@@ -1,0 +1,748 @@
+{
+  "schema": "heart-turn-limit-refinement-1",
+  "sourceCommit": "932b1f8c471f5980ebda7854e3a6d4245eec086c",
+  "scope": "Maximum-turn optimizer cushion only. The independent geometry, paper, image, symmetry and feature acceptance gates are unchanged. Experimental short-return predicates, checkpoint projection and cached return forces are not included. Native benchmark used an isolated copy; its two changed implementation files match the committed code except comments.",
+  "controlledRegression": {
+    "maximumAllowedTurnDegrees": 145,
+    "steps": 240,
+    "rows": [
+      {
+        "name": "control",
+        "error": 0.00043402777777777775,
+        "geometry": true,
+        "paper": true,
+        "turns": [
+          68.76249460332225,
+          140.581256718929,
+          71.2173984542495
+        ]
+      },
+      {
+        "name": "candidate",
+        "error": 0.0003298611111111111,
+        "geometry": true,
+        "paper": true,
+        "turns": [
+          69.27432027879182,
+          143.93691484820945,
+          72.49630315287268
+        ]
+      }
+    ],
+    "oldRegressionTests": {
+      "passed": 1,
+      "failed": 2
+    },
+    "focusedTests": {
+      "passed": 20,
+      "failed": 0
+    }
+  },
+  "fixedGift": {
+    "scope": "Controlled production/cushion refinement from the same captured late gift starting graph, with 320 steps and no wall-clock cutoff. This is a causal refinement comparison, not an end-to-end speed benchmark.",
+    "inputSha256": "23fb94fe724d429531cac278b5e9eb82d08959ce747b5b0334e554e9f83bdb63",
+    "rows": [
+      {
+        "name": "control",
+        "error": 0.0240375,
+        "geometry": true,
+        "paper": true,
+        "maximumTurn": 98.80935539986503,
+        "pointsSha256": "eb9685a61af45e6ebfd54e07e0644b12568a1ac599349a12d3a3f5253f1cfef4"
+      },
+      {
+        "name": "candidate",
+        "error": 0.0240375,
+        "geometry": true,
+        "paper": true,
+        "maximumTurn": 98.80935539986503,
+        "pointsSha256": "eb9685a61af45e6ebfd54e07e0644b12568a1ac599349a12d3a3f5253f1cfef4"
+      }
+    ]
+  },
+  "hunodan": {
+    "passed": 22,
+    "total": 22,
+    "maximumSeconds": 7.7930516250000075,
+    "allErrorsExactlyUnchanged": true,
+    "rows": [
+      {
+        "id": "hjfig-01",
+        "seconds": 4.319872167,
+        "error": 0.009799111111111111,
+        "passed": true
+      },
+      {
+        "id": "hjfig-02",
+        "seconds": 5.230667458,
+        "error": 0.013340444444444445,
+        "passed": true
+      },
+      {
+        "id": "hjfig-03",
+        "seconds": 3.4112665420000012,
+        "error": 0.006634666666666666,
+        "passed": true
+      },
+      {
+        "id": "hjfig-04",
+        "seconds": 3.8550879589999987,
+        "error": 0.013824,
+        "passed": true
+      },
+      {
+        "id": "hjfig-05",
+        "seconds": 2.8985522079999972,
+        "error": 0.009042960667083447,
+        "passed": true
+      },
+      {
+        "id": "hjfla-01",
+        "seconds": 5.420008957999999,
+        "error": 0.012166341145833334,
+        "passed": true
+      },
+      {
+        "id": "hjcur-01",
+        "seconds": 5.112501833000002,
+        "error": 0.005148444444444444,
+        "passed": true
+      },
+      {
+        "id": "hjcur-02",
+        "seconds": 5.099301249999997,
+        "error": 0.005219555555555555,
+        "passed": true
+      },
+      {
+        "id": "hjcur-03",
+        "seconds": 4.721068542000001,
+        "error": 0.004522666666666667,
+        "passed": true
+      },
+      {
+        "id": "hjcur-04",
+        "seconds": 6.660873374999996,
+        "error": 0.005639111111111111,
+        "passed": true
+      },
+      {
+        "id": "hjcur-05",
+        "seconds": 3.1166111659999953,
+        "error": 0.009436444444444445,
+        "passed": true
+      },
+      {
+        "id": "hjhih-01",
+        "seconds": 5.8687272499999965,
+        "error": 0.006040430615586996,
+        "passed": true
+      },
+      {
+        "id": "hjhih-02",
+        "seconds": 4.403444959000001,
+        "error": 0.003899406226779104,
+        "passed": true
+      },
+      {
+        "id": "hjhih-04",
+        "seconds": 7.0571875840000065,
+        "error": 0.007776029627903062,
+        "passed": true
+      },
+      {
+        "id": "hjstr-01",
+        "seconds": 3.9180458749999962,
+        "error": 0.007550237322696868,
+        "passed": true
+      },
+      {
+        "id": "hjstr-02",
+        "seconds": 5.825761416999987,
+        "error": 0.004365548980933596,
+        "passed": true
+      },
+      {
+        "id": "hjstr-03",
+        "seconds": 7.7930516250000075,
+        "error": 0.0056129769369752365,
+        "passed": true
+      },
+      {
+        "id": "hjsta-01",
+        "seconds": 4.618494458000001,
+        "error": 0.007929362880886427,
+        "passed": true
+      },
+      {
+        "id": "hjsta-02",
+        "seconds": 4.148053374999988,
+        "error": 0.0038045247395833335,
+        "passed": true
+      },
+      {
+        "id": "hjsta-03",
+        "seconds": 5.851659125000006,
+        "error": 0.012332213049376572,
+        "passed": true
+      },
+      {
+        "id": "hjsta-04",
+        "seconds": 6.053228292,
+        "error": 0.0050250552896055544,
+        "passed": true
+      },
+      {
+        "id": "hjsta-05",
+        "seconds": 5.510360707999993,
+        "error": 0.010624446293860237,
+        "passed": true
+      }
+    ]
+  },
+  "photos": {
+    "passed": 25,
+    "total": 31,
+    "allStatusesUnchanged": true,
+    "allSourcesCropsAndTargetsUnchanged": true,
+    "acceptedErrors": {
+      "equal": 17,
+      "lower": 4,
+      "higher": 4,
+      "maximumIncreasePercentagePoints": 0.07187500000000006
+    },
+    "rows": [
+      {
+        "id": "nested-squares",
+        "status": "no_crop",
+        "error": null,
+        "previousError": null
+      },
+      {
+        "id": "outline-star",
+        "status": "failed",
+        "error": 0.00815625,
+        "previousError": 0.00815625
+      },
+      {
+        "id": "floral-checker",
+        "status": "validated",
+        "error": 0.01929375,
+        "previousError": 0.01941875
+      },
+      {
+        "id": "dense-checker",
+        "status": "validated",
+        "error": 0.00699375,
+        "previousError": 0.00699375
+      },
+      {
+        "id": "bird",
+        "status": "validated",
+        "error": 0.02470625,
+        "previousError": 0.02470625
+      },
+      {
+        "id": "leaf",
+        "status": "validated",
+        "error": 0.0265125,
+        "previousError": 0.0265125
+      },
+      {
+        "id": "gift",
+        "status": "validated",
+        "error": 0.02309375,
+        "previousError": 0.02309375
+      },
+      {
+        "id": "gingerbread",
+        "status": "validated",
+        "error": 0.014825,
+        "previousError": 0.01468125
+      },
+      {
+        "id": "white-birds",
+        "status": "validated",
+        "error": 0.00379375,
+        "previousError": 0.00379375
+      },
+      {
+        "id": "flower",
+        "status": "validated",
+        "error": 0.0050625,
+        "previousError": 0.0050625
+      },
+      {
+        "id": "warped-checker",
+        "status": "validated",
+        "error": 0.01813125,
+        "previousError": 0.0174125
+      },
+      {
+        "id": "round-checker",
+        "status": "validated",
+        "error": 0.0121375,
+        "previousError": 0.0121375
+      },
+      {
+        "id": "santa",
+        "status": "no_crop",
+        "error": null,
+        "previousError": null
+      },
+      {
+        "id": "fine-checker",
+        "status": "validated",
+        "error": 0.0215875,
+        "previousError": 0.0216875
+      },
+      {
+        "id": "orb",
+        "status": "validated",
+        "error": 0.01438125,
+        "previousError": 0.01443125
+      },
+      {
+        "id": "stacked-hearts",
+        "status": "validated",
+        "error": 0.007425,
+        "previousError": 0.007425
+      },
+      {
+        "id": "jigsaw",
+        "status": "failed",
+        "error": 0.0564375,
+        "previousError": 0.0564375
+      },
+      {
+        "id": "candle",
+        "status": "validated",
+        "error": 0.0048375,
+        "previousError": 0.0048375
+      },
+      {
+        "id": "maple-leaf",
+        "status": "validated",
+        "error": 0.013325,
+        "previousError": 0.0134125
+      },
+      {
+        "id": "crown",
+        "status": "validated",
+        "error": 0.02411875,
+        "previousError": 0.02411875
+      },
+      {
+        "id": "crossed-ribbons",
+        "status": "failed",
+        "error": 0.02153125,
+        "previousError": 0.02153125
+      },
+      {
+        "id": "bauble",
+        "status": "failed",
+        "error": 0.0919125,
+        "previousError": 0.0919125
+      },
+      {
+        "id": "bottom-flower",
+        "status": "validated",
+        "error": 0.0093875,
+        "previousError": 0.0093875
+      },
+      {
+        "id": "faceted-star",
+        "status": "validated",
+        "error": 0.0065,
+        "previousError": 0.0065
+      },
+      {
+        "id": "bibel-star-8",
+        "status": "validated",
+        "error": 0.003675,
+        "previousError": 0.003675
+      },
+      {
+        "id": "bibel-star-curved",
+        "status": "validated",
+        "error": 0.00663125,
+        "previousError": 0.00663125
+      },
+      {
+        "id": "bibel-star-outline",
+        "status": "validated",
+        "error": 0.0116,
+        "previousError": 0.01159375
+      },
+      {
+        "id": "bibel-cross",
+        "status": "validated",
+        "error": 0.00243125,
+        "previousError": 0.00243125
+      },
+      {
+        "id": "flettede-puppy",
+        "status": "validated",
+        "error": 0.0103125,
+        "previousError": 0.0103125
+      },
+      {
+        "id": "flettede-stonehenge",
+        "status": "validated",
+        "error": 0.01905,
+        "previousError": 0.01905
+      },
+      {
+        "id": "flettede-viking",
+        "status": "validated",
+        "error": 0.02056875,
+        "previousError": 0.02055
+      }
+    ]
+  },
+  "editable": {
+    "hunodan-editor": {
+      "converted": 22,
+      "complete": 22,
+      "total": 22
+    },
+    "photo-editor": {
+      "converted": 29,
+      "complete": 25,
+      "total": 29
+    }
+  },
+  "limitations": [
+    "Native timings are not browser click-to-ready latency.",
+    "The turning cost is soft; the unchanged independent validators still decide which checkpoints are allowed.",
+    "Short-return decisions still depend on curve subdivision; this separate geometry issue is not resolved here.",
+    "Timed photo runs do not show uniform image-error improvement. The fixed-start gift result does not explain every change in the full corpus.",
+    "No physical cutting or assembly tests were performed."
+  ],
+  "artifacts": {
+    "tmp/heart-learning/turn-limit-v1/runtime/source.json": "7f1fa8fbb186ae60d66b813ec19792556394672c216519758c87e9f5935c6648",
+    "tmp/heart-learning/turn-limit-v1/source.json": "dcda45c47b31a25ec53cf9a0470c5bf29d8ce0039b179741e4515fac1fcc20c9",
+    "tmp/heart-learning/turn-limit-v1/fit-replay.mjs": "f349a9fb84eb1fb31f1a1ec628a473e4a70b030b6819e14c2a3f681d5239ccb6",
+    "tmp/heart-learning/turn-limit-v1/fits/fit-results.json": "97052051aefac589be6bfc25576549e5c5f308302e395e83d541a9f0e7404ba4",
+    "tmp/heart-learning/turn-limit-v1/controlled-145.mjs": "70e774ed96383c770d02977024149a3cf8b216c11b94048fffefdc7f7cf8e69d",
+    "tmp/heart-learning/turn-limit-v1/controlled-145-results.json": "c822d222e54c304254a9d1201e622bf4f186c0f26c74262d10d6a711dc71f765",
+    "tmp/heart-learning/turn-limit-v1/fixed-gift.mjs": "821443c109696f33c0f5025453ad73174d2f191c805ff3e76337c6f5ac83b064",
+    "tmp/heart-learning/turn-limit-v1/fixed-gift-results.json": "3d4398ba791aa59d18f3c47921ae1df02ba68729774d22061d71f91b93136622",
+    "tmp/heart-learning/turn-limit-v1/fixed-gift-input.json": "23fb94fe724d429531cac278b5e9eb82d08959ce747b5b0334e554e9f83bdb63",
+    "tmp/heart-learning/turn-limit-v1/focused.log": "dff9dadbc285a67b88fbcaa9a5d6877f079ae37fb01626d7668cd27d0428dd4d",
+    "tmp/heart-learning/turn-limit-v1/old-regression.log": "e4b1cf7a42f7e3a8e6bead515012f74b2704d2aba9bad023f9be284e82535a61",
+    "tmp/heart-learning/turn-limit-v1/checks.json": "4810d9a3e8a71fb531701e40f7be138843a1ab6814f8f21ab8bffbf64b2312e3",
+    "tmp/heart-learning/turn-limit-v1/editor-checks.json": "51090daec519888c560a7ef050f9037cf53ea8383e90b29e2b1c63459b804dc5",
+    "tmp/heart-learning/row-kernel-v1/release-v2/hunodan/results.json": "a117fed5ef8bf0952b4ed519c4fb869a33123e9e65a07be0d2a834d35740c0c0",
+    "tmp/heart-learning/row-kernel-v1/release-v2/photos/results.json": "38ec7875fd66f308cd13d41fb937babed119c3faf1485e2053dd339339239d8e",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjcur-01/cut_geometry.json": "049b9ebeddc1110704836a415214288788c8494bd69914e99140e1c6a00e499a",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjcur-01/independent.png": "e4ecbb14e341dcb48718b6041b9e2c93ac01b0fc06b5ed4c941b36a6a456f38b",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjcur-01/report.json": "fb00ea281f67616bb93a549a21b1b5a3a643134d726892ad7ed274058b53f849",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjcur-02/cut_geometry.json": "b6dec1adec3bcf53ef9122c6d6095f9c30ff233e7ef358b73502f7b739327cc8",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjcur-02/independent.png": "8e6a81f849f396e1cd396105daab665f363a0e90b43aa90a2331c5aee28e9416",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjcur-02/report.json": "63631b6d3a160ab640367dd53bcf7978f86c2a05c58d01ad8fbe4880368751ef",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjcur-03/cut_geometry.json": "ad97a002943d8e2647c3b8d9f4b9c7d0f6f1ee10dd5db85238f2366dd6ca91c3",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjcur-03/independent.png": "4f4264139cbfba0b66f795196c5457333aa00f0bc666636a6ff89dd148012756",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjcur-03/report.json": "120b4768052305973a7ae920186cb5d2cd32c33d19fa4d88aa0f3308d16394eb",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjcur-04/cut_geometry.json": "a525041d65f090550c374aa1d58e5b9a22afbeaaa8d21f397e32ed8cd26ae022",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjcur-04/independent.png": "3442cc6d073d8a134ea483fadbad855abc538b982025312a1aeed911a29e8e59",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjcur-04/report.json": "516d3faf0c94125d27e0a049f42c9687475040763ef6685aebf3183de4bcebd1",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjcur-05/cut_geometry.json": "1b3822492ae13f4b6f73bc67284ce4eb568f292cb87b092b80be053e914817f7",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjcur-05/independent.png": "7db466e91c1607b861a53198900b4dc47df4746edfcb1e0ba78a940016597781",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjcur-05/report.json": "3c247018816dc03ca77727f69d51a1544aad54dbb6c2ba95c4afa64c5289779c",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjfig-01/cut_geometry.json": "d7ad5e34490ec434df08448000f24ff0cba34e62923d67eef6ddf2a13a640983",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjfig-01/independent.png": "90b333bc8b073a75052adcfab1673ab418b58e3010c8e577e6fb3913dbc0f4bb",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjfig-01/report.json": "76e99b89ea50ce55de28f024939a2d01867184afc0372a652187d57e353d27b5",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjfig-02/cut_geometry.json": "bc90373c69a2bcc1236d56643df72e3c3e205aea3d3a4b8f2b93c88ec187be88",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjfig-02/independent.png": "fbb58d97c2808f40405bacc5dac7b2c3bbccc5d3c1ed7db496036ed4e512789e",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjfig-02/report.json": "ef27f4fdcbd9df0fd9c9076e0ba3c3cb78c5b6f6e43b701c43b21bed292562d2",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjfig-03/cut_geometry.json": "ce50b811ccfc67a307097b3d058c6d6ab6e47fbd1da7bf87584b6cda6cdaf8f6",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjfig-03/independent.png": "dd1cc125318fe895ecaf6755ab81f8cd2364be8d19537cbea148a5857ca748f0",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjfig-03/report.json": "d95250619ee6f63a55fcaa31eb9aa0fd25a89bf6bbbcb7540d558d89e4bb3b20",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjfig-04/cut_geometry.json": "16695deef171fd7b1f248ef452407bbbcc4a0c65aeabdfbb6038ef5c56117db7",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjfig-04/independent.png": "7da54e786207f5798379327247c97f90d15ee69f024ec5927a046dc3ad5eec62",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjfig-04/report.json": "eaedb92d51cd3ad9acd137920544ac59edb590ade7bc42f2b6b88ba4319240bc",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjfig-05/cut_geometry.json": "2701e521e2279a469101261ad62c8757aa3c4f2509a17e5ade6b015bf1915196",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjfig-05/independent.png": "76d69e2ddf62d0c71976bf30614eeb1b54f81ea7c65e431bced9d59c7da39bfb",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjfig-05/report.json": "d97e1c442fd831b29b7fd380256015d025339824f257cec104f6ddc183ff9490",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjfla-01/cut_geometry.json": "2adb545bc28461e7756f84b13f7b7470b9ae477659d6c862afc5b1c0b47a4073",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjfla-01/independent.png": "eb1cd5b7af7248c7c807c8f8a9896cea86bcdb65cc50c94836be2c6b506f3321",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjfla-01/report.json": "3f06394d8ef217982b907b5972a0db40466304d9558ac761111d81dc5435707a",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjhih-01/cut_geometry.json": "df9facec711075be91afcf6f2ddf537842a1724fcd44ef1f68cdb0703d5f2c68",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjhih-01/independent.png": "5cde47544e1e0147fc9115a89252da3006a69c1951769ee579de383ade93fff2",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjhih-01/report.json": "9f91560a633f701ea8e4d47a6df836e29c6d6cc0f6aaa9f39d18d4e3a1b7d9fd",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjhih-02/cut_geometry.json": "25db88ee2ae032dd7f5aaa85fe1a897b585797aa10fbdf37af94d73e24a81f2a",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjhih-02/independent.png": "f36eca01b1c27b198571686891f73c05d2e61b41e446ee6b901c1dc4a43ce054",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjhih-02/report.json": "51ce73ecab168c3fe54e08c96fa669d5ed267ac913c6d11d12e5719e4a153ce8",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjhih-04/cut_geometry.json": "8c34f52f04b01a4ba97e7e20eae725dfe423f2ef7eb1b1b8154c749e63d220d6",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjhih-04/independent.png": "61da8da37b1a97a8aaad6bc0e8fbfaeb0cec2244512bfc2921816cbbe145d9fb",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjhih-04/report.json": "24344581d7dc4a4b6d83292d9e34d65e3a1805aba221d2fad74bb41c11164682",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjsta-01/cut_geometry.json": "ec714b590351efd48a2ca01d3c2a1ec25791b52fe9286389b1c6aa0b96eea005",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjsta-01/independent.png": "e4d066e073330265c4dea2118439e84bca83fc5da9c04af97534b494a19599a3",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjsta-01/report.json": "e6b8061031375d7a9f79c547662829646a219682a816768e8dbe0cdf8985637f",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjsta-02/cut_geometry.json": "ba755c3c9ca90e290630af6e8984e9167b4f865dfd5055a578378a6d2fba1cd7",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjsta-02/independent.png": "4be533947679d19e18b3d09e895114190a26eeb87a233d076aecb9eb77e9d679",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjsta-02/report.json": "ccf5a78dd0409e40d857a96432ff40d9160ebb7afa52db457f0c1fddad981766",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjsta-03/cut_geometry.json": "94a7e2fae6933095c873744551ba72caf03ad1119701a8f6e162f1f6687266f5",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjsta-03/independent.png": "9941518d33cb094aec9c9cfcaeffc19ad7064a99c882a894c5bf5887e79cf192",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjsta-03/report.json": "68f89c44944b4fa304a6ff879b86a09e3fde307989dbdbef39ca49e3101d94fc",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjsta-04/cut_geometry.json": "0ec351fd7566f5570145c107913d323e6761f018527258f6def41cd4dcc67a1e",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjsta-04/independent.png": "16ed70b6b7e3f569a4d5c9e93be7d93f005305bae182fe364e79b30e2931850e",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjsta-04/report.json": "0ac28c29046dca66a0124efcc240542a3096d079befdb854ab07ef6775f8d3ee",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjsta-05/cut_geometry.json": "e5c679f439952dc25a281d54f49977ec76113eab8e1eead9473f77b881a9f5f2",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjsta-05/independent.png": "7f3d00241b585b3e679884fd7e03a99a16cb355d1f1f3674846e8c151f0f6acd",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjsta-05/report.json": "3357211cd817b6c8aa09ee88092c05ea9527bb86b6582e1e8fa7cb2dcc29bbf2",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjstr-01/cut_geometry.json": "a7f33780db85389adc0d24217c4e7febf717857000a2b4ad93f677fcfd0860f2",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjstr-01/independent.png": "3c350eb16799c0593bdf3badfdcb948ecc0778d04080cddd3c2f3af840a99873",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjstr-01/report.json": "29246c24b8da29bbc571d85c8aeab1183528f0821e1e431322ec2cbcbc864937",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjstr-02/cut_geometry.json": "febe020fdc59877ef5cf71c22eff1fbc4607a1eaae93baf40ec9611d46bdb270",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjstr-02/independent.png": "7ba0236c5fb9fd15ce5237187442095e2c50d60d72a104b3435403a0f4db78f0",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjstr-02/report.json": "b670784cc1bf8dfa34f7741dbc8d650ed4a56b83195222f77e076527a0272798",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjstr-03/cut_geometry.json": "5ffc98f412dcae8e143a786b0f2dea156757837c0d08dbd8d0e9c123664e9cb5",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjstr-03/independent.png": "3494f3b925bfe14bab1f5d670de233993639a50664c421fdcb3bf5a65e22e5cc",
+    "tmp/heart-learning/turn-limit-v1/hunodan/hjstr-03/report.json": "bab93baf2eb0dd32ac059cd0ea72d8fc2e6d2db84180b3051351fa213b45fc18",
+    "tmp/heart-learning/turn-limit-v1/hunodan/results.json": "5007914a593807372d8a5b96ebbb1113c07d54ce63d7fce51102f0eb87d940ca",
+    "tmp/heart-learning/turn-limit-v1/photos/bauble/automatic/cut_geometry.json": "ae10e0c878e1b780e5a6844f0ac90f19832bb52622949402d48017f03f0edbe4",
+    "tmp/heart-learning/turn-limit-v1/photos/bauble/automatic/independent-weave.png": "9e2b3cf6d9ee1f1458d8f00ab751dd199ee0418ac77f428dfb77431a1509a414",
+    "tmp/heart-learning/turn-limit-v1/photos/bauble/automatic/report.json": "435c8da78599ffbea4ccfe1b5fcb9d9baf960c656fd5708317b63f36a8432fef",
+    "tmp/heart-learning/turn-limit-v1/photos/bibel-cross/automatic/cut_geometry.json": "9668da65c3b88ef077b3054d27e022b021851263785e9868f692bb7cc9fa0a05",
+    "tmp/heart-learning/turn-limit-v1/photos/bibel-cross/automatic/independent-weave.png": "36896001c76948d60485d263597de6ca83d1698b9037cba4f8330096d09404bf",
+    "tmp/heart-learning/turn-limit-v1/photos/bibel-cross/automatic/report.json": "1446695e5a44bbf1860ba80159729fa70376b04ca4795b160a9bfb20aa330180",
+    "tmp/heart-learning/turn-limit-v1/photos/bibel-star-8/automatic/cut_geometry.json": "86835af75f4222c274fdd1757ba65e6494909876bac46bb31a18561628d53e97",
+    "tmp/heart-learning/turn-limit-v1/photos/bibel-star-8/automatic/independent-weave.png": "6d7723777a8dfc75f0d531e74715fadb9f79e36f0ecbf2d7b3021bbfa19468d7",
+    "tmp/heart-learning/turn-limit-v1/photos/bibel-star-8/automatic/report.json": "08b8d717a1fcd98e43d81c39ddb4ff7ed509b69f29652cf719b2204a407e57d3",
+    "tmp/heart-learning/turn-limit-v1/photos/bibel-star-curved/automatic/cut_geometry.json": "d4e520bac64dbd55e0f2ca8c1dbe9adbfc7d4f29d15714783362199a9abc1e30",
+    "tmp/heart-learning/turn-limit-v1/photos/bibel-star-curved/automatic/independent-weave.png": "918212146d9422905587707177c83a0846ddba47adf1dba15e69b532d61bac34",
+    "tmp/heart-learning/turn-limit-v1/photos/bibel-star-curved/automatic/report.json": "629393635a351e09b16ef7b21f0ad75fd13bf1762536b7badf766c5eda42c480",
+    "tmp/heart-learning/turn-limit-v1/photos/bibel-star-outline/automatic/cut_geometry.json": "4c9a25ea9b9317a32f57efe82c23cd260ded4e1aa313d40780c7dc38f47f706a",
+    "tmp/heart-learning/turn-limit-v1/photos/bibel-star-outline/automatic/independent-weave.png": "c9d952fb937d199e25cedc9e66163f6a8469633986f79369e69bf7fe41683ac6",
+    "tmp/heart-learning/turn-limit-v1/photos/bibel-star-outline/automatic/report.json": "d0fe1c1e11ff5f85828c857290901731979239cf6ce0911f0406c74593f8e9b7",
+    "tmp/heart-learning/turn-limit-v1/photos/bird/automatic/cut_geometry.json": "f8b6dc9f52641fbd373b3382985120a0b564c1e434a179728bd5da9dab938303",
+    "tmp/heart-learning/turn-limit-v1/photos/bird/automatic/independent-weave.png": "f5a3fc73be321eaa7a38368b8caa8f148b01e76521ec31df5ace1dd42648132c",
+    "tmp/heart-learning/turn-limit-v1/photos/bird/automatic/report.json": "456fea21f284199c3bb20eae9f768d5f65811dd8c1e4eccc18ccfb8d0d499697",
+    "tmp/heart-learning/turn-limit-v1/photos/bottom-flower/automatic/cut_geometry.json": "a580fc671d38d5315d1594fe7ee3993b2bd428d98b617a2ef9a7c34744b88dc6",
+    "tmp/heart-learning/turn-limit-v1/photos/bottom-flower/automatic/independent-weave.png": "576f065940258d07c5c12d89a0bbb9e047fc0ba737b535638f4fc91f2a68c3b4",
+    "tmp/heart-learning/turn-limit-v1/photos/bottom-flower/automatic/report.json": "f815dea055ce28bb985507449852e21e9cf8ecbe9dbb7c8ff42535ba5f08fa62",
+    "tmp/heart-learning/turn-limit-v1/photos/candle/automatic/cut_geometry.json": "1bc0dd1dba943690ef6f316b404c1a855be582f7ca0fd9b98fd70ef814ec26f7",
+    "tmp/heart-learning/turn-limit-v1/photos/candle/automatic/independent-weave.png": "e0fe40045dcef87e386c60b8c67537b09b6791a957cce501a185fa0b0db6429a",
+    "tmp/heart-learning/turn-limit-v1/photos/candle/automatic/report.json": "6bf283d59c56e6fbd0b3aec122954b854a984aedb62fa758367ee6f477b7d9f6",
+    "tmp/heart-learning/turn-limit-v1/photos/crossed-ribbons/automatic/cut_geometry.json": "6eb1839135e42a75bbb7e98541662479085f9692660c1a0f32d97a0016ed27f1",
+    "tmp/heart-learning/turn-limit-v1/photos/crossed-ribbons/automatic/independent-weave.png": "346207f690a75e5e37be5fc3bca6b1954a073deec61a221fed30bd5de9f778a5",
+    "tmp/heart-learning/turn-limit-v1/photos/crossed-ribbons/automatic/report.json": "973f29beb40194050415dd89344bc06f596c634dcc5455b84f8e0cebe3736941",
+    "tmp/heart-learning/turn-limit-v1/photos/crown/automatic/cut_geometry.json": "7c02af78469c84f4dad34d81e2c85c561f2c73d90acef981373f4681053561bd",
+    "tmp/heart-learning/turn-limit-v1/photos/crown/automatic/independent-weave.png": "a0bf0fe3368a901d0b304fac3c5fc571986396ca7f9bd9597a5fcba2e3157db9",
+    "tmp/heart-learning/turn-limit-v1/photos/crown/automatic/report.json": "ff262ad64f944801371877939f710805f78dd9db3ad1ec0ec4a0840eea5cefd1",
+    "tmp/heart-learning/turn-limit-v1/photos/dense-checker/automatic/cut_geometry.json": "0ba6a61f0e66805d5d5db934f2ce9f574330700451e6a692794da8a14944c5af",
+    "tmp/heart-learning/turn-limit-v1/photos/dense-checker/automatic/independent-weave.png": "02df941ac787becf92e34e276537989a71f0c181bc692d4fed673f06c6174f21",
+    "tmp/heart-learning/turn-limit-v1/photos/dense-checker/automatic/report.json": "ff30896d9d68569872553d21d6c5a8303ef591a13ce9b6a0cf9f3c5be3112980",
+    "tmp/heart-learning/turn-limit-v1/photos/faceted-star/automatic/cut_geometry.json": "229d2de8e9616388bc4ff178759a57fa3fbde8277a10d8ee6f06db8c97c5dcaa",
+    "tmp/heart-learning/turn-limit-v1/photos/faceted-star/automatic/independent-weave.png": "ab4c0be7bb1f8995a3429ec6026d0ba58488ccc9a14c88360470e93fe2458df3",
+    "tmp/heart-learning/turn-limit-v1/photos/faceted-star/automatic/report.json": "0e4ee6eb17460d9962c6b9169cf3ea75b08d13d801fba36b3cb863d2a59e97fc",
+    "tmp/heart-learning/turn-limit-v1/photos/fine-checker/automatic/cut_geometry.json": "f3f49bba06206774a710b6fb567314e29fe0c5a2ebe2641478a4af14a5089d8b",
+    "tmp/heart-learning/turn-limit-v1/photos/fine-checker/automatic/independent-weave.png": "28f8f23cb65c9755273232658682b7319e341222f6d1cb7354d6fee5077d84a1",
+    "tmp/heart-learning/turn-limit-v1/photos/fine-checker/automatic/report.json": "cf4cc1dbae96fe149272387ffe937b76fc3a483cf499d57540d4fda4e7b023b7",
+    "tmp/heart-learning/turn-limit-v1/photos/flettede-puppy/automatic/cut_geometry.json": "7cdda85aa95f3bb6bb8a05acd4f2dcf8de9168f8338972387c11fe7385929303",
+    "tmp/heart-learning/turn-limit-v1/photos/flettede-puppy/automatic/independent-weave.png": "9b8ca6490e7cc0e59d417b07a72211422f80d8639c2feb45fc4cd817e2afe9c0",
+    "tmp/heart-learning/turn-limit-v1/photos/flettede-puppy/automatic/report.json": "4211318745f947c6131b5fb38c61cb74e0bc3a8a1e6c9fbb8ac4be27cf9a29c5",
+    "tmp/heart-learning/turn-limit-v1/photos/flettede-stonehenge/automatic/cut_geometry.json": "d6fdb7b80050ee3070ac9a08e51d0d6c690480180df245daf5af0527bc6bffb5",
+    "tmp/heart-learning/turn-limit-v1/photos/flettede-stonehenge/automatic/independent-weave.png": "f4fe1ed74b10cab4b9fab836544bba46e923b7ab7676e552aa9e672cfa020319",
+    "tmp/heart-learning/turn-limit-v1/photos/flettede-stonehenge/automatic/report.json": "e4bdeb8d6a3ab063e97037298eb20828db7ba58b10b0d5a121a886600fe2fd8c",
+    "tmp/heart-learning/turn-limit-v1/photos/flettede-viking/automatic/cut_geometry.json": "490246593bf4a18f9ef2066970e9edfa7fcad0d006a6ea43c1e0e98731607e5b",
+    "tmp/heart-learning/turn-limit-v1/photos/flettede-viking/automatic/independent-weave.png": "dbeb9c001e91aa1e468c4d7532bdcb9aff9152637f97ee0f7c16220f629baac9",
+    "tmp/heart-learning/turn-limit-v1/photos/flettede-viking/automatic/report.json": "d47b1b85832dfa425ed95dc8b9b0a2c1875ca4ae238ba796234404c7412af78b",
+    "tmp/heart-learning/turn-limit-v1/photos/floral-checker/automatic/cut_geometry.json": "a15356c8620c3b55d3668e391b6c7fb53d07ace2016243c4f791b58908e5096d",
+    "tmp/heart-learning/turn-limit-v1/photos/floral-checker/automatic/independent-weave.png": "7cdbc4489fab219a0012347966a1661fa518da5f2bac2927aae7df824e616241",
+    "tmp/heart-learning/turn-limit-v1/photos/floral-checker/automatic/report.json": "45610b98aa5579101eb304c50c0a80e8baa1bea7ae595021db742574db937ca3",
+    "tmp/heart-learning/turn-limit-v1/photos/flower/automatic/cut_geometry.json": "8166aedab48b2bb9b365f503f6ac46592840520e5f26c9681480c1a32ddd942f",
+    "tmp/heart-learning/turn-limit-v1/photos/flower/automatic/independent-weave.png": "a6a3723848c77d7ce97e64ea551f7ab92a8e43d8a45a3fcd0d4ecfe705f29e0e",
+    "tmp/heart-learning/turn-limit-v1/photos/flower/automatic/report.json": "82eb655974e67b85247d29286e33c65367e977aadaafab25d584faa7bbf134d8",
+    "tmp/heart-learning/turn-limit-v1/photos/gift/automatic/cut_geometry.json": "09e359bda1756bae08a8d2e0ff65474c341e82e6cd9a4169ab56d624d4393945",
+    "tmp/heart-learning/turn-limit-v1/photos/gift/automatic/independent-weave.png": "33219d2d725d971d4680dc50822986431819e1122a443785d287b94796a8027b",
+    "tmp/heart-learning/turn-limit-v1/photos/gift/automatic/report.json": "9078f08e04122171daa1945c7c378452beb02425c0646ec84078e609a4518d49",
+    "tmp/heart-learning/turn-limit-v1/photos/gingerbread/automatic/cut_geometry.json": "5bbe8c0816b13bcb313ef9515119d4424cbb36612de249c87d550085ae6be1ef",
+    "tmp/heart-learning/turn-limit-v1/photos/gingerbread/automatic/independent-weave.png": "f00fccda7857da3176eaab66a00b27491d8cf89dacc520b8c2ec9c639b399ae9",
+    "tmp/heart-learning/turn-limit-v1/photos/gingerbread/automatic/report.json": "1942eb58f153614487563980dd1c78617445bf951302622a60b0f98f9b29f8f5",
+    "tmp/heart-learning/turn-limit-v1/photos/jigsaw/automatic/cut_geometry.json": "7dda8ac65eabe72eef97dace02becc40801a0e23ed1bcea3fa3dc03563b921f2",
+    "tmp/heart-learning/turn-limit-v1/photos/jigsaw/automatic/independent-weave.png": "69e8d3f6de30b0fa6d2c994a9f6508e781d898abc3524550e75a9a625d50d9b8",
+    "tmp/heart-learning/turn-limit-v1/photos/jigsaw/automatic/report.json": "7b14324ec5b96452f2d77b75996f1b10c762cf22eedea2308af19ffc015b2627",
+    "tmp/heart-learning/turn-limit-v1/photos/leaf/automatic/cut_geometry.json": "edc2ede44816c17bbeb6c39367e1423b936ffb35be786733adb460a2bae0bc06",
+    "tmp/heart-learning/turn-limit-v1/photos/leaf/automatic/independent-weave.png": "c3c53aed1987d005d7f1f2a39e8d752cdc01577943b7dee0f09ed72a662f8c15",
+    "tmp/heart-learning/turn-limit-v1/photos/leaf/automatic/report.json": "c3ffd751afde154be36f98427db92a437e561cfa6d168cf54daf22b800af714f",
+    "tmp/heart-learning/turn-limit-v1/photos/maple-leaf/automatic/cut_geometry.json": "be0d60e823f72b34a5fe94b2beb033fbfe4b1ee89c6305048159fc388e85923e",
+    "tmp/heart-learning/turn-limit-v1/photos/maple-leaf/automatic/independent-weave.png": "161e4087722dd7635a8553b25449bb6f640dff7ef32829c9c0028181219ff189",
+    "tmp/heart-learning/turn-limit-v1/photos/maple-leaf/automatic/report.json": "319a9843491b97e163d6d5b75f045c86fad6adc5eb5a6c5c72001d042f3662d2",
+    "tmp/heart-learning/turn-limit-v1/photos/orb/automatic/cut_geometry.json": "1af7a34ae209d5d0e2ec44efc7720e21639155876d14d73c5c17dc0d4c1fd5aa",
+    "tmp/heart-learning/turn-limit-v1/photos/orb/automatic/independent-weave.png": "5efd6f074506c130f18ab727ebe5dd0e10cf0f39d3361fcb5c1c53e7a201c054",
+    "tmp/heart-learning/turn-limit-v1/photos/orb/automatic/report.json": "ac16c5bc27dbf515025ecc814b564562a503a76214337cd2186b67519f8187d8",
+    "tmp/heart-learning/turn-limit-v1/photos/outline-star/automatic/cut_geometry.json": "906d2a80229665d3291e6ed9133a4c7f999686014d3f938eeda806933799444c",
+    "tmp/heart-learning/turn-limit-v1/photos/outline-star/automatic/independent-weave.png": "4d6a1d52d987c855afe7b41acd18ee45662e13ffe85166cbc3d562ad20a8828b",
+    "tmp/heart-learning/turn-limit-v1/photos/outline-star/automatic/report.json": "8d8fee21207bed19e6f677d4d53cc8f4ae1a56fcb961b194b4ea6bff64efb860",
+    "tmp/heart-learning/turn-limit-v1/photos/results.json": "047932a72d80aa9fb98527cd0b0583838544bd7129f280bc2dadd4096d154f7f",
+    "tmp/heart-learning/turn-limit-v1/photos/round-checker/automatic/cut_geometry.json": "869d72e1e5d88ad1b0ba87d6c4bca3d5a1f0427224a4b3e6c8d0c29471cb6864",
+    "tmp/heart-learning/turn-limit-v1/photos/round-checker/automatic/independent-weave.png": "75323a7be19c8d5df04a274bd2e4a6294c28a196b8e6a167a5299bed9b672085",
+    "tmp/heart-learning/turn-limit-v1/photos/round-checker/automatic/report.json": "45051561f97225a5e9414161d8c7dfb037cd2fb481e8b722623d5daa99301337",
+    "tmp/heart-learning/turn-limit-v1/photos/stacked-hearts/automatic/cut_geometry.json": "64ec24b836d5dd71dca23d35c5814a2e337c3445f79d9c649806d65c4a3104a2",
+    "tmp/heart-learning/turn-limit-v1/photos/stacked-hearts/automatic/independent-weave.png": "3a09f477a8707bade8c8fa991ffb403dbaa07d9471c04156194dcf528485e79e",
+    "tmp/heart-learning/turn-limit-v1/photos/stacked-hearts/automatic/report.json": "29dbe338822bd95fad9aa2cc5cbf12c8212386098c9f17d55f7ce3f855043a23",
+    "tmp/heart-learning/turn-limit-v1/photos/warped-checker/automatic/cut_geometry.json": "d7cb7db55b5c2ab846ff70ff4e12332cf5ccb4ea35ccc181fe42712788165848",
+    "tmp/heart-learning/turn-limit-v1/photos/warped-checker/automatic/independent-weave.png": "c54482ce2ed1e04d305effaaf8a6d553c2f2c0fe3f2980e0b34cd44020933b0a",
+    "tmp/heart-learning/turn-limit-v1/photos/warped-checker/automatic/report.json": "a61345f1339b2a1787c56aa0ede15c8e006856e8d08773390f3ec635e0049108",
+    "tmp/heart-learning/turn-limit-v1/photos/white-birds/automatic/cut_geometry.json": "6c8c0ef9ecf16ffde3f8b46b9424f2c8f7d169e8b2e0de6f278547cd700fb1ce",
+    "tmp/heart-learning/turn-limit-v1/photos/white-birds/automatic/independent-weave.png": "e5d93425d83551428c8035b96f22940a4dd94f5bc97643aa56994c9b263a2483",
+    "tmp/heart-learning/turn-limit-v1/photos/white-birds/automatic/report.json": "6a3350873e90194de5d3548687b37925ca1a9989807cbf6c34f76ba6e47ce6c7",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor-input/hjcur-01/automatic/cut_geometry.json": "049b9ebeddc1110704836a415214288788c8494bd69914e99140e1c6a00e499a",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor-input/hjcur-02/automatic/cut_geometry.json": "b6dec1adec3bcf53ef9122c6d6095f9c30ff233e7ef358b73502f7b739327cc8",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor-input/hjcur-03/automatic/cut_geometry.json": "ad97a002943d8e2647c3b8d9f4b9c7d0f6f1ee10dd5db85238f2366dd6ca91c3",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor-input/hjcur-04/automatic/cut_geometry.json": "a525041d65f090550c374aa1d58e5b9a22afbeaaa8d21f397e32ed8cd26ae022",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor-input/hjcur-05/automatic/cut_geometry.json": "1b3822492ae13f4b6f73bc67284ce4eb568f292cb87b092b80be053e914817f7",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor-input/hjfig-01/automatic/cut_geometry.json": "d7ad5e34490ec434df08448000f24ff0cba34e62923d67eef6ddf2a13a640983",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor-input/hjfig-02/automatic/cut_geometry.json": "bc90373c69a2bcc1236d56643df72e3c3e205aea3d3a4b8f2b93c88ec187be88",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor-input/hjfig-03/automatic/cut_geometry.json": "ce50b811ccfc67a307097b3d058c6d6ab6e47fbd1da7bf87584b6cda6cdaf8f6",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor-input/hjfig-04/automatic/cut_geometry.json": "16695deef171fd7b1f248ef452407bbbcc4a0c65aeabdfbb6038ef5c56117db7",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor-input/hjfig-05/automatic/cut_geometry.json": "2701e521e2279a469101261ad62c8757aa3c4f2509a17e5ade6b015bf1915196",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor-input/hjfla-01/automatic/cut_geometry.json": "2adb545bc28461e7756f84b13f7b7470b9ae477659d6c862afc5b1c0b47a4073",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor-input/hjhih-01/automatic/cut_geometry.json": "df9facec711075be91afcf6f2ddf537842a1724fcd44ef1f68cdb0703d5f2c68",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor-input/hjhih-02/automatic/cut_geometry.json": "25db88ee2ae032dd7f5aaa85fe1a897b585797aa10fbdf37af94d73e24a81f2a",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor-input/hjhih-04/automatic/cut_geometry.json": "8c34f52f04b01a4ba97e7e20eae725dfe423f2ef7eb1b1b8154c749e63d220d6",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor-input/hjsta-01/automatic/cut_geometry.json": "ec714b590351efd48a2ca01d3c2a1ec25791b52fe9286389b1c6aa0b96eea005",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor-input/hjsta-02/automatic/cut_geometry.json": "ba755c3c9ca90e290630af6e8984e9167b4f865dfd5055a578378a6d2fba1cd7",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor-input/hjsta-03/automatic/cut_geometry.json": "94a7e2fae6933095c873744551ba72caf03ad1119701a8f6e162f1f6687266f5",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor-input/hjsta-04/automatic/cut_geometry.json": "0ec351fd7566f5570145c107913d323e6761f018527258f6def41cd4dcc67a1e",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor-input/hjsta-05/automatic/cut_geometry.json": "e5c679f439952dc25a281d54f49977ec76113eab8e1eead9473f77b881a9f5f2",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor-input/hjstr-01/automatic/cut_geometry.json": "a7f33780db85389adc0d24217c4e7febf717857000a2b4ad93f677fcfd0860f2",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor-input/hjstr-02/automatic/cut_geometry.json": "febe020fdc59877ef5cf71c22eff1fbc4607a1eaae93baf40ec9611d46bdb270",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor-input/hjstr-03/automatic/cut_geometry.json": "5ffc98f412dcae8e143a786b0f2dea156757837c0d08dbd8d0e9c123664e9cb5",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor-input/results.json": "46a890158ac6132a7a8797b48bf0e1a8571e83cf0de5e8a1b5a4d42ccbda826d",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor/hjcur-01-automatic.svg": "40acd9a84c79838183adffb76382b5b92722090bd99ea4776a110986a102d81e",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor/hjcur-02-automatic.svg": "c680f0b80f6ae186cf443a4f304ae349d4e42d6a6e9a2bc3b282461c6cd8e579",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor/hjcur-03-automatic.svg": "7db6ce7155a3519ba0ac78a86c255d73f133c13dae68be4e754e5c7034ad35bc",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor/hjcur-04-automatic.svg": "d2191b18c9ebd7d472a27d76e5257a1d28942a460d498111f5f84376db8b44af",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor/hjcur-05-automatic.svg": "93d051e82b3d860995c0330ad1fcad67e7045812a9181966ca58e2b9d8a2296b",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor/hjfig-01-automatic.svg": "b43d4c9422ff66a2a4485f6ff3623d6397020e848e5e71410cbbdc14aa8430bd",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor/hjfig-02-automatic.svg": "a855e76bf8583ddbae319d1eed5f6dedfed76a182e510dbae42d8e8bd1446f0f",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor/hjfig-03-automatic.svg": "9a4c02bbb030e8ce0c9a8a07950ba6939460b3b6a1233c06f5ead9cfafd2f3e9",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor/hjfig-04-automatic.svg": "302bd3b42da4e1cb4682aff6a17fba600b2868654f60faaf9a899556f70ae5cc",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor/hjfig-05-automatic.svg": "380a0aa9a07ad27f53319566155b442fa57db0af098a660bcb99a5207a37e77b",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor/hjfla-01-automatic.svg": "046391e41de74e0bd041d33b47b71c1472123422fd58b4d08278a638df28c452",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor/hjhih-01-automatic.svg": "a88dc8b487189c44ecb8dd2626514d37b2287627269c226eacd93025164c7f76",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor/hjhih-02-automatic.svg": "d7b39d3a76232f9142aae786ee4224ff869f4c13a3f6b0912240b97057e72269",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor/hjhih-04-automatic.svg": "5b2cac89a860d81d73cb880a5b3496f5d04b5c80af4586ea595b4d37d014f039",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor/hjsta-01-automatic.svg": "e22112caeeaec2d2f84c063d28a2f371ca387a5ba4e0ae7e512e39132603bcda",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor/hjsta-02-automatic.svg": "5ce279297864eb72576584ca08ab40206fd2422a7ec6637acd30fcfe0ce05f6b",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor/hjsta-03-automatic.svg": "a61308d990e47d19a910f540c488b13023e3a7e99bbac9e59a310360f8845366",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor/hjsta-04-automatic.svg": "88c5af9626d5009dc0179dea841e6549c5ecc8a20723d0ec330f85927a91a24b",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor/hjsta-05-automatic.svg": "761bca2f88f51c233560054850d9ecd4c7f0b27f777070dab1eb2a7699d34d3c",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor/hjstr-01-automatic.svg": "4742e9f710b910c99b82b1be9cbf07bb200da208276ff38f952e462fe45d9d91",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor/hjstr-02-automatic.svg": "85db49783533580055d019813dbeca98fc6d2d900fdbf8d8628cf7f97bcaca2c",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor/hjstr-03-automatic.svg": "30c262b7a9b80fc8295485080c37eab233b3222a5ed4dd29af4b94c2cbbfff9c",
+    "tmp/heart-learning/turn-limit-v1/hunodan-editor/results.json": "45a6e8e020f3749af930ed840ff15ad80bed452234af43f743f863d9b15d611a",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/bauble-automatic.svg": "00b92c3a1231eacd9f8d38154df6c71f108cbe4afc0d8bc5af308881cfd09fa6",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/bibel-cross-automatic.svg": "67679ccbf964a7fb02206b9c88003028ff45d8bb18a0c5e7f1920df295941a71",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/bibel-star-8-automatic.svg": "c7f275bad163cc35677d81527b14cd0f87b1f11b44be572658a0b41deb5dda01",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/bibel-star-curved-automatic.svg": "d6f2b6556888c5f7f216f2ec2871a41b1935c62b4f169092d2fb99ec9f4c3d1e",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/bibel-star-outline-automatic.svg": "f06b657667cc6ea0c8611f9ac17a8e1d521b559040aed1cdca4981e8ac070337",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/bird-automatic.svg": "a005ae5d7fd50f854e780b5ba3c5906953c3a46c96c167ac1bea4129f130b0e5",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/bottom-flower-automatic.svg": "4048e108af23cdd2d31718dce6b6a3fc42b4beb552ddd49d10aa0035f622fb6f",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/candle-automatic.svg": "5d4c6cc63010f2f7a64fe1f934daed5345e1e431f4abe04233bbe4e1eae804cb",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/crossed-ribbons-automatic.svg": "987c44b39202a7caa840c5e2b85b0d14d64c1cadbccc25395ad32fc81022ce52",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/crown-automatic.svg": "b2091f9071301fecf30c91d18299caf21e7d45bbc62f04af489aa1dee824e3c2",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/dense-checker-automatic.svg": "97ea13a0d9a3c397a5b3f64fb7933204f1d0f73b7993e071bb528d1068420236",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/faceted-star-automatic.svg": "76ddd045e7fdf8c19449315c891ea0eb43133b0521913bb055cc23190189885f",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/fine-checker-automatic.svg": "7652c00226c015693e6a1f5839138ba1c2d78c79441a6621da97990bbd573b87",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/flettede-puppy-automatic.svg": "ccb74c5830e56be506e2315b5155bd831cb5a94cc38c4906061262530661bcd2",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/flettede-stonehenge-automatic.svg": "5f2470fd85e280ff3c4758e9d1301136e65b1872e4ad5f724ff07d5480d58f45",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/flettede-viking-automatic.svg": "be7d2994a2fa46073c2ce258b91074ea54f64eda210a7d461de6367d25b0aa38",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/floral-checker-automatic.svg": "4a47abe835446cee53f9a5bbb361b6c0e6db3d3623e0f4d9173eeff5d4d4c70d",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/flower-automatic.svg": "d02d47669ec71c7923da9ee45e6fd1ba656756ce6c1de70ff8b6c759936a702e",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/gift-automatic.svg": "a9445435a929b583422539ebb5bb9fe6d1222a0a5c424f69b58976a67869453d",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/gingerbread-automatic.svg": "90a714ae10ef9dc8e6e113e4191e5a3b6289719aea22f19e1a60ebee5b42725d",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/jigsaw-automatic.svg": "37f59648c1ce7bb2b974315671152aa07401006147c2bb84e98836cd503c86cd",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/leaf-automatic.svg": "2dd240ddef3cc97cf068578cb9583ee7ca1201fde4a992c7f89694b5bac6960b",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/maple-leaf-automatic.svg": "88d7bad1ef38d9f0dfe0e3b08cef12b86ffdf218560ab0a0a8180c66c53464a6",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/orb-automatic.svg": "c814e512fda6c212f92d99130ddd2df2e57dde06cdb4379d3e2d00d886275564",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/outline-star-automatic.svg": "c5c7fb52ab579e221fa56e2d09a74a71b006e3dcc77263fafd51d2689dc247af",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/results.json": "c3d433b8ce5f4a2fda1363e097a661d4a7101c0a7404993b4f1ae77adff9258d",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/round-checker-automatic.svg": "da0c317849bb553e34080515acd5c891452aa91f01f08cef314327f584309d8e",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/stacked-hearts-automatic.svg": "b3cd59a9bfc3b45fb6ce18cd77c78e783bc5e3642cd7f841a9e2f8a91f5cfca9",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/warped-checker-automatic.svg": "aa2a68b854f30c1ead039aa1523b2025288d9ac7335ac0e3c822cf11067ba01d",
+    "tmp/heart-learning/turn-limit-v1/photo-editor/white-birds-automatic.svg": "f1db88e3fe259b4356b042508bbfd4dc5bf738d20719bbbe82679baa9f2b9082",
+    "tmp/heart-learning/turn-limit-v1/runtime/inverse/core/direct/turn-limit.js": "95bf93229e8515d07593b407234317af101ac3b479fc85119d96d68e4d752773",
+    "tmp/heart-learning/turn-limit-v1/runtime/inverse/core/direct/refine.js": "911900caa058579f81ad114eee191e154161283e16db6cbd99cb100ab6df999a",
+    "static/inverse/core/direct/turn-limit.js": "1f64a27bd008775f01ccc1caec37b50e3b60afb1604b9b073aec42fcbec2fb11",
+    "static/inverse/core/direct/refine.js": "c69369263ff5a9686d6ab6c49c6f7cedb7b6c9bc6fa9cd398f9521a980043e15",
+    "scripts/inverse/turn-limit-refinement.test.mjs": "48e45552dcbaec7ef47c1fc4b9929e95f03fc520951279a528093d00cda741bd",
+    "tmp/heart-learning/turn-limit-v1/qa/source.json": "cd7c5c453f80638098ea3955b9d220890b1b3f254658bf5f7707da19e22f21ba",
+    "tmp/heart-learning/turn-limit-v1/qa/checks.json": "3f0d138c6d9446bbd43fba37952864140a7514748aeec810a85dcdafa7b7fc78",
+    "tmp/heart-learning/turn-limit-v1/qa/inverse.log": "0b68808f0a5c8126c12b36010dcebcf97ff67f44d1c5e32ab11704e197bef673",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/source.json": "eed7880ee4980d9094cbf573fbabf521b20aee60af915d3f425ef2d8d97ecebc",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/focused.log": "97522d9a99c12618d2135801f435a6189a2a57b8b374b0d6801eaf9a2dd239be"
+  },
+  "repositoryQA": {
+    "firstRun": {
+      "sourceManifest": "tmp/heart-learning/turn-limit-v1/qa/source.json",
+      "checks": [
+        {
+          "stage": "check",
+          "command": [
+            "npm",
+            "run",
+            "check"
+          ],
+          "exitCode": 0,
+          "seconds": 8.826615167
+        },
+        {
+          "stage": "lint",
+          "command": [
+            "npm",
+            "run",
+            "lint"
+          ],
+          "exitCode": 0,
+          "seconds": 6.175653624999999
+        },
+        {
+          "stage": "app",
+          "command": [
+            "npx",
+            "vitest",
+            "run",
+            "--maxWorkers=2"
+          ],
+          "exitCode": 0,
+          "seconds": 30.694507750000003
+        },
+        {
+          "stage": "inverse",
+          "command": [
+            "npm",
+            "run",
+            "test:inverse"
+          ],
+          "exitCode": 1,
+          "seconds": 807.196190792
+        }
+      ],
+      "inversePassed": 828,
+      "inverseFailed": 1,
+      "failure": "The offline projection patch no longer matched the import block after adding turn-limit.js. No fitting or geometry regression failed in this run."
+    },
+    "diagnosticCorrectionCommit": "6874c18",
+    "correctedFocusedRun": {
+      "passed": 4,
+      "failed": 0,
+      "log": "tmp/heart-learning/turn-limit-v1/qa-v2/focused.log"
+    },
+    "fullRerun": {
+      "status": "complete",
+      "sourceCommit": "6874c18c159bfa2f469560df56117000e1ff8e8c",
+      "applicationPassed": 855,
+      "applicationSkipped": 1,
+      "inversePassed": 829,
+      "inverseFailed": 0,
+      "browserPassed": 13,
+      "servedAssetsVerified": 154,
+      "validation": "docs/inverse/datasets/turn-limit-validation.json"
+    }
+  }
+}

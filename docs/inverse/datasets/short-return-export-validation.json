@@ -1,0 +1,349 @@
+{
+  "schema": 1,
+  "sourceCommit": "ea1be7a1e8669351347d00213bc4a9f3de835445",
+  "runtimeUnchangedSince": "87a612b",
+  "qa": {
+    "checks": [
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 8.70359175
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 6.097761917
+      },
+      {
+        "stage": "app",
+        "command": [
+          "npx",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 30.903977708000003
+      },
+      {
+        "stage": "inverse",
+        "command": [
+          "npm",
+          "run",
+          "test:inverse"
+        ],
+        "exitCode": 0,
+        "seconds": 808.3676816249999
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 13.052250374999971
+      }
+    ],
+    "applicationPassed": 855,
+    "applicationSkipped": 1,
+    "inversePassed": 826,
+    "inverseFailed": 0,
+    "sourceFilesVerified": 822,
+    "sourceManifest": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/self-return-projection-v1/export-qa/source.json"
+  },
+  "preview": {
+    "metadata": {
+      "pid": 51440,
+      "cwd": "/Users/ahle/repos/julehjerte-solver-initialization",
+      "origin": "http://127.0.0.1:5232",
+      "commit": "ea1be7a1e8669351347d00213bc4a9f3de835445"
+    },
+    "assetsVerified": 153,
+    "manifest": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/self-return-projection-v1/export-qa/served-assets.json",
+    "previousBuildAssetNamesChanged": true
+  },
+  "browser": {
+    "commit": null,
+    "timingDefinition": null,
+    "results": [
+      {
+        "name": "flower-native-mask",
+        "passed": true,
+        "pageErrors": [],
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "sourceEditableError": 0.00509375,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0055,
+          "prepareRoundTripSeconds": 0.16279999995231628,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 6.783900000095367,
+          "resultToReadySeconds": 0.5891999999284744,
+          "clickToReadySeconds": 7.541799999952317
+        }
+      },
+      {
+        "name": "flower-downsample-mask",
+        "passed": true,
+        "pageErrors": [],
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "sourceEditableError": 0.00611875,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005100000023841858,
+          "prepareRoundTripSeconds": 0.1697999999523163,
+          "preparedToSolveRequestSeconds": 0.00030000007152557374,
+          "solveRoundTripSeconds": 8.456899999976159,
+          "resultToReadySeconds": 0.49129999995231627,
+          "clickToReadySeconds": 9.123399999976158
+        }
+      },
+      {
+        "name": "hard-bibel-star-outline",
+        "passed": true,
+        "pageErrors": [],
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "sourceEditableError": 0.01153125,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0055,
+          "prepareRoundTripSeconds": 0.1555,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 7.514700000047684,
+          "resultToReadySeconds": 0.16329999995231628,
+          "clickToReadySeconds": 7.839299999952316
+        }
+      },
+      {
+        "name": "hard-bibel-star-outline-half",
+        "passed": true,
+        "pageErrors": [],
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "sourceEditableError": 0.01313125,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005399999976158142,
+          "prepareRoundTripSeconds": 0.15889999997615814,
+          "preparedToSolveRequestSeconds": 0.00040000009536743164,
+          "solveRoundTripSeconds": 8.362299999952317,
+          "resultToReadySeconds": 0.35810000002384185,
+          "clickToReadySeconds": 8.885100000023842
+        }
+      },
+      {
+        "name": "hard-bibel-star-outline-jpeg75",
+        "passed": true,
+        "pageErrors": [],
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "sourceEditableError": 0.01764375,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0055,
+          "prepareRoundTripSeconds": 0.16279999995231628,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 3.5769000000953675,
+          "resultToReadySeconds": 0.31359999990463255,
+          "clickToReadySeconds": 4.059099999904633
+        }
+      },
+      {
+        "name": "hard-flettede-puppy",
+        "passed": true,
+        "pageErrors": [],
+        "selectedCounts": [
+          5,
+          3
+        ],
+        "sourceEditableError": 0.0106,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005300000071525574,
+          "prepareRoundTripSeconds": 0.15089999997615813,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 16.165800000071524,
+          "resultToReadySeconds": 0.7062999999523163,
+          "clickToReadySeconds": 17.028600000023843
+        }
+      },
+      {
+        "name": "hard-flettede-viking",
+        "passed": true,
+        "pageErrors": [],
+        "selectedCounts": [
+          6,
+          6
+        ],
+        "sourceEditableError": 0.02001875,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005199999928474426,
+          "prepareRoundTripSeconds": 0.193,
+          "preparedToSolveRequestSeconds": 0.00020000004768371582,
+          "solveRoundTripSeconds": 26.862899999976158,
+          "resultToReadySeconds": 0.9547999999523162,
+          "clickToReadySeconds": 28.016099999904633
+        }
+      },
+      {
+        "name": "hunodan",
+        "passed": true,
+        "pageErrors": [],
+        "selectedCounts": [
+          2,
+          2
+        ],
+        "sourceEditableError": 0.00944375,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005600000023841858,
+          "prepareRoundTripSeconds": 0.14139999997615815,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 3.922600000023842,
+          "resultToReadySeconds": 0.41469999992847445,
+          "clickToReadySeconds": 4.484699999928474
+        }
+      },
+      {
+        "name": "star",
+        "passed": true,
+        "pageErrors": [],
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "sourceEditableError": 0.0016,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.008300000071525574,
+          "prepareRoundTripSeconds": 0.03339999997615814,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 1.5846000000238418,
+          "resultToReadySeconds": 0.09360000002384186,
+          "clickToReadySeconds": 1.7202000000476838
+        }
+      },
+      {
+        "name": "top-hat-preferred",
+        "passed": true,
+        "pageErrors": [],
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "sourceEditableError": 0.004118835034013606,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.01960000002384186,
+          "prepareRoundTripSeconds": 0.24689999997615814,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 7.121300000071526,
+          "resultToReadySeconds": 0.21569999992847444,
+          "clickToReadySeconds": 7.603799999952316
+        }
+      },
+      {
+        "name": "blue-star-polishing-mask",
+        "passed": true,
+        "pageErrors": [],
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "sourceEditableError": 0.0044625,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0055,
+          "prepareRoundTripSeconds": 0.14830000007152558,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 8.061399999976159,
+          "resultToReadySeconds": 0.7079000000953675,
+          "clickToReadySeconds": 8.923400000095368
+        }
+      },
+      {
+        "name": "web-danish-tree-green",
+        "passed": true,
+        "pageErrors": [],
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "sourceEditableError": 0.010575,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0055,
+          "prepareRoundTripSeconds": 0.16479999995231628,
+          "preparedToSolveRequestSeconds": 0.00040000009536743164,
+          "solveRoundTripSeconds": 7.3510999999046325,
+          "resultToReadySeconds": 0.403,
+          "clickToReadySeconds": 7.924799999952317
+        }
+      },
+      {
+        "name": "gold-routing-mask",
+        "passed": true,
+        "pageErrors": [],
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "sourceEditableError": 0.0073625,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0052999999523162845,
+          "prepareRoundTripSeconds": 0.182,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 6.127,
+          "resultToReadySeconds": 0.20440000009536743,
+          "clickToReadySeconds": 6.519
+        }
+      }
+    ],
+    "scope": "Fresh Chromium upload/find/export/editable flows on the rebuilt preview. The new screenshots were not all visually re-reviewed."
+  },
+  "artifacts": {
+    "tmp/heart-learning/self-return-projection-v1/export-qa/app.log": "118816aaec1e83b8d8bf305932ff87051a62f55f1ec3bde3b7d037192621e2ea",
+    "tmp/heart-learning/self-return-projection-v1/export-qa/browser/results.json": "4d12427ecb8f656cecaa6af88a8ffb088b8698c8ae0921cff4ce025a0dde31aa",
+    "tmp/heart-learning/self-return-projection-v1/export-qa/browser.log": "6966f4bdbf07c743c20e48f7d5ac214df404e6dfbaf350f007c0316f1d2e1210",
+    "tmp/heart-learning/self-return-projection-v1/export-qa/build.log": "642a08f29502f67176aeb4735b628796b5677e452844311916dcfa164c8e72ad",
+    "tmp/heart-learning/self-return-projection-v1/export-qa/check.log": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+    "tmp/heart-learning/self-return-projection-v1/export-qa/checks.json": "8ae63a60eb5b53a0dd650522af6d6222661ad9ea5a3401b8972ac42469562169",
+    "tmp/heart-learning/self-return-projection-v1/export-qa/collect.py": "a2e1711289f86859cd161eedf30de7c98dbf8c262caff5e7ca645b34dc684d90",
+    "tmp/heart-learning/self-return-projection-v1/export-qa/inverse.log": "fa9286a787953878662ae2e3f8f02710e98942918499a4ecc2460762b28b1198",
+    "tmp/heart-learning/self-return-projection-v1/export-qa/lint.log": "f1a4b272f2f106d9cc645be00a12d8ac4dea14308d11091a0ea8c493d6036f90",
+    "tmp/heart-learning/self-return-projection-v1/export-qa/preview.json": "32a204b41f5a06f5661c4413083013e1fec2626174c1b8150c83d705d6c99d5f",
+    "tmp/heart-learning/self-return-projection-v1/export-qa/preview.log": "871e85c321ccafc342ad01dcf3337f8e9ecdd5ac3163cc588adf0756f05cc1ac",
+    "tmp/heart-learning/self-return-projection-v1/export-qa/restart-preview.py": "62fa8bc777e5ba697a1c131a87f4005ddd51f074f37f384bee76514048677f52",
+    "tmp/heart-learning/self-return-projection-v1/export-qa/run.py": "d2fbac86e9e8f2478625d5d7503d3f41c7ff41d3b37723385e283960adffb198",
+    "tmp/heart-learning/self-return-projection-v1/export-qa/running.json": "c0c359bd44f6f8aacd20700abf844c9c05ee1c7140b17d270ef93d8bde6764df",
+    "tmp/heart-learning/self-return-projection-v1/export-qa/served-assets.json": "235a965a4585ce1d3d394d651c06256ecb2ef511487a7657b92fa9984e1153d9",
+    "tmp/heart-learning/self-return-projection-v1/export-qa/source.json": "653a876b446f2b69606e8b942a5180859ecc463f356627dab37c47fa0f766782"
+  }
+}

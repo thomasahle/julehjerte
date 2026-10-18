@@ -1,0 +1,446 @@
+{
+  "schema": "sharing-original-scale-results-1",
+  "status": "integrated-full-QA-complete",
+  "change": "Fine-scale shared-cut image checks area-resample the original classified mask and its observation weights directly. Source-free callers keep their existing objective. No new alignment pass, extra rounds or acceptance-threshold relaxation.",
+  "scope": "Local additional alignment on 49 fixed accepted exports. All source probability fields in this probe equal their binary masks, making its probability-or-mask prototype equivalent to the integrated classified-mask reference. This does not establish fresh solve success or runtime.",
+  "fixedMatrix": {
+    "cases": 49,
+    "geometryPassed": 49,
+    "paperPassed": 49,
+    "featureChangesPassed": 49,
+    "sourceHashesVerifiedPerArm": 90,
+    "identicalInputGeometriesMasksAndObservationFields": true,
+    "hunodanGeometryByteIdenticalCases": 22,
+    "changedCases": [
+      {
+        "case": "photos/faceted-star",
+        "baselineMilliseconds": 152.14295800000036,
+        "candidateMilliseconds": 628.1145419999993,
+        "baselineError": 0.0065,
+        "candidateError": 0.0064875,
+        "baselineCoverageError": 0.009145073481835424,
+        "candidateCoverageError": 0.009144436229253188,
+        "baselineSourceError": 0.00626875,
+        "candidateSourceError": 0.00623125
+      },
+      {
+        "case": "photos/fine-checker",
+        "baselineMilliseconds": 4136.383750000001,
+        "candidateMilliseconds": 4539.852082999998,
+        "baselineError": 0.0170875,
+        "candidateError": 0.0170375,
+        "baselineCoverageError": 0.021160318562178874,
+        "candidateCoverageError": 0.021150955813890322,
+        "baselineSourceError": 0.01696875,
+        "candidateSourceError": 0.01695625
+      },
+      {
+        "case": "photos/orb",
+        "baselineMilliseconds": 2722.319417000006,
+        "candidateMilliseconds": 2776.294750000001,
+        "baselineError": 0.01245,
+        "candidateError": 0.01244375,
+        "baselineCoverageError": 0.0145688234961126,
+        "candidateCoverageError": 0.014541127417422832,
+        "baselineSourceError": 0.01245,
+        "candidateSourceError": 0.0124375
+      },
+      {
+        "case": "photos/warped-checker",
+        "baselineMilliseconds": 886.715916000001,
+        "candidateMilliseconds": 1176.861791999996,
+        "baselineError": 0.01361875,
+        "candidateError": 0.0136375,
+        "baselineCoverageError": 0.017671029340056703,
+        "candidateCoverageError": 0.017680833261972295,
+        "baselineSourceError": 0.01351875,
+        "candidateSourceError": 0.01353125
+      }
+    ],
+    "baselineTotalMilliseconds": 32231.80466800001,
+    "candidateTotalMilliseconds": 32952.43862599999
+  },
+  "independentFineRenders": [
+    {
+      "name": "faceted-star",
+      "n": 800,
+      "arm": "baseline",
+      "error": 0.008690625,
+      "coverage": 0.009220042881654808
+    },
+    {
+      "name": "faceted-star",
+      "n": 800,
+      "arm": "candidate",
+      "error": 0.0086984375,
+      "coverage": 0.009225674010178772
+    },
+    {
+      "name": "faceted-star",
+      "n": 1600,
+      "arm": "baseline",
+      "error": 0.00908984375,
+      "coverage": 0.009242156859983516
+    },
+    {
+      "name": "faceted-star",
+      "n": 1600,
+      "arm": "candidate",
+      "error": 0.009105859375,
+      "coverage": 0.009246654409878829
+    },
+    {
+      "name": "fine-checker",
+      "n": 800,
+      "arm": "baseline",
+      "error": 0.0204453125,
+      "coverage": 0.021282389701844658
+    },
+    {
+      "name": "fine-checker",
+      "n": 800,
+      "arm": "candidate",
+      "error": 0.0204484375,
+      "coverage": 0.021268731612176635
+    },
+    {
+      "name": "fine-checker",
+      "n": 1600,
+      "arm": "baseline",
+      "error": 0.02101953125,
+      "coverage": 0.02131677236820542
+    },
+    {
+      "name": "fine-checker",
+      "n": 1600,
+      "arm": "candidate",
+      "error": 0.02100390625,
+      "coverage": 0.02130431832289178
+    },
+    {
+      "name": "orb",
+      "n": 800,
+      "arm": "baseline",
+      "error": 0.01424375,
+      "coverage": 0.014673345579055603
+    },
+    {
+      "name": "orb",
+      "n": 800,
+      "arm": "candidate",
+      "error": 0.0142078125,
+      "coverage": 0.014652132342359982
+    },
+    {
+      "name": "orb",
+      "n": 1600,
+      "arm": "baseline",
+      "error": 0.0145484375,
+      "coverage": 0.014682190559289302
+    },
+    {
+      "name": "orb",
+      "n": 1600,
+      "arm": "candidate",
+      "error": 0.01451171875,
+      "coverage": 0.014658098952955334
+    },
+    {
+      "name": "warped-checker",
+      "n": 800,
+      "arm": "baseline",
+      "error": 0.017025,
+      "coverage": 0.01783673406066955
+    },
+    {
+      "name": "warped-checker",
+      "n": 800,
+      "arm": "candidate",
+      "error": 0.017034375,
+      "coverage": 0.017847941168653778
+    },
+    {
+      "name": "warped-checker",
+      "n": 1600,
+      "arm": "baseline",
+      "error": 0.017624609375,
+      "coverage": 0.01788280943599093
+    },
+    {
+      "name": "warped-checker",
+      "n": 1600,
+      "arm": "candidate",
+      "error": 0.017633203125,
+      "coverage": 0.017893848038978467
+    }
+  ],
+  "verification": {
+    "focusedTestsPassed": 111,
+    "focusedTestsFailed": 0,
+    "newRegression": "Original orb cleanup fails the independent fractional-coverage limit at 800 pixels; updated cleanup passes both binary and fractional limits at 800 and 1600, plus final geometry, paper and feature checks. Input image and geometry remain unchanged.",
+    "fullQA": "Pending fresh check/lint/build/browser, all 22 timed Hunodan solves, automatic photos, editable conversion and complete tests."
+  },
+  "limitations": [
+    "Three of four changed cases improve binary error at source resolution; warped-checker worsens by three pixels.",
+    "At 800/1600, orb improves binary and fractional error; fine-checker fractional error improves but its 800-pixel binary error increases by two pixels. Faceted-star and warped-checker worsen slightly on both fine metrics. No uniform fidelity improvement claim.",
+    "All changed 800-pixel before/after pairs were visually inspected. Major motifs remain, with subtle changes in faint seams and contact points; uneven contours and several seams remain.",
+    "A separate continuous-area fallback stayed valid but cost 47.60 versus 32.23 seconds across the same 49 exports. It is not integrated.",
+    "The benchmark contains development fixtures, not original cutting-path ground truth or physical assembly tests."
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/sharing-area-tail-current-v1/matrix-baseline/results.json": "ab1c30c11ff61f3e9ece9ba0bc8d468e411e88e7f5e5ec1b46d5e4bc59a89e41",
+    "tmp/heart-learning/sharing-original-scale-v1/matrix-candidate/results.json": "f285428b1cd7c32427db26e955fae4eee3073fbafd7cb86706f45d809771d7f6",
+    "tmp/heart-learning/sharing-original-scale-v1/fine-renders.mjs": "7cf4652db920b9a6e48c19b028d4f7d540d3a8d77cfd65472ae02c01397a0146",
+    "tmp/heart-learning/sharing-original-scale-v1/fine-renders.json": "8b40caba24bc63bc887b20b3fd851a1cf37b394f4c079e6ae3420f24449afab0",
+    "tmp/heart-learning/sharing-original-scale-v1/test-before.log": "b9fd37717d371fb26968c5a8f79af33cb83d6d2c2d3d65e337663396188506dd",
+    "tmp/heart-learning/sharing-original-scale-v1/focused.log": "58b7c9588bc249b2d602893b8f57ca45505d4c3d726cfe37d0da06bb14787292",
+    "static/inverse/core/direct/share.js": "4a9dc8272771895dea2c0c0b27df643c6733f236384d85195fac2a5332566a28",
+    "scripts/inverse/sharing-source-scale.test.mjs": "a23d9bae63bd5d81efed9996feb1b53c43019aad8b052c278d53f55fd57da0c1",
+    "scripts/inverse/fixtures/sharing-original-scale-orb.json": "6d47e5021c1434a60cbcb1514b3a55f9f41e0e67d32573dafa6e3d731211a7a4"
+  },
+  "freshPipeline": {
+    "scope": "Each prepare + solve + validate + export <=10 seconds; independent error <= that case\u2019s validated release error, plus at most 1 percentage point for an identical pair; unchanged geometry, strict paper and substantial feature checks. Decode and independent external replay are timed separately. Optional retained snapshots reproduce the compute-worker observer; thread startup and message transfer are excluded.",
+    "qaCommit": "eee81257007125a35fb90000e63edc218e04f47b",
+    "hunodan": {
+      "cases": 22,
+      "passed": 22,
+      "medianSeconds": 5.154380437999999,
+      "maximumSeconds": 8.828164792000003,
+      "previousRunErrorChanges": [
+        {
+          "id": "hjsta-01",
+          "baselineError": 0.007929362880886427,
+          "candidateError": 0.007922437673130193,
+          "deltaPercentagePoints": -0.0006925207756233731
+        },
+        {
+          "id": "hjsta-03",
+          "baselineError": 0.012332213049376572,
+          "candidateError": 0.012352664480635904,
+          "deltaPercentagePoints": 0.002045143125933152
+        }
+      ]
+    },
+    "photos": {
+      "baseline": {
+        "catalogCases": 47,
+        "reviewableCases": 31,
+        "fittedCases": 29,
+        "passed": 27,
+        "statuses": {
+          "incomplete": 15,
+          "no_crop": 2,
+          "failed": 2,
+          "validated": 27,
+          "obscured": 1
+        },
+        "maximumTotalSeconds": 11.11092633300001,
+        "maximumSolveAndValidationSeconds": 10.470584457999998
+      },
+      "candidate": {
+        "catalogCases": 47,
+        "reviewableCases": 31,
+        "fittedCases": 29,
+        "passed": 27,
+        "statuses": {
+          "incomplete": 15,
+          "no_crop": 2,
+          "failed": 2,
+          "validated": 27,
+          "obscured": 1
+        },
+        "maximumTotalSeconds": 11.051972041,
+        "maximumSolveAndValidationSeconds": 10.46118966600002
+      },
+      "inputComparisons": "Original file and decoded-pixel hashes, catalog metadata, effective automatic crops, classified/fitting mask and probability hashes, observation metadata, settings and criteria match for every paired case.",
+      "passRegressions": [],
+      "errorChanges": [
+        {
+          "id": "outline-star",
+          "baselineError": 0.00743125,
+          "candidateError": 0.00753125,
+          "errorDelta": 9.99999999999994e-05,
+          "baselineSeconds": 9.594397416,
+          "candidateSeconds": 9.710889
+        },
+        {
+          "id": "floral-checker",
+          "baselineError": 0.01315,
+          "candidateError": 0.01415625,
+          "errorDelta": 0.0010062500000000002,
+          "baselineSeconds": 10.67750475,
+          "candidateSeconds": 10.747536375
+        },
+        {
+          "id": "dense-checker",
+          "baselineError": 0.00699375,
+          "candidateError": 0.00700625,
+          "errorDelta": 1.2500000000000358e-05,
+          "baselineSeconds": 9.858824499999999,
+          "candidateSeconds": 10.135130749999997
+        },
+        {
+          "id": "bird",
+          "baselineError": 0.019675,
+          "candidateError": 0.01963125,
+          "errorDelta": -4.375000000000212e-05,
+          "baselineSeconds": 10.041992208000003,
+          "candidateSeconds": 10.369042916999998
+        },
+        {
+          "id": "leaf",
+          "baselineError": 0.0095125,
+          "candidateError": 0.00929375,
+          "errorDelta": -0.0002187500000000002,
+          "baselineSeconds": 10.166923166,
+          "candidateSeconds": 10.306644916999998
+        },
+        {
+          "id": "warped-checker",
+          "baselineError": 0.013625,
+          "candidateError": 0.01375625,
+          "errorDelta": 0.00013124999999999942,
+          "baselineSeconds": 10.84632429199999,
+          "candidateSeconds": 10.843257375
+        },
+        {
+          "id": "fine-checker",
+          "baselineError": 0.017075,
+          "candidateError": 0.01941875,
+          "errorDelta": 0.0023437499999999986,
+          "baselineSeconds": 11.11092633300001,
+          "candidateSeconds": 11.051972041
+        },
+        {
+          "id": "orb",
+          "baselineError": 0.01255,
+          "candidateError": 0.01331875,
+          "errorDelta": 0.0007687500000000003,
+          "baselineSeconds": 10.16213166699998,
+          "candidateSeconds": 10.056191541000008
+        },
+        {
+          "id": "jigsaw",
+          "baselineError": 0.010125,
+          "candidateError": 0.01005625,
+          "errorDelta": -6.87500000000011e-05,
+          "baselineSeconds": 10.298772874999996,
+          "candidateSeconds": 10.314035417000007
+        },
+        {
+          "id": "faceted-star",
+          "baselineError": 0.0065,
+          "candidateError": 0.00641875,
+          "errorDelta": -8.124999999999973e-05,
+          "baselineSeconds": 8.931960124999984,
+          "candidateSeconds": 9.610961333000013
+        },
+        {
+          "id": "flettede-viking",
+          "baselineError": 0.02223125,
+          "candidateError": 0.0204625,
+          "errorDelta": -0.0017687499999999995,
+          "baselineSeconds": 10.31158808299998,
+          "candidateSeconds": 10.459202374999993
+        }
+      ],
+      "remainingFailures": [
+        "nested-squares",
+        "outline-star",
+        "santa",
+        "bauble"
+      ]
+    },
+    "inputComparison": "Original file and decoded-pixel hashes, catalog metadata, effective automatic crops, classified/fitting mask and probability hashes, observation metadata, settings and criteria match for every paired case.",
+    "browser": {
+      "cases": [
+        "star",
+        "top-hat-preferred"
+      ],
+      "passed": 2,
+      "screenshotsInspected": true,
+      "visualFindings": "Both shared-boundary silhouettes remain intact; small contour notches remain in the free-border hat."
+    },
+    "verification": {
+      "sourceFilesVerified": 801,
+      "allCommandsPassed": true,
+      "applicationTestsPassed": 865,
+      "applicationTestsSkipped": 1,
+      "inverseTestsPassed": 968,
+      "inverseTestsFailed": 0,
+      "checks": [
+        {
+          "stage": "check",
+          "exitCode": 0,
+          "seconds": 10.51380925
+        },
+        {
+          "stage": "lint",
+          "exitCode": 0,
+          "seconds": 7.077233750000001
+        },
+        {
+          "stage": "build",
+          "exitCode": 0,
+          "seconds": 15.389112125
+        },
+        {
+          "stage": "preview",
+          "exitCode": 0,
+          "seconds": 1.123723292000001
+        },
+        {
+          "stage": "browser",
+          "exitCode": 0,
+          "seconds": 17.677238709
+        },
+        {
+          "stage": "hunodan",
+          "exitCode": 0,
+          "seconds": 122.18008220800002
+        },
+        {
+          "stage": "photos",
+          "exitCode": 0,
+          "seconds": 334.54281199999997
+        },
+        {
+          "stage": "editable",
+          "exitCode": 0,
+          "seconds": 34.52681104100003
+        },
+        {
+          "stage": "test",
+          "exitCode": 0,
+          "seconds": 1107.522229417
+        }
+      ]
+    },
+    "limitations": [
+      "Comparison is against a previous timed run, not an interleaved repeated timing study.",
+      "Fine-checker, orb, floral-checker and Viking already enter shared-cut processing with different refined candidates. Their initial fixed-count fitting attempts match; later wall-clock-bounded refinement differs. Changes cannot all be attributed to the shared-cut sampling patch.",
+      "Hunodan hjsta-01 and hjsta-03 have different early sharing decisions and subsequent polishing results; hjsta-03 independent error increases by three pixels at 383x383.",
+      "The known four photo failures remain; mask disagreement does not establish original cutting-path recovery."
+    ],
+    "artifactsSha256": {
+      "tmp/heart-learning/sharing-original-scale-v1/production-qa/hunodan/results.json": "cd404dd1f28380a14cf14f094cc08ec3e9b6b266de734420dbc40be7e1363d75",
+      "tmp/heart-learning/sharing-original-scale-v1/production-qa/photos/results.json": "c64584648211f55685238aa9f7f62f11f2bcd066ffe77d0d079fed8db434b1df",
+      "tmp/heart-learning/sharing-original-scale-v1/production-qa/comparison.json": "e8ea37f1d1e268a9dcc3e5e80d4feef81495e34a4bbfd33ce0dae9ec2854c94d",
+      "tmp/heart-learning/sharing-original-scale-v1/production-qa/compare.py": "d82d0a1c7d0d6d4f0fa6006ff924964efa32e435c808e1604fb154edde00b4c7",
+      "tmp/heart-learning/sharing-original-scale-v1/production-qa/browser/results.json": "3b8529cfec0d9ee7064b62a7e5d3e9445939f84efd8a8a178bb5cc53efd0a29e",
+      "tmp/heart-learning/sharing-original-scale-v1/production-qa/editable/results.json": "b4ef1d5e72bb2fdb1562cea6db607088504560c87f69f5b03034a082423c2794",
+      "tmp/heart-learning/sharing-original-scale-v1/production-qa/state.json": "9ba3ffab295bcb55010fe7055ee70b5b19e2708acc8e29f8c64245f8d500ea3c",
+      "tmp/heart-learning/sharing-original-scale-v1/production-qa/source.json": "948262eaa2534e84dcbef1de89626bc080ca57a6157eec1799e7e0d805255525",
+      "tmp/heart-learning/sharing-original-scale-v1/production-qa/test.log": "c37101d1323cd0d993bf69ba51f797aa7ea6ef7566ded43ba543acd8f85aff25",
+      "tmp/heart-learning/sharing-original-scale-v1/production-qa/checks.json": "8b20b12a406d0bc702a117963d40e20aa6415596ba52cee40082472fa58046f6",
+      "tmp/heart-learning/sharing-original-scale-v1/production-qa/served-assets.json": "23db4e2af6e966bdbd0b426ad129f2368138e260c8cf2a8aa5d1fafea16c5b33",
+      "tmp/heart-learning/sharing-original-scale-v1/production-qa/preview.json": "141bb5eec3d23cccb10b3460467ae09297c5de146eb15a76a53dc4448feb80ef"
+    },
+    "editable": {
+      "exportedCandidates": 29,
+      "conversionPassed": 29,
+      "completeCandidatePassed": 27,
+      "editorIssues": 0
+    }
+  }
+}

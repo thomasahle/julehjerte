@@ -1,0 +1,1871 @@
+{
+  "schema": "woven-heart-material-crop-swap-results-1",
+  "status": "complete-offline-development-diagnostic",
+  "scope": "Seventeen already-inspected development photographs, four fixed prediction combinations. No retraining, reference-label injection, relaxed crop gates or production change. Not a new independent holdout benchmark.",
+  "method": "Swap previous/expanded held-out body probabilities independently of paper-identity probabilities. Same complete RGB images, source window, sampling, locator and support tests. Rotate arm order by source index.",
+  "validation": {
+    "cropAttempts": 68,
+    "historicalDiagonalControls": 34,
+    "controlCropAvailabilityAndCoordinatesExactlyReproduced": true,
+    "newSupportedPhotoCases": 1,
+    "newCaseTemplateFits": 2,
+    "newCaseEditableChecksPassed": 2,
+    "sameCropForBothClassifierComparisons": true,
+    "sameSolverConfiguration": true,
+    "commonReplaySourceFilesVerified": 104
+  },
+  "cropSummary": [
+    {
+      "body": "previous",
+      "material": "previous",
+      "cases": 17,
+      "supported": 2,
+      "passedIds": [
+        "real-2044b1d98ed6f262-body-1",
+        "real-cf2d0fcff65d7386-body-1"
+      ],
+      "historicalControlMismatches": []
+    },
+    {
+      "body": "previous",
+      "material": "expanded",
+      "cases": 17,
+      "supported": 2,
+      "passedIds": [
+        "real-cf2d0fcff65d7386-body-1",
+        "real-990ac34431be87fe-body-1"
+      ],
+      "historicalControlMismatches": []
+    },
+    {
+      "body": "expanded",
+      "material": "previous",
+      "cases": 17,
+      "supported": 1,
+      "passedIds": [
+        "real-cf2d0fcff65d7386-body-1"
+      ],
+      "historicalControlMismatches": []
+    },
+    {
+      "body": "expanded",
+      "material": "expanded",
+      "cases": 17,
+      "supported": 3,
+      "passedIds": [
+        "real-45744a03afddccb1-body-1",
+        "real-8c875dd0f298b5a4-body-1",
+        "real-cf2d0fcff65d7386-body-1"
+      ],
+      "historicalControlMismatches": []
+    }
+  ],
+  "perInstance": [
+    {
+      "id": "real-2044b1d98ed6f262-body-1",
+      "arms": [
+        {
+          "body": "previous",
+          "material": "previous",
+          "hasCrop": true,
+          "supported": true,
+          "seconds": 0.44216695800000005,
+          "attempts": 0,
+          "selectedQuad": [
+            [
+              485.8072909247849,
+              523.3211058545224
+            ],
+            [
+              884.2675478940832,
+              905.8900872914918
+            ],
+            [
+              457.41043548147775,
+              1313.7108832383994
+            ],
+            [
+              99.99668810064269,
+              932.2664278190188
+            ]
+          ],
+          "reason": null,
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.8125,
+              0.8125
+            ],
+            "lobeOutlineSupport": [
+              0.8333333333333334,
+              0.8055555555555556
+            ],
+            "capColourLoss": [
+              0.015055001523656056,
+              0.06326345241635586
+            ]
+          }
+        },
+        {
+          "body": "previous",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.53498725,
+          "attempts": 14,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.8125,
+              0.8125
+            ],
+            "lobeOutlineSupport": [
+              0.8055555555555556,
+              0.7222222222222222
+            ],
+            "capColourLoss": [
+              0.24914137564355313,
+              0.7699078423441772
+            ]
+          }
+        },
+        {
+          "body": "expanded",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.439261541,
+          "attempts": 14,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.8529411764705882,
+              0.9558823529411765
+            ],
+            "lobeOutlineSupport": [
+              0.7222222222222222,
+              0.5277777777777778
+            ],
+            "capColourLoss": [
+              0.8137288067310119,
+              0.7517151337170745
+            ]
+          }
+        },
+        {
+          "body": "expanded",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.710454167,
+          "attempts": 15,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.8529411764705882,
+              0.9558823529411765
+            ],
+            "lobeOutlineSupport": [
+              0.7222222222222222,
+              0.5277777777777778
+            ],
+            "capColourLoss": [
+              0.2320596613464934,
+              0.7838554519989361
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "real-45744a03afddccb1-body-1",
+      "arms": [
+        {
+          "body": "previous",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.420151916999999,
+          "attempts": 12,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.46153846153846156,
+              0.6474358974358975
+            ],
+            "lobeOutlineSupport": [
+              0.6111111111111112,
+              0.4722222222222222
+            ],
+            "capColourLoss": [
+              0.14884000613944354,
+              0.05849033974124396
+            ]
+          }
+        },
+        {
+          "body": "expanded",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.419529457999999,
+          "attempts": 15,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.6616541353383458,
+              0.849624060150376
+            ],
+            "lobeOutlineSupport": [
+              0.4166666666666667,
+              0.5833333333333334
+            ],
+            "capColourLoss": [
+              0.08469622596745173,
+              0.03800271562590236
+            ]
+          }
+        },
+        {
+          "body": "expanded",
+          "material": "expanded",
+          "hasCrop": true,
+          "supported": true,
+          "seconds": 0.4423811669999996,
+          "attempts": 0,
+          "selectedQuad": [
+            [
+              1112.103225490251,
+              1240.549359362661
+            ],
+            [
+              2186.100024583978,
+              2104.678382627026
+            ],
+            [
+              1106.5820032544984,
+              3265.6081344193467
+            ],
+            [
+              202.22718247807467,
+              2083.9768894711597
+            ]
+          ],
+          "reason": null,
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.6616541353383458,
+              0.849624060150376
+            ],
+            "lobeOutlineSupport": [
+              0.7222222222222222,
+              0.7777777777777778
+            ],
+            "capColourLoss": [
+              0.04160925419329266,
+              0.058984934921282935
+            ]
+          }
+        },
+        {
+          "body": "previous",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.3829925419999998,
+          "attempts": 12,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.46153846153846156,
+              0.6474358974358975
+            ],
+            "lobeOutlineSupport": [
+              0.5555555555555556,
+              0.5
+            ],
+            "capColourLoss": [
+              0.0869505453808086,
+              0.03549149907897189
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "arms": [
+        {
+          "body": "expanded",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.341695707999999,
+          "attempts": 19,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.990990990990991,
+              0.7477477477477478
+            ],
+            "lobeOutlineSupport": [
+              0.8055555555555556,
+              0.8055555555555556
+            ],
+            "capColourLoss": [
+              0.1185329315158892,
+              0.5491675694762446
+            ]
+          }
+        },
+        {
+          "body": "expanded",
+          "material": "expanded",
+          "hasCrop": true,
+          "supported": true,
+          "seconds": 0.3115538749999978,
+          "attempts": 0,
+          "selectedQuad": [
+            [
+              226.59531450456694,
+              140.99911505151235
+            ],
+            [
+              373.4961982719152,
+              280.70101733394137
+            ],
+            [
+              224.4445048266433,
+              432.7635640402018
+            ],
+            [
+              75.13388678528688,
+              282.2290207610812
+            ]
+          ],
+          "reason": null,
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.990990990990991,
+              0.7477477477477478
+            ],
+            "lobeOutlineSupport": [
+              0.8611111111111112,
+              0.8055555555555556
+            ],
+            "capColourLoss": [
+              0.1292552999179143,
+              0.06675312758680174
+            ]
+          }
+        },
+        {
+          "body": "previous",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.493179583000001,
+          "attempts": 14,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.5258620689655172,
+              0.5431034482758621
+            ],
+            "lobeOutlineSupport": [
+              0.9166666666666666,
+              0.3333333333333333
+            ],
+            "capColourLoss": [
+              0.08931800857773714,
+              0.5695809857732123
+            ]
+          }
+        },
+        {
+          "body": "previous",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.3418940839999998,
+          "attempts": 14,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.5258620689655172,
+              0.5431034482758621
+            ],
+            "lobeOutlineSupport": [
+              0.9166666666666666,
+              0.3611111111111111
+            ],
+            "capColourLoss": [
+              0.10205207134023969,
+              0.2792972297299479
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "real-3f7b76e1a98e808f-body-1",
+      "arms": [
+        {
+          "body": "expanded",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.1401802080000016,
+          "attempts": 13,
+          "selectedQuad": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "evidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        {
+          "body": "previous",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.310732959000001,
+          "attempts": 12,
+          "selectedQuad": null,
+          "reason": "No nondegenerate heart-shape fit",
+          "evidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        {
+          "body": "previous",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.2174443339999996,
+          "attempts": 12,
+          "selectedQuad": null,
+          "reason": "No nondegenerate heart-shape fit",
+          "evidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        {
+          "body": "expanded",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.200303917000001,
+          "attempts": 13,
+          "selectedQuad": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "evidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "real-995899fe049540ed-body-1",
+      "arms": [
+        {
+          "body": "previous",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.4264719160000023,
+          "attempts": 8,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.6363636363636364,
+              0.5878787878787879
+            ],
+            "lobeOutlineSupport": [
+              0.4444444444444444,
+              0.5
+            ],
+            "capColourLoss": [
+              0.5359760427043334,
+              0.483448472903286
+            ]
+          }
+        },
+        {
+          "body": "previous",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.4933703749999987,
+          "attempts": 9,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.6363636363636364,
+              0.5878787878787879
+            ],
+            "lobeOutlineSupport": [
+              0.5,
+              0.2777777777777778
+            ],
+            "capColourLoss": [
+              0.3540155606201755,
+              0.5152840363591955
+            ]
+          }
+        },
+        {
+          "body": "expanded",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.5144056669999992,
+          "attempts": 12,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.7678571428571429,
+              0.6666666666666666
+            ],
+            "lobeOutlineSupport": [
+              0.6666666666666666,
+              0.9444444444444444
+            ],
+            "capColourLoss": [
+              0.331888636965108,
+              0.2900298896434068
+            ]
+          }
+        },
+        {
+          "body": "expanded",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.471573249999994,
+          "attempts": 10,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.7678571428571429,
+              0.6666666666666666
+            ],
+            "lobeOutlineSupport": [
+              0.6944444444444444,
+              0.9722222222222222
+            ],
+            "capColourLoss": [
+              0.5700836852439125,
+              0.6566854372018577
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "real-b87b0b19f12724f3-body-1",
+      "arms": [
+        {
+          "body": "previous",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.1007035000000034,
+          "attempts": 11,
+          "selectedQuad": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "evidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        {
+          "body": "expanded",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.374874792000002,
+          "attempts": 11,
+          "selectedQuad": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "evidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        {
+          "body": "expanded",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.2715868340000016,
+          "attempts": 11,
+          "selectedQuad": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "evidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        {
+          "body": "previous",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.2957332919999973,
+          "attempts": 13,
+          "selectedQuad": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "evidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "real-cf2d0fcff65d7386-body-1",
+      "arms": [
+        {
+          "body": "expanded",
+          "material": "previous",
+          "hasCrop": true,
+          "supported": true,
+          "seconds": 0.7524986250000002,
+          "attempts": 1,
+          "selectedQuad": [
+            [
+              271.6796797053413,
+              90.89445999152801
+            ],
+            [
+              512.2533873534042,
+              244.81157678965275
+            ],
+            [
+              346.64569991364095,
+              519.2981798521297
+            ],
+            [
+              88.24034465424766,
+              323.9874300833148
+            ]
+          ],
+          "reason": null,
+          "evidence": {
+            "lowerEdgeSupport": [
+              1,
+              0.821656050955414
+            ],
+            "lobeOutlineSupport": [
+              1,
+              0.9166666666666666
+            ],
+            "capColourLoss": [
+              0.04006128620784206,
+              0.07605781834766262
+            ]
+          }
+        },
+        {
+          "body": "expanded",
+          "material": "expanded",
+          "hasCrop": true,
+          "supported": true,
+          "seconds": 0.428403542,
+          "attempts": 0,
+          "selectedQuad": [
+            [
+              273.26391725614167,
+              91.32579430988532
+            ],
+            [
+              512.1273682161303,
+              241.33942441835865
+            ],
+            [
+              348.2543500123355,
+              522.686508063864
+            ],
+            [
+              89.49035463786686,
+              324.3591478556385
+            ]
+          ],
+          "reason": null,
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.7388535031847133,
+              0.7070063694267515
+            ],
+            "lobeOutlineSupport": [
+              1,
+              0.9722222222222222
+            ],
+            "capColourLoss": [
+              0.044191625503471,
+              0.06876085103409649
+            ]
+          }
+        },
+        {
+          "body": "previous",
+          "material": "previous",
+          "hasCrop": true,
+          "supported": true,
+          "seconds": 0.7869538749999992,
+          "attempts": 1,
+          "selectedQuad": [
+            [
+              272.0262749702778,
+              92.1822120193383
+            ],
+            [
+              512.8793266530762,
+              242.7938701872271
+            ],
+            [
+              349.0441399744488,
+              519.3054852923462
+            ],
+            [
+              87.42535492853449,
+              324.4012135395449
+            ]
+          ],
+          "reason": null,
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.9675324675324676,
+              0.7987012987012987
+            ],
+            "lobeOutlineSupport": [
+              1,
+              0.6944444444444444
+            ],
+            "capColourLoss": [
+              0.03932089664080686,
+              0.07815342921359608
+            ]
+          }
+        },
+        {
+          "body": "previous",
+          "material": "expanded",
+          "hasCrop": true,
+          "supported": true,
+          "seconds": 0.7723166249999994,
+          "attempts": 1,
+          "selectedQuad": [
+            [
+              272.8951055553158,
+              91.86373584257126
+            ],
+            [
+              513.7776460206137,
+              241.27773837065163
+            ],
+            [
+              349.0441399744488,
+              519.3054852923462
+            ],
+            [
+              88.81134996090607,
+              325.4337707100477
+            ]
+          ],
+          "reason": null,
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.9675324675324676,
+              0.7987012987012987
+            ],
+            "lobeOutlineSupport": [
+              1,
+              0.75
+            ],
+            "capColourLoss": [
+              0.043520057333024526,
+              0.0707582167040092
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "real-cdae5c890b6933cd-body-1",
+      "arms": [
+        {
+          "body": "expanded",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.127593958999998,
+          "attempts": 13,
+          "selectedQuad": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "evidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        {
+          "body": "previous",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.1395541250000023,
+          "attempts": 12,
+          "selectedQuad": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "evidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        {
+          "body": "previous",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.190835957999996,
+          "attempts": 13,
+          "selectedQuad": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "evidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        {
+          "body": "expanded",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.159118917000007,
+          "attempts": 14,
+          "selectedQuad": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "evidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "real-68d8f25d8891df62-body-1",
+      "arms": [
+        {
+          "body": "previous",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 1.6233910000000034,
+          "attempts": 19,
+          "selectedQuad": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "evidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        {
+          "body": "previous",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 1.6163852500000067,
+          "attempts": 19,
+          "selectedQuad": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "evidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        {
+          "body": "expanded",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 1.5010240410000115,
+          "attempts": 19,
+          "selectedQuad": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "evidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        {
+          "body": "expanded",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 1.5761872500000027,
+          "attempts": 19,
+          "selectedQuad": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "evidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "real-5330aa8b62176216-body-1",
+      "arms": [
+        {
+          "body": "previous",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 1.154389624999996,
+          "attempts": 19,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.6086956521739131,
+              0.6811594202898551
+            ],
+            "lobeOutlineSupport": [
+              0.5,
+              0.4166666666666667
+            ],
+            "capColourLoss": [
+              0.1352582434170978,
+              0.4174813192474611
+            ]
+          }
+        },
+        {
+          "body": "expanded",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 1.103250417000003,
+          "attempts": 19,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.8307692307692308,
+              0.5076923076923077
+            ],
+            "lobeOutlineSupport": [
+              0.8055555555555556,
+              0.6666666666666666
+            ],
+            "capColourLoss": [
+              0.2722287585135355,
+              0.36017464288016066
+            ]
+          }
+        },
+        {
+          "body": "expanded",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 0.9817748750000028,
+          "attempts": 19,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.8307692307692308,
+              0.5076923076923077
+            ],
+            "lobeOutlineSupport": [
+              0.6388888888888888,
+              0.6388888888888888
+            ],
+            "capColourLoss": [
+              0.18419414499513984,
+              0.442865535800449
+            ]
+          }
+        },
+        {
+          "body": "previous",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 1.1276297500000074,
+          "attempts": 19,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.6086956521739131,
+              0.6811594202898551
+            ],
+            "lobeOutlineSupport": [
+              0.5833333333333334,
+              0.3611111111111111
+            ],
+            "capColourLoss": [
+              0.5694073601293849,
+              0.3888952040007193
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "real-abf590088db891f9-body-1",
+      "arms": [
+        {
+          "body": "expanded",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 0.9515689169999969,
+          "attempts": 19,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.96875,
+              0.96875
+            ],
+            "lobeOutlineSupport": [
+              0.6111111111111112,
+              0.9166666666666666
+            ],
+            "capColourLoss": [
+              0.08330672054050664,
+              0.0760960479798787
+            ]
+          }
+        },
+        {
+          "body": "expanded",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 0.942896041999993,
+          "attempts": 19,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.96875,
+              0.96875
+            ],
+            "lobeOutlineSupport": [
+              0.6388888888888888,
+              0.75
+            ],
+            "capColourLoss": [
+              0.19256672782088907,
+              0.35059538515555383
+            ]
+          }
+        },
+        {
+          "body": "previous",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 0.6965791249999893,
+          "attempts": 16,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.8450704225352113,
+              0.6338028169014085
+            ],
+            "lobeOutlineSupport": [
+              0.5555555555555556,
+              0.8055555555555556
+            ],
+            "capColourLoss": [
+              0.08823196189404153,
+              0.08695624941069144
+            ]
+          }
+        },
+        {
+          "body": "previous",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 0.7438681250000081,
+          "attempts": 16,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.8450704225352113,
+              0.6338028169014085
+            ],
+            "lobeOutlineSupport": [
+              0.6111111111111112,
+              0.7222222222222222
+            ],
+            "capColourLoss": [
+              0.20166950646991008,
+              0.3688334609003618
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "real-990ac34431be87fe-body-1",
+      "arms": [
+        {
+          "body": "expanded",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.62287000000001,
+          "attempts": 14,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.7380952380952381,
+              0.6825396825396826
+            ],
+            "lobeOutlineSupport": [
+              0.75,
+              0.5277777777777778
+            ],
+            "capColourLoss": [
+              0.2400468804061114,
+              0.0290519671073358
+            ]
+          }
+        },
+        {
+          "body": "previous",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.380975583000007,
+          "attempts": 14,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.7864077669902912,
+              0.912621359223301
+            ],
+            "lobeOutlineSupport": [
+              0.75,
+              0.6944444444444444
+            ],
+            "capColourLoss": [
+              0.313035671441549,
+              0.09862347892032756
+            ]
+          }
+        },
+        {
+          "body": "previous",
+          "material": "expanded",
+          "hasCrop": true,
+          "supported": true,
+          "seconds": 0.34534733299999787,
+          "attempts": 0,
+          "selectedQuad": [
+            [
+              295.47822550979265,
+              141.6164472793305
+            ],
+            [
+              397.93636080819397,
+              287.48921267024775
+            ],
+            [
+              280.62058674572523,
+              435.94843207610717
+            ],
+            [
+              156.63630373914302,
+              278.6514763019552
+            ]
+          ],
+          "reason": null,
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.7864077669902912,
+              0.912621359223301
+            ],
+            "lobeOutlineSupport": [
+              0.7777777777777778,
+              0.6666666666666666
+            ],
+            "capColourLoss": [
+              0.24313122498688067,
+              0.05937220898466923
+            ]
+          }
+        },
+        {
+          "body": "expanded",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.490146709000008,
+          "attempts": 14,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.7380952380952381,
+              0.6825396825396826
+            ],
+            "lobeOutlineSupport": [
+              0.7222222222222222,
+              0.6111111111111112
+            ],
+            "capColourLoss": [
+              0.3375876085372208,
+              0.012466162133961543
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "real-12ce3c9180f7f317-body-1",
+      "arms": [
+        {
+          "body": "previous",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.584351834000001,
+          "attempts": 11,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.8636363636363636,
+              0.7954545454545454
+            ],
+            "lobeOutlineSupport": [
+              0.8888888888888888,
+              0.8055555555555556
+            ],
+            "capColourLoss": [
+              0.14574777116194484,
+              0.6278337864327733
+            ]
+          }
+        },
+        {
+          "body": "previous",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.6416623749999997,
+          "attempts": 11,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.8636363636363636,
+              0.7954545454545454
+            ],
+            "lobeOutlineSupport": [
+              0.8611111111111112,
+              0.8055555555555556
+            ],
+            "capColourLoss": [
+              0.11790611100707377,
+              0.3606643018883633
+            ]
+          }
+        },
+        {
+          "body": "expanded",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.5543669999999983,
+          "attempts": 13,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.8114285714285714,
+              0.6114285714285714
+            ],
+            "lobeOutlineSupport": [
+              0.9444444444444444,
+              0.5833333333333334
+            ],
+            "capColourLoss": [
+              0.13027766372726934,
+              0.6191687858764674
+            ]
+          }
+        },
+        {
+          "body": "expanded",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.616239209000007,
+          "attempts": 13,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.8114285714285714,
+              0.6114285714285714
+            ],
+            "lobeOutlineSupport": [
+              0.9722222222222222,
+              0.7222222222222222
+            ],
+            "capColourLoss": [
+              0.10213405636290743,
+              0.3578058490118168
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1",
+      "arms": [
+        {
+          "body": "previous",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.458860084,
+          "attempts": 12,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.6178861788617886,
+              0.5528455284552846
+            ],
+            "lobeOutlineSupport": [
+              0.5833333333333334,
+              0.8333333333333334
+            ],
+            "capColourLoss": [
+              0.3921445941398615,
+              0.006289920383492946
+            ]
+          }
+        },
+        {
+          "body": "expanded",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.3647997920000052,
+          "attempts": 14,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.4566929133858268,
+              0.47244094488188976
+            ],
+            "lobeOutlineSupport": [
+              0.3888888888888889,
+              0.2777777777777778
+            ],
+            "capColourLoss": [
+              0.1880318310626837,
+              0.10620503631217676
+            ]
+          }
+        },
+        {
+          "body": "expanded",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.426288084,
+          "attempts": 14,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.4566929133858268,
+              0.47244094488188976
+            ],
+            "lobeOutlineSupport": [
+              0.3611111111111111,
+              0.2777777777777778
+            ],
+            "capColourLoss": [
+              0.3421523770060181,
+              0.11161280829029131
+            ]
+          }
+        },
+        {
+          "body": "previous",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.5250851249999977,
+          "attempts": 14,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.6178861788617886,
+              0.5528455284552846
+            ],
+            "lobeOutlineSupport": [
+              0.5833333333333334,
+              0.8333333333333334
+            ],
+            "capColourLoss": [
+              0.21462766049992574,
+              0.0026528510679812126
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "real-39f3a1ba97852876-body-1",
+      "arms": [
+        {
+          "body": "expanded",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.366089458000002,
+          "attempts": 14,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.37362637362637363,
+              0.5714285714285714
+            ],
+            "lobeOutlineSupport": [
+              0.5555555555555556,
+              0.6111111111111112
+            ],
+            "capColourLoss": [
+              0.024013358471147925,
+              0.5081838980544272
+            ]
+          }
+        },
+        {
+          "body": "expanded",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.2764208329999964,
+          "attempts": 16,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.37362637362637363,
+              0.5714285714285714
+            ],
+            "lobeOutlineSupport": [
+              0.5555555555555556,
+              0.8055555555555556
+            ],
+            "capColourLoss": [
+              0.06808476082741527,
+              0.5441144325067439
+            ]
+          }
+        },
+        {
+          "body": "previous",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.137964458000002,
+          "attempts": 19,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.8876404494382022,
+              0.4157303370786517
+            ],
+            "lobeOutlineSupport": [
+              0.6944444444444444,
+              0.5555555555555556
+            ],
+            "capColourLoss": [
+              0.023807305828022953,
+              0.4279199339762032
+            ]
+          }
+        },
+        {
+          "body": "previous",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.0498928329999906,
+          "attempts": 19,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.8876404494382022,
+              0.4157303370786517
+            ],
+            "lobeOutlineSupport": [
+              0.4722222222222222,
+              0.6111111111111112
+            ],
+            "capColourLoss": [
+              0.006043255445167311,
+              0.5683431673042928
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "real-e936e08ac62db19b-body-1",
+      "arms": [
+        {
+          "body": "expanded",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.5972146659999997,
+          "attempts": 15,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.8913043478260869,
+              0.6739130434782609
+            ],
+            "lobeOutlineSupport": [
+              0.9444444444444444,
+              0.5277777777777778
+            ],
+            "capColourLoss": [
+              0.5330292859571937,
+              0.07749486277405278
+            ]
+          }
+        },
+        {
+          "body": "previous",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.549913625000001,
+          "attempts": 15,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.631578947368421,
+              0.5964912280701754
+            ],
+            "lobeOutlineSupport": [
+              0.6111111111111112,
+              0.5277777777777778
+            ],
+            "capColourLoss": [
+              0.5803135491040278,
+              0.06021481757533628
+            ]
+          }
+        },
+        {
+          "body": "previous",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.3728812079999915,
+          "attempts": 14,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.631578947368421,
+              0.5964912280701754
+            ],
+            "lobeOutlineSupport": [
+              0.5,
+              0.4166666666666667
+            ],
+            "capColourLoss": [
+              0.5958967012253197,
+              0.23079817409020512
+            ]
+          }
+        },
+        {
+          "body": "expanded",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.3992245410000033,
+          "attempts": 14,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              0.8913043478260869,
+              0.6739130434782609
+            ],
+            "lobeOutlineSupport": [
+              0.8888888888888888,
+              0.4444444444444444
+            ],
+            "capColourLoss": [
+              0.6074404462263543,
+              0.07698557951308703
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "real-340f5e5b0f447889-body-1",
+      "arms": [
+        {
+          "body": "previous",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.137222167,
+          "attempts": 13,
+          "selectedQuad": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "evidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        {
+          "body": "previous",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.221270583000005,
+          "attempts": 14,
+          "selectedQuad": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "evidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        {
+          "body": "expanded",
+          "material": "previous",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.693352500000008,
+          "attempts": 17,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              1,
+              0.782608695652174
+            ],
+            "lobeOutlineSupport": [
+              0.027777777777777776,
+              0.6111111111111112
+            ],
+            "capColourLoss": [
+              0.6655538481725092,
+              0.38097258036492027
+            ]
+          }
+        },
+        {
+          "body": "expanded",
+          "material": "expanded",
+          "hasCrop": false,
+          "supported": false,
+          "seconds": 2.5597426660000058,
+          "attempts": 17,
+          "selectedQuad": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "evidence": {
+            "lowerEdgeSupport": [
+              1,
+              0.782608695652174
+            ],
+            "lobeOutlineSupport": [
+              0.1388888888888889,
+              0.6944444444444444
+            ],
+            "capColourLoss": [
+              0.32389058693817196,
+              0.2287863318301732
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "novelDecoratedChecker": {
+    "learnedMask": {
+      "status": "checked-derived-mask",
+      "cropSeconds": 0.4364206670000001,
+      "solveSeconds": 9.537372042000001,
+      "independentImageError": 0.0036875,
+      "targetMaskSha256": "51a338607087b0878b58b47d250f4aae197f472bdec7ccad1ffc88e3b138bd92",
+      "resolution": 400,
+      "completeEditablePassed": true,
+      "editableError": 0.00369375,
+      "sourceQuad": [
+        [
+          295.47822550979265,
+          141.6164472793305
+        ],
+        [
+          397.93636080819397,
+          287.48921267024775
+        ],
+        [
+          280.62058674572523,
+          435.94843207610717
+        ],
+        [
+          156.63630373914302,
+          278.6514763019552
+        ]
+      ]
+    },
+    "rgbMask": {
+      "status": "checked-derived-mask",
+      "cropSeconds": 0.446947875,
+      "solveSeconds": 9.518279,
+      "independentImageError": 0.020075,
+      "targetMaskSha256": "c0aa69cb120dbe3513d3873dd0cf7acf59273a462babc788c03e1133f6f896c5",
+      "resolution": 400,
+      "completeEditablePassed": true,
+      "editableError": 0.01974375,
+      "sourceQuad": [
+        [
+          295.47822550979265,
+          141.6164472793305
+        ],
+        [
+          397.93636080819397,
+          287.48921267024775
+        ],
+        [
+          280.62058674572523,
+          435.94843207610717
+        ],
+        [
+          156.63630373914302,
+          278.6514763019552
+        ]
+      ]
+    }
+  },
+  "findings": [
+    "Supported crop counts are 2/17 for both previous predictions, 2/17 for previous body plus expanded materials, 1/17 for expanded body plus previous materials, and 3/17 for both expanded predictions. No globally fixed cross-combination improves crop count.",
+    "The boar is supported only with both previous predictions: replacing either component alone loses the crop. This regression cannot be assigned to the body head alone.",
+    "The rabbit and stacked hearts are supported only with both expanded predictions. Better materials alone do not recover their old body evidence; better bodies alone do not recover their old material evidence.",
+    "The decorated checker becomes supported only with previous body plus expanded materials. Visual inspection still finds a displaced tip/notch and no exact corner-ground-truth claim is made.",
+    "Fitting the decorated neural mask passes all current checks at 0.36875 percent disagreement, but closely reproduces an already distorted mask. Existing RGB classification on the identical crop restores much straighter cells; its fit also passes, at 2.0075 percent disagreement with its different target, while retaining border artifacts.",
+    "Per-target fit percentages are not comparable as artwork accuracy. Crop support, paper identity, boundary localization and final motif fidelity remain separate requirements."
+  ],
+  "visualReview": {
+    "scope": "All five photos supported by any intervention arm: source/quad panels for all four arms. Other twelve failed photos retain their numerical records but their new overlay panels were not separately reviewed.",
+    "cases": [
+      "real-2044b1d98ed6f262-body-1",
+      "real-45744a03afddccb1-body-1",
+      "real-8c875dd0f298b5a4-body-1",
+      "real-990ac34431be87fe-body-1",
+      "real-cf2d0fcff65d7386-body-1"
+    ],
+    "figures": {
+      "tmp/heart-learning/material-crop-swaps-v1/causal-crops-1.png": "a38ea46fcefdb4fef8ff66b3f79d20adc7131c155968a993fac69a82539c6a9c",
+      "tmp/heart-learning/material-crop-swaps-v1/causal-crops-2.png": "fda43bb4da0f3c57f512df3baed0192b3ac237eb9012d92448fc8a514e7e944d",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-crop-swaps-v1/novel-pipeline-v1/real-990ac34431be87fe-body-1-mixed-joint/crop.png": "28d7980ac337517f9da17aa0de085c4ebcc3ba542d4dde7112344c1b8b7e68e1",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-crop-swaps-v1/novel-pipeline-v1/real-990ac34431be87fe-body-1-mixed-joint/mask.png": "834a18583ab64bb0f0593629bad4cb4ce48077c9e7782b5c5fffe189e8a31253",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-crop-swaps-v1/novel-pipeline-v1/real-990ac34431be87fe-body-1-mixed-joint/woven.png": "a40fd347aed2fba82e60074a1827d5609ce058321ebd0b0612878584276ee5b3",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-crop-swaps-v1/novel-rgb-pipeline-v1/real-990ac34431be87fe-body-1-mixed-joint-rgb/crop.png": "28d7980ac337517f9da17aa0de085c4ebcc3ba542d4dde7112344c1b8b7e68e1",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-crop-swaps-v1/novel-rgb-pipeline-v1/real-990ac34431be87fe-body-1-mixed-joint-rgb/mask.png": "df48cdf95ae6a7f2f2bc5e7005af1b99dfa4d63d8b52de5adbe0e2d22be5f3d8",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-crop-swaps-v1/novel-rgb-pipeline-v1/real-990ac34431be87fe-body-1-mixed-joint-rgb/woven.png": "e49ec6f2f8829a98742ef32dede46f976f1e268be3fb6524a6e80b8a817d3836"
+    },
+    "novelCase": "Decorated checker: supported quad visibly extends below the paper tip and shifts near the handle/notch. Learned classification rounds and displaces straight cells. RGB classification retains straighter interior edges on the identical crop, but its fit has extra right/bottom border features. These are not faithful-source successes merely because derived-mask/geometry checks pass.",
+    "novelCaseInspected": [
+      "Original photograph with both proposed and rejected quads.",
+      "Exact shared rectified photograph.",
+      "Learned binary mask and independently rendered fit.",
+      "RGB binary mask and independently rendered fit."
+    ]
+  },
+  "nextWork": [
+    "Refine neural outline proposals against source-image edges and verify physical corner placement without weakening support gates.",
+    "Use learned paper identity as guidance for high-resolution photographic boundary recovery rather than accepting the coarse predicted binary mask as artwork.",
+    "Retain complete template and editable checks when evaluating either intervention; do not report the new crop as a broad learned-pipeline improvement."
+  ],
+  "evidence": {
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-crop-swaps-v1/plan.json": "ab936bd7ddd253d9c8b0006d44fb23043f65b6739c81884f9aa77bb5f774913c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-crop-swaps-v1/run.mjs": "2bbe4e3efe1ee134ea39aeea559b69e1cab4cbb3122c6557b31325717dbbbbbe",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-crop-swaps-v1/foreground-crop.mjs": "d97cfdada4dcea131882749441df095390c17bd0ef130049d1781c357c9fe350",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-crop-swaps-v1/results-v1/report.json": "4b03f3199db0f84e7eca27e468fa7f505ad2669502a69d858003079f4d218dfe",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-crop-swaps-v1/novel-plan.json": "e90170f8ba34bf6308d27df805480d4100bbebb410ed2908a981fa1c92d25c78",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-crop-swaps-v1/novel-rgb-plan.json": "5128dbf411645f5ac449df2d9751aea18950ab7e5b7240a7e5b4ce3d72b1faca",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-crop-swaps-v1/novel-probe-v1/manifest.json": "3862c75fc0a623c53f7f755473eab0cb37d3dc294bf0d77997abb21393a397bd",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-crop-swaps-v1/replay-novel.mjs": "c6cf77c8c5c69b612cda42a67b9a05c86564f4dfb642cd4bf6f1f88166f8d129",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-crop-swaps-v1/replay-novel-rgb.mjs": "d0f6bf36ce4fb199d734ed45777969736128465b6d5469d3baa3edeefe71e9bb",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-crop-swaps-v1/novel-pipeline-v1/report.json": "7f992e350170d2a0a63dce93466931b0d8ea5a37beada016fba9fb24ff10f705",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-crop-swaps-v1/novel-rgb-pipeline-v1/report.json": "8e8313d9c9188e0069636cc1bb5959280ac43e212290885746ee050fe21ebc53",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-crop-swaps-v1/novel-editable-v1/results.json": "19ee8bcfdb82d27f671106af71be55f1dd466aca68d1f27f89b8af8e3ebdeba9",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-crop-swaps-v1/novel-rgb-editable-v1/results.json": "0e8d776e83f620750e827bc58914ff0fb2fa1870dfd945e4b3635db307ccf16f",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-crop-swaps-v1/visual-review.json": "83d5ffbd6a176d051e5415cf5c855149d4c1913f3f9a69829e00aae7715cc66a",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-crop-swaps-v1/record.py": "9f40bcc606370b187c3ed6f3450d095f35a7fa2f4accca176c6934566621f69e"
+  }
+}

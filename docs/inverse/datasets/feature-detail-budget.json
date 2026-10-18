@@ -1,0 +1,564 @@
+{
+  "scope": "Serial low-priority fresh fits, unchanged source mask and cutting rules. Not whole-browser speed or physical assembly evidence.",
+  "parentRuntime": "62bed03",
+  "candidateFiles": {
+    "static/inverse/core/direct/fit.js": "0bfefd7a66c70327ce9e65231506156e545c6d2e0f946046b7085ec671c4dc23",
+    "scripts/inverse/feature-seeds.test.mjs": "6699b244b3d2352f33112434d4c8f92d3772a62d7490cafe98b02d9cc2a6200a"
+  },
+  "cases": [
+    {
+      "name": "cold-before",
+      "capture": "tmp/heart-learning/clearance-continuation-2026-10-18/puppy-cold/captures/43717-1.json",
+      "captureSha256": "70931ff0ab09c3a8e14852b855627e0ea53e1003c17b558e2115c551f8d86477",
+      "maskSha256": "45bb41ffbb961e933cb29f4effbe47239533035ab522c7e654b7d9c1de1a0dad",
+      "requestedSeconds": 10,
+      "reportedSeconds": 9.072967375000001,
+      "counts": [
+        5,
+        3
+      ],
+      "detail": {
+        "regions": 1,
+        "addedCurves": 29,
+        "maximumLengthMm": 2,
+        "haloMm": 1,
+        "refinementRate": 0.07,
+        "finalizationReserveSeconds": 1.7,
+        "applied": true,
+        "errorBefore": 0.02040625,
+        "errorAfter": 0.01395625,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "featuresPassed": true,
+        "steps": 105
+      },
+      "stages": [
+        {
+          "stage": "directInitializing",
+          "seconds": 0.39909725
+        },
+        {
+          "stage": "directFitting",
+          "seconds": 0.629100666
+        },
+        {
+          "stage": "directInitializing",
+          "seconds": 0.4567592920000002
+        },
+        {
+          "stage": "directFitting",
+          "seconds": 0.24428691600000002
+        },
+        {
+          "stage": "directClearance",
+          "seconds": 0.512379708
+        },
+        {
+          "stage": "directInitializing",
+          "seconds": 0.14945695799999975
+        },
+        {
+          "stage": "directClearance",
+          "seconds": 0.3373932909999999
+        },
+        {
+          "stage": "directRefining",
+          "seconds": 2.269230917
+        },
+        {
+          "stage": "directPolishing",
+          "seconds": 0.0077280409999993934
+        },
+        {
+          "stage": "directRefining",
+          "seconds": 1.430150917
+        },
+        {
+          "stage": "directPolishing",
+          "seconds": 1.3419594579999994
+        },
+        {
+          "stage": "directSharing",
+          "seconds": 0.5953982909999995
+        }
+      ],
+      "independent": {
+        "capture": "tmp/heart-learning/clearance-continuation-2026-10-18/puppy-cold/captures/43717-1.json",
+        "sourceMaskSha256": "45bb41ffbb961e933cb29f4effbe47239533035ab522c7e654b7d9c1de1a0dad",
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "paperResolution": 700,
+        "comparisons": [
+          {
+            "resolution": 400,
+            "error": 0.0139,
+            "featuresPassed": true,
+            "opening": {
+              "centerMm": [
+                61.219298245614034,
+                75.54385964912281
+              ],
+              "sourceAreaMm2": 7.125,
+              "intersectionPixels": 114,
+              "retention": 1,
+              "predictedComponentAreaMm2": 31.875,
+              "touchesBorder": false,
+              "componentIoU": 0.2235294117647059
+            },
+            "passed": false
+          },
+          {
+            "resolution": 800,
+            "error": 0.0146765625,
+            "featuresPassed": true,
+            "opening": {
+              "centerMm": [
+                61.219298245614034,
+                75.54385964912281
+              ],
+              "sourceAreaMm2": 7.125,
+              "intersectionPixels": 440,
+              "retention": 0.9649122807017544,
+              "predictedComponentAreaMm2": 31.640625,
+              "touchesBorder": false,
+              "componentIoU": 0.21558059774620283
+            },
+            "passed": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "rejected-early",
+      "capture": "tmp/heart-learning/clearance-continuation-2026-10-18/puppy-handoff/captures/46897-1.json",
+      "captureSha256": "1d86e0fe0491f07cefaff4e3ff583b113ca244d0a057d14ec7e788daab3578e5",
+      "maskSha256": "45bb41ffbb961e933cb29f4effbe47239533035ab522c7e654b7d9c1de1a0dad",
+      "requestedSeconds": 10,
+      "reportedSeconds": 9.010612875,
+      "counts": [
+        5,
+        3
+      ],
+      "detail": {
+        "regions": 1,
+        "addedCurves": 27,
+        "maximumLengthMm": 2,
+        "haloMm": 1,
+        "refinementRate": 0.07,
+        "finalizationReserveSeconds": 1.7,
+        "applied": true,
+        "errorBefore": 0.0281875,
+        "errorAfter": 0.01644375,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "featuresPassed": true,
+        "steps": 160
+      },
+      "stages": [
+        {
+          "stage": "directInitializing",
+          "seconds": 0.4182907919999999
+        },
+        {
+          "stage": "directFitting",
+          "seconds": 0.6302900000000002
+        },
+        {
+          "stage": "directInitializing",
+          "seconds": 0.42476091700000007
+        },
+        {
+          "stage": "directFitting",
+          "seconds": 0.25094779199999995
+        },
+        {
+          "stage": "directClearance",
+          "seconds": 0.3574905410000001
+        },
+        {
+          "stage": "directInitializing",
+          "seconds": 0.18023766699999988
+        },
+        {
+          "stage": "directClearance",
+          "seconds": 0.30772683300000014
+        },
+        {
+          "stage": "directRefining",
+          "seconds": 2.1440017080000002
+        },
+        {
+          "stage": "directPolishing",
+          "seconds": 0.0058283750000000505
+        },
+        {
+          "stage": "directRefining",
+          "seconds": 0.5446832910000002
+        },
+        {
+          "stage": "directPolishing",
+          "seconds": 1.641090166
+        },
+        {
+          "stage": "directSharing",
+          "seconds": 1.3939023750000015
+        }
+      ],
+      "independent": {
+        "capture": "tmp/heart-learning/clearance-continuation-2026-10-18/puppy-handoff/captures/46897-1.json",
+        "sourceMaskSha256": "45bb41ffbb961e933cb29f4effbe47239533035ab522c7e654b7d9c1de1a0dad",
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "paperResolution": 700,
+        "comparisons": [
+          {
+            "resolution": 400,
+            "error": 0.01625625,
+            "featuresPassed": true,
+            "opening": {
+              "centerMm": [
+                61.219298245614034,
+                75.54385964912281
+              ],
+              "sourceAreaMm2": 7.125,
+              "intersectionPixels": 114,
+              "retention": 1,
+              "predictedComponentAreaMm2": 51.875,
+              "touchesBorder": false,
+              "componentIoU": 0.13734939759036144
+            },
+            "passed": false
+          },
+          {
+            "resolution": 800,
+            "error": 0.0171703125,
+            "featuresPassed": true,
+            "opening": {
+              "centerMm": [
+                61.219298245614034,
+                75.54385964912281
+              ],
+              "sourceAreaMm2": 7.125,
+              "intersectionPixels": 441,
+              "retention": 0.9671052631578947,
+              "predictedComponentAreaMm2": 51.78125,
+              "touchesBorder": false,
+              "componentIoU": 0.13247221387804145
+            },
+            "passed": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "checked-window",
+      "capture": "tmp/heart-learning/clearance-continuation-2026-10-18/puppy-checked-window/captures/60697-1.json",
+      "captureSha256": "41c4bf1ca7891d339037375d6d010feb62b53699dae3316096e6c6c7e3e55154",
+      "maskSha256": "45bb41ffbb961e933cb29f4effbe47239533035ab522c7e654b7d9c1de1a0dad",
+      "requestedSeconds": 10,
+      "reportedSeconds": 9.097413875,
+      "counts": [
+        5,
+        3
+      ],
+      "detail": {
+        "regions": 1,
+        "addedCurves": 40,
+        "maximumLengthMm": 2,
+        "haloMm": 1,
+        "refinementRate": 0.07,
+        "finalizationReserveSeconds": 1,
+        "applied": true,
+        "errorBefore": 0.014175,
+        "errorAfter": 0.01078125,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "featuresPassed": true,
+        "steps": 160
+      },
+      "stages": [
+        {
+          "stage": "directInitializing",
+          "seconds": 0.41096458299999994
+        },
+        {
+          "stage": "directFitting",
+          "seconds": 0.6642960420000001
+        },
+        {
+          "stage": "directInitializing",
+          "seconds": 0.3785527089999996
+        },
+        {
+          "stage": "directFitting",
+          "seconds": 0.21219604100000014
+        },
+        {
+          "stage": "directClearance",
+          "seconds": 0.339031125
+        },
+        {
+          "stage": "directInitializing",
+          "seconds": 0.1478047499999998
+        },
+        {
+          "stage": "directClearance",
+          "seconds": 0.239178042
+        },
+        {
+          "stage": "directRefining",
+          "seconds": 1.9174026670000004
+        },
+        {
+          "stage": "directPolishing",
+          "seconds": 0.005887458000000152
+        },
+        {
+          "stage": "directRefining",
+          "seconds": 2.001194459
+        },
+        {
+          "stage": "directPolishing",
+          "seconds": 1.1230382500000005
+        },
+        {
+          "stage": "directSharing",
+          "seconds": 0.8072244999999985
+        }
+      ],
+      "independent": {
+        "capture": "tmp/heart-learning/clearance-continuation-2026-10-18/puppy-checked-window/captures/60697-1.json",
+        "sourceMaskSha256": "45bb41ffbb961e933cb29f4effbe47239533035ab522c7e654b7d9c1de1a0dad",
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "paperResolution": 700,
+        "comparisons": [
+          {
+            "resolution": 400,
+            "error": 0.01069375,
+            "featuresPassed": true,
+            "opening": {
+              "centerMm": [
+                61.219298245614034,
+                75.54385964912281
+              ],
+              "sourceAreaMm2": 7.125,
+              "intersectionPixels": 112,
+              "retention": 0.9824561403508771,
+              "predictedComponentAreaMm2": 9.625,
+              "touchesBorder": false,
+              "componentIoU": 0.717948717948718
+            },
+            "passed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.011796875,
+            "featuresPassed": true,
+            "opening": {
+              "centerMm": [
+                61.219298245614034,
+                75.54385964912281
+              ],
+              "sourceAreaMm2": 7.125,
+              "intersectionPixels": 449,
+              "retention": 0.9846491228070176,
+              "predictedComponentAreaMm2": 9.546875,
+              "touchesBorder": false,
+              "componentIoU": 0.7265372168284789
+            },
+            "passed": true
+          }
+        ]
+      }
+    }
+  ],
+  "focused": {
+    "log": "tmp/heart-learning/clearance-continuation-2026-10-18/feature-window-focused.log",
+    "sha256": "a78308504256d006e3bb80b097f16ceb8a452e527575e4bcba5ca89e928ea060",
+    "passed": 25,
+    "failed": 0,
+    "seconds": 190.610254041
+  },
+  "coldFinalTest": {
+    "log": "tmp/heart-learning/clearance-continuation-2026-10-18/puppy-checked-window.log",
+    "sha256": "f3ddcfb635a5c1bdbd0e474a1b83805f3945ddd5be6cb14e7ca78d57ca73c8e4",
+    "passed": 1,
+    "failed": 0
+  },
+  "remainingFailureReplayBeforeTestCorrection": {
+    "log": "tmp/heart-learning/clearance-continuation-2026-10-18/remaining-replay/remaining.log",
+    "sha256": "7d5c55bacf94485a6a3ba3b8b972ccd63d8c92ad1100ae787992c2112b9d2ee4",
+    "passed": 8,
+    "failed": 1,
+    "failure": "Puppy required an uncertain-to-pass intermediate paper transition. Its captured output independently passed geometry, paper, image and shape criteria; a separate cold replay exposed the inflated-opening issue."
+  },
+  "standardChecks": {
+    "directory": "tmp/heart-learning/clearance-continuation-2026-10-18/qa-detail-window",
+    "state": {
+      "status": "complete",
+      "pid": 63471,
+      "stages": [
+        {
+          "name": "check",
+          "command": [
+            "npm",
+            "run",
+            "check"
+          ],
+          "status": "passed",
+          "log": "check.log",
+          "pid": 63501,
+          "exitCode": 0,
+          "seconds": 12.093418292
+        },
+        {
+          "name": "lint",
+          "command": [
+            "npm",
+            "run",
+            "lint"
+          ],
+          "status": "passed",
+          "log": "lint.log",
+          "pid": 63921,
+          "exitCode": 0,
+          "seconds": 7.919969
+        },
+        {
+          "name": "application",
+          "command": [
+            "node",
+            "node_modules/vitest/vitest.mjs",
+            "run",
+            "--maxWorkers=1"
+          ],
+          "status": "passed",
+          "log": "application.log",
+          "pid": 64195,
+          "exitCode": 0,
+          "seconds": 61.340898958
+        },
+        {
+          "name": "build",
+          "command": [
+            "npm",
+            "run",
+            "build"
+          ],
+          "status": "passed",
+          "log": "build.log",
+          "pid": 66321,
+          "exitCode": 0,
+          "seconds": 31.126089459
+        }
+      ],
+      "scope": "Standard checks for a bounded detail window on already checked candidates and independent puppy-output assertions. Feature/rerouting tests run separately; full inverse suite remains pending.",
+      "sourceFiles": 1040,
+      "priority": 15,
+      "minimumFreeGiB": 10
+    },
+    "sourceFiles": 1040,
+    "sourceManifestSha256": "4e48442bd41d932796284e0837d42a771b5750de447c8815f6ae536b1559229e",
+    "sourceHashesMatchedAfterRun": true,
+    "applicationPassed": 874,
+    "applicationSkipped": 1
+  },
+  "fullInverseSuite": {
+    "runtimeRevision": "4379b66829575ff5bb437564a99a25fc5618f109",
+    "command": "npm run test:inverse",
+    "status": "failed",
+    "tests": 1060,
+    "suites": 0,
+    "pass": 1051,
+    "fail": 9,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "duration_ms": 1476136.084541,
+    "sourceFiles": 1040,
+    "sourceHashesMatchedAfterRun": true,
+    "sourceManifest": "tmp/heart-learning/clearance-continuation-2026-10-18/full/source.json",
+    "sourceManifestSha256": "4e48442bd41d932796284e0837d42a771b5750de447c8815f6ae536b1559229e",
+    "log": "tmp/heart-learning/clearance-continuation-2026-10-18/full/inverse.log",
+    "logSha256": "14898bd7381510b6bb09586cd45884d59c05bb31e931bff28d13bdff65d155b7",
+    "failures": [
+      {
+        "location": "scripts/inverse/feature-seeds.test.mjs:125:1",
+        "test": "a finer spline recovers a half-resolution opening after all coarse feature starts fail",
+        "assertion": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  false !== true\n  \n      at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/feature-seeds.test.mjs:151:10)\n      at async Test.run (node:internal/test_runner/test:1125:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: false,\n    expected: true,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }"
+      },
+      {
+        "location": "scripts/inverse/fitted-rerouting.test.mjs:53:33",
+        "test": "a fresh shifted bird fit reroutes its rejected eye with a 10-second allowance",
+        "assertion": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  + actual - expected\n  \n  + 'feature-preserving-grid'\n  - 'fitted-boundary-rerouting'\n  \n      at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/fitted-rerouting.test.mjs:62:10)\n      at async Test.run (node:internal/test_runner/test:1125:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: 'feature-preserving-grid',\n    expected: 'fitted-boundary-rerouting',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }"
+      },
+      {
+        "location": "scripts/inverse/interior-counts.test.mjs:85:1",
+        "test": "the main fitter reconstructs the dense binary photo target with legal editable-sized counts",
+        "assertion": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  false !== true\n  \n      at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/interior-counts.test.mjs:97:10)\n      at async Test.run (node:internal/test_runner/test:1125:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: false,\n    expected: true,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }"
+      },
+      {
+        "location": "scripts/inverse/late-routing-repair.test.mjs:12:36",
+        "test": "a late routing candidate uses the repair time already provided by its caller",
+        "assertion": "AssertionError [ERR_ASSERTION]: {\"reason\":\"refinement_rejected\",\"steps\":0}\n  \n  false !== true\n  \n      at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/late-routing-repair.test.mjs:36:10)\n      at async Test.run (node:internal/test_runner/test:1125:7)\n      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {\n    generatedMessage: false,\n    code: 'ERR_ASSERTION',\n    actual: false,\n    expected: true,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }"
+      },
+      {
+        "location": "scripts/inverse/late-routing-repair.test.mjs:12:36",
+        "test": "a late routing candidate cannot manufacture an unprovided repair allowance",
+        "assertion": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  false !== true\n  \n      at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/late-routing-repair.test.mjs:29:9)\n      at async Test.run (node:internal/test_runner/test:1125:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: false,\n    expected: true,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }"
+      },
+      {
+        "location": "scripts/inverse/search-scheduling.test.mjs:18:45",
+        "test": "fresh synthetic-control routing retains time for a valid template without changing the mask",
+        "assertion": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  false !== true\n  \n      at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/search-scheduling.test.mjs:26:10)\n      at async Test.run (node:internal/test_runner/test:1125:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: false,\n    expected: true,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }"
+      },
+      {
+        "location": "scripts/inverse/search-scheduling.test.mjs:18:45",
+        "test": "fresh y-plus-1 routing retains time for a valid template without changing the mask",
+        "assertion": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  false !== true\n  \n      at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/search-scheduling.test.mjs:26:10)\n      at async Test.run (node:internal/test_runner/test:1125:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: false,\n    expected: true,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }"
+      },
+      {
+        "location": "scripts/inverse/search-scheduling.test.mjs:18:45",
+        "test": "fresh x-plus-1-paint routing retains time for a valid template without changing the mask",
+        "assertion": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  false !== true\n  \n      at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/search-scheduling.test.mjs:26:10)\n      at async Test.run (node:internal/test_runner/test:1125:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: false,\n    expected: true,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }"
+      },
+      {
+        "location": "scripts/inverse/short-budget-features.test.mjs:15:37",
+        "test": "crown retains its interior detail in a fresh fit (10s allowance)",
+        "assertion": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  + actual - expected\n  \n  + 'uncertain'\n  - 'pass'\n  \n      at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/short-budget-features.test.mjs:29:10)\n      at async Test.run (node:internal/test_runner/test:1125:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: 'uncertain',\n    expected: 'pass',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }"
+      }
+    ],
+    "previousFailureComparison": {
+      "passedNow": [
+        "a finer-verified supported grid stops before other counts that cannot displace it",
+        "a fresh shifted bird fit reroutes its rejected eye with a 180-second allowance",
+        "a one-pixel crop shift cannot discard a feature-preserving fine-grid checkpoint",
+        "a short probe tries simpler junctions before densifying exhausted traces",
+        "a simpler seed that never contained the Viking opening leaves time for the viable routing",
+        "early feature routing recovers the frozen puppy opening within a ten-second search",
+        "fresh fitting continues an unfinished verified initializer within the remaining search allowance",
+        "fresh fitting finds a checked pair for the upward-shifted photograph without saved cuts",
+        "fresh fitting retains the stacked motif on the original mask",
+        "fresh fitting retains the stacked motif on the resampled mask",
+        "the full fitter retains the bird eye through clearance, refinement and independent export",
+        "the vertical near-miss layout produces checked exports within the original short search (1.5x clock)"
+      ],
+      "stillFailed": [
+        "a fresh shifted bird fit reroutes its rejected eye with a 10-second allowance",
+        "the main fitter reconstructs the dense binary photo target with legal editable-sized counts"
+      ],
+      "newlyFailedInThisRun": [
+        "a finer spline recovers a half-resolution opening after all coarse feature starts fail",
+        "a late routing candidate cannot manufacture an unprovided repair allowance",
+        "a late routing candidate uses the repair time already provided by its caller",
+        "crown retains its interior detail in a fresh fit (10s allowance)",
+        "fresh synthetic-control routing retains time for a valid template without changing the mask",
+        "fresh x-plus-1-paint routing retains time for a valid template without changing the mask",
+        "fresh y-plus-1 routing retains time for a valid template without changing the mask"
+      ]
+    },
+    "qualification": "Serial low-priority timed tests; passing focused replays do not replace these full-run failures. No attribution to a code change, calibration choice or system load without a controlled comparison."
+  },
+  "previewRefreshed": false
+}

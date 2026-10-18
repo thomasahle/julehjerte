@@ -1,0 +1,27 @@
+{
+  "schema": "new-photo-rejected-crops-plan-1",
+  "status": "declared-before-counterfactual-fitting",
+  "sourceExperiment": "docs/inverse/datasets/new-photo-generalization-results.json",
+  "sourceReportSha256": "3b05f3b40d819aaa9554a89f6e86e1c37bd95231c843a3dbd324a790cc5203b7",
+  "cases": 10,
+  "ids": [
+    "real-1fa372c6288da69f",
+    "real-202b8421f50252f2",
+    "real-7076a4d811c096db",
+    "real-931ac5ea86dbe082",
+    "real-962159dea653810f",
+    "real-9b47cfbdf0004f4d",
+    "real-c7bc99827b382da7",
+    "real-e4baad0c914577c8",
+    "real-e9131a2d52b78220",
+    "real-f882e57ac79e63d3"
+  ],
+  "selection": "Every final rejected quadrilateral among the sixteen frozen learned-policy crop failures; none selected by fit error. Six failures have no final quadrilateral and remain outside this conditional diagnostic. Four automatic successes are unchanged.",
+  "intervention": "Use the final rejected quadrilateral only as a diagnostic input, translating locator pixel centres to source pixel edges. Original field values, pixels, observation support, ten-second fitting and all final geometry, paper, feature and editable checks remain unchanged. No manual corners or labels enter fitting.",
+  "evaluation": [
+    "Inspect all ten source/crop/mask/export outputs, including failed fits.",
+    "Distinguish a checked fit to an estimated mask from a correctly localized original motif.",
+    "These results are not automatic-photo successes and do not change the frozen 4/20 versus 3/20 result.",
+    "Do not deploy weakened crop support gates; identify which additional evidence could disambiguate plausible rejected crops from incorrect ones."
+  ]
+}

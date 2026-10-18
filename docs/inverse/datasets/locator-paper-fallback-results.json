@@ -1,0 +1,124 @@
+{
+  "schema": "locator-paper-fallback-results-1",
+  "status": "complete-development-experiment",
+  "deployed": false,
+  "training": false,
+  "plan": "docs/inverse/datasets/locator-paper-fallback-plan.json",
+  "scope": "Conditional two-paper SAM fallback on all 22 development photographs. Existing single-point/contrast fallback policy first; only after its support gates reject every crop, try automatically prompted two-paper segmentation with the original locator. No target-fit scores or annotation coordinates select crops. Frozen material fields and all original observations remain unchanged. No new inference, retraining or deployment. Fresh fitting keeps every photograph in the denominator and preserves all support, feature, geometry and paper checks. Derived-mask agreement is not original-artwork accuracy.",
+  "summary": {
+    "photos": 22,
+    "cropProposals": 18,
+    "checkedDerivedMasks": 15,
+    "cropUnresolved": 4,
+    "reviewRequired": 3,
+    "exports": 18,
+    "editableConverted": 18,
+    "editableComplete": 15,
+    "previousCheckedDerivedMasks": 13
+  },
+  "selectionAudit": {
+    "status": "complete",
+    "photos": 22,
+    "previousProposalsRetainedExactly": 16,
+    "newProposals": 18,
+    "twoPaperAttempts": 6,
+    "newlyCroppedIds": [
+      "real-cdae5c890b6933cd-body-1",
+      "real-d5b0aa8d4d2465ee-body-1"
+    ],
+    "selection": "Existing crop support only; no downstream fit scores.",
+    "allPriorCropGeometryAndMasksExactlyPreserved": 16,
+    "excludedTimingMetadata": [
+      "selectedCrop.locator.elapsedMs"
+    ],
+    "allPriorPassFailResultsRetained": true,
+    "sourceFilesVerified": 884,
+    "cropSeconds": {
+      "median": 0.5934703130000003,
+      "maximum": 7.580102291999999
+    },
+    "fitAndEngineExportSeconds": {
+      "median": 7.653358625000001,
+      "maximum": 9.622677833000001
+    }
+  },
+  "newResults": [
+    {
+      "id": "real-cdae5c890b6933cd-body-1",
+      "name": "hand-held printed checker",
+      "maskError": 0.007925,
+      "editableError": 0.00784375,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "editableComplete": true,
+      "cropSeconds": 4.665025875000007,
+      "fitAndEngineExportSeconds": 3.2844640000000074
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1",
+      "name": "checker among foliage",
+      "maskError": 0.00464375,
+      "editableError": 0.0046625,
+      "slits": {
+        "left": 4,
+        "right": 4
+      },
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "editableComplete": true,
+      "cropSeconds": 5.4930475,
+      "fitAndEngineExportSeconds": 9.38677845900001
+    }
+  ],
+  "visualReview": {
+    "allFiveReconstructionPanelsInspected": true,
+    "exportsInspected": 18,
+    "allFourUnresolvedSourcePhotosInspected": true,
+    "notes": [
+      "The two recovered crops cover the expected weave square. The hand-held checker uses two cuts per sheet and still follows uneven/blurred cell boundaries; it is not an ideal straight-grid reconstruction.",
+      "The foliage checker uses four cuts per sheet. Its approximate visible-corner reference has a maximum offset of 8.41 source pixels (3.45% of a side), exceeding the 6.75-pixel stated reference uncertainty by 1.66 pixels. It is not an exact-corner result.",
+      "Previously supported crops and classified masks are retained. Existing small seams, border artifacts and printed-decoration misclassification remain visible.",
+      "The four unresolved images include two strongly decorated papers, a red/white checker with a handle and greenery, and a blue/yellow checker whose SAM fields still fail the foreground/crowding checks. These observations do not establish a single cause for all four failures."
+    ]
+  },
+  "independentReferences": {
+    "sourcePaper": "tmp/heart-learning/locator-paper-fallback-v1/source-paper-scores.json",
+    "corners": "tmp/heart-learning/locator-paper-fallback-v1/corner-audit.json",
+    "referencePhotos": 6,
+    "newFoliageCheckerKnownInteriorError": 0,
+    "limitations": [
+      "The hand-held checker has no independently supplied overlap reference in this six-photo diagnostic.",
+      "Partial labels and approximate corners do not certify every motif boundary or physical cutting paths.",
+      "The printed-heart checker still has about 23.6% exported disagreement with known underlying-paper samples despite about 1.94% derived-mask disagreement."
+    ]
+  },
+  "timingScope": "Crop search and fit/engine export are separate wall timers. Model fields are cached; timing excludes model inference, decoding, startup, independent replay, file writes and browser execution. This is not a full-photo ten-second latency claim.",
+  "verification": {
+    "sourceFilesVerified": 884,
+    "allStagesPassed": true,
+    "runtimeCommit": "97f5c49f63a19fd421410494f05735de8b82c738",
+    "repositoryQA": "docs/inverse/datasets/border-feature-routing-results.json",
+    "note": "This adds only an offline selection wrapper and experiment artifacts; the engine, application and tracked learning modules are unchanged from the completed 865/978-test production QA."
+  },
+  "nextStep": "Validate the frozen conditional policy on additional photographs outside these 22 development examples before integrating a learned model. Four crop failures and three fitting/classification failures remain in this cohort.",
+  "artifactsSha256": {
+    "tmp/heart-learning/locator-paper-fallback-v1/plan.json": "8a65ab5a5d6fe1e6e47016c75d4837c669ea65ab2e8ff0d0c52643140a233201",
+    "tmp/heart-learning/locator-paper-fallback-v1/probe/manifest.json": "46086602ec57e3e2de2bfb52c89d2033c2cfcaa4fa596f159a22f28c129ae219",
+    "tmp/heart-learning/locator-paper-fallback-v1/state.json": "b0831c6c88d026f92dd52aaa8999afe11e0a703c034b5a9b0186fe8c0378f451",
+    "tmp/heart-learning/locator-paper-fallback-v1/source.json": "eaba3a3b4b4aa35d38014ba5cd02c578a435089ba1db59a06e807fde18fc7c39",
+    "tmp/heart-learning/locator-paper-fallback-v1/checks.json": "47bead0c83679d15c6046aa0b8ed62282c45452b97e177f6bf81a77cd3d49066",
+    "tmp/heart-learning/locator-paper-fallback-v1/results/report.json": "6179baaf91d284015d96ffa7497c192de820740d7d49ae614986f4ded55d3c5b",
+    "tmp/heart-learning/locator-paper-fallback-v1/selection-audit.json": "2474f1e0273b02171aff3f67d961264fbb17b5c6dd4b41985334d02ae0fb5cd5",
+    "tmp/heart-learning/locator-paper-fallback-v1/pipeline/report.json": "923e603ea273b69d4d8d5934fbd6f44a9d51e868df58d52a28d3cb99dba4157a",
+    "tmp/heart-learning/locator-paper-fallback-v1/editable/results.json": "939d9a5e1a5718d19b98730da10df07368251b5c4fb9ecb2d4597f94b5243068",
+    "tmp/heart-learning/locator-paper-fallback-v1/source-paper-scores.json": "64f6c3fc71b40e48e63c953b80a8d89349782f3ca40c1f91774c8c0cbc940a1f",
+    "tmp/heart-learning/locator-paper-fallback-v1/corner-audit.json": "53c20b845454b49ebf6d0afd161771149a292735dc8ff31ab23ee941851a6923",
+    "tmp/heart-learning/locator-paper-fallback-v1/reconstruction-figures.json": "87333fd5a4ab135e2eed97687644ada01704aacaae364f0b3f39a95197288557"
+  }
+}

@@ -1,0 +1,240 @@
+# Automatic recovery of enclosed motifs
+
+The direct fitter now has a bounded corner-routing recovery, followed by the
+existing clearance projection, Bézier refinement and final cleanup. It starts
+from the uploaded mask, never a saved cutting template. The earlier isolated
+[clearance experiment](corner-clearance-repair.md) remains unchanged as evidence.
+
+Global pixel error can reward a narrow channel that opens an otherwise enclosed
+motif. Rejecting those fits alone did not recover the missing enclosures in the
+paired development runs. The new path constructs an alternative routing before
+the ordinary grid search, when a small corner disturbance supports that attempt.
+
+## Source support and limits
+
+Larger interior regions receive enclosure protection only if a small dilation
+of their colour still cannot reach the square boundary or unknown pixels. This
+avoids treating checkerboard point contacts and thin classification gaps as
+confidently closed shapes. Same-colour neighbours may merge inside a protected
+group. Both colours are treated alike. This is a source-mask confidence
+heuristic, not knowledge of the original artwork.
+
+Cleanup and matching-sheet proposals may not open a confidently enclosed motif
+that their incoming candidate preserved. An already imperfect candidate remains
+eligible for improvement. The ordinary final acceptance test has not been
+replaced by a blanket large-region enclosure requirement: that stricter rule
+rejected candidates without finding better routings.
+
+Automatic corner recovery requires at least a 20-second requested allowance,
+fully observed pixels, no requested hard symmetry, stable interior enclosures,
+and a bounded corner proposal. The smallest proposal must change no more than
+0.5% of the original pixels, preserving the ordinary border-recovery allowance.
+Its MILP/repair/refinement attempt shares at most 16 seconds. All image scores
+and feature checks use the unchanged original mask; geometry and paper checks
+remain mandatory. Short searches keep their existing scheduling.
+
+The border-change limit matters in practice. Before it was applied, Stonehenge
+spent 23.31 seconds instead of 7.72 without improving its 1.905% error. With the
+limit it takes 7.48 seconds at the same error. The flower remains at 0.50625%
+and about 6.6 seconds. These are fresh paired fits of fixed benchmark masks,
+not new crop-detection measurements or repeated timing distributions.
+
+## Verification
+
+The fresh automatic replay takes **16.34 seconds** through fitting and engine
+export. Its independent disagreement is **1.7475% at 400 pixels** and **1.8664%
+at 800 pixels**. The finer reference repeats each original cell; it contains
+no extra photographic information. Editable SVG disagreement is **1.73%**.
+All four heart motifs remain enclosed, and geometry and paper checks pass.
+These measurements exclude the subsequent independent rendering and editor
+audit; actual browser latency is measured separately.
+
+The automatic stacked-hearts regression checks the original mask and probability
+bytes, fresh routing, geometry and paper validity, independent exports at 400
+and 800 pixels, and the shape and enclosure of all four hearts. A separate
+replay converts the result to editable SVG, parses it back, and checks physical
+geometry, paper support, source fidelity and the enclosed components.
+
+The browser harness also has a `stacked-hearts-mask` case. It uploads the frozen
+estimated mask through Paint, uses the real worker, opens Draw and downloads
+the editable SVG. It does not supply saved geometry, rerun neural inference or
+claim to test photograph cropping.
+
+```sh
+node scripts/inverse/diagnostics/corner-clearance-repair.mjs \
+  --mode=automatic --seconds=30 --output=FRESH_DIRECTORY
+node --test --test-concurrency=1 \
+  scripts/inverse/feature-enclosures.test.mjs \
+  scripts/inverse/corner-topology.test.mjs
+```
+
+The reference mask is a frozen neural estimate, not original artwork. The
+recovered motifs still have uneven boundaries. No physical assembly or
+ten-second performance claim follows from this recovery.
+
+Runtime commit `8ca7c42` passes **883 inverse tests**, **857 application tests**
+(one existing skip), type checking, explicit core lint, repository lint and
+the production build. All 732 pinned source files remained unchanged during
+that QA run. The [evidence record](enclosure-recovery.json) retains the separate
+corpus, export and browser measurements, including failed comparisons.
+
+All **22 Hunodan designs** retain exactly the validated baseline's error, with
+a maximum measured preparation/solve/validation/export time of **7.94 seconds**.
+The automatic photo corpus remains **25/31**, with no lost accepted case. All
+**47 accepted editable pairs** pass the independent editor/geometry/paper checks.
+Five photo errors nevertheless increase against the older validated runtime:
+
+| Photograph | Baseline error | Current error |
+| --- | ---: | ---: |
+| Warped checker | 1.755000% | 1.761875% |
+| Round checker | 1.213750% | 1.214375% |
+| Fine checker | 2.168750% | 2.245000% |
+| Crown | 2.411875% | 2.413125% |
+| Viking | 2.024375% | 2.056875% |
+
+The strict no-higher-error gate remains **failed**. Source photographs, automatic
+crops, classified masks and fitting probabilities match the baseline exactly.
+The differences arise downstream. A focused before/after/after/before replay
+of the fine checker produces errors of 2.281875%, 2.281875%, 2.245000% and
+2.168750%. The first before/after exports have identical cutting coordinates.
+The latter pair starts polishing at the same recorded error but reaches steps
+44 and 59 respectively. This exposes sensitivity to how much refinement fits
+inside the wall-clock budget; it does not establish that every regression has
+the same cause or excuse the failed comparison.
+
+All **six actual Chromium workflows** pass: stacked hearts, native flower,
+Stonehenge photograph, puppy photograph, example star and preferred-matching
+free-border hat. The stacked-heart upload takes **16.74 seconds click to ready**,
+and its downloaded editable SVG has **1.73%** source-mask disagreement. All four
+hearts remain enclosed at 400 and 800 pixels. The result screenshot was reviewed;
+remaining uneven edges are visible.
+
+The strict initial-script-size comparison records a four-byte failure. The
+generated SvelteKit identifier changes from `__sveltekit_pcs580` to
+`__sveltekit_19yb0vv`, appearing four times in the affected runtime chunk. This
+accounts for the size difference. Separate fresh Draw and Paint checks verify
+served bytes, no page errors and **zero initial solver/WASM requests**. The
+original strict failure is retained rather than overwritten.
+
+## Refinement rollback follow-up
+
+The [rollback study](paper-rollback.json) isolates another loss of useful work.
+A coarse paper audit can remain uncertain on curves that pass the independent
+700-cell audit. Refinement then repeatedly restores an older, much poorer safe
+checkpoint. Waiting until the stage ends to resolve that uncertainty wastes
+the intervening gradient steps.
+
+The fitter now tries the finer audit before such a rollback, only when a safe
+incumbent already exists and the audit reserve remains. The identical geometry
+must pass; no physical tolerance changes. Its verification resolution travels
+with progress snapshots, subsequent polishing and final export. A finer pass
+does not bypass source-image checks, other ordinary finalists or the existing
+comparison with simpler layouts. When time prevents another fit, the cheap
+comparison records its deferred candidate explicitly.
+
+The distinction between preventing a rollback and introducing one is material.
+An unrestricted prototype verified Viking's provisional shape too early,
+creating a safe rollback point that interrupted its useful search through later
+provisional states. Its independent error rose to 2.398125%. Requiring an existing
+safe incumbent restored the prior 2.056875% result in the five-case timing probe.
+Early stage handoffs were also rejected after inconsistent photographic results.
+
+With identical 201-step work, the floral-checker fixture improves from 4.611875%
+to 1.580625% independently rendered disagreement. The gift fixture, which has no
+safe incumbent, retains exactly the same coordinates. New tests replay the
+published progress geometry through the finer paper audit and preserve the
+remaining-time reserve. These are refinement diagnostics on fixed inputs, not
+new automatic-cropping or physical-assembly results.
+
+The fresh native corpus replay on `24f5c70` passes all 22 Hunodan designs within
+9.38 seconds. Twenty image errors are unchanged from the validated release and
+two improve. Photographic checks pass 26/31, with no lost accepted case; all 48
+accepted editable pairs pass independent geometry, paper and fidelity checks.
+All 733 pinned source files remained unchanged throughout that replay.
+
+The newly accepted jigsaw deserves a qualification: its crop is still visibly
+distorted, including background near the bottom. The fitted weave agrees with
+that classified mask at 0.973125%, but visual review does not establish a faithful
+recovery of the original design. This is an improvement in fitting that input,
+not a repaired automatic crop. The complete photo benchmark remains a diagnostic
+against estimated targets, not verified cutting artwork.
+
+The strict comparison against the older validated solver still fails for crown
+(2.411875% to 2.413125%) and Viking (2.024375% to 2.03625%). These small regressions
+remain recorded. Repository and browser QA now pass, but the historical error
+gate still prevents this from being a validated release replacement.
+
+The first full inverse run passes 884 tests and fails two assertions about which
+initializer or cut count must win. Captured replays reproduce both failures:
+the tree now selects a valid grid with 0.89875% independent disagreement and
+0.68229% disagreement in its central branch region; the maple keeps a checked
+three-cut candidate but selects a closer four-cut result at 0.881875% independent
+disagreement. Both outputs were visually inspected. The recorded failure is not
+discarded or treated as a passing full run.
+
+The corrected tests retain the existing independent image, feature, paper and
+branch-region limits. They require the tree's coarse proposal to remain available,
+and the maple's three-cut alternative to remain checked below its existing 1.2%
+source-error ceiling. Additional cuts must beat that retained alternative's
+original-source error. Both tests now retain actual curves on any subsequent
+assertion failure. All five focused tests and their lint pass. No solver policy
+changed in this test correction.
+
+The full repeat passes **886 inverse tests**, **857 application tests** (one
+existing skip), type checking, lint and build. All 733 pinned source files were
+verified. Actual browser verification passes eleven Paint/worker/Draw workflows,
+including four ten-second requests, with independent downloaded-SVG checks.
+Six ordinary passes are retained from the first browser run; the maple and four
+short-budget cases were completed in a subsequent run on the same runtime.
+
+The first browser run stopped on another obsolete three-cut maple assertion.
+It recorded a checked three-cut candidate at 1.1875% source error and a selected
+four-cut result at 0.866875%. The corrected check requires both a checked simpler
+alternative and an improvement from any extra cuts, including after editable
+export. The fresh downloaded maple has **0.883125%** disagreement and passes
+geometry, paper and conversion-fidelity checks. Its screenshot was inspected;
+the leaf is recognizable, with remaining uneven border details. The earlier
+failed run remains recorded. Fresh Draw and Paint loading checks also pass with
+no initial solver or WASM requests; no historical bundle-size comparison is claimed.
+
+## Source evidence for the jigsaw crop
+
+The [new source-photo observations](jigsaw-material-observations.json) make the
+crop defect measurable without using template agreement to choose corners.
+Twenty-five clearly visible red/white motif-interior points were reviewed on
+the original photograph. One ambiguous point in a narrow blurred bridge was
+excluded before the coverage replay. Source bytes, decoded pixels, coordinates
+and reviewed overlays are pinned. These are development QA observations, not
+training labels, original artwork or physical-corner ground truth.
+
+The current automatic crop includes only **21/25** points. It excludes red pixels
+`(832,690)` and `(846,697)`, and white pixels `(855,730)` and `(867,710)`. This loss
+occurs before classification or fitting; the 0.973125% mask error cannot account
+for those missing observations. The historical diagnostic crop includes 25/25,
+which is useful comparative evidence but does not verify all its corners.
+
+This is a source-coordinate projection check, with no new solver run or changed
+input. The 25 observations remain separate from the common benchmark's existing
+78 samples while release QA runs on its pinned files. No production crop or
+acceptance gate has changed.
+
+A [review of the recorded edge samples](jigsaw-edge-diagnosis.json) identifies
+why the current shape refinement cannot fix this crop. The left scanline edge
+follows background outside the visible paper. Three reviewed background pixels
+have raw paper probabilities of 0.937, 0.677 and 0.798; the colour model admits
+them before the 0.5 threshold and morphological closing. The initial lower-line
+intersection is at `(755.89,874.98)`. Local RGB adjustment moves it to
+`(764.81,864.05)`, still below the visible tip. Every subsequent shape candidate
+uses that same intersection and those same lower lines. More lobe optimization
+therefore cannot correct the underlying edge choice. This is a read-only
+diagnosis from saved evidence, not a repaired crop or a new benchmark pass.
+
+Two subsequent [RGB-gradient proposal experiments](gradient-edge-crops.json)
+replace the threshold-mask line proposals while keeping the existing shape
+fitter. One weights gradients by the inside/outside paper-probability change;
+the other uses RGB gradients alone. Both use the same eight rough ROIs, fixed
+candidate budgets and lobe-based selection, without consulting template error
+or review points. Neither produces a lobe-qualified jigsaw candidate, and both
+also fail qualification on the flower and dense-checker controls. Their bauble
+candidate loses three of the existing 26 artwork observations. These prototypes
+are rejected; no crop or acceptance rule changes.

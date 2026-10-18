@@ -1,0 +1,33 @@
+{
+  "description": "Original blue-star photograph with the frozen production crop from the interior-palette release. Reproduces exhausted 0.3/0.5 mm trace graphs and a recoverable smoother junction graph. No saved cutting paths enter the solve; approximate corners are not ground truth.",
+  "source": {
+    "file": "scripts/inverse/fixtures/hard-photos/bibel-star-outline.png",
+    "sha256": "50182945f46ea5e51dc4ab75227d73abfd332e07a4568a1acc52ae43c1c8638c",
+    "decodedPixelsSha256": "a58dc34d7dd3f2bf65fc981a7cd9fc934d59ca4db5c3d90d00abf00757c723f0",
+    "width": 995,
+    "height": 661
+  },
+  "quad": [
+    [
+      508.93214738809337,
+      139.42154594591744
+    ],
+    [
+      733.0890556479761,
+      381.63384919139503
+    ],
+    [
+      503.36343799983547,
+      612.548994160581
+    ],
+    [
+      269.2275949887735,
+      367.7991156114501
+    ]
+  ],
+  "maskSha256": "069c4d534547341c69dc2233d6e210d5607f284d2d81b0d18623b06c148d4fe4",
+  "fittingProbabilitySha256": "a1a6b2179a08074fc59fb08e6dd0924ddaa4c88b1f9ecab2ef118bd40d70221a",
+  "baselineIndependentImageError": 0.0130625,
+  "sourceMaterialCase": "bibel-star-outline",
+  "evidence": "docs/inverse/datasets/star-input-factorial.json"
+}

@@ -1,0 +1,165 @@
+{
+  "status": "complete",
+  "boardUrl": "https://dk.pinterest.com/sabrinadanholm/mine-egne-flettede-julehjerter/",
+  "observedAt": "2026-10-17",
+  "expectedPins": 225,
+  "inventoriedPins": 225,
+  "downloadedPins": 225,
+  "distinctFileHashes": 225,
+  "existingFileHashesReused": 5,
+  "newFileHashes": 220,
+  "newImageBytes": 36836015,
+  "boardKinds": {
+    "mixed-photo-template": 1,
+    "photo-process": 1,
+    "photo": 223
+  },
+  "overallCounts": {
+    "uniqueFileHashes": 1254,
+    "kinds": {
+      "photo": 615,
+      "photo-multiple": 106,
+      "mixed-photo-template": 42,
+      "photo-collage": 20,
+      "template-render": 202,
+      "unrelated": 122,
+      "photo-process": 94,
+      "photo-other-material": 49,
+      "unknown": 4
+    },
+    "sourcePages": 134,
+    "visuallyReviewedFiles": 1254,
+    "reviewedPhotoFileHashes": 783,
+    "photoNearDuplicateGroups": 670,
+    "qaReservedFiles": 748
+  },
+  "splitDecision": "All 225 board images share their observed board source group. One reused asset was already QA-reserved; reservation propagates to the entire board. None is newly admitted to training. Existing experiment scores are historical and not recomputed.",
+  "visualReview": "All five 1200px contact sheets inspected. Pin 405746247698860739 includes a finished heart and reference artwork; pin 405746247698858691 is a process shot. Remaining 223 files show assembled hearts.",
+  "nearDuplicateReview": "Exact bytes deduplicated against the corpus. No additional old-corpus candidates at dHash distance <=16 with aspect-ratio difference <0.04. Motif-family review remains pending; source-file counts are not independent design counts.",
+  "annotations": "Image-kind labels only; no new corner, paper-mask, junction or cutting-path labels.",
+  "verification": "All 225 selected pin/image pairs match the signed-in inventory; all 1,254 merged files pass independent byte, decoded-pixel, dimension and grouping checks. A separate offline import reuses all 225 files with zero new image bytes.",
+  "artifacts": {
+    "scripts/inverse/datasets/real-sabrina-board.json": {
+      "sha256": "340e02362ff08346e349670010d1c6a4d3fff11086a63947993a57e25470ac56",
+      "bytes": 39998
+    },
+    "scripts/inverse/datasets/real-board-import.py": {
+      "sha256": "3cb19817fbba9f82300411256f88e3aeffb46af23058f79cd47c4fc41090a2a8",
+      "bytes": 5009
+    },
+    "docs/inverse/datasets/real-manifest.json": {
+      "sha256": "46986981cdbac3fbada54621014a7584a106576688b08807f52753507c8a6ff5",
+      "bytes": 7442583
+    },
+    "docs/inverse/datasets/real-validation.json": {
+      "sha256": "50a63086a90e37913735bfbef026661e9a3fee985a6785b6f5e8dd475619cecc",
+      "bytes": 641
+    },
+    "tmp/heart-training-real/sabrina-board/signed-in-pins.txt": {
+      "sha256": "c4a66fc0a85c4c7322bed0d8ea8a908e839f472ff31838fbe30f72840ff3f5d0",
+      "bytes": 9675
+    },
+    "tmp/heart-training-real/sabrina-board/imports.json": {
+      "sha256": "b464aa02d27c9301364a331e67ec9a68b03e462daf9216ad44693d8f0054d915",
+      "bytes": 318314
+    },
+    "tmp/heart-training-real/sabrina-board/near-duplicate-candidates.json": {
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    "tmp/heart-training-real/sabrina-board/review/contact-000.jpg": {
+      "sha256": "4fc27c8032b3692f77a656664ed5a1f5caf0beae80fa3dc22970f6130b01f6ba",
+      "bytes": 226126
+    },
+    "tmp/heart-training-real/sabrina-board/review/contact-048.jpg": {
+      "sha256": "3a7e3794bbca59c0be0c4188d8139d3b92bfcb5a1fe40397c490d5e3cb022f37",
+      "bytes": 247681
+    },
+    "tmp/heart-training-real/sabrina-board/review/contact-096.jpg": {
+      "sha256": "17c0095fd937fa37ff3f213035443987c04531014cf6acd46ba0142447fbf933",
+      "bytes": 251716
+    },
+    "tmp/heart-training-real/sabrina-board/review/contact-144.jpg": {
+      "sha256": "0c57eb362f4056c2a163d26005516f742565fe690b5822a9858fa941cc74ff64",
+      "bytes": 258149
+    },
+    "tmp/heart-training-real/sabrina-board/review/contact-192.jpg": {
+      "sha256": "a76bed9ab8f4a8af1ff154a34b853a25b7a8aa5115b272c1b04e24aa65a4f5ee",
+      "bytes": 170675
+    },
+    "tmp/heart-training-real/sabrina-board/verification/state.json": {
+      "sha256": "67f4ea2387f35ba26943827936dba961ffa4c5f3a7c505998e27088a363f1aab",
+      "bytes": 895
+    },
+    "tmp/heart-training-real/sabrina-board/verification/collector-tests.log": {
+      "sha256": "ab6fcc8487bcf9ceead427c0269b2a9c52031539ee70da305bc1d165e65b51b1",
+      "bytes": 113
+    },
+    "tmp/heart-training-real/sabrina-board/verification/asset-audit.log": {
+      "sha256": "639b0fe04e8eddbe50a66357bb2a741a9278c370df3f2c45f8f4f4d3e6fb427a",
+      "bytes": 833
+    },
+    "tmp/heart-training-real/sabrina-board/verification/offline-import.log": {
+      "sha256": "d8060da7e2da28d76eb870501f1eb56df07f0224f218b2de41bf5f36f885baf8",
+      "bytes": 367
+    },
+    "tmp/heart-training-real/sabrina-board/verification/check.log": {
+      "sha256": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+      "bytes": 13474
+    },
+    "tmp/heart-training-real/sabrina-board/verification/lint.log": {
+      "sha256": "2b7add329ca80a0f26dcb26c7eb139cd28b3768793c6b0797002f91a54119a34",
+      "bytes": 519
+    },
+    "tmp/heart-training-real/sabrina-board/verification/build.log": {
+      "sha256": "a09fdb924ce7e976572d4f12fcc21c523b854e1188d18848ecacf43aadaef001",
+      "bytes": 26053
+    }
+  },
+  "verificationStages": [
+    {
+      "name": "export",
+      "status": "passed",
+      "exitCode": 0,
+      "seconds": 11.664280292
+    },
+    {
+      "name": "asset-audit",
+      "status": "passed",
+      "exitCode": 0,
+      "seconds": 10.125536
+    },
+    {
+      "name": "collector-tests",
+      "status": "passed",
+      "exitCode": 0,
+      "seconds": 0.1755077500000013
+    },
+    {
+      "name": "offline-import",
+      "status": "passed",
+      "exitCode": 0,
+      "seconds": 6.50954475
+    },
+    {
+      "name": "check",
+      "status": "passed",
+      "exitCode": 0,
+      "seconds": 10.256052749999998
+    },
+    {
+      "name": "lint",
+      "status": "passed",
+      "exitCode": 0,
+      "seconds": 6.928958792000003
+    },
+    {
+      "name": "build",
+      "status": "passed",
+      "exitCode": 0,
+      "seconds": 16.044425708000006
+    }
+  ],
+  "offlineMissingImageRejected": true,
+  "solverBenchmarkPerformed": false
+}

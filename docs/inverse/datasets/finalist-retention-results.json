@@ -1,0 +1,136 @@
+{
+  "schema": "finalist-retention-results-1",
+  "status": "diagnostic-complete",
+  "plan": "docs/inverse/datasets/finalist-retention-plan.json",
+  "deployed": false,
+  "eligible": [
+    {
+      "id": "real-5330aa8b62176216-body-1",
+      "incumbent": {
+        "rank": 0,
+        "counts": [
+          3,
+          4
+        ],
+        "phase": 1,
+        "error": 0.08062744140625,
+        "missing": 3,
+        "featureRetention": [
+          0.39989746218918226,
+          0.9083333333333333,
+          0.263254113345521,
+          0.9562569213732004,
+          0.3402777777777778,
+          0.9591503267973857
+        ],
+        "fullFeaturesPassed": false,
+        "change": {
+          "passed": true,
+          "missingBefore": 3,
+          "missingAfter": 3,
+          "regressed": []
+        },
+        "eligible": false
+      },
+      "alternatives": [
+        {
+          "rank": 1,
+          "counts": [
+            4,
+            4
+          ],
+          "phase": 1,
+          "error": 0.078277587890625,
+          "missing": 2,
+          "featureRetention": [
+            0.47141758523455524,
+            0.8715909090909091,
+            0.40585009140767825,
+            0.82281284606866,
+            0.9652777777777778,
+            0.9855664488017429
+          ],
+          "fullFeaturesPassed": false,
+          "change": {
+            "passed": true,
+            "missingBefore": 3,
+            "missingAfter": 2,
+            "regressed": []
+          },
+          "eligible": true
+        }
+      ]
+    },
+    {
+      "id": "real-1fa372c6288da69f",
+      "incumbent": {
+        "rank": 0,
+        "counts": [
+          1,
+          2
+        ],
+        "phase": 1,
+        "error": 0.0970001220703125,
+        "missing": 5,
+        "featureRetention": [
+          0.7212475633528265,
+          0,
+          0.6516777214202107,
+          0.8397104446742503,
+          0.928311057108141,
+          0,
+          0,
+          0,
+          0
+        ],
+        "fullFeaturesPassed": false,
+        "change": {
+          "passed": true,
+          "missingBefore": 5,
+          "missingAfter": 5,
+          "regressed": []
+        },
+        "eligible": false
+      },
+      "alternatives": [
+        {
+          "rank": 2,
+          "counts": [
+            5,
+            5
+          ],
+          "phase": 1,
+          "error": 0.0762939453125,
+          "missing": 2,
+          "featureRetention": [
+            0.7212475633528265,
+            0.6521739130434783,
+            0.8249122122512681,
+            0.7518097207859359,
+            0.9526123936816525,
+            0.7729789590254706,
+            0,
+            0,
+            0.6567796610169492
+          ],
+          "fullFeaturesPassed": false,
+          "change": {
+            "passed": true,
+            "missingBefore": 5,
+            "missingAfter": 2,
+            "regressed": []
+          },
+          "eligible": true
+        }
+      ]
+    }
+  ],
+  "controls": "None of the five checked controls is eligible. Weighted examples remain outside this policy.",
+  "finding": "Existing (5,5) brown-checker and (4,4) bicycle finalists reduce image error and missing regions without regressing the existing per-region retention/enclosure contract. This does not validate their fitted curves or paper.",
+  "artifactsSha256": {
+    "tmp/heart-learning/finalist-retention-v1/report.json": "8e961576fcee66d79b96cfc6f9dc8b3568df626e9d8985355fc30b849af315e1",
+    "tmp/heart-learning/finalist-retention-v1/source.json": "60a9b5fd13dc278be3c3d97a94c7f786155f3439afcd9ddba05c5667e7c00403",
+    "tmp/heart-learning/finalist-retention-v1/checks.json": "0c0e850b2d4d478a445eb54eaa3435ef34d1609fdc5e36b0d365e699ee4a36e4",
+    "tmp/heart-learning/finalist-retention-v1/replay.mjs": "df8a264e55719decd78f120296e52c589de0dbe059466f690fd775116e4e338b"
+  }
+}

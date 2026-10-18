@@ -1,0 +1,622 @@
+{
+  "status": "source_contact_sheets_reviewed; no_crop_or_solver_changes",
+  "sourceRun": "tmp/heart-learning/polishing-paper-tail-v1/qa/native/photos/results.json",
+  "summary": {
+    "inventoryTotal": 47,
+    "completeRows": 31,
+    "templateAccepted": 26,
+    "outlineSupported": {
+      "None": 2,
+      "False": 21,
+      "True": 8
+    },
+    "acceptedWithUnsupportedOutline": [
+      "floral-checker",
+      "dense-checker",
+      "bird",
+      "leaf",
+      "gift",
+      "gingerbread",
+      "white-birds",
+      "flower",
+      "warped-checker",
+      "round-checker",
+      "fine-checker",
+      "orb",
+      "stacked-hearts",
+      "jigsaw",
+      "maple-leaf",
+      "crown",
+      "bottom-flower",
+      "faceted-star"
+    ]
+  },
+  "cases": [
+    {
+      "id": "floral-checker",
+      "status": "validated",
+      "templateAccepted": true,
+      "locatorStatus": "needs_review",
+      "outlineSupported": false,
+      "lobeSupport": [
+        0.19444444444444445,
+        0.8888888888888888
+      ],
+      "lowerEdgeSupport": [
+        0.8181818181818182,
+        0.6363636363636364
+      ],
+      "capColourLoss": [
+        0.34589218945271055,
+        0.00018297300877855182
+      ],
+      "warnings": [
+        "Lobe outlines do not closely fit a single flat-heart model.",
+        "One or both lower edges have limited support, possibly due to a ribbon or overlapping paper.",
+        "Part of a lobe outline is obscured or ambiguous."
+      ],
+      "locatorVersion": "0.1.0",
+      "visualClassification": "plausible-not-verified",
+      "visualObservation": "Corners follow the visible diamond reasonably; partial neighbouring hearts obscure the cap outline."
+    },
+    {
+      "id": "dense-checker",
+      "status": "validated",
+      "templateAccepted": true,
+      "locatorStatus": "needs_review",
+      "outlineSupported": false,
+      "lobeSupport": [
+        0.4722222222222222,
+        0.75
+      ],
+      "lowerEdgeSupport": [
+        0.7090909090909091,
+        0.8181818181818182
+      ],
+      "capColourLoss": [
+        0.26904397936568286,
+        3.9575092657475855e-05
+      ],
+      "warnings": [
+        "Lobe outlines do not closely fit a single flat-heart model.",
+        "Part of a lobe outline is obscured or ambiguous.",
+        "Corners were refined using a regular checker-lattice hypothesis; review the displayed physical outline."
+      ],
+      "locatorVersion": "0.1.0",
+      "visualClassification": "plausible-not-verified",
+      "visualObservation": "Corners broadly follow the visible overlap; the tip may extend slightly below the paper."
+    },
+    {
+      "id": "bird",
+      "status": "validated",
+      "templateAccepted": true,
+      "locatorStatus": "needs_review",
+      "outlineSupported": false,
+      "lobeSupport": [
+        0.6111111111111112,
+        0.6111111111111112
+      ],
+      "lowerEdgeSupport": [
+        0.717391304347826,
+        0.7391304347826086
+      ],
+      "capColourLoss": [
+        0.1856145484778063,
+        0.00014172033150817228
+      ],
+      "warnings": [
+        "Lobe outlines do not closely fit a single flat-heart model."
+      ],
+      "locatorVersion": "0.1.0",
+      "visualClassification": "uncertain",
+      "visualObservation": "Upper and side corners look plausible; the tip appears low and requires a closer independent reference."
+    },
+    {
+      "id": "leaf",
+      "status": "validated",
+      "templateAccepted": true,
+      "locatorStatus": "needs_review",
+      "outlineSupported": false,
+      "lobeSupport": [
+        0.3611111111111111,
+        0.3888888888888889
+      ],
+      "lowerEdgeSupport": [
+        0.5294117647058824,
+        0.3137254901960784
+      ],
+      "capColourLoss": [
+        0.5353838533368398,
+        0.001005191235521236
+      ],
+      "warnings": [
+        "Lobe outlines do not closely fit a single flat-heart model.",
+        "One or both lower edges have limited support, possibly due to a ribbon or overlapping paper.",
+        "Part of a lobe outline is obscured or ambiguous."
+      ],
+      "locatorVersion": "0.1.0",
+      "visualClassification": "plausible-not-verified",
+      "visualObservation": "Visible diamond is broadly aligned despite weak full-lobe evidence."
+    },
+    {
+      "id": "gift",
+      "status": "validated",
+      "templateAccepted": true,
+      "locatorStatus": "needs_review",
+      "outlineSupported": false,
+      "lobeSupport": [
+        0.3055555555555556,
+        0.3611111111111111
+      ],
+      "lowerEdgeSupport": [
+        0.9473684210526315,
+        0.6842105263157895
+      ],
+      "capColourLoss": [
+        0.14675036972093763,
+        0.07753829868261441
+      ],
+      "warnings": [
+        "Lobe outlines do not closely fit a single flat-heart model.",
+        "Part of a lobe outline is obscured or ambiguous."
+      ],
+      "locatorVersion": "0.1.0",
+      "visualClassification": "visibly-misplaced",
+      "visualObservation": "Strong skew, a high top corner and a low tip distort the visible gift/frame region."
+    },
+    {
+      "id": "gingerbread",
+      "status": "validated",
+      "templateAccepted": true,
+      "locatorStatus": "needs_review",
+      "outlineSupported": false,
+      "lobeSupport": [
+        0.5833333333333334,
+        0.6388888888888888
+      ],
+      "lowerEdgeSupport": [
+        0.7142857142857143,
+        0.8775510204081632
+      ],
+      "capColourLoss": [
+        0.35632021793613544,
+        1.2145910560109238e-05
+      ],
+      "warnings": [
+        "Part of a lobe outline is obscured or ambiguous."
+      ],
+      "locatorVersion": "0.1.0",
+      "visualClassification": "uncertain",
+      "visualObservation": "Overall diamond is plausible but top/tip positioning may extend beyond the intended overlap."
+    },
+    {
+      "id": "white-birds",
+      "status": "validated",
+      "templateAccepted": true,
+      "locatorStatus": "needs_review",
+      "outlineSupported": false,
+      "lobeSupport": [
+        0.4444444444444444,
+        0.5
+      ],
+      "lowerEdgeSupport": [
+        0.9056603773584906,
+        0.8113207547169812
+      ],
+      "capColourLoss": [
+        0.5271705219547371,
+        1.197033691011404e-05
+      ],
+      "warnings": [
+        "Lobe outlines do not closely fit a single flat-heart model.",
+        "Part of a lobe outline is obscured or ambiguous."
+      ],
+      "locatorVersion": "0.1.0",
+      "visualClassification": "uncertain",
+      "visualObservation": "Visible motif remains inside the crop; tip/background boundary is too imprecise for certification."
+    },
+    {
+      "id": "flower",
+      "status": "validated",
+      "templateAccepted": true,
+      "locatorStatus": "needs_review",
+      "outlineSupported": false,
+      "lobeSupport": [
+        0.5555555555555556,
+        0.4166666666666667
+      ],
+      "lowerEdgeSupport": [
+        0.868421052631579,
+        0.9473684210526315
+      ],
+      "capColourLoss": [
+        0.31629444266453993,
+        4.717162392876685e-06
+      ],
+      "warnings": [
+        "Lobe outlines do not closely fit a single flat-heart model.",
+        "Part of a lobe outline is obscured or ambiguous."
+      ],
+      "locatorVersion": "0.1.0",
+      "visualClassification": "plausible-not-verified",
+      "visualObservation": "Four corners track the visible overlap reasonably despite cap occlusion."
+    },
+    {
+      "id": "warped-checker",
+      "status": "validated",
+      "templateAccepted": true,
+      "locatorStatus": "needs_review",
+      "outlineSupported": false,
+      "lobeSupport": [
+        0.16666666666666666,
+        0.9166666666666666
+      ],
+      "lowerEdgeSupport": [
+        0.9782608695652174,
+        0.8260869565217391
+      ],
+      "capColourLoss": [
+        0.3700221626993956,
+        1.1342103521179888e-05
+      ],
+      "warnings": [
+        "Lobe outlines do not closely fit a single flat-heart model.",
+        "Part of a lobe outline is obscured or ambiguous."
+      ],
+      "locatorVersion": "0.1.0",
+      "visualClassification": "plausible-not-verified",
+      "visualObservation": "The diamond follows the photographed paper region closely at this source resolution."
+    },
+    {
+      "id": "round-checker",
+      "status": "validated",
+      "templateAccepted": true,
+      "locatorStatus": "needs_review",
+      "outlineSupported": false,
+      "lobeSupport": [
+        0.1111111111111111,
+        0.2222222222222222
+      ],
+      "lowerEdgeSupport": [
+        0.92,
+        0.96
+      ],
+      "capColourLoss": [
+        0.8137813987027086,
+        0.03156358959296121
+      ],
+      "warnings": [
+        "Lobe outlines do not closely fit a single flat-heart model.",
+        "Part of a lobe outline is obscured or ambiguous.",
+        "Several plausible fits disagree on the corner positions."
+      ],
+      "locatorVersion": "0.1.0",
+      "visualClassification": "visibly-misplaced",
+      "visualObservation": "The tip is outside the paper, and the crop is strongly skewed. Expanded context includes adjacent hearts."
+    },
+    {
+      "id": "fine-checker",
+      "status": "validated",
+      "templateAccepted": true,
+      "locatorStatus": "needs_review",
+      "outlineSupported": false,
+      "lobeSupport": [
+        0.9166666666666666,
+        0.4722222222222222
+      ],
+      "lowerEdgeSupport": [
+        0.9285714285714286,
+        0.7619047619047619
+      ],
+      "capColourLoss": [
+        0.19475377504002753,
+        4.561643120032994e-05
+      ],
+      "warnings": [
+        "Lobe outlines do not closely fit a single flat-heart model.",
+        "Part of a lobe outline is obscured or ambiguous."
+      ],
+      "locatorVersion": "0.1.0",
+      "visualClassification": "uncertain",
+      "visualObservation": "The main diamond is plausible; the lower tip appears extended."
+    },
+    {
+      "id": "orb",
+      "status": "validated",
+      "templateAccepted": true,
+      "locatorStatus": "needs_review",
+      "outlineSupported": false,
+      "lobeSupport": [
+        0.3611111111111111,
+        0.4444444444444444
+      ],
+      "lowerEdgeSupport": [
+        0.6071428571428571,
+        0.8214285714285714
+      ],
+      "capColourLoss": [
+        0.060475313614340456,
+        0.16483631719088493
+      ],
+      "warnings": [
+        "Lobe outlines do not closely fit a single flat-heart model.",
+        "One or both lower edges have limited support, possibly due to a ribbon or overlapping paper.",
+        "Part of a lobe outline is obscured or ambiguous."
+      ],
+      "locatorVersion": "0.1.0",
+      "visualClassification": "plausible-not-verified",
+      "visualObservation": "The visible frame and tip are broadly aligned; exact overlap corners remain unverified."
+    },
+    {
+      "id": "stacked-hearts",
+      "status": "validated",
+      "templateAccepted": true,
+      "locatorStatus": "needs_review",
+      "outlineSupported": false,
+      "lobeSupport": [
+        0.9166666666666666,
+        0.3611111111111111
+      ],
+      "lowerEdgeSupport": [
+        0.8703703703703703,
+        0.9074074074074074
+      ],
+      "capColourLoss": [
+        0.036482005778582925,
+        0.42061333433313136
+      ],
+      "warnings": [
+        "Lobe outlines do not closely fit a single flat-heart model.",
+        "Part of a lobe outline is obscured or ambiguous."
+      ],
+      "locatorVersion": "0.1.0",
+      "visualClassification": "uncertain",
+      "visualObservation": "Corners broadly contain the hearts, with possible small side/tip offsets."
+    },
+    {
+      "id": "jigsaw",
+      "status": "validated",
+      "templateAccepted": true,
+      "locatorStatus": "needs_review",
+      "outlineSupported": false,
+      "lobeSupport": [
+        0.5,
+        0.2222222222222222
+      ],
+      "lowerEdgeSupport": [
+        0.5434782608695652,
+        0.6304347826086957
+      ],
+      "capColourLoss": [
+        0.06737205525921813,
+        0.2620610725950713
+      ],
+      "warnings": [
+        "Lobe outlines do not closely fit a single flat-heart model.",
+        "One or both lower edges have limited support, possibly due to a ribbon or overlapping paper.",
+        "Part of a lobe outline is obscured or ambiguous.",
+        "Several plausible fits disagree on the corner positions."
+      ],
+      "locatorVersion": "0.1.0",
+      "visualClassification": "visibly-misplaced",
+      "visualObservation": "Side corners lie too far inside the motif and the low-left tip lands outside the visible paper."
+    },
+    {
+      "id": "maple-leaf",
+      "status": "validated",
+      "templateAccepted": true,
+      "locatorStatus": "needs_review",
+      "outlineSupported": false,
+      "lobeSupport": [
+        0.9444444444444444,
+        0.3611111111111111
+      ],
+      "lowerEdgeSupport": [
+        0.7777777777777778,
+        0.6296296296296297
+      ],
+      "capColourLoss": [
+        0.07787497561109859,
+        0.3887397264406911
+      ],
+      "warnings": [
+        "Lobe outlines do not closely fit a single flat-heart model.",
+        "One or both lower edges have limited support, possibly due to a ribbon or overlapping paper.",
+        "Part of a lobe outline is obscured or ambiguous.",
+        "Several plausible fits disagree on the corner positions."
+      ],
+      "locatorVersion": "0.1.0",
+      "visualClassification": "uncertain",
+      "visualObservation": "The crop is slightly displaced relative to the visible diamond; precise corners need review."
+    },
+    {
+      "id": "crown",
+      "status": "validated",
+      "templateAccepted": true,
+      "locatorStatus": "needs_review",
+      "outlineSupported": false,
+      "lobeSupport": [
+        0.3888888888888889,
+        0.16666666666666666
+      ],
+      "lowerEdgeSupport": [
+        0.8888888888888888,
+        0.7222222222222222
+      ],
+      "capColourLoss": [
+        0.21184276030373972,
+        0.45173431894188415
+      ],
+      "warnings": [
+        "Lobe outlines do not closely fit a single flat-heart model.",
+        "Part of a lobe outline is obscured or ambiguous.",
+        "Several plausible fits disagree on the corner positions."
+      ],
+      "locatorVersion": "0.1.0",
+      "visualClassification": "uncertain",
+      "visualObservation": "Most of the motif is retained, but the bottom and side placements are not established."
+    },
+    {
+      "id": "bottom-flower",
+      "status": "validated",
+      "templateAccepted": true,
+      "locatorStatus": "needs_review",
+      "outlineSupported": false,
+      "lobeSupport": [
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "lowerEdgeSupport": [
+        0.5945945945945946,
+        0.8378378378378378
+      ],
+      "capColourLoss": [
+        0.0939699435687757,
+        0.0016824733176135642
+      ],
+      "warnings": [
+        "Independent lobe shapes improved the outline fit. Review all four overlap corners.",
+        "One or both lower edges have limited support, possibly due to a ribbon or overlapping paper.",
+        "The heart may be clipped by the image boundary."
+      ],
+      "locatorVersion": "0.4.0",
+      "visualClassification": "outside-source",
+      "visualObservation": "Glare and source-frame clipping limit the evidence; the proposed tip is below the photograph."
+    },
+    {
+      "id": "faceted-star",
+      "status": "validated",
+      "templateAccepted": true,
+      "locatorStatus": "needs_review",
+      "outlineSupported": false,
+      "lobeSupport": [
+        0.5555555555555556,
+        0.4444444444444444
+      ],
+      "lowerEdgeSupport": [
+        0.819672131147541,
+        0.45901639344262296
+      ],
+      "capColourLoss": [
+        0.22723380800383777,
+        1.799822642430578e-05
+      ],
+      "warnings": [
+        "Lobe outlines do not closely fit a single flat-heart model.",
+        "One or both lower edges have limited support, possibly due to a ribbon or overlapping paper.",
+        "Part of a lobe outline is obscured or ambiguous."
+      ],
+      "locatorVersion": "0.1.0",
+      "visualClassification": "plausible-not-verified",
+      "visualObservation": "Corners broadly align with the visible diamond; no exact corner/cut ground truth available."
+    }
+  ],
+  "qualification": "Weak outline support is a heuristic, not a proof that every crop is wrong. Three accepted cases have clear visible misplacement; bottom-flower extends outside the source. Other entries remain plausible or uncertain, never verified corner truth. The old reviewed quad in the comparison is not ground truth.",
+  "outsideSource": [
+    {
+      "id": "crossed-ribbons",
+      "resolution": 400,
+      "status": "failed",
+      "fullyUnobservedPixels": 2564,
+      "partiallyUnobservedPixels": 245,
+      "unobservedBilinearWeightFraction": 0.016784075225052313,
+      "scope": "Outside-source geometry only; no inferred body mask or source alpha adjustment."
+    },
+    {
+      "id": "bauble",
+      "resolution": 400,
+      "status": "failed",
+      "fullyUnobservedPixels": 4266,
+      "partiallyUnobservedPixels": 321,
+      "unobservedBilinearWeightFraction": 0.027661775188591538,
+      "scope": "Outside-source geometry only; no inferred body mask or source alpha adjustment."
+    },
+    {
+      "id": "bottom-flower",
+      "resolution": 400,
+      "status": "validated",
+      "fullyUnobservedPixels": 236,
+      "partiallyUnobservedPixels": 86,
+      "unobservedBilinearWeightFraction": 0.0017351206520456457,
+      "scope": "Outside-source geometry only; no inferred body mask or source alpha adjustment."
+    }
+  ],
+  "rectifierReplay": {
+    "method": "Pass opaque black source pixels through the actual production rectifier with white padding; compare its synthetic white coverage to the independent homography calculation.",
+    "results": [
+      {
+        "id": "crossed-ribbons",
+        "fullyWhitePixels": 2564,
+        "partiallyWhitePixels": 244,
+        "meanSyntheticWhiteFraction": 0.016784093137254902,
+        "analyticMissingWeightFraction": 0.016784075225052313
+      },
+      {
+        "id": "bauble",
+        "fullyWhitePixels": 4268,
+        "partiallyWhitePixels": 318,
+        "meanSyntheticWhiteFraction": 0.02766183823529412,
+        "analyticMissingWeightFraction": 0.027661775188591538
+      },
+      {
+        "id": "bottom-flower",
+        "fullyWhitePixels": 237,
+        "partiallyWhitePixels": 85,
+        "meanSyntheticWhiteFraction": 0.0017353431372549018,
+        "analyticMissingWeightFraction": 0.0017351206520456457
+      }
+    ]
+  },
+  "rootCauseEvidence": {
+    "roundChecker": "The detector reports needs_review, only 11%/22% cap-outline support and 81% first-cap colour loss, yet a high 92%/96% local lower-edge score. Lower-line intersection is fixed in later cap refinement. The high local edge score does not establish that the lines describe this heart.",
+    "rectification": "Production rectify() blends out-of-source samples with white and preprocessPixels() provides no observation-coverage weight. The bottom-flower template score therefore includes synthetic padding as if observed colour. The independent opaque-black replay confirms the padding fraction.",
+    "benchmarkMeaning": "The 26/31 number counts valid templates fitting estimated rectified masks. It is not a count of verified physical crops or recovered ground-truth cutting paths."
+  },
+  "next": [
+    "Preserve the existing frozen benchmark and report crop diagnostics alongside template/image passes.",
+    "Investigate lower-edge/instance selection on gift, jigsaw and round-checker using source-image evidence; do not select crops by fitting error.",
+    "Treat out-of-source coverage explicitly if used by fitting; maintain a separate observed-image metric so missing data cannot improve the reported score."
+  ],
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/round-crop-review-v1/comparison.png",
+      "sha256": "aa2297aebe0cd595b72547e7f01ef2a5a622f307f3740098bd25800848e655c8"
+    },
+    {
+      "path": "tmp/heart-learning/round-crop-review-v1/input.json",
+      "sha256": "bc1de569792c132bfc7a445d9f5bc32040c88298e1b96967bca7c19bce16610d"
+    },
+    {
+      "path": "tmp/heart-learning/round-crop-review-v1/crop-diagnostics.json",
+      "sha256": "000dca415f891597707dce375f0ccf04e6ad3d2e172a663187782b6f146ab507"
+    },
+    {
+      "path": "tmp/heart-learning/round-crop-review-v1/review-input.json",
+      "sha256": "d1f1e450139dee67ad4276be5f17860233eda7c0ed3707c99745b99aade9214e"
+    },
+    {
+      "path": "tmp/heart-learning/round-crop-review-v1/unsupported-0.jpg",
+      "sha256": "db68abc2a32882a42c2871595f0f41599e35a37f3eb9c14c62ca6f0606104762"
+    },
+    {
+      "path": "tmp/heart-learning/round-crop-review-v1/unsupported-1.jpg",
+      "sha256": "4d6da54201d3be3f35d7b1d6e5ff5c2ca06539b589cf138379126732a88c943e"
+    },
+    {
+      "path": "tmp/heart-learning/round-crop-review-v1/unsupported-2.jpg",
+      "sha256": "9c51ec5720b5618583a760cae02ae6c38d23db7301fc10e30c41107d0e3cff88"
+    },
+    {
+      "path": "tmp/heart-learning/round-crop-review-v1/outside-source-coverage.json",
+      "sha256": "32996c054bca0a6d64d9089ce06c4d7022305ec8c2afd977d1d5a6c3fd3d88ea"
+    },
+    {
+      "path": "tmp/heart-learning/round-crop-review-v1/coverage-replay.mjs",
+      "sha256": "0f6993db739dc743c2b0fc3559aa4211bfb8511ffcb5fd74d82193262b6958c0"
+    },
+    {
+      "path": "tmp/heart-learning/round-crop-review-v1/coverage-replay.json",
+      "sha256": "c481779e13a6232e32827d36d06358f99d125eea1e7ac4a510931031b05d8c13"
+    }
+  ]
+}

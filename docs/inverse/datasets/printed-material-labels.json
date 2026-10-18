@@ -1,0 +1,815 @@
+{
+  "schema": "woven-heart-material-proposal-review-1",
+  "status": "admitted-after-source-outline-and-compiled-overlay-review",
+  "scope": "Two additional partial material annotations on existing body-labelled photographs. Nine admitted material-labelled instances total; no training, split assignment, crop change or cutting-path ground truth.",
+  "root": "tmp/heart-learning/printed-material-labels-v2",
+  "proposals": {
+    "schema": "woven-heart-real-material-annotations-1",
+    "scope": "Partial material identities for two existing printed/shaded body annotations. A/B exchange is global per image. No new photographs, cutting paths, split allocation or trained model.",
+    "bodyAnnotations": [
+      {
+        "path": "scripts/inverse/datasets/real-annotations.json",
+        "sha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5"
+      }
+    ],
+    "instances": [
+      {
+        "id": "real-995899fe049540ed-body-1",
+        "boundaryUncertaintyPixels": 8,
+        "papers": {
+          "paperA": {
+            "description": "Floral printed material: turquoise ground and every flower, leaf and printed colour on that same material; physical paper/fabric composition is unverified.",
+            "polygons": [
+              [
+                [
+                  235,
+                  310
+                ],
+                [
+                  285,
+                  213
+                ],
+                [
+                  370,
+                  160
+                ],
+                [
+                  470,
+                  130
+                ],
+                [
+                  560,
+                  140
+                ],
+                [
+                  659,
+                  170
+                ],
+                [
+                  738,
+                  214
+                ],
+                [
+                  596,
+                  334
+                ],
+                [
+                  765,
+                  524
+                ],
+                [
+                  620,
+                  661
+                ],
+                [
+                  442,
+                  493
+                ],
+                [
+                  408,
+                  493
+                ],
+                [
+                  255,
+                  644
+                ],
+                [
+                  212,
+                  552
+                ],
+                [
+                  205,
+                  434
+                ]
+              ],
+              [
+                [
+                  849,
+                  535
+                ],
+                [
+                  975,
+                  410
+                ],
+                [
+                  1124,
+                  537
+                ],
+                [
+                  978,
+                  681
+                ]
+              ],
+              [
+                [
+                  466,
+                  891
+                ],
+                [
+                  621,
+                  753
+                ],
+                [
+                  758,
+                  910
+                ],
+                [
+                  622,
+                  1057
+                ]
+              ],
+              [
+                [
+                  839,
+                  909
+                ],
+                [
+                  983,
+                  762
+                ],
+                [
+                  1137,
+                  910
+                ],
+                [
+                  997,
+                  1058
+                ]
+              ]
+            ]
+          },
+          "paperB": {
+            "description": "Horizontally striped printed material, including all its white, green, blue, yellow, orange and magenta stripes as one identity.",
+            "polygons": [
+              [
+                [
+                  830,
+                  217
+                ],
+                [
+                  945,
+                  164
+                ],
+                [
+                  1110,
+                  155
+                ],
+                [
+                  1210,
+                  170
+                ],
+                [
+                  1300,
+                  214
+                ],
+                [
+                  1375,
+                  327
+                ],
+                [
+                  1409,
+                  442
+                ],
+                [
+                  1417,
+                  543
+                ],
+                [
+                  1390,
+                  637
+                ],
+                [
+                  1335,
+                  720
+                ],
+                [
+                  1190,
+                  870
+                ],
+                [
+                  1025,
+                  715
+                ],
+                [
+                  1200,
+                  536
+                ],
+                [
+                  979,
+                  331
+                ],
+                [
+                  805,
+                  491
+                ],
+                [
+                  674,
+                  338
+                ]
+              ],
+              [
+                [
+                  663,
+                  708
+                ],
+                [
+                  804,
+                  574
+                ],
+                [
+                  939,
+                  719
+                ],
+                [
+                  801,
+                  865
+                ]
+              ],
+              [
+                [
+                  288,
+                  699
+                ],
+                [
+                  427,
+                  574
+                ],
+                [
+                  577,
+                  707
+                ],
+                [
+                  428,
+                  849
+                ]
+              ],
+              [
+                [
+                  665,
+                  1104
+                ],
+                [
+                  802,
+                  951
+                ],
+                [
+                  958,
+                  1105
+                ],
+                [
+                  813,
+                  1254
+                ]
+              ]
+            ]
+          }
+        },
+        "review": {
+          "method": "assistant-visual-interior-polygons",
+          "status": "initial-reviewed",
+          "note": "The original photograph and polygon-outline review were inspected. Floral ink of every colour belongs to one material; all horizontal printed stripes belong to the other. Conservative visible interiors avoid joins and edges. Physical paper/fabric composition is not asserted. Compiled overlays were inspected at 256 and 768 pixels; interiors retain the intended material and all uncertain joins and outer margins remain unlabelled. Follow-up review moved the centre floral polygon left vertex from [811,570] (inside an adjacent striped cell) to [849,535], safely inside the floral material."
+        }
+      },
+      {
+        "id": "real-b87b0b19f12724f3-body-1",
+        "boundaryUncertaintyPixels": 3,
+        "papers": {
+          "paperA": {
+            "description": "Saturated red paper, including its illumination changes and bowed front regions.",
+            "polygons": [
+              [
+                [
+                  247,
+                  173
+                ],
+                [
+                  281,
+                  121
+                ],
+                [
+                  310,
+                  100
+                ],
+                [
+                  328,
+                  99
+                ],
+                [
+                  355,
+                  108
+                ],
+                [
+                  381,
+                  129
+                ],
+                [
+                  395,
+                  151
+                ],
+                [
+                  393,
+                  178
+                ],
+                [
+                  378,
+                  210
+                ],
+                [
+                  359,
+                  233
+                ],
+                [
+                  339,
+                  221
+                ],
+                [
+                  365,
+                  181
+                ],
+                [
+                  313,
+                  148
+                ],
+                [
+                  285,
+                  189
+                ],
+                [
+                  275,
+                  197
+                ]
+              ],
+              [
+                [
+                  278,
+                  215
+                ],
+                [
+                  316,
+                  234
+                ],
+                [
+                  296,
+                  265
+                ],
+                [
+                  260,
+                  249
+                ]
+              ],
+              [
+                [
+                  206,
+                  233
+                ],
+                [
+                  240,
+                  252
+                ],
+                [
+                  224,
+                  280
+                ],
+                [
+                  192,
+                  262
+                ]
+              ],
+              [
+                [
+                  285,
+                  309
+                ],
+                [
+                  304,
+                  289
+                ],
+                [
+                  325,
+                  299
+                ],
+                [
+                  309,
+                  325
+                ]
+              ]
+            ]
+          },
+          "paperB": {
+            "description": "Pale pink paper, including the darker bowed left lobe and lighter front squares.",
+            "polygons": [
+              [
+                [
+                  150,
+                  163
+                ],
+                [
+                  170,
+                  139
+                ],
+                [
+                  195,
+                  130
+                ],
+                [
+                  221,
+                  130
+                ],
+                [
+                  242,
+                  140
+                ],
+                [
+                  214,
+                  179
+                ],
+                [
+                  265,
+                  213
+                ],
+                [
+                  249,
+                  237
+                ],
+                [
+                  198,
+                  212
+                ],
+                [
+                  177,
+                  246
+                ],
+                [
+                  157,
+                  231
+                ],
+                [
+                  146,
+                  208
+                ],
+                [
+                  145,
+                  187
+                ]
+              ],
+              [
+                [
+                  308,
+                  174
+                ],
+                [
+                  338,
+                  189
+                ],
+                [
+                  321,
+                  216
+                ],
+                [
+                  289,
+                  203
+                ]
+              ],
+              [
+                [
+                  255,
+                  263
+                ],
+                [
+                  289,
+                  280
+                ],
+                [
+                  274,
+                  300
+                ],
+                [
+                  237,
+                  289
+                ]
+              ],
+              [
+                [
+                  327,
+                  241
+                ],
+                [
+                  354,
+                  252
+                ],
+                [
+                  334,
+                  282
+                ],
+                [
+                  310,
+                  273
+                ]
+              ]
+            ]
+          }
+        },
+        "review": {
+          "method": "assistant-visual-interior-polygons",
+          "status": "initial-reviewed",
+          "note": "The original photograph and polygon-outline review were inspected. Red and pale-pink identities continue through their illumination changes and bowing. Label conservative front interiors only; chocolates, tabletop, cast shadows and seam margins remain outside material supervision. Compiled overlays were inspected at 256 and 768 pixels; interiors retain the intended material and all uncertain joins and outer margins remain unlabelled."
+        }
+      }
+    ],
+    "coordinateConvention": "source-image pixel edges; x right, y down; no EXIF transform"
+  },
+  "sources": [
+    {
+      "id": "real-995899fe049540ed",
+      "localPath": "tmp/heart-training-real/assets/995899fe049540eddee6f7bdd90e0a65f839059ac404346642c904617875ca8e.jpg",
+      "sha256": "995899fe049540eddee6f7bdd90e0a65f839059ac404346642c904617875ca8e",
+      "width": 1600,
+      "height": 1349,
+      "nearDuplicateGroup": "real-995899fe049540ed",
+      "splitGroupId": "real-split-837aa89750c4379e",
+      "splitStatus": "unassigned",
+      "trainingRightsStatus": "not-cleared"
+    },
+    {
+      "id": "real-b87b0b19f12724f3",
+      "localPath": "tmp/heart-training-real/assets/b87b0b19f12724f37b816b22afe3dc5f59aa57531bdaf18d8c678f074d4eafd3.jpg",
+      "sha256": "b87b0b19f12724f37b816b22afe3dc5f59aa57531bdaf18d8c678f074d4eafd3",
+      "width": 600,
+      "height": 400,
+      "nearDuplicateGroup": "real-b87b0b19f12724f3",
+      "splitGroupId": "real-split-b0658dffd8a94416",
+      "splitStatus": "unassigned",
+      "trainingRightsStatus": "not-cleared"
+    }
+  ],
+  "abstentions": [
+    {
+      "id": "real-f4b397c381357dfa-body-1",
+      "reason": "Both sides appear to use similar dark decorative material. The photograph alone does not clearly establish two distinguishable material identities. Keep its existing body label; do not infer A/B labels from a guessed cut grid."
+    }
+  ],
+  "previousReview": {
+    "root": "tmp/heart-learning/printed-material-labels-v1",
+    "proposalSha256": "44778c1603bb2eb91fff13819a05cb3bdc0e7ba2d355c1223b969acfc3728e07",
+    "commit": "54bcf32",
+    "compilationRan": false,
+    "reason": "Stopped the waiting compiler after source-image inspection found one polygon vertex entering the adjacent material."
+  },
+  "correction": {
+    "previousRoot": "tmp/heart-learning/printed-material-labels-v1",
+    "previousProposalSha256": "44778c1603bb2eb91fff13819a05cb3bdc0e7ba2d355c1223b969acfc3728e07",
+    "instance": "real-995899fe049540ed-body-1",
+    "paper": "paperA",
+    "polygon": 1,
+    "vertex": 0,
+    "before": [
+      811,
+      570
+    ],
+    "after": [
+      849,
+      535
+    ],
+    "reason": "The old left vertex lay below the floral diamond edge in the striped central cell. Source-image review exposed this semantic error; moving it inward leaves the join unlabelled.",
+    "previousCompilationRan": false
+  },
+  "proposalSourceHashes": {
+    "tmp/heart-learning/printed-material-labels-v2/reviewed-proposal.json": "1b510fca333f815232b4b3cc2bce92725034d7adba0a7d9abed69346e56721db",
+    "tmp/heart-learning/printed-material-labels-v2/review-notes.json": "4e89466717c6069c4106d9278b1dbcd94d4cf42f7fdb79b6e5283f3959b1dd26",
+    "tmp/heart-learning/printed-material-labels-v2/correction.json": "1ab0d9fac567607758b0be4df1425d645bcbbea0db2c19e7233d0be86bd43323",
+    "scripts/inverse/datasets/real-annotations.json": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5",
+    "scripts/inverse/datasets/real_materials.py": "7f6052d404e66b971bc76821e4de75d7fee38972cdd2af30fa076037faaf878a",
+    "scripts/inverse/datasets/real_annotations.py": "b505fb723dc45b644cb95a058ddf45317f6afb700c61fb88cb3d93571fb9e33c",
+    "docs/inverse/datasets/real-manifest.json": "149697fc7cdd535736dd8727bba7847bca10d74823a28bdfaf77c95c44a6ffb3",
+    "tmp/heart-learning/printed-material-labels-v2/real-b87b0b19f12724f3-body-1-outlines.png": "2b0c2d8bc660727e1549d4da1db8fe62ea624f6f12b535b75d87797d2e940b43",
+    "tmp/heart-learning/printed-material-labels-v2/real-995899fe049540ed-body-1-outlines.png": "7400dcbdfe3440115cda3ce70844e491340511d998499389a731b61ce810d5c2"
+  },
+  "annotations": {
+    "path": "scripts/inverse/datasets/real-materials-printed.json",
+    "sha256": "96368a150b75fc0aa04aa03eda43293b094235cd2741abaa7a55bc4fab0feee2"
+  },
+  "compiled": [
+    {
+      "resolution": 256,
+      "root": "tmp/heart-learning/printed-material-labels-v2/final-profile-256",
+      "manifestSha256": "d4d089ab1cbef1c2ac8bdbda232fc21ec9522ca91324297ec799a6174f723e48",
+      "instances": [
+        {
+          "id": "real-995899fe049540ed-body-1",
+          "materialPixelCounts": {
+            "0": 7196,
+            "1": 8535,
+            "255": 49805
+          },
+          "bodyPixelCounts": {
+            "0": 28584,
+            "1": 25207,
+            "255": 11745
+          }
+        },
+        {
+          "id": "real-b87b0b19f12724f3-body-1",
+          "materialPixelCounts": {
+            "0": 1854,
+            "1": 1654,
+            "255": 62028
+          },
+          "bodyPixelCounts": {
+            "0": 35305,
+            "1": 7330,
+            "255": 22901
+          }
+        }
+      ]
+    },
+    {
+      "resolution": 768,
+      "root": "tmp/heart-learning/printed-material-labels-v2/final-profile-768",
+      "manifestSha256": "afc5272412ee64cfa1446b5dc85c7565e3f39e85050776f1567dfbf6ea9dc313",
+      "instances": [
+        {
+          "id": "real-995899fe049540ed-body-1",
+          "materialPixelCounts": {
+            "0": 64767,
+            "1": 76840,
+            "255": 448217
+          },
+          "bodyPixelCounts": {
+            "0": 257277,
+            "1": 226867,
+            "255": 105680
+          }
+        },
+        {
+          "id": "real-b87b0b19f12724f3-body-1",
+          "materialPixelCounts": {
+            "0": 16632,
+            "1": 14823,
+            "255": 558369
+          },
+          "bodyPixelCounts": {
+            "0": 319285,
+            "1": 65992,
+            "255": 204547
+          }
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "checks": [
+      {
+        "stage": "labels-256",
+        "command": [
+          "python3",
+          "scripts/inverse/datasets/real_materials.py",
+          "--annotations=scripts/inverse/datasets/real-materials-printed.json",
+          "--resolution=256",
+          "--output=tmp/heart-learning/printed-material-labels-v2/final-profile-256"
+        ],
+        "exitCode": 0,
+        "seconds": 0.49791175
+      },
+      {
+        "stage": "labels-768",
+        "command": [
+          "python3",
+          "scripts/inverse/datasets/real_materials.py",
+          "--annotations=scripts/inverse/datasets/real-materials-printed.json",
+          "--resolution=768",
+          "--output=tmp/heart-learning/printed-material-labels-v2/final-profile-768"
+        ],
+        "exitCode": 0,
+        "seconds": 1.7105892910000002
+      },
+      {
+        "stage": "learning-tests",
+        "command": [
+          "python3",
+          "scripts/inverse/learning/test.py"
+        ],
+        "exitCode": 0,
+        "seconds": 18.34890425
+      }
+    ],
+    "pixelIdentities": [
+      {
+        "final": "tmp/heart-learning/printed-material-labels-v2/final-profile-256/real-995899fe049540ed-body-1-body.png",
+        "reviewed": "tmp/heart-learning/printed-material-labels-v2/compiled-256/real-995899fe049540ed-body-1-body.png",
+        "sha256": "234fd13a0f837794a148fa57be3f02d469e562dd90840021abcc2bb637479bb5"
+      },
+      {
+        "final": "tmp/heart-learning/printed-material-labels-v2/final-profile-256/real-995899fe049540ed-body-1-materials.png",
+        "reviewed": "tmp/heart-learning/printed-material-labels-v2/compiled-256/real-995899fe049540ed-body-1-materials.png",
+        "sha256": "b474a8c859fa61bc6509f236d41009e79fe732a9de556bac68ac187a539a2bb4"
+      },
+      {
+        "final": "tmp/heart-learning/printed-material-labels-v2/final-profile-256/real-995899fe049540ed-body-1-overlay.png",
+        "reviewed": "tmp/heart-learning/printed-material-labels-v2/compiled-256/real-995899fe049540ed-body-1-overlay.png",
+        "sha256": "cf1298e181fd4985be96554b8517d65aa4bb65acb3a8095b0f0aa5ecafa6750c"
+      },
+      {
+        "final": "tmp/heart-learning/printed-material-labels-v2/final-profile-256/real-995899fe049540ed-body-1-rgb.png",
+        "reviewed": "tmp/heart-learning/printed-material-labels-v2/compiled-256/real-995899fe049540ed-body-1-rgb.png",
+        "sha256": "21a1fdbbeb74db5eba6a6cace7ddbb4bc6ccc775e04bda29284cd07570d85538"
+      },
+      {
+        "final": "tmp/heart-learning/printed-material-labels-v2/final-profile-256/real-b87b0b19f12724f3-body-1-body.png",
+        "reviewed": "tmp/heart-learning/printed-material-labels-v2/compiled-256/real-b87b0b19f12724f3-body-1-body.png",
+        "sha256": "fd2cfa99837268779e927d33576f3b32fcd95ab5858bab3e1368c30501b0367b"
+      },
+      {
+        "final": "tmp/heart-learning/printed-material-labels-v2/final-profile-256/real-b87b0b19f12724f3-body-1-materials.png",
+        "reviewed": "tmp/heart-learning/printed-material-labels-v2/compiled-256/real-b87b0b19f12724f3-body-1-materials.png",
+        "sha256": "35eb0a311986e5f4fa9e3f6eabf81e517fbc9c80a12c2d1ffe466d550ea54051"
+      },
+      {
+        "final": "tmp/heart-learning/printed-material-labels-v2/final-profile-256/real-b87b0b19f12724f3-body-1-overlay.png",
+        "reviewed": "tmp/heart-learning/printed-material-labels-v2/compiled-256/real-b87b0b19f12724f3-body-1-overlay.png",
+        "sha256": "7bd31d9c84c218de7b6f7c10715f01b6e56d00ea657559446c77d986bcd9acc8"
+      },
+      {
+        "final": "tmp/heart-learning/printed-material-labels-v2/final-profile-256/real-b87b0b19f12724f3-body-1-rgb.png",
+        "reviewed": "tmp/heart-learning/printed-material-labels-v2/compiled-256/real-b87b0b19f12724f3-body-1-rgb.png",
+        "sha256": "5d03251b6b0db320dc05b52dfca0dc51c8a9ca05fcc826a58ec556b3702c1eb1"
+      },
+      {
+        "final": "tmp/heart-learning/printed-material-labels-v2/final-profile-768/real-995899fe049540ed-body-1-body.png",
+        "reviewed": "tmp/heart-learning/printed-material-labels-v2/compiled-768/real-995899fe049540ed-body-1-body.png",
+        "sha256": "c7b82e561090d2f3878ca3281276b1aa3fe8e2e73ede6530170730bd0eb9fad0"
+      },
+      {
+        "final": "tmp/heart-learning/printed-material-labels-v2/final-profile-768/real-995899fe049540ed-body-1-materials.png",
+        "reviewed": "tmp/heart-learning/printed-material-labels-v2/compiled-768/real-995899fe049540ed-body-1-materials.png",
+        "sha256": "b1a8c260bf329fb77718a1b5541614d8c6f9bcd0766371a5a842f24c7870fe1e"
+      },
+      {
+        "final": "tmp/heart-learning/printed-material-labels-v2/final-profile-768/real-995899fe049540ed-body-1-overlay.png",
+        "reviewed": "tmp/heart-learning/printed-material-labels-v2/compiled-768/real-995899fe049540ed-body-1-overlay.png",
+        "sha256": "3e15d4641d7a882a41061298e66ed0a491b00afe716c06273c989335304f7b6f"
+      },
+      {
+        "final": "tmp/heart-learning/printed-material-labels-v2/final-profile-768/real-995899fe049540ed-body-1-rgb.png",
+        "reviewed": "tmp/heart-learning/printed-material-labels-v2/compiled-768/real-995899fe049540ed-body-1-rgb.png",
+        "sha256": "c615b82e641fa1d6607aa4f0e291de0df4d0d2695592c08a685140a27d6a7609"
+      },
+      {
+        "final": "tmp/heart-learning/printed-material-labels-v2/final-profile-768/real-b87b0b19f12724f3-body-1-body.png",
+        "reviewed": "tmp/heart-learning/printed-material-labels-v2/compiled-768/real-b87b0b19f12724f3-body-1-body.png",
+        "sha256": "5c5eed113c35aeaf0414b3b90283e3d2406d5ba0e06efd791c86eb56c8220294"
+      },
+      {
+        "final": "tmp/heart-learning/printed-material-labels-v2/final-profile-768/real-b87b0b19f12724f3-body-1-materials.png",
+        "reviewed": "tmp/heart-learning/printed-material-labels-v2/compiled-768/real-b87b0b19f12724f3-body-1-materials.png",
+        "sha256": "b1cb92393016ddc7cea6396b696d247e440daccd258c32f227f6d7ae1df4741d"
+      },
+      {
+        "final": "tmp/heart-learning/printed-material-labels-v2/final-profile-768/real-b87b0b19f12724f3-body-1-overlay.png",
+        "reviewed": "tmp/heart-learning/printed-material-labels-v2/compiled-768/real-b87b0b19f12724f3-body-1-overlay.png",
+        "sha256": "259020366d99fb802ba0b7936e3b56641235c5c4b067663f4830ca155589d309"
+      },
+      {
+        "final": "tmp/heart-learning/printed-material-labels-v2/final-profile-768/real-b87b0b19f12724f3-body-1-rgb.png",
+        "reviewed": "tmp/heart-learning/printed-material-labels-v2/compiled-768/real-b87b0b19f12724f3-body-1-rgb.png",
+        "sha256": "98b259d6ef801e153f9576925853a5ec045efcd16e44ced20028bb0a99397f3a"
+      },
+      {
+        "final": "tmp/heart-learning/printed-material-labels-v2/final-profile-256/real-995899fe049540ed-body-1-body.png",
+        "previousBodyAnnotation": "tmp/heart-learning/real-annotation-v1/labels-filtered/real-995899fe049540ed-body-1-labels.png",
+        "sha256": "234fd13a0f837794a148fa57be3f02d469e562dd90840021abcc2bb637479bb5"
+      },
+      {
+        "final": "tmp/heart-learning/printed-material-labels-v2/final-profile-256/real-995899fe049540ed-body-1-rgb.png",
+        "previousBodyAnnotation": "tmp/heart-learning/real-annotation-v1/labels-filtered/real-995899fe049540ed-body-1-rgb.png",
+        "sha256": "21a1fdbbeb74db5eba6a6cace7ddbb4bc6ccc775e04bda29284cd07570d85538"
+      },
+      {
+        "final": "tmp/heart-learning/printed-material-labels-v2/final-profile-256/real-b87b0b19f12724f3-body-1-body.png",
+        "previousBodyAnnotation": "tmp/heart-learning/real-annotation-v1/labels-filtered/real-b87b0b19f12724f3-body-1-labels.png",
+        "sha256": "fd2cfa99837268779e927d33576f3b32fcd95ab5858bab3e1368c30501b0367b"
+      },
+      {
+        "final": "tmp/heart-learning/printed-material-labels-v2/final-profile-256/real-b87b0b19f12724f3-body-1-rgb.png",
+        "previousBodyAnnotation": "tmp/heart-learning/real-annotation-v1/labels-filtered/real-b87b0b19f12724f3-body-1-rgb.png",
+        "sha256": "5d03251b6b0db320dc05b52dfca0dc51c8a9ca05fcc826a58ec556b3702c1eb1"
+      }
+    ],
+    "knownMaterialPixels256": 19239,
+    "visualReview": "Original sources, outlined polygons, and compiled overlays inspected at 256 and 768 pixels. Final profile-preserving PNGs have the same decoded pixels as those inspected overlays."
+  },
+  "rgbProfileCorrection": {
+    "initialFinalCheck": "tmp/heart-learning/material-evaluation-v1/final-checks/running.json",
+    "failure": "Floral RGB pixels matched the prior body export, but the material compiler discarded its embedded ICC profile through a NumPy round trip.",
+    "correction": "Save the original transformed RGB image object; retain the array-derived body/material/overlay maps.",
+    "result": "Both final 256-pixel RGB PNGs and body-label PNGs are byte-identical to the prior body-only exports.",
+    "regressionBefore": "tmp/heart-learning/printed-material-labels-v2/profile-regression-before.log",
+    "regressionAfter": "tmp/heart-learning/printed-material-labels-v2/profile-regression-after-v2.log"
+  },
+  "sourceHashes": {
+    "scripts/inverse/datasets/real-materials-printed.json": "96368a150b75fc0aa04aa03eda43293b094235cd2741abaa7a55bc4fab0feee2",
+    "scripts/inverse/datasets/real_materials.py": "86ec6dd4d4d8af2289eda79925cd7c68d9df87719a49adf9fb2d0078858a175e",
+    "scripts/inverse/datasets/real_annotations.py": "b505fb723dc45b644cb95a058ddf45317f6afb700c61fb88cb3d93571fb9e33c",
+    "scripts/inverse/learning/real_materials.test.py": "854cbee079418e47fc71c450f85db92203f0e7b489775be94e14eb91f1263e80",
+    "scripts/inverse/datasets/real-annotations.json": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5"
+  }
+}

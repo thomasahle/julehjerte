@@ -1,0 +1,224 @@
+{
+  "method": "Nearest distinct exported cut paths to the nine nominal cell centres of the displayed pattern; sampled chords at 0.01 mm tolerance. Diagnostic centres are not fitting constraints.",
+  "records": [
+    {
+      "point": [
+        16.666666666666668,
+        16.666666666666668
+      ],
+      "orientation": "vertical opposing semicircles",
+      "nearestPaths": [
+        {
+          "family": 0,
+          "path": 1,
+          "distanceMm": 1.4454337373746993
+        },
+        {
+          "family": 0,
+          "path": 0,
+          "distanceMm": 1.6793346641706337
+        },
+        {
+          "family": 0,
+          "path": 2,
+          "distanceMm": 16.574424323050714
+        }
+      ]
+    },
+    {
+      "point": [
+        50,
+        16.666666666666668
+      ],
+      "orientation": "horizontal opposing semicircles",
+      "nearestPaths": [
+        {
+          "family": 0,
+          "path": 4,
+          "distanceMm": 2.849381784397122
+        },
+        {
+          "family": 0,
+          "path": 3,
+          "distanceMm": 3.333804038102307
+        },
+        {
+          "family": 1,
+          "path": 0,
+          "distanceMm": 15.20847925578787
+        }
+      ]
+    },
+    {
+      "point": [
+        83.33333333333333,
+        16.666666666666668
+      ],
+      "orientation": "vertical opposing semicircles",
+      "nearestPaths": [
+        {
+          "family": 0,
+          "path": 7,
+          "distanceMm": 1.5076867825777343
+        },
+        {
+          "family": 0,
+          "path": 6,
+          "distanceMm": 1.5992876416604778
+        },
+        {
+          "family": 0,
+          "path": 5,
+          "distanceMm": 16.816564253274333
+        }
+      ]
+    },
+    {
+      "point": [
+        16.666666666666668,
+        50
+      ],
+      "orientation": "horizontal opposing semicircles",
+      "nearestPaths": [
+        {
+          "family": 0,
+          "path": 1,
+          "distanceMm": 3.5534952495656857
+        },
+        {
+          "family": 0,
+          "path": 0,
+          "distanceMm": 3.57027864471067
+        },
+        {
+          "family": 1,
+          "path": 0,
+          "distanceMm": 15.32017545468539
+        }
+      ]
+    },
+    {
+      "point": [
+        50,
+        50
+      ],
+      "orientation": "vertical opposing semicircles",
+      "nearestPaths": [
+        {
+          "family": 0,
+          "path": 4,
+          "distanceMm": 1.401251950836336
+        },
+        {
+          "family": 0,
+          "path": 3,
+          "distanceMm": 1.7641700639265678
+        },
+        {
+          "family": 0,
+          "path": 5,
+          "distanceMm": 16.49001985380519
+        }
+      ]
+    },
+    {
+      "point": [
+        83.33333333333333,
+        50
+      ],
+      "orientation": "horizontal opposing semicircles",
+      "nearestPaths": [
+        {
+          "family": 0,
+          "path": 7,
+          "distanceMm": 3.4732180643433783
+        },
+        {
+          "family": 0,
+          "path": 6,
+          "distanceMm": 3.666636310578062
+        },
+        {
+          "family": 1,
+          "path": 1,
+          "distanceMm": 15.78241007326961
+        }
+      ]
+    },
+    {
+      "point": [
+        16.666666666666668,
+        83.33333333333333
+      ],
+      "orientation": "vertical opposing semicircles",
+      "nearestPaths": [
+        {
+          "family": 0,
+          "path": 1,
+          "distanceMm": 1.486448035527386
+        },
+        {
+          "family": 0,
+          "path": 0,
+          "distanceMm": 1.636607369809007
+        },
+        {
+          "family": 0,
+          "path": 2,
+          "distanceMm": 16.547359017208773
+        }
+      ]
+    },
+    {
+      "point": [
+        50,
+        83.33333333333333
+      ],
+      "orientation": "horizontal opposing semicircles",
+      "nearestPaths": [
+        {
+          "family": 0,
+          "path": 4,
+          "distanceMm": 3.1572003383553513
+        },
+        {
+          "family": 0,
+          "path": 3,
+          "distanceMm": 3.396823012370144
+        },
+        {
+          "family": 1,
+          "path": 1,
+          "distanceMm": 15.211512839566216
+        }
+      ]
+    },
+    {
+      "point": [
+        83.33333333333333,
+        83.33333333333333
+      ],
+      "orientation": "vertical opposing semicircles",
+      "nearestPaths": [
+        {
+          "family": 0,
+          "path": 7,
+          "distanceMm": 1.4706684949929267
+        },
+        {
+          "family": 0,
+          "path": 6,
+          "distanceMm": 1.6980140142393019
+        },
+        {
+          "family": 1,
+          "path": 1,
+          "distanceMm": 16.57871346980086
+        }
+      ]
+    }
+  ],
+  "runtimeCommit": "f1cf52e2a42c294458f1c9904997c5d7dfa44bcc",
+  "geometrySha256": "fd0628257a89a8723f23f30567a95da3067118af5487793ce5c482ecd1dc8fe2",
+  "requiredNominalWidthMm": 2.50501002004008
+}

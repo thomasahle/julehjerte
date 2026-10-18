@@ -10,6 +10,7 @@ import {loadSolutionJSON} from '../../static/inverse/core/graph.js';
 import {checkerPixels} from './fixtures.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
 import {transposeTarget} from '../../static/inverse/core/symmetry.js';
+import {Cubic} from '../../static/inverse/core/bezier.js';
 
 test('the exact grid rejects asymmetric input with a recoverable code and leaves it untouched',()=>{
   const target={sourceImage:{mask:Uint8Array.from([0,1,0,0]),resolution:2}},before=structuredClone(target);
@@ -62,10 +63,41 @@ test('identical proposals preserve exact transposition and reject unequal counts
   assert.equal(matchingSummary(graph.solution(graph.points,1)).identical,true);
 });
 
+test('matching summary pairs identical cuts after path reordering',()=>{
+  const paths=gridPaths(matchingGrid(gridModel([3,3],8,17)));
+  const reverse=path=>path.toReversed().map(c=>c.toReversed());
+  paths[1]=[reverse(paths[1][2]),paths[1][0],paths[1][1]];
+  const graph=new CurveGraph(paths),summary=matchingSummary(graph.solution(graph.points,1));
+  assert.equal(summary.identical,true);assert.equal(summary.rmsTemplateDifferenceMm,0);
+});
+
+test('reordered and reversed cuts keep the same pairing during optimization',()=>{
+  const a=[[[10,0],[70,100]],[[30,0],[90,100]]].map(([start,end])=>[Cubic.line(start,end).p]);
+  const b=a.map(p=>p.map(c=>c.map(([x,y])=>[y,x])));
+  // Reversing the first cut moves its serialized start beyond the second cut.
+  const paths=[a,[b[1],b[0].toReversed().map(c=>c.toReversed())]],before=structuredClone(paths);
+  const graph=new CurveGraph(paths),projected=graph.points.slice();
+  assert.equal(matchingSummary(graph.solution(graph.points,1)).identical,true);
+  assert.equal(matchingPenalty(graph,graph.points).loss,0);
+  projectMatching(projected,matchingGroups(graph));
+  assert.deepEqual(projected,graph.points,'Matching projection must not move already matching physical cuts.');
+  assert.deepEqual(matchingPaths(paths),[a,b],'Averaging an identical pair must preserve every control.');
+  assert.deepEqual(paths,before);
+});
+
 test('matching projection respects a locked scalar with index zero',()=>{
   const points=Float64Array.from([1,9,7]),fixed=Uint8Array.from([1,0,0]);
   projectMatching(points,[[0,1,2]],fixed,Float64Array.from([1,9,7]));
   assert.deepEqual([...points],[1,1,1]);
+});
+
+test('matching identity tolerance is per control point, independent of cut length',()=>{
+  const paths=gridPaths(matchingGrid(gridModel([3,3],8,17)));
+  for(const path of paths[1])for(const curve of path)for(const point of curve)point[0]+=5e-8;
+  const summary=()=>{const graph=new CurveGraph(paths);return matchingSummary(graph.solution(graph.points,1));};
+  assert.equal(summary().identical,true);
+  paths[1][0][0][1][0]+=2e-7;
+  assert.equal(summary().identical,false);
 });
 
 test('fitted free paths can propose one reusable pattern without changing their input',()=>{

@@ -1,0 +1,957 @@
+{
+  "runtimeCommit": "87a612b6085f827533d0193a36ad78492c0998a1",
+  "scope": "Completed native benchmarks and editable replay. Full repository/build/browser validation is separate and still pending when this record was written. No physical assembly testing.",
+  "sourceManifest": {
+    "file": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/source.json",
+    "sha256": "7ae154b6f8a4a6f3dea1ac5bf4e2dbda529109c043385e9f8071d07988be9625",
+    "trackedFilesChecked": 553
+  },
+  "hunodan": {
+    "count": 22,
+    "passes": 22,
+    "maximumSeconds": 7.826535415999999,
+    "unchangedValidatedErrors": 22,
+    "results": [
+      {
+        "id": "hjfig-01",
+        "error": 0.009799111111111111,
+        "seconds": 4.236434625000001,
+        "passed": true,
+        "validatedError": 0.009799111111111111,
+        "previousError": 0.009799111111111111
+      },
+      {
+        "id": "hjfig-02",
+        "error": 0.013340444444444445,
+        "seconds": 5.188337916,
+        "passed": true,
+        "validatedError": 0.013340444444444445,
+        "previousError": 0.013340444444444445
+      },
+      {
+        "id": "hjfig-03",
+        "error": 0.006634666666666666,
+        "seconds": 3.436564791999999,
+        "passed": true,
+        "validatedError": 0.006634666666666666,
+        "previousError": 0.006634666666666666
+      },
+      {
+        "id": "hjfig-04",
+        "error": 0.013824,
+        "seconds": 3.922617916999998,
+        "passed": true,
+        "validatedError": 0.013824,
+        "previousError": 0.013824
+      },
+      {
+        "id": "hjfig-05",
+        "error": 0.009042960667083447,
+        "seconds": 3.0972797500000016,
+        "passed": true,
+        "validatedError": 0.009042960667083447,
+        "previousError": 0.009042960667083447
+      },
+      {
+        "id": "hjfla-01",
+        "error": 0.012166341145833334,
+        "seconds": 5.459372416000002,
+        "passed": true,
+        "validatedError": 0.012166341145833334,
+        "previousError": 0.012166341145833334
+      },
+      {
+        "id": "hjcur-01",
+        "error": 0.005148444444444444,
+        "seconds": 4.8640072499999985,
+        "passed": true,
+        "validatedError": 0.005148444444444444,
+        "previousError": 0.005148444444444444
+      },
+      {
+        "id": "hjcur-02",
+        "error": 0.005219555555555555,
+        "seconds": 5.191470666000001,
+        "passed": true,
+        "validatedError": 0.005219555555555555,
+        "previousError": 0.005219555555555555
+      },
+      {
+        "id": "hjcur-03",
+        "error": 0.004522666666666667,
+        "seconds": 4.97499525,
+        "passed": true,
+        "validatedError": 0.004522666666666667,
+        "previousError": 0.004522666666666667
+      },
+      {
+        "id": "hjcur-04",
+        "error": 0.005639111111111111,
+        "seconds": 6.678481957999996,
+        "passed": true,
+        "validatedError": 0.005639111111111111,
+        "previousError": 0.005639111111111111
+      },
+      {
+        "id": "hjcur-05",
+        "error": 0.009436444444444445,
+        "seconds": 3.252493125000001,
+        "passed": true,
+        "validatedError": 0.009436444444444445,
+        "previousError": 0.009436444444444445
+      },
+      {
+        "id": "hjhih-01",
+        "error": 0.006040430615586996,
+        "seconds": 6.021795958000002,
+        "passed": true,
+        "validatedError": 0.006040430615586996,
+        "previousError": 0.006040430615586996
+      },
+      {
+        "id": "hjhih-02",
+        "error": 0.003899406226779104,
+        "seconds": 4.525772292000002,
+        "passed": true,
+        "validatedError": 0.003899406226779104,
+        "previousError": 0.003899406226779104
+      },
+      {
+        "id": "hjhih-04",
+        "error": 0.007776029627903062,
+        "seconds": 7.0219882080000025,
+        "passed": true,
+        "validatedError": 0.007776029627903062,
+        "previousError": 0.007911996840380967
+      },
+      {
+        "id": "hjstr-01",
+        "error": 0.007550237322696868,
+        "seconds": 3.9699487919999954,
+        "passed": true,
+        "validatedError": 0.007550237322696868,
+        "previousError": 0.007550237322696868
+      },
+      {
+        "id": "hjstr-02",
+        "error": 0.004365548980933596,
+        "seconds": 5.852302041999995,
+        "passed": true,
+        "validatedError": 0.004365548980933596,
+        "previousError": 0.004365548980933596
+      },
+      {
+        "id": "hjstr-03",
+        "error": 0.0056129769369752365,
+        "seconds": 7.826535415999999,
+        "passed": true,
+        "validatedError": 0.0056129769369752365,
+        "previousError": 0.006257306833882453
+      },
+      {
+        "id": "hjsta-01",
+        "error": 0.007929362880886427,
+        "seconds": 4.621112584000002,
+        "passed": true,
+        "validatedError": 0.007929362880886427,
+        "previousError": 0.007929362880886427
+      },
+      {
+        "id": "hjsta-02",
+        "error": 0.0038045247395833335,
+        "seconds": 4.068477833000012,
+        "passed": true,
+        "validatedError": 0.0038045247395833335,
+        "previousError": 0.0038045247395833335
+      },
+      {
+        "id": "hjsta-03",
+        "error": 0.012332213049376572,
+        "seconds": 5.999412082999989,
+        "passed": true,
+        "validatedError": 0.012332213049376572,
+        "previousError": 0.012332213049376572
+      },
+      {
+        "id": "hjsta-04",
+        "error": 0.0050250552896055544,
+        "seconds": 6.141713542000012,
+        "passed": true,
+        "validatedError": 0.0050250552896055544,
+        "previousError": 0.0050250552896055544
+      },
+      {
+        "id": "hjsta-05",
+        "error": 0.010624446293860237,
+        "seconds": 5.4413029580000005,
+        "passed": true,
+        "validatedError": 0.010624446293860237,
+        "previousError": 0.010624446293860237
+      }
+    ]
+  },
+  "photos": {
+    "catalogRows": 47,
+    "completePhotographs": 31,
+    "passes": 25,
+    "sameSourceCropsAndTargets": true,
+    "newPasses": [],
+    "lostPasses": [],
+    "results": [
+      {
+        "id": "oval-figure",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null
+      },
+      {
+        "id": "eight-point-star",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null
+      },
+      {
+        "id": "small-figure",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null
+      },
+      {
+        "id": "deer",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null
+      },
+      {
+        "id": "top-checker",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null
+      },
+      {
+        "id": "top-candle",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null
+      },
+      {
+        "id": "top-tree",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null
+      },
+      {
+        "id": "partial-top-right",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null
+      },
+      {
+        "id": "partial-left-checker",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null
+      },
+      {
+        "id": "nested-squares",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null
+      },
+      {
+        "id": "outline-star",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": 0.00815625,
+        "error": 0.00815625
+      },
+      {
+        "id": "floral-checker",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.02280625,
+        "error": 0.01941875
+      },
+      {
+        "id": "dense-checker",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.00700625,
+        "error": 0.00699375
+      },
+      {
+        "id": "bird",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.02471875,
+        "error": 0.02470625
+      },
+      {
+        "id": "leaf",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0265125,
+        "error": 0.0265125
+      },
+      {
+        "id": "partial-right-checker",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null
+      },
+      {
+        "id": "partial-left-abstract",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null
+      },
+      {
+        "id": "gift",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.02405625,
+        "error": 0.02309375
+      },
+      {
+        "id": "gingerbread",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0157,
+        "error": 0.01468125
+      },
+      {
+        "id": "white-birds",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.00379375,
+        "error": 0.00379375
+      },
+      {
+        "id": "flower",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0050625,
+        "error": 0.0050625
+      },
+      {
+        "id": "warped-checker",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.01838125,
+        "error": 0.0174125
+      },
+      {
+        "id": "round-checker",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0121375,
+        "error": 0.0121375
+      },
+      {
+        "id": "santa",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null
+      },
+      {
+        "id": "partial-left-diamonds",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null
+      },
+      {
+        "id": "fine-checker",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.02245,
+        "error": 0.0216875
+      },
+      {
+        "id": "orb",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.01439375,
+        "error": 0.01443125
+      },
+      {
+        "id": "stacked-hearts",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.007425,
+        "error": 0.007425
+      },
+      {
+        "id": "jigsaw",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": 0.0564375,
+        "error": 0.0564375
+      },
+      {
+        "id": "candle",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0048375,
+        "error": 0.0048375
+      },
+      {
+        "id": "maple-leaf",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.014675,
+        "error": 0.0134125
+      },
+      {
+        "id": "crown",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0247,
+        "error": 0.02411875
+      },
+      {
+        "id": "partial-bottom-left",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null
+      },
+      {
+        "id": "bottom-diamonds",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null
+      },
+      {
+        "id": "crossed-ribbons",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": 0.02153125,
+        "error": 0.02153125
+      },
+      {
+        "id": "bauble",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": 0.0929625,
+        "error": 0.0919125
+      },
+      {
+        "id": "glare-motif",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null
+      },
+      {
+        "id": "bottom-flower",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0093875,
+        "error": 0.0093875
+      },
+      {
+        "id": "faceted-star",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.00649375,
+        "error": 0.0065
+      },
+      {
+        "id": "partial-bottom-right",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null
+      },
+      {
+        "id": "bibel-star-8",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.003675,
+        "error": 0.003675
+      },
+      {
+        "id": "bibel-star-curved",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.00663125,
+        "error": 0.00663125
+      },
+      {
+        "id": "bibel-star-outline",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.011975,
+        "error": 0.01159375
+      },
+      {
+        "id": "bibel-cross",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.00243125,
+        "error": 0.00243125
+      },
+      {
+        "id": "flettede-puppy",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.01031875,
+        "error": 0.0103125
+      },
+      {
+        "id": "flettede-stonehenge",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.01905,
+        "error": 0.01905
+      },
+      {
+        "id": "flettede-viking",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.02091875,
+        "error": 0.02055
+      }
+    ]
+  },
+  "editable": {
+    "pairs": 25,
+    "passes": 25,
+    "results": [
+      {
+        "id": "floral-checker",
+        "completeCandidatePassed": true,
+        "editableError": 0.01965,
+        "editorIssues": [],
+        "maskSha256": "351a7a00b7aba431e393477f0ae7747c3b2dda9ad8a40fd086e625d3d6ccb6f7",
+        "geometrySha256": "ac716e0a2aa14fe4330455d313b8ff5045a508612c98cd7a100d8e174c4fa5dd"
+      },
+      {
+        "id": "dense-checker",
+        "completeCandidatePassed": true,
+        "editableError": 0.00676875,
+        "editorIssues": [],
+        "maskSha256": "ff1cc0d30dbc0e6c908d2a731a5b5f0012c20224fd64713648cea42f258db664",
+        "geometrySha256": "0ba6a61f0e66805d5d5db934f2ce9f574330700451e6a692794da8a14944c5af"
+      },
+      {
+        "id": "bird",
+        "completeCandidatePassed": true,
+        "editableError": 0.02518125,
+        "editorIssues": [],
+        "maskSha256": "7137173fa17abe3f8f7788ddb7d321fe48258a4a3f4c2f8b3171b9ff9f15a16f",
+        "geometrySha256": "f8b6dc9f52641fbd373b3382985120a0b564c1e434a179728bd5da9dab938303"
+      },
+      {
+        "id": "leaf",
+        "completeCandidatePassed": true,
+        "editableError": 0.0263,
+        "editorIssues": [],
+        "maskSha256": "0e1fefda40bbe92da956dd2467d117af6a732d0223e695901cc0255a166651f4",
+        "geometrySha256": "edc2ede44816c17bbeb6c39367e1423b936ffb35be786733adb460a2bae0bc06"
+      },
+      {
+        "id": "gift",
+        "completeCandidatePassed": true,
+        "editableError": 0.023375,
+        "editorIssues": [],
+        "maskSha256": "27d7f1538cbba31b9e4b13270a70e7ffc36acc23f69a49d4646d5ee3f49b7738",
+        "geometrySha256": "09e359bda1756bae08a8d2e0ff65474c341e82e6cd9a4169ab56d624d4393945"
+      },
+      {
+        "id": "gingerbread",
+        "completeCandidatePassed": true,
+        "editableError": 0.01480625,
+        "editorIssues": [],
+        "maskSha256": "58e23488bf3ab6809c751f87de2cb7b7316aab8fc591b0c1c107ecbc2e64823e",
+        "geometrySha256": "58754d754327e83244cc2311d74f9a63ade54dc39315ed6a6a93600ad8d5b4b2"
+      },
+      {
+        "id": "white-birds",
+        "completeCandidatePassed": true,
+        "editableError": 0.00375,
+        "editorIssues": [],
+        "maskSha256": "4c2f7e027c7efd6daad57573ee636a271679fa82f4170304628322ce87112c90",
+        "geometrySha256": "6c8c0ef9ecf16ffde3f8b46b9424f2c8f7d169e8b2e0de6f278547cd700fb1ce"
+      },
+      {
+        "id": "flower",
+        "completeCandidatePassed": true,
+        "editableError": 0.0051875,
+        "editorIssues": [],
+        "maskSha256": "a6329990af013948c3ba32058af40424949d57280ca3b5ab18ecaaca0f1787a0",
+        "geometrySha256": "8166aedab48b2bb9b365f503f6ac46592840520e5f26c9681480c1a32ddd942f"
+      },
+      {
+        "id": "warped-checker",
+        "completeCandidatePassed": true,
+        "editableError": 0.017775,
+        "editorIssues": [],
+        "maskSha256": "3508f08f46f539554f7fdab38f01f018bc7ec8d86db2309427b28e18b049c2de",
+        "geometrySha256": "65816f181b75a02eaeec02c6f4e17d8f63a52e7d7ba9fbad285efd9997fca03e"
+      },
+      {
+        "id": "round-checker",
+        "completeCandidatePassed": true,
+        "editableError": 0.012125,
+        "editorIssues": [],
+        "maskSha256": "215c0cab5c8f635f9fbfad239d09f3fb2bc6dd2469764906d062fdfbac0e5e68",
+        "geometrySha256": "9bb1e94e5022aa8a1161ebe310f417bafb9f89b1ef4b123d62a9d4d2c578bcf5"
+      },
+      {
+        "id": "fine-checker",
+        "completeCandidatePassed": true,
+        "editableError": 0.02205,
+        "editorIssues": [],
+        "maskSha256": "184fe9c3aaf1a4e8a3732e1180a17770ebb3ef60566861c89859bb5a1e36ad4a",
+        "geometrySha256": "a34b0cbb71b638d21d1e8ed2d58d332869fc66a3b93dcc574a9649d1236606ab"
+      },
+      {
+        "id": "orb",
+        "completeCandidatePassed": true,
+        "editableError": 0.0143875,
+        "editorIssues": [],
+        "maskSha256": "4a9574d7d5bc6d22ff176926863814a6f9c298abd433f9e0fa432886a9929830",
+        "geometrySha256": "20966b021c20238f6307f168e55b229a2f8f9cab062926acf733e5a1efbc6fb4"
+      },
+      {
+        "id": "stacked-hearts",
+        "completeCandidatePassed": true,
+        "editableError": 0.0073625,
+        "editorIssues": [],
+        "maskSha256": "9a7ed32b892c60e0889f4ef7df0a70073e15e1353225bf5736925f4a6f7f9c24",
+        "geometrySha256": "64ec24b836d5dd71dca23d35c5814a2e337c3445f79d9c649806d65c4a3104a2"
+      },
+      {
+        "id": "candle",
+        "completeCandidatePassed": true,
+        "editableError": 0.0048,
+        "editorIssues": [],
+        "maskSha256": "263a91fc0a1b6db6db4da860f4145bd52aa0973927285068f8cbe267c9bc175d",
+        "geometrySha256": "1bc0dd1dba943690ef6f316b404c1a855be582f7ca0fd9b98fd70ef814ec26f7"
+      },
+      {
+        "id": "maple-leaf",
+        "completeCandidatePassed": true,
+        "editableError": 0.01359375,
+        "editorIssues": [],
+        "maskSha256": "9b0908abdb6ceb0957b6344cfa5fbaeab4a46866c640ea8d1898b3dc31a8c101",
+        "geometrySha256": "c40974d0b34870cac55a72fab0e021c0f33cba1defc2a1bb8fe9c4c04bb2f83e"
+      },
+      {
+        "id": "crown",
+        "completeCandidatePassed": true,
+        "editableError": 0.02450625,
+        "editorIssues": [],
+        "maskSha256": "28f4380aaf5bb197acbaf7750b4560e317c442740098abaf4c91eb88ac7866aa",
+        "geometrySha256": "f40f658802de5734f36b1d94fbbec18064e537b5fc706071e7af343e0d418753"
+      },
+      {
+        "id": "bottom-flower",
+        "completeCandidatePassed": true,
+        "editableError": 0.00935625,
+        "editorIssues": [],
+        "maskSha256": "c28a1d562809d85df72b62ed7c8da9eaa3eb5ae98c3af23e2630232ecc641a50",
+        "geometrySha256": "a580fc671d38d5315d1594fe7ee3993b2bd428d98b617a2ef9a7c34744b88dc6"
+      },
+      {
+        "id": "faceted-star",
+        "completeCandidatePassed": true,
+        "editableError": 0.0065125,
+        "editorIssues": [],
+        "maskSha256": "bce82438deb37467102b2a1155902d668bcabb46cc8419aa561d68f4f69c9f86",
+        "geometrySha256": "229d2de8e9616388bc4ff178759a57fa3fbde8277a10d8ee6f06db8c97c5dcaa"
+      },
+      {
+        "id": "bibel-star-8",
+        "completeCandidatePassed": true,
+        "editableError": 0.00365,
+        "editorIssues": [],
+        "maskSha256": "d679deeeed128c62414a104b457a76afd1f7a60ae90d7014579f5aa7fd8d0760",
+        "geometrySha256": "86835af75f4222c274fdd1757ba65e6494909876bac46bb31a18561628d53e97"
+      },
+      {
+        "id": "bibel-star-curved",
+        "completeCandidatePassed": true,
+        "editableError": 0.00635625,
+        "editorIssues": [],
+        "maskSha256": "1f6c8ac1fbb7a2d13b56154c9c0c9dfe257990a6a057bce0f1a80fb0a98e52d2",
+        "geometrySha256": "d4e520bac64dbd55e0f2ca8c1dbe9adbfc7d4f29d15714783362199a9abc1e30"
+      },
+      {
+        "id": "bibel-star-outline",
+        "completeCandidatePassed": true,
+        "editableError": 0.01153125,
+        "editorIssues": [],
+        "maskSha256": "069c4d534547341c69dc2233d6e210d5607f284d2d81b0d18623b06c148d4fe4",
+        "geometrySha256": "dc92088ca228d5666d2b415335bde72c397e26ab88171f2e9609acc9db9dbd43"
+      },
+      {
+        "id": "bibel-cross",
+        "completeCandidatePassed": true,
+        "editableError": 0.002425,
+        "editorIssues": [],
+        "maskSha256": "d191cd84d681ff1fa498ab6155bcf1b56dbf558168037d921edff536e801fdb3",
+        "geometrySha256": "9668da65c3b88ef077b3054d27e022b021851263785e9868f692bb7cc9fa0a05"
+      },
+      {
+        "id": "flettede-puppy",
+        "completeCandidatePassed": true,
+        "editableError": 0.01029375,
+        "editorIssues": [],
+        "maskSha256": "45bb41ffbb961e933cb29f4effbe47239533035ab522c7e654b7d9c1de1a0dad",
+        "geometrySha256": "7cdda85aa95f3bb6bb8a05acd4f2dcf8de9168f8338972387c11fe7385929303"
+      },
+      {
+        "id": "flettede-stonehenge",
+        "completeCandidatePassed": true,
+        "editableError": 0.0188,
+        "editorIssues": [],
+        "maskSha256": "ff0bfa945a6368140b08b2f1f9709b1363b2e6fd8e9d19da4d824ffc97ba55c2",
+        "geometrySha256": "d6fdb7b80050ee3070ac9a08e51d0d6c690480180df245daf5af0527bc6bffb5"
+      },
+      {
+        "id": "flettede-viking",
+        "completeCandidatePassed": true,
+        "editableError": 0.02078125,
+        "editorIssues": [],
+        "maskSha256": "7791de154fdbc94b618ece0bf018522573d57c231c46bc0385d24a9e2b9a9bb8",
+        "geometrySha256": "42899e9fb09565529a2e5a9a97e36e3abd3fdef87919abd8215649b1997c5908"
+      }
+    ]
+  },
+  "artifacts": {
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/collect-native.py": "a96dd230242eb9044073b4c16c6f70613e00be779f65b96db3bfbc41830fb181",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/bibel-cross-automatic-weave.png": "c0b7c57d5ce8300b47b79f83ba7c5176ac6259f3d52d680f13b05189c06a2add",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/bibel-cross-automatic.svg": "67679ccbf964a7fb02206b9c88003028ff45d8bb18a0c5e7f1920df295941a71",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/bibel-star-8-automatic-weave.png": "27d276f3c0a795ab4443272f0f394614c156bde198534a309d238fa4c73ade06",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/bibel-star-8-automatic.svg": "c7f275bad163cc35677d81527b14cd0f87b1f11b44be572658a0b41deb5dda01",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/bibel-star-curved-automatic-weave.png": "924a187a571911730cacd0416ab1de86f3aa791c1e26c40e13cc2f96adc7ffc7",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/bibel-star-curved-automatic.svg": "d6f2b6556888c5f7f216f2ec2871a41b1935c62b4f169092d2fb99ec9f4c3d1e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/bibel-star-outline-automatic-weave.png": "0e1ecf02affb330fb887463d5c605b0da983dff2e152c1f0490d898870c63cfb",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/bibel-star-outline-automatic.svg": "be9fe5fd187adeb8eaabce909059d5a6389bd911964167a326de6a6bf737f484",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/bird-automatic-weave.png": "68b58d668c0b60c66bfb858e85528bddab413fb3571216e2edd8bb8df9a789a1",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/bird-automatic.svg": "a005ae5d7fd50f854e780b5ba3c5906953c3a46c96c167ac1bea4129f130b0e5",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/bottom-flower-automatic-weave.png": "45eec6187fcb61ae780ab7a819ed638959a92e02aac019746e690d3ab979516b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/bottom-flower-automatic.svg": "4048e108af23cdd2d31718dce6b6a3fc42b4beb552ddd49d10aa0035f622fb6f",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/candle-automatic-weave.png": "776ff35abe0c208a2877b971fca002a3c021c730780ce466cb9d6177de26a500",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/candle-automatic.svg": "5d4c6cc63010f2f7a64fe1f934daed5345e1e431f4abe04233bbe4e1eae804cb",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/crown-automatic-weave.png": "fdb73b77fee8c792f912d91c3de53ddc8980eb90291c9d581756b8dd98935fa0",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/crown-automatic.svg": "dfb61517941bef829c7169d68d5362f294dbc77f9a5b495059f0f1ed223d86ac",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/dense-checker-automatic-weave.png": "cecd5e02f9f8f0ba592fe7e5c447ae200aaae158d1bb9fd9f894b5461e0c0c36",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/dense-checker-automatic.svg": "97ea13a0d9a3c397a5b3f64fb7933204f1d0f73b7993e071bb528d1068420236",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/faceted-star-automatic-weave.png": "0a2095bcd041e8b2de8dbe86a1b39db882fcc72ebec72d4a3a1e1255c4178bb6",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/faceted-star-automatic.svg": "76ddd045e7fdf8c19449315c891ea0eb43133b0521913bb055cc23190189885f",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/fine-checker-automatic-weave.png": "471e52dd53a2f8b31d0b298bf178f9c7c163a3c4434410b504bbe68b1be90f20",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/fine-checker-automatic.svg": "7e5603666730bdf088f555858ab9df81f1128ddb23d798a28633e69c4bec1bff",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/flettede-puppy-automatic-weave.png": "a9e87b73bef12acbdf2f81492d87e81bfab17279a830defa21aaa6108d790005",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/flettede-puppy-automatic.svg": "ccb74c5830e56be506e2315b5155bd831cb5a94cc38c4906061262530661bcd2",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/flettede-stonehenge-automatic-weave.png": "1e660514815d1149afe33e7cd48005ecef3a53d976a9ff5f687dbf34c1de3a32",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/flettede-stonehenge-automatic.svg": "5f2470fd85e280ff3c4758e9d1301136e65b1872e4ad5f724ff07d5480d58f45",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/flettede-viking-automatic-weave.png": "fa3a3796dcdd2c2e38a92f189d319608eebe9a6d3846500e67a76287607132d0",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/flettede-viking-automatic.svg": "7352b6466afb4ad8352a3205175ecb73f988ce25e8d538f1d876384167ce1d50",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/floral-checker-automatic-weave.png": "0b8b88c99a933e8df7dee7e86905bf9686ad232c0b71904479d37a0312e53c78",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/floral-checker-automatic.svg": "054838ff09896814e0fb390f7cff8e8c7e4c466ee33e4470329f99770ed4c7df",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/flower-automatic-weave.png": "b5af0baba8733dd5563631f96c94367d1382a20478ec687e0187b0ebfabe5d4a",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/flower-automatic.svg": "d02d47669ec71c7923da9ee45e6fd1ba656756ce6c1de70ff8b6c759936a702e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/gift-automatic-weave.png": "757dca66e1d7a2dd9ea31df3e526ad86b49377542940bacf473c82d3016c4aac",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/gift-automatic.svg": "a9445435a929b583422539ebb5bb9fe6d1222a0a5c424f69b58976a67869453d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/gingerbread-automatic-weave.png": "9cca7677bbf379bdb016088f6e162bfa7ce76a1a0c2109461bae2ef1645037e1",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/gingerbread-automatic.svg": "7192937c3903374b0b2619e215827088095b8cb6c3529e2e7289d63662105d2a",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/leaf-automatic-weave.png": "a5368c9e7752ec58815ba3feaec62977ec60fcf4fbf5a6e6d49c0c616a83a99c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/leaf-automatic.svg": "2dd240ddef3cc97cf068578cb9583ee7ca1201fde4a992c7f89694b5bac6960b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/maple-leaf-automatic-weave.png": "89184dda51efbe9c43fd8841df936024c1185f0a347737510cc95d904ddddfa6",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/maple-leaf-automatic.svg": "e672530dd4f79526a635376bc78b9164824c3579630b78cb5aa05dfd198be05d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/orb-automatic-weave.png": "1652c42d3f119af50726be31a646803763275a211bbbe6fa61097a6a0299f545",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/orb-automatic.svg": "d7e6b38fa793f0591a91b3163936e5a10af1da428aba9401fa24ea6a847f1d0f",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/results.json": "5424df6ba19591e207f1b7d5caaaae9681fc19198aee0750068fd862fdb06351",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/round-checker-automatic-weave.png": "264e695172caa013d53ccc6369fd5a7d02481efcc78ebb2dff7ec5f9798e24a9",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/round-checker-automatic.svg": "dbd9b95dafc3d93069045d71fd6bdfd73e8d9738ed0dc27e1b901d119ab686dc",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/stacked-hearts-automatic-weave.png": "51c06f4a57e9981c64f6ed93c80ca437d3b69ff26ce279602601bd6dc2ef0ddc",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/stacked-hearts-automatic.svg": "b3cd59a9bfc3b45fb6ce18cd77c78e783bc5e3642cd7f841a9e2f8a91f5cfca9",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/warped-checker-automatic-weave.png": "602506053b73d919b6e8612aab76dfc386ed826db0448fadf873e5e336dfb609",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/warped-checker-automatic.svg": "a4bc0df066e4d21e2ea4c9f70438165805510e5ed2f7af0e9029f47939537ca8",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/white-birds-automatic-weave.png": "1ec871ae86e0c4e7bddab3ec14e6a2e5b37836af852076ed965ab93253ef9dad",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/editor/white-birds-automatic.svg": "f1db88e3fe259b4356b042508bbfd4dc5bf738d20719bbbe82679baa9f2b9082",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjcur-01/cut_geometry.json": "049b9ebeddc1110704836a415214288788c8494bd69914e99140e1c6a00e499a",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjcur-01/independent.png": "e4ecbb14e341dcb48718b6041b9e2c93ac01b0fc06b5ed4c941b36a6a456f38b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjcur-02/cut_geometry.json": "b6dec1adec3bcf53ef9122c6d6095f9c30ff233e7ef358b73502f7b739327cc8",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjcur-02/independent.png": "8e6a81f849f396e1cd396105daab665f363a0e90b43aa90a2331c5aee28e9416",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjcur-03/cut_geometry.json": "ad97a002943d8e2647c3b8d9f4b9c7d0f6f1ee10dd5db85238f2366dd6ca91c3",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjcur-03/independent.png": "4f4264139cbfba0b66f795196c5457333aa00f0bc666636a6ff89dd148012756",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjcur-04/cut_geometry.json": "a525041d65f090550c374aa1d58e5b9a22afbeaaa8d21f397e32ed8cd26ae022",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjcur-04/independent.png": "3442cc6d073d8a134ea483fadbad855abc538b982025312a1aeed911a29e8e59",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjcur-05/cut_geometry.json": "1b3822492ae13f4b6f73bc67284ce4eb568f292cb87b092b80be053e914817f7",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjcur-05/independent.png": "7db466e91c1607b861a53198900b4dc47df4746edfcb1e0ba78a940016597781",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjfig-01/cut_geometry.json": "d7ad5e34490ec434df08448000f24ff0cba34e62923d67eef6ddf2a13a640983",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjfig-01/independent.png": "90b333bc8b073a75052adcfab1673ab418b58e3010c8e577e6fb3913dbc0f4bb",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjfig-02/cut_geometry.json": "bc90373c69a2bcc1236d56643df72e3c3e205aea3d3a4b8f2b93c88ec187be88",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjfig-02/independent.png": "fbb58d97c2808f40405bacc5dac7b2c3bbccc5d3c1ed7db496036ed4e512789e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjfig-03/cut_geometry.json": "ce50b811ccfc67a307097b3d058c6d6ab6e47fbd1da7bf87584b6cda6cdaf8f6",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjfig-03/independent.png": "dd1cc125318fe895ecaf6755ab81f8cd2364be8d19537cbea148a5857ca748f0",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjfig-04/cut_geometry.json": "16695deef171fd7b1f248ef452407bbbcc4a0c65aeabdfbb6038ef5c56117db7",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjfig-04/independent.png": "7da54e786207f5798379327247c97f90d15ee69f024ec5927a046dc3ad5eec62",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjfig-05/cut_geometry.json": "a017322e2ab775aec82d8d6024a22518302def5269ad6aea66e033da8bae12dc",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjfig-05/independent.png": "8a525fc8a75bbb57d3b893292c0dc2fb790461cfe62b8f31d2a76d2c169cbb1a",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjfla-01/cut_geometry.json": "2adb545bc28461e7756f84b13f7b7470b9ae477659d6c862afc5b1c0b47a4073",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjfla-01/independent.png": "eb1cd5b7af7248c7c807c8f8a9896cea86bcdb65cc50c94836be2c6b506f3321",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjhih-01/cut_geometry.json": "df9facec711075be91afcf6f2ddf537842a1724fcd44ef1f68cdb0703d5f2c68",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjhih-01/independent.png": "5cde47544e1e0147fc9115a89252da3006a69c1951769ee579de383ade93fff2",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjhih-02/cut_geometry.json": "25db88ee2ae032dd7f5aaa85fe1a897b585797aa10fbdf37af94d73e24a81f2a",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjhih-02/independent.png": "f36eca01b1c27b198571686891f73c05d2e61b41e446ee6b901c1dc4a43ce054",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjhih-04/cut_geometry.json": "8c34f52f04b01a4ba97e7e20eae725dfe423f2ef7eb1b1b8154c749e63d220d6",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjhih-04/independent.png": "61da8da37b1a97a8aaad6bc0e8fbfaeb0cec2244512bfc2921816cbbe145d9fb",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjsta-01/cut_geometry.json": "ec714b590351efd48a2ca01d3c2a1ec25791b52fe9286389b1c6aa0b96eea005",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjsta-01/independent.png": "e4d066e073330265c4dea2118439e84bca83fc5da9c04af97534b494a19599a3",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjsta-02/cut_geometry.json": "ba755c3c9ca90e290630af6e8984e9167b4f865dfd5055a578378a6d2fba1cd7",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjsta-02/independent.png": "4be533947679d19e18b3d09e895114190a26eeb87a233d076aecb9eb77e9d679",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjsta-03/cut_geometry.json": "94a7e2fae6933095c873744551ba72caf03ad1119701a8f6e162f1f6687266f5",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjsta-03/independent.png": "9941518d33cb094aec9c9cfcaeffc19ad7064a99c882a894c5bf5887e79cf192",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjsta-04/cut_geometry.json": "0ec351fd7566f5570145c107913d323e6761f018527258f6def41cd4dcc67a1e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjsta-04/independent.png": "16ed70b6b7e3f569a4d5c9e93be7d93f005305bae182fe364e79b30e2931850e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjsta-05/cut_geometry.json": "e5c679f439952dc25a281d54f49977ec76113eab8e1eead9473f77b881a9f5f2",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjsta-05/independent.png": "7f3d00241b585b3e679884fd7e03a99a16cb355d1f1f3674846e8c151f0f6acd",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjstr-01/cut_geometry.json": "a7f33780db85389adc0d24217c4e7febf717857000a2b4ad93f677fcfd0860f2",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjstr-01/independent.png": "3c350eb16799c0593bdf3badfdcb948ecc0778d04080cddd3c2f3af840a99873",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjstr-02/cut_geometry.json": "febe020fdc59877ef5cf71c22eff1fbc4607a1eaae93baf40ec9611d46bdb270",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjstr-02/independent.png": "7ba0236c5fb9fd15ce5237187442095e2c50d60d72a104b3435403a0f4db78f0",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjstr-03/cut_geometry.json": "5ffc98f412dcae8e143a786b0f2dea156757837c0d08dbd8d0e9c123664e9cb5",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/hjstr-03/independent.png": "3494f3b925bfe14bab1f5d670de233993639a50664c421fdcb3bf5a65e22e5cc",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan/results.json": "a117fed5ef8bf0952b4ed519c4fb869a33123e9e65a07be0d2a834d35740c0c0",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/hunodan-comparison.json": "9d82ff40972ef91b7c89e60527d0aa12c7a2a0f2436fd1b67d5bce48cf796b07",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photo-comparison.json": "9d51ad049c6df60b3a0324b9cb4012b30bd2b4c65521977a23710280b425faaf",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/bauble/automatic/cut_geometry.json": "ae10e0c878e1b780e5a6844f0ac90f19832bb52622949402d48017f03f0edbe4",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/bauble/automatic/independent-weave.png": "9e2b3cf6d9ee1f1458d8f00ab751dd199ee0418ac77f428dfb77431a1509a414",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/bauble/automatic/mask.png": "c17fe4647f0c58e5e303b206e1f022d02a2bd42041c919733b4ecbd79336f190",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/bauble/crop.png": "286b5cc63b40cf55d269990ad9c8fb8064436efd14b8c8090df637365824f53a",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/bibel-cross/automatic/cut_geometry.json": "9668da65c3b88ef077b3054d27e022b021851263785e9868f692bb7cc9fa0a05",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/bibel-cross/automatic/independent-weave.png": "36896001c76948d60485d263597de6ca83d1698b9037cba4f8330096d09404bf",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/bibel-cross/automatic/mask.png": "18cdad89f6f67d314257eeef0e57c561847435241efa11a51df5c82b9ebc8f99",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/bibel-cross/crop.png": "66433c12e0648167dfca5f3295cef756f4b40e0c37a36a5dd8e13c0bb93150a4",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/bibel-star-8/automatic/cut_geometry.json": "86835af75f4222c274fdd1757ba65e6494909876bac46bb31a18561628d53e97",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/bibel-star-8/automatic/independent-weave.png": "6d7723777a8dfc75f0d531e74715fadb9f79e36f0ecbf2d7b3021bbfa19468d7",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/bibel-star-8/automatic/mask.png": "368d6f5e006c99a93f432d169ced85cd7b5dc78f129e9bee76ef10bcd01b8801",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/bibel-star-8/crop.png": "d6e02d9d13292fd1baa0086e22967eb4d7cc1c50454ba1b0345d786d7d7f74ab",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/bibel-star-curved/automatic/cut_geometry.json": "d4e520bac64dbd55e0f2ca8c1dbe9adbfc7d4f29d15714783362199a9abc1e30",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/bibel-star-curved/automatic/independent-weave.png": "918212146d9422905587707177c83a0846ddba47adf1dba15e69b532d61bac34",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/bibel-star-curved/automatic/mask.png": "37ba10450d2b1064ed27911736a5a5405134546a6a8f487a7a6d96f3639f8a3e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/bibel-star-curved/crop.png": "d24d87ea257693c7cd042acf8b6b75606af6881915d8fb77b4b805f2f275a2fd",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/bibel-star-outline/automatic/cut_geometry.json": "dc92088ca228d5666d2b415335bde72c397e26ab88171f2e9609acc9db9dbd43",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/bibel-star-outline/automatic/independent-weave.png": "cd566bb426e4306861d389c0cb6aca11b7ad91ce64381642d75c046d285157c4",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/bibel-star-outline/automatic/mask.png": "3d193006a6dfd33df8adffbbbca60d3c0a3a47c7325a407ab4ea20be63c636f0",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/bibel-star-outline/crop.png": "f76562375bc454fd023c791d8ee392abfe20ab37d2dd27c5bacf058d849fe5dc",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/bird/automatic/cut_geometry.json": "f8b6dc9f52641fbd373b3382985120a0b564c1e434a179728bd5da9dab938303",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/bird/automatic/independent-weave.png": "f5a3fc73be321eaa7a38368b8caa8f148b01e76521ec31df5ace1dd42648132c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/bird/automatic/mask.png": "e2524f8dd95ff18e008d6d27a37062462adacb879ab609978da3035bbc277664",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/bird/crop.png": "edab89fa0bee80571cd44aea64810b805f66b230077ab55a813f386e189f1f4f",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/bottom-flower/automatic/cut_geometry.json": "a580fc671d38d5315d1594fe7ee3993b2bd428d98b617a2ef9a7c34744b88dc6",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/bottom-flower/automatic/independent-weave.png": "576f065940258d07c5c12d89a0bbb9e047fc0ba737b535638f4fc91f2a68c3b4",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/bottom-flower/automatic/mask.png": "fbb1c92887012ea8e34991cfa5f0a16f5473da3ef8e166595750056859a4605b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/bottom-flower/crop.png": "cb2918a46deceb67e6bb19d1fe6ff71e5d451b5cf6d014f64575e0b67fb80b66",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/candle/automatic/cut_geometry.json": "1bc0dd1dba943690ef6f316b404c1a855be582f7ca0fd9b98fd70ef814ec26f7",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/candle/automatic/independent-weave.png": "e0fe40045dcef87e386c60b8c67537b09b6791a957cce501a185fa0b0db6429a",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/candle/automatic/mask.png": "8b853d5e3f7b1e6b9a0b695d93692823eb63c2b004f6ddaee3bde2ab49df6ab0",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/candle/crop.png": "8a204bfa9ef5974a603792b8cda7824d40ee5e2ed01739572cb81bbb52dc2c2d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/crossed-ribbons/automatic/cut_geometry.json": "6eb1839135e42a75bbb7e98541662479085f9692660c1a0f32d97a0016ed27f1",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/crossed-ribbons/automatic/independent-weave.png": "346207f690a75e5e37be5fc3bca6b1954a073deec61a221fed30bd5de9f778a5",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/crossed-ribbons/automatic/mask.png": "25d5c8a37f2215d74d1beea8efa57d5229aa011ed725efcefe3e0ab00f7c187b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/crossed-ribbons/crop.png": "0113093cd66e7109f5df8f7998c9c4e9bbe9db132ab00221928642bf43b07be5",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/crown/automatic/cut_geometry.json": "f40f658802de5734f36b1d94fbbec18064e537b5fc706071e7af343e0d418753",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/crown/automatic/independent-weave.png": "befb4fd4d2d2166e61b168b990c5394b502fb0f57893ac87da0ade41b840ab56",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/crown/automatic/mask.png": "39e14ff51b6dfa30887029aff7dedc7ee2cad5fa6ae4466afd2bba0f6a621100",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/crown/crop.png": "0ff98694f2ec97f6c117cab1b28c7f600900226e2148f35ee16a398b88fc24ba",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/dense-checker/automatic/cut_geometry.json": "0ba6a61f0e66805d5d5db934f2ce9f574330700451e6a692794da8a14944c5af",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/dense-checker/automatic/independent-weave.png": "02df941ac787becf92e34e276537989a71f0c181bc692d4fed673f06c6174f21",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/dense-checker/automatic/mask.png": "c850f1b447f40e1c999203c5b343d9cb58722d26bd1a011cd502e446f06f5cf4",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/dense-checker/crop.png": "38e5f3522bb546956e17c0a5ca1ed2a8bb83a031f2eeb15451420bea980695d0",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/faceted-star/automatic/cut_geometry.json": "229d2de8e9616388bc4ff178759a57fa3fbde8277a10d8ee6f06db8c97c5dcaa",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/faceted-star/automatic/independent-weave.png": "ab4c0be7bb1f8995a3429ec6026d0ba58488ccc9a14c88360470e93fe2458df3",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/faceted-star/automatic/mask.png": "86b08a16d992bf1c4e5a4e432095cf8aac60b332de5637ae5592e45950719347",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/faceted-star/crop.png": "a8be012b93983773612129c7fd22d22764a7daf40c5c6abe184a83c36913614d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/fine-checker/automatic/cut_geometry.json": "a34b0cbb71b638d21d1e8ed2d58d332869fc66a3b93dcc574a9649d1236606ab",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/fine-checker/automatic/independent-weave.png": "2707217afcc866e603f130a803980a8d1cc7b0284c399a056d7baa5d991f7d5e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/fine-checker/automatic/mask.png": "6ab55d12e30257ae2f347e981009bc90d7ac4efb61617408c68d5da89a94e949",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/fine-checker/crop.png": "93509714320d71944846b142f423ed425db26be0ec60d2731ff0aab730c0f5ba",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/flettede-puppy/automatic/cut_geometry.json": "7cdda85aa95f3bb6bb8a05acd4f2dcf8de9168f8338972387c11fe7385929303",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/flettede-puppy/automatic/independent-weave.png": "9b8ca6490e7cc0e59d417b07a72211422f80d8639c2feb45fc4cd817e2afe9c0",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/flettede-puppy/automatic/mask.png": "c6ee6456c3dcce3e857e1d4ac26dbd6b9e42a2589818ba2eac6983fa1828869a",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/flettede-puppy/crop.png": "4bcdbfd9e218884fb39d7d71520cf6fa0c7e6ec580d11c7216d937eada5402f5",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/flettede-stonehenge/automatic/cut_geometry.json": "d6fdb7b80050ee3070ac9a08e51d0d6c690480180df245daf5af0527bc6bffb5",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/flettede-stonehenge/automatic/independent-weave.png": "f4fe1ed74b10cab4b9fab836544bba46e923b7ab7676e552aa9e672cfa020319",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/flettede-stonehenge/automatic/mask.png": "4ed238a1a78572719909ee847cbe0fe4f1e2f0679adfeec93662636fa55de46e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/flettede-stonehenge/crop.png": "7e3920b2b3acdf68c25549bc4b666e1b1e293daf34aa467619031089223cf6f6",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/flettede-viking/automatic/cut_geometry.json": "42899e9fb09565529a2e5a9a97e36e3abd3fdef87919abd8215649b1997c5908",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/flettede-viking/automatic/independent-weave.png": "5b5497a817947ac334f1259a098e224ff96a8b68aefd8422818be31ca89e0e2d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/flettede-viking/automatic/mask.png": "a34f7fa7e6120c27dd41a8e441c163679036b2717ba4f3c19801d408a7f46986",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/flettede-viking/crop.png": "b1c3446a9006f2a69f358a2c37a4cf27a8c14e8d681c6f6af853567969a9b1da",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/floral-checker/automatic/cut_geometry.json": "ac716e0a2aa14fe4330455d313b8ff5045a508612c98cd7a100d8e174c4fa5dd",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/floral-checker/automatic/independent-weave.png": "59e5a916bce4d8344762131ee78365ce829390228c3eb2ccd1aac50b5adb7f15",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/floral-checker/automatic/mask.png": "a3bd4395960468cb45eb1e927e79f1427defb088ad65188e6175e4ae55a61372",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/floral-checker/crop.png": "5f56c36e5b2bf7bca5aa492ffc5993eaac1b85c193112d7999ce599c48200726",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/flower/automatic/cut_geometry.json": "8166aedab48b2bb9b365f503f6ac46592840520e5f26c9681480c1a32ddd942f",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/flower/automatic/independent-weave.png": "a6a3723848c77d7ce97e64ea551f7ab92a8e43d8a45a3fcd0d4ecfe705f29e0e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/flower/automatic/mask.png": "a7731b3f08fedf7b34ebac173b27fc02f3d65525a2fcbc2a6896c9260bfd7721",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/flower/crop.png": "d1dd19f0cf841f5f10b9dc8048d702c3e8fbdb2ea091dcc03f52d7fd8f4c68a8",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/gift/automatic/cut_geometry.json": "09e359bda1756bae08a8d2e0ff65474c341e82e6cd9a4169ab56d624d4393945",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/gift/automatic/independent-weave.png": "33219d2d725d971d4680dc50822986431819e1122a443785d287b94796a8027b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/gift/automatic/mask.png": "072708f51d848a7754e3ff4c07b80e8674c1eee6677f87ef526389a626694d6a",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/gift/crop.png": "ba11be225e89ff83f1aad9501740fdb697871a42e0c3aa70cc97eb01bea3aa9e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/gingerbread/automatic/cut_geometry.json": "58754d754327e83244cc2311d74f9a63ade54dc39315ed6a6a93600ad8d5b4b2",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/gingerbread/automatic/independent-weave.png": "3a02f57cb927415612abe14ac1b7165c99db362d46d4a7dda23e131e6a2bc060",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/gingerbread/automatic/mask.png": "7141bc2be816939ff9c775105fa20ab1994bebea2dadb2839dfe948fbca07046",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/gingerbread/crop.png": "3644ddbcc1fe0c8f6eef8c1d64375b18058e56e0ab3528cd6434debe826d8728",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/jigsaw/automatic/cut_geometry.json": "7dda8ac65eabe72eef97dace02becc40801a0e23ed1bcea3fa3dc03563b921f2",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/jigsaw/automatic/independent-weave.png": "69e8d3f6de30b0fa6d2c994a9f6508e781d898abc3524550e75a9a625d50d9b8",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/jigsaw/automatic/mask.png": "5836657bb7a8f44a02d71936a316ed50a6b4ac22d899bdb535fc3e6bd0cc8292",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/jigsaw/crop.png": "b22e3ea88a9090705eb71eac8be5f9485f0482ed5777aebfeb3bd2ba5f78bc47",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/leaf/automatic/cut_geometry.json": "edc2ede44816c17bbeb6c39367e1423b936ffb35be786733adb460a2bae0bc06",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/leaf/automatic/independent-weave.png": "c3c53aed1987d005d7f1f2a39e8d752cdc01577943b7dee0f09ed72a662f8c15",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/leaf/automatic/mask.png": "716048eeef8b3a1beee3778f2085b3eaaeff02e5c12acfbad4cb69d416327a31",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/leaf/crop.png": "003553d180f2b83520df05059a7afe652a556dd3acc3dc0f62e7aa5f766743b9",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/maple-leaf/automatic/cut_geometry.json": "c40974d0b34870cac55a72fab0e021c0f33cba1defc2a1bb8fe9c4c04bb2f83e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/maple-leaf/automatic/independent-weave.png": "17949e02b4dd59dc8d902d73203379bbc16609536619bdfe603ac4c25d5b92f8",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/maple-leaf/automatic/mask.png": "9fea2f9125fb7524dfa5eadaaec9095c78f3fcf96b7eca2e6745c5b5517ec684",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/maple-leaf/crop.png": "232be79b104f2f517d8fd0dc60bf508eef04beff17abf817e4b8586706fb70a0",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/orb/automatic/cut_geometry.json": "20966b021c20238f6307f168e55b229a2f8f9cab062926acf733e5a1efbc6fb4",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/orb/automatic/independent-weave.png": "eaf09e501b50dcdb371f9f7d45f7276796ae7bf2f86952115d78a7e389606893",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/orb/automatic/mask.png": "7d9cfa9ca97567f82fe9d49ac68ee83b97d7d4af5f9db609eda68c6fccf59eff",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/orb/crop.png": "0f4949a1989d42c5eef6e95617a7c6fa9e0ef25471ef89a1633aaea14a33039a",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/outline-star/automatic/cut_geometry.json": "906d2a80229665d3291e6ed9133a4c7f999686014d3f938eeda806933799444c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/outline-star/automatic/independent-weave.png": "4d6a1d52d987c855afe7b41acd18ee45662e13ffe85166cbc3d562ad20a8828b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/outline-star/automatic/mask.png": "b6aa425563bc9119f335dc8092c9a1ad496ce96c7739ec15e9bed6e1e74041b9",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/outline-star/crop.png": "2518423f266911e09eb9a8f43decca557a6f5aa95f20bc0bd4a049ca2298f83b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/results.json": "38ec7875fd66f308cd13d41fb937babed119c3faf1485e2053dd339339239d8e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/round-checker/automatic/cut_geometry.json": "9bb1e94e5022aa8a1161ebe310f417bafb9f89b1ef4b123d62a9d4d2c578bcf5",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/round-checker/automatic/independent-weave.png": "3d187c138e6e3729446f7dfc04306ff762b8f0fcf30f452ae9d17b1de5711b71",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/round-checker/automatic/mask.png": "436e34e4e93c065806c13f6f145217f3c12c3fd6cb7e13279222e327c9b64136",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/round-checker/crop.png": "a89d78782d4dbd5f721ba42aead569b765b9fef1f3416b5e2a6e802fc5abff92",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/stacked-hearts/automatic/cut_geometry.json": "64ec24b836d5dd71dca23d35c5814a2e337c3445f79d9c649806d65c4a3104a2",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/stacked-hearts/automatic/independent-weave.png": "3a09f477a8707bade8c8fa991ffb403dbaa07d9471c04156194dcf528485e79e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/stacked-hearts/automatic/mask.png": "5e70aa3b8a8a502fd1f592628d82db7c8f9876a1d074d0f9be0fb9b29a7734bf",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/stacked-hearts/crop.png": "61acf47f4cc5bb592f671e4b38ba44553e90e6d6ea42150afed6df8d2a0ca7b5",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/warped-checker/automatic/cut_geometry.json": "65816f181b75a02eaeec02c6f4e17d8f63a52e7d7ba9fbad285efd9997fca03e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/warped-checker/automatic/independent-weave.png": "3107ec6c6c78080f546a5f97cad022b471c423c00e9ba402a8aa54e86b1d33ac",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/warped-checker/automatic/mask.png": "34d1200c3ccb16b6a54f582456d4ab17d246921ecb35df53c88031447ae524cd",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/warped-checker/crop.png": "96db79941d95ef334546be6a5a67656d03d09d082cf13e8cb589b04ddae4c1cd",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/white-birds/automatic/cut_geometry.json": "6c8c0ef9ecf16ffde3f8b46b9424f2c8f7d169e8b2e0de6f278547cd700fb1ce",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/white-birds/automatic/independent-weave.png": "e5d93425d83551428c8035b96f22940a4dd94f5bc97643aa56994c9b263a2483",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/white-birds/automatic/mask.png": "722d69312e347ea00608408f4961229541bf1414b42735dbb1becfaec72d939c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/photos/white-birds/crop.png": "4eaa7b91e7f5efda70fb4cd74283d969507145baaad73c32926b50c97deb26b5",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/row-kernel-v1/release-v2/source.json": "7ae154b6f8a4a6f3dea1ac5bf4e2dbda529109c043385e9f8071d07988be9625"
+  }
+}

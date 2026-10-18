@@ -1,0 +1,214 @@
+{
+  "implementationCommit": "f1fb202",
+  "baselineCommit": "f826c88",
+  "checks": {
+    "applicationPassed": 840,
+    "applicationSkipped": 1,
+    "enginePassed": 391,
+    "typeErrors": 0,
+    "existingTypeWarnings": 7,
+    "lint": "passed",
+    "build": "passed"
+  },
+  "gallery": {
+    "designs": 38,
+    "phases": 2,
+    "joinedCases": 76,
+    "identicalFillPaths": 72,
+    "changedCases": [
+      {
+        "id": "amy-pattern",
+        "phase": 0,
+        "previouslyJoined": false,
+        "identical": false,
+        "coverageDifference800": 5.571526856356578e-06
+      },
+      {
+        "id": "amy-pattern",
+        "phase": 1,
+        "previouslyJoined": false,
+        "identical": false,
+        "coverageDifference800": 5.589955280357757e-06
+      },
+      {
+        "id": "triple-heart",
+        "phase": 0,
+        "previouslyJoined": false,
+        "identical": false,
+        "coverageDifference800": 0
+      },
+      {
+        "id": "triple-heart",
+        "phase": 1,
+        "previouslyJoined": false,
+        "identical": false,
+        "coverageDifference800": 0
+      }
+    ]
+  },
+  "geometryOracle": {
+    "comparisons": 20,
+    "probesPerComparison": 2491,
+    "probeMismatches": 0,
+    "method": "Uniform cubic samples and independent scanline parity; no clipping roots or SVG tessellation reused.",
+    "maximumPermittedCoverageDifference400": 0.002,
+    "maximumPermittedGalleryCoverageDifference384": 0.0005
+  },
+  "rendering": [
+    {
+      "browser": "chromium",
+      "design": "classic-3x3",
+      "checks": 6,
+      "maximumChannelDriftAfter": 0,
+      "maximumChannelDriftBefore": 100
+    },
+    {
+      "browser": "chromium",
+      "design": "amy-pattern",
+      "checks": 6,
+      "maximumChannelDriftAfter": 0,
+      "maximumChannelDriftBefore": 113
+    },
+    {
+      "browser": "chromium",
+      "design": "triple-heart",
+      "checks": 6,
+      "maximumChannelDriftAfter": 0,
+      "maximumChannelDriftBefore": 99
+    },
+    {
+      "browser": "firefox",
+      "design": "classic-3x3",
+      "checks": 6,
+      "maximumChannelDriftAfter": 0,
+      "maximumChannelDriftBefore": 118
+    },
+    {
+      "browser": "firefox",
+      "design": "amy-pattern",
+      "checks": 6,
+      "maximumChannelDriftAfter": 0,
+      "maximumChannelDriftBefore": 131
+    },
+    {
+      "browser": "firefox",
+      "design": "triple-heart",
+      "checks": 6,
+      "maximumChannelDriftAfter": 0,
+      "maximumChannelDriftBefore": 118
+    },
+    {
+      "browser": "webkit",
+      "design": "classic-3x3",
+      "checks": 6,
+      "maximumChannelDriftAfter": 0,
+      "maximumChannelDriftBefore": 79
+    },
+    {
+      "browser": "webkit",
+      "design": "amy-pattern",
+      "checks": 6,
+      "maximumChannelDriftAfter": 0,
+      "maximumChannelDriftBefore": 89
+    },
+    {
+      "browser": "webkit",
+      "design": "triple-heart",
+      "checks": 6,
+      "maximumChannelDriftAfter": 0,
+      "maximumChannelDriftBefore": 79
+    }
+  ],
+  "drawExports": [
+    {
+      "browser": "chromium",
+      "id": "classic-3x3",
+      "errors": [],
+      "maximumControlDrift": 0,
+      "coordinates": 64,
+      "passed": true
+    },
+    {
+      "browser": "chromium",
+      "id": "amy-pattern",
+      "errors": [],
+      "maximumControlDrift": 0,
+      "coordinates": 256,
+      "passed": true
+    },
+    {
+      "browser": "chromium",
+      "id": "triple-heart",
+      "errors": [],
+      "maximumControlDrift": 5.684341886080802e-14,
+      "coordinates": 256,
+      "passed": true
+    },
+    {
+      "browser": "firefox",
+      "id": "classic-3x3",
+      "errors": [],
+      "maximumControlDrift": 0,
+      "coordinates": 64,
+      "passed": true
+    },
+    {
+      "browser": "firefox",
+      "id": "amy-pattern",
+      "errors": [],
+      "maximumControlDrift": 0,
+      "coordinates": 256,
+      "passed": true
+    },
+    {
+      "browser": "firefox",
+      "id": "triple-heart",
+      "errors": [],
+      "maximumControlDrift": 5.684341886080802e-14,
+      "coordinates": 256,
+      "passed": true
+    },
+    {
+      "browser": "webkit",
+      "id": "classic-3x3",
+      "errors": [],
+      "maximumControlDrift": 0,
+      "coordinates": 64,
+      "passed": true
+    },
+    {
+      "browser": "webkit",
+      "id": "amy-pattern",
+      "errors": [],
+      "maximumControlDrift": 0,
+      "coordinates": 256,
+      "passed": true
+    },
+    {
+      "browser": "webkit",
+      "id": "triple-heart",
+      "errors": [],
+      "maximumControlDrift": 5.684341886080802e-14,
+      "coordinates": 256,
+      "passed": true
+    }
+  ],
+  "exportedScalarCoordinates": 1728,
+  "maximumExportDrift": 5.684341886080802e-14,
+  "sourceSha256": {
+    "src/lib/geometry/clipBezierLoop.ts": "d89a40c36eab8e05b4971689b380b801d150186e64b86aea9d5fa7cc1fa8b18f",
+    "src/lib/geometry/clipBezierLoop.test.ts": "4407d5adfd3cebce1dff52f1817b30f9999011af6d4bcc9c504cc0cd07a41488",
+    "src/lib/geometry/curves.ts": "f68e8539e1f6df509807a45a0866b023e836f01536458f014167804446fe59cb",
+    "src/lib/rendering/heartPaint.ts": "d8068059984944c548539323f132395956b96a741cf55bd58b26b009779baecd",
+    "src/lib/rendering/heartPaint.test.ts": "c8e058caf755c750a88cd394acaa6f43aa9b5196f57b7f9e34d18e8a0f60cb26",
+    "src/lib/components/HeartWeaveFill.test.ts": "225dfb6ff4bada1af4b9186c69e118c5c32a819578f6496382a16c6601c1f75d",
+    "scripts/inverse/heart-render-browser-test.mjs": "cf0ec884edd302b96f56076bca16f2dbcfa5b5b3649d8212c8595358439f9f2c",
+    "scripts/inverse/heart-clipping-editor-browser-test.mjs": "2438b927d11f331ca726a29462ec7c7c34e0d7acf9c8c0185683e80d2deb324f"
+  },
+  "artifactReports": [
+    "tmp/clipped-render-browser/report.json",
+    "tmp/clipped-editor-browser/report.json",
+    "tmp/clipped-gallery-results.json"
+  ],
+  "scope": "Only fill clipping changed. Cutting geometry, inverse fitter, source masks and conversion validation are unchanged."
+}

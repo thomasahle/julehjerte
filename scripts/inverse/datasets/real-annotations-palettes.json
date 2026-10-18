@@ -1,0 +1,242 @@
+{
+  "schema": "woven-heart-real-annotations-1",
+  "coordinateConvention": "source-image pixel edges; x right, y down; no EXIF transform",
+  "target": "visible woven basket body, excluding handle",
+  "scope": "One additional unassigned public Pinterest photograph with reviewed orange/yellow body and conservative uncertainty. No exact overlap corners or cutting paths.",
+  "instances": [
+    {
+      "id": "real-e936e08ac62db19b-body-1",
+      "assetId": "real-e936e08ac62db19b",
+      "imageSha256": "e936e08ac62db19b9b12cf9ce4e1a0b10fbb50023316daaee6f36747beae5643",
+      "sourceSize": [
+        1280,
+        720
+      ],
+      "review": {
+        "method": "assistant-visual-polygon",
+        "status": "initial-reviewed",
+        "viewSize": [
+          1280,
+          720
+        ],
+        "note": "Orange/yellow paper on a decorated table. Image frame, flowers, chicken decoration and tablecloth are background. A feather crossing the lower-left body edge is unknown. No exact overlap corners or cutting paths are inferred; native source outline and compiled body/material overlays at 256 and 768 pixels were visually reviewed."
+      },
+      "motif": {
+        "candidateFamily": "regular-checkerboard",
+        "crossCorpusReview": "pending"
+      },
+      "allocation": "unassigned",
+      "pose": "upright",
+      "foregroundPolygons": [
+        [
+          [
+            637,
+            114
+          ],
+          [
+            613,
+            97
+          ],
+          [
+            586,
+            85
+          ],
+          [
+            558,
+            79
+          ],
+          [
+            521,
+            77
+          ],
+          [
+            485,
+            83
+          ],
+          [
+            454,
+            99
+          ],
+          [
+            423,
+            124
+          ],
+          [
+            393,
+            154
+          ],
+          [
+            367,
+            186
+          ],
+          [
+            343,
+            218
+          ],
+          [
+            333,
+            242
+          ],
+          [
+            330,
+            268
+          ],
+          [
+            333,
+            303
+          ],
+          [
+            340,
+            337
+          ],
+          [
+            352,
+            363
+          ],
+          [
+            369,
+            388
+          ],
+          [
+            436,
+            455
+          ],
+          [
+            501,
+            529
+          ],
+          [
+            531,
+            558
+          ],
+          [
+            584,
+            611
+          ],
+          [
+            654,
+            678
+          ],
+          [
+            716,
+            611
+          ],
+          [
+            786,
+            540
+          ],
+          [
+            855,
+            469
+          ],
+          [
+            925,
+            393
+          ],
+          [
+            945,
+            368
+          ],
+          [
+            960,
+            339
+          ],
+          [
+            972,
+            308
+          ],
+          [
+            979,
+            278
+          ],
+          [
+            978,
+            249
+          ],
+          [
+            971,
+            223
+          ],
+          [
+            958,
+            199
+          ],
+          [
+            939,
+            174
+          ],
+          [
+            909,
+            144
+          ],
+          [
+            875,
+            115
+          ],
+          [
+            841,
+            93
+          ],
+          [
+            808,
+            78
+          ],
+          [
+            775,
+            69
+          ],
+          [
+            745,
+            65
+          ],
+          [
+            715,
+            68
+          ],
+          [
+            685,
+            79
+          ],
+          [
+            659,
+            94
+          ]
+        ]
+      ],
+      "unknownPolygons": [
+        [
+          [
+            518,
+            537
+          ],
+          [
+            540,
+            548
+          ],
+          [
+            567,
+            590
+          ],
+          [
+            584,
+            624
+          ],
+          [
+            565,
+            639
+          ],
+          [
+            539,
+            605
+          ],
+          [
+            522,
+            575
+          ]
+        ]
+      ],
+      "boundaryUncertaintyPixels": 7,
+      "overlapCorners": null
+    }
+  ]
+}

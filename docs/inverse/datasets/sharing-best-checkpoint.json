@@ -1,0 +1,2265 @@
+{
+  "schema": "sharing-best-checkpoint-1",
+  "status": "focused-frozen-and-full-release-qa-passed",
+  "problem": "Shared-cut search retains one original-source error ceiling so complementary edits may temporarily worsen the score. It previously returned the last accepted state even after visiting a better valid source-image checkpoint.",
+  "change": "Retain the lowest original-source disagreement checkpoint while continuing the same search. Equal scores select the later checkpoint to preserve additional exact alignments. No-source searches retain the established last state, whose fitting/high-resolution errors already descend. Actual selected-prefix proposals remain in sharing.accepted; the later explored suffix is preserved in sharing.unselected with selection diagnostics.",
+  "criteriaUnchanged": [
+    "source-image ceiling",
+    "fitting and high-resolution image gates",
+    "feature preservation",
+    "symmetry and matching constraints",
+    "cutting quality",
+    "geometry",
+    "paper",
+    "iteration and wall-time budgets"
+  ],
+  "regression": {
+    "source": "scripts/inverse/fixtures/sharing-best-checkpoint.json",
+    "sourceErrors": [
+      0.0193125,
+      0.01928125,
+      0.0192625,
+      0.01926875,
+      0.01926875,
+      0.0192375,
+      0.01920625,
+      0.01920625,
+      0.0192125
+    ],
+    "selectedError": 0.01920625,
+    "previousFinalError": 0.0192125,
+    "temporaryRegressionsRetained": true
+  },
+  "verification": {
+    "focusedTests": 112,
+    "frozenPairs": 56,
+    "frozenGeometryIdentical": 52,
+    "sourceImproved": 4,
+    "sourceWorse": 0,
+    "independentImproved": 2,
+    "independentWorse": 2,
+    "geometryAndPaperPasses": 112,
+    "featureChangePasses": 56,
+    "sourceFilesVerified": 531
+  },
+  "method": "Both arms align the same 55 saved current exports plus a historical regression fixture, with identical native masks, coverage, settings and source dependencies. Twelve-round search without a time cutoff. This isolates checkpoint selection; it is not a fresh fitting, cropper, latency or automatic success-rate benchmark.",
+  "visualReview": "All four changed render pairs inspected. Changes are minute at the source resolution; uneven checker cells, imperfect contacts and missing bauble frame remain. The frozen comparison establishes retention of the lowest production-source score, not recovery of those motifs.",
+  "qualification": "Independent antialiased rendering disagrees with the source pixel-centre sampler at some boundary pixels. It improves fine checker by three pixels and jigsaw by two, but worsens the already failing bauble by two observed pixels and historical floral checker by one. These tradeoffs are retained rather than claiming every rendering metric improves.",
+  "releaseQA": {
+    "status": "complete",
+    "report": "docs/inverse/datasets/sharing-best-checkpoint-release-qa.json",
+    "browserPassed": 29,
+    "nativePassed": 53,
+    "nativeTotal": 55,
+    "editableGeometryAndPaperPassed": 55,
+    "sameKnownFailures": [
+      "photo-outline-star",
+      "photo-bauble"
+    ],
+    "qualification": "Fresh timed fits have both error increases and decreases. No uniform full-fit quality improvement is claimed.",
+    "root": "tmp/heart-learning/shared-best-checkpoint-v1/qa",
+    "applicationPassed": 874,
+    "applicationSkipped": 1,
+    "inversePassed": 1008,
+    "sourceFilesVerified": 1025
+  },
+  "results": [
+    {
+      "id": "hunodan-hjfig-01",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 1379,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.009806222222222221
+        },
+        "independentError": {
+          "mismatchPixels": 1378,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.009799111111111111
+        },
+        "geometrySha256": "a2ae29d501a6d2dee5a894558a37f87e85a8e9a8e2b4d9e01e42eccd2f4f4c19",
+        "seconds": 0.015935415999999977
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 1379,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.009806222222222221
+        },
+        "independentError": {
+          "mismatchPixels": 1378,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.009799111111111111
+        },
+        "geometrySha256": "a2ae29d501a6d2dee5a894558a37f87e85a8e9a8e2b4d9e01e42eccd2f4f4c19",
+        "seconds": 0.014705125000000067
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "hunodan-hjfig-02",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 861,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00538125
+        },
+        "independentError": {
+          "mismatchPixels": 898,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0056125
+        },
+        "geometrySha256": "c9402b2069de5ae5b40267ad9de2ad103cefe92949e3c0422c231e8c90074da7",
+        "seconds": 0.11894387500000005
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 861,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00538125
+        },
+        "independentError": {
+          "mismatchPixels": 898,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0056125
+        },
+        "geometrySha256": "c9402b2069de5ae5b40267ad9de2ad103cefe92949e3c0422c231e8c90074da7",
+        "seconds": 0.14886341699999991
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "hunodan-hjfig-03",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 928,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.006599111111111111
+        },
+        "independentError": {
+          "mismatchPixels": 933,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.006634666666666666
+        },
+        "geometrySha256": "241b0a4dcb90a212faffc9699ad00135029214500417969e3bab0d70f8f4ba46",
+        "seconds": 0.07757137499999998
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 928,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.006599111111111111
+        },
+        "independentError": {
+          "mismatchPixels": 933,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.006634666666666666
+        },
+        "geometrySha256": "241b0a4dcb90a212faffc9699ad00135029214500417969e3bab0d70f8f4ba46",
+        "seconds": 0.05103583299999991
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "hunodan-hjfig-04",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 1969,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.014001777777777778
+        },
+        "independentError": {
+          "mismatchPixels": 1944,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.013824
+        },
+        "geometrySha256": "2312e8f72e0e34c6d040b296ddac1c596a424cf229120cdc78ad79972b0595ff",
+        "seconds": 0.008353875000000016
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 1969,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.014001777777777778
+        },
+        "independentError": {
+          "mismatchPixels": 1944,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.013824
+        },
+        "geometrySha256": "2312e8f72e0e34c6d040b296ddac1c596a424cf229120cdc78ad79972b0595ff",
+        "seconds": 0.006304000000000087
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "hunodan-hjfig-05",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 862,
+          "observedPixels": 113569,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0075900994109308
+        },
+        "independentError": {
+          "mismatchPixels": 911,
+          "observedPixels": 113569,
+          "observedFraction": 1,
+          "mismatchFraction": 0.008021555177909465
+        },
+        "geometrySha256": "c2796770e31f514c9d83e46919a02f11549f6781253a063f4b7dc73908851251",
+        "seconds": 0.01326533399999994
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 862,
+          "observedPixels": 113569,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0075900994109308
+        },
+        "independentError": {
+          "mismatchPixels": 911,
+          "observedPixels": 113569,
+          "observedFraction": 1,
+          "mismatchFraction": 0.008021555177909465
+        },
+        "geometrySha256": "c2796770e31f514c9d83e46919a02f11549f6781253a063f4b7dc73908851251",
+        "seconds": 0.029429499999999963
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "hunodan-hjfla-01",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 1041,
+          "observedPixels": 147456,
+          "observedFraction": 1,
+          "mismatchFraction": 0.007059733072916667
+        },
+        "independentError": {
+          "mismatchPixels": 1059,
+          "observedPixels": 147456,
+          "observedFraction": 1,
+          "mismatchFraction": 0.007181803385416667
+        },
+        "geometrySha256": "21375fc1b7547c010782d97f97680d8ab704e2cb61065dc7aa952772a8e379fa",
+        "seconds": 0.05947775000000002
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 1041,
+          "observedPixels": 147456,
+          "observedFraction": 1,
+          "mismatchFraction": 0.007059733072916667
+        },
+        "independentError": {
+          "mismatchPixels": 1059,
+          "observedPixels": 147456,
+          "observedFraction": 1,
+          "mismatchFraction": 0.007181803385416667
+        },
+        "geometrySha256": "21375fc1b7547c010782d97f97680d8ab704e2cb61065dc7aa952772a8e379fa",
+        "seconds": 0.09418758299999991
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "hunodan-hjcur-01",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 696,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.004949333333333333
+        },
+        "independentError": {
+          "mismatchPixels": 724,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.005148444444444444
+        },
+        "geometrySha256": "4b866cdc142ce50188e3163634e587041793ad04c2e413e5d85f66202084b044",
+        "seconds": 0.020986332999999833
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 696,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.004949333333333333
+        },
+        "independentError": {
+          "mismatchPixels": 724,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.005148444444444444
+        },
+        "geometrySha256": "4b866cdc142ce50188e3163634e587041793ad04c2e413e5d85f66202084b044",
+        "seconds": 0.016351624999999786
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "hunodan-hjcur-02",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 686,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.004878222222222222
+        },
+        "independentError": {
+          "mismatchPixels": 713,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0050702222222222225
+        },
+        "geometrySha256": "adab9b0c0bb8f9eeab6721f04ccb5fcd934519ee0e8d8d43b2a028bbe92eed3b",
+        "seconds": 0.019574417000000267
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 686,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.004878222222222222
+        },
+        "independentError": {
+          "mismatchPixels": 713,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0050702222222222225
+        },
+        "geometrySha256": "adab9b0c0bb8f9eeab6721f04ccb5fcd934519ee0e8d8d43b2a028bbe92eed3b",
+        "seconds": 0.012704040999999961
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "hunodan-hjcur-03",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 592,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0042097777777777776
+        },
+        "independentError": {
+          "mismatchPixels": 636,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.004522666666666667
+        },
+        "geometrySha256": "0bb39a5c84cbb0f7f5b89e4c6334e9ebb2373298207355b20ef29980d365a071",
+        "seconds": 0.0202117089999997
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 592,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0042097777777777776
+        },
+        "independentError": {
+          "mismatchPixels": 636,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.004522666666666667
+        },
+        "geometrySha256": "0bb39a5c84cbb0f7f5b89e4c6334e9ebb2373298207355b20ef29980d365a071",
+        "seconds": 0.03405325000000039
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "hunodan-hjcur-04",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 758,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0053902222222222225
+        },
+        "independentError": {
+          "mismatchPixels": 793,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.005639111111111111
+        },
+        "geometrySha256": "7d10439035589189a1f36a38ab7b4942a4c4603dd9437ebc7dacb1f451db9853",
+        "seconds": 0.024880041999999776
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 758,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0053902222222222225
+        },
+        "independentError": {
+          "mismatchPixels": 793,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.005639111111111111
+        },
+        "geometrySha256": "7d10439035589189a1f36a38ab7b4942a4c4603dd9437ebc7dacb1f451db9853",
+        "seconds": 0.02917183299999988
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "hunodan-hjcur-05",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 1317,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.009365333333333333
+        },
+        "independentError": {
+          "mismatchPixels": 1313,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00933688888888889
+        },
+        "geometrySha256": "57c52b6fbb8a7f37206c0c758c354d7aea328b68199f1dfa29c88be80d02b09c",
+        "seconds": 0.006076833000000079
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 1317,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.009365333333333333
+        },
+        "independentError": {
+          "mismatchPixels": 1313,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00933688888888889
+        },
+        "geometrySha256": "57c52b6fbb8a7f37206c0c758c354d7aea328b68199f1dfa29c88be80d02b09c",
+        "seconds": 0.006073457999999846
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "hunodan-hjhih-01",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 879,
+          "observedPixels": 148996,
+          "observedFraction": 1,
+          "mismatchFraction": 0.005899487234556632
+        },
+        "independentError": {
+          "mismatchPixels": 900,
+          "observedPixels": 148996,
+          "observedFraction": 1,
+          "mismatchFraction": 0.006040430615586996
+        },
+        "geometrySha256": "b1b47096a5029e2f574f0f3445adb918209460d1a656c29986b46133153011c4",
+        "seconds": 0.11652929100000074
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 879,
+          "observedPixels": 148996,
+          "observedFraction": 1,
+          "mismatchFraction": 0.005899487234556632
+        },
+        "independentError": {
+          "mismatchPixels": 900,
+          "observedPixels": 148996,
+          "observedFraction": 1,
+          "mismatchFraction": 0.006040430615586996
+        },
+        "geometrySha256": "b1b47096a5029e2f574f0f3445adb918209460d1a656c29986b46133153011c4",
+        "seconds": 0.11966879100000005
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "hunodan-hjhih-02",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 564,
+          "observedPixels": 146689,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0038448690767542214
+        },
+        "independentError": {
+          "mismatchPixels": 572,
+          "observedPixels": 146689,
+          "observedFraction": 1,
+          "mismatchFraction": 0.003899406226779104
+        },
+        "geometrySha256": "b34bb7320bc49c07775efa0307e693f60c35160571a39a339af4c1fdd693a70f",
+        "seconds": 0.10130174999999964
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 564,
+          "observedPixels": 146689,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0038448690767542214
+        },
+        "independentError": {
+          "mismatchPixels": 572,
+          "observedPixels": 146689,
+          "observedFraction": 1,
+          "mismatchFraction": 0.003899406226779104
+        },
+        "geometrySha256": "b34bb7320bc49c07775efa0307e693f60c35160571a39a339af4c1fdd693a70f",
+        "seconds": 0.08343166700000074
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "hunodan-hjhih-04",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 1163,
+          "observedPixels": 154449,
+          "observedFraction": 1,
+          "mismatchFraction": 0.007529993719609709
+        },
+        "independentError": {
+          "mismatchPixels": 1201,
+          "observedPixels": 154449,
+          "observedFraction": 1,
+          "mismatchFraction": 0.007776029627903062
+        },
+        "geometrySha256": "c750f18c8101a9d5c7fd662f251fca05edace426c21362c7c0d9411444a3e556",
+        "seconds": 0.1314801669999997
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 1163,
+          "observedPixels": 154449,
+          "observedFraction": 1,
+          "mismatchFraction": 0.007529993719609709
+        },
+        "independentError": {
+          "mismatchPixels": 1201,
+          "observedPixels": 154449,
+          "observedFraction": 1,
+          "mismatchFraction": 0.007776029627903062
+        },
+        "geometrySha256": "c750f18c8101a9d5c7fd662f251fca05edace426c21362c7c0d9411444a3e556",
+        "seconds": 0.20001416599999994
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "hunodan-hjstr-01",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 1049,
+          "observedPixels": 145161,
+          "observedFraction": 1,
+          "mismatchFraction": 0.007226458897362239
+        },
+        "independentError": {
+          "mismatchPixels": 1096,
+          "observedPixels": 145161,
+          "observedFraction": 1,
+          "mismatchFraction": 0.007550237322696868
+        },
+        "geometrySha256": "b241aa4245048eb29bc5040a8594baa11b8c77a9b2a86028c9b2baad11326bd5",
+        "seconds": 0.0074784999999992574
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 1049,
+          "observedPixels": 145161,
+          "observedFraction": 1,
+          "mismatchFraction": 0.007226458897362239
+        },
+        "independentError": {
+          "mismatchPixels": 1096,
+          "observedPixels": 145161,
+          "observedFraction": 1,
+          "mismatchFraction": 0.007550237322696868
+        },
+        "geometrySha256": "b241aa4245048eb29bc5040a8594baa11b8c77a9b2a86028c9b2baad11326bd5",
+        "seconds": 0.010449499999999716
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "hunodan-hjstr-02",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 624,
+          "observedPixels": 152100,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0041025641025641026
+        },
+        "independentError": {
+          "mismatchPixels": 664,
+          "observedPixels": 152100,
+          "observedFraction": 1,
+          "mismatchFraction": 0.004365548980933596
+        },
+        "geometrySha256": "ffe279ed934df5ea77dc4629b7448ca8712468eb3bb625f12bbbf93e690812d3",
+        "seconds": 0.013695042000000286
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 624,
+          "observedPixels": 152100,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0041025641025641026
+        },
+        "independentError": {
+          "mismatchPixels": 664,
+          "observedPixels": 152100,
+          "observedFraction": 1,
+          "mismatchFraction": 0.004365548980933596
+        },
+        "geometrySha256": "ffe279ed934df5ea77dc4629b7448ca8712468eb3bb625f12bbbf93e690812d3",
+        "seconds": 0.014439833000000362
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "hunodan-hjstr-03",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 811,
+          "observedPixels": 150544,
+          "observedFraction": 1,
+          "mismatchFraction": 0.005387129344244872
+        },
+        "independentError": {
+          "mismatchPixels": 845,
+          "observedPixels": 150544,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0056129769369752365
+        },
+        "geometrySha256": "a93ae4013c8d6e607f19876a4252a2945d5b9ed05e1fd516048aaadbc576a3a5",
+        "seconds": 0.02292570799999976
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 811,
+          "observedPixels": 150544,
+          "observedFraction": 1,
+          "mismatchFraction": 0.005387129344244872
+        },
+        "independentError": {
+          "mismatchPixels": 845,
+          "observedPixels": 150544,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0056129769369752365
+        },
+        "geometrySha256": "a93ae4013c8d6e607f19876a4252a2945d5b9ed05e1fd516048aaadbc576a3a5",
+        "seconds": 0.025038290999999845
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "hunodan-hjsta-01",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 1133,
+          "observedPixels": 144400,
+          "observedFraction": 1,
+          "mismatchFraction": 0.007846260387811634
+        },
+        "independentError": {
+          "mismatchPixels": 1144,
+          "observedPixels": 144400,
+          "observedFraction": 1,
+          "mismatchFraction": 0.007922437673130193
+        },
+        "geometrySha256": "9d1d62e00cf9d152a8a9b74abfc55714c56a5b7f9db5ff5a4878a2d714232b1b",
+        "seconds": 0.029696458999999776
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 1133,
+          "observedPixels": 144400,
+          "observedFraction": 1,
+          "mismatchFraction": 0.007846260387811634
+        },
+        "independentError": {
+          "mismatchPixels": 1144,
+          "observedPixels": 144400,
+          "observedFraction": 1,
+          "mismatchFraction": 0.007922437673130193
+        },
+        "geometrySha256": "9d1d62e00cf9d152a8a9b74abfc55714c56a5b7f9db5ff5a4878a2d714232b1b",
+        "seconds": 0.05610841699999946
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "hunodan-hjsta-02",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 341,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00213125
+        },
+        "independentError": {
+          "mismatchPixels": 355,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00221875
+        },
+        "geometrySha256": "944f43f9b9ea1918f310f6df40c0bef356d1230bc2089cfd9a88ab3b3c8c5f39",
+        "seconds": 0.01259387500000048
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 341,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00213125
+        },
+        "independentError": {
+          "mismatchPixels": 355,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00221875
+        },
+        "geometrySha256": "944f43f9b9ea1918f310f6df40c0bef356d1230bc2089cfd9a88ab3b3c8c5f39",
+        "seconds": 0.013927249999999732
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "hunodan-hjsta-03",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 1757,
+          "observedPixels": 146689,
+          "observedFraction": 1,
+          "mismatchFraction": 0.011977721574214836
+        },
+        "independentError": {
+          "mismatchPixels": 1812,
+          "observedPixels": 146689,
+          "observedFraction": 1,
+          "mismatchFraction": 0.012352664480635904
+        },
+        "geometrySha256": "e58ce8b1348960f20993e094344348f7a50f3cf5d71a218cad3a3bd95a7199c4",
+        "seconds": 0.07343579099999988
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 1757,
+          "observedPixels": 146689,
+          "observedFraction": 1,
+          "mismatchFraction": 0.011977721574214836
+        },
+        "independentError": {
+          "mismatchPixels": 1812,
+          "observedPixels": 146689,
+          "observedFraction": 1,
+          "mismatchFraction": 0.012352664480635904
+        },
+        "geometrySha256": "e58ce8b1348960f20993e094344348f7a50f3cf5d71a218cad3a3bd95a7199c4",
+        "seconds": 0.1057186670000001
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "hunodan-hjsta-04",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 685,
+          "observedPixels": 142884,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0047940987094426245
+        },
+        "independentError": {
+          "mismatchPixels": 718,
+          "observedPixels": 142884,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0050250552896055544
+        },
+        "geometrySha256": "043abe55fe5c241a737d992a2d9877c8c48467455ead6140831445aa1bd20f72",
+        "seconds": 0.022607374999999593
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 685,
+          "observedPixels": 142884,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0047940987094426245
+        },
+        "independentError": {
+          "mismatchPixels": 718,
+          "observedPixels": 142884,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0050250552896055544
+        },
+        "geometrySha256": "043abe55fe5c241a737d992a2d9877c8c48467455ead6140831445aa1bd20f72",
+        "seconds": 0.04782124999999996
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "hunodan-hjsta-05",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 1550,
+          "observedPixels": 148996,
+          "observedFraction": 1,
+          "mismatchFraction": 0.010402963837955382
+        },
+        "independentError": {
+          "mismatchPixels": 1583,
+          "observedPixels": 148996,
+          "observedFraction": 1,
+          "mismatchFraction": 0.010624446293860237
+        },
+        "geometrySha256": "7509bc76049372437a533a1535739f7586349b8e48e3a8bc83860257481f0b90",
+        "seconds": 0.03786416699999973
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 1550,
+          "observedPixels": 148996,
+          "observedFraction": 1,
+          "mismatchFraction": 0.010402963837955382
+        },
+        "independentError": {
+          "mismatchPixels": 1583,
+          "observedPixels": 148996,
+          "observedFraction": 1,
+          "mismatchFraction": 0.010624446293860237
+        },
+        "geometrySha256": "7509bc76049372437a533a1535739f7586349b8e48e3a8bc83860257481f0b90",
+        "seconds": 0.01582487500000025
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "hard-bibel-star-outline",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 1822,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0113875
+        },
+        "independentError": {
+          "mismatchPixels": 1856,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0116
+        },
+        "geometrySha256": "fe8fc1ed3462afbf01ef142476f1a419f4f958d04d38be87666cedc4281e77a5",
+        "seconds": 0.018303750000000944
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 1822,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0113875
+        },
+        "independentError": {
+          "mismatchPixels": 1856,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0116
+        },
+        "geometrySha256": "fe8fc1ed3462afbf01ef142476f1a419f4f958d04d38be87666cedc4281e77a5",
+        "seconds": 0.016754000000000813
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "hard-bibel-star-outline-half",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 1699,
+          "observedPixels": 109561,
+          "observedFraction": 1,
+          "mismatchFraction": 0.015507342941375124
+        },
+        "independentError": {
+          "mismatchPixels": 1728,
+          "observedPixels": 109561,
+          "observedFraction": 1,
+          "mismatchFraction": 0.015772035669626965
+        },
+        "geometrySha256": "bb16ed47a7a317123559ba6cc493bc59fcdd45c4ae21558e89b3d327a14cfbc9",
+        "seconds": 0.011318124999999781
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 1699,
+          "observedPixels": 109561,
+          "observedFraction": 1,
+          "mismatchFraction": 0.015507342941375124
+        },
+        "independentError": {
+          "mismatchPixels": 1728,
+          "observedPixels": 109561,
+          "observedFraction": 1,
+          "mismatchFraction": 0.015772035669626965
+        },
+        "geometrySha256": "bb16ed47a7a317123559ba6cc493bc59fcdd45c4ae21558e89b3d327a14cfbc9",
+        "seconds": 0.011235582999999678
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "hard-bibel-star-outline-jpeg75",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 2683,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01676875
+        },
+        "independentError": {
+          "mismatchPixels": 2692,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.016825
+        },
+        "geometrySha256": "deb27cf691a3ce6d4050b708988e4b1a4f88d76565df827f544aeb61bdd6d3d1",
+        "seconds": 0.011178250000000844
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 2683,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01676875
+        },
+        "independentError": {
+          "mismatchPixels": 2692,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.016825
+        },
+        "geometrySha256": "deb27cf691a3ce6d4050b708988e4b1a4f88d76565df827f544aeb61bdd6d3d1",
+        "seconds": 0.010980208999999377
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "hard-flettede-puppy-half",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 1785,
+          "observedPixels": 152100,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01173570019723866
+        },
+        "independentError": {
+          "mismatchPixels": 1797,
+          "observedPixels": 152100,
+          "observedFraction": 1,
+          "mismatchFraction": 0.011814595660749506
+        },
+        "geometrySha256": "bb6205bc692e62b130b32c96d45e3e51d08a290b5c3eee3743e1c9eb36ed7acd",
+        "seconds": 1.894954749999999
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 1785,
+          "observedPixels": 152100,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01173570019723866
+        },
+        "independentError": {
+          "mismatchPixels": 1797,
+          "observedPixels": 152100,
+          "observedFraction": 1,
+          "mismatchFraction": 0.011814595660749506
+        },
+        "geometrySha256": "bb6205bc692e62b130b32c96d45e3e51d08a290b5c3eee3743e1c9eb36ed7acd",
+        "seconds": 2.097829625
+      },
+      "selectedAlignments": 1,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-outline-star",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 1205,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00753125
+        },
+        "independentError": {
+          "mismatchPixels": 1198,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0074875
+        },
+        "geometrySha256": "f39f9a31b7c52859f69dea759df3b2f2222865fa6672ec2851126cdef0647d4a",
+        "seconds": 0.12897124999999868
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 1205,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00753125
+        },
+        "independentError": {
+          "mismatchPixels": 1198,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0074875
+        },
+        "geometrySha256": "f39f9a31b7c52859f69dea759df3b2f2222865fa6672ec2851126cdef0647d4a",
+        "seconds": 0.07524362499999916
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-floral-checker",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 2227,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01391875
+        },
+        "independentError": {
+          "mismatchPixels": 2254,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0140875
+        },
+        "geometrySha256": "6f0b73fb089b25edf6af5e7309be880817c3b496d89a13a8549dcafd4ba24735",
+        "seconds": 1.868185125
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 2227,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01391875
+        },
+        "independentError": {
+          "mismatchPixels": 2254,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0140875
+        },
+        "geometrySha256": "6f0b73fb089b25edf6af5e7309be880817c3b496d89a13a8549dcafd4ba24735",
+        "seconds": 1.9828656250000003
+      },
+      "selectedAlignments": 4,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-dense-checker",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 1070,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0066875
+        },
+        "independentError": {
+          "mismatchPixels": 1119,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00699375
+        },
+        "geometrySha256": "b10795dd1d26b12e4487cb3d578ed61a8dfa06c69b30e3d1ec6d39f142b3ac98",
+        "seconds": 0.031856541000001015
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 1070,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0066875
+        },
+        "independentError": {
+          "mismatchPixels": 1119,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00699375
+        },
+        "geometrySha256": "b10795dd1d26b12e4487cb3d578ed61a8dfa06c69b30e3d1ec6d39f142b3ac98",
+        "seconds": 0.03621970800000054
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-bird",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 3198,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0199875
+        },
+        "independentError": {
+          "mismatchPixels": 3140,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.019625
+        },
+        "geometrySha256": "42f043895ef0bc85d71861c5e581e6e56ee67f6062cd9a32d7ed71ffef525c70",
+        "seconds": 4.643529125000001
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 3198,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0199875
+        },
+        "independentError": {
+          "mismatchPixels": 3140,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.019625
+        },
+        "geometrySha256": "42f043895ef0bc85d71861c5e581e6e56ee67f6062cd9a32d7ed71ffef525c70",
+        "seconds": 4.4177747080000005
+      },
+      "selectedAlignments": 6,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-leaf",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 1496,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00935
+        },
+        "independentError": {
+          "mismatchPixels": 1519,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00949375
+        },
+        "geometrySha256": "c77f79f42d89d692d6647e06d6d2cb1a6b1cd59a5e828481d49652c778add172",
+        "seconds": 0.022022709000000758
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 1496,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00935
+        },
+        "independentError": {
+          "mismatchPixels": 1519,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00949375
+        },
+        "geometrySha256": "c77f79f42d89d692d6647e06d6d2cb1a6b1cd59a5e828481d49652c778add172",
+        "seconds": 0.02510399999999936
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-gift",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 2629,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01643125
+        },
+        "independentError": {
+          "mismatchPixels": 2645,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01653125
+        },
+        "geometrySha256": "47b6f864fbc4f41c0e1b2eccb11227bf6b2ab7e14915691211d4459bd4a29f31",
+        "seconds": 2.326090916999998
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 2629,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01643125
+        },
+        "independentError": {
+          "mismatchPixels": 2645,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01653125
+        },
+        "geometrySha256": "47b6f864fbc4f41c0e1b2eccb11227bf6b2ab7e14915691211d4459bd4a29f31",
+        "seconds": 2.462726792000001
+      },
+      "selectedAlignments": 5,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-gingerbread",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 1704,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01065
+        },
+        "independentError": {
+          "mismatchPixels": 1748,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.010925
+        },
+        "geometrySha256": "a037f9e70e9d9927337ac130166db5fa12f4254d43bff53ce63d76667460be48",
+        "seconds": 0.11007291699999769
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 1704,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01065
+        },
+        "independentError": {
+          "mismatchPixels": 1748,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.010925
+        },
+        "geometrySha256": "a037f9e70e9d9927337ac130166db5fa12f4254d43bff53ce63d76667460be48",
+        "seconds": 0.07177875000000494
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-white-birds",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 590,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0036875
+        },
+        "independentError": {
+          "mismatchPixels": 607,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00379375
+        },
+        "geometrySha256": "b5a063a9f39975f7a6e9d966c8f25af527766aed1857a6a3f0d30a619d1d6bc0",
+        "seconds": 0.07157783299999573
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 590,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0036875
+        },
+        "independentError": {
+          "mismatchPixels": 607,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00379375
+        },
+        "geometrySha256": "b5a063a9f39975f7a6e9d966c8f25af527766aed1857a6a3f0d30a619d1d6bc0",
+        "seconds": 0.09475595899999462
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-flower",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 531,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00331875
+        },
+        "independentError": {
+          "mismatchPixels": 561,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00350625
+        },
+        "geometrySha256": "ccc9d7ec289b448c59de59907939e6e40f276ef8e6eecf24e0850ae5d3e2836d",
+        "seconds": 0.08182929200000216
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 531,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00331875
+        },
+        "independentError": {
+          "mismatchPixels": 561,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00350625
+        },
+        "geometrySha256": "ccc9d7ec289b448c59de59907939e6e40f276ef8e6eecf24e0850ae5d3e2836d",
+        "seconds": 0.05207029200000397
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-warped-checker",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 2186,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0136625
+        },
+        "independentError": {
+          "mismatchPixels": 2191,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01369375
+        },
+        "geometrySha256": "c71a64fbbfacaf76544ad47bf7cbb075a4216c1fb2df46fd9c99bfeb4babffdd",
+        "seconds": 0.8044100830000025
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 2186,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0136625
+        },
+        "independentError": {
+          "mismatchPixels": 2191,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01369375
+        },
+        "geometrySha256": "c71a64fbbfacaf76544ad47bf7cbb075a4216c1fb2df46fd9c99bfeb4babffdd",
+        "seconds": 0.8268675000000003
+      },
+      "selectedAlignments": 2,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-round-checker",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 1871,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01169375
+        },
+        "independentError": {
+          "mismatchPixels": 1907,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01191875
+        },
+        "geometrySha256": "cb1f6d163e971fb338e862757b9f146a6450e37d05a94e3d0a497d586b8911b8",
+        "seconds": 1.4576323749999938
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 1871,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01169375
+        },
+        "independentError": {
+          "mismatchPixels": 1907,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01191875
+        },
+        "geometrySha256": "cb1f6d163e971fb338e862757b9f146a6450e37d05a94e3d0a497d586b8911b8",
+        "seconds": 1.284436124999993
+      },
+      "selectedAlignments": 3,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-fine-checker",
+      "geometryIdentical": false,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 2713,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01695625
+        },
+        "independentError": {
+          "mismatchPixels": 2726,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0170375
+        },
+        "geometrySha256": "c728204427c50a43c6836e07fc9ba41c6ecc03bb90962a3824ef6f58b263c5d2",
+        "seconds": 4.413597915999999
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 2711,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01694375
+        },
+        "independentError": {
+          "mismatchPixels": 2723,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01701875
+        },
+        "geometrySha256": "a064cdfdf2ef8693642328e462a6c082d965845f5c156d83edc5c35ff3006c6b",
+        "seconds": 4.463306499999999
+      },
+      "selectedAlignments": 9,
+      "unselectedAlignments": 2,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-orb",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 1887,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01179375
+        },
+        "independentError": {
+          "mismatchPixels": 1913,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01195625
+        },
+        "geometrySha256": "ba0cf62c633a301dd16144b9382210e3629a59ef6def734e4b24700cfd275707",
+        "seconds": 3.337181083999996
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 1887,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01179375
+        },
+        "independentError": {
+          "mismatchPixels": 1913,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01195625
+        },
+        "geometrySha256": "ba0cf62c633a301dd16144b9382210e3629a59ef6def734e4b24700cfd275707",
+        "seconds": 3.1665410419999973
+      },
+      "selectedAlignments": 7,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-stacked-hearts",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 910,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0056875
+        },
+        "independentError": {
+          "mismatchPixels": 907,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00566875
+        },
+        "geometrySha256": "06386e0ac8e84d70df21dee7c3782c001b4f60b6d48941edb9684fbab6a7ca78",
+        "seconds": 0.08519099999999889
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 910,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0056875
+        },
+        "independentError": {
+          "mismatchPixels": 907,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00566875
+        },
+        "geometrySha256": "06386e0ac8e84d70df21dee7c3782c001b4f60b6d48941edb9684fbab6a7ca78",
+        "seconds": 0.10223158300000068
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-jigsaw",
+      "geometryIdentical": false,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 1658,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0103625
+        },
+        "independentError": {
+          "mismatchPixels": 1646,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0102875
+        },
+        "geometrySha256": "59a4ac7f1729ce7111cf2411b0d1ef392289229ce7036ba90b4429c86935507d",
+        "seconds": 1.1511692089999996
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 1657,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01035625
+        },
+        "independentError": {
+          "mismatchPixels": 1644,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.010275
+        },
+        "geometrySha256": "85278364750c0123e06a0bffd7235257a0d244c5bc64f7694f1e623605bb5716",
+        "seconds": 1.0922229580000058
+      },
+      "selectedAlignments": 2,
+      "unselectedAlignments": 1,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-candle",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 758,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0047375
+        },
+        "independentError": {
+          "mismatchPixels": 774,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0048375
+        },
+        "geometrySha256": "06c6e207901b5c0f0dbf0bc7a39e507b41b9dffe4be303ab9d4dd597b8c2fae6",
+        "seconds": 0.01604912499999773
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 758,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0047375
+        },
+        "independentError": {
+          "mismatchPixels": 774,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0048375
+        },
+        "geometrySha256": "06c6e207901b5c0f0dbf0bc7a39e507b41b9dffe4be303ab9d4dd597b8c2fae6",
+        "seconds": 0.009740707999997539
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-maple-leaf",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 1361,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00850625
+        },
+        "independentError": {
+          "mismatchPixels": 1386,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0086625
+        },
+        "geometrySha256": "2b8af155609a68ddcb2e0e2840e2321bac3bbf0a7bb948fe53e9eabdc6022b50",
+        "seconds": 1.2710749159999977
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 1361,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00850625
+        },
+        "independentError": {
+          "mismatchPixels": 1386,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0086625
+        },
+        "geometrySha256": "2b8af155609a68ddcb2e0e2840e2321bac3bbf0a7bb948fe53e9eabdc6022b50",
+        "seconds": 1.1160665000000007
+      },
+      "selectedAlignments": 4,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-crown",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 3599,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.02249375
+        },
+        "independentError": {
+          "mismatchPixels": 3629,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.02268125
+        },
+        "geometrySha256": "25a029037b2a3ea004097299cace684dc16dbf707f399e5fdeb4f817aff3a6de",
+        "seconds": 3.3009282079999975
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 3599,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.02249375
+        },
+        "independentError": {
+          "mismatchPixels": 3629,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.02268125
+        },
+        "geometrySha256": "25a029037b2a3ea004097299cace684dc16dbf707f399e5fdeb4f817aff3a6de",
+        "seconds": 3.505301541999994
+      },
+      "selectedAlignments": 7,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-crossed-ribbons",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 850,
+          "observedPixels": 157191,
+          "observedFraction": 0.98244375,
+          "mismatchFraction": 0.005407434267865208
+        },
+        "independentError": {
+          "mismatchPixels": 869,
+          "observedPixels": 157191,
+          "observedFraction": 0.98244375,
+          "mismatchFraction": 0.0055283063279704305
+        },
+        "geometrySha256": "4e022d2f29ada9c8310a47a23b0b19cd127fa62d77c9c47a7df3b597b238f326",
+        "seconds": 0.14393970799999078
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 850,
+          "observedPixels": 157191,
+          "observedFraction": 0.98244375,
+          "mismatchFraction": 0.005407434267865208
+        },
+        "independentError": {
+          "mismatchPixels": 869,
+          "observedPixels": 157191,
+          "observedFraction": 0.98244375,
+          "mismatchFraction": 0.0055283063279704305
+        },
+        "geometrySha256": "4e022d2f29ada9c8310a47a23b0b19cd127fa62d77c9c47a7df3b597b238f326",
+        "seconds": 0.12202820800000336
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-bauble",
+      "geometryIdentical": false,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 6752,
+          "observedPixels": 155413,
+          "observedFraction": 0.97133125,
+          "mismatchFraction": 0.04344552900979969
+        },
+        "independentError": {
+          "mismatchPixels": 6730,
+          "observedPixels": 155413,
+          "observedFraction": 0.97133125,
+          "mismatchFraction": 0.04330397071030094
+        },
+        "geometrySha256": "0bea312cbc256a2bf36ba46e7ab48b48cc191c20e8745e4bb141e0c46813d7e9",
+        "seconds": 2.8795439999999943
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 6750,
+          "observedPixels": 155413,
+          "observedFraction": 0.97133125,
+          "mismatchFraction": 0.04343266007348163
+        },
+        "independentError": {
+          "mismatchPixels": 6732,
+          "observedPixels": 155413,
+          "observedFraction": 0.97133125,
+          "mismatchFraction": 0.04331683964661901
+        },
+        "geometrySha256": "ad21e646bee32c0881715665d4f97742182dcac7329503883e6b756e8cba9aa5",
+        "seconds": 2.8026683750000085
+      },
+      "selectedAlignments": 8,
+      "unselectedAlignments": 1,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-bottom-flower",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 1125,
+          "observedPixels": 159678,
+          "observedFraction": 0.9979875,
+          "mismatchFraction": 0.007045428925712997
+        },
+        "independentError": {
+          "mismatchPixels": 1162,
+          "observedPixels": 159678,
+          "observedFraction": 0.9979875,
+          "mismatchFraction": 0.007277145254825336
+        },
+        "geometrySha256": "dcc78e889c3fb4385f3e80b40fb15c90343d4e55f6b885317a1f02ff4ce54516",
+        "seconds": 2.656368082999994
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 1125,
+          "observedPixels": 159678,
+          "observedFraction": 0.9979875,
+          "mismatchFraction": 0.007045428925712997
+        },
+        "independentError": {
+          "mismatchPixels": 1162,
+          "observedPixels": 159678,
+          "observedFraction": 0.9979875,
+          "mismatchFraction": 0.007277145254825336
+        },
+        "geometrySha256": "dcc78e889c3fb4385f3e80b40fb15c90343d4e55f6b885317a1f02ff4ce54516",
+        "seconds": 2.5435031670000026
+      },
+      "selectedAlignments": 9,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-faceted-star",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 998,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0062375
+        },
+        "independentError": {
+          "mismatchPixels": 1026,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0064125
+        },
+        "geometrySha256": "64da89d30d7af309627e0868c3f53dbe2482d372e2e9df1010dd9f2d58cab3b9",
+        "seconds": 0.2809847920000029
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 998,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0062375
+        },
+        "independentError": {
+          "mismatchPixels": 1026,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0064125
+        },
+        "geometrySha256": "64da89d30d7af309627e0868c3f53dbe2482d372e2e9df1010dd9f2d58cab3b9",
+        "seconds": 0.3729307919999992
+      },
+      "selectedAlignments": 1,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-bibel-star-8",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 578,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0036125
+        },
+        "independentError": {
+          "mismatchPixels": 588,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.003675
+        },
+        "geometrySha256": "82d863a55d881acf40b48cb7b6b587d02081504b13ee3fe29d98efef41e50dbe",
+        "seconds": 0.009928083000006154
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 578,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0036125
+        },
+        "independentError": {
+          "mismatchPixels": 588,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.003675
+        },
+        "geometrySha256": "82d863a55d881acf40b48cb7b6b587d02081504b13ee3fe29d98efef41e50dbe",
+        "seconds": 0.008275666000001364
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-bibel-star-curved",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 978,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0061125
+        },
+        "independentError": {
+          "mismatchPixels": 1034,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0064625
+        },
+        "geometrySha256": "9134a84847970959809093250ff1f33bca823aacc19e870920176287ef5da2d7",
+        "seconds": 0.08263404200000514
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 978,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0061125
+        },
+        "independentError": {
+          "mismatchPixels": 1034,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0064625
+        },
+        "geometrySha256": "9134a84847970959809093250ff1f33bca823aacc19e870920176287ef5da2d7",
+        "seconds": 0.12382045899999503
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-bibel-star-outline",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 1822,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0113875
+        },
+        "independentError": {
+          "mismatchPixels": 1856,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0116
+        },
+        "geometrySha256": "61f91fd91f429bd9f77ab3f216355de09e27456633f19b4959f03362ce86aaad",
+        "seconds": 0.018436665999994148
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 1822,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0113875
+        },
+        "independentError": {
+          "mismatchPixels": 1856,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0116
+        },
+        "geometrySha256": "61f91fd91f429bd9f77ab3f216355de09e27456633f19b4959f03362ce86aaad",
+        "seconds": 0.024923083000001497
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-bibel-cross",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 382,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0023875
+        },
+        "independentError": {
+          "mismatchPixels": 389,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00243125
+        },
+        "geometrySha256": "47335f24c6cba0117df7e2ca68604f97896351ffa96a5f11bd892e98ce0ad116",
+        "seconds": 0.009542625000001862
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 382,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0023875
+        },
+        "independentError": {
+          "mismatchPixels": 389,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00243125
+        },
+        "geometrySha256": "47335f24c6cba0117df7e2ca68604f97896351ffa96a5f11bd892e98ce0ad116",
+        "seconds": 0.007614334000012605
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-flettede-puppy",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 1639,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01024375
+        },
+        "independentError": {
+          "mismatchPixels": 1659,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01036875
+        },
+        "geometrySha256": "1511d252d9e9fb28538b68669fa0518ab197dca3fc365831362495e2a3ca5873",
+        "seconds": 0.12529675000000862
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 1639,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01024375
+        },
+        "independentError": {
+          "mismatchPixels": 1659,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01036875
+        },
+        "geometrySha256": "1511d252d9e9fb28538b68669fa0518ab197dca3fc365831362495e2a3ca5873",
+        "seconds": 0.07086933400000271
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-flettede-stonehenge",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 2243,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01401875
+        },
+        "independentError": {
+          "mismatchPixels": 2302,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0143875
+        },
+        "geometrySha256": "9f6ce1200dcbd863fdbdcf9550a803ab7370d0b3cd42767c90faebcb51338472",
+        "seconds": 0.018077542000013637
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 2243,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01401875
+        },
+        "independentError": {
+          "mismatchPixels": 2302,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0143875
+        },
+        "geometrySha256": "9f6ce1200dcbd863fdbdcf9550a803ab7370d0b3cd42767c90faebcb51338472",
+        "seconds": 0.016157500000001164
+      },
+      "selectedAlignments": 0,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "photo-flettede-viking",
+      "geometryIdentical": true,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 3177,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01985625
+        },
+        "independentError": {
+          "mismatchPixels": 3197,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01998125
+        },
+        "geometrySha256": "19521e6138e4f4b7f98769fb54f1252785108c1be67e1e297e893cf878e9f7d6",
+        "seconds": 4.5535131669999975
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 3177,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01985625
+        },
+        "independentError": {
+          "mismatchPixels": 3197,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01998125
+        },
+        "geometrySha256": "19521e6138e4f4b7f98769fb54f1252785108c1be67e1e297e893cf878e9f7d6",
+        "seconds": 4.412102167000005
+      },
+      "selectedAlignments": 11,
+      "unselectedAlignments": 0,
+      "featuresPassed": true
+    },
+    {
+      "id": "regression-floral-checker",
+      "geometryIdentical": false,
+      "baseline": {
+        "sourceError": {
+          "mismatchPixels": 3074,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0192125
+        },
+        "independentError": {
+          "mismatchPixels": 3102,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0193875
+        },
+        "geometrySha256": "db2f036b3f610f072f8a192428ea0236a1962d5c2aa52250050c4ce9896dda55",
+        "seconds": 2.8090398330000026
+      },
+      "candidate": {
+        "sourceError": {
+          "mismatchPixels": 3073,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01920625
+        },
+        "independentError": {
+          "mismatchPixels": 3103,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01939375
+        },
+        "geometrySha256": "3ccc18f1bcb27b8e6d50be26f98f7a56d9bd953d6e97f5de1a41429c305a36c3",
+        "seconds": 2.9249545000000072
+      },
+      "selectedAlignments": 8,
+      "unselectedAlignments": 1,
+      "featuresPassed": true
+    }
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/shared-best-checkpoint-v1/baseline-share.js": "4a9dc8272771895dea2c0c0b27df643c6733f236384d85195fac2a5332566a28",
+    "tmp/heart-learning/shared-best-checkpoint-v1/probe.mjs": "ccae99f4566685560d7582d5c71909028cdf13fa33cdea6af994f01531f2b699",
+    "tmp/heart-learning/shared-best-checkpoint-v1/baseline.json": "a40d720717ac0681516561ed7a4110f80e6c5eecc945ee870b1cf1045bdfbb13",
+    "tmp/heart-learning/shared-best-checkpoint-v1/matrix.mjs": "951539aee2b57655961d40ef707eedfe5cac3a4ee4f8ef5f05780f63f69e618d",
+    "tmp/heart-learning/shared-best-checkpoint-v1/matrix-sources.json": "c45c2f7819ddfeb8f54509052e85a0a9f43be465ea28952fe9f26b60477815b6",
+    "tmp/heart-learning/shared-best-checkpoint-v1/matrix-results.json": "c4745d49619745a336343deb1e1904e606fb96ec60b617712df93bde5aa710f2",
+    "tmp/heart-learning/shared-best-checkpoint-v1/focused.log": "5ac7fb182db8b867c4eb394912c0c48fd113e133859f8f7cad715586a3580852",
+    "tmp/heart-learning/shared-best-checkpoint-v1/changed-comparison.png": "11d703ea94a7f1761d15b31f30dc8196ba4034f387f83e5e8455f54aa49b497b",
+    "static/inverse/core/direct/share.js": "c5586a5341a799ec0da0dc6fac2c83b06b8b8da484085758d34441c93f145c3b",
+    "scripts/inverse/sharing-checkpoint.test.mjs": "5afd7ed3e93a3d642296bec8594056c4568ceb7dd3b63b78cf08c14ffbb42464",
+    "scripts/inverse/fixtures/sharing-best-checkpoint.json": "24230d9bc7bea27260c906f8aee435ec6527fba37d884560f193d6f7d2460933"
+  }
+}

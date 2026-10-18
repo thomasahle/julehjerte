@@ -1,0 +1,2193 @@
+{
+  "schema": "woven-heart-feature-deadline-diagnostic-1",
+  "status": "reproduced-existing-deadline-cliff-prototypes-not-promoted",
+  "productionFitterCommit": "4142aa8",
+  "testCorrectionsCommit": "0f059c7",
+  "scope": "Full QA failures and controlled old/current replays. Uniformly scaled monotonic-clock experiments simulate less compute within the same deadline; their reported virtual seconds are not measured CPU/browser latency. Crops and source-mask identities remain fixed. No success threshold is relaxed.",
+  "fullQA": {
+    "inversePassed": 809,
+    "inverseTotal": 813,
+    "applicationPassed": 855,
+    "applicationSkipped": 1,
+    "failures": [
+      "original near-miss: earlyFeatureInitialization null",
+      "horizontal near-miss: earlyFeatureInitialization null",
+      "vertical near-miss: sun-window error at least 4%",
+      "candle: test required the obsolete uncertain-candidate route"
+    ],
+    "buildAndBrowserReached": false
+  },
+  "focusedFollowup": {
+    "nearMissPassed": 7,
+    "candlePassed": 1,
+    "qualification": "These do not replace the failed full suite. The candle now requires final geometry and paper validity, 1+1 cuts and the same independent image-error bound. Near-miss checks retain their original criteria and have clearer failure reports."
+  },
+  "rootCause": [
+    "The normal old/current replays pass all four photo targets. None runs the new clearance comparison.",
+    "At a 1.5x monotonic clock, both unchanged and current engines skip the feature initializer and reject all four. Initial three fine-grid counts, phases, 150-step errors and original mask hashes match the normal current run.",
+    "The feature initializer requires more than 3.5 seconds AFTER clearance/polishing reserves. In a ten-second request this effectively requires reaching that decision before about 2.7 seconds.",
+    "After skipping the useful start, the solver instead spends roughly five virtual seconds on unsuccessful MILP recovery. Returning to ordinary grids cannot recover the missing source region.",
+    "A separate local-shape issue remains: whole-image acceptance can pass while the sun-window test fails. It is retained in prototype scoring."
+  ],
+  "experiments": {
+    "near-miss-control": {
+      "clockScale": 1,
+      "engine": "control",
+      "templatePasses": 4,
+      "strictFixtureQualityPasses": 4,
+      "rows": [
+        {
+          "name": "original",
+          "seconds": 9.152510834000001,
+          "physicalSeconds": null,
+          "maskSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+          "templateChecksPassed": true,
+          "solverSeconds": 9.002516291,
+          "selectedInitialization": "feature-weighted-grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.01343125,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.0148390625,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixtureQualityPassed": true,
+          "earlyFeatureScheduled": 1,
+          "clearanceComparison": null,
+          "outlineDetail": {
+            "residualCoreFraction": 0.0048375,
+            "addedCurves": 85,
+            "fixedBorderMm": 8,
+            "maximumLengthMm": 4,
+            "frozenCoordinates": 84,
+            "applied": true,
+            "errorBefore": 0.027125,
+            "errorAfter": 0.01345625,
+            "steps": 160,
+            "geometryPassed": true,
+            "paperStatus": "pass"
+          },
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.0526885986328125,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.0517425537109375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0555877685546875,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": 0.6955036731999994
+        },
+        {
+          "name": "horizontal",
+          "seconds": 8.640089958,
+          "physicalSeconds": null,
+          "maskSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+          "templateChecksPassed": true,
+          "solverSeconds": 8.398844083,
+          "selectedInitialization": "feature-weighted-grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.01876875,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.019690625,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixtureQualityPassed": true,
+          "earlyFeatureScheduled": 1,
+          "clearanceComparison": null,
+          "outlineDetail": {
+            "residualCoreFraction": 0.004675,
+            "addedCurves": 58,
+            "fixedBorderMm": 8,
+            "maximumLengthMm": 4,
+            "frozenCoordinates": 88,
+            "applied": true,
+            "errorBefore": 0.02473125,
+            "errorAfter": 0.01845,
+            "steps": 160,
+            "geometryPassed": true,
+            "paperStatus": "pass"
+          },
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.052337646484375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.049652099609375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0552825927734375,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": 0.75
+        },
+        {
+          "name": "vertical",
+          "seconds": 7.707629959000002,
+          "physicalSeconds": null,
+          "maskSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+          "templateChecksPassed": true,
+          "solverSeconds": 7.5836845839999985,
+          "selectedInitialization": "feature-sampling-grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.0114375,
+              "featuresPassed": true,
+              "sunWindowError": 0.02215126050420168
+            },
+            {
+              "scale": 2,
+              "error": 0.013278125,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixtureQualityPassed": true,
+          "earlyFeatureScheduled": 1,
+          "clearanceComparison": null,
+          "outlineDetail": {
+            "residualCoreFraction": 0.00525625,
+            "addedCurves": 69,
+            "fixedBorderMm": 8,
+            "maximumLengthMm": 4,
+            "frozenCoordinates": 88,
+            "applied": true,
+            "errorBefore": 0.0287375,
+            "errorAfter": 0.01143125,
+            "steps": 160,
+            "geometryPassed": true,
+            "paperStatus": "pass"
+          },
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.054534912109375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.050811767578125,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0633544921875,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": 0.75
+        },
+        {
+          "name": "negative-diagonal",
+          "seconds": 8.302731667,
+          "physicalSeconds": null,
+          "maskSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+          "templateChecksPassed": true,
+          "solverSeconds": 8.165967541000002,
+          "selectedInitialization": "feature-sampling-grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.00998125,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.011575,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixtureQualityPassed": true,
+          "earlyFeatureScheduled": 1,
+          "clearanceComparison": null,
+          "outlineDetail": {
+            "residualCoreFraction": 0.0047125,
+            "addedCurves": 69,
+            "fixedBorderMm": 8,
+            "maximumLengthMm": 4,
+            "frozenCoordinates": 76,
+            "applied": true,
+            "errorBefore": 0.0249125,
+            "errorAfter": 0.00966875,
+            "steps": 160,
+            "geometryPassed": true,
+            "paperStatus": "pass"
+          },
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.051116943359375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.0464630126953125,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0507965087890625,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": 0.75
+        }
+      ]
+    },
+    "near-miss-current": {
+      "clockScale": 1,
+      "engine": "current",
+      "templatePasses": 4,
+      "strictFixtureQualityPasses": 4,
+      "rows": [
+        {
+          "name": "original",
+          "seconds": 9.157122791,
+          "physicalSeconds": null,
+          "maskSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+          "templateChecksPassed": true,
+          "solverSeconds": 9.000642709,
+          "selectedInitialization": "feature-weighted-grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.014925,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.01620625,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixtureQualityPassed": true,
+          "earlyFeatureScheduled": 1,
+          "clearanceComparison": null,
+          "outlineDetail": {
+            "residualCoreFraction": 0.00480625,
+            "addedCurves": 85,
+            "fixedBorderMm": 8,
+            "maximumLengthMm": 4,
+            "frozenCoordinates": 84,
+            "applied": true,
+            "errorBefore": 0.02710625,
+            "errorAfter": 0.014975,
+            "steps": 160,
+            "geometryPassed": true,
+            "paperStatus": "pass"
+          },
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.0526885986328125,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.0517425537109375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0555877685546875,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": 0.75
+        },
+        {
+          "name": "horizontal",
+          "seconds": 9.1720525,
+          "physicalSeconds": null,
+          "maskSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+          "templateChecksPassed": true,
+          "solverSeconds": 8.906764083,
+          "selectedInitialization": "feature-weighted-grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.01876875,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.019690625,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixtureQualityPassed": true,
+          "earlyFeatureScheduled": 1,
+          "clearanceComparison": null,
+          "outlineDetail": {
+            "residualCoreFraction": 0.004675,
+            "addedCurves": 58,
+            "fixedBorderMm": 8,
+            "maximumLengthMm": 4,
+            "frozenCoordinates": 88,
+            "applied": true,
+            "errorBefore": 0.02473125,
+            "errorAfter": 0.01845,
+            "steps": 160,
+            "geometryPassed": true,
+            "paperStatus": "pass"
+          },
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.052337646484375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.049652099609375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0552825927734375,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": 0.75
+        },
+        {
+          "name": "vertical",
+          "seconds": 7.8940001250000025,
+          "physicalSeconds": null,
+          "maskSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+          "templateChecksPassed": true,
+          "solverSeconds": 7.766476917,
+          "selectedInitialization": "feature-sampling-grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.0114375,
+              "featuresPassed": true,
+              "sunWindowError": 0.02215126050420168
+            },
+            {
+              "scale": 2,
+              "error": 0.013278125,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixtureQualityPassed": true,
+          "earlyFeatureScheduled": 1,
+          "clearanceComparison": null,
+          "outlineDetail": {
+            "residualCoreFraction": 0.00525625,
+            "addedCurves": 69,
+            "fixedBorderMm": 8,
+            "maximumLengthMm": 4,
+            "frozenCoordinates": 88,
+            "applied": true,
+            "errorBefore": 0.0287375,
+            "errorAfter": 0.01143125,
+            "steps": 160,
+            "geometryPassed": true,
+            "paperStatus": "pass"
+          },
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.054534912109375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.050811767578125,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0633544921875,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": 0.75
+        },
+        {
+          "name": "negative-diagonal",
+          "seconds": 8.386997958,
+          "physicalSeconds": null,
+          "maskSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+          "templateChecksPassed": true,
+          "solverSeconds": 8.250161709000004,
+          "selectedInitialization": "feature-sampling-grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.00998125,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.011575,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixtureQualityPassed": true,
+          "earlyFeatureScheduled": 1,
+          "clearanceComparison": null,
+          "outlineDetail": {
+            "residualCoreFraction": 0.0047125,
+            "addedCurves": 69,
+            "fixedBorderMm": 8,
+            "maximumLengthMm": 4,
+            "frozenCoordinates": 76,
+            "applied": true,
+            "errorBefore": 0.0249125,
+            "errorAfter": 0.00966875,
+            "steps": 160,
+            "geometryPassed": true,
+            "paperStatus": "pass"
+          },
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.051116943359375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.0464630126953125,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0507965087890625,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": 0.75
+        }
+      ]
+    },
+    "near-miss-clock-control-1.5": {
+      "clockScale": 1.5,
+      "engine": "control",
+      "templatePasses": 0,
+      "strictFixtureQualityPasses": 0,
+      "rows": [
+        {
+          "name": "original",
+          "seconds": 9.725421312,
+          "physicalSeconds": 6.48476525,
+          "maskSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+          "templateChecksPassed": false,
+          "solverSeconds": 9.5415924375,
+          "selectedInitialization": "grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.05249375,
+              "featuresPassed": false
+            },
+            {
+              "scale": 2,
+              "error": 0.053340625,
+              "featuresPassed": false
+            }
+          ],
+          "strictFixtureQualityPassed": false,
+          "earlyFeatureScheduled": 0,
+          "clearanceComparison": null,
+          "outlineDetail": null,
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.0526885986328125,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.0517425537109375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0555877685546875,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": 4.960259156700001
+        },
+        {
+          "name": "horizontal",
+          "seconds": 9.8191959375,
+          "physicalSeconds": 6.5473915410000005,
+          "maskSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+          "templateChecksPassed": false,
+          "solverSeconds": 9.665269124999998,
+          "selectedInitialization": "grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.052325,
+              "featuresPassed": false
+            },
+            {
+              "scale": 2,
+              "error": 0.053059375,
+              "featuresPassed": false
+            }
+          ],
+          "strictFixtureQualityPassed": false,
+          "earlyFeatureScheduled": 0,
+          "clearanceComparison": null,
+          "outlineDetail": null,
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.052337646484375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.049652099609375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0552825927734375,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": 5.391722194200001
+        },
+        {
+          "name": "vertical",
+          "seconds": 9.815353999500003,
+          "physicalSeconds": 6.546150791999999,
+          "maskSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+          "templateChecksPassed": false,
+          "solverSeconds": 9.658918438499997,
+          "selectedInitialization": "grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.054425,
+              "featuresPassed": false,
+              "sunWindowError": 0.12699159663865547
+            },
+            {
+              "scale": 2,
+              "error": 0.055040625,
+              "featuresPassed": false
+            }
+          ],
+          "strictFixtureQualityPassed": false,
+          "earlyFeatureScheduled": 0,
+          "clearanceComparison": null,
+          "outlineDetail": null,
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.054534912109375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.050811767578125,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0633544921875,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": 5.344164225450001
+        },
+        {
+          "name": "negative-diagonal",
+          "seconds": 8.839200249000001,
+          "physicalSeconds": 5.894447625000001,
+          "maskSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+          "templateChecksPassed": false,
+          "solverSeconds": 8.687890811999994,
+          "selectedInitialization": "grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.051025,
+              "featuresPassed": false
+            },
+            {
+              "scale": 2,
+              "error": 0.051728125,
+              "featuresPassed": false
+            }
+          ],
+          "strictFixtureQualityPassed": false,
+          "earlyFeatureScheduled": 0,
+          "clearanceComparison": null,
+          "outlineDetail": null,
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.051116943359375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.0464630126953125,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0507965087890625,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": 5.361751407149995
+        }
+      ]
+    },
+    "near-miss-clock-current-1.5": {
+      "clockScale": 1.5,
+      "engine": "current",
+      "templatePasses": 0,
+      "strictFixtureQualityPasses": 0,
+      "rows": [
+        {
+          "name": "original",
+          "seconds": 9.849612187500002,
+          "physicalSeconds": 6.568552583000001,
+          "maskSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+          "templateChecksPassed": false,
+          "solverSeconds": 9.6584428125,
+          "selectedInitialization": "grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.05249375,
+              "featuresPassed": false
+            },
+            {
+              "scale": 2,
+              "error": 0.053340625,
+              "featuresPassed": false
+            }
+          ],
+          "strictFixtureQualityPassed": false,
+          "earlyFeatureScheduled": 0,
+          "clearanceComparison": null,
+          "outlineDetail": null,
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.0526885986328125,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.0517425537109375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0555877685546875,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": 5.0332343058
+        },
+        {
+          "name": "horizontal",
+          "seconds": 9.808603249499999,
+          "physicalSeconds": 6.541055583,
+          "maskSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+          "templateChecksPassed": false,
+          "solverSeconds": 9.661012187999999,
+          "selectedInitialization": "grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.052325,
+              "featuresPassed": false
+            },
+            {
+              "scale": 2,
+              "error": 0.053059375,
+              "featuresPassed": false
+            }
+          ],
+          "strictFixtureQualityPassed": false,
+          "earlyFeatureScheduled": 0,
+          "clearanceComparison": null,
+          "outlineDetail": null,
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.052337646484375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.049652099609375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0552825927734375,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": 5.336363587949999
+        },
+        {
+          "name": "vertical",
+          "seconds": 9.838720749000004,
+          "physicalSeconds": 6.561985666999999,
+          "maskSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+          "templateChecksPassed": false,
+          "solverSeconds": 9.674176438500002,
+          "selectedInitialization": "grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.054425,
+              "featuresPassed": false,
+              "sunWindowError": 0.12699159663865547
+            },
+            {
+              "scale": 2,
+              "error": 0.055040625,
+              "featuresPassed": false
+            }
+          ],
+          "strictFixtureQualityPassed": false,
+          "earlyFeatureScheduled": 0,
+          "clearanceComparison": null,
+          "outlineDetail": null,
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.054534912109375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.050811767578125,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0633544921875,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": 5.329272600900005
+        },
+        {
+          "name": "negative-diagonal",
+          "seconds": 9.02791637549999,
+          "physicalSeconds": 6.021276542,
+          "maskSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+          "templateChecksPassed": false,
+          "solverSeconds": 8.872084375499995,
+          "selectedInitialization": "grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.051025,
+              "featuresPassed": false
+            },
+            {
+              "scale": 2,
+              "error": 0.051728125,
+              "featuresPassed": false
+            }
+          ],
+          "strictFixtureQualityPassed": false,
+          "earlyFeatureScheduled": 0,
+          "clearanceComparison": null,
+          "outlineDetail": null,
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.051116943359375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.0464630126953125,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0507965087890625,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": 5.116587131700004
+        }
+      ]
+    },
+    "near-miss-clock-current-2": {
+      "clockScale": 2,
+      "engine": "current",
+      "templatePasses": 0,
+      "strictFixtureQualityPasses": 0,
+      "rows": [
+        {
+          "name": "original",
+          "seconds": 9.824761583999999,
+          "physicalSeconds": 4.919895749999999,
+          "maskSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+          "templateChecksPassed": false,
+          "solverSeconds": 9.534371668,
+          "selectedInitialization": "grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.05249375,
+              "featuresPassed": false
+            },
+            {
+              "scale": 2,
+              "error": 0.053340625,
+              "featuresPassed": false
+            }
+          ],
+          "strictFixtureQualityPassed": false,
+          "earlyFeatureScheduled": 0,
+          "clearanceComparison": null,
+          "outlineDetail": null,
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.0526885986328125,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.0517425537109375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0555877685546875,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": 3.883007624399999
+        },
+        {
+          "name": "horizontal",
+          "seconds": 10.003029416,
+          "physicalSeconds": 5.003138792,
+          "maskSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+          "templateChecksPassed": false,
+          "solverSeconds": 9.747869000000003,
+          "selectedInitialization": "grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.052325,
+              "featuresPassed": false
+            },
+            {
+              "scale": 2,
+              "error": 0.053059375,
+              "featuresPassed": false
+            }
+          ],
+          "strictFixtureQualityPassed": false,
+          "earlyFeatureScheduled": 0,
+          "clearanceComparison": null,
+          "outlineDetail": null,
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.052337646484375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.049652099609375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0552825927734375,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": 4.2909340500000015
+        },
+        {
+          "name": "vertical",
+          "seconds": 9.915154415999998,
+          "physicalSeconds": 4.961318875000001,
+          "maskSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+          "templateChecksPassed": false,
+          "solverSeconds": 9.69066875,
+          "selectedInitialization": "grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.054425,
+              "featuresPassed": false,
+              "sunWindowError": 0.12699159663865547
+            },
+            {
+              "scale": 2,
+              "error": 0.055040625,
+              "featuresPassed": false
+            }
+          ],
+          "strictFixtureQualityPassed": false,
+          "earlyFeatureScheduled": 0,
+          "clearanceComparison": null,
+          "outlineDetail": null,
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.054534912109375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.050811767578125,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0633544921875,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": 3.9002080500000007
+        },
+        {
+          "name": "negative-diagonal",
+          "seconds": 9.292055084,
+          "physicalSeconds": 4.656772249999998,
+          "maskSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+          "templateChecksPassed": false,
+          "solverSeconds": 9.094145250000002,
+          "selectedInitialization": "grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.051025,
+              "featuresPassed": false
+            },
+            {
+              "scale": 2,
+              "error": 0.051728125,
+              "featuresPassed": false
+            }
+          ],
+          "strictFixtureQualityPassed": false,
+          "earlyFeatureScheduled": 0,
+          "clearanceComparison": null,
+          "outlineDetail": null,
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.051116943359375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.0464630126953125,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0507965087890625,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": 4.055800651199998
+        }
+      ]
+    },
+    "near-miss-clock-feature-time-1.5": {
+      "clockScale": 1.5,
+      "engine": "feature-time",
+      "templatePasses": 3,
+      "strictFixtureQualityPasses": 3,
+      "rows": [
+        {
+          "name": "original",
+          "seconds": 9.1854436875,
+          "physicalSeconds": 6.12500225,
+          "maskSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+          "templateChecksPassed": false,
+          "solverSeconds": 9.00540975,
+          "selectedInitialization": "feature-weighted-grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.03181875,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.0329484375,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixtureQualityPassed": false,
+          "earlyFeatureScheduled": 1,
+          "clearanceComparison": null,
+          "outlineDetail": null,
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.0526885986328125,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.0517425537109375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0555877685546875,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": null
+        },
+        {
+          "name": "horizontal",
+          "seconds": 9.190005187499997,
+          "physicalSeconds": 6.12842,
+          "maskSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+          "templateChecksPassed": true,
+          "solverSeconds": 9.005142438,
+          "selectedInitialization": "feature-weighted-grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.01011875,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.0115,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixtureQualityPassed": true,
+          "earlyFeatureScheduled": 1,
+          "clearanceComparison": null,
+          "outlineDetail": {
+            "residualCoreFraction": 0.00479375,
+            "addedCurves": 63,
+            "fixedBorderMm": 8,
+            "maximumLengthMm": 4,
+            "frozenCoordinates": 88,
+            "applied": true,
+            "errorBefore": 0.02513125,
+            "errorAfter": 0.0097625,
+            "steps": 160,
+            "geometryPassed": true,
+            "paperStatus": "pass"
+          },
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.052337646484375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.049652099609375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0552825927734375,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": null
+        },
+        {
+          "name": "vertical",
+          "seconds": 9.239589124500002,
+          "physicalSeconds": 6.161178917000001,
+          "maskSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+          "templateChecksPassed": true,
+          "solverSeconds": 9.059020125000004,
+          "selectedInitialization": "feature-sampling-grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.01730625,
+              "featuresPassed": true,
+              "sunWindowError": 0.03922689075630252
+            },
+            {
+              "scale": 2,
+              "error": 0.0185515625,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixtureQualityPassed": true,
+          "earlyFeatureScheduled": 1,
+          "clearanceComparison": null,
+          "outlineDetail": {
+            "residualCoreFraction": 0.00525625,
+            "addedCurves": 74,
+            "fixedBorderMm": 8,
+            "maximumLengthMm": 4,
+            "frozenCoordinates": 88,
+            "applied": true,
+            "errorBefore": 0.0288,
+            "errorAfter": 0.01718125,
+            "steps": 50,
+            "geometryPassed": true,
+            "paperStatus": "pass"
+          },
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.054534912109375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.050811767578125,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0633544921875,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": null
+        },
+        {
+          "name": "negative-diagonal",
+          "seconds": 9.236911000500008,
+          "physicalSeconds": 6.161789041,
+          "maskSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+          "templateChecksPassed": true,
+          "solverSeconds": 9.075006061500007,
+          "selectedInitialization": "feature-sampling-grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.0250625,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.0260765625,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixtureQualityPassed": true,
+          "earlyFeatureScheduled": 1,
+          "clearanceComparison": null,
+          "outlineDetail": null,
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.051116943359375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.0464630126953125,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0507965087890625,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": 0.3574030156249946
+        }
+      ]
+    },
+    "near-miss-clock-feature-time2-1.5": {
+      "clockScale": 1.5,
+      "engine": "feature-time2",
+      "templatePasses": 3,
+      "strictFixtureQualityPasses": 2,
+      "rows": [
+        {
+          "name": "original",
+          "seconds": 9.300586186499999,
+          "physicalSeconds": 6.201455792000001,
+          "maskSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+          "templateChecksPassed": false,
+          "solverSeconds": 9.088067125500002,
+          "selectedInitialization": "feature-weighted-grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.03300625,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.0339578125,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixtureQualityPassed": false,
+          "earlyFeatureScheduled": 1,
+          "clearanceComparison": null,
+          "outlineDetail": null,
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.0526885986328125,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.0517425537109375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0555877685546875,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": 0.682889749500001
+        },
+        {
+          "name": "horizontal",
+          "seconds": 9.1955524995,
+          "physicalSeconds": 6.1325748749999995,
+          "maskSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+          "templateChecksPassed": true,
+          "solverSeconds": 9.016986687000001,
+          "selectedInitialization": "feature-weighted-grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.01334375,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.014521875,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixtureQualityPassed": true,
+          "earlyFeatureScheduled": 1,
+          "clearanceComparison": null,
+          "outlineDetail": {
+            "residualCoreFraction": 0.0048125,
+            "addedCurves": 63,
+            "fixedBorderMm": 8,
+            "maximumLengthMm": 4,
+            "frozenCoordinates": 88,
+            "applied": true,
+            "errorBefore": 0.02513125,
+            "errorAfter": 0.01303125,
+            "steps": 160,
+            "geometryPassed": true,
+            "paperStatus": "pass"
+          },
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.052337646484375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.049652099609375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0552825927734375,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": null
+        },
+        {
+          "name": "vertical",
+          "seconds": 9.262453061999997,
+          "physicalSeconds": 6.176270999999999,
+          "maskSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+          "templateChecksPassed": true,
+          "solverSeconds": 9.074341437,
+          "selectedInitialization": "feature-sampling-grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.018125,
+              "featuresPassed": true,
+              "sunWindowError": 0.042756302521008406
+            },
+            {
+              "scale": 2,
+              "error": 0.0191484375,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixtureQualityPassed": false,
+          "earlyFeatureScheduled": 1,
+          "clearanceComparison": null,
+          "outlineDetail": {
+            "residualCoreFraction": 0.00525625,
+            "addedCurves": 74,
+            "fixedBorderMm": 8,
+            "maximumLengthMm": 4,
+            "frozenCoordinates": 88,
+            "applied": true,
+            "errorBefore": 0.0288,
+            "errorAfter": 0.01795,
+            "steps": 45,
+            "geometryPassed": true,
+            "paperStatus": "pass"
+          },
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.054534912109375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.050811767578125,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0633544921875,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": null
+        },
+        {
+          "name": "negative-diagonal",
+          "seconds": 9.173867500500004,
+          "physicalSeconds": 6.117416291999998,
+          "maskSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+          "templateChecksPassed": true,
+          "solverSeconds": 9.008789437500003,
+          "selectedInitialization": "feature-sampling-grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.02503125,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.0258921875,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixtureQualityPassed": true,
+          "earlyFeatureScheduled": 1,
+          "clearanceComparison": null,
+          "outlineDetail": null,
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.051116943359375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.0464630126953125,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0507965087890625,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": 0.33007317897500027
+        }
+      ]
+    },
+    "near-miss-clock-feature-time3-1.5": {
+      "clockScale": 1.5,
+      "engine": "feature-time3",
+      "templatePasses": 3,
+      "strictFixtureQualityPasses": 2,
+      "rows": [
+        {
+          "name": "original",
+          "seconds": 9.871187311500002,
+          "physicalSeconds": 6.58502275,
+          "maskSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+          "templateChecksPassed": false,
+          "solverSeconds": 9.671152875000002,
+          "selectedInitialization": "feature-weighted-grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.05391875,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.0545703125,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixtureQualityPassed": false,
+          "earlyFeatureScheduled": 1,
+          "clearanceComparison": null,
+          "outlineDetail": null,
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.0526885986328125,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.0517425537109375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0555877685546875,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": null
+        },
+        {
+          "name": "horizontal",
+          "seconds": 8.774719687499998,
+          "physicalSeconds": 5.851529916999999,
+          "maskSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+          "templateChecksPassed": true,
+          "solverSeconds": 8.6008498755,
+          "selectedInitialization": "feature-weighted-grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.02835,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.0291125,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixtureQualityPassed": true,
+          "earlyFeatureScheduled": 1,
+          "clearanceComparison": null,
+          "outlineDetail": {
+            "residualCoreFraction": 0.0052875,
+            "addedCurves": 62,
+            "fixedBorderMm": 8,
+            "maximumLengthMm": 4,
+            "frozenCoordinates": 88,
+            "applied": false,
+            "errorBefore": 0.028025,
+            "steps": 160,
+            "geometryPassed": false
+          },
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.052337646484375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.049652099609375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0552825927734375,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": null
+        },
+        {
+          "name": "vertical",
+          "seconds": 9.315261749999998,
+          "physicalSeconds": 6.2169602909999995,
+          "maskSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+          "templateChecksPassed": true,
+          "solverSeconds": 9.133113686999998,
+          "selectedInitialization": "feature-sampling-grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.0288375,
+              "featuresPassed": true,
+              "sunWindowError": 0.07670588235294118
+            },
+            {
+              "scale": 2,
+              "error": 0.0297703125,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixtureQualityPassed": false,
+          "earlyFeatureScheduled": 1,
+          "clearanceComparison": null,
+          "outlineDetail": null,
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.054534912109375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.050811767578125,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0633544921875,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": null
+        },
+        {
+          "name": "negative-diagonal",
+          "seconds": 9.31572637500001,
+          "physicalSeconds": 6.212346540999999,
+          "maskSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+          "templateChecksPassed": true,
+          "solverSeconds": 9.1168531245,
+          "selectedInitialization": "feature-sampling-grid",
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.02503125,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.0258921875,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixtureQualityPassed": true,
+          "earlyFeatureScheduled": 1,
+          "clearanceComparison": null,
+          "outlineDetail": null,
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.051116943359375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.0464630126953125,
+              "steps": 150
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": -1,
+              "error": 0.0507965087890625,
+              "steps": 150
+            }
+          ],
+          "recoveryBudgetSeconds": null
+        }
+      ]
+    }
+  },
+  "prototypeChanges": {
+    "feature-time": "Offline prototype: only featureTimeAvailable threshold changes from 3500 to 2500 milliseconds after the same clearance/polishing reserves. Not production.",
+    "feature-time2": "Offline prototype: feature cutoff 2500 milliseconds plus defer speculative MILP behind the available feature-retaining grid even on short requests. Same overall deadline, targets and final checks. Not production.",
+    "feature-time3": "Offline prototype: feature cutoff 2500 milliseconds and allow a geometry/paper/source-feature-valid candidate within one percentage point of the original image limit to propose outline detail. Final image acceptance unchanged. No speculative-MILP deferral change. Not production."
+  },
+  "runtimeHashes": {
+    "static/inverse/core/direct/fit.js": "b5820faaae871a33ed6acd6d494060f72b2e7eaeb47e2fc6b3f7c8d39487e874",
+    "static/inverse/core/direct/counts.js": "8e201e762967c320bdc8ba97885d41c37f901a2ca51f80074d1572f2204a78e4",
+    "static/inverse/core/direct/polish.js": "3f9df26508076465860a62ce72c2de3aeb67413a1d67ab1927dc37b89b7b622e",
+    "scripts/inverse/feature-near-miss.test.mjs": "987742b7b6d3cd292af2c08cffa8c88e8b84122771a108a22fc6649ca4d7f5d3",
+    "scripts/inverse/feature-seeds.test.mjs": "087f95b5db6b1923f348d2c161b009a3240cd9c569192dbe3382aab195773e6a"
+  },
+  "artifactsSha256": {
+    "tmp/heart-learning/clearance-order-v2/candle-focused.log": "e6841990aa1be0fed6728e624a2522fc3983756157ecb60f0e83ca5c318772f4",
+    "tmp/heart-learning/clearance-order-v2/collect-deadline.py": "e2f0ab25da4bad2a5ecf8e6a230b381747ff41ee3c332a0999da03ba4fb6c1c2",
+    "tmp/heart-learning/clearance-order-v2/feature-time-source.json": "54327cbbdc2998715d75e78f15b448142fa1dc4ee1e317a73893b643c70f2428",
+    "tmp/heart-learning/clearance-order-v2/feature-time2-source.json": "6e8582a9eacad579567ad441284e003715ddbb4999c10cb1b3d348bc79ccf6ea",
+    "tmp/heart-learning/clearance-order-v2/feature-time3-source.json": "a8843695952895e7ca94238920aedca552d27a5e6e2feffb69cd739c85ab8599",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-control-1.5/horizontal-1x.png": "ae7eb1e18d014963a55ef84db73553909ea5c1873b3581567e27f22b371f4c41",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-control-1.5/horizontal-2x.png": "4f4fd1fc6259110aaceea0da3093ccf8159357e212fb518e1cda12efa6b27f80",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-control-1.5/horizontal-geometry.json": "45b5ffa24745cb587f65132f8e66350ea766e6d2305f4d7fa419c18842b8bc3f",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-control-1.5/horizontal-report.json": "abf7e907f0938b45e54b30a35be801163628e72dc4b8d5fa93d2d9997402309a",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-control-1.5/negative-diagonal-1x.png": "a15c86463737040b63bd9999ca42dc319696fc10c39816929bb21f97aeaffe65",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-control-1.5/negative-diagonal-2x.png": "ad72581e7a185453656fe3d432568c394e6ef78688bf1cddde8c4de5831d0a28",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-control-1.5/negative-diagonal-geometry.json": "9ab7f28b61e2a1587dcaf6eaa3198626d8a6b25e933a36e3498cab137f7986cc",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-control-1.5/negative-diagonal-report.json": "626f32233b5dd6d2d1eec629dd1c48c22ec9d36d3167131c44a836f9a93e676d",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-control-1.5/original-1x.png": "4c84b8d8ebbc82fba4f19552d13e863f1013bf90167aea10f8a7582192bb9c72",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-control-1.5/original-2x.png": "208a479e015af7b3f1727439fb2a73b38d55232dc04a246aeeca556735749cd9",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-control-1.5/original-geometry.json": "5cea9ba08ae52f5b192c80b66dc325dbd8e41f2c28b27d893b71b909c3e5197e",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-control-1.5/original-report.json": "f2364a2117a1673e339d37b4d5ec526de01e0d98fe2fea680f12a095dc832f9d",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-control-1.5/results.json": "67b5c419c24e3913fe12ae394d7f3b8796563b09937fb4eb8f9b6694cfa13dd1",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-control-1.5/vertical-1x.png": "6d72b4662e4afb41fe437bfcf66f03d6f8bf55e4e3b48ad99ea016442218a9b7",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-control-1.5/vertical-2x.png": "d6511155e31a7f4472e87a8dfc7f962be8221439a77c78028619a707effa2956",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-control-1.5/vertical-geometry.json": "16b953b7452785bf3fdb303d9e6374a5d65d72b62402d7a57814db125a5f191d",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-control-1.5/vertical-report.json": "0a2b1c60d32465f968907914f42f6c6a3de821089cca226f62ec55a9cea05c4e",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-control-1.5.log": "08eae94008398134d653bcc266331b8aa46a1ba6da529a37a63c700a79bd4aef",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-1.5/horizontal-1x.png": "ae7eb1e18d014963a55ef84db73553909ea5c1873b3581567e27f22b371f4c41",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-1.5/horizontal-2x.png": "4f4fd1fc6259110aaceea0da3093ccf8159357e212fb518e1cda12efa6b27f80",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-1.5/horizontal-geometry.json": "45b5ffa24745cb587f65132f8e66350ea766e6d2305f4d7fa419c18842b8bc3f",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-1.5/horizontal-report.json": "b21da51a6f1b2ee9716007eb77b345280d1d85e20c7992ba6d330992f9b454c4",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-1.5/negative-diagonal-1x.png": "a15c86463737040b63bd9999ca42dc319696fc10c39816929bb21f97aeaffe65",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-1.5/negative-diagonal-2x.png": "ad72581e7a185453656fe3d432568c394e6ef78688bf1cddde8c4de5831d0a28",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-1.5/negative-diagonal-geometry.json": "9ab7f28b61e2a1587dcaf6eaa3198626d8a6b25e933a36e3498cab137f7986cc",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-1.5/negative-diagonal-report.json": "0704808110e071428e9781a74f438dafd1b8190fc1492b74ff72faf89f67bf91",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-1.5/original-1x.png": "4c84b8d8ebbc82fba4f19552d13e863f1013bf90167aea10f8a7582192bb9c72",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-1.5/original-2x.png": "208a479e015af7b3f1727439fb2a73b38d55232dc04a246aeeca556735749cd9",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-1.5/original-geometry.json": "5cea9ba08ae52f5b192c80b66dc325dbd8e41f2c28b27d893b71b909c3e5197e",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-1.5/original-report.json": "d7df35f41be3d5512e1cd4d99e9b49d7f89541ab94b5329502e78c8b4b113ba6",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-1.5/results.json": "ac7b0ce467b668e070b6932c36f79d43035d7a585b538ee1895cd4c2f6a7077f",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-1.5/vertical-1x.png": "6d72b4662e4afb41fe437bfcf66f03d6f8bf55e4e3b48ad99ea016442218a9b7",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-1.5/vertical-2x.png": "d6511155e31a7f4472e87a8dfc7f962be8221439a77c78028619a707effa2956",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-1.5/vertical-geometry.json": "16b953b7452785bf3fdb303d9e6374a5d65d72b62402d7a57814db125a5f191d",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-1.5/vertical-report.json": "9a773b91cadd132bb0e223fdd3a26253afbdcdc090504fe500e86d109261af63",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-1.5.log": "4b3fe03bf50522483d1462f4b1bcf707981251fb745d05ce860b9c75cecbd464",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-2/horizontal-1x.png": "ae7eb1e18d014963a55ef84db73553909ea5c1873b3581567e27f22b371f4c41",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-2/horizontal-2x.png": "4f4fd1fc6259110aaceea0da3093ccf8159357e212fb518e1cda12efa6b27f80",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-2/horizontal-geometry.json": "45b5ffa24745cb587f65132f8e66350ea766e6d2305f4d7fa419c18842b8bc3f",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-2/horizontal-report.json": "d27e0571df3a1305845bc2a47336b47b33ef1c977b6ae4ddbd5fd6e3ffde061c",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-2/negative-diagonal-1x.png": "a15c86463737040b63bd9999ca42dc319696fc10c39816929bb21f97aeaffe65",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-2/negative-diagonal-2x.png": "ad72581e7a185453656fe3d432568c394e6ef78688bf1cddde8c4de5831d0a28",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-2/negative-diagonal-geometry.json": "9ab7f28b61e2a1587dcaf6eaa3198626d8a6b25e933a36e3498cab137f7986cc",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-2/negative-diagonal-report.json": "345a247689aadac52156c87d4568cf48c2c986894e98398c2894b88f4b07cbb1",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-2/original-1x.png": "4c84b8d8ebbc82fba4f19552d13e863f1013bf90167aea10f8a7582192bb9c72",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-2/original-2x.png": "208a479e015af7b3f1727439fb2a73b38d55232dc04a246aeeca556735749cd9",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-2/original-geometry.json": "5cea9ba08ae52f5b192c80b66dc325dbd8e41f2c28b27d893b71b909c3e5197e",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-2/original-report.json": "8cabb33db05fc1f7813b0566688b42fe205e57298f79a95066455d74ef2d087f",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-2/results.json": "d5d342495e4b2bebda8721b21df65b2e496e85b2c003ca6d808c68a0e1c1e151",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-2/vertical-1x.png": "6d72b4662e4afb41fe437bfcf66f03d6f8bf55e4e3b48ad99ea016442218a9b7",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-2/vertical-2x.png": "d6511155e31a7f4472e87a8dfc7f962be8221439a77c78028619a707effa2956",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-2/vertical-geometry.json": "16b953b7452785bf3fdb303d9e6374a5d65d72b62402d7a57814db125a5f191d",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-2/vertical-report.json": "736cc6308606d3cf50737071892ba0273fa9f0b439cdea94df05cb489f7dbf01",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-current-2.log": "2003eb6ace87cc17c5e58380df4429201bbd2fe9088a218b46148f80736a8c10",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-diagnostic.mjs": "5035b8ad84444f048c8755c619d4121914b331be77dc914c2535389c81ba6ff7",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time-1.5/horizontal-1x.png": "e6b5d6dc44d80e8f7bdc3aacebc20d20cc0d2588d97478dd230bf61cbd964c57",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time-1.5/horizontal-2x.png": "586277b25c8276bb8a8349d77ce58ca2e8e5749c573f4b0f4530433ca467771a",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time-1.5/horizontal-geometry.json": "4e78e01175541b29406d118bb22d837c3776a7210ade4d73987a9e2926a1f3aa",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time-1.5/horizontal-report.json": "cecc51103b4e1ded8d5872c40cc89cb2f6c8d5b2d20c91cadea69c2a8daf7a46",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time-1.5/negative-diagonal-1x.png": "00b551bef8e2a555724f9593f5e602b701746406951df26151c41fc6c5981467",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time-1.5/negative-diagonal-2x.png": "21934eed9afa1e599f7a566b77bf4fc4ffbd9fdc06cbd8e2ad167a0f2cb74c77",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time-1.5/negative-diagonal-geometry.json": "70f6d5e21127867dd623e6a9d208ccef09654b9aecbc61952bbdee96ee769a42",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time-1.5/negative-diagonal-report.json": "ac55799ba229869c0a3fca9b1f546d022150dc2579fa63859e1dbcd7ebca575e",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time-1.5/original-1x.png": "85574ec5301cff40ac3dbd4b78beae87068faa2577f72aae3a88345b06157044",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time-1.5/original-2x.png": "03d7e75365e257fc9df978f07429950d793ebc0840a7cc30bddab94b6c599c47",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time-1.5/original-geometry.json": "de681062a7e9ebba7cdb4c3946b17b85c8baca7f9fcd631ef089d4d9c4269868",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time-1.5/original-report.json": "cc6c4ad2938c84684636c2813770826a5a97e01e2064ed84d0275736f226a8ff",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time-1.5/results.json": "f6d4f3484d75262f7367fe514bba92d63d5fb61d73825c1b14c0eae3e0d3d0d4",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time-1.5/vertical-1x.png": "00e2f9394ca0dff3c379d4d5abe7ee47f9dde8a42a0d689cdd60d95719c8241f",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time-1.5/vertical-2x.png": "cb61e36053d7800dd9471a58d30a47fd2364b27df383433c58473d1f1aa63478",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time-1.5/vertical-geometry.json": "5087bc2500ee82e4e0ae70f8af0cbaa746d5487bf7ceed40e86e2039b2934820",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time-1.5/vertical-report.json": "5f092d1e956da4e0aeafb3aca45ea9c5cb552b1f42e3e3e3ae63c0f36979d5e9",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time-1.5.log": "e10735ae55f51da7528939a21b8523e609e735ed635c23d7f4a1dde47c92faec",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time2-1.5/horizontal-1x.png": "bb73dcd87aa557ec9ec52403a30666190d2f5bc410049f0befdf4304535e0c0e",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time2-1.5/horizontal-2x.png": "1a36a390e55fef0db223243fda55a2f6ba1d79ee241b329a486b1d05388afadf",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time2-1.5/horizontal-geometry.json": "dfde26323405e69d7766542d96bbd544f2a1cff50f819afb50876c3396db8aaa",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time2-1.5/horizontal-report.json": "58a124bb5877527b74c7389ae4344e656b584016241b9341dfa35d1db180fae9",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time2-1.5/negative-diagonal-1x.png": "a300cb7cb01644b6e51991cf135113d2381bfd31b2c7e2ed2c17cadec42358a2",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time2-1.5/negative-diagonal-2x.png": "9305d2b098ce2e707bd3912d21f016c0d708b77f8ef920139f679908725c725d",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time2-1.5/negative-diagonal-geometry.json": "1fb0e8e6ccec086c1ec05d694f1799ce52e667eca2fe1b80db7f17db3134393e",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time2-1.5/negative-diagonal-report.json": "e493c8928a88bad3e53e018397d03c607372d7e55b0b3619fd4abedb89761f8b",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time2-1.5/original-1x.png": "e72e484f914c504a36f868e55745853014827e5a36cfc09cb7c2f0e87c618746",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time2-1.5/original-2x.png": "3fe80c571c0ce1442dcdca592e585daebbc12c21affd7bd684373f3c3d553bbe",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time2-1.5/original-geometry.json": "4a8a83dc3076235170fce1e9dfc7dd131bff9feea1d1345e756d77235da3d028",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time2-1.5/original-report.json": "fe6d9bfdee562b17342d8be1d0fe6ff3c86c2be1a914afd39dc32881256a9572",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time2-1.5/results.json": "2eda957687bf3fab923f62f1ce79d11d8093f544ef6b46b138fced97635b9484",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time2-1.5/vertical-1x.png": "091c5196d5c2b3417c7a4626c8d8d2ad617edf8eb190c4d85ebca4b252bedc3c",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time2-1.5/vertical-2x.png": "e03acbc184397322070c9c7e91d5ba58cb399a8bfa933cc286304a0eb603dec8",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time2-1.5/vertical-geometry.json": "e7e37062c568fe03bba21348bc8ee50dc7f7ab6e9565e27a4065d8cdf80bc30f",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time2-1.5/vertical-report.json": "deaefd86ef89dbd748567a06a4157dec0c9edb7a25795a2f422fd77fcc72ee97",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time2-1.5.log": "43a71fc68cdbbc02042fc5c55d6422f7926ba0fa634adaf289c9e445b675467a",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time3-1.5/horizontal-1x.png": "d1d6c87c464d5d3cf5f55e964eb4b8de97a465e0c7b75b2d0288e108324d5acc",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time3-1.5/horizontal-2x.png": "abb4bd88cdb59cc945f127f122250da12368d920171e0efff2258f6a89ac8f2a",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time3-1.5/horizontal-geometry.json": "07a726a3589c621378a3e5ba29bc83f25d0200f65a215fbbd7fb9e65553df3b1",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time3-1.5/horizontal-report.json": "f02abd741f788350600619bb037fcd9df3eb5cc5201522b720005e2259d3465d",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time3-1.5/negative-diagonal-1x.png": "a300cb7cb01644b6e51991cf135113d2381bfd31b2c7e2ed2c17cadec42358a2",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time3-1.5/negative-diagonal-2x.png": "9305d2b098ce2e707bd3912d21f016c0d708b77f8ef920139f679908725c725d",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time3-1.5/negative-diagonal-geometry.json": "1fb0e8e6ccec086c1ec05d694f1799ce52e667eca2fe1b80db7f17db3134393e",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time3-1.5/negative-diagonal-report.json": "10eea64db91f0577331ba61cbb672bba67db66b0146de483bdb29e0aca2d32f9",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time3-1.5/original-1x.png": "555d3113dec0ce78579ec996029c87055ea7f0603a4e4be04cb7a2a031167309",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time3-1.5/original-2x.png": "b59572c659cf1df56bf350bb1f4fc55488bc84a4e02756881a2a0e2c5a8cfb76",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time3-1.5/original-geometry.json": "3624986b188bb4c25cb52edea575baa1e97cd4a3f09eafd2e8d0345687db6ab0",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time3-1.5/original-report.json": "e179375349c19d5ef019742b3cd130274a58a22dc3d2a02a5f85f0f6e4d42def",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time3-1.5/results.json": "b36ee68891b208da6a69fe1a061e9569e14af200b09954c849137f6db04f7250",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time3-1.5/vertical-1x.png": "da23da05f8b9333c3086a33d66fc57229aa4ba9909dcf40f5ad399a255efb49d",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time3-1.5/vertical-2x.png": "ff3c5998ea9cf8ec39002d62a650fbc8965902b8fecb6ecaf64168169e6e283d",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time3-1.5/vertical-geometry.json": "0be958e03d34d5cac06c1240fa79d01883bc131bf96b56b1cbb827e323fcfc6b",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time3-1.5/vertical-report.json": "88b9401294502ae3d232a7054b8dcc16d49a44619ff7283177c6168cd6c80285",
+    "tmp/heart-learning/clearance-order-v2/near-miss-clock-feature-time3-1.5.log": "14c30a9a432f9add4cf2100a5803236fee0b5b1491c240a212753a1338d71047",
+    "tmp/heart-learning/clearance-order-v2/near-miss-control/horizontal-1x.png": "832eb9b4e520b99454abb9675ee639325ab35e03df2a74c8e654d8e17fa8bbe0",
+    "tmp/heart-learning/clearance-order-v2/near-miss-control/horizontal-2x.png": "a7449c4c523dc37db37c8c753fcff7448f05642ecf6857a6a45aa87f16e33e47",
+    "tmp/heart-learning/clearance-order-v2/near-miss-control/horizontal-geometry.json": "b576a8daaaa665df802853b53b263fbf1e3729a1249b4d8fddaaa337d9855fb3",
+    "tmp/heart-learning/clearance-order-v2/near-miss-control/horizontal-report.json": "e2fe043eafacb925a3fd205e6c94cee6f03ce999a690c2ec13e7717561f620c1",
+    "tmp/heart-learning/clearance-order-v2/near-miss-control/negative-diagonal-1x.png": "94208c2e9b501ae5a29e27fef0c932ff79c98efdf634810a71f43fb3a7285789",
+    "tmp/heart-learning/clearance-order-v2/near-miss-control/negative-diagonal-2x.png": "12fc3338f89ba059724e6fbd1c03108401d5a6bb3e74abebf032102e54b1c1a0",
+    "tmp/heart-learning/clearance-order-v2/near-miss-control/negative-diagonal-geometry.json": "484fa89d67ad377ea0a97683bfdc7a4226266e105aef1eaaddc2f33a29bbf184",
+    "tmp/heart-learning/clearance-order-v2/near-miss-control/negative-diagonal-report.json": "a47fad3d9b54688c60b633b71897317ecd753db8d786474da2b7a6cd3cae28a8",
+    "tmp/heart-learning/clearance-order-v2/near-miss-control/original-1x.png": "266a9ae1b0b9c394ffc78ee8e57988dcbef9e7f9971e87074b448a6291108494",
+    "tmp/heart-learning/clearance-order-v2/near-miss-control/original-2x.png": "8760c8ca45a0b4384777c23ea4638a2b40eef311a8a5ecf24e8396b5e4185ff2",
+    "tmp/heart-learning/clearance-order-v2/near-miss-control/original-geometry.json": "e7e769801ee4eb9f33e66311bcb9e7d14119428e0beb3f334961411027522b0c",
+    "tmp/heart-learning/clearance-order-v2/near-miss-control/original-report.json": "81a870e46e112aaad79260b2678f8668331d85f57174159acb2e6ef3b832fe69",
+    "tmp/heart-learning/clearance-order-v2/near-miss-control/results.json": "0b2f83ac35997f80d0867b4cb85725cd8674085051d213eef09a6ba0b7460359",
+    "tmp/heart-learning/clearance-order-v2/near-miss-control/vertical-1x.png": "aab1c00ba385e5f6aa8bfd70ff8159b14d89d6d4879e4dda6217c1d4d2f55542",
+    "tmp/heart-learning/clearance-order-v2/near-miss-control/vertical-2x.png": "fc91a88b3f6f530e28d76295d82aa4757a62bc493053f2b0854720375eda4606",
+    "tmp/heart-learning/clearance-order-v2/near-miss-control/vertical-geometry.json": "d45c4640d6744bd5d86372e9ecc157a97ff2ce13114fe6c7ff35cd5ca8cb35ad",
+    "tmp/heart-learning/clearance-order-v2/near-miss-control/vertical-report.json": "273ade29aeff02b5e523cc0d082144ed1688ffc746d25ff03a4f44a0c234cd21",
+    "tmp/heart-learning/clearance-order-v2/near-miss-control.log": "aad2b87cd5ffd360deba959e882175936c19173fcdca74003eaaf349f93172b6",
+    "tmp/heart-learning/clearance-order-v2/near-miss-current/horizontal-1x.png": "832eb9b4e520b99454abb9675ee639325ab35e03df2a74c8e654d8e17fa8bbe0",
+    "tmp/heart-learning/clearance-order-v2/near-miss-current/horizontal-2x.png": "a7449c4c523dc37db37c8c753fcff7448f05642ecf6857a6a45aa87f16e33e47",
+    "tmp/heart-learning/clearance-order-v2/near-miss-current/horizontal-geometry.json": "b576a8daaaa665df802853b53b263fbf1e3729a1249b4d8fddaaa337d9855fb3",
+    "tmp/heart-learning/clearance-order-v2/near-miss-current/horizontal-report.json": "9aa97fcbb43a89fc548643bb3221661968228c934e34648d94a7cbfabfb1c1b3",
+    "tmp/heart-learning/clearance-order-v2/near-miss-current/negative-diagonal-1x.png": "94208c2e9b501ae5a29e27fef0c932ff79c98efdf634810a71f43fb3a7285789",
+    "tmp/heart-learning/clearance-order-v2/near-miss-current/negative-diagonal-2x.png": "12fc3338f89ba059724e6fbd1c03108401d5a6bb3e74abebf032102e54b1c1a0",
+    "tmp/heart-learning/clearance-order-v2/near-miss-current/negative-diagonal-geometry.json": "484fa89d67ad377ea0a97683bfdc7a4226266e105aef1eaaddc2f33a29bbf184",
+    "tmp/heart-learning/clearance-order-v2/near-miss-current/negative-diagonal-report.json": "20512caacfab9a5064f2dc6aa9a3a1e44099db5953cae415ba13784d5355d502",
+    "tmp/heart-learning/clearance-order-v2/near-miss-current/original-1x.png": "071f9007a0ef3718040d511cb70f22f8891584b43f4d1278210fc9397d71bbaf",
+    "tmp/heart-learning/clearance-order-v2/near-miss-current/original-2x.png": "5ceb8375f1d4805530cf5bad4f5dec375b3077dc052819adf4056226950038a4",
+    "tmp/heart-learning/clearance-order-v2/near-miss-current/original-geometry.json": "9dd7a9c321ec82084f727436748d3dc6502bce9ffaf99efa3b0962c1b57f8442",
+    "tmp/heart-learning/clearance-order-v2/near-miss-current/original-report.json": "b8f1c06159e8327f6266de5b3ebafecfad85a6768858efd4800539b4f7578386",
+    "tmp/heart-learning/clearance-order-v2/near-miss-current/results.json": "c2dd5d44ccc9c87ca49ec05b0c5f081b5cc33bd3baff2295446162252f4ca0e8",
+    "tmp/heart-learning/clearance-order-v2/near-miss-current/vertical-1x.png": "aab1c00ba385e5f6aa8bfd70ff8159b14d89d6d4879e4dda6217c1d4d2f55542",
+    "tmp/heart-learning/clearance-order-v2/near-miss-current/vertical-2x.png": "fc91a88b3f6f530e28d76295d82aa4757a62bc493053f2b0854720375eda4606",
+    "tmp/heart-learning/clearance-order-v2/near-miss-current/vertical-geometry.json": "d45c4640d6744bd5d86372e9ecc157a97ff2ce13114fe6c7ff35cd5ca8cb35ad",
+    "tmp/heart-learning/clearance-order-v2/near-miss-current/vertical-report.json": "82eb965e409e13adb014f3d5b166ed1c5639a7c53424e007f896d982cc010c1c",
+    "tmp/heart-learning/clearance-order-v2/near-miss-current.log": "432234c4f5a6c751eca3b7c7cba4dec020ab36499db93ab0d1846fec28479d3d",
+    "tmp/heart-learning/clearance-order-v2/near-miss-diagnostic.mjs": "674b7da051f184e3b6c025bc2524ac3647a26337bcfa674ab8c980c8989562b5",
+    "tmp/heart-learning/clearance-order-v2/near-miss-focused.log": "384c59fbd460319dba31391bd4aee1d20de32ec40d7b1cbc9549f815b6e6f513",
+    "tmp/heart-learning/clearance-order-v2/near-miss-time-diagnostic.mjs": "c46f61a907a9ecee7914e501f88e5d06717345ff58251aedf8d1f8b055454a96",
+    "tmp/heart-learning/clearance-order-v2/near-miss-time2-diagnostic.mjs": "a86742c2599fddab76e552c32efcefbb81f1def8bea58d92b1f4ea0b1b985258",
+    "tmp/heart-learning/clearance-order-v2/near-miss-time3-diagnostic.mjs": "30b3f37a11ef90d71308230801ed79655510a97ba578b61d1bfe8c9de567c2c2",
+    "tmp/heart-learning/clearance-order-v2/qa-final/app.log": "66afd7a6c975f393568b5ed722b6ff38b564bef6622b50a96d38ccc87d7e74d1",
+    "tmp/heart-learning/clearance-order-v2/qa-final/checks.json": "9ef8062c52ca83318c3370ed44f1e8890edb4a9549027e4e57f2045feee57485",
+    "tmp/heart-learning/clearance-order-v2/qa-final/inverse.log": "6ff0ecc33b5f55f6dcfc24c117bc2e56354c1ce756500fd57fc49d6757e1e984",
+    "tmp/heart-learning/clearance-order-v2/validation-final-checks.json": "eb3ebeba81b8cdcc48058af43ed798ddd78a7879ae01b95a6cdf8c4267dbc1b1"
+  }
+}

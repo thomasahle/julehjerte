@@ -1,0 +1,4153 @@
+{
+  "implementationCommit": "47ba2f3",
+  "replayCommit": "c572fee",
+  "baselineCommit": "68e4f99edb35317a7547446a365bd1b93ca25df2",
+  "claims": {
+    "fitterSourceUnchanged": true,
+    "sourcePixelsCropsAndMasksUnchanged": true,
+    "newPhotoSuccesses": 0,
+    "measuredSupportIsNotPhysicalCornerGroundTruth": true,
+    "physicalAssemblyTested": false
+  },
+  "sourceHashes": {
+    "static/inverse/locator/NOTICE.md": "4a9cc65be6ca309d2b57609d760e584ab78c345dae95c789e351bb69180d5b05",
+    "static/inverse/locator/anchored.js": "c4f5276af229a7b9bbc1f686ea308697200cdd787bcdee2692d87a60bcdad991",
+    "static/inverse/locator/background.js": "03d1c9b8f8237a97a7e8ed53d1dfa5117d1db079ba4162cac7117a8761f3441f",
+    "static/inverse/locator/fields.js": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
+    "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+    "static/inverse/locator/locator.js": "f4c769870e13481a30d149dbdad5a743b52d55d949bc9d898c2c7db0af434773",
+    "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+    "static/inverse/locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+    "static/inverse/locator/palette.js": "e6163193c14d753c2b93168c2e2e25602fb240117e1846a1c92a92308bc9084b"
+  },
+  "baselineSourceHashes": {
+    "static/inverse/locator/NOTICE.md": "4a9cc65be6ca309d2b57609d760e584ab78c345dae95c789e351bb69180d5b05",
+    "static/inverse/locator/anchored.js": "c4f5276af229a7b9bbc1f686ea308697200cdd787bcdee2692d87a60bcdad991",
+    "static/inverse/locator/background.js": "03d1c9b8f8237a97a7e8ed53d1dfa5117d1db079ba4162cac7117a8761f3441f",
+    "static/inverse/locator/fields.js": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
+    "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+    "static/inverse/locator/locator.js": "971c5205bd738b280b98e32899a8095d00c6520cadee7c8ec0e7e65529d0fbdd",
+    "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+    "static/inverse/locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+    "static/inverse/locator/palette.js": "e6163193c14d753c2b93168c2e2e25602fb240117e1846a1c92a92308bc9084b"
+  },
+  "analyticCases": [
+    {
+      "kind": "aligned",
+      "inputs": {
+        "mask": "e2476ffad3873e7e07ea23fdcf24f84bb1e3019552929fa159c762fcaf8b0aa3",
+        "r": "a8dad39f7bd55e45609877b77025ec1ed80e273287371c8e8eb208764797d8df",
+        "g": "a8dad39f7bd55e45609877b77025ec1ed80e273287371c8e8eb208764797d8df",
+        "b": "a8dad39f7bd55e45609877b77025ec1ed80e273287371c8e8eb208764797d8df"
+      },
+      "geometryUnchanged": true,
+      "before": {
+        "left": {
+          "a": 0.64989939637829,
+          "b": -22.952716297789824,
+          "inliers": 70,
+          "total": 70,
+          "support": 1,
+          "rms": 0.24166598863375924,
+          "span": 69
+        },
+        "right": {
+          "a": -0.6498993963782697,
+          "b": 262.9527162977868,
+          "inliers": 70,
+          "total": 70,
+          "support": 1,
+          "rms": 0.24166598863376193,
+          "span": 69
+        }
+      },
+      "after": {
+        "left": {
+          "a": 0.64989939637829,
+          "b": -22.952716297789824,
+          "inliers": 70,
+          "total": 70,
+          "support": 1,
+          "tolerancePx": 1.7999999999999998,
+          "rms": 2.978887036582087e-15,
+          "span": 69,
+          "initial": {
+            "a": 0.6498993963782697,
+            "b": -22.952716297786733,
+            "inliers": 70,
+            "total": 70,
+            "support": 1,
+            "tolerancePx": 1.7999999999999998,
+            "rms": 0.24166598863376124,
+            "span": 69
+          },
+          "segmentation": {
+            "a": 0.64989939637829,
+            "b": -22.952716297789824,
+            "inliers": 70,
+            "total": 70,
+            "support": 1,
+            "tolerancePx": 1.7999999999999998,
+            "rms": 0.24166598863375924,
+            "span": 69
+          }
+        },
+        "right": {
+          "a": -0.6498993963782697,
+          "b": 262.9527162977868,
+          "inliers": 70,
+          "total": 70,
+          "support": 1,
+          "tolerancePx": 1.7999999999999998,
+          "rms": 1.3837288727014478e-13,
+          "span": 69,
+          "initial": {
+            "a": -0.6498993963782697,
+            "b": 262.95271629778676,
+            "inliers": 70,
+            "total": 70,
+            "support": 1,
+            "tolerancePx": 1.7999999999999998,
+            "rms": 0.24166598863376196,
+            "span": 69
+          },
+          "segmentation": {
+            "a": -0.6498993963782697,
+            "b": 262.9527162977868,
+            "inliers": 70,
+            "total": 70,
+            "support": 1,
+            "tolerancePx": 1.7999999999999998,
+            "rms": 0.24166598863376193,
+            "span": 69
+          }
+        }
+      }
+    },
+    {
+      "kind": "outward",
+      "inputs": {
+        "mask": "e2476ffad3873e7e07ea23fdcf24f84bb1e3019552929fa159c762fcaf8b0aa3",
+        "r": "2b9423dc207e3e873d1ea653d0306597f10785a534d5e2934587adf2bb1043cf",
+        "g": "2b9423dc207e3e873d1ea653d0306597f10785a534d5e2934587adf2bb1043cf",
+        "b": "2b9423dc207e3e873d1ea653d0306597f10785a534d5e2934587adf2bb1043cf"
+      },
+      "geometryUnchanged": true,
+      "before": {
+        "left": {
+          "a": 0.650251226755079,
+          "b": -28.774275625229425,
+          "inliers": 70,
+          "total": 70,
+          "support": 1,
+          "rms": 4.842134172395588,
+          "span": 69
+        },
+        "right": {
+          "a": -0.6502512267551713,
+          "b": 268.7742756252437,
+          "inliers": 70,
+          "total": 70,
+          "support": 1,
+          "rms": 4.8421341723957125,
+          "span": 69
+        }
+      },
+      "after": {
+        "left": {
+          "a": 0.650251226755079,
+          "b": -28.774275625229425,
+          "inliers": 70,
+          "total": 70,
+          "support": 1,
+          "tolerancePx": 1.7999999999999998,
+          "rms": 0.2498996168642927,
+          "span": 69,
+          "initial": {
+            "a": 0.6498993963782697,
+            "b": -22.952716297786733,
+            "inliers": 70,
+            "total": 70,
+            "support": 1,
+            "tolerancePx": 1.7999999999999998,
+            "rms": 0.24166598863376124,
+            "span": 69
+          },
+          "segmentation": {
+            "a": 0.650251226755079,
+            "b": -28.774275625229425,
+            "inliers": 0,
+            "total": 70,
+            "support": 0,
+            "tolerancePx": 1.7999999999999998,
+            "rms": null,
+            "span": 0
+          }
+        },
+        "right": {
+          "a": -0.6502512267551713,
+          "b": 268.7742756252437,
+          "inliers": 70,
+          "total": 70,
+          "support": 1,
+          "tolerancePx": 1.7999999999999998,
+          "rms": 0.24989961686430104,
+          "span": 69,
+          "initial": {
+            "a": -0.6498993963782697,
+            "b": 262.95271629778676,
+            "inliers": 70,
+            "total": 70,
+            "support": 1,
+            "tolerancePx": 1.7999999999999998,
+            "rms": 0.24166598863376196,
+            "span": 69
+          },
+          "segmentation": {
+            "a": -0.6502512267551713,
+            "b": 268.7742756252437,
+            "inliers": 0,
+            "total": 70,
+            "support": 0,
+            "tolerancePx": 1.7999999999999998,
+            "rms": null,
+            "span": 0
+          }
+        }
+      }
+    },
+    {
+      "kind": "inward",
+      "inputs": {
+        "mask": "e2476ffad3873e7e07ea23fdcf24f84bb1e3019552929fa159c762fcaf8b0aa3",
+        "r": "cd203b653fe0a9467dce66584ac32e6292493469b80d6289b1fcb6ae0759aee3",
+        "g": "cd203b653fe0a9467dce66584ac32e6292493469b80d6289b1fcb6ae0759aee3",
+        "b": "cd203b653fe0a9467dce66584ac32e6292493469b80d6289b1fcb6ae0759aee3"
+      },
+      "geometryUnchanged": true,
+      "before": {
+        "left": {
+          "a": 0.6495348699877743,
+          "b": -17.12261758476265,
+          "inliers": 70,
+          "total": 70,
+          "support": 1,
+          "rms": 4.849271584349275,
+          "span": 69
+        },
+        "right": {
+          "a": -0.6495348699876522,
+          "b": 257.12261758474466,
+          "inliers": 70,
+          "total": 70,
+          "support": 1,
+          "rms": 4.849271584349225,
+          "span": 69
+        }
+      },
+      "after": {
+        "left": {
+          "a": 0.6495348699877743,
+          "b": -17.12261758476265,
+          "inliers": 70,
+          "total": 70,
+          "support": 1,
+          "tolerancePx": 1.7999999999999998,
+          "rms": 0.24989960806852288,
+          "span": 69,
+          "initial": {
+            "a": 0.6498993963782697,
+            "b": -22.952716297786733,
+            "inliers": 70,
+            "total": 70,
+            "support": 1,
+            "tolerancePx": 1.7999999999999998,
+            "rms": 0.24166598863376124,
+            "span": 69
+          },
+          "segmentation": {
+            "a": 0.6495348699877743,
+            "b": -17.12261758476265,
+            "inliers": 0,
+            "total": 70,
+            "support": 0,
+            "tolerancePx": 1.7999999999999998,
+            "rms": null,
+            "span": 0
+          }
+        },
+        "right": {
+          "a": -0.6495348699876522,
+          "b": 257.12261758474466,
+          "inliers": 70,
+          "total": 70,
+          "support": 1,
+          "tolerancePx": 1.7999999999999998,
+          "rms": 0.24989960806851946,
+          "span": 69.00000000000001,
+          "initial": {
+            "a": -0.6498993963782697,
+            "b": 262.95271629778676,
+            "inliers": 70,
+            "total": 70,
+            "support": 1,
+            "tolerancePx": 1.7999999999999998,
+            "rms": 0.24166598863376196,
+            "span": 69
+          },
+          "segmentation": {
+            "a": -0.6495348699876522,
+            "b": 257.12261758474466,
+            "inliers": 0,
+            "total": 70,
+            "support": 0,
+            "tolerancePx": 1.7999999999999998,
+            "rms": null,
+            "span": 0
+          }
+        }
+      }
+    },
+    {
+      "kind": "interrupted",
+      "inputs": {
+        "mask": "e2476ffad3873e7e07ea23fdcf24f84bb1e3019552929fa159c762fcaf8b0aa3",
+        "r": "a0bf75ce3b5ac0efd41809eed52d13ad7ddf3f640b6dfe07a4eafb9e881e4ff8",
+        "g": "a0bf75ce3b5ac0efd41809eed52d13ad7ddf3f640b6dfe07a4eafb9e881e4ff8",
+        "b": "a0bf75ce3b5ac0efd41809eed52d13ad7ddf3f640b6dfe07a4eafb9e881e4ff8"
+      },
+      "geometryUnchanged": true,
+      "before": {
+        "left": {
+          "a": 0.6535915944334446,
+          "b": -23.661768981899133,
+          "inliers": 70,
+          "total": 70,
+          "support": 1,
+          "rms": 0.28033593122725126,
+          "span": 69
+        },
+        "right": {
+          "a": -0.6535915944334239,
+          "b": 263.6617689818959,
+          "inliers": 70,
+          "total": 70,
+          "support": 1,
+          "rms": 0.2803359312271224,
+          "span": 69
+        }
+      },
+      "after": {
+        "left": {
+          "a": 0.6535915944334446,
+          "b": -23.661768981899133,
+          "inliers": 56,
+          "total": 70,
+          "support": 0.8,
+          "tolerancePx": 1.7999999999999998,
+          "rms": 0.19563402393451298,
+          "span": 69,
+          "initial": {
+            "a": 0.6498993963782697,
+            "b": -22.952716297786733,
+            "inliers": 70,
+            "total": 70,
+            "support": 1,
+            "tolerancePx": 1.7999999999999998,
+            "rms": 0.24166598863376124,
+            "span": 69
+          },
+          "segmentation": {
+            "a": 0.6535915944334446,
+            "b": -23.661768981899133,
+            "inliers": 70,
+            "total": 70,
+            "support": 1,
+            "tolerancePx": 1.7999999999999998,
+            "rms": 0.28033593122725126,
+            "span": 69
+          }
+        },
+        "right": {
+          "a": -0.6535915944334239,
+          "b": 263.6617689818959,
+          "inliers": 56,
+          "total": 70,
+          "support": 0.8,
+          "tolerancePx": 1.7999999999999998,
+          "rms": 0.19563402393444923,
+          "span": 69,
+          "initial": {
+            "a": -0.6498993963782697,
+            "b": 262.95271629778676,
+            "inliers": 70,
+            "total": 70,
+            "support": 1,
+            "tolerancePx": 1.7999999999999998,
+            "rms": 0.24166598863376196,
+            "span": 69
+          },
+          "segmentation": {
+            "a": -0.6535915944334239,
+            "b": 263.6617689818959,
+            "inliers": 70,
+            "total": 70,
+            "support": 1,
+            "tolerancePx": 1.7999999999999998,
+            "rms": 0.2803359312271224,
+            "span": 69
+          }
+        }
+      }
+    }
+  ],
+  "corpus": {
+    "counts": {
+      "incomplete": 15,
+      "no_crop": 3,
+      "failed": 4,
+      "validated": 24,
+      "obscured": 1
+    },
+    "completeDenominator": 31,
+    "rows": [
+      {
+        "id": "oval-figure",
+        "before": "incomplete",
+        "after": "incomplete",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "eight-point-star",
+        "before": "incomplete",
+        "after": "incomplete",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "small-figure",
+        "before": "incomplete",
+        "after": "incomplete",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "deer",
+        "before": "incomplete",
+        "after": "incomplete",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "top-checker",
+        "before": "incomplete",
+        "after": "incomplete",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "top-candle",
+        "before": "incomplete",
+        "after": "incomplete",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "top-tree",
+        "before": "incomplete",
+        "after": "incomplete",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "partial-top-right",
+        "before": "incomplete",
+        "after": "incomplete",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "partial-left-checker",
+        "before": "incomplete",
+        "after": "incomplete",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "nested-squares",
+        "before": "no_crop",
+        "after": "no_crop",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null,
+        "beforeAssessment": {
+          "outlineSupported": null,
+          "withinPhotograph": null,
+          "outOfFrameCorners": null,
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": null,
+          "withinPhotograph": null,
+          "outOfFrameCorners": null,
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "outline-star",
+        "before": "failed",
+        "after": "failed",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": 0.00815625,
+        "errorAfter": 0.00815625,
+        "beforeAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.6938775510204082,
+            0.7346938775510204
+          ],
+          "lobeOutlineSupport": [
+            0.2222222222222222,
+            0.5277777777777778
+          ],
+          "capColourLoss": [
+            0.42635245971816615,
+            0.00028428130171863505
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.7959183673469388,
+            0.7551020408163265
+          ],
+          "lobeOutlineSupport": [
+            0.2222222222222222,
+            0.5277777777777778
+          ],
+          "capColourLoss": [
+            0.42635245971816615,
+            0.00028428130171863505
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "floral-checker",
+        "before": "validated",
+        "after": "validated",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": 0.02038125,
+        "errorAfter": 0.02038125,
+        "beforeAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.7954545454545454,
+            0.5909090909090909
+          ],
+          "lobeOutlineSupport": [
+            0.19444444444444445,
+            0.8888888888888888
+          ],
+          "capColourLoss": [
+            0.34589218945271055,
+            0.00018297300877855182
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.8181818181818182,
+            0.6363636363636364
+          ],
+          "lobeOutlineSupport": [
+            0.19444444444444445,
+            0.8888888888888888
+          ],
+          "capColourLoss": [
+            0.34589218945271055,
+            0.00018297300877855182
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "dense-checker",
+        "before": "validated",
+        "after": "validated",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": 0.006975,
+        "errorAfter": 0.00698125,
+        "beforeAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.7090909090909091,
+            0.6727272727272727
+          ],
+          "lobeOutlineSupport": [
+            0.4722222222222222,
+            0.75
+          ],
+          "capColourLoss": [
+            0.26904397936568286,
+            3.9575092657475855e-05
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.7090909090909091,
+            0.8181818181818182
+          ],
+          "lobeOutlineSupport": [
+            0.4722222222222222,
+            0.75
+          ],
+          "capColourLoss": [
+            0.26904397936568286,
+            3.9575092657475855e-05
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "bird",
+        "before": "validated",
+        "after": "validated",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": 0.02471875,
+        "errorAfter": 0.0247125,
+        "beforeAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.782608695652174,
+            0.8260869565217391
+          ],
+          "lobeOutlineSupport": [
+            0.6111111111111112,
+            0.6111111111111112
+          ],
+          "capColourLoss": [
+            0.1856145484778063,
+            0.00014172033150817228
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.717391304347826,
+            0.7391304347826086
+          ],
+          "lobeOutlineSupport": [
+            0.6111111111111112,
+            0.6111111111111112
+          ],
+          "capColourLoss": [
+            0.1856145484778063,
+            0.00014172033150817228
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "leaf",
+        "before": "validated",
+        "after": "validated",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": 0.0265125,
+        "errorAfter": 0.0265125,
+        "beforeAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.5490196078431373,
+            0.35294117647058826
+          ],
+          "lobeOutlineSupport": [
+            0.3611111111111111,
+            0.3888888888888889
+          ],
+          "capColourLoss": [
+            0.5353838533368398,
+            0.001005191235521236
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.5294117647058824,
+            0.3137254901960784
+          ],
+          "lobeOutlineSupport": [
+            0.3611111111111111,
+            0.3888888888888889
+          ],
+          "capColourLoss": [
+            0.5353838533368398,
+            0.001005191235521236
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "partial-right-checker",
+        "before": "incomplete",
+        "after": "incomplete",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "partial-left-abstract",
+        "before": "incomplete",
+        "after": "incomplete",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "gift",
+        "before": "validated",
+        "after": "validated",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": 0.02371875,
+        "errorAfter": 0.02305,
+        "beforeAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.9473684210526315,
+            0.7894736842105263
+          ],
+          "lobeOutlineSupport": [
+            0.3055555555555556,
+            0.3611111111111111
+          ],
+          "capColourLoss": [
+            0.14675036972093763,
+            0.07753829868261441
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.9473684210526315,
+            0.6842105263157895
+          ],
+          "lobeOutlineSupport": [
+            0.3055555555555556,
+            0.3611111111111111
+          ],
+          "capColourLoss": [
+            0.14675036972093763,
+            0.07753829868261441
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "gingerbread",
+        "before": "validated",
+        "after": "validated",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": 0.01480625,
+        "errorAfter": 0.01480625,
+        "beforeAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.8163265306122449,
+            0.9387755102040817
+          ],
+          "lobeOutlineSupport": [
+            0.5833333333333334,
+            0.6388888888888888
+          ],
+          "capColourLoss": [
+            0.35632021793613544,
+            1.2145910560109238e-05
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.7142857142857143,
+            0.8775510204081632
+          ],
+          "lobeOutlineSupport": [
+            0.5833333333333334,
+            0.6388888888888888
+          ],
+          "capColourLoss": [
+            0.35632021793613544,
+            1.2145910560109238e-05
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "white-birds",
+        "before": "validated",
+        "after": "validated",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": 0.00379375,
+        "errorAfter": 0.00379375,
+        "beforeAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            1,
+            0.8679245283018868
+          ],
+          "lobeOutlineSupport": [
+            0.4444444444444444,
+            0.5
+          ],
+          "capColourLoss": [
+            0.5271705219547371,
+            1.197033691011404e-05
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.9056603773584906,
+            0.8113207547169812
+          ],
+          "lobeOutlineSupport": [
+            0.4444444444444444,
+            0.5
+          ],
+          "capColourLoss": [
+            0.5271705219547371,
+            1.197033691011404e-05
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "flower",
+        "before": "validated",
+        "after": "validated",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": 0.00600625,
+        "errorAfter": 0.00600625,
+        "beforeAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.8947368421052632,
+            0.7894736842105263
+          ],
+          "lobeOutlineSupport": [
+            0.5555555555555556,
+            0.4166666666666667
+          ],
+          "capColourLoss": [
+            0.31629444266453993,
+            4.717162392876685e-06
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.868421052631579,
+            0.9473684210526315
+          ],
+          "lobeOutlineSupport": [
+            0.5555555555555556,
+            0.4166666666666667
+          ],
+          "capColourLoss": [
+            0.31629444266453993,
+            4.717162392876685e-06
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "warped-checker",
+        "before": "validated",
+        "after": "validated",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": 0.01764375,
+        "errorAfter": 0.018475,
+        "beforeAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            1,
+            0.8260869565217391
+          ],
+          "lobeOutlineSupport": [
+            0.16666666666666666,
+            0.9166666666666666
+          ],
+          "capColourLoss": [
+            0.3700221626993956,
+            1.1342103521179888e-05
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.9782608695652174,
+            0.8260869565217391
+          ],
+          "lobeOutlineSupport": [
+            0.16666666666666666,
+            0.9166666666666666
+          ],
+          "capColourLoss": [
+            0.3700221626993956,
+            1.1342103521179888e-05
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "round-checker",
+        "before": "validated",
+        "after": "validated",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": 0.0121375,
+        "errorAfter": 0.01214375,
+        "beforeAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.84,
+            0.92
+          ],
+          "lobeOutlineSupport": [
+            0.1111111111111111,
+            0.2222222222222222
+          ],
+          "capColourLoss": [
+            0.8137813987027086,
+            0.03156358959296121
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.92,
+            0.96
+          ],
+          "lobeOutlineSupport": [
+            0.1111111111111111,
+            0.2222222222222222
+          ],
+          "capColourLoss": [
+            0.8137813987027086,
+            0.03156358959296121
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "santa",
+        "before": "no_crop",
+        "after": "no_crop",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null,
+        "beforeAssessment": {
+          "outlineSupported": null,
+          "withinPhotograph": null,
+          "outOfFrameCorners": null,
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": null,
+          "withinPhotograph": null,
+          "outOfFrameCorners": null,
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "partial-left-diamonds",
+        "before": "incomplete",
+        "after": "incomplete",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "fine-checker",
+        "before": "validated",
+        "after": "validated",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": 0.02245,
+        "errorAfter": 0.02245,
+        "beforeAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.9523809523809523,
+            0.7380952380952381
+          ],
+          "lobeOutlineSupport": [
+            0.9166666666666666,
+            0.4722222222222222
+          ],
+          "capColourLoss": [
+            0.19475377504002753,
+            4.561643120032994e-05
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.9285714285714286,
+            0.7619047619047619
+          ],
+          "lobeOutlineSupport": [
+            0.9166666666666666,
+            0.4722222222222222
+          ],
+          "capColourLoss": [
+            0.19475377504002753,
+            4.561643120032994e-05
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "orb",
+        "before": "validated",
+        "after": "validated",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": 0.01439375,
+        "errorAfter": 0.01439375,
+        "beforeAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.6071428571428571,
+            0.8392857142857143
+          ],
+          "lobeOutlineSupport": [
+            0.3611111111111111,
+            0.4444444444444444
+          ],
+          "capColourLoss": [
+            0.060475313614340456,
+            0.16483631719088493
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.6071428571428571,
+            0.8214285714285714
+          ],
+          "lobeOutlineSupport": [
+            0.3611111111111111,
+            0.4444444444444444
+          ],
+          "capColourLoss": [
+            0.060475313614340456,
+            0.16483631719088493
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "stacked-hearts",
+        "before": "validated",
+        "after": "validated",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": 0.00753125,
+        "errorAfter": 0.00753125,
+        "beforeAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.8518518518518519,
+            0.6666666666666666
+          ],
+          "lobeOutlineSupport": [
+            0.9166666666666666,
+            0.3611111111111111
+          ],
+          "capColourLoss": [
+            0.036482005778582925,
+            0.42061333433313136
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.8703703703703703,
+            0.9074074074074074
+          ],
+          "lobeOutlineSupport": [
+            0.9166666666666666,
+            0.3611111111111111
+          ],
+          "capColourLoss": [
+            0.036482005778582925,
+            0.42061333433313136
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "jigsaw",
+        "before": "failed",
+        "after": "failed",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": 0.0688875,
+        "errorAfter": 0.0688875,
+        "beforeAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.7391304347826086,
+            0.7608695652173914
+          ],
+          "lobeOutlineSupport": [
+            0.5,
+            0.2222222222222222
+          ],
+          "capColourLoss": [
+            0.06737205525921813,
+            0.2620610725950713
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.5434782608695652,
+            0.6304347826086957
+          ],
+          "lobeOutlineSupport": [
+            0.5,
+            0.2222222222222222
+          ],
+          "capColourLoss": [
+            0.06737205525921813,
+            0.2620610725950713
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "candle",
+        "before": "validated",
+        "after": "validated",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": 0.0048375,
+        "errorAfter": 0.0048375,
+        "beforeAssessment": {
+          "outlineSupported": true,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.8222222222222222,
+            0.9333333333333333
+          ],
+          "lobeOutlineSupport": [
+            1,
+            0.7222222222222222
+          ],
+          "capColourLoss": [
+            0.10483015480223726,
+            2.0220186776115986e-06
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": true,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.8222222222222222,
+            0.8222222222222222
+          ],
+          "lobeOutlineSupport": [
+            1,
+            0.7222222222222222
+          ],
+          "capColourLoss": [
+            0.10483015480223726,
+            2.0220186776115986e-06
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "maple-leaf",
+        "before": "validated",
+        "after": "validated",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": 0.013325,
+        "errorAfter": 0.013825,
+        "beforeAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.7222222222222222,
+            0.6851851851851852
+          ],
+          "lobeOutlineSupport": [
+            0.9444444444444444,
+            0.3611111111111111
+          ],
+          "capColourLoss": [
+            0.07787497561109859,
+            0.3887397264406911
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.7777777777777778,
+            0.6296296296296297
+          ],
+          "lobeOutlineSupport": [
+            0.9444444444444444,
+            0.3611111111111111
+          ],
+          "capColourLoss": [
+            0.07787497561109859,
+            0.3887397264406911
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "crown",
+        "before": "validated",
+        "after": "validated",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": 0.02340625,
+        "errorAfter": 0.0241375,
+        "beforeAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.75,
+            0.7222222222222222
+          ],
+          "lobeOutlineSupport": [
+            0.3888888888888889,
+            0.16666666666666666
+          ],
+          "capColourLoss": [
+            0.21184276030373972,
+            0.45173431894188415
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.8888888888888888,
+            0.7222222222222222
+          ],
+          "lobeOutlineSupport": [
+            0.3888888888888889,
+            0.16666666666666666
+          ],
+          "capColourLoss": [
+            0.21184276030373972,
+            0.45173431894188415
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "partial-bottom-left",
+        "before": "incomplete",
+        "after": "incomplete",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "bottom-diamonds",
+        "before": "incomplete",
+        "after": "incomplete",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "crossed-ribbons",
+        "before": "failed",
+        "after": "failed",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": 0.02153125,
+        "errorAfter": 0.02153125,
+        "beforeAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": false,
+          "outOfFrameCorners": [
+            2
+          ],
+          "lowerEdgeSupport": [
+            0.8536585365853658,
+            1
+          ],
+          "lobeOutlineSupport": [
+            0.4444444444444444,
+            0.9166666666666666
+          ],
+          "capColourLoss": [
+            0.35390980295114954,
+            1.8150160387500306e-05
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": false,
+          "outOfFrameCorners": [
+            2
+          ],
+          "lowerEdgeSupport": [
+            0.7560975609756098,
+            0.9512195121951219
+          ],
+          "lobeOutlineSupport": [
+            0.4444444444444444,
+            0.9166666666666666
+          ],
+          "capColourLoss": [
+            0.35390980295114954,
+            1.8150160387500306e-05
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "bauble",
+        "before": "failed",
+        "after": "failed",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": 0.0929625,
+        "errorAfter": 0.0929625,
+        "beforeAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": false,
+          "outOfFrameCorners": [
+            2
+          ],
+          "lowerEdgeSupport": [
+            1,
+            0.625
+          ],
+          "lobeOutlineSupport": [
+            0.4722222222222222,
+            0.19444444444444445
+          ],
+          "capColourLoss": [
+            0.08657327621293223,
+            0.43616477850802343
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": false,
+          "outOfFrameCorners": [
+            2
+          ],
+          "lowerEdgeSupport": [
+            1,
+            0.625
+          ],
+          "lobeOutlineSupport": [
+            0.4722222222222222,
+            0.19444444444444445
+          ],
+          "capColourLoss": [
+            0.08657327621293223,
+            0.43616477850802343
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "glare-motif",
+        "before": "obscured",
+        "after": "obscured",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "bottom-flower",
+        "before": "validated",
+        "after": "validated",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": 0.0093875,
+        "errorAfter": 0.0093875,
+        "beforeAssessment": {
+          "outlineSupported": true,
+          "withinPhotograph": false,
+          "outOfFrameCorners": [
+            2
+          ],
+          "lowerEdgeSupport": [
+            0.7027027027027027,
+            0.7837837837837838
+          ],
+          "lobeOutlineSupport": [
+            0.6666666666666666,
+            0.6666666666666666
+          ],
+          "capColourLoss": [
+            0.0939699435687757,
+            0.0016824733176135642
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": false,
+          "outOfFrameCorners": [
+            2
+          ],
+          "lowerEdgeSupport": [
+            0.5945945945945946,
+            0.8378378378378378
+          ],
+          "lobeOutlineSupport": [
+            0.6666666666666666,
+            0.6666666666666666
+          ],
+          "capColourLoss": [
+            0.0939699435687757,
+            0.0016824733176135642
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "faceted-star",
+        "before": "validated",
+        "after": "validated",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": 0.00649375,
+        "errorAfter": 0.0065,
+        "beforeAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.9016393442622951,
+            0.7049180327868853
+          ],
+          "lobeOutlineSupport": [
+            0.5555555555555556,
+            0.4444444444444444
+          ],
+          "capColourLoss": [
+            0.22723380800383777,
+            1.799822642430578e-05
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": false,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.819672131147541,
+            0.45901639344262296
+          ],
+          "lobeOutlineSupport": [
+            0.5555555555555556,
+            0.4444444444444444
+          ],
+          "capColourLoss": [
+            0.22723380800383777,
+            1.799822642430578e-05
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "partial-bottom-right",
+        "before": "incomplete",
+        "after": "incomplete",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "bibel-star-8",
+        "before": "validated",
+        "after": "validated",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": 0.003675,
+        "errorAfter": 0.003675,
+        "beforeAssessment": {
+          "outlineSupported": true,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            1,
+            1
+          ],
+          "lobeOutlineSupport": [
+            0.75,
+            0.9722222222222222
+          ],
+          "capColourLoss": [
+            6.847330233927806e-06,
+            4.268529606850831e-06
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": true,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            1,
+            1
+          ],
+          "lobeOutlineSupport": [
+            0.75,
+            0.9722222222222222
+          ],
+          "capColourLoss": [
+            6.847330233927806e-06,
+            4.268529606850831e-06
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "bibel-star-curved",
+        "before": "validated",
+        "after": "validated",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": 0.00663125,
+        "errorAfter": 0.00663125,
+        "beforeAssessment": {
+          "outlineSupported": true,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            1,
+            1
+          ],
+          "lobeOutlineSupport": [
+            0.9722222222222222,
+            0.9444444444444444
+          ],
+          "capColourLoss": [
+            3.892959024772343e-06,
+            5.195500268333979e-06
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": true,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            1,
+            1
+          ],
+          "lobeOutlineSupport": [
+            0.9722222222222222,
+            0.9444444444444444
+          ],
+          "capColourLoss": [
+            3.892959024772343e-06,
+            5.195500268333979e-06
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "bibel-star-outline",
+        "before": "no_crop",
+        "after": "no_crop",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null,
+        "beforeAssessment": {
+          "outlineSupported": null,
+          "withinPhotograph": null,
+          "outOfFrameCorners": null,
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": null,
+          "withinPhotograph": null,
+          "outOfFrameCorners": null,
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "bibel-cross",
+        "before": "validated",
+        "after": "validated",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": 0.00243125,
+        "errorAfter": 0.00243125,
+        "beforeAssessment": {
+          "outlineSupported": true,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            1,
+            1
+          ],
+          "lobeOutlineSupport": [
+            0.6944444444444444,
+            0.75
+          ],
+          "capColourLoss": [
+            5.291220144920672e-06,
+            4.421769197318317e-06
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": true,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            1,
+            1
+          ],
+          "lobeOutlineSupport": [
+            0.6944444444444444,
+            0.75
+          ],
+          "capColourLoss": [
+            5.291220144920672e-06,
+            4.421769197318317e-06
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "flettede-puppy",
+        "before": "validated",
+        "after": "validated",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": 0.01031875,
+        "errorAfter": 0.01031875,
+        "beforeAssessment": {
+          "outlineSupported": true,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            1,
+            1
+          ],
+          "lobeOutlineSupport": [
+            0.9722222222222222,
+            0.9444444444444444
+          ],
+          "capColourLoss": [
+            1.5390148279688837e-05,
+            3.916316927606485e-06
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": true,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            0.993421052631579,
+            0.9868421052631579
+          ],
+          "lobeOutlineSupport": [
+            0.9722222222222222,
+            0.9444444444444444
+          ],
+          "capColourLoss": [
+            1.5390148279688837e-05,
+            3.916316927606485e-06
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "flettede-stonehenge",
+        "before": "validated",
+        "after": "validated",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": 0.01905,
+        "errorAfter": 0.01905,
+        "beforeAssessment": {
+          "outlineSupported": true,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            1,
+            0.8863636363636364
+          ],
+          "lobeOutlineSupport": [
+            0.9166666666666666,
+            0.9444444444444444
+          ],
+          "capColourLoss": [
+            4.063221698738209e-06,
+            6.967683760344339e-06
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": true,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            1,
+            0.8863636363636364
+          ],
+          "lobeOutlineSupport": [
+            0.9166666666666666,
+            0.9444444444444444
+          ],
+          "capColourLoss": [
+            4.063221698738209e-06,
+            6.967683760344339e-06
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      },
+      {
+        "id": "flettede-viking",
+        "before": "validated",
+        "after": "validated",
+        "quadUnchanged": true,
+        "maskUnchanged": true,
+        "errorBefore": 0.02096875,
+        "errorAfter": 0.02023125,
+        "beforeAssessment": {
+          "outlineSupported": true,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            1,
+            0.9562841530054644
+          ],
+          "lobeOutlineSupport": [
+            0.9722222222222222,
+            0.9722222222222222
+          ],
+          "capColourLoss": [
+            4.270488761831053e-06,
+            4.974229825772793e-06
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        },
+        "afterAssessment": {
+          "outlineSupported": true,
+          "withinPhotograph": true,
+          "outOfFrameCorners": [],
+          "lowerEdgeSupport": [
+            1,
+            0.9836065573770492
+          ],
+          "lobeOutlineSupport": [
+            0.9722222222222222,
+            0.9722222222222222
+          ],
+          "capColourLoss": [
+            4.270488761831053e-06,
+            4.974229825772793e-06
+          ],
+          "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+        }
+      }
+    ],
+    "failedCaseEdges": [
+      {
+        "id": "outline-star",
+        "before": {
+          "left": {
+            "a": 0.9159110816630973,
+            "b": -115.20275963441993,
+            "inliers": 34,
+            "total": 49,
+            "support": 0.6938775510204082,
+            "rms": 3.7310301218664765,
+            "span": 48
+          },
+          "right": {
+            "a": -1.4836034677723333,
+            "b": 525.4269694685262,
+            "inliers": 36,
+            "total": 49,
+            "support": 0.7346938775510204,
+            "rms": 0.7557723996078372,
+            "span": 41
+          }
+        },
+        "after": {
+          "left": {
+            "a": 0.9159110816630973,
+            "b": -115.20275963441993,
+            "inliers": 39,
+            "total": 49,
+            "support": 0.7959183673469388,
+            "tolerancePx": 2.025,
+            "rms": 0.4933753806496098,
+            "span": 48,
+            "initial": {
+              "a": 0.9395575709661528,
+              "b": -124.8436432524349,
+              "inliers": 35,
+              "total": 49,
+              "support": 0.7142857142857143,
+              "tolerancePx": 2.025,
+              "rms": 0.8267711688945575,
+              "span": 48
+            },
+            "segmentation": {
+              "a": 0.9159110816630973,
+              "b": -115.20275963441993,
+              "inliers": 6,
+              "total": 49,
+              "support": 0.12244897959183673,
+              "tolerancePx": 2.025,
+              "rms": 1.1669820491341094,
+              "span": 5
+            }
+          },
+          "right": {
+            "a": -1.4836034677723333,
+            "b": 525.4269694685262,
+            "inliers": 37,
+            "total": 49,
+            "support": 0.7551020408163265,
+            "tolerancePx": 2.025,
+            "rms": 0.8092859694140835,
+            "span": 42,
+            "initial": {
+              "a": -1.4836034677723333,
+              "b": 525.4269694685262,
+              "inliers": 37,
+              "total": 49,
+              "support": 0.7551020408163265,
+              "tolerancePx": 2.025,
+              "rms": 0.8092859694140835,
+              "span": 42
+            },
+            "segmentation": {
+              "a": -1.4836034677723333,
+              "b": 525.4269694685262,
+              "inliers": 37,
+              "total": 49,
+              "support": 0.7551020408163265,
+              "tolerancePx": 2.025,
+              "rms": 0.8092859694140835,
+              "span": 42
+            }
+          }
+        }
+      },
+      {
+        "id": "jigsaw",
+        "before": {
+          "left": {
+            "a": 0.411531668149437,
+            "b": -3.6292077564943925,
+            "inliers": 34,
+            "total": 46,
+            "support": 0.7391304347826086,
+            "rms": 5.396983616769886,
+            "span": 37
+          },
+          "right": {
+            "a": -0.7930395044317302,
+            "b": 378.3547642953796,
+            "inliers": 35,
+            "total": 46,
+            "support": 0.7608695652173914,
+            "rms": 1.5057464345998461,
+            "span": 43
+          }
+        },
+        "after": {
+          "left": {
+            "a": 0.411531668149437,
+            "b": -3.6292077564943925,
+            "inliers": 25,
+            "total": 46,
+            "support": 0.5434782608695652,
+            "tolerancePx": 2.097,
+            "rms": 0.9841055436521332,
+            "span": 34.79694570172995,
+            "initial": {
+              "a": 0.3368657322901543,
+              "b": 7.442686128188611,
+              "inliers": 34,
+              "total": 46,
+              "support": 0.7391304347826086,
+              "tolerancePx": 2.097,
+              "rms": 0.9615809536315099,
+              "span": 37
+            },
+            "segmentation": {
+              "a": 0.411531668149437,
+              "b": -3.6292077564943925,
+              "inliers": 0,
+              "total": 46,
+              "support": 0,
+              "tolerancePx": 2.097,
+              "rms": null,
+              "span": 0
+            }
+          },
+          "right": {
+            "a": -0.7930395044317302,
+            "b": 378.3547642953796,
+            "inliers": 29,
+            "total": 46,
+            "support": 0.6304347826086957,
+            "tolerancePx": 2.097,
+            "rms": 0.9924967714223794,
+            "span": 40.68814824494595,
+            "initial": {
+              "a": -0.8080363535287844,
+              "b": 383.01697649149315,
+              "inliers": 34,
+              "total": 46,
+              "support": 0.7391304347826086,
+              "tolerancePx": 2.097,
+              "rms": 0.9649740413469832,
+              "span": 43
+            },
+            "segmentation": {
+              "a": -0.7930395044317302,
+              "b": 378.3547642953796,
+              "inliers": 31,
+              "total": 46,
+              "support": 0.6739130434782609,
+              "tolerancePx": 2.097,
+              "rms": 1.1821705235628825,
+              "span": 42
+            }
+          }
+        }
+      },
+      {
+        "id": "crossed-ribbons",
+        "before": {
+          "left": {
+            "a": 0.6923914348240349,
+            "b": -59.756252917885725,
+            "inliers": 35,
+            "total": 41,
+            "support": 0.8536585365853658,
+            "rms": 4.229402096088735,
+            "span": 34
+          },
+          "right": {
+            "a": -0.99226687302367,
+            "b": 487.9498566434867,
+            "inliers": 41,
+            "total": 41,
+            "support": 1,
+            "rms": 0.7679223020082353,
+            "span": 40
+          }
+        },
+        "after": {
+          "left": {
+            "a": 0.6923914348240349,
+            "b": -59.756252917885725,
+            "inliers": 31,
+            "total": 41,
+            "support": 0.7560975609756098,
+            "tolerancePx": 2.367,
+            "rms": 0.8926210913712171,
+            "span": 39,
+            "initial": {
+              "a": 0.5834733893557423,
+              "b": -38.97114845938377,
+              "inliers": 35,
+              "total": 41,
+              "support": 0.8536585365853658,
+              "tolerancePx": 2.367,
+              "rms": 0.8856140859156215,
+              "span": 34
+            },
+            "segmentation": {
+              "a": 0.6923914348240349,
+              "b": -59.756252917885725,
+              "inliers": 7,
+              "total": 41,
+              "support": 0.17073170731707318,
+              "tolerancePx": 2.367,
+              "rms": 1.6034854289533724,
+              "span": 35
+            }
+          },
+          "right": {
+            "a": -0.99226687302367,
+            "b": 487.9498566434867,
+            "inliers": 39,
+            "total": 41,
+            "support": 0.9512195121951219,
+            "tolerancePx": 2.367,
+            "rms": 0.6431079707063398,
+            "span": 40,
+            "initial": {
+              "a": -1.0348432055749128,
+              "b": 498.48606271777004,
+              "inliers": 41,
+              "total": 41,
+              "support": 1,
+              "tolerancePx": 2.367,
+              "rms": 0.616309956670794,
+              "span": 40
+            },
+            "segmentation": {
+              "a": -0.99226687302367,
+              "b": 487.9498566434867,
+              "inliers": 41,
+              "total": 41,
+              "support": 1,
+              "tolerancePx": 2.367,
+              "rms": 0.7679223020082353,
+              "span": 40
+            }
+          }
+        }
+      },
+      {
+        "id": "bauble",
+        "before": {
+          "left": {
+            "a": 1.3147058823529412,
+            "b": -217.99705882352941,
+            "inliers": 16,
+            "total": 16,
+            "support": 1,
+            "rms": 0.7728697153248275,
+            "span": 15
+          },
+          "right": {
+            "a": -0.5116279069767442,
+            "b": 375.0348837209302,
+            "inliers": 10,
+            "total": 16,
+            "support": 0.625,
+            "rms": 0.6650931566229681,
+            "span": 15
+          }
+        },
+        "after": {
+          "left": {
+            "a": 1.3147058823529412,
+            "b": -217.99705882352941,
+            "inliers": 16,
+            "total": 16,
+            "support": 1,
+            "tolerancePx": 2.295,
+            "rms": 0.7728697153248275,
+            "span": 15,
+            "initial": {
+              "a": 1.3147058823529412,
+              "b": -217.99705882352941,
+              "inliers": 16,
+              "total": 16,
+              "support": 1,
+              "tolerancePx": 2.295,
+              "rms": 0.7728697153248275,
+              "span": 15
+            },
+            "segmentation": {
+              "a": 1.3147058823529412,
+              "b": -217.99705882352941,
+              "inliers": 16,
+              "total": 16,
+              "support": 1,
+              "tolerancePx": 2.295,
+              "rms": 0.7728697153248275,
+              "span": 15
+            }
+          },
+          "right": {
+            "a": -0.5116279069767442,
+            "b": 375.0348837209302,
+            "inliers": 10,
+            "total": 16,
+            "support": 0.625,
+            "tolerancePx": 2.295,
+            "rms": 0.6650931566229681,
+            "span": 15,
+            "initial": {
+              "a": -0.5116279069767442,
+              "b": 375.0348837209302,
+              "inliers": 10,
+              "total": 16,
+              "support": 0.625,
+              "tolerancePx": 2.295,
+              "rms": 0.6650931566229681,
+              "span": 15
+            },
+            "segmentation": {
+              "a": -0.5116279069767442,
+              "b": 375.0348837209302,
+              "inliers": 10,
+              "total": 16,
+              "support": 0.625,
+              "tolerancePx": 2.295,
+              "rms": 0.6650931566229681,
+              "span": 15
+            }
+          }
+        }
+      }
+    ]
+  },
+  "rejectedProbes": [
+    {
+      "policy": "baseline",
+      "id": "outline-star",
+      "quad": [
+        [
+          430.32931226516513,
+          171.9092353088924
+        ],
+        [
+          525.2431230765773,
+          267.80938630026435
+        ],
+        [
+          403.3299806510149,
+          349.9830567410715
+        ],
+        [
+          320.83807769917655,
+          259.9176512630082
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.6938775510204082,
+          0.7346938775510204
+        ],
+        "lobeOutlineSupport": [
+          0.2222222222222222,
+          0.5277777777777778
+        ],
+        "capColourLoss": [
+          0.42635245971816615,
+          0.00028428130171863505
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "971c5205bd738b280b98e32899a8095d00c6520cadee7c8ec0e7e65529d0fbdd"
+    },
+    {
+      "policy": "baseline",
+      "id": "crossed-ribbons",
+      "quad": [
+        [
+          402.13745403852283,
+          920.2819656234791
+        ],
+        [
+          482.00372354384695,
+          1030.9815069791907
+        ],
+        [
+          379.5099406019051,
+          1134.274064383248
+        ],
+        [
+          291.35871775582666,
+          1006.9599203709363
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": false,
+        "outOfFrameCorners": [
+          2
+        ],
+        "lowerEdgeSupport": [
+          0.8536585365853658,
+          1
+        ],
+        "lobeOutlineSupport": [
+          0.4444444444444444,
+          0.9166666666666666
+        ],
+        "capColourLoss": [
+          0.35390980295114954,
+          1.8150160387500306e-05
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "971c5205bd738b280b98e32899a8095d00c6520cadee7c8ec0e7e65529d0fbdd"
+    },
+    {
+      "policy": "baseline",
+      "id": "jigsaw",
+      "quad": [
+        [
+          796.940953842628,
+          631.6593539438662
+        ],
+        [
+          856.2204646604408,
+          748.7890866349005
+        ],
+        [
+          764.8124220376249,
+          864.0519986487432
+        ],
+        [
+          715.8813933469556,
+          745.1522092092067
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.7391304347826086,
+          0.7608695652173914
+        ],
+        "lobeOutlineSupport": [
+          0.5,
+          0.2222222222222222
+        ],
+        "capColourLoss": [
+          0.06737205525921813,
+          0.2620610725950713
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "971c5205bd738b280b98e32899a8095d00c6520cadee7c8ec0e7e65529d0fbdd"
+    },
+    {
+      "policy": "baseline",
+      "id": "bauble",
+      "quad": [
+        [
+          585.124945734859,
+          905.2805093237887
+        ],
+        [
+          680.4272015903496,
+          1020.2331968915895
+        ],
+        [
+          619.5033182277817,
+          1139.311696191154
+        ],
+        [
+          466.440010833398,
+          1022.8877039896092
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": false,
+        "outOfFrameCorners": [
+          2
+        ],
+        "lowerEdgeSupport": [
+          1,
+          0.625
+        ],
+        "lobeOutlineSupport": [
+          0.4722222222222222,
+          0.19444444444444445
+        ],
+        "capColourLoss": [
+          0.08657327621293223,
+          0.43616477850802343
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "971c5205bd738b280b98e32899a8095d00c6520cadee7c8ec0e7e65529d0fbdd"
+    },
+    {
+      "policy": "baseline",
+      "id": "flower",
+      "quad": [
+        [
+          793.8567114883541,
+          385.4102448391328
+        ],
+        [
+          907.8415931957261,
+          468.36492954624373
+        ],
+        [
+          815.3115076445058,
+          571.9592484245964
+        ],
+        [
+          698.0645010186174,
+          484.2821580070257
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.8947368421052632,
+          0.7894736842105263
+        ],
+        "lobeOutlineSupport": [
+          0.5555555555555556,
+          0.4166666666666667
+        ],
+        "capColourLoss": [
+          0.31629444266453993,
+          4.717162392876685e-06
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "971c5205bd738b280b98e32899a8095d00c6520cadee7c8ec0e7e65529d0fbdd"
+    },
+    {
+      "policy": "baseline",
+      "id": "dense-checker",
+      "quad": [
+        [
+          824.3637759965004,
+          169.25568526873215
+        ],
+        [
+          925.6879214394025,
+          250.01664849307951
+        ],
+        [
+          837.5322148453769,
+          339.1106360621789
+        ],
+        [
+          733.4422670902453,
+          251.36690779712663
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.7090909090909091,
+          0.6727272727272727
+        ],
+        "lobeOutlineSupport": [
+          0.4722222222222222,
+          0.75
+        ],
+        "capColourLoss": [
+          0.26904397936568286,
+          3.9575092657475855e-05
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "971c5205bd738b280b98e32899a8095d00c6520cadee7c8ec0e7e65529d0fbdd"
+    },
+    {
+      "policy": "no-rgb",
+      "id": "outline-star",
+      "quad": [
+        [
+          430.6852406527058,
+          170.70227750749615
+        ],
+        [
+          524.7698721158736,
+          268.12837379994596
+        ],
+        [
+          401.29258194737736,
+          351.3563338652458
+        ],
+        [
+          320.92164474290905,
+          265.8150752047229
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.6938775510204082,
+          0.7346938775510204
+        ],
+        "lobeOutlineSupport": [
+          0.16666666666666666,
+          0.4166666666666667
+        ],
+        "capColourLoss": [
+          0.44995833188781176,
+          0.00029807821169117486
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "320cbc055ac2de5129a3bd36d195414958c98aa7ebdb9fff47fd9c80f01132f0"
+    },
+    {
+      "policy": "no-rgb",
+      "id": "crossed-ribbons",
+      "quad": [
+        [
+          404.54827361417847,
+          919.6661943253844
+        ],
+        [
+          481.9471075615802,
+          1032.0913135684393
+        ],
+        [
+          368.96550910041606,
+          1141.2688178053218
+        ],
+        [
+          287.6439647815192,
+          1001.8939194767275
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": false,
+        "outOfFrameCorners": [
+          2
+        ],
+        "lowerEdgeSupport": [
+          0.8536585365853658,
+          1
+        ],
+        "lobeOutlineSupport": [
+          0.4166666666666667,
+          0.8888888888888888
+        ],
+        "capColourLoss": [
+          0.3486927430811684,
+          1.7981161935502293e-05
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "320cbc055ac2de5129a3bd36d195414958c98aa7ebdb9fff47fd9c80f01132f0"
+    },
+    {
+      "policy": "no-rgb",
+      "id": "jigsaw",
+      "quad": [
+        [
+          791.1694546427003,
+          622.0950654110383
+        ],
+        [
+          857.7570601523798,
+          748.9110074013394
+        ],
+        [
+          755.8883004682065,
+          874.9805329113009
+        ],
+        [
+          714.7143028830399,
+          752.7538008977817
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.7391304347826086,
+          0.7608695652173914
+        ],
+        "lobeOutlineSupport": [
+          0.1111111111111111,
+          0.3611111111111111
+        ],
+        "capColourLoss": [
+          0.20519132393061984,
+          0.17122397262310576
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "320cbc055ac2de5129a3bd36d195414958c98aa7ebdb9fff47fd9c80f01132f0"
+    },
+    {
+      "policy": "no-rgb",
+      "id": "bauble",
+      "quad": [
+        [
+          585.124945734859,
+          905.2805093237887
+        ],
+        [
+          680.4272015903496,
+          1020.2331968915895
+        ],
+        [
+          619.5033182277817,
+          1139.311696191154
+        ],
+        [
+          466.440010833398,
+          1022.8877039896092
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": false,
+        "outOfFrameCorners": [
+          2
+        ],
+        "lowerEdgeSupport": [
+          1,
+          0.625
+        ],
+        "lobeOutlineSupport": [
+          0.4722222222222222,
+          0.19444444444444445
+        ],
+        "capColourLoss": [
+          0.08657327621293223,
+          0.43616477850802343
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "320cbc055ac2de5129a3bd36d195414958c98aa7ebdb9fff47fd9c80f01132f0"
+    },
+    {
+      "policy": "no-rgb",
+      "id": "flower",
+      "quad": [
+        [
+          794.090746760397,
+          384.7890115387685
+        ],
+        [
+          906.3372387951126,
+          464.88970589653553
+        ],
+        [
+          821.1847724153885,
+          579.5572722167453
+        ],
+        [
+          697.1991176910651,
+          485.60895400799046
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.8947368421052632,
+          0.7894736842105263
+        ],
+        "lobeOutlineSupport": [
+          0.6666666666666666,
+          0.4166666666666667
+        ],
+        "capColourLoss": [
+          0.3145580382206195,
+          4.552238566521736e-06
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "320cbc055ac2de5129a3bd36d195414958c98aa7ebdb9fff47fd9c80f01132f0"
+    },
+    {
+      "policy": "no-rgb",
+      "id": "dense-checker",
+      "quad": [
+        [
+          824.3588055402225,
+          169.24958383997466
+        ],
+        [
+          925.7264726948204,
+          250.0336561163974
+        ],
+        [
+          837.5242123185527,
+          339.1025130127114
+        ],
+        [
+          733.4484191572618,
+          251.36425415504277
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.7090909090909091,
+          0.6727272727272727
+        ],
+        "lobeOutlineSupport": [
+          0.3611111111111111,
+          0.7222222222222222
+        ],
+        "capColourLoss": [
+          0.3669534041367986,
+          3.0091896235453744e-05
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "320cbc055ac2de5129a3bd36d195414958c98aa7ebdb9fff47fd9c80f01132f0"
+    },
+    {
+      "policy": "paper-direction",
+      "id": "outline-star",
+      "quad": [
+        [
+          430.6852406527058,
+          170.70227750749615
+        ],
+        [
+          524.7698721158736,
+          268.12837379994596
+        ],
+        [
+          401.29258194737736,
+          351.3563338652458
+        ],
+        [
+          320.92164474290905,
+          265.8150752047229
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.6938775510204082,
+          0.7346938775510204
+        ],
+        "lobeOutlineSupport": [
+          0.16666666666666666,
+          0.4166666666666667
+        ],
+        "capColourLoss": [
+          0.44995833188781176,
+          0.00029807821169117486
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "5b832d1c36ad345cfff1c1ba44c83300e57dccb12f4af4fa9af3c5175a7a17e6"
+    },
+    {
+      "policy": "paper-direction",
+      "id": "crossed-ribbons",
+      "quad": [
+        [
+          404.54827361417847,
+          919.6661943253844
+        ],
+        [
+          481.9471075615802,
+          1032.0913135684393
+        ],
+        [
+          368.96550910041606,
+          1141.2688178053218
+        ],
+        [
+          287.6439647815192,
+          1001.8939194767275
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": false,
+        "outOfFrameCorners": [
+          2
+        ],
+        "lowerEdgeSupport": [
+          0.8536585365853658,
+          1
+        ],
+        "lobeOutlineSupport": [
+          0.4166666666666667,
+          0.8888888888888888
+        ],
+        "capColourLoss": [
+          0.3486927430811684,
+          1.7981161935502293e-05
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "5b832d1c36ad345cfff1c1ba44c83300e57dccb12f4af4fa9af3c5175a7a17e6"
+    },
+    {
+      "policy": "paper-direction",
+      "id": "jigsaw",
+      "quad": [
+        [
+          791.1694546427003,
+          622.0950654110383
+        ],
+        [
+          857.7570601523798,
+          748.9110074013394
+        ],
+        [
+          755.8883004682065,
+          874.9805329113009
+        ],
+        [
+          714.7143028830399,
+          752.7538008977817
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.7391304347826086,
+          0.7608695652173914
+        ],
+        "lobeOutlineSupport": [
+          0.1111111111111111,
+          0.3611111111111111
+        ],
+        "capColourLoss": [
+          0.20519132393061984,
+          0.17122397262310576
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "5b832d1c36ad345cfff1c1ba44c83300e57dccb12f4af4fa9af3c5175a7a17e6"
+    },
+    {
+      "policy": "paper-direction",
+      "id": "bauble",
+      "quad": [
+        [
+          585.124945734859,
+          905.2805093237887
+        ],
+        [
+          680.4272015903496,
+          1020.2331968915895
+        ],
+        [
+          619.5033182277817,
+          1139.311696191154
+        ],
+        [
+          466.440010833398,
+          1022.8877039896092
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": false,
+        "outOfFrameCorners": [
+          2
+        ],
+        "lowerEdgeSupport": [
+          1,
+          0.625
+        ],
+        "lobeOutlineSupport": [
+          0.4722222222222222,
+          0.19444444444444445
+        ],
+        "capColourLoss": [
+          0.08657327621293223,
+          0.43616477850802343
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "5b832d1c36ad345cfff1c1ba44c83300e57dccb12f4af4fa9af3c5175a7a17e6"
+    },
+    {
+      "policy": "paper-direction",
+      "id": "flower",
+      "quad": [
+        [
+          794.0675459229636,
+          384.7564792365918
+        ],
+        [
+          907.0200273600626,
+          465.6358446855588
+        ],
+        [
+          818.994462661975,
+          577.6558050989521
+        ],
+        [
+          697.3890550218633,
+          485.31120858823454
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.8947368421052632,
+          0.7894736842105263
+        ],
+        "lobeOutlineSupport": [
+          0.6666666666666666,
+          0.4166666666666667
+        ],
+        "capColourLoss": [
+          0.3117012734145758,
+          4.502536778287307e-06
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "5b832d1c36ad345cfff1c1ba44c83300e57dccb12f4af4fa9af3c5175a7a17e6"
+    },
+    {
+      "policy": "paper-direction",
+      "id": "dense-checker",
+      "quad": [
+        [
+          824.3498103889142,
+          169.2504944618699
+        ],
+        [
+          925.7191348391259,
+          250.03363405846903
+        ],
+        [
+          837.5314144603174,
+          339.1053581255899
+        ],
+        [
+          733.4497755389217,
+          251.36340844201885
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.7090909090909091,
+          0.6727272727272727
+        ],
+        "lobeOutlineSupport": [
+          0.3055555555555556,
+          0.8055555555555556
+        ],
+        "capColourLoss": [
+          0.35956047235858607,
+          2.935653941300699e-05
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "5b832d1c36ad345cfff1c1ba44c83300e57dccb12f4af4fa9af3c5175a7a17e6"
+    },
+    {
+      "policy": "guarded-rgb",
+      "id": "outline-star",
+      "quad": [
+        [
+          430.6852406527058,
+          170.70227750749615
+        ],
+        [
+          524.7698721158736,
+          268.12837379994596
+        ],
+        [
+          401.29258194737736,
+          351.3563338652458
+        ],
+        [
+          320.92164474290905,
+          265.8150752047229
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.6938775510204082,
+          0.7346938775510204
+        ],
+        "lobeOutlineSupport": [
+          0.16666666666666666,
+          0.4166666666666667
+        ],
+        "capColourLoss": [
+          0.44995833188781176,
+          0.00029807821169117486
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "2171a84cc9297709dfdf53f640a9e3ff22c15729d4e930ad2473bc5afd9dc7ac"
+    },
+    {
+      "policy": "guarded-rgb",
+      "id": "crossed-ribbons",
+      "quad": null,
+      "assessment": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "2171a84cc9297709dfdf53f640a9e3ff22c15729d4e930ad2473bc5afd9dc7ac"
+    },
+    {
+      "policy": "guarded-rgb",
+      "id": "jigsaw",
+      "quad": [
+        [
+          797.2634465114423,
+          632.5155139109033
+        ],
+        [
+          855.598347129977,
+          749.5735589430103
+        ],
+        [
+          755.9650294666047,
+          875.2083061486576
+        ],
+        [
+          713.0106534855996,
+          747.6964464858082
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.7391304347826086,
+          0.7608695652173914
+        ],
+        "lobeOutlineSupport": [
+          0.4166666666666667,
+          0.2777777777777778
+        ],
+        "capColourLoss": [
+          0.060097370925073314,
+          0.30740941854444687
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "2171a84cc9297709dfdf53f640a9e3ff22c15729d4e930ad2473bc5afd9dc7ac"
+    },
+    {
+      "policy": "guarded-rgb",
+      "id": "bauble",
+      "quad": [
+        [
+          585.124945734859,
+          905.2805093237887
+        ],
+        [
+          680.4272015903496,
+          1020.2331968915895
+        ],
+        [
+          619.5033182277817,
+          1139.311696191154
+        ],
+        [
+          466.440010833398,
+          1022.8877039896092
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": false,
+        "outOfFrameCorners": [
+          2
+        ],
+        "lowerEdgeSupport": [
+          1,
+          0.625
+        ],
+        "lobeOutlineSupport": [
+          0.4722222222222222,
+          0.19444444444444445
+        ],
+        "capColourLoss": [
+          0.08657327621293223,
+          0.43616477850802343
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "2171a84cc9297709dfdf53f640a9e3ff22c15729d4e930ad2473bc5afd9dc7ac"
+    },
+    {
+      "policy": "guarded-rgb",
+      "id": "flower",
+      "quad": [
+        [
+          793.8567114883541,
+          385.4102448391328
+        ],
+        [
+          907.8415931957261,
+          468.36492954624373
+        ],
+        [
+          815.3115076445058,
+          571.9592484245964
+        ],
+        [
+          698.0645010186174,
+          484.2821580070257
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.8947368421052632,
+          0.7894736842105263
+        ],
+        "lobeOutlineSupport": [
+          0.5555555555555556,
+          0.4166666666666667
+        ],
+        "capColourLoss": [
+          0.31629444266453993,
+          4.717162392876685e-06
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "2171a84cc9297709dfdf53f640a9e3ff22c15729d4e930ad2473bc5afd9dc7ac"
+    },
+    {
+      "policy": "guarded-rgb",
+      "id": "dense-checker",
+      "quad": [
+        [
+          824.3537844414226,
+          169.25087133702505
+        ],
+        [
+          925.7187116182206,
+          250.03326630832626
+        ],
+        [
+          837.529034077572,
+          339.104787019615
+        ],
+        [
+          733.4478677725132,
+          251.36312365847215
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.7090909090909091,
+          0.6727272727272727
+        ],
+        "lobeOutlineSupport": [
+          0.3055555555555556,
+          0.8055555555555556
+        ],
+        "capColourLoss": [
+          0.3469356065135,
+          2.9494841229518424e-05
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "2171a84cc9297709dfdf53f640a9e3ff22c15729d4e930ad2473bc5afd9dc7ac"
+    },
+    {
+      "policy": "lower-mid",
+      "id": "outline-star",
+      "quad": [
+        [
+          429.5850365077088,
+          172.95789973512046
+        ],
+        [
+          526.1021601363315,
+          267.23036563981515
+        ],
+        [
+          402.9767362547896,
+          350.22115566972633
+        ],
+        [
+          317.44947494558323,
+          256.0391206069588
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.68,
+          0.48
+        ],
+        "lobeOutlineSupport": [
+          0.2777777777777778,
+          0.19444444444444445
+        ],
+        "capColourLoss": [
+          0.4190936320994079,
+          0.00029806698262794623
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "93ecee34a8c02b91df7b7817ad3758e8e292228eef775e70e78757c52d313503"
+    },
+    {
+      "policy": "lower-mid",
+      "id": "crossed-ribbons",
+      "quad": [
+        [
+          401.2989300375002,
+          919.8155141381934
+        ],
+        [
+          482.2459478214688,
+          1031.0182817633831
+        ],
+        [
+          380.99262822151786,
+          1128.2143769486152
+        ],
+        [
+          293.3181312844261,
+          1013.5230174268548
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": false,
+        "outOfFrameCorners": [
+          2
+        ],
+        "lowerEdgeSupport": [
+          0.8611111111111112,
+          0.9444444444444444
+        ],
+        "lobeOutlineSupport": [
+          0.5277777777777778,
+          0.8888888888888888
+        ],
+        "capColourLoss": [
+          0.36260830044563547,
+          1.93419553543634e-05
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "93ecee34a8c02b91df7b7817ad3758e8e292228eef775e70e78757c52d313503"
+    },
+    {
+      "policy": "lower-mid",
+      "id": "jigsaw",
+      "quad": [
+        [
+          792.7378830138102,
+          619.4687684822363
+        ],
+        [
+          847.5549222753089,
+          737.8275621955379
+        ],
+        [
+          808.6098363373831,
+          853.3974795557945
+        ],
+        [
+          721.2428067852966,
+          757.3232937172985
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.5066666666666667,
+          0.4533333333333333
+        ],
+        "lobeOutlineSupport": [
+          0.3611111111111111,
+          0.2222222222222222
+        ],
+        "capColourLoss": [
+          0.2234737275010422,
+          0.23370173425796206
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "93ecee34a8c02b91df7b7817ad3758e8e292228eef775e70e78757c52d313503"
+    },
+    {
+      "policy": "lower-mid",
+      "id": "bauble",
+      "quad": null,
+      "assessment": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "93ecee34a8c02b91df7b7817ad3758e8e292228eef775e70e78757c52d313503"
+    },
+    {
+      "policy": "lower-mid",
+      "id": "flower",
+      "quad": [
+        [
+          799.3778739512645,
+          382.6019366060054
+        ],
+        [
+          898.86718568932,
+          481.1742622639597
+        ],
+        [
+          811.5237921174358,
+          572.1304319555061
+        ],
+        [
+          697.0729009449358,
+          482.31535163885945
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.6923076923076923,
+          0.9230769230769231
+        ],
+        "lobeOutlineSupport": [
+          0.6666666666666666,
+          0.8055555555555556
+        ],
+        "capColourLoss": [
+          0.2699008296736564,
+          2.5020006284101922e-05
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "93ecee34a8c02b91df7b7817ad3758e8e292228eef775e70e78757c52d313503"
+    },
+    {
+      "policy": "lower-mid",
+      "id": "dense-checker",
+      "quad": [
+        [
+          824.3649330691067,
+          169.25651882518224
+        ],
+        [
+          925.6941174424156,
+          250.0164140949974
+        ],
+        [
+          837.5315505675367,
+          339.1142635666846
+        ],
+        [
+          733.4430457583795,
+          251.36686702506145
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.5294117647058824,
+          0.75
+        ],
+        "lobeOutlineSupport": [
+          0.4722222222222222,
+          0.75
+        ],
+        "capColourLoss": [
+          0.27112322226437047,
+          3.951196162887971e-05
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "93ecee34a8c02b91df7b7817ad3758e8e292228eef775e70e78757c52d313503"
+    },
+    {
+      "policy": "lower-tail",
+      "id": "outline-star",
+      "quad": [
+        [
+          430.60250890494,
+          172.0747995801985
+        ],
+        [
+          525.4322170721463,
+          267.81286093226095
+        ],
+        [
+          402.574142537592,
+          350.2045072084435
+        ],
+        [
+          317.53115258944223,
+          255.8591809996982
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.6756756756756757,
+          0.47297297297297297
+        ],
+        "lobeOutlineSupport": [
+          0.2222222222222222,
+          0.19444444444444445
+        ],
+        "capColourLoss": [
+          0.4188512483223524,
+          0.00028956976178916446
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "6eeb0f857d9924adfac7e13d397628c2c60e3b73ef22ddd91274b87a79bebb97"
+    },
+    {
+      "policy": "lower-tail",
+      "id": "crossed-ribbons",
+      "quad": [
+        [
+          401.97214272079066,
+          919.7482443196091
+        ],
+        [
+          482.44810595124,
+          1031.5281648003588
+        ],
+        [
+          377.3483567982661,
+          1123.8767662795394
+        ],
+        [
+          292.63634623114433,
+          1012.0987545514766
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": false,
+        "outOfFrameCorners": [
+          2
+        ],
+        "lowerEdgeSupport": [
+          0.8860759493670886,
+          0.9367088607594937
+        ],
+        "lobeOutlineSupport": [
+          0.5555555555555556,
+          0.8888888888888888
+        ],
+        "capColourLoss": [
+          0.3727644583871997,
+          1.8278376071613324e-05
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "6eeb0f857d9924adfac7e13d397628c2c60e3b73ef22ddd91274b87a79bebb97"
+    },
+    {
+      "policy": "lower-tail",
+      "id": "jigsaw",
+      "quad": [
+        [
+          793.0519482687471,
+          619.3156217052472
+        ],
+        [
+          847.03596022629,
+          735.4834520496629
+        ],
+        [
+          810.5309822461218,
+          855.5027351082276
+        ],
+        [
+          720.046720811,
+          755.965019033938
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.4931506849315068,
+          0.4657534246575342
+        ],
+        "lobeOutlineSupport": [
+          0.3055555555555556,
+          0.16666666666666666
+        ],
+        "capColourLoss": [
+          0.2226245870747425,
+          0.22121035382729282
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "6eeb0f857d9924adfac7e13d397628c2c60e3b73ef22ddd91274b87a79bebb97"
+    },
+    {
+      "policy": "lower-tail",
+      "id": "bauble",
+      "quad": null,
+      "assessment": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "6eeb0f857d9924adfac7e13d397628c2c60e3b73ef22ddd91274b87a79bebb97"
+    },
+    {
+      "policy": "lower-tail",
+      "id": "flower",
+      "quad": [
+        [
+          799.3778739512645,
+          382.6019366060054
+        ],
+        [
+          898.86718568932,
+          481.1742622639597
+        ],
+        [
+          811.5237921174358,
+          572.1304319555061
+        ],
+        [
+          697.0729009449358,
+          482.31535163885945
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.6923076923076923,
+          0.9230769230769231
+        ],
+        "lobeOutlineSupport": [
+          0.6666666666666666,
+          0.8055555555555556
+        ],
+        "capColourLoss": [
+          0.2699008296736564,
+          2.5020006284101922e-05
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "6eeb0f857d9924adfac7e13d397628c2c60e3b73ef22ddd91274b87a79bebb97"
+    },
+    {
+      "policy": "lower-tail",
+      "id": "dense-checker",
+      "quad": [
+        [
+          824.3521118478018,
+          169.25209490894923
+        ],
+        [
+          925.7026124201709,
+          250.0249239476787
+        ],
+        [
+          837.5347050173524,
+          339.1090204450536
+        ],
+        [
+          733.4430491683634,
+          251.36478589328206
+        ]
+      ],
+      "assessment": {
+        "outlineSupported": false,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.42857142857142855,
+          0.8035714285714286
+        ],
+        "lobeOutlineSupport": [
+          0.3333333333333333,
+          0.7222222222222222
+        ],
+        "capColourLoss": [
+          0.21113755231207754,
+          3.104406918798109e-05
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "locatorSha256": "6eeb0f857d9924adfac7e13d397628c2c60e3b73ef22ddd91274b87a79bebb97"
+    }
+  ],
+  "hunodan": {
+    "passed": 22,
+    "maximumSeconds": 9.141331208000004,
+    "timingDefinition": "Each prepare + solve + validate + export <=10 seconds; independent error <= that case\u2019s validated release error, plus at most 1 percentage point for an identical pair; unchanged geometry, strict paper and substantial feature checks. Decode and independent external replay are timed separately. Optional retained snapshots reproduce the compute-worker observer; thread startup and message transfer are excluded.",
+    "rows": [
+      {
+        "id": "hjfig-01",
+        "seconds": 4.683180084,
+        "error": 0.009799111111111111,
+        "previousError": 0.009799111111111111,
+        "passed": true
+      },
+      {
+        "id": "hjfig-02",
+        "seconds": 4.802962167,
+        "error": 0.013923555555555555,
+        "previousError": 0.013923555555555555,
+        "passed": true
+      },
+      {
+        "id": "hjfig-03",
+        "seconds": 3.9850142080000004,
+        "error": 0.006634666666666666,
+        "previousError": 0.006634666666666666,
+        "passed": true
+      },
+      {
+        "id": "hjfig-04",
+        "seconds": 4.564874,
+        "error": 0.013824,
+        "previousError": 0.013824,
+        "passed": true
+      },
+      {
+        "id": "hjfig-05",
+        "seconds": 3.568670582999999,
+        "error": 0.009042960667083447,
+        "previousError": 0.009042960667083447,
+        "passed": true
+      },
+      {
+        "id": "hjfla-01",
+        "seconds": 5.661266750000003,
+        "error": 0.01336669921875,
+        "previousError": 0.01336669921875,
+        "passed": true
+      },
+      {
+        "id": "hjcur-01",
+        "seconds": 5.8319838330000024,
+        "error": 0.005148444444444444,
+        "previousError": 0.005148444444444444,
+        "passed": true
+      },
+      {
+        "id": "hjcur-02",
+        "seconds": 5.270996999999996,
+        "error": 0.005397333333333333,
+        "previousError": 0.005397333333333333,
+        "passed": true
+      },
+      {
+        "id": "hjcur-03",
+        "seconds": 5.279536749999999,
+        "error": 0.004522666666666667,
+        "previousError": 0.004522666666666667,
+        "passed": true
+      },
+      {
+        "id": "hjcur-04",
+        "seconds": 7.575793209000003,
+        "error": 0.005639111111111111,
+        "previousError": 0.005639111111111111,
+        "passed": true
+      },
+      {
+        "id": "hjcur-05",
+        "seconds": 3.600329458,
+        "error": 0.009436444444444445,
+        "previousError": 0.009436444444444445,
+        "passed": true
+      },
+      {
+        "id": "hjhih-01",
+        "seconds": 6.766231541000001,
+        "error": 0.006040430615586996,
+        "previousError": 0.006040430615586996,
+        "passed": true
+      },
+      {
+        "id": "hjhih-02",
+        "seconds": 5.03748933299999,
+        "error": 0.003899406226779104,
+        "previousError": 0.003899406226779104,
+        "passed": true
+      },
+      {
+        "id": "hjhih-04",
+        "seconds": 8.268283209000002,
+        "error": 0.007776029627903062,
+        "previousError": 0.007776029627903062,
+        "passed": true
+      },
+      {
+        "id": "hjstr-01",
+        "seconds": 4.405238083000004,
+        "error": 0.007550237322696868,
+        "previousError": 0.007550237322696868,
+        "passed": true
+      },
+      {
+        "id": "hjstr-02",
+        "seconds": 6.6861827920000065,
+        "error": 0.004365548980933596,
+        "previousError": 0.004365548980933596,
+        "passed": true
+      },
+      {
+        "id": "hjstr-03",
+        "seconds": 9.141331208000004,
+        "error": 0.0055399085981507066,
+        "previousError": 0.0056129769369752365,
+        "passed": true
+      },
+      {
+        "id": "hjsta-01",
+        "seconds": 5.2201884169999975,
+        "error": 0.007929362880886427,
+        "previousError": 0.007929362880886427,
+        "passed": true
+      },
+      {
+        "id": "hjsta-02",
+        "seconds": 4.626614749999994,
+        "error": 0.0038045247395833335,
+        "previousError": 0.0038045247395833335,
+        "passed": true
+      },
+      {
+        "id": "hjsta-03",
+        "seconds": 6.740764207999994,
+        "error": 0.012332213049376572,
+        "previousError": 0.012332213049376572,
+        "passed": true
+      },
+      {
+        "id": "hjsta-04",
+        "seconds": 7.128530457999994,
+        "error": 0.0050250552896055544,
+        "previousError": 0.0050250552896055544,
+        "passed": true
+      },
+      {
+        "id": "hjsta-05",
+        "seconds": 6.2316474170000005,
+        "error": 0.010624446293860237,
+        "previousError": 0.010624446293860237,
+        "passed": true
+      }
+    ]
+  },
+  "checks": [
+    {
+      "name": "corpus",
+      "command": [
+        "node",
+        "scripts/inverse/hard-photo-benchmark.mjs",
+        "--crop=automatic",
+        "--target=mask",
+        "--seconds=10",
+        "--output=tmp/heart-learning/crop-edge-v1/verified-corpus"
+      ],
+      "exitCode": 0,
+      "seconds": 311.28702725
+    },
+    {
+      "name": "hunodan",
+      "command": [
+        "env",
+        "INVERSE_SPEED_OUT=tmp/heart-learning/crop-edge-v1/verified-hunodan",
+        "node",
+        "scripts/inverse/hunodan-speed-benchmark.mjs"
+      ],
+      "exitCode": 0,
+      "seconds": 126.588346334
+    },
+    {
+      "name": "check",
+      "command": [
+        "npm",
+        "run",
+        "check"
+      ],
+      "exitCode": 0,
+      "seconds": 8.297660334
+    },
+    {
+      "name": "lint",
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "exitCode": 0,
+      "seconds": 6.225688417000015
+    },
+    {
+      "name": "vitest",
+      "command": [
+        "npm",
+        "exec",
+        "--",
+        "vitest",
+        "run",
+        "--maxWorkers=2"
+      ],
+      "exitCode": 0,
+      "seconds": 36.094822499999964
+    },
+    {
+      "name": "inverse",
+      "command": [
+        "npm",
+        "run",
+        "test:inverse"
+      ],
+      "exitCode": 0,
+      "seconds": 644.5400463330001
+    },
+    {
+      "name": "build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exitCode": 0,
+      "seconds": 12.561541875000103
+    }
+  ],
+  "browser": {
+    "gitCommit": "c572fee29b2def791eaa3e8951d9daa65c183c92",
+    "results": [
+      {
+        "browser": "chromium",
+        "name": "star",
+        "pageErrors": [],
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.009299999952316285,
+          "prepareRoundTripSeconds": 0.038600000023841854,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 1.988899999976158,
+          "resultToReadySeconds": 0.096,
+          "clickToReadySeconds": 2.1330999999046325
+        },
+        "engineError": 0.0016,
+        "sourceEditableError": 0.0016,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "name": "hat",
+        "pageErrors": [],
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0056999999284744265,
+          "prepareRoundTripSeconds": 0.24289999997615813,
+          "preparedToSolveRequestSeconds": 0.00040000009536743164,
+          "solveRoundTripSeconds": 1.8335,
+          "resultToReadySeconds": 0.053099999904632565,
+          "clickToReadySeconds": 2.1355999999046325
+        },
+        "engineError": 0.001575,
+        "sourceEditableError": 0.001575,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "name": "unequal-lobes",
+        "pageErrors": [],
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.008800000071525574,
+          "prepareRoundTripSeconds": 0.14689999997615813,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 4.757399999976158,
+          "resultToReadySeconds": 0.931,
+          "clickToReadySeconds": 5.8445
+        },
+        "detectedCrop": {
+          "quad": [
+            [
+              189.43543338847311,
+              79.4713671523885
+            ],
+            [
+              275.57042863460583,
+              153.83212282349484
+            ],
+            [
+              190.1688290623907,
+              231.09055446335313
+            ],
+            [
+              104.387153330518,
+              153.92177715851432
+            ]
+          ],
+          "status": "needs_review",
+          "locatorVersion": "0.4.0",
+          "lobeRefinement": {
+            "accepted": true,
+            "method": "independent-lobe-depths",
+            "initialQuad": [
+              [
+                188.7601917291639,
+                77.48875178710122
+              ],
+              [
+                273.08615323297073,
+                155.12719465165478
+              ],
+              [
+                189.6688290623907,
+                230.59055446335313
+              ],
+              [
+                90.71328079512843,
+                141.57062564798161
+              ]
+            ],
+            "proposedQuad": [
+              [
+                188.93543338847311,
+                78.9713671523885
+              ],
+              [
+                275.07042863460583,
+                153.33212282349484
+              ],
+              [
+                189.6688290623907,
+                230.59055446335313
+              ],
+              [
+                103.887153330518,
+                153.42177715851432
+              ]
+            ],
+            "initialScore": -0.15226555831667202,
+            "initialMedianLobeResidualPx": [
+              0.4138793558084888,
+              2.9721023285590156
+            ],
+            "proposedScore": -3.0993515806312733,
+            "proposedMedianLobeResidualPx": [
+              0.21723149483951307,
+              0.24234295853961818
+            ],
+            "proposedLobeOutlineSupport": [
+              1,
+              1
+            ],
+            "initialDiameterContrast": [
+              0.5106003478030258,
+              7.145516785230417e-06
+            ],
+            "proposedDiameterContrast": [
+              0.5095102909470952,
+              0.4978440499892282
+            ]
+          }
+        },
+        "engineError": 0.0029375,
+        "sourceEditableError": 0.0029375,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "name": "hunodan-hjcur-02",
+        "pageErrors": [],
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0052999999523162845,
+          "prepareRoundTripSeconds": 0.1727999999523163,
+          "preparedToSolveRequestSeconds": 0.00040000009536743164,
+          "solveRoundTripSeconds": 6.071399999976158,
+          "resultToReadySeconds": 0.5845,
+          "clickToReadySeconds": 6.834399999976158
+        },
+        "detectedCrop": {
+          "quad": [
+            [
+              194.65378748297076,
+              44.23339992230309
+            ],
+            [
+              339.67367514119843,
+              190.98638544523556
+            ],
+            [
+              193.29192428448607,
+              341.6245320415693
+            ],
+            [
+              45.47671643716768,
+              194.46654727533422
+            ]
+          ],
+          "status": "needs_review",
+          "locatorVersion": "0.2.0",
+          "lobeRefinement": null
+        },
+        "engineError": 0.0057,
+        "sourceEditableError": 0.00576875,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "name": "hard-bibel-star-8",
+        "pageErrors": [],
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0055,
+          "prepareRoundTripSeconds": 0.14839999997615813,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 4.369,
+          "resultToReadySeconds": 0.2761000000238419,
+          "clickToReadySeconds": 4.799399999976158
+        },
+        "detectedCrop": {
+          "quad": [
+            [
+              535.923635058345,
+              138.08539460374064
+            ],
+            [
+              760.3583639239442,
+              377.85442466426053
+            ],
+            [
+              534.6258578830394,
+              606.1244440267722
+            ],
+            [
+              300.14530487499763,
+              366.7513429315625
+            ]
+          ],
+          "status": "needs_review",
+          "locatorVersion": "0.2.0",
+          "lobeRefinement": null
+        },
+        "engineError": 0.0035875,
+        "sourceEditableError": 0.0036375,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "name": "hard-flettede-puppy-half",
+        "pageErrors": [],
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0055,
+          "prepareRoundTripSeconds": 0.15330000007152558,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 21.475700000047684,
+          "resultToReadySeconds": 0.6246999999284745,
+          "clickToReadySeconds": 22.2595
+        },
+        "detectedCrop": {
+          "quad": [
+            [
+              199.26477585137323,
+              162.21315169453797
+            ],
+            [
+              326.4926030186158,
+              294.563663334038
+            ],
+            [
+              194.28373192596354,
+              425.07205211518135
+            ],
+            [
+              63.892640932218455,
+              289.123974355558
+            ]
+          ],
+          "status": "candidate",
+          "locatorVersion": "0.2.0",
+          "lobeRefinement": null
+        },
+        "engineError": 0.00908125,
+        "sourceEditableError": 0.00915,
+        "passed": true
+      }
+    ]
+  },
+  "artifacts": {
+    "path": "tmp/heart-learning/crop-edge-v1/artifact-inventory.json",
+    "count": 1371,
+    "sha256": "63c0d093891138eac60351f08bc965f116f3da245a985aae750bddd726c7e955"
+  },
+  "evidence": {
+    "tmp/heart-learning/crop-edge-v1/verified-corpus/results.json": "5bfae0cf1ef1c25fe503d5e02620db0c3f0f059a2857a92b262dbc4ad2b32a3c",
+    "tmp/heart-learning/crop-edge-v1/reproduction-study/results.json": "ed478a4091e6844352bb50ec6ac7868da06f0a61208aead168445a9943bf12ab",
+    "tmp/heart-learning/crop-edge-v1/checks/report.json": "6a331a9be4ca94e892861e9386867f071668014429133a0361a23379aea44bba",
+    "tmp/heart-learning/crop-edge-v1/verified-hunodan/results.json": "517c759730ebe0e6a94674276fba02e004b7d6c33029d5c44f2853eca59dc211",
+    "tmp/heart-learning/crop-edge-v1/browser/results.json": "6bb2293ec6de8444b5911468bc806aa1ff518727a11dbe1dcebc2fc35c90c29f",
+    "tmp/heart-learning/crop-edge-v1/served.json": "4a0ba96a35c53a5f0186eacbc3b83f1104615e5a0d216c335f5dd0ed06473b7a"
+  }
+}

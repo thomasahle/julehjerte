@@ -1,0 +1,53 @@
+{
+  "status": "declared-before-fitting",
+  "runtimeChange": false,
+  "sourceFile": "static/inverse/core/direct/fit.js",
+  "sourceSha256": "656b0f45abd239507445dc3ec7927fcba119db6b94794cc6c931432cfa7d274f",
+  "hypothesis": "The currently selected valid boundary-supported count with source error <=1% always satisfies the existing best-error +1 percentage point final preference. Different-count finalists cannot displace it; a queued same-count alternative can and prevents the bound.",
+  "unchanged": [
+    "Geometry, image, feature, paper, sharing, matching and exported checks",
+    "Unsupported or weighted count search",
+    "Failed candidates, errors above 1%, and queued same-count alternatives"
+  ],
+  "qualification": "This is a bound on the existing pre-polish selection policy. Changed scheduling can still alter deadline-limited polishing, so actual final errors and geometry must be compared.",
+  "smokeCases": [
+    {
+      "id": "hjcur-02",
+      "source": "current captured browser mask",
+      "seconds": 180
+    },
+    {
+      "id": "hjstr-03",
+      "source": "current captured browser mask",
+      "seconds": 180
+    },
+    {
+      "id": "candle",
+      "source": "fixed prior automatic-photo mask",
+      "seconds": 10
+    }
+  ],
+  "execution": "Wait for the active native-import full QA controller to complete with source hashes verified, then run baseline and candidate in fresh serial Node processes.",
+  "evaluation": [
+    "Measure prepare/fit/finish and retained checkpoints",
+    "Independently score exported weave against the exact unchanged source mask",
+    "Require all existing template checks and the candle 1+1 result",
+    "Preserve failures and inspect every changed output before deciding on a corpus replay"
+  ],
+  "artifacts": {
+    "tmp/heart-learning/supported-count-bound-v1/baseline-original.js": "656b0f45abd239507445dc3ec7927fcba119db6b94794cc6c931432cfa7d274f",
+    "tmp/heart-learning/supported-count-bound-v1/candidate-original.js": "93b1f0e08ecadeb670051f32094f99a44bf01bdeef7625dda384a9de1931d27a",
+    "tmp/heart-learning/supported-count-bound-v1/baseline.mjs": "d08b581d80077659ed00e4986543589d2416ac5a1fcb369530300e11008917e6",
+    "tmp/heart-learning/supported-count-bound-v1/candidate.mjs": "e5192c9c5597be27eaef308f90749b98299e27b56219289c3894aa256b90d0af"
+  },
+  "schema": "supported-count-bound-plan-1",
+  "executionState": "tmp/heart-learning/supported-count-bound-v1/state.json",
+  "replayScript": {
+    "path": "tmp/heart-learning/supported-count-bound-v1/replay.mjs",
+    "sha256": "99c030e51f1ff56a992205cb2bbef07e639c90c1c94ef425d41eaeab118f43e9"
+  },
+  "controllerScript": {
+    "path": "tmp/heart-learning/supported-count-bound-v1/run.py",
+    "sha256": "92e60053071284ce418b513cadccac21da0be4942e7abc45714671094f05a476"
+  }
+}

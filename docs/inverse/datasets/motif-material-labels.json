@@ -1,0 +1,158 @@
+{
+  "scope": "Two partial paper-material annotations layered over existing boar/rabbit body labels. No new photographs, training runs, cut-path labels, global family review or split assignments.",
+  "sourceFile": "scripts/inverse/datasets/real-materials-motifs.json",
+  "newInstances": 2,
+  "newSourceGroups": 2,
+  "totalMaterialInstances": 7,
+  "knownMaterialPixelsAt256": 22869,
+  "bodyAndRGBAt256UnchangedFromPriorBodyExports": true,
+  "checks": [
+    {
+      "resolution": 256,
+      "audit": {
+        "passed": true,
+        "instances": 2,
+        "sourceGroups": 2,
+        "manifestSha256": "d6f9d3ce32734283a7ee71ec40b596154cb9aab77ea636be4244e7054cba21c2",
+        "annotationsSha256": "5e439770d03347a528746a325ce995fb8f917d096fb480113fb45e4af97ec100",
+        "scope": "Source bytes, body references, grouping, transforms and every output pixel; annotation correctness still requires visual review."
+      },
+      "instances": [
+        {
+          "id": "real-2044b1d98ed6f262-body-1",
+          "assetId": "real-2044b1d98ed6f262",
+          "imageSha256": "2044b1d98ed6f262c52cdc80544b8b22ea909a2d8923dbfc27e4c41f91da3047",
+          "splitGroupId": "real-split-43d9db9ff4061e07",
+          "nearDuplicateGroup": "real-2044b1d98ed6f262",
+          "allocation": "unassigned",
+          "bodyPixelCounts": {
+            "0": 27475,
+            "1": 20083,
+            "255": 17978
+          },
+          "materialPixelCounts": {
+            "0": 6662,
+            "1": 4136,
+            "255": 54738
+          }
+        },
+        {
+          "id": "real-45744a03afddccb1-body-1",
+          "assetId": "real-45744a03afddccb1",
+          "imageSha256": "45744a03afddccb18b4b01fb770d6cfdcfbd35d25dad796e99b62a6dd9cbad33",
+          "splitGroupId": "real-split-8e4db6249b2748c6",
+          "nearDuplicateGroup": "real-45744a03afddccb1",
+          "allocation": "unassigned",
+          "bodyPixelCounts": {
+            "0": 27925,
+            "1": 19694,
+            "255": 17917
+          },
+          "materialPixelCounts": {
+            "0": 5731,
+            "1": 6340,
+            "255": 53465
+          }
+        }
+      ]
+    },
+    {
+      "resolution": 768,
+      "audit": {
+        "passed": true,
+        "instances": 2,
+        "sourceGroups": 2,
+        "manifestSha256": "58e29a381e640525c8e42cd1d19f1b18b8d35669f1263d6b45206962ead5ffc1",
+        "annotationsSha256": "5e439770d03347a528746a325ce995fb8f917d096fb480113fb45e4af97ec100",
+        "scope": "Source bytes, body references, grouping, transforms and every output pixel; annotation correctness still requires visual review."
+      },
+      "instances": [
+        {
+          "id": "real-2044b1d98ed6f262-body-1",
+          "assetId": "real-2044b1d98ed6f262",
+          "imageSha256": "2044b1d98ed6f262c52cdc80544b8b22ea909a2d8923dbfc27e4c41f91da3047",
+          "splitGroupId": "real-split-43d9db9ff4061e07",
+          "nearDuplicateGroup": "real-2044b1d98ed6f262",
+          "allocation": "unassigned",
+          "bodyPixelCounts": {
+            "0": 247313,
+            "1": 180890,
+            "255": 161621
+          },
+          "materialPixelCounts": {
+            "0": 60159,
+            "1": 37135,
+            "255": 492530
+          }
+        },
+        {
+          "id": "real-45744a03afddccb1-body-1",
+          "assetId": "real-45744a03afddccb1",
+          "imageSha256": "45744a03afddccb18b4b01fb770d6cfdcfbd35d25dad796e99b62a6dd9cbad33",
+          "splitGroupId": "real-split-8e4db6249b2748c6",
+          "nearDuplicateGroup": "real-45744a03afddccb1",
+          "allocation": "unassigned",
+          "bodyPixelCounts": {
+            "0": 251373,
+            "1": 177434,
+            "255": 161017
+          },
+          "materialPixelCounts": {
+            "0": 51439,
+            "1": 57096,
+            "255": 481289
+          }
+        }
+      ]
+    }
+  ],
+  "visualReview": {
+    "reviewer": "assistant",
+    "views": [
+      "Both original photographs",
+      "Existing source outline reviews",
+      "Both draft material outlines",
+      "Both 768-pixel material overlays",
+      "Corrected boar 768-pixel material overlay",
+      "Both final 256-pixel material overlays"
+    ],
+    "correction": "The first right red-frame polygon extended into the boar heart\u2019s green lower corner. It was shortened; the initial draft remains preserved.",
+    "uncertainty": "Conservative paper interiors only. Handles, shadows, uncertain body boundaries, seam rims, the rabbit\u2019s central crease and unannotated motif details remain unknown. Material labels never restore pixels marked unknown in the body annotation.",
+    "limitations": "These are assistant-reviewed observations of visible materials, not independent human labels or true cutting paths. Existing source groups are outside current QA reservations; cross-corpus motif-family review remains pending."
+  },
+  "artifactsSha256": {
+    "scripts/inverse/datasets/real-materials-motifs.json": "5e439770d03347a528746a325ce995fb8f917d096fb480113fb45e4af97ec100",
+    "scripts/inverse/datasets/real-annotations-motifs.json": "753cd9c44d1b24077024ba3f9a2f40408a5d13624416c1f8e9402a80b3b6580e",
+    "tmp/heart-learning/motif-materials-v1/draft.json": "45d2c7b1160b7f77c4c6970cbe1b4c795925660faba3d967b56bfdbf48479ff8",
+    "tmp/heart-learning/motif-materials-v1/reviewed.json": "5e439770d03347a528746a325ce995fb8f917d096fb480113fb45e4af97ec100",
+    "tmp/heart-learning/motif-materials-v1/annotate.py": "baa7f2dc36c5666b1d023e20222622a0e52fc3144428c340ecd9cf6968da0e3e",
+    "tmp/heart-learning/motif-materials-v1/reviewed-256/manifest.json": "d6f9d3ce32734283a7ee71ec40b596154cb9aab77ea636be4244e7054cba21c2",
+    "tmp/heart-learning/motif-materials-v1/verify-256.json": "462628ba57c05fb2b62946d82337f0a6200cef9a3d116bdff2e7146140bd09b0",
+    "tmp/heart-learning/motif-materials-v1/reviewed-256/real-2044b1d98ed6f262-body-1-rgb.png": "2c59b386b405e63effdd332487bc27143cf985dbabb123305ed8e2c62c09f93b",
+    "tmp/heart-learning/motif-materials-v1/reviewed-256/real-2044b1d98ed6f262-body-1-body.png": "d95187d0d1c5080784e53e8f2ebf3f610987dc0254912c885668a8378c91377d",
+    "tmp/heart-learning/motif-materials-v1/reviewed-256/real-2044b1d98ed6f262-body-1-materials.png": "53dfc35effb921af5b29dab35469c13c2bc124e1aa2074e6a01b81145533627c",
+    "tmp/heart-learning/motif-materials-v1/reviewed-256/real-2044b1d98ed6f262-body-1-overlay.png": "2a4f64c24722d2534b8dd7a6526010790298020f25d7f494e53a6a6cad42e282",
+    "tmp/heart-learning/real-motif-annotation-v1/reviewed-labels/real-2044b1d98ed6f262-body-1-rgb.png": "2c59b386b405e63effdd332487bc27143cf985dbabb123305ed8e2c62c09f93b",
+    "tmp/heart-learning/real-motif-annotation-v1/reviewed-labels/real-2044b1d98ed6f262-body-1-labels.png": "d95187d0d1c5080784e53e8f2ebf3f610987dc0254912c885668a8378c91377d",
+    "tmp/heart-learning/motif-materials-v1/reviewed-256/real-45744a03afddccb1-body-1-rgb.png": "a8a93e49a128a5a5a37c25f1704026b2a70c7d0329ea2f7635f1a94392fd1c79",
+    "tmp/heart-learning/motif-materials-v1/reviewed-256/real-45744a03afddccb1-body-1-body.png": "705fdd7adcf96c30bd33b541d5e470eaf93afcaa3bc834f1056451682c8adcf8",
+    "tmp/heart-learning/motif-materials-v1/reviewed-256/real-45744a03afddccb1-body-1-materials.png": "f81d5bc50be5ac2a570e9951bf6993cb991b3c63f181cd10af0a443e9186f3d2",
+    "tmp/heart-learning/motif-materials-v1/reviewed-256/real-45744a03afddccb1-body-1-overlay.png": "0d1a9394aab07f4ca7f525d2a8fbe56c88927499bac9d2ad686c552119ddb2c7",
+    "tmp/heart-learning/real-motif-annotation-v1/reviewed-labels/real-45744a03afddccb1-body-1-rgb.png": "a8a93e49a128a5a5a37c25f1704026b2a70c7d0329ea2f7635f1a94392fd1c79",
+    "tmp/heart-learning/real-motif-annotation-v1/reviewed-labels/real-45744a03afddccb1-body-1-labels.png": "705fdd7adcf96c30bd33b541d5e470eaf93afcaa3bc834f1056451682c8adcf8",
+    "tmp/heart-learning/motif-materials-v1/reviewed-768/manifest.json": "58e29a381e640525c8e42cd1d19f1b18b8d35669f1263d6b45206962ead5ffc1",
+    "tmp/heart-learning/motif-materials-v1/verify-768.json": "aa0f65a20e4e5e8b8adf2cfc517251d1c4d1d7306fe4d4d5d9ca1dded4aca97e",
+    "tmp/heart-learning/motif-materials-v1/reviewed-768/real-2044b1d98ed6f262-body-1-rgb.png": "298f32d215c3465623a84aa16861be3b050d0079d2b445ae6b00f84e014c8095",
+    "tmp/heart-learning/motif-materials-v1/reviewed-768/real-2044b1d98ed6f262-body-1-body.png": "7f88eedacab2ecb9e99dde794dab885904eade170ca259381113667fbbd6ecb6",
+    "tmp/heart-learning/motif-materials-v1/reviewed-768/real-2044b1d98ed6f262-body-1-materials.png": "0ae1b22350d5e7ce0655f60b42a608f88dab4fe264c012458e0dda8d71df1a5b",
+    "tmp/heart-learning/motif-materials-v1/reviewed-768/real-2044b1d98ed6f262-body-1-overlay.png": "b75cbed9c9dc9f724bbbd7d475dc11982779abba1c7e923ea0990c68ed00f775",
+    "tmp/heart-learning/motif-materials-v1/reviewed-768/real-45744a03afddccb1-body-1-rgb.png": "6e42b0d5f38d195140df5bf262697452a53b041671cdf27601d90a04f6945104",
+    "tmp/heart-learning/motif-materials-v1/reviewed-768/real-45744a03afddccb1-body-1-body.png": "880e30a044f311ee367e1a52c720ad11b6e4117184e530718aa6f00839434290",
+    "tmp/heart-learning/motif-materials-v1/reviewed-768/real-45744a03afddccb1-body-1-materials.png": "fcf82823f88af395c9ed099f530b0f2feebae95821a1d397ccc8b6736ce131b5",
+    "tmp/heart-learning/motif-materials-v1/reviewed-768/real-45744a03afddccb1-body-1-overlay.png": "1e6f2cb50fde7a57c49dc0d605fd2b3161946a836faa57561c4635a94eb3c400",
+    "tmp/heart-training-real/pinterest/assets/2044b1d98ed6f262c52cdc80544b8b22ea909a2d8923dbfc27e4c41f91da3047.jpg": "2044b1d98ed6f262c52cdc80544b8b22ea909a2d8923dbfc27e4c41f91da3047",
+    "tmp/heart-learning/motif-materials-v1/real-2044b1d98ed6f262-body-1-draft-overlay.png": "2134343f5979eaae027655c97be3716748de6912f24c06a460bb85cfe7e74df2",
+    "tmp/heart-training-real/pinterest-expanded/assets/45744a03afddccb18b4b01fb770d6cfdcfbd35d25dad796e99b62a6dd9cbad33.jpg": "45744a03afddccb18b4b01fb770d6cfdcfbd35d25dad796e99b62a6dd9cbad33",
+    "tmp/heart-learning/motif-materials-v1/real-45744a03afddccb1-body-1-draft-overlay.png": "d56c6bf1a3d6dfad5cac9db758b8d5865eca7ac5abc1f561157d84d685320343"
+  }
+}

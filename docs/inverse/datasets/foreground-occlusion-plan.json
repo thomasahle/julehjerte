@@ -1,0 +1,40 @@
+{
+  "schema": "foreground-occlusion-pilot-plan-1",
+  "status": "declared-before-generation",
+  "rationale": "A ribbon entering the heart creates a false notch when visible-paper segmentation treats the occluded region as exposed background. Existing scene variants forbid overlap with the selected body.",
+  "sourceTrainingReport": "tmp/heart-learning/foreground-scene-v1/scene-trained/report.json",
+  "sourceTrainingReportSha256": "f3a71ff6de0cb0a00fe8db15051631d131b6cbd71bf607bd607acae5d101929c",
+  "sourceDatasets": [
+    {
+      "dataset": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-training-synthetic/batch-v1",
+      "foreground": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/real-edge-v1/foreground-batch",
+      "parentManifestSha256": "6649301431add7c3a7b7ba2ccb374723bc165fd3a64c9adede0ad11b3a54133d",
+      "foregroundManifestSha256": "9c1528b5019733d83573bdfd5dc9afd1b2c4d4c6457b4831f4c0023fd2b2f2cc"
+    },
+    {
+      "dataset": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-training-synthetic/corner-lattice-v1",
+      "foreground": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/real-edge-v1/foreground-corners",
+      "parentManifestSha256": "180ecc34ae4294b3e9a70d90009cd2610f918394c0fa531fa64b3aaad0b27732",
+      "foregroundManifestSha256": "1d7fc46096727cfda5cb19bd3ba9599407fc7e7c6d72995b3494691a9eaa5397"
+    }
+  ],
+  "selection": "Use the existing ForegroundCorpus experimentalSplit, not merely parent split=train. First sixteen distinct training geometry hashes in lexical order, one deterministically chosen original view each. No real photograph, QA source, development geometry or recipe holdout enters this pilot.",
+  "generation": "Superimpose a projected foreground ribbon crossing the known notch into the overlap. Vary width, length and colour deterministically. Keep original views and all latent cutting geometry/camera labels unchanged. New output directory only.",
+  "labels": {
+    "amodalBody": "Original complete synthetic paper occupancy from the fixed known camera and geometry.",
+    "visibleBody": "Physical paper occupancy multiplied by unoccluded coverage.",
+    "occludedBody": "Physical paper occupancy multiplied by occluder coverage.",
+    "occluderCoverage": "Known foreground object coverage, distinct from background.",
+    "materialObservation": "Original photograph support multiplied by unoccluded coverage; hidden paper labels must not be scored as observed.",
+    "originalMaterialAndCuts": "Preserved latent references, not inferred from new occluded RGB."
+  },
+  "verification": [
+    "Check visibleBody + occludedBody equals amodalBody, including fractional edge coverage.",
+    "Verify image compositing, all original source/camera/geometry identities and group isolation.",
+    "Require each generated ribbon to actually occlude some paper and include the notch neighbourhood.",
+    "Inspect all sixteen source/occluded/visible/amodal/observation panels before any training.",
+    "Keep counts of source geometries and augmented views separate.",
+    "A small raster-composite pilot is not a physically calibrated photographic simulation.",
+    "Do not train or integrate a model merely because the synthetic labels are consistent; declare the training comparison separately."
+  ]
+}

@@ -28,6 +28,7 @@ export { default as FitIcon } from '@lucide/svelte/icons/maximize';
 export { default as GearIcon } from '@lucide/svelte/icons/settings';
 export { default as HelpIcon } from '@lucide/svelte/icons/circle-help';
 export { default as ImageIcon } from '@lucide/svelte/icons/image';
+export { default as InfoIcon } from '@lucide/svelte/icons/info';
 export { default as LineIcon } from '@lucide/svelte/icons/minus';
 export { default as LockIcon } from '@lucide/svelte/icons/lock';
 export { default as LockOpenIcon } from '@lucide/svelte/icons/lock-open';

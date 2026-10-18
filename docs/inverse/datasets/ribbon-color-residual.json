@@ -1,0 +1,129 @@
+{
+  "schema": "ribbon-color-residual-probe-1",
+  "source": "tmp/heart-learning/projective-real-v1/pipeline/real-202b8421f50252f2-fallback/crop.png",
+  "sourceSha256": "51e64117be7482eab732e21f73c999eef4cea0721fb7008af2630995466371e8",
+  "implementationSha256": "345b28faf982372ed03437845f8a02087fd0828507fc63e27187b20ad4431b0b",
+  "scope": "Read-only one-photo diagnostic of the existing automatically estimated red/white palette model. No mask, crop, fit weights or solver changed; no new model trained.",
+  "metadata": {
+    "model": "Nonnegative sRGB paper mixture with scalar illumination",
+    "paperPalettesSRGB": [
+      [
+        0.592156862745098,
+        0.00784313725490196,
+        0.00784313725490196
+      ],
+      [
+        0.8549019607843137,
+        0.7254901960784313,
+        0.5686274509803921
+      ]
+    ],
+    "sampleCounts": [
+      47948,
+      63367
+    ],
+    "sampleInsetFraction": 0.045,
+    "rmsColorResidual": 0.05724645323362239,
+    "redFraction": 0.48565
+  },
+  "calibratedPalettes": [
+    [
+      0.6274509803921569,
+      0,
+      0.00784313725490196
+    ],
+    [
+      0.9450980392156862,
+      0.8705882352941177,
+      0.7294117647058823
+    ]
+  ],
+  "calibrationQualification": "Manual paper-patch calibration, not an automatic result; white/red patch errors are in-sample. Gold patch is used only for diagnosis.",
+  "relativeResidualDefinition": "NNLS RGB reconstruction residual divided by RGB vector norm, with a 0.05 denominator floor; empirical sRGB coordinates.",
+  "samples": [
+    {
+      "name": "red-paper-interior",
+      "box": [
+        65,
+        100,
+        150,
+        160
+      ],
+      "pixels": 5100,
+      "relativeResidual": {
+        "p10": 0.006892821418632557,
+        "median": 0.013296657035067659,
+        "p90": 0.017808154936496557
+      },
+      "calibratedRelativeResidual": {
+        "p10": 0.0006429550027779057,
+        "median": 0.004767775091316097,
+        "p90": 0.012499023551926019
+      }
+    },
+    {
+      "name": "white-paper-interior",
+      "box": [
+        185,
+        95,
+        210,
+        155
+      ],
+      "pixels": 1500,
+      "relativeResidual": {
+        "p10": 0.05203625696394282,
+        "median": 0.05782087782250988,
+        "p90": 0.06693014426509045
+      },
+      "calibratedRelativeResidual": {
+        "p10": 0.001730652982489653,
+        "median": 0.00548817155971541,
+        "p90": 0.011408923813572556
+      }
+    },
+    {
+      "name": "gold-ribbon-interior",
+      "box": [
+        237,
+        110,
+        248,
+        165
+      ],
+      "pixels": 605,
+      "relativeResidual": {
+        "p10": 0.04050245346231294,
+        "median": 0.058135552562137746,
+        "p90": 0.07503276600334473
+      },
+      "calibratedRelativeResidual": {
+        "p10": 0.06446525610033385,
+        "median": 0.08189958870757208,
+        "p90": 0.09828043719095778
+      }
+    }
+  ],
+  "sampleQualification": "Three sparse rectangles selected by visible RGB appearance before computing scores; not dense visibility labels or held-out detector evaluation.",
+  "limitations": [
+    "No threshold selected and no pixels excluded from fitting.",
+    "Some third-colour objects can lie within the two-paper mixture model; low residual does not prove visible paper.",
+    "Legitimate paper under changing colour illumination can also have high residual.",
+    "This probe cannot establish automatic ribbon segmentation or generalize to other photographs."
+  ],
+  "visualReview": {
+    "path": "tmp/heart-learning/ribbon-residual-v1/comparison.png",
+    "sha256": "749339f46486d36e159aac5792b35d726c78042fd8c46126af3f080b1a766423",
+    "reviewed": true,
+    "finding": "Automatic residual responds to substantial white-paper regions as well as the ribbon. Manual calibration makes the ribbon more distinct but leaves large residuals on other illuminated or mixed boundaries. No automatic visibility mask is accepted."
+  },
+  "findings": [
+    "Automatic relative-residual medians are 0.05782 for the sampled white paper and 0.05814 for the sampled gold: this pair is not usefully separated by a simple threshold.",
+    "Manual paper-patch calibration changes these medians to 0.00549 and 0.08190. This demonstrates palette sensitivity, not held-out detection accuracy; the white patch participates in calibration.",
+    "The original fixed mask, crop, observation weights and all reconstruction scores remain untouched."
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/ribbon-residual-v1/probe.mjs": "96b7e1455227c07a3f6ca8a0ab6c53e42b279eacf6a6f756ea1f7f27a8492b97",
+    "tmp/heart-learning/ribbon-residual-v1/report.json": "aada79f34b76afdab7aa676d2fb8e79bab5e993763a061aa97434843c8f9589a",
+    "tmp/heart-learning/ribbon-residual-v1/relative-residual.png": "3ec559075aa33baa9cb7d74d349d5e2e120e159a4b3826ee3a029266dd22d163",
+    "tmp/heart-learning/ribbon-residual-v1/calibrated-relative-residual.png": "89675b3860ab52141281e685448158cffdef655ff88805cd44fd40f1469d57dc"
+  }
+}

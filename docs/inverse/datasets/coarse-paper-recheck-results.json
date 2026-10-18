@@ -1,0 +1,717 @@
+{
+  "schema": 1,
+  "status": "implemented_locally; full_QA_complete_with_two_inverse_failures_and_six_photo_error_increases",
+  "mechanism": "At fixed refinement step395 the normal incumbent is the older step160 geometry (3.240625% source error). The best discarded coarse-paper-failed checkpoint has 2.715625% error and passes independent geometric, feature and paper checks at both 700px and 1000px. Retain that candidate separately; only after ordinary candidates fail, assess its original mask/features and run the actual finer paper audit. Preserve finer validation through export.",
+  "fixed": {
+    "incumbentAndHistoryUnchanged": true,
+    "alternativeError": 0.02715625,
+    "incumbentError": 0.03240625,
+    "coarsePaper": "fail",
+    "paper700": "pass",
+    "paper1000": "pass"
+  },
+  "fresh": {
+    "rows": [
+      {
+        "arm": "before",
+        "id": "crown",
+        "repeat": 0,
+        "solveSeconds": 10.327639209,
+        "passed": true,
+        "error": 0.02241875,
+        "paperVerification": {
+          "requestedResolution": 700,
+          "initialStatus": "uncertain",
+          "resolution": 1000,
+          "status": "pass",
+          "source": "rollback-checkpoint"
+        }
+      },
+      {
+        "arm": "before",
+        "id": "crown",
+        "repeat": 1,
+        "solveSeconds": 9.954264208,
+        "passed": true,
+        "error": 0.02241875,
+        "paperVerification": {
+          "requestedResolution": 700,
+          "initialStatus": "uncertain",
+          "resolution": 1000,
+          "status": "pass",
+          "source": "rollback-checkpoint"
+        }
+      },
+      {
+        "arm": "before",
+        "id": "flettede-viking",
+        "repeat": 0,
+        "solveSeconds": 9.884851958,
+        "passed": true,
+        "error": 0.0215125,
+        "paperVerification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass"
+        }
+      },
+      {
+        "arm": "before",
+        "id": "flettede-viking",
+        "repeat": 1,
+        "solveSeconds": 9.902637708,
+        "passed": true,
+        "error": 0.0217625,
+        "paperVerification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass"
+        }
+      },
+      {
+        "arm": "before",
+        "id": "jigsaw",
+        "repeat": 0,
+        "solveSeconds": 9.821691000000001,
+        "passed": true,
+        "error": 0.0100375,
+        "paperVerification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass",
+          "source": "rollback-checkpoint"
+        }
+      },
+      {
+        "arm": "before",
+        "id": "jigsaw",
+        "repeat": 1,
+        "solveSeconds": 9.764352040999999,
+        "passed": true,
+        "error": 0.00981875,
+        "paperVerification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass",
+          "source": "rollback-checkpoint"
+        }
+      },
+      {
+        "arm": "cap-before",
+        "id": "flettede-viking",
+        "repeat": 0,
+        "solveSeconds": 9.603832624999999,
+        "passed": false,
+        "error": 0.03209375,
+        "paperVerification": null
+      },
+      {
+        "arm": "cap-before",
+        "id": "flettede-viking",
+        "repeat": 1,
+        "solveSeconds": 9.649374208,
+        "passed": false,
+        "error": 0.03209375,
+        "paperVerification": null
+      },
+      {
+        "arm": "cap-retained-failure",
+        "id": "flettede-viking",
+        "repeat": 0,
+        "solveSeconds": 9.805163792,
+        "passed": true,
+        "error": 0.02226875,
+        "paperVerification": {
+          "requestedResolution": 360,
+          "initialStatus": "fail",
+          "resolution": 700,
+          "status": "pass",
+          "source": "retained-refinement-alternative",
+          "incumbentImageError": 0.03240625
+        }
+      },
+      {
+        "arm": "cap-retained-failure",
+        "id": "flettede-viking",
+        "repeat": 1,
+        "solveSeconds": 9.843911792,
+        "passed": true,
+        "error": 0.022775,
+        "paperVerification": {
+          "requestedResolution": 360,
+          "initialStatus": "fail",
+          "resolution": 700,
+          "status": "pass",
+          "source": "retained-refinement-alternative",
+          "incumbentImageError": 0.03240625
+        }
+      },
+      {
+        "arm": "retained-failure",
+        "id": "crown",
+        "repeat": 0,
+        "solveSeconds": 10.264914625,
+        "passed": true,
+        "error": 0.022725,
+        "paperVerification": {
+          "requestedResolution": 700,
+          "initialStatus": "uncertain",
+          "resolution": 1000,
+          "status": "pass",
+          "source": "rollback-checkpoint"
+        }
+      },
+      {
+        "arm": "retained-failure",
+        "id": "crown",
+        "repeat": 1,
+        "solveSeconds": 9.918166458000002,
+        "passed": true,
+        "error": 0.02273125,
+        "paperVerification": {
+          "requestedResolution": 700,
+          "initialStatus": "uncertain",
+          "resolution": 1000,
+          "status": "pass",
+          "source": "rollback-checkpoint"
+        }
+      },
+      {
+        "arm": "retained-failure",
+        "id": "flettede-viking",
+        "repeat": 0,
+        "solveSeconds": 9.911789166999998,
+        "passed": true,
+        "error": 0.0217625,
+        "paperVerification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass"
+        }
+      },
+      {
+        "arm": "retained-failure",
+        "id": "flettede-viking",
+        "repeat": 1,
+        "solveSeconds": 9.946382208,
+        "passed": true,
+        "error": 0.0217625,
+        "paperVerification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass"
+        }
+      },
+      {
+        "arm": "retained-failure",
+        "id": "jigsaw",
+        "repeat": 0,
+        "solveSeconds": 9.884943875000001,
+        "passed": true,
+        "error": 0.00988125,
+        "paperVerification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass",
+          "source": "rollback-checkpoint"
+        }
+      },
+      {
+        "arm": "retained-failure",
+        "id": "jigsaw",
+        "repeat": 1,
+        "solveSeconds": 9.767276249999998,
+        "passed": true,
+        "error": 0.00970625,
+        "paperVerification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass",
+          "source": "rollback-checkpoint"
+        }
+      }
+    ],
+    "uncapped": "All twelve normal fresh replays pass. They reach later checkpoints and do not exercise the new retention branch. Some paired errors increase, so these do not establish no-regression.",
+    "controlled": "Same 395-step ceiling in both runtime arms, retaining the finite ten-second deadline. Baseline fails both repetitions; the candidate passes both with original source, geometry and features and an actual finer paper audit. The ceiling is experimental only and is not in production."
+  },
+  "regression": {
+    "before": "New fixed-input test fails because the alternative is not retained.",
+    "after": "Six focused tests pass, including independent exported SVG replay, the original ten-second Viking test, finer-paper export and polishing tests. This initial multi-file node run used the runner default concurrency; it is not a timing measurement. The full suite uses the repository serial inverse runner.",
+    "fixture": "scripts/inverse/fixtures/viking-initial-refinement.json",
+    "log": "tmp/heart-learning/coarse-paper-recheck-v1/focused-after.log"
+  },
+  "limits": [
+    "No claim of a completed whole-corpus speed or quality goal.",
+    "No failed coarse candidate is accepted without actual finer validation.",
+    "Original source pixels, physical tolerances, geometry checks and image-error limits are unchanged.",
+    "The prior 945/946 inverse suite remains recorded; upcoming QA does not rewrite it."
+  ],
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/coarse-paper-recheck-v1/source.json",
+      "sha256": "fa1b05f874375c95562c6f00ef2a724d2dac24115220a049aa6c0a47ff5eb18b"
+    },
+    {
+      "path": "tmp/heart-learning/coarse-paper-recheck-v1/capped-source.json",
+      "sha256": "6439a0dfd3fa6cda9142ae4d9c57d13195239b473939c6623b0345c7d43e066f"
+    },
+    {
+      "path": "tmp/heart-learning/coarse-paper-recheck-v1/fixed-before.json",
+      "sha256": "be8bd0fb484ff38e6adf5e0a0d35d7b66e4e118c88791ddeddec1b692f6e4289"
+    },
+    {
+      "path": "tmp/heart-learning/coarse-paper-recheck-v1/fixed-retained-failure.json",
+      "sha256": "05c3de351012f4f8ff57e9235f2eeb2d947108082e126d3e18af41fe0241282a"
+    },
+    {
+      "path": "tmp/heart-learning/coarse-paper-recheck-v1/regression-before.log",
+      "sha256": "c78f05fb1790c2408fabec0f52d716140007938d7d9c3ceb6f80e86ec65afa93"
+    },
+    {
+      "path": "tmp/heart-learning/coarse-paper-recheck-v1/focused-after.log",
+      "sha256": "24fadd5e1f48b4568f4745a1b716fa9973a9b0ad00399afcd0e64ded72c40d01"
+    },
+    {
+      "path": "tmp/heart-learning/coarse-paper-recheck-v1/controlled-comparison.png",
+      "sha256": "f03ae82c26ed76edda3d4ad2fb72fe88e0444c4be175379cff43983277d8dbd4"
+    },
+    {
+      "path": "tmp/heart-learning/coarse-paper-recheck-v1/qa/checks.json",
+      "sha256": "539d026bdf89fa3b72af4ea398e9dae789c091109349bf6914707c51522b6717"
+    },
+    {
+      "path": "tmp/heart-learning/coarse-paper-recheck-v1/qa/test.log",
+      "sha256": "afb1f54d84ba581a3fc8dd23e11cf12b45bc3be5e28e444f543e0927f53d4dee"
+    },
+    {
+      "path": "tmp/heart-learning/coarse-paper-recheck-v1/qa/state.json",
+      "sha256": "2aaa99ae9ebacd06cda3931ef4e12e550a96d4d63dd3d12a20e27c13a34814dd"
+    },
+    {
+      "path": "tmp/heart-learning/coarse-paper-recheck-v1/qa/native/native-gates.json",
+      "sha256": "b934b71d53d2ae025f50bdf4f371c6a72b751dfeb68f2ea5db302f28bb9551bc"
+    },
+    {
+      "path": "tmp/heart-learning/coarse-paper-recheck-v1/qa/native/hunodan/results.json",
+      "sha256": "ea68061ff01e266488655397faa454d425479fad3eb35fc577750bb1afc6671b"
+    },
+    {
+      "path": "tmp/heart-learning/coarse-paper-recheck-v1/qa/native/photos/results.json",
+      "sha256": "4bebcf87e525a60449c78ef01fbf02b3f4ff27ce6fe06e93756dddca0a92be49"
+    },
+    {
+      "path": "tmp/heart-learning/coarse-paper-recheck-v1/qa/native/visual-review.json",
+      "sha256": "0346bd6f9b35b679794a09c303885726e51dea832360beac18ac5569c45af529"
+    }
+  ],
+  "currentQA": {
+    "checks": [
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 11.041608416
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 8.551095292
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 20.011646832999997
+      },
+      {
+        "stage": "preview",
+        "command": [
+          "python3",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/coarse-paper-recheck-v1/qa/restart-preview.py"
+        ],
+        "exitCode": 0,
+        "seconds": 1.3582444590000051
+      },
+      {
+        "stage": "browser",
+        "command": [
+          "node",
+          "scripts/inverse/paint-browser-test.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 19.647777667
+      },
+      {
+        "stage": "test",
+        "command": [
+          "npm",
+          "test"
+        ],
+        "exitCode": 1,
+        "seconds": 1139.198414417
+      },
+      {
+        "stage": "native",
+        "command": [
+          "python3",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/coarse-paper-recheck-v1/qa/native/run.py"
+        ],
+        "exitCode": 0,
+        "seconds": 526.235364458
+      }
+    ],
+    "application": {
+      "passed": 857,
+      "skipped": 1,
+      "failed": 0
+    },
+    "inverse": {
+      "tests": 947,
+      "passed": 945,
+      "failed": 2,
+      "failures": [
+        "fresh fitting continues an unfinished verified initializer within the remaining search allowance",
+        "fresh y-minus-1 fitting carries repaired clearance through final export"
+      ],
+      "diagnosticPlan": "docs/inverse/datasets/clearance-handoff-regression-plan.json"
+    },
+    "corpus": {
+      "hunodanPassed": 22,
+      "hunodanTotal": 22,
+      "hunodanErrorRegressions": [],
+      "photoPassed": 26,
+      "photoPassRegressions": [],
+      "photoErrorRegressions": [
+        {
+          "id": "gingerbread",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.010875,
+          "error": 0.01094375,
+          "errorDelta": 6.87500000000011e-05
+        },
+        {
+          "id": "warped-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.01424375,
+          "error": 0.0145125,
+          "errorDelta": 0.0002687499999999999
+        },
+        {
+          "id": "fine-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.0179125,
+          "error": 0.01815625,
+          "errorDelta": 0.00024374999999999744
+        },
+        {
+          "id": "orb",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.0118875,
+          "error": 0.0135875,
+          "errorDelta": 0.0017000000000000001
+        },
+        {
+          "id": "stacked-hearts",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.00566875,
+          "error": 0.0059375,
+          "errorDelta": 0.0002687499999999999
+        },
+        {
+          "id": "flettede-viking",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.02091875,
+          "error": 0.02096875,
+          "errorDelta": 5.000000000000143e-05
+        }
+      ],
+      "editablePassed": 48,
+      "editableTotal": 48,
+      "passed": false,
+      "hunodanMaximumSeconds": 9.489570790999998,
+      "completeHeartPhotos": 31,
+      "allInventoryEntries": 47,
+      "classifiedPhotos": 29,
+      "cropFailures": 2,
+      "existingIncompleteOrObscured": 16,
+      "checks": [
+        {
+          "stage": "hunodan",
+          "command": [
+            "node",
+            "scripts/inverse/hunodan-speed-benchmark.mjs"
+          ],
+          "environment": {
+            "INVERSE_SPEED_OUT": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/coarse-paper-recheck-v1/qa/native/hunodan",
+            "INVERSE_SPEED_MODULE": "",
+            "INVERSE_SPEED_SECONDS": "10",
+            "INVERSE_SPEED_SETTINGS": "{}",
+            "INVERSE_SPEED_RETAIN_CANDIDATES": "0",
+            "INVERSE_HUNODAN_IDS": ""
+          },
+          "exitCode": 0,
+          "seconds": 128.542808625
+        },
+        {
+          "stage": "photos",
+          "command": [
+            "node",
+            "scripts/inverse/hard-photo-benchmark.mjs",
+            "--crop=automatic",
+            "--target=mask",
+            "--seconds=10",
+            "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/coarse-paper-recheck-v1/qa/native/photos"
+          ],
+          "environment": {},
+          "exitCode": 0,
+          "seconds": 337.884522167
+        },
+        {
+          "stage": "hunodan-editor-input",
+          "command": [
+            "node",
+            "scripts/inverse/diagnostics/hunodan-editor-input.mjs",
+            "--run=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/coarse-paper-recheck-v1/qa/native/hunodan",
+            "--runtime=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/coarse-paper-recheck-v1/qa/native/runtime",
+            "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/coarse-paper-recheck-v1/qa/native/hunodan-editor-input"
+          ],
+          "environment": {},
+          "exitCode": 0,
+          "seconds": 6.460237291999988
+        },
+        {
+          "stage": "hunodan-editor",
+          "command": [
+            "node",
+            "scripts/inverse/hard-photo-editor-replay.mjs",
+            "--run=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/coarse-paper-recheck-v1/qa/native/hunodan-editor-input",
+            "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/coarse-paper-recheck-v1/qa/native/hunodan-editor"
+          ],
+          "environment": {},
+          "exitCode": 0,
+          "seconds": 19.40389079199997
+        },
+        {
+          "stage": "photo-editor",
+          "command": [
+            "node",
+            "scripts/inverse/hard-photo-editor-replay.mjs",
+            "--run=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/coarse-paper-recheck-v1/qa/native/photo-editor-input",
+            "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/coarse-paper-recheck-v1/qa/native/photo-editor"
+          ],
+          "environment": {},
+          "exitCode": 0,
+          "seconds": 32.72551504200004
+        }
+      ]
+    },
+    "controller": "tmp/heart-learning/coarse-paper-recheck-v1/qa/run.py",
+    "state": "tmp/heart-learning/coarse-paper-recheck-v1/qa/state.json",
+    "sourceFilesVerified": 785,
+    "visualReview": {
+      "changedRows": [
+        {
+          "id": "outline-star",
+          "previousStatus": "failed",
+          "status": "failed",
+          "previousPassed": false,
+          "passed": false,
+          "previousError": 0.00754375,
+          "error": 0.00759375,
+          "errorDelta": 4.99999999999997e-05
+        },
+        {
+          "id": "floral-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.01360625,
+          "error": 0.01359375,
+          "errorDelta": -1.2500000000000358e-05
+        },
+        {
+          "id": "gingerbread",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.010875,
+          "error": 0.01094375,
+          "errorDelta": 6.87500000000011e-05
+        },
+        {
+          "id": "warped-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.01424375,
+          "error": 0.0145125,
+          "errorDelta": 0.0002687499999999999
+        },
+        {
+          "id": "fine-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.0179125,
+          "error": 0.01815625,
+          "errorDelta": 0.00024374999999999744
+        },
+        {
+          "id": "orb",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.0118875,
+          "error": 0.0135875,
+          "errorDelta": 0.0017000000000000001
+        },
+        {
+          "id": "stacked-hearts",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.00566875,
+          "error": 0.0059375,
+          "errorDelta": 0.0002687499999999999
+        },
+        {
+          "id": "crossed-ribbons",
+          "previousStatus": "failed",
+          "status": "failed",
+          "previousPassed": false,
+          "passed": false,
+          "previousError": 0.00885,
+          "error": 0.00886875,
+          "errorDelta": 1.874999999999967e-05
+        },
+        {
+          "id": "bauble",
+          "previousStatus": "failed",
+          "status": "failed",
+          "previousPassed": false,
+          "passed": false,
+          "previousError": 0.0280375,
+          "error": 0.02806875,
+          "errorDelta": 3.125000000000003e-05
+        },
+        {
+          "id": "bottom-flower",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.0093375,
+          "error": 0.0093125,
+          "errorDelta": -2.5000000000000716e-05
+        },
+        {
+          "id": "faceted-star",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.00713125,
+          "error": 0.0065,
+          "errorDelta": -0.0006312499999999999
+        },
+        {
+          "id": "flettede-viking",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.02091875,
+          "error": 0.02096875,
+          "errorDelta": 5.000000000000143e-05
+        }
+      ],
+      "panels": [
+        {
+          "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/coarse-paper-recheck-v1/qa/native/visual-comparison-0.png",
+          "ids": [
+            "outline-star",
+            "floral-checker",
+            "gingerbread",
+            "warped-checker"
+          ],
+          "sha256": "6131c9b51dc2da9468a43838c4933db7dba1addf55c7144f01bbe3143bf1be2f"
+        },
+        {
+          "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/coarse-paper-recheck-v1/qa/native/visual-comparison-1.png",
+          "ids": [
+            "fine-checker",
+            "orb",
+            "stacked-hearts",
+            "crossed-ribbons"
+          ],
+          "sha256": "4d3025d89985edd81b5d7f642d8a8e76dc646c5193000e5b86c2b8d0b9fc989c"
+        },
+        {
+          "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/coarse-paper-recheck-v1/qa/native/visual-comparison-2.png",
+          "ids": [
+            "bauble",
+            "bottom-flower",
+            "faceted-star",
+            "flettede-viking"
+          ],
+          "sha256": "9fe5744b5abc6c663a12a103db27771afd382f5228a8f07345093ac46af233b6"
+        }
+      ],
+      "reviewed": true,
+      "observations": [
+        "All twelve changed outputs were inspected beside their original rectified photograph and unchanged mask.",
+        "Most differences are small contour movements; checker contacts and thin false seams remain visible in both arms.",
+        "The orb has visibly different outer blocks and less thin top-edge noise, but its measured original-mask error increases from 1.18875% to 1.35875%. This is not counted as a strict quality improvement.",
+        "The faceted star improves from 0.713125% to 0.65% disagreement while its central contact and frame remain imperfect.",
+        "The Viking keeps its central opening and curled silhouette; thin seams and border irregularities remain.",
+        "Outline-star, crossed-ribbons and bauble remain rejected. No feature exclusions or success-denominator changes were applied."
+      ]
+    }
+  },
+  "visualReview": "Both controlled baseline and recovered Viking exports were inspected beside the original crop. The recovered shape follows the curled upper silhouette and central lower opening more closely. Thin seams and frame irregularities remain; this is an improved validated fit, not exact recovery of the publisher cutting paths."
+}

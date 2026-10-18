@@ -1,0 +1,271 @@
+# Data for learned heart reconstruction
+
+Release status reviewed on **2026-10-18**; dataset counts last audited on
+**2026-10-17**. **No neural network is ready for production or
+included in the website.** The collection, synthetic generator and learned
+prototypes are research tools; the existing geometric solver remains the
+production path.
+
+## Current results and limits
+
+| Area | Verified evidence | Remaining limitation |
+| --- | --- | --- |
+| Real-image inventory | 1,254 files; 783 contain assembled-heart photographs; all files and decoded identities audited | File counts are not counts of independent motifs or fully labelled training examples |
+| Sabrina Danholm's Pinterest board | All 225 pins imported; 220 new image files, about 35 MiB | No new corner, material or cutting-path labels; the whole board is QA-reserved |
+| Synthetic geometry | 256 saved witnesses pass the current geometry/paper re-audit across 768 original/subdivided/reflected representations | Limited procedural diversity; recipe holdouts are not topology-disjoint splits |
+| Small learned model | TorchVision ImageNet-pretrained MobileNetV3-Small with task-specific heads; offline experiments exist | No demonstrated overall reconstruction advantage, ONNX/browser validation or deployment |
+| Larger segmentation baseline | Official pretrained MobileSAM evaluated offline | A useful body mask alone does not establish correct corners, material boundaries or legal templates |
+| Solver | Current revision passes 1,109/1,109 inverse tests and 34 browser workflows; all 22 regular Hunodan designs finish under ten seconds | Some hard fits retain thin false seams; the earlier 27/31 photo benchmark has not been rerun |
+
+### Latest solver and browser validation
+
+The **18 October validated revision** (`1921279a`) passes type checking, lint,
+build, **874 application tests** (one skipped), and **1,109/1,109 inverse tests**.
+All 1,124 pinned source files remained unchanged throughout the full run.
+The [complete QA record](finalist-release-qa.json) includes the failed preceding
+run, the captured defect, and the regression that fails before its fix.
+
+All **34 actual Chromium workflows** pass: 22 regular Hunodan photographs,
+eight photos/examples, three explicitly constrained ten-second mask diagnostics,
+and one normal-budget replay of a related sloth mask. Engine checks and
+independent checks of the downloaded editable SVGs pass in every case.
+All **22 Hunodan designs finish under ten seconds**: **5.88 s median,
+8.64 s maximum**, measured from clicking Find the cuts to an editable result.
+Their crops, classified masks, observation coverage and weights match the earlier
+`b7daccc` benchmark; every editable-mask error is unchanged. Timings come from
+separate shared-machine runs, so this is not a causal speedup claim.
+
+The changes remove a hidden wall-clock cutoff from explicitly untimed repairs,
+prioritize useful feature routing, and protect refinement/polishing reserves.
+The final fix concerns verification: a captured paper repair passed the polygon
+offset checks but remained uncertain on a coarse 360-cell lattice. Both models
+pass the same repaired curves at 700 cells. One bounded finer audit now verifies
+that repair, and exports record the resolution actually used. No paper-width,
+feature-retention or image-error limit is relaxed. This final verification adds
+work after the optimization cutoff, just as the existing final audit does; one
+diagnostic finer audit took 0.525 seconds.
+
+Visual review covers all 34 rendered results, three import/Draw screenshots and
+all nine downloaded PDF pages. PDF labels and templates are unclipped, and the
+hat retains its shared seams. Small boundary spurs, imperfect curved contacts
+and false seams remain in some hard fits. On one exact native sloth mask,
+increasing the allowance from ten to 180 seconds reduces independent error from
+**1.63% to 1.50%** in **16.36 seconds**, but leaves visible defects and the same
+four-cut-per-sheet layout. More time alone is insufficient there; topology
+choice remains a candidate cause. The cleaner browser sloth fixture is a
+**different mask**, verified by hashes, and is not evidence of recovery on that
+native input.
+
+The current local preview at `http://localhost:5232/editor/mal/` serves an
+immutable snapshot of the validated build. All changes are committed locally;
+nothing has been pushed or deployed. The neural prototypes remain offline, and
+this QA does not replace the earlier, separately recorded 31-photo benchmark.
+
+### Earlier solver experiments
+
+The [interior-supported count proposal](interior-count-fit-results.json) retains
+all original hypotheses and adds denser starts only with repeated interior
+support. In four development inputs from two photographs it improves three
+checker fits and leaves the star unchanged. Two checker variants still exceed
+the image limit. The [integrated release record](interior-count-release-results.json)
+records 1,028/1,035 inverse tests passing before subsequent fixes; it is not a
+current full-suite pass.
+
+Commit `5e48e29` separates a clearance repair's work cutoff from the deadline
+for retaining completed verification. Commit `8149da2` fixes a different
+selection bug: a better legal approximation was discarded when it still
+exceeded the image acceptance limit. Its [deterministic regression](late-polishing.md)
+improves independently rendered export error from **4.89% to 4.02%**, while
+keeping the mismatch warning and geometry, paper and feature checks.
+
+The [complete QA run for the polishing fix](late-polishing-release-qa.json)
+passes type checking, lint, build, **874 application tests** (one skipped) and
+**1,037/1,038 inverse tests**. The remaining failure discards a useful clearance
+initializer before its final checks can begin, despite time remaining before
+the caller deadline. Commit `b7daccc` permits that bounded verification without
+extending the optimization cutoff or caller deadline. Its deterministic
+regression fails before the change; all **17 affected tests** pass afterward.
+
+Post-fix type checking, lint, build and **874 application tests** (one skipped)
+pass. All **30 browser workflows** pass, including **22/22 regular Hunodan
+designs under ten seconds** (5.72 s median, 8.62 s maximum, click to editable
+result). Compared with the preceding complete browser run, all crops and masks
+are identical; 18 editable exports are byte-identical and four have lower mask
+error. None has higher mask error. Small edge irregularities remain visible.
+Full inverse verification of `b7daccc` now passes **1,039/1,039 tests**, with
+1,018 source files checked unchanged. The [fresh photo replay](late-polishing-photo-qa.json)
+passes the current derived-mask checks for **27/31 complete heart cases**,
+including their editable exports, with no lost previous passes. Jigsaw improves
+from **5.64% to 1.00%** on an unchanged crop and target. Crossed ribbons also
+passes, but classification/coverage changed and its old 72-pixel border feature
+is still absent; this is not claimed as faithful feature recovery. Visible
+false gaps and uneven edges remain in some accepted outputs. Evidence is under
+`tmp/heart-learning/late-polishing-release-v1/`. Nothing has been pushed or
+deployed.
+
+Earlier [30-workflow browser validation](late-feature-browser-qa.json) and
+[later slower follow-up](base-count-release-qa.json) describe their respective
+revisions. Those timing differences are observations from a separate run,
+not evidence that the deadline correction caused the speed difference. These
+are development workflows, not a fresh holdout. The separate photo comparison
+marks changed crops, targets and observation coverage before comparing errors.
+
+### Neural experiments
+
+The [pretrained-model research](pretrained-models.md) compares candidate
+encoders. Actual experiments use TorchVision's hash-verified ImageNet
+MobileNetV3-Small weights, not the separately researched timm LAMB checkpoint.
+The [boundary/junction prototype](boundary-localization.md),
+[foreground adaptation](real-adaptation.md) and
+[body/material transfer](material-transfer.md) cover different tasks; their
+metrics must not be pooled into one success rate.
+
+In the [nineteen-photo corrected-material comparison](material-corrected-scenes-results.json),
+the learned arms each produce **3/19** checked derived-mask reconstructions,
+versus **6/19** for the existing pipeline. Sixteen learned attempts fail before
+fitting. These are repeatedly inspected development photos, and agreement with
+a derived mask is not agreement with unavailable original artwork. The
+[body-only ROI experiment](foreground-roi-results.json) and
+[MobileSAM foreground experiment](mobilesam-foreground-results.json) retain
+separate results and limitations.
+
+The next deployment gate is improvement in complete photo-to-editable-template
+recovery on properly grouped real images, including feature retention and
+physical validity. Python/ONNX agreement, download/startup cost, memory and
+browser inference latency still need measurement. A better segmentation score
+alone does not meet that gate.
+
+## Collected assets
+
+The [real-photo collection](real-collection.md) explains collection and review.
+The [manifest](real-manifest.json) and [independent audit](real-validation.json)
+record source URLs, hashes, decoded identities, dimensions, image kinds and
+groups. Image bytes remain under `tmp/heart-training-real/`, outside Git.
+
+Current inventory: **783 photo-containing files**, **670 near-duplicate photo
+groups**, **748 QA-reserved files**, and **695 downloaded / 712 selected
+Pinterest pins**. Near-duplicate groups are not verified motif families.
+A collage remains one file until its individual hearts are annotated.
+
+The [complete Sabrina board import](sabrina-board.md) accounts for all 225
+observed pins. Five image files were already present. One reused file was
+QA-reserved, so reservation propagates to the board's source group; none of
+these additions has been newly admitted to training. The new files consume
+35.13 MiB, not another copy of the whole corpus.
+
+The [synthetic generator](synthetic-training.md) keeps canonical curves, exact
+shared-edge identities, phase and camera transforms while varying color,
+lighting, background, pose, blur and crop error. The
+[current geometry re-audit](synthetic-current-geometry.md) covers 256 witnesses
+used for 1,024 photographic views, including 64 unassigned radial motifs.
+These views are not independent designs or replacements for real photographs.
+
+Local review galleries are `tmp/heart-training-real/index.html` and
+`tmp/heart-training-synthetic/batch-v1/index.html`. Do not expand old archived
+artifact collections just to inspect one case; use the retained compact exports.
+
+The [four user-supplied regression cases received on 2026-10-17](../../../scripts/inverse/fixtures/user-photos-2026-10-17/README.md)
+are retained separately from the 1,254-file inventory above. The
+[edge-inset study](photo-edge-inset-study.md) reproduces the reported fringe and
+tests all three hearts in the window photograph, including cropping and
+downstream feature failures. These additions are QA-reserved, not new training
+labels; no automatic border inset has been enabled.
+
+The subsequent [chromatic-paper crop study](chromatic-crop-results.json) recovers
+the blue/orange window heart through automatic cropping, fresh fitting and a
+downloaded editable SVG. Reflections had interrupted the foreground scanlines
+and reduced edge-confidence scores despite visible physical edges. The new
+fallback learns two coloured papers and checks contrast along the fitted
+outline, retaining the lobe checks. All 31 previous photographic crops and masks
+remain identical. The hand-adjacent orange/white crop is still visibly wrong;
+its low mask error does not establish a faithful reconstruction. Small boundary
+tabs also remain in the blue/orange result. This is a deterministic preprocessing
+improvement, not a neural-network release. The full inverse run passed
+**1,047/1,048 tests**; its sole failure was the offline body-only crop adapter's
+guarded source replacement, which still expected the old palette expression.
+That adapter is fixed, and all four of its tests pass on replay. All other
+1,031 pinned files remained unchanged. The full suite was not repeated after
+this isolated offline fix; the linked record retains both the failed full run
+and the successful focused replay. Lint passes with two existing warnings.
+
+The newer [touching-semicircle mask investigation](curved-triangles.md) identifies
+why a nominally valid 2.76% editable approximation opened white channels: the
+opposing curves belonged to different cuts in the same sheet, so closing them
+would violate the width constraint. Coarse rerouting followed by bounded
+clearance repair and common Bézier refinement reduces editable disagreement to
+**0.69%**, with a checked 2 / 4-cut pair in a 24.92-second integrated run. Small
+join defects remain. The screenshot is committed as a development QA regression;
+no saved templates or idealized circles enter its fresh solve. The subsequently
+supplied original Art e Sta poster is also committed as a related QA fixture.
+Its manually selected three-by-three artwork region gives **0.945%** editable
+error in **30.63 seconds** through normal browser upload, fitting and export.
+A shorter diagnostic browser run remains a documented 2.14% failure against the
+stricter regression target; import masks match exactly, exposing timed-search
+variability rather than a crop or classification difference.
+
+## What the network should learn
+
+Keep full-photo localization separate from rectified-pattern interpretation.
+The [foreground labels](foreground-supervision.md) supervise physical paper
+and background; [material labels and evaluation](material-evaluation.md)
+supervise paper identity with partial observations. Graph proposals can predict
+visible boundaries, junctions, border endpoints and connection scores. The MILP,
+Bézier refinement and independent geometry checks still decide whether a
+proposed template is legal.
+
+A saved cut graph is one valid witness, not necessarily a unique answer.
+Invisible shared cuts admit multiple routings; an unused edge is not
+automatically a negative label. Preserve shared curves as one geometric object
+and account for interchangeable sheet identities. Solver outputs and linked
+template downloads are not ground truth until independently verified.
+
+The material compiler, `scripts/inverse/datasets/real_materials.py`, supports
+256-pixel training views and 768-pixel inspection. Its verifier checks source,
+annotation and output pixels. Unlabelled material stays unknown (255), while
+known body can still supervise foreground. Evaluation permits one global A/B
+exchange per image, never a different exchange for each pixel; missed body
+remains a material error.
+
+## Keep evaluation separate
+
+Existing Hunodan and photographic QA sources stay reserved. Reposts,
+resolutions and collage crops inherit their source group; motif families must
+also stay together before assigning a split. Unreviewed family assignments
+remain unassigned. Hashes and perceptual similarity alone do not establish
+independent designs.
+
+Synthetic recipe splits are **not topology-disjoint evaluation sets**.
+Equivalent geometry can arise from different recipes or subdivisions. Keep
+counts of photographs, heart instances, motifs, graph witnesses and augmented
+views distinct. Accessibility, attribution and usage terms are recorded
+separately from visual suitability; downloading a photo does not itself admit
+it to training.
+
+## Reproduce and verify
+
+Follow the linked collection, model and synthetic documents for individual
+commands and pinned artifacts. Run heavy jobs **one at a time at nice 15**,
+limit numerical thread pools to one, and keep at least **10 GiB free**. New
+experiments need new output directories so they cannot overwrite prior evidence.
+
+```sh
+nice -n 15 node --test --test-concurrency=1 scripts/inverse/datasets/*.test.mjs
+nice -n 15 python3 scripts/inverse/datasets/real-collect.test.py
+```
+
+Full application QA uses `npm run check`, `npm run lint`, the two `npm test`
+phases (`vitest run --maxWorkers=1`, then `npm run test:inverse`), and
+`npm run build`. Browser QA uses the assigned worktree's own preview and
+Chrome-for-testing, with served assets checked against the current source.
+
+Whole-pipeline reports must include failed crops and missing exports, total
+time, valid-template recovery, image/feature errors and crop/color/noise
+sensitivity. Inspect rendered results: low whole-image error can hide missing
+rays or thin false seams. No physical assembly or paper-strength guarantee
+follows from the nominal geometry checks.
+
+The [complete overview archived on 2026-10-17](experiment-history-2026-10-17.md)
+preserves every prior paragraph and report link. The
+[earlier experiment history](experiment-history.md) retains older snapshots.
+Their historical “current” and “pending” statements refer to those snapshots,
+not to this status page.

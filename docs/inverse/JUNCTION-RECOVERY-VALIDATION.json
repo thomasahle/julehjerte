@@ -1,0 +1,2419 @@
+{
+  "createdAt": "2026-10-11T19:57:14.471Z",
+  "algorithmCommit": "a825955",
+  "verificationCommit": "09f5438",
+  "baselineCommit": "c987936",
+  "sourceHashes": {
+    "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+    "static/inverse/core/feature-recovery.js": "686e6fcab12fa81cf18c7774ca8fd644fd54e74acb66c983f4ca385115e0e26b",
+    "scripts/inverse/junctions.test.mjs": "6e9cc0ee346672ba1e0c9702c32e12be08cd72b190a3fcf7adacdfc6192943b3",
+    "scripts/inverse/coarse-topology.test.mjs": "bb86b0ea109ef0d71ac629344662f3ecb85a34bdd0e57984ead1cb69f97fa515",
+    "scripts/inverse/feature-refinement.test.mjs": "b3155d815a30709d5a391c89af6bd65051ce15b9b2d3a9462678d56ed27a0e00",
+    "scripts/inverse/paint-browser-test.mjs": "044fc61ba8bc837c43642bac631538a3daf0e18f5a7ac78a256bfd9b1599729b"
+  },
+  "policy": "Circular junction repair can cross a closed contour storage seam. A single smoother tracing seed is tried only after both established graphs prove infeasible, within the existing budget. Crop, source mask, probabilities and final acceptance thresholds remain unchanged",
+  "qa": {
+    "browserPassed": 12,
+    "browserNewCaseFailed": 2,
+    "applicationPassed": 845,
+    "applicationExistingSkipped": 1,
+    "inversePassed": 541,
+    "typeErrors": 0,
+    "typeExistingWarnings": 7,
+    "lint": "passed",
+    "build": "passed"
+  },
+  "hunodan": {
+    "medianSeconds": 5.342952625000002,
+    "maxSeconds": 8.418549666999999,
+    "results": [
+      {
+        "id": "hjfig-01",
+        "passed": true,
+        "seconds": 4.365500459,
+        "error": 0.009799111111111111,
+        "beforeError": 0.009799111111111111
+      },
+      {
+        "id": "hjfig-02",
+        "passed": true,
+        "seconds": 4.5241285,
+        "error": 0.013923555555555555,
+        "beforeError": 0.013923555555555555
+      },
+      {
+        "id": "hjfig-03",
+        "passed": true,
+        "seconds": 3.7253089170000004,
+        "error": 0.006634666666666666,
+        "beforeError": 0.006634666666666666
+      },
+      {
+        "id": "hjfig-04",
+        "passed": true,
+        "seconds": 4.094921166999999,
+        "error": 0.013824,
+        "beforeError": 0.013824
+      },
+      {
+        "id": "hjfig-05",
+        "passed": true,
+        "seconds": 3.107779791000001,
+        "error": 0.009042960667083447,
+        "beforeError": 0.009042960667083447
+      },
+      {
+        "id": "hjfla-01",
+        "passed": true,
+        "seconds": 5.940569208000001,
+        "error": 0.013468424479166666,
+        "beforeError": 0.013468424479166666
+      },
+      {
+        "id": "hjcur-01",
+        "passed": true,
+        "seconds": 5.812615750000001,
+        "error": 0.005148444444444444,
+        "beforeError": 0.005148444444444444
+      },
+      {
+        "id": "hjcur-02",
+        "passed": true,
+        "seconds": 5.289185875000003,
+        "error": 0.005397333333333333,
+        "beforeError": 0.005397333333333333
+      },
+      {
+        "id": "hjcur-03",
+        "passed": true,
+        "seconds": 5.396719375000001,
+        "error": 0.004522666666666667,
+        "beforeError": 0.004522666666666667
+      },
+      {
+        "id": "hjcur-04",
+        "passed": true,
+        "seconds": 7.0964410830000055,
+        "error": 0.005639111111111111,
+        "beforeError": 0.005639111111111111
+      },
+      {
+        "id": "hjcur-05",
+        "passed": true,
+        "seconds": 3.4911950839999992,
+        "error": 0.009436444444444445,
+        "beforeError": 0.009436444444444445
+      },
+      {
+        "id": "hjhih-01",
+        "passed": true,
+        "seconds": 6.928342583999998,
+        "error": 0.006040430615586996,
+        "beforeError": 0.006040430615586996
+      },
+      {
+        "id": "hjhih-02",
+        "passed": true,
+        "seconds": 5.221797332999995,
+        "error": 0.003899406226779104,
+        "beforeError": 0.003899406226779104
+      },
+      {
+        "id": "hjhih-04",
+        "passed": true,
+        "seconds": 7.5608733329999955,
+        "error": 0.007776029627903062,
+        "beforeError": 0.007776029627903062
+      },
+      {
+        "id": "hjstr-01",
+        "passed": true,
+        "seconds": 4.469877999999997,
+        "error": 0.007550237322696868,
+        "beforeError": 0.007550237322696868
+      },
+      {
+        "id": "hjstr-02",
+        "passed": true,
+        "seconds": 6.136504124999992,
+        "error": 0.004365548980933596,
+        "beforeError": 0.004365548980933596
+      },
+      {
+        "id": "hjstr-03",
+        "passed": true,
+        "seconds": 8.418549666999999,
+        "error": 0.0056129769369752365,
+        "beforeError": 0.0056129769369752365
+      },
+      {
+        "id": "hjsta-01",
+        "passed": true,
+        "seconds": 4.8575535830000005,
+        "error": 0.007929362880886427,
+        "beforeError": 0.007929362880886427
+      },
+      {
+        "id": "hjsta-02",
+        "passed": true,
+        "seconds": 4.867500249999997,
+        "error": 0.0038045247395833335,
+        "beforeError": 0.0038045247395833335
+      },
+      {
+        "id": "hjsta-03",
+        "passed": true,
+        "seconds": 6.762028707999998,
+        "error": 0.012332213049376572,
+        "beforeError": 0.012332213049376572
+      },
+      {
+        "id": "hjsta-04",
+        "passed": true,
+        "seconds": 6.707233250000005,
+        "error": 0.005053050026595,
+        "beforeError": 0.005053050026595
+      },
+      {
+        "id": "hjsta-05",
+        "passed": true,
+        "seconds": 6.447985125000007,
+        "error": 0.010624446293860237,
+        "beforeError": 0.010624446293860237
+      }
+    ]
+  },
+  "web": {
+    "counts": {
+      "candidate_needs_review": 18,
+      "candidate_checks_passed": 11,
+      "no_crop": 15
+    },
+    "methodology": "Original photographs and rough ROIs, automatic crops, fresh initialization and independent resvg replay. Passes are candidate checks, not validated ground-truth recovery. Before values come from BORDER-FEATURE-VALIDATION.json.",
+    "results": [
+      {
+        "id": "danish-silver-on-tree",
+        "track": "two-colour",
+        "sourceSha256": "960a8d2c6b1123b117fc96b13a915e292a67521590f5603dbdd2a7a75a7463fe",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 1,
+            "right": 1
+          },
+          "error": 0.03775,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 1,
+          "missingRegions": 0,
+          "totalSeconds": 9.324950000000001,
+          "fitAndValidationSeconds": 6.905769666
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 1,
+            "right": 1
+          },
+          "error": 0.03775,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 1,
+          "missingRegions": 0,
+          "totalSeconds": 10.276506959,
+          "fitAndValidationSeconds": 7.620258834
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "danish-green-yellow",
+        "track": "two-colour",
+        "sourceSha256": "5957b2a8f5e25981f400cef687784effdb6c8491b8f0886ab5117ea66d610d4f",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.0033125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 5,
+          "missingRegions": 0,
+          "totalSeconds": 6.784771333000001,
+          "fitAndValidationSeconds": 5.030279500000001
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.0033125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 5,
+          "missingRegions": 0,
+          "totalSeconds": 6.975781583,
+          "fitAndValidationSeconds": 5.131882375000001
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "danish-silver-white",
+        "track": "two-colour",
+        "sourceSha256": "9a2a6d6fdae42655ec1ee153635ea85556aea24ed79d5960f7837b6bb0a01458",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "error": 0.0551625,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 19,
+          "missingRegions": 17,
+          "totalSeconds": 8.708062709,
+          "fitAndValidationSeconds": 7.643705833
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "error": 0.0551625,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 19,
+          "missingRegions": 17,
+          "totalSeconds": 8.672864624999999,
+          "fitAndValidationSeconds": 7.651512875000001
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "danish-red-gold",
+        "track": "printed-paper",
+        "sourceSha256": "8de9081d6aad37c1e63600cf1f51f5c205c2d383b89f22a16cb14aab63d36a96",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 6,
+            "right": 6
+          },
+          "error": 0.139425,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 27,
+          "missingRegions": 11,
+          "totalSeconds": 10.145812707999998,
+          "fitAndValidationSeconds": 9.223111667000001
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 6,
+            "right": 6
+          },
+          "error": 0.13795625,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 27,
+          "missingRegions": 11,
+          "totalSeconds": 10.134526999999999,
+          "fitAndValidationSeconds": 9.207408542000001
+        },
+        "errorChange": -0.001468749999999991
+      },
+      {
+        "id": "danish-tree-red",
+        "track": "two-colour",
+        "sourceSha256": "6603c4c02f4c45d097a47b06bf003e62d5710ef33ce574b35f2a2e351d274b40",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0205375,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 4,
+          "missingRegions": 0,
+          "totalSeconds": 4.535794792000001,
+          "fitAndValidationSeconds": 3.591221167000003
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0205375,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 4,
+          "missingRegions": 0,
+          "totalSeconds": 4.460630834000003,
+          "fitAndValidationSeconds": 3.519268667000004
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "danish-tree-green",
+        "track": "two-colour",
+        "sourceSha256": "5a8c872aeae2452165ddc05753a2255effaba318a7eb4b5b57ad9fb4361c1439",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.011375,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 3,
+          "missingRegions": 0,
+          "totalSeconds": 7.844748915999997,
+          "fitAndValidationSeconds": 6.617196166999995
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.01075,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 3,
+          "missingRegions": 0,
+          "totalSeconds": 7.731412915999994,
+          "fitAndValidationSeconds": 6.502541124999996
+        },
+        "errorChange": -0.0006250000000000006
+      },
+      {
+        "id": "danish-tree-dots",
+        "track": "printed-paper",
+        "sourceSha256": "b7a0ae1209a1fbc5092b1e1b453dae5a19decc11c33a12e12b345ba9cfb16063",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.1311,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 15,
+          "missingRegions": 7,
+          "totalSeconds": 11.799349000000001,
+          "fitAndValidationSeconds": 9.878150667000002
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.1311,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 15,
+          "missingRegions": 7,
+          "totalSeconds": 11.770353917,
+          "fitAndValidationSeconds": 9.858739416000004
+        },
+        "seedSmoothingRetry": true,
+        "errorChange": 0
+      },
+      {
+        "id": "gathering-pink-single",
+        "track": "printed-paper",
+        "sourceSha256": "867f0e5852ebeba92db6e89b0d4883f88b12a30226a93bb2042d9bce0e17500b",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 1.8339809999999999
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 1.8380115000000006
+        }
+      },
+      {
+        "id": "bibel-checker-2",
+        "track": "two-colour",
+        "sourceSha256": "d715441c747a0f9d93db029c5b97b4c0a9dff0f5d3bd6480a871ae8285abfb4b",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 1,
+            "right": 1
+          },
+          "error": 0.01753125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 0,
+          "missingRegions": 0,
+          "totalSeconds": 3.451041000000005,
+          "fitAndValidationSeconds": 2.3714817079999992
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 1,
+            "right": 1
+          },
+          "error": 0.01753125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 0,
+          "missingRegions": 0,
+          "totalSeconds": 3.443970417000004,
+          "fitAndValidationSeconds": 2.3820362500000045
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "bibel-checker-3",
+        "track": "two-colour",
+        "sourceSha256": "ca918edf5ebf69b903f8f0c95cf048280c7ed4e1dea135f5e14aca3529decbc7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "error": 0.014375,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 1,
+          "missingRegions": 0,
+          "totalSeconds": 5.974630042000005,
+          "fitAndValidationSeconds": 4.97265854199999
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "error": 0.014375,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 1,
+          "missingRegions": 0,
+          "totalSeconds": 6.007565291000006,
+          "fitAndValidationSeconds": 5.009138624999992
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "bibel-checker-4",
+        "track": "two-colour",
+        "sourceSha256": "8552792996b59b8c94b8ef67759ce53f9799c73683f55d673314415cefd9ac87",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0035625,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 2,
+          "missingRegions": 0,
+          "totalSeconds": 5.387497041000009,
+          "fitAndValidationSeconds": 4.150674625
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0035625,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 2,
+          "missingRegions": 0,
+          "totalSeconds": 5.406531417000005,
+          "fitAndValidationSeconds": 4.178507584000006
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "bibel-narrow-wide",
+        "track": "two-colour",
+        "sourceSha256": "f89f56183194d4035b3e4f0864d5ea7642912342a5717da2ad0c6c38da7da194",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 4,
+            "right": 5
+          },
+          "error": 0.02026875,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 4,
+          "missingRegions": 0,
+          "totalSeconds": 10.007175625000004,
+          "fitAndValidationSeconds": 8.853023167000007
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 4,
+            "right": 5
+          },
+          "error": 0.02026875,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 4,
+          "missingRegions": 0,
+          "totalSeconds": 9.979174165999996,
+          "fitAndValidationSeconds": 8.831200292000009
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "bibel-nested-heart-green",
+        "track": "two-colour",
+        "sourceSha256": "0c426b93e08995e5daf1714aca5cee453e5126781455e1f284f4f00c42a40990",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.873733917000005
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.8703401660000091
+        }
+      },
+      {
+        "id": "bibel-nested-heart-red",
+        "track": "two-colour",
+        "sourceSha256": "2a3c21b4bab08513abb8d5538143dd2670df0ce0fe3048ec16b93359914f97a2",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.02806875,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 1,
+          "missingRegions": 0,
+          "totalSeconds": 11.043930000000007,
+          "fitAndValidationSeconds": 9.196666958999995
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.02806875,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 1,
+          "missingRegions": 0,
+          "totalSeconds": 10.998701082999993,
+          "fitAndValidationSeconds": 9.163505000000004
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "bibel-angel",
+        "track": "two-colour",
+        "sourceSha256": "524ac9f34366e7db1cdf04687a802e0e89ea36589f8943f72e7fee4d9c6551d9",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.8702246660000091
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.8824831249999988
+        }
+      },
+      {
+        "id": "danish-tree-group-top",
+        "track": "scene",
+        "sourceSha256": "2f5e6fcf603f627d3184407ff89e078880f62c3f6376af720e6030397d7461bc",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.3898239579999936
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.39634841700000106
+        }
+      },
+      {
+        "id": "danish-tree-group-right",
+        "track": "scene",
+        "sourceSha256": "2f5e6fcf603f627d3184407ff89e078880f62c3f6376af720e6030397d7461bc",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.05973125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 3,
+          "missingRegions": 0,
+          "totalSeconds": 9.936964875000005,
+          "fitAndValidationSeconds": 8.959519874999998
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.019225,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 3,
+          "missingRegions": 0,
+          "totalSeconds": 6.4568922920000045,
+          "fitAndValidationSeconds": 5.490471332999994
+        },
+        "seedSmoothingRetry": true,
+        "errorChange": -0.04050625
+      },
+      {
+        "id": "danish-tree-group-left",
+        "track": "scene",
+        "sourceSha256": "2f5e6fcf603f627d3184407ff89e078880f62c3f6376af720e6030397d7461bc",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.31256216600000336
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.3135570829999924
+        }
+      },
+      {
+        "id": "danish-tree-group-bottom",
+        "track": "scene",
+        "sourceSha256": "2f5e6fcf603f627d3184407ff89e078880f62c3f6376af720e6030397d7461bc",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.2866365000000078
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.27372783300001174
+        }
+      },
+      {
+        "id": "gathering-striped-scene-top",
+        "track": "printed-paper",
+        "sourceSha256": "fee1e0ab49ac2a4d4704e4011ff323cd35f8d754b24a14e45380ccd46f59089d",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0633125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 24,
+          "missingRegions": 19,
+          "totalSeconds": 9.693601708000003,
+          "fitAndValidationSeconds": 8.833695166999998
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0633125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 24,
+          "missingRegions": 19,
+          "totalSeconds": 9.82765804200001,
+          "fitAndValidationSeconds": 8.907682583000001
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "gathering-striped-scene-bottom",
+        "track": "printed-paper",
+        "sourceSha256": "fee1e0ab49ac2a4d4704e4011ff323cd35f8d754b24a14e45380ccd46f59089d",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.21492845800000943
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.235171875
+        }
+      },
+      {
+        "id": "gathering-hanging-trio-top",
+        "track": "printed-paper",
+        "sourceSha256": "8430404de482224c669c12d30d76ca039a4d582a7b606e0b719d2ed1464341e9",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.8975190410000068
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.9178762500000012
+        }
+      },
+      {
+        "id": "gathering-hanging-trio-middle",
+        "track": "printed-paper",
+        "sourceSha256": "8430404de482224c669c12d30d76ca039a4d582a7b606e0b719d2ed1464341e9",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.18957079199999863
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.18695370899999397
+        }
+      },
+      {
+        "id": "gathering-hanging-trio-bottom",
+        "track": "printed-paper",
+        "sourceSha256": "8430404de482224c669c12d30d76ca039a4d582a7b606e0b719d2ed1464341e9",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.7974357500000042
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.804051999999996
+        }
+      },
+      {
+        "id": "vissevasse-arranged-r1c1",
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.13903291700000409
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.13695641700000852
+        }
+      },
+      {
+        "id": "vissevasse-arranged-r1c2",
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.0270875,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 20,
+          "missingRegions": 17,
+          "totalSeconds": 9.217174166000012,
+          "fitAndValidationSeconds": 8.46232920800001
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.0270875,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 20,
+          "missingRegions": 17,
+          "totalSeconds": 9.201163625000001,
+          "fitAndValidationSeconds": 8.42848266699999
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r1c3",
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0326375,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 3,
+          "missingRegions": 2,
+          "totalSeconds": 9.048303583000001,
+          "fitAndValidationSeconds": 8.33154120800001
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0326375,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 3,
+          "missingRegions": 2,
+          "totalSeconds": 9.036725709000006,
+          "fitAndValidationSeconds": 8.309667708000008
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r1c4",
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.007725,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 2,
+          "missingRegions": 0,
+          "totalSeconds": 7.164097957999998,
+          "fitAndValidationSeconds": 6.454626416999992
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.007725,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 2,
+          "missingRegions": 0,
+          "totalSeconds": 7.252798125000001,
+          "fitAndValidationSeconds": 6.558049540999986
+        },
+        "seedSmoothingRetry": true,
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r2c1",
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0826,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 8,
+          "missingRegions": 0,
+          "totalSeconds": 9.926569332999993,
+          "fitAndValidationSeconds": 9.122980333999992
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0826,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 8,
+          "missingRegions": 0,
+          "totalSeconds": 9.936113583999976,
+          "fitAndValidationSeconds": 9.128355582999998
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r2c2",
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.05739375,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 16,
+          "missingRegions": 0,
+          "totalSeconds": 9.88055591700002,
+          "fitAndValidationSeconds": 9.132230207999994
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.05739375,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 16,
+          "missingRegions": 0,
+          "totalSeconds": 9.893617041999999,
+          "fitAndValidationSeconds": 9.140534000000015
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r2c3",
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.0985125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 37,
+          "missingRegions": 0,
+          "totalSeconds": 9.555794165999977,
+          "fitAndValidationSeconds": 8.771653332999994
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.0985125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 37,
+          "missingRegions": 0,
+          "totalSeconds": 9.611459167000023,
+          "fitAndValidationSeconds": 8.812929000000004
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r3c1",
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.14350533400001586
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.154535332999978
+        }
+      },
+      {
+        "id": "vissevasse-arranged-r3c2",
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.04849375,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 23,
+          "missingRegions": 21,
+          "totalSeconds": 9.952856790999999,
+          "fitAndValidationSeconds": 9.15607920800001
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.04849375,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 23,
+          "missingRegions": 21,
+          "totalSeconds": 9.865823583000019,
+          "fitAndValidationSeconds": 9.06798425000001
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r3c3",
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.13658125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 46,
+          "missingRegions": 3,
+          "totalSeconds": 9.786589750000013,
+          "fitAndValidationSeconds": 8.928712499999994
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.13658125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 46,
+          "missingRegions": 3,
+          "totalSeconds": 9.82927125000002,
+          "fitAndValidationSeconds": 8.940397834000002
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r3c4",
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "error": 0.058225,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 14,
+          "missingRegions": 0,
+          "totalSeconds": 10.020434417000011,
+          "fitAndValidationSeconds": 9.18249554199999
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "error": 0.0584375,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 14,
+          "missingRegions": 0,
+          "totalSeconds": 10.024542125000007,
+          "fitAndValidationSeconds": 9.181172332999996
+        },
+        "errorChange": 0.00021250000000000435
+      },
+      {
+        "id": "vissevasse-arranged-r4c1",
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.06788125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 25,
+          "missingRegions": 24,
+          "totalSeconds": 8.958944667000003,
+          "fitAndValidationSeconds": 8.181804999999994
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.06788125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 25,
+          "missingRegions": 24,
+          "totalSeconds": 8.918238708000018,
+          "fitAndValidationSeconds": 8.133846374999994
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r4c2",
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.03785625,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 6,
+          "missingRegions": 1,
+          "totalSeconds": 9.000528833000018,
+          "fitAndValidationSeconds": 8.230767583999986
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.03785625,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 6,
+          "missingRegions": 1,
+          "totalSeconds": 8.973867375000001,
+          "fitAndValidationSeconds": 8.187222917000007
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r4c3",
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.035325,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 30,
+          "missingRegions": 30,
+          "totalSeconds": 9.287949083999992,
+          "fitAndValidationSeconds": 8.583316334000003
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.035325,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 30,
+          "missingRegions": 30,
+          "totalSeconds": 9.302141250000016,
+          "fitAndValidationSeconds": 8.589590084000024
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-scattered-pale-fish",
+        "track": "printed-paper",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.14175920900001074
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.14572375000000465
+        }
+      },
+      {
+        "id": "vissevasse-scattered-yellow-checker",
+        "track": "printed-paper",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.13701129200001014
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.14228479099998367
+        }
+      },
+      {
+        "id": "vissevasse-scattered-blue-fish",
+        "track": "printed-paper",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.1413937080000178
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.13986462499998742
+        }
+      },
+      {
+        "id": "vissevasse-scattered-blue-checker",
+        "track": "printed-paper",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.07458125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 24,
+          "missingRegions": 2,
+          "totalSeconds": 9.69139387499998,
+          "fitAndValidationSeconds": 8.87939279100002
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.07458125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 24,
+          "missingRegions": 2,
+          "totalSeconds": 9.766746500000009,
+          "fitAndValidationSeconds": 8.913219666999998
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-scattered-green-checker",
+        "track": "printed-paper",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0142,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 0,
+          "missingRegions": 0,
+          "totalSeconds": 5.723487250000006,
+          "fitAndValidationSeconds": 4.918198417000007
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0142,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 0,
+          "missingRegions": 0,
+          "totalSeconds": 5.6266024169999875,
+          "fitAndValidationSeconds": 4.8095740410000145
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-scattered-purple-checker",
+        "track": "printed-paper",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "error": 0.04591875,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 16,
+          "missingRegions": 11,
+          "totalSeconds": 8.441977333999995,
+          "fitAndValidationSeconds": 7.6405385419999945
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "error": 0.04591875,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 16,
+          "missingRegions": 11,
+          "totalSeconds": 8.435455916000006,
+          "fitAndValidationSeconds": 7.650327667000005
+        },
+        "errorChange": 0
+      }
+    ]
+  },
+  "browser": {
+    "methodology": "Actual production editor with its 180-second budget. Page-clock Find-to-ready timing; downloaded editable SVG error. The six existing cases have their source masks and crops compared with the preceding run. The group-photo tree is a new browser case; no browser timing baseline is claimed for it.",
+    "results": [
+      {
+        "browser": "chromium",
+        "name": "web-danish-tree-group-right",
+        "passed": false,
+        "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ undefined\n- true\n\n    at file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/paint-browser-test.mjs:289:13",
+        "exportReplayCompleted": false,
+        "sourceMaskUnchanged": null,
+        "maskSha256": "5a60916399cc8036f9a416c3229b971efc28790636f620e765cc10f803d80d5f",
+        "cropUnchanged": null,
+        "afterSeconds": 75.04010000002384,
+        "afterError": 0.05250625,
+        "afterErrorRenderer": "engine-only (failed before export replay)",
+        "afterTemplateChecksPassed": false,
+        "counts": [
+          1,
+          1
+        ],
+        "gridAttempts": 20,
+        "pageErrors": []
+      },
+      {
+        "browser": "chromium",
+        "name": "web-danish-tree-red",
+        "passed": true,
+        "exportReplayCompleted": true,
+        "sourceMaskUnchanged": true,
+        "maskSha256": "242e845545caec329460d2fc50e591a50f485b23da38a67bb2a718397d7351d8",
+        "cropUnchanged": true,
+        "beforeSeconds": 4.556300000071525,
+        "afterSeconds": 4.496600000023842,
+        "beforeError": 0.02024375,
+        "afterError": 0.02024375,
+        "afterErrorRenderer": "editable SVG replay",
+        "beforeTemplateChecksPassed": true,
+        "afterTemplateChecksPassed": true,
+        "counts": [
+          3,
+          3
+        ],
+        "gridAttempts": 0,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.02024375,
+          "sourceError": 0.02024375
+        },
+        "sharedSpans": 7,
+        "pageErrors": []
+      },
+      {
+        "browser": "chromium",
+        "name": "web-danish-tree-green",
+        "passed": true,
+        "exportReplayCompleted": true,
+        "sourceMaskUnchanged": true,
+        "maskSha256": "99fa80c07d5bccbb8354d2301e844e0231a84101b5f8d9351da0baf0747b5bb9",
+        "cropUnchanged": true,
+        "beforeSeconds": 7.843,
+        "afterSeconds": 7.9851000000238415,
+        "beforeError": 0.01104375,
+        "afterError": 0.010575,
+        "afterErrorRenderer": "editable SVG replay",
+        "beforeTemplateChecksPassed": true,
+        "afterTemplateChecksPassed": true,
+        "counts": [
+          3,
+          3
+        ],
+        "gridAttempts": 1,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.010575,
+          "sourceError": 0.010575
+        },
+        "sharedSpans": 3,
+        "pageErrors": []
+      },
+      {
+        "browser": "chromium",
+        "name": "hunodan-hjfig-05",
+        "passed": true,
+        "exportReplayCompleted": true,
+        "sourceMaskUnchanged": true,
+        "maskSha256": "0445f9d1abf328342785e2aa278e7a7c4072613fee0e9db8db5f08f3791b2aba",
+        "cropUnchanged": true,
+        "beforeSeconds": 4.927199999928474,
+        "afterSeconds": 4.9315,
+        "beforeError": 0.00861875,
+        "afterError": 0.00861875,
+        "afterErrorRenderer": "editable SVG replay",
+        "beforeTemplateChecksPassed": true,
+        "afterTemplateChecksPassed": true,
+        "counts": [
+          4,
+          4
+        ],
+        "gridAttempts": 0,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00861875,
+          "sourceError": 0.00861875
+        },
+        "sharedSpans": 4,
+        "pageErrors": []
+      },
+      {
+        "browser": "chromium",
+        "name": "top-hat-preferred",
+        "passed": true,
+        "exportReplayCompleted": true,
+        "sourceMaskUnchanged": true,
+        "maskSha256": "c41bc699904f56cc07cd003be29111caeec37e585023705b3bc0f57d6c23f00f",
+        "cropUnchanged": true,
+        "beforeSeconds": 7.261,
+        "afterSeconds": 7.226,
+        "beforeError": 0.0040834041950113375,
+        "afterError": 0.0040834041950113375,
+        "afterErrorRenderer": "editable SVG replay",
+        "beforeTemplateChecksPassed": true,
+        "afterTemplateChecksPassed": true,
+        "counts": [
+          3,
+          3
+        ],
+        "gridAttempts": 1,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.0007875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0004625
+            }
+          ],
+          "originalSourceError": 0.004118835034013606,
+          "sourceError": 0.0040834041950113375
+        },
+        "sharedSpans": 43,
+        "sharedLengthMm": 228.28581422182742,
+        "pageErrors": []
+      },
+      {
+        "browser": "chromium",
+        "name": "top-hat-independent",
+        "passed": true,
+        "exportReplayCompleted": true,
+        "sourceMaskUnchanged": true,
+        "maskSha256": "c41bc699904f56cc07cd003be29111caeec37e585023705b3bc0f57d6c23f00f",
+        "cropUnchanged": true,
+        "beforeSeconds": 5.9945,
+        "afterSeconds": 5.9885,
+        "beforeError": 0.0029584750566893424,
+        "afterError": 0.0029584750566893424,
+        "afterErrorRenderer": "editable SVG replay",
+        "beforeTemplateChecksPassed": true,
+        "afterTemplateChecksPassed": true,
+        "counts": [
+          2,
+          2
+        ],
+        "gridAttempts": 1,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00036875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000325
+            }
+          ],
+          "originalSourceError": 0.0029584750566893424,
+          "sourceError": 0.0029584750566893424
+        },
+        "sharedSpans": 28,
+        "sharedLengthMm": 71.12407746187121,
+        "pageErrors": []
+      },
+      {
+        "browser": "chromium",
+        "name": "web-bibel-checker-3",
+        "passed": true,
+        "exportReplayCompleted": true,
+        "sourceMaskUnchanged": true,
+        "maskSha256": "b7417d49a05f351d70203f50df5927543b6ee8384aa4a0ca3cd838c40d7f39c8",
+        "cropUnchanged": true,
+        "beforeSeconds": 5.849600000023842,
+        "afterSeconds": 5.8751999999284745,
+        "beforeError": 0.0142,
+        "afterError": 0.0142,
+        "afterErrorRenderer": "editable SVG replay",
+        "beforeTemplateChecksPassed": true,
+        "afterTemplateChecksPassed": true,
+        "counts": [
+          2,
+          2
+        ],
+        "gridAttempts": 2,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0142,
+          "sourceError": 0.0142
+        },
+        "sharedSpans": 0,
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "name": "web-danish-tree-group-right",
+        "passed": false,
+        "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ undefined\n- true\n\n    at file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/paint-browser-test.mjs:289:13",
+        "exportReplayCompleted": false,
+        "sourceMaskUnchanged": null,
+        "maskSha256": "5a60916399cc8036f9a416c3229b971efc28790636f620e765cc10f803d80d5f",
+        "cropUnchanged": null,
+        "afterSeconds": 80.948,
+        "afterError": 0.05250625,
+        "afterErrorRenderer": "engine-only (failed before export replay)",
+        "afterTemplateChecksPassed": false,
+        "counts": [
+          1,
+          1
+        ],
+        "gridAttempts": 20,
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "name": "web-danish-tree-red",
+        "passed": true,
+        "exportReplayCompleted": true,
+        "sourceMaskUnchanged": true,
+        "maskSha256": "242e845545caec329460d2fc50e591a50f485b23da38a67bb2a718397d7351d8",
+        "cropUnchanged": true,
+        "beforeSeconds": 4.6,
+        "afterSeconds": 4.601,
+        "beforeError": 0.02031875,
+        "afterError": 0.02031875,
+        "afterErrorRenderer": "editable SVG replay",
+        "beforeTemplateChecksPassed": true,
+        "afterTemplateChecksPassed": true,
+        "counts": [
+          3,
+          3
+        ],
+        "gridAttempts": 0,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.02031875,
+          "sourceError": 0.02031875
+        },
+        "sharedSpans": 7,
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "name": "web-danish-tree-green",
+        "passed": true,
+        "exportReplayCompleted": true,
+        "sourceMaskUnchanged": true,
+        "maskSha256": "99fa80c07d5bccbb8354d2301e844e0231a84101b5f8d9351da0baf0747b5bb9",
+        "cropUnchanged": true,
+        "beforeSeconds": 8.593,
+        "afterSeconds": 8.676,
+        "beforeError": 0.01104375,
+        "afterError": 0.01056875,
+        "afterErrorRenderer": "editable SVG replay",
+        "beforeTemplateChecksPassed": true,
+        "afterTemplateChecksPassed": true,
+        "counts": [
+          3,
+          3
+        ],
+        "gridAttempts": 1,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.01056875,
+          "sourceError": 0.01056875
+        },
+        "sharedSpans": 3,
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "name": "hunodan-hjfig-05",
+        "passed": true,
+        "exportReplayCompleted": true,
+        "sourceMaskUnchanged": true,
+        "maskSha256": "0445f9d1abf328342785e2aa278e7a7c4072613fee0e9db8db5f08f3791b2aba",
+        "cropUnchanged": true,
+        "beforeSeconds": 5.571,
+        "afterSeconds": 5.631,
+        "beforeError": 0.00861875,
+        "afterError": 0.00861875,
+        "afterErrorRenderer": "editable SVG replay",
+        "beforeTemplateChecksPassed": true,
+        "afterTemplateChecksPassed": true,
+        "counts": [
+          4,
+          4
+        ],
+        "gridAttempts": 0,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00861875,
+          "sourceError": 0.00861875
+        },
+        "sharedSpans": 4,
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "name": "top-hat-preferred",
+        "passed": true,
+        "exportReplayCompleted": true,
+        "sourceMaskUnchanged": true,
+        "maskSha256": "c41bc699904f56cc07cd003be29111caeec37e585023705b3bc0f57d6c23f00f",
+        "cropUnchanged": true,
+        "beforeSeconds": 7.62,
+        "afterSeconds": 7.531,
+        "beforeError": 0.0040834041950113375,
+        "afterError": 0.0040834041950113375,
+        "afterErrorRenderer": "editable SVG replay",
+        "beforeTemplateChecksPassed": true,
+        "afterTemplateChecksPassed": true,
+        "counts": [
+          3,
+          3
+        ],
+        "gridAttempts": 1,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.0007875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0004625
+            }
+          ],
+          "originalSourceError": 0.004118835034013606,
+          "sourceError": 0.0040834041950113375
+        },
+        "sharedSpans": 43,
+        "sharedLengthMm": 228.28581422182341,
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "name": "top-hat-independent",
+        "passed": true,
+        "exportReplayCompleted": true,
+        "sourceMaskUnchanged": true,
+        "maskSha256": "c41bc699904f56cc07cd003be29111caeec37e585023705b3bc0f57d6c23f00f",
+        "cropUnchanged": true,
+        "beforeSeconds": 6.035,
+        "afterSeconds": 6.234,
+        "beforeError": 0.0029584750566893424,
+        "afterError": 0.0029584750566893424,
+        "afterErrorRenderer": "editable SVG replay",
+        "beforeTemplateChecksPassed": true,
+        "afterTemplateChecksPassed": true,
+        "counts": [
+          2,
+          2
+        ],
+        "gridAttempts": 1,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00036875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000325
+            }
+          ],
+          "originalSourceError": 0.0029584750566893424,
+          "sourceError": 0.0029584750566893424
+        },
+        "sharedSpans": 28,
+        "sharedLengthMm": 71.12407746164283,
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "name": "web-bibel-checker-3",
+        "passed": true,
+        "exportReplayCompleted": true,
+        "sourceMaskUnchanged": true,
+        "maskSha256": "b7417d49a05f351d70203f50df5927543b6ee8384aa4a0ca3cd838c40d7f39c8",
+        "cropUnchanged": true,
+        "beforeSeconds": 5.853,
+        "afterSeconds": 5.869000000000001,
+        "beforeError": 0.0142,
+        "afterError": 0.0142,
+        "afterErrorRenderer": "editable SVG replay",
+        "beforeTemplateChecksPassed": true,
+        "afterTemplateChecksPassed": true,
+        "counts": [
+          2,
+          2
+        ],
+        "gridAttempts": 2,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0142,
+          "sourceError": 0.0142
+        },
+        "sharedSpans": 0,
+        "pageErrors": []
+      }
+    ]
+  },
+  "diagnostics": {
+    "methodology": "Fixed automatic crop and original mask. Up to six seconds of sparse routing plus 160 common-fitter steps. These isolated probes are not complete-pipeline timing measurements.",
+    "oldSeamWithSmootherSeed": {
+      "referenceCommit": "c987936",
+      "maskSha256": "3fbcf6e41567406f801908f1e0f64a65cf13b8db4fb294ce169954f943ba0d18",
+      "maskUnchanged": true,
+      "result": {
+        "index": 0,
+        "options": {
+          "smoothRadius": 0.5
+        },
+        "trace": {
+          "segments": 59,
+          "changes": 0.030825,
+          "junctions": [
+            {
+              "from": [
+                [
+                  76,
+                  88.25
+                ],
+                [
+                  75.25,
+                  89.25
+                ]
+              ],
+              "to": [
+                75.625,
+                88.75
+              ],
+              "maximumMoveMm": 1.4630874888399532
+            },
+            {
+              "from": [
+                [
+                  89,
+                  87.25
+                ],
+                [
+                  89.75,
+                  88.5
+                ]
+              ],
+              "to": [
+                89.375,
+                87.875
+              ],
+              "maximumMoveMm": 1.4252192813739224
+            },
+            {
+              "from": [
+                [
+                  14.25,
+                  19
+                ],
+                [
+                  13.5,
+                  20
+                ]
+              ],
+              "to": [
+                13.875,
+                19.5
+              ],
+              "maximumMoveMm": 1.375
+            },
+            {
+              "from": [
+                [
+                  22.25,
+                  11.25
+                ],
+                [
+                  23,
+                  10
+                ]
+              ],
+              "to": [
+                22.625,
+                10.625
+              ],
+              "maximumMoveMm": 1.4252192813739224
+            },
+            {
+              "from": [
+                [
+                  89.25,
+                  75
+                ],
+                [
+                  90.25,
+                  73.5
+                ]
+              ],
+              "to": [
+                89.75,
+                74.25
+              ],
+              "maximumMoveMm": 1.5
+            },
+            {
+              "from": [
+                [
+                  11,
+                  90
+                ],
+                [
+                  12.25,
+                  89
+                ]
+              ],
+              "to": [
+                11.625,
+                89.5
+              ],
+              "maximumMoveMm": 1.3975424859373686
+            },
+            {
+              "from": [
+                [
+                  91.5,
+                  11.5
+                ],
+                [
+                  90.25,
+                  9.75
+                ]
+              ],
+              "to": [
+                90.875,
+                10.625
+              ],
+              "maximumMoveMm": 1.4252192813739224
+            }
+          ]
+        },
+        "endpoints": [
+          {
+            "sources": 3,
+            "sinks": 3
+          },
+          {
+            "sources": 3,
+            "sinks": 3
+          }
+        ],
+        "solver": {
+          "seconds": 3.048240833,
+          "rounds": 3
+        },
+        "counts": {
+          "left": 3,
+          "right": 3
+        },
+        "geometry": true,
+        "paper": "pass",
+        "error": 0.0191625,
+        "missing": [],
+        "templateChecksPassed": true,
+        "seconds": 4.1115034999999995
+      }
+    },
+    "singleSpurRemoved": {
+      "maskSha256": "3fbcf6e41567406f801908f1e0f64a65cf13b8db4fb294ce169954f943ba0d18",
+      "maskUnchanged": true,
+      "result": {
+        "index": 0,
+        "options": {},
+        "trace": {
+          "segments": 55,
+          "changes": 0.0308125,
+          "junctions": [
+            {
+              "from": [
+                [
+                  14.25,
+                  10.75
+                ],
+                [
+                  13.5,
+                  10.25
+                ]
+              ],
+              "to": [
+                13.875,
+                10.5
+              ],
+              "maximumMoveMm": 1.3975424859373684
+            },
+            {
+              "from": [
+                [
+                  14,
+                  19.25
+                ],
+                [
+                  13.25,
+                  19.75
+                ]
+              ],
+              "to": [
+                13.625,
+                19.5
+              ],
+              "maximumMoveMm": 1.375
+            },
+            {
+              "from": [
+                [
+                  11.25,
+                  89.75
+                ],
+                [
+                  12.25,
+                  89
+                ]
+              ],
+              "to": [
+                11.75,
+                89.375
+              ],
+              "maximumMoveMm": 1.4630874888399532
+            },
+            {
+              "from": [
+                [
+                  75.75,
+                  88
+                ],
+                [
+                  75,
+                  89
+                ]
+              ],
+              "to": [
+                75.375,
+                88.5
+              ],
+              "maximumMoveMm": 1.4630874888399532
+            },
+            {
+              "from": [
+                [
+                  88.75,
+                  87.5
+                ],
+                [
+                  89.5,
+                  88.75
+                ]
+              ],
+              "to": [
+                89.125,
+                88.125
+              ],
+              "maximumMoveMm": 1.4252192813739224
+            },
+            {
+              "from": [
+                [
+                  22.5,
+                  11.5
+                ],
+                [
+                  23.25,
+                  10.25
+                ]
+              ],
+              "to": [
+                22.875,
+                10.875
+              ],
+              "maximumMoveMm": 1.4252192813739224
+            },
+            {
+              "from": [
+                [
+                  89,
+                  74.75
+                ],
+                [
+                  90.25,
+                  73.5
+                ]
+              ],
+              "to": [
+                89.625,
+                74.125
+              ],
+              "maximumMoveMm": 1.4252192813739224
+            },
+            {
+              "from": [
+                [
+                  91.5,
+                  11.5
+                ],
+                [
+                  90.25,
+                  9.75
+                ]
+              ],
+              "to": [
+                90.875,
+                10.625
+              ],
+              "maximumMoveMm": 1.4252192813739224
+            }
+          ]
+        },
+        "endpoints": [
+          {
+            "sources": 3,
+            "sinks": 3
+          },
+          {
+            "sources": 3,
+            "sinks": 3
+          }
+        ],
+        "errorMessage": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+        "termination": "candidate_graph_exhausted",
+        "seconds": 0.11373350000000004
+      },
+      "replacement": {
+        "removedEndpoints": [
+          [
+            [
+              4.25,
+              10
+            ],
+            [
+              3.5,
+              16
+            ]
+          ],
+          [
+            [
+              3.5,
+              16
+            ],
+            [
+              3,
+              16
+            ]
+          ],
+          [
+            [
+              3,
+              16
+            ],
+            [
+              3,
+              10.25
+            ]
+          ]
+        ],
+        "chord": [
+          [
+            4.25,
+            10
+          ],
+          [
+            3,
+            10.25
+          ]
+        ]
+      }
+    },
+    "interpretation": "Smoothing can recover this example even with the old seam logic; removing only the small spur cannot. Do not attribute the full recovery to either that spur alone or the contour-seam correction."
+  },
+  "servedSourceHashes": {
+    "static/inverse/core/junctions.js": {
+      "served": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+      "local": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104"
+    },
+    "static/inverse/core/feature-recovery.js": {
+      "served": "686e6fcab12fa81cf18c7774ca8fd644fd54e74acb66c983f4ca385115e0e26b",
+      "local": "686e6fcab12fa81cf18c7774ca8fd644fd54e74acb66c983f4ca385115e0e26b"
+    },
+    "static/inverse/core/direct/fit.js": {
+      "served": "6b16b0667ce6a380ba61fbbd9bba9eaebe330ee2fa16655e42bb2b7757d8f7d9",
+      "local": "6b16b0667ce6a380ba61fbbd9bba9eaebe330ee2fa16655e42bb2b7757d8f7d9"
+    }
+  },
+  "failedBrowserFixture": {
+    "path": "scripts/inverse/fixtures/browser-group-tree.json",
+    "sha256": "9898b6dded7e634ec91c1104f0e030ed66e4fc2d3cd4679c8d6488fcb6f50301",
+    "maskSha256": "5a60916399cc8036f9a416c3229b971efc28790636f620e765cc10f803d80d5f"
+  }
+}

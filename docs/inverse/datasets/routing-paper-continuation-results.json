@@ -1,0 +1,418 @@
+{
+  "schema": 1,
+  "status": "offline_diagnosis_complete; finer_audit_prototype_not_integrated",
+  "fixed": [
+    {
+      "label": "initial-85",
+      "steps": 85,
+      "sourceError": 0.014416,
+      "independentError": 0.014864,
+      "featuresPassed": true,
+      "geometryPassed": true,
+      "issues": [],
+      "papers": {
+        "360": "uncertain",
+        "700": "uncertain",
+        "1000": "pass"
+      },
+      "fitSeconds": 2.0991088749999998
+    },
+    {
+      "label": "continued-85",
+      "steps": 120,
+      "sourceError": 0.010688,
+      "independentError": 0.010896,
+      "featuresPassed": true,
+      "geometryPassed": true,
+      "issues": [],
+      "papers": {
+        "360": "uncertain",
+        "700": "pass",
+        "1000": "pass"
+      },
+      "fitSeconds": 1.160873834
+    },
+    {
+      "label": "initial-105",
+      "steps": 105,
+      "sourceError": 0.013904,
+      "independentError": 0.01464,
+      "featuresPassed": true,
+      "geometryPassed": true,
+      "issues": [],
+      "papers": {
+        "360": "uncertain",
+        "700": "pass",
+        "1000": "pass"
+      },
+      "fitSeconds": 0.9621862080000001
+    },
+    {
+      "label": "continued-105",
+      "steps": 120,
+      "sourceError": 0.010448,
+      "independentError": 0.010752,
+      "featuresPassed": true,
+      "geometryPassed": true,
+      "issues": [],
+      "papers": {
+        "360": "uncertain",
+        "700": "pass",
+        "1000": "pass"
+      },
+      "fitSeconds": 1.1559281250000004
+    },
+    {
+      "label": "initial-160",
+      "steps": 160,
+      "sourceError": 0.012912,
+      "independentError": 0.013328,
+      "featuresPassed": true,
+      "geometryPassed": true,
+      "issues": [],
+      "papers": {
+        "360": "uncertain",
+        "700": "pass",
+        "1000": "pass"
+      },
+      "fitSeconds": 1.0115550829999993
+    },
+    {
+      "label": "initial-81",
+      "steps": 81,
+      "sourceError": 0.014448,
+      "independentError": 0.01488,
+      "featuresPassed": true,
+      "geometryPassed": true,
+      "issues": [],
+      "papers": {
+        "360": "uncertain",
+        "700": "uncertain",
+        "1000": "pass"
+      },
+      "fitSeconds": 1.768279458
+    },
+    {
+      "label": "continued-81",
+      "steps": 120,
+      "sourceError": 0.01072,
+      "independentError": 0.010944,
+      "featuresPassed": true,
+      "geometryPassed": true,
+      "issues": [],
+      "papers": {
+        "360": "uncertain",
+        "700": "pass",
+        "1000": "pass"
+      },
+      "fitSeconds": 1.1787827499999999
+    }
+  ],
+  "timingQualification": "Fixed-probe fitSeconds includes independent rendering plus all three paper audits and is not a fitting-only or live-site timing. Fresh seconds measures design() before the independent export replay.",
+  "fixedFinding": "The 81-step checkpoint reproduces the failed repair source disagreement of 1.4448%; geometry/features pass, paper is uncertain at 360 and 700 but actually passes at 1000. A new 120-step refinement at 700 yields 1.0944% independent error and passes 700/1000 paper checks. This uses additional offline work and is not a ten-second recovery result.",
+  "fresh": [
+    {
+      "file": "tmp/heart-learning/routing-paper-continuation-v1/fresh-0-before.json",
+      "arm": "before",
+      "passed": true,
+      "seconds": 9.339802582999999,
+      "error": 0.013312,
+      "featuresPassed": true,
+      "repairs": [
+        {
+          "accepted": true,
+          "steps": 160,
+          "reason": null,
+          "seconds": 1.3375760420000007,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "pass"
+          },
+          "verificationTailSeconds": null
+        }
+      ],
+      "rejectedCandidates": [
+        {
+          "round": 1,
+          "integerCandidateSeconds": 3.1855450000000003,
+          "remainingSeconds": 1.1067461089999986,
+          "reason": "repair_attempted",
+          "repairBudgetSeconds": 1.513811249999999
+        }
+      ]
+    },
+    {
+      "file": "tmp/heart-learning/routing-paper-continuation-v1/fresh-0-cap-before.json",
+      "arm": "cap-before",
+      "passed": false,
+      "seconds": 9.218327166,
+      "error": 0.056544,
+      "featuresPassed": false,
+      "repairs": [
+        {
+          "accepted": false,
+          "steps": 81,
+          "reason": "paper_rejected",
+          "seconds": 1.0860655000000006,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "uncertain"
+          },
+          "verificationTailSeconds": null
+        }
+      ],
+      "rejectedCandidates": [
+        {
+          "round": 1,
+          "integerCandidateSeconds": 3.3398017909999997,
+          "remainingSeconds": 0.8937583747000022,
+          "reason": "repair_attempted",
+          "repairBudgetSeconds": 1.2867192920000017
+        }
+      ]
+    },
+    {
+      "file": "tmp/heart-learning/routing-paper-continuation-v1/fresh-0-cap-fine-audit.json",
+      "arm": "cap-fine-audit",
+      "passed": false,
+      "seconds": 9.251000750000001,
+      "error": 0.05664,
+      "featuresPassed": false,
+      "repairs": [],
+      "rejectedCandidates": [
+        {
+          "round": 1,
+          "integerCandidateSeconds": 4.029551042,
+          "remainingSeconds": 0.156845775299999,
+          "reason": "insufficient_phase_time"
+        }
+      ]
+    },
+    {
+      "file": "tmp/heart-learning/routing-paper-continuation-v1/fresh-0-fine-audit.json",
+      "arm": "fine-audit",
+      "passed": true,
+      "seconds": 9.327613375,
+      "error": 0.013312,
+      "featuresPassed": true,
+      "repairs": [
+        {
+          "accepted": true,
+          "steps": 160,
+          "reason": null,
+          "seconds": 1.3214453329999996,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "pass"
+          },
+          "verificationTailSeconds": null
+        }
+      ],
+      "rejectedCandidates": [
+        {
+          "round": 1,
+          "integerCandidateSeconds": 3.1941721250000006,
+          "remainingSeconds": 1.1239513045000016,
+          "reason": "repair_attempted",
+          "repairBudgetSeconds": 1.5311672500000013
+        }
+      ]
+    },
+    {
+      "file": "tmp/heart-learning/routing-paper-continuation-v1/fresh-1-before.json",
+      "arm": "before",
+      "passed": true,
+      "seconds": 9.330146749999999,
+      "error": 0.013312,
+      "featuresPassed": true,
+      "repairs": [
+        {
+          "accepted": true,
+          "steps": 160,
+          "reason": null,
+          "seconds": 1.3608500409999997,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "pass"
+          },
+          "verificationTailSeconds": null
+        }
+      ],
+      "rejectedCandidates": [
+        {
+          "round": 1,
+          "integerCandidateSeconds": 3.1953805,
+          "remainingSeconds": 1.1243680587000005,
+          "reason": "repair_attempted",
+          "repairBudgetSeconds": 1.5865397499999998
+        }
+      ]
+    },
+    {
+      "file": "tmp/heart-learning/routing-paper-continuation-v1/fresh-1-cap-before.json",
+      "arm": "cap-before",
+      "passed": false,
+      "seconds": 9.181612042,
+      "error": 0.055568,
+      "featuresPassed": false,
+      "repairs": [
+        {
+          "accepted": false,
+          "steps": 81,
+          "reason": "paper_rejected",
+          "seconds": 1.085299417,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "uncertain"
+          },
+          "verificationTailSeconds": null
+        }
+      ],
+      "rejectedCandidates": [
+        {
+          "round": 1,
+          "integerCandidateSeconds": 3.3158736659999994,
+          "remainingSeconds": 0.9529540051000001,
+          "reason": "repair_attempted",
+          "repairBudgetSeconds": 1.4096542500000004
+        }
+      ]
+    },
+    {
+      "file": "tmp/heart-learning/routing-paper-continuation-v1/fresh-1-cap-fine-audit.json",
+      "arm": "cap-fine-audit",
+      "passed": false,
+      "seconds": 9.356208458,
+      "error": 0.0572,
+      "featuresPassed": false,
+      "repairs": [
+        {
+          "accepted": false,
+          "steps": 81,
+          "reason": "deadline",
+          "seconds": 1.806306125,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 1000,
+            "status": "pass"
+          },
+          "verificationTailSeconds": 0
+        }
+      ],
+      "rejectedCandidates": [
+        {
+          "round": 1,
+          "integerCandidateSeconds": 3.2215999579999997,
+          "remainingSeconds": 1.050963254400001,
+          "reason": "repair_attempted",
+          "repairBudgetSeconds": 1.5085016670000004
+        }
+      ]
+    },
+    {
+      "file": "tmp/heart-learning/routing-paper-continuation-v1/fresh-1-fine-audit.json",
+      "arm": "fine-audit",
+      "passed": true,
+      "seconds": 9.32980825,
+      "error": 0.013792,
+      "featuresPassed": true,
+      "repairs": [
+        {
+          "accepted": true,
+          "steps": 135,
+          "reason": null,
+          "seconds": 1.3754255000000002,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "pass"
+          },
+          "verificationTailSeconds": null
+        }
+      ],
+      "rejectedCandidates": [
+        {
+          "round": 1,
+          "integerCandidateSeconds": 3.2397722090000007,
+          "remainingSeconds": 1.0178827297999984,
+          "reason": "repair_attempted",
+          "repairBudgetSeconds": 1.4230098749999989
+        }
+      ]
+    }
+  ],
+  "prototype": "An uncertain repair may request an actual 1000px audit and at most 300ms from the caller allowance after its optimization deadline. It cannot extend that caller deadline. The controlled arm limits only the first repair to 81 steps, preserving the ten-second overall request and later refinement.",
+  "conclusions": [
+    "All four normal fresh attempts pass, but one candidate error increases from 1.3312% to 1.3792%.",
+    "Both controlled baselines and both controlled candidates fail. One candidate arrives too late to enter repair; the other passes the actual 1000px paper audit but exceeds its allowed deadline.",
+    "The latter receives zero extra verification tail: the caller repair deadline already equals the effective repair deadline. There is no authorized time to borrow within this policy.",
+    "A finer audit alone does not solve the handoff. The pipeline must allocate the existing overall budget earlier or preserve a provisional repair for an explicitly budgeted continuation, without accepting uncertain geometry or extending the user request.",
+    "The production initializer-deadline fix is separate and remains committed; none of these routing or 1000px policy changes is integrated."
+  ],
+  "visualReview": {
+    "fixed": "All four fixed reconstructions were reviewed beside the unchanged mask. Continued refinement keeps the three interior white openings and follows their boundaries more closely.",
+    "fresh": "All eight fresh exported masks were reviewed. Normal fits retain the white openings. All four controlled failures instead select the visibly poorer fallback that merges those features."
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/routing-paper-continuation-v1/source.json",
+      "sha256": "44666ddf372c32c81ec8d912fddb462be363a98a7c8b61d886fea34a46d4f911"
+    },
+    {
+      "path": "tmp/heart-learning/routing-paper-continuation-v1/plan.json",
+      "sha256": "2e833b56fe58a78ab99535b30f7ab43f84479339f90f025ad352f02740f25265"
+    },
+    {
+      "path": "tmp/heart-learning/routing-paper-continuation-v1/probe.mjs",
+      "sha256": "4d9dc9ee3f8c3445fef152b41b8f3f42856ee597c650d71e63d9c7e8f3c9ad0c"
+    },
+    {
+      "path": "tmp/heart-learning/routing-paper-continuation-v1/results.json",
+      "sha256": "e655a14d7f3832c882458d5603570566208111487ea4aad0f50b2715a77acada"
+    },
+    {
+      "path": "tmp/heart-learning/routing-paper-continuation-v1/checkpoint-81.mjs",
+      "sha256": "ed36aaddcbd2fe3a32a623e15a1724a7cc383d413a9cfe37dc182c19f37ade84"
+    },
+    {
+      "path": "tmp/heart-learning/routing-paper-continuation-v1/checkpoint-81-results.json",
+      "sha256": "786a99f70c186d37e73607f26c34cc55262e2dcff7b68da4f1dfcbc2bb9b40fb"
+    },
+    {
+      "path": "tmp/heart-learning/routing-paper-continuation-v1/fresh-source.json",
+      "sha256": "1c81b3487d6832e41efcf78787955fc2627403ef1c11ce8530ede35618e0a6c9"
+    },
+    {
+      "path": "tmp/heart-learning/routing-paper-continuation-v1/fresh-plan.json",
+      "sha256": "178b11ac392ad2b90245a11b41d00cbd21273756ee3bb176d3ba8ceabf3ded32"
+    },
+    {
+      "path": "tmp/heart-learning/routing-paper-continuation-v1/fresh-checks.json",
+      "sha256": "896c3a56a0ae4e8e2f70e8c9236bbc202d0b94026d612922b74e5637d8551389"
+    },
+    {
+      "path": "tmp/heart-learning/routing-paper-continuation-v1/fresh-state.json",
+      "sha256": "99b432578966c236e2d4e4080f7f0291d56543563e9cf4c28495c927b0e2a431"
+    },
+    {
+      "path": "tmp/heart-learning/routing-paper-continuation-v1/fixed-comparison.png",
+      "sha256": "f9862a98bb009735a52ff6d459d1b3d79d16e0a1d9e6ec05716c0fdef6e732c1"
+    },
+    {
+      "path": "tmp/heart-learning/routing-paper-continuation-v1/fresh-comparison.png",
+      "sha256": "7ad1be1d7dd8c2c0a4ed52f43bd6dd34b53dca9c15d0421caa5e9c46e86be15a"
+    }
+  ]
+}

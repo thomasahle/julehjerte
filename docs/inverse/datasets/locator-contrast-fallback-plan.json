@@ -1,0 +1,24 @@
+{
+  "schema": "locator-contrast-fallback-plan-1",
+  "status": "declared-before-outcomes",
+  "cases": 22,
+  "scope": "Fresh deterministic crop fallback and complete fitting on the same 22 development photos. No retraining or inference.",
+  "selection": "Run the unchanged original locator; retain every supported crop. Only if it produces no candidate, run the locator with the palette diameter contrast reward removed. Both retain all support gates. Never choose from template error, references or labels.",
+  "invariants": [
+    "Verify source RGB and frozen probabilities by hash.",
+    "Check all accepted primary crop coordinates against the earlier baseline after the run; do not feed baseline coordinates to inference.",
+    "Carry source observation through fitting and export scoring.",
+    "Ten-second fitting allowance; report crop time separately, including both attempts. Model inference/startup excluded.",
+    "Inspect every export, then check editable geometry and partial source references.",
+    "No production change; no prediction of success by taking a best-arm union."
+  ],
+  "hashes": {
+    "tmp/heart-learning/locator-contrast-fallback-v1/editor-input.mjs": "da2005873ee1d72da172ddffc81f1446093ac76d6671a6ae03caa2b35cc34a4b",
+    "tmp/heart-learning/locator-contrast-fallback-v1/fallback-crop.mjs": "4758d3cfbf24a62cda508169e31b4b021ef220c4868f0d9609b943d96cba58a4",
+    "tmp/heart-learning/locator-contrast-fallback-v1/pipeline-replay.mjs": "4348d5ff1373f13b990c8430a664f838b52d0c040ed6d32be9a6e9d339fb5491",
+    "tmp/heart-learning/locator-contrast-fallback-v1/replay.mjs": "ada07a54da29ad23808cd3cf124534638ae526573682bbf0fb86e73630c1e55a",
+    "tmp/heart-learning/locator-contrast-fallback-v1/run.py": "bd8dc4fc87039603820782a42d0520a365357684695ba65f3b97028c575e9e10",
+    "tmp/heart-learning/locator-contrast-fallback-v1/review-reconstructions.py": "ad901cfc9a27805df81656b2fe9edbf4f93ada5a84b4219f4a11d78ea35398dc",
+    "tmp/heart-learning/locator-contrast-fallback-v1/probe/manifest.json": "0c8ede9bac6bb4823db7742c86c02667bd399cb17526052d3850899e52d2cbf0"
+  }
+}

@@ -1,0 +1,1911 @@
+{
+  "status": "complete-not-integrated",
+  "runtimeCommit": "c000d30",
+  "scope": "Fixed prepared masks and nearest-edge-extended one-pixel translations. Fresh fitting, no saved cutting geometry. This is a repeated development diagnostic, not a photo or browser evaluation.",
+  "variants": "Use the existing image-error plus 0.005-per-cut objective for the low-cut finalist reservation instead of a raw-image-only 0.015 window. Preserve the three-slot count budget, top seed and any opposing-border reservation. Compare alone and with the 3.0-second clearance-comparison window.",
+  "cases": 6,
+  "repeats": 2,
+  "freshRuns": 36,
+  "sourceFilesVerified": 308,
+  "passes": {
+    "baseline": 8,
+    "score-reservation": 8,
+    "combined": 10
+  },
+  "rows": [
+    {
+      "case": "leaf-r1",
+      "variant": "baseline",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 9.318892750000002,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.0131625,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.01468125,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        3
+      ],
+      "comparisonCounts": [
+        3,
+        3
+      ],
+      "comparisonGeometry": true,
+      "comparisonPreferred": true
+    },
+    {
+      "case": "leaf-r1",
+      "variant": "score-reservation",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 9.209349083,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.0132875,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.014721875,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        3
+      ],
+      "comparisonCounts": [
+        3,
+        3
+      ],
+      "comparisonGeometry": true,
+      "comparisonPreferred": true
+    },
+    {
+      "case": "leaf-r1",
+      "variant": "combined",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 9.268997417000001,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.0132875,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.014721875,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        3
+      ],
+      "comparisonCounts": [
+        3,
+        3
+      ],
+      "comparisonGeometry": true,
+      "comparisonPreferred": true
+    },
+    {
+      "case": "leaf-x-plus-1-r1",
+      "variant": "baseline",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 9.492877792,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.0178875,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.0196265625,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        4,
+        5
+      ],
+      "comparisonCounts": [
+        3,
+        5
+      ],
+      "comparisonGeometry": true,
+      "comparisonPreferred": false
+    },
+    {
+      "case": "leaf-x-plus-1-r1",
+      "variant": "score-reservation",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 6.140485915999999,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.0123375,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.013828125,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        3
+      ],
+      "comparisonCounts": [
+        3,
+        3
+      ],
+      "comparisonGeometry": true,
+      "comparisonPreferred": true
+    },
+    {
+      "case": "leaf-x-plus-1-r1",
+      "variant": "combined",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 6.209072459,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.0123375,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.013828125,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        3
+      ],
+      "comparisonCounts": [
+        3,
+        3
+      ],
+      "comparisonGeometry": true,
+      "comparisonPreferred": true
+    },
+    {
+      "case": "leaf-x-minus-1-r1",
+      "variant": "baseline",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 8.674049707999998,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.01583125,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.0175484375,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        3
+      ],
+      "comparisonCounts": null,
+      "comparisonGeometry": null,
+      "comparisonPreferred": null
+    },
+    {
+      "case": "leaf-x-minus-1-r1",
+      "variant": "score-reservation",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 8.700967791,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.01583125,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.0175484375,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        3
+      ],
+      "comparisonCounts": null,
+      "comparisonGeometry": null,
+      "comparisonPreferred": null
+    },
+    {
+      "case": "leaf-x-minus-1-r1",
+      "variant": "combined",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 8.780946250000001,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.01583125,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.0175484375,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        3
+      ],
+      "comparisonCounts": null,
+      "comparisonGeometry": null,
+      "comparisonPreferred": null
+    },
+    {
+      "case": "leaf-y-plus-1-r1",
+      "variant": "baseline",
+      "passed": false,
+      "nativePrepareAndSolveSeconds": 8.885701833,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.04976875,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.050278125,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        5
+      ],
+      "comparisonCounts": null,
+      "comparisonGeometry": null,
+      "comparisonPreferred": null
+    },
+    {
+      "case": "leaf-y-plus-1-r1",
+      "variant": "score-reservation",
+      "passed": false,
+      "nativePrepareAndSolveSeconds": 8.864808459,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.04976875,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.050278125,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        5
+      ],
+      "comparisonCounts": null,
+      "comparisonGeometry": null,
+      "comparisonPreferred": null
+    },
+    {
+      "case": "leaf-y-plus-1-r1",
+      "variant": "combined",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 9.102302708,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.0127375,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.01430625,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        3
+      ],
+      "comparisonCounts": [
+        3,
+        3
+      ],
+      "comparisonGeometry": true,
+      "comparisonPreferred": true
+    },
+    {
+      "case": "leaf-y-minus-1-r1",
+      "variant": "baseline",
+      "passed": false,
+      "nativePrepareAndSolveSeconds": 9.081920416,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.049975,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.0504984375,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        5
+      ],
+      "comparisonCounts": [
+        4,
+        4
+      ],
+      "comparisonGeometry": true,
+      "comparisonPreferred": false
+    },
+    {
+      "case": "leaf-y-minus-1-r1",
+      "variant": "score-reservation",
+      "passed": false,
+      "nativePrepareAndSolveSeconds": 9.134468375,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.049975,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.0504984375,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        5
+      ],
+      "comparisonCounts": [
+        3,
+        3
+      ],
+      "comparisonGeometry": false,
+      "comparisonPreferred": false
+    },
+    {
+      "case": "leaf-y-minus-1-r1",
+      "variant": "combined",
+      "passed": false,
+      "nativePrepareAndSolveSeconds": 9.085209124999999,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.049975,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.0504984375,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        5
+      ],
+      "comparisonCounts": [
+        3,
+        3
+      ],
+      "comparisonGeometry": false,
+      "comparisonPreferred": false
+    },
+    {
+      "case": "outline-star-shift-r1",
+      "variant": "baseline",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 8.763904458,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.00756875,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.0091421875,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        3
+      ],
+      "comparisonCounts": null,
+      "comparisonGeometry": null,
+      "comparisonPreferred": null
+    },
+    {
+      "case": "outline-star-shift-r1",
+      "variant": "score-reservation",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 8.833492249999999,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.0076125,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.0092359375,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        3
+      ],
+      "comparisonCounts": null,
+      "comparisonGeometry": null,
+      "comparisonPreferred": null
+    },
+    {
+      "case": "outline-star-shift-r1",
+      "variant": "combined",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 8.829716083,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.00756875,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.0091421875,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        3
+      ],
+      "comparisonCounts": null,
+      "comparisonGeometry": null,
+      "comparisonPreferred": null
+    },
+    {
+      "case": "leaf-r2",
+      "variant": "combined",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 9.247997916000001,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.0132875,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.014721875,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        3
+      ],
+      "comparisonCounts": [
+        3,
+        3
+      ],
+      "comparisonGeometry": true,
+      "comparisonPreferred": true
+    },
+    {
+      "case": "leaf-r2",
+      "variant": "score-reservation",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 9.202435207999999,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.0132875,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.014721875,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        3
+      ],
+      "comparisonCounts": [
+        3,
+        3
+      ],
+      "comparisonGeometry": true,
+      "comparisonPreferred": true
+    },
+    {
+      "case": "leaf-r2",
+      "variant": "baseline",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 9.295655083000002,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.0132875,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.014721875,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        3
+      ],
+      "comparisonCounts": [
+        3,
+        3
+      ],
+      "comparisonGeometry": true,
+      "comparisonPreferred": true
+    },
+    {
+      "case": "leaf-x-plus-1-r2",
+      "variant": "combined",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 6.342979166999999,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.0123375,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.013828125,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        3
+      ],
+      "comparisonCounts": [
+        3,
+        3
+      ],
+      "comparisonGeometry": true,
+      "comparisonPreferred": true
+    },
+    {
+      "case": "leaf-x-plus-1-r2",
+      "variant": "score-reservation",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 6.104179083,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.0123375,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.013828125,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        3
+      ],
+      "comparisonCounts": [
+        3,
+        3
+      ],
+      "comparisonGeometry": true,
+      "comparisonPreferred": true
+    },
+    {
+      "case": "leaf-x-plus-1-r2",
+      "variant": "baseline",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 9.474121166,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.0178875,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.0196265625,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        4,
+        5
+      ],
+      "comparisonCounts": [
+        3,
+        5
+      ],
+      "comparisonGeometry": true,
+      "comparisonPreferred": false
+    },
+    {
+      "case": "leaf-x-minus-1-r2",
+      "variant": "combined",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 8.649950959,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.01586875,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.0176328125,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        3
+      ],
+      "comparisonCounts": null,
+      "comparisonGeometry": null,
+      "comparisonPreferred": null
+    },
+    {
+      "case": "leaf-x-minus-1-r2",
+      "variant": "score-reservation",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 8.68851225,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.01583125,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.0175484375,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        3
+      ],
+      "comparisonCounts": null,
+      "comparisonGeometry": null,
+      "comparisonPreferred": null
+    },
+    {
+      "case": "leaf-x-minus-1-r2",
+      "variant": "baseline",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 8.603665,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.01583125,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.0175484375,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        3
+      ],
+      "comparisonCounts": null,
+      "comparisonGeometry": null,
+      "comparisonPreferred": null
+    },
+    {
+      "case": "leaf-y-plus-1-r2",
+      "variant": "combined",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 9.072008375,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.0127375,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.01430625,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        3
+      ],
+      "comparisonCounts": [
+        3,
+        3
+      ],
+      "comparisonGeometry": true,
+      "comparisonPreferred": true
+    },
+    {
+      "case": "leaf-y-plus-1-r2",
+      "variant": "score-reservation",
+      "passed": false,
+      "nativePrepareAndSolveSeconds": 8.889165,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.04976875,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.050278125,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        5
+      ],
+      "comparisonCounts": null,
+      "comparisonGeometry": null,
+      "comparisonPreferred": null
+    },
+    {
+      "case": "leaf-y-plus-1-r2",
+      "variant": "baseline",
+      "passed": false,
+      "nativePrepareAndSolveSeconds": 8.867887208,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.04976875,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.050278125,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        5
+      ],
+      "comparisonCounts": null,
+      "comparisonGeometry": null,
+      "comparisonPreferred": null
+    },
+    {
+      "case": "leaf-y-minus-1-r2",
+      "variant": "combined",
+      "passed": false,
+      "nativePrepareAndSolveSeconds": 9.070564584,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.049975,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.0504984375,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        5
+      ],
+      "comparisonCounts": [
+        3,
+        3
+      ],
+      "comparisonGeometry": false,
+      "comparisonPreferred": false
+    },
+    {
+      "case": "leaf-y-minus-1-r2",
+      "variant": "score-reservation",
+      "passed": false,
+      "nativePrepareAndSolveSeconds": 9.129373916,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.049975,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.0504984375,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        5
+      ],
+      "comparisonCounts": [
+        3,
+        3
+      ],
+      "comparisonGeometry": false,
+      "comparisonPreferred": false
+    },
+    {
+      "case": "leaf-y-minus-1-r2",
+      "variant": "baseline",
+      "passed": false,
+      "nativePrepareAndSolveSeconds": 9.053695207999999,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.049975,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.0504984375,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        5
+      ],
+      "comparisonCounts": [
+        4,
+        4
+      ],
+      "comparisonGeometry": true,
+      "comparisonPreferred": false
+    },
+    {
+      "case": "outline-star-shift-r2",
+      "variant": "combined",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 8.834972667,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.00756875,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.0091421875,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        3
+      ],
+      "comparisonCounts": null,
+      "comparisonGeometry": null,
+      "comparisonPreferred": null
+    },
+    {
+      "case": "outline-star-shift-r2",
+      "variant": "score-reservation",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 8.762674208,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.00756875,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.0091421875,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        3
+      ],
+      "comparisonCounts": null,
+      "comparisonGeometry": null,
+      "comparisonPreferred": null
+    },
+    {
+      "case": "outline-star-shift-r2",
+      "variant": "baseline",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 8.799411625,
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.00756875,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.0091421875,
+          "featuresPassed": true
+        }
+      ],
+      "counts": [
+        3,
+        3
+      ],
+      "comparisonCounts": null,
+      "comparisonGeometry": null,
+      "comparisonPreferred": null
+    }
+  ],
+  "capture": {
+    "sourceFilesVerified": 105,
+    "inputMaskSha256": "8dc94d285d79edd22b62caeaead1667af6d837bfde7e8d8024e2e890e54831da",
+    "validation": {
+      "passed": false,
+      "issues": [
+        {
+          "type": "inter_slit_clearance",
+          "family": 0,
+          "slits": [
+            1,
+            2
+          ],
+          "distanceLower": 1.0734473436275662
+        }
+      ],
+      "finalGeometry": true,
+      "editorClearanceRequired": 1.5,
+      "nominalWidthRequired": 2.50501002004008,
+      "minimumInterSlitDistanceLower": 1.0734473436275662,
+      "minimumOuterSideClearance": 3.277775125777495,
+      "boundaryParityMatches": true,
+      "forwardSampleMismatchPixels": null,
+      "forwardBoundaryAmbiguousPixels": 0,
+      "forwardSampleResolution": 101,
+      "geometryTolerance": 0.01,
+      "sharedCurvesStoredOnce": true,
+      "physicalAssemblyTested": false,
+      "limitations": [
+        "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+        "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+        "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+        "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+      ]
+    },
+    "meaning": "Actual alternative geometry captured before rejection. It is an invalid initialization, not a usable or ground-truth template."
+  },
+  "boundedRefinement": {
+    "sourceFilesVerified": 81,
+    "rows": [
+      {
+        "milliseconds": 500,
+        "elapsed": 0.713505709,
+        "finerAuditSeconds": 0.20956287500000007,
+        "steps": 125,
+        "geometry": {
+          "passed": true,
+          "issues": [],
+          "finalGeometry": true,
+          "editorClearanceRequired": 1.5,
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 2.9039330077123515,
+          "minimumOuterSideClearance": 3.2678471206992725,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": null,
+          "forwardBoundaryAmbiguousPixels": 0,
+          "forwardSampleResolution": 101,
+          "geometryTolerance": 0.01,
+          "sharedCurvesStoredOnce": true,
+          "physicalAssemblyTested": false,
+          "limitations": [
+            "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+            "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+            "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+            "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+          ]
+        },
+        "initialPaper": {
+          "status": "uncertain",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658,
+          "families": [
+            {
+              "family": 0,
+              "status": "uncertain",
+              "detachedCertainCoreIslands": 5,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    20.66181683433819
+                  ],
+                  "certainCoreLength": 17.777777777777803,
+                  "possibleCoreLength": 18.61111111111114
+                },
+                {
+                  "interval": [
+                    20.66181683433819,
+                    24.096536182843057
+                  ],
+                  "certainCoreLength": 0.5555555555555556,
+                  "possibleCoreLength": 1.1111111111111112
+                },
+                {
+                  "interval": [
+                    24.096536182843057,
+                    35.420096757273356
+                  ],
+                  "certainCoreLength": 0,
+                  "possibleCoreLength": 6.3888888888888875
+                },
+                {
+                  "interval": [
+                    35.420096757273356,
+                    100
+                  ],
+                  "certainCoreLength": 36.111111111111185,
+                  "possibleCoreLength": 43.33333333333343
+                }
+              ]
+            },
+            {
+              "family": 1,
+              "status": "pass",
+              "detachedCertainCoreIslands": 0,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    15.52679385973062
+                  ],
+                  "certainCoreLength": 12.77777777777779,
+                  "possibleCoreLength": 13.333333333333346
+                },
+                {
+                  "interval": [
+                    15.52679385973062,
+                    71.70566471241543
+                  ],
+                  "certainCoreLength": 52.7777777777779,
+                  "possibleCoreLength": 53.611111111111235
+                },
+                {
+                  "interval": [
+                    71.70566471241543,
+                    80.15544591558053
+                  ],
+                  "certainCoreLength": 5.5555555555555545,
+                  "possibleCoreLength": 6.3888888888888875
+                },
+                {
+                  "interval": [
+                    80.15544591558053,
+                    100
+                  ],
+                  "certainCoreLength": 16.944444444444468,
+                  "possibleCoreLength": 17.777777777777803
+                }
+              ]
+            }
+          ],
+          "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+          "seconds": 0.05146454199999994,
+          "limitations": [
+            "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+            "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+            "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+            "Small tips and features below the explicitly stated area threshold are not certified."
+          ]
+        },
+        "paper": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.14285714285714285,
+          "clearanceGuard": 0.11101525445522108,
+          "families": [
+            {
+              "family": 0,
+              "status": "pass",
+              "detachedCertainCoreIslands": 0,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    20.66181683433819
+                  ],
+                  "certainCoreLength": 17.857142857142833,
+                  "possibleCoreLength": 18.428571428571402
+                },
+                {
+                  "interval": [
+                    20.66181683433819,
+                    24.096536182843057
+                  ],
+                  "certainCoreLength": 0.5714285714285714,
+                  "possibleCoreLength": 1.1428571428571426
+                },
+                {
+                  "interval": [
+                    24.096536182843057,
+                    35.420096757273356
+                  ],
+                  "certainCoreLength": 5.000000000000001,
+                  "possibleCoreLength": 6.142857142857147
+                },
+                {
+                  "interval": [
+                    35.420096757273356,
+                    100
+                  ],
+                  "certainCoreLength": 38.71428571428578,
+                  "possibleCoreLength": 42.714285714285865
+                }
+              ]
+            },
+            {
+              "family": 1,
+              "status": "pass",
+              "detachedCertainCoreIslands": 0,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    15.52679385973062
+                  ],
+                  "certainCoreLength": 12.714285714285706,
+                  "possibleCoreLength": 13.285714285714276
+                },
+                {
+                  "interval": [
+                    15.52679385973062,
+                    71.70566471241543
+                  ],
+                  "certainCoreLength": 53.00000000000037,
+                  "possibleCoreLength": 53.57142857142895
+                },
+                {
+                  "interval": [
+                    71.70566471241543,
+                    80.15544591558053
+                  ],
+                  "certainCoreLength": 5.571428571428574,
+                  "possibleCoreLength": 6.142857142857147
+                },
+                {
+                  "interval": [
+                    80.15544591558053,
+                    100
+                  ],
+                  "certainCoreLength": 16.99999999999998,
+                  "possibleCoreLength": 17.571428571428548
+                }
+              ]
+            }
+          ],
+          "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+          "seconds": 0.20955116700000007,
+          "limitations": [
+            "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+            "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+            "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+            "Small tips and features below the explicitly stated area threshold are not certified."
+          ]
+        },
+        "materialResolution": 700,
+        "sourceImageError": 0.0135625,
+        "scores": [
+          {
+            "resolution": 400,
+            "error": 0.01351875,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0149203125,
+            "featuresPassed": true
+          }
+        ],
+        "passed": true
+      },
+      {
+        "milliseconds": 1500,
+        "elapsed": 1.5704289160000002,
+        "finerAuditSeconds": 0.15200662500000045,
+        "steps": 430,
+        "geometry": {
+          "passed": true,
+          "issues": [],
+          "finalGeometry": true,
+          "editorClearanceRequired": 1.5,
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 3.1406273990052003,
+          "minimumOuterSideClearance": 3.2678471206992725,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": null,
+          "forwardBoundaryAmbiguousPixels": 0,
+          "forwardSampleResolution": 101,
+          "geometryTolerance": 0.01,
+          "sharedCurvesStoredOnce": true,
+          "physicalAssemblyTested": false,
+          "limitations": [
+            "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+            "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+            "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+            "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+          ]
+        },
+        "initialPaper": {
+          "status": "uncertain",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658,
+          "families": [
+            {
+              "family": 0,
+              "status": "uncertain",
+              "detachedCertainCoreIslands": 2,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    21.539660741209833
+                  ],
+                  "certainCoreLength": 18.61111111111114,
+                  "possibleCoreLength": 19.444444444444475
+                },
+                {
+                  "interval": [
+                    21.539660741209833,
+                    25.554553569629064
+                  ],
+                  "certainCoreLength": 0,
+                  "possibleCoreLength": 1.3888888888888888
+                },
+                {
+                  "interval": [
+                    25.554553569629064,
+                    36.71156734383133
+                  ],
+                  "certainCoreLength": 0,
+                  "possibleCoreLength": 6.944444444444443
+                },
+                {
+                  "interval": [
+                    36.71156734383133,
+                    100
+                  ],
+                  "certainCoreLength": 36.388888888888964,
+                  "possibleCoreLength": 43.33333333333343
+                }
+              ]
+            },
+            {
+              "family": 1,
+              "status": "pass",
+              "detachedCertainCoreIslands": 0,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    15.513563155992987
+                  ],
+                  "certainCoreLength": 12.77777777777779,
+                  "possibleCoreLength": 13.333333333333346
+                },
+                {
+                  "interval": [
+                    15.513563155992987,
+                    71.7058164933639
+                  ],
+                  "certainCoreLength": 52.7777777777779,
+                  "possibleCoreLength": 53.611111111111235
+                },
+                {
+                  "interval": [
+                    71.7058164933639,
+                    80.1259554108327
+                  ],
+                  "certainCoreLength": 5.5555555555555545,
+                  "possibleCoreLength": 6.3888888888888875
+                },
+                {
+                  "interval": [
+                    80.1259554108327,
+                    100
+                  ],
+                  "certainCoreLength": 16.944444444444468,
+                  "possibleCoreLength": 17.777777777777803
+                }
+              ]
+            }
+          ],
+          "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+          "seconds": 0.04317987500000026,
+          "limitations": [
+            "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+            "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+            "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+            "Small tips and features below the explicitly stated area threshold are not certified."
+          ]
+        },
+        "paper": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.14285714285714285,
+          "clearanceGuard": 0.11101525445522108,
+          "families": [
+            {
+              "family": 0,
+              "status": "pass",
+              "detachedCertainCoreIslands": 0,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    21.539660741209833
+                  ],
+                  "certainCoreLength": 18.714285714285687,
+                  "possibleCoreLength": 19.285714285714256
+                },
+                {
+                  "interval": [
+                    21.539660741209833,
+                    25.554553569629064
+                  ],
+                  "certainCoreLength": 0.7142857142857142,
+                  "possibleCoreLength": 1.2857142857142854
+                },
+                {
+                  "interval": [
+                    25.554553569629064,
+                    36.71156734383133
+                  ],
+                  "certainCoreLength": 6.0000000000000036,
+                  "possibleCoreLength": 6.857142857142863
+                },
+                {
+                  "interval": [
+                    36.71156734383133,
+                    100
+                  ],
+                  "certainCoreLength": 39.14285714285722,
+                  "possibleCoreLength": 43.000000000000156
+                }
+              ]
+            },
+            {
+              "family": 1,
+              "status": "pass",
+              "detachedCertainCoreIslands": 0,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    15.513563155992987
+                  ],
+                  "certainCoreLength": 12.714285714285706,
+                  "possibleCoreLength": 13.285714285714276
+                },
+                {
+                  "interval": [
+                    15.513563155992987,
+                    71.7058164933639
+                  ],
+                  "certainCoreLength": 53.00000000000037,
+                  "possibleCoreLength": 53.57142857142895
+                },
+                {
+                  "interval": [
+                    71.7058164933639,
+                    80.1259554108327
+                  ],
+                  "certainCoreLength": 5.571428571428574,
+                  "possibleCoreLength": 6.142857142857147
+                },
+                {
+                  "interval": [
+                    80.1259554108327,
+                    100
+                  ],
+                  "certainCoreLength": 17.14285714285712,
+                  "possibleCoreLength": 17.571428571428548
+                }
+              ]
+            }
+          ],
+          "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+          "seconds": 0.15199800000000005,
+          "limitations": [
+            "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+            "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+            "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+            "Small tips and features below the explicitly stated area threshold are not certified."
+          ]
+        },
+        "materialResolution": 700,
+        "sourceImageError": 0.00984375,
+        "scores": [
+          {
+            "resolution": 400,
+            "error": 0.00995,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.011371875,
+            "featuresPassed": true
+          }
+        ],
+        "passed": true
+      },
+      {
+        "milliseconds": 2500,
+        "elapsed": 2.2972579169999996,
+        "finerAuditSeconds": 0.15540683400000035,
+        "steps": 750,
+        "geometry": {
+          "passed": true,
+          "issues": [],
+          "finalGeometry": true,
+          "editorClearanceRequired": 1.5,
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 3.162210225911145,
+          "minimumOuterSideClearance": 3.2678471206992725,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": null,
+          "forwardBoundaryAmbiguousPixels": 0,
+          "forwardSampleResolution": 101,
+          "geometryTolerance": 0.01,
+          "sharedCurvesStoredOnce": true,
+          "physicalAssemblyTested": false,
+          "limitations": [
+            "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+            "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+            "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+            "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+          ]
+        },
+        "initialPaper": {
+          "status": "uncertain",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658,
+          "families": [
+            {
+              "family": 0,
+              "status": "uncertain",
+              "detachedCertainCoreIslands": 4,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    22.074578211954222
+                  ],
+                  "certainCoreLength": 19.166666666666696,
+                  "possibleCoreLength": 20.000000000000032
+                },
+                {
+                  "interval": [
+                    22.074578211954222,
+                    26.101811630707335
+                  ],
+                  "certainCoreLength": 0,
+                  "possibleCoreLength": 1.3888888888888888
+                },
+                {
+                  "interval": [
+                    26.101811630707335,
+                    37.30578589722297
+                  ],
+                  "certainCoreLength": 0,
+                  "possibleCoreLength": 7.499999999999998
+                },
+                {
+                  "interval": [
+                    37.30578589722297,
+                    100
+                  ],
+                  "certainCoreLength": 36.66666666666674,
+                  "possibleCoreLength": 43.33333333333343
+                }
+              ]
+            },
+            {
+              "family": 1,
+              "status": "pass",
+              "detachedCertainCoreIslands": 0,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    15.514047928911271
+                  ],
+                  "certainCoreLength": 12.77777777777779,
+                  "possibleCoreLength": 13.333333333333346
+                },
+                {
+                  "interval": [
+                    15.514047928911271,
+                    71.71465512198725
+                  ],
+                  "certainCoreLength": 52.7777777777779,
+                  "possibleCoreLength": 53.611111111111235
+                },
+                {
+                  "interval": [
+                    71.71465512198725,
+                    80.12864839671533
+                  ],
+                  "certainCoreLength": 5.5555555555555545,
+                  "possibleCoreLength": 6.3888888888888875
+                },
+                {
+                  "interval": [
+                    80.12864839671533,
+                    100
+                  ],
+                  "certainCoreLength": 16.944444444444468,
+                  "possibleCoreLength": 17.777777777777803
+                }
+              ]
+            }
+          ],
+          "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+          "seconds": 0.0441551670000008,
+          "limitations": [
+            "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+            "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+            "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+            "Small tips and features below the explicitly stated area threshold are not certified."
+          ]
+        },
+        "paper": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.14285714285714285,
+          "clearanceGuard": 0.11101525445522108,
+          "families": [
+            {
+              "family": 0,
+              "status": "pass",
+              "detachedCertainCoreIslands": 0,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    22.074578211954222
+                  ],
+                  "certainCoreLength": 19.285714285714256,
+                  "possibleCoreLength": 19.857142857142826
+                },
+                {
+                  "interval": [
+                    22.074578211954222,
+                    26.101811630707335
+                  ],
+                  "certainCoreLength": 0.7142857142857142,
+                  "possibleCoreLength": 1.2857142857142854
+                },
+                {
+                  "interval": [
+                    26.101811630707335,
+                    37.30578589722297
+                  ],
+                  "certainCoreLength": 6.5714285714285765,
+                  "possibleCoreLength": 7.285714285714293
+                },
+                {
+                  "interval": [
+                    37.30578589722297,
+                    100
+                  ],
+                  "certainCoreLength": 39.14285714285722,
+                  "possibleCoreLength": 42.85714285714301
+                }
+              ]
+            },
+            {
+              "family": 1,
+              "status": "pass",
+              "detachedCertainCoreIslands": 0,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    15.514047928911271
+                  ],
+                  "certainCoreLength": 12.714285714285706,
+                  "possibleCoreLength": 13.285714285714276
+                },
+                {
+                  "interval": [
+                    15.514047928911271,
+                    71.71465512198725
+                  ],
+                  "certainCoreLength": 53.00000000000037,
+                  "possibleCoreLength": 53.57142857142895
+                },
+                {
+                  "interval": [
+                    71.71465512198725,
+                    80.12864839671533
+                  ],
+                  "certainCoreLength": 5.571428571428574,
+                  "possibleCoreLength": 6.142857142857147
+                },
+                {
+                  "interval": [
+                    80.12864839671533,
+                    100
+                  ],
+                  "certainCoreLength": 17.14285714285712,
+                  "possibleCoreLength": 17.571428571428548
+                }
+              ]
+            }
+          ],
+          "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+          "seconds": 0.15539449999999944,
+          "limitations": [
+            "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+            "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+            "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+            "Small tips and features below the explicitly stated area threshold are not certified."
+          ]
+        },
+        "materialResolution": 700,
+        "sourceImageError": 0.0093625,
+        "scores": [
+          {
+            "resolution": 400,
+            "error": 0.00945,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.011071875,
+            "featuresPassed": true
+          }
+        ],
+        "passed": true
+      }
+    ],
+    "scope": "Fresh bounded refinement of an actual rejected clearance candidate, not a fresh full solve or editable SVG conversion. All original validation thresholds retained; uncertain paper receives the existing 700-pixel audit.",
+    "visualReview": "Reviewed the 500-ms and 1500-ms requested-window independent renders: the leaf silhouette and border are much closer than the failed 3+5 result; faint connector seams and irregular edges remain."
+  },
+  "artifactsSha256": {
+    "tmp/heart-learning/clearance-counts-v1/protocol.json": "00464b80ad829b3fcc0401e54088fedbaec658259d4fb99947d6b5fdee7181ef",
+    "tmp/heart-learning/clearance-counts-v1/checks.json": "d7a3b082736ce5f19322ae05929007fc9e7d54362fcc5b369184e97ae48e804a",
+    "tmp/heart-learning/clearance-counts-v1/running.json": "f529068c6d1886566ab577200054e10830c313c951f204f5f8e37d49c00904de",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-r1/baseline-10/measurement.json": "915ceadf0d276ef9e48dbc4406aeb4e338c9abc96753a169b067b4b6e0a8e24e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-r1/baseline-10/cut_geometry.json": "20d7893fa3d70da7cf7bfa2a157668759ec4298194698c39d7247e40afeeb8cd",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-r1/baseline-10/weave-400.png": "710b87b566f4ce7d1fe4206b0ebddaae685be3350de73028d800afb29aea0f86",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-r1/baseline-10/weave-800.png": "f9803c659f2c03dcfc9d2dd3551b173235738e14d2697ee8354e8ade02e4b627",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-r1/score-reservation-10/measurement.json": "3a67744e48f5dadc8506bc5d6e15d1ca940fabcfa9e08c7b88feb12baccafcd1",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-r1/score-reservation-10/cut_geometry.json": "d27407dfb5cc598e911b9dc61aff360e1fb22a27e148df76b16249d414cab9ea",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-r1/score-reservation-10/weave-400.png": "095a43e289ad263aecd6024b4c15659d219feb53dd9c5fa390b1fbfd9c1e928f",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-r1/score-reservation-10/weave-800.png": "958697153a84b2469c8eef4e89d176a1ecf44abc737d6c7f3342ee0808257254",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-r1/combined-10/measurement.json": "42a36a36bd82070babb940cee48295bf2f7e29c03516bf9d561f9a9d9d90aec8",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-r1/combined-10/cut_geometry.json": "d27407dfb5cc598e911b9dc61aff360e1fb22a27e148df76b16249d414cab9ea",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-r1/combined-10/weave-400.png": "095a43e289ad263aecd6024b4c15659d219feb53dd9c5fa390b1fbfd9c1e928f",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-r1/combined-10/weave-800.png": "958697153a84b2469c8eef4e89d176a1ecf44abc737d6c7f3342ee0808257254",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-plus-1-r1/baseline-10/measurement.json": "4c04abaae5ef9936b2afe920fbbdd7b49b9db22fdb64b6fb72f466b96e3f235f",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-plus-1-r1/baseline-10/cut_geometry.json": "1d2f2b89853ef9f572a3260c4ba843a22dfada0d949b0aa66d2544a616f845b2",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-plus-1-r1/baseline-10/weave-400.png": "fd70b5ae74852a9813f3e649eac852e5824f921ace626807dc27b66e5bbe9556",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-plus-1-r1/baseline-10/weave-800.png": "ba22a7760ecb1cd299c46b4b46dbbe3cbbfcdb382b2afdfb55c541d3bf37410e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-plus-1-r1/score-reservation-10/measurement.json": "ebccb7e87438bdc0c97f427146169568a3d8e24b19c94c0779401d15f2e1b054",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-plus-1-r1/score-reservation-10/cut_geometry.json": "999983a25933d35a6118f7e880afee1a1e0b6dc5afc3f989f29659dffd70181a",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-plus-1-r1/score-reservation-10/weave-400.png": "232e4b120fd3017d8b210a61f564251cd53cf78cdaa876b862c5720042be0c95",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-plus-1-r1/score-reservation-10/weave-800.png": "6da90983d22d4b03f564dda3a800e6f9e0abc9f99dd2dd123a905f899c279d24",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-plus-1-r1/combined-10/measurement.json": "118648f589d07ae050db524e289b4d6bc16b8867b759f7ee236e18b0971892ec",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-plus-1-r1/combined-10/cut_geometry.json": "999983a25933d35a6118f7e880afee1a1e0b6dc5afc3f989f29659dffd70181a",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-plus-1-r1/combined-10/weave-400.png": "232e4b120fd3017d8b210a61f564251cd53cf78cdaa876b862c5720042be0c95",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-plus-1-r1/combined-10/weave-800.png": "6da90983d22d4b03f564dda3a800e6f9e0abc9f99dd2dd123a905f899c279d24",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-minus-1-r1/baseline-10/measurement.json": "2e4ba9c66191f7dc255622f35419d2bf3b2e5565d54e590be1fdea5c7fb837f3",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-minus-1-r1/baseline-10/cut_geometry.json": "bbaa4f65222ba7081ab95543a737ac4795fbd7cd12598d2c918a43b59ca16b25",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-minus-1-r1/baseline-10/weave-400.png": "33cc8cd6fac67c479dc44821d16f9414fb5cdb9feb3864802d7de2de6a45dc88",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-minus-1-r1/baseline-10/weave-800.png": "5367800708b426a4604ba10500ca55342a8bf3631c276a9421b9db671c85110b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-minus-1-r1/score-reservation-10/measurement.json": "f13965cc0f004de6b468d4b76493f60ac04d0dfd946167cd833b98f83f255405",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-minus-1-r1/score-reservation-10/cut_geometry.json": "bbaa4f65222ba7081ab95543a737ac4795fbd7cd12598d2c918a43b59ca16b25",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-minus-1-r1/score-reservation-10/weave-400.png": "33cc8cd6fac67c479dc44821d16f9414fb5cdb9feb3864802d7de2de6a45dc88",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-minus-1-r1/score-reservation-10/weave-800.png": "5367800708b426a4604ba10500ca55342a8bf3631c276a9421b9db671c85110b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-minus-1-r1/combined-10/measurement.json": "b6f2f95a8965a5d08f3ef05d424cc770c2a5b988b855e0b6658ea52db1558db5",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-minus-1-r1/combined-10/cut_geometry.json": "bbaa4f65222ba7081ab95543a737ac4795fbd7cd12598d2c918a43b59ca16b25",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-minus-1-r1/combined-10/weave-400.png": "33cc8cd6fac67c479dc44821d16f9414fb5cdb9feb3864802d7de2de6a45dc88",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-minus-1-r1/combined-10/weave-800.png": "5367800708b426a4604ba10500ca55342a8bf3631c276a9421b9db671c85110b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-plus-1-r1/baseline-10/measurement.json": "40bdf2d3ef39a004968c4696b258df1b1a33fa9862ca45076df9262e63d2a923",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-plus-1-r1/baseline-10/cut_geometry.json": "c838abae7235913e5d8e64e80651663a5054aa7b511d3effaae28ae1e0fd7052",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-plus-1-r1/baseline-10/weave-400.png": "a73361d3782b484122386e0f8adc24ab11fb5c108c07e3c389b8d7eb8de81d98",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-plus-1-r1/baseline-10/weave-800.png": "6b27764913de84591161c1d2e53af82312a79e8d2ed83beb51836ef5d19f5ec1",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-plus-1-r1/score-reservation-10/measurement.json": "3d6c393a8c2c83ec354f29d5c6114728973cc49d067e89cc7d2691ea3db53144",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-plus-1-r1/score-reservation-10/cut_geometry.json": "c838abae7235913e5d8e64e80651663a5054aa7b511d3effaae28ae1e0fd7052",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-plus-1-r1/score-reservation-10/weave-400.png": "a73361d3782b484122386e0f8adc24ab11fb5c108c07e3c389b8d7eb8de81d98",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-plus-1-r1/score-reservation-10/weave-800.png": "6b27764913de84591161c1d2e53af82312a79e8d2ed83beb51836ef5d19f5ec1",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-plus-1-r1/combined-10/measurement.json": "f14216e1d7c2f4c79f1ce64d0a9e9ec3159424011b7f0b08456ebec7dc54034e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-plus-1-r1/combined-10/cut_geometry.json": "5a06d6de43a2217601e9b9215ebfe8d2093f0df36c2f26cbb555cea933a21317",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-plus-1-r1/combined-10/weave-400.png": "036907034462df773f44b1fb135061395e98c2bfd3d71a1c341a872759f25e00",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-plus-1-r1/combined-10/weave-800.png": "53d40ca1ff7e081520614a470536eff7dec25639020425ed8814872b0c934bed",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-minus-1-r1/baseline-10/measurement.json": "fa941a1d0b9de380b422ff61aec23b292c44d53e3bfd57c198058303ecca9eba",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-minus-1-r1/baseline-10/cut_geometry.json": "2d615b40ac1e7d1100ff9b2353c2f80367fa71be372c7ac6f79f19459b44d19c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-minus-1-r1/baseline-10/weave-400.png": "724e84aab7b5dd98864c860fb5df83687fd4a0f1fe52bb48695506d7d7e1a48c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-minus-1-r1/baseline-10/weave-800.png": "41747d28c065761e42e21456163e027a27966ebd24d302ef073db3970a55325d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-minus-1-r1/score-reservation-10/measurement.json": "a30a2257bfb771f922c7f4fb6260bf92e6396e6a443a8f10f967ee1897b7c3a2",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-minus-1-r1/score-reservation-10/cut_geometry.json": "2d615b40ac1e7d1100ff9b2353c2f80367fa71be372c7ac6f79f19459b44d19c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-minus-1-r1/score-reservation-10/weave-400.png": "724e84aab7b5dd98864c860fb5df83687fd4a0f1fe52bb48695506d7d7e1a48c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-minus-1-r1/score-reservation-10/weave-800.png": "41747d28c065761e42e21456163e027a27966ebd24d302ef073db3970a55325d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-minus-1-r1/combined-10/measurement.json": "f0f7f7b4e87a9bc99399f099d0fae334b41464593be957156e1933aca52cebcd",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-minus-1-r1/combined-10/cut_geometry.json": "2d615b40ac1e7d1100ff9b2353c2f80367fa71be372c7ac6f79f19459b44d19c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-minus-1-r1/combined-10/weave-400.png": "724e84aab7b5dd98864c860fb5df83687fd4a0f1fe52bb48695506d7d7e1a48c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-minus-1-r1/combined-10/weave-800.png": "41747d28c065761e42e21456163e027a27966ebd24d302ef073db3970a55325d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/outline-star-shift-r1/baseline-10/measurement.json": "2f89d2ed3550da4de851eede33795e88ea1d4f4689334fb712ebd0c39f39b023",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/outline-star-shift-r1/baseline-10/cut_geometry.json": "9e6da2fa44cc1c93b80e7a92e0c6e0592547576861a530d99cb3cd7b5602f54d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/outline-star-shift-r1/baseline-10/weave-400.png": "c0887fcfb5932bbc0c60b1e01d7ed815de528a72fb11deeb4723115b8ea85440",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/outline-star-shift-r1/baseline-10/weave-800.png": "b30b8cf8bc77df6299960a005fd8876a9eef845b564058fb595a8d62ac449b30",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/outline-star-shift-r1/score-reservation-10/measurement.json": "e30cd0929533da4215b4cfab10e619f6323698a6dff4e4188ca3d9d06663f1ae",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/outline-star-shift-r1/score-reservation-10/cut_geometry.json": "7b208a9a68e6f655393da6a6a6f68864b366fcf3945e8a87d062742dca248fab",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/outline-star-shift-r1/score-reservation-10/weave-400.png": "44a62aabe643627c720545b1895ece259f8eed073a83cc5494de9bec9df6fa0a",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/outline-star-shift-r1/score-reservation-10/weave-800.png": "231cad26370321f98ab9accca6bc8f126b1d9561f0701f80ad6aeeaf89073469",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/outline-star-shift-r1/combined-10/measurement.json": "c5f7f8a4c103b2a3f08342310688dc79ab530a13aa3617b50f1571e80d40d74f",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/outline-star-shift-r1/combined-10/cut_geometry.json": "9e6da2fa44cc1c93b80e7a92e0c6e0592547576861a530d99cb3cd7b5602f54d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/outline-star-shift-r1/combined-10/weave-400.png": "c0887fcfb5932bbc0c60b1e01d7ed815de528a72fb11deeb4723115b8ea85440",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/outline-star-shift-r1/combined-10/weave-800.png": "b30b8cf8bc77df6299960a005fd8876a9eef845b564058fb595a8d62ac449b30",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-r2/combined-10/measurement.json": "66fefd10c18226d4c6815f9ca8198bfb9272f83a08dbc577c142cf826f11b652",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-r2/combined-10/cut_geometry.json": "d27407dfb5cc598e911b9dc61aff360e1fb22a27e148df76b16249d414cab9ea",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-r2/combined-10/weave-400.png": "095a43e289ad263aecd6024b4c15659d219feb53dd9c5fa390b1fbfd9c1e928f",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-r2/combined-10/weave-800.png": "958697153a84b2469c8eef4e89d176a1ecf44abc737d6c7f3342ee0808257254",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-r2/score-reservation-10/measurement.json": "135cc7241d120045d52c61b116afed399e25c65229ce44d58f60c597b1694d65",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-r2/score-reservation-10/cut_geometry.json": "d27407dfb5cc598e911b9dc61aff360e1fb22a27e148df76b16249d414cab9ea",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-r2/score-reservation-10/weave-400.png": "095a43e289ad263aecd6024b4c15659d219feb53dd9c5fa390b1fbfd9c1e928f",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-r2/score-reservation-10/weave-800.png": "958697153a84b2469c8eef4e89d176a1ecf44abc737d6c7f3342ee0808257254",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-r2/baseline-10/measurement.json": "4f7a1da0dfc0c9934cedc2dd04721fcfd2756e86e509eabeaea9a231c98ca98e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-r2/baseline-10/cut_geometry.json": "d27407dfb5cc598e911b9dc61aff360e1fb22a27e148df76b16249d414cab9ea",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-r2/baseline-10/weave-400.png": "095a43e289ad263aecd6024b4c15659d219feb53dd9c5fa390b1fbfd9c1e928f",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-r2/baseline-10/weave-800.png": "958697153a84b2469c8eef4e89d176a1ecf44abc737d6c7f3342ee0808257254",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-plus-1-r2/combined-10/measurement.json": "0536daba4c316d99973793b9ba8d25b59534aeaa01abdf155eb1227d6829c417",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-plus-1-r2/combined-10/cut_geometry.json": "999983a25933d35a6118f7e880afee1a1e0b6dc5afc3f989f29659dffd70181a",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-plus-1-r2/combined-10/weave-400.png": "232e4b120fd3017d8b210a61f564251cd53cf78cdaa876b862c5720042be0c95",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-plus-1-r2/combined-10/weave-800.png": "6da90983d22d4b03f564dda3a800e6f9e0abc9f99dd2dd123a905f899c279d24",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-plus-1-r2/score-reservation-10/measurement.json": "4b31d2c1a6b6b569a60451e96f1c8003aa87929d084efea69966ca53a6bc0db6",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-plus-1-r2/score-reservation-10/cut_geometry.json": "999983a25933d35a6118f7e880afee1a1e0b6dc5afc3f989f29659dffd70181a",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-plus-1-r2/score-reservation-10/weave-400.png": "232e4b120fd3017d8b210a61f564251cd53cf78cdaa876b862c5720042be0c95",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-plus-1-r2/score-reservation-10/weave-800.png": "6da90983d22d4b03f564dda3a800e6f9e0abc9f99dd2dd123a905f899c279d24",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-plus-1-r2/baseline-10/measurement.json": "365a5417e11c7bae2090ecf19881406f231577f97b660e9da6510b17cff0bd33",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-plus-1-r2/baseline-10/cut_geometry.json": "1d2f2b89853ef9f572a3260c4ba843a22dfada0d949b0aa66d2544a616f845b2",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-plus-1-r2/baseline-10/weave-400.png": "fd70b5ae74852a9813f3e649eac852e5824f921ace626807dc27b66e5bbe9556",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-plus-1-r2/baseline-10/weave-800.png": "ba22a7760ecb1cd299c46b4b46dbbe3cbbfcdb382b2afdfb55c541d3bf37410e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-minus-1-r2/combined-10/measurement.json": "3a33f227000e2b2ccbd6730367b268d9ff67fa9112ac84e466c766baab6e5d78",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-minus-1-r2/combined-10/cut_geometry.json": "cd8aa9493b0ef873a2c80bc13a7efd3688d177ad32b766ae4d653ccb8bffdfae",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-minus-1-r2/combined-10/weave-400.png": "5b0afbc782e8fb48719e2fa92d9eb9c9582837a40bfb5b29793548af3a3f2d4d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-minus-1-r2/combined-10/weave-800.png": "bf4c5655997653a026cacdb6cacf4772c8fa0e87b1761ddc50c46af5a8f30721",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-minus-1-r2/score-reservation-10/measurement.json": "42f887f1c028f023d685be78ec3e919493c538786ac8b7c31950797f61b25e06",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-minus-1-r2/score-reservation-10/cut_geometry.json": "bbaa4f65222ba7081ab95543a737ac4795fbd7cd12598d2c918a43b59ca16b25",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-minus-1-r2/score-reservation-10/weave-400.png": "33cc8cd6fac67c479dc44821d16f9414fb5cdb9feb3864802d7de2de6a45dc88",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-minus-1-r2/score-reservation-10/weave-800.png": "5367800708b426a4604ba10500ca55342a8bf3631c276a9421b9db671c85110b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-minus-1-r2/baseline-10/measurement.json": "e99b94c6403f999dca7a7e07ad93f1019c1324cb1ee15bbc9c384ac7d3d7b251",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-minus-1-r2/baseline-10/cut_geometry.json": "bbaa4f65222ba7081ab95543a737ac4795fbd7cd12598d2c918a43b59ca16b25",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-minus-1-r2/baseline-10/weave-400.png": "33cc8cd6fac67c479dc44821d16f9414fb5cdb9feb3864802d7de2de6a45dc88",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-x-minus-1-r2/baseline-10/weave-800.png": "5367800708b426a4604ba10500ca55342a8bf3631c276a9421b9db671c85110b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-plus-1-r2/combined-10/measurement.json": "ecc4e9656b6f9e80bd63573b00cce9cef27546a0454f97a4df6a5df0f8510ee6",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-plus-1-r2/combined-10/cut_geometry.json": "5a06d6de43a2217601e9b9215ebfe8d2093f0df36c2f26cbb555cea933a21317",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-plus-1-r2/combined-10/weave-400.png": "036907034462df773f44b1fb135061395e98c2bfd3d71a1c341a872759f25e00",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-plus-1-r2/combined-10/weave-800.png": "53d40ca1ff7e081520614a470536eff7dec25639020425ed8814872b0c934bed",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-plus-1-r2/score-reservation-10/measurement.json": "56e9d514bae14420172695a2ce70479fbf80940e0be301ad2d6888f571e94e8f",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-plus-1-r2/score-reservation-10/cut_geometry.json": "c838abae7235913e5d8e64e80651663a5054aa7b511d3effaae28ae1e0fd7052",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-plus-1-r2/score-reservation-10/weave-400.png": "a73361d3782b484122386e0f8adc24ab11fb5c108c07e3c389b8d7eb8de81d98",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-plus-1-r2/score-reservation-10/weave-800.png": "6b27764913de84591161c1d2e53af82312a79e8d2ed83beb51836ef5d19f5ec1",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-plus-1-r2/baseline-10/measurement.json": "f3129a214137fc0846bd35aa7fe399b61b6c83d14f3d13149ce1f6ba45de82f1",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-plus-1-r2/baseline-10/cut_geometry.json": "c838abae7235913e5d8e64e80651663a5054aa7b511d3effaae28ae1e0fd7052",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-plus-1-r2/baseline-10/weave-400.png": "a73361d3782b484122386e0f8adc24ab11fb5c108c07e3c389b8d7eb8de81d98",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-plus-1-r2/baseline-10/weave-800.png": "6b27764913de84591161c1d2e53af82312a79e8d2ed83beb51836ef5d19f5ec1",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-minus-1-r2/combined-10/measurement.json": "597d9586817e0f546a1753ecbf632ad9deec8d8133f2fb4613f7fc6055fc2e27",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-minus-1-r2/combined-10/cut_geometry.json": "2d615b40ac1e7d1100ff9b2353c2f80367fa71be372c7ac6f79f19459b44d19c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-minus-1-r2/combined-10/weave-400.png": "724e84aab7b5dd98864c860fb5df83687fd4a0f1fe52bb48695506d7d7e1a48c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-minus-1-r2/combined-10/weave-800.png": "41747d28c065761e42e21456163e027a27966ebd24d302ef073db3970a55325d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-minus-1-r2/score-reservation-10/measurement.json": "7306a2316ec7575e99e600db2a2319a72ac4c187f5a0d28c5431ca2063005e38",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-minus-1-r2/score-reservation-10/cut_geometry.json": "2d615b40ac1e7d1100ff9b2353c2f80367fa71be372c7ac6f79f19459b44d19c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-minus-1-r2/score-reservation-10/weave-400.png": "724e84aab7b5dd98864c860fb5df83687fd4a0f1fe52bb48695506d7d7e1a48c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-minus-1-r2/score-reservation-10/weave-800.png": "41747d28c065761e42e21456163e027a27966ebd24d302ef073db3970a55325d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-minus-1-r2/baseline-10/measurement.json": "bc50cf9fb64534d46eb55f727e0216d9d7fa0752fefc488bc9c6a4aa63136a09",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-minus-1-r2/baseline-10/cut_geometry.json": "2d615b40ac1e7d1100ff9b2353c2f80367fa71be372c7ac6f79f19459b44d19c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-minus-1-r2/baseline-10/weave-400.png": "724e84aab7b5dd98864c860fb5df83687fd4a0f1fe52bb48695506d7d7e1a48c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/leaf-y-minus-1-r2/baseline-10/weave-800.png": "41747d28c065761e42e21456163e027a27966ebd24d302ef073db3970a55325d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/outline-star-shift-r2/combined-10/measurement.json": "c80bab14a9bb997c031c535e1ce0750dac00bfcdbfb5a398908c0de503a128a8",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/outline-star-shift-r2/combined-10/cut_geometry.json": "9e6da2fa44cc1c93b80e7a92e0c6e0592547576861a530d99cb3cd7b5602f54d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/outline-star-shift-r2/combined-10/weave-400.png": "c0887fcfb5932bbc0c60b1e01d7ed815de528a72fb11deeb4723115b8ea85440",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/outline-star-shift-r2/combined-10/weave-800.png": "b30b8cf8bc77df6299960a005fd8876a9eef845b564058fb595a8d62ac449b30",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/outline-star-shift-r2/score-reservation-10/measurement.json": "b4905c7237114ca359862b1f8ed177872edd6f36f5fb1a90a9c8740a209850d5",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/outline-star-shift-r2/score-reservation-10/cut_geometry.json": "9e6da2fa44cc1c93b80e7a92e0c6e0592547576861a530d99cb3cd7b5602f54d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/outline-star-shift-r2/score-reservation-10/weave-400.png": "c0887fcfb5932bbc0c60b1e01d7ed815de528a72fb11deeb4723115b8ea85440",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/outline-star-shift-r2/score-reservation-10/weave-800.png": "b30b8cf8bc77df6299960a005fd8876a9eef845b564058fb595a8d62ac449b30",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/outline-star-shift-r2/baseline-10/measurement.json": "5868ead6e65499445206b0e33d6b85d177124883d1b5b709aa70d54df65cf6ee",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/outline-star-shift-r2/baseline-10/cut_geometry.json": "9e6da2fa44cc1c93b80e7a92e0c6e0592547576861a530d99cb3cd7b5602f54d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/outline-star-shift-r2/baseline-10/weave-400.png": "c0887fcfb5932bbc0c60b1e01d7ed815de528a72fb11deeb4723115b8ea85440",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-counts-v1/runs/outline-star-shift-r2/baseline-10/weave-800.png": "b30b8cf8bc77df6299960a005fd8876a9eef845b564058fb595a8d62ac449b30",
+    "tmp/heart-learning/clearance-candidate-v1/runs/leaf-y-minus-1-r1/captured-10/measurement.json": "bf2df8faed6cc815159f08a7396ff05e1c7b34d02c66de400761d0b73cd3aa49",
+    "tmp/heart-learning/clearance-candidate-v1/protocol.json": "62a528a8eab037506f3b58cce83188a503a07ff4a74cc839cb08924c0632a4b7",
+    "tmp/heart-learning/clearance-candidate-v1/running.json": "ca16022521ba498a927dccbb35866de4053050d484d770b65728a9f76ffca468",
+    "tmp/heart-learning/clearance-candidate-v1/refine.mjs": "778fad7bbecbb9880ba148fc844b40ee973dc1b0fb5e1ab49f75b0ad689ee65f",
+    "tmp/heart-learning/clearance-candidate-v1/refinement/results.json": "f887087dc5f0a7dba6bb37a7b9c61bf332f7317a06fb06c023d8aedcba2a5569",
+    "tmp/heart-learning/clearance-candidate-v1/refinement/paper-700.json": "1bad0d625e9cf68dc251f79d7b2ca694e81c62cdde61074bcb53edd3ef2a0041",
+    "tmp/heart-learning/clearance-candidate-v1/reproduced/results.json": "27023bf8627429c9b904311f1f4f43bd6ce27e89f31fb41d7c063fb1e97c64c0",
+    "scripts/inverse/diagnostics/clearance-refinement-study.mjs": "6c4c1b3a3570c79d3a0c7a86cef49ea8958dd502ca3260de25d4c743c559408f",
+    "tmp/heart-learning/clearance-candidate-v1/reproduced/1500/weave-800.png": "08ec8d960b5a304693de81e9145fd28e3eeece391d3ef07eb32905f7ee766594",
+    "tmp/heart-learning/clearance-candidate-v1/reproduced/1500/cut_geometry.json": "e5cbe225e55d4a5e6000fea717b9282e721fa1b24b765b1e610e1fa574bc8129",
+    "tmp/heart-learning/clearance-candidate-v1/reproduced/1500/weave-400.png": "33ac2ef785ad65c4e06bbac9e466df7b96101f78f88d4de9868bfb3c35f82edc",
+    "tmp/heart-learning/clearance-candidate-v1/reproduced/500/weave-800.png": "f6c7b0956c2d9e89d8955a27cc70dc2fa33c1df9c8f5256f02dc2d07574dc457",
+    "tmp/heart-learning/clearance-candidate-v1/reproduced/500/cut_geometry.json": "765c4979aeb0c3b3bd4253eda11c40191aa7e5e0b69ca6f897424fd998da2e13",
+    "tmp/heart-learning/clearance-candidate-v1/reproduced/500/weave-400.png": "b73cff7629d8af564891750e231c1196e44d4e0e0322adf32ff3b7befaf9bbc6",
+    "tmp/heart-learning/clearance-candidate-v1/reproduced/2500/weave-800.png": "043d734ed79e7e800679a6869fd57c77e56a5bbfb24e70ded03a9bcde5d5cafd",
+    "tmp/heart-learning/clearance-candidate-v1/reproduced/2500/cut_geometry.json": "eed48699f54d18a6bc1d4e39bff5864727129f2a014a899ea2636a5b2af1898b",
+    "tmp/heart-learning/clearance-candidate-v1/reproduced/2500/weave-400.png": "0f7c12d5fdcb95b466316825179496349f84733868147121a05fb900620e9c2b"
+  },
+  "nextAction": "Try bounded repair of a promising rejected clearance initializer inside fresh fitting, carry its verified paper resolution forward, retain the old candidates, and recheck the complete photo/Hunodan/browser pipeline. No gate may accept an invalid or paper-uncertain output."
+}

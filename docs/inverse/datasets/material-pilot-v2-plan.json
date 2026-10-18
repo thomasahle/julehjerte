@@ -1,0 +1,76 @@
+{
+  "schema": "woven-heart-material-pilot-plan-1",
+  "scope": "Nine already inspected development photos, grouped by conservative visible motif families and inherited source/duplicate links. Not unseen evaluation or topology-disjoint training. No QA-reserved inputs, deployed model or all-data model.",
+  "sourceManifest": "docs/inverse/datasets/real-manifest.json",
+  "sourceManifestSha256": "149697fc7cdd535736dd8727bba7847bca10d74823a28bdfaf77c95c44a6ffb3",
+  "labelSources": [
+    {
+      "annotations": "scripts/inverse/datasets/real-materials-motifs.json",
+      "sha256": "5e439770d03347a528746a325ce995fb8f917d096fb480113fb45e4af97ec100",
+      "name": "real-materials-motifs"
+    },
+    {
+      "annotations": "scripts/inverse/datasets/real-materials-pinterest.json",
+      "sha256": "3a9d3bb965d0165dde196b72968af30c426802fa71429ca041c045b16c31137e",
+      "name": "real-materials-pinterest"
+    },
+    {
+      "annotations": "scripts/inverse/datasets/real-materials-printed.json",
+      "sha256": "96368a150b75fc0aa04aa03eda43293b094235cd2741abaa7a55bc4fab0feee2",
+      "name": "real-materials-printed"
+    },
+    {
+      "annotations": "scripts/inverse/datasets/real-materials.json",
+      "sha256": "fae5ef1cf8f1fbf4661776e05454da849be1dcada9f778d88e522d5d29773709",
+      "name": "real-materials"
+    }
+  ],
+  "initialRun": "tmp/heart-learning/foreground-scene-v1/scene-trained",
+  "initialReportSha256": "f3a71ff6de0cb0a00fe8db15051631d131b6cbd71bf607bd607acae5d101929c",
+  "initialCheckpointSha256": "3e94244975ee6641626b5b93c3948974bfa33609f461aae828e40bdf0a889fe6",
+  "groups": [
+    {
+      "id": "checker-family",
+      "members": [
+        "real-cf2d0fcff65d7386-body-1",
+        "real-cdae5c890b6933cd-body-1",
+        "real-68d8f25d8891df62-body-1",
+        "real-995899fe049540ed-body-1",
+        "real-b87b0b19f12724f3-body-1"
+      ],
+      "reason": "Keep regular, decorative, printed and bowed checker variants together despite different photographs and counts."
+    },
+    {
+      "id": "framed-motif-family",
+      "members": [
+        "real-2044b1d98ed6f262-body-1",
+        "real-3f7b76e1a98e808f-body-1",
+        "real-45744a03afddccb1-body-1",
+        "real-8c875dd0f298b5a4-body-1"
+      ],
+      "reason": "Conservatively keep star, small hearts, boar and rabbit inside surrounding frames/grids together; these are not independent topology families."
+    }
+  ],
+  "protocol": {
+    "updates": 240,
+    "seed": 20261015,
+    "batchSize": 4,
+    "realPerMixedBatch": 2,
+    "learningRate": 0.001,
+    "weightDecay": 0.0001,
+    "syntheticReplayGeometries": 32,
+    "device": "cpu",
+    "threads": 2,
+    "encoder": "Freeze parameters AND BatchNorm statistics; train existing decoder and neutral new material head.",
+    "comparison": "Synthetic-only control plus one mixed real/synthetic run per complete connected source/motif group; identical initial model, draw schedule and updates.",
+    "selection": "Fixed final update; no held-out checkpoint selection or tuning.",
+    "metric": "Body and globally exchangeable A/B identities, including missing-body joint errors and balanced per-material errors.",
+    "trainingTarget": "Undegraded fractional synthetic paper coverage; ignore only two-pixel outer body band for material labels, preserve all body supervision."
+  },
+  "followup": {
+    "reason": "The first setup barely learned the material task even on its exact synthetic training replay. At identical 240 updates, rates .001 and .003 reduce synthetic training material disagreement from 48.24% to 4.09% and 3.63%.",
+    "selection": "Use the smaller tested rate that learns the synthetic training task while retaining body IoU above 95%. Real-photo predictions from these new rate-study models have not been scored or used to select this rate. This is a development follow-up, not an unseen test.",
+    "rateStudyReportSha256": "4aaef2331561e4522f37451248002a8c91a8cd4e6d56258eb3aefa3065deaac1",
+    "firstPilotReportSha256": "83d8ee7b4ed1b7c86307809021f8f077e16646ea672dbf36430fad31f904423e"
+  }
+}

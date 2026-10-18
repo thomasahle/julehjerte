@@ -1,14 +1,16 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { assert, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createMask, MASK_SIZE, type Mask } from '$lib/paint/mask';
 import { insideCell } from '$lib/paint/frame';
 import { symmetrize } from '$lib/paint/symmetry';
 import {
 	ADVANCED_LIMITS,
 	clampAdvanced,
+	defaultAdvanced,
 	ENGINE_SYMMETRY,
 	engineSymmetry,
 	frameWeights,
 	maskPrepareSettings,
+	maskToArtwork,
 	maskToPixels,
 	solveSettings,
 	type ImportSettings
@@ -28,10 +30,10 @@ const NO_SYMMETRY = { curve: 'off', lobe: 'off', lobes: 'off' } as const;
 
 /**
  * Send a mask to the engine exactly as `prepareMask` does, and read back the
- * cells it classified.
+ * cells it received, without a colour-classification round trip.
  */
 function roundTrip(mask: Mask, colors = COLORS): Uint8Array {
-	const { preview } = prepare(maskToPixels(mask, colors), maskPrepareSettings(colors));
+	const { preview } = prepare(maskToArtwork(mask), maskPrepareSettings(colors));
 	expect(preview.resolution).toBe(mask.size);
 	return preview.mask;
 }
@@ -51,10 +53,19 @@ function scribble(): Mask {
 	return mask;
 }
 
+// Compare complete typed buffers without treating every pixel as an object
+// property. Keep exact equality at the production 400² resolution.
+function expectSameBuffer(actual: Uint8Array | Float64Array, expected: Uint8Array | Float64Array) {
+	expect(actual.constructor).toBe(expected.constructor);
+	expect(actual.length).toBe(expected.length);
+	const different = actual.findIndex((value, index) => !Object.is(value, expected[index]));
+	expect(different, `First differing sample: ${different}`).toBe(-1);
+}
+
 describe('the mask round trip', () => {
 	it('comes back from prepare cell for cell', () => {
 		const mask = scribble();
-		expect(roundTrip(mask)).toEqual(mask.data);
+		expectSameBuffer(roundTrip(mask), mask.data);
 	});
 
 	it('survives a symmetric mask too, which takes the engine down another road', () => {
@@ -64,7 +75,7 @@ describe('the mask round trip', () => {
 		// either way, and this is what says so.
 		const mask = scribble();
 		symmetrize(mask, ['transpose', 'mirrorX', 'mirrorY']);
-		expect(roundTrip(mask)).toEqual(mask.data);
+		expectSameBuffer(roundTrip(mask), mask.data);
 	});
 
 	it('paints 1 in the right lobe colour and 0 in the left', () => {
@@ -80,14 +91,14 @@ describe('the mask round trip', () => {
 	it('keeps the mapping when the visitor picks other paper', () => {
 		const colors = { left: '#0b3d0b', right: '#f5c542' };
 		const mask = scribble();
-		expect(roundTrip(mask, colors)).toEqual(mask.data);
+		expectSameBuffer(roundTrip(mask, colors), mask.data);
 	});
 
 	it('falls back to the site paper for a colour the engine would refuse', () => {
 		// The colour store still holds its default red as `rgb(185, 19, 19)`, and
 		// the engine takes `#rrggbb` only.
 		const mask = scribble();
-		expect(roundTrip(mask, { left: '#ffffff', right: 'rgb(185, 19, 19)' })).toEqual(mask.data);
+		expectSameBuffer(roundTrip(mask, { left: '#ffffff', right: 'rgb(185, 19, 19)' }), mask.data);
 	});
 
 	it('sends the swatches right colour first, which is what makes 1 the right lobe', () => {
@@ -123,12 +134,23 @@ describe('the settings a search is run with', () => {
 		expect(engineSettings(on)).not.toHaveProperty('identicalSheets');
 	});
 
-	it('follows Mellem lapper: Sym when the visitor has not touched the checkbox', () => {
+	it('prefers matching sheets without requiring or adding mask symmetry', () => {
 		const sym = solveSettings({ colors: COLORS, symmetry: { ...NO_SYMMETRY, lobes: 'sym' } });
 		expect(sym.preferMatchingSheets).toBe(true);
-		expect(solveSettings({ colors: COLORS, symmetry: NO_SYMMETRY }).preferMatchingSheets).toBe(
-			false
-		);
+		const independent = engineSettings(solveSettings({ colors: COLORS, symmetry: NO_SYMMETRY }));
+		expect(independent.preferMatchingSheets).toBe(true);
+		expect(independent.symmetry).toMatchObject({ transpose: false });
+		expect(independent.matchingErrorAllowance).toBe(0.01);
+		expect(defaultAdvanced().matchingSheets).toBe(true);
+	});
+
+	it('keeps forced symmetry separate from the optional matching preference', () => {
+		const forced = engineSettings(solveSettings({ colors: COLORS, symmetry: { ...NO_SYMMETRY, lobes: 'sym' }, matchingSheets: false }));
+		expect(forced.symmetry).toMatchObject({ transpose: true });
+		expect(forced.preferMatchingSheets).toBe(true);
+		const anti = engineSettings(solveSettings({ colors: COLORS, symmetry: { ...NO_SYMMETRY, lobes: 'anti' } }));
+		expect(anti.symmetry).toMatchObject({ antiTranspose: true });
+		expect(anti.preferMatchingSheets).toBe(false);
 	});
 
 	it('survives the engine’s own settings(), which drops what it does not know', () => {
@@ -141,6 +163,7 @@ describe('the settings a search is run with', () => {
 		expect(cfg.preferMatchingSheets).toBe(false);
 		expect(cfg.width).toBe(100);
 		expect(cfg.minWidth).toBe(2);
+		expect(cfg.progressGeometry).toBe(true);
 	});
 
 	it('clamps the two Avanceret numbers instead of letting the engine throw', () => {
@@ -416,13 +439,29 @@ describe('frameWeights', () => {
 		expect([...weights].every((w) => w === 1)).toBe(true);
 	});
 
-	it('is not sent to the engine yet, because the engine cannot read it', () => {
-		// PAINT.md §11 and docs/inverse/MOTIF-BORDER.md: the fitter's loss has no
-		// per-cell weight, and a neutral 0.5 probability is not the same as an
-		// ignored cell. Until Codex's lane lands, a free band travels as
-		// `substituteCheckerBand`'s woven pattern instead — so no key of the solve
-		// settings may carry weights, or a reader would think the engine honours them.
-		const sent = solveSettings({ colors: COLORS, symmetry: NO_SYMMETRY });
-		expect(Object.keys(sent).some((key) => /weight/i.test(key))).toBe(false);
+	it('travels with the exact original mask into the public engine', () => {
+		const mask = scribble();
+		const input = maskToArtwork(mask, FREE);
+		const { preview, target } = prepare(input, maskPrepareSettings(COLORS));
+		assert(preview.weights);
+		assert(target.sourceImage.weights);
+		expectSameBuffer(preview.mask, mask.data);
+		expectSameBuffer(preview.weights, Float64Array.from(frameWeights(mask, FREE)));
+		expectSameBuffer(target.sourceImage.weights, preview.weights);
+		// Owning the input prevents a brush stroke during queued preparation from
+		// changing which drawing the weights describe.
+		mask.data.fill(0);
+		expectSameBuffer(input.mask, preview.mask);
+		expect(input.mask.some(Boolean)).toBe(true);
+	});
+
+	it('keeps fixed masks unweighted, at their own pixel resolution', () => {
+		const mask = createMask(0, 64);
+		mask.data[20 * 64 + 31] = 1;
+		const input = maskToArtwork(mask, { ...FREE, mode: 'fixed' });
+		expect(input.weights).toBeUndefined();
+		const { preview } = prepare(input, maskPrepareSettings(COLORS));
+		expect(preview.resolution).toBe(64);
+		expectSameBuffer(preview.mask, mask.data);
 	});
 });

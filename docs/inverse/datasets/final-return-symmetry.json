@@ -1,0 +1,1216 @@
+{
+  "scope": "Final repair of frozen outputs, preserving the original masks and constraints. No fresh fitting, browser latency or physical assembly claim. The application is unchanged.",
+  "summary": {
+    "savedOutputs": 51,
+    "originallyAccepted": 47,
+    "geometryRepresentations": 408,
+    "geometryRepresentationsPassed": 408,
+    "changed": [
+      "hunodan/hjfig-05",
+      "photos/gift"
+    ],
+    "unchangedOutputs": 49,
+    "existingIdenticalPairsRetained": 2,
+    "maskErrorsIncreased": 0,
+    "previousSelectedRepairs": "Geometry objects match the earlier independently audited actual SVG exports exactly."
+  },
+  "symmetryDiagnosis": {
+    "before": [
+      {
+        "name": "matching",
+        "before": {
+          "requested": [],
+          "honoured": [],
+          "maxDeviationMm": null
+        },
+        "after": {
+          "requested": [],
+          "honoured": [],
+          "maxDeviationMm": null
+        },
+        "matching": {
+          "identical": false,
+          "rmsTemplateDifferenceMm": 0.006865719839374693,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates."
+        },
+        "fixedPreserved": true
+      },
+      {
+        "name": "matching-pinned-control",
+        "before": {
+          "requested": [],
+          "honoured": [],
+          "maxDeviationMm": null
+        },
+        "after": {
+          "requested": [],
+          "honoured": [],
+          "maxDeviationMm": null
+        },
+        "matching": {
+          "identical": false,
+          "rmsTemplateDifferenceMm": 0.006865719839374693,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates."
+        },
+        "fixedPreserved": true
+      },
+      {
+        "name": "withinCurve-sym",
+        "before": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 1.4210854715202004e-14
+        },
+        "after": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [],
+          "maxDeviationMm": 0.005300848760228405
+        },
+        "matching": {
+          "identical": false,
+          "rmsTemplateDifferenceMm": 29.90601489564868,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates."
+        },
+        "fixedPreserved": true
+      },
+      {
+        "name": "withinCurve-anti",
+        "before": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 1.4210854715202004e-14
+        },
+        "after": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [],
+          "maxDeviationMm": 0.029062997898047414
+        },
+        "matching": {
+          "identical": false,
+          "rmsTemplateDifferenceMm": 30.01614925527983,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates."
+        },
+        "fixedPreserved": true
+      },
+      {
+        "name": "transpose",
+        "before": {
+          "requested": [
+            "transpose"
+          ],
+          "honoured": [
+            "transpose"
+          ],
+          "maxDeviationMm": 0
+        },
+        "after": {
+          "requested": [
+            "transpose"
+          ],
+          "honoured": [],
+          "maxDeviationMm": 0.017055309547290138
+        },
+        "matching": {
+          "identical": false,
+          "rmsTemplateDifferenceMm": 0.006865719839374693,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates."
+        },
+        "fixedPreserved": true
+      },
+      {
+        "name": "antiTranspose",
+        "before": {
+          "requested": [
+            "antiTranspose"
+          ],
+          "honoured": [
+            "antiTranspose"
+          ],
+          "maxDeviationMm": 0
+        },
+        "after": {
+          "requested": [
+            "antiTranspose"
+          ],
+          "honoured": [],
+          "maxDeviationMm": 0.010512766854951222
+        },
+        "matching": {
+          "identical": false,
+          "rmsTemplateDifferenceMm": 0.5922217796737511,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates."
+        },
+        "fixedPreserved": true
+      },
+      {
+        "name": "mirrorX",
+        "before": {
+          "requested": [
+            "mirrorX"
+          ],
+          "honoured": [
+            "mirrorX"
+          ],
+          "maxDeviationMm": 1.4210854715202004e-14
+        },
+        "after": {
+          "requested": [
+            "mirrorX"
+          ],
+          "honoured": [],
+          "maxDeviationMm": 0.029089909829118462
+        },
+        "matching": {
+          "identical": false,
+          "rmsTemplateDifferenceMm": null
+        },
+        "fixedPreserved": true
+      },
+      {
+        "name": "rotate180",
+        "before": {
+          "requested": [
+            "rotate180"
+          ],
+          "honoured": [
+            "rotate180"
+          ],
+          "maxDeviationMm": 0
+        },
+        "after": {
+          "requested": [
+            "rotate180"
+          ],
+          "honoured": [],
+          "maxDeviationMm": 0.02903961983093359
+        },
+        "matching": {
+          "identical": false,
+          "rmsTemplateDifferenceMm": 10.10227851541301,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates."
+        },
+        "fixedPreserved": true
+      }
+    ],
+    "prototypeAfter": [
+      {
+        "name": "matching",
+        "before": {
+          "requested": [],
+          "honoured": [],
+          "maxDeviationMm": null
+        },
+        "after": {
+          "requested": [],
+          "honoured": [],
+          "maxDeviationMm": null
+        },
+        "matching": {
+          "identical": true,
+          "rmsTemplateDifferenceMm": 0,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates."
+        },
+        "fixedPreserved": true
+      },
+      {
+        "name": "matching-pinned-control",
+        "before": {
+          "requested": [],
+          "honoured": [],
+          "maxDeviationMm": null
+        },
+        "after": {
+          "requested": [],
+          "honoured": [],
+          "maxDeviationMm": null
+        },
+        "matching": {
+          "identical": true,
+          "rmsTemplateDifferenceMm": 0,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates."
+        },
+        "fixedPreserved": true
+      },
+      {
+        "name": "withinCurve-sym",
+        "before": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 1.4210854715202004e-14
+        },
+        "after": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 0
+        },
+        "matching": {
+          "identical": false,
+          "rmsTemplateDifferenceMm": 29.906032541782025,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates."
+        },
+        "fixedPreserved": true
+      },
+      {
+        "name": "withinCurve-anti",
+        "before": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 1.4210854715202004e-14
+        },
+        "after": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 3.552713678800501e-15
+        },
+        "matching": {
+          "identical": false,
+          "rmsTemplateDifferenceMm": 30.018664724136297,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates."
+        },
+        "fixedPreserved": true
+      },
+      {
+        "name": "transpose",
+        "before": {
+          "requested": [
+            "transpose"
+          ],
+          "honoured": [
+            "transpose"
+          ],
+          "maxDeviationMm": 0
+        },
+        "after": {
+          "requested": [
+            "transpose"
+          ],
+          "honoured": [
+            "transpose"
+          ],
+          "maxDeviationMm": 0
+        },
+        "matching": {
+          "identical": true,
+          "rmsTemplateDifferenceMm": 0,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates."
+        },
+        "fixedPreserved": true
+      },
+      {
+        "name": "antiTranspose",
+        "before": {
+          "requested": [
+            "antiTranspose"
+          ],
+          "honoured": [
+            "antiTranspose"
+          ],
+          "maxDeviationMm": 0
+        },
+        "after": {
+          "requested": [
+            "antiTranspose"
+          ],
+          "honoured": [
+            "antiTranspose"
+          ],
+          "maxDeviationMm": 0
+        },
+        "matching": {
+          "identical": false,
+          "rmsTemplateDifferenceMm": 0.5931470244292465,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates."
+        },
+        "fixedPreserved": true
+      },
+      {
+        "name": "mirrorX",
+        "before": {
+          "requested": [
+            "mirrorX"
+          ],
+          "honoured": [
+            "mirrorX"
+          ],
+          "maxDeviationMm": 1.4210854715202004e-14
+        },
+        "after": {
+          "requested": [
+            "mirrorX"
+          ],
+          "honoured": [
+            "mirrorX"
+          ],
+          "maxDeviationMm": 0
+        },
+        "matching": {
+          "identical": false,
+          "rmsTemplateDifferenceMm": null
+        },
+        "fixedPreserved": true
+      },
+      {
+        "name": "rotate180",
+        "before": {
+          "requested": [
+            "rotate180"
+          ],
+          "honoured": [
+            "rotate180"
+          ],
+          "maxDeviationMm": 0
+        },
+        "after": {
+          "requested": [
+            "rotate180"
+          ],
+          "honoured": [
+            "rotate180"
+          ],
+          "maxDeviationMm": 0
+        },
+        "matching": {
+          "identical": false,
+          "rmsTemplateDifferenceMm": 10.103833025411122,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates."
+        },
+        "fixedPreserved": true
+      }
+    ],
+    "regression": "The committed test extends these eight probes to eleven cases, including mirrorY and both within-curve modes combined with transpose. All eight focused tests pass.",
+    "intermediateFailure": "The first constrained implementation passed geometric symmetry but changed a pinned +0 to -0 after antiTranspose. Restoring original pinned scalar values resolves the strict identity test without relaxing it."
+  },
+  "rows": [
+    {
+      "name": "hunodan/hjcur-01",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "049b9ebeddc1110704836a415214288788c8494bd69914e99140e1c6a00e499a",
+      "sourceMaskSha256": "0c353c2947b1c0c208329e0f02516f0d862a24568cc4a256c7ee197f9f2e3652",
+      "changed": false,
+      "errorBefore": 0.005148444444444444,
+      "errorAfter": 0.005148444444444444,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "hunodan/hjcur-02",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "b6dec1adec3bcf53ef9122c6d6095f9c30ff233e7ef358b73502f7b739327cc8",
+      "sourceMaskSha256": "b60053193f087f4941ce271733f461545ad288b4e6035a082e115e5a6e2ea5ee",
+      "changed": false,
+      "errorBefore": 0.005219555555555555,
+      "errorAfter": 0.005219555555555555,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "hunodan/hjcur-03",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "ad97a002943d8e2647c3b8d9f4b9c7d0f6f1ee10dd5db85238f2366dd6ca91c3",
+      "sourceMaskSha256": "4bd5c786bc18bce8e63dfb32477b6102a70772df54e7ab044d73d408c6e12491",
+      "changed": false,
+      "errorBefore": 0.004522666666666667,
+      "errorAfter": 0.004522666666666667,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "hunodan/hjcur-04",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "a525041d65f090550c374aa1d58e5b9a22afbeaaa8d21f397e32ed8cd26ae022",
+      "sourceMaskSha256": "b4b1860ee97b85952db95f12d7564c4fcc15e0fc6b087f055647b1a0beaad8d0",
+      "changed": false,
+      "errorBefore": 0.005639111111111111,
+      "errorAfter": 0.005639111111111111,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "hunodan/hjcur-05",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "1b3822492ae13f4b6f73bc67284ce4eb568f292cb87b092b80be053e914817f7",
+      "sourceMaskSha256": "0abad3d8448af96175b8bdbf5262704c3ec473972fd5692b890fb9a1d8348fcd",
+      "changed": false,
+      "errorBefore": 0.009436444444444445,
+      "errorAfter": 0.009436444444444445,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "hunodan/hjfig-01",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "d7ad5e34490ec434df08448000f24ff0cba34e62923d67eef6ddf2a13a640983",
+      "sourceMaskSha256": "23c72e2e81092030ab011d44ebb0a16fd817c4f3c18752309107b3cb39fa16f1",
+      "changed": false,
+      "errorBefore": 0.009799111111111111,
+      "errorAfter": 0.009799111111111111,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "hunodan/hjfig-02",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "bc90373c69a2bcc1236d56643df72e3c3e205aea3d3a4b8f2b93c88ec187be88",
+      "sourceMaskSha256": "98ca65ea6036e431465e6b0f06b657404bcab1ae50121ca6f99f775b6aa16a72",
+      "changed": false,
+      "errorBefore": 0.013340444444444445,
+      "errorAfter": 0.013340444444444445,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": true,
+      "attempts": []
+    },
+    {
+      "name": "hunodan/hjfig-03",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "ce50b811ccfc67a307097b3d058c6d6ab6e47fbd1da7bf87584b6cda6cdaf8f6",
+      "sourceMaskSha256": "b4fe6ade0ea499a152ef0405fed274e29eba30414f2072b8cbc8009d5ff6d4a2",
+      "changed": false,
+      "errorBefore": 0.006634666666666666,
+      "errorAfter": 0.006634666666666666,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "hunodan/hjfig-04",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "16695deef171fd7b1f248ef452407bbbcc4a0c65aeabdfbb6038ef5c56117db7",
+      "sourceMaskSha256": "50c4281fb3b6455a51366c3c9c334a352a6bcb3fc22ab37a65cfc02fccabe01e",
+      "changed": false,
+      "errorBefore": 0.013824,
+      "errorAfter": 0.013824,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": true,
+      "attempts": []
+    },
+    {
+      "name": "hunodan/hjfig-05",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "2701e521e2279a469101261ad62c8757aa3c4f2509a17e5ade6b015bf1915196",
+      "sourceMaskSha256": "399c96a211658a3f5661cb2606dddb44be18663c65299026512a1c0d0322f8d0",
+      "changed": true,
+      "errorBefore": 0.009042960667083447,
+      "errorAfter": 0.009042960667083447,
+      "geometryPassed": true,
+      "initialGeometryPassed": false,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": [
+        {
+          "hiddenOnly": true,
+          "milliseconds": 236.63816700000007,
+          "accepted": true,
+          "gates": {
+            "fixedPreserved": true,
+            "symmetryPreserved": true,
+            "matchingPreserved": true,
+            "imageNotWorse": true,
+            "paper": true,
+            "features": true,
+            "geometry": true
+          },
+          "maximumCoordinateMovement": 1.5533577133517795
+        }
+      ]
+    },
+    {
+      "name": "hunodan/hjfla-01",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "2adb545bc28461e7756f84b13f7b7470b9ae477659d6c862afc5b1c0b47a4073",
+      "sourceMaskSha256": "6e9b8ca749f1bada0bd7f7598a33bc632ddc6ccabd3932dde3126ff6a69f5b5a",
+      "changed": false,
+      "errorBefore": 0.012166341145833334,
+      "errorAfter": 0.012166341145833334,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "hunodan/hjhih-01",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "df9facec711075be91afcf6f2ddf537842a1724fcd44ef1f68cdb0703d5f2c68",
+      "sourceMaskSha256": "3cc18836292c583b8703b23f8dff17d8a151b3faf5b90bc2da9dcc021a687571",
+      "changed": false,
+      "errorBefore": 0.006040430615586996,
+      "errorAfter": 0.006040430615586996,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "hunodan/hjhih-02",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "25db88ee2ae032dd7f5aaa85fe1a897b585797aa10fbdf37af94d73e24a81f2a",
+      "sourceMaskSha256": "2df61062535cc40df05c655e9f42565c712e9f2c76514c73edf464c304020c75",
+      "changed": false,
+      "errorBefore": 0.003899406226779104,
+      "errorAfter": 0.003899406226779104,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "hunodan/hjhih-04",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "8c34f52f04b01a4ba97e7e20eae725dfe423f2ef7eb1b1b8154c749e63d220d6",
+      "sourceMaskSha256": "82125695ba5cb9289002827798b69a51a689bcd0343ea41f5e28b3afea27b9f6",
+      "changed": false,
+      "errorBefore": 0.007776029627903062,
+      "errorAfter": 0.007776029627903062,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "hunodan/hjsta-01",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "ec714b590351efd48a2ca01d3c2a1ec25791b52fe9286389b1c6aa0b96eea005",
+      "sourceMaskSha256": "53c9af8a5adf12f04082bfea4fd22ec47f59891f968b639970dd782096c8ecd7",
+      "changed": false,
+      "errorBefore": 0.007929362880886427,
+      "errorAfter": 0.007929362880886427,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "hunodan/hjsta-02",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "ba755c3c9ca90e290630af6e8984e9167b4f865dfd5055a578378a6d2fba1cd7",
+      "sourceMaskSha256": "b141ae88df405adb0885e38a885b8883f4ae74153f189ec958d21d0196dea212",
+      "changed": false,
+      "errorBefore": 0.0038045247395833335,
+      "errorAfter": 0.0038045247395833335,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "hunodan/hjsta-03",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "94a7e2fae6933095c873744551ba72caf03ad1119701a8f6e162f1f6687266f5",
+      "sourceMaskSha256": "53a43dfa83fd0531f21b06ff5523a1107051f2da1122eeb6fec21da0124f74da",
+      "changed": false,
+      "errorBefore": 0.012332213049376572,
+      "errorAfter": 0.012332213049376572,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "hunodan/hjsta-04",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "0ec351fd7566f5570145c107913d323e6761f018527258f6def41cd4dcc67a1e",
+      "sourceMaskSha256": "d5ce568047e6eb27cf27d373840cf1e65229721ed9e15af90abdffe4f349ee41",
+      "changed": false,
+      "errorBefore": 0.0050250552896055544,
+      "errorAfter": 0.0050250552896055544,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "hunodan/hjsta-05",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "e5c679f439952dc25a281d54f49977ec76113eab8e1eead9473f77b881a9f5f2",
+      "sourceMaskSha256": "0b669fdab2036d19935c59310517dda13ef13c9f92fc33cac1c8e5a2ec01ccf8",
+      "changed": false,
+      "errorBefore": 0.010624446293860237,
+      "errorAfter": 0.010624446293860237,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "hunodan/hjstr-01",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "a7f33780db85389adc0d24217c4e7febf717857000a2b4ad93f677fcfd0860f2",
+      "sourceMaskSha256": "cdad8c3c706fd74bd2b3f9789d8a54da69fc2e8e9f06e071924afa13635c9296",
+      "changed": false,
+      "errorBefore": 0.007550237322696868,
+      "errorAfter": 0.007550237322696868,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "hunodan/hjstr-02",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "febe020fdc59877ef5cf71c22eff1fbc4607a1eaae93baf40ec9611d46bdb270",
+      "sourceMaskSha256": "bcb5beb9f193459a01d227f980c8801ebf46831971701d2cd6ada06748851d67",
+      "changed": false,
+      "errorBefore": 0.004365548980933596,
+      "errorAfter": 0.004365548980933596,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "hunodan/hjstr-03",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "5ffc98f412dcae8e143a786b0f2dea156757837c0d08dbd8d0e9c123664e9cb5",
+      "sourceMaskSha256": "fde5099f0782c8f889266af40f02b3cb948ee69ece3b05d22fed097ae836dbb8",
+      "changed": false,
+      "errorBefore": 0.0056129769369752365,
+      "errorAfter": 0.0056129769369752365,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "photos/bauble",
+      "originallyAccepted": false,
+      "sourceGeometrySha256": "ae10e0c878e1b780e5a6844f0ac90f19832bb52622949402d48017f03f0edbe4",
+      "sourceMaskSha256": "c17fe4647f0c58e5e303b206e1f022d02a2bd42041c919733b4ecbd79336f190",
+      "changed": false,
+      "errorBefore": 0.0919125,
+      "errorAfter": 0.0919125,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "photos/bibel-cross",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "9668da65c3b88ef077b3054d27e022b021851263785e9868f692bb7cc9fa0a05",
+      "sourceMaskSha256": "18cdad89f6f67d314257eeef0e57c561847435241efa11a51df5c82b9ebc8f99",
+      "changed": false,
+      "errorBefore": 0.00243125,
+      "errorAfter": 0.00243125,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "photos/bibel-star-8",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "86835af75f4222c274fdd1757ba65e6494909876bac46bb31a18561628d53e97",
+      "sourceMaskSha256": "368d6f5e006c99a93f432d169ced85cd7b5dc78f129e9bee76ef10bcd01b8801",
+      "changed": false,
+      "errorBefore": 0.003675,
+      "errorAfter": 0.003675,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "photos/bibel-star-curved",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "d4e520bac64dbd55e0f2ca8c1dbe9adbfc7d4f29d15714783362199a9abc1e30",
+      "sourceMaskSha256": "37ba10450d2b1064ed27911736a5a5405134546a6a8f487a7a6d96f3639f8a3e",
+      "changed": false,
+      "errorBefore": 0.00663125,
+      "errorAfter": 0.00663125,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "photos/bibel-star-outline",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "4c9a25ea9b9317a32f57efe82c23cd260ded4e1aa313d40780c7dc38f47f706a",
+      "sourceMaskSha256": "3d193006a6dfd33df8adffbbbca60d3c0a3a47c7325a407ab4ea20be63c636f0",
+      "changed": false,
+      "errorBefore": 0.0116,
+      "errorAfter": 0.0116,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "photos/bird",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "f8b6dc9f52641fbd373b3382985120a0b564c1e434a179728bd5da9dab938303",
+      "sourceMaskSha256": "e2524f8dd95ff18e008d6d27a37062462adacb879ab609978da3035bbc277664",
+      "changed": false,
+      "errorBefore": 0.02470625,
+      "errorAfter": 0.02470625,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "photos/bottom-flower",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "a580fc671d38d5315d1594fe7ee3993b2bd428d98b617a2ef9a7c34744b88dc6",
+      "sourceMaskSha256": "fbb1c92887012ea8e34991cfa5f0a16f5473da3ef8e166595750056859a4605b",
+      "changed": false,
+      "errorBefore": 0.0093875,
+      "errorAfter": 0.0093875,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "photos/candle",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "1bc0dd1dba943690ef6f316b404c1a855be582f7ca0fd9b98fd70ef814ec26f7",
+      "sourceMaskSha256": "8b853d5e3f7b1e6b9a0b695d93692823eb63c2b004f6ddaee3bde2ab49df6ab0",
+      "changed": false,
+      "errorBefore": 0.0048375,
+      "errorAfter": 0.0048375,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "photos/crossed-ribbons",
+      "originallyAccepted": false,
+      "sourceGeometrySha256": "6eb1839135e42a75bbb7e98541662479085f9692660c1a0f32d97a0016ed27f1",
+      "sourceMaskSha256": "25d5c8a37f2215d74d1beea8efa57d5229aa011ed725efcefe3e0ab00f7c187b",
+      "changed": false,
+      "errorBefore": 0.02153125,
+      "errorAfter": 0.02153125,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "photos/crown",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "7c02af78469c84f4dad34d81e2c85c561f2c73d90acef981373f4681053561bd",
+      "sourceMaskSha256": "39e14ff51b6dfa30887029aff7dedc7ee2cad5fa6ae4466afd2bba0f6a621100",
+      "changed": false,
+      "errorBefore": 0.02411875,
+      "errorAfter": 0.02411875,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "photos/dense-checker",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "0ba6a61f0e66805d5d5db934f2ce9f574330700451e6a692794da8a14944c5af",
+      "sourceMaskSha256": "c850f1b447f40e1c999203c5b343d9cb58722d26bd1a011cd502e446f06f5cf4",
+      "changed": false,
+      "errorBefore": 0.00699375,
+      "errorAfter": 0.00699375,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "photos/faceted-star",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "229d2de8e9616388bc4ff178759a57fa3fbde8277a10d8ee6f06db8c97c5dcaa",
+      "sourceMaskSha256": "86b08a16d992bf1c4e5a4e432095cf8aac60b332de5637ae5592e45950719347",
+      "changed": false,
+      "errorBefore": 0.0065,
+      "errorAfter": 0.0065,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "photos/fine-checker",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "f3f49bba06206774a710b6fb567314e29fe0c5a2ebe2641478a4af14a5089d8b",
+      "sourceMaskSha256": "6ab55d12e30257ae2f347e981009bc90d7ac4efb61617408c68d5da89a94e949",
+      "changed": false,
+      "errorBefore": 0.0215875,
+      "errorAfter": 0.0215875,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "photos/flettede-puppy",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "7cdda85aa95f3bb6bb8a05acd4f2dcf8de9168f8338972387c11fe7385929303",
+      "sourceMaskSha256": "c6ee6456c3dcce3e857e1d4ac26dbd6b9e42a2589818ba2eac6983fa1828869a",
+      "changed": false,
+      "errorBefore": 0.0103125,
+      "errorAfter": 0.0103125,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "photos/flettede-stonehenge",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "d6fdb7b80050ee3070ac9a08e51d0d6c690480180df245daf5af0527bc6bffb5",
+      "sourceMaskSha256": "4ed238a1a78572719909ee847cbe0fe4f1e2f0679adfeec93662636fa55de46e",
+      "changed": false,
+      "errorBefore": 0.01905,
+      "errorAfter": 0.01905,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "photos/flettede-viking",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "490246593bf4a18f9ef2066970e9edfa7fcad0d006a6ea43c1e0e98731607e5b",
+      "sourceMaskSha256": "a34f7fa7e6120c27dd41a8e441c163679036b2717ba4f3c19801d408a7f46986",
+      "changed": false,
+      "errorBefore": 0.02056875,
+      "errorAfter": 0.02056875,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "photos/floral-checker",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "a15356c8620c3b55d3668e391b6c7fb53d07ace2016243c4f791b58908e5096d",
+      "sourceMaskSha256": "a3bd4395960468cb45eb1e927e79f1427defb088ad65188e6175e4ae55a61372",
+      "changed": false,
+      "errorBefore": 0.01929375,
+      "errorAfter": 0.01929375,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "photos/flower",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "8166aedab48b2bb9b365f503f6ac46592840520e5f26c9681480c1a32ddd942f",
+      "sourceMaskSha256": "a7731b3f08fedf7b34ebac173b27fc02f3d65525a2fcbc2a6896c9260bfd7721",
+      "changed": false,
+      "errorBefore": 0.0050625,
+      "errorAfter": 0.0050625,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "photos/gift",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "09e359bda1756bae08a8d2e0ff65474c341e82e6cd9a4169ab56d624d4393945",
+      "sourceMaskSha256": "072708f51d848a7754e3ff4c07b80e8674c1eee6677f87ef526389a626694d6a",
+      "changed": true,
+      "errorBefore": 0.02309375,
+      "errorAfter": 0.0230625,
+      "geometryPassed": true,
+      "initialGeometryPassed": false,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": [
+        {
+          "hiddenOnly": true,
+          "milliseconds": 5.775917000000845,
+          "accepted": false
+        },
+        {
+          "hiddenOnly": false,
+          "milliseconds": 163.13058300000012,
+          "accepted": true,
+          "gates": {
+            "fixedPreserved": true,
+            "symmetryPreserved": true,
+            "matchingPreserved": true,
+            "imageNotWorse": true,
+            "paper": true,
+            "features": true,
+            "geometry": true
+          },
+          "maximumCoordinateMovement": 0.3726220046508928
+        }
+      ]
+    },
+    {
+      "name": "photos/gingerbread",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "5bbe8c0816b13bcb313ef9515119d4424cbb36612de249c87d550085ae6be1ef",
+      "sourceMaskSha256": "7141bc2be816939ff9c775105fa20ab1994bebea2dadb2839dfe948fbca07046",
+      "changed": false,
+      "errorBefore": 0.014825,
+      "errorAfter": 0.014825,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "photos/jigsaw",
+      "originallyAccepted": false,
+      "sourceGeometrySha256": "7dda8ac65eabe72eef97dace02becc40801a0e23ed1bcea3fa3dc03563b921f2",
+      "sourceMaskSha256": "5836657bb7a8f44a02d71936a316ed50a6b4ac22d899bdb535fc3e6bd0cc8292",
+      "changed": false,
+      "errorBefore": 0.0564375,
+      "errorAfter": 0.0564375,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "photos/leaf",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "edc2ede44816c17bbeb6c39367e1423b936ffb35be786733adb460a2bae0bc06",
+      "sourceMaskSha256": "716048eeef8b3a1beee3778f2085b3eaaeff02e5c12acfbad4cb69d416327a31",
+      "changed": false,
+      "errorBefore": 0.0265125,
+      "errorAfter": 0.0265125,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "photos/maple-leaf",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "be0d60e823f72b34a5fe94b2beb033fbfe4b1ee89c6305048159fc388e85923e",
+      "sourceMaskSha256": "9fea2f9125fb7524dfa5eadaaec9095c78f3fcf96b7eca2e6745c5b5517ec684",
+      "changed": false,
+      "errorBefore": 0.013325,
+      "errorAfter": 0.013325,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "photos/orb",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "1af7a34ae209d5d0e2ec44efc7720e21639155876d14d73c5c17dc0d4c1fd5aa",
+      "sourceMaskSha256": "7d9cfa9ca97567f82fe9d49ac68ee83b97d7d4af5f9db609eda68c6fccf59eff",
+      "changed": false,
+      "errorBefore": 0.01438125,
+      "errorAfter": 0.01438125,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "photos/outline-star",
+      "originallyAccepted": false,
+      "sourceGeometrySha256": "906d2a80229665d3291e6ed9133a4c7f999686014d3f938eeda806933799444c",
+      "sourceMaskSha256": "b6aa425563bc9119f335dc8092c9a1ad496ce96c7739ec15e9bed6e1e74041b9",
+      "changed": false,
+      "errorBefore": 0.00815625,
+      "errorAfter": 0.00815625,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "photos/round-checker",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "869d72e1e5d88ad1b0ba87d6c4bca3d5a1f0427224a4b3e6c8d0c29471cb6864",
+      "sourceMaskSha256": "436e34e4e93c065806c13f6f145217f3c12c3fd6cb7e13279222e327c9b64136",
+      "changed": false,
+      "errorBefore": 0.0121375,
+      "errorAfter": 0.0121375,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "photos/stacked-hearts",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "64ec24b836d5dd71dca23d35c5814a2e337c3445f79d9c649806d65c4a3104a2",
+      "sourceMaskSha256": "5e70aa3b8a8a502fd1f592628d82db7c8f9876a1d074d0f9be0fb9b29a7734bf",
+      "changed": false,
+      "errorBefore": 0.007425,
+      "errorAfter": 0.007425,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "photos/warped-checker",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "d7cb7db55b5c2ab846ff70ff4e12332cf5ccb4ea35ccc181fe42712788165848",
+      "sourceMaskSha256": "34d1200c3ccb16b6a54f582456d4ab17d246921ecb35df53c88031447ae524cd",
+      "changed": false,
+      "errorBefore": 0.01813125,
+      "errorAfter": 0.01813125,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    },
+    {
+      "name": "photos/white-birds",
+      "originallyAccepted": true,
+      "sourceGeometrySha256": "6c8c0ef9ecf16ffde3f8b46b9424f2c8f7d169e8b2e0de6f278547cd700fb1ce",
+      "sourceMaskSha256": "722d69312e347ea00608408f4961229541bf1414b42735dbb1becfaec72d939c",
+      "changed": false,
+      "errorBefore": 0.00379375,
+      "errorAfter": 0.00379375,
+      "geometryPassed": true,
+      "initialGeometryPassed": true,
+      "representationsPassed": 8,
+      "initiallyIdentical": false,
+      "attempts": []
+    }
+  ],
+  "sourceHashes": {
+    "scripts/inverse/diagnostics/final-return-repair-study.mjs": "a0c950a9cc9d138d58aa2d0a17711e52da9c3fe3cfb424ac0934331180d6df7d",
+    "scripts/inverse/diagnostics/short-return-projection.patch": "1f3c09a5206ec666c4ad98241ab9ef33282d24b469aa2cb06628f5c9f2278fe0",
+    "scripts/inverse/self-return-projection.test.mjs": "f6d41abbbe2d0c6587e05b85bd0f7c73c19cdf1eae9d3a31c7f20d2967cd6f3c",
+    "scripts/inverse/diagnostics/self-return-candidate.mjs": "51820f6daff38df7966879eead097fa004cb776b75fc7729c83103e41ffa0866",
+    "scripts/inverse/diagnostics/build-short-return-runtime.mjs": "ecd0cf717456027c703e1fc2b5aa25e25b6ffb5d7eb188ae8f7268c628fe170c",
+    "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+    "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559"
+  },
+  "artifacts": {
+    "tmp/heart-learning/final-return-corpus-v1/checked-build.log": "abca93c1209e7020cb3c053dcbbe6b0f167a06bbc698630ddd1f5c34381266a1",
+    "tmp/heart-learning/final-return-corpus-v1/checked-corpus/hunodan/hjfig-05/cut_geometry.json": "34d85a10b131fb804cb2e4c3330c588a4fa2efa875c556a4b246fbf2601d00d4",
+    "tmp/heart-learning/final-return-corpus-v1/checked-corpus/hunodan/hjfig-05/weave.png": "76d69e2ddf62d0c71976bf30614eeb1b54f81ea7c65e431bced9d59c7da39bfb",
+    "tmp/heart-learning/final-return-corpus-v1/checked-corpus/photos/gift/cut_geometry.json": "9fb445ad1e5e3361ec07f25e8f68c1eff06d825990ec624eecaecb21e1d6cd2a",
+    "tmp/heart-learning/final-return-corpus-v1/checked-corpus/photos/gift/weave.png": "1a601dbf2d8208a09e4e1f76c122d12e20204cfba3ec70f498c32781c8822598",
+    "tmp/heart-learning/final-return-corpus-v1/checked-corpus/results.json": "fbec97a2871f9d3d21ccaec5e1fa5d94e7829d494e298a18ec8698bfdfcd8f09",
+    "tmp/heart-learning/final-return-corpus-v1/checked-corpus.log": "7b518343a3cc965d431c9fb00299b10abc934d11b79504db425bdeb6bfa3b897",
+    "tmp/heart-learning/final-return-corpus-v1/checked-runtime/source.json": "5532375b66f5b7f0b5aae293ef4bdf3320c1ff3374dd08b60ad5c55803842060",
+    "tmp/heart-learning/final-return-corpus-v1/checks.json": "df09e1c478eb8f1d6e26baf07d063fe33c68e718bf38a9f1541a1227ac5b9f35",
+    "tmp/heart-learning/final-return-corpus-v1/corpus/hunodan/hjfig-05/cut_geometry.json": "34d85a10b131fb804cb2e4c3330c588a4fa2efa875c556a4b246fbf2601d00d4",
+    "tmp/heart-learning/final-return-corpus-v1/corpus/hunodan/hjfig-05/weave.png": "76d69e2ddf62d0c71976bf30614eeb1b54f81ea7c65e431bced9d59c7da39bfb",
+    "tmp/heart-learning/final-return-corpus-v1/corpus/photos/gift/cut_geometry.json": "9fb445ad1e5e3361ec07f25e8f68c1eff06d825990ec624eecaecb21e1d6cd2a",
+    "tmp/heart-learning/final-return-corpus-v1/corpus/photos/gift/weave.png": "1a601dbf2d8208a09e4e1f76c122d12e20204cfba3ec70f498c32781c8822598",
+    "tmp/heart-learning/final-return-corpus-v1/corpus/results.json": "c8e5ec51781a8e0dc46cc8a78a9665245dae7ed2ac1cc2f3ef2b11cdc852a3d9",
+    "tmp/heart-learning/final-return-corpus-v1/corpus.log": "84417056a829bf2b0e2924d7eaf4de16418054aa718fc39c2fc0d5bcbce10ab5",
+    "tmp/heart-learning/final-return-corpus-v1/corpus.mjs": "82791131907e56fbb79c5b6d6bf0668b17e4cdf628601997783ea7f6a3dee137",
+    "tmp/heart-learning/final-return-corpus-v1/final-build.log": "75a9ac8fca061acd4abf50ed4ac86d89e5d380dc69f84049e8cfc89b9b6c0b5b",
+    "tmp/heart-learning/final-return-corpus-v1/final-corpus/hunodan/hjfig-05/cut_geometry.json": "34d85a10b131fb804cb2e4c3330c588a4fa2efa875c556a4b246fbf2601d00d4",
+    "tmp/heart-learning/final-return-corpus-v1/final-corpus/hunodan/hjfig-05/weave.png": "76d69e2ddf62d0c71976bf30614eeb1b54f81ea7c65e431bced9d59c7da39bfb",
+    "tmp/heart-learning/final-return-corpus-v1/final-corpus/photos/gift/cut_geometry.json": "9fb445ad1e5e3361ec07f25e8f68c1eff06d825990ec624eecaecb21e1d6cd2a",
+    "tmp/heart-learning/final-return-corpus-v1/final-corpus/photos/gift/weave.png": "1a601dbf2d8208a09e4e1f76c122d12e20204cfba3ec70f498c32781c8822598",
+    "tmp/heart-learning/final-return-corpus-v1/final-corpus/results.json": "3b72ea41f26effa21c860e1cc4eeb0c0c7b66daacb0ffece0566f92556f6e79b",
+    "tmp/heart-learning/final-return-corpus-v1/final-corpus.log": "e5380e5fc06dc6f15141ae33e5b27e2357181a48fffc9459969053ec59a95f05",
+    "tmp/heart-learning/final-return-corpus-v1/final-focused.log": "359b5298bdd0bf8f281a4a6e0fd3aeacfb9b108394a9bd3ed1eed39c2a1fca24",
+    "tmp/heart-learning/final-return-corpus-v1/final-runtime/source.json": "9b2dc4894f45cda9fc149bc75b989fa62c58e8a34d43f0d266e92aa5fbc7c2af",
+    "tmp/heart-learning/final-return-corpus-v1/prototype-projector.js": "defc020d791c56ba1ae8e86810599976616774906a58d6d9710f5a7707c81c03",
+    "tmp/heart-learning/final-return-corpus-v1/prototype-runtime/source.json": "3ba1ea8b15341a02f4841e7ce549bc8ab2c4505e50eeeedf929fff4d42bea523",
+    "tmp/heart-learning/final-return-corpus-v1/prototype-symmetry-probe-results.json": "8cdddb39d34d6e10bdc3297c20dcb0e383acb9a932a015abb81229d91a020420",
+    "tmp/heart-learning/final-return-corpus-v1/prototype-symmetry-probe.mjs": "0b05e0832f9d55b5ab39a0ae62abc02e8598d20272e7e87e051bfafd97ddccc0",
+    "tmp/heart-learning/final-return-corpus-v1/prototype-symmetry.log": "4c1d507fef602cf68c8cdbe9ce8a29b6be8bf457d7a9f5d7c65db5c4e3f567f2",
+    "tmp/heart-learning/final-return-corpus-v1/run.py": "4b4604f6e5609807f855301fa912ffc8e156cdbb1848544682e9c8574aafc516",
+    "tmp/heart-learning/final-return-corpus-v1/runner.json": "d754a5396ecf66337b9da3fbae042b284a6d3be35c6f767d08bfee978b8fc12c",
+    "tmp/heart-learning/final-return-corpus-v1/running.json": "c0c359bd44f6f8aacd20700abf844c9c05ee1c7140b17d270ef93d8bde6764df",
+    "tmp/heart-learning/final-return-corpus-v1/symmetry-after-fixed.log": "2bd1af49f0e9308cfda553f6793d3e88a4b25e4d6280aa0cd9ce01f49bc0534f",
+    "tmp/heart-learning/final-return-corpus-v1/symmetry-after.log": "9f76b2bfd79058ff09b575b599a261f3d50b79badd9103b0a5334ba9cbcb82c1",
+    "tmp/heart-learning/final-return-corpus-v1/symmetry-before.log": "06dd7ecfaba72c5dc65fe6a59d547b34451bf184a5e8d4e5753de237a2157fd8",
+    "tmp/heart-learning/final-return-corpus-v1/symmetry-probe-results.json": "e65dd0eb11d652e7c047407e7666ba677dce8350f23b1ad4fec706ad23af5b1f",
+    "tmp/heart-learning/final-return-corpus-v1/symmetry-probe.mjs": "48a2258c2fef2a1d1a49ab8365397ce35598d686d3c418eaeceafe900a20e0a8",
+    "tmp/heart-learning/final-return-corpus-v1/symmetry.log": "62818e48daf5358fbfe1a4eb46a4764c347c4c4f6644aa3759e7a7d6f6550ad7"
+  },
+  "finalStudy": "tmp/heart-learning/final-return-corpus-v1/final-corpus/results.json",
+  "finalMatchingGate": "An originally identical pair is rechecked using matchingSummary, in addition to requested-symmetry tolerance, before any repair is accepted."
+}

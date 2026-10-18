@@ -1,0 +1,1735 @@
+{
+  "screen": {
+    "cases": 91,
+    "repetitions": 1,
+    "policies": [
+      {
+        "policy": "all",
+        "runs": 91,
+        "medianSeconds": 0.952920125,
+        "medianPairedTimeRatio": 1,
+        "identicalSeeds": 91,
+        "baselineBestRetained": 91,
+        "baselineFinalistsRetained": 91,
+        "failures": [],
+        "misses": []
+      },
+      {
+        "policy": "shared-work",
+        "runs": 91,
+        "medianSeconds": 0.8166624169999995,
+        "medianPairedTimeRatio": 0.8455243779780339,
+        "identicalSeeds": 91,
+        "baselineBestRetained": 91,
+        "baselineFinalistsRetained": 91,
+        "failures": [],
+        "misses": []
+      }
+    ],
+    "sourceHashes": {
+      "static/inverse/core/direct/boundary.js": "1e35a5520ffe879136390980b000df46f39adf3609edc918282e7cd6a3c8d511",
+      "static/inverse/core/direct/counts.js": "5b3b2c4dd2e69f827ab2e9e942dff9ddef84c924fb0b50d58cb194fa3287c60c",
+      "static/inverse/core/direct/curves.js": "18fe358d46448eb844b69fe5f35bee1cc8adb87cd5c5462382a59dbbd92fe08a",
+      "static/inverse/core/direct/fit.js": "3500e1b9101b3c398308c8b52964b16303a0b32f4a38be2cbc9b9229365bb04e",
+      "static/inverse/core/direct/grid.js": "5cdec810401481ed1b44f1c96cf248e5ee5dc4c48d7b20c95705054f5eedb328",
+      "static/inverse/core/direct/initialize.js": "945b954245d735986e1ba35d4311091845eaa808ef4e11bc8a442a87f91fc11b",
+      "static/inverse/core/direct/matching.js": "9559e669bb2997f178ca71d5c55c1d78226b709932f5f0630a31ee993d2c20df",
+      "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+      "static/inverse/core/direct/native.js": "48435ecb5bea2b58d0b89ae48a358da064031c7d801bcbb477b749625a6719a2",
+      "static/inverse/core/direct/prefer-matching.js": "0c4b48c48f3b48b9687dcd846cc497aa6537bc31c3d53649962ca9a52fb84834",
+      "static/inverse/core/direct/primitives.js": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b",
+      "static/inverse/core/direct/refine.js": "72d764ebebdb97432c66f1bf4480f23c62603ba484f8d780bd0762549f26bf2d",
+      "static/inverse/core/direct/share.js": "46a7ba6dac920ea143f6666d02a5f0d4e9442c023c8a351f7046c9e66136e72a",
+      "static/inverse/core/direct/symmetry.js": "2f023222094d6732c13b0c74736249392284e9d47d3248d328884fcdc1de87c9",
+      "static/inverse/core/direct/topology.js": "e98801f147529817b5f0c9adbb2c615b5ddfdd8c904b5653c5a7a2be83c37aa3",
+      "scripts/inverse/count-strategies.mjs": "878311de64f6edbb9a201aa3d3045040bb5495e1feaceef72314026c595fa107",
+      "scripts/inverse/count-strategy-benchmark.mjs": "7f346770a0e9f7c20e393f4211f93f61f0811e88d1ed6a4685548da05e017bb3",
+      "scripts/inverse/count-strategy-data.mjs": "3e2c02647948fa2547337c2ae6dfc07ffef2c1a3947f3ecf6a1bc8629f048d2c",
+      "scripts/inverse/count-strategy-report.mjs": "4efca40f8a71297fca0909fc3c5f80ea9acba9fa34d88b4b8076f80e09a08fdd",
+      "scripts/inverse/count-strategy.test.mjs": "b8e873c3b30117b5f947e47869089f80447abc8dee395c10446576c7889ad627"
+    }
+  },
+  "solve": {
+    "cases": 49,
+    "repetitions": 1,
+    "policies": [
+      {
+        "policy": "all",
+        "runs": 49,
+        "passed": 38,
+        "medianSeconds": 8.574339334000019,
+        "totalSeconds": 369.61188137200014,
+        "medianPairedTimeRatio": 1,
+        "lostPasses": [],
+        "gainedPasses": [],
+        "medianValidErrorChange": 0,
+        "maximumValidErrorIncrease": 0,
+        "cases": [
+          {
+            "id": "hjfig-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 6.1091425,
+            "passed": true,
+            "error": 0.009806222222222221,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjfig-01-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 5.79920075,
+            "passed": true,
+            "error": 0.005262222222222222,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjfig-02",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 12.897184124999999,
+            "passed": true,
+            "error": 0.0064,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            },
+            "identicalSheets": false,
+            "matchingStatus": "matching_budget_exhausted",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjfig-03",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 5.629691208000004,
+            "passed": true,
+            "error": 0.006634666666666666,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjfig-04",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 6.812624041000003,
+            "passed": true,
+            "error": 0.013895111111111112,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            },
+            "identicalSheets": true,
+            "matchingStatus": "matched",
+            "matchingAdditionalError": 0.009557333333333334
+          },
+          {
+            "id": "hjfig-05",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 3.2030236250000015,
+            "passed": true,
+            "error": 0.010055560936523171,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjfig-05-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 3.183754291000005,
+            "passed": true,
+            "error": 0.017971453477621534,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjfla-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 7.34062995799999,
+            "passed": true,
+            "error": 0.013434516059027778,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjcur-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 7.466778124999997,
+            "passed": true,
+            "error": 0.00512,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjcur-02",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 7.277129999999976,
+            "passed": true,
+            "error": 0.005368888888888889,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjcur-03",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.803680125000014,
+            "passed": true,
+            "error": 0.005155555555555556,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjcur-03-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 8.127295290999987,
+            "passed": true,
+            "error": 0.00922311111111111,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjcur-04",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.975861000000004,
+            "passed": true,
+            "error": 0.005539555555555555,
+            "errorChange": 0,
+            "counts": {
+              "left": 6,
+              "right": 6
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjcur-05",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 5.245417499999982,
+            "passed": true,
+            "error": 0.009429333333333333,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjhih-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 9.122335125000012,
+            "passed": true,
+            "error": 0.00616795081747161,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjhih-02",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 6.526121084000013,
+            "passed": true,
+            "error": 0.0038721376517666627,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjhih-02-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 6.886815125000023,
+            "passed": true,
+            "error": 0.004212994839422179,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjhih-04",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 9.089658583000011,
+            "passed": true,
+            "error": 0.008002641648699571,
+            "errorChange": 0,
+            "counts": {
+              "left": 5,
+              "right": 5
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjstr-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 6.236920291999995,
+            "passed": true,
+            "error": 0.007529570614696785,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjstr-02",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.33169954100001,
+            "passed": true,
+            "error": 0.0041617357001972385,
+            "errorChange": 0,
+            "counts": {
+              "left": 5,
+              "right": 5
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjstr-03",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.96378216599999,
+            "passed": true,
+            "error": 0.005500053140610054,
+            "errorChange": 0,
+            "counts": {
+              "left": 7,
+              "right": 7
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjstr-03-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 8.930340250000008,
+            "passed": true,
+            "error": 0.0055731214794345835,
+            "errorChange": 0,
+            "counts": {
+              "left": 7,
+              "right": 7
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjsta-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 7.20607925000001,
+            "passed": true,
+            "error": 0.007915512465373961,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            },
+            "identicalSheets": false,
+            "matchingStatus": "no_valid_matching_candidate",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjsta-02",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 9.367588457999984,
+            "passed": true,
+            "error": 0.0036485460069444445,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjsta-03",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.885616959000007,
+            "passed": true,
+            "error": 0.012495824499451219,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjsta-04",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 9.03902350000001,
+            "passed": true,
+            "error": 0.005046051342347638,
+            "errorChange": 0,
+            "counts": {
+              "left": 5,
+              "right": 5
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjsta-04-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 8.731574916,
+            "passed": true,
+            "error": 0.005312001343747375,
+            "errorChange": 0,
+            "counts": {
+              "left": 5,
+              "right": 5
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjsta-05",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.487722417,
+            "passed": true,
+            "error": 0.0107922360331821,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "danish-silver-on-tree",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 7.9567288750000005,
+            "passed": false,
+            "error": 0.03775625,
+            "errorChange": 0,
+            "counts": {
+              "left": 1,
+              "right": 1
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "danish-tree-red",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 8.805857333000008,
+            "passed": false,
+            "error": 0.07024375,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "bibel-checker-3",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 6.422650541999989,
+            "passed": true,
+            "error": 0.01696875,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "danish-tree-group-right",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 7.735141957999993,
+            "passed": false,
+            "error": 0.0176,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "vissevasse-arranged-r1c4",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 8.813543667000005,
+            "passed": true,
+            "error": 0.0084625,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "vissevasse-arranged-r3c2",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 8.900059750000015,
+            "passed": false,
+            "error": 0.070975,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "vissevasse-arranged-r4c2",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 8.668805332999996,
+            "passed": false,
+            "error": 0.03785625,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "vissevasse-scattered-purple-checker",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 8.574339334000019,
+            "passed": false,
+            "error": 0.04591875,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "collage-outline-star",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 8.790809500000003,
+            "passed": false,
+            "error": 0.0301375,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "collage-leaf",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 8.906931207999994,
+            "passed": false,
+            "error": 0.047475,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "collage-flower",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 8.584670416999987,
+            "passed": true,
+            "error": 0.011525,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "collage-orb",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 8.942175875000016,
+            "passed": false,
+            "error": 0.0497875,
+            "errorChange": 0,
+            "counts": {
+              "left": 5,
+              "right": 5
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "collage-maple-leaf",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 8.936888292000019,
+            "passed": false,
+            "error": 0.0312625,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "collage-bottom-flower",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 8.985120791000023,
+            "passed": true,
+            "error": 0.0096375,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "bibel-star-8",
+            "group": "individual",
+            "repeat": 0,
+            "seconds": 4.378596375000023,
+            "passed": true,
+            "error": 0.00319375,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "flettede-puppy",
+            "group": "individual",
+            "repeat": 0,
+            "seconds": 8.704066041000013,
+            "passed": false,
+            "error": 0.00731875,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "tilted-orange-weave",
+            "group": "hard-user",
+            "repeat": 0,
+            "seconds": 9.305981417000003,
+            "passed": true,
+            "error": 0.018225,
+            "errorChange": 0,
+            "counts": {
+              "left": 10,
+              "right": 10
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "orange-upload-1254",
+            "group": "hard-user",
+            "repeat": 0,
+            "seconds": 9.545251209000009,
+            "passed": true,
+            "error": 0.0167125,
+            "errorChange": 0,
+            "counts": {
+              "left": 10,
+              "right": 10
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "motif-hat",
+            "group": "synthetic",
+            "repeat": 0,
+            "seconds": 2.1241325840000065,
+            "passed": true,
+            "error": 0.0006597222222222222,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "motif-house",
+            "group": "synthetic",
+            "repeat": 0,
+            "seconds": 1.7369064159999834,
+            "passed": true,
+            "error": 0.00001736111111111111,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "motif-circle",
+            "group": "synthetic",
+            "repeat": 0,
+            "seconds": 2.116534249999968,
+            "passed": true,
+            "error": 0.0010763888888888889,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          }
+        ]
+      },
+      {
+        "policy": "shared-work",
+        "runs": 49,
+        "passed": 38,
+        "medianSeconds": 8.260569582999976,
+        "totalSeconds": 359.07990941499986,
+        "medianPairedTimeRatio": 0.9912403854070356,
+        "lostPasses": [],
+        "gainedPasses": [],
+        "medianValidErrorChange": 0,
+        "maximumValidErrorIncrease": 0.007573333333333334,
+        "cases": [
+          {
+            "id": "hjfig-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 5.611219665999999,
+            "passed": true,
+            "error": 0.009806222222222221,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjfig-01-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 5.723994041999998,
+            "passed": true,
+            "error": 0.005262222222222222,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjfig-02",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 7.485076582999994,
+            "passed": true,
+            "error": 0.013973333333333334,
+            "errorChange": 0.007573333333333334,
+            "counts": {
+              "left": 2,
+              "right": 2
+            },
+            "identicalSheets": true,
+            "matchingStatus": "matched",
+            "matchingAdditionalError": 0.00786488888888889
+          },
+          {
+            "id": "hjfig-03",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 5.928171708000002,
+            "passed": true,
+            "error": 0.006634666666666666,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjfig-04",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 7.297033374999999,
+            "passed": true,
+            "error": 0.013895111111111112,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            },
+            "identicalSheets": true,
+            "matchingStatus": "matched",
+            "matchingAdditionalError": 0.009557333333333334
+          },
+          {
+            "id": "hjfig-05",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 2.8851822079999985,
+            "passed": true,
+            "error": 0.010055560936523171,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjfig-05-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 2.8109411249999976,
+            "passed": true,
+            "error": 0.017971453477621534,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjfla-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 7.242118624999988,
+            "passed": true,
+            "error": 0.013434516059027778,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjcur-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 9.173561375000006,
+            "passed": true,
+            "error": 0.0051697777777777775,
+            "errorChange": 0.00004977777777777706,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjcur-02",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 7.185554000000003,
+            "passed": true,
+            "error": 0.005368888888888889,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjcur-03",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 7.076962750000006,
+            "passed": true,
+            "error": 0.004515555555555556,
+            "errorChange": -0.0006399999999999999,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjcur-03-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 9.277999708000017,
+            "passed": true,
+            "error": 0.009180444444444444,
+            "errorChange": -0.00004266666666666655,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjcur-04",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.897235916999984,
+            "passed": true,
+            "error": 0.005518222222222222,
+            "errorChange": -0.000021333333333333274,
+            "counts": {
+              "left": 6,
+              "right": 6
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjcur-05",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 5.126325542000006,
+            "passed": true,
+            "error": 0.009429333333333333,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjhih-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.930102125000005,
+            "passed": true,
+            "error": 0.006127681280034363,
+            "errorChange": -0.00004026953743724651,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjhih-02",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 6.285311499999982,
+            "passed": true,
+            "error": 0.0038721376517666627,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjhih-02-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 6.9008200420000065,
+            "passed": true,
+            "error": 0.004212994839422179,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjhih-04",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.990931166999973,
+            "passed": true,
+            "error": 0.008002641648699571,
+            "errorChange": 0,
+            "counts": {
+              "left": 5,
+              "right": 5
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjstr-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 5.92347000000003,
+            "passed": true,
+            "error": 0.007529570614696785,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjstr-02",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.260569582999976,
+            "passed": true,
+            "error": 0.0041617357001972385,
+            "errorChange": 0,
+            "counts": {
+              "left": 5,
+              "right": 5
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjstr-03",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.936154041000002,
+            "passed": true,
+            "error": 0.005480125411839728,
+            "errorChange": -0.000019927728770326517,
+            "counts": {
+              "left": 7,
+              "right": 7
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjstr-03-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 8.934440708999988,
+            "passed": true,
+            "error": 0.005533266021893931,
+            "errorChange": -0.000039855457540652166,
+            "counts": {
+              "left": 7,
+              "right": 7
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjsta-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 7.323937708000012,
+            "passed": true,
+            "error": 0.007915512465373961,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            },
+            "identicalSheets": false,
+            "matchingStatus": "no_valid_matching_candidate",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjsta-02",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 6.136757166000025,
+            "passed": true,
+            "error": 0.003573947482638889,
+            "errorChange": -0.00007459852430555551,
+            "counts": {
+              "left": 3,
+              "right": 3
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjsta-03",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.661974457999982,
+            "passed": true,
+            "error": 0.012414018774413896,
+            "errorChange": -0.00008180572503732261,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjsta-04",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 9.067983707999986,
+            "passed": true,
+            "error": 0.005339996080736821,
+            "errorChange": 0.0002939447383891831,
+            "counts": {
+              "left": 5,
+              "right": 5
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjsta-04-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 8.282165166,
+            "passed": true,
+            "error": 0.005312001343747375,
+            "errorChange": 0,
+            "counts": {
+              "left": 5,
+              "right": 5
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "hjsta-05",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.043092333,
+            "passed": true,
+            "error": 0.0107922360331821,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "danish-silver-on-tree",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 8.001506667000001,
+            "passed": false,
+            "error": 0.03775625,
+            "errorChange": 0,
+            "counts": {
+              "left": 1,
+              "right": 1
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "danish-tree-red",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 8.832251082999996,
+            "passed": false,
+            "error": 0.07024375,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "bibel-checker-3",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 6.859394249999998,
+            "passed": true,
+            "error": 0.01696875,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "danish-tree-group-right",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 7.85475499999999,
+            "passed": false,
+            "error": 0.0176,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "vissevasse-arranged-r1c4",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 8.581032584,
+            "passed": true,
+            "error": 0.009275,
+            "errorChange": 0.0008125000000000007,
+            "counts": {
+              "left": 3,
+              "right": 3
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "vissevasse-arranged-r3c2",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 9.010919666999994,
+            "passed": false,
+            "error": 0.07029375,
+            "errorChange": -0.0006812499999999944,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "vissevasse-arranged-r4c2",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 8.795778332999994,
+            "passed": false,
+            "error": 0.03785625,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "vissevasse-scattered-purple-checker",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 8.500109417,
+            "passed": false,
+            "error": 0.04591875,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "collage-outline-star",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 8.741354709000007,
+            "passed": false,
+            "error": 0.0301375,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "collage-leaf",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 8.988412666999997,
+            "passed": false,
+            "error": 0.047475,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "collage-flower",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 8.617777082999993,
+            "passed": true,
+            "error": 0.011525,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "collage-orb",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 8.947641917,
+            "passed": false,
+            "error": 0.0497875,
+            "errorChange": 0,
+            "counts": {
+              "left": 5,
+              "right": 5
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "collage-maple-leaf",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 8.926163416999975,
+            "passed": false,
+            "error": 0.0312625,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "collage-bottom-flower",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 8.975312375000037,
+            "passed": true,
+            "error": 0.0094875,
+            "errorChange": -0.00015000000000000083,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "bibel-star-8",
+            "group": "individual",
+            "repeat": 0,
+            "seconds": 4.227765542000008,
+            "passed": true,
+            "error": 0.00319375,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "flettede-puppy",
+            "group": "individual",
+            "repeat": 0,
+            "seconds": 8.616614165999986,
+            "passed": false,
+            "error": 0.00731875,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "tilted-orange-weave",
+            "group": "hard-user",
+            "repeat": 0,
+            "seconds": 9.161694499999983,
+            "passed": true,
+            "error": 0.0182625,
+            "errorChange": 0.00003749999999999934,
+            "counts": {
+              "left": 10,
+              "right": 10
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "orange-upload-1254",
+            "group": "hard-user",
+            "repeat": 0,
+            "seconds": 9.334402124999965,
+            "passed": true,
+            "error": 0.0172125,
+            "errorChange": 0.000499999999999997,
+            "counts": {
+              "left": 10,
+              "right": 10
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "motif-hat",
+            "group": "synthetic",
+            "repeat": 0,
+            "seconds": 1.7377033330000122,
+            "passed": true,
+            "error": 0.0006597222222222222,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "motif-house",
+            "group": "synthetic",
+            "repeat": 0,
+            "seconds": 1.5232266669999808,
+            "passed": true,
+            "error": 0.00001736111111111111,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          },
+          {
+            "id": "motif-circle",
+            "group": "synthetic",
+            "repeat": 0,
+            "seconds": 2.4470075829999987,
+            "passed": true,
+            "error": 0.0010763888888888889,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            },
+            "identicalSheets": false,
+            "matchingStatus": "image_bound_exceeds_allowance",
+            "matchingAdditionalError": 0
+          }
+        ]
+      }
+    ],
+    "sourceHashes": {
+      "static/inverse/core/direct/boundary.js": "1e35a5520ffe879136390980b000df46f39adf3609edc918282e7cd6a3c8d511",
+      "static/inverse/core/direct/counts.js": "5b3b2c4dd2e69f827ab2e9e942dff9ddef84c924fb0b50d58cb194fa3287c60c",
+      "static/inverse/core/direct/curves.js": "18fe358d46448eb844b69fe5f35bee1cc8adb87cd5c5462382a59dbbd92fe08a",
+      "static/inverse/core/direct/fit.js": "3500e1b9101b3c398308c8b52964b16303a0b32f4a38be2cbc9b9229365bb04e",
+      "static/inverse/core/direct/grid.js": "5cdec810401481ed1b44f1c96cf248e5ee5dc4c48d7b20c95705054f5eedb328",
+      "static/inverse/core/direct/initialize.js": "945b954245d735986e1ba35d4311091845eaa808ef4e11bc8a442a87f91fc11b",
+      "static/inverse/core/direct/matching.js": "9559e669bb2997f178ca71d5c55c1d78226b709932f5f0630a31ee993d2c20df",
+      "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+      "static/inverse/core/direct/native.js": "48435ecb5bea2b58d0b89ae48a358da064031c7d801bcbb477b749625a6719a2",
+      "static/inverse/core/direct/prefer-matching.js": "0c4b48c48f3b48b9687dcd846cc497aa6537bc31c3d53649962ca9a52fb84834",
+      "static/inverse/core/direct/primitives.js": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b",
+      "static/inverse/core/direct/refine.js": "72d764ebebdb97432c66f1bf4480f23c62603ba484f8d780bd0762549f26bf2d",
+      "static/inverse/core/direct/share.js": "46a7ba6dac920ea143f6666d02a5f0d4e9442c023c8a351f7046c9e66136e72a",
+      "static/inverse/core/direct/symmetry.js": "2f023222094d6732c13b0c74736249392284e9d47d3248d328884fcdc1de87c9",
+      "static/inverse/core/direct/topology.js": "e98801f147529817b5f0c9adbb2c615b5ddfdd8c904b5653c5a7a2be83c37aa3",
+      "scripts/inverse/count-strategies.mjs": "878311de64f6edbb9a201aa3d3045040bb5495e1feaceef72314026c595fa107",
+      "scripts/inverse/count-strategy-benchmark.mjs": "7f346770a0e9f7c20e393f4211f93f61f0811e88d1ed6a4685548da05e017bb3",
+      "scripts/inverse/count-strategy-data.mjs": "3e2c02647948fa2547337c2ae6dfc07ffef2c1a3947f3ecf6a1bc8629f048d2c",
+      "scripts/inverse/count-strategy-report.mjs": "4efca40f8a71297fca0909fc3c5f80ea9acba9fa34d88b4b8076f80e09a08fdd",
+      "scripts/inverse/count-strategy.test.mjs": "4439d10dfd94c7217fc272bd81f3e7f931db566f3b5646a51c343ef1c0743416"
+    }
+  },
+  "experiment": {
+    "numericalCommit": "1045595",
+    "scope": "Initialization-only change before the shared-cut repair. Fixed prepared corpus. Complete case/policy blocks resumed on an isolated checkout of the identical numerical commit.",
+    "runtime": "v25.6.1",
+    "cpu": "Apple M2 Pro",
+    "settings": {
+      "algorithm": "auto",
+      "preferMatchingSheets": true,
+      "matchingErrorAllowance": 0.01,
+      "earlyStop": false,
+      "width": 100,
+      "maxImageError": 0.03,
+      "minWidth": 2,
+      "cutError": 0.25,
+      "kerf": 0,
+      "printShrinkPercent": 0.2,
+      "geometryTolerance": 0.01,
+      "sharpTurn": 60,
+      "sharpPenalty": 50,
+      "turnPenalty": 3,
+      "bendingPenalty": 0.15,
+      "acutePenalty": 30,
+      "maxTurn": 175,
+      "connectorPenalty": 2,
+      "junctionBalancePenalty": 0,
+      "gridPreference": 0,
+      "minRadius": 0.8,
+      "gridPortals": false,
+      "neighbors": 16,
+      "connectorVariants": 2,
+      "timeLimit": 10,
+      "relativeGap": 0.02,
+      "maxRounds": 12,
+      "localNeighborhoodFactor": 8,
+      "requireMaterialCore": true,
+      "materialResolution": 360,
+      "minFeatureArea": 0.25,
+      "roundHidden": false,
+      "trials": 0,
+      "registration": 0.4,
+      "rotation": 0.3,
+      "relativeScalePercent": 0.2,
+      "seed": 1729,
+      "symmetry": null,
+      "paperColors": [
+        "#bd1111",
+        "#ffffff"
+      ],
+      "nominalWidth": 2.50501002004008
+    },
+    "manifestSha256": "287b59d411abc43002c1af80f5403df3264c62e1ef32e965b775bb9a6bb9944b",
+    "resumes": [
+      {
+        "at": "2026-09-08T22:06:18.166Z",
+        "previousCommit": "10455950abd92f06749899e1a55e938a7f677421",
+        "completedRuns": 52
+      }
+    ]
+  }
+}

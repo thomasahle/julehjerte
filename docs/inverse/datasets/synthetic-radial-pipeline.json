@@ -1,0 +1,3024 @@
+{
+  "schema": "radial-motif-pipeline-qa-1",
+  "generationCommit": "9162bce",
+  "annotationFixCommit": "909dad9",
+  "scoringFixCommit": "00129ca",
+  "applicationSourcesUnchangedSince": "66e91bd",
+  "unchangedApplicationSourceCount": 113,
+  "qa": {
+    "serialChecks": [
+      {
+        "stage": "check",
+        "exitCode": 0,
+        "seconds": 8.466948083
+      },
+      {
+        "stage": "lint",
+        "exitCode": 0,
+        "seconds": 5.928747667
+      },
+      {
+        "stage": "app",
+        "exitCode": 0,
+        "seconds": 33.562766083999996
+      },
+      {
+        "stage": "inverse",
+        "exitCode": 0,
+        "seconds": 770.484222625
+      },
+      {
+        "stage": "build",
+        "exitCode": 0,
+        "seconds": 12.51881574999993
+      }
+    ],
+    "fullInverseTests": 799,
+    "applicationTests": 855,
+    "applicationSkipped": 1,
+    "annotationTests": 10,
+    "scoringTests": 7,
+    "qualification": "The full inverse/application/build checks followed radial generation. Subsequent changes are offline annotation/scoring helpers, covered by ten Python tests, seven focused Node tests including a real lower-resolution CLI replay, and lint. Application and static runtime sources are unchanged.",
+    "servedAssets": 153,
+    "browserFlows": [
+      {
+        "name": "star",
+        "passed": true,
+        "clickToReadySeconds": 2.0715,
+        "editableError": 0.0016
+      },
+      {
+        "name": "top-hat-preferred",
+        "passed": true,
+        "clickToReadySeconds": 8.069100000023841,
+        "editableError": 0.004118835034013606
+      },
+      {
+        "name": "gold-routing-mask",
+        "passed": true,
+        "clickToReadySeconds": 6.626199999928475,
+        "editableError": 0.0073625
+      }
+    ],
+    "pdfSignatures": 2
+  },
+  "benchmark": {
+    "scope": "Six inspected development designs, first instance of each style at 3/5/8 lobes and first photographic view. Exact masks and ground-truth crops are explicit diagnostic interventions; only the automatic track is a blind photograph upload. No cutting paths, cut count or graph enters fitting.",
+    "selection": [
+      {
+        "id": "radial-motif-920413-v0",
+        "designId": "radial-motif-920413",
+        "style": "polygonal-radial-motif",
+        "lobes": 3
+      },
+      {
+        "id": "radial-motif-966827-v0",
+        "designId": "radial-motif-966827",
+        "style": "polygonal-radial-motif",
+        "lobes": 5
+      },
+      {
+        "id": "radial-motif-923440-v0",
+        "designId": "radial-motif-923440",
+        "style": "polygonal-radial-motif",
+        "lobes": 8
+      },
+      {
+        "id": "radial-motif-930503-v0",
+        "designId": "radial-motif-930503",
+        "style": "smooth-radial-motif",
+        "lobes": 3
+      },
+      {
+        "id": "radial-motif-926467-v0",
+        "designId": "radial-motif-926467",
+        "style": "smooth-radial-motif",
+        "lobes": 5
+      },
+      {
+        "id": "radial-motif-925458-v0",
+        "designId": "radial-motif-925458",
+        "style": "smooth-radial-motif",
+        "lobes": 8
+      }
+    ],
+    "configuration": {
+      "algorithm": "auto",
+      "polygonal": false,
+      "identicalSheets": false,
+      "resolution": 400,
+      "fitTolerance": 0.5,
+      "maxSpan": 15,
+      "smoothRadius": 0,
+      "snapRadius": 1.5,
+      "borderRadius": 3,
+      "gridPortals": false,
+      "neighbors": 16,
+      "connectorVariants": 2,
+      "junctionBalancePenalty": 0,
+      "gridPreference": 0,
+      "sharpPenalty": 50,
+      "acutePenalty": 30,
+      "turnPenalty": 3,
+      "maxTurn": 175,
+      "localNeighborhoodFactor": 8,
+      "roundHidden": false,
+      "width": 100,
+      "timeLimit": 10,
+      "trials": 0,
+      "earlyStop": false
+    },
+    "criteria": {
+      "maximumMaskError": 0.03,
+      "minimumCropIoU": 0.9,
+      "minimumObservedFraction": 0.9
+    },
+    "summary": {
+      "exact-mask": {
+        "cases": 6,
+        "checkedPairs": 6,
+        "checkedReferences": 6,
+        "maximumClassifiedReferenceError": 0,
+        "maximumIndependentMaskError": 0.0012375,
+        "maximumExportedReferenceError": 0.0012375,
+        "maximumSolveSeconds": 1.8369563340000021
+      },
+      "known-crop": {
+        "cases": 6,
+        "checkedPairs": 6,
+        "checkedReferences": 6,
+        "maximumClassifiedReferenceError": 0.005961100260416667,
+        "maximumIndependentMaskError": 0.003980848524305556,
+        "maximumExportedReferenceError": 0.005594889322916667,
+        "maximumSolveSeconds": 2.221164249999998
+      },
+      "automatic": {
+        "cases": 6,
+        "checkedPairs": 6,
+        "checkedReferences": 6,
+        "maximumClassifiedReferenceError": 0.00595478470373235,
+        "maximumIndependentMaskError": 0.004380967881944444,
+        "maximumExportedReferenceError": 0.006071142565759304,
+        "maximumSolveSeconds": 6.187533624999997
+      }
+    },
+    "rows": [
+      {
+        "id": "radial-motif-920413-v0",
+        "track": "exact-mask",
+        "resolution": 400,
+        "solveSeconds": 1.445221167,
+        "sourceMaskSha256": "da63b4832f6c352d1f1e25fc6efefd3a919baf01f936c81f8a12e5f08693b1b7",
+        "classifiedReference": {
+          "mismatchFraction": 0,
+          "inverted": false,
+          "observedPixels": 160000,
+          "observedFraction": 1
+        },
+        "exportedReference": {
+          "mismatchFraction": 0.00049375,
+          "inverted": false,
+          "observedPixels": 160000,
+          "observedFraction": 1
+        },
+        "independentMaskError": 0.00049375,
+        "checkedReference": true,
+        "cropOverlap": null,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "editableError": 0.0004625,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0004625,
+          "sourceError": 0.0004625
+        }
+      },
+      {
+        "id": "radial-motif-920413-v0",
+        "track": "known-crop",
+        "resolution": 384,
+        "solveSeconds": 1.9644921250000003,
+        "sourceMaskSha256": "b0c7839658993456101cecba2436321e7be21e4d4a445834cbf104c1ddf49b84",
+        "classifiedReference": {
+          "mismatchFraction": 0.004611545138888889,
+          "inverted": false,
+          "observedPixels": 147456,
+          "observedFraction": 1
+        },
+        "exportedReference": {
+          "mismatchFraction": 0.003913031684027778,
+          "inverted": false,
+          "observedPixels": 147456,
+          "observedFraction": 1
+        },
+        "independentMaskError": 0.002190483940972222,
+        "checkedReference": true,
+        "cropOverlap": {
+          "iou": 1,
+          "referenceCoverage": 1,
+          "proposalPrecision": 1
+        },
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "editableError": 0.0021226671006944445,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 384,
+              "mismatch": 6.781684027777777e-06
+            },
+            {
+              "resolution": 768,
+              "mismatch": 3.3908420138888887e-06
+            }
+          ],
+          "originalSourceError": 0.002129448784722222,
+          "sourceError": 0.0021226671006944445
+        }
+      },
+      {
+        "id": "radial-motif-920413-v0",
+        "track": "automatic",
+        "resolution": 384,
+        "solveSeconds": 1.9415162499999996,
+        "sourceMaskSha256": "c4e8cb154246fb4e4f63a70959c0591153d069b5da3ff95054d425643e691bc7",
+        "classifiedReference": {
+          "mismatchFraction": 0.003997498164414109,
+          "inverted": false,
+          "observedPixels": 147092,
+          "observedFraction": 0.9975314670138888
+        },
+        "exportedReference": {
+          "mismatchFraction": 0.004106273624670274,
+          "inverted": false,
+          "observedPixels": 147092,
+          "observedFraction": 0.9975314670138888
+        },
+        "independentMaskError": 0.0008409288194444445,
+        "checkedReference": true,
+        "cropOverlap": {
+          "iou": 0.9874837133387748,
+          "referenceCoverage": 0.9898706391163933,
+          "proposalPrecision": 0.997564033491316
+        },
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "editableError": 0.0007798936631944445,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 384,
+              "mismatch": 0
+            },
+            {
+              "resolution": 768,
+              "mismatch": 6.781684027777777e-06
+            }
+          ],
+          "originalSourceError": 0.0007798936631944445,
+          "sourceError": 0.0007798936631944445
+        }
+      },
+      {
+        "id": "radial-motif-966827-v0",
+        "track": "exact-mask",
+        "resolution": 400,
+        "solveSeconds": 1.0225250420000012,
+        "sourceMaskSha256": "6e07b40c83232c52a4a51fee64c85d03af18dd7e7915991f11399b829784af1d",
+        "classifiedReference": {
+          "mismatchFraction": 0,
+          "inverted": false,
+          "observedPixels": 160000,
+          "observedFraction": 1
+        },
+        "exportedReference": {
+          "mismatchFraction": 0.00040625,
+          "inverted": false,
+          "observedPixels": 160000,
+          "observedFraction": 1
+        },
+        "independentMaskError": 0.00040625,
+        "checkedReference": true,
+        "cropOverlap": null,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "editableError": 0.00039375,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00039375,
+          "sourceError": 0.00039375
+        }
+      },
+      {
+        "id": "radial-motif-966827-v0",
+        "track": "known-crop",
+        "resolution": 384,
+        "solveSeconds": 1.7656131669999995,
+        "sourceMaskSha256": "85a55b96c14fcaf7b2b90e124c91efb1d3292b89dfc326cb90bb0edc31bafca7",
+        "classifiedReference": {
+          "mismatchFraction": 0.004313151041666667,
+          "inverted": false,
+          "observedPixels": 147456,
+          "observedFraction": 1
+        },
+        "exportedReference": {
+          "mismatchFraction": 0.003078884548611111,
+          "inverted": false,
+          "observedPixels": 147456,
+          "observedFraction": 1
+        },
+        "independentMaskError": 0.003946940104166667,
+        "checkedReference": true,
+        "cropOverlap": {
+          "iou": 1,
+          "referenceCoverage": 1,
+          "proposalPrecision": 1
+        },
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "editableError": 0.003994411892361111,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 384,
+              "mismatch": 0
+            },
+            {
+              "resolution": 768,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.003994411892361111,
+          "sourceError": 0.003994411892361111
+        }
+      },
+      {
+        "id": "radial-motif-966827-v0",
+        "track": "automatic",
+        "resolution": 384,
+        "solveSeconds": 3.8509373749999996,
+        "sourceMaskSha256": "69ec002b1328a9a3e7b83cf1580274d980f5ec889d4dcb6d02e6f29bfcc9e02a",
+        "classifiedReference": {
+          "mismatchFraction": 0.004673664618374413,
+          "inverted": false,
+          "observedPixels": 146138,
+          "observedFraction": 0.9910617404513888
+        },
+        "exportedReference": {
+          "mismatchFraction": 0.0032024524764263916,
+          "inverted": false,
+          "observedPixels": 146138,
+          "observedFraction": 0.9910617404513888
+        },
+        "independentMaskError": 0.003472222222222222,
+        "checkedReference": true,
+        "cropOverlap": {
+          "iou": 0.9870843680041906,
+          "referenceCoverage": 0.9974653238826505,
+          "proposalPrecision": 0.9895664945685481
+        },
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "editableError": 0.0035400390625,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 384,
+              "mismatch": 0
+            },
+            {
+              "resolution": 768,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0035400390625,
+          "sourceError": 0.0035400390625
+        }
+      },
+      {
+        "id": "radial-motif-923440-v0",
+        "track": "exact-mask",
+        "resolution": 400,
+        "solveSeconds": 1.0516551250000012,
+        "sourceMaskSha256": "6373bedfd5d7752974189826ee696e2797259db70f05f78fc3e72e115833c963",
+        "classifiedReference": {
+          "mismatchFraction": 0,
+          "inverted": false,
+          "observedPixels": 160000,
+          "observedFraction": 1
+        },
+        "exportedReference": {
+          "mismatchFraction": 0.0004125,
+          "inverted": false,
+          "observedPixels": 160000,
+          "observedFraction": 1
+        },
+        "independentMaskError": 0.0004125,
+        "checkedReference": true,
+        "cropOverlap": null,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "editableError": 0.00034375,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00034375,
+          "sourceError": 0.00034375
+        }
+      },
+      {
+        "id": "radial-motif-923440-v0",
+        "track": "known-crop",
+        "resolution": 384,
+        "solveSeconds": 2.1015908339999987,
+        "sourceMaskSha256": "7aa12e2f0d81740e9a2a19bb639046d47cbe17d43b620d2f76b5a3cd53816670",
+        "classifiedReference": {
+          "mismatchFraction": 0.005961100260416667,
+          "inverted": false,
+          "observedPixels": 147456,
+          "observedFraction": 1
+        },
+        "exportedReference": {
+          "mismatchFraction": 0.005594889322916667,
+          "inverted": false,
+          "observedPixels": 147456,
+          "observedFraction": 1
+        },
+        "independentMaskError": 0.003119574652777778,
+        "checkedReference": true,
+        "cropOverlap": {
+          "iou": 1,
+          "referenceCoverage": 1,
+          "proposalPrecision": 1
+        },
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "editableError": 0.002997504340277778,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 384,
+              "mismatch": 0
+            },
+            {
+              "resolution": 768,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.002997504340277778,
+          "sourceError": 0.002997504340277778
+        }
+      },
+      {
+        "id": "radial-motif-923440-v0",
+        "track": "automatic",
+        "resolution": 384,
+        "solveSeconds": 3.7738967090000006,
+        "sourceMaskSha256": "2ed7da6f8575b7f4812a0b1569c2c9aace4abb3b3d5bd7890ab142c54e7d6a3f",
+        "classifiedReference": {
+          "mismatchFraction": 0.00595478470373235,
+          "inverted": false,
+          "observedPixels": 146101,
+          "observedFraction": 0.9908108181423612
+        },
+        "exportedReference": {
+          "mismatchFraction": 0.006071142565759304,
+          "inverted": false,
+          "observedPixels": 146101,
+          "observedFraction": 0.9908108181423612
+        },
+        "independentMaskError": 0.002658420138888889,
+        "checkedReference": true,
+        "cropOverlap": {
+          "iou": 0.9875078936718064,
+          "referenceCoverage": 0.9965165931779449,
+          "proposalPrecision": 0.9909284957616701
+        },
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "editableError": 0.002658420138888889,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 384,
+              "mismatch": 0
+            },
+            {
+              "resolution": 768,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.002658420138888889,
+          "sourceError": 0.002658420138888889
+        }
+      },
+      {
+        "id": "radial-motif-930503-v0",
+        "track": "exact-mask",
+        "resolution": 400,
+        "solveSeconds": 1.6157324169999994,
+        "sourceMaskSha256": "71504546a273716fa2dbf044c73272ef1cc9b7b050ba95e77794f0322af197f5",
+        "classifiedReference": {
+          "mismatchFraction": 0,
+          "inverted": false,
+          "observedPixels": 160000,
+          "observedFraction": 1
+        },
+        "exportedReference": {
+          "mismatchFraction": 0.00095,
+          "inverted": false,
+          "observedPixels": 160000,
+          "observedFraction": 1
+        },
+        "independentMaskError": 0.00095,
+        "checkedReference": true,
+        "cropOverlap": null,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "editableError": 0.0010125,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0010125,
+          "sourceError": 0.0010125
+        }
+      },
+      {
+        "id": "radial-motif-930503-v0",
+        "track": "known-crop",
+        "resolution": 384,
+        "solveSeconds": 2.221164249999998,
+        "sourceMaskSha256": "a5f964963342549e527ee4c04b05aa67d5e327105e363319d7ef3ea4df7d18db",
+        "classifiedReference": {
+          "mismatchFraction": 0.00335693359375,
+          "inverted": false,
+          "observedPixels": 147456,
+          "observedFraction": 1
+        },
+        "exportedReference": {
+          "mismatchFraction": 0.0033094618055555555,
+          "inverted": false,
+          "observedPixels": 147456,
+          "observedFraction": 1
+        },
+        "independentMaskError": 0.002597384982638889,
+        "checkedReference": true,
+        "cropOverlap": {
+          "iou": 1,
+          "referenceCoverage": 1,
+          "proposalPrecision": 1
+        },
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "editableError": 0.002475314670138889,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 384,
+              "mismatch": 0
+            },
+            {
+              "resolution": 768,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.002475314670138889,
+          "sourceError": 0.002475314670138889
+        }
+      },
+      {
+        "id": "radial-motif-930503-v0",
+        "track": "automatic",
+        "resolution": 384,
+        "solveSeconds": 3.694000250000001,
+        "sourceMaskSha256": "3d61931e9615214f0b8925bbd2ef90fe55896cce7950098e377467e67bc0a20a",
+        "classifiedReference": {
+          "mismatchFraction": 0.003304882212359167,
+          "inverted": false,
+          "observedPixels": 146450,
+          "observedFraction": 0.9931776258680556
+        },
+        "exportedReference": {
+          "mismatchFraction": 0.0033458518265619664,
+          "inverted": false,
+          "observedPixels": 146450,
+          "observedFraction": 0.9931776258680556
+        },
+        "independentMaskError": 0.0017903645833333333,
+        "checkedReference": true,
+        "cropOverlap": {
+          "iou": 0.9885170484942476,
+          "referenceCoverage": 0.995509334453636,
+          "proposalPrecision": 0.9929447119765689
+        },
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "editableError": 0.001742892795138889,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 384,
+              "mismatch": 0
+            },
+            {
+              "resolution": 768,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.001742892795138889,
+          "sourceError": 0.001742892795138889
+        }
+      },
+      {
+        "id": "radial-motif-926467-v0",
+        "track": "exact-mask",
+        "resolution": 400,
+        "solveSeconds": 1.8369563340000021,
+        "sourceMaskSha256": "8b83d5b29b1e903842b4e94f02fb2a25dc7213cc6a7953858636cb0574b53d99",
+        "classifiedReference": {
+          "mismatchFraction": 0,
+          "inverted": false,
+          "observedPixels": 160000,
+          "observedFraction": 1
+        },
+        "exportedReference": {
+          "mismatchFraction": 0.001225,
+          "inverted": false,
+          "observedPixels": 160000,
+          "observedFraction": 1
+        },
+        "independentMaskError": 0.001225,
+        "checkedReference": true,
+        "cropOverlap": null,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "editableError": 0.00115625,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.0003125
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0003484375
+            }
+          ],
+          "originalSourceError": 0.00119375,
+          "sourceError": 0.00115625
+        }
+      },
+      {
+        "id": "radial-motif-926467-v0",
+        "track": "known-crop",
+        "resolution": 384,
+        "solveSeconds": 1.954949708,
+        "sourceMaskSha256": "e152e72c8d8d3201b29aa66da38c25c7bb27cf36cb755eee417b6f770bcc7acf",
+        "classifiedReference": {
+          "mismatchFraction": 0.005405002170138889,
+          "inverted": false,
+          "observedPixels": 147456,
+          "observedFraction": 1
+        },
+        "exportedReference": {
+          "mismatchFraction": 0.005018446180555556,
+          "inverted": false,
+          "observedPixels": 147456,
+          "observedFraction": 1
+        },
+        "independentMaskError": 0.003167046440972222,
+        "checkedReference": true,
+        "cropOverlap": {
+          "iou": 1,
+          "referenceCoverage": 1,
+          "proposalPrecision": 1
+        },
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "editableError": 0.003078884548611111,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 384,
+              "mismatch": 0
+            },
+            {
+              "resolution": 768,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.003078884548611111,
+          "sourceError": 0.003078884548611111
+        }
+      },
+      {
+        "id": "radial-motif-926467-v0",
+        "track": "automatic",
+        "resolution": 384,
+        "solveSeconds": 6.187533624999997,
+        "sourceMaskSha256": "fea5866bd8bd04286138052b85dc826347336bdc47ad747a2036f56922e4c906",
+        "classifiedReference": {
+          "mismatchFraction": 0.005773176201154635,
+          "inverted": false,
+          "observedPixels": 146713,
+          "observedFraction": 0.9949612087673612
+        },
+        "exportedReference": {
+          "mismatchFraction": 0.004880276458118913,
+          "inverted": false,
+          "observedPixels": 146713,
+          "observedFraction": 0.9949612087673612
+        },
+        "independentMaskError": 0.0021769205729166665,
+        "checkedReference": true,
+        "cropOverlap": {
+          "iou": 0.9923477742991018,
+          "referenceCoverage": 0.9975327465477456,
+          "proposalPrecision": 0.9947894144567692
+        },
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "editableError": 0.002163357204861111,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 384,
+              "mismatch": 0
+            },
+            {
+              "resolution": 768,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.002163357204861111,
+          "sourceError": 0.002163357204861111
+        }
+      },
+      {
+        "id": "radial-motif-925458-v0",
+        "track": "exact-mask",
+        "resolution": 400,
+        "solveSeconds": 1.370743875,
+        "sourceMaskSha256": "3d691d0ba2e30d73b11217befc951684a4702f72524158529a0dda45553f997b",
+        "classifiedReference": {
+          "mismatchFraction": 0,
+          "inverted": false,
+          "observedPixels": 160000,
+          "observedFraction": 1
+        },
+        "exportedReference": {
+          "mismatchFraction": 0.0012375,
+          "inverted": false,
+          "observedPixels": 160000,
+          "observedFraction": 1
+        },
+        "independentMaskError": 0.0012375,
+        "checkedReference": true,
+        "cropOverlap": null,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "editableError": 0.0011375,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0011375,
+          "sourceError": 0.0011375
+        }
+      },
+      {
+        "id": "radial-motif-925458-v0",
+        "track": "known-crop",
+        "resolution": 384,
+        "solveSeconds": 1.7468982089999991,
+        "sourceMaskSha256": "618da2d35cf9022c4006ad37979dc0f9b0615dd930f9a18adcc2e617f2b08ee2",
+        "classifiedReference": {
+          "mismatchFraction": 0.003827751196172249,
+          "inverted": false,
+          "observedPixels": 147345,
+          "observedFraction": 0.9992472330729166
+        },
+        "exportedReference": {
+          "mismatchFraction": 0.0032169398350809326,
+          "inverted": false,
+          "observedPixels": 147345,
+          "observedFraction": 0.9992472330729166
+        },
+        "independentMaskError": 0.003980848524305556,
+        "checkedReference": true,
+        "cropOverlap": {
+          "iou": 1,
+          "referenceCoverage": 1,
+          "proposalPrecision": 1
+        },
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "editableError": 0.0038248697916666665,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 384,
+              "mismatch": 0
+            },
+            {
+              "resolution": 768,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0038248697916666665,
+          "sourceError": 0.0038248697916666665
+        }
+      },
+      {
+        "id": "radial-motif-925458-v0",
+        "track": "automatic",
+        "resolution": 384,
+        "solveSeconds": 3.9330604590000005,
+        "sourceMaskSha256": "6a4cda00507595da26986f4514acbe7d0a8974a4b240f0a72a6ef88cd2a5d1ac",
+        "classifiedReference": {
+          "mismatchFraction": 0.0038323912610490314,
+          "inverted": false,
+          "observedPixels": 145601,
+          "observedFraction": 0.9874199761284722
+        },
+        "exportedReference": {
+          "mismatchFraction": 0.0029464083351075886,
+          "inverted": false,
+          "observedPixels": 145601,
+          "observedFraction": 0.9874199761284722
+        },
+        "independentMaskError": 0.004380967881944444,
+        "checkedReference": true,
+        "cropOverlap": {
+          "iou": 0.9879787903753531,
+          "referenceCoverage": 0.9998674790149688,
+          "proposalPrecision": 0.9881081784729947
+        },
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "editableError": 0.004313151041666667,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 384,
+              "mismatch": 0
+            },
+            {
+              "resolution": 768,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.004313151041666667,
+          "sourceError": 0.004313151041666667
+        }
+      }
+    ],
+    "correction": "Original photographic comparisons/writes incorrectly assumed 400px. These regenerated inputs must match the original source-mask hash; saved cuts are unchanged and independently rendered at the actual prepared resolution. Fitting is not rerun. Only original solver timings and engine reports are retained, not the invalid derived scores.",
+    "invalidInitialRun": "tmp/heart-learning/radial-motif-v1/pipeline",
+    "correctedRun": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2",
+    "editablePairs": 18,
+    "visualReview": "All six panels of input/woven/latent masks across three tracks were inspected, plus all three browser result/Draw pairs. Photographic corners are rounded relative to ideal polygons. Thin source-edge artifacts remain in several automatic crops. No extra slit was introduced in these six designs.",
+    "limits": [
+      "Six development cases from one simple procedural recipe, not six new real-photo recoveries or a full 64-design benchmark.",
+      "Ten seconds is the native search allowance; solve timings exclude crop detection, scoring and artifact writes.",
+      "The canonical mask and known-crop tracks use explicit synthetic ground truth; only the automatic track is a blind upload.",
+      "Rescoring retains the exact original input-mask hashes and exported cuts. Initial dimension-mismatched scores are invalid and not counted.",
+      "No neural training, held-out generalization claim, original-cut uniqueness claim or physical assembly test."
+    ]
+  },
+  "sourceHashes": {
+    "tmp/heart-learning/radial-motif-v1/rescore.mjs": "978bfc0cdbfda281d242b770534d5b3882005ea050ee112586f3b79bb41541ee",
+    "scripts/inverse/hard-photo-target.mjs": "69bdd88cd8f4c992d6b958082ce5b60d88abfab6c3f0299346b7b4a143f80d4a",
+    "scripts/inverse/export-renderer.mjs": "fb393f73b9c39780795c3951eb82d864fef7ab40ec63a90a4365aae6041afbbe",
+    "scripts/inverse/learning/photo-labels.mjs": "5e661f7195121a8225fc5c255eb9a4a2324773ff0c93fdc6713929c296b7e653",
+    "static/inverse/locator/anchored.js": "92f1ffb68bac38b1bc36f4209820b46200cfa7e6dcfbb746ed94f33beddac536",
+    "static/inverse/locator/background.js": "03d1c9b8f8237a97a7e8ed53d1dfa5117d1db079ba4162cac7117a8761f3441f",
+    "static/inverse/locator/fields.js": "569c2235139acdc3c22f1fee94158ae59406b682e7ef16e822de215fd94b36ea",
+    "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+    "static/inverse/locator/interior-palette.js": "6322efaa9772d488992a40da5b01091b0e71826d30c91fba5976c5b285e027bc",
+    "static/inverse/locator/locator.js": "bb745954e2fa2b59abf8be98ded36b75b134295363f913dab04d3a4ad1c6a419",
+    "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+    "static/inverse/locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+    "static/inverse/locator/palette.js": "4a373e0a911d8f8d2cdda42468c05cc52cb33b912a8990775f9db651cfc99158",
+    "static/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+    "static/inverse/core/chord-distance.js": "6be52281e3056d29ad7093f902b0f768410f3c414f049f164f94e969bd89dd48",
+    "static/inverse/core/crop.js": "03552409b48975702527fb365eea6841cb441a2be26637a7d44a85aa8ea763ff",
+    "static/inverse/core/engine.js": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+    "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+    "static/inverse/core/feature-recovery.js": "2db84f0963f188ae820dff82610f3d63dc7f51c61207b775a65973c12b390288",
+    "static/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+    "static/inverse/core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+    "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+    "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+    "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+    "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+    "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+    "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+    "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+    "static/inverse/core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+    "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+    "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+    "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+    "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+    "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+    "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+    "static/inverse/core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+    "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+    "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+    "static/inverse/core/solver.js": "29eeca095cfe123f378a424f099954e5ae082866b8ad437f1a6dbb064eddbbf1",
+    "static/inverse/core/spatial-color.js": "f170ff447ef905fc21121d286ac427a079b184ca077fd178065b0a3e247fb132",
+    "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+    "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+    "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+    "static/inverse/core/validate.js": "31cc29c6873896f53a2f999782dcd2292f0924611166932114b45534f5cbebd7",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+    "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+    "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+    "static/inverse/core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+    "static/inverse/core/direct/counts.js": "efdfa3fc371dc9d9cfbbc9ce763df8b8cdca6f8f6324b55fde9d23ed05f31d8e",
+    "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+    "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+    "static/inverse/core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+    "static/inverse/core/direct/feature-seeds.js": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+    "static/inverse/core/direct/finalize.js": "d8504b811b223296c006c1cca57466c28fef0adc0e880b2d0073bfcdcd554ae4",
+    "static/inverse/core/direct/fit.js": "ce926fbf75afdbe4a8b062c30da551832c5bff0305514f905ec87cfdb6687e7e",
+    "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+    "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+    "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+    "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+    "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+    "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+    "static/inverse/core/direct/outline-details.js": "ff9d4df5f27fd9ca97d15b115cc95c5692bd17e302f0dcd11c62e7295b85d8aa",
+    "static/inverse/core/direct/polish.js": "3f9df26508076465860a62ce72c2de3aeb67413a1d67ab1927dc37b89b7b622e",
+    "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+    "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+    "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+    "static/inverse/core/direct/refine.js": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+    "static/inverse/core/direct/rejected-routing.js": "26be56dd3367eeb0648833ca347f008af73c8717d58358664ff1d15bbd240540",
+    "static/inverse/core/direct/reroute.js": "84a8cf2cfb6bcb1101a63004f638d0f3dc398baf3fe15ec1068b20336535d9ed",
+    "static/inverse/core/direct/share.js": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+    "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+    "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+    "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+    "static/inverse/core/direct/short-returns.js": "b329b2ca19cb7fca3493d33b0e65dcd44f32ff7bba507cddad106df7f85321ab",
+    "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+    "static/inverse/core/direct/topology.js": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097",
+    "scripts/inverse/learning/photo-pipeline.mjs": "e672d2f08b081f77714a8ca5c8973be4039fa2d92102282a109e2ceadb198a5e",
+    "scripts/inverse/learning/foreground-replay.mjs": "a3ee22eeafed7e714762e2a699d6474052786c3dc375e6fe88338dfdaa452cc7",
+    "scripts/inverse/datasets/photo-labels.test.mjs": "79a12adbd5ef5d503c045c8139d1e31a1adad844ad0134b6f75905766513d8d4",
+    "scripts/inverse/datasets/real_annotations.py": "9f3d4ea18457751f04d312aa6c210b8e1bec9dc98231ce2274c88e06a1c5557e",
+    "scripts/inverse/learning/real_foreground.test.py": "1710e628392ec642cdf0d4a3457332470782a6f8a58910a96e8e50ed1a7ff296",
+    "tmp/heart-learning/radial-motif-v1/collect-qa.py": "df1648e107e2810b70b07c2eb44ce18d4d2bbaa50404fea6d8ebbda856905bab"
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/annotation-tests.log",
+      "bytes": 109,
+      "sha256": "a73b90ce0dcc2f1b6a82ba2689ef96d905fe952f9cb3c5593056e984ec490673"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/app.log",
+      "bytes": 258,
+      "sha256": "830549cd6b0a193db6b836a15114aec833311ef276031cfcb86b4887c91c652c"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/browser/chromium-gold-routing-mask/cut_geometry.json",
+      "bytes": 30117,
+      "sha256": "427fc6d21c1005db16984f025d71d57affadc24e4b8d84cb927dfb6c3d6070aa"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/browser/chromium-gold-routing-mask/draw.png",
+      "bytes": 267807,
+      "sha256": "ff0d5af26e416646be7986f623f28e8ecda11ad788baa93e8a9a1d837d21945e"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/browser/chromium-gold-routing-mask/editable.svg",
+      "bytes": 8549,
+      "sha256": "e2a26b693d1dd53c396a8191253169a8fe9d892248304e1ab64857df22be4f60"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/browser/chromium-gold-routing-mask/engine-report.json",
+      "bytes": 63078,
+      "sha256": "48bb53d5a2775b4753aa0e4013fc4f4469947658041030281374dc0b116af71c"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/browser/chromium-gold-routing-mask/import.png",
+      "bytes": 199034,
+      "sha256": "4cbe40c5b768aac41975047072f16306f1bd3944ede10fbb7dc704fb37730a21"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/browser/chromium-gold-routing-mask/input.png",
+      "bytes": 5055,
+      "sha256": "8ddd10a79196cb834f8e58a7e2860f94535ddfc6e35e570232a4387083231a98"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/browser/chromium-gold-routing-mask/prepared.json",
+      "bytes": 320042,
+      "sha256": "6663e0adccc59375fc86b70620908be827b1d05fde0298e75b9b88263f16840d"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/browser/chromium-gold-routing-mask/result.png",
+      "bytes": 163049,
+      "sha256": "c7fdd29c1b01c738cc06ce207311e26b55e61ed814b742458aa1ba7e8962fb22"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/browser/chromium-gold-routing-mask/template.pdf",
+      "bytes": 390523,
+      "sha256": "3273558407f8e25c891dc15e399628873b96c1ecfe37b0b4d3b5e0e75d58678f"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/browser/chromium-star/cut_geometry.json",
+      "bytes": 36275,
+      "sha256": "7e040bc9715127cdbf3d111dd6acb85beebb267bcfab69c198a9b3966de87601"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/browser/chromium-star/draw.png",
+      "bytes": 246444,
+      "sha256": "867e51a30e7fd087acc1a4fe04eb3cf70dff6edfe240183448e0a796762a542a"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/browser/chromium-star/editable.svg",
+      "bytes": 7113,
+      "sha256": "fb311ce80a88dd35e0f9a521e6f22dd9e185841ae1b9f9b6557817d9f7d1f83f"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/browser/chromium-star/engine-report.json",
+      "bytes": 44428,
+      "sha256": "bb8cbe210017488d0b95883f3cfcb34d13546878eb3ce828f4d1143cda167317"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/browser/chromium-star/prepared.json",
+      "bytes": 320042,
+      "sha256": "16846094e460d9c934f80d1e922cde35c0528a8eaec7696399d23910dc89576b"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/browser/chromium-star/result.png",
+      "bytes": 165792,
+      "sha256": "958edcaedd6edee695a3a100dc1ba1602ee7d9909f79d7fa5b0f6c0a7d4521ac"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/browser/chromium-star/template.pdf",
+      "bytes": 326180,
+      "sha256": "c10df814b026e5c39b49081e277fac7fdb18d0d17b37c78aa150e980f5f537a1"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/browser/chromium-top-hat-preferred/cut_geometry.json",
+      "bytes": 46870,
+      "sha256": "39f1f4067a585a1848603766697b8e86c5bcc1d98b49b022fc4121cacfa29667"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/browser/chromium-top-hat-preferred/draw.png",
+      "bytes": 247552,
+      "sha256": "3a195be2bb71a1cc178c0ed5715a80960d7f77c3a7e5c8346067055ff95237c9"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/browser/chromium-top-hat-preferred/editable.svg",
+      "bytes": 16194,
+      "sha256": "0c9fc9985182e0cb501ff6caa07d151ccabe83cd4e4f3f2ef5444c9d152b4d20"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/browser/chromium-top-hat-preferred/engine-report.json",
+      "bytes": 67659,
+      "sha256": "81072e0d72b9040e3125e6146806e271cb1ffdd74d93a1f1240016a82e18a88c"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/browser/chromium-top-hat-preferred/import.png",
+      "bytes": 187694,
+      "sha256": "a3afa944882f28e7f8e3299eaa1ecb189d262813243f3c077f4046f93ac7738c"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/browser/chromium-top-hat-preferred/input.png",
+      "bytes": 1484,
+      "sha256": "0b9f120849b863c65f2f806828b20702be2dfd90bd70426b1d7eb0ee7ca10fba"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/browser/chromium-top-hat-preferred/prepared.json",
+      "bytes": 640039,
+      "sha256": "e5c0a7c46136bec133f19ca5e67cf3260989136898a7cf0a80eda690593d4a4a"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/browser/chromium-top-hat-preferred/result.png",
+      "bytes": 182807,
+      "sha256": "494327c688ff971ae61ca91b697335eb4b8e9b05082d223d34a17b7b880a5fbf"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/browser/results.json",
+      "bytes": 82065,
+      "sha256": "37b2ae29302f289722c45f0c349881e86aec72e2ff9d614052bc4be0eae4fbfc"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/browser.log",
+      "bytes": 39653,
+      "sha256": "d08177aab6e7577668c3898e9ef361ac91a157d6378bc50f15106a3e18da93fd"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/build.log",
+      "bytes": 26131,
+      "sha256": "c40db96853921da9d7559c5ed36c1533a45072b58effcd9c780f2f5b7a17de84"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/check.log",
+      "bytes": 13474,
+      "sha256": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/checks.json",
+      "bytes": 402,
+      "sha256": "0f7c0b600f6ee3e31dde6edf773d4d7d71eec42a48182e7f8d52e4b9654216f1"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/collect-qa.py",
+      "bytes": 6182,
+      "sha256": "df1648e107e2810b70b07c2eb44ce18d4d2bbaa50404fea6d8ebbda856905bab"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/collect.py",
+      "bytes": 3956,
+      "sha256": "890f89e16c657372f83afab852a55982d99a04bdd4a2a55f921f939d5399dfc4"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/contact-0.png",
+      "bytes": 332058,
+      "sha256": "ec7f2632c388ad54baf7d368cf65a5fd5b2165020f4b758eed8d022fc45e5892"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/contact-1.png",
+      "bytes": 337071,
+      "sha256": "1e06cae54858154634b0da7003793bc9df6ae8da20329a471217482c037c65f6"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/contact-2.png",
+      "bytes": 327066,
+      "sha256": "092266e5bb1f7feaaec8e6e098796692f1cc066866434ccd8a10b791ebe1653d"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/contact-3.png",
+      "bytes": 325499,
+      "sha256": "58c71e9e9dd4afdb1347c8027d33a3da9dfc1510dd74ff828ea842a8053b2dd2"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/contact-4.png",
+      "bytes": 343900,
+      "sha256": "aa9c190598167fc6b99338db149b38ee8159d1ed5621806932ead2589603ed3d"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/contact-5.png",
+      "bytes": 339166,
+      "sha256": "9185f7355b97bb87cc12b003ce3b7452031ce7ddba1e8dd0a85c394d75ce2e1c"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/contact-6.png",
+      "bytes": 311026,
+      "sha256": "cfffdad20d515d42a0ab54c2a2e9eb6107fafb5f8038dbd23ae2a061530935a8"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/contact-7.png",
+      "bytes": 304316,
+      "sha256": "a7d55d0b4a84e3da2ec4c431f8448e0b729c93979f8751cb1c42654159e2d504"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-920413-v0-automatic-automatic-weave.png",
+      "bytes": 2309,
+      "sha256": "630a626995ba0216b6d3f4aff3d3fcdf7923b795f2f12102a69984a058945b54"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-920413-v0-automatic-automatic.svg",
+      "bytes": 9153,
+      "sha256": "a321f482760c39cb221c0cffcacf31687235b3b7b3d261c3fce69c681c1b99ae"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-920413-v0-exact-mask-automatic-weave.png",
+      "bytes": 2234,
+      "sha256": "3a72b7107c050c745fdc9d398687f6613caa74a54d8f92fc34d305da88367335"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-920413-v0-exact-mask-automatic.svg",
+      "bytes": 3102,
+      "sha256": "a761b6581f5bb14c6ca83fd15534ea2b1f753b27f5d14b8be23d4a07c4470e1a"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-920413-v0-known-crop-automatic-weave.png",
+      "bytes": 2304,
+      "sha256": "aa3d866a1c0138c1e7f65cbee68113d0ce157ac56dd81f7693e319e940a70555"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-920413-v0-known-crop-automatic.svg",
+      "bytes": 9019,
+      "sha256": "bb368e131192c11f6f790d774259d195fab1a0547695b5d52b13b7b60b416a81"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-923440-v0-automatic-automatic-weave.png",
+      "bytes": 2489,
+      "sha256": "64ff8173f76b2ebeffcba66b206bc8dcbe81a0f5ab2c196885ab13f93e2753c3"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-923440-v0-automatic-automatic.svg",
+      "bytes": 10795,
+      "sha256": "21112033083bb572faeea6fecdb3941ad08a060e37cb592b649bd02e35c6c380"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-923440-v0-exact-mask-automatic-weave.png",
+      "bytes": 2334,
+      "sha256": "39e4f50f704b6913b66d92e2fae90050e40074fcdf87146777bc4d4ba0b588a2"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-923440-v0-exact-mask-automatic.svg",
+      "bytes": 4222,
+      "sha256": "42d8e8b867f2d510bbbe76bd3898a62eadd4ed4a317925489af2e7e3c5cb976e"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-923440-v0-known-crop-automatic-weave.png",
+      "bytes": 2447,
+      "sha256": "f45557d262bf6854bf34500e508b9dca6accc369ea2d92c73e8f54ebf3ad9226"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-923440-v0-known-crop-automatic.svg",
+      "bytes": 12811,
+      "sha256": "be311e62b7c01a7ec3a17120f271d21e641ac27cf370c0b4bc067419d0ff1529"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-925458-v0-automatic-automatic-weave.png",
+      "bytes": 2618,
+      "sha256": "44ae8de0884433e9dd5859238d3435edb5d0a828ea33e5a929b0549007292831"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-925458-v0-automatic-automatic.svg",
+      "bytes": 12342,
+      "sha256": "bdf26761a47e19d1d525b13066d3a7ff429100a57373634613460b51a1f03231"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-925458-v0-exact-mask-automatic-weave.png",
+      "bytes": 2422,
+      "sha256": "2beb5afab9f414e638aac4d9eb0f964415227b5dce6a5afd65348112eebe4d84"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-925458-v0-exact-mask-automatic.svg",
+      "bytes": 5649,
+      "sha256": "39c8806deb2ae3921c1281887189e7ac8f41a5c5434088b51eb177422f5368fa"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-925458-v0-known-crop-automatic-weave.png",
+      "bytes": 2435,
+      "sha256": "ec8d884f93e2d08d8bfb168c87e73e95bcff071073e58a1877d349c48dfac14d"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-925458-v0-known-crop-automatic.svg",
+      "bytes": 9507,
+      "sha256": "ddc448f5d83d8c1454d99cb3fd9820ee52b2adff6b8a63fbc4078f5d5cdbfd65"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-926467-v0-automatic-automatic-weave.png",
+      "bytes": 2740,
+      "sha256": "7e2f1c67513806abcc29a240423a40180b2fd5442f31f941ea3b719f1e7dbc0e"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-926467-v0-automatic-automatic.svg",
+      "bytes": 11285,
+      "sha256": "e52d6808dc0d4dabd089f45d13ae8bdf094db543dd9629c1874b3e25264e7b0f"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-926467-v0-exact-mask-automatic-weave.png",
+      "bytes": 2555,
+      "sha256": "e6398954aa25c8956cd4799af90cbb4a09f1e0c31a4c6ddb8ede8299c0663e58"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-926467-v0-exact-mask-automatic.svg",
+      "bytes": 7425,
+      "sha256": "8733ef8325d62c6acdb61fc9e25f1553f925e4e4ba9921ee1ed40b6c4c6bde15"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-926467-v0-known-crop-automatic-weave.png",
+      "bytes": 2648,
+      "sha256": "0f29b5ee51742024cb3ad0219a018a396b79faced24d35eccb64e9839c68e1ee"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-926467-v0-known-crop-automatic.svg",
+      "bytes": 12058,
+      "sha256": "247d72337486bc8b979279c3973a45d3745b22a6b8e04aaba910ff89feb26a36"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-930503-v0-automatic-automatic-weave.png",
+      "bytes": 2493,
+      "sha256": "03f40a5867137a1ed111361a2e0f31c569f5188fdaf5802ac20b21560897fdb4"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-930503-v0-automatic-automatic.svg",
+      "bytes": 10660,
+      "sha256": "8aea187115ba1bb7a678bd36f50bb595194b52d08ac0a10f799666c85ef3bfc2"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-930503-v0-exact-mask-automatic-weave.png",
+      "bytes": 2351,
+      "sha256": "436e291a08fc5da8b95d76f586f2e96924838c87a71e4cf87db73340c456ec6d"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-930503-v0-exact-mask-automatic.svg",
+      "bytes": 6837,
+      "sha256": "38f7e87d80527be275e34de800f7fa8604b677b254800e6a39285fdcb954627b"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-930503-v0-known-crop-automatic-weave.png",
+      "bytes": 2412,
+      "sha256": "1d0aa1724a307545b7194755983682e62d061a64534d95822649efa44ea8bfb9"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-930503-v0-known-crop-automatic.svg",
+      "bytes": 9936,
+      "sha256": "3ec2f5745edadda0f828dbd7622d460c06de3f0c11cc5d15413dae39797d70db"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-966827-v0-automatic-automatic-weave.png",
+      "bytes": 2421,
+      "sha256": "688f7289ff70e180def5f05e8f642784f51d01582c240ee3f283ca8494f3537f"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-966827-v0-automatic-automatic.svg",
+      "bytes": 12868,
+      "sha256": "7fb1ceecd0e9a094ba0b9d1cceeb43bfb717136c71f90b7fdf6bbd12ffdcbc70"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-966827-v0-exact-mask-automatic-weave.png",
+      "bytes": 2288,
+      "sha256": "9096c3893c472bdd45f28e70b1b1bced874597563ad3db0ee2ef6ae6b1e788c2"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-966827-v0-exact-mask-automatic.svg",
+      "bytes": 3333,
+      "sha256": "9f16747352aacc982f504dfd4e58f23fd4e15d30f912767b4785575e7fb336c4"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-966827-v0-known-crop-automatic-weave.png",
+      "bytes": 2358,
+      "sha256": "591a203a93cb0de676c78aca6accaf7cc21f4faab6a9b03522d3e18f5a40fe11"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/radial-motif-966827-v0-known-crop-automatic.svg",
+      "bytes": 9276,
+      "sha256": "cb29121d8b066bc7e76cd5f5db2617aa239eae951f0de4ef6e44bfaaa90b6846"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor/results.json",
+      "bytes": 102682,
+      "sha256": "3879aac248db73b6e1feddff6e3bdbdb127884a1b248987fae4d873ffcde5e02"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-920413-v0-automatic/automatic/cut_geometry.json",
+      "bytes": 34266,
+      "sha256": "f7bb8a21d306ac2278497bbcb2ba71188f2e6b45347b1e2a38b9268d5132e3aa"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-920413-v0-automatic/automatic/mask.png",
+      "bytes": 2199,
+      "sha256": "222b42ad1d4bdd4944a7f5bcbe4085a080cfc5042b92fae6ac9d85790135760a"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-920413-v0-exact-mask/automatic/cut_geometry.json",
+      "bytes": 10513,
+      "sha256": "0e8df67793972b686adcc80514ddb66a710112f3f4494be8b877b7edc38d79ed"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-920413-v0-exact-mask/automatic/mask.png",
+      "bytes": 2066,
+      "sha256": "dbbfe65e74b9336890720e2dccd9032a818a5000929a9688f93858190ddd3517"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-920413-v0-known-crop/automatic/cut_geometry.json",
+      "bytes": 33345,
+      "sha256": "ac00990bf8227eff3439eecb6e1fde31ae69069423901c8314d24e0cdaf33b13"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-920413-v0-known-crop/automatic/mask.png",
+      "bytes": 2274,
+      "sha256": "646e719a60c926ed0d8c87f99b4576f223f381aa4e9a1fc798020f40ca05af75"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-923440-v0-automatic/automatic/cut_geometry.json",
+      "bytes": 32684,
+      "sha256": "d23a75a80533f04c802844b201971a6187a214b52253940bf03459531d512cb1"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-923440-v0-automatic/automatic/mask.png",
+      "bytes": 2420,
+      "sha256": "84d24d8b1f2ebb7d467f3f5c6382c04097d535635d875599b2cfb6a0f9910310"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-923440-v0-exact-mask/automatic/cut_geometry.json",
+      "bytes": 14837,
+      "sha256": "61ab66331f1d6c290e63fc67425bbbf0eb7b1b6f644ccce523348bea628edf27"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-923440-v0-exact-mask/automatic/mask.png",
+      "bytes": 2144,
+      "sha256": "383c14a5a900ed62f4d3d8fc646d2073c81e9b94132c4d6eed49703a13944e93"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-923440-v0-known-crop/automatic/cut_geometry.json",
+      "bytes": 48621,
+      "sha256": "e5efec69baf0c9c23440d32a08afe2cf63257de013006cfaab8e7ea06a964eb4"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-923440-v0-known-crop/automatic/mask.png",
+      "bytes": 2414,
+      "sha256": "ecc839b16c6321e53326003c62fd1c7932b182df1bd62c8ff672148e6da66a8c"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-925458-v0-automatic/automatic/cut_geometry.json",
+      "bytes": 35161,
+      "sha256": "da3c57952d2ba43e10ef24c2cb9f3d4654b04f8a6ec578c790687e1cfaf71543"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-925458-v0-automatic/automatic/mask.png",
+      "bytes": 2553,
+      "sha256": "f13e2518c8036c0ec18b7bddde51d4d6c2e2c0bb68e07034b2b024c6fd7e4029"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-925458-v0-exact-mask/automatic/cut_geometry.json",
+      "bytes": 24075,
+      "sha256": "6da59f1271e09c8f6c976dfb6d19318dd49832b55381f4cb8dcad0423f3df159"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-925458-v0-exact-mask/automatic/mask.png",
+      "bytes": 2222,
+      "sha256": "168dc311cd5f6b77e7ce387c3cae38c8991fdc9a9998b173c0cf7071f5b925f5"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-925458-v0-known-crop/automatic/cut_geometry.json",
+      "bytes": 34777,
+      "sha256": "60671b14b061f9e334cc56a1b6234c75f428a0b6a9b4d29d420c1b2e6add7d46"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-925458-v0-known-crop/automatic/mask.png",
+      "bytes": 2525,
+      "sha256": "774c4f8c405971ed82230812ffecd0199a63a6d3702a44faf57b8ae84b9b6eec"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-926467-v0-automatic/automatic/cut_geometry.json",
+      "bytes": 33372,
+      "sha256": "3d48ab1af8f9632b5ab22dce98f4f1a7abe8b961d2620cb9ebaa17c18296693c"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-926467-v0-automatic/automatic/mask.png",
+      "bytes": 2600,
+      "sha256": "a6f6dfe419b311f80116f353fd2ae7f9e2be2e3ea1755030c50e165b12e95f30"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-926467-v0-exact-mask/automatic/cut_geometry.json",
+      "bytes": 29564,
+      "sha256": "b5afee634e3608d080c091f8919c5f7abc4bb93c1affa1c47791e7a603108ae6"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-926467-v0-exact-mask/automatic/mask.png",
+      "bytes": 2377,
+      "sha256": "eccf1db155fb4fdfa961af7f4532e5bea4069cf6322d5addaf49e9d56b246d89"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-926467-v0-known-crop/automatic/cut_geometry.json",
+      "bytes": 46945,
+      "sha256": "f0e77b5337feca3ec53879cbe024575170f49e4eae2096fd9763d19ddfeadb1e"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-926467-v0-known-crop/automatic/mask.png",
+      "bytes": 2529,
+      "sha256": "f75b3a885ee93ff6fc96fbe924879517de43b9e688bc17e8adf3b80b28fd42d2"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-930503-v0-automatic/automatic/cut_geometry.json",
+      "bytes": 32229,
+      "sha256": "d323bcf3c08a77cc28e2d0a5db7ab97d4eddaad6d65bc1a3c170444272899c89"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-930503-v0-automatic/automatic/mask.png",
+      "bytes": 2424,
+      "sha256": "09083b22e7c775930a09e5b5255ab5c6ec8bf4502ba89f2585d2d7fecaa27c40"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-930503-v0-exact-mask/automatic/cut_geometry.json",
+      "bytes": 24646,
+      "sha256": "73183d104d676ec29158e7f22e8f69175ea231e2f511d5c3e1f18f7b45a333e8"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-930503-v0-exact-mask/automatic/mask.png",
+      "bytes": 2179,
+      "sha256": "4fe1ecc259f6186f3f7953ff1266b97a44eb244113a3506390871c296412e57e"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-930503-v0-known-crop/automatic/cut_geometry.json",
+      "bytes": 39933,
+      "sha256": "8bf0f28be2adde1a2994a6d17fbe0daccff514d7ec415231fbb583d11ef10da3"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-930503-v0-known-crop/automatic/mask.png",
+      "bytes": 2327,
+      "sha256": "ff4f037201e9f98711c3452b6d0613aee7e0f37907f362b3e9283ab45a9549fe"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-966827-v0-automatic/automatic/cut_geometry.json",
+      "bytes": 37455,
+      "sha256": "1b646695f6b0e3563ff6ea75e4dd11db384b89be5817b891c1dbd7601f519b06"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-966827-v0-automatic/automatic/mask.png",
+      "bytes": 2396,
+      "sha256": "4430282ffea1443e426dc831bcfdbb0a0c968d83051f25b5abf2dfb8c118e835"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-966827-v0-exact-mask/automatic/cut_geometry.json",
+      "bytes": 11513,
+      "sha256": "cc1f3f8ce5743852ea9dac5d420d297d86926318b03ed59c5f4e9ced13433412"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-966827-v0-exact-mask/automatic/mask.png",
+      "bytes": 2124,
+      "sha256": "f3f482d1b46c1af8ee38d43997c2cd6f8bf96d9ee5181519f7926a9de53a5aa3"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-966827-v0-known-crop/automatic/cut_geometry.json",
+      "bytes": 33820,
+      "sha256": "e3a0980a2e7e4e98900e3e55cb43024707ccd279756575125d065589c60e6c75"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/radial-motif-966827-v0-known-crop/automatic/mask.png",
+      "bytes": 2411,
+      "sha256": "6e42ca57502ca283cbb3cc5a2793cb49e72f8ce5bb7c625830b5507fbf5ff0b8"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor-input/results.json",
+      "bytes": 907687,
+      "sha256": "b2418450e046b6d29141a2aed6c54148e96d03e66986a554973ecae7bbdf4244"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/editor.log",
+      "bytes": 1801,
+      "sha256": "d9537153b43a9570a03aa97afd3175958cee67a5df720e8b27776e1be763bd36"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/focused-tests.log",
+      "bytes": 1625,
+      "sha256": "39db63e1bc9914ed19ef9ac5320d3ab9fdc783675fa3310c0f8d1bde8cb1bb12"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/generation.log",
+      "bytes": 4554,
+      "sha256": "5e66e71c8d20a4ddb71525a42811577df78f06feacfe5e154e14a94396ed9bc9"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/inverse.log",
+      "bytes": 74870,
+      "sha256": "60ca6977648c0fe822fcf10234e02e3ad62508c27f022c0e34f7bdf0b68ca2a5"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/lint.log",
+      "bytes": 293,
+      "sha256": "f1a4b272f2f106d9cc645be00a12d8ac4dea14308d11091a0ea8c493d6036f90"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/INVALID.md",
+      "bytes": 713,
+      "sha256": "8dcebbfc5cb4e3eb7a4b3f0c64d938bc7ec2bc46d52b6dcb99e00a8fa0d91509"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-920413-v0-automatic/crop.png",
+      "bytes": 108830,
+      "sha256": "9e06cff6b0991d4d256660e0522c08d6fcb47cea4b468665c37e4c2de953f3a9"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-920413-v0-automatic/cut_geometry.json",
+      "bytes": 34266,
+      "sha256": "f7bb8a21d306ac2278497bbcb2ba71188f2e6b45347b1e2a38b9268d5132e3aa"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-920413-v0-automatic/detection.json",
+      "bytes": 66827,
+      "sha256": "999e82e27a693ab7450b75afbd7a976a647bed951727d32ba59866aef5ec7c50"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-920413-v0-automatic/mask.png",
+      "bytes": 3591,
+      "sha256": "f779dbfea41b4397de9d871522031c71520dcf085b2a6d0a9a615551d37d431a"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-920413-v0-automatic/reference.png",
+      "bytes": 2267,
+      "sha256": "744a9023dadba5174d5f1dbb24b438d0daaabd6543a134df4462291c375344e4"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-920413-v0-automatic/woven.png",
+      "bytes": 5546,
+      "sha256": "63215b0ac8a220dc2123971e46311eb5615bdbbdcaccd3d377cefb9c951d2ef4"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-920413-v0-exact-mask/cut_geometry.json",
+      "bytes": 10513,
+      "sha256": "0e8df67793972b686adcc80514ddb66a710112f3f4494be8b877b7edc38d79ed"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-920413-v0-exact-mask/mask.png",
+      "bytes": 2220,
+      "sha256": "567572248d101a22de7ff75dda60990048446f556d51c4a38261082a6f552e60"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-920413-v0-exact-mask/reference.png",
+      "bytes": 2220,
+      "sha256": "567572248d101a22de7ff75dda60990048446f556d51c4a38261082a6f552e60"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-920413-v0-exact-mask/woven.png",
+      "bytes": 4544,
+      "sha256": "9dd3c72bfa2271c716968223bfdc98c6a5f3c22710a278b97fae2c0f91d2ae17"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-920413-v0-known-crop/crop.png",
+      "bytes": 108825,
+      "sha256": "0663dab28cfe06ef51be13dd9dab59b381982c6babb446d60166d9806fa47995"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-920413-v0-known-crop/cut_geometry.json",
+      "bytes": 33345,
+      "sha256": "ac00990bf8227eff3439eecb6e1fde31ae69069423901c8314d24e0cdaf33b13"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-920413-v0-known-crop/mask.png",
+      "bytes": 3789,
+      "sha256": "08f71a6817782d13617cc9f827d30417c4faf2df9840bf27d85122fad7319de0"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-920413-v0-known-crop/reference.png",
+      "bytes": 2220,
+      "sha256": "567572248d101a22de7ff75dda60990048446f556d51c4a38261082a6f552e60"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-920413-v0-known-crop/woven.png",
+      "bytes": 5440,
+      "sha256": "a4abb08a24ab3ac24f0c7e6148c3e67cf9e9c9a53b4143cb5637dea96e67a9c9"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-923440-v0-automatic/crop.png",
+      "bytes": 104127,
+      "sha256": "0c018083168ac47a07fe32865b264d2d3b558a9a6d3686a7d34adbecce47cedb"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-923440-v0-automatic/cut_geometry.json",
+      "bytes": 32684,
+      "sha256": "d23a75a80533f04c802844b201971a6187a214b52253940bf03459531d512cb1"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-923440-v0-automatic/detection.json",
+      "bytes": 71480,
+      "sha256": "208c021d1e62fd5fc634ca61bc24c80bbcd2bb19f4637d120b995379727ee2da"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-923440-v0-automatic/mask.png",
+      "bytes": 3894,
+      "sha256": "326c7943a50231e2bbb20591ae92faf21b35fe945b5c507dfb594c136564baf7"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-923440-v0-automatic/reference.png",
+      "bytes": 2378,
+      "sha256": "8588655f9abbe6846557839b728a88581e44ebacc20df551f74ff52e5a9539b8"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-923440-v0-automatic/woven.png",
+      "bytes": 6979,
+      "sha256": "33a94d10566400a743895c65251488701c216f5d73e3a9e023d5a66f2993c962"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-923440-v0-exact-mask/cut_geometry.json",
+      "bytes": 14837,
+      "sha256": "61ab66331f1d6c290e63fc67425bbbf0eb7b1b6f644ccce523348bea628edf27"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-923440-v0-exact-mask/mask.png",
+      "bytes": 2323,
+      "sha256": "dbf8dba7810a2bdbc34c17f419f305dfc38486e5ce0bd387064edb7142fc51df"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-923440-v0-exact-mask/reference.png",
+      "bytes": 2323,
+      "sha256": "dbf8dba7810a2bdbc34c17f419f305dfc38486e5ce0bd387064edb7142fc51df"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-923440-v0-exact-mask/woven.png",
+      "bytes": 5547,
+      "sha256": "55b9bd094bb47b637da58bc94da8f4e341f163f6fdaabaec3c071de0cbaca2d1"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-923440-v0-known-crop/crop.png",
+      "bytes": 103700,
+      "sha256": "a165a48cf5eb02c8299bd5f0a863e27c8212df90e5d515cdd9f02392d5e45780"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-923440-v0-known-crop/cut_geometry.json",
+      "bytes": 48621,
+      "sha256": "e5efec69baf0c9c23440d32a08afe2cf63257de013006cfaab8e7ea06a964eb4"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-923440-v0-known-crop/mask.png",
+      "bytes": 3829,
+      "sha256": "da43948d2ff7c2fe49d8ed7c7781108cbad8b6478730259946d79e58ba0bda6f"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-923440-v0-known-crop/reference.png",
+      "bytes": 2323,
+      "sha256": "dbf8dba7810a2bdbc34c17f419f305dfc38486e5ce0bd387064edb7142fc51df"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-923440-v0-known-crop/woven.png",
+      "bytes": 6262,
+      "sha256": "374102cf723cf4581ed4bd167bfa880378b11bd38d479d437e3b04680924a35c"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-925458-v0-automatic/crop.png",
+      "bytes": 112115,
+      "sha256": "4981f8d96f930843a909c11b6afeb1592bab8c086a1d12c03d8448cb5a2513c0"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-925458-v0-automatic/cut_geometry.json",
+      "bytes": 35161,
+      "sha256": "da3c57952d2ba43e10ef24c2cb9f3d4654b04f8a6ec578c790687e1cfaf71543"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-925458-v0-automatic/detection.json",
+      "bytes": 68889,
+      "sha256": "e6844117a332e709a5d046dd15ded914c0b9f497591e33458d2fce14b54410a0"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-925458-v0-automatic/mask.png",
+      "bytes": 4456,
+      "sha256": "72cc1f94c975ef79848a9af465a37007ac92f75cd83a4e08cadc9ad54b02d6bd"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-925458-v0-automatic/reference.png",
+      "bytes": 2481,
+      "sha256": "45c3c14694c0f0c67089bfea0abbdfe6527874a1c7b97bc5cacc8e60d956b0a2"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-925458-v0-automatic/woven.png",
+      "bytes": 6896,
+      "sha256": "2278c7c43f0d9b4734681befcd36282fe0bece333e5973f3fa84747ec6b0b40f"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-925458-v0-exact-mask/cut_geometry.json",
+      "bytes": 24075,
+      "sha256": "6da59f1271e09c8f6c976dfb6d19318dd49832b55381f4cb8dcad0423f3df159"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-925458-v0-exact-mask/mask.png",
+      "bytes": 2409,
+      "sha256": "b1f393b43dcc35101acb0b41eb7a9d398d485f3de9a68bc8baa5ecdc04d349cf"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-925458-v0-exact-mask/reference.png",
+      "bytes": 2409,
+      "sha256": "b1f393b43dcc35101acb0b41eb7a9d398d485f3de9a68bc8baa5ecdc04d349cf"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-925458-v0-exact-mask/woven.png",
+      "bytes": 5578,
+      "sha256": "2bbf1a80472b4fbe7cda04d70f3562091ccd394816b9fb3a3b9a34f9f7e816c5"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-925458-v0-known-crop/crop.png",
+      "bytes": 111837,
+      "sha256": "e5d2a9119adf78a14f587cae151520999829476e0d3d2b3b015bdf2e9a6d49b4"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-925458-v0-known-crop/cut_geometry.json",
+      "bytes": 34777,
+      "sha256": "60671b14b061f9e334cc56a1b6234c75f428a0b6a9b4d29d420c1b2e6add7d46"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-925458-v0-known-crop/mask.png",
+      "bytes": 4092,
+      "sha256": "cefb5e988b926dbb2ef7e9fe779b0a4edca56b466915ff2261fb2e7bb0ed9032"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-925458-v0-known-crop/reference.png",
+      "bytes": 2409,
+      "sha256": "b1f393b43dcc35101acb0b41eb7a9d398d485f3de9a68bc8baa5ecdc04d349cf"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-925458-v0-known-crop/woven.png",
+      "bytes": 5963,
+      "sha256": "2ba7c707424aaea34c37c4723379b5bbe728533d550e627d438bccc1f913d6f3"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-926467-v0-automatic/crop.png",
+      "bytes": 112360,
+      "sha256": "060ab188c50604e17719fba3a1e6f2cafc838f16c6c0a6c7db6a704c6f82b15c"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-926467-v0-automatic/cut_geometry.json",
+      "bytes": 33372,
+      "sha256": "3d48ab1af8f9632b5ab22dce98f4f1a7abe8b961d2620cb9ebaa17c18296693c"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-926467-v0-automatic/detection.json",
+      "bytes": 66214,
+      "sha256": "a14ff56d600381b08edac7582d1f0593648fdf819044b5c89fcd2045ce93ffa8"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-926467-v0-automatic/mask.png",
+      "bytes": 3973,
+      "sha256": "0ab1f9809d625f0ec02280f092caac176e8f1d184f125995008cf14adce5372e"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-926467-v0-automatic/reference.png",
+      "bytes": 2579,
+      "sha256": "0f9ec71ced07eb5aa6304f3acbaae9311d78c3d18e79da224623ffcb9001c9f5"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-926467-v0-automatic/woven.png",
+      "bytes": 6876,
+      "sha256": "5eaff7742e358cf44ca458667be549beb8a6aff076306a30c9c2d1f732f36da4"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-926467-v0-exact-mask/cut_geometry.json",
+      "bytes": 29564,
+      "sha256": "b5afee634e3608d080c091f8919c5f7abc4bb93c1affa1c47791e7a603108ae6"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-926467-v0-exact-mask/mask.png",
+      "bytes": 2550,
+      "sha256": "d0118853af007ad90a5e8efede56af0a0ec6c7b602dec037dc4d457f47a934d0"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-926467-v0-exact-mask/reference.png",
+      "bytes": 2550,
+      "sha256": "d0118853af007ad90a5e8efede56af0a0ec6c7b602dec037dc4d457f47a934d0"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-926467-v0-exact-mask/woven.png",
+      "bytes": 5884,
+      "sha256": "b9c15faf8403b31e876c8715d2edd45b2262529db980aa54e5577642ec916956"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-926467-v0-known-crop/crop.png",
+      "bytes": 111224,
+      "sha256": "75a708575556502dfaba91d7e8f7e35d527015778dae39e2d47d194b2f9fc2bc"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-926467-v0-known-crop/cut_geometry.json",
+      "bytes": 46945,
+      "sha256": "f0e77b5337feca3ec53879cbe024575170f49e4eae2096fd9763d19ddfeadb1e"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-926467-v0-known-crop/mask.png",
+      "bytes": 3856,
+      "sha256": "c8ed36069be3a608c0e8eaff795fbab547f5aa97dc5ccbb06a54b6603a451932"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-926467-v0-known-crop/reference.png",
+      "bytes": 2550,
+      "sha256": "d0118853af007ad90a5e8efede56af0a0ec6c7b602dec037dc4d457f47a934d0"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-926467-v0-known-crop/woven.png",
+      "bytes": 6473,
+      "sha256": "59a722d9a6f8e0a7917563a370cde76857783431dec8326b0993ad5fe16ecaef"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-930503-v0-automatic/crop.png",
+      "bytes": 111627,
+      "sha256": "907f2f111f8589da9f1dd225c5269e65603bcd975aa76235dc47689c1ed3e27d"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-930503-v0-automatic/cut_geometry.json",
+      "bytes": 32229,
+      "sha256": "d323bcf3c08a77cc28e2d0a5db7ab97d4eddaad6d65bc1a3c170444272899c89"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-930503-v0-automatic/detection.json",
+      "bytes": 63300,
+      "sha256": "fea78638c9ada03d984d60aedde63c6bbd831382c39620866fbb72d5c24eaa15"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-930503-v0-automatic/mask.png",
+      "bytes": 4055,
+      "sha256": "cbedfb98ed5c2b982de9aad1af492bbb21cd9b0fe9f74f9122cec2e70cf50a29"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-930503-v0-automatic/reference.png",
+      "bytes": 2425,
+      "sha256": "e865568eaaa60a82e29d06f89b1813e60c2330d5d2a9f3e69965b81a926c1699"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-930503-v0-automatic/woven.png",
+      "bytes": 6730,
+      "sha256": "4e3b7cb7ea4f983891ac98ea4599048d6be4429a2eea2fa0a98494ef6bbd9291"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-930503-v0-exact-mask/cut_geometry.json",
+      "bytes": 24646,
+      "sha256": "73183d104d676ec29158e7f22e8f69175ea231e2f511d5c3e1f18f7b45a333e8"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-930503-v0-exact-mask/mask.png",
+      "bytes": 2337,
+      "sha256": "41514c79515bba1e16a017a8d433159d0f095004e8852a43276d78498312aa1d"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-930503-v0-exact-mask/reference.png",
+      "bytes": 2337,
+      "sha256": "41514c79515bba1e16a017a8d433159d0f095004e8852a43276d78498312aa1d"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-930503-v0-exact-mask/woven.png",
+      "bytes": 5438,
+      "sha256": "8bdaf7c483844042a13d5a9566d2d1d079da40a404ee96210f0edfd5d2addf25"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-930503-v0-known-crop/crop.png",
+      "bytes": 111402,
+      "sha256": "f2389c804f476a70f252d604abf0e32f65888ad1012faeaec97428a557af2980"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-930503-v0-known-crop/cut_geometry.json",
+      "bytes": 39933,
+      "sha256": "8bf0f28be2adde1a2994a6d17fbe0daccff514d7ec415231fbb583d11ef10da3"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-930503-v0-known-crop/mask.png",
+      "bytes": 3758,
+      "sha256": "687bd5a03054640e10c4d49d36bdc9df6324630324633f077b5ce6c5b8300c33"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-930503-v0-known-crop/reference.png",
+      "bytes": 2337,
+      "sha256": "41514c79515bba1e16a017a8d433159d0f095004e8852a43276d78498312aa1d"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-930503-v0-known-crop/woven.png",
+      "bytes": 6038,
+      "sha256": "c651f87d99c6069d6f8684d855a6dd0cb85ee2ae326c8251124f337165ae0360"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-966827-v0-automatic/crop.png",
+      "bytes": 109791,
+      "sha256": "9af1c502f9db57862696fcca7c30e8bbe57fd796e0f47b26852c2ccec20a3112"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-966827-v0-automatic/cut_geometry.json",
+      "bytes": 37455,
+      "sha256": "1b646695f6b0e3563ff6ea75e4dd11db384b89be5817b891c1dbd7601f519b06"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-966827-v0-automatic/detection.json",
+      "bytes": 64901,
+      "sha256": "84c567653c9a1d7491ec6eb5d5f3cb8c77d37cf0c07f31656a49b82711f46ee5"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-966827-v0-automatic/mask.png",
+      "bytes": 3740,
+      "sha256": "3145bcc8796bb5ea1b77632177d1c5a8e8475f4244f9f6f8e6d80a0a767cdaaf"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-966827-v0-automatic/reference.png",
+      "bytes": 2339,
+      "sha256": "fec5aa7772c0a8e11b257d5ba93d186756a316929f664874717e310eafcfa859"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-966827-v0-automatic/woven.png",
+      "bytes": 6021,
+      "sha256": "b439eee165d13097056ce92ecc2b7fd558489f82992aaa35c4e7cd4d095291a5"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-966827-v0-exact-mask/cut_geometry.json",
+      "bytes": 11513,
+      "sha256": "cc1f3f8ce5743852ea9dac5d420d297d86926318b03ed59c5f4e9ced13433412"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-966827-v0-exact-mask/mask.png",
+      "bytes": 2312,
+      "sha256": "7a048d773e72e37da4b82e21e4afed9f86a27d1ce5feebbbd2920e33519579d7"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-966827-v0-exact-mask/reference.png",
+      "bytes": 2312,
+      "sha256": "7a048d773e72e37da4b82e21e4afed9f86a27d1ce5feebbbd2920e33519579d7"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-966827-v0-exact-mask/woven.png",
+      "bytes": 4958,
+      "sha256": "d5155de2dedb0d3c2be69c87828c8e457e1f9953c8619bd3b759db47faebfdc0"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-966827-v0-known-crop/crop.png",
+      "bytes": 107510,
+      "sha256": "e45f2327f50b077ea2a8b5ed54d779d4689772ec7664485782e972ca67add725"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-966827-v0-known-crop/cut_geometry.json",
+      "bytes": 33820,
+      "sha256": "e3a0980a2e7e4e98900e3e55cb43024707ccd279756575125d065589c60e6c75"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-966827-v0-known-crop/mask.png",
+      "bytes": 3677,
+      "sha256": "87af3c8636ccaa866c8abfe28c4c8686b87e2bdc34463386aad3bae95eab9848"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-966827-v0-known-crop/reference.png",
+      "bytes": 2312,
+      "sha256": "7a048d773e72e37da4b82e21e4afed9f86a27d1ce5feebbbd2920e33519579d7"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/radial-motif-966827-v0-known-crop/woven.png",
+      "bytes": 5093,
+      "sha256": "e0fe9b72e4155de319a081695b582facb3903daf141be68cc2fc34bacfd032d4"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/report.json",
+      "bytes": 873900,
+      "sha256": "1a908239a955c83c19073960b91037d0362f37de5e2a330a78bd58413b00ce2d"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline/selection.json",
+      "bytes": 822,
+      "sha256": "9c6eda41fab5c2663767fc2c6ff6c199c43af971eb4153b843f2700dccb2f3af"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored/INVALID.md",
+      "bytes": 237,
+      "sha256": "5f14f4a8fa73cfa18504fe94914d82682ec25cb44d3c1baa314c3122a66c4038"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored/report.json",
+      "bytes": 11924,
+      "sha256": "c4b8b02476b1ded17783db686f166dd61ad05b10a7f297afe74968e0355dc4eb"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-920413-v0-automatic/crop.png",
+      "bytes": 80543,
+      "sha256": "5e9cff0eeced34b39a7ba16876b3891e7a5d5dfee29ffcd84a52dac364207388"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-920413-v0-automatic/cut_geometry.json",
+      "bytes": 34266,
+      "sha256": "f7bb8a21d306ac2278497bbcb2ba71188f2e6b45347b1e2a38b9268d5132e3aa"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-920413-v0-automatic/mask.png",
+      "bytes": 2376,
+      "sha256": "5bb8f82151363d7bb9bfeb215b7d3b10b455dd19a660e7725062416a89da9037"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-920413-v0-automatic/reference.png",
+      "bytes": 2154,
+      "sha256": "cf622830ad79f56e1a3699813877462b961f53f7acb203cf0ca90a2f7a05266b"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-920413-v0-automatic/woven.png",
+      "bytes": 5210,
+      "sha256": "05cd347cc4198a5cb972d33a62972cb6b72953c449823beab97aa8b68387b5f0"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-920413-v0-exact-mask/cut_geometry.json",
+      "bytes": 10513,
+      "sha256": "0e8df67793972b686adcc80514ddb66a710112f3f4494be8b877b7edc38d79ed"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-920413-v0-exact-mask/mask.png",
+      "bytes": 2220,
+      "sha256": "567572248d101a22de7ff75dda60990048446f556d51c4a38261082a6f552e60"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-920413-v0-exact-mask/reference.png",
+      "bytes": 2220,
+      "sha256": "567572248d101a22de7ff75dda60990048446f556d51c4a38261082a6f552e60"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-920413-v0-exact-mask/woven.png",
+      "bytes": 4544,
+      "sha256": "9dd3c72bfa2271c716968223bfdc98c6a5f3c22710a278b97fae2c0f91d2ae17"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-920413-v0-known-crop/crop.png",
+      "bytes": 81196,
+      "sha256": "aad880659a44b4453336a224c6d03a2366f650b5e9843033892113ff5877d28b"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-920413-v0-known-crop/cut_geometry.json",
+      "bytes": 33345,
+      "sha256": "ac00990bf8227eff3439eecb6e1fde31ae69069423901c8314d24e0cdaf33b13"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-920413-v0-known-crop/mask.png",
+      "bytes": 2438,
+      "sha256": "0fb50941c1b1f06ff440d159888ea3316615654a807dcb3f6c8182cd0a717e97"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-920413-v0-known-crop/reference.png",
+      "bytes": 2125,
+      "sha256": "76649c15f5d8ac0de9efbd488435c6a08f84b0b5235c5b4dd47a7f8271d4fc5a"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-920413-v0-known-crop/woven.png",
+      "bytes": 5078,
+      "sha256": "b62503fb632ea3e7c38402c6ae698110a16050df109794adb0f611ec5d6a00a7"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-923440-v0-automatic/crop.png",
+      "bytes": 82510,
+      "sha256": "b0d85106d2bce7c1411a2621da9ed88fb607d72d09421693822799e007698f7b"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-923440-v0-automatic/cut_geometry.json",
+      "bytes": 32684,
+      "sha256": "d23a75a80533f04c802844b201971a6187a214b52253940bf03459531d512cb1"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-923440-v0-automatic/mask.png",
+      "bytes": 2622,
+      "sha256": "a7bd67b3769e3e8e1ec20bc1178f93fd98d162a0c74c11b62fdf8ea79e4c3127"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-923440-v0-automatic/reference.png",
+      "bytes": 2249,
+      "sha256": "6fdce41759b7662de02e8b2071abce862a68cfb74374868c324839c0605eeb1e"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-923440-v0-automatic/woven.png",
+      "bytes": 6596,
+      "sha256": "7ee4acef83f0d2e690ec203507d49e95d84b958136dd85ec100dd7d94b547324"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-923440-v0-exact-mask/cut_geometry.json",
+      "bytes": 14837,
+      "sha256": "61ab66331f1d6c290e63fc67425bbbf0eb7b1b6f644ccce523348bea628edf27"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-923440-v0-exact-mask/mask.png",
+      "bytes": 2323,
+      "sha256": "dbf8dba7810a2bdbc34c17f419f305dfc38486e5ce0bd387064edb7142fc51df"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-923440-v0-exact-mask/reference.png",
+      "bytes": 2323,
+      "sha256": "dbf8dba7810a2bdbc34c17f419f305dfc38486e5ce0bd387064edb7142fc51df"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-923440-v0-exact-mask/woven.png",
+      "bytes": 5547,
+      "sha256": "55b9bd094bb47b637da58bc94da8f4e341f163f6fdaabaec3c071de0cbaca2d1"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-923440-v0-known-crop/crop.png",
+      "bytes": 81908,
+      "sha256": "9a401c587fabc6a07b60960c87d709775dbd16151e00d2d7bd734647ac2e6f86"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-923440-v0-known-crop/cut_geometry.json",
+      "bytes": 48621,
+      "sha256": "e5efec69baf0c9c23440d32a08afe2cf63257de013006cfaab8e7ea06a964eb4"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-923440-v0-known-crop/mask.png",
+      "bytes": 2607,
+      "sha256": "462296e44ec2dc7ba370a8390a5de64b7220e88ae1ccaf5fcbbfada3c02e9405"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-923440-v0-known-crop/reference.png",
+      "bytes": 2224,
+      "sha256": "ba45522fc51fc640f7f70e66d78010eb91df00484a91b4566ec5d2d734123823"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-923440-v0-known-crop/woven.png",
+      "bytes": 6037,
+      "sha256": "1775f2989c55d7e1ded51a0dbf4456d7752f807249338a2b70cb37cb824a5525"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-925458-v0-automatic/crop.png",
+      "bytes": 95155,
+      "sha256": "e7df0b8b1475535f874bc369774131aa0ac6ae5bea6f4d5c0f2484566afd4888"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-925458-v0-automatic/cut_geometry.json",
+      "bytes": 35161,
+      "sha256": "da3c57952d2ba43e10ef24c2cb9f3d4654b04f8a6ec578c790687e1cfaf71543"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-925458-v0-automatic/mask.png",
+      "bytes": 2788,
+      "sha256": "60354393beb20a2659267eb2797e482ed481f73b820cbc1836a62e838a0b6b57"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-925458-v0-automatic/reference.png",
+      "bytes": 2394,
+      "sha256": "7dbc55dbe0e87df633b42607a34885ac8d3bdbe35920bd828ccfa357217982ca"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-925458-v0-automatic/woven.png",
+      "bytes": 6668,
+      "sha256": "b2f34f2b2122a6ffc6580221fe757dde479991808798152413b45077f4cbf13c"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-925458-v0-exact-mask/cut_geometry.json",
+      "bytes": 24075,
+      "sha256": "6da59f1271e09c8f6c976dfb6d19318dd49832b55381f4cb8dcad0423f3df159"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-925458-v0-exact-mask/mask.png",
+      "bytes": 2409,
+      "sha256": "b1f393b43dcc35101acb0b41eb7a9d398d485f3de9a68bc8baa5ecdc04d349cf"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-925458-v0-exact-mask/reference.png",
+      "bytes": 2409,
+      "sha256": "b1f393b43dcc35101acb0b41eb7a9d398d485f3de9a68bc8baa5ecdc04d349cf"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-925458-v0-exact-mask/woven.png",
+      "bytes": 5578,
+      "sha256": "2bbf1a80472b4fbe7cda04d70f3562091ccd394816b9fb3a3b9a34f9f7e816c5"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-925458-v0-known-crop/crop.png",
+      "bytes": 94584,
+      "sha256": "f23813e982e9ac9e32d94992371b251f769268fa935b9203d2761fa6744de742"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-925458-v0-known-crop/cut_geometry.json",
+      "bytes": 34777,
+      "sha256": "60671b14b061f9e334cc56a1b6234c75f428a0b6a9b4d29d420c1b2e6add7d46"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-925458-v0-known-crop/mask.png",
+      "bytes": 2723,
+      "sha256": "6ed93eb1e4e32c18796ccfff476a8f7c13308d0c6469ca7193b0d53794e19949"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-925458-v0-known-crop/reference.png",
+      "bytes": 2316,
+      "sha256": "d43c53b7d18d6a9f49b55320828e0280da86abd92d07d7d35b1de57ddee7ccd1"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-925458-v0-known-crop/woven.png",
+      "bytes": 5757,
+      "sha256": "e3358ecc8340da4c36977c3c7c4fd5cdcffb904ae4e3e02e420355c7f856ce11"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-926467-v0-automatic/crop.png",
+      "bytes": 87042,
+      "sha256": "297b81474bbefbe2219f2a530f7fe2332e0b986355249e2572e78f13307660ec"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-926467-v0-automatic/cut_geometry.json",
+      "bytes": 33372,
+      "sha256": "3d48ab1af8f9632b5ab22dce98f4f1a7abe8b961d2620cb9ebaa17c18296693c"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-926467-v0-automatic/mask.png",
+      "bytes": 2806,
+      "sha256": "354b2d226d537b5abdf40a8acaf9e312decbc3e85b0b69012c3bb353175f268f"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-926467-v0-automatic/reference.png",
+      "bytes": 2478,
+      "sha256": "813520a62eac59f49d238a8829a8264c6159fea8b8399e05364feea5705f0fde"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-926467-v0-automatic/woven.png",
+      "bytes": 6578,
+      "sha256": "638481a6f738452544037fde3e939899ecb5e46ef53cebba4f059722de0a28bd"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-926467-v0-exact-mask/cut_geometry.json",
+      "bytes": 29564,
+      "sha256": "b5afee634e3608d080c091f8919c5f7abc4bb93c1affa1c47791e7a603108ae6"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-926467-v0-exact-mask/mask.png",
+      "bytes": 2550,
+      "sha256": "d0118853af007ad90a5e8efede56af0a0ec6c7b602dec037dc4d457f47a934d0"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-926467-v0-exact-mask/reference.png",
+      "bytes": 2550,
+      "sha256": "d0118853af007ad90a5e8efede56af0a0ec6c7b602dec037dc4d457f47a934d0"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-926467-v0-exact-mask/woven.png",
+      "bytes": 5884,
+      "sha256": "b9c15faf8403b31e876c8715d2edd45b2262529db980aa54e5577642ec916956"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-926467-v0-known-crop/crop.png",
+      "bytes": 86585,
+      "sha256": "101215bf2f4d3cd0f7489a2cfa35dd8b305590d026f5c881bf29b546714f15e9"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-926467-v0-known-crop/cut_geometry.json",
+      "bytes": 46945,
+      "sha256": "f0e77b5337feca3ec53879cbe024575170f49e4eae2096fd9763d19ddfeadb1e"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-926467-v0-known-crop/mask.png",
+      "bytes": 2736,
+      "sha256": "902649f530063713be58bcc34bacb71e3aa995d13529245a8cfda439aabc6767"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-926467-v0-known-crop/reference.png",
+      "bytes": 2443,
+      "sha256": "77a28b32e38c20011f665f130e6136a3e01bc6e4aa33bafa2627fb3a38e8766b"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-926467-v0-known-crop/woven.png",
+      "bytes": 6041,
+      "sha256": "248bf658bba1d9d7b5a36257bcc23d938019912afaf226419341b233cab48563"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-930503-v0-automatic/crop.png",
+      "bytes": 90935,
+      "sha256": "dc9d9ad37f75793885a5709c6b170d1eb34a4ec5d2c25e38f5cd5369597f38b9"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-930503-v0-automatic/cut_geometry.json",
+      "bytes": 32229,
+      "sha256": "d323bcf3c08a77cc28e2d0a5db7ab97d4eddaad6d65bc1a3c170444272899c89"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-930503-v0-automatic/mask.png",
+      "bytes": 2573,
+      "sha256": "8d4627053e18ab736b205d1c043be17c1ebc74779b0b510a9eb5e1226c640ad8"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-930503-v0-automatic/reference.png",
+      "bytes": 2314,
+      "sha256": "0106bca1f92fe819f14674f3c7277f5024841a61f7a57fb65919ab4a096b3c0a"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-930503-v0-automatic/woven.png",
+      "bytes": 6299,
+      "sha256": "b0667b8c317228f90159d85c26f03f70bd7373b1085f61d8f1e0ba01951f810c"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-930503-v0-exact-mask/cut_geometry.json",
+      "bytes": 24646,
+      "sha256": "73183d104d676ec29158e7f22e8f69175ea231e2f511d5c3e1f18f7b45a333e8"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-930503-v0-exact-mask/mask.png",
+      "bytes": 2337,
+      "sha256": "41514c79515bba1e16a017a8d433159d0f095004e8852a43276d78498312aa1d"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-930503-v0-exact-mask/reference.png",
+      "bytes": 2337,
+      "sha256": "41514c79515bba1e16a017a8d433159d0f095004e8852a43276d78498312aa1d"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-930503-v0-exact-mask/woven.png",
+      "bytes": 5438,
+      "sha256": "8bdaf7c483844042a13d5a9566d2d1d079da40a404ee96210f0edfd5d2addf25"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-930503-v0-known-crop/crop.png",
+      "bytes": 90845,
+      "sha256": "f9cec52ef744bcd3e35d38b7f91109289a9b923c5b470500236e3729587b5796"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-930503-v0-known-crop/cut_geometry.json",
+      "bytes": 39933,
+      "sha256": "8bf0f28be2adde1a2994a6d17fbe0daccff514d7ec415231fbb583d11ef10da3"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-930503-v0-known-crop/mask.png",
+      "bytes": 2493,
+      "sha256": "76087f77293fab63f6202369069f62ad709cffd8612e3855356ed218b5cc0e59"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-930503-v0-known-crop/reference.png",
+      "bytes": 2240,
+      "sha256": "1c5fc82dbeb1c992531f7ef006cba0f5ad925ac6beb22a7b5cddccdbe33b4c99"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-930503-v0-known-crop/woven.png",
+      "bytes": 5787,
+      "sha256": "4ed1d895b31972b40b869ef6ac0d7f5be8a002b8d3e050bd6ba7f59689d26bbb"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-966827-v0-automatic/crop.png",
+      "bytes": 84471,
+      "sha256": "6cc8ca91bf0de2944744de84f34499bcfa2969ec1f5aec2ff3f7d5a1e196c7bb"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-966827-v0-automatic/cut_geometry.json",
+      "bytes": 37455,
+      "sha256": "1b646695f6b0e3563ff6ea75e4dd11db384b89be5817b891c1dbd7601f519b06"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-966827-v0-automatic/mask.png",
+      "bytes": 2603,
+      "sha256": "3d559d3cdff3cd46f7c957956a7574485ef9055f35f69f0a2df7b7879f320819"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-966827-v0-automatic/reference.png",
+      "bytes": 2240,
+      "sha256": "d18bdb4b76764d1698ae6ce8416e929d7aa28a3ad59bfb3b40668209610078e9"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-966827-v0-automatic/woven.png",
+      "bytes": 5633,
+      "sha256": "d84b1541a4043f8336c808962d998ba1be123ce6cf127a2c4767262d124995ba"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-966827-v0-exact-mask/cut_geometry.json",
+      "bytes": 11513,
+      "sha256": "cc1f3f8ce5743852ea9dac5d420d297d86926318b03ed59c5f4e9ced13433412"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-966827-v0-exact-mask/mask.png",
+      "bytes": 2312,
+      "sha256": "7a048d773e72e37da4b82e21e4afed9f86a27d1ce5feebbbd2920e33519579d7"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-966827-v0-exact-mask/reference.png",
+      "bytes": 2312,
+      "sha256": "7a048d773e72e37da4b82e21e4afed9f86a27d1ce5feebbbd2920e33519579d7"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-966827-v0-exact-mask/woven.png",
+      "bytes": 4958,
+      "sha256": "d5155de2dedb0d3c2be69c87828c8e457e1f9953c8619bd3b759db47faebfdc0"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-966827-v0-known-crop/crop.png",
+      "bytes": 83630,
+      "sha256": "25450cd9b7903b219f91bed9c95649d0954aab835ec4dc9642b6c88cd669ec2e"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-966827-v0-known-crop/cut_geometry.json",
+      "bytes": 33820,
+      "sha256": "e3a0980a2e7e4e98900e3e55cb43024707ccd279756575125d065589c60e6c75"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-966827-v0-known-crop/mask.png",
+      "bytes": 2596,
+      "sha256": "6b45c464e6fb4762012ab476e2f6aa4e717d1f1cbf9b346efee3baf30e5ab580"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-966827-v0-known-crop/reference.png",
+      "bytes": 2216,
+      "sha256": "ed3ba63f6f51fd70991ff80fbf1d209d85c5914fb83eea831ce0569516aaacb3"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/radial-motif-966827-v0-known-crop/woven.png",
+      "bytes": 4843,
+      "sha256": "90b517180870a695fa9b4417e7d6b384b54e32b8b30aabd277b0c4981fb8ea36"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/report.json",
+      "bytes": 871591,
+      "sha256": "3b5392f039848782cb8c4f0903fc6fdc8bd73836357dc556666e1b5120ff9352"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/review-0.png",
+      "bytes": 33251,
+      "sha256": "a5f60574137d6c5539852ba5bf1fee8f5278b9ee57db74448f6799e7259386a2"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/review-1.png",
+      "bytes": 36644,
+      "sha256": "6c07ce368d859fd8727ac404d73c1942daa2185c33a6e9df41d5e604b804fadd"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/review-2.png",
+      "bytes": 39285,
+      "sha256": "d8eedaaeefb20fc5cfb6a30ccd9afa7a476e27274366bcc2e6f421ab967edc0d"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/review-3.png",
+      "bytes": 36843,
+      "sha256": "4e7b404fabca4d5a11b8d338c28f44810d09d928366172a22898bcee40ea78f5"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/review-4.png",
+      "bytes": 42866,
+      "sha256": "e3a5576e742a20742d374ffcb06ce722d43a5e9e775509f7687fd01ea3cfaf00"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-rescored-v2/review-5.png",
+      "bytes": 40526,
+      "sha256": "ec97abf0888378f916379b8adbf27df305b936c86583d3c40762e973b517494b"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline-v1-invalid.mjs",
+      "bytes": 8644,
+      "sha256": "609427658ade34a109d23ca085fabae92db67cfe70d2776cd9ecb297dc422c22"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline.log",
+      "bytes": 1580,
+      "sha256": "d43ccd96bf0f64413b34307d0b9ba7b60c50c56c038619403f092c40c6724da4"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/pipeline.mjs",
+      "bytes": 8644,
+      "sha256": "609427658ade34a109d23ca085fabae92db67cfe70d2776cd9ecb297dc422c22"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/preview.json",
+      "bytes": 174,
+      "sha256": "86f4e527c6627a1a6864f7d3d4dfd3f8dfb304b481abdddc4dd15b96b67b5c2f"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/probe.json",
+      "bytes": 5462,
+      "sha256": "90c36cd683b2055dd7dd760308d3f376b51ecf145fc7579c5bd62ecf32f5e42f"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/rescore-v1-buffer-error.mjs",
+      "bytes": 5802,
+      "sha256": "dbceb1cc37e01ea9bd87fd14a6b33ddbda65e5540bb99c865296fe4dd72a0aea"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/rescore-v2.log",
+      "bytes": 1632,
+      "sha256": "985ad09d21d5e9f02364f9e959a6f20abe31bc71db536ffda874ff8bee64beed"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/rescore.log",
+      "bytes": 552,
+      "sha256": "9d322432b6422bcd24498f77e170217063dd54eb2b7b1920171c03caadfd565d"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/rescore.mjs",
+      "bytes": 5816,
+      "sha256": "978bfc0cdbfda281d242b770534d5b3882005ea050ee112586f3b79bb41541ee"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/run-checks.py",
+      "bytes": 776,
+      "sha256": "16e733d18c58d199c527d48c273075f56ff973085f0e64fc1fb52dae4dd9fd2b"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/score-lint.log",
+      "bytes": 293,
+      "sha256": "f1a4b272f2f106d9cc645be00a12d8ac4dea14308d11091a0ea8c493d6036f90"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/score-tests-v2.log",
+      "bytes": 827,
+      "sha256": "a4a3d392206c30a74e22953e5d04ce36433941a93cd247806675869986a1d255"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/score-tests.log",
+      "bytes": 715,
+      "sha256": "96eaf9a66244044b692e6dbce22f95065486adb63b4cec57e3d38e7b69efae0f"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-0.json",
+      "bytes": 38552,
+      "sha256": "e8a6551f7da4076e9cc6e96dc7ccd60f6d26e15f484ffb4d526c7fe337ffa7aa"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-0.png",
+      "bytes": 6408,
+      "sha256": "3af3eaeaf8bb00ec2c8524564998d49f211c18bd534b6649fb17d2832df102c8"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-1.json",
+      "bytes": 43650,
+      "sha256": "3545d0922e9027cd7f584d290d0d056948ef24835b040ee405fac8591ab40ea2"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-1.png",
+      "bytes": 7958,
+      "sha256": "7ce81378fb5467e4cd55a9aef7e9fd926250640185017dfdac09c399bd13ed20"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-10.json",
+      "bytes": 85263,
+      "sha256": "e90010e80c301ec5f83ab522851dda108a4566126af74cda39c6f778f11f7eb0"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-10.png",
+      "bytes": 7280,
+      "sha256": "c1d1d06a652db8a4d06ee3fd96c4139dcd61daf8db792f76b43c2206810c4055"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-11.json",
+      "bytes": 85317,
+      "sha256": "9e6f0b864d1cf43a682bc64bdaa334a90716609ca1bd988bde49138795ae5f2a"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-11.png",
+      "bytes": 7911,
+      "sha256": "2593448573bdae0f0168f46b061eaa27d526b83313c0697c0c75e9a82973d1b1"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-12.json",
+      "bytes": 38588,
+      "sha256": "f7033cfec117764c2c98320b53c188df40c2e2ae881484082a8972c3ed15080d"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-12.png",
+      "bytes": 6760,
+      "sha256": "96b9c50b3b52e5e23ccdbf088d11aa613a3f68a4b61f9115dbc9979260cc15a6"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-13.json",
+      "bytes": 43771,
+      "sha256": "869df2868c0764821d33cfd7df712beecc09cfd5ef7a9f0f9db6f2e8a6fc01a9"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-13.png",
+      "bytes": 5919,
+      "sha256": "dae2031d0e9a51a86ccb2981348930c4b56c0cb4cb3af3d95bad8200543c8b61"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-14.json",
+      "bytes": 41183,
+      "sha256": "ed07c3d65027fa52998c7e8d989496197cf027303d98da15d5ed070e624b5c3b"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-14.png",
+      "bytes": 7591,
+      "sha256": "4459212a908279ffaee45edb8c54e9e9c19af74a8410d0a464719fdb9ed47b6a"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-15.json",
+      "bytes": 38596,
+      "sha256": "c59c88957cb00865b5bec57169313d5a27a8f6169b5960f349d9b810b33b1752"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-15.png",
+      "bytes": 7560,
+      "sha256": "bd39ec15c9026add005050e8d3f63888b732dcaa5c43c5434a82b86fcc634edd"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-16.json",
+      "bytes": 43732,
+      "sha256": "0c0fe683598202980bffd1c2f17ff735a32fa2a859166934678b34f1ce01c665"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-16.png",
+      "bytes": 7552,
+      "sha256": "3f23d32dc5b1dce02a7cee3b25f39321a82363b6c09ea38df4523b5551a5fa38"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-17.json",
+      "bytes": 46374,
+      "sha256": "89cbfa512d5c115563b834eef26cfcee2e6430de25ac62c536349104a45540bf"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-17.png",
+      "bytes": 6786,
+      "sha256": "1f2ede4701b08db760864dbe9bfc2438ba003038ddd373b2c2da5978c2201f9e"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-18.json",
+      "bytes": 74844,
+      "sha256": "2d06553e680a39bc55216629e3af9cf2f9af2dd4e6ebc6992d481109eab07fa2"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-18.png",
+      "bytes": 7792,
+      "sha256": "3d4ce958830d15656a2898f4fe03716d0ff2009052b94364b24deb38e8b8a80e"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-19.json",
+      "bytes": 36013,
+      "sha256": "cfc77cd19b55b7a18c9107c141f1ec7d4d5fa61d8d5a23271adaf259378f9e28"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-19.png",
+      "bytes": 6921,
+      "sha256": "250743faf98b7a0a9600d56ac813538dc3d7e86924e989da1100667383ec3920"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-2.json",
+      "bytes": 46401,
+      "sha256": "30cffdfe934bbcd6f494aecbb4d5841bae2b9c5c3a0f813fcc360d3b0abb1824"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-2.png",
+      "bytes": 7550,
+      "sha256": "29926c4645ad4583a07e07d855b16bc399ba84f7c2684ba9b99ab5b9b2a92e18"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-20.json",
+      "bytes": 46368,
+      "sha256": "e34e4818422a9f5da8a226e118c1d0ce744f2173a725e37a0178dce90320a3a9"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-20.png",
+      "bytes": 7219,
+      "sha256": "734ed1371045f5a2fe71f100844dbc35f7ef61dea077c5dc435125c3bcbcbc00"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-21.json",
+      "bytes": 41188,
+      "sha256": "7ac802b01f9460abeda16cef0491cba211a56af9f39f2dcd89d1470b039fa668"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-21.png",
+      "bytes": 7003,
+      "sha256": "b25366c60f18c8b276af0c399713f008b03d7324135e58a452f1644e8b828704"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-22.json",
+      "bytes": 43789,
+      "sha256": "11edd3136c142eae993d8b7e2ffcd6e250db301e9ddec4c21248577e4df16723"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-22.png",
+      "bytes": 7063,
+      "sha256": "013b78e6ee9f8bd9a2dbd6c35e633563a4e01fed0f7e646f269718316a5593fd"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-23.json",
+      "bytes": 35953,
+      "sha256": "9ec0e0a82bea796c366307a57a969d547ac55f55321c3f3ab13772c410a5f23b"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-23.png",
+      "bytes": 7472,
+      "sha256": "21237a00d1d8294cb757794cb1a73ef2fba85186422d8e55938f441bcdf0eb12"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-24.json",
+      "bytes": 64473,
+      "sha256": "c03a944ae1eac5b232d7174132878cfa6665ef21fdd6c6f8b115bdbd000a71a1"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-24.png",
+      "bytes": 6613,
+      "sha256": "3944664e7b831eb805d2041ae568c0997b19f5d40bc00e1a724dcb4843c43159"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-25.json",
+      "bytes": 85266,
+      "sha256": "22ade9420afa7c03169d2db225ad167a4c29435f1176a887b26ab727cb62c1ed"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-25.png",
+      "bytes": 8037,
+      "sha256": "c10a5b44afe7ebe6fa7f2ed92548dacc1ef4ef1aad5ba82533cc105553d109eb"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-26.json",
+      "bytes": 85253,
+      "sha256": "f7e35841e70ff5bb0c7c036d113be0abe287b03800340c32c467608b6ff9b154"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-26.png",
+      "bytes": 7276,
+      "sha256": "76cbcb19ecaaef1eca3ce96c10047d15d6764ca5ef461bb2d36faf7c96c0e04c"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-27.json",
+      "bytes": 41211,
+      "sha256": "7194c0e64502a4232af73a7f3223e106d87459eaeb5a17df878f4f52fbb7f023"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-27.png",
+      "bytes": 6600,
+      "sha256": "705b5f2cdb19b15a0d5db1f92f210846e042bf940df231851946252befd574bf"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-28.json",
+      "bytes": 74896,
+      "sha256": "d7745b8788c5b31afd9a46f15205de753a22caa2f3d0744d1980e193c7ea0aae"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-28.png",
+      "bytes": 7893,
+      "sha256": "c2101a3dcb9c5b9ea07e7c7d9db80bf5950e2d3a5c03b60ac89d50d405ace6af"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-29.json",
+      "bytes": 38553,
+      "sha256": "49e2369339e0c3bff99ee97243f835ec22830c740371a87d3dde181ca70c56bd"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-29.png",
+      "bytes": 6145,
+      "sha256": "cd879f0958625d6a8c8871c83c2c333f5efb8c4698d9f81027c3c1ba9ab9bdb2"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-3.json",
+      "bytes": 46377,
+      "sha256": "15536b898adc30ff7a21d300dc9da05ea83218ac7c475dde901a6b27b81d5944"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-3.png",
+      "bytes": 7263,
+      "sha256": "6efc465243dc849eb1de3e94550f153099aff58493fdc015b258fd787fa2e567"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-30.json",
+      "bytes": 106091,
+      "sha256": "26c783e9afe0d38216397e120156eb6ac94f33a5075c23b59d21565d0d906c3c"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-30.png",
+      "bytes": 7455,
+      "sha256": "f55865a8aad2a030dfd116528cc16fa96309341c9433490fa3ef5455afa9080b"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-31.json",
+      "bytes": 95628,
+      "sha256": "700a1b6e0d3e2563c52ac4a4d0c8d2ef56bd4508bd434460ec768c068d79a76e"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-31.png",
+      "bytes": 7731,
+      "sha256": "f4be51d0043f3c151fa68125834f20476f2cbad0cfe95a5e47de8ed2f8844357"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-4.json",
+      "bytes": 48953,
+      "sha256": "8c1b4ff25768cf49dfff485dde0b510de49f4b15879ee13b370a29d3bd9775bf"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-4.png",
+      "bytes": 6571,
+      "sha256": "6d8be348c27a33957e2b26fa7b9162e63a98c08c8cb3e305aebf9ad8d11b8ef8"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-5.json",
+      "bytes": 95695,
+      "sha256": "9a331b46425f3efa30550893fdfc042cd4beee6f340d02aa036bafdf77d14a28"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-5.png",
+      "bytes": 7691,
+      "sha256": "010ff7bf083008b0e4b1cdcc541db728b50b49b65f833cdb2395c9c0f78f0c48"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-6.json",
+      "bytes": 43767,
+      "sha256": "670787cea2705679a7c0289236fd1bcd6e2e1592ddf9b8d17a95674c1d3cc193"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-6.png",
+      "bytes": 7651,
+      "sha256": "cabd474774ed3692b6d57c1b524e2755777e62ceb83da03d4bbb1d6948acca32"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-7.json",
+      "bytes": 35959,
+      "sha256": "e47b91e91b083f12954f6d6169d0092049656fd5bb4debf245ef1620822774da"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-7.png",
+      "bytes": 7158,
+      "sha256": "88a7ebb1c59bfe2b22b3a0e76fd4ad951269981325070a5b72d14057eb101ae9"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-8.json",
+      "bytes": 54138,
+      "sha256": "887995a702dcea80e1647374cf50428278fb539f08fa7121c5362a119a3934aa"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-8.png",
+      "bytes": 6925,
+      "sha256": "22fed40a24d50531883b107cc2576111a6ef0ed934ecfcf28f4f8133ba5a71d0"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-9.json",
+      "bytes": 64519,
+      "sha256": "a7760167b0cad1cab9ccb360755ace7abe1ef338985590e5ef4922666dc9a868"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/seed-9.png",
+      "bytes": 6555,
+      "sha256": "e6e13ff7623463243f2ae3f9cb8a3094e24872567c4870ad2cd4774153014481"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/served-assets.json",
+      "bytes": 36416,
+      "sha256": "0405bbb3ebd9f36b0efe25c053a67ac8b9354020e91dbafbb7e9cc6df8169d7b"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/shared-coverage.json",
+      "bytes": 8527,
+      "sha256": "b8190975c0edacd2f43a55cbc9ad9f9d8cce7849aadc25cb807b483ba397f6dc"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/verification.json",
+      "bytes": 376,
+      "sha256": "200ed7943bb8451021604f891cf35667f7a9e504248b162c4c7dec5256dbe67e"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "description": "Frozen scene-model crop proposal used only to reproduce the final polishing checkpoint selection. The proposal clips one reviewed border detail and is not physical-corner or artwork ground truth. No saved cutting curves enter the fresh solve.",
+  "source": {
+    "file": "scripts/inverse/fixtures/hard-photos/bibel-star-outline.png",
+    "sha256": "50182945f46ea5e51dc4ab75227d73abfd332e07a4568a1acc52ae43c1c8638c",
+    "decodedPixelsSha256": "a58dc34d7dd3f2bf65fc981a7cd9fc934d59ca4db5c3d90d00abf00757c723f0",
+    "width": 995,
+    "height": 661,
+    "paperNames": [
+      "blue paper",
+      "cream paper"
+    ]
+  },
+  "quad": [
+    [
+      513.3545428148515,
+      146.27395317629365
+    ],
+    [
+      727.2435237755178,
+      382.2806819789985
+    ],
+    [
+      485.55361224150624,
+      596.6805118169444
+    ],
+    [
+      273.4449956033525,
+      371.1741352002313
+    ]
+  ],
+  "maskSha256": "3ce29580911b533c11961dfd4ff58799c3d9463dd09fb7303ce4edbc649ea0e9"
+}

@@ -1,0 +1,181 @@
+{
+  "schema": 1,
+  "status": "completed; coarse_failure_can_pass_finer_paper_audit",
+  "scope": "Fresh initializer captured before its first update; fixed source, graph, phase and refinement options. Each step limit repeated in reverse order with identical resulting coordinates.",
+  "rows": [
+    {
+      "steps": 395,
+      "repeat": 0,
+      "seconds": 2.388753125,
+      "sourceError": 0.03240625,
+      "coordinatesSha256": "663afcf080d589237515fb302e63bbf02ff6c5522845e0347bcfe969770ea532",
+      "geometry": true,
+      "finePaper": "pass",
+      "features": true
+    },
+    {
+      "steps": 395,
+      "repeat": 1,
+      "seconds": 2.460303417,
+      "sourceError": 0.03240625,
+      "coordinatesSha256": "663afcf080d589237515fb302e63bbf02ff6c5522845e0347bcfe969770ea532",
+      "geometry": true,
+      "finePaper": "pass",
+      "features": true
+    },
+    {
+      "steps": 401,
+      "repeat": 0,
+      "seconds": 2.41593625,
+      "sourceError": 0.0269375,
+      "coordinatesSha256": "61b14da32db7abd3e5837235fa3f81e1070d48bfc6e929dd29e5e27db816a745",
+      "geometry": true,
+      "finePaper": "pass",
+      "features": true
+    },
+    {
+      "steps": 401,
+      "repeat": 1,
+      "seconds": 2.6251523750000003,
+      "sourceError": 0.0269375,
+      "coordinatesSha256": "61b14da32db7abd3e5837235fa3f81e1070d48bfc6e929dd29e5e27db816a745",
+      "geometry": true,
+      "finePaper": "pass",
+      "features": true
+    },
+    {
+      "steps": 441,
+      "repeat": 0,
+      "seconds": 2.6024460410000003,
+      "sourceError": 0.0265125,
+      "coordinatesSha256": "f9c9aaf748fac03b3d5b79dbc694ab24b5bd7ca516228a2ae06cbe9b025969b7",
+      "geometry": true,
+      "finePaper": "pass",
+      "features": true
+    },
+    {
+      "steps": 441,
+      "repeat": 1,
+      "seconds": 2.655464167,
+      "sourceError": 0.0265125,
+      "coordinatesSha256": "f9c9aaf748fac03b3d5b79dbc694ab24b5bd7ca516228a2ae06cbe9b025969b7",
+      "geometry": true,
+      "finePaper": "pass",
+      "features": true
+    },
+    {
+      "steps": 521,
+      "repeat": 0,
+      "seconds": 3.031989417,
+      "sourceError": 0.025475,
+      "coordinatesSha256": "73a3974e85cd0b6b669bf7fb5a0809ceb13f4fff94c4b5e7093b88cefe831d1f",
+      "geometry": true,
+      "finePaper": "pass",
+      "features": true
+    },
+    {
+      "steps": 521,
+      "repeat": 1,
+      "seconds": 3.014176625,
+      "sourceError": 0.025475,
+      "coordinatesSha256": "73a3974e85cd0b6b669bf7fb5a0809ceb13f4fff94c4b5e7093b88cefe831d1f",
+      "geometry": true,
+      "finePaper": "pass",
+      "features": true
+    }
+  ],
+  "checkpointAudits": [
+    {
+      "step": 80,
+      "coarsePaper": "uncertain",
+      "finePaper": "uncertain",
+      "sourceError": 0.03946875,
+      "geometryPassed": true
+    },
+    {
+      "step": 120,
+      "coarsePaper": "uncertain",
+      "finePaper": "pass",
+      "sourceError": 0.035275,
+      "geometryPassed": true
+    },
+    {
+      "step": 160,
+      "coarsePaper": "uncertain",
+      "finePaper": "pass",
+      "sourceError": 0.03240625,
+      "geometryPassed": true
+    },
+    {
+      "step": 200,
+      "coarsePaper": "fail",
+      "finePaper": "fail",
+      "sourceError": 0.03075,
+      "geometryPassed": true
+    },
+    {
+      "step": 240,
+      "coarsePaper": "fail",
+      "finePaper": "fail",
+      "sourceError": 0.02975625,
+      "geometryPassed": true
+    },
+    {
+      "step": 280,
+      "coarsePaper": "fail",
+      "finePaper": "pass",
+      "sourceError": 0.0287875,
+      "geometryPassed": true
+    },
+    {
+      "step": 320,
+      "coarsePaper": "fail",
+      "finePaper": "pass",
+      "sourceError": 0.0280125,
+      "geometryPassed": true
+    },
+    {
+      "step": 360,
+      "coarsePaper": "fail",
+      "finePaper": "pass",
+      "sourceError": 0.02735,
+      "geometryPassed": true
+    },
+    {
+      "step": 400,
+      "coarsePaper": "uncertain",
+      "finePaper": "pass",
+      "sourceError": 0.0269375,
+      "geometryPassed": true
+    }
+  ],
+  "finding": "At 395 steps the refiner returns the step160 uncertain-paper incumbent with 3.240625% source error. After 401 steps, it retains a later uncertain-paper checkpoint with 2.69375% error. Both pass the separate 700px paper check. Crucially, steps280/320/360 are marked fail at 360px but pass at 700px with 2.87875%, 2.80125% and 2.735% error; the current refiner drops these candidates.",
+  "limits": [
+    "The original final pipeline error is 3.209375% after cleanup and has a paper failure; do not conflate it with the captured pre-cleanup incumbent.",
+    "Coarse failure is not permission to accept a template. Every proposed alternative needs an actual finer audit, unchanged geometry/features/image checks and finer-resolution export validation.",
+    "The fixed replays isolate a retention issue; they do not establish a new whole-photo speed result."
+  ],
+  "next": "Test separately retaining one geometry-valid coarse-paper-failed checkpoint, without changing rollback or the established incumbent. Recheck only if the ordinary candidates fail, the original image/feature conditions pass, and time remains.",
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/viking-checkpoint-cliff-v1/initial.json",
+      "sha256": "3c41dfccbf026c303ab97614216a4d5b3c59a8f9c3fe7596049906b0dbb9a15a"
+    },
+    {
+      "path": "tmp/heart-learning/viking-checkpoint-cliff-v1/source.json",
+      "sha256": "15a9198166ad19315ed042c87dd3db2e40abfd50399a3af8d013f5b11e286400"
+    },
+    {
+      "path": "tmp/heart-learning/viking-checkpoint-cliff-v1/state.json",
+      "sha256": "44168ab2bef56db4a042c90e3aacfd7f43781f301405f2a7f8a6d965ee87bb3c"
+    },
+    {
+      "path": "tmp/heart-learning/viking-checkpoint-cliff-v1/checkpoint-audits.json",
+      "sha256": "7f8c79608ac093a561084b82699ee0e5faf0d6667ecd0ab677d311bf01d56e12"
+    },
+    {
+      "path": "tmp/heart-learning/viking-checkpoint-cliff-v1/checkpoints.mjs",
+      "sha256": "546419eba53ce3308d92d5e0b527deb8a160366505c369b009bdbbd531f56822"
+    }
+  ]
+}

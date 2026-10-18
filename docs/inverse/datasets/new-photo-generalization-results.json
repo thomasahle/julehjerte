@@ -1,0 +1,95 @@
+{
+  "schema": "new-photo-generalization-results-1",
+  "status": "complete-source-group-evaluation",
+  "deployed": false,
+  "plan": "docs/inverse/datasets/new-photo-generalization-plan.json",
+  "summary": [
+    {
+      "method": "production",
+      "photos": 20,
+      "statuses": {
+        "checked-derived-mask": 3,
+        "crop-unresolved": 15,
+        "review-required": 2
+      },
+      "exports": 5,
+      "editableConverted": 5,
+      "editableComplete": 3,
+      "cropSeconds": {
+        "median": 3.2144529165000133,
+        "maximum": 4.980950584000006
+      },
+      "fitAndExportSeconds": {
+        "median": 9.419933665999999,
+        "maximum": 9.93344537500001
+      },
+      "checkedIds": [
+        "real-1498fed65a8e41b7",
+        "real-970f4be1bd64e5d7",
+        "real-e15ec1906fab0f9c"
+      ]
+    },
+    {
+      "method": "fallback",
+      "photos": 20,
+      "statuses": {
+        "checked-derived-mask": 4,
+        "crop-unresolved": 16
+      },
+      "exports": 4,
+      "editableConverted": 4,
+      "editableComplete": 4,
+      "cropSeconds": {
+        "median": 6.834887166500002,
+        "maximum": 8.161260416000005
+      },
+      "fitAndExportSeconds": {
+        "median": 9.204262458499997,
+        "maximum": 9.471454166
+      },
+      "checkedIds": [
+        "real-1498fed65a8e41b7",
+        "real-31ed1172998ab1c5",
+        "real-970f4be1bd64e5d7",
+        "real-e15ec1906fab0f9c"
+      ]
+    }
+  ],
+  "scope": "Twenty frozen full-source inputs, one fixed model checkpoint, no annotated corners or saved templates. Production and learned policy classified their own target masks, so their mask-error percentages are not directly comparable. Source-group separation is not established motif-family or unknown-pretraining separation.",
+  "verification": {
+    "sourceFilesVerified": 886,
+    "allStagesPassed": true,
+    "allFiveFieldPanelsInspected": true,
+    "allFiveCropPanelsInspected": true,
+    "allNineExportsInspected": true,
+    "photoProbeRegressionTests": 2,
+    "paletteTests": 7,
+    "promptTests": 9,
+    "collectorTests": 14,
+    "runtimeChanged": false
+  },
+  "findings": [
+    "The learned policy adds the yellow/white cross to the same three shared passes: green/white checker, orange/blue checker and green/gold tree. All seven accepted outputs pass editable checks.",
+    "Production emits five crops and the learned policy four. Sixteen learned-policy inputs never reach fitting; ten retain an internal rejected quadrilateral, six do not.",
+    "The production flower-cap crop is visibly too large and includes the cap artwork and background. Its template fails at 4.97% target disagreement. The production Santa crop is plausible, but its template fails full checks despite 2.51% disagreement.",
+    "Several neural silhouettes are visually useful but are rejected by the semicircular-cap/colour-support model. Other rejections protect against visibly wrong overlap corners; globally loosening support gates is not justified.",
+    "Printed decoration, foil reflections, dark seams and same-paper newsprint remain paper-classification problems. The museum case and multiple-heart tree scene also expose wrong-object selection.",
+    "The four learned accepted motifs are recognizable, but the green checker and cross retain curved grid/border artifacts; low disagreement does not establish recovery of ideal artwork."
+  ],
+  "timingScope": "CPU offline comparison. Crop and fitting timers are separate; models were inferred first. Two SAM variants were evaluated for every image in the diagnostic, not a measured lazy browser deployment. No browser end-to-end speed claim.",
+  "nextStep": "Counterfactual fitting of all ten final rejected quadrilaterals to distinguish localization/support rejection from downstream mask/curve problems. Keep separate from automatic success counts.",
+  "artifactsSha256": {
+    "tmp/heart-learning/new-photo-generalization-v1/plan.json": "022825de958daed47c269ce44b70d24972bad775139e0175e6f1cf1145f57240",
+    "tmp/heart-learning/new-photo-generalization-v1/frontend/manifest.json": "82c77b0b951a814e5134b00690b44b2cc513667edf3c3bbe002505eb2e7bf51c",
+    "tmp/heart-learning/new-photo-generalization-v1/sam/manifest.json": "9f19d3ce47b95b039fa10ffabc0e9da8b57777c930ee7e71b45629a1bfa6900f",
+    "tmp/heart-learning/new-photo-generalization-v1/probe/manifest.json": "c04e282590e4da55fa6de01272d3da0ef3625b17f0d3fc9bd97ec512748b3abf",
+    "tmp/heart-learning/new-photo-generalization-v1/state.json": "7628b9f4f1d15ca08a4749f7f336b1c57edc6aff04ea3d6fc09e0e74e2e1ec8d",
+    "tmp/heart-learning/new-photo-generalization-v1/checks.json": "320882fe6922a5a2cada12d37db53383a3a4704c5cb23a05a24b12ea824d9dd4",
+    "tmp/heart-learning/new-photo-generalization-v1/source.json": "4ad6f1855ce80aadd408a1ee3a89171b48e2134b838fc2bec3102d3cff244f09",
+    "tmp/heart-learning/new-photo-generalization-v1/pipeline/report.json": "3b05f3b40d819aaa9554a89f6e86e1c37bd95231c843a3dbd324a790cc5203b7",
+    "tmp/heart-learning/new-photo-generalization-v1/editable/results.json": "8648af371c3d48ee0bc5c7647351ad9f0a5443893cfd871b17b50a059af94564",
+    "tmp/heart-learning/new-photo-generalization-v1/field-review.json": "1dbd364e441893980dee138d418e941161edbef2cdb49e30976a119b53aa96ce",
+    "tmp/heart-learning/new-photo-generalization-v1/crop-review.json": "3e7789405d428b81d3dd234e31003a0e79f5e8591f1855e8ab0f5c7cb466e1aa",
+    "tmp/heart-learning/new-photo-generalization-v1/reconstruction-figures.json": "c4181111ae7a982004423a01266c255415e033e98b32beb19d10b89557841bc0"
+  }
+}

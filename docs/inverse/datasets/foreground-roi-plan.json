@@ -1,0 +1,67 @@
+{
+  "schema": "body-roi-rgb-study-1",
+  "status": "complete-offline-no-verified-recovery-gain",
+  "question": "Can a learned body prediction help full-photo localization without replacing photographic boundaries or material identity?",
+  "protocol": {
+    "photos": 19,
+    "probe": "tmp/heart-learning/material-corrected-scenes-v1/probe",
+    "model": "Frozen candidate out-of-fold body probabilities from corrected-family study; no retraining or new model selection.",
+    "proposal": {
+      "threshold": 0.5,
+      "connectivity": 8,
+      "component": "largest by pixel count; deterministic scan order for ties",
+      "minPixels": 16,
+      "padding": "10% of selected component width/height on each side, clipped to photograph",
+      "coordinates": "Network cell edges through the recorded full-photo letterbox window; padded-image pixels excluded by source-centre bounds."
+    },
+    "arms": [
+      "production: unchanged full-photo RGB cropper and solver",
+      "body-roi: body-derived rectangle only, unchanged RGB cropper/classifier and solver inside that rectangle"
+    ],
+    "comparison": "Fresh solves in both arms, alternating order by photo index. Ten-second fitting budget per attempt; cropping and inference are not included in that budget. No per-photo threshold tuning, mask replacement, reference corners, known slit counts or saved templates.",
+    "fallbackPolicy": "Retain production whenever it supplies any crop, including a needs-review crop. Otherwise use the body-roi result. Report this separately; no selection by reconstruction score.",
+    "validation": [
+      "Same crop support checks, geometry checks, independent exported rendering and feature gates.",
+      "Pass every exported pair, including rejected ones, through editable conversion and geometry checks.",
+      "Visually inspect all source/crop/mask/weave rows and all nineteen predicted ROI overlays.",
+      "Run focused coordinate/component tests and repository check, lint, tests and build."
+    ]
+  },
+  "limitations": [
+    "Previously inspected development photos and body predictions; not an unseen test.",
+    "Derived-mask checks are not true cutting-path accuracy.",
+    "This isolates use of the current prediction, not the ultimate value of learned localization.",
+    "No app integration, model export, push or deployment."
+  ],
+  "focusedTests": {
+    "passed": 5,
+    "command": "node --test scripts/inverse/foreground-roi.test.mjs"
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/foreground-roi-v1/replay.mjs",
+      "sha256": "40ef417586efe627e24118227eb1f6b38e95f8294c803f5a029c8d92caa18c6d"
+    },
+    {
+      "path": "tmp/heart-learning/foreground-roi-v1/editor-input.mjs",
+      "sha256": "ae29c115fc06ad201560f2a33fc28d8ab77b9817cb8161a9af4c6d68d4a8e594"
+    },
+    {
+      "path": "tmp/heart-learning/foreground-roi-v1/run.py",
+      "sha256": "149ca626e8adb8059375a64e62bb673d696227258b5916b4857a916ad4f31cdb"
+    },
+    {
+      "path": "scripts/inverse/learning/foreground-roi.mjs",
+      "sha256": "bf39f03e20a08c9083f9ea8bb145f84d14c4491d2f5b66f880ea54ba308a74cd"
+    },
+    {
+      "path": "scripts/inverse/foreground-roi.test.mjs",
+      "sha256": "2d0df2b4784c91efd3572fe1d246e9dc23b40ea590d7f599f8335070c3b6679d"
+    },
+    {
+      "path": "tmp/heart-learning/material-corrected-scenes-v1/probe/manifest.json",
+      "sha256": "276db507f6a4ebcf94ec74b80347d450713249205b8cf36509e350cab0f940f5"
+    }
+  ],
+  "result": "docs/inverse/datasets/foreground-roi-results.json"
+}

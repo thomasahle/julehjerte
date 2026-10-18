@@ -1,0 +1,129 @@
+{
+  "description": "Frozen rectified photographs for a finalist-selection regression. Same source photo at two resolutions, using registered historical approximate corners. No ground-truth cutting paths or physical corners are asserted. Pixel classification remains unchanged.",
+  "origin": "https://dk.pinterest.com/pin/563018689715827/",
+  "originalSourceSha256": "ae5bef18320bc1170376960c93df6bf9be328581bb57ee8ceee734a26fe3d586",
+  "registrationFile": "tmp/heart-learning/collage-resolution-v1/registration.json",
+  "registrationSha256": "b330a202a7e71d891990184bab4595d118413922e0c39bd95a9b176ec7a1bfc9",
+  "cases": [
+    {
+      "variant": "native",
+      "rectifiedPhoto": "scripts/inverse/fixtures/flower-resolution/native.png",
+      "sha256": "ff26866081f60d3f0636acffb408cde199c177aac7e97b907979b06ad5b6f35b",
+      "source": {
+        "fileSha256": "f8f011db0e02ea843502974252e06d2166e3a5f9ad3b719f8a394d3728cc8ebe",
+        "rgbaSha256": "8b6662f67666bed952d5b88ff50a73c3e56ab61a9c4d15478ebfe22fb2b5fb51",
+        "width": 3648,
+        "height": 2736
+      },
+      "sourceFile": "tmp/heart-learning/collage-resolution-v1/native.png",
+      "quad": [
+        [
+          1958.1511161734893,
+          959.5408897075058
+        ],
+        [
+          2219.0960683537965,
+          1147.6306573319055
+        ],
+        [
+          1994.6508359685786,
+          1396.7803178581464
+        ],
+        [
+          1738.580221867835,
+          1181.8126859661738
+        ]
+      ],
+      "settings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "timeLimit": 10,
+        "trials": 0
+      },
+      "maskSha256": "d3606045ae05979ef0b06135c902c0f4733b190b29674e8677659b160f536a07",
+      "previousIndependentMaskError": 0.01075,
+      "previousSlits": {
+        "left": 4,
+        "right": 4
+      }
+    },
+    {
+      "variant": "downsample",
+      "rectifiedPhoto": "scripts/inverse/fixtures/flower-resolution/downsample.png",
+      "sha256": "401aa87e915c367ba1f55e3c3caa418d90c8d98537dbe9cd006d8576eeb039df",
+      "source": {
+        "fileSha256": "81dc2febdd670601732e85f696b0c62f8826c25df879bf82e01e6293fc4097b3",
+        "rgbaSha256": "0cebc81eacffa9c6b3fdfaf39926d91a0e3af7b2fd588627bd9c3cc699468d5f",
+        "width": 1482,
+        "height": 1112
+      },
+      "sourceFile": "tmp/heart-learning/collage-resolution-v1/downsample.png",
+      "quad": [
+        [
+          795.49889094548,
+          389.98884113843076
+        ],
+        [
+          901.5077777687297,
+          466.43468236589143
+        ],
+        [
+          810.326902112235,
+          567.6972636908841
+        ],
+        [
+          706.2982151338078,
+          480.32737821432215
+        ]
+      ],
+      "settings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "timeLimit": 10,
+        "trials": 0
+      },
+      "maskSha256": "428aa6afafd78d0443a4610302b6ce9c78ad5b7cf50133e35d3730a30eb0525a",
+      "previousIndependentMaskError": 0.01430625,
+      "previousSlits": {
+        "left": 4,
+        "right": 2
+      }
+    }
+  ]
+}

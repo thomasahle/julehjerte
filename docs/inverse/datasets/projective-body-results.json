@@ -1,0 +1,93 @@
+{
+  "schema": "projective-body-results-1",
+  "status": "synthetic-comparison-complete-real-validation-required",
+  "plan": "docs/inverse/datasets/projective-body-plan.json",
+  "deployed": false,
+  "trainingPerformed": false,
+  "summary": {
+    "oracle-body-diagnostic-original": {
+      "cases": 16,
+      "proposals": 16,
+      "medianMaximumCornerError": 0.012308922407334322,
+      "maximumCornerError": 0.02466630322995598,
+      "within": {
+        "0.01": 5,
+        "0.03": 16,
+        "0.05": 16
+      },
+      "seconds": {
+        "median": 0.2129519794999999,
+        "maximum": 1.168035083
+      }
+    },
+    "predicted-body-original": {
+      "cases": 16,
+      "proposals": 16,
+      "medianMaximumCornerError": 0.012224063683856631,
+      "maximumCornerError": 0.05970793200556033,
+      "within": {
+        "0.01": 5,
+        "0.03": 14,
+        "0.05": 15
+      },
+      "seconds": {
+        "median": 0.1945946870000007,
+        "maximum": 1.1193917089999996
+      }
+    },
+    "predicted-body-occluded": {
+      "cases": 16,
+      "proposals": 16,
+      "medianMaximumCornerError": 0.01495147929513162,
+      "maximumCornerError": 0.03764120804461995,
+      "within": {
+        "0.01": 3,
+        "0.03": 13,
+        "0.05": 16
+      },
+      "seconds": {
+        "median": 0.19493954150000037,
+        "maximum": 1.1506753750000007
+      }
+    }
+  },
+  "comparisonScope": "16 fixed training-source geometries in one procedural family. Supplied-body diagnostic is separate from predicted segmentation. Exact corners used only for scoring.",
+  "sourceClippingCases": 1,
+  "runtimeScope": "Crop geometry only; excludes frozen MobileSAM and CNN inference, material classification, solver and exports.",
+  "verification": {
+    "focusedTestsPassed": 4,
+    "lintPassed": true,
+    "sourceFilesVerified": 891,
+    "visualReview": {
+      "status": "complete",
+      "syntheticComparisonsInspected": 48,
+      "panels": {
+        "tmp/heart-learning/projective-body-v1/review-1.png": "d2921b1c5a32cc69657fea6cb0350681be6585558665af4bb317eb3967cac9f6",
+        "tmp/heart-learning/projective-body-v1/review-2.png": "5a9a9c29b9d30948101ea886859c8e657ecc1b1519914d24aee64f5f950a7b22",
+        "tmp/heart-learning/projective-body-v1/review-3.png": "68c15074155f4a8a7fcb98f512acd7d9c4f62e90593b336fc5e9b27fe852f236",
+        "tmp/heart-learning/projective-body-v1/review-4.png": "c0bb10dad91bc7536fb8184fcc7f816467cf67c3fa2c213f9705c9a38d35b15e"
+      },
+      "notes": [
+        "All 16 exact-body controls and all 32 frozen-SAM predictions reviewed against exact camera corners.",
+        "Projective side corners closely follow the true overlaps; original case 3 has a visibly displaced cap boundary (5.97% worst corner). Its occluded counterpart improves without any per-case adjustment.",
+        "One source clips an overlap corner; retained in all counts. No per-case exclusion.",
+        "Occluded cases retain small corner offsets; a good outline does not infer hidden material or certify a cutting pair."
+      ]
+    }
+  },
+  "findings": [
+    "Replacing the affine construction with a projective outline fit removes much of the corner bias.",
+    "The visible-body mask can support a good fit behind these small notch occluders when the model uses the entire outline. No union with the coarse CNN is needed.",
+    "Colour-free outline acceptance can still accept an incorrect real object or unsupported decorative geometry; real-photo and independent export checks are required before adoption."
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/projective-body-v1/plan.json": "a3fefcce1959ad8e7bf501818c3ba2f51bd1802443726cf0a86f4c12c3464814",
+    "tmp/heart-learning/projective-body-v1/source.json": "22b0b98e92d012b7612945a18538d31a7616e0e71b4fdcfbceff2c6518a4c9d3",
+    "tmp/heart-learning/projective-body-v1/checks.json": "cd4c5dbbb4e8515d00a24b4aeb6f397dab97c836a573b49fbf9edaa2f41245a2",
+    "tmp/heart-learning/projective-body-v1/results/report.json": "eae612398fedcffe922dc00ed3905201629eb22538e6e4f8f8097cb080f7cbcb",
+    "tmp/heart-learning/projective-body-v1/input/manifest.json": "58cdbb8797744901751fcebf869a2332693dc8b48eaa36c8950e127dee1766c7",
+    "tmp/heart-learning/projective-body-v1/pair-audit.json": "3db29e2c5ba72d57877a5745ad1eb6b0b2717ccc57fde78f25b1b5d80bfbe8ad",
+    "tmp/heart-learning/projective-body-v1/visual-review.json": "450ccbcba2ccb3eb1a4ec964254bafead7eedb86461650878455a539e005d3bd"
+  },
+  "nextStep": "Conditional projective fallback on all 42 fixed real-photo cases with unchanged material predictions, solver budget and independent editable checks."
+}

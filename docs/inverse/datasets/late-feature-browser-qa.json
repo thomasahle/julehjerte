@@ -1,0 +1,157 @@
+{
+  "baseline": "2841a0e",
+  "current": "fd85519",
+  "passed": 22,
+  "medianSeconds": 5.988849999904632,
+  "maximumSeconds": 8.8505,
+  "masksIdentical": 22,
+  "geometryIdentical": 22,
+  "editableIdentical": 22,
+  "errorsEqual": 22,
+  "schema": "late-feature-browser-qa-1",
+  "status": "release-qa-complete",
+  "browserWorkflowsPassed": 30,
+  "workflowGroups": {
+    "selectedOriginalPhotos": 2,
+    "smokeMasks": 5,
+    "clippedOriginalPhoto": 1,
+    "hunodan": 22
+  },
+  "qualification": "The two original-photo workflows verify UI and editable export; the dense checker remains above the image acceptance limit. Hunodan timing variation is not attributed to the new fallback, since every exported geometry and mask is identical.",
+  "fullSuite": {
+    "status": "passed",
+    "applicationPassed": 874,
+    "applicationSkipped": 1,
+    "inversePassed": 1022,
+    "sourceFilesVerified": 1041,
+    "checks": [
+      {
+        "stage": "check",
+        "exitCode": 0,
+        "seconds": 11.730816,
+        "availableBytesBefore": 3268698112,
+        "availableBytesAfter": 3267584000
+      },
+      {
+        "stage": "lint",
+        "exitCode": 0,
+        "seconds": 7.182694374999999,
+        "availableBytesBefore": 3267563520,
+        "availableBytesAfter": 3268493312
+      },
+      {
+        "stage": "build",
+        "exitCode": 0,
+        "seconds": 17.315326375,
+        "availableBytesBefore": 3268493312,
+        "availableBytesAfter": 3267870720
+      },
+      {
+        "stage": "preview",
+        "exitCode": 0,
+        "seconds": 1.2935847920000043,
+        "availableBytesBefore": 3267866624,
+        "availableBytesAfter": 3267698688
+      },
+      {
+        "stage": "browser-selected",
+        "exitCode": 0,
+        "seconds": 36.600669917,
+        "availableBytesBefore": 3267698688,
+        "availableBytesAfter": 3250978816
+      },
+      {
+        "stage": "browser-smoke",
+        "exitCode": 0,
+        "seconds": 36.213965916999996,
+        "availableBytesBefore": 3250974720,
+        "availableBytesAfter": 3243155456
+      },
+      {
+        "stage": "browser-coverage",
+        "exitCode": 0,
+        "seconds": 25.125474249999996,
+        "availableBytesBefore": 3243151360,
+        "availableBytesAfter": 3232813056
+      },
+      {
+        "stage": "browser-hunodan",
+        "exitCode": 0,
+        "seconds": 197.89822079200002,
+        "availableBytesBefore": 3232808960,
+        "availableBytesAfter": 3171381248,
+        "cases": 22,
+        "maximumClickToReadySeconds": 8.8505
+      },
+      {
+        "stage": "test",
+        "exitCode": 0,
+        "seconds": 1173.118672458,
+        "availableBytesBefore": 3171377152,
+        "availableBytesAfter": 2996883456,
+        "completeSummary": true,
+        "applicationPassed": 874,
+        "applicationSkipped": 1,
+        "inversePassed": 1022
+      }
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/late-feature-release-v1/hunodan-comparison.json",
+      "sha256": "a6942864a3407be3a0e6920dc85aaffc35f0b7132bde934b8263608cd192ec27"
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-release-v1/browser-checks.json",
+      "sha256": "274c2b617ed05a514273e8056a2da50820e5dec7f836553f5e3519232652f029"
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-release-v1/qa/source.json",
+      "sha256": "90084f7d24efa4da5c089690626d0c3e66eae767dffeb53271427e9cdbc3ab29"
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-release-v1/qa/served-assets.json",
+      "sha256": "a8f11ab6df44f34b1b99a8caa1bcfdf9a20ac7916b7161ac55849b1a609ecb8e"
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-release-v1/qa/browser-selected/results.json",
+      "sha256": "801e8006a0948e75a52f2f74d29c23b50a5f120e5b3fb267831b1e24fe71d8b9"
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-release-v1/qa/browser-smoke/results.json",
+      "sha256": "92fd5837012e94ce3d437befd5e8724e388a4f6d3dd4d88defb897cc4544939a"
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-release-v1/qa/browser-coverage/results.json",
+      "sha256": "bd29439024c251cdaa6a5a16813984c2b4e0bede7d73d3eeec92c543efff01f3"
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-release-v1/qa/browser-hunodan/results.json",
+      "sha256": "492136e7a91a2bb3ef3014ed25eff02014e4eaf5823ddab8a61c6b90ba7e81a1"
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-release-v1/qa/state.json",
+      "sha256": "e467bc0d2082aba4f94c1fc26e2e755c7077b804c333c7ef3b3a350aae9ba4a2"
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-release-v1/qa/checks.json",
+      "sha256": "e7c023f6dbf7357e4d73859efc56d824074664f376c0f45106dda8e833ef2700"
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-release-v1/qa/test.log",
+      "sha256": "2bf66bd0398c9c86a5e4918fac1e98b427b5eb916db746bb4a964cb1e891e54c"
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-release-v1/qa/check.log",
+      "sha256": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092"
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-release-v1/qa/lint.log",
+      "sha256": "2b7add329ca80a0f26dcb26c7eb139cd28b3768793c6b0797002f91a54119a34"
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-release-v1/qa/build.log",
+      "sha256": "ad74202a906a6d54e6a82d718bf2cc1213756060773d12ff162af1885a10ce85"
+    }
+  ]
+}

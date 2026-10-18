@@ -1,0 +1,57 @@
+{
+  "description": "Frozen classifier-derived photographic mask, not ground-truth artwork. No cutting paths are supplied to fitting. Black pixels encode mask value 1.",
+  "sourceCase": "hjfig-05",
+  "source": {
+    "file": "scripts/inverse/fixtures/hunodan/source/hjfig-05.jpg",
+    "sha256": "cc0c4eddf643a41839fadc014400f3353815017883c37a53160a9f4592ec9bd8",
+    "quad": [
+      [
+        216.8538757473738,
+        38.328225363387574
+      ],
+      [
+        359.89753198285587,
+        187.87012162871665
+      ],
+      [
+        212.54958628080993,
+        334.34627418104253
+      ],
+      [
+        67.96701146105954,
+        182.82942921221752
+      ]
+    ],
+    "photoROI": [
+      223,
+      0,
+      621,
+      337
+    ]
+  },
+  "derivationCommit": "fee6ff4",
+  "derivationModuleSha256": "f170ff447ef905fc21121d286ac427a079b184ca077fd178065b0a3e247fb132",
+  "resolution": 337,
+  "maskFile": "scripts/inverse/fixtures/photographic-anchor-perturbation.png",
+  "imageSha256": "fbe7dec61239342c470a8d8d227fc47f0c55d52a5c07488f26485a07bf84a10d",
+  "maskSha256": "50f97910d446ba265f4cb15babc1bee197517947e6b03c737e443fef15ec0cb2",
+  "fractionChangedFromProductionMask": 0.008585089240902007,
+  "baseline": {
+    "commit": "fee6ff4",
+    "id": "hjfig-05",
+    "method": "spatial",
+    "seconds": 9.913332624999999,
+    "checked": false,
+    "slits": {
+      "left": 4,
+      "right": 4
+    },
+    "maskError": 0.040812193468288,
+    "originalMaskDisagreement": 0.04099710308270743
+  },
+  "paintImport": {
+    "resolution": 400,
+    "method": "Nearest-neighbor resampling at destination cell centers by maskFromPrepared; the 337-pixel upload itself remains unchanged.",
+    "maskSha256": "bea3d463bfda33cc8361cb8196bea7154a1464a154f906da48cfa25d34975c6f"
+  }
+}

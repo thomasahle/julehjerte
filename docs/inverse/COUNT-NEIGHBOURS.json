@@ -1,0 +1,1491 @@
+{
+  "engineCommit": "f17177a",
+  "settings": {
+    "timeLimit": 10,
+    "trials": 0,
+    "earlyStop": false
+  },
+  "strategy": "Initialize the original shortlist; if opposite inset bands lack consensus and its best seed error exceeds the ordinary 3% limit, add every legal one-cut increment/decrement of either family of that best seed, in both phases. Merge initialized seeds using the existing score and retain the ordinary three finalists. No source edits or known cutting templates.",
+  "status": "diagnostic_only_not_promoted",
+  "sourceHashes": {
+    "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+    "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+    "static/inverse/core/direct/fit.js": "6b16b0667ce6a380ba61fbbd9bba9eaebe330ee2fa16655e42bb2b7757d8f7d9"
+  },
+  "screen": [
+    {
+      "id": "vissevasse-arranged-r1c3",
+      "maskSha256": "55fb6626496c9149413ffeca95f74b423d29c38020fcbc0a8f28eb91c4b5a5d8",
+      "supported": null,
+      "baseCount": 22,
+      "additional": [
+        {
+          "counts": [
+            2,
+            3
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            2,
+            3
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            4,
+            3
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            4,
+            3
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            3,
+            2
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            3,
+            2
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            3,
+            4
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            3,
+            4
+          ],
+          "phase": -1
+        }
+      ],
+      "initSeconds": 1.0519846670000002,
+      "coarse": [
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "phase": 1,
+          "error": 0.0567779541015625
+        },
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "phase": 1,
+          "error": 0.06365966796875
+        },
+        {
+          "counts": [
+            4,
+            3
+          ],
+          "phase": -1,
+          "error": 0.064727783203125
+        },
+        {
+          "counts": [
+            2,
+            3
+          ],
+          "phase": -1,
+          "error": 0.0682525634765625
+        },
+        {
+          "counts": [
+            3,
+            4
+          ],
+          "phase": -1,
+          "error": 0.0672607421875
+        },
+        {
+          "counts": [
+            3,
+            4
+          ],
+          "phase": 1,
+          "error": 0.0688323974609375
+        },
+        {
+          "counts": [
+            5,
+            5
+          ],
+          "phase": -1,
+          "error": 0.06866455078125
+        },
+        {
+          "counts": [
+            4,
+            3
+          ],
+          "phase": 1,
+          "error": 0.0747528076171875
+        },
+        {
+          "counts": [
+            5,
+            3
+          ],
+          "phase": -1,
+          "error": 0.0753326416015625
+        },
+        {
+          "counts": [
+            2,
+            2
+          ],
+          "phase": -1,
+          "error": 0.08154296875
+        }
+      ],
+      "fine": [
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "phase": 1,
+          "error": 0.0318756103515625,
+          "coarse": 0.0567779541015625,
+          "seconds": 0.19377208300000007,
+          "steps": 150
+        },
+        {
+          "counts": [
+            2,
+            3
+          ],
+          "phase": -1,
+          "error": 0.041229248046875,
+          "coarse": 0.0682525634765625,
+          "seconds": 0.13221137499999985,
+          "steps": 150
+        },
+        {
+          "counts": [
+            4,
+            3
+          ],
+          "phase": -1,
+          "error": 0.034454345703125,
+          "coarse": 0.064727783203125,
+          "seconds": 0.16401824999999987,
+          "steps": 150
+        },
+        {
+          "counts": [
+            3,
+            4
+          ],
+          "phase": -1,
+          "error": 0.0369110107421875,
+          "coarse": 0.0672607421875,
+          "seconds": 0.15226479199999995,
+          "steps": 150
+        },
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "phase": 1,
+          "error": 0.0355224609375,
+          "coarse": 0.06365966796875,
+          "seconds": 0.1651657500000001,
+          "steps": 150
+        },
+        {
+          "counts": [
+            3,
+            4
+          ],
+          "phase": 1,
+          "error": 0.04266357421875,
+          "coarse": 0.0688323974609375,
+          "seconds": 0.16666075,
+          "steps": 150
+        }
+      ]
+    },
+    {
+      "id": "bibel-narrow-wide",
+      "maskSha256": "d4f907f6f86ce38f19799459a0ee87b0a73004656d258a398d93dae99effcbd7",
+      "supported": null,
+      "baseCount": 22,
+      "additional": [
+        {
+          "counts": [
+            4,
+            5
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            4,
+            5
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            6,
+            5
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            6,
+            5
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            5,
+            6
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            5,
+            6
+          ],
+          "phase": -1
+        }
+      ],
+      "initSeconds": 0.9076525839999999,
+      "coarse": [
+        {
+          "counts": [
+            4,
+            5
+          ],
+          "phase": -1,
+          "error": 0.0367431640625
+        },
+        {
+          "counts": [
+            5,
+            6
+          ],
+          "phase": 1,
+          "error": 0.0414581298828125
+        },
+        {
+          "counts": [
+            5,
+            5
+          ],
+          "phase": -1,
+          "error": 0.0426788330078125
+        },
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "phase": -1,
+          "error": 0.046478271484375
+        },
+        {
+          "counts": [
+            5,
+            4
+          ],
+          "phase": -1,
+          "error": 0.0471954345703125
+        },
+        {
+          "counts": [
+            4,
+            5
+          ],
+          "phase": 1,
+          "error": 0.0473480224609375
+        },
+        {
+          "counts": [
+            6,
+            6
+          ],
+          "phase": 1,
+          "error": 0.044677734375
+        },
+        {
+          "counts": [
+            6,
+            5
+          ],
+          "phase": -1,
+          "error": 0.046112060546875
+        },
+        {
+          "counts": [
+            5,
+            5
+          ],
+          "phase": 1,
+          "error": 0.0472259521484375
+        },
+        {
+          "counts": [
+            5,
+            6
+          ],
+          "phase": -1,
+          "error": 0.051513671875
+        }
+      ],
+      "fine": [
+        {
+          "counts": [
+            4,
+            5
+          ],
+          "phase": -1,
+          "error": 0.0242919921875,
+          "coarse": 0.0367431640625,
+          "seconds": 0.18919862499999998,
+          "steps": 150
+        },
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "phase": -1,
+          "error": 0.030517578125,
+          "coarse": 0.046478271484375,
+          "seconds": 0.18333362500000022,
+          "steps": 150
+        },
+        {
+          "counts": [
+            5,
+            4
+          ],
+          "phase": -1,
+          "error": 0.0265045166015625,
+          "coarse": 0.0471954345703125,
+          "seconds": 0.18774862500000017,
+          "steps": 150
+        },
+        {
+          "counts": [
+            5,
+            5
+          ],
+          "phase": -1,
+          "error": 0.023162841796875,
+          "coarse": 0.0426788330078125,
+          "seconds": 0.20018316700000013,
+          "steps": 150
+        },
+        {
+          "counts": [
+            4,
+            5
+          ],
+          "phase": 1,
+          "error": 0.0303802490234375,
+          "coarse": 0.0473480224609375,
+          "seconds": 0.19980616700000065,
+          "steps": 150
+        },
+        {
+          "counts": [
+            5,
+            6
+          ],
+          "phase": 1,
+          "error": 0.0226593017578125,
+          "coarse": 0.0414581298828125,
+          "seconds": 0.22864274999999953,
+          "steps": 150
+        }
+      ]
+    },
+    {
+      "id": "bibel-nested-heart-red",
+      "maskSha256": "ffe76a68ece4263b1c652e3df3dee6d154fbe501a4016a88868901702908ebc9",
+      "supported": null,
+      "baseCount": 18,
+      "additional": [
+        {
+          "counts": [
+            2,
+            3
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            2,
+            3
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            4,
+            3
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            4,
+            3
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            3,
+            2
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            3,
+            2
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            3,
+            4
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            3,
+            4
+          ],
+          "phase": -1
+        }
+      ],
+      "initSeconds": 0.9069454579999993,
+      "coarse": [
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "phase": -1,
+          "error": 0.0364227294921875
+        },
+        {
+          "counts": [
+            4,
+            3
+          ],
+          "phase": 1,
+          "error": 0.0361328125
+        },
+        {
+          "counts": [
+            3,
+            4
+          ],
+          "phase": 1,
+          "error": 0.04571533203125
+        },
+        {
+          "counts": [
+            4,
+            3
+          ],
+          "phase": -1,
+          "error": 0.047149658203125
+        },
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "phase": -1,
+          "error": 0.048583984375
+        },
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "phase": 1,
+          "error": 0.052490234375
+        },
+        {
+          "counts": [
+            5,
+            5
+          ],
+          "phase": -1,
+          "error": 0.0600128173828125
+        },
+        {
+          "counts": [
+            3,
+            4
+          ],
+          "phase": -1,
+          "error": 0.0650482177734375
+        },
+        {
+          "counts": [
+            5,
+            5
+          ],
+          "phase": 1,
+          "error": 0.0648345947265625
+        },
+        {
+          "counts": [
+            6,
+            6
+          ],
+          "phase": 1,
+          "error": 0.0659637451171875
+        }
+      ],
+      "fine": [
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "phase": -1,
+          "error": 0.0179901123046875,
+          "coarse": 0.0364227294921875,
+          "seconds": 0.1552758329999997,
+          "steps": 150
+        },
+        {
+          "counts": [
+            4,
+            3
+          ],
+          "phase": 1,
+          "error": 0.0161895751953125,
+          "coarse": 0.0361328125,
+          "seconds": 0.16491633399999955,
+          "steps": 150
+        },
+        {
+          "counts": [
+            3,
+            4
+          ],
+          "phase": 1,
+          "error": 0.0222320556640625,
+          "coarse": 0.04571533203125,
+          "seconds": 0.16799895800000014,
+          "steps": 150
+        },
+        {
+          "counts": [
+            4,
+            3
+          ],
+          "phase": -1,
+          "error": 0.02386474609375,
+          "coarse": 0.047149658203125,
+          "seconds": 0.16307804099999976,
+          "steps": 150
+        },
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "phase": -1,
+          "error": 0.0209808349609375,
+          "coarse": 0.048583984375,
+          "seconds": 0.16944766600000002,
+          "steps": 150
+        },
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "phase": 1,
+          "error": 0.0251007080078125,
+          "coarse": 0.052490234375,
+          "seconds": 0.184198625,
+          "steps": 150
+        }
+      ]
+    },
+    {
+      "id": "vissevasse-arranged-r1c2",
+      "maskSha256": "13a16e6964a593bcd6a9180e999ac8f57b9bec5c3ed3db60229040bdfeed829c",
+      "supported": null,
+      "baseCount": 22,
+      "additional": [
+        {
+          "counts": [
+            3,
+            4
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            3,
+            4
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            5,
+            4
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            5,
+            4
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            4,
+            3
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            4,
+            3
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            4,
+            5
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            4,
+            5
+          ],
+          "phase": -1
+        }
+      ],
+      "initSeconds": 1.168619791,
+      "coarse": [
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "phase": -1,
+          "error": 0.061859130859375
+        },
+        {
+          "counts": [
+            4,
+            5
+          ],
+          "phase": 1,
+          "error": 0.0701904296875
+        },
+        {
+          "counts": [
+            5,
+            4
+          ],
+          "phase": -1,
+          "error": 0.0704345703125
+        },
+        {
+          "counts": [
+            4,
+            5
+          ],
+          "phase": -1,
+          "error": 0.070556640625
+        },
+        {
+          "counts": [
+            5,
+            5
+          ],
+          "phase": -1,
+          "error": 0.0759429931640625
+        },
+        {
+          "counts": [
+            5,
+            4
+          ],
+          "phase": 1,
+          "error": 0.07794189453125
+        },
+        {
+          "counts": [
+            5,
+            5
+          ],
+          "phase": 1,
+          "error": 0.07769775390625
+        },
+        {
+          "counts": [
+            6,
+            4
+          ],
+          "phase": -1,
+          "error": 0.086822509765625
+        },
+        {
+          "counts": [
+            6,
+            4
+          ],
+          "phase": 1,
+          "error": 0.08966064453125
+        },
+        {
+          "counts": [
+            6,
+            6
+          ],
+          "phase": 1,
+          "error": 0.089324951171875
+        }
+      ],
+      "fine": [
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "phase": -1,
+          "error": 0.04150390625,
+          "coarse": 0.061859130859375,
+          "seconds": 0.18481004199999915,
+          "steps": 150
+        },
+        {
+          "counts": [
+            5,
+            4
+          ],
+          "phase": -1,
+          "error": 0.0425872802734375,
+          "coarse": 0.0704345703125,
+          "seconds": 0.1975686249999999,
+          "steps": 150
+        },
+        {
+          "counts": [
+            4,
+            5
+          ],
+          "phase": -1,
+          "error": 0.04486083984375,
+          "coarse": 0.070556640625,
+          "seconds": 0.18345425000000068,
+          "steps": 150
+        },
+        {
+          "counts": [
+            4,
+            5
+          ],
+          "phase": 1,
+          "error": 0.0460205078125,
+          "coarse": 0.0701904296875,
+          "seconds": 0.18016283300000033,
+          "steps": 150
+        },
+        {
+          "counts": [
+            5,
+            5
+          ],
+          "phase": -1,
+          "error": 0.0443267822265625,
+          "coarse": 0.0759429931640625,
+          "seconds": 0.19840295800000057,
+          "steps": 150
+        },
+        {
+          "counts": [
+            5,
+            4
+          ],
+          "phase": 1,
+          "error": 0.050537109375,
+          "coarse": 0.07794189453125,
+          "seconds": 0.1870074170000007,
+          "steps": 150
+        }
+      ]
+    },
+    {
+      "id": "vissevasse-arranged-r4c2",
+      "maskSha256": "a65ea85f814d75869e53d995d09738065b91aa785edd41c42437e74c2ace206c",
+      "supported": null,
+      "baseCount": 24,
+      "additional": [
+        {
+          "counts": [
+            2,
+            3
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            2,
+            3
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            4,
+            3
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            4,
+            3
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            3,
+            2
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            3,
+            2
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            3,
+            4
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            3,
+            4
+          ],
+          "phase": -1
+        }
+      ],
+      "initSeconds": 0.9273247090000004,
+      "coarse": [
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "phase": -1,
+          "error": 0.065704345703125
+        },
+        {
+          "counts": [
+            3,
+            2
+          ],
+          "phase": 1,
+          "error": 0.0672454833984375
+        },
+        {
+          "counts": [
+            4,
+            3
+          ],
+          "phase": -1,
+          "error": 0.0665283203125
+        },
+        {
+          "counts": [
+            4,
+            3
+          ],
+          "phase": 1,
+          "error": 0.069488525390625
+        },
+        {
+          "counts": [
+            2,
+            3
+          ],
+          "phase": 1,
+          "error": 0.0742645263671875
+        },
+        {
+          "counts": [
+            3,
+            4
+          ],
+          "phase": -1,
+          "error": 0.073272705078125
+        },
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "phase": 1,
+          "error": 0.0750274658203125
+        },
+        {
+          "counts": [
+            2,
+            2
+          ],
+          "phase": -1,
+          "error": 0.0797882080078125
+        },
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "phase": -1,
+          "error": 0.0800018310546875
+        },
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "phase": 1,
+          "error": 0.081268310546875
+        }
+      ],
+      "fine": [
+        {
+          "counts": [
+            3,
+            2
+          ],
+          "phase": 1,
+          "error": 0.0469818115234375,
+          "coarse": 0.0672454833984375,
+          "seconds": 0.12739533299999858,
+          "steps": 150
+        },
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "phase": -1,
+          "error": 0.0423126220703125,
+          "coarse": 0.065704345703125,
+          "seconds": 0.14913129200000003,
+          "steps": 150
+        },
+        {
+          "counts": [
+            2,
+            3
+          ],
+          "phase": 1,
+          "error": 0.0524444580078125,
+          "coarse": 0.0742645263671875,
+          "seconds": 0.1327458750000005,
+          "steps": 150
+        },
+        {
+          "counts": [
+            4,
+            3
+          ],
+          "phase": -1,
+          "error": 0.04351806640625,
+          "coarse": 0.0665283203125,
+          "seconds": 0.15279704200000016,
+          "steps": 150
+        },
+        {
+          "counts": [
+            3,
+            4
+          ],
+          "phase": -1,
+          "error": 0.045318603515625,
+          "coarse": 0.073272705078125,
+          "seconds": 0.1504560840000013,
+          "steps": 150
+        },
+        {
+          "counts": [
+            4,
+            3
+          ],
+          "phase": 1,
+          "error": 0.0459442138671875,
+          "coarse": 0.069488525390625,
+          "seconds": 0.15779537499999968,
+          "steps": 150
+        }
+      ]
+    }
+  ],
+  "fit": [
+    {
+      "id": "vissevasse-arranged-r1c3",
+      "seconds": 8.684649416000001,
+      "error": 0.03165,
+      "checks": false,
+      "counts": {
+        "left": 3,
+        "right": 3
+      },
+      "missing": 2,
+      "before": {
+        "error": 0.03165,
+        "checks": false,
+        "counts": {
+          "left": 3,
+          "right": 3
+        }
+      },
+      "countSearch": {
+        "strategy": "neighbours-diagnostic",
+        "base": {
+          "strategy": "shared-work",
+          "hypotheses": 22,
+          "fullyInitialized": 22
+        },
+        "added": [
+          {
+            "counts": [
+              2,
+              3
+            ],
+            "phase": 1
+          },
+          {
+            "counts": [
+              2,
+              3
+            ],
+            "phase": -1
+          },
+          {
+            "counts": [
+              4,
+              3
+            ],
+            "phase": 1
+          },
+          {
+            "counts": [
+              4,
+              3
+            ],
+            "phase": -1
+          },
+          {
+            "counts": [
+              3,
+              2
+            ],
+            "phase": 1
+          },
+          {
+            "counts": [
+              3,
+              2
+            ],
+            "phase": -1
+          },
+          {
+            "counts": [
+              3,
+              4
+            ],
+            "phase": 1
+          },
+          {
+            "counts": [
+              3,
+              4
+            ],
+            "phase": -1
+          }
+        ]
+      }
+    },
+    {
+      "id": "bibel-narrow-wide",
+      "seconds": 5.818496541,
+      "error": 0.02178125,
+      "checks": true,
+      "counts": {
+        "left": 5,
+        "right": 4
+      },
+      "missing": 0,
+      "before": {
+        "error": 0.02026875,
+        "checks": true,
+        "counts": {
+          "left": 4,
+          "right": 5
+        }
+      },
+      "countSearch": {
+        "strategy": "neighbours-diagnostic",
+        "base": {
+          "strategy": "shared-work",
+          "hypotheses": 22,
+          "fullyInitialized": 22
+        },
+        "added": [
+          {
+            "counts": [
+              4,
+              5
+            ],
+            "phase": 1
+          },
+          {
+            "counts": [
+              4,
+              5
+            ],
+            "phase": -1
+          },
+          {
+            "counts": [
+              6,
+              5
+            ],
+            "phase": 1
+          },
+          {
+            "counts": [
+              6,
+              5
+            ],
+            "phase": -1
+          },
+          {
+            "counts": [
+              5,
+              6
+            ],
+            "phase": 1
+          },
+          {
+            "counts": [
+              5,
+              6
+            ],
+            "phase": -1
+          }
+        ]
+      }
+    },
+    {
+      "id": "bibel-nested-heart-red",
+      "seconds": 8.147920167,
+      "error": 0.01525,
+      "checks": true,
+      "counts": {
+        "left": 3,
+        "right": 4
+      },
+      "missing": 0,
+      "before": {
+        "error": 0.02806875,
+        "checks": true,
+        "counts": {
+          "left": 4,
+          "right": 4
+        }
+      },
+      "countSearch": {
+        "strategy": "neighbours-diagnostic",
+        "base": {
+          "strategy": "shared-work",
+          "hypotheses": 18,
+          "fullyInitialized": 18
+        },
+        "added": [
+          {
+            "counts": [
+              2,
+              3
+            ],
+            "phase": 1
+          },
+          {
+            "counts": [
+              2,
+              3
+            ],
+            "phase": -1
+          },
+          {
+            "counts": [
+              4,
+              3
+            ],
+            "phase": 1
+          },
+          {
+            "counts": [
+              4,
+              3
+            ],
+            "phase": -1
+          },
+          {
+            "counts": [
+              3,
+              2
+            ],
+            "phase": 1
+          },
+          {
+            "counts": [
+              3,
+              2
+            ],
+            "phase": -1
+          },
+          {
+            "counts": [
+              3,
+              4
+            ],
+            "phase": 1
+          },
+          {
+            "counts": [
+              3,
+              4
+            ],
+            "phase": -1
+          }
+        ]
+      }
+    },
+    {
+      "id": "vissevasse-arranged-r1c2",
+      "seconds": 8.511042708000002,
+      "error": 0.027175,
+      "checks": false,
+      "counts": {
+        "left": 4,
+        "right": 4
+      },
+      "missing": 17,
+      "before": {
+        "error": 0.027175,
+        "checks": false,
+        "counts": {
+          "left": 4,
+          "right": 4
+        }
+      },
+      "countSearch": {
+        "strategy": "neighbours-diagnostic",
+        "base": {
+          "strategy": "shared-work",
+          "hypotheses": 22,
+          "fullyInitialized": 22
+        },
+        "added": [
+          {
+            "counts": [
+              3,
+              4
+            ],
+            "phase": 1
+          },
+          {
+            "counts": [
+              3,
+              4
+            ],
+            "phase": -1
+          },
+          {
+            "counts": [
+              5,
+              4
+            ],
+            "phase": 1
+          },
+          {
+            "counts": [
+              5,
+              4
+            ],
+            "phase": -1
+          },
+          {
+            "counts": [
+              4,
+              3
+            ],
+            "phase": 1
+          },
+          {
+            "counts": [
+              4,
+              3
+            ],
+            "phase": -1
+          },
+          {
+            "counts": [
+              4,
+              5
+            ],
+            "phase": 1
+          },
+          {
+            "counts": [
+              4,
+              5
+            ],
+            "phase": -1
+          }
+        ]
+      }
+    },
+    {
+      "id": "vissevasse-arranged-r4c2",
+      "seconds": 8.334007833999996,
+      "error": 0.0379625,
+      "checks": false,
+      "counts": {
+        "left": 3,
+        "right": 3
+      },
+      "missing": 1,
+      "before": {
+        "error": 0.0379625,
+        "checks": false,
+        "counts": {
+          "left": 3,
+          "right": 3
+        }
+      },
+      "countSearch": {
+        "strategy": "neighbours-diagnostic",
+        "base": {
+          "strategy": "shared-work",
+          "hypotheses": 24,
+          "fullyInitialized": 24
+        },
+        "added": [
+          {
+            "counts": [
+              2,
+              3
+            ],
+            "phase": 1
+          },
+          {
+            "counts": [
+              2,
+              3
+            ],
+            "phase": -1
+          },
+          {
+            "counts": [
+              4,
+              3
+            ],
+            "phase": 1
+          },
+          {
+            "counts": [
+              4,
+              3
+            ],
+            "phase": -1
+          },
+          {
+            "counts": [
+              3,
+              2
+            ],
+            "phase": 1
+          },
+          {
+            "counts": [
+              3,
+              2
+            ],
+            "phase": -1
+          },
+          {
+            "counts": [
+              3,
+              4
+            ],
+            "phase": 1
+          },
+          {
+            "counts": [
+              3,
+              4
+            ],
+            "phase": -1
+          }
+        ]
+      }
+    }
+  ]
+}

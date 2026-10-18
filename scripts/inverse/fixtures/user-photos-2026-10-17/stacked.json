@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "description": "User-supplied photographic QA cases, received 2026-10-17. Rough selection rectangles only; no reference cuts or solver feedback used to place them.",
+  "splitStatus": "qa-reserved",
+  "trainingEligibility": "excluded-existing-development-qa",
+  "familyReviewStatus": "pending; related motifs/reposts must remain together",
+  "rights": "Source creator rights retained; local regression fixtures, not public website assets or newly approved training data.",
+  "source": {
+    "file": "scripts/inverse/fixtures/user-photos-2026-10-17/stacked-hearts.png",
+    "sha256": "c25d43d008c63dba490e4426f972cd347d3b578a510b478edac6874ecfee6ab5",
+    "decodedPixelsSha256": "ddc8769cf7a63fe6c7a2f525b67e6ef1ee04281ffd95ebf09a44a4e243df28eb",
+    "width": 650,
+    "height": 652,
+    "receivedAt": "2026-10-17",
+    "originalFilename": "Screenshot 2026-10-11 at 5.02.34 PM.png"
+  },
+  "cases": [
+    {
+      "id": "stacked-heart-fringe",
+      "roi": [
+        0,
+        0,
+        650,
+        652
+      ],
+      "tags": [
+        "user-reported-border-fringe",
+        "screenshot-of-photograph"
+      ],
+      "relatedPhotoAssetIds": [
+        "real-68ac6f59a93fe017",
+        "real-d738f564a8ad8b40",
+        "real-d655daacff9539f6"
+      ]
+    }
+  ]
+}

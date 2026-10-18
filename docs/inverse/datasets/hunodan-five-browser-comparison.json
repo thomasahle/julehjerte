@@ -1,0 +1,173 @@
+{
+  "scope": "Counterbalanced reference-engine comparison on four Hunodan cases with earlier error increases and one unchanged control. Both revisions use the same current UI and the same HTTP reference-engine proxy. Each stage uses a fresh Chrome process and the same case order. Unmodified production settings. Not a full 22-design result.",
+  "method": "Counterbalanced diagnostic of scalar-loss indexing, scoped detail and completed-audit retention against the baseline. No attribution to one change. Same UI, masks and production settings; independently measure cuts, paper, errors and click-to-ready time.",
+  "runtimeRevision": "eaa358ac9be1c7a22557e6690c784d0a59629eb9",
+  "baselineRevision": "f4a1af250b8c020573d58b6aba5e83d478e50993",
+  "evidence": {
+    "path": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/browser-paired/comparison.json",
+    "sha256": "1d7215bd1c8c5bf441b4e49c77cc09c7093cf9fabc1eec739016549521d686b6"
+  },
+  "browserSourceManifest": {
+    "path": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/browser-paired/browser-source.json",
+    "sha256": "c24b335f7d28c1ff9e5aee420f4384315b13d98286709b001eac8d80cad1b462"
+  },
+  "servedAssets": {
+    "path": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/browser-paired/served-assets.json",
+    "sha256": "bf09f3dffb36fed0a5d073b7ae92fcd5ccde58fd1170d103fe9f9a56e03cdc02"
+  },
+  "stages": [
+    {
+      "name": "baseline-1",
+      "cases": 5,
+      "functionalPasses": 5,
+      "withinTenSeconds": 5,
+      "medianSeconds": 7.2740999999046325,
+      "maximumSeconds": 9.0285
+    },
+    {
+      "name": "current-1",
+      "cases": 5,
+      "functionalPasses": 5,
+      "withinTenSeconds": 5,
+      "medianSeconds": 7.166900000095367,
+      "maximumSeconds": 8.855299999952317
+    },
+    {
+      "name": "current-2",
+      "cases": 5,
+      "functionalPasses": 5,
+      "withinTenSeconds": 5,
+      "medianSeconds": 7.138800000190735,
+      "maximumSeconds": 8.678200000047683
+    },
+    {
+      "name": "baseline-2",
+      "cases": 5,
+      "functionalPasses": 5,
+      "withinTenSeconds": 5,
+      "medianSeconds": 7.528099999904633,
+      "maximumSeconds": 8.9095
+    }
+  ],
+  "cases": [
+    {
+      "case": "hunodan-hjfig-01",
+      "baselineMedianSeconds": 4.340750000119209,
+      "currentMedianSeconds": 4.331049999952317,
+      "sourceEditableError": 0.009891555555555556,
+      "paintingEditableError": 0.0112625,
+      "errorChanges": {
+        "engineError": 0.0,
+        "sourceEditableError": 0.0,
+        "paintingEditableError": 0.0
+      },
+      "sourceMaskSha256": "0f602686e418c6e266fa6fc82f0a899b24920770cc69f3c1ce0c4004c8407fb6",
+      "cutGeometrySha256": {
+        "baseline-1": "93e2bd151444bfb5109c65d91c416496d5bae8f499a8fd8da14a4b4593e4706f",
+        "current-1": "93e2bd151444bfb5109c65d91c416496d5bae8f499a8fd8da14a4b4593e4706f",
+        "current-2": "93e2bd151444bfb5109c65d91c416496d5bae8f499a8fd8da14a4b4593e4706f",
+        "baseline-2": "93e2bd151444bfb5109c65d91c416496d5bae8f499a8fd8da14a4b4593e4706f"
+      },
+      "identicalCutGeometryBytes": true
+    },
+    {
+      "case": "hunodan-hjfla-01",
+      "baselineMedianSeconds": 6.820399999976158,
+      "currentMedianSeconds": 6.679850000023842,
+      "sourceEditableError": 0.007120768229166667,
+      "paintingEditableError": 0.0093375,
+      "errorChanges": {
+        "engineError": 0.0,
+        "sourceEditableError": 0.0,
+        "paintingEditableError": 0.0
+      },
+      "sourceMaskSha256": "f5f772caadf20161dd72c25a4e06acf56e3122ddbd9b530c471121095a344f5d",
+      "cutGeometrySha256": {
+        "baseline-1": "0bb8ca85fd4cbb66b41d6b02fbb71111b90eb8537bbbb4b477263e4cd6fbdde6",
+        "current-1": "0bb8ca85fd4cbb66b41d6b02fbb71111b90eb8537bbbb4b477263e4cd6fbdde6",
+        "current-2": "0bb8ca85fd4cbb66b41d6b02fbb71111b90eb8537bbbb4b477263e4cd6fbdde6",
+        "baseline-2": "0bb8ca85fd4cbb66b41d6b02fbb71111b90eb8537bbbb4b477263e4cd6fbdde6"
+      },
+      "identicalCutGeometryBytes": true
+    },
+    {
+      "case": "hunodan-hjcur-02",
+      "baselineMedianSeconds": 7.401099999904632,
+      "currentMedianSeconds": 7.152850000143051,
+      "sourceEditableError": 0.004878222222222222,
+      "paintingEditableError": 0.00829375,
+      "errorChanges": {
+        "engineError": 0.0,
+        "sourceEditableError": 0.0,
+        "paintingEditableError": 0.0
+      },
+      "sourceMaskSha256": "ee27e7b1a962204080c43d064b331286e929ae897f20ff8f5ac082e961caf4de",
+      "cutGeometrySha256": {
+        "baseline-1": "2f15a6a0be0ec3465eec06df375f5517000a44ffc16856bda95cd3ec53bc2fd5",
+        "current-1": "2f15a6a0be0ec3465eec06df375f5517000a44ffc16856bda95cd3ec53bc2fd5",
+        "current-2": "2f15a6a0be0ec3465eec06df375f5517000a44ffc16856bda95cd3ec53bc2fd5",
+        "baseline-2": "2f15a6a0be0ec3465eec06df375f5517000a44ffc16856bda95cd3ec53bc2fd5"
+      },
+      "identicalCutGeometryBytes": true
+    },
+    {
+      "case": "hunodan-hjhih-04",
+      "baselineMedianSeconds": 7.977,
+      "currentMedianSeconds": 8.023149999976157,
+      "sourceEditableError": 0.007750131111240604,
+      "paintingEditableError": 0.01061875,
+      "errorChanges": {
+        "engineError": 0.0,
+        "sourceEditableError": 0.0,
+        "paintingEditableError": 0.0
+      },
+      "sourceMaskSha256": "8c86ff1087e3248e8450d6cca93b879ead9373a20e7fd9baddb540f93cad3e11",
+      "cutGeometrySha256": {
+        "baseline-1": "68160c76e5ad6b3573c3e52d3efedbe24c970c0d59a4a9b53e81b7304e4bdb49",
+        "current-1": "68160c76e5ad6b3573c3e52d3efedbe24c970c0d59a4a9b53e81b7304e4bdb49",
+        "current-2": "68160c76e5ad6b3573c3e52d3efedbe24c970c0d59a4a9b53e81b7304e4bdb49",
+        "baseline-2": "68160c76e5ad6b3573c3e52d3efedbe24c970c0d59a4a9b53e81b7304e4bdb49"
+      },
+      "identicalCutGeometryBytes": true
+    },
+    {
+      "case": "hunodan-hjstr-03",
+      "baselineMedianSeconds": 8.969,
+      "currentMedianSeconds": 8.76675,
+      "sourceEditableError": 0.005446912530555851,
+      "paintingEditableError": 0.00808125,
+      "errorChanges": {
+        "engineError": 0.0,
+        "sourceEditableError": 0.0,
+        "paintingEditableError": 0.0
+      },
+      "sourceMaskSha256": "d9ba414af2b114d628d5a1ee4df9b7c6cc875d31452495e8159a06d1e3021f11",
+      "cutGeometrySha256": {
+        "baseline-1": "f56429ad6c7a2faceb7df95a22be4962cf6834878da575768a79c727408c2e1d",
+        "current-1": "f56429ad6c7a2faceb7df95a22be4962cf6834878da575768a79c727408c2e1d",
+        "current-2": "f56429ad6c7a2faceb7df95a22be4962cf6834878da575768a79c727408c2e1d",
+        "baseline-2": "f56429ad6c7a2faceb7df95a22be4962cf6834878da575768a79c727408c2e1d"
+      },
+      "identicalCutGeometryBytes": true
+    }
+  ],
+  "medianClickToReadyRatio": 0.9793927042471399,
+  "all20UnderTenSeconds": true,
+  "integrityProblems": [],
+  "prerequisiteFullSuite": {
+    "runtime": "6efe473",
+    "passed": 1057,
+    "failed": 5,
+    "path": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/scoped-qa/summary.json",
+    "status": "failed",
+    "qualification": "Current38focused tests pass; that does not explain all previous timing-sensitive failures. This browser comparison is diagnostic, not release approval."
+  },
+  "limitations": [
+    "Previous full suite failed five tests; current focused replays pass, but this diagnostic does not establish release readiness.",
+    "Only five designs and two runs per engine; not a full 22-design claim or statistical proof.",
+    "Browser readiness is measured separately from artifact capture and independent audit.",
+    "Changing available optimization time can change selected geometry; preserve every error increase.",
+    "Geometry and guarded paper checks do not establish physical assembly or tear resistance."
+  ],
+  "full22Status": "Running separately against the actual current build; not yet scored."
+}

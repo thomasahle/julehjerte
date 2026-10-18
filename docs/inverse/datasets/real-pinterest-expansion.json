@@ -1,0 +1,133 @@
+{
+  "baseline": {
+    "commit": "ade443a",
+    "manifestSha256": "9a2586fa86778b3d60129a3aa4b9287085aa3843935698518355a15afc391a17",
+    "counts": {
+      "uniqueFileHashes": 672,
+      "kinds": {
+        "photo": 303,
+        "photo-multiple": 57,
+        "mixed-photo-template": 29,
+        "photo-collage": 8,
+        "template-render": 143,
+        "unrelated": 58,
+        "photo-process": 67,
+        "photo-other-material": 6,
+        "unknown": 1
+      },
+      "sourcePages": 134,
+      "visuallyReviewedFiles": 672,
+      "reviewedPhotoFileHashes": 397,
+      "photoNearDuplicateGroups": 345,
+      "qaReservedFiles": 372
+    }
+  },
+  "current": {
+    "manifestSha256": "a900f3f3baaeba87e4d5bb3eedc595f0276ca1684110cdd4dc1f3ba1cc531dd8",
+    "verifiedAssetFiles": 1034,
+    "verifiedBytes": 199381046,
+    "verifiedDecodedPixelGroups": 1033,
+    "kinds": {
+      "photo": 408,
+      "photo-multiple": 104,
+      "mixed-photo-template": 41,
+      "photo-collage": 20,
+      "template-render": 202,
+      "unrelated": 119,
+      "photo-process": 91,
+      "photo-other-material": 47,
+      "unknown": 2
+    },
+    "reviewedAssembledHeartPhotoFiles": 573,
+    "reviewedPhotoNearDuplicateGroups": 461,
+    "qaReservedFiles": 475,
+    "pinterestSelectedPins": 487,
+    "pinterestDownloadedPins": 470,
+    "pinterestPhotoFiles": 198
+  },
+  "delta": {
+    "uniqueFiles": 362,
+    "photoContainingFiles": 176,
+    "photoNearDuplicateGroups": 116
+  },
+  "expansion": {
+    "explicitSelectedPins": 320,
+    "keywordSearchQueries": 100,
+    "visitedPins": 442,
+    "downloadedPins": 428,
+    "uniqueFileHashes": 365,
+    "reviewedPhotoContainingFiles": 178,
+    "kinds": {
+      "photo": 106,
+      "photo-multiple": 48,
+      "template-render": 60,
+      "photo-collage": 12,
+      "mixed-photo-template": 12,
+      "photo-process": 24,
+      "unrelated": 61,
+      "photo-other-material": 41,
+      "unknown": 1
+    },
+    "failures": {
+      "No public main-pin image advertised in HTML": 14
+    },
+    "stopped": null,
+    "remainingQueued": 0,
+    "maximumRelatedDepth": 2,
+    "minimumHostDelaySeconds": 1.2,
+    "hostJitterSeconds": 0.5
+  },
+  "allPinterest": {
+    "selectedPinRecords": 487,
+    "downloadedPins": 470,
+    "photoContainingFiles": 198,
+    "photoNearDuplicateGroups": 177,
+    "photoFilesOutsideQaReservedGroups": 141
+  },
+  "review": {
+    "confirmedAdditionalDuplicateEdges": 137,
+    "allPhotoFilesOutsideQaReservedGroups": 314,
+    "familyAndInstanceAnnotations": "pending; near-duplicate photo groups are not independent motifs",
+    "trainingRights": "not-cleared"
+  },
+  "browserSearchCheck": {
+    "url": "https://dk.pinterest.com/search/pins/?q=julehjerter",
+    "httpStatus": 200,
+    "publicPinAnchors": 0,
+    "renderedImages": 39,
+    "result": "Mandatory login modal; no authentication or modal bypass attempted. Public pin URLs remain downloadable independently."
+  },
+  "gallerySmoke": {
+    "checks": [
+      {
+        "filter": "",
+        "visible": 1034
+      },
+      {
+        "filter": "photo",
+        "visible": 573
+      },
+      {
+        "filter": "template-render",
+        "visible": 202
+      },
+      {
+        "filter": "photo-process",
+        "visible": 91
+      },
+      {
+        "filter": "photo-other-material",
+        "visible": 47
+      },
+      {
+        "filter": "unrelated",
+        "visible": 119
+      },
+      {
+        "filter": "unknown",
+        "visible": 2
+      }
+    ],
+    "errors": []
+  }
+}

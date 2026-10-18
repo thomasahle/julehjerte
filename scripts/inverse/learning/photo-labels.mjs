@@ -1,0 +1,38 @@
+/** Evaluate a chosen crop in the unchanged synthetic material coordinates. */
+import {homography,invert,multiply,project,SQUARE} from '../datasets/synthetic-photo.mjs';
+
+/** Compare equally sampled binary fields, allowing an exchange of paper names.
+ * A flattened array with a different stride must never become an image score. */
+export function scoreReferenceMask(mask,target,valid){
+  if(!mask?.length||mask.length!==target?.length||mask.length!==valid?.length)throw new Error('Mask, reference and validity dimensions differ.');
+  let count=0,wrong=0;
+  for(let i=0;i<mask.length;i++)if(valid[i]){count++;wrong+=mask[i]!==target[i];}
+  if(!count)return null;
+  return{mismatchFraction:Math.min(wrong,count-wrong)/count,inverted:wrong>count/2,observedPixels:count,observedFraction:count/mask.length};
+}
+
+/** Locate saved predictions in the photograph, never in an unrelated proposed
+ * crop. The original intervention runner fits pre-rectified crops and therefore
+ * records their transform in labels rather than in a selectedCrop field.
+ */
+export function savedCropQuad(row,labels,schema){
+  const selected=row.selectedCrop?.quad,reported=row.report?.input?.sourceImage?.cropCorners;
+  if(selected&&reported&&JSON.stringify(selected)!==JSON.stringify(reported))throw new Error('Saved crop and fitted crop disagree.');
+  const quad=reported||selected||(schema==='heart-intervention-solves-1'?labels.proposedCropQuad:null);
+  if(!Array.isArray(quad)||quad.length!==4||quad.some(p=>!Array.isArray(p)||p.length!==2||p.some(v=>!Number.isFinite(v))))throw new Error('Missing saved prediction crop.');
+  return quad;
+}
+
+export function labelsForCrop(labels,quad,canonical,n,width,height){
+  const toPhoto=homography(SQUARE,quad),toCanonical=multiply(invert(labels.canonicalToPhoto),toPhoto),target=new Uint8Array(n*n),valid=new Uint8Array(n*n),size=canonical.width;
+  if(size!==canonical.height)throw new Error('Canonical label must be square.');
+  for(let y=0;y<n;y++)for(let x=0;x<n;x++){
+    const i=y*n+x,point=[(x+.5)*100/n,(y+.5)*100/n],p=project(toCanonical,point),q=project(toPhoto,point);
+    if(p.some(v=>v<0||v>100)||q[0]<0||q[1]<0||q[0]>width||q[1]>height)continue;
+    valid[i]=1;
+    const sx=Math.max(0,Math.min(size-1,p[0]*size/100-.5)),sy=Math.max(0,Math.min(size-1,p[1]*size/100-.5)),x0=Math.floor(sx),y0=Math.floor(sy),x1=Math.min(size-1,x0+1),y1=Math.min(size-1,y0+1),u=sx-x0,v=sy-y0;
+    const at=(a,b)=>1-canonical.data[4*(b*size+a)]/255;
+    target[i]=Number((1-v)*((1-u)*at(x0,y0)+u*at(x1,y0))+v*((1-u)*at(x0,y1)+u*at(x1,y1))>.5);
+  }
+  return{target,valid};
+}

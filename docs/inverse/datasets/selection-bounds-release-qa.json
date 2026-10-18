@@ -1,0 +1,1282 @@
+{
+  "schema": "selection-bounds-release-qa-1",
+  "status": "full-suite-failed-fitter-scheduling-under-investigation",
+  "runtimeCommit": "fb3d8a3",
+  "sourceFilesVerified": 1037,
+  "checks": [
+    {
+      "stage": "check",
+      "exitCode": 0,
+      "seconds": 14.323092542,
+      "availableBytesBefore": 3755089920,
+      "availableBytesAfter": 3754807296
+    },
+    {
+      "stage": "lint",
+      "exitCode": 0,
+      "seconds": 7.428262332999999,
+      "availableBytesBefore": 3754799104,
+      "availableBytesAfter": 3754606592
+    },
+    {
+      "stage": "build",
+      "exitCode": 0,
+      "seconds": 18.004398459,
+      "availableBytesBefore": 3754606592,
+      "availableBytesAfter": 3753512960
+    },
+    {
+      "stage": "preview",
+      "exitCode": 0,
+      "seconds": 1.2485511659999986,
+      "availableBytesBefore": 3753537536,
+      "availableBytesAfter": 3753218048
+    },
+    {
+      "stage": "browser-selected",
+      "exitCode": 0,
+      "seconds": 36.126575833000004,
+      "availableBytesBefore": 3753213952,
+      "availableBytesAfter": 3729485824
+    },
+    {
+      "stage": "browser-smoke",
+      "exitCode": 0,
+      "seconds": 36.07637295799999,
+      "availableBytesBefore": 3729481728,
+      "availableBytesAfter": 3724316672
+    },
+    {
+      "stage": "browser-coverage",
+      "exitCode": 0,
+      "seconds": 24.635476082999986,
+      "availableBytesBefore": 3724304384,
+      "availableBytesAfter": 3708092416
+    },
+    {
+      "stage": "test",
+      "exitCode": 1,
+      "seconds": 1163.587419625,
+      "availableBytesBefore": 3708088320,
+      "availableBytesAfter": 2349395968
+    }
+  ],
+  "applicationTests": {
+    "passed": 874,
+    "skipped": 1
+  },
+  "inverseTests": {
+    "passed": 1019,
+    "failed": 1,
+    "total": 1020
+  },
+  "browserWorkflows": {
+    "passed": 8,
+    "selectedOriginalPhotos": 2,
+    "maskSmoke": 5,
+    "clippedOriginalPhoto": 1,
+    "qualification": "Workflow success checks UI, solving and editable export. Dense checker remains above image-error limit; not a reconstruction success."
+  },
+  "failure": {
+    "test": "the vertical near-miss layout produces checked exports within the original short search (1.5x clock)",
+    "file": "scripts/inverse/feature-near-miss.test.mjs",
+    "assertion": "Feature initialization was skipped",
+    "sourceCase": "flettede-stonehenge",
+    "fixedCropShiftPx": [
+      0,
+      1
+    ],
+    "selectedInitialization": "grid",
+    "solverSeconds": 9.657621876000004,
+    "initializationSeconds": 0.9844824375000099,
+    "fineGridSeconds": 2.0345273129999915,
+    "scope": "The test uses fixed corners and byte-checked inputs. Automatic crop detection is not called. The failure does not retain the complete answer because this scheduling assertion precedes the existing image-error capture."
+  },
+  "capturedReplay": {
+    "testsPassed": 11,
+    "testsFailed": 0,
+    "fittedPairs": 8,
+    "qualification": "Complete original file and assertions, with post-fit capture. Successful replay does not cancel full-suite failure.",
+    "independentResults": [
+      {
+        "name": "horizontal-1",
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 7.727354040999999,
+        "selected": "feature-weighted-grid",
+        "counts": [
+          3,
+          3
+        ],
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.01660625,
+            "sunWindowError": 0.042352941176470586
+          },
+          {
+            "resolution": 800,
+            "error": 0.017709375,
+            "sunWindowError": 0.043176470588235295
+          }
+        ]
+      },
+      {
+        "name": "horizontal-1.5",
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 9.041155813500009,
+        "selected": "feature-weighted-grid",
+        "counts": [
+          3,
+          3
+        ],
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.01679375,
+            "sunWindowError": 0.04248739495798319
+          },
+          {
+            "resolution": 800,
+            "error": 0.01768125,
+            "sunWindowError": 0.04323529411764706
+          }
+        ]
+      },
+      {
+        "name": "negative-diagonal-1",
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 7.8226789169999975,
+        "selected": "feature-sampling-grid",
+        "counts": [
+          3,
+          3
+        ],
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.015675,
+            "sunWindowError": 0.04295798319327731
+          },
+          {
+            "resolution": 800,
+            "error": 0.017184375,
+            "sunWindowError": 0.044176470588235296
+          }
+        ]
+      },
+      {
+        "name": "negative-diagonal-1.5",
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 9.127565124,
+        "selected": "feature-sampling-grid",
+        "counts": [
+          3,
+          3
+        ],
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.0160125,
+            "sunWindowError": 0.04349579831932773
+          },
+          {
+            "resolution": 800,
+            "error": 0.0172703125,
+            "sunWindowError": 0.044722689075630255
+          }
+        ]
+      },
+      {
+        "name": "original-1",
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 8.911185625000002,
+        "selected": "feature-weighted-grid",
+        "counts": [
+          3,
+          3
+        ],
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.012375,
+            "sunWindowError": 0.02557983193277311
+          },
+          {
+            "resolution": 800,
+            "error": 0.0135796875,
+            "sunWindowError": 0.027218487394957983
+          }
+        ]
+      },
+      {
+        "name": "original-1.5",
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 9.088524375,
+        "selected": "feature-weighted-grid",
+        "counts": [
+          3,
+          3
+        ],
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.0187875,
+            "sunWindowError": 0.04598319327731092
+          },
+          {
+            "resolution": 800,
+            "error": 0.0200015625,
+            "sunWindowError": 0.04697478991596639
+          }
+        ]
+      },
+      {
+        "name": "vertical-1",
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 9.002440666999998,
+        "selected": "feature-sampling-grid",
+        "counts": [
+          3,
+          3
+        ],
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.01349375,
+            "sunWindowError": 0.022957983193277312
+          },
+          {
+            "resolution": 800,
+            "error": 0.0152453125,
+            "sunWindowError": 0.025487394957983193
+          }
+        ]
+      },
+      {
+        "name": "vertical-1.5",
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 9.100209750000001,
+        "selected": "feature-sampling-grid",
+        "counts": [
+          3,
+          3
+        ],
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.014925,
+            "sunWindowError": 0.029747899159663867
+          },
+          {
+            "resolution": 800,
+            "error": 0.0164578125,
+            "sunWindowError": 0.03144537815126051
+          }
+        ]
+      }
+    ]
+  },
+  "controlledBudgetDiagnostic": {
+    "status": "complete",
+    "sourceMaskSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+    "method": "Counterfactual initializer delay: advance a 1.5x clock once, at the feature-proposal decision, to leave the specified total search time. No sleep, altered source pixels, extra budget or acceptance changes. Candidate only changes that decision from 2.5s after reserves to 3.5s total remaining. Diagnostic only; not integrated.",
+    "rows": [
+      {
+        "remaining": 6000,
+        "policy": "current",
+        "simulatedDelayMs": 51.96574950000013,
+        "decisions": [
+          {
+            "remaining": 5999.99775,
+            "refinement": 3499.984625,
+            "permitted": true,
+            "missingFeature": true,
+            "lostColour": true,
+            "poorGrid": true,
+            "competitiveGrid": false
+          }
+        ],
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 9.0096774375,
+        "selected": "feature-sampling-grid",
+        "maskError": 0.01591875,
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.0161125,
+            "sunWindowError": 0.033008403361344536
+          },
+          {
+            "resolution": 800,
+            "error": 0.017484375,
+            "sunWindowError": 0.03464705882352941
+          }
+        ]
+      },
+      {
+        "remaining": 6000,
+        "policy": "total-budget",
+        "simulatedDelayMs": 305.3614994999989,
+        "decisions": [
+          {
+            "remaining": 5999.998687500001,
+            "refinement": 3499.9761874999986,
+            "permitted": true,
+            "missingFeature": true,
+            "lostColour": true,
+            "poorGrid": true,
+            "competitiveGrid": false
+          }
+        ],
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 9.008929125,
+        "selected": "feature-sampling-grid",
+        "maskError": 0.0155125,
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.01565625,
+            "sunWindowError": 0.029546218487394957
+          },
+          {
+            "resolution": 800,
+            "error": 0.01698125,
+            "sunWindowError": 0.03134453781512605
+          }
+        ]
+      },
+      {
+        "remaining": 4800,
+        "policy": "current",
+        "simulatedDelayMs": 1615.548437999998,
+        "decisions": [
+          {
+            "remaining": 4799.9973119999995,
+            "refinement": 2379.9838495750028,
+            "permitted": false,
+            "missingFeature": true,
+            "lostColour": true,
+            "poorGrid": true,
+            "competitiveGrid": false
+          }
+        ],
+        "checks": false,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 9.675340625999997,
+        "selected": "grid",
+        "maskError": 0.05400625,
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.054425,
+            "sunWindowError": 0.12699159663865547
+          },
+          {
+            "resolution": 800,
+            "error": 0.055040625,
+            "sunWindowError": 0.12719327731092436
+          }
+        ]
+      },
+      {
+        "remaining": 4800,
+        "policy": "total-budget",
+        "simulatedDelayMs": 1665.0793124999982,
+        "decisions": [
+          {
+            "remaining": 4799.998125000002,
+            "refinement": 2379.987090625002,
+            "permitted": true,
+            "missingFeature": true,
+            "lostColour": true,
+            "poorGrid": true,
+            "competitiveGrid": false
+          }
+        ],
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 9.010147312500001,
+        "selected": "feature-sampling-grid",
+        "maskError": 0.0196375,
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.0200125,
+            "sunWindowError": 0.03273949579831933
+          },
+          {
+            "resolution": 800,
+            "error": 0.0211875,
+            "sunWindowError": 0.034680672268907566
+          }
+        ]
+      },
+      {
+        "remaining": 4200,
+        "policy": "current",
+        "simulatedDelayMs": 2192.734875000002,
+        "decisions": [
+          {
+            "remaining": 4199.997374999999,
+            "refinement": 1869.9834785500009,
+            "permitted": false,
+            "missingFeature": true,
+            "lostColour": true,
+            "poorGrid": true,
+            "competitiveGrid": false
+          }
+        ],
+        "checks": false,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 9.675146250000004,
+        "selected": "grid",
+        "maskError": 0.05400625,
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.054425,
+            "sunWindowError": 0.12699159663865547
+          },
+          {
+            "resolution": 800,
+            "error": 0.055040625,
+            "sunWindowError": 0.12719327731092436
+          }
+        ]
+      },
+      {
+        "remaining": 4200,
+        "policy": "total-budget",
+        "simulatedDelayMs": 2285.496562499997,
+        "decisions": [
+          {
+            "remaining": 4199.997813000009,
+            "refinement": 1869.9840624999974,
+            "permitted": true,
+            "missingFeature": true,
+            "lostColour": true,
+            "poorGrid": true,
+            "competitiveGrid": false
+          }
+        ],
+        "checks": false,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 9.754467999000001,
+        "selected": "feature-sampling-grid",
+        "maskError": 0.07529375,
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.0755,
+            "sunWindowError": 0.157109243697479
+          },
+          {
+            "resolution": 800,
+            "error": 0.075540625,
+            "sunWindowError": 0.15707563025210083
+          }
+        ]
+      }
+    ]
+  },
+  "decision": "Integrated the cheaper same-count fallback only in the time range where the old scheduler skipped feature initialization; the ordinary initializer remains unchanged when its reserve fits. Two deterministic scheduling regressions pass. All 25 focused tests pass; full release verification of the runtime change remains pending.",
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/selection-bounds-release-v1/qa/state.json",
+      "sha256": "58a785b9fd12191a544e5b869ab4b7276ce5cbab00f287f0515ae0863a5efd42"
+    },
+    {
+      "path": "tmp/heart-learning/selection-bounds-release-v1/qa/checks.json",
+      "sha256": "31686f15aa20efab4218765e79519092cd493f0a5bf9dff614b574c6e048ce07"
+    },
+    {
+      "path": "tmp/heart-learning/selection-bounds-release-v1/qa/test.log",
+      "sha256": "9e767a4ecd3e58a37a3a6ecbbf4c8976e6b22e02e75f82a796625247ddc1e744"
+    },
+    {
+      "path": "tmp/heart-learning/selection-bounds-release-v1/qa/source.json",
+      "sha256": "f81be94a2c1e346210d061a25d81b0757222ad4178272585d2d5b5695bbbd97d"
+    },
+    {
+      "path": "tmp/heart-learning/selection-bounds-release-v1/qa/browser-selected/results.json",
+      "sha256": "89276871421a79e635c6282e2afce2108cf9328b8a80b443a5328cb3219df508"
+    },
+    {
+      "path": "tmp/heart-learning/selection-bounds-release-v1/qa/browser-smoke/results.json",
+      "sha256": "c362277506e1c67f2b57be660738d30d3c567ef476306c8b43ab0732b47ff238"
+    },
+    {
+      "path": "tmp/heart-learning/selection-bounds-release-v1/qa/browser-coverage/results.json",
+      "sha256": "8233d8e0dd72821e6e00037b340cada934bef71cf7737c1fad9ce191d2d5b874"
+    },
+    {
+      "path": "tmp/heart-learning/selection-release-failure-v1/plan.json",
+      "sha256": "095f659d372dda3e4914275e0a32433b390cc7b4e77d3c7ec3b8a56be2864933"
+    },
+    {
+      "path": "tmp/heart-learning/selection-release-failure-v1/test.log",
+      "sha256": "f160ae595d1fc93512419ffe3fe6d48f66e53bb8cc771442a94d45cfb8073654"
+    },
+    {
+      "path": "tmp/heart-learning/selection-release-failure-v1/inspection.json",
+      "sha256": "9e0e6ff07af47df8481bbd19ced72eaf9aa817610df3083c6c3ed3a43e145546"
+    },
+    {
+      "path": "tmp/heart-learning/selection-release-failure-v1/budget-probe.mjs",
+      "sha256": "18e191444820ff7fe387000c5cbd942459214607e3cc709101703a72d27fd697"
+    },
+    {
+      "path": "tmp/heart-learning/selection-release-failure-v1/budget-probe/report.json",
+      "sha256": "0293908b9c7034f7e13e2eca17142804a6c6caa471f77c1e50773686152b6e19"
+    },
+    {
+      "path": "tmp/heart-learning/selection-release-failure-v1/budget-sampling-probe.mjs",
+      "sha256": "48fa96f4f1aa413fa62f6ba8f1b9e7dcef0611c87c186edea148ec5dd2e13eca"
+    },
+    {
+      "path": "tmp/heart-learning/selection-release-failure-v1/budget-sampling-probe/report.json",
+      "sha256": "f4f25474ef009bb7be4d44c32c79e04321a0e89143aa6a6a0e6baca408ee9e84"
+    },
+    {
+      "path": "tmp/heart-learning/selection-release-failure-v1/captured/vertical-1.5/comparison.png",
+      "sha256": "d847b76b6613210ee5fe477a7f45886dfc4bbf6550b8eb81ef6cf71d4b8f1e6e"
+    },
+    {
+      "path": "tmp/heart-learning/selection-release-failure-v1/budget-sampling-probe/4800-current/woven.png",
+      "sha256": "6d72b4662e4afb41fe437bfcf66f03d6f8bf55e4e3b48ad99ea016442218a9b7"
+    },
+    {
+      "path": "tmp/heart-learning/selection-release-failure-v1/budget-sampling-probe/4800-sampling-first/woven.png",
+      "sha256": "33aaa77c3c037f7b8b919238844ca24aabce67e2c56c284e22a1609edddb69b6"
+    },
+    {
+      "path": "tmp/heart-learning/selection-release-failure-v1/budget-sampling-probe/4200-sampling-first/woven.png",
+      "sha256": "970230e4fb2cb0e159025e565a98256ecf7f680c77a63b7f43b8031b4ffe8f64"
+    },
+    {
+      "path": "tmp/heart-learning/selection-release-failure-v1/budget-sampling-variants.mjs",
+      "sha256": "84b8915d45209a989e6f6f0fb3363b7a5d18b42fb429f159c029795d6adeb8ca"
+    },
+    {
+      "path": "tmp/heart-learning/selection-release-failure-v1/budget-sampling-variants/report.json",
+      "sha256": "cf18061fec36b89eb30873d485e612a088039c082da31cd2518dcdea9d54554a"
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-release-v1/focused.log",
+      "sha256": "9c7d58e83e078a9faf85736485d696c71635fc4eabc6ac36c7bb01b0c94ee854"
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-release-v1/photo-controls.log",
+      "sha256": "9c94aad9962811c92a47f3699f462e29a996aed2617f95a59a9da77d8c1a0841"
+    }
+  ],
+  "unchanged": "No dataset admission, benchmark denominator, pixel target, geometry/paper rule or deployment changes.",
+  "cheaperSamplingDiagnostic": {
+    "status": "complete",
+    "sourceMaskSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+    "method": "Counterfactual initializer delay: advance a 1.5x clock once, at the feature-proposal decision, to leave the specified total search time. No sleep, altered source pixels, extra budget or acceptance changes. Candidate uses the cheaper same-count alternate lattice first only when the normal feature initializer would be skipped. It retains the original source and acceptance gates; at least 3.5s total remains. Diagnostic only; not integrated.",
+    "rows": [
+      {
+        "remaining": 6000,
+        "policy": "current",
+        "simulatedDelayMs": 54.31424999999945,
+        "decisions": [
+          {
+            "remaining": 5999.9985000000015,
+            "refinement": 3499.985063000002,
+            "permitted": true,
+            "missingFeature": true,
+            "lostColour": true,
+            "poorGrid": true,
+            "competitiveGrid": false
+          }
+        ],
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 9.079293374999999,
+        "selected": "feature-sampling-grid",
+        "maskError": 0.01581875,
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.01600625,
+            "sunWindowError": 0.03294117647058824
+          },
+          {
+            "resolution": 800,
+            "error": 0.0174078125,
+            "sunWindowError": 0.03461344537815126
+          }
+        ]
+      },
+      {
+        "remaining": 6000,
+        "policy": "sampling-first",
+        "simulatedDelayMs": 406.00237500000185,
+        "decisions": [
+          {
+            "remaining": 5999.998750500001,
+            "refinement": 3499.9855625,
+            "permitted": true,
+            "missingFeature": true,
+            "lostColour": true,
+            "poorGrid": true,
+            "competitiveGrid": false
+          }
+        ],
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 9.038633625000003,
+        "selected": "feature-sampling-grid",
+        "maskError": 0.01550625,
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.01568125,
+            "sunWindowError": 0.029546218487394957
+          },
+          {
+            "resolution": 800,
+            "error": 0.0171875,
+            "sunWindowError": 0.031386554621848736
+          }
+        ]
+      },
+      {
+        "remaining": 4800,
+        "policy": "current",
+        "simulatedDelayMs": 1623.948187500002,
+        "decisions": [
+          {
+            "remaining": 4799.998937999997,
+            "refinement": 2379.9882062499996,
+            "permitted": false,
+            "missingFeature": true,
+            "lostColour": true,
+            "poorGrid": true,
+            "competitiveGrid": false
+          }
+        ],
+        "checks": false,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 9.657530625000003,
+        "selected": "grid",
+        "maskError": 0.05400625,
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.054425,
+            "sunWindowError": 0.12699159663865547
+          },
+          {
+            "resolution": 800,
+            "error": 0.055040625,
+            "sunWindowError": 0.12719327731092436
+          }
+        ]
+      },
+      {
+        "remaining": 4800,
+        "policy": "sampling-first",
+        "simulatedDelayMs": 1737.7146884999966,
+        "decisions": [
+          {
+            "remaining": 4799.997374999999,
+            "refinement": 2379.984274150001,
+            "permitted": true,
+            "missingFeature": true,
+            "lostColour": true,
+            "poorGrid": true,
+            "competitiveGrid": false
+          }
+        ],
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 9.056413187999999,
+        "selected": "feature-sampling-grid",
+        "maskError": 0.01516875,
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.0153125,
+            "sunWindowError": 0.029008403361344536
+          },
+          {
+            "resolution": 800,
+            "error": 0.016828125,
+            "sunWindowError": 0.03091596638655462
+          }
+        ]
+      },
+      {
+        "remaining": 4200,
+        "policy": "current",
+        "simulatedDelayMs": 2309.831125500008,
+        "decisions": [
+          {
+            "remaining": 4199.997937499997,
+            "refinement": 1869.984965199997,
+            "permitted": false,
+            "missingFeature": true,
+            "lostColour": true,
+            "poorGrid": true,
+            "competitiveGrid": false
+          }
+        ],
+        "checks": false,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 9.665520687000011,
+        "selected": "grid",
+        "maskError": 0.05400625,
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.054425,
+            "sunWindowError": 0.12699159663865547
+          },
+          {
+            "resolution": 800,
+            "error": 0.055040625,
+            "sunWindowError": 0.12719327731092436
+          }
+        ]
+      },
+      {
+        "remaining": 4200,
+        "policy": "sampling-first",
+        "simulatedDelayMs": 2346.331249499999,
+        "decisions": [
+          {
+            "remaining": 4199.9986260000005,
+            "refinement": 1869.9873570999998,
+            "permitted": true,
+            "missingFeature": true,
+            "lostColour": true,
+            "poorGrid": true,
+            "competitiveGrid": false
+          }
+        ],
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 9.059059812,
+        "selected": "feature-sampling-grid",
+        "maskError": 0.01870625,
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.01889375,
+            "sunWindowError": 0.04285714285714286
+          },
+          {
+            "resolution": 800,
+            "error": 0.0199171875,
+            "sunWindowError": 0.04363865546218487
+          }
+        ]
+      }
+    ]
+  },
+  "cheaperSamplingQualification": "Both constrained-time candidate fits pass whole-image, geometry and paper checks. The 4.2-second candidate has 4.286% disagreement in the fixed sun window, exceeding the original vertical test's 4% local target; some ray detail remains missing. These are offline counterfactual scheduling experiments, not new real-device speed or benchmark successes.",
+  "visualReview": "Inspected the ordinary accelerated-clock comparison and the 4.8-second baseline/candidate plus 4.2-second cheaper candidate. The baseline loses the separate sun and its rays; the cheap candidate recovers the sun and architectural branches. The tighter candidate loses several ray tips. Neither is exact source artwork.",
+  "otherCropPerturbations": {
+    "method": "Counterfactual initializer delay: advance a 1.5x clock once, at the feature-proposal decision, to leave the specified total search time. No sleep, altered source pixels, extra budget or acceptance changes. Candidate uses the cheaper same-count alternate lattice first only when the normal feature initializer would be skipped. It retains the original source and acceptance gates; at least 3.5s total remains. Diagnostic only; not integrated.",
+    "rows": [
+      {
+        "translation": "original",
+        "sourceMaskSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+        "remaining": 4800,
+        "policy": "current",
+        "simulatedDelayMs": 1365.9288134999997,
+        "decisions": [
+          {
+            "remaining": 4799.9986874999995,
+            "refinement": 2379.987728125,
+            "permitted": false,
+            "missingFeature": true,
+            "lostColour": true,
+            "poorGrid": true,
+            "competitiveGrid": false
+          }
+        ],
+        "checks": false,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 9.675793188,
+        "selected": "grid",
+        "maskError": 0.05229375,
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.05249375,
+            "sunWindowError": 0.13159663865546217
+          },
+          {
+            "resolution": 800,
+            "error": 0.053340625,
+            "sunWindowError": 0.13149579831932773
+          }
+        ]
+      },
+      {
+        "translation": "original",
+        "sourceMaskSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+        "remaining": 4800,
+        "policy": "sampling-first",
+        "simulatedDelayMs": 1620.4906245000002,
+        "decisions": [
+          {
+            "remaining": 4799.998813500002,
+            "refinement": 2379.9885249999993,
+            "permitted": true,
+            "missingFeature": true,
+            "lostColour": true,
+            "poorGrid": true,
+            "competitiveGrid": false
+          }
+        ],
+        "checks": false,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 9.666806562000001,
+        "selected": "grid",
+        "maskError": 0.05229375,
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.05249375,
+            "sunWindowError": 0.13159663865546217
+          },
+          {
+            "resolution": 800,
+            "error": 0.053340625,
+            "sunWindowError": 0.13149579831932773
+          }
+        ]
+      },
+      {
+        "translation": "original",
+        "sourceMaskSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+        "remaining": 4200,
+        "policy": "current",
+        "simulatedDelayMs": 2192.720750999997,
+        "decisions": [
+          {
+            "remaining": 4199.9986874999995,
+            "refinement": 1869.9883120750014,
+            "permitted": false,
+            "missingFeature": true,
+            "lostColour": true,
+            "poorGrid": true,
+            "competitiveGrid": false
+          }
+        ],
+        "checks": false,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 9.658459376999994,
+        "selected": "grid",
+        "maskError": 0.05229375,
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.05249375,
+            "sunWindowError": 0.13159663865546217
+          },
+          {
+            "resolution": 800,
+            "error": 0.053340625,
+            "sunWindowError": 0.13149579831932773
+          }
+        ]
+      },
+      {
+        "translation": "original",
+        "sourceMaskSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+        "remaining": 4200,
+        "policy": "sampling-first",
+        "simulatedDelayMs": 2212.528936499999,
+        "decisions": [
+          {
+            "remaining": 4199.999062499999,
+            "refinement": 1869.9882598000022,
+            "permitted": true,
+            "missingFeature": true,
+            "lostColour": true,
+            "poorGrid": true,
+            "competitiveGrid": false
+          }
+        ],
+        "checks": false,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 9.660495186,
+        "selected": "grid",
+        "maskError": 0.05229375,
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.05249375,
+            "sunWindowError": 0.13159663865546217
+          },
+          {
+            "resolution": 800,
+            "error": 0.053340625,
+            "sunWindowError": 0.13149579831932773
+          }
+        ]
+      },
+      {
+        "translation": "horizontal",
+        "sourceMaskSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+        "remaining": 4800,
+        "policy": "current",
+        "simulatedDelayMs": 1724.0530620000063,
+        "decisions": [
+          {
+            "remaining": 4799.998562999997,
+            "refinement": 2379.987196449995,
+            "permitted": false,
+            "missingFeature": true,
+            "lostColour": true,
+            "poorGrid": true,
+            "competitiveGrid": false
+          }
+        ],
+        "checks": false,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 9.6638712495,
+        "selected": "grid",
+        "maskError": 0.0522125,
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.052325,
+            "sunWindowError": 0.12460504201680672
+          },
+          {
+            "resolution": 800,
+            "error": 0.053059375,
+            "sunWindowError": 0.1246218487394958
+          }
+        ]
+      },
+      {
+        "translation": "horizontal",
+        "sourceMaskSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+        "remaining": 4800,
+        "policy": "sampling-first",
+        "simulatedDelayMs": 1746.0250620000006,
+        "decisions": [
+          {
+            "remaining": 4799.998625999993,
+            "refinement": 2379.987568749997,
+            "permitted": true,
+            "missingFeature": true,
+            "lostColour": true,
+            "poorGrid": true,
+            "competitiveGrid": false
+          }
+        ],
+        "checks": false,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 9.698501499000006,
+        "selected": "grid",
+        "maskError": 0.0522125,
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.052325,
+            "sunWindowError": 0.12460504201680672
+          },
+          {
+            "resolution": 800,
+            "error": 0.053059375,
+            "sunWindowError": 0.1246218487394958
+          }
+        ]
+      },
+      {
+        "translation": "horizontal",
+        "sourceMaskSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+        "remaining": 4200,
+        "policy": "current",
+        "simulatedDelayMs": 2236.251375,
+        "decisions": [
+          {
+            "remaining": 4199.998437000009,
+            "refinement": 1869.986931250004,
+            "permitted": false,
+            "missingFeature": true,
+            "lostColour": true,
+            "poorGrid": true,
+            "competitiveGrid": false
+          }
+        ],
+        "checks": false,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 9.660476062499997,
+        "selected": "grid",
+        "maskError": 0.0522125,
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.052325,
+            "sunWindowError": 0.12460504201680672
+          },
+          {
+            "resolution": 800,
+            "error": 0.053059375,
+            "sunWindowError": 0.1246218487394958
+          }
+        ]
+      },
+      {
+        "translation": "horizontal",
+        "sourceMaskSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+        "remaining": 4200,
+        "policy": "sampling-first",
+        "simulatedDelayMs": 2300.236124999996,
+        "decisions": [
+          {
+            "remaining": 4199.998500000009,
+            "refinement": 1869.9873035500125,
+            "permitted": true,
+            "missingFeature": true,
+            "lostColour": true,
+            "poorGrid": true,
+            "competitiveGrid": false
+          }
+        ],
+        "checks": false,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 9.659673250499996,
+        "selected": "grid",
+        "maskError": 0.0522125,
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.052325,
+            "sunWindowError": 0.12460504201680672
+          },
+          {
+            "resolution": 800,
+            "error": 0.053059375,
+            "sunWindowError": 0.1246218487394958
+          }
+        ]
+      },
+      {
+        "translation": "negative-diagonal",
+        "sourceMaskSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+        "remaining": 4800,
+        "policy": "current",
+        "simulatedDelayMs": 1698.9214364999934,
+        "decisions": [
+          {
+            "remaining": 4799.999062500006,
+            "refinement": 2379.9882062499964,
+            "permitted": false,
+            "missingFeature": true,
+            "lostColour": true,
+            "poorGrid": true,
+            "competitiveGrid": false
+          }
+        ],
+        "checks": false,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 8.732964311999996,
+        "selected": "grid",
+        "maskError": 0.0509125,
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.051025,
+            "sunWindowError": 0.13247058823529412
+          },
+          {
+            "resolution": 800,
+            "error": 0.051728125,
+            "sunWindowError": 0.1322436974789916
+          }
+        ]
+      },
+      {
+        "translation": "negative-diagonal",
+        "sourceMaskSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+        "remaining": 4800,
+        "policy": "sampling-first",
+        "simulatedDelayMs": 1612.020375,
+        "decisions": [
+          {
+            "remaining": 4799.998999499992,
+            "refinement": 2379.9883120749982,
+            "permitted": true,
+            "missingFeature": true,
+            "lostColour": true,
+            "poorGrid": true,
+            "competitiveGrid": false
+          }
+        ],
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 9.066353999999999,
+        "selected": "feature-sampling-grid",
+        "maskError": 0.02420625,
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.024425,
+            "sunWindowError": 0.07052100840336134
+          },
+          {
+            "resolution": 800,
+            "error": 0.0254546875,
+            "sunWindowError": 0.07085714285714285
+          }
+        ]
+      },
+      {
+        "translation": "negative-diagonal",
+        "sourceMaskSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+        "remaining": 4200,
+        "policy": "current",
+        "simulatedDelayMs": 2266.166125500007,
+        "decisions": [
+          {
+            "remaining": 4199.9983125,
+            "refinement": 1869.9863460250008,
+            "permitted": false,
+            "missingFeature": true,
+            "lostColour": true,
+            "poorGrid": true,
+            "competitiveGrid": false
+          }
+        ],
+        "checks": false,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 8.739963937500011,
+        "selected": "grid",
+        "maskError": 0.0509125,
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.051025,
+            "sunWindowError": 0.13247058823529412
+          },
+          {
+            "resolution": 800,
+            "error": 0.051728125,
+            "sunWindowError": 0.1322436974789916
+          }
+        ]
+      },
+      {
+        "translation": "negative-diagonal",
+        "sourceMaskSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+        "remaining": 4200,
+        "policy": "sampling-first",
+        "simulatedDelayMs": 2287.6250010000076,
+        "decisions": [
+          {
+            "remaining": 4199.998249499986,
+            "refinement": 1869.9801839499896,
+            "permitted": true,
+            "missingFeature": true,
+            "lostColour": true,
+            "poorGrid": true,
+            "competitiveGrid": false
+          }
+        ],
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "solverSeconds": 9.013051314000025,
+        "selected": "feature-sampling-grid",
+        "maskError": 0.02420625,
+        "independent": [
+          {
+            "resolution": 400,
+            "error": 0.024425,
+            "sunWindowError": 0.07052100840336134
+          },
+          {
+            "resolution": 800,
+            "error": 0.025478125,
+            "sunWindowError": 0.07085714285714285
+          }
+        ]
+      }
+    ],
+    "summary": "Across all four frozen crop variants at 4.8 and 4.2 seconds remaining, the same-count fallback increases complete candidate passes from 0/8 to 4/8. Original and horizontal variants remain failures with unchanged independent mask error. This is not complete perturbation robustness."
+  },
+  "runtimeFollowup": {
+    "files": [
+      "static/inverse/core/direct/fit.js",
+      "scripts/inverse/late-feature-initialization.test.mjs",
+      "scripts/inverse/feature-near-miss.test.mjs"
+    ],
+    "newSchedulingTests": {
+      "passed": 2,
+      "failed": 0
+    },
+    "fullQA": {
+      "status": "passed",
+      "report": "docs/inverse/datasets/late-feature-browser-qa.json",
+      "runtimeCommit": "fd85519",
+      "applicationPassed": 874,
+      "applicationSkipped": 1,
+      "inversePassed": 1022,
+      "browserWorkflowsPassed": 30,
+      "sourceFilesVerified": 1041
+    },
+    "focusedTests": {
+      "passed": 25,
+      "failed": 0,
+      "scheduling": 2,
+      "nearMissAndBudgets": 13,
+      "partialPhotoAndPhotographicBudgets": 10
+    },
+    "sourceHashes": {
+      "static/inverse/core/direct/fit.js": "b1fc890fdb3d183161409c270ee244efb5956a5acc5ce9744f383508486bca57",
+      "scripts/inverse/late-feature-initialization.test.mjs": "96a5aa034873d81ac375ada8c6d382c8e30a9457e498c6ff7bd1fdb45e155e63",
+      "scripts/inverse/feature-near-miss.test.mjs": "8e362fdef9d45c2e240e3bcaddaaa559ce317c15ad05e6591c2c31db211df883"
+    }
+  }
+}

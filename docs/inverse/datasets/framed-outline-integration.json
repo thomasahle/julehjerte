@@ -1,0 +1,145 @@
+{
+  "status": "crop_application_and_browser_passed_full_inverse_running",
+  "runtimeCommit": "c2c3bf8f1f3c8025748048de028b2ad136ae178b",
+  "scope": "Integrated detector with shared preparation, evaluated against the frozen experimental crops and through actual browser uploads and editable exports. No physical assembly test. Preview remains the prior validated runtime until the complete solver suite passes.",
+  "cropReplay": {
+    "cases": 103,
+    "exactCoordinateMatches": 103,
+    "acceptedRecoveries": [
+      "targeted-study/02-tinted-framed-blob",
+      "targeted-study/08-lighter-background-framed-blob",
+      "targeted-study/10-tinted-framed-blob",
+      "targeted-study/12-lighter-background-framed-blob"
+    ],
+    "sourceHashesUnchanged": true
+  },
+  "completedStages": [
+    {
+      "name": "check",
+      "status": "passed",
+      "seconds": 15.848388208,
+      "exitCode": 0
+    },
+    {
+      "name": "lint",
+      "status": "passed",
+      "seconds": 7.974861291000001,
+      "exitCode": 0
+    },
+    {
+      "name": "application",
+      "status": "passed",
+      "seconds": 52.668222084,
+      "exitCode": 0
+    },
+    {
+      "name": "build",
+      "status": "passed",
+      "seconds": 32.567715125,
+      "exitCode": 0
+    },
+    {
+      "name": "browser",
+      "status": "passed",
+      "seconds": 50.53508783300001,
+      "exitCode": 0
+    }
+  ],
+  "applicationTests": {
+    "passed": 874,
+    "existingSkipped": 1
+  },
+  "browser": [
+    {
+      "id": "02-tinted-framed-blob",
+      "status": "workflow-passed",
+      "sourceSha256": "6ffbc37044feca8ffcfdf2d5172fd9b1d306f2b7245edf763d508e90b40990ac",
+      "roi": [
+        84.99998881554728,
+        40,
+        299.9999712399787,
+        250
+      ],
+      "cornerError": 1.029034312293346,
+      "maskTransfer": {
+        "importResolution": 320,
+        "solverResolution": 320,
+        "detectedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "transforms": [],
+        "symmetryEditFraction": 0
+      },
+      "editableError": 0.022978515625,
+      "editableIdealError": 0.04279296875,
+      "errors": [],
+      "clickToReadySeconds": 16.213900000095368,
+      "slits": {
+        "left": 6,
+        "right": 6
+      },
+      "templateChecksPassed": true,
+      "nativeMaskError": 0.022822265625,
+      "geometryPassed": true,
+      "paperStatus": "pass"
+    },
+    {
+      "id": "12-lighter-background-framed-blob",
+      "status": "workflow-passed",
+      "sourceSha256": "a94b3069430c5f2210b9b6d6e8e12fdf37f728960d1342587d5f1543b00f4169",
+      "roi": [
+        84.99998881554728,
+        40,
+        299.9999712399787,
+        250
+      ],
+      "cornerError": 1.995950952582584,
+      "maskTransfer": {
+        "importResolution": 320,
+        "solverResolution": 320,
+        "detectedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "transforms": [],
+        "symmetryEditFraction": 0
+      },
+      "editableError": 0.029716796875,
+      "editableIdealError": 0.072001953125,
+      "errors": [],
+      "clickToReadySeconds": 14.3505,
+      "slits": {
+        "left": 6,
+        "right": 6
+      },
+      "templateChecksPassed": true,
+      "nativeMaskError": 0.02951171875,
+      "geometryPassed": true,
+      "paperStatus": "pass"
+    }
+  ],
+  "visualReview": "Both result screenshots inspected. Frame/circle proportions substantially improve; corner protrusions and thin seams remain, especially on the deep-lobed lighter-background example. Its fractional pointer selection yields a 1.996-pixel maximum corner error, versus 1.341 pixels for the integer ROI in the offline experiment. No claim that remaining crop sensitivity or template defects are solved.",
+  "fullInverse": {
+    "status": "running",
+    "controllerPid": 37060,
+    "processPid": 44975,
+    "session": 22324,
+    "state": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/outline-production/state.json",
+    "log": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/outline-production/inverse.log"
+  },
+  "artifacts": {
+    "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/outline-production-replay-2/results.json": "55df877221d0c2559327ae92926660a22af8e2a7a92e44ce4f5ec020d8c54a6c",
+    "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/outline-production/source-pins.json": "d9a98fd7291ffc6a109176e1a9f98d192ff4b3bc1ff54482444ef419f52d78b2",
+    "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/outline-production/browser/results.json": "063f04cc3f1f7a0cf330efee54bbba42a8744a73de21be445725f22d7f344852",
+    "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/outline-production/browser/02-tinted-framed-blob/editable.svg": "1074932e9af61f7bcc77d8287f954581bee79a0f5445e6a4b9d9380cda087b55",
+    "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/outline-production/browser/12-lighter-background-framed-blob/editable.svg": "3c17887c78d76619cae33a8a1c3448391f76a6462c62548cdc6c03cad568ed24"
+  },
+  "nextChecks": [
+    "Complete the current inverse suite without changing pinned source files.",
+    "If successful, refresh preview5232 and run its health checks.",
+    "Investigate the deep-frame sensitivity to tiny pointer-coordinate changes using fixed photos and mask/geometry comparisons; do not select crops by solver error."
+  ]
+}

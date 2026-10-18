@@ -1,0 +1,3000 @@
+{
+  "schema": "joint-border-profiles-diagnostic-1",
+  "sourceCommit": "c291f8733602889a99eb5fed5fe02191f9e8e310",
+  "scope": "Offline boundary-profile initialization and unsuccessful Santa routing probes. Historical approximate crop; no automatic recovery improvement or runtime changes.",
+  "sourceHashes": {
+    "scripts/inverse/border-profile-proposals.mjs": "af7e4c4dccad598694cb0a3fcebecf9dd1b2d620e925391dd9cde5fdfb6f22ab",
+    "scripts/inverse/border-profile-proposals.test.mjs": "4ced22388e986417bd757416c8cc6985e73a54c405e8fcdc11b7329946bb180e",
+    "scripts/inverse/fixtures/photographic-santa-border.json": "2783d2ae327589a0f82dd14ab67f970782e9f07999cbd3f4812f51d7b056c1a3"
+  },
+  "unchangedReleaseSources": {
+    "static/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+    "static/inverse/core/chord-distance.js": "6be52281e3056d29ad7093f902b0f768410f3c414f049f164f94e969bd89dd48",
+    "static/inverse/core/crop.js": "03552409b48975702527fb365eea6841cb441a2be26637a7d44a85aa8ea763ff",
+    "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+    "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+    "static/inverse/core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+    "static/inverse/core/direct/counts.js": "efdfa3fc371dc9d9cfbbc9ce763df8b8cdca6f8f6324b55fde9d23ed05f31d8e",
+    "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+    "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+    "static/inverse/core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+    "static/inverse/core/direct/feature-seeds.js": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+    "static/inverse/core/direct/finalize.js": "d8504b811b223296c006c1cca57466c28fef0adc0e880b2d0073bfcdcd554ae4",
+    "static/inverse/core/direct/fit.js": "ce926fbf75afdbe4a8b062c30da551832c5bff0305514f905ec87cfdb6687e7e",
+    "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+    "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+    "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+    "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+    "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+    "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/native/PROVENANCE.json": "e9fbaef090fc05bdc9450210f527b1fb3fa6bc77ee86c1902eb97bb6ed0acd2a",
+    "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+    "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58",
+    "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+    "static/inverse/core/direct/outline-details.js": "ff9d4df5f27fd9ca97d15b115cc95c5692bd17e302f0dcd11c62e7295b85d8aa",
+    "static/inverse/core/direct/polish.js": "3f9df26508076465860a62ce72c2de3aeb67413a1d67ab1927dc37b89b7b622e",
+    "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+    "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+    "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+    "static/inverse/core/direct/refine.js": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+    "static/inverse/core/direct/rejected-routing.js": "26be56dd3367eeb0648833ca347f008af73c8717d58358664ff1d15bbd240540",
+    "static/inverse/core/direct/reroute.js": "84a8cf2cfb6bcb1101a63004f638d0f3dc398baf3fe15ec1068b20336535d9ed",
+    "static/inverse/core/direct/share.js": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+    "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+    "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+    "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+    "static/inverse/core/direct/short-returns.js": "b329b2ca19cb7fca3493d33b0e65dcd44f32ff7bba507cddad106df7f85321ab",
+    "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+    "static/inverse/core/direct/topology.js": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097",
+    "static/inverse/core/engine.js": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+    "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+    "static/inverse/core/feature-recovery.js": "2db84f0963f188ae820dff82610f3d63dc7f51c61207b775a65973c12b390288",
+    "static/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+    "static/inverse/core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+    "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+    "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+    "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+    "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+    "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+    "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+    "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+    "static/inverse/core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+    "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+    "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+    "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+    "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+    "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+    "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+    "static/inverse/core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+    "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+    "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+    "static/inverse/core/solver.js": "29eeca095cfe123f378a424f099954e5ae082866b8ad437f1a6dbb064eddbbf1",
+    "static/inverse/core/spatial-color.js": "f170ff447ef905fc21121d286ac427a079b184ca077fd178065b0a3e247fb132",
+    "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+    "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+    "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+    "static/inverse/core/validate.js": "31cc29c6873896f53a2f999782dcd2292f0924611166932114b45534f5cbebd7",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+    "static/inverse/locator/NOTICE.md": "4a9cc65be6ca309d2b57609d760e584ab78c345dae95c789e351bb69180d5b05",
+    "static/inverse/locator/anchored.js": "92f1ffb68bac38b1bc36f4209820b46200cfa7e6dcfbb746ed94f33beddac536",
+    "static/inverse/locator/background.js": "03d1c9b8f8237a97a7e8ed53d1dfa5117d1db079ba4162cac7117a8761f3441f",
+    "static/inverse/locator/fields.js": "569c2235139acdc3c22f1fee94158ae59406b682e7ef16e822de215fd94b36ea",
+    "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+    "static/inverse/locator/interior-palette.js": "6322efaa9772d488992a40da5b01091b0e71826d30c91fba5976c5b285e027bc",
+    "static/inverse/locator/locator.js": "bb745954e2fa2b59abf8be98ded36b75b134295363f913dab04d3a4ad1c6a419",
+    "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+    "static/inverse/locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+    "static/inverse/locator/palette.js": "4a373e0a911d8f8d2cdda42468c05cc52cb33b912a8990775f9db651cfc99158",
+    "scripts/inverse/hard-photo-cases.json": "a104debdefa7629136a238106304a877daa57fee31abef9ebf09d48c69f87917",
+    "scripts/inverse/photo-cases.json": "a366d97e5a81384eb8745bcfa0fb3201b76cf3f92710ae65bedf88a95fc42385",
+    "scripts/inverse/hard-photo-data.mjs": "84ba890531eab12a9a22e056a2e4a0043414eaca7db3f82b5956718869556d9f",
+    "scripts/inverse/hard-photo-target.mjs": "69bdd88cd8f4c992d6b958082ce5b60d88abfab6c3f0299346b7b4a143f80d4a",
+    "scripts/inverse/hard-photo-benchmark.mjs": "7b5448b56181d7e5d6c52dd70065fe826b1a101579f5ef18d63d5157ebf21217",
+    "scripts/inverse/hard-photo-report.mjs": "156d754048477f45b84a9d97ea9f041391b9249da8a13a88d129921ee1f39db4",
+    "scripts/inverse/crop-evidence.mjs": "52872ad6028a15b5746f51a004d0d5f8a216850559f4dbbbce4235213373b260",
+    "scripts/inverse/export-renderer.mjs": "fb393f73b9c39780795c3951eb82d864fef7ab40ec63a90a4365aae6041afbbe",
+    "src/lib/inverse/presets.js": "17d4f9be7dded0eb6619be3449eb962b67ee04ca96fd61db2777cbf3efb8d954",
+    "scripts/inverse/fixtures/photo-material-samples.json": "30b1d24b9a380cb8cfda5fda26d32b20750d64335f99a71b7ebb37b6a8985eb6",
+    "scripts/inverse/photo-material-samples.mjs": "8a28ea92b7206bb517d2561c8e14211cdb0a6fcfaea9de587f13a920b0f43c3d"
+  },
+  "attempts": {
+    "paired": {
+      "file": "tmp/heart-learning/joint-border-v1/paired/results.json",
+      "rows": [
+        {
+          "index": 0,
+          "seed": {
+            "method": "joint-minimum-run-boundary-profiles",
+            "initializationOnly": true,
+            "counts": [
+              5,
+              8
+            ],
+            "phase": 1,
+            "expectedProfileMismatch": 125.07692307692368,
+            "transitions": [
+              [
+                11,
+                79,
+                91,
+                102,
+                214
+              ],
+              [
+                28,
+                44,
+                87,
+                117,
+                151,
+                211,
+                262,
+                335
+              ],
+              [
+                77,
+                179,
+                222,
+                325,
+                380
+              ],
+              [
+                11,
+                45,
+                121,
+                166,
+                205,
+                216,
+                309,
+                376
+              ]
+            ],
+            "minimumPixels": 11,
+            "changedPixels": 2119,
+            "changeFraction": 0.01324375,
+            "editRadiusMm": 3,
+            "editedBandWidthMm": 3,
+            "depthPixels": 12,
+            "profileStartMm": 1,
+            "profileEndMm": 4
+          },
+          "routingSeconds": 0.12836337499999997,
+          "error": "Candidate graph too large. Reduce connection neighbours or image detail.",
+          "termination": null,
+          "hasRefinedCandidate": false
+        },
+        {
+          "index": 1,
+          "seed": {
+            "method": "joint-minimum-run-boundary-profiles",
+            "initializationOnly": true,
+            "counts": [
+              7,
+              8
+            ],
+            "phase": 1,
+            "expectedProfileMismatch": 126.46153846153912,
+            "transitions": [
+              [
+                11,
+                49,
+                60,
+                79,
+                91,
+                102,
+                214
+              ],
+              [
+                28,
+                44,
+                87,
+                117,
+                151,
+                211,
+                262,
+                335
+              ],
+              [
+                77,
+                179,
+                222,
+                284,
+                295,
+                325,
+                380
+              ],
+              [
+                11,
+                45,
+                121,
+                166,
+                205,
+                216,
+                309,
+                376
+              ]
+            ],
+            "minimumPixels": 11,
+            "changedPixels": 2317,
+            "changeFraction": 0.01448125,
+            "editRadiusMm": 3,
+            "editedBandWidthMm": 3,
+            "depthPixels": 12,
+            "profileStartMm": 1,
+            "profileEndMm": 4
+          },
+          "routingSeconds": 0.11989974999999993,
+          "error": "Candidate graph too large. Reduce connection neighbours or image detail.",
+          "termination": null,
+          "hasRefinedCandidate": false
+        },
+        {
+          "index": 2,
+          "seed": {
+            "method": "joint-minimum-run-boundary-profiles",
+            "initializationOnly": true,
+            "counts": [
+              5,
+              9
+            ],
+            "phase": 0,
+            "expectedProfileMismatch": 127.46153846153899,
+            "transitions": [
+              [
+                79,
+                91,
+                102,
+                214,
+                389
+              ],
+              [
+                11,
+                28,
+                44,
+                87,
+                117,
+                151,
+                211,
+                262,
+                335
+              ],
+              [
+                77,
+                179,
+                222,
+                325,
+                380
+              ],
+              [
+                45,
+                56,
+                67,
+                121,
+                166,
+                205,
+                216,
+                309,
+                376
+              ]
+            ],
+            "minimumPixels": 11,
+            "changedPixels": 2071,
+            "changeFraction": 0.01294375,
+            "editRadiusMm": 3,
+            "editedBandWidthMm": 3,
+            "depthPixels": 12,
+            "profileStartMm": 1,
+            "profileEndMm": 4
+          },
+          "routingSeconds": 0.117234958,
+          "error": "Candidate graph too large. Reduce connection neighbours or image detail.",
+          "termination": null,
+          "hasRefinedCandidate": false
+        }
+      ]
+    },
+    "paired-sparse": {
+      "file": "tmp/heart-learning/joint-border-v1/paired-sparse/results.json",
+      "rows": [
+        {
+          "index": 0,
+          "seed": {
+            "method": "joint-minimum-run-boundary-profiles",
+            "initializationOnly": true,
+            "counts": [
+              5,
+              8
+            ],
+            "phase": 1,
+            "expectedProfileMismatch": 125.07692307692368,
+            "transitions": [
+              [
+                11,
+                79,
+                91,
+                102,
+                214
+              ],
+              [
+                28,
+                44,
+                87,
+                117,
+                151,
+                211,
+                262,
+                335
+              ],
+              [
+                77,
+                179,
+                222,
+                325,
+                380
+              ],
+              [
+                11,
+                45,
+                121,
+                166,
+                205,
+                216,
+                309,
+                376
+              ]
+            ],
+            "minimumPixels": 11,
+            "changedPixels": 2119,
+            "changeFraction": 0.01324375,
+            "editRadiusMm": 3,
+            "editedBandWidthMm": 3,
+            "depthPixels": 12,
+            "profileStartMm": 1,
+            "profileEndMm": 4
+          },
+          "routingSeconds": 0.14128916599999997,
+          "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+          "termination": "candidate_graph_exhausted",
+          "hasRefinedCandidate": false
+        },
+        {
+          "index": 1,
+          "seed": {
+            "method": "joint-minimum-run-boundary-profiles",
+            "initializationOnly": true,
+            "counts": [
+              7,
+              8
+            ],
+            "phase": 1,
+            "expectedProfileMismatch": 126.46153846153912,
+            "transitions": [
+              [
+                11,
+                49,
+                60,
+                79,
+                91,
+                102,
+                214
+              ],
+              [
+                28,
+                44,
+                87,
+                117,
+                151,
+                211,
+                262,
+                335
+              ],
+              [
+                77,
+                179,
+                222,
+                284,
+                295,
+                325,
+                380
+              ],
+              [
+                11,
+                45,
+                121,
+                166,
+                205,
+                216,
+                309,
+                376
+              ]
+            ],
+            "minimumPixels": 11,
+            "changedPixels": 2317,
+            "changeFraction": 0.01448125,
+            "editRadiusMm": 3,
+            "editedBandWidthMm": 3,
+            "depthPixels": 12,
+            "profileStartMm": 1,
+            "profileEndMm": 4
+          },
+          "routingSeconds": 0.10958687500000001,
+          "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+          "termination": "candidate_graph_exhausted",
+          "hasRefinedCandidate": false
+        },
+        {
+          "index": 2,
+          "seed": {
+            "method": "joint-minimum-run-boundary-profiles",
+            "initializationOnly": true,
+            "counts": [
+              5,
+              9
+            ],
+            "phase": 0,
+            "expectedProfileMismatch": 127.46153846153899,
+            "transitions": [
+              [
+                79,
+                91,
+                102,
+                214,
+                389
+              ],
+              [
+                11,
+                28,
+                44,
+                87,
+                117,
+                151,
+                211,
+                262,
+                335
+              ],
+              [
+                77,
+                179,
+                222,
+                325,
+                380
+              ],
+              [
+                45,
+                56,
+                67,
+                121,
+                166,
+                205,
+                216,
+                309,
+                376
+              ]
+            ],
+            "minimumPixels": 11,
+            "changedPixels": 2071,
+            "changeFraction": 0.01294375,
+            "editRadiusMm": 3,
+            "editedBandWidthMm": 3,
+            "depthPixels": 12,
+            "profileStartMm": 1,
+            "profileEndMm": 4
+          },
+          "routingSeconds": 0.09077824999999996,
+          "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+          "termination": "candidate_graph_exhausted",
+          "hasRefinedCandidate": false
+        }
+      ]
+    },
+    "coarse": {
+      "file": "tmp/heart-learning/joint-border-v1/coarse/results.json",
+      "rows": [
+        {
+          "index": 0,
+          "seed": {
+            "method": "joint-minimum-run-boundary-profiles",
+            "initializationOnly": true,
+            "counts": [
+              5,
+              8
+            ],
+            "phase": 1,
+            "expectedProfileMismatch": 125.07692307692368,
+            "transitions": [
+              [
+                11,
+                79,
+                91,
+                102,
+                214
+              ],
+              [
+                28,
+                44,
+                87,
+                117,
+                151,
+                211,
+                262,
+                335
+              ],
+              [
+                77,
+                179,
+                222,
+                325,
+                380
+              ],
+              [
+                11,
+                45,
+                121,
+                166,
+                205,
+                216,
+                309,
+                376
+              ]
+            ],
+            "minimumPixels": 11,
+            "changedPixels": 2119,
+            "changeFraction": 0.01324375,
+            "editRadiusMm": 3,
+            "editedBandWidthMm": 3,
+            "depthPixels": 12,
+            "profileStartMm": 1,
+            "profileEndMm": 4
+          },
+          "routingSeconds": 0.595165959,
+          "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+          "termination": "candidate_graph_exhausted",
+          "hasRefinedCandidate": false
+        },
+        {
+          "index": 1,
+          "seed": {
+            "method": "joint-minimum-run-boundary-profiles",
+            "initializationOnly": true,
+            "counts": [
+              7,
+              8
+            ],
+            "phase": 1,
+            "expectedProfileMismatch": 126.46153846153912,
+            "transitions": [
+              [
+                11,
+                49,
+                60,
+                79,
+                91,
+                102,
+                214
+              ],
+              [
+                28,
+                44,
+                87,
+                117,
+                151,
+                211,
+                262,
+                335
+              ],
+              [
+                77,
+                179,
+                222,
+                284,
+                295,
+                325,
+                380
+              ],
+              [
+                11,
+                45,
+                121,
+                166,
+                205,
+                216,
+                309,
+                376
+              ]
+            ],
+            "minimumPixels": 11,
+            "changedPixels": 2317,
+            "changeFraction": 0.01448125,
+            "editRadiusMm": 3,
+            "editedBandWidthMm": 3,
+            "depthPixels": 12,
+            "profileStartMm": 1,
+            "profileEndMm": 4
+          },
+          "routingSeconds": 0.238587708,
+          "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+          "termination": "candidate_graph_exhausted",
+          "hasRefinedCandidate": false
+        },
+        {
+          "index": 2,
+          "seed": {
+            "method": "joint-minimum-run-boundary-profiles",
+            "initializationOnly": true,
+            "counts": [
+              5,
+              9
+            ],
+            "phase": 0,
+            "expectedProfileMismatch": 127.46153846153899,
+            "transitions": [
+              [
+                79,
+                91,
+                102,
+                214,
+                389
+              ],
+              [
+                11,
+                28,
+                44,
+                87,
+                117,
+                151,
+                211,
+                262,
+                335
+              ],
+              [
+                77,
+                179,
+                222,
+                325,
+                380
+              ],
+              [
+                45,
+                56,
+                67,
+                121,
+                166,
+                205,
+                216,
+                309,
+                376
+              ]
+            ],
+            "minimumPixels": 11,
+            "changedPixels": 2071,
+            "changeFraction": 0.01294375,
+            "editRadiusMm": 3,
+            "editedBandWidthMm": 3,
+            "depthPixels": 12,
+            "profileStartMm": 1,
+            "profileEndMm": 4
+          },
+          "routingSeconds": 0.20793291700000008,
+          "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+          "termination": "candidate_graph_exhausted",
+          "hasRefinedCandidate": false
+        }
+      ]
+    },
+    "relaxed": {
+      "file": "tmp/heart-learning/joint-border-v1/relaxed/results.json",
+      "rows": [
+        {
+          "index": 0,
+          "minWidth": 1.5,
+          "seedNominalWidth": 2.004008016032064,
+          "seed": {
+            "method": "joint-minimum-run-boundary-profiles",
+            "initializationOnly": true,
+            "counts": [
+              5,
+              8
+            ],
+            "phase": 1,
+            "expectedProfileMismatch": 125.07692307692368,
+            "transitions": [
+              [
+                11,
+                79,
+                91,
+                102,
+                214
+              ],
+              [
+                28,
+                44,
+                87,
+                117,
+                151,
+                211,
+                262,
+                335
+              ],
+              [
+                77,
+                179,
+                222,
+                325,
+                380
+              ],
+              [
+                11,
+                45,
+                121,
+                166,
+                205,
+                216,
+                309,
+                376
+              ]
+            ],
+            "minimumPixels": 11,
+            "changedPixels": 2119,
+            "changeFraction": 0.01324375,
+            "editRadiusMm": 3,
+            "editedBandWidthMm": 3,
+            "depthPixels": 12,
+            "profileStartMm": 1,
+            "profileEndMm": 4
+          },
+          "routingSeconds": 1.3772265,
+          "routingError": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+          "termination": "candidate_graph_exhausted",
+          "hasRefinedCandidate": false
+        },
+        {
+          "index": 1,
+          "minWidth": 1.5,
+          "seedNominalWidth": 2.004008016032064,
+          "seed": {
+            "method": "joint-minimum-run-boundary-profiles",
+            "initializationOnly": true,
+            "counts": [
+              7,
+              8
+            ],
+            "phase": 1,
+            "expectedProfileMismatch": 126.46153846153912,
+            "transitions": [
+              [
+                11,
+                49,
+                60,
+                79,
+                91,
+                102,
+                214
+              ],
+              [
+                28,
+                44,
+                87,
+                117,
+                151,
+                211,
+                262,
+                335
+              ],
+              [
+                77,
+                179,
+                222,
+                284,
+                295,
+                325,
+                380
+              ],
+              [
+                11,
+                45,
+                121,
+                166,
+                205,
+                216,
+                309,
+                376
+              ]
+            ],
+            "minimumPixels": 11,
+            "changedPixels": 2317,
+            "changeFraction": 0.01448125,
+            "editRadiusMm": 3,
+            "editedBandWidthMm": 3,
+            "depthPixels": 12,
+            "profileStartMm": 1,
+            "profileEndMm": 4
+          },
+          "routingSeconds": 0.5538199580000001,
+          "routingError": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+          "termination": "candidate_graph_exhausted",
+          "hasRefinedCandidate": false
+        },
+        {
+          "index": 2,
+          "minWidth": 1.5,
+          "seedNominalWidth": 2.004008016032064,
+          "seed": {
+            "method": "joint-minimum-run-boundary-profiles",
+            "initializationOnly": true,
+            "counts": [
+              5,
+              9
+            ],
+            "phase": 0,
+            "expectedProfileMismatch": 127.46153846153899,
+            "transitions": [
+              [
+                79,
+                91,
+                102,
+                214,
+                389
+              ],
+              [
+                11,
+                28,
+                44,
+                87,
+                117,
+                151,
+                211,
+                262,
+                335
+              ],
+              [
+                77,
+                179,
+                222,
+                325,
+                380
+              ],
+              [
+                45,
+                56,
+                67,
+                121,
+                166,
+                205,
+                216,
+                309,
+                376
+              ]
+            ],
+            "minimumPixels": 11,
+            "changedPixels": 2071,
+            "changeFraction": 0.01294375,
+            "editRadiusMm": 3,
+            "editedBandWidthMm": 3,
+            "depthPixels": 12,
+            "profileStartMm": 1,
+            "profileEndMm": 4
+          },
+          "routingSeconds": 1.2008057079999999,
+          "routingError": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+          "termination": "candidate_graph_exhausted",
+          "hasRefinedCandidate": false
+        },
+        {
+          "index": 0,
+          "minWidth": 1,
+          "seedNominalWidth": 1.503006012024048,
+          "seed": {
+            "method": "joint-minimum-run-boundary-profiles",
+            "initializationOnly": true,
+            "counts": [
+              5,
+              8
+            ],
+            "phase": 1,
+            "expectedProfileMismatch": 125.07692307692368,
+            "transitions": [
+              [
+                11,
+                79,
+                91,
+                102,
+                214
+              ],
+              [
+                28,
+                44,
+                87,
+                117,
+                151,
+                211,
+                262,
+                335
+              ],
+              [
+                77,
+                179,
+                222,
+                325,
+                380
+              ],
+              [
+                11,
+                45,
+                121,
+                166,
+                205,
+                216,
+                309,
+                376
+              ]
+            ],
+            "minimumPixels": 11,
+            "changedPixels": 2119,
+            "changeFraction": 0.01324375,
+            "editRadiusMm": 3,
+            "editedBandWidthMm": 3,
+            "depthPixels": 12,
+            "profileStartMm": 1,
+            "profileEndMm": 4
+          },
+          "routingSeconds": 2.369726667,
+          "routingError": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+          "termination": "candidate_graph_exhausted",
+          "hasRefinedCandidate": false
+        },
+        {
+          "index": 1,
+          "minWidth": 1,
+          "seedNominalWidth": 1.503006012024048,
+          "seed": {
+            "method": "joint-minimum-run-boundary-profiles",
+            "initializationOnly": true,
+            "counts": [
+              7,
+              8
+            ],
+            "phase": 1,
+            "expectedProfileMismatch": 126.46153846153912,
+            "transitions": [
+              [
+                11,
+                49,
+                60,
+                79,
+                91,
+                102,
+                214
+              ],
+              [
+                28,
+                44,
+                87,
+                117,
+                151,
+                211,
+                262,
+                335
+              ],
+              [
+                77,
+                179,
+                222,
+                284,
+                295,
+                325,
+                380
+              ],
+              [
+                11,
+                45,
+                121,
+                166,
+                205,
+                216,
+                309,
+                376
+              ]
+            ],
+            "minimumPixels": 11,
+            "changedPixels": 2317,
+            "changeFraction": 0.01448125,
+            "editRadiusMm": 3,
+            "editedBandWidthMm": 3,
+            "depthPixels": 12,
+            "profileStartMm": 1,
+            "profileEndMm": 4
+          },
+          "routingSeconds": 0.44120295800000076,
+          "routingError": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+          "termination": "candidate_graph_exhausted",
+          "hasRefinedCandidate": false
+        },
+        {
+          "index": 2,
+          "minWidth": 1,
+          "seedNominalWidth": 1.503006012024048,
+          "seed": {
+            "method": "joint-minimum-run-boundary-profiles",
+            "initializationOnly": true,
+            "counts": [
+              5,
+              9
+            ],
+            "phase": 0,
+            "expectedProfileMismatch": 127.46153846153899,
+            "transitions": [
+              [
+                79,
+                91,
+                102,
+                214,
+                389
+              ],
+              [
+                11,
+                28,
+                44,
+                87,
+                117,
+                151,
+                211,
+                262,
+                335
+              ],
+              [
+                77,
+                179,
+                222,
+                325,
+                380
+              ],
+              [
+                45,
+                56,
+                67,
+                121,
+                166,
+                205,
+                216,
+                309,
+                376
+              ]
+            ],
+            "minimumPixels": 11,
+            "changedPixels": 2071,
+            "changeFraction": 0.01294375,
+            "editRadiusMm": 3,
+            "editedBandWidthMm": 3,
+            "depthPixels": 12,
+            "profileStartMm": 1,
+            "profileEndMm": 4
+          },
+          "routingSeconds": 3.035095,
+          "routingError": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+          "termination": "time_limit",
+          "hasRefinedCandidate": false
+        },
+        {
+          "index": 0,
+          "minWidth": 0.5,
+          "seedNominalWidth": 1.002004008016032,
+          "seed": {
+            "method": "joint-minimum-run-boundary-profiles",
+            "initializationOnly": true,
+            "counts": [
+              5,
+              8
+            ],
+            "phase": 1,
+            "expectedProfileMismatch": 125.07692307692368,
+            "transitions": [
+              [
+                11,
+                79,
+                91,
+                102,
+                214
+              ],
+              [
+                28,
+                44,
+                87,
+                117,
+                151,
+                211,
+                262,
+                335
+              ],
+              [
+                77,
+                179,
+                222,
+                325,
+                380
+              ],
+              [
+                11,
+                45,
+                121,
+                166,
+                205,
+                216,
+                309,
+                376
+              ]
+            ],
+            "minimumPixels": 11,
+            "changedPixels": 2119,
+            "changeFraction": 0.01324375,
+            "editRadiusMm": 3,
+            "editedBandWidthMm": 3,
+            "depthPixels": 12,
+            "profileStartMm": 1,
+            "profileEndMm": 4
+          },
+          "routingSeconds": 3.0397461249999997,
+          "routingError": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+          "termination": "time_limit",
+          "hasRefinedCandidate": false
+        },
+        {
+          "index": 1,
+          "minWidth": 0.5,
+          "seedNominalWidth": 1.002004008016032,
+          "seed": {
+            "method": "joint-minimum-run-boundary-profiles",
+            "initializationOnly": true,
+            "counts": [
+              7,
+              8
+            ],
+            "phase": 1,
+            "expectedProfileMismatch": 126.46153846153912,
+            "transitions": [
+              [
+                11,
+                49,
+                60,
+                79,
+                91,
+                102,
+                214
+              ],
+              [
+                28,
+                44,
+                87,
+                117,
+                151,
+                211,
+                262,
+                335
+              ],
+              [
+                77,
+                179,
+                222,
+                284,
+                295,
+                325,
+                380
+              ],
+              [
+                11,
+                45,
+                121,
+                166,
+                205,
+                216,
+                309,
+                376
+              ]
+            ],
+            "minimumPixels": 11,
+            "changedPixels": 2317,
+            "changeFraction": 0.01448125,
+            "editRadiusMm": 3,
+            "editedBandWidthMm": 3,
+            "depthPixels": 12,
+            "profileStartMm": 1,
+            "profileEndMm": 4
+          },
+          "routingSeconds": 0.39691199999999843,
+          "routingError": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+          "termination": "candidate_graph_exhausted",
+          "hasRefinedCandidate": false
+        },
+        {
+          "index": 2,
+          "minWidth": 0.5,
+          "seedNominalWidth": 1.002004008016032,
+          "seed": {
+            "method": "joint-minimum-run-boundary-profiles",
+            "initializationOnly": true,
+            "counts": [
+              5,
+              9
+            ],
+            "phase": 0,
+            "expectedProfileMismatch": 127.46153846153899,
+            "transitions": [
+              [
+                79,
+                91,
+                102,
+                214,
+                389
+              ],
+              [
+                11,
+                28,
+                44,
+                87,
+                117,
+                151,
+                211,
+                262,
+                335
+              ],
+              [
+                77,
+                179,
+                222,
+                325,
+                380
+              ],
+              [
+                45,
+                56,
+                67,
+                121,
+                166,
+                205,
+                216,
+                309,
+                376
+              ]
+            ],
+            "minimumPixels": 11,
+            "changedPixels": 2071,
+            "changeFraction": 0.01294375,
+            "editRadiusMm": 3,
+            "editedBandWidthMm": 3,
+            "depthPixels": 12,
+            "profileStartMm": 1,
+            "profileEndMm": 4
+          },
+          "routingSeconds": 3.0323158330000006,
+          "routingError": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+          "termination": "time_limit",
+          "hasRefinedCandidate": false
+        }
+      ]
+    }
+  },
+  "prototypeReplay": {
+    "sourceHash": "e45aca01a4c94c9caa7d4ddde017518cb09c0eba73d539f7fcc53508599d48d6",
+    "implementationHash": "feca3b03fd6333104f875cca1037d200e50449f75bf22a5cde70bc19e48f1ede",
+    "rows": [
+      {
+        "prototypeIndex": 0,
+        "metadata": {
+          "method": "joint-minimum-run-boundary-profiles",
+          "initializationOnly": true,
+          "counts": [
+            5,
+            9
+          ],
+          "phase": 0,
+          "expectedProfileMismatch": 112.44444444444463,
+          "transitions": [
+            [
+              167,
+              178,
+              191,
+              202,
+              389
+            ],
+            [
+              11,
+              25,
+              45,
+              84,
+              117,
+              149,
+              210,
+              262,
+              334
+            ],
+            [
+              59,
+              181,
+              208,
+              327,
+              382
+            ],
+            [
+              29,
+              57,
+              82,
+              93,
+              167,
+              203,
+              214,
+              310,
+              377
+            ]
+          ],
+          "minimumPixels": 11,
+          "changedPixels": 373,
+          "changeFraction": 0.00233125,
+          "editRadiusMm": 1,
+          "editedBandWidthMm": 1,
+          "depthPixels": 4,
+          "profileStartMm": 0,
+          "profileEndMm": 2
+        },
+        "hash": "8b58abf6d3a1e4166b6b5ce8a25aa2dd3de6f6c8803ffb3548606500011519eb",
+        "prototypeHash": "8b58abf6d3a1e4166b6b5ce8a25aa2dd3de6f6c8803ffb3548606500011519eb",
+        "identical": true,
+        "prototypeCounts": [
+          5,
+          9
+        ]
+      },
+      {
+        "prototypeIndex": 1,
+        "metadata": {
+          "method": "joint-minimum-run-boundary-profiles",
+          "initializationOnly": true,
+          "counts": [
+            5,
+            8
+          ],
+          "phase": 1,
+          "expectedProfileMismatch": 117.88888888888906,
+          "transitions": [
+            [
+              11,
+              167,
+              178,
+              191,
+              202
+            ],
+            [
+              25,
+              45,
+              84,
+              117,
+              149,
+              210,
+              262,
+              334
+            ],
+            [
+              59,
+              181,
+              208,
+              327,
+              382
+            ],
+            [
+              11,
+              29,
+              57,
+              167,
+              203,
+              214,
+              310,
+              377
+            ]
+          ],
+          "minimumPixels": 11,
+          "changedPixels": 361,
+          "changeFraction": 0.00225625,
+          "editRadiusMm": 1,
+          "editedBandWidthMm": 1,
+          "depthPixels": 4,
+          "profileStartMm": 0,
+          "profileEndMm": 2
+        },
+        "hash": "1c28602790888cd3cefb3fdb25c9a204f4aefcd9a2ede34d682ed6df05573319",
+        "prototypeHash": "1c28602790888cd3cefb3fdb25c9a204f4aefcd9a2ede34d682ed6df05573319",
+        "identical": true,
+        "prototypeCounts": [
+          5,
+          8
+        ]
+      },
+      {
+        "prototypeIndex": 2,
+        "metadata": {
+          "method": "joint-minimum-run-boundary-profiles",
+          "initializationOnly": true,
+          "counts": [
+            6,
+            8
+          ],
+          "phase": 0,
+          "expectedProfileMismatch": 118.66666666666676,
+          "transitions": [
+            [
+              145,
+              156,
+              167,
+              178,
+              191,
+              202
+            ],
+            [
+              25,
+              45,
+              84,
+              117,
+              149,
+              210,
+              262,
+              334
+            ],
+            [
+              11,
+              59,
+              181,
+              208,
+              327,
+              382
+            ],
+            [
+              29,
+              57,
+              167,
+              203,
+              214,
+              310,
+              377,
+              389
+            ]
+          ],
+          "minimumPixels": 11,
+          "changedPixels": 405,
+          "changeFraction": 0.00253125,
+          "editRadiusMm": 1,
+          "editedBandWidthMm": 1,
+          "depthPixels": 4,
+          "profileStartMm": 0,
+          "profileEndMm": 2
+        },
+        "hash": "2347ca2ccd3ad22b2f1421371b5eead8f76332e1549eaec6b5c9af2d97489743",
+        "prototypeHash": "d3bb79e3cd5df7ffe54839cd0b3e41cb64216ed4ed916598547d379c501098be",
+        "identical": false,
+        "prototypeCounts": [
+          6,
+          8
+        ]
+      },
+      {
+        "prototypeIndex": 3,
+        "metadata": {
+          "method": "joint-minimum-run-boundary-profiles",
+          "initializationOnly": true,
+          "counts": [
+            5,
+            7
+          ],
+          "phase": 0,
+          "expectedProfileMismatch": 119.66666666666683,
+          "transitions": [
+            [
+              167,
+              178,
+              191,
+              202,
+              389
+            ],
+            [
+              45,
+              84,
+              117,
+              149,
+              210,
+              262,
+              334
+            ],
+            [
+              59,
+              181,
+              208,
+              327,
+              382
+            ],
+            [
+              29,
+              57,
+              167,
+              203,
+              214,
+              310,
+              377
+            ]
+          ],
+          "minimumPixels": 11,
+          "changedPixels": 335,
+          "changeFraction": 0.00209375,
+          "editRadiusMm": 1,
+          "editedBandWidthMm": 1,
+          "depthPixels": 4,
+          "profileStartMm": 0,
+          "profileEndMm": 2
+        },
+        "hash": "1121a78c53196364550178681e2f016efcec3359494d3b3ea7ac162a38d85c05",
+        "prototypeHash": "1121a78c53196364550178681e2f016efcec3359494d3b3ea7ac162a38d85c05",
+        "identical": true,
+        "prototypeCounts": [
+          5,
+          7
+        ]
+      },
+      {
+        "prototypeIndex": 4,
+        "metadata": {
+          "method": "joint-minimum-run-boundary-profiles",
+          "initializationOnly": true,
+          "counts": [
+            6,
+            9
+          ],
+          "phase": 0,
+          "expectedProfileMismatch": 122.55555555555564,
+          "transitions": [
+            [
+              145,
+              156,
+              167,
+              178,
+              191,
+              202
+            ],
+            [
+              25,
+              45,
+              84,
+              117,
+              149,
+              210,
+              262,
+              334,
+              389
+            ],
+            [
+              59,
+              181,
+              208,
+              327,
+              378,
+              389
+            ],
+            [
+              29,
+              57,
+              82,
+              93,
+              167,
+              203,
+              214,
+              310,
+              377
+            ]
+          ],
+          "minimumPixels": 11,
+          "changedPixels": 465,
+          "changeFraction": 0.00290625,
+          "editRadiusMm": 1,
+          "editedBandWidthMm": 1,
+          "depthPixels": 4,
+          "profileStartMm": 0,
+          "profileEndMm": 2
+        },
+        "hash": "508ebe2a4ecb4b2d3d1c1efc00874b0368f29254aad665663ca868d555b5b72d",
+        "prototypeHash": "60cabae3bb0eec0d2114e9d2cd638f61e06cf6dd3c0d4ea8ef8ecf762cb7d0e0",
+        "identical": false,
+        "prototypeCounts": [
+          6,
+          9
+        ]
+      },
+      {
+        "prototypeIndex": 5,
+        "metadata": {
+          "method": "joint-minimum-run-boundary-profiles",
+          "initializationOnly": true,
+          "counts": [
+            7,
+            9
+          ],
+          "phase": 0,
+          "expectedProfileMismatch": 122.88888888888903,
+          "transitions": [
+            [
+              145,
+              156,
+              167,
+              178,
+              191,
+              202,
+              389
+            ],
+            [
+              11,
+              25,
+              45,
+              84,
+              117,
+              149,
+              210,
+              262,
+              334
+            ],
+            [
+              53,
+              64,
+              75,
+              181,
+              208,
+              327,
+              382
+            ],
+            [
+              29,
+              57,
+              82,
+              93,
+              167,
+              203,
+              214,
+              310,
+              377
+            ]
+          ],
+          "minimumPixels": 11,
+          "changedPixels": 447,
+          "changeFraction": 0.00279375,
+          "editRadiusMm": 1,
+          "editedBandWidthMm": 1,
+          "depthPixels": 4,
+          "profileStartMm": 0,
+          "profileEndMm": 2
+        },
+        "hash": "ec2bc4a0f2239db4ec1a6574cc3314e5ea95221750ec70636e34688a800fb4d3",
+        "prototypeHash": "da70ee52aeb87a7e6bf62ead152f5a447cf8ebf6b63a49baac9af5415b68c420",
+        "identical": false,
+        "prototypeCounts": [
+          7,
+          9
+        ]
+      },
+      {
+        "prototypeIndex": 6,
+        "metadata": {
+          "method": "joint-minimum-run-boundary-profiles",
+          "initializationOnly": true,
+          "counts": [
+            4,
+            9
+          ],
+          "phase": 0,
+          "expectedProfileMismatch": 125.66666666666684,
+          "transitions": [
+            [
+              167,
+              178,
+              191,
+              202
+            ],
+            [
+              25,
+              45,
+              84,
+              117,
+              149,
+              210,
+              262,
+              334,
+              389
+            ],
+            [
+              59,
+              181,
+              208,
+              327
+            ],
+            [
+              29,
+              57,
+              82,
+              93,
+              167,
+              203,
+              214,
+              310,
+              377
+            ]
+          ],
+          "minimumPixels": 11,
+          "changedPixels": 429,
+          "changeFraction": 0.00268125,
+          "editRadiusMm": 1,
+          "editedBandWidthMm": 1,
+          "depthPixels": 4,
+          "profileStartMm": 0,
+          "profileEndMm": 2
+        },
+        "hash": "9cb4cfd49ee5498290ff2094c345151131acb0b2fb1a157b6e192cfa36736043",
+        "prototypeHash": "9cb4cfd49ee5498290ff2094c345151131acb0b2fb1a157b6e192cfa36736043",
+        "identical": true,
+        "prototypeCounts": [
+          4,
+          9
+        ]
+      },
+      {
+        "prototypeIndex": 7,
+        "metadata": {
+          "method": "joint-minimum-run-boundary-profiles",
+          "initializationOnly": true,
+          "counts": [
+            5,
+            11
+          ],
+          "phase": 0,
+          "expectedProfileMismatch": 126.0000000000002,
+          "transitions": [
+            [
+              167,
+              178,
+              191,
+              202,
+              389
+            ],
+            [
+              11,
+              25,
+              45,
+              56,
+              67,
+              84,
+              117,
+              149,
+              210,
+              262,
+              334
+            ],
+            [
+              59,
+              181,
+              208,
+              327,
+              382
+            ],
+            [
+              29,
+              57,
+              68,
+              79,
+              90,
+              101,
+              167,
+              203,
+              214,
+              310,
+              377
+            ]
+          ],
+          "minimumPixels": 11,
+          "changedPixels": 461,
+          "changeFraction": 0.00288125,
+          "editRadiusMm": 1,
+          "editedBandWidthMm": 1,
+          "depthPixels": 4,
+          "profileStartMm": 0,
+          "profileEndMm": 2
+        },
+        "hash": "06799a89ebcabb038e5d5317151bab8b6dd89d57937c9e0e9a5ffe3e0d1a01f8",
+        "prototypeHash": "709e2f938558f6d2659ff2cfdb18214a264047b5ee0c14ced67d788497b0c91e",
+        "identical": false,
+        "prototypeCounts": [
+          5,
+          11
+        ]
+      },
+      {
+        "prototypeIndex": 16,
+        "metadata": {
+          "method": "joint-minimum-run-boundary-profiles",
+          "initializationOnly": true,
+          "counts": [
+            5,
+            8
+          ],
+          "phase": 1,
+          "expectedProfileMismatch": 125.07692307692368,
+          "transitions": [
+            [
+              11,
+              79,
+              91,
+              102,
+              214
+            ],
+            [
+              28,
+              44,
+              87,
+              117,
+              151,
+              211,
+              262,
+              335
+            ],
+            [
+              77,
+              179,
+              222,
+              325,
+              380
+            ],
+            [
+              11,
+              45,
+              121,
+              166,
+              205,
+              216,
+              309,
+              376
+            ]
+          ],
+          "minimumPixels": 11,
+          "changedPixels": 2119,
+          "changeFraction": 0.01324375,
+          "editRadiusMm": 3,
+          "editedBandWidthMm": 3,
+          "depthPixels": 12,
+          "profileStartMm": 1,
+          "profileEndMm": 4
+        },
+        "hash": "3ede037750d302c1b757486b7565faf404b2e0d64aa8da4d3556777ac66faf11",
+        "prototypeHash": "3ede037750d302c1b757486b7565faf404b2e0d64aa8da4d3556777ac66faf11",
+        "identical": true,
+        "prototypeCounts": [
+          5,
+          8
+        ]
+      },
+      {
+        "prototypeIndex": 17,
+        "metadata": {
+          "method": "joint-minimum-run-boundary-profiles",
+          "initializationOnly": true,
+          "counts": [
+            7,
+            8
+          ],
+          "phase": 1,
+          "expectedProfileMismatch": 126.46153846153912,
+          "transitions": [
+            [
+              11,
+              49,
+              60,
+              79,
+              91,
+              102,
+              214
+            ],
+            [
+              28,
+              44,
+              87,
+              117,
+              151,
+              211,
+              262,
+              335
+            ],
+            [
+              77,
+              179,
+              222,
+              284,
+              295,
+              325,
+              380
+            ],
+            [
+              11,
+              45,
+              121,
+              166,
+              205,
+              216,
+              309,
+              376
+            ]
+          ],
+          "minimumPixels": 11,
+          "changedPixels": 2317,
+          "changeFraction": 0.01448125,
+          "editRadiusMm": 3,
+          "editedBandWidthMm": 3,
+          "depthPixels": 12,
+          "profileStartMm": 1,
+          "profileEndMm": 4
+        },
+        "hash": "0e39e228e4cdd5dc40c06fb76633c674d2f91e7e216b5dddccf38eea184a9ca9",
+        "prototypeHash": "b546914e42678b08471d53b619804ee4d6e6d66cf047be57d28bc5adb221c7c0",
+        "identical": false,
+        "prototypeCounts": [
+          7,
+          8
+        ]
+      },
+      {
+        "prototypeIndex": 18,
+        "metadata": {
+          "method": "joint-minimum-run-boundary-profiles",
+          "initializationOnly": true,
+          "counts": [
+            5,
+            9
+          ],
+          "phase": 0,
+          "expectedProfileMismatch": 127.46153846153899,
+          "transitions": [
+            [
+              79,
+              91,
+              102,
+              214,
+              389
+            ],
+            [
+              11,
+              28,
+              44,
+              87,
+              117,
+              151,
+              211,
+              262,
+              335
+            ],
+            [
+              77,
+              179,
+              222,
+              325,
+              380
+            ],
+            [
+              45,
+              56,
+              67,
+              121,
+              166,
+              205,
+              216,
+              309,
+              376
+            ]
+          ],
+          "minimumPixels": 11,
+          "changedPixels": 2071,
+          "changeFraction": 0.01294375,
+          "editRadiusMm": 3,
+          "editedBandWidthMm": 3,
+          "depthPixels": 12,
+          "profileStartMm": 1,
+          "profileEndMm": 4
+        },
+        "hash": "3ec019531d2cc81bec2a6dd9539aa6b27cfa1328ae2ef755b0073ea311c32b98",
+        "prototypeHash": "3ec019531d2cc81bec2a6dd9539aa6b27cfa1328ae2ef755b0073ea311c32b98",
+        "identical": true,
+        "prototypeCounts": [
+          5,
+          9
+        ]
+      },
+      {
+        "prototypeIndex": 19,
+        "metadata": {
+          "method": "joint-minimum-run-boundary-profiles",
+          "initializationOnly": true,
+          "counts": [
+            7,
+            9
+          ],
+          "phase": 0,
+          "expectedProfileMismatch": 128.84615384615444,
+          "transitions": [
+            [
+              49,
+              60,
+              79,
+              91,
+              102,
+              214,
+              389
+            ],
+            [
+              11,
+              28,
+              44,
+              87,
+              117,
+              151,
+              211,
+              262,
+              335
+            ],
+            [
+              77,
+              179,
+              222,
+              284,
+              295,
+              325,
+              380
+            ],
+            [
+              45,
+              56,
+              67,
+              121,
+              166,
+              205,
+              216,
+              309,
+              376
+            ]
+          ],
+          "minimumPixels": 11,
+          "changedPixels": 2269,
+          "changeFraction": 0.01418125,
+          "editRadiusMm": 3,
+          "editedBandWidthMm": 3,
+          "depthPixels": 12,
+          "profileStartMm": 1,
+          "profileEndMm": 4
+        },
+        "hash": "6360b601425bb8f12b202951f303865dfdd82be5314a1bcf558b79b8a175262e",
+        "prototypeHash": "36c9b9fe8dbb2417a0146727867c4e9dbb0c4f77aded5c71c98c04b12fa8883b",
+        "identical": false,
+        "prototypeCounts": [
+          7,
+          9
+        ]
+      },
+      {
+        "prototypeIndex": 20,
+        "metadata": {
+          "method": "joint-minimum-run-boundary-profiles",
+          "initializationOnly": true,
+          "counts": [
+            6,
+            8
+          ],
+          "phase": 0,
+          "expectedProfileMismatch": 129.00000000000057,
+          "transitions": [
+            [
+              49,
+              60,
+              79,
+              91,
+              102,
+              214
+            ],
+            [
+              28,
+              44,
+              87,
+              117,
+              151,
+              211,
+              262,
+              335
+            ],
+            [
+              11,
+              77,
+              179,
+              222,
+              325,
+              380
+            ],
+            [
+              45,
+              121,
+              166,
+              205,
+              216,
+              309,
+              376,
+              389
+            ]
+          ],
+          "minimumPixels": 11,
+          "changedPixels": 2251,
+          "changeFraction": 0.01406875,
+          "editRadiusMm": 3,
+          "editedBandWidthMm": 3,
+          "depthPixels": 12,
+          "profileStartMm": 1,
+          "profileEndMm": 4
+        },
+        "hash": "8faa91b7e0e1f8f87e34d3c5d51d9a39fbd58fe5d88ded20f239962c2ad4b47e",
+        "prototypeHash": "af1862a1827a26535bf1586b96347d7594d16905121f568cfbc49d5d7465eea7",
+        "identical": false,
+        "prototypeCounts": [
+          6,
+          8
+        ]
+      },
+      {
+        "prototypeIndex": 21,
+        "metadata": {
+          "method": "joint-minimum-run-boundary-profiles",
+          "initializationOnly": true,
+          "counts": [
+            8,
+            8
+          ],
+          "phase": 0,
+          "expectedProfileMismatch": 130.69230769230836,
+          "transitions": [
+            [
+              49,
+              60,
+              79,
+              91,
+              102,
+              113,
+              124,
+              214
+            ],
+            [
+              28,
+              44,
+              87,
+              117,
+              151,
+              211,
+              262,
+              335
+            ],
+            [
+              11,
+              77,
+              179,
+              222,
+              284,
+              295,
+              325,
+              380
+            ],
+            [
+              45,
+              121,
+              166,
+              205,
+              216,
+              309,
+              376,
+              389
+            ]
+          ],
+          "minimumPixels": 11,
+          "changedPixels": 2273,
+          "changeFraction": 0.01420625,
+          "editRadiusMm": 3,
+          "editedBandWidthMm": 3,
+          "depthPixels": 12,
+          "profileStartMm": 1,
+          "profileEndMm": 4
+        },
+        "hash": "1366e07e3e3fda1fca60be36cb76d19f768c0b10e6a00c8c2b68df3a09d9267a",
+        "prototypeHash": "6ad2082f368db071ea8b3f59d49ec40793bde1cd84015f9a2608e2c8ff08ceee",
+        "identical": false,
+        "prototypeCounts": [
+          8,
+          8
+        ]
+      },
+      {
+        "prototypeIndex": 22,
+        "metadata": {
+          "method": "joint-minimum-run-boundary-profiles",
+          "initializationOnly": true,
+          "counts": [
+            6,
+            9
+          ],
+          "phase": 0,
+          "expectedProfileMismatch": 135.53846153846212,
+          "transitions": [
+            [
+              49,
+              60,
+              79,
+              91,
+              102,
+              214
+            ],
+            [
+              28,
+              44,
+              87,
+              117,
+              151,
+              211,
+              262,
+              335,
+              389
+            ],
+            [
+              77,
+              179,
+              222,
+              325,
+              378,
+              389
+            ],
+            [
+              45,
+              56,
+              67,
+              121,
+              166,
+              205,
+              216,
+              309,
+              376
+            ]
+          ],
+          "minimumPixels": 11,
+          "changedPixels": 2259,
+          "changeFraction": 0.01411875,
+          "editRadiusMm": 3,
+          "editedBandWidthMm": 3,
+          "depthPixels": 12,
+          "profileStartMm": 1,
+          "profileEndMm": 4
+        },
+        "hash": "00855128a456c54343eaee677d64c6c29a58abd9283f097904a3996ad7ca5211",
+        "prototypeHash": "708689e89bdf66dfbe7bc77f38721f07f111e8286ad119b3a1af5c83edaca5ed",
+        "identical": false,
+        "prototypeCounts": [
+          6,
+          9
+        ]
+      },
+      {
+        "prototypeIndex": 23,
+        "metadata": {
+          "method": "joint-minimum-run-boundary-profiles",
+          "initializationOnly": true,
+          "counts": [
+            8,
+            9
+          ],
+          "phase": 0,
+          "expectedProfileMismatch": 137.23076923076985,
+          "transitions": [
+            [
+              49,
+              60,
+              79,
+              91,
+              102,
+              113,
+              124,
+              214
+            ],
+            [
+              28,
+              44,
+              87,
+              117,
+              151,
+              211,
+              262,
+              335,
+              389
+            ],
+            [
+              77,
+              179,
+              222,
+              284,
+              295,
+              325,
+              378,
+              389
+            ],
+            [
+              45,
+              56,
+              67,
+              121,
+              166,
+              205,
+              216,
+              309,
+              376
+            ]
+          ],
+          "minimumPixels": 11,
+          "changedPixels": 2281,
+          "changeFraction": 0.01425625,
+          "editRadiusMm": 3,
+          "editedBandWidthMm": 3,
+          "depthPixels": 12,
+          "profileStartMm": 1,
+          "profileEndMm": 4
+        },
+        "hash": "a3832deecf9fdccdba2468bb8dca72c3cacdf93d4bb51231abbe499993a1170f",
+        "prototypeHash": "d1e1c9d8f97b5ff3d46b38a623afbea30bd2503c8019727a856cbcf9b2e80efc",
+        "identical": false,
+        "prototypeCounts": [
+          8,
+          9
+        ]
+      }
+    ]
+  },
+  "validation": {
+    "fullRunCommit": "2564d3d",
+    "fullRun": [
+      {
+        "stage": "check",
+        "exitCode": 0,
+        "seconds": 8.699807208
+      },
+      {
+        "stage": "lint",
+        "exitCode": 0,
+        "seconds": 6.157377749999998
+      },
+      {
+        "stage": "app",
+        "exitCode": 0,
+        "seconds": 33.370548167
+      },
+      {
+        "stage": "inverse",
+        "exitCode": 0,
+        "seconds": 781.74854725
+      },
+      {
+        "stage": "build",
+        "exitCode": 0,
+        "seconds": 13.447194917000047
+      }
+    ],
+    "inverseTestsPassed": 805,
+    "applicationTestsPassed": 855,
+    "applicationTestsSkipped": 1,
+    "laterDefaultsCommit": "c291f87",
+    "laterChecks": [
+      "four focused tests",
+      "lint"
+    ],
+    "browserCommit": "c291f8733602889a99eb5fed5fe02191f9e8e310",
+    "browserCases": [
+      {
+        "name": "star",
+        "passed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.008699999928474426,
+          "prepareRoundTripSeconds": 0.034,
+          "preparedToSolveRequestSeconds": 0.00030000007152557374,
+          "solveRoundTripSeconds": 1.8826999999284744,
+          "resultToReadySeconds": 0.0965,
+          "clickToReadySeconds": 2.0221999999284743
+        },
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "sourceEditableError": 0.0016,
+        "templateChecksPassed": true
+      },
+      {
+        "name": "top-hat-preferred",
+        "passed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.019299999952316283,
+          "prepareRoundTripSeconds": 0.2635,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 7.758800000071526,
+          "resultToReadySeconds": 0.20969999992847443,
+          "clickToReadySeconds": 8.251699999928475
+        },
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "sourceEditableError": 0.004118835034013606,
+        "templateChecksPassed": true
+      },
+      {
+        "name": "gold-routing-mask",
+        "passed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005399999976158142,
+          "prepareRoundTripSeconds": 0.19910000002384184,
+          "preparedToSolveRequestSeconds": 0.00030000007152557374,
+          "solveRoundTripSeconds": 6.459799999952316,
+          "resultToReadySeconds": 0.21529999995231627,
+          "clickToReadySeconds": 6.879899999976158
+        },
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "sourceEditableError": 0.0073625,
+        "templateChecksPassed": true
+      }
+    ],
+    "pdfs": [
+      {
+        "file": "tmp/heart-learning/joint-border-v1/browser/chromium-gold-routing-mask/template.pdf",
+        "sha256": "1fdf233e64daf88ec2842650a9c686fc19241d5a7f5942afb90b0ce1c0edd393",
+        "bytes": 390523,
+        "verification": "PDF header and EOF marker; screenshots cover editor result, not PDF layout."
+      },
+      {
+        "file": "tmp/heart-learning/joint-border-v1/browser/chromium-star/template.pdf",
+        "sha256": "bc50e5f941e7551e2ecaeeef807113b72f32e48d23372af058afa3133f5e2d29",
+        "bytes": 326180,
+        "verification": "PDF header and EOF marker; screenshots cover editor result, not PDF layout."
+      }
+    ],
+    "servedAssetsVerified": 153,
+    "unchangedReleaseFiles": 93,
+    "newAutomaticBenchmarkSuccesses": 0
+  },
+  "visualReview": {
+    "reviewer": "assistant",
+    "screenshots": [
+      "tmp/heart-learning/joint-border-v1/browser/chromium-gold-routing-mask/draw.png",
+      "tmp/heart-learning/joint-border-v1/browser/chromium-gold-routing-mask/result.png",
+      "tmp/heart-learning/joint-border-v1/browser/chromium-star/draw.png",
+      "tmp/heart-learning/joint-border-v1/browser/chromium-star/result.png",
+      "tmp/heart-learning/joint-border-v1/browser/chromium-top-hat-preferred/draw.png",
+      "tmp/heart-learning/joint-border-v1/browser/chromium-top-hat-preferred/result.png"
+    ],
+    "other": [
+      "tmp/heart-learning/joint-border-v1/profile-review.png"
+    ],
+    "observations": [
+      "Star and hat shared cuts remain aligned; small hat boundary bumps remain.",
+      "Gold angel silhouette and enclosing frame retained, but asymmetric thin border arms remain. Gold crop is annotation-assisted.",
+      "Profile seed interiors are unchanged; short rectangular border stubs are provisional interpretations, not established artwork."
+    ]
+  },
+  "limitations": [
+    "No new Hunodan or 31-photo benchmark: runtime sources unchanged.",
+    "Exact endpoint agreement does not certify valid cuts.",
+    "Early prototype and committed DP select identical counts in 16 comparisons, but only six masks are byte-identical.",
+    "Mixed tracing nominal .3/.5 smoothing attempts override to zero and duplicate the effective trace.",
+    "Relaxed initialization yielded no candidate: planned strict refinement/export checks were not reached.",
+    "No physical assembly test."
+  ],
+  "artifacts": {
+    "tmp/heart-learning/joint-border-v1/app.log": {
+      "sha256": "67c64782cd41545295ef89c2c656ab8af9404212e6b0473ad8cda426f9c4fadf",
+      "bytes": 258
+    },
+    "tmp/heart-learning/joint-border-v1/border.mjs": {
+      "sha256": "2d0297fb22c2e861468f2915f12a3f925addeb3088193974ee748363f6d96668",
+      "bytes": 5852
+    },
+    "tmp/heart-learning/joint-border-v1/browser/chromium-gold-routing-mask/cut_geometry.json": {
+      "sha256": "427fc6d21c1005db16984f025d71d57affadc24e4b8d84cb927dfb6c3d6070aa",
+      "bytes": 30117
+    },
+    "tmp/heart-learning/joint-border-v1/browser/chromium-gold-routing-mask/draw.png": {
+      "sha256": "53fdee76fbec1fdfe3c3d797377d57506bbcad86a79c811cc06e84db8c9b6337",
+      "bytes": 267790
+    },
+    "tmp/heart-learning/joint-border-v1/browser/chromium-gold-routing-mask/editable.svg": {
+      "sha256": "e2a26b693d1dd53c396a8191253169a8fe9d892248304e1ab64857df22be4f60",
+      "bytes": 8549
+    },
+    "tmp/heart-learning/joint-border-v1/browser/chromium-gold-routing-mask/engine-report.json": {
+      "sha256": "b1b6fe395688d5fc7623357cd0471124c70d0dfe3e9aa27cc777c8926eab741b",
+      "bytes": 63048
+    },
+    "tmp/heart-learning/joint-border-v1/browser/chromium-gold-routing-mask/import.png": {
+      "sha256": "4cbe40c5b768aac41975047072f16306f1bd3944ede10fbb7dc704fb37730a21",
+      "bytes": 199034
+    },
+    "tmp/heart-learning/joint-border-v1/browser/chromium-gold-routing-mask/input.png": {
+      "sha256": "8ddd10a79196cb834f8e58a7e2860f94535ddfc6e35e570232a4387083231a98",
+      "bytes": 5055
+    },
+    "tmp/heart-learning/joint-border-v1/browser/chromium-gold-routing-mask/prepared.json": {
+      "sha256": "6663e0adccc59375fc86b70620908be827b1d05fde0298e75b9b88263f16840d",
+      "bytes": 320042
+    },
+    "tmp/heart-learning/joint-border-v1/browser/chromium-gold-routing-mask/result.png": {
+      "sha256": "c7fdd29c1b01c738cc06ce207311e26b55e61ed814b742458aa1ba7e8962fb22",
+      "bytes": 163049
+    },
+    "tmp/heart-learning/joint-border-v1/browser/chromium-gold-routing-mask/template.pdf": {
+      "sha256": "1fdf233e64daf88ec2842650a9c686fc19241d5a7f5942afb90b0ce1c0edd393",
+      "bytes": 390523
+    },
+    "tmp/heart-learning/joint-border-v1/browser/chromium-star/cut_geometry.json": {
+      "sha256": "7e040bc9715127cdbf3d111dd6acb85beebb267bcfab69c198a9b3966de87601",
+      "bytes": 36275
+    },
+    "tmp/heart-learning/joint-border-v1/browser/chromium-star/draw.png": {
+      "sha256": "9a5297df9cfe01d650388356f95c67f1c5752f77c9450b00682267a2242f7094",
+      "bytes": 246452
+    },
+    "tmp/heart-learning/joint-border-v1/browser/chromium-star/editable.svg": {
+      "sha256": "fb311ce80a88dd35e0f9a521e6f22dd9e185841ae1b9f9b6557817d9f7d1f83f",
+      "bytes": 7113
+    },
+    "tmp/heart-learning/joint-border-v1/browser/chromium-star/engine-report.json": {
+      "sha256": "ea01b0d801f20a53bcdf9ffa483e895423e2617e4f9fe06fdef57fbec8e13b28",
+      "bytes": 44491
+    },
+    "tmp/heart-learning/joint-border-v1/browser/chromium-star/prepared.json": {
+      "sha256": "16846094e460d9c934f80d1e922cde35c0528a8eaec7696399d23910dc89576b",
+      "bytes": 320042
+    },
+    "tmp/heart-learning/joint-border-v1/browser/chromium-star/result.png": {
+      "sha256": "958edcaedd6edee695a3a100dc1ba1602ee7d9909f79d7fa5b0f6c0a7d4521ac",
+      "bytes": 165792
+    },
+    "tmp/heart-learning/joint-border-v1/browser/chromium-star/template.pdf": {
+      "sha256": "bc50e5f941e7551e2ecaeeef807113b72f32e48d23372af058afa3133f5e2d29",
+      "bytes": 326180
+    },
+    "tmp/heart-learning/joint-border-v1/browser/chromium-top-hat-preferred/cut_geometry.json": {
+      "sha256": "39f1f4067a585a1848603766697b8e86c5bcc1d98b49b022fc4121cacfa29667",
+      "bytes": 46870
+    },
+    "tmp/heart-learning/joint-border-v1/browser/chromium-top-hat-preferred/draw.png": {
+      "sha256": "423fee25e0daaea6c342415b02292259fdbfd275baaeafa2211eb95875178340",
+      "bytes": 247551
+    },
+    "tmp/heart-learning/joint-border-v1/browser/chromium-top-hat-preferred/editable.svg": {
+      "sha256": "0c9fc9985182e0cb501ff6caa07d151ccabe83cd4e4f3f2ef5444c9d152b4d20",
+      "bytes": 16194
+    },
+    "tmp/heart-learning/joint-border-v1/browser/chromium-top-hat-preferred/engine-report.json": {
+      "sha256": "191d60ebef78a593425dce863a7d3b11a9741e02f4d5815624ae17f3b3983fea",
+      "bytes": 67649
+    },
+    "tmp/heart-learning/joint-border-v1/browser/chromium-top-hat-preferred/import.png": {
+      "sha256": "a3afa944882f28e7f8e3299eaa1ecb189d262813243f3c077f4046f93ac7738c",
+      "bytes": 187694
+    },
+    "tmp/heart-learning/joint-border-v1/browser/chromium-top-hat-preferred/input.png": {
+      "sha256": "0b9f120849b863c65f2f806828b20702be2dfd90bd70426b1d7eb0ee7ca10fba",
+      "bytes": 1484
+    },
+    "tmp/heart-learning/joint-border-v1/browser/chromium-top-hat-preferred/prepared.json": {
+      "sha256": "e5c0a7c46136bec133f19ca5e67cf3260989136898a7cf0a80eda690593d4a4a",
+      "bytes": 640039
+    },
+    "tmp/heart-learning/joint-border-v1/browser/chromium-top-hat-preferred/result.png": {
+      "sha256": "4a2cc09a5e4717c288e0952b1273bb8062cecf74adc5f2486dc5ee829e097c91",
+      "bytes": 182806
+    },
+    "tmp/heart-learning/joint-border-v1/browser/results.json": {
+      "sha256": "59bb3ee99166fc51e74c49c4927b60c4b2b70e0b6254dfaf878db2c879aae212",
+      "bytes": 82075
+    },
+    "tmp/heart-learning/joint-border-v1/browser.log": {
+      "sha256": "86e4f50faaf84c94eea331ed323bd53c794ea8a594bf3896fa881aad28779f5a",
+      "bytes": 39663
+    },
+    "tmp/heart-learning/joint-border-v1/build.log": {
+      "sha256": "64a3627def6302c87de1b57398a91d485f86eabb4c2a1434d3cf179d7a91f8c8",
+      "bytes": 26053
+    },
+    "tmp/heart-learning/joint-border-v1/check.log": {
+      "sha256": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+      "bytes": 13474
+    },
+    "tmp/heart-learning/joint-border-v1/checks.json": {
+      "sha256": "2428d30e8648bb256943b3490ae555566d2d615548d6847ed844729e288ca35f",
+      "bytes": 402
+    },
+    "tmp/heart-learning/joint-border-v1/coarse/results.json": {
+      "sha256": "a2d0f75e9ba399a276bb6f314d8f14bb4eca779d8f9258b51b6ff074dab9db4e",
+      "bytes": 9666
+    },
+    "tmp/heart-learning/joint-border-v1/coarse-initialization.log": {
+      "sha256": "4ef274bc7556c61e0f05e9f568d6952110b01cb76e05975d57ccf9f6642c1e1d",
+      "bytes": 1482
+    },
+    "tmp/heart-learning/joint-border-v1/coarse-initialization.mjs": {
+      "sha256": "b9087d98ab8f43a893a2ffae9d3db0ad6bd69018908fea7839e4d8e5fcb9ca2d",
+      "bytes": 4857
+    },
+    "tmp/heart-learning/joint-border-v1/collect.py": {
+      "sha256": "a9e4d650fd120e15945d3054484dcffa7ff5aa96c72d59d1606f049cc931a6ac",
+      "bytes": 4472
+    },
+    "tmp/heart-learning/joint-border-v1/committed-replay.json": {
+      "sha256": "bcccbdcb9dc4a5bf64a00ca63b79ff1e325e7229b4204ca6c0eab5c3eb4ce2ea",
+      "bytes": 22639
+    },
+    "tmp/heart-learning/joint-border-v1/dp-0.bin": {
+      "sha256": "8b58abf6d3a1e4166b6b5ce8a25aa2dd3de6f6c8803ffb3548606500011519eb",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-1.bin": {
+      "sha256": "1c28602790888cd3cefb3fdb25c9a204f4aefcd9a2ede34d682ed6df05573319",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-10.bin": {
+      "sha256": "62baa3e0354c397a373ccd84f5aa9f0e669f2c9e3589a89f6ac6d826bdf66685",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-11.bin": {
+      "sha256": "40eeb10898c65415525d5a36cd8dce75a823c6dcbba1c855d31e7e7b84fdd915",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-12.bin": {
+      "sha256": "fa6c8f4c4be8c7744c29d1c77ab5893604bb3edae34222c3dd44b3422d24334e",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-13.bin": {
+      "sha256": "c7c07799d90906cbc58956357eb0783c1fa7d3f704c54d11e9cba95c45d48ab8",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-14.bin": {
+      "sha256": "1225c9c4ecea47fdfd553c746cf0d02610e5b157bb67882398174ef65af30a03",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-15.bin": {
+      "sha256": "7fd3489a14060d36cd7e57a4d6249f623a0586c97962ad75246714b0a2c2fb68",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-16.bin": {
+      "sha256": "3ede037750d302c1b757486b7565faf404b2e0d64aa8da4d3556777ac66faf11",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-17.bin": {
+      "sha256": "b546914e42678b08471d53b619804ee4d6e6d66cf047be57d28bc5adb221c7c0",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-18.bin": {
+      "sha256": "3ec019531d2cc81bec2a6dd9539aa6b27cfa1328ae2ef755b0073ea311c32b98",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-19.bin": {
+      "sha256": "36c9b9fe8dbb2417a0146727867c4e9dbb0c4f77aded5c71c98c04b12fa8883b",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-2.bin": {
+      "sha256": "d3bb79e3cd5df7ffe54839cd0b3e41cb64216ed4ed916598547d379c501098be",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-20.bin": {
+      "sha256": "af1862a1827a26535bf1586b96347d7594d16905121f568cfbc49d5d7465eea7",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-21.bin": {
+      "sha256": "6ad2082f368db071ea8b3f59d49ec40793bde1cd84015f9a2608e2c8ff08ceee",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-22.bin": {
+      "sha256": "708689e89bdf66dfbe7bc77f38721f07f111e8286ad119b3a1af5c83edaca5ed",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-23.bin": {
+      "sha256": "d1e1c9d8f97b5ff3d46b38a623afbea30bd2503c8019727a856cbcf9b2e80efc",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-24.bin": {
+      "sha256": "c0fdc58b8e114c7fdfcbbaccc6fcce90988160aa383069bbc3bf645da60f2ad9",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-25.bin": {
+      "sha256": "9d0b7f38b27f0895848e9905afc30dee1af0945d3ad7ab596e7ccb802907861b",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-26.bin": {
+      "sha256": "05436dfceac7b605db8b2b91c1dd81a8f04c550b31014368896192401c774cb1",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-27.bin": {
+      "sha256": "c7e90218f1d5acfc1fa42f8c86154b126366716d38769d7217f655d38f6b54dc",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-28.bin": {
+      "sha256": "def4e5b9bf759b8f04595522950d623e13029433d1b1f6c4c8a8fe70091f77bf",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-29.bin": {
+      "sha256": "3b39684aada2b0bdd470cd2ee36bc1d79343c7a6c6a9e63e296c5e9b3e795e6b",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-3.bin": {
+      "sha256": "1121a78c53196364550178681e2f016efcec3359494d3b3ea7ac162a38d85c05",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-30.bin": {
+      "sha256": "46fd5146ccd95f6d409620eb77d492b36676c68c02ca456bfeac909b8998e510",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-31.bin": {
+      "sha256": "f8f807fb69287cfcb28afaf3d2bb9b1b9fb4d0008b1ef6a748361a8706476d8e",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-4.bin": {
+      "sha256": "60cabae3bb0eec0d2114e9d2cd638f61e06cf6dd3c0d4ea8ef8ecf762cb7d0e0",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-5.bin": {
+      "sha256": "da70ee52aeb87a7e6bf62ead152f5a447cf8ebf6b63a49baac9af5415b68c420",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-6.bin": {
+      "sha256": "9cb4cfd49ee5498290ff2094c345151131acb0b2fb1a157b6e192cfa36736043",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-7.bin": {
+      "sha256": "709e2f938558f6d2659ff2cfdb18214a264047b5ee0c14ced67d788497b0c91e",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-8.bin": {
+      "sha256": "9b8b5da1473cb0baa149eab4d6fcbbc485716f6567aa942a7136aec0839238b3",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-9.bin": {
+      "sha256": "e447dab0b3019e4bd8c59253f7b8e02d31e0558e8456067d1f4adaf946aa2f27",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/dp-probe.log": {
+      "sha256": "390b0327546acaa836fa48c23b789f530e875f0fcf563eb3e87e0082b6e86a16",
+      "bytes": 11383
+    },
+    "tmp/heart-learning/joint-border-v1/dp-probe.mjs": {
+      "sha256": "298598e5cdf945636f1efb484694168ecb670ad673690cdd82de10b25c18ab1b",
+      "bytes": 1788
+    },
+    "tmp/heart-learning/joint-border-v1/dp-results.json": {
+      "sha256": "169dd0787d33974af2520cb843964cc1742b414a71f0f9077d4726b5d92373fc",
+      "bytes": 25195
+    },
+    "tmp/heart-learning/joint-border-v1/feature-recovery-mixed.mjs": {
+      "sha256": "1d8be2574b1d66ea2839a5cf630d9d115b21e2ba1f0f95785a67799a9346c6c1",
+      "bytes": 18573
+    },
+    "tmp/heart-learning/joint-border-v1/feature-recovery-smoother.mjs": {
+      "sha256": "c6261faf84d412567cbe07df857a70f650ed7136d41404ef65547d1d3e0ca575",
+      "bytes": 18558
+    },
+    "tmp/heart-learning/joint-border-v1/feature-recovery-split.mjs": {
+      "sha256": "1d5772dd17ffea429e56109644da20eb7563800f2c09044848c66dfb1a1ebd2e",
+      "bytes": 18552
+    },
+    "tmp/heart-learning/joint-border-v1/feature-recovery-wide.mjs": {
+      "sha256": "be22981cc1274b03ce504a1472f21a40a5896e8b6a90eebdf060de7cfddd7125",
+      "bytes": 18420
+    },
+    "tmp/heart-learning/joint-border-v1/feature-recovery.mjs": {
+      "sha256": "59855d19e7f8b0fde49a6c5fdf9864c2e94972e69a37a1121770a5e8d0c0a055",
+      "bytes": 18420
+    },
+    "tmp/heart-learning/joint-border-v1/half-probe.log": {
+      "sha256": "96c77a1c357dfe8e1c920598d9937c3c089dacb24aa2d3f55ccc4b9e2ec11128",
+      "bytes": 1099
+    },
+    "tmp/heart-learning/joint-border-v1/half-probe.mjs": {
+      "sha256": "3cac63eb9f95986fe86559c59380f2504fb4b38e2c5d2bdbc2eb6ecd70372f86",
+      "bytes": 3105
+    },
+    "tmp/heart-learning/joint-border-v1/half-results.json": {
+      "sha256": "a0b501b19a2aa64282651799160da47568bcc181b6e158b9cbaec40ec631c1a3",
+      "bytes": 70217
+    },
+    "tmp/heart-learning/joint-border-v1/half-seed-5.5-3-3-7.5.bin": {
+      "sha256": "57a2897df21970f3288c7806798cd912c0f67c59094611ab3e43e5c106118679",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/half-seed-5.5-3-3-8.bin": {
+      "sha256": "8d7f7c562da28d1d8fb55023a21cafa4256b155a44c5682eb47b2a642bd99b2b",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/joint-border-v1/inverse.log": {
+      "sha256": "46c9c57275619aab40b9b4a01448e6e6e513b5d1285e45a5046ab686e40df2e5",
+      "bytes": 75516
+    },
+    "tmp/heart-learning/joint-border-v1/lint.log": {
+      "sha256": "f1a4b272f2f106d9cc645be00a12d8ac4dea14308d11091a0ea8c493d6036f90",
+      "bytes": 293
+    },
+    "tmp/heart-learning/joint-border-v1/margin-results.json": {
+      "sha256": "75f20e72e72a7f83808fb2c373125f4cdd8390c6c88421f538d641ddf2446e5b",
+      "bytes": 3706
+    },
+    "tmp/heart-learning/joint-border-v1/margins.mjs": {
+      "sha256": "d1773bd8eea2ebd4157ebd3836b2f0f8e56c2830def8c5a9f61dacb6ef62af62",
+      "bytes": 1434
+    },
+    "tmp/heart-learning/joint-border-v1/paired/results.json": {
+      "sha256": "c629ee060de1ec3dc326bb2b7bc1c2a957176779d7ca00acd99037a95b9b3dcc",
+      "bytes": 5074
+    },
+    "tmp/heart-learning/joint-border-v1/paired-graph.mjs": {
+      "sha256": "63cbfd29305402bfaad856b780da0c3dd2b60a951b75ca9fa988d351d7dcd203",
+      "bytes": 12834
+    },
+    "tmp/heart-learning/joint-border-v1/paired-initialization.log": {
+      "sha256": "7ef5adcafad71fd54a310b6b57f04ded6ec6867e724a2fc7151024b5cf562ef8",
+      "bytes": 118
+    },
+    "tmp/heart-learning/joint-border-v1/paired-initialization.mjs": {
+      "sha256": "aaa7dc832ad3d66115533047cc93219447e7ec352d55b7ea17f091e984daf00b",
+      "bytes": 4856
+    },
+    "tmp/heart-learning/joint-border-v1/paired-portals.mjs": {
+      "sha256": "7b92ab1956daa5b6b8c7ac2993c12ab7bdcaeea02978ef3853f0b2aaf69b51b2",
+      "bytes": 1852
+    },
+    "tmp/heart-learning/joint-border-v1/paired-routing.mjs": {
+      "sha256": "4342fb3c388fe5ef8aeaca34b37c82f839f026281c92483102c97644cac003bf",
+      "bytes": 3052
+    },
+    "tmp/heart-learning/joint-border-v1/paired-sparse/results.json": {
+      "sha256": "9d1f6f915358d539d0f012662a9cb41d1abddbde5224a7f219522b629b9f2d8f",
+      "bytes": 9750
+    },
+    "tmp/heart-learning/joint-border-v1/paired-sparse-initialization.log": {
+      "sha256": "449592dcfe64d09edea894c94f01b8498fcec63f3702ec93804ee6ba4daa1a0d",
+      "bytes": 1575
+    },
+    "tmp/heart-learning/joint-border-v1/paired-sparse-initialization.mjs": {
+      "sha256": "6247620cbc5403655a0f78d739228523ddb6ee28f86273d8e3902492058bfb87",
+      "bytes": 4895
+    },
+    "tmp/heart-learning/joint-border-v1/preview.json": {
+      "sha256": "fa4c11a40a61637a5786679a335b5c0d8f3b5d069272feab0a5a7b452511846d",
+      "bytes": 175
+    },
+    "tmp/heart-learning/joint-border-v1/probe.log": {
+      "sha256": "1bc8d3a24f0edb1fde462e94c1b8288de7ad68727c81a7efcf557b04cfce1092",
+      "bytes": 33
+    },
+    "tmp/heart-learning/joint-border-v1/probe.mjs": {
+      "sha256": "c42736c62b9d7db160162c682aa312869b3369e258d45e45dbbec48857959b74",
+      "bytes": 3089
+    },
+    "tmp/heart-learning/joint-border-v1/profile-review.png": {
+      "sha256": "3c1d1a4a75f2f50c51736f6f24a562d255c2fb422c082ca1f5a6e46ef47c6417",
+      "bytes": 30586
+    },
+    "tmp/heart-learning/joint-border-v1/profile.mjs": {
+      "sha256": "caa7cf5a79aa3574019e891343eb655e31307e27e9052e929086e261f116f5c7",
+      "bytes": 2855
+    },
+    "tmp/heart-learning/joint-border-v1/recover-mixed.log": {
+      "sha256": "51417921bc317ffb23e9344e1707b7c08471908a5c7d0e8fc7316c689b7e4a32",
+      "bytes": 52413
+    },
+    "tmp/heart-learning/joint-border-v1/recover-mixed.mjs": {
+      "sha256": "4f6e37d06c4ade44fd0fb10144c8bfd4baf2059dfbc59c8d2336ee5f51fde6ec",
+      "bytes": 2254
+    },
+    "tmp/heart-learning/joint-border-v1/recover-smoother.log": {
+      "sha256": "fdd345071979027c14a6fea21a96266a322dafe1895821df4b862f341a440c94",
+      "bytes": 56455
+    },
+    "tmp/heart-learning/joint-border-v1/recover-smoother.mjs": {
+      "sha256": "f9c284754e10a753e671b26fb882d597c5ebcdbf2f43053385692fec170e660e",
+      "bytes": 2231
+    },
+    "tmp/heart-learning/joint-border-v1/recover-split.log": {
+      "sha256": "446d4761682284b029070bd0f16079148d1c06cb4902e21525dc755b27e06eb5",
+      "bytes": 26663
+    },
+    "tmp/heart-learning/joint-border-v1/recover-split.mjs": {
+      "sha256": "b92d310d93614c0f05ffe89a19c4481993917df675bfa5f994818954215b2639",
+      "bytes": 2120
+    },
+    "tmp/heart-learning/joint-border-v1/recover-wide.log": {
+      "sha256": "88ddb1d211e36c1c6a3582740534458e9908e24dadd802315a488e991429e999",
+      "bytes": 30387
+    },
+    "tmp/heart-learning/joint-border-v1/recover-wide.mjs": {
+      "sha256": "693fb560b2de57a5742ee572b28a5e9bbd68e7762d2f619f1b6b1fbbc5589113",
+      "bytes": 1902
+    },
+    "tmp/heart-learning/joint-border-v1/recover.log": {
+      "sha256": "9f2e76b69b3cdcf7cc089e0498111dbbb8eddff8a856063f1cc1ae951c1ccb50",
+      "bytes": 30309
+    },
+    "tmp/heart-learning/joint-border-v1/recover.mjs": {
+      "sha256": "cbeb75c5b52eec1c267f47ca47ccff07f2e4d75972b0dbd98bfd71698995a940",
+      "bytes": 1882
+    },
+    "tmp/heart-learning/joint-border-v1/recovery-mixed.json": {
+      "sha256": "82f3d8a45a3dad64ffed5c0a2d63c2a0416ee995e9bf21fd1aae02d4392160d0",
+      "bytes": 91279
+    },
+    "tmp/heart-learning/joint-border-v1/recovery-smoother.json": {
+      "sha256": "3bc3af792e51c1eabd840d7dcf644f4407eb09bd215a28a6f919278dbee921e2",
+      "bytes": 96433
+    },
+    "tmp/heart-learning/joint-border-v1/recovery-split.json": {
+      "sha256": "58e8060e7512024799f99228a643481ea03792dcbc0e70d24bcfd1066db52bc4",
+      "bytes": 45617
+    },
+    "tmp/heart-learning/joint-border-v1/recovery-wide.json": {
+      "sha256": "05cc1939bb49689b0067a7e6748629f5f95cb7c69d20e6fe7e0a4d93d93e9e0a",
+      "bytes": 51557
+    },
+    "tmp/heart-learning/joint-border-v1/recovery.json": {
+      "sha256": "a217b2cb20700cd1300d07f0cfaa32cd781d67786ca427bf37bd6c5c9b36d57c",
+      "bytes": 51115
+    },
+    "tmp/heart-learning/joint-border-v1/relaxed/results.json": {
+      "sha256": "0b006f8fd978b24dc16aa4aa0cb0209967ee273799704211a78efa23984964d5",
+      "bytes": 27039
+    },
+    "tmp/heart-learning/joint-border-v1/relaxed-initialization.log": {
+      "sha256": "8a52c7cae187b3874b1900e8cb3440e37a41894ebe10dba0dc02c8660b3f9bd8",
+      "bytes": 906
+    },
+    "tmp/heart-learning/joint-border-v1/relaxed-initialization.mjs": {
+      "sha256": "f0c4230fd7e6c6c0e63cf03d93535da878d91a39bd89de6827e75d0243fddc35",
+      "bytes": 4830
+    },
+    "tmp/heart-learning/joint-border-v1/results.json": {
+      "sha256": "03a2ec628694e32f89a9c2bf00087ccfd38841cf3a79be1ba965656e69d616f7",
+      "bytes": 21669
+    },
+    "tmp/heart-learning/joint-border-v1/run-checks.py": {
+      "sha256": "1746a849cf8ef489adad57ae75a61ef8da77f681cc5497bdad5dae988a882454",
+      "bytes": 776
+    },
+    "tmp/heart-learning/joint-border-v1/scaled-default-lint.log": {
+      "sha256": "f1a4b272f2f106d9cc645be00a12d8ac4dea14308d11091a0ea8c493d6036f90",
+      "bytes": 293
+    },
+    "tmp/heart-learning/joint-border-v1/scaled-default-tests.log": {
+      "sha256": "ed32b921f7002e9091ed4f35c45e576b162a277cc4c59d242820f71334beffc6",
+      "bytes": 570
+    },
+    "tmp/heart-learning/joint-border-v1/served-assets.json": {
+      "sha256": "88405cb1e3c157dacbb08818ac9bf4b91e3e61e6c3ae9a7c39aeb052df3a0619",
+      "bytes": 36432
+    },
+    "tmp/heart-learning/joint-border-v1/subdivide.mjs": {
+      "sha256": "7b63dd0b528b565c12dcf51d776563c1b72e08c1971df81cbdc40ff4a4e9e977",
+      "bytes": 348
+    },
+    "tmp/heart-learning/joint-border-v1/tests-final.log": {
+      "sha256": "3f67611772da6348947a609a883b5230875cfb33114d58b5b7ba0f040c7d0c63",
+      "bytes": 568
+    },
+    "tmp/heart-learning/joint-border-v1/tests.log": {
+      "sha256": "dd918149556cb3de9bfe7a60b379848aab71dcf0dede4b536f74ce0eac1967c7",
+      "bytes": 569
+    }
+  }
+}

@@ -1,0 +1,589 @@
+{
+  "schema": 1,
+  "status": "initializer_deadline_fix_implemented; full_inverse_947_of_949; corpus_22_of_22_and_26_of_31; strict_quality_gate_failed",
+  "rootCause": "repairClearanceInitializer discarded a geometry-valid, feature-retaining and independently paper-verified continuation after its final audit crossed the 1.2-second local cap, despite the original caller having time left. The observed full-suite run completed at 1.248 seconds.",
+  "change": "Keep the same refinement budget and pre-audit local checks. After a completed successful paper audit, compare time with the original caller deadline. This is still only a continuation when source error exceeds the final limit.",
+  "deterministicRegression": {
+    "before": {
+      "passed": 1,
+      "failed": 1,
+      "failure": "The 10-second caller loses its completed verified continuation."
+    },
+    "after": {
+      "focusedTests": 11,
+      "passed": 11,
+      "failed": 0
+    },
+    "clock": "45 ordinary refinement steps; after the real final audit, simulate 1250 ms. A 10000 ms caller retains the continuation; a 1200 ms caller still rejects it.",
+    "imageErrorAboveAcceptance": true,
+    "actualPaperAuditRequired": true,
+    "sourceAndInitializerUnchanged": true
+  },
+  "freshBeforeFix": [
+    {
+      "artifact": "tmp/heart-learning/clearance-handoff-regression-v1/fresh-0-clearance-feature-handoff-before.json",
+      "arm": "before",
+      "case": "clearance-feature-handoff",
+      "seconds": 9.454695083,
+      "passed": true,
+      "independentError": 0.01366875,
+      "featuresPassed": true,
+      "initializerRepair": {
+        "steps": 45,
+        "reason": "continue_refinement",
+        "continued": true,
+        "seconds": 1.1411794170000011,
+        "imageError": 0.03305625
+      },
+      "routingRepairs": []
+    },
+    {
+      "artifact": "tmp/heart-learning/clearance-handoff-regression-v1/fresh-0-clearance-feature-handoff-current.json",
+      "arm": "current",
+      "case": "clearance-feature-handoff",
+      "seconds": 9.427670417,
+      "passed": true,
+      "independentError": 0.01366875,
+      "featuresPassed": true,
+      "initializerRepair": {
+        "steps": 45,
+        "reason": "continue_refinement",
+        "continued": true,
+        "seconds": 1.1425224579999995,
+        "imageError": 0.03305625
+      },
+      "routingRepairs": []
+    },
+    {
+      "artifact": "tmp/heart-learning/clearance-handoff-regression-v1/fresh-0-sloth-y-minus-1-before.json",
+      "arm": "before",
+      "case": "sloth-y-minus-1",
+      "seconds": 9.376330666,
+      "passed": true,
+      "independentError": 0.013312,
+      "featuresPassed": true,
+      "initializerRepair": {
+        "steps": null,
+        "reason": null,
+        "continued": null,
+        "seconds": null,
+        "imageError": null
+      },
+      "routingRepairs": [
+        {
+          "accepted": true,
+          "steps": 160,
+          "reason": null,
+          "seconds": 1.3543904999999996,
+          "integerCandidateSeconds": 3.1983427079999998,
+          "imageError": 0.012912,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "pass"
+          }
+        }
+      ]
+    },
+    {
+      "artifact": "tmp/heart-learning/clearance-handoff-regression-v1/fresh-0-sloth-y-minus-1-current.json",
+      "arm": "current",
+      "case": "sloth-y-minus-1",
+      "seconds": 9.257646667,
+      "passed": false,
+      "independentError": 0.05664,
+      "featuresPassed": false,
+      "initializerRepair": {
+        "steps": null,
+        "reason": null,
+        "continued": null,
+        "seconds": null,
+        "imageError": null
+      },
+      "routingRepairs": [
+        {
+          "accepted": false,
+          "steps": 105,
+          "reason": "paper_rejected",
+          "seconds": 1.3423577080000004,
+          "integerCandidateSeconds": 3.3452205000000004,
+          "imageError": 0.014448,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "uncertain"
+          }
+        }
+      ]
+    },
+    {
+      "artifact": "tmp/heart-learning/clearance-handoff-regression-v1/fresh-1-clearance-feature-handoff-before.json",
+      "arm": "before",
+      "case": "clearance-feature-handoff",
+      "seconds": 9.601993708,
+      "passed": true,
+      "independentError": 0.01463125,
+      "featuresPassed": true,
+      "initializerRepair": {
+        "steps": 45,
+        "reason": "continue_refinement",
+        "continued": true,
+        "seconds": 1.1630879589999994,
+        "imageError": 0.03305625
+      },
+      "routingRepairs": []
+    },
+    {
+      "artifact": "tmp/heart-learning/clearance-handoff-regression-v1/fresh-1-clearance-feature-handoff-current.json",
+      "arm": "current",
+      "case": "clearance-feature-handoff",
+      "seconds": 9.605562000000003,
+      "passed": true,
+      "independentError": 0.01444375,
+      "featuresPassed": true,
+      "initializerRepair": {
+        "steps": 45,
+        "reason": "continue_refinement",
+        "continued": true,
+        "seconds": 1.1575087499999999,
+        "imageError": 0.03305625
+      },
+      "routingRepairs": []
+    },
+    {
+      "artifact": "tmp/heart-learning/clearance-handoff-regression-v1/fresh-1-sloth-y-minus-1-before.json",
+      "arm": "before",
+      "case": "sloth-y-minus-1",
+      "seconds": 9.309017166,
+      "passed": true,
+      "independentError": 0.013312,
+      "featuresPassed": true,
+      "initializerRepair": {
+        "steps": null,
+        "reason": null,
+        "continued": null,
+        "seconds": null,
+        "imageError": null
+      },
+      "routingRepairs": [
+        {
+          "accepted": true,
+          "steps": 160,
+          "reason": null,
+          "seconds": 1.3152580419999995,
+          "integerCandidateSeconds": 3.1840625,
+          "imageError": 0.012912,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "pass"
+          }
+        }
+      ]
+    },
+    {
+      "artifact": "tmp/heart-learning/clearance-handoff-regression-v1/fresh-1-sloth-y-minus-1-current.json",
+      "arm": "current",
+      "case": "sloth-y-minus-1",
+      "seconds": 9.231030208,
+      "passed": false,
+      "independentError": 0.05664,
+      "featuresPassed": false,
+      "initializerRepair": {
+        "steps": null,
+        "reason": null,
+        "continued": null,
+        "seconds": null,
+        "imageError": null
+      },
+      "routingRepairs": [
+        {
+          "accepted": false,
+          "steps": 105,
+          "reason": "paper_rejected",
+          "seconds": 1.274616083,
+          "integerCandidateSeconds": 3.382422042,
+          "imageError": 0.014448,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "uncertain"
+          }
+        }
+      ]
+    },
+    {
+      "artifact": "tmp/heart-learning/clearance-handoff-regression-v1/fresh-2-clearance-feature-handoff-before.json",
+      "arm": "before",
+      "case": "clearance-feature-handoff",
+      "seconds": 9.589237542000001,
+      "passed": true,
+      "independentError": 0.01366875,
+      "featuresPassed": true,
+      "initializerRepair": {
+        "steps": 45,
+        "reason": "continue_refinement",
+        "continued": true,
+        "seconds": 1.147812167,
+        "imageError": 0.03305625
+      },
+      "routingRepairs": []
+    },
+    {
+      "artifact": "tmp/heart-learning/clearance-handoff-regression-v1/fresh-2-clearance-feature-handoff-current.json",
+      "arm": "current",
+      "case": "clearance-feature-handoff",
+      "seconds": 9.487565,
+      "passed": false,
+      "independentError": 0.03549375,
+      "featuresPassed": true,
+      "initializerRepair": {
+        "steps": 45,
+        "reason": "deadline",
+        "continued": null,
+        "seconds": 1.2173388749999994,
+        "imageError": 0.03305625
+      },
+      "routingRepairs": []
+    },
+    {
+      "artifact": "tmp/heart-learning/clearance-handoff-regression-v1/fresh-2-sloth-y-minus-1-before.json",
+      "arm": "before",
+      "case": "sloth-y-minus-1",
+      "seconds": 9.369523625,
+      "passed": true,
+      "independentError": 0.013312,
+      "featuresPassed": true,
+      "initializerRepair": {
+        "steps": null,
+        "reason": null,
+        "continued": null,
+        "seconds": null,
+        "imageError": null
+      },
+      "routingRepairs": [
+        {
+          "accepted": true,
+          "steps": 160,
+          "reason": null,
+          "seconds": 1.3598104579999999,
+          "integerCandidateSeconds": 3.2043382080000002,
+          "imageError": 0.012912,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "pass"
+          }
+        }
+      ]
+    },
+    {
+      "artifact": "tmp/heart-learning/clearance-handoff-regression-v1/fresh-2-sloth-y-minus-1-current.json",
+      "arm": "current",
+      "case": "sloth-y-minus-1",
+      "seconds": 9.415120292,
+      "passed": true,
+      "independentError": 0.013312,
+      "featuresPassed": true,
+      "initializerRepair": {
+        "steps": null,
+        "reason": null,
+        "continued": null,
+        "seconds": null,
+        "imageError": null
+      },
+      "routingRepairs": [
+        {
+          "accepted": true,
+          "steps": 160,
+          "reason": null,
+          "seconds": 1.3583209580000002,
+          "integerCandidateSeconds": 3.1918700420000006,
+          "imageError": 0.012912,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "pass"
+          }
+        }
+      ]
+    }
+  ],
+  "interpretation": [
+    "The pre-retention runtime passes all six paired fresh trials; the current pre-fix runtime passes three of six. This sample does not establish the candidate-retention change is harmless.",
+    "The failing fresh initializer again ends with reason deadline. The deterministic audit wrapper isolates that discard independently of clock throughput.",
+    "The y-minus-1 failures stop at 105 steps and retain the step-80 geometry with paper uncertainty even at 700 pixels. Successful trials finish 160 steps. Their earlier integer candidates leave approximately 0.15-0.26 seconds more repair time.",
+    "The local handoff fix does not certify those uncertain routing candidates or claim to resolve that second failure."
+  ],
+  "discardedClockPrototype": "The first six copied-runtime clock probes advanced time inside the final refinement checkpoint, before the intended final-audit boundary; all six stopped early. They do not isolate the observed bug and remain recorded. The regression instead wraps the actual final paper audit and advances the clock only after it returns.",
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/clearance-handoff-regression-v1/plan.json",
+      "sha256": "05153e8e4e79ab665e5cecfbd3cc5c8181c8c077c14724cfaf4bce3198bd67d3"
+    },
+    {
+      "path": "tmp/heart-learning/clearance-handoff-regression-v1/source.json",
+      "sha256": "c582e0ad2090b3a17e01cd63dafcb74ec7726fd4cb09ee0c0e53d30b48ea64bf"
+    },
+    {
+      "path": "tmp/heart-learning/clearance-handoff-regression-v1/checks.json",
+      "sha256": "c343ff25b71f143f627ec1a5fc07fde45f011484dcace1e737348136bee23b66"
+    },
+    {
+      "path": "tmp/heart-learning/clearance-handoff-regression-v1/state.json",
+      "sha256": "9919b0d9e2ec2016f48f54bbbad1653ccd1e12af07ee2cde5bfd6ce52049c31e"
+    },
+    {
+      "path": "tmp/heart-learning/clearance-handoff-regression-v1/diagnostic-0.json",
+      "sha256": "59bbee0207ff27a7cd2b460b29e801f9be14c7b4fa526c441587a4c45676a363"
+    },
+    {
+      "path": "tmp/heart-learning/clearance-handoff-regression-v1/diagnostic-1.json",
+      "sha256": "8c985553ea63fe9cc326c6d294f8d9456e323a64dca5db6ba38f4222163c2a27"
+    },
+    {
+      "path": "tmp/heart-learning/clearance-handoff-regression-v1/regression-before.log",
+      "sha256": "18c25470b7fd52f0b5fd15e8a9daa79262405a3ef727b3b10b40e1d63be78440"
+    },
+    {
+      "path": "tmp/heart-learning/clearance-handoff-regression-v1/focused-after.log",
+      "sha256": "2d57cf39ec8aaa1c27cd0b92da07a945576309af5c6da98d123d2a213bd9493c"
+    }
+  ],
+  "broaderQA": {
+    "status": "complete; two_inverse_failures_and_four_accepted_photo_error_increases",
+    "controller": "tmp/heart-learning/clearance-handoff-regression-v1/qa/run.py",
+    "state": "tmp/heart-learning/clearance-handoff-regression-v1/qa/state.json",
+    "expectedInverseTests": 949,
+    "productionCommit": "9cedec4",
+    "sourceFreeze": "Finished; all 785 pinned runtime/application/test source files verified unchanged throughout QA and corpus replay.",
+    "application": {
+      "passed": 857,
+      "skipped": 1,
+      "failed": 0
+    },
+    "inverse": {
+      "tests": 949,
+      "passed": 947,
+      "failed": 2,
+      "failures": [
+        {
+          "test": "fresh fitting finds a checked pair for the upward-shifted photograph without saved cuts",
+          "assertion": "report.solver.clearanceComparison.repair.accepted === true",
+          "sourceLine": 46,
+          "qualification": "The preceding templateChecksPassed assertion passed. The test then stopped before its paper-resolution, paper-status and independent-image assertions. No full report or geometry was captured; do not infer the missing checks from a later rerun."
+        },
+        {
+          "test": "fresh y-minus-1 fitting carries repaired clearance through final export",
+          "assertion": "report.templateChecksPassed === true",
+          "sourceLine": 46,
+          "diagnostic": "tmp/heart-learning/clearance-handoff-regression-v1/qa/failure-diagnostics/line-182.json",
+          "qualification": "This run rejected an 85-step repair for geometry, without reaching fine paper verification; integer-candidate generation took 3.7175 seconds. Earlier failures at the same input were paper-uncertain, so the failure mechanism varies with available work."
+        }
+      ]
+    },
+    "hunodan": {
+      "passed": 22,
+      "total": 22,
+      "maximumSeconds": 9.515122125000001,
+      "allErrorsUnchangedFromPriorRuntime": true
+    },
+    "sourceFilesVerified": 785,
+    "commands": [
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 10.596833875
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 7.0367732090000015
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 16.010570291999997
+      },
+      {
+        "stage": "preview",
+        "command": [
+          "python3",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-handoff-regression-v1/qa/restart-preview.py"
+        ],
+        "exitCode": 0,
+        "seconds": 1.1871660420000012
+      },
+      {
+        "stage": "browser",
+        "command": [
+          "node",
+          "scripts/inverse/paint-browser-test.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 18.881217792
+      },
+      {
+        "stage": "test",
+        "command": [
+          "npm",
+          "test"
+        ],
+        "exitCode": 1,
+        "seconds": 1112.630031459
+      },
+      {
+        "stage": "native",
+        "command": [
+          "python3",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-handoff-regression-v1/qa/native/run.py"
+        ],
+        "exitCode": 0,
+        "seconds": 524.057671042
+      }
+    ],
+    "corpus": {
+      "hunodanPassed": 22,
+      "hunodanTotal": 22,
+      "hunodanErrorRegressions": [],
+      "photoPassed": 26,
+      "photoPassRegressions": [],
+      "photoErrorRegressions": [
+        {
+          "id": "floral-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.01360625,
+          "error": 0.01410625,
+          "errorDelta": 0.0005000000000000004
+        },
+        {
+          "id": "gingerbread",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.010875,
+          "error": 0.01094375,
+          "errorDelta": 6.87500000000011e-05
+        },
+        {
+          "id": "warped-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.01424375,
+          "error": 0.0145125,
+          "errorDelta": 0.0002687499999999999
+        },
+        {
+          "id": "fine-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.0179125,
+          "error": 0.01800625,
+          "errorDelta": 9.375000000000008e-05
+        }
+      ],
+      "editablePassed": 48,
+      "editableTotal": 48,
+      "passed": false,
+      "completeHeartPhotos": 31,
+      "allInventoryEntries": 47,
+      "classifiedPhotos": 29,
+      "cropFailures": 2,
+      "existingIncompleteOrObscured": 16,
+      "maximumHunodanSeconds": 9.515122125000001,
+      "comparisonBaseline": "tmp/heart-learning/trace-reuse-v1/qa/native",
+      "cropAndMaskHashesUnchanged": true
+    },
+    "visualReview": {
+      "path": "tmp/heart-learning/clearance-handoff-regression-v1/qa/native/visual-review.json",
+      "sha256": "7dff58dc804c9f3e68e97736642d2323ef7997840a9270a40c5ed40bd22374fb",
+      "changedOutputs": 7,
+      "finding": "Floral/warped/fine checker contacts and gingerbread contours move slightly; no newly accepted or rejected photo. Faceted star improves against the unchanged mask, while the bauble retains broken border structure and its error worsens. Thin seams and imperfect checker contacts remain. The bottom flower change is small. These images do not establish recovery of original published cutting paths."
+    },
+    "interpretation": "The local-deadline regression is fixed and the Hunodan speed/quality target remains met. The broad run is not green. Photo pass counts are unchanged, but four accepted photo errors increased versus the pinned comparison. Clock-limited trajectory differences prevent attributing every photo movement to the handoff fix.",
+    "artifacts": [
+      {
+        "path": "tmp/heart-learning/clearance-handoff-regression-v1/qa/source.json",
+        "sha256": "67857d41be2bb2a1c92b3497f89bd0683b8e8f9f92770134b0e01403fb3f15c4"
+      },
+      {
+        "path": "tmp/heart-learning/clearance-handoff-regression-v1/qa/checks.json",
+        "sha256": "a78f7ff5d1a59e23d57e1df777e5244739551a48af17c0fa7d8ccc2c08ae87c4"
+      },
+      {
+        "path": "tmp/heart-learning/clearance-handoff-regression-v1/qa/state.json",
+        "sha256": "2aaa99ae9ebacd06cda3931ef4e12e550a96d4d63dd3d12a20e27c13a34814dd"
+      },
+      {
+        "path": "tmp/heart-learning/clearance-handoff-regression-v1/qa/test.log",
+        "sha256": "280f4c360b0b539ad1c057c91555e90aac039847b0129ffbe7c3b9089796a3c5"
+      },
+      {
+        "path": "tmp/heart-learning/clearance-handoff-regression-v1/qa/native/native-gates.json",
+        "sha256": "f04bfa48322ef0b4834df974f46011d9bcbdf13069e8fe334d52d89908dc29b8"
+      },
+      {
+        "path": "tmp/heart-learning/clearance-handoff-regression-v1/qa/native/photo-comparison.json",
+        "sha256": "ce85fdbfe136fc69cac941e844d2342ffa5a54a5055288b17aefdea1474dbcc1"
+      },
+      {
+        "path": "tmp/heart-learning/clearance-handoff-regression-v1/qa/native/hunodan-comparison.json",
+        "sha256": "2c96e333c264222634bac80a97ee9a4a4498a768b5b53df467497b42329a74f8"
+      }
+    ]
+  },
+  "routeIndependentTestFollowup": {
+    "change": "The upward-leaf integration test accepts any successful fresh route, then reloads exported controls and reruns final geometry, actual paper, independent SVG-image error below 2%, feature retention and input-identity checks. Full report and exported cuts are emitted for any failed assertion. It no longer requires one internal repair to be accepted or a specific paper-resolution route.",
+    "focusedTests": 8,
+    "passed": 8,
+    "seconds": 34.88725325,
+    "qualification": "This later fresh replay does not establish the uncaptured full-suite leaf output quality and does not fix or erase the other routing failure. Deterministic bounded-repair/deadline regressions remain unchanged. Full-suite results above retain the original test assertions.",
+    "artifacts": [
+      {
+        "path": "tmp/heart-learning/clearance-handoff-regression-v1/route-checks/source.json",
+        "sha256": "4f0b15666beafbeeace5c8d11a2bb32ad381804aeacbc06d77b82e78a88eb3ae"
+      },
+      {
+        "path": "tmp/heart-learning/clearance-handoff-regression-v1/route-checks/state.json",
+        "sha256": "e3085cee205f3484fc2a049e89864650189e0f92e9abb0d810bc485d7c80f32b"
+      },
+      {
+        "path": "tmp/heart-learning/clearance-handoff-regression-v1/route-checks/tests.log",
+        "sha256": "de844ed106436261e308938f8bb91676a455cd3270e238e34a062eff8d47bb5b"
+      },
+      {
+        "path": "scripts/inverse/clearance-initializer.test.mjs",
+        "sha256": "324845dbbf0b99a6d77fe724d7e821ce1c1c67566ef3646d36728964e5b821f7"
+      }
+    ]
+  }
+}

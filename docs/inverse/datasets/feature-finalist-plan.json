@@ -1,0 +1,42 @@
+{
+  "schema": "feature-finalist-probe-plan-1",
+  "status": "declared-before-evaluation",
+  "rationale": "Brown checker selected (1,2) while an existing (5,5) finalist had lower image error. Feature seeding stayed local to the first pair and returned no retained seeds; six seconds of MILP recovery failed. Separate this solver issue from crop quality.",
+  "inputReport": "tmp/heart-learning/projective-real-v1/pipeline/report.json",
+  "inputReportSha256": "68bb42139f34201f48c1523b2ec38ce06cf60741cc64c2387c2853d1eede7cbc",
+  "cases": {
+    "rule": "All eight review-required exports plus all five newly checked exports from the fixed 42-photo projective replay. No manual crop, material, phase, feature or count labels.",
+    "ids": [
+      "real-3f7b76e1a98e808f-body-1",
+      "real-5330aa8b62176216-body-1",
+      "real-8c875dd0f298b5a4-body-1",
+      "real-995899fe049540ed-body-1",
+      "real-1fa372c6288da69f",
+      "real-202b8421f50252f2",
+      "real-931ac5ea86dbe082",
+      "real-962159dea653810f",
+      "real-9b47cfbdf0004f4d",
+      "real-c7bc99827b382da7",
+      "real-d6d0462384722949",
+      "real-e4baad0c914577c8",
+      "real-e9131a2d52b78220"
+    ]
+  },
+  "procedure": "Recreate the unchanged source mask and observed-pixel coverage. Replay the current solver until its ordinary fine-grid finalists are ranked, capture those candidates, and stop before further routing or refinement. For each unique existing finalist count pair, call the unchanged feature-seed initializer on that finalist\u2019s missing regions. Keep weighted/symmetric inputs explicitly ineligible under the current production policy. Record early solver returns instead of excluding them.",
+  "candidateLimits": "At most three already generated finalist count pairs. No new counts outside the existing feature initializer, no changed image or feature acceptance, no manual best count.",
+  "metrics": [
+    "Original-mask error and retained features before/after feature initialization",
+    "Initializer hypotheses, retained seeds and time for every candidate count base",
+    "Existing lower-error finalist versus complexity-preferred baseline",
+    "All positive control outcomes, including ineligible and early-return cases"
+  ],
+  "decision": "A useful alternate must meet the existing original-image and feature gates. Only then design a bounded scheduling change and test full solver/export results within the same ten-second budget. An initialization improvement is not a valid cutting-pair result.",
+  "qaDependency": "Wait until projective-real-v1 current full suite succeeds; verify live controller before waiting. Do not run alongside its heavy tests.",
+  "sourceHashes": {
+    "static/inverse/core/direct/fit.js": "3df91dd597ba37163cb0bc9ca9cd04a6f3e9454ec791cf410777e2e9c67e0ac1",
+    "static/inverse/core/direct/feature-seeds.js": "759fbba9c6858369949be81d7d3c25e126da769913f089fdd100b3fa650c4b6d",
+    "static/inverse/core/direct/counts.js": "1249948d4129dbcf50e0ccb1efaeba1ab2d620d89169f495d60d12cacc17c748",
+    "static/inverse/core/direct/grid.js": "9aec9a72390448102547ce457bde22a0beb05521b9f9fc60034ecdd113ecfb85"
+  },
+  "deployed": false
+}

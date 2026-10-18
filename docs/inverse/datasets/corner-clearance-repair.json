@@ -1,0 +1,920 @@
+{
+  "schema": "woven-heart-corner-clearance-study-1",
+  "status": "verified",
+  "scope": "One frozen photographic mask; fresh corner-seed routing with fixed 0.75 mm tracing tolerance, then at most five seconds of clearance projection. Original mask remains the reference. No pretrained cuts, production scheduling, or ten-second claim.",
+  "measurements": {
+    "maskSha256": "e0cb651b0b2212c08cd6fddc87de9c897e5f520379aefff3dbfe9b14841ec51b",
+    "fixtureSha256": "09f218ae8851f1f68c431a0111bb0986b7905a7f154ca30cd6651e52af9d8194",
+    "initialGeometrySha256": "8c55de8c9c9fae7e2be92f4e363ffa71d6edbd4d5b9d32a15d8e2a151f4848ec",
+    "routingSeconds": 8.822087750000001,
+    "repairSeconds": 2.0695122919999993,
+    "fitAndFinishSeconds": 11.452766667000002,
+    "projection": {
+      "fullGeometryAudits": 1,
+      "returnConstraintAudits": 33,
+      "attempted": true,
+      "iterations": 33,
+      "displacements": 161,
+      "initialReturns": 47,
+      "finalReturns": 0,
+      "accepted": true,
+      "termination": "validated",
+      "policy": "all-free-controls",
+      "maxIterations": 128,
+      "maxMilliseconds": 5000,
+      "preservedSymmetry": [],
+      "clearanceMargin": 3.2678471206992734,
+      "linearHandles": 110
+    },
+    "independentImageError": 0.024525,
+    "enginePassed": true,
+    "editablePassed": true,
+    "components": [
+      {
+        "centerMm": [
+          14.105950736648248,
+          14.743669429097606
+        ],
+        "sourceAreaMm2": 271.5,
+        "intersectionPixels": 4296,
+        "retention": 0.988950276243094,
+        "predictedComponentAreaMm2": 276.9375,
+        "touchesBorder": false,
+        "componentIoU": 0.9591426657736102
+      },
+      {
+        "centerMm": [
+          38.96996221662469,
+          40.24773299748111
+        ],
+        "sourceAreaMm2": 248.125,
+        "intersectionPixels": 3721,
+        "retention": 0.93727959697733,
+        "predictedComponentAreaMm2": 235.375,
+        "touchesBorder": false,
+        "componentIoU": 0.926774595267746
+      },
+      {
+        "centerMm": [
+          37.09396305256213,
+          63.97888717835936
+        ],
+        "sourceAreaMm2": 568.375,
+        "intersectionPixels": 8838,
+        "retention": 0.9718495711458104,
+        "predictedComponentAreaMm2": 1111.3125,
+        "touchesBorder": true,
+        "componentIoU": 0.48999279259300327
+      },
+      {
+        "centerMm": [
+          62.52816560685651,
+          65.49623306607685
+        ],
+        "sourceAreaMm2": 226.0625,
+        "intersectionPixels": 3571,
+        "retention": 0.9872822781310479,
+        "predictedComponentAreaMm2": 226.75,
+        "touchesBorder": false,
+        "componentIoU": 0.971965160587915
+      },
+      {
+        "centerMm": [
+          85.27692091979809,
+          89.84885025238364
+        ],
+        "sourceAreaMm2": 222.875,
+        "intersectionPixels": 3430,
+        "retention": 0.9618620302860348,
+        "predictedComponentAreaMm2": 217.5,
+        "touchesBorder": false,
+        "componentIoU": 0.9485619469026548
+      }
+    ]
+  },
+  "editable": {
+    "imageError": 0.0242875,
+    "components": [
+      {
+        "centerMm": [
+          14.105950736648248,
+          14.743669429097606
+        ],
+        "sourceAreaMm2": 271.5,
+        "intersectionPixels": 4294,
+        "retention": 0.9884898710865562,
+        "predictedComponentAreaMm2": 276.4375,
+        "touchesBorder": false,
+        "componentIoU": 0.9599821149116924
+      },
+      {
+        "centerMm": [
+          38.96996221662469,
+          40.24773299748111
+        ],
+        "sourceAreaMm2": 248.125,
+        "intersectionPixels": 3712,
+        "retention": 0.9350125944584383,
+        "predictedComponentAreaMm2": 234.4375,
+        "touchesBorder": false,
+        "componentIoU": 0.9259166874532302
+      },
+      {
+        "centerMm": [
+          37.09396305256213,
+          63.97888717835936
+        ],
+        "sourceAreaMm2": 568.375,
+        "intersectionPixels": 8828,
+        "retention": 0.9707499450186936,
+        "predictedComponentAreaMm2": 563.5625,
+        "touchesBorder": false,
+        "componentIoU": 0.9509856727351071
+      },
+      {
+        "centerMm": [
+          62.52816560685651,
+          65.49623306607685
+        ],
+        "sourceAreaMm2": 226.0625,
+        "intersectionPixels": 3571,
+        "retention": 0.9872822781310479,
+        "predictedComponentAreaMm2": 226.5625,
+        "touchesBorder": false,
+        "componentIoU": 0.9727594660855353
+      },
+      {
+        "centerMm": [
+          85.27692091979809,
+          89.84885025238364
+        ],
+        "sourceAreaMm2": 222.875,
+        "intersectionPixels": 3426,
+        "retention": 0.9607403252944475,
+        "predictedComponentAreaMm2": 217.25,
+        "touchesBorder": false,
+        "componentIoU": 0.9474557522123894
+      }
+    ],
+    "fidelity": {
+      "passed": true,
+      "maximumWeaveDrift": 0.001,
+      "weaveDrift": [
+        {
+          "resolution": 400,
+          "mismatch": 0
+        },
+        {
+          "resolution": 800,
+          "mismatch": 0
+        }
+      ],
+      "originalSourceError": 0.0242875,
+      "sourceError": 0.0242875
+    },
+    "issues": []
+  },
+  "paper": {
+    "status": "pass",
+    "requiredRemainingWidth": 2,
+    "nominalDiameter": 2.50501002004008,
+    "gridSpacing": 0.14285714285714285,
+    "clearanceGuard": 0.11101525445522108,
+    "families": [
+      {
+        "family": 0,
+        "status": "pass",
+        "detachedCertainCoreIslands": 0,
+        "detachedPossibleCoreIslands": 0,
+        "detachedPossibleArea": 0,
+        "foldIntervals": [
+          {
+            "interval": [
+              0,
+              22.5
+            ],
+            "certainCoreLength": 19.714285714285683,
+            "possibleCoreLength": 20.285714285714253
+          },
+          {
+            "interval": [
+              22.5,
+              48.75
+            ],
+            "certainCoreLength": 23.571428571428527,
+            "possibleCoreLength": 23.85714285714281
+          },
+          {
+            "interval": [
+              48.75,
+              71.25
+            ],
+            "certainCoreLength": 19.714285714285683,
+            "possibleCoreLength": 20.285714285714253
+          },
+          {
+            "interval": [
+              71.25,
+              100
+            ],
+            "certainCoreLength": 25.999999999999947,
+            "possibleCoreLength": 26.428571428571374
+          }
+        ]
+      },
+      {
+        "family": 1,
+        "status": "pass",
+        "detachedCertainCoreIslands": 0,
+        "detachedPossibleCoreIslands": 0,
+        "detachedPossibleArea": 0,
+        "foldIntervals": [
+          {
+            "interval": [
+              0,
+              26.75
+            ],
+            "certainCoreLength": 23.999999999999954,
+            "possibleCoreLength": 24.42857142857138
+          },
+          {
+            "interval": [
+              26.75,
+              54.5
+            ],
+            "certainCoreLength": 24.99999999999995,
+            "possibleCoreLength": 25.57142857142852
+          },
+          {
+            "interval": [
+              54.5,
+              86.5
+            ],
+            "certainCoreLength": 26.428571428571374,
+            "possibleCoreLength": 27.571428571428513
+          },
+          {
+            "interval": [
+              86.5,
+              100
+            ],
+            "certainCoreLength": 10.428571428571429,
+            "possibleCoreLength": 10.999999999999998
+          }
+        ]
+      }
+    ],
+    "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+    "seconds": 0.21817954199999987,
+    "limitations": [
+      "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+      "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+      "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+      "Small tips and features below the explicitly stated area threshold are not certified."
+    ]
+  },
+  "sourceHashes": {
+    "scripts/inverse/fixtures/stacked-hearts-corner-mask.json": "09f218ae8851f1f68c431a0111bb0986b7905a7f154ca30cd6651e52af9d8194",
+    "scripts/inverse/diagnostics/corner-clearance-repair.mjs": "8645d0c409b9078cd3bff699e9846c1abf46f4bf90215505b8dcab15e6da65c3",
+    "scripts/inverse/export-renderer.mjs": "fb393f73b9c39780795c3951eb82d864fef7ab40ec63a90a4365aae6041afbbe",
+    "scripts/inverse/editable-paper-audit.mjs": "546e56e42e74c14852759d204ad57b88a2f529e0a7f40861f1c29b0564716e0d",
+    "static/inverse/compute-worker.js": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+    "static/inverse/worker-bootstrap.js": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+    "static/inverse/worker-controller.js": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+    "static/inverse/worker.js": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70",
+    "static/inverse/vendor/highs.wasm": "528be4365bea1d4188988646b244263f50320df55782e14d6af5bce7cd45c840",
+    "static/inverse/locator/anchored.js": "92f1ffb68bac38b1bc36f4209820b46200cfa7e6dcfbb746ed94f33beddac536",
+    "static/inverse/locator/background.js": "03d1c9b8f8237a97a7e8ed53d1dfa5117d1db079ba4162cac7117a8761f3441f",
+    "static/inverse/locator/fields.js": "569c2235139acdc3c22f1fee94158ae59406b682e7ef16e822de215fd94b36ea",
+    "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+    "static/inverse/locator/interior-palette.js": "6322efaa9772d488992a40da5b01091b0e71826d30c91fba5976c5b285e027bc",
+    "static/inverse/locator/locator.js": "bb745954e2fa2b59abf8be98ded36b75b134295363f913dab04d3a4ad1c6a419",
+    "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+    "static/inverse/locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+    "static/inverse/locator/palette.js": "4a373e0a911d8f8d2cdda42468c05cc52cb33b912a8990775f9db651cfc99158",
+    "static/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+    "static/inverse/core/chord-distance.js": "6be52281e3056d29ad7093f902b0f768410f3c414f049f164f94e969bd89dd48",
+    "static/inverse/core/complete-self-returns.js": "c39492fd0b22e65ac28bdf11cde24c8a72ffe385d488820e0d05299914f1a110",
+    "static/inverse/core/corner-border-seeds.js": "37c9c93bfa2d2533d1811a354edce0f36c308e43a9b9d39252999af713447e4e",
+    "static/inverse/core/crop.js": "03552409b48975702527fb365eea6841cb441a2be26637a7d44a85aa8ea763ff",
+    "static/inverse/core/engine.js": "df3c667254e3014ee5bcd7de4c8e1d02505b4701c8596a48cd204992b9f27e12",
+    "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+    "static/inverse/core/feature-recovery.js": "755ca667ece3a051d5ce0387240a4b491e7051aaf2b9a68e6b5bd1c477bb25e3",
+    "static/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+    "static/inverse/core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+    "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+    "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+    "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+    "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+    "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+    "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+    "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+    "static/inverse/core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+    "static/inverse/core/numerical-kernel.js": "f690a486fe92aebb33192c1b5f21d5613548561b61e59c394ce0feef152cdb0d",
+    "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+    "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+    "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+    "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+    "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+    "static/inverse/core/return-search.js": "7fa3ca77219e51ae3e8cc3aa09f81e23d6f63a173e2a28586e6c4c917c8d807d",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+    "static/inverse/core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+    "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+    "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+    "static/inverse/core/solver.js": "d3f3762d7d2a70983cce1a999052759c448778c7f7102b3010e1756250aecebe",
+    "static/inverse/core/spatial-color.js": "f170ff447ef905fc21121d286ac427a079b184ca077fd178065b0a3e247fb132",
+    "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+    "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+    "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+    "static/inverse/core/validate.js": "6476e80b1b34fd6511ba89ae89508e501daed670369ab8c26acdce7109c155db",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+    "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+    "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+    "static/inverse/core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+    "static/inverse/core/direct/clearance-repair.js": "4479bc23647003be20ec37d833e4456fe1063692b7b6a33d1088ddc11437bca8",
+    "static/inverse/core/direct/clearance-witnesses.js": "a126b2249b85a86fe88a8bcbfc143a9d3c08a0e73cece38f5884fed152aa72f2",
+    "static/inverse/core/direct/counts.js": "1249948d4129dbcf50e0ccb1efaeba1ab2d620d89169f495d60d12cacc17c748",
+    "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+    "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+    "static/inverse/core/direct/feature-details.js": "b4c07ebd50fe821c37cd61ca1404c70370f50120a4c2058f7c11e743b4cfcb49",
+    "static/inverse/core/direct/feature-seeds.js": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+    "static/inverse/core/direct/final-return-repair.js": "591521ee1ae435e1bc8b231210de873af18042475c31265a0eca988971f654bb",
+    "static/inverse/core/direct/finalize.js": "d8504b811b223296c006c1cca57466c28fef0adc0e880b2d0073bfcdcd554ae4",
+    "static/inverse/core/direct/fit.js": "e91cfe8549ab9384b0ea20f04fb34c9119ed26b050d95fd38f372bab4b0b5f56",
+    "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+    "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+    "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+    "static/inverse/core/direct/initialize.js": "097ae2b72608930c5337097b253328cd316123e45eaf56e0eaaaa3de3a3ad5d3",
+    "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+    "static/inverse/core/direct/linear-controls.js": "d813372611a04cf34eadd9e109264ac2b50c3518dcc62a2227877fa29e87224d",
+    "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+    "static/inverse/core/direct/outline-details.js": "ff9d4df5f27fd9ca97d15b115cc95c5692bd17e302f0dcd11c62e7295b85d8aa",
+    "static/inverse/core/direct/polish.js": "4d96c771f4c4dcb0a4b4cba1ad422fe3d5b73c8fc928848ba03417ba2685980a",
+    "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+    "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+    "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+    "static/inverse/core/direct/refine.js": "39105b04e208a53d16d3990a57584d73b33536b27885d2e0048ddb0a717f9502",
+    "static/inverse/core/direct/rejected-routing.js": "0c683586205f582975567c8bed43681307cfee563f38b638508efc4502141b68",
+    "static/inverse/core/direct/reroute.js": "84a8cf2cfb6bcb1101a63004f638d0f3dc398baf3fe15ec1068b20336535d9ed",
+    "static/inverse/core/direct/share.js": "5f31cddc475959fa8c9c126782f2c6695bdfc5944862a5a12782f14d2113f92d",
+    "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+    "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+    "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+    "static/inverse/core/direct/short-return-project.js": "404c1f52ee1b2c8c12fa65a21801cd801caed4056f1a5529457d6657e4cfc6a4",
+    "static/inverse/core/direct/short-returns.js": "b329b2ca19cb7fca3493d33b0e65dcd44f32ff7bba507cddad106df7f85321ab",
+    "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+    "static/inverse/core/direct/topology.js": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097",
+    "static/inverse/core/direct/turn-limit.js": "1f64a27bd008775f01ccc1caec37b50e3b60afb1604b9b073aec42fcbec2fb11",
+    "static/inverse/core/direct/native/boundary.wasm": "52152e812fb055451635f4897b2a6c0b92156084bd272575200300263bd31ba9",
+    "src/lib/analytics.ts": "8d6379610ec63c7c40e70d65009eaa539f12d040a812a75fb73b5116b9f264ac",
+    "src/lib/breakpoints.ts": "762a2444e609c1cc39f1e5719734b32c73683541d876a6d3ef52ea94b8be8feb",
+    "src/lib/config.ts": "50c40628bc877215de2dc278942a4398299208c409b7a10b135b990a48bb4f85",
+    "src/lib/constants.ts": "d9d09f60e850583fd730816dae38920f50e65f9227cb30376c72644559ab99af",
+    "src/lib/githubStars.ts": "914a014efed9c9d1e9fd941f22ec8e5772931c512cd06779346881578db2d925",
+    "src/lib/hydration.ts": "8009722eace266d43fc6600af052fffc76b81924eea2c4765970e86ab953973d",
+    "src/lib/index.ts": "4beec0ade3bea5be651939b305bccf69d48506c74eda0a1a50a0dd6c79c4e91a",
+    "src/lib/landscape.ts": "d14df0a02a15271676e05d649230681cd60663aeb5f7ed76f23481a3fd532207",
+    "src/lib/types.ts": "82bede32703f1c2813fba480b730b8abda5b03bf93c4d8f5e0d8012c11196e16",
+    "src/lib/utils.ts": "eb2ad862b262a0776942d6a59c78fd756d97b7e635d7b768bf82d6054057cedb",
+    "src/lib/utils/difficulty.examples.test.ts": "b59b26acd70f7d156e65a27c45350f3430f2cbf6932425d58bce4b57a8219145",
+    "src/lib/utils/difficulty.ts": "3f5453c415dc25d120c341edf9628990560982467ca933c82c2918089db013a7",
+    "src/lib/utils/heartAnchors.ts": "81c47e46a46ab18685d4012a20a8d87964e88d44178e50497a978b21192460a1",
+    "src/lib/utils/heartColors.test.ts": "c2f3a3d629f52cf7a96237329e4de1214a599b865749437268e3656fdf1a5238",
+    "src/lib/utils/heartColors.ts": "3168eeb506a83bad3f1a303800b467ee62ae2fff7918aef754f947ca2aa9bb42",
+    "src/lib/utils/heartDesign.test.ts": "b4f613f2d48f76e2a6fe39a74cbd5db3235b7cd166d808520475889ea20e8fe7",
+    "src/lib/utils/heartDesign.ts": "c4d79388b56ca2332e6b42fd08716b3e9bfcd79b07ce9f7992ce46f1db998637",
+    "src/lib/utils/math.test.ts": "3a00e64601c26fd4df8eba75759bd2a5659c2e56e9e46115b19dd30629629055",
+    "src/lib/utils/math.ts": "ff76a4a31b5429204a8a6820f090c9c6127b6697463d37952550a77cdecd07f0",
+    "src/lib/utils/overlapRect.test.ts": "00ed698c97b7d8a57e95f7b3f398bbee93777f9a913b1f8841c3a276ea72985e",
+    "src/lib/utils/overlapRect.ts": "8c11b5bcf496e2176001a711039ac6573d06c4848f5290005df5216e49be327b",
+    "src/lib/utils/randomHearts.test.ts": "3c1ae495de86d3c8fc667d41327470beb80b422cc398b8e809df7a7181421f96",
+    "src/lib/utils/randomHearts.ts": "081c59775483d0f5ebdb53da1a5242535262e0cba51a6775caec3b8836c8b263",
+    "src/lib/utils/shareDesign.test.ts": "a44feb1b2f8d985e132c2b3be023cac7d3260a533a3a981ed285f8a8f3b36444",
+    "src/lib/utils/shareDesign.ts": "2b0ced35e695c9a4117db9892351ee93a81469cfde95add24dc4a07fb12a12af",
+    "src/lib/utils/slug.test.ts": "9c855b7351b7af39d7614c8147bf8e37fc8b267066535e8efc0bdb056be45588",
+    "src/lib/utils/slug.ts": "ce56ada0b8798a771c4d23246d5f07ba501ea52305ac93c05cea92e7678969d3",
+    "src/lib/utils/sway.test.ts": "2084ac4b55cdb16875dcd57b4de6d7699450abd857005a9f39ec025f4d1f9c21",
+    "src/lib/utils/sway.ts": "009053f245348b0da94f8d8267892b262b59fdc37513ec2618a86c0c2a785fd4",
+    "src/lib/utils/symmetry.test.ts": "4e3aee0c93066da05384f57171b9b27ba71f8b82bf57ac86f59f3aea58a54a26",
+    "src/lib/utils/symmetry.ts": "bfae5d8275d6aa11761b11f20062bf98bd5ba9acbd8ea4af5d5cd0e0521bcab8",
+    "src/lib/utils/templateSvg.ts": "bfaf9c35d5d531f688820a973b8fd25f1517327146e82a219745b2966537546b",
+    "src/lib/utils/text.test.ts": "e0e0430cabf015824b28d3b0d37b747e49eac663a83dfd3afdb1cb184ef00650",
+    "src/lib/utils/text.ts": "8f8f0d909f4c7e12d786c29a57bb6d487cc7feb86349373401cf1e3f5ab06526",
+    "src/lib/utils/validatePaths.ts": "ad1a699c7f6f710052e18139d3d912c76f5e0f6049b4e7682c7aba7c75a54296",
+    "src/lib/types/heart.ts": "289b9f15d16b85dcc7d7eb8bde060f09ff861747cd1b33751d4b4b260b3c1d6c",
+    "src/lib/stores/collection.ts": "af7e2763474e88a2725b76768dfb629fb5732ed3f2221d3826465869ba899ea0",
+    "src/lib/stores/colors.ts": "4b44e39deebeac49107121185c67b3647470f0c17b8e088ac323251336e44137",
+    "src/lib/rendering/heartPaint.test.ts": "e5a931299274cf60f9001de05d5a4c495a0d885f1929fdb618292c8b6561924f",
+    "src/lib/rendering/heartPaint.ts": "d8068059984944c548539323f132395956b96a741cf55bd58b26b009779baecd",
+    "src/lib/rendering/heartSvg.ts": "fa860791b781ff1434a5ab7760156a69a7aeff019279007aac4595dc9aa8c2ec",
+    "src/lib/rendering/prerenderHeart.ts": "ecab3ef3b6d52de38ca8a5cb7a4f91ee483cdbe10e631c782651bc66e92dadfe",
+    "src/lib/rendering/svgWeave.ts": "79dac646c5fbfb998c7c85917b365b4e0c01b885d40795d0ee5eae7884ef34d1",
+    "src/lib/pdf/heartRenderer.ts": "08d5eeab0eebcac4ff4dd27f23dc638c0191147eb5144422bba3098808052562",
+    "src/lib/pdf/template.ts": "8a983d1f07e0907a8d3ac0ad3f3bee523622c1cf3f004e4a2b55c48591e40112",
+    "src/lib/paint/capture-modules.d.ts": "bdad3ea53661f8b252fcf318cbf38b92aaca08ffe3cfcbc78f62ae66c50d12ed",
+    "src/lib/paint/drawHeart.test.ts": "0a955fa18d3d110d22e30e55cc6f12e3069d24d2f467a6b6aae2bf4fc00f13f4",
+    "src/lib/paint/drawHeart.ts": "92c07f5410f164ad1000a8953bc21e03536a868a6f319b1d8076283f3c5b6ddc",
+    "src/lib/paint/frame.test.ts": "3064f17a6622818398521ef1cc27c2092665096a74de267c9f0a376c1529d4af",
+    "src/lib/paint/frame.ts": "56f23f653dc43588039d98951e1d45c8682a47892d5feccc4eb43c90b6326af5",
+    "src/lib/paint/heartLayout.test.ts": "e9391707d0c275ee67577f1965b67b57e4abb33dbd577bcb2ec10c48d9f2546f",
+    "src/lib/paint/heartLayout.ts": "08ff937506bf5086b3ef2758036e45b561373d7f286ff355a00e2294f9d645b2",
+    "src/lib/paint/history.test.ts": "1dea69eacc30d7873a9fb809abcc2f0b0b48da0aa0ba2e02143493b7fcb18158",
+    "src/lib/paint/history.ts": "6b272d8919d80dc87eece4da8b7dc6b18a8004c3c98a97d7350aa970a72432ab",
+    "src/lib/paint/importImage.test.ts": "29ff25ebc8c7f4224f3218c2c46d2620fe9d6141dec9cc2695de55172401b341",
+    "src/lib/paint/importImage.ts": "a4fe3ffb1471d9033d45c60f70f3c27baf28df8e0a10d88be808e65154a1e418",
+    "src/lib/paint/mask.test.ts": "e4eeba45d0fa10fe04178cb8883a28d944fc8b2f1c29aeec9567511aae1dae33",
+    "src/lib/paint/mask.ts": "11b31bc39c088e00a69c08e731d6a61574d7b03a309b62719aadc78308e941f0",
+    "src/lib/paint/rasterize.test.ts": "d04f358b9e439216eb07fa4f1f545fe31fcd7cf6e5f062d79c471e5cc7780e91",
+    "src/lib/paint/rasterize.ts": "c8e227d34063a9e87d45c223910f821255daf4527f7dd6dc38684eb774fda96e",
+    "src/lib/paint/rectify.test.ts": "254718c1e50add3974e501622f77290f43ac7fd7b75fc35ab22662e739d86efc",
+    "src/lib/paint/rectify.ts": "80847a836cf85fbf6604a7de5f2034670c91e4e8ee0e65b145dee95ca905604c",
+    "src/lib/paint/searchProgress.test.ts": "a09e4564929d8cceffaebb4902b0e20885a3a5c30fdb76a86a4fe4b0f51eac33",
+    "src/lib/paint/searchProgress.ts": "efcbe6eac0df951054ce4351ed3cefb3bc141aecc1716836aebcc5b1d3a9fafe",
+    "src/lib/paint/selection.test.ts": "a0d4fa7f10974fe83a6e7d12e294746bccb63e38da933fd2dac0ab126342fbcf",
+    "src/lib/paint/selection.ts": "69d48f8e456cb8b4710003833c14caa1c849d08dd7a54c3ce15f55d6dcc5307e",
+    "src/lib/paint/symmetry.test.ts": "8aaa5094ec399168a4d88cfbd4f772bd251a3c0d89d9273fb27a80fb4dfffa45",
+    "src/lib/paint/symmetry.ts": "d273a932ed2128bc2e7855c4d47ac65580e704ffcff3f89f5d6a307242302df1",
+    "src/lib/paint/tools.test.ts": "30a31991b3b114f1db8b6eec6db6aa1c1a9e682bb27129bb20a15b2e71b68269",
+    "src/lib/paint/tools.ts": "a4db74da74587f50cd6e42047d6816c7c716bda63d51454753d22c9309ad1fd8",
+    "src/lib/paint/toolset.test.ts": "db35011d254a0564bd72c3a6003235628c54d146a25592a6163de7e014cecea9",
+    "src/lib/paint/toolset.ts": "958cb5045eecf0d2004192db6af6e0e38bc57d194e2d4f60ad52c32cb95aeaba",
+    "src/lib/inverse/client.test.ts": "5e9bf08a80c0df0f986d3e1c66a39ac2322dade9e1e99ff889c1aaaa3a382132",
+    "src/lib/inverse/client.ts": "0d4ec0517e11b23d19a0b075bd228311dc799d2fda326d284a64875e80ee3504",
+    "src/lib/inverse/conversionFidelity.test.ts": "1f77592021a408058f4debc6d4f4e8a9fb2c4d4434735a58025d114b4b0f977a",
+    "src/lib/inverse/conversionFidelity.ts": "45db43e0919b98cfe03c115bda7473896de0da1aeec89e94ee74bbaeffdbb589",
+    "src/lib/inverse/editorConversion.test.ts": "b0e3f4b0772c9dca3f0e00b4ff2f4cc8a2ab6c34f8c19e3c6d576e0e89a5a0f9",
+    "src/lib/inverse/engine-modules.d.ts": "e554424ce825ba1e68a02152027ed1b042ebbedffffb9ec452d2f9c6e84adb67",
+    "src/lib/inverse/engine.test.ts": "2dd8eab342bc17eda4affec71c1365c4bf40821e4f338588386cba829ed3ee90",
+    "src/lib/inverse/engine.ts": "8f6674a430cb5f89ff597eb1f290a730173a5d82afcb42263a14762ded568618",
+    "src/lib/inverse/notices.test.ts": "7514b3b63f5396ddbf5e94ce5289aa18ca104499c5a6014b007362fdace9f8ae",
+    "src/lib/inverse/notices.ts": "2fc5aa9fd017cf29165687b9e653eca69dfcd209985c268a91ef86735344b588",
+    "src/lib/inverse/shortReturns.test.ts": "94b8eed5df7b0e9e3fabecbfc9431d95cce8a15729c91bf2f599fca0dcae2c9f",
+    "src/lib/inverse/simplifyCurves.test.ts": "1d1d111932fdc4c6ee78807725423e5ace7de756c1b95fabab350e1e29bd6b34",
+    "src/lib/inverse/simplifyCurves.ts": "c693b9eb86084926d941d7e60a1a38178156d081657feabce41ff03261714173",
+    "src/lib/inverse/toHeartDesign.test.ts": "1a4ede45182b2a626403e614d00cae3a22e975765931ceb0a35eff292a37b817",
+    "src/lib/inverse/toHeartDesign.ts": "eb405a8bb15abebd46f07ed17457ebc44735221e92b9bc866a4ad5dc3c05c66f",
+    "src/lib/i18n/index.ts": "ddda2862337feb3d33b75f0ae67bdcb504365fcc7398f6fac7862a9d0977f716",
+    "src/lib/i18n/routes.test.ts": "dd93a01cd5b84bf4f3803f722905d9bc145367976e741553b7ae26fdac2b0c01",
+    "src/lib/i18n/routes.ts": "227de596e81ce12d0f6511ec37a0977413c0ac0a0f1c95b4d1951a86f09aa318",
+    "src/lib/i18n/translations.test.ts": "36878362468f6a7bd05bb4be555d52a494c1107203d68e8aa42b91b9f5106923",
+    "src/lib/i18n/translations.ts": "408c079b8f04fd6da92d8b463442b7cbfb64846b5005e0b7e875dd4b8efff758",
+    "src/lib/geometry/bezierSegments.test.ts": "eefa3cb9f28b9591047a4ee33cf2e9085f2ee26412c8fed8743352351f82de85",
+    "src/lib/geometry/bezierSegments.ts": "b19dbf3f42e2566465698d8c623e0d9abb39ad40c5173514b8744b2316e2f650",
+    "src/lib/geometry/clipBezierLoop.test.ts": "afda0984ddfe934f1698346cbd82b9d3bd57e0f138d6bb711591a1b78646ed2f",
+    "src/lib/geometry/clipBezierLoop.ts": "d89a40c36eab8e05b4971689b380b801d150186e64b86aea9d5fa7cc1fa8b18f",
+    "src/lib/geometry/constraints.ts": "11b00a67cf6abfc13c729f7ee4a36e82bfeeca40119afa2a752f77494c3204d4",
+    "src/lib/geometry/curveReturns.test.ts": "9b5063c23bd9c2e699431533db092ae29693b6389b55e2a7944ce67ccb7a8cef",
+    "src/lib/geometry/curveReturns.ts": "fac814a3f65d9421f1a0b2b5b4fb422eee38d72b705c915e0d1b6b9e1776ee08",
+    "src/lib/geometry/curves.test.ts": "6ff0759bbcf4092227212a723bda3297576f52c6c4fe3f477f3538f79f40858a",
+    "src/lib/geometry/curves.ts": "f68e8539e1f6df509807a45a0866b023e836f01536458f014167804446fe59cb",
+    "src/lib/geometry/point.ts": "2712ca8982eccca734fd4739a1cca3f4b3fc1a0d00a284bdf6144a0a30b26fb2",
+    "src/lib/geometry/pointLike.ts": "b1aae7037f9ac17e9a1c8a287c523fad46b1bdb7a98d69fb058a7fbdd8ff67b6",
+    "src/lib/geometry/returnSearch.ts": "cac37b3b085ea98a572dd28309530e74074c127752ad754360cd46634e444189",
+    "src/lib/geometry/vec.ts": "07e3c792c6256839c039b5d22c3872d454252c48d8589e2c345bdd7ce4cf126e",
+    "src/lib/front/galleryHearts.ts": "e64a39819c54ea2bd8ec36f475d15b2fa7f3f0bf77841410a57b04ad5ef333cb",
+    "src/lib/front/heroBootstrap.test.ts": "a5649c0092980d922ecd04ecbe82ca54681d48d949c3dc1e8b71f75f48e71a48",
+    "src/lib/front/heroBootstrap.ts": "bb3d2e4a670cac59194cdb4d0d1e9aaf3941ef8560a9de111dce8cbab37bbe7e",
+    "src/lib/front/selection.test.ts": "9325ce412efc1309c8647fc404154dc531ff4b976470a93f8f6d03a8b60fb7e4",
+    "src/lib/front/selection.ts": "bacc2fd9a33734746946a12cee336bdae8c7d9aad64c11ea707651c0a93826e2",
+    "src/lib/editor/commands.ts": "3e651fd8d3212615af82aacda21fad5197c16962b8c75a6e970b28084694ca09",
+    "src/lib/editor/curveIssues.test.ts": "50c4d2fc2dd3b13a4f1b276d5186926bf2fd7d05d8571efcd2cecaa1d490f076",
+    "src/lib/editor/curveIssues.ts": "fa07e5071f6efb87a21630abc0cdc2dfa5a6fd537eea2e46999fe362fb695b38",
+    "src/lib/editor/draft.test.ts": "0d976bd362b058352ba4ba05d70181121c05376282e02f1267dcf1120e30b7fc",
+    "src/lib/editor/draft.ts": "0fa2e724949c52dccd4c34828332cf244514afc4250872f208795cf9afa71ecb",
+    "src/lib/editor/handoff.ts": "a540e111c79abdd002fed7f4162b345ac344a514618bb684344007fe54ae9d03",
+    "src/lib/editor/hitTest.ts": "a5e4d43adc48bd2f4a94192f497a21b7f276be7a1e46a78c4d09c986233bb6c1",
+    "src/lib/editor/outlineColors.test.ts": "388c75e63cdf8e58e8d7cb47c165f19a453867657cde114b5786b754d55ba23b",
+    "src/lib/editor/outlineColors.ts": "951e71e49d4d37f82bd4bf7f9f52f72d7a94bc8f8b72923ea7bcd3a5c0010e55",
+    "src/lib/editor/panelState.test.ts": "2bad9c547f5d1852b8cde3cbaf418e91d06e6ba5e6b548fadb71b62ad659ef7f",
+    "src/lib/editor/panelState.ts": "e6bb6351b9e691f3b2de6a8726a1c888b1a1bf371a8eb0d1188216899573d18f",
+    "src/lib/editor/selection.ts": "ab72cd17f1019aa8d4a47d7ad38cc2b5e328a856b2f40ed53c7296d3873a3613",
+    "src/lib/editor/session.svelte.ts": "ff2f24a7a1096781cfad50d895f284283f36fe958fc519af8bebfc1fdd964f8d",
+    "src/lib/editor/session.test.ts": "279fc5b1bc7125a138d8d7efa69b50f45f0807cf3f7e3730bcb471fe72da7342",
+    "src/lib/editor/snapOpposite.test.ts": "700d0a4bcf9c67084db1396a1b5c84b2c378e284ffa5d41428b536a0ed350938",
+    "src/lib/editor/snapOpposite.ts": "d898212b633bb7fda3a97b91af4711d299527aa6f1323b5fe5cb944c87f4e2aa",
+    "src/lib/data/categories.test.ts": "3eeee4d95e86615545a28907eb02f53f2b38d05d461486648628ab499d992da6",
+    "src/lib/data/categories.ts": "c40d14ff18d7cc4768c789cda05661a7394f23a585577cf7b09824b35deedd79",
+    "src/lib/data/heartDescriptions.test.ts": "dd3277a4a87a824befa6e904ca0d54b65e42083837e0a8cdb15be9446b4271d6",
+    "src/lib/data/heartDescriptions.ts": "851deb3464f4fe74ad31890fcf62a0b812a1a2ff2eb5af5ffafbe450fe68f3c1",
+    "src/lib/data/heartDesigns.ts": "67117e71f4001d1655ce261112306af7c2af1d4bc2c230a9726471ce6cdd5d4d",
+    "src/lib/components/HeartWeaveFill.test.ts": "225dfb6ff4bada1af4b9186c69e118c5c32a819578f6496382a16c6601c1f75d",
+    "src/lib/components/ui/tooltip/index.ts": "3489a6f4e07592bf867ebd4e8903770bf2d2d6a31cb8768160182866257b7d8e",
+    "src/lib/components/ui/toggle-group/index.ts": "984df7cb69ba320128094e10cb2cb53b184ff33cc48344e0279a14b04cc2f625",
+    "src/lib/components/ui/separator/index.ts": "18f59f106bd580b5b65b18341e90b06f505e3e61cfbce22d302a05c5452cfcdb",
+    "src/lib/components/ui/dropdown-menu/index.ts": "02354b1d65c9862b678ebc8d247860c418478f7b074af42bd23c10272aefc7e4",
+    "src/lib/components/ui/carousel/context.ts": "4f604bce17510fb237a6fb23dbdfab67b9f38cf1082112324019429a385bfd00",
+    "src/lib/components/ui/carousel/index.ts": "c3294425be02a82e404b1ca75547efdd94717416aad25b61d4ded12168f72160",
+    "src/lib/components/ui/button/index.ts": "0f6b6f040d92b4153821d3f9b4d6b9cbc567247e4fda913e64c1d0fcc4a2f386",
+    "src/lib/components/paint/FindCutsPanel.test.ts": "7fcf407fde9b03f70ee2b9ed24b64ca54f412f0afde4a29ae6067b7638a4d3f5",
+    "src/lib/components/paint/FramePanel.test.ts": "59435e233ebc980ebb693fc87a071f7ccb3b68598abcaae032171d861b571a8d",
+    "src/lib/components/paint/MaskCanvas.test.ts": "636ce6f5e516653e888a2baecc08e9b48504d9ded3e1639c4a57a6a5ca962c32",
+    "src/lib/components/paint/MaskToolPanel.test.ts": "34ee1ea98fbddbe84dce19e0dcdd12fbf4ef12862039e41d3bb8138fc8688c3e",
+    "src/lib/components/paint/PanelHint.test.ts": "05021c200a781ca23ff492c82ec05c3869930cf31925e672ff868593e2a91d23",
+    "src/lib/components/icons/index.ts": "4e59efe5a97b1cd10635a9688f0e72b1ebc402418fa0ff261553d4e7ae1fcfb0",
+    "src/lib/components/icons/sourcePage.test.ts": "281acf0391b0fc27eefffdf577f0cc18038d799a0cf31458ec503d0f1e9c4b08",
+    "src/lib/components/icons/symmetryIcons.test.ts": "e2e0b05cf812df4726987f318875f9a44dc3bc4b10a675194261f9a980ad49ce",
+    "src/lib/components/icons/symmetryIcons.ts": "df92bfd8a119fc6e523d435f1406ad4d52a28e6567237481eddbbecdafcc7c1e",
+    "src/lib/components/icons/types.ts": "a29837ebac4421d0066bb261b7481d20578a9130bd164cc62105d1c6b50ad32c",
+    "src/lib/components/front/heroSlots.ts": "10c5b720edf869f4c115e0d6938a2d5fff574b7651ee0261a21a3bc9a9a145ec",
+    "src/lib/components/editor/icons/index.ts": "fdc596bcbcaf7bba94713a5fcae3de799f7cb93fc4d34c60381ea49342871c55",
+    "src/lib/algorithms/bezier.ts": "0d1d55c7bfb7fe515cb7ae64ea40f2a63ce84fd083445778efb4ab6754ab261d",
+    "src/lib/algorithms/projection2d.ts": "1e67d3ad9eb03757ef4db9925aa01cacf995c55ac9e15871d6c98c4dba446f4d",
+    "src/lib/algorithms/snap.ts": "114ea8f99485d5cb8235c80224ca03a60d0c0f9adef8cacdf3a45258fc92c16e",
+    "src/lib/algorithms/snapBezierControl.test.ts": "46e1b21b0edf3dbd27045da4fff560acddf177cf04cc1e8ba95d5d627e9fbdf9",
+    "src/lib/algorithms/snapBezierControl.ts": "78b7598381cb7e9903c53b4074c53595b6abfb031cf7d909e3b9c14d8082b5a2"
+  },
+  "artifacts": {
+    "tmp/heart-learning/corner-clearance-fresh-v1/report.json": "c89b65cf3c8486879206712c09ee3efd3e6fbe6353b8b8dc1d3e225e302c805b",
+    "tmp/heart-learning/nonlocal-projection-v2/report.json": "0665c395b0dba78256e7bbf842e86c3f91713bddcf16a28d116ccf610059f270",
+    "tmp/heart-learning/nonlocal-projection-v5/report.json": "0ba1ef4f30bf53b62a6f530fa037b03c0afed081d95c939e869ac9765b0fbfb9",
+    "tmp/heart-learning/nonlocal-linear-v1/report.json": "35ef2581d8cd52befa89b65bfafd1a18ccc44ab99db0b78e1a8cf7dc56d7966c",
+    "scripts/inverse/fixtures/stacked-hearts-corner-routing.json": "51ca787ca1c337c2a4b62cb2496fd672e8cca7aa8ec4e9b27573651db41c878d",
+    "tmp/heart-learning/corner-clearance-refined-v1/report.json": "c799d8cf0328616fe31bdf9c611cefcb181d9fa8985ec3a3b5dac763d524a3fc",
+    "tmp/heart-learning/corner-clearance-refined-v1/independent-multiscale.json": "f294947e03cad4b8c48299ff5be50709a7decff65484c39d113512f91c8cf724",
+    "tmp/heart-learning/corner-clearance-refined-v1/comparison.png": "8fd04ec9691cf28beec04e9aa54fc532d97f2df78cad715349ebee57e916c43d",
+    "tmp/heart-learning/corner-clearance-refined-v1/editable.svg": "a34102e360c0de154d3f3cc9fed062aebdadf7ea85d210231d9dcaaba9556638",
+    "tmp/heart-learning/valid-corner-refine-v1/report.json": "eafa6c604bdd525aaacde9ec5614f890f5ebd16a3a03f6296259cdf3c8161727",
+    "tmp/heart-learning/valid-corner-refine-v1/run.mjs": "8f33e3527f1a7b2eabd64a09eb3cfeea08fbc3c5933f16a2fa0d3e65504fb7c9",
+    "tmp/heart-learning/corner-clearance-fresh-v1/independent-multiscale.json": "e59cdca4fa3eaaec297af7acb91b346bcb4cef98e124428bd47128d4cf92e75e",
+    "tmp/heart-learning/corner-clearance-qa-v1/source.json": "5b0395ac395f3d76d49e5797ea2993087d2085d73b7ea137df0b8212aad82341",
+    "tmp/heart-learning/corner-clearance-qa-v1/checks.json": "5368518a872502f3ed68af82581210b2ba935688a322f6819192c683d089ae60",
+    "tmp/heart-learning/corner-clearance-qa-v1/running.json": "8a650db1c07e3cd2aa03e72eb044505402717bc97d565b10ad878f693a404784",
+    "tmp/heart-learning/corner-clearance-qa-v2/source.json": "4859480bef76e1c55510706157368d78e7316bdb807a0a64dd4b9dabb8deb255",
+    "tmp/heart-learning/corner-clearance-qa-v2/checks.json": "e138bb73baa57b4a6553b41a4c191935c319b64dad69f3b86dc9c4c907cc189b",
+    "tmp/heart-learning/corner-clearance-qa-v2/running.json": "8a650db1c07e3cd2aa03e72eb044505402717bc97d565b10ad878f693a404784"
+  },
+  "verification": {
+    "focusedTests": 22,
+    "coreLint": "pass",
+    "inverseTests": 876,
+    "inversePassed": 876,
+    "applicationPassed": 857,
+    "applicationSkipped": 1,
+    "fullChecks": [
+      {
+        "stage": "core-lint",
+        "command": [
+          "npx",
+          "eslint",
+          "--no-ignore",
+          "static/inverse/core/direct/short-return-project.js",
+          "static/inverse/core/direct/clearance-witnesses.js",
+          "static/inverse/core/direct/linear-controls.js"
+        ],
+        "exitCode": 0,
+        "seconds": 1.591955833
+      },
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 8.689248542000001
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 6.031564790999999
+      },
+      {
+        "stage": "app",
+        "command": [
+          "npx",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 22.20408875
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 12.220143708999998
+      },
+      {
+        "stage": "inverse",
+        "command": [
+          "npm",
+          "run",
+          "test:inverse"
+        ],
+        "exitCode": 0,
+        "seconds": 861.3941216659999
+      }
+    ],
+    "fullRun": {
+      "status": "complete",
+      "sourceFilesVerified": 728
+    },
+    "postReplayExtensionChecks": [
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 8.990999542
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 6.2781125410000005
+      },
+      {
+        "stage": "app",
+        "command": [
+          "npx",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 22.238395542000003
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 11.591888124999997
+      }
+    ],
+    "postReplayExtensionRun": {
+      "status": "complete",
+      "sourceFilesVerified": 728
+    },
+    "onlyChangedSourceAfterInverseRun": [
+      "scripts/inverse/diagnostics/corner-clearance-repair.mjs"
+    ],
+    "status": "complete"
+  },
+  "limitations": [
+    "Frozen estimated neural mask, not original artwork or a raw-photo benchmark pass.",
+    "Not integrated into automatic search.",
+    "11.45 seconds excludes downstream independent and editable checks.",
+    "Four enclosed hearts verified; checker junction connectivity differs with rasterization.",
+    "Physical assembly untested.",
+    "Refined fresh total is 14.91 seconds before independent/export audits; the ten-second target remains unmet for this development mask."
+  ],
+  "refinedReplay": {
+    "maskSha256": "e0cb651b0b2212c08cd6fddc87de9c897e5f520379aefff3dbfe9b14841ec51b",
+    "initialGeometrySha256": "8c55de8c9c9fae7e2be92f4e363ffa71d6edbd4d5b9d32a15d8e2a151f4848ec",
+    "routingSeconds": 8.900012917,
+    "repairSeconds": 2.122141458,
+    "fitAndFinishSeconds": 14.913337958,
+    "independentImageError": 0.0176125,
+    "independentFiner": {
+      "resolution": 800,
+      "reference": "Each original mask cell repeated 2 x 2; no extra photo information.",
+      "imageError": 0.01848125,
+      "components": [
+        {
+          "centerMm": [
+            14.105950736648248,
+            14.743669429097606
+          ],
+          "sourceAreaMm2": 271.5,
+          "intersectionPixels": 17195,
+          "retention": 0.9895833333333334,
+          "predictedComponentAreaMm2": 273.75,
+          "touchesBorder": false,
+          "componentIoU": 0.9714140444042709
+        },
+        {
+          "centerMm": [
+            38.96996221662469,
+            40.24773299748111
+          ],
+          "sourceAreaMm2": 248.125,
+          "intersectionPixels": 15084,
+          "retention": 0.9498740554156171,
+          "predictedComponentAreaMm2": 237.4375,
+          "touchesBorder": false,
+          "componentIoU": 0.9432216108054027
+        },
+        {
+          "centerMm": [
+            37.09396305256213,
+            63.97888717835936
+          ],
+          "sourceAreaMm2": 568.375,
+          "intersectionPixels": 35551,
+          "retention": 0.9773202111282164,
+          "predictedComponentAreaMm2": 562.796875,
+          "touchesBorder": false,
+          "componentIoU": 0.9649060905439149
+        },
+        {
+          "centerMm": [
+            62.52816560685651,
+            65.49623306607685
+          ],
+          "sourceAreaMm2": 226.0625,
+          "intersectionPixels": 14296,
+          "retention": 0.9881116947746752,
+          "predictedComponentAreaMm2": 225.484375,
+          "touchesBorder": false,
+          "componentIoU": 0.9789769225501609
+        },
+        {
+          "centerMm": [
+            85.27692091979809,
+            89.84885025238364
+          ],
+          "sourceAreaMm2": 222.875,
+          "intersectionPixels": 13855,
+          "retention": 0.9713264161525519,
+          "predictedComponentAreaMm2": 218.625,
+          "touchesBorder": false,
+          "componentIoU": 0.9620859662523435
+        }
+      ]
+    },
+    "enginePassed": true,
+    "editablePassed": true,
+    "components": [
+      {
+        "centerMm": [
+          14.105950736648248,
+          14.743669429097606
+        ],
+        "sourceAreaMm2": 271.5,
+        "intersectionPixels": 4312,
+        "retention": 0.992633517495396,
+        "predictedComponentAreaMm2": 274.5625,
+        "touchesBorder": false,
+        "componentIoU": 0.9744632768361582
+      },
+      {
+        "centerMm": [
+          38.96996221662469,
+          40.24773299748111
+        ],
+        "sourceAreaMm2": 248.125,
+        "intersectionPixels": 3780,
+        "retention": 0.9521410579345088,
+        "predictedComponentAreaMm2": 237.4375,
+        "touchesBorder": false,
+        "componentIoU": 0.9476059162697418
+      },
+      {
+        "centerMm": [
+          37.09396305256213,
+          63.97888717835936
+        ],
+        "sourceAreaMm2": 568.375,
+        "intersectionPixels": 8898,
+        "retention": 0.9784473279085111,
+        "predictedComponentAreaMm2": 563.4375,
+        "touchesBorder": false,
+        "componentIoU": 0.9660188904570622
+      },
+      {
+        "centerMm": [
+          62.52816560685651,
+          65.49623306607685
+        ],
+        "sourceAreaMm2": 226.0625,
+        "intersectionPixels": 3586,
+        "retention": 0.9914293613491844,
+        "predictedComponentAreaMm2": 225.8125,
+        "touchesBorder": false,
+        "componentIoU": 0.9840834248079035
+      },
+      {
+        "centerMm": [
+          85.27692091979809,
+          89.84885025238364
+        ],
+        "sourceAreaMm2": 222.875,
+        "intersectionPixels": 3475,
+        "retention": 0.9744812114413909,
+        "predictedComponentAreaMm2": 219.1875,
+        "touchesBorder": false,
+        "componentIoU": 0.9658143413007226
+      }
+    ],
+    "refinement": {
+      "seconds": 3.3575560409999996,
+      "steps": 800,
+      "skippedSteps": 700
+    },
+    "editable": {
+      "imageError": 0.0174625,
+      "components": [
+        {
+          "centerMm": [
+            14.105950736648248,
+            14.743669429097606
+          ],
+          "sourceAreaMm2": 271.5,
+          "intersectionPixels": 4304,
+          "retention": 0.990791896869245,
+          "predictedComponentAreaMm2": 273.375,
+          "touchesBorder": false,
+          "componentIoU": 0.9750792931581332
+        },
+        {
+          "centerMm": [
+            38.96996221662469,
+            40.24773299748111
+          ],
+          "sourceAreaMm2": 248.125,
+          "intersectionPixels": 3773,
+          "retention": 0.9503778337531487,
+          "predictedComponentAreaMm2": 236.75,
+          "touchesBorder": false,
+          "componentIoU": 0.9468005018820577
+        },
+        {
+          "centerMm": [
+            37.09396305256213,
+            63.97888717835936
+          ],
+          "sourceAreaMm2": 568.375,
+          "intersectionPixels": 8893,
+          "retention": 0.9778975148449527,
+          "predictedComponentAreaMm2": 563.125,
+          "touchesBorder": false,
+          "componentIoU": 0.9654760612311367
+        },
+        {
+          "centerMm": [
+            62.52816560685651,
+            65.49623306607685
+          ],
+          "sourceAreaMm2": 226.0625,
+          "intersectionPixels": 3582,
+          "retention": 0.9903234724910146,
+          "predictedComponentAreaMm2": 225.0625,
+          "touchesBorder": false,
+          "componentIoU": 0.9851485148514851
+        },
+        {
+          "centerMm": [
+            85.27692091979809,
+            89.84885025238364
+          ],
+          "sourceAreaMm2": 222.875,
+          "intersectionPixels": 3471,
+          "retention": 0.9733595064498037,
+          "predictedComponentAreaMm2": 218.3125,
+          "touchesBorder": false,
+          "componentIoU": 0.967391304347826
+        }
+      ],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.0174625,
+        "sourceError": 0.0174625
+      },
+      "issues": []
+    },
+    "geometryPassed": true,
+    "paperStatus": "pass",
+    "editablePaperStatus": "pass",
+    "sourceHashChanges": {
+      "scripts/inverse/diagnostics/corner-clearance-repair.mjs": "b6f76e7923ba1c98b74e774b368efb845ae965d9b020a6b3c6150c9e6f0975a6"
+    }
+  }
+}

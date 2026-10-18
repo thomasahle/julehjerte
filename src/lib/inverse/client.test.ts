@@ -20,14 +20,27 @@ describe('inverse worker lifecycle', () => {
     const cancelled = expect(first).rejects.toMatchObject({ name: 'AbortError' });
     engine.stop();
     await cancelled;
+    expect(workers[0].postMessage).toHaveBeenLastCalledWith({ id: 1, action: 'cancel' });
+    expect(workers[0].terminate).not.toHaveBeenCalled();
+    reply(workers[0], { id: 1, type: 'cancelled' });
     expect(workers[0].terminate).toHaveBeenCalledOnce();
     const progress = vi.fn();
     const second = engine.request('prepare', { type: 'svg', text: '<svg/>' }, {}, progress);
     reply(workers[0], { id: 1, type: 'result', result: 'stale result' });
-    reply(workers[1], { id: 3, type: 'progress', event: { stage: 'preprocessing' } });
+    // The whole event reaches the listener, not only its stage: the counts and
+    // the error are what the searching panel is built out of (PAINT.md §2).
+    reply(workers[1], {
+      id: 3,
+      type: 'progress',
+      event: { stage: 'directInitializing', counts: [4, 4], error: 0.031 }
+    });
     reply(workers[1], { id: 3, type: 'prepared', preview: 'new artwork' });
     expect(await second).toBe('new artwork');
-    expect(progress).toHaveBeenCalledWith('preprocessing');
+    expect(progress).toHaveBeenCalledWith({
+      stage: 'directInitializing',
+      counts: [4, 4],
+      error: 0.031
+    });
     expect(create).toHaveBeenCalledTimes(2);
   });
 
@@ -44,6 +57,41 @@ describe('inverse worker lifecycle', () => {
     expect(await retry).toBe('retry');
     expect(searchTimedOut({ termination: 'time_limit' })).toBe(true);
     expect(searchTimedOut({ termination: 'candidate_graph_exhausted' })).toBe(false);
+  });
+
+  it('uses the current solve id for a graceful stop and resolves its original promise', async () => {
+    const { workers, engine, reply } = harness();
+    expect(engine.useBest()).toBe(false);
+    const prepared = engine.request('prepare', undefined, {});
+    expect(engine.useBest()).toBe(false);
+    reply(workers[0], { id: 1, type: 'prepared', preview: 'artwork' });
+    await prepared;
+    const solving = engine.request('solve', undefined, {});
+    expect(engine.useBest()).toBe(true);
+    expect(workers[0].postMessage).toHaveBeenLastCalledWith({ id: 2, action: 'stop' });
+    expect(workers[0].terminate).not.toHaveBeenCalled();
+    reply(workers[0], { id: 2, type: 'result', result: { report: { stoppedEarly: true } } });
+    expect(await solving).toEqual({ report: { stoppedEarly: true } });
+    expect(engine.useBest()).toBe(false);
+    const next = engine.request('solve', undefined, {});
+    reply(workers[0], { id: 3, type: 'result', result: 'same prepared artwork' });
+    expect(await next).toBe('same prepared artwork');
+  });
+
+  it('eventually terminates an unresponsive controller and ignores its late result', async () => {
+    vi.useFakeTimers();
+    try {
+      const { workers, engine, reply } = harness();
+      const solving = engine.request('solve', undefined, {});
+      const cancelled = expect(solving).rejects.toMatchObject({ name: 'AbortError' });
+      engine.stop();
+      reply(workers[0], { id: 1, type: 'result', result: 'too late' });
+      await cancelled;
+      await vi.advanceTimersByTimeAsync(1000);
+      expect(workers[0].terminate).toHaveBeenCalledOnce();
+      reply(workers[0], { id: 1, type: 'cancelled' });
+      expect(workers[0].terminate).toHaveBeenCalledOnce();
+    } finally { vi.useRealTimers(); }
   });
 
   it('terminates a failed worker and rejects overlapping requests', async () => {

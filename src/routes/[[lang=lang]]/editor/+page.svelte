@@ -505,6 +505,7 @@
       // touched follows the site-wide pair, as the gallery hearts do.
       colors: designColors ?? undefined,
       gridSize: currentGridSize,
+      overlapAspectRatio: initialDesign?.overlapAspectRatio,
       fingers: currentFingers
     };
   }

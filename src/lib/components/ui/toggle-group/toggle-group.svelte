@@ -55,11 +55,13 @@
 	<ToggleGroupPrimitive.Root
 		bind:ref
 		type="single"
-		value={normalizeSingle(value)}
-		onValueChange={(v) => {
-			value = v;
-			onValueChange?.(v);
-		}}
+		bind:value={
+			() => normalizeSingle(value),
+			(v) => {
+				value = v;
+				onValueChange?.(v);
+			}
+		}
 		data-slot="toggle-group"
 		class={rootClass}
 		{...restProps}

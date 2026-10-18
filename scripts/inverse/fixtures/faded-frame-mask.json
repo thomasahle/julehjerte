@@ -1,0 +1,70 @@
+{
+  "schema": "woven-heart-derived-mask-diagnostic-1",
+  "id": "faded-frame",
+  "status": "Unresolved development case. Candidate preprocessing, not artwork or cutting-path ground truth.",
+  "reservedForQA": true,
+  "source": {
+    "file": "scripts/inverse/fixtures/hard-photos/collage.png",
+    "sha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+    "decodedPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+    "width": 1482,
+    "height": 1112
+  },
+  "quad": [
+    [
+      580.8896846884898,
+      915.2939899986951
+    ],
+    [
+      677.6253511913307,
+      1009.9739174398903
+    ],
+    [
+      579.3740550093529,
+      1115.8957769828548
+    ],
+    [
+      473.2222004536287,
+      1011.7567090328694
+    ]
+  ],
+  "cropProvenance": {
+    "method": "Eight-pixel bounded restoration of the scene foreground from the control foreground. This was one of three predeclared experimental widths, then selected for diagnosis after source-sample review.",
+    "fusionInputManifestSha256": "713ae47c28a1471da320e268af0bf90954e296cf80e80a24d4e5ef71a7ca729e",
+    "fusionReportSha256": "351be221b522a1a5968d36cf343b3e08f087339023767e932ec0bb80f218fffa"
+  },
+  "classification": {
+    "resolution": 400,
+    "initial": "red-white-mixture from static/inverse/core/unmix.js",
+    "probabilitySha256": "580cfa6ea9a727941e3a628c1f9d76cd935aed30e6f8c12987116541a9d156da",
+    "localContrast": {
+      "smooth": "scipy.ndimage.gaussian_filter(probability, 1), default reflect/truncate",
+      "window": 41,
+      "threshold": "(local_max + local_min) / 2 only where local_max - local_min > 0.15, local_min < 0.15, local_max < 0.7; otherwise 0.5",
+      "output": "probability > threshold",
+      "numpy": "1.26.4",
+      "scipy": "1.13.1"
+    },
+    "maskEncoding": "PNG black = binary mask 1; white = 0",
+    "file": "scripts/inverse/fixtures/faded-frame-mask.png",
+    "sha256": "8d88be6bd3febd2c47ee79fc9e480deed6e6fb71b6790746d4330b10da1fa8c0"
+  },
+  "review": {
+    "annotationFile": "scripts/inverse/fixtures/photo-material-samples.json",
+    "annotationSha256": "3e813ae0dc3bdf192b55e5dbabfaa58565bafc1d5cb78c061e3a601676d89d4f",
+    "sourceSamplesPresent": 26,
+    "sourceSamplesTotal": 26,
+    "meaning": "Sparse development observations only; matching all samples does not certify the rest of the classified image."
+  },
+  "baseline": {
+    "seconds": 9.171625667,
+    "error": 0.06020625,
+    "numericalPass": false
+  },
+  "limitations": [
+    "Coordinates are a model proposal, not verified physical corners.",
+    "Do not use this QA photograph, its crops, or these labels for neural training.",
+    "Local contrast regresses clean controlled inputs and is not enabled in production.",
+    "No physical assembly test."
+  ]
+}

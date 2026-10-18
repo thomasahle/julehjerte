@@ -1,0 +1,2599 @@
+{
+  "scope": "Two repeatedly inspected real collage photographs. No original cutting paths or exact physical crop labels are available. Prototype alternatives were rejected. Website algorithms are unchanged.",
+  "productionBaseline": "46fbebf",
+  "benchmarkCommit": "72e4ff1",
+  "replays": [
+    {
+      "path": "tmp/heart-learning/real-border-before-v1/results.json",
+      "sha256": "0a432a00b5e826dc0dda74cb7470a2638b612a71f85ab5094f171fce6eeca40d",
+      "cropMode": "automatic",
+      "targetMode": "mask",
+      "sourceHashes": {
+        "static/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+        "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+        "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+        "static/inverse/core/chord-distance.js": "cb79dd6d90d22b6bea6bb4bd0593cc8e32a18a09116084e53f5d942bcbef3c04",
+        "static/inverse/core/crop.js": "e44d3179ca229cb645779af3550ab2736547104c46684e0ccee402a1d1875ea6",
+        "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+        "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+        "static/inverse/core/direct/counts.js": "38b429832cff5844bef49d4e393d18cb59d689578c6a39f7e1860a257bb34ea8",
+        "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+        "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+        "static/inverse/core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+        "static/inverse/core/direct/feature-seeds.js": "8d13605875bf0f4dfe74c0bc18ac7145023c895754e9842499d6d00879999c45",
+        "static/inverse/core/direct/finalize.js": "2730887151dcae876569c8a5fb2ba8831a1ce4320e92d1735077c4bfe9b90df5",
+        "static/inverse/core/direct/fit.js": "a86a3ff6c104b2be384718cd4b6d0751e5204c71bd7b3c97467fbe6f388b7a4c",
+        "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+        "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+        "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+        "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+        "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+        "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+        "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+        "static/inverse/core/direct/native/PROVENANCE.json": "e9fbaef090fc05bdc9450210f527b1fb3fa6bc77ee86c1902eb97bb6ed0acd2a",
+        "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+        "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58",
+        "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+        "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+        "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+        "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+        "static/inverse/core/direct/refine.js": "7bb1e8f18ff62c6c4cf5f2c5e7f6c398ca7a7ffed0668bc4b8dfef0c8c73953d",
+        "static/inverse/core/direct/share.js": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+        "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+        "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+        "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+        "static/inverse/core/direct/short-returns.js": "d89c3a75df735ca5d519b354b0e47327f58ce56e55f86693de44ded98e857269",
+        "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+        "static/inverse/core/direct/topology.js": "ce6ceff1d1742efd45ae1be71ff58e88d44a6c0dac4b53d141121d68f141a173",
+        "static/inverse/core/engine.js": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+        "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+        "static/inverse/core/feature-recovery.js": "5106e25e15a23740776dfced1f95e3be005fa5217d837f4400c5ee3399190c42",
+        "static/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+        "static/inverse/core/geometry.js": "e9ada76afbaa0ef4bd957cbc4c8c20f09f471cf6ba0c33b84a774aba10a9da84",
+        "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+        "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+        "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+        "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+        "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+        "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+        "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+        "static/inverse/core/material.js": "b38677af5801e894eb869d38df247ea02c06ba2bd773d606da97494e2297ce29",
+        "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+        "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+        "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+        "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+        "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+        "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+        "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+        "static/inverse/core/routing.js": "af2ab7ff657356438dafdc6e41adfd1bb737fe368fb094cada4f8dd2bb7ffce5",
+        "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+        "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+        "static/inverse/core/solver.js": "c4e1362454df612592753de03af71522de75cb87227417bb0d43c077940588d5",
+        "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+        "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+        "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+        "static/inverse/core/validate.js": "0184fc04b25d28e1ea9d21d778711870a2429087fce2b937b6bb0c90266043b6",
+        "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+        "static/inverse/locator/NOTICE.md": "4a9cc65be6ca309d2b57609d760e584ab78c345dae95c789e351bb69180d5b05",
+        "static/inverse/locator/anchored.js": "c4f5276af229a7b9bbc1f686ea308697200cdd787bcdee2692d87a60bcdad991",
+        "static/inverse/locator/background.js": "03d1c9b8f8237a97a7e8ed53d1dfa5117d1db079ba4162cac7117a8761f3441f",
+        "static/inverse/locator/fields.js": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
+        "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+        "static/inverse/locator/locator.js": "971c5205bd738b280b98e32899a8095d00c6520cadee7c8ec0e7e65529d0fbdd",
+        "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+        "static/inverse/locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+        "static/inverse/locator/palette.js": "e6163193c14d753c2b93168c2e2e25602fb240117e1846a1c92a92308bc9084b",
+        "scripts/inverse/hard-photo-cases.json": "a104debdefa7629136a238106304a877daa57fee31abef9ebf09d48c69f87917",
+        "scripts/inverse/photo-cases.json": "a366d97e5a81384eb8745bcfa0fb3201b76cf3f92710ae65bedf88a95fc42385",
+        "scripts/inverse/hard-photo-data.mjs": "1dd31822bf42b54f40c871de7903bbc0be0245c6c41a8d6669002c1eb17e6c9f",
+        "scripts/inverse/hard-photo-target.mjs": "69bdd88cd8f4c992d6b958082ce5b60d88abfab6c3f0299346b7b4a143f80d4a",
+        "scripts/inverse/hard-photo-benchmark.mjs": "47f0ec70f9e5e979e1f3a2ea7e420d4f9ebcbb5205a6ff5e536824b3e4979a34",
+        "scripts/inverse/hard-photo-report.mjs": "f3035e82a2369847184d229afc157e96c46c786806b30d26d1f7ec3507d80a3a",
+        "scripts/inverse/export-renderer.mjs": "fb393f73b9c39780795c3951eb82d864fef7ab40ec63a90a4365aae6041afbbe",
+        "src/lib/inverse/presets.js": "17d4f9be7dded0eb6619be3449eb962b67ee04ca96fd61db2777cbf3efb8d954"
+      },
+      "timingDefinitions": {
+        "timeLimit": "Requested solver search allowance, not an end-to-end latency limit.",
+        "detectionSeconds": "Crop detection wall time. Decoding and the source thumbnail are outside this timer.",
+        "runSeconds": "Each runs[].seconds starts after crop detection and source-thumbnail creation. Includes preparation, solving, validation, export, independent replay and per-case artifact writes; excludes decoding and detection.",
+        "solveAndValidationSeconds": "design() wall time, including final validation and generated export data. Excludes crop detection, preparation, independent replay and writing artifacts.",
+        "independentReplaySeconds": "Separate exported-SVG renderer wall time; not part of application solving.",
+        "browser": "Actual click-to-ready latency is measured separately by paint-browser-test.mjs."
+      },
+      "rows": [
+        {
+          "id": "jigsaw",
+          "status": "failed",
+          "input": {
+            "fileSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+            "rgbaSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "width": 1482,
+            "height": 1112
+          },
+          "quad": [
+            [
+              796.940953842628,
+              631.6593539438662
+            ],
+            [
+              856.2204646604408,
+              748.7890866349005
+            ],
+            [
+              764.8124220376249,
+              864.0519986487432
+            ],
+            [
+              715.8813933469556,
+              745.1522092092067
+            ]
+          ],
+          "roughROI": [
+            681,
+            590,
+            914,
+            832
+          ],
+          "cropAssessment": {
+            "outlineSupported": false,
+            "withinPhotograph": true,
+            "outOfFrameCorners": [],
+            "lowerEdgeSupport": [
+              0.7391304347826086,
+              0.7608695652173914
+            ],
+            "lobeOutlineSupport": [
+              0.5,
+              0.2222222222222222
+            ],
+            "capColourLoss": [
+              0.06737205525921813,
+              0.2620610725950713
+            ],
+            "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+          },
+          "solverAllowance": 10,
+          "pairChecks": false,
+          "slits": {
+            "left": 6,
+            "right": 4
+          },
+          "independentImageError": 0.0669375,
+          "maskSha256": "5c3d1ae064e795a787a92a91d5403bc7bdb0f4780dfeb75606ce1f9531b58788",
+          "classification": {
+            "method": "lab",
+            "threshold": null,
+            "labCenters": [
+              [
+                49.01853101727894,
+                49.782658799736076,
+                23.025244520079674
+              ],
+              [
+                72.91873017460618,
+                15.335379137119498,
+                5.519576598842307
+              ]
+            ],
+            "inverted": false,
+            "dither": false,
+            "actualResolution": 400,
+            "traceUsed": false,
+            "traceChangeFraction": 0,
+            "totalChangeFraction": 0,
+            "sourceMaskComponents": 9,
+            "vectorSampleComponents": 9,
+            "requestedResolution": 400
+          },
+          "featureCheck": {
+            "passed": true,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 1,
+                "areaMm2": 700.8125,
+                "centerMm": [
+                  23.3444773923125,
+                  31.319773923124945
+                ],
+                "retainedFraction": 0.9074288771961116
+              },
+              {
+                "value": 1,
+                "areaMm2": 721.75,
+                "centerMm": [
+                  46.48157689643228,
+                  50.10529961898165
+                ],
+                "retainedFraction": 0.8966054728091445
+              }
+            ],
+            "missing": [],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          },
+          "seconds": 10.160281417,
+          "solveAndValidationSeconds": 9.304237917,
+          "assets": {
+            "source.png": {
+              "path": "tmp/heart-learning/real-border-before-v1/jigsaw/source.png",
+              "sha256": "14e867b8cd24c46c172ad813802b1bd676a85acfbfb186d12d0b2b38409132a4"
+            },
+            "crop.png": {
+              "path": "tmp/heart-learning/real-border-before-v1/jigsaw/crop.png",
+              "sha256": "b22e3ea88a9090705eb71eac8be5f9485f0482ed5777aebfeb3bd2ba5f78bc47"
+            },
+            "automatic/mask.png": {
+              "path": "tmp/heart-learning/real-border-before-v1/jigsaw/automatic/mask.png",
+              "sha256": "5836657bb7a8f44a02d71936a316ed50a6b4ac22d899bdb535fc3e6bd0cc8292"
+            },
+            "automatic/independent-weave.png": {
+              "path": "tmp/heart-learning/real-border-before-v1/jigsaw/automatic/independent-weave.png",
+              "sha256": "3688b3a853395fff657ba8cc7f1817c98e700776c4a0f775b9e1e05ab7a3fa18"
+            },
+            "automatic/cut_geometry.json": {
+              "path": "tmp/heart-learning/real-border-before-v1/jigsaw/automatic/cut_geometry.json",
+              "sha256": "64bfcdd8ed7b6848f30af33c53696fc29554d4a0be26434bcf79b8abdac12106"
+            }
+          }
+        },
+        {
+          "id": "bauble",
+          "status": "failed",
+          "input": {
+            "fileSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+            "rgbaSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "width": 1482,
+            "height": 1112
+          },
+          "quad": [
+            [
+              585.124945734859,
+              905.2805093237887
+            ],
+            [
+              680.4272015903496,
+              1020.2331968915895
+            ],
+            [
+              619.5033182277817,
+              1139.311696191154
+            ],
+            [
+              466.440010833398,
+              1022.8877039896092
+            ]
+          ],
+          "roughROI": [
+            456,
+            860,
+            711,
+            1112
+          ],
+          "cropAssessment": {
+            "outlineSupported": false,
+            "withinPhotograph": false,
+            "outOfFrameCorners": [
+              2
+            ],
+            "lowerEdgeSupport": [
+              1,
+              0.625
+            ],
+            "lobeOutlineSupport": [
+              0.4722222222222222,
+              0.19444444444444445
+            ],
+            "capColourLoss": [
+              0.08657327621293223,
+              0.43616477850802343
+            ],
+            "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+          },
+          "solverAllowance": 10,
+          "pairChecks": false,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "independentImageError": 0.0929625,
+          "maskSha256": "90cfecd3f41ee3b4261b6e821e02339019ddd6bcb43bcb07c1b06abf1cb93d8c",
+          "classification": {
+            "method": "lab",
+            "threshold": null,
+            "labCenters": [
+              [
+                54.71974212081293,
+                37.886263752385254,
+                10.019626428056213
+              ],
+              [
+                79.07471653948036,
+                7.828142785865999,
+                2.473045667123409
+              ]
+            ],
+            "inverted": false,
+            "dither": false,
+            "actualResolution": 400,
+            "traceUsed": false,
+            "traceChangeFraction": 0,
+            "totalChangeFraction": 0,
+            "sourceMaskComponents": 17,
+            "vectorSampleComponents": 17,
+            "requestedResolution": 400
+          },
+          "featureCheck": {
+            "passed": false,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 1,
+                "areaMm2": 114.875,
+                "centerMm": [
+                  34.50897714907508,
+                  13.189200217627857
+                ],
+                "retainedFraction": 0.6229597388465724
+              },
+              {
+                "value": 1,
+                "areaMm2": 77.4375,
+                "centerMm": [
+                  68.6657586763519,
+                  24.045702179176757
+                ],
+                "retainedFraction": 0.34301856335754644
+              },
+              {
+                "value": 1,
+                "areaMm2": 106.0625,
+                "centerMm": [
+                  10.211181496758986,
+                  26.01878314672952
+                ],
+                "retainedFraction": 0.845020624631703
+              },
+              {
+                "value": 1,
+                "areaMm2": 1787.9375,
+                "centerMm": [
+                  37.45990928793652,
+                  58.03706697661411
+                ],
+                "retainedFraction": 0.9922047051420981
+              },
+              {
+                "value": 1,
+                "areaMm2": 56.5625,
+                "centerMm": [
+                  82.81174033149173,
+                  39.64074585635359
+                ],
+                "retainedFraction": 0
+              },
+              {
+                "value": 1,
+                "areaMm2": 56.4375,
+                "centerMm": [
+                  79.33070321151716,
+                  57.12140088593577
+                ],
+                "retainedFraction": 0
+              },
+              {
+                "value": 1,
+                "areaMm2": 3.1875,
+                "centerMm": [
+                  72.49754901960785,
+                  72.13480392156863
+                ],
+                "retainedFraction": 0
+              },
+              {
+                "value": 1,
+                "areaMm2": 18.0625,
+                "centerMm": [
+                  75.94506920415225,
+                  77.95025951557093
+                ],
+                "retainedFraction": 0
+              }
+            ],
+            "missing": [
+              {
+                "value": 1,
+                "areaMm2": 77.4375,
+                "centerMm": [
+                  68.6657586763519,
+                  24.045702179176757
+                ],
+                "retainedFraction": 0.34301856335754644
+              },
+              {
+                "value": 1,
+                "areaMm2": 56.5625,
+                "centerMm": [
+                  82.81174033149173,
+                  39.64074585635359
+                ],
+                "retainedFraction": 0
+              },
+              {
+                "value": 1,
+                "areaMm2": 56.4375,
+                "centerMm": [
+                  79.33070321151716,
+                  57.12140088593577
+                ],
+                "retainedFraction": 0
+              },
+              {
+                "value": 1,
+                "areaMm2": 3.1875,
+                "centerMm": [
+                  72.49754901960785,
+                  72.13480392156863
+                ],
+                "retainedFraction": 0
+              },
+              {
+                "value": 1,
+                "areaMm2": 18.0625,
+                "centerMm": [
+                  75.94506920415225,
+                  77.95025951557093
+                ],
+                "retainedFraction": 0
+              }
+            ],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement. Small interior regions must also remain separate from the square boundary.",
+            "enclosures": {
+              "components": [
+                {
+                  "centerMm": [
+                    72.49754901960785,
+                    72.13480392156863
+                  ],
+                  "sourceAreaMm2": 3.1875,
+                  "intersectionPixels": 0,
+                  "retention": 0,
+                  "predictedComponentAreaMm2": 0,
+                  "touchesBorder": null,
+                  "componentIoU": 0
+                },
+                {
+                  "centerMm": [
+                    75.94506920415225,
+                    77.95025951557093
+                  ],
+                  "sourceAreaMm2": 18.0625,
+                  "intersectionPixels": 0,
+                  "retention": 0,
+                  "predictedComponentAreaMm2": 0,
+                  "touchesBorder": null,
+                  "componentIoU": 0
+                }
+              ],
+              "opened": 0
+            }
+          },
+          "seconds": 9.728924875,
+          "solveAndValidationSeconds": 9.086270832999999,
+          "assets": {
+            "source.png": {
+              "path": "tmp/heart-learning/real-border-before-v1/bauble/source.png",
+              "sha256": "c20ca00cf11766e46545cc25a0fae67a36b73da71cc79c867f29d3c70241a0f4"
+            },
+            "crop.png": {
+              "path": "tmp/heart-learning/real-border-before-v1/bauble/crop.png",
+              "sha256": "286b5cc63b40cf55d269990ad9c8fb8064436efd14b8c8090df637365824f53a"
+            },
+            "automatic/mask.png": {
+              "path": "tmp/heart-learning/real-border-before-v1/bauble/automatic/mask.png",
+              "sha256": "c17fe4647f0c58e5e303b206e1f022d02a2bd42041c919733b4ecbd79336f190"
+            },
+            "automatic/independent-weave.png": {
+              "path": "tmp/heart-learning/real-border-before-v1/bauble/automatic/independent-weave.png",
+              "sha256": "7388756f24a15769a3d7f0f455bbc76c231974bab3118e69a22ff50c5081081f"
+            },
+            "automatic/cut_geometry.json": {
+              "path": "tmp/heart-learning/real-border-before-v1/bauble/automatic/cut_geometry.json",
+              "sha256": "7935a6b702c62196c018e96d328268b67155d7a6ea580b19f4d3bc6db917ad09"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "path": "tmp/heart-learning/real-border-automatic25-v1/results.json",
+      "sha256": "f7797b173535e214a879b347a2f533c14edb06014cbd420303f0d081d2ca3bc2",
+      "cropMode": "automatic",
+      "targetMode": "mask",
+      "sourceHashes": {
+        "static/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+        "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+        "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+        "static/inverse/core/chord-distance.js": "cb79dd6d90d22b6bea6bb4bd0593cc8e32a18a09116084e53f5d942bcbef3c04",
+        "static/inverse/core/crop.js": "e44d3179ca229cb645779af3550ab2736547104c46684e0ccee402a1d1875ea6",
+        "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+        "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+        "static/inverse/core/direct/counts.js": "38b429832cff5844bef49d4e393d18cb59d689578c6a39f7e1860a257bb34ea8",
+        "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+        "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+        "static/inverse/core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+        "static/inverse/core/direct/feature-seeds.js": "8d13605875bf0f4dfe74c0bc18ac7145023c895754e9842499d6d00879999c45",
+        "static/inverse/core/direct/finalize.js": "2730887151dcae876569c8a5fb2ba8831a1ce4320e92d1735077c4bfe9b90df5",
+        "static/inverse/core/direct/fit.js": "a86a3ff6c104b2be384718cd4b6d0751e5204c71bd7b3c97467fbe6f388b7a4c",
+        "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+        "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+        "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+        "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+        "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+        "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+        "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+        "static/inverse/core/direct/native/PROVENANCE.json": "e9fbaef090fc05bdc9450210f527b1fb3fa6bc77ee86c1902eb97bb6ed0acd2a",
+        "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+        "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58",
+        "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+        "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+        "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+        "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+        "static/inverse/core/direct/refine.js": "7bb1e8f18ff62c6c4cf5f2c5e7f6c398ca7a7ffed0668bc4b8dfef0c8c73953d",
+        "static/inverse/core/direct/share.js": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+        "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+        "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+        "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+        "static/inverse/core/direct/short-returns.js": "d89c3a75df735ca5d519b354b0e47327f58ce56e55f86693de44ded98e857269",
+        "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+        "static/inverse/core/direct/topology.js": "ce6ceff1d1742efd45ae1be71ff58e88d44a6c0dac4b53d141121d68f141a173",
+        "static/inverse/core/engine.js": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+        "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+        "static/inverse/core/feature-recovery.js": "5106e25e15a23740776dfced1f95e3be005fa5217d837f4400c5ee3399190c42",
+        "static/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+        "static/inverse/core/geometry.js": "e9ada76afbaa0ef4bd957cbc4c8c20f09f471cf6ba0c33b84a774aba10a9da84",
+        "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+        "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+        "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+        "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+        "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+        "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+        "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+        "static/inverse/core/material.js": "b38677af5801e894eb869d38df247ea02c06ba2bd773d606da97494e2297ce29",
+        "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+        "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+        "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+        "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+        "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+        "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+        "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+        "static/inverse/core/routing.js": "af2ab7ff657356438dafdc6e41adfd1bb737fe368fb094cada4f8dd2bb7ffce5",
+        "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+        "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+        "static/inverse/core/solver.js": "c4e1362454df612592753de03af71522de75cb87227417bb0d43c077940588d5",
+        "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+        "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+        "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+        "static/inverse/core/validate.js": "0184fc04b25d28e1ea9d21d778711870a2429087fce2b937b6bb0c90266043b6",
+        "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+        "static/inverse/locator/NOTICE.md": "4a9cc65be6ca309d2b57609d760e584ab78c345dae95c789e351bb69180d5b05",
+        "static/inverse/locator/anchored.js": "c4f5276af229a7b9bbc1f686ea308697200cdd787bcdee2692d87a60bcdad991",
+        "static/inverse/locator/background.js": "03d1c9b8f8237a97a7e8ed53d1dfa5117d1db079ba4162cac7117a8761f3441f",
+        "static/inverse/locator/fields.js": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
+        "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+        "static/inverse/locator/locator.js": "971c5205bd738b280b98e32899a8095d00c6520cadee7c8ec0e7e65529d0fbdd",
+        "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+        "static/inverse/locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+        "static/inverse/locator/palette.js": "e6163193c14d753c2b93168c2e2e25602fb240117e1846a1c92a92308bc9084b",
+        "scripts/inverse/hard-photo-cases.json": "a104debdefa7629136a238106304a877daa57fee31abef9ebf09d48c69f87917",
+        "scripts/inverse/photo-cases.json": "a366d97e5a81384eb8745bcfa0fb3201b76cf3f92710ae65bedf88a95fc42385",
+        "scripts/inverse/hard-photo-data.mjs": "1dd31822bf42b54f40c871de7903bbc0be0245c6c41a8d6669002c1eb17e6c9f",
+        "scripts/inverse/hard-photo-target.mjs": "69bdd88cd8f4c992d6b958082ce5b60d88abfab6c3f0299346b7b4a143f80d4a",
+        "scripts/inverse/hard-photo-benchmark.mjs": "129fc3f033db9a4bf7567ca851c98e1c27257b6f374ddfb507d08edf0d8365f8",
+        "scripts/inverse/hard-photo-report.mjs": "60c5698fd2270c65d023ab4dd0c6ff4bf840130b5ac28ac41a1a3d8e8d371b38",
+        "scripts/inverse/crop-evidence.mjs": "52872ad6028a15b5746f51a004d0d5f8a216850559f4dbbbce4235213373b260",
+        "scripts/inverse/export-renderer.mjs": "fb393f73b9c39780795c3951eb82d864fef7ab40ec63a90a4365aae6041afbbe",
+        "src/lib/inverse/presets.js": "17d4f9be7dded0eb6619be3449eb962b67ee04ca96fd61db2777cbf3efb8d954"
+      },
+      "timingDefinitions": {
+        "timeLimit": "Requested solver search allowance, not an end-to-end latency limit.",
+        "detectionSeconds": "Crop detection wall time. Decoding and the source thumbnail are outside this timer.",
+        "runSeconds": "Each runs[].seconds starts after crop detection and source-thumbnail creation. Includes preparation, solving, validation, export, independent replay and per-case artifact writes; excludes decoding and detection.",
+        "solveAndValidationSeconds": "design() wall time, including final validation and generated export data. Excludes crop detection, preparation, independent replay and writing artifacts.",
+        "independentReplaySeconds": "Separate exported-SVG renderer wall time; not part of application solving.",
+        "browser": "Actual click-to-ready latency is measured separately by paint-browser-test.mjs."
+      },
+      "rows": [
+        {
+          "id": "jigsaw",
+          "status": "validated",
+          "input": {
+            "fileSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+            "rgbaSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "width": 1482,
+            "height": 1112
+          },
+          "quad": [
+            [
+              796.940953842628,
+              631.6593539438662
+            ],
+            [
+              856.2204646604408,
+              748.7890866349005
+            ],
+            [
+              764.8124220376249,
+              864.0519986487432
+            ],
+            [
+              715.8813933469556,
+              745.1522092092067
+            ]
+          ],
+          "roughROI": [
+            681,
+            590,
+            914,
+            832
+          ],
+          "cropAssessment": {
+            "outlineSupported": false,
+            "withinPhotograph": true,
+            "outOfFrameCorners": [],
+            "lowerEdgeSupport": [
+              0.7391304347826086,
+              0.7608695652173914
+            ],
+            "lobeOutlineSupport": [
+              0.5,
+              0.2222222222222222
+            ],
+            "capColourLoss": [
+              0.06737205525921813,
+              0.2620610725950713
+            ],
+            "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+          },
+          "solverAllowance": 25,
+          "pairChecks": true,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "independentImageError": 0.0176125,
+          "maskSha256": "5c3d1ae064e795a787a92a91d5403bc7bdb0f4780dfeb75606ce1f9531b58788",
+          "classification": {
+            "method": "lab",
+            "threshold": null,
+            "labCenters": [
+              [
+                49.01853101727894,
+                49.782658799736076,
+                23.025244520079674
+              ],
+              [
+                72.91873017460618,
+                15.335379137119498,
+                5.519576598842307
+              ]
+            ],
+            "inverted": false,
+            "dither": false,
+            "actualResolution": 400,
+            "traceUsed": false,
+            "traceChangeFraction": 0,
+            "totalChangeFraction": 0,
+            "sourceMaskComponents": 9,
+            "vectorSampleComponents": 9,
+            "requestedResolution": 400
+          },
+          "featureCheck": {
+            "passed": true,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 1,
+                "areaMm2": 700.8125,
+                "centerMm": [
+                  23.3444773923125,
+                  31.319773923124945
+                ],
+                "retainedFraction": 0.9853741193257826
+              },
+              {
+                "value": 1,
+                "areaMm2": 721.75,
+                "centerMm": [
+                  46.48157689643228,
+                  50.10529961898165
+                ],
+                "retainedFraction": 0.9922930377554555
+              }
+            ],
+            "missing": [],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          },
+          "seconds": 23.767860208,
+          "solveAndValidationSeconds": 23.120341958,
+          "assets": {
+            "source.png": {
+              "path": "tmp/heart-learning/real-border-automatic25-v1/jigsaw/source.png",
+              "sha256": "14e867b8cd24c46c172ad813802b1bd676a85acfbfb186d12d0b2b38409132a4"
+            },
+            "crop.png": {
+              "path": "tmp/heart-learning/real-border-automatic25-v1/jigsaw/crop.png",
+              "sha256": "b22e3ea88a9090705eb71eac8be5f9485f0482ed5777aebfeb3bd2ba5f78bc47"
+            },
+            "automatic/mask.png": {
+              "path": "tmp/heart-learning/real-border-automatic25-v1/jigsaw/automatic/mask.png",
+              "sha256": "5836657bb7a8f44a02d71936a316ed50a6b4ac22d899bdb535fc3e6bd0cc8292"
+            },
+            "automatic/independent-weave.png": {
+              "path": "tmp/heart-learning/real-border-automatic25-v1/jigsaw/automatic/independent-weave.png",
+              "sha256": "518b458504d0a48477d3833c3a77847adce5d283eb10657f14387afc8851a349"
+            },
+            "automatic/cut_geometry.json": {
+              "path": "tmp/heart-learning/real-border-automatic25-v1/jigsaw/automatic/cut_geometry.json",
+              "sha256": "4d0e402ed8771b99cef725a258f02ac6ee9e45b1df0a81a13bc294b7360d9924"
+            }
+          }
+        },
+        {
+          "id": "bauble",
+          "status": "validated",
+          "input": {
+            "fileSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+            "rgbaSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "width": 1482,
+            "height": 1112
+          },
+          "quad": [
+            [
+              585.124945734859,
+              905.2805093237887
+            ],
+            [
+              680.4272015903496,
+              1020.2331968915895
+            ],
+            [
+              619.5033182277817,
+              1139.311696191154
+            ],
+            [
+              466.440010833398,
+              1022.8877039896092
+            ]
+          ],
+          "roughROI": [
+            456,
+            860,
+            711,
+            1112
+          ],
+          "cropAssessment": {
+            "outlineSupported": false,
+            "withinPhotograph": false,
+            "outOfFrameCorners": [
+              2
+            ],
+            "lowerEdgeSupport": [
+              1,
+              0.625
+            ],
+            "lobeOutlineSupport": [
+              0.4722222222222222,
+              0.19444444444444445
+            ],
+            "capColourLoss": [
+              0.08657327621293223,
+              0.43616477850802343
+            ],
+            "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+          },
+          "solverAllowance": 25,
+          "pairChecks": true,
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "independentImageError": 0.020425,
+          "maskSha256": "90cfecd3f41ee3b4261b6e821e02339019ddd6bcb43bcb07c1b06abf1cb93d8c",
+          "classification": {
+            "method": "lab",
+            "threshold": null,
+            "labCenters": [
+              [
+                54.71974212081293,
+                37.886263752385254,
+                10.019626428056213
+              ],
+              [
+                79.07471653948036,
+                7.828142785865999,
+                2.473045667123409
+              ]
+            ],
+            "inverted": false,
+            "dither": false,
+            "actualResolution": 400,
+            "traceUsed": false,
+            "traceChangeFraction": 0,
+            "totalChangeFraction": 0,
+            "sourceMaskComponents": 17,
+            "vectorSampleComponents": 17,
+            "requestedResolution": 400
+          },
+          "featureCheck": {
+            "passed": true,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 1,
+                "areaMm2": 114.875,
+                "centerMm": [
+                  34.50897714907508,
+                  13.189200217627857
+                ],
+                "retainedFraction": 0.971164309031556
+              },
+              {
+                "value": 1,
+                "areaMm2": 77.4375,
+                "centerMm": [
+                  68.6657586763519,
+                  24.045702179176757
+                ],
+                "retainedFraction": 0.9556093623890234
+              },
+              {
+                "value": 1,
+                "areaMm2": 106.0625,
+                "centerMm": [
+                  10.211181496758986,
+                  26.01878314672952
+                ],
+                "retainedFraction": 0.986446670595168
+              },
+              {
+                "value": 1,
+                "areaMm2": 1787.9375,
+                "centerMm": [
+                  37.45990928793652,
+                  58.03706697661411
+                ],
+                "retainedFraction": 0.9983220889991961
+              },
+              {
+                "value": 1,
+                "areaMm2": 56.5625,
+                "centerMm": [
+                  82.81174033149173,
+                  39.64074585635359
+                ],
+                "retainedFraction": 0.980110497237569
+              },
+              {
+                "value": 1,
+                "areaMm2": 56.4375,
+                "centerMm": [
+                  79.33070321151716,
+                  57.12140088593577
+                ],
+                "retainedFraction": 0.9623477297895903
+              },
+              {
+                "value": 1,
+                "areaMm2": 3.1875,
+                "centerMm": [
+                  72.49754901960785,
+                  72.13480392156863
+                ],
+                "retainedFraction": 0.7843137254901961
+              },
+              {
+                "value": 1,
+                "areaMm2": 18.0625,
+                "centerMm": [
+                  75.94506920415225,
+                  77.95025951557093
+                ],
+                "retainedFraction": 0.9411764705882353
+              }
+            ],
+            "missing": [],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement. Small interior regions must also remain separate from the square boundary.",
+            "enclosures": {
+              "components": [
+                {
+                  "centerMm": [
+                    72.49754901960785,
+                    72.13480392156863
+                  ],
+                  "sourceAreaMm2": 3.1875,
+                  "intersectionPixels": 40,
+                  "retention": 0.7843137254901961,
+                  "predictedComponentAreaMm2": 3.0625,
+                  "touchesBorder": false,
+                  "componentIoU": 0.6666666666666666
+                },
+                {
+                  "centerMm": [
+                    75.94506920415225,
+                    77.95025951557093
+                  ],
+                  "sourceAreaMm2": 18.0625,
+                  "intersectionPixels": 272,
+                  "retention": 0.9411764705882353,
+                  "predictedComponentAreaMm2": 19.5,
+                  "touchesBorder": false,
+                  "componentIoU": 0.8267477203647416
+                }
+              ],
+              "opened": 0
+            }
+          },
+          "seconds": 21.563404790999996,
+          "solveAndValidationSeconds": 20.898688625,
+          "assets": {
+            "source.png": {
+              "path": "tmp/heart-learning/real-border-automatic25-v1/bauble/source.png",
+              "sha256": "c20ca00cf11766e46545cc25a0fae67a36b73da71cc79c867f29d3c70241a0f4"
+            },
+            "crop.png": {
+              "path": "tmp/heart-learning/real-border-automatic25-v1/bauble/crop.png",
+              "sha256": "286b5cc63b40cf55d269990ad9c8fb8064436efd14b8c8090df637365824f53a"
+            },
+            "automatic/mask.png": {
+              "path": "tmp/heart-learning/real-border-automatic25-v1/bauble/automatic/mask.png",
+              "sha256": "c17fe4647f0c58e5e303b206e1f022d02a2bd42041c919733b4ecbd79336f190"
+            },
+            "automatic/independent-weave.png": {
+              "path": "tmp/heart-learning/real-border-automatic25-v1/bauble/automatic/independent-weave.png",
+              "sha256": "9776afb0029b62b24c4b82f355eb10960a88f38b693f6d680d3c249445bb9b42"
+            },
+            "automatic/cut_geometry.json": {
+              "path": "tmp/heart-learning/real-border-automatic25-v1/bauble/automatic/cut_geometry.json",
+              "sha256": "b60e93253c9c5bd177cb867cb0a1686718c125ebbdfd65e211e2c835d2bb4398"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "path": "tmp/heart-learning/real-border-fixed25-v1/results.json",
+      "sha256": "a838aae789977e6221d2c5710195657750cbb4bd7551a381b42bcf632dd6c674",
+      "cropMode": "fixed",
+      "targetMode": "mask",
+      "sourceHashes": {
+        "static/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+        "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+        "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+        "static/inverse/core/chord-distance.js": "cb79dd6d90d22b6bea6bb4bd0593cc8e32a18a09116084e53f5d942bcbef3c04",
+        "static/inverse/core/crop.js": "e44d3179ca229cb645779af3550ab2736547104c46684e0ccee402a1d1875ea6",
+        "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+        "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+        "static/inverse/core/direct/counts.js": "38b429832cff5844bef49d4e393d18cb59d689578c6a39f7e1860a257bb34ea8",
+        "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+        "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+        "static/inverse/core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+        "static/inverse/core/direct/feature-seeds.js": "8d13605875bf0f4dfe74c0bc18ac7145023c895754e9842499d6d00879999c45",
+        "static/inverse/core/direct/finalize.js": "2730887151dcae876569c8a5fb2ba8831a1ce4320e92d1735077c4bfe9b90df5",
+        "static/inverse/core/direct/fit.js": "a86a3ff6c104b2be384718cd4b6d0751e5204c71bd7b3c97467fbe6f388b7a4c",
+        "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+        "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+        "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+        "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+        "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+        "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+        "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+        "static/inverse/core/direct/native/PROVENANCE.json": "e9fbaef090fc05bdc9450210f527b1fb3fa6bc77ee86c1902eb97bb6ed0acd2a",
+        "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+        "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58",
+        "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+        "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+        "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+        "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+        "static/inverse/core/direct/refine.js": "7bb1e8f18ff62c6c4cf5f2c5e7f6c398ca7a7ffed0668bc4b8dfef0c8c73953d",
+        "static/inverse/core/direct/share.js": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+        "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+        "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+        "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+        "static/inverse/core/direct/short-returns.js": "d89c3a75df735ca5d519b354b0e47327f58ce56e55f86693de44ded98e857269",
+        "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+        "static/inverse/core/direct/topology.js": "ce6ceff1d1742efd45ae1be71ff58e88d44a6c0dac4b53d141121d68f141a173",
+        "static/inverse/core/engine.js": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+        "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+        "static/inverse/core/feature-recovery.js": "5106e25e15a23740776dfced1f95e3be005fa5217d837f4400c5ee3399190c42",
+        "static/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+        "static/inverse/core/geometry.js": "e9ada76afbaa0ef4bd957cbc4c8c20f09f471cf6ba0c33b84a774aba10a9da84",
+        "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+        "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+        "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+        "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+        "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+        "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+        "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+        "static/inverse/core/material.js": "b38677af5801e894eb869d38df247ea02c06ba2bd773d606da97494e2297ce29",
+        "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+        "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+        "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+        "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+        "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+        "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+        "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+        "static/inverse/core/routing.js": "af2ab7ff657356438dafdc6e41adfd1bb737fe368fb094cada4f8dd2bb7ffce5",
+        "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+        "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+        "static/inverse/core/solver.js": "c4e1362454df612592753de03af71522de75cb87227417bb0d43c077940588d5",
+        "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+        "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+        "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+        "static/inverse/core/validate.js": "0184fc04b25d28e1ea9d21d778711870a2429087fce2b937b6bb0c90266043b6",
+        "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+        "static/inverse/locator/NOTICE.md": "4a9cc65be6ca309d2b57609d760e584ab78c345dae95c789e351bb69180d5b05",
+        "static/inverse/locator/anchored.js": "c4f5276af229a7b9bbc1f686ea308697200cdd787bcdee2692d87a60bcdad991",
+        "static/inverse/locator/background.js": "03d1c9b8f8237a97a7e8ed53d1dfa5117d1db079ba4162cac7117a8761f3441f",
+        "static/inverse/locator/fields.js": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
+        "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+        "static/inverse/locator/locator.js": "971c5205bd738b280b98e32899a8095d00c6520cadee7c8ec0e7e65529d0fbdd",
+        "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+        "static/inverse/locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+        "static/inverse/locator/palette.js": "e6163193c14d753c2b93168c2e2e25602fb240117e1846a1c92a92308bc9084b",
+        "scripts/inverse/hard-photo-cases.json": "a104debdefa7629136a238106304a877daa57fee31abef9ebf09d48c69f87917",
+        "scripts/inverse/photo-cases.json": "a366d97e5a81384eb8745bcfa0fb3201b76cf3f92710ae65bedf88a95fc42385",
+        "scripts/inverse/hard-photo-data.mjs": "1dd31822bf42b54f40c871de7903bbc0be0245c6c41a8d6669002c1eb17e6c9f",
+        "scripts/inverse/hard-photo-target.mjs": "69bdd88cd8f4c992d6b958082ce5b60d88abfab6c3f0299346b7b4a143f80d4a",
+        "scripts/inverse/hard-photo-benchmark.mjs": "129fc3f033db9a4bf7567ca851c98e1c27257b6f374ddfb507d08edf0d8365f8",
+        "scripts/inverse/hard-photo-report.mjs": "60c5698fd2270c65d023ab4dd0c6ff4bf840130b5ac28ac41a1a3d8e8d371b38",
+        "scripts/inverse/crop-evidence.mjs": "52872ad6028a15b5746f51a004d0d5f8a216850559f4dbbbce4235213373b260",
+        "scripts/inverse/export-renderer.mjs": "fb393f73b9c39780795c3951eb82d864fef7ab40ec63a90a4365aae6041afbbe",
+        "src/lib/inverse/presets.js": "17d4f9be7dded0eb6619be3449eb962b67ee04ca96fd61db2777cbf3efb8d954"
+      },
+      "timingDefinitions": {
+        "timeLimit": "Requested solver search allowance, not an end-to-end latency limit.",
+        "detectionSeconds": "Crop detection wall time. Decoding and the source thumbnail are outside this timer.",
+        "runSeconds": "Each runs[].seconds starts after crop detection and source-thumbnail creation. Includes preparation, solving, validation, export, independent replay and per-case artifact writes; excludes decoding and detection.",
+        "solveAndValidationSeconds": "design() wall time, including final validation and generated export data. Excludes crop detection, preparation, independent replay and writing artifacts.",
+        "independentReplaySeconds": "Separate exported-SVG renderer wall time; not part of application solving.",
+        "browser": "Actual click-to-ready latency is measured separately by paint-browser-test.mjs."
+      },
+      "rows": [
+        {
+          "id": "jigsaw",
+          "status": "validated",
+          "input": {
+            "fileSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+            "rgbaSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "width": 1482,
+            "height": 1112
+          },
+          "quad": [
+            [
+              786.16125,
+              637.36125
+            ],
+            [
+              888.6012499999999,
+              716.16125
+            ],
+            [
+              803.89125,
+              821.55625
+            ],
+            [
+              708.34625,
+              731.92125
+            ]
+          ],
+          "roughROI": [
+            681,
+            590,
+            914,
+            832
+          ],
+          "cropAssessment": null,
+          "solverAllowance": 25,
+          "pairChecks": true,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "independentImageError": 0.00999375,
+          "maskSha256": "a56f9553ead05a3acd63b51cee44c4766faf1af5abb87a851dc805e840be144f",
+          "classification": {
+            "method": "lab",
+            "threshold": null,
+            "labCenters": [
+              [
+                49.189284274532596,
+                49.225938835028245,
+                22.576088652530796
+              ],
+              [
+                76.44657807009872,
+                16.439425630010646,
+                5.179784351028873
+              ]
+            ],
+            "inverted": false,
+            "dither": false,
+            "actualResolution": 400,
+            "traceUsed": false,
+            "traceChangeFraction": 0,
+            "totalChangeFraction": 0,
+            "sourceMaskComponents": 7,
+            "vectorSampleComponents": 7,
+            "requestedResolution": 400
+          },
+          "featureCheck": {
+            "passed": true,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 1,
+                "areaMm2": 730.375,
+                "centerMm": [
+                  28.020173712134177,
+                  37.917294198185864
+                ],
+                "retainedFraction": 0.9937532089679959
+              },
+              {
+                "value": 1,
+                "areaMm2": 656.625,
+                "centerMm": [
+                  81.96318770226537,
+                  43.9076004188083
+                ],
+                "retainedFraction": 0.990481629545022
+              },
+              {
+                "value": 1,
+                "areaMm2": 709.9375,
+                "centerMm": [
+                  49.79788053525838,
+                  68.57856105290959
+                ],
+                "retainedFraction": 0.99304516242627
+              }
+            ],
+            "missing": [],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          },
+          "seconds": 7.161407042,
+          "solveAndValidationSeconds": 6.510297500000001,
+          "assets": {
+            "source.png": {
+              "path": "tmp/heart-learning/real-border-fixed25-v1/jigsaw/source.png",
+              "sha256": "e3f2f220f098c8dbc486ce660ac5dd6b78a36b21df6800994252037975a299a2"
+            },
+            "crop.png": {
+              "path": "tmp/heart-learning/real-border-fixed25-v1/jigsaw/crop.png",
+              "sha256": "8712be461b899ed49a27551a47e9598ebcbb909e25213c660179a78a8ae2e000"
+            },
+            "automatic/mask.png": {
+              "path": "tmp/heart-learning/real-border-fixed25-v1/jigsaw/automatic/mask.png",
+              "sha256": "125805c11d50cb68810e20d189be918d8a2e6c470a458da03ad7218565c36caa"
+            },
+            "automatic/independent-weave.png": {
+              "path": "tmp/heart-learning/real-border-fixed25-v1/jigsaw/automatic/independent-weave.png",
+              "sha256": "c7ed8cfcfa2b84dd6fa8e5468fc3e696ae61c97ba4a7688bfad6047c9149d173"
+            },
+            "automatic/cut_geometry.json": {
+              "path": "tmp/heart-learning/real-border-fixed25-v1/jigsaw/automatic/cut_geometry.json",
+              "sha256": "8156bb9b011f437d3ccc60e83aba480c7720f137e3a8fb6a3045cdb1b9b47fd8"
+            }
+          }
+        },
+        {
+          "id": "bauble",
+          "status": "failed",
+          "input": {
+            "fileSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+            "rgbaSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "width": 1482,
+            "height": 1112
+          },
+          "quad": [
+            [
+              570.09,
+              941.20375
+            ],
+            [
+              681.395,
+              1019.01875
+            ],
+            [
+              579.94,
+              1102.74375
+            ],
+            [
+              472.575,
+              1018.03375
+            ]
+          ],
+          "roughROI": [
+            456,
+            860,
+            711,
+            1112
+          ],
+          "cropAssessment": null,
+          "solverAllowance": 25,
+          "pairChecks": false,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "independentImageError": 0.02909375,
+          "maskSha256": "6ae7825a20f0988e542ac2fb667eab971392c47a516dc17589b863949cc20b56",
+          "classification": {
+            "method": "lab",
+            "threshold": null,
+            "labCenters": [
+              [
+                54.917171767392276,
+                40.227647648992395,
+                10.36023053732274
+              ],
+              [
+                82.54093542162364,
+                9.047043350782289,
+                2.0796316926743224
+              ]
+            ],
+            "inverted": false,
+            "dither": false,
+            "actualResolution": 400,
+            "traceUsed": false,
+            "traceChangeFraction": 0,
+            "totalChangeFraction": 0,
+            "sourceMaskComponents": 14,
+            "vectorSampleComponents": 14,
+            "requestedResolution": 400
+          },
+          "featureCheck": {
+            "passed": false,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 1,
+                "areaMm2": 74.5,
+                "centerMm": [
+                  77.78921979865771,
+                  15.21413590604027
+                ],
+                "retainedFraction": 0.7533557046979866
+              },
+              {
+                "value": 1,
+                "areaMm2": 2983.3125,
+                "centerMm": [
+                  48.70241499591478,
+                  47.94891113066432
+                ],
+                "retainedFraction": 0.9977164645004504
+              },
+              {
+                "value": 1,
+                "areaMm2": 4.8125,
+                "centerMm": [
+                  97.69642857142857,
+                  68.0211038961039
+                ],
+                "retainedFraction": 0
+              }
+            ],
+            "missing": [
+              {
+                "value": 1,
+                "areaMm2": 4.8125,
+                "centerMm": [
+                  97.69642857142857,
+                  68.0211038961039
+                ],
+                "retainedFraction": 0
+              }
+            ],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          },
+          "seconds": 24.237659167,
+          "solveAndValidationSeconds": 23.627538291999997,
+          "assets": {
+            "source.png": {
+              "path": "tmp/heart-learning/real-border-fixed25-v1/bauble/source.png",
+              "sha256": "0079c4380a8028527b99f86b45511a492f16ab2797fd242266f4e0276eb0326a"
+            },
+            "crop.png": {
+              "path": "tmp/heart-learning/real-border-fixed25-v1/bauble/crop.png",
+              "sha256": "ab56065a5eb05b3a5b9e6a1ed775f38df00fa9f4e0a67449424a413eebc39930"
+            },
+            "automatic/mask.png": {
+              "path": "tmp/heart-learning/real-border-fixed25-v1/bauble/automatic/mask.png",
+              "sha256": "68b7e9cababd0de56f3f0f56b452e39c2f12ac9ab8fd2b7d4c607b69819a17a1"
+            },
+            "automatic/independent-weave.png": {
+              "path": "tmp/heart-learning/real-border-fixed25-v1/bauble/automatic/independent-weave.png",
+              "sha256": "cad3bee9ef143b6df3874d0e61972b6e577f82d163e0f64284ab211e272a306d"
+            },
+            "automatic/cut_geometry.json": {
+              "path": "tmp/heart-learning/real-border-fixed25-v1/bauble/automatic/cut_geometry.json",
+              "sha256": "c1666166032ae874edf2c0921a8669b66df18614ffb92cf19d2c98dad394bba8"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "experiments": {
+    "inventory": {
+      "path": "tmp/heart-learning/real-crop-experiments-v1/inventory.json",
+      "sha256": "e09bd97d304d63de3bcd91f325b64d4f04e5475f43b2d029ea6a228101f6c3cc",
+      "data": {
+        "baseCommit": "46fbebf",
+        "files": [
+          {
+            "path": "tmp/heart-learning/real-crop-experiments-v1/README.txt",
+            "bytes": 1102,
+            "sha256": "e4194817f8f4d570cb507719077315004e6a81f154bf0430676d04f57c0dbb7a"
+          },
+          {
+            "path": "tmp/heart-learning/roi-anchor-v1/bauble-union.png",
+            "bytes": 203180,
+            "sha256": "089079274d1881458a9457476fcfda6f2eda4b18a90a4f8e56778b4fe45ce9f9"
+          },
+          {
+            "path": "tmp/heart-learning/roi-anchor-v1/bauble.png",
+            "bytes": 203180,
+            "sha256": "089079274d1881458a9457476fcfda6f2eda4b18a90a4f8e56778b4fe45ce9f9"
+          },
+          {
+            "path": "tmp/heart-learning/roi-anchor-v1/jigsaw-union.png",
+            "bytes": 205321,
+            "sha256": "58e85d5f79c9bb71444fc78b3b84c3bbadb78a49e464986c5ec71b8430796bc3"
+          },
+          {
+            "path": "tmp/heart-learning/roi-anchor-v1/jigsaw.png",
+            "bytes": 205321,
+            "sha256": "58e85d5f79c9bb71444fc78b3b84c3bbadb78a49e464986c5ec71b8430796bc3"
+          },
+          {
+            "path": "tmp/heart-learning/roi-anchor-v1/probe.mjs",
+            "bytes": 2721,
+            "sha256": "ed6249aab60d9a9621998deee5a6cec8e38e5fb6e551bb9adb9f4f1aaa865fdc"
+          },
+          {
+            "path": "tmp/heart-learning/roi-anchor-v1/report.json",
+            "bytes": 906,
+            "sha256": "dcb6aa096147e5cc30b062e383d203ed4689ba9e957a7edefe9ccfb43f7a84c6"
+          },
+          {
+            "path": "tmp/heart-learning/roi-anchor-v1/union-probe.mjs",
+            "bytes": 2784,
+            "sha256": "909cb60d4a39d31544fd6d0c6c55c75ea9439429493d73cdb055b3ed48ea6b29"
+          },
+          {
+            "path": "tmp/heart-learning/roi-anchor-v1/union-report.json",
+            "bytes": 1629,
+            "sha256": "14df172c1e901ede7854e748e559337d3bf1b78f1da7eb87727450ce8cbcf447"
+          },
+          {
+            "path": "tmp/heart-learning/scene-colour-v1/bauble-mask.png",
+            "bytes": 2755,
+            "sha256": "bec5cc464d96f07f0260d034d69c2c840121fb9736706bfc223518bb8dd2d37f"
+          },
+          {
+            "path": "tmp/heart-learning/scene-colour-v1/bauble.png",
+            "bytes": 203180,
+            "sha256": "089079274d1881458a9457476fcfda6f2eda4b18a90a4f8e56778b4fe45ce9f9"
+          },
+          {
+            "path": "tmp/heart-learning/scene-colour-v1/fields-hue-only.mjs",
+            "bytes": 2370,
+            "sha256": "3bebdca9b24ad4fb4f5b6a21bd861e04ab20e447b64b20e1f551d306c9e26934"
+          },
+          {
+            "path": "tmp/heart-learning/scene-colour-v1/fields.mjs",
+            "bytes": 2475,
+            "sha256": "f71e6c58372f137952fd7f41420b382a995ac7e556776b4f9261068c96053040"
+          },
+          {
+            "path": "tmp/heart-learning/scene-colour-v1/jigsaw-mask.png",
+            "bytes": 2764,
+            "sha256": "e7681359895aeb26318d0d1fafd684e6c8c28cf79b316ce2ab16e9c21d6ed3f7"
+          },
+          {
+            "path": "tmp/heart-learning/scene-colour-v1/jigsaw.png",
+            "bytes": 205321,
+            "sha256": "58e85d5f79c9bb71444fc78b3b84c3bbadb78a49e464986c5ec71b8430796bc3"
+          },
+          {
+            "path": "tmp/heart-learning/scene-colour-v1/luminance.log",
+            "bytes": 3200,
+            "sha256": "50db3fde6fe8583a48a0d36a42296d5c4a6eeef0beda1c0c73bb2d5b37b3a48a"
+          },
+          {
+            "path": "tmp/heart-learning/scene-colour-v1/probe.log",
+            "bytes": 1094,
+            "sha256": "9080cf06e9dcc38158ec907ce96bef7d52b788fd2bc747f790ac8b1fe6a7c770"
+          },
+          {
+            "path": "tmp/heart-learning/scene-colour-v1/probe.mjs",
+            "bytes": 2505,
+            "sha256": "7b38b2bad4a65d7a3f15dcde0a380ea560bdb564c566dc00dc8e546f68495700"
+          },
+          {
+            "path": "tmp/heart-learning/scene-colour-v1/report.json",
+            "bytes": 2070,
+            "sha256": "0a3c4579a49c0410cf84f3698775f09a9e39628a00c940d2683ad54f50ca2990"
+          },
+          {
+            "path": "tmp/heart-learning/edge-hypotheses-v1/bauble-exterior.png",
+            "bytes": 218747,
+            "sha256": "97b337c82d8f21da2ef4c3de841048a925d8a4191acc79988be095be44ba909d"
+          },
+          {
+            "path": "tmp/heart-learning/edge-hypotheses-v1/bauble-gradient.png",
+            "bytes": 218272,
+            "sha256": "8d667502fef9e6afd86d0f2d80617db231f5b75d76bca9611cafbf864ba304ab"
+          },
+          {
+            "path": "tmp/heart-learning/edge-hypotheses-v1/bauble-original.png",
+            "bytes": 220446,
+            "sha256": "9a3520a73438c3930cd85b171fad619cba69b223b426f70f06af605fbc44ead5"
+          },
+          {
+            "path": "tmp/heart-learning/edge-hypotheses-v1/bauble-scene.png",
+            "bytes": 216266,
+            "sha256": "efaf179f94fef8d907d6bbee1f7013bb2db97c0c9bc98419173a9773d13e986b"
+          },
+          {
+            "path": "tmp/heart-learning/edge-hypotheses-v1/exterior-probe.mjs",
+            "bytes": 3289,
+            "sha256": "6f1839e96ccb2d86125705036e452adabfa9cfdfb7bbfb44273a5d529a301afd"
+          },
+          {
+            "path": "tmp/heart-learning/edge-hypotheses-v1/exterior-report.json",
+            "bytes": 878308,
+            "sha256": "5f6a1e8065c843174ae413db3da205fce85c5e4c9b85664ddda092fc40dbb2a8"
+          },
+          {
+            "path": "tmp/heart-learning/edge-hypotheses-v1/exterior.log",
+            "bytes": 2351,
+            "sha256": "6ed8a24ec704a1ed26bed45b4c1686b6b65a0cd63e4e0d6f23be1af93c9a7c05"
+          },
+          {
+            "path": "tmp/heart-learning/edge-hypotheses-v1/gradient-probe.mjs",
+            "bytes": 3257,
+            "sha256": "f184449246f6be20f5d81a9a137783805607790c6c0b5bd9273ffe7fb21d754e"
+          },
+          {
+            "path": "tmp/heart-learning/edge-hypotheses-v1/gradient-report.json",
+            "bytes": 874373,
+            "sha256": "7ac3e67d58e16bde2a2fe2593c5ecb8091d589d71fb2f45d7f010e09c3c638a1"
+          },
+          {
+            "path": "tmp/heart-learning/edge-hypotheses-v1/gradient.log",
+            "bytes": 2298,
+            "sha256": "90b2c8fe31b3e09065f879cfeb0d08c51d09f14e77e5db1b03af60b3f6d82c50"
+          },
+          {
+            "path": "tmp/heart-learning/edge-hypotheses-v1/jigsaw-exterior.png",
+            "bytes": 220629,
+            "sha256": "310af756a953422dcec20f7dcbfd4a4af120d5b00e5943c701cfc54cbfcd7537"
+          },
+          {
+            "path": "tmp/heart-learning/edge-hypotheses-v1/jigsaw-gradient.png",
+            "bytes": 220761,
+            "sha256": "647602a42d1a5cd1a9d15b93c431212e97a01308d252effce17560e431cba44b"
+          },
+          {
+            "path": "tmp/heart-learning/edge-hypotheses-v1/jigsaw-original.png",
+            "bytes": 223768,
+            "sha256": "f8480e1d5282e8470364f3fba27bfbf79515f69478452a5c1b8a4efd0a45afdb"
+          },
+          {
+            "path": "tmp/heart-learning/edge-hypotheses-v1/jigsaw-scene.png",
+            "bytes": 224447,
+            "sha256": "73b96a1c75e9f5a1b69aba0338a6405b9c3b26626655a80b4ca879ac791cf796"
+          },
+          {
+            "path": "tmp/heart-learning/edge-hypotheses-v1/lines-gradient.mjs",
+            "bytes": 2461,
+            "sha256": "00ded8bbd0845d9f88638b0c7542ff4e33454a91cae8ec53169c948c04c59508"
+          },
+          {
+            "path": "tmp/heart-learning/edge-hypotheses-v1/lines-mask.mjs",
+            "bytes": 2282,
+            "sha256": "032b722b014f4c2b821cd3b34a2760e2843ecf1fa6d784cf518799403d576be2"
+          },
+          {
+            "path": "tmp/heart-learning/edge-hypotheses-v1/lines.mjs",
+            "bytes": 2955,
+            "sha256": "bc2c4033f5b508ef111433c2fab5c0b3f70b385f90ed7c52a4b3780ea65105be"
+          },
+          {
+            "path": "tmp/heart-learning/edge-hypotheses-v1/probe.log",
+            "bytes": 5157,
+            "sha256": "3b5d18738521270ba874a4d65073dff9e43f4b783831da77aec8850ddc0ef024"
+          },
+          {
+            "path": "tmp/heart-learning/edge-hypotheses-v1/probe.mjs",
+            "bytes": 2859,
+            "sha256": "6d710a19cbe1d1b7a2e74b478435fc71eccb55a1976ae97767e944ded783b7f0"
+          },
+          {
+            "path": "tmp/heart-learning/edge-hypotheses-v1/report.json",
+            "bytes": 774391,
+            "sha256": "cda45dcab14dfc05482d71192e481a039eaa2e8514907cbe4649e5fae13e9d41"
+          }
+        ],
+        "archiveSha256": "e5609c52930847caf7dcb59ad2b76d7f9afd52d80d5c70042c5eb40039af80a7"
+      }
+    },
+    "selectedOutcomes": [
+      {
+        "path": "tmp/heart-learning/roi-anchor-v1/report.json",
+        "sha256": "dcb6aa096147e5cc30b062e383d203ed4689ba9e957a7edefe9ccfb43f7a84c6",
+        "rows": [
+          {
+            "id": "jigsaw",
+            "status": "needs_review",
+            "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+            "quad": null
+          },
+          {
+            "id": "bauble",
+            "status": "not_found",
+            "reason": "No two distinct paper colours on a sufficiently plain background",
+            "quad": null
+          }
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/roi-anchor-v1/union-report.json",
+        "sha256": "14df172c1e901ede7854e748e559337d3bf1b78f1da7eb87727450ce8cbcf447",
+        "rows": [
+          {
+            "id": "jigsaw",
+            "status": "needs_review",
+            "reason": "The coloured region does not support two paper lobes and an overlap square.",
+            "quad": null
+          },
+          {
+            "id": "bauble",
+            "status": "needs_review",
+            "reason": "No nondegenerate heart-shape fit",
+            "quad": null
+          }
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/scene-colour-v1/report.json",
+        "sha256": "0a3c4579a49c0410cf84f3698775f09a9e39628a00c940d2683ad54f50ca2990",
+        "rows": [
+          {
+            "id": "jigsaw",
+            "status": "needs_review",
+            "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+          },
+          {
+            "id": "bauble",
+            "status": "needs_review",
+            "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+          }
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/edge-hypotheses-v1/report.json",
+        "sha256": "cda45dcab14dfc05482d71192e481a039eaa2e8514907cbe4649e5fae13e9d41",
+        "rows": [
+          {
+            "id": "jigsaw",
+            "model": "original",
+            "top": [
+              {
+                "quad": [
+                  [
+                    788.2197018916327,
+                    624.3786399721492
+                  ],
+                  [
+                    883.267927256754,
+                    726.415903119552
+                  ],
+                  [
+                    758.6364561280699,
+                    841.8005799566479
+                  ],
+                  [
+                    686.8141180861518,
+                    705.7622367775147
+                  ]
+                ],
+                "prototypeScore": 3.7185387320250305,
+                "prototypeSupported": false,
+                "lobeSupport": [
+                  0.6388888888888888,
+                  0.4722222222222222
+                ],
+                "capColourLoss": [
+                  0.053994636955166264,
+                  0.09001216455561306
+                ],
+                "lowerLineSupport": [
+                  0.41025641025641024,
+                  0.5398230088495575
+                ]
+              },
+              {
+                "quad": [
+                  [
+                    788.09608068399,
+                    623.4226689819258
+                  ],
+                  [
+                    881.4541300101836,
+                    725.7224193938008
+                  ],
+                  [
+                    783.5259775381485,
+                    829.9238440406475
+                  ],
+                  [
+                    674.3649650861375,
+                    719.6159458884688
+                  ]
+                ],
+                "prototypeScore": 3.7347297098436942,
+                "prototypeSupported": false,
+                "lobeSupport": [
+                  0.5555555555555556,
+                  0.5555555555555556
+                ],
+                "capColourLoss": [
+                  0.052877063574584306,
+                  0.2777541260410943
+                ],
+                "lowerLineSupport": [
+                  0.3333333333333333,
+                  0.4247787610619469
+                ]
+              },
+              {
+                "quad": [
+                  [
+                    787.9554288320692,
+                    623.6143907176681
+                  ],
+                  [
+                    880.2114360234191,
+                    723.0672460323457
+                  ],
+                  [
+                    786.7675123107413,
+                    835.73617354257
+                  ],
+                  [
+                    679.1621743960759,
+                    715.1679995088591
+                  ]
+                ],
+                "prototypeScore": 3.7881458991665635,
+                "prototypeSupported": false,
+                "lobeSupport": [
+                  0.5555555555555556,
+                  0.4722222222222222
+                ],
+                "capColourLoss": [
+                  0.049801427228027245,
+                  0.2529796003716359
+                ],
+                "lowerLineSupport": [
+                  0.48717948717948717,
+                  0.36283185840707965
+                ]
+              }
+            ]
+          },
+          {
+            "id": "jigsaw",
+            "model": "scene",
+            "top": [
+              {
+                "quad": [
+                  [
+                    804.4007634158338,
+                    614.7531613461714
+                  ],
+                  [
+                    879.2433537929204,
+                    729.0112151353014
+                  ],
+                  [
+                    784.314951406421,
+                    839.5133082256403
+                  ],
+                  [
+                    686.8846045244001,
+                    714.3111778393554
+                  ]
+                ],
+                "prototypeScore": 4.143344399215111,
+                "prototypeSupported": false,
+                "lobeSupport": [
+                  0.4722222222222222,
+                  0.2222222222222222
+                ],
+                "capColourLoss": [
+                  0.011258830538944005,
+                  0.05716401815789044
+                ],
+                "lowerLineSupport": [
+                  0.5476190476190477,
+                  0.504424778761062
+                ]
+              },
+              {
+                "quad": [
+                  [
+                    804.0348467986448,
+                    614.6080321558786
+                  ],
+                  [
+                    878.9769163796063,
+                    728.0652228185587
+                  ],
+                  [
+                    777.1469714397045,
+                    836.7045884484298
+                  ],
+                  [
+                    697.985586468591,
+                    703.8966450671402
+                  ]
+                ],
+                "prototypeScore": 4.146270993186006,
+                "prototypeSupported": false,
+                "lobeSupport": [
+                  0.4722222222222222,
+                  0.1111111111111111
+                ],
+                "capColourLoss": [
+                  0.017799134282465236,
+                  0.00004696710795654763
+                ],
+                "lowerLineSupport": [
+                  0.3333333333333333,
+                  0.4424778761061947
+                ]
+              },
+              {
+                "quad": [
+                  [
+                    803.2337951535899,
+                    615.472888022754
+                  ],
+                  [
+                    879.0469637132416,
+                    727.0840294152499
+                  ],
+                  [
+                    770.9741540547543,
+                    826.3485394472323
+                  ],
+                  [
+                    697.8068661314348,
+                    703.5968084684403
+                  ]
+                ],
+                "prototypeScore": 4.1724841640732535,
+                "prototypeSupported": false,
+                "lobeSupport": [
+                  0.5,
+                  0.19444444444444445
+                ],
+                "capColourLoss": [
+                  0.061459956804767714,
+                  0.000105413453783972
+                ],
+                "lowerLineSupport": [
+                  0.3333333333333333,
+                  0.4690265486725664
+                ]
+              }
+            ]
+          },
+          {
+            "id": "bauble",
+            "model": "original",
+            "top": [
+              {
+                "quad": [
+                  [
+                    578.3164612668022,
+                    915.1779557262012
+                  ],
+                  [
+                    720.8242962704325,
+                    1012.4243608747254
+                  ],
+                  [
+                    577.5032281140786,
+                    1124.5430559916358
+                  ],
+                  [
+                    470.4565318361706,
+                    1013.288751388146
+                  ]
+                ],
+                "prototypeScore": 3.9299060782124573,
+                "prototypeSupported": false,
+                "lobeSupport": [
+                  0.5,
+                  0.6388888888888888
+                ],
+                "capColourLoss": [
+                  0.08906665735125194,
+                  0.008090161980818498
+                ],
+                "lowerLineSupport": [
+                  0.6338028169014085,
+                  0.34782608695652173
+                ]
+              },
+              {
+                "quad": [
+                  [
+                    578.0396035771098,
+                    914.8755789129926
+                  ],
+                  [
+                    720.5696492597054,
+                    1012.6235687855051
+                  ],
+                  [
+                    579.0571866817738,
+                    1123.3274091288479
+                  ],
+                  [
+                    468.4228669688958,
+                    1016.3658541031075
+                  ]
+                ],
+                "prototypeScore": 4.057336023954905,
+                "prototypeSupported": false,
+                "lobeSupport": [
+                  0.4444444444444444,
+                  0.6111111111111112
+                ],
+                "capColourLoss": [
+                  0.08722833452413067,
+                  0.01668296623645475
+                ],
+                "lowerLineSupport": [
+                  0.6338028169014085,
+                  0.34782608695652173
+                ]
+              },
+              {
+                "quad": [
+                  [
+                    578.1966786559453,
+                    914.5389158415699
+                  ],
+                  [
+                    720.8554677132578,
+                    1012.3999757543836
+                  ],
+                  [
+                    580.0667037294786,
+                    1122.5376736381559
+                  ],
+                  [
+                    467.14928067514603,
+                    1018.4441076448131
+                  ]
+                ],
+                "prototypeScore": 4.237228020827197,
+                "prototypeSupported": false,
+                "lobeSupport": [
+                  0.4444444444444444,
+                  0.5833333333333334
+                ],
+                "capColourLoss": [
+                  0.08123089537192377,
+                  0.025641748876871942
+                ],
+                "lowerLineSupport": [
+                  0.4084507042253521,
+                  0.34782608695652173
+                ]
+              }
+            ]
+          },
+          {
+            "id": "bauble",
+            "model": "scene",
+            "top": [
+              {
+                "quad": [
+                  [
+                    583.8091502897113,
+                    920.1767770794446
+                  ],
+                  [
+                    670.0726401756426,
+                    1020.8901825167042
+                  ],
+                  [
+                    572.0838225943595,
+                    1118.6495467488783
+                  ],
+                  [
+                    482.84298936172024,
+                    1032.4366047039598
+                  ]
+                ],
+                "prototypeScore": -6.095784368538716,
+                "prototypeSupported": false,
+                "lobeSupport": [
+                  0.6111111111111112,
+                  0.3333333333333333
+                ],
+                "capColourLoss": [
+                  0.003839826298656183,
+                  0.0007368356418139574
+                ],
+                "lowerLineSupport": [
+                  0.48936170212765956,
+                  0.5
+                ]
+              },
+              {
+                "quad": [
+                  [
+                    582.509444046585,
+                    920.838240439563
+                  ],
+                  [
+                    671.210049484137,
+                    1019.816996485097
+                  ],
+                  [
+                    574.8123294562417,
+                    1123.895311108914
+                  ],
+                  [
+                    484.0386400644051,
+                    1031.01001206121
+                  ]
+                ],
+                "prototypeScore": -6.046738183770687,
+                "prototypeSupported": false,
+                "lobeSupport": [
+                  0.5555555555555556,
+                  0.3333333333333333
+                ],
+                "capColourLoss": [
+                  0.00350081762602577,
+                  0.0008050722679865951
+                ],
+                "lowerLineSupport": [
+                  0.43617021276595747,
+                  0.7021276595744681
+                ]
+              },
+              {
+                "quad": [
+                  [
+                    581.8838606043815,
+                    923.0779761809582
+                  ],
+                  [
+                    671.4417962878463,
+                    1019.524232458652
+                  ],
+                  [
+                    570.8696304809748,
+                    1119.8608956761345
+                  ],
+                  [
+                    483.8207050958753,
+                    1030.7870074123912
+                  ]
+                ],
+                "prototypeScore": -5.748034105961872,
+                "prototypeSupported": false,
+                "lobeSupport": [
+                  0.5,
+                  0.3333333333333333
+                ],
+                "capColourLoss": [
+                  0.003857694572694143,
+                  0.00021882773016137748
+                ],
+                "lowerLineSupport": [
+                  0.43617021276595747,
+                  0.5
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/edge-hypotheses-v1/gradient-report.json",
+        "sha256": "7ac3e67d58e16bde2a2fe2593c5ecb8091d589d71fb2f45d7f010e09c3c638a1",
+        "rows": [
+          {
+            "id": "jigsaw",
+            "model": "gradient",
+            "top": [
+              {
+                "quad": [
+                  [
+                    788.2587155860092,
+                    624.111988524757
+                  ],
+                  [
+                    881.6723169139472,
+                    724.31993903496
+                  ],
+                  [
+                    809.7839962620046,
+                    800.590877500064
+                  ],
+                  [
+                    707.3699059775181,
+                    690.8344111191968
+                  ]
+                ],
+                "prototypeScore": 0.5328850426445675,
+                "prototypeSupported": true,
+                "lobeSupport": [
+                  0.6944444444444444,
+                  0.7222222222222222
+                ],
+                "capColourLoss": [
+                  0.05327205403498532,
+                  0.00023289111509571124
+                ],
+                "lowerLineSupport": [
+                  0.672566371681416,
+                  0.7256637168141593
+                ]
+              },
+              {
+                "quad": [
+                  [
+                    788.9989503407141,
+                    623.9179646724909
+                  ],
+                  [
+                    880.8275221342553,
+                    725.216236097865
+                  ],
+                  [
+                    781.3380525163886,
+                    830.7710069748937
+                  ],
+                  [
+                    681.4655988621996,
+                    710.6488626566642
+                  ]
+                ],
+                "prototypeScore": 2.1832259403516527,
+                "prototypeSupported": true,
+                "lobeSupport": [
+                  0.6666666666666666,
+                  0.6944444444444444
+                ],
+                "capColourLoss": [
+                  0.05122985719490621,
+                  0.22561604373923017
+                ],
+                "lowerLineSupport": [
+                  0.7079646017699115,
+                  0.7256637168141593
+                ]
+              },
+              {
+                "quad": [
+                  [
+                    789.076875347764,
+                    624.434266953221
+                  ],
+                  [
+                    881.1894161020739,
+                    725.0102631518552
+                  ],
+                  [
+                    778.0697488861634,
+                    826.8400367625759
+                  ],
+                  [
+                    681.2055913014218,
+                    710.3361371292858
+                  ]
+                ],
+                "prototypeScore": 2.262611336508011,
+                "prototypeSupported": true,
+                "lobeSupport": [
+                  0.6944444444444444,
+                  0.6944444444444444
+                ],
+                "capColourLoss": [
+                  0.0527331368638372,
+                  0.2370417139874092
+                ],
+                "lowerLineSupport": [
+                  0.7079646017699115,
+                  0.7876106194690266
+                ]
+              }
+            ]
+          },
+          {
+            "id": "bauble",
+            "model": "gradient",
+            "top": [
+              {
+                "quad": [
+                  [
+                    576.1924749021646,
+                    916.3919677852048
+                  ],
+                  [
+                    681.1596270815851,
+                    1009.2164516213593
+                  ],
+                  [
+                    581.8062453343447,
+                    1104.1505525233865
+                  ],
+                  [
+                    476.7005656507531,
+                    1007.4905347308545
+                  ]
+                ],
+                "prototypeScore": 1.5960730379820387,
+                "prototypeSupported": true,
+                "lobeSupport": [
+                  1,
+                  1
+                ],
+                "capColourLoss": [
+                  0.07839205850517904,
+                  0.006312627257564719
+                ],
+                "lowerLineSupport": [
+                  0.7457627118644068,
+                  0.7796610169491526
+                ]
+              },
+              {
+                "quad": [
+                  [
+                    576.5834325784459,
+                    918.3643483206897
+                  ],
+                  [
+                    680.2394859799995,
+                    1007.8212781776842
+                  ],
+                  [
+                    598.8749287785618,
+                    1093.6335142654648
+                  ],
+                  [
+                    483.7468896986753,
+                    987.3795015677879
+                  ]
+                ],
+                "prototypeScore": 1.6866202380259996,
+                "prototypeSupported": true,
+                "lobeSupport": [
+                  1,
+                  0.9444444444444444
+                ],
+                "capColourLoss": [
+                  0.08009695112260419,
+                  0.009056003295111255
+                ],
+                "lowerLineSupport": [
+                  0.6694915254237288,
+                  0.8728813559322034
+                ]
+              },
+              {
+                "quad": [
+                  [
+                    576.7706010282832,
+                    917.7600133765574
+                  ],
+                  [
+                    676.5263761949391,
+                    1006.1627583483562
+                  ],
+                  [
+                    576.251345223963,
+                    1101.7829185939595
+                  ],
+                  [
+                    473.4443413458923,
+                    1000.0761844021802
+                  ]
+                ],
+                "prototypeScore": 1.7022988489837074,
+                "prototypeSupported": true,
+                "lobeSupport": [
+                  0.9722222222222222,
+                  0.9722222222222222
+                ],
+                "capColourLoss": [
+                  0.07736147033742001,
+                  0.0037157429062843164
+                ],
+                "lowerLineSupport": [
+                  0.8559322033898306,
+                  0.7033898305084746
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/edge-hypotheses-v1/exterior-report.json",
+        "sha256": "5f6a1e8065c843174ae413db3da205fce85c5e4c9b85664ddda092fc40dbb2a8",
+        "rows": [
+          {
+            "id": "jigsaw",
+            "model": "exterior",
+            "top": [
+              {
+                "quad": [
+                  [
+                    789.1587660241323,
+                    625.0507360621992
+                  ],
+                  [
+                    881.4881516829397,
+                    724.715264366557
+                  ],
+                  [
+                    807.322641120172,
+                    797.9530603586384
+                  ],
+                  [
+                    706.370665473182,
+                    689.763532038829
+                  ]
+                ],
+                "prototypeScore": 5.722958133727835,
+                "prototypeSupported": false,
+                "lobeSupport": [
+                  0.6388888888888888,
+                  0.7222222222222222
+                ],
+                "capColourLoss": [
+                  0.0539355001715031,
+                  0.00020195556609589295
+                ],
+                "lowerLineSupport": [
+                  0.672566371681416,
+                  0.7876106194690266
+                ],
+                "outsidePaper": 0.6349587606503914
+              },
+              {
+                "quad": [
+                  [
+                    788.7961350002282,
+                    624.4130429257729
+                  ],
+                  [
+                    881.4529119448573,
+                    724.7500633011144
+                  ],
+                  [
+                    809.6723825184463,
+                    795.6327111848087
+                  ],
+                  [
+                    704.928000229343,
+                    691.6342680781017
+                  ]
+                ],
+                "prototypeScore": 5.728540784326795,
+                "prototypeSupported": false,
+                "lobeSupport": [
+                  0.6944444444444444,
+                  0.6944444444444444
+                ],
+                "capColourLoss": [
+                  0.05504745882183493,
+                  0.001038877644313263
+                ],
+                "lowerLineSupport": [
+                  0.6548672566371682,
+                  0.7876106194690266
+                ],
+                "outsidePaper": 0.6277062785107558
+              },
+              {
+                "quad": [
+                  [
+                    789.3794812311218,
+                    624.5134987754966
+                  ],
+                  [
+                    881.229193658119,
+                    725.2993068755271
+                  ],
+                  [
+                    804.445978639324,
+                    796.3918721594054
+                  ],
+                  [
+                    715.5510143318782,
+                    682.2472615517813
+                  ]
+                ],
+                "prototypeScore": 5.899345356865165,
+                "prototypeSupported": false,
+                "lobeSupport": [
+                  0.6111111111111112,
+                  0.8611111111111112
+                ],
+                "capColourLoss": [
+                  0.05238215812108295,
+                  0.00007111881231426488
+                ],
+                "lowerLineSupport": [
+                  0.49557522123893805,
+                  0.9557522123893806
+                ],
+                "outsidePaper": 0.6546445799583096
+              }
+            ]
+          },
+          {
+            "id": "bauble",
+            "model": "exterior",
+            "top": [
+              {
+                "quad": [
+                  [
+                    576.4624172782748,
+                    917.3124116583326
+                  ],
+                  [
+                    686.7745289559678,
+                    1000.92900628454
+                  ],
+                  [
+                    575.6077893472889,
+                    1118.1725190930904
+                  ],
+                  [
+                    479.08654921187986,
+                    999.1934768359818
+                  ]
+                ],
+                "prototypeScore": 8.42805983521897,
+                "prototypeSupported": false,
+                "lobeSupport": [
+                  0.9444444444444444,
+                  0.9166666666666666
+                ],
+                "capColourLoss": [
+                  0.08278055732939478,
+                  0.0011158050371901157
+                ],
+                "lowerLineSupport": [
+                  0.5254237288135594,
+                  0.8728813559322034
+                ],
+                "outsidePaper": 0.823024057120587
+              },
+              {
+                "quad": [
+                  [
+                    575.573070608371,
+                    916.1375266074192
+                  ],
+                  [
+                    670.2518087464005,
+                    1018.1853405471643
+                  ],
+                  [
+                    590.9165346784034,
+                    1116.2911570354165
+                  ],
+                  [
+                    483.36044452647013,
+                    1009.8861626367507
+                  ]
+                ],
+                "prototypeScore": 8.560831984810886,
+                "prototypeSupported": false,
+                "lobeSupport": [
+                  0.9166666666666666,
+                  0.9444444444444444
+                ],
+                "capColourLoss": [
+                  0.06789039306034798,
+                  0.01667148162181883
+                ],
+                "lowerLineSupport": [
+                  0.8559322033898306,
+                  0.5847457627118644
+                ],
+                "outsidePaper": 0.8818873639691877
+              },
+              {
+                "quad": [
+                  [
+                    576.2213789821685,
+                    917.6210692871811
+                  ],
+                  [
+                    670.0222079774766,
+                    1018.5970692872742
+                  ],
+                  [
+                    575.1114777766705,
+                    1118.695960836472
+                  ],
+                  [
+                    483.0572601966877,
+                    994.8471689528869
+                  ]
+                ],
+                "prototypeScore": 8.579080731912637,
+                "prototypeSupported": false,
+                "lobeSupport": [
+                  0.9166666666666666,
+                  0.7777777777777778
+                ],
+                "capColourLoss": [
+                  0.06732103426890601,
+                  0.002933103900371282
+                ],
+                "lowerLineSupport": [
+                  0.5254237288135594,
+                  0.8728813559322034
+                ],
+                "outsidePaper": 0.8438320062082799
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "qa": {
+    "path": "tmp/heart-learning/real-border-qa-v1/report.json",
+    "sha256": "5f91b08c471a9837c46a21840bb97acd3b6cb470307ea5fd8c6d7ee1201e7735",
+    "data": [
+      {
+        "command": [
+          "node",
+          "scripts/inverse/hard-photo-benchmark.mjs",
+          "--ids=jigsaw,bauble",
+          "--crop=fixed",
+          "--target=mask",
+          "--seconds=25",
+          "--output=tmp/heart-learning/real-border-fixed25-v1"
+        ],
+        "exitCode": 0,
+        "seconds": 31.77569025,
+        "log": "tmp/heart-learning/real-border-qa-v1/0.log",
+        "logSha256": "cfa15e3ebce0914eb38a35f000312e6e6bd59d1afcdf24df82f763ff4f830171"
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 7.447853000000002,
+        "log": "tmp/heart-learning/real-border-qa-v1/1.log",
+        "logSha256": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092"
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 5.466184417000001,
+        "log": "tmp/heart-learning/real-border-qa-v1/2.log",
+        "logSha256": "a552732ebea6b64b49ac0a1299170db75e8c45dbbc66c284f28e99be5613e5c7"
+      },
+      {
+        "command": [
+          "npm",
+          "exec",
+          "vitest",
+          "run",
+          "--",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 33.93853925,
+        "log": "tmp/heart-learning/real-border-qa-v1/3.log",
+        "logSha256": "7187a64087c7b0fdb8ed6da8238e1f3db4e5f0c0d8ba49a8ec362976f79e9318"
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "test:inverse"
+        ],
+        "exitCode": 0,
+        "seconds": 498.755047125,
+        "log": "tmp/heart-learning/real-border-qa-v1/4.log",
+        "logSha256": "b09bbbac30ad2ecba55c9b21eaec84a5bfb8fab7d0266ffe7855582d54903a80"
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 9.808405249999964,
+        "log": "tmp/heart-learning/real-border-qa-v1/5.log",
+        "logSha256": "8483e28367040385ffcbc4a98e05db43124911a2ce8c21413befad547199581d"
+      }
+    ]
+  },
+  "browser": {
+    "path": "tmp/heart-learning/real-crop-report-browser-v1/report.json",
+    "sha256": "450fcc8bf1b354f41bd4b5f97760fbdba0a21a6f27e41d92d3593a4dbc604a3c",
+    "data": {
+      "status": "passed",
+      "htmlPath": "tmp/heart-learning/real-border-automatic25-v1/index.html",
+      "htmlSha256": "8e4a3cd76e666a2d40816a406f00bdd650f1fc9070fc4e76287efa474f9533bb",
+      "browser": "145.0.7632.6",
+      "checks": [
+        "accepted pair count retained",
+        "two weak outlines distinguished from pair checks",
+        "one out-of-photo corner",
+        "all images decoded",
+        "filter preserves both independent diagnostics"
+      ],
+      "errors": []
+    }
+  }
+}

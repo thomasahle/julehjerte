@@ -1,0 +1,568 @@
+{
+  "schema": "woven-heart-polishing-fold-recovery-1",
+  "status": "complete-qa-and-independent-export-audit; strict-historical-photo-error-gate-fails",
+  "rootCause": "Detailed outline polishing froze the eight-millimetre border band even when an initial raster pass concealed a fold island. Final repair could inherit those locks or run out of time.",
+  "implementation": [
+    "Check polygon offsets at detailed-polishing checkpoints while the regular constrained fitter can still improve the curves.",
+    "Activate fold and local separation only for the diagnosed sheet families.",
+    "Release temporary fold-band locks only on an affected sheet; preserve all original endpoint constraints.",
+    "Do not launch redundant whole-family separation retries for a diagnosed geometric defect. Final fine-offset, lattice, image and feature checks remain unchanged."
+  ],
+  "sourceCase": "flettede-stonehenge",
+  "replays": [
+    {
+      "name": "original-1",
+      "clockScale": 1,
+      "before": {
+        "seconds": 10.741605250000001,
+        "passed": false,
+        "error": 0.01156875
+      },
+      "after": {
+        "seconds": 9.940665000000001,
+        "passed": true,
+        "error": 0.012575
+      },
+      "lateRepairAttempted": false,
+      "maskSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890"
+    },
+    {
+      "name": "vertical-1",
+      "clockScale": 1,
+      "before": {
+        "seconds": 10.172970083000001,
+        "passed": false,
+        "error": 0.011375
+      },
+      "after": {
+        "seconds": 9.361965167000001,
+        "passed": true,
+        "error": 0.01335
+      },
+      "lateRepairAttempted": false,
+      "maskSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea"
+    },
+    {
+      "name": "original-1.5",
+      "clockScale": 1.5,
+      "before": {
+        "seconds": 6.829523459,
+        "passed": true,
+        "error": 0.02115625
+      },
+      "after": {
+        "seconds": 6.760458542,
+        "passed": true,
+        "error": 0.02115625
+      },
+      "lateRepairAttempted": false,
+      "maskSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890"
+    },
+    {
+      "name": "vertical-1.5",
+      "clockScale": 1.5,
+      "before": {
+        "seconds": 6.703966417000003,
+        "passed": false,
+        "error": 0.01505
+      },
+      "after": {
+        "seconds": 6.678543542000003,
+        "passed": true,
+        "error": 0.01569375
+      },
+      "lateRepairAttempted": false,
+      "maskSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea"
+    }
+  ],
+  "timingQualification": "One fresh run per condition. Seconds measure design plus engine finalization, excluding image preparation and the independent exported render. Scale 1.5 is an accelerated monotonic deadline clock, not a browser speed measurement.",
+  "fidelityQualification": "Validity improves from one to four checked outputs. The formerly invalid original and vertically shifted fits have slightly less mask error. This is not a strict fidelity improvement over invalid geometry, nor evidence of four new photographs.",
+  "independentGeos": {
+    "cases": 4,
+    "probes": 48,
+    "passed": 48,
+    "flatteningTolerances": [
+      0.0005,
+      0.002
+    ],
+    "method": "Independent de Casteljau flattening and Shapely/GEOS offsets; three radii at each of two tolerances for both families.",
+    "limitations": [
+      "Polygonal GEOS approximation, not a physical strength certificate.",
+      "Continuous positive fold support is compared with the lattice half-cell threshold, not asserted identical.",
+      "Radius brackets expose numerical sensitivity; component statuses are not monotone in radius."
+    ]
+  },
+  "regressionTests": {
+    "existingFocusedPassed": 19,
+    "outlineTestsPassed": 6,
+    "newTests": 2,
+    "newTestCoverage": "Both sheet orientations: coarse lattice false pass, geometric defect detected before a safe rollback, fold locks released, endpoints preserved, independently rendered error below 0.5%, source graph and target arrays immutable."
+  },
+  "preflight": {
+    "sourceFilesVerified": 827,
+    "checks": [
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 10.188992584
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 7.229600584
+      },
+      {
+        "stage": "app",
+        "command": [
+          "npx",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 25.197640292
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 15.024553500000003
+      },
+      {
+        "stage": "restart",
+        "command": [
+          "python3",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/conditional-paper-repair-v2/preflight-v1/restart-preview.py"
+        ],
+        "exitCode": 0,
+        "seconds": 1.4496825000000015
+      },
+      {
+        "stage": "entry",
+        "command": [
+          "node",
+          "scripts/inverse/entry-loading-browser-test.mjs",
+          "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/conditional-paper-repair-v2/preflight-v1/entry"
+        ],
+        "exitCode": 0,
+        "seconds": 4.243742249999997
+      },
+      {
+        "stage": "offset-browser",
+        "command": [
+          "node",
+          "scripts/inverse/geometric-paper-browser-test.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 3.59796412499999
+      },
+      {
+        "stage": "paint",
+        "command": [
+          "node",
+          "scripts/inverse/paint-browser-test.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 19.566227791000003
+      }
+    ],
+    "applicationPassed": 857,
+    "applicationSkipped": 1,
+    "visualReview": "Reviewed independent weave renders and both Chromium Draw screenshots. Star retains shared approaches; free-border hat remains editable with shared connectors."
+  },
+  "evidence": {
+    "tmp/heart-learning/conditional-paper-repair-v2/source.json": "347167164df9d56d0c97e682dec865bdacb2b802c731cbe46f83bf9a5d646efe",
+    "tmp/heart-learning/conditional-paper-repair-v2/fresh.mjs": "c0e44f82cf6439ab4235c5b0fb503a9df6272647ee08eb6293f4899e4eff75c8",
+    "tmp/heart-learning/conditional-paper-repair-v2/fresh/results.json": "5a62c9b90059e299021487f3d94f7a5d565f7d699c8d9a48c36ef4e4013c4134",
+    "tmp/heart-learning/conditional-paper-repair-v2/during-polish.mjs": "c6bc0156101e34781364da5964bc133921f3a9945b57721e6aa64d5b547c391e",
+    "tmp/heart-learning/conditional-paper-repair-v2/during-polish/results.json": "b49fa98eac0922ab64f9f9ccec8b980ab41c2ad16ca365ced2c0bf4e8c7b8d54",
+    "tmp/heart-learning/conditional-paper-repair-v2/geos-plan.json": "9b16325d8a2bbf59faf24d716aea15008953d1260bea1044ef5d0211a6d88067",
+    "tmp/heart-learning/conditional-paper-repair-v2/geos/results.json": "cdf134cfa34a44f93868d9ec749155a6a931f9a4d1f76f62fa6c0bb64aa1574a",
+    "tmp/heart-learning/conditional-paper-repair-v2/focused.log": "193f36927c97d2327eb653311a0b12a18848c379ccc9d684142dacb753b9b1ee",
+    "tmp/heart-learning/conditional-paper-repair-v2/outline-tests.log": "d427b013a6a466b4ed25d8ea9600aa3d41b17b51525fe2c89be084018a324f6f",
+    "tmp/heart-learning/conditional-paper-repair-v2/preflight-v1/checks.json": "d031c8547eec34e94f8835702e7f363f68192801200d32fc9b665f0b23319fd4",
+    "tmp/heart-learning/conditional-paper-repair-v2/preflight-v1/source.json": "5a28231a37a8b982bf2b4aa60a50d57a7835ebcdd03826dfeb02c501cddc14f1",
+    "tmp/heart-learning/conditional-paper-repair-v2/preflight-v1/paint/results.json": "9095ca8a29e74370e35432ce1d1729367fc5654d0e965592ecdb27f9574314ad",
+    "tmp/heart-learning/conditional-paper-repair-v2/release-v1/checks.json": "379a1bc1340efa4045554e617203b28b42c51c7a432de7a55ae736fab9ef45a4",
+    "tmp/heart-learning/conditional-paper-repair-v2/release-v1/source.json": "5a28231a37a8b982bf2b4aa60a50d57a7835ebcdd03826dfeb02c501cddc14f1",
+    "tmp/heart-learning/conditional-paper-repair-v2/release-v1/native/native-gates.json": "1bd4fad5785dcc6008c16510b1b6cd1795b3985d225353198acf3a4c74de893c",
+    "tmp/heart-learning/conditional-paper-repair-v2/release-v1/native/hunodan-comparison.json": "ebeee93c1148342990ffad5350139f18bbf69241c49754b30c923c4fbfd8baae",
+    "tmp/heart-learning/conditional-paper-repair-v2/release-v1/native/photo-comparison.json": "4238e2693761c48aaa65048619812044f54951ee80d2acc9b494813f7d6fd158",
+    "tmp/heart-learning/conditional-paper-repair-v2/editable-offset-audit.mjs": "ca6167c78adc7a58badbe90d6739ca24c6e3e93426808710fe18c9fd452d474e",
+    "tmp/heart-learning/conditional-paper-repair-v2/editable-offset-v1/results.json": "c117fd2236721d331b2b7fbcccf9d0e39a933f0625960548909c54c78e343c4a",
+    "tmp/heart-learning/conditional-paper-repair-v2/editable-offset-v1/geos-plan.json": "42f61f785632b4896e18d0de09a7f939eb505319bb0b0a941d041b5ab96e02d1",
+    "tmp/heart-learning/conditional-paper-repair-v2/editable-geos-v1/results.json": "b8647f48748809f442bd056602cf10ba6eb88369a127f7a577316f2bbc9b511f",
+    "tmp/heart-learning/conditional-paper-repair-v2/release-v1/browser/ordinary/results.json": "90795b7eed0321506df56e5087043e2b6032c3439c67132982179bd6cfa1225c",
+    "tmp/heart-learning/conditional-paper-repair-v2/release-v1/browser/ordinary/chromium-web-danish-tree-green/draw.png": "857878105fa72db1f4a54e4522b153dd1b7076f9d6f4ef77bd8caccc4a84b1c9",
+    "tmp/heart-learning/conditional-paper-repair-v2/release-v1/browser/ordinary/chromium-maple-leaf-mask/draw.png": "fbd9bed4c6a201fd03f1d6a9deffe0eff585edbd09560505f0289b3ff5430288",
+    "tmp/heart-learning/conditional-paper-repair-v2/release-v1/browser/ordinary/chromium-hard-flettede-viking/draw.png": "0170f19f2f289cf4375531b172dc5d8579de1c8ee7e63d975d44f82bfd584ded",
+    "tmp/heart-learning/conditional-paper-repair-v2/release-v1/browser/ordinary/chromium-stacked-hearts-mask/draw.png": "1023d53f388ffcaef6181a52fb10829d17215f08adc0e856ed3f32e68d9830bd",
+    "tmp/heart-learning/conditional-paper-repair-v2/release-v1/browser/ordinary/chromium-flower-native-mask/draw.png": "fc42898e34ad48da2b072d6ee83a79199a1574004124fdd9d0681984503e1d04",
+    "tmp/heart-learning/conditional-paper-repair-v2/release-v1/browser/ten-second/results.json": "60b12da4dd88dfdd482393d87e64cd0e0973ab59082871e8cc1bdb92c90f5972",
+    "tmp/heart-learning/conditional-paper-repair-v2/release-v1/browser/ten-second/chromium-crown-mask/draw.png": "f93d9ede5f04dbe22d15444b153da52c4f87268aa78e5ed7dbcc91323a858861",
+    "tmp/heart-learning/conditional-paper-repair-v2/release-v1/browser/ten-second/chromium-fine-checker-mask/draw.png": "b4f1faaba974e07d5576a457bf1bcd5f6a166d7528553baa2f9b51f4abaf739e",
+    "tmp/heart-learning/conditional-paper-repair-v2/release-v1/browser/ten-second/chromium-warped-checker-mask/draw.png": "9b64587f957990f55446350a8a4fb523c0ba62596379b7a17871c26680c104bb",
+    "tmp/heart-learning/conditional-paper-repair-v2/release-v1/browser/ten-second/chromium-floral-checker-mask/draw.png": "9d3ff3ef1f58074adfa50b45ae46fa924419224a0edf1b395de36a10de84e2ab",
+    "tmp/heart-learning/conditional-paper-repair-v2/release-v1/browser/ten-second/chromium-blue-star-polishing-mask/draw.png": "8abe522947387aa9820b5f10577f792ed03e1ae46059ab882aa25b78368f578b",
+    "tmp/heart-learning/conditional-paper-repair-v2/editable-audit-before.log": "bdf0e7e4dd5e666cdfe17c9cd1c06a751a47e996cd812d3dbc763ad060bd6ece",
+    "tmp/heart-learning/conditional-paper-repair-v2/editable-audit-after.log": "2d740ba9ed8543fa992e3b10fe9b8a494f11e64092dd338eba2b8ce0045cb035",
+    "tmp/heart-learning/conditional-paper-repair-v2/editable-helper-replay.mjs": "05d9414f958dab95df9be32497ed62f877040f7e2ffd58a1fcd7325a6a586ef1",
+    "tmp/heart-learning/conditional-paper-repair-v2/editable-helper-v2/results.json": "ebdb6d78a860fd76c866eacbc34606952b2cea6c3a5705cecadbde61c16d3214"
+  },
+  "remaining": [
+    "Make the stronger editable paper check routine in the QA helper.",
+    "Investigate the remaining photographic fidelity regressions, especially Viking, without changing reference masks or quality thresholds.",
+    "Separate crop uncertainty and feature preservation in the five remaining complete-photo failures.",
+    "No release replacement claimed: strict historical photo-error comparison still fails."
+  ],
+  "fullInverse": {
+    "tests": 923,
+    "passed": 923,
+    "failed": 0,
+    "seconds": 1040.9332036669998,
+    "sourceFilesVerified": 827,
+    "log": "tmp/heart-learning/conditional-paper-repair-v2/release-v1/inverse.log",
+    "logSha256": "c4822844ca7fe5cf2c1973c7ca5588838fddc0ee29f29cbebe83679cb546a384"
+  },
+  "release": {
+    "runtimeCommit": "49377bd",
+    "sourceFilesVerified": 827,
+    "checks": [
+      {
+        "stage": "inverse",
+        "exitCode": 0,
+        "seconds": 1040.9332036669998
+      },
+      {
+        "stage": "native",
+        "exitCode": 0,
+        "seconds": 523.358580291
+      },
+      {
+        "stage": "browser-ordinary",
+        "exitCode": 0,
+        "seconds": 122.01160249999998
+      },
+      {
+        "stage": "browser-ten-second",
+        "exitCode": 0,
+        "seconds": 88.4485783749999
+      }
+    ],
+    "native": {
+      "hunodanPassed": 22,
+      "hunodanTotal": 22,
+      "hunodanErrorRegressions": [],
+      "photoPassed": 26,
+      "photoPassRegressions": [],
+      "photoErrorRegressions": [
+        {
+          "id": "dense-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.00699375,
+          "error": 0.007,
+          "errorDelta": 6.250000000000179e-06
+        },
+        {
+          "id": "bird",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.02470625,
+          "error": 0.0247125,
+          "errorDelta": 6.249999999999312e-06
+        },
+        {
+          "id": "round-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.0121375,
+          "error": 0.01216875,
+          "errorDelta": 3.125000000000003e-05
+        },
+        {
+          "id": "flettede-viking",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.02024375,
+          "error": 0.02225,
+          "errorDelta": 0.0020062499999999976
+        }
+      ],
+      "editablePassed": 48,
+      "editableTotal": 48,
+      "passed": false
+    },
+    "maximumHunodanSeconds": 9.645914375000004,
+    "hunodanErrorChanges": {
+      "unchanged": 19,
+      "improved": 3,
+      "worse": 0
+    },
+    "photographicDenominator": 31,
+    "browserWorkflows": [
+      {
+        "name": "star",
+        "browser": "chromium",
+        "passed": true,
+        "sourceEditableError": 0.0016,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.010400000095367432,
+          "prepareRoundTripSeconds": 0.04039999985694885,
+          "preparedToSolveRequestSeconds": 0.0005,
+          "solveRoundTripSeconds": 2.0917999999523165,
+          "resultToReadySeconds": 0.2827000000476837,
+          "clickToReadySeconds": 2.425799999952316
+        }
+      },
+      {
+        "name": "top-hat-preferred",
+        "browser": "chromium",
+        "passed": true,
+        "sourceEditableError": 0.004118835034013606,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.020099999904632567,
+          "prepareRoundTripSeconds": 0.32770000004768374,
+          "preparedToSolveRequestSeconds": 0.00040000009536743164,
+          "solveRoundTripSeconds": 8.570799999952316,
+          "resultToReadySeconds": 0.25089999985694883,
+          "clickToReadySeconds": 9.169899999856948
+        }
+      },
+      {
+        "name": "stacked-hearts-mask",
+        "browser": "chromium",
+        "passed": true,
+        "sourceEditableError": 0.0173,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.007299999952316285,
+          "prepareRoundTripSeconds": 0.18010000014305114,
+          "preparedToSolveRequestSeconds": 0.00039999985694885254,
+          "solveRoundTripSeconds": 16.656299999952317,
+          "resultToReadySeconds": 0.5903000001907348,
+          "clickToReadySeconds": 17.43440000009537
+        }
+      },
+      {
+        "name": "flower-native-mask",
+        "browser": "chromium",
+        "passed": true,
+        "sourceEditableError": 0.00401875,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.006599999904632568,
+          "prepareRoundTripSeconds": 0.18329999995231627,
+          "preparedToSolveRequestSeconds": 0.0005,
+          "solveRoundTripSeconds": 6.714800000190735,
+          "resultToReadySeconds": 0.6173999998569488,
+          "clickToReadySeconds": 7.5225999999046325
+        }
+      },
+      {
+        "name": "hard-flettede-viking",
+        "browser": "chromium",
+        "passed": true,
+        "sourceEditableError": 0.01831875,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005700000047683716,
+          "prepareRoundTripSeconds": 0.21859999990463258,
+          "preparedToSolveRequestSeconds": 0.00030000019073486326,
+          "solveRoundTripSeconds": 29.163699999809264,
+          "resultToReadySeconds": 1.1177000000476838,
+          "clickToReadySeconds": 30.506
+        }
+      },
+      {
+        "name": "maple-leaf-mask",
+        "browser": "chromium",
+        "passed": true,
+        "sourceEditableError": 0.00823125,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005799999952316284,
+          "prepareRoundTripSeconds": 0.18770000004768372,
+          "preparedToSolveRequestSeconds": 0.00039999985694885254,
+          "solveRoundTripSeconds": 15.577100000143052,
+          "resultToReadySeconds": 0.8515,
+          "clickToReadySeconds": 16.6225
+        }
+      },
+      {
+        "name": "web-danish-tree-green",
+        "browser": "chromium",
+        "passed": true,
+        "sourceEditableError": 0.0087625,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.006,
+          "prepareRoundTripSeconds": 0.1935,
+          "preparedToSolveRequestSeconds": 0.0005,
+          "solveRoundTripSeconds": 23.084400000095368,
+          "resultToReadySeconds": 0.415,
+          "clickToReadySeconds": 23.699400000095366
+        }
+      },
+      {
+        "name": "floral-checker-mask",
+        "browser": "chromium",
+        "passed": true,
+        "sourceEditableError": 0.01345,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.011600000143051148,
+          "prepareRoundTripSeconds": 0.19829999995231629,
+          "preparedToSolveRequestSeconds": 0.0012999999523162842,
+          "solveRoundTripSeconds": 10.486299999952315,
+          "resultToReadySeconds": 0.376,
+          "clickToReadySeconds": 11.0735
+        }
+      },
+      {
+        "name": "warped-checker-mask",
+        "browser": "chromium",
+        "passed": true,
+        "sourceEditableError": 0.01590625,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0062999999523162846,
+          "prepareRoundTripSeconds": 0.21470000004768372,
+          "preparedToSolveRequestSeconds": 0.00040000009536743164,
+          "solveRoundTripSeconds": 10.837099999904632,
+          "resultToReadySeconds": 1.0550999999046327,
+          "clickToReadySeconds": 12.113599999904633
+        }
+      },
+      {
+        "name": "fine-checker-mask",
+        "browser": "chromium",
+        "passed": true,
+        "sourceEditableError": 0.022725,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005599999904632568,
+          "prepareRoundTripSeconds": 0.18680000019073487,
+          "preparedToSolveRequestSeconds": 0.00039999985694885254,
+          "solveRoundTripSeconds": 10.751200000047684,
+          "resultToReadySeconds": 1.8655999999046327,
+          "clickToReadySeconds": 12.809599999904632
+        }
+      },
+      {
+        "name": "blue-star-polishing-mask",
+        "browser": "chromium",
+        "passed": true,
+        "sourceEditableError": 0.00415625,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005700000047683716,
+          "prepareRoundTripSeconds": 0.1642000000476837,
+          "preparedToSolveRequestSeconds": 0.00039999985694885254,
+          "solveRoundTripSeconds": 9.560700000047683,
+          "resultToReadySeconds": 0.4539000000953674,
+          "clickToReadySeconds": 10.184900000095368
+        }
+      },
+      {
+        "name": "crown-mask",
+        "browser": "chromium",
+        "passed": true,
+        "sourceEditableError": 0.02284375,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0055,
+          "prepareRoundTripSeconds": 0.18330000019073486,
+          "preparedToSolveRequestSeconds": 0.00039999985694885254,
+          "solveRoundTripSeconds": 10.4325,
+          "resultToReadySeconds": 0.8127999999523163,
+          "clickToReadySeconds": 11.4345
+        }
+      }
+    ],
+    "visualReview": "All twelve actual Draw screenshots inspected. Recognizable motifs and retained enclosures; photographic border roughness and complex routing remain. No original cutting-path ground truth is claimed.",
+    "independentEditableOffset": {
+      "svgFiles": 60,
+      "passed": 60,
+      "engineAndEditableForms": 120,
+      "geosProbes": 1440,
+      "geosPassed": 1440,
+      "sources": "22 Hunodan, 26 photographic and 12 Chromium workflow outputs. Both the engine geometry and the actual serialized/reparsed editable SVG are independently audited.",
+      "limitation": "Finite polygon approximations and radius probes, not physical assembly or an exact continuous certificate."
+    }
+  },
+  "diagnosis": {
+    "borderFeatureFailures": [
+      {
+        "id": "outline-star",
+        "independentError": 0.00754375,
+        "geometryAndPaperPass": true,
+        "missingRegionAreaMm2": 4.25,
+        "centerMm": [
+          7.154411764705881,
+          98.7904411764706
+        ]
+      },
+      {
+        "id": "crossed-ribbons",
+        "independentError": 0.0088875,
+        "geometryAndPaperPass": true,
+        "missingRegionAreaMm2": 4.5,
+        "centerMm": [
+          48.64583333333334,
+          98.73263888888889
+        ]
+      }
+    ],
+    "inference": "Crop previews suggest contamination near the image boundary; this is not proof that either missing source region can be discarded. Reference masks and feature rules remain unchanged.",
+    "viking": {
+      "sourceAndCropIdenticalAcrossNativeAndBrowser": true,
+      "sourceMaskSha256": "7791de154fdbc94b618ece0bf018522573d57c231c46bc0385d24a9e2b9a9bb8",
+      "tenSecondCounts": [
+        6,
+        6
+      ],
+      "longerBrowserCounts": [
+        6,
+        4
+      ],
+      "tenSecondEditableError": 0.02248125,
+      "longerBrowserEditableError": 0.01831875,
+      "longerBrowserClickToReadySeconds": 30.506,
+      "qualification": "Different runtime and time allowance; suggests scheduling/refinement work remains, not a controlled latency ablation."
+    }
+  },
+  "editableAuditRegression": {
+    "status": "focused-tests-and-saved-export-replay-pass",
+    "change": "Routine editable SVG QA now combines the existing guarded lattice with the fine unfolded polygon-offset check. Native and browser harnesses pin the additional backend sources. No fitter, converter or UI change.",
+    "fixture": "hjcur-05 at a non-default SVG scale and translation, original and transposed sheet families",
+    "before": {
+      "passed": 1,
+      "failed": 2,
+      "failure": "Old audit incorrectly reported pass for a 4.1542 mm\u00b2 detached paper core between lattice rows."
+    },
+    "after": {
+      "passed": 3,
+      "failed": 0
+    },
+    "savedSvgReplay": {
+      "passed": 60,
+      "total": 60,
+      "newFitting": false,
+      "newBrowserInteractions": false
+    },
+    "fullSuiteQualification": "The 923-test full run above predates these two new harness regressions; no 925-test result claimed yet."
+  }
+}

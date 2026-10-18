@@ -1,0 +1,2768 @@
+{
+  "schema": "woven-heart-retained-grid-starts-1",
+  "baselineCommit": "87feaf8",
+  "initialImplementationCommit": "dbe3654",
+  "implementationCommit": "a8b8a73",
+  "decision": "Retain existing computed grid alternatives at the original cut counts only after ordinary feature seeds and their near-miss retry fail. Do not change the production paper-resolution policy.",
+  "changedCoreFiles": [
+    "static/inverse/core/direct/counts.js",
+    "static/inverse/core/direct/feature-seeds.js"
+  ],
+  "rawReports": {
+    "tmp/heart-learning/foreground-locator-v1/new-corpus/results.json": "a25b7663008eb276391a510c79cc0fb283615659b1937e413feb6ead417c2471",
+    "tmp/heart-learning/near-miss-paper-v1/final-corpus/results.json": "d06ca52dc13aabf2171426bbea4ae2fac1cf36a844ba34781188601a158e3b62",
+    "tmp/heart-learning/foreground-locator-v1/new-perturbations/results.json": "3e1f7f8ab2107274753f631577de38cadbf680d67f05ef5b196945dd598a8b7a",
+    "tmp/heart-learning/near-miss-paper-v1/final-perturbations/results.json": "c167fadd65ae7a4ca8517d5a191ff1b948fe166b0999b74f4aabc8b7c5faf243",
+    "tmp/heart-learning/near-miss-paper-v1/results.json": "9bb183ac9cc5fcf7fe956bebc916666252d7a865920502f74ed8dab9f825eb5e",
+    "tmp/heart-learning/near-miss-paper-v1/choice-probe.json": "300346fa34dfad78ae79a9cac5cf2ea34444a5f679df5ed67c104a46e2435c6b",
+    "tmp/heart-learning/near-miss-paper-v1/final-checks/report.json": "a188b849aed73b235570488e5dcb0b03c839058fbe5ff8b5de88e565d8b9b4af",
+    "tmp/heart-learning/near-miss-paper-v1/final-hunodan/results.json": "052021d5944769eb2935c891a30d14432f81970914c350eaf2b696fd3a403b2a",
+    "tmp/heart-learning/foreground-locator-v1/hunodan/results.json": "8b23382544fd0f4199e5c98ebf671e7385ceb319eb003b16c405e7203a0b0f7d",
+    "tmp/heart-learning/near-miss-paper-v1/browser/results.json": "f59a865b7e424080b46bd015d455c3c7d215d2c8d00cd63e206f3e5d98161e16",
+    "tmp/heart-learning/near-miss-paper-v1/served-source-check.json": "447c2358828c66094d551ed842b10b7d058801c7721f9f082b2984d50f346aa8",
+    "tmp/heart-learning/near-miss-paper-v1/crop-transfer.json": "23dc43c979d7acd8a9ebb404e4503e8cbb8f568afcdcd3c148defcec0cbc8a61",
+    "tmp/heart-learning/near-miss-paper-v1/crop-transfer-refinement.json": "497778684cc3871d74587fa24b43f8b3425128ad94baa2b615b0c070967d1905",
+    "tmp/heart-learning/near-miss-paper-v1/transfer-before-source-promotion.json": "8d9a1d4e5f4b4498ec8e4bd89fb6cf9cc0a64c0ba3e1a2b7709b41a8aba8ae15",
+    "tmp/heart-learning/near-miss-paper-v1/checks/report.json": "910f51e2a308f1536708a1bc226499d9b61700cfcff9a76580c6c9f55585951a"
+  },
+  "artifactManifest": {
+    "path": "tmp/heart-learning/near-miss-paper-v1/artifacts.json",
+    "sha256": "f537cc4e1dd442f1e93d6e671c90a50d56defe78a3d01f2b091d3d9bb106930b",
+    "hashedFiles": 1680
+  },
+  "corpus": {
+    "identicalInputsAndCrops": true,
+    "rows": [
+      {
+        "before": {
+          "id": "oval-figure",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "oval-figure",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "eight-point-star",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "eight-point-star",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "small-figure",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "small-figure",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "deer",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "deer",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "top-checker",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "top-checker",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "top-candle",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "top-candle",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "top-tree",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "top-tree",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "partial-top-right",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "partial-top-right",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "partial-left-checker",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "partial-left-checker",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "nested-squares",
+          "status": "no_crop"
+        },
+        "after": {
+          "id": "nested-squares",
+          "status": "no_crop"
+        }
+      },
+      {
+        "before": {
+          "id": "outline-star",
+          "status": "failed",
+          "passed": false,
+          "error": 0.00815625,
+          "solveAndValidationSeconds": 9.066331791,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": false
+        },
+        "after": {
+          "id": "outline-star",
+          "status": "failed",
+          "passed": false,
+          "error": 0.00815625,
+          "solveAndValidationSeconds": 8.989238957999998,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": false
+        }
+      },
+      {
+        "before": {
+          "id": "floral-checker",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02038125,
+          "solveAndValidationSeconds": 9.4172155,
+          "counts": {
+            "left": 7,
+            "right": 7
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "floral-checker",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02280625,
+          "solveAndValidationSeconds": 9.504009334,
+          "counts": {
+            "left": 7,
+            "right": 7
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      },
+      {
+        "before": {
+          "id": "dense-checker",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0071,
+          "solveAndValidationSeconds": 9.14311075,
+          "counts": {
+            "left": 7,
+            "right": 7
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "dense-checker",
+          "status": "validated",
+          "passed": true,
+          "error": 0.00698125,
+          "solveAndValidationSeconds": 9.064922041,
+          "counts": {
+            "left": 7,
+            "right": 7
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      },
+      {
+        "before": {
+          "id": "bird",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02469375,
+          "solveAndValidationSeconds": 9.342448458,
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "bird",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0247125,
+          "solveAndValidationSeconds": 9.403080499999996,
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      },
+      {
+        "before": {
+          "id": "leaf",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0265125,
+          "solveAndValidationSeconds": 8.038318666000006,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "leaf",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0265125,
+          "solveAndValidationSeconds": 7.806497125000002,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      },
+      {
+        "before": {
+          "id": "partial-right-checker",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "partial-right-checker",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "partial-left-abstract",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "partial-left-abstract",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "gift",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02348125,
+          "solveAndValidationSeconds": 9.412014125,
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "gift",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02266875,
+          "solveAndValidationSeconds": 9.459803415999994,
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      },
+      {
+        "before": {
+          "id": "gingerbread",
+          "status": "validated",
+          "passed": true,
+          "error": 0.01593125,
+          "solveAndValidationSeconds": 9.337629666000009,
+          "counts": {
+            "left": 5,
+            "right": 3
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "gingerbread",
+          "status": "validated",
+          "passed": true,
+          "error": 0.015475,
+          "solveAndValidationSeconds": 9.300395124999996,
+          "counts": {
+            "left": 5,
+            "right": 3
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      },
+      {
+        "before": {
+          "id": "white-birds",
+          "status": "validated",
+          "passed": true,
+          "error": 0.00379375,
+          "solveAndValidationSeconds": 5.497163249999998,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "white-birds",
+          "status": "validated",
+          "passed": true,
+          "error": 0.00379375,
+          "solveAndValidationSeconds": 5.325777208999993,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      },
+      {
+        "before": {
+          "id": "flower",
+          "status": "validated",
+          "passed": true,
+          "error": 0.01145,
+          "solveAndValidationSeconds": 5.491595249999999,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "flower",
+          "status": "validated",
+          "passed": true,
+          "error": 0.01145,
+          "solveAndValidationSeconds": 5.341288625000001,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      },
+      {
+        "before": {
+          "id": "warped-checker",
+          "status": "validated",
+          "passed": true,
+          "error": 0.01789375,
+          "solveAndValidationSeconds": 9.590471875000002,
+          "counts": {
+            "left": 9,
+            "right": 9
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "warped-checker",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0184625,
+          "solveAndValidationSeconds": 9.511683040999996,
+          "counts": {
+            "left": 9,
+            "right": 9
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      },
+      {
+        "before": {
+          "id": "round-checker",
+          "status": "validated",
+          "passed": true,
+          "error": 0.01214375,
+          "solveAndValidationSeconds": 9.377415500000017,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "round-checker",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0121375,
+          "solveAndValidationSeconds": 9.306168000000005,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      },
+      {
+        "before": {
+          "id": "santa",
+          "status": "no_crop"
+        },
+        "after": {
+          "id": "santa",
+          "status": "no_crop"
+        }
+      },
+      {
+        "before": {
+          "id": "partial-left-diamonds",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "partial-left-diamonds",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "fine-checker",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0223375,
+          "solveAndValidationSeconds": 9.58884391700002,
+          "counts": {
+            "left": 10,
+            "right": 9
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "fine-checker",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02245,
+          "solveAndValidationSeconds": 9.514083375000016,
+          "counts": {
+            "left": 10,
+            "right": 9
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      },
+      {
+        "before": {
+          "id": "orb",
+          "status": "validated",
+          "passed": true,
+          "error": 0.01439375,
+          "solveAndValidationSeconds": 9.39338283399999,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "orb",
+          "status": "validated",
+          "passed": true,
+          "error": 0.01439375,
+          "solveAndValidationSeconds": 9.310396416000003,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      },
+      {
+        "before": {
+          "id": "stacked-hearts",
+          "status": "validated",
+          "passed": true,
+          "error": 0.00753125,
+          "solveAndValidationSeconds": 5.387713417000021,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "stacked-hearts",
+          "status": "validated",
+          "passed": true,
+          "error": 0.00753125,
+          "solveAndValidationSeconds": 5.233888166999997,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      },
+      {
+        "before": {
+          "id": "jigsaw",
+          "status": "failed",
+          "passed": false,
+          "error": 0.0688875,
+          "solveAndValidationSeconds": 9.071436791999993,
+          "counts": {
+            "left": 3,
+            "right": 4
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "jigsaw",
+          "status": "failed",
+          "passed": false,
+          "error": 0.0688875,
+          "solveAndValidationSeconds": 8.98855249999999,
+          "counts": {
+            "left": 3,
+            "right": 4
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      },
+      {
+        "before": {
+          "id": "candle",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0048375,
+          "solveAndValidationSeconds": 4.45636704100002,
+          "counts": {
+            "left": 1,
+            "right": 1
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "candle",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0048375,
+          "solveAndValidationSeconds": 4.288959541999997,
+          "counts": {
+            "left": 1,
+            "right": 1
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      },
+      {
+        "before": {
+          "id": "maple-leaf",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0133375,
+          "solveAndValidationSeconds": 9.305498124999984,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "maple-leaf",
+          "status": "validated",
+          "passed": true,
+          "error": 0.013325,
+          "solveAndValidationSeconds": 9.332171082999993,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      },
+      {
+        "before": {
+          "id": "crown",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0241375,
+          "solveAndValidationSeconds": 9.373802708000003,
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "crown",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02454375,
+          "solveAndValidationSeconds": 9.420448874999973,
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      },
+      {
+        "before": {
+          "id": "partial-bottom-left",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "partial-bottom-left",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "bottom-diamonds",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "bottom-diamonds",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "crossed-ribbons",
+          "status": "failed",
+          "passed": false,
+          "error": 0.02153125,
+          "solveAndValidationSeconds": 4.411244457999972,
+          "counts": {
+            "left": 3,
+            "right": 1
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": false
+        },
+        "after": {
+          "id": "crossed-ribbons",
+          "status": "failed",
+          "passed": false,
+          "error": 0.02153125,
+          "solveAndValidationSeconds": 4.484378417,
+          "counts": {
+            "left": 3,
+            "right": 1
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": false
+        }
+      },
+      {
+        "before": {
+          "id": "bauble",
+          "status": "failed",
+          "passed": false,
+          "error": 0.0929625,
+          "solveAndValidationSeconds": 8.974907875000005,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": false
+        },
+        "after": {
+          "id": "bauble",
+          "status": "failed",
+          "passed": false,
+          "error": 0.0929625,
+          "solveAndValidationSeconds": 8.906121791999992,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": false
+        }
+      },
+      {
+        "before": {
+          "id": "glare-motif",
+          "status": "obscured"
+        },
+        "after": {
+          "id": "glare-motif",
+          "status": "obscured"
+        }
+      },
+      {
+        "before": {
+          "id": "bottom-flower",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0093875,
+          "solveAndValidationSeconds": 7.7069243750000025,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "bottom-flower",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0093875,
+          "solveAndValidationSeconds": 7.521736082999996,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      },
+      {
+        "before": {
+          "id": "faceted-star",
+          "status": "validated",
+          "passed": true,
+          "error": 0.00649375,
+          "solveAndValidationSeconds": 9.18060158300001,
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "faceted-star",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0065,
+          "solveAndValidationSeconds": 8.849718500000018,
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      },
+      {
+        "before": {
+          "id": "partial-bottom-right",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "partial-bottom-right",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "bibel-star-8",
+          "status": "validated",
+          "passed": true,
+          "error": 0.003675,
+          "solveAndValidationSeconds": 3.8698893749999987,
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "bibel-star-8",
+          "status": "validated",
+          "passed": true,
+          "error": 0.003675,
+          "solveAndValidationSeconds": 3.6693424589999775,
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      },
+      {
+        "before": {
+          "id": "bibel-star-curved",
+          "status": "validated",
+          "passed": true,
+          "error": 0.00663125,
+          "solveAndValidationSeconds": 7.792103915999993,
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "bibel-star-curved",
+          "status": "validated",
+          "passed": true,
+          "error": 0.00663125,
+          "solveAndValidationSeconds": 6.723241792000016,
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      },
+      {
+        "before": {
+          "id": "bibel-star-outline",
+          "status": "no_crop"
+        },
+        "after": {
+          "id": "bibel-star-outline",
+          "status": "no_crop"
+        }
+      },
+      {
+        "before": {
+          "id": "bibel-cross",
+          "status": "validated",
+          "passed": true,
+          "error": 0.00243125,
+          "solveAndValidationSeconds": 3.527403333999973,
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "bibel-cross",
+          "status": "validated",
+          "passed": true,
+          "error": 0.00243125,
+          "solveAndValidationSeconds": 3.358521040999971,
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      },
+      {
+        "before": {
+          "id": "flettede-puppy",
+          "status": "validated",
+          "passed": true,
+          "error": 0.01031875,
+          "solveAndValidationSeconds": 9.384793208000017,
+          "counts": {
+            "left": 3,
+            "right": 5
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "flettede-puppy",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0103125,
+          "solveAndValidationSeconds": 9.365680416999966,
+          "counts": {
+            "left": 3,
+            "right": 5
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      },
+      {
+        "before": {
+          "id": "flettede-stonehenge",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02491875,
+          "solveAndValidationSeconds": 7.168949582999979,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "flettede-stonehenge",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02491875,
+          "solveAndValidationSeconds": 6.820775458999968,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      },
+      {
+        "before": {
+          "id": "flettede-viking",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0231375,
+          "solveAndValidationSeconds": 9.357431291999994,
+          "counts": {
+            "left": 6,
+            "right": 6
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "flettede-viking",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02231875,
+          "solveAndValidationSeconds": 9.472015707999992,
+          "counts": {
+            "left": 6,
+            "right": 6
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      }
+    ]
+  },
+  "cropTranslations": {
+    "identicalInputsAndCrops": true,
+    "rows": [
+      {
+        "before": {
+          "id": "flettede-stonehenge--crop-x-plus-1",
+          "status": "failed",
+          "passed": false,
+          "error": 0.03581875,
+          "solveAndValidationSeconds": 9.371728292000002,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "flettede-stonehenge--crop-x-plus-1",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0246625,
+          "solveAndValidationSeconds": 7.786242915999999,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "alternativeRefinement": {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "initialError": 0.091156005859375,
+            "error": 0.0856781005859375,
+            "featuresPassed": true,
+            "steps": 150,
+            "accepted": true,
+            "considered": 6,
+            "retained": 1
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      },
+      {
+        "before": {
+          "id": "flettede-stonehenge--crop-y-plus-1",
+          "status": "failed",
+          "passed": false,
+          "error": 0.03093125,
+          "solveAndValidationSeconds": 8.412005375000003,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "flettede-stonehenge--crop-y-plus-1",
+          "status": "failed",
+          "passed": false,
+          "error": 0.03093125,
+          "solveAndValidationSeconds": 8.463032540999999,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      }
+    ]
+  },
+  "imagePerturbations": {
+    "identicalInputsAndCrops": true,
+    "rows": [
+      {
+        "before": {
+          "id": "flettede-stonehenge--jpeg-75",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02413125,
+          "solveAndValidationSeconds": 6.949648209000003,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "flettede-stonehenge--jpeg-75",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02413125,
+          "solveAndValidationSeconds": 6.877231040999999,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      },
+      {
+        "before": {
+          "id": "flettede-stonehenge--half-resolution",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02218518559397799,
+          "solveAndValidationSeconds": 6.619633958000002,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        },
+        "after": {
+          "id": "flettede-stonehenge--half-resolution",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02218518559397799,
+          "solveAndValidationSeconds": 6.758445917000001,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "alternativeRefinement": null,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceFeaturesPassed": true
+        }
+      }
+    ]
+  },
+  "rejectedFirstProposal": {
+    "fullSuite": [
+      {
+        "command": [
+          "node",
+          "scripts/inverse/hard-photo-benchmark.mjs",
+          "--ids=flettede-stonehenge",
+          "--crop=fixed",
+          "--crop-overrides=tmp/heart-learning/foreground-locator-v1/retry-crop.json",
+          "--seconds=10",
+          "--perturb=true",
+          "--variants=jpeg-75,half-resolution",
+          "--output=tmp/heart-learning/near-miss-paper-v1/image-perturbations"
+        ],
+        "exitCode": 0,
+        "seconds": 15.829725042,
+        "log": "0.log"
+      },
+      {
+        "command": [
+          "env",
+          "INVERSE_SPEED_OUT=tmp/heart-learning/near-miss-paper-v1/hunodan",
+          "node",
+          "scripts/inverse/hunodan-speed-benchmark.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 125.97671804200002,
+        "log": "1.log"
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 8.199973,
+        "log": "2.log"
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 6.4068938339999875,
+        "log": "3.log"
+      },
+      {
+        "command": [
+          "npx",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 35.0673295,
+        "log": "4.log"
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "test:inverse"
+        ],
+        "exitCode": 1,
+        "seconds": 594.358474166,
+        "log": "5.log"
+      }
+    ],
+    "diagnosticLogSha256": "37866a1fca012b5bfb7a3229d83e060682d3cefb608f64d72dc8a4bae5471197",
+    "diagnosticScriptSha256": "28c6dd8a69567b8c0f3c041c318681e86edd4a158a0daba38eeb3bd72c3a9ce5",
+    "cause": "An unequal-count alternative displaced the half-resolution puppy\u2019s finer-spline route and then lost its opening. The final implementation only retries the base count pair. The unchanged feature-shape/export regression passes with that guard.",
+    "guardedTargetedLogSha256": "1c4e70af8e41540fe6c82928626f4b011cd3003682d2f158024c3900ba6b3daf"
+  },
+  "discardedStarts": [
+    {
+      "suffix": "crop-x-plus-1",
+      "choices": [
+        {
+          "i": 0,
+          "weightedError": 0.10282848428622422,
+          "error": 0.0819549560546875,
+          "audit": {
+            "passed": false,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 0,
+                "areaMm2": 111.25,
+                "centerMm": [
+                  16.072050561797752,
+                  15.167696629213482
+                ],
+                "retainedFraction": 0.9612359550561798
+              },
+              {
+                "value": 1,
+                "areaMm2": 33.6875,
+                "centerMm": [
+                  55.30728200371058,
+                  60.577690166975884
+                ],
+                "retainedFraction": 0.48608534322820035
+              }
+            ],
+            "missing": [
+              {
+                "value": 1,
+                "areaMm2": 33.6875,
+                "centerMm": [
+                  55.30728200371058,
+                  60.577690166975884
+                ],
+                "retainedFraction": 0.48608534322820035
+              }
+            ],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          }
+        },
+        {
+          "i": 1,
+          "weightedError": 0.10288623501502214,
+          "error": 0.091156005859375,
+          "audit": {
+            "passed": true,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 0,
+                "areaMm2": 111.25,
+                "centerMm": [
+                  16.072050561797752,
+                  15.167696629213482
+                ],
+                "retainedFraction": 0.8769662921348315
+              },
+              {
+                "value": 1,
+                "areaMm2": 33.6875,
+                "centerMm": [
+                  55.30728200371058,
+                  60.577690166975884
+                ],
+                "retainedFraction": 0.6623376623376623
+              }
+            ],
+            "missing": [],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          }
+        },
+        {
+          "i": 2,
+          "weightedError": 0.13808931307076774,
+          "error": 0.13580322265625,
+          "audit": {
+            "passed": false,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 0,
+                "areaMm2": 111.25,
+                "centerMm": [
+                  16.072050561797752,
+                  15.167696629213482
+                ],
+                "retainedFraction": 0.20842696629213484
+              },
+              {
+                "value": 1,
+                "areaMm2": 33.6875,
+                "centerMm": [
+                  55.30728200371058,
+                  60.577690166975884
+                ],
+                "retainedFraction": 0.8144712430426716
+              }
+            ],
+            "missing": [
+              {
+                "value": 0,
+                "areaMm2": 111.25,
+                "centerMm": [
+                  16.072050561797752,
+                  15.167696629213482
+                ],
+                "retainedFraction": 0.20842696629213484
+              }
+            ],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          }
+        },
+        {
+          "i": 3,
+          "weightedError": 0.47475503000713926,
+          "error": 0.4475250244140625,
+          "audit": {
+            "passed": false,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 0,
+                "areaMm2": 111.25,
+                "centerMm": [
+                  16.072050561797752,
+                  15.167696629213482
+                ],
+                "retainedFraction": 1
+              },
+              {
+                "value": 1,
+                "areaMm2": 33.6875,
+                "centerMm": [
+                  55.30728200371058,
+                  60.577690166975884
+                ],
+                "retainedFraction": 0
+              }
+            ],
+            "missing": [
+              {
+                "value": 1,
+                "areaMm2": 33.6875,
+                "centerMm": [
+                  55.30728200371058,
+                  60.577690166975884
+                ],
+                "retainedFraction": 0
+              }
+            ],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          }
+        }
+      ]
+    },
+    {
+      "suffix": "crop-y-plus-1",
+      "choices": [
+        {
+          "i": 0,
+          "weightedError": 0.09456071797751137,
+          "error": 0.0922698974609375,
+          "audit": {
+            "passed": true,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 0,
+                "areaMm2": 110.4375,
+                "centerMm": [
+                  16.06232314657612,
+                  14.733658743633276
+                ],
+                "retainedFraction": 0.9609507640067911
+              },
+              {
+                "value": 1,
+                "areaMm2": 33.6875,
+                "centerMm": [
+                  55.29661410018552,
+                  60.16442486085343
+                ],
+                "retainedFraction": 0.8534322820037106
+              }
+            ],
+            "missing": [],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          }
+        },
+        {
+          "i": 1,
+          "weightedError": 0.11188523942499329,
+          "error": 0.095703125,
+          "audit": {
+            "passed": false,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 0,
+                "areaMm2": 110.4375,
+                "centerMm": [
+                  16.06232314657612,
+                  14.733658743633276
+                ],
+                "retainedFraction": 0.7091114883984154
+              },
+              {
+                "value": 1,
+                "areaMm2": 33.6875,
+                "centerMm": [
+                  55.29661410018552,
+                  60.16442486085343
+                ],
+                "retainedFraction": 0.5714285714285714
+              }
+            ],
+            "missing": [
+              {
+                "value": 1,
+                "areaMm2": 33.6875,
+                "centerMm": [
+                  55.29661410018552,
+                  60.16442486085343
+                ],
+                "retainedFraction": 0.5714285714285714
+              }
+            ],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          }
+        },
+        {
+          "i": 2,
+          "weightedError": 0.13520410060386112,
+          "error": 0.138153076171875,
+          "audit": {
+            "passed": false,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 0,
+                "areaMm2": 110.4375,
+                "centerMm": [
+                  16.06232314657612,
+                  14.733658743633276
+                ],
+                "retainedFraction": 0.43406904357668363
+              },
+              {
+                "value": 1,
+                "areaMm2": 33.6875,
+                "centerMm": [
+                  55.29661410018552,
+                  60.16442486085343
+                ],
+                "retainedFraction": 0.9239332096474954
+              }
+            ],
+            "missing": [
+              {
+                "value": 0,
+                "areaMm2": 110.4375,
+                "centerMm": [
+                  16.06232314657612,
+                  14.733658743633276
+                ],
+                "retainedFraction": 0.43406904357668363
+              }
+            ],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          }
+        },
+        {
+          "i": 3,
+          "weightedError": 0.4745354145595976,
+          "error": 0.4474334716796875,
+          "audit": {
+            "passed": false,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 0,
+                "areaMm2": 110.4375,
+                "centerMm": [
+                  16.06232314657612,
+                  14.733658743633276
+                ],
+                "retainedFraction": 1
+              },
+              {
+                "value": 1,
+                "areaMm2": 33.6875,
+                "centerMm": [
+                  55.29661410018552,
+                  60.16442486085343
+                ],
+                "retainedFraction": 0
+              }
+            ],
+            "missing": [
+              {
+                "value": 1,
+                "areaMm2": 33.6875,
+                "centerMm": [
+                  55.29661410018552,
+                  60.16442486085343
+                ],
+                "retainedFraction": 0
+              }
+            ],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          }
+        }
+      ]
+    }
+  ],
+  "paperContinuation": {
+    "freshSolve": false,
+    "steps": 160,
+    "rows": [
+      {
+        "id": "flettede-stonehenge--crop-x-plus-1",
+        "materialResolution": 360,
+        "imageResolution": 256,
+        "counts": [
+          4,
+          4
+        ],
+        "baselineError": 0.03581875,
+        "error": 0.03354375,
+        "fittingMarginMm": 3.2678471206992734,
+        "seconds": 1.36535475,
+        "geometryPassed": true,
+        "paperStatus": "uncertain",
+        "featuresPassed": true
+      },
+      {
+        "id": "flettede-stonehenge--crop-x-plus-1",
+        "materialResolution": 360,
+        "imageResolution": 400,
+        "counts": [
+          4,
+          4
+        ],
+        "baselineError": 0.03581875,
+        "error": 0.03325625,
+        "fittingMarginMm": 3.2678471206992734,
+        "seconds": 0.9203527910000002,
+        "geometryPassed": true,
+        "paperStatus": "uncertain",
+        "featuresPassed": true
+      },
+      {
+        "id": "flettede-stonehenge--crop-x-plus-1",
+        "materialResolution": 700,
+        "imageResolution": 256,
+        "counts": [
+          4,
+          4
+        ],
+        "baselineError": 0.03581875,
+        "error": 0.03554375,
+        "fittingMarginMm": 3.0770405289505227,
+        "seconds": 1.6352487919999998,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "featuresPassed": true
+      },
+      {
+        "id": "flettede-stonehenge--crop-x-plus-1",
+        "materialResolution": 700,
+        "imageResolution": 400,
+        "counts": [
+          4,
+          4
+        ],
+        "baselineError": 0.03581875,
+        "error": 0.0354875,
+        "fittingMarginMm": 3.0770405289505227,
+        "seconds": 1.3065672920000007,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "featuresPassed": true
+      },
+      {
+        "id": "flettede-stonehenge--crop-y-plus-1",
+        "materialResolution": 360,
+        "imageResolution": 256,
+        "counts": [
+          3,
+          3
+        ],
+        "baselineError": 0.03093125,
+        "error": 0.030475,
+        "fittingMarginMm": 3.2678471206992734,
+        "seconds": 0.6779819589999997,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "featuresPassed": true
+      },
+      {
+        "id": "flettede-stonehenge--crop-y-plus-1",
+        "materialResolution": 360,
+        "imageResolution": 400,
+        "counts": [
+          3,
+          3
+        ],
+        "baselineError": 0.03093125,
+        "error": 0.03035625,
+        "fittingMarginMm": 3.2678471206992734,
+        "seconds": 0.6057708749999993,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "featuresPassed": true
+      },
+      {
+        "id": "flettede-stonehenge--crop-y-plus-1",
+        "materialResolution": 700,
+        "imageResolution": 256,
+        "counts": [
+          3,
+          3
+        ],
+        "baselineError": 0.03093125,
+        "error": 0.03044375,
+        "fittingMarginMm": 3.0770405289505227,
+        "seconds": 0.9706554170000008,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "featuresPassed": true
+      },
+      {
+        "id": "flettede-stonehenge--crop-y-plus-1",
+        "materialResolution": 700,
+        "imageResolution": 400,
+        "counts": [
+          3,
+          3
+        ],
+        "baselineError": 0.03093125,
+        "error": 0.0303125,
+        "fittingMarginMm": 3.0770405289505227,
+        "seconds": 1.0331205839999984,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "featuresPassed": true
+      }
+    ]
+  },
+  "cropTransfer": {
+    "freshSolve": false,
+    "identicalTargetMaskAndProbabilities": true,
+    "maximumCoordinateRoundoffPixels": 1.4210854715202004e-14,
+    "method": "160-step independent continuations against the identical unresolved vertical crop. Different saved image-derived shapes, routing and segment counts can all affect the result. This demonstrates existence only, not fresh-solve speed or a production warm start.",
+    "target": {
+      "name": "vertical",
+      "quad": [
+        [
+          305.5967262064524,
+          108.0274863625818
+        ],
+        [
+          529.7725951657528,
+          351.803899019794
+        ],
+        [
+          294.27536884429037,
+          574.8330869731378
+        ],
+        [
+          74.36258333728793,
+          335.03682567312495
+        ]
+      ],
+      "maskSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+      "probabilitySha256": "6466b2be539d90b28d67882a07374a1eb508bee20581481c5ed567d1d454efbe"
+    },
+    "exactlyReproducedGeometryHashes": {
+      "tmp/heart-learning/near-miss-paper-v1/transfer-refined-original.json": "cffbb971d4e658f5fabd2da2fcecfb2e5cdd3b25ff2d2d91f790872b05fbfc5f",
+      "tmp/heart-learning/near-miss-paper-v1/transfer-refined-vertical.json": "c8074784b746abaa0a0009661bf9a143cb7a4a7ad0e114b793647021a1d59684",
+      "tmp/heart-learning/near-miss-paper-v1/transfer-refined-horizontal.json": "0b58401cda9040b7a48f0a62f7e2fe33209486a096a471e92fda632ea7906cc0"
+    },
+    "unrefinedRows": [
+      {
+        "model": "original",
+        "target": "original",
+        "error": 0.0266875,
+        "passed": true,
+        "geometrySha256": "d821fcb4030e965e11dce8760c0e04de1b22438708aa7188de4ce427348bee90",
+        "maskSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890"
+      },
+      {
+        "model": "original",
+        "target": "horizontal",
+        "error": 0.0377375,
+        "passed": false,
+        "geometrySha256": "d821fcb4030e965e11dce8760c0e04de1b22438708aa7188de4ce427348bee90",
+        "maskSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16"
+      },
+      {
+        "model": "original",
+        "target": "vertical",
+        "error": 0.0389125,
+        "passed": false,
+        "geometrySha256": "d821fcb4030e965e11dce8760c0e04de1b22438708aa7188de4ce427348bee90",
+        "maskSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea"
+      },
+      {
+        "model": "horizontal",
+        "target": "original",
+        "error": 0.0353375,
+        "passed": false,
+        "geometrySha256": "10f788ceec5d7e9b1704d35dd726075ca8ebbe8e7ea2ca361ae06c21a6c9ab67",
+        "maskSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890"
+      },
+      {
+        "model": "horizontal",
+        "target": "horizontal",
+        "error": 0.0246625,
+        "passed": true,
+        "geometrySha256": "10f788ceec5d7e9b1704d35dd726075ca8ebbe8e7ea2ca361ae06c21a6c9ab67",
+        "maskSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16"
+      },
+      {
+        "model": "horizontal",
+        "target": "vertical",
+        "error": 0.038925,
+        "passed": false,
+        "geometrySha256": "10f788ceec5d7e9b1704d35dd726075ca8ebbe8e7ea2ca361ae06c21a6c9ab67",
+        "maskSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea"
+      },
+      {
+        "model": "vertical",
+        "target": "original",
+        "error": 0.03900625,
+        "passed": false,
+        "geometrySha256": "5af28ce25b7ce72989dafbb4e0c60f697418d1dc1954c62c15f9887a182ff4c6",
+        "maskSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890"
+      },
+      {
+        "model": "vertical",
+        "target": "horizontal",
+        "error": 0.04228125,
+        "passed": false,
+        "geometrySha256": "5af28ce25b7ce72989dafbb4e0c60f697418d1dc1954c62c15f9887a182ff4c6",
+        "maskSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16"
+      },
+      {
+        "model": "vertical",
+        "target": "vertical",
+        "error": 0.03093125,
+        "passed": false,
+        "geometrySha256": "5af28ce25b7ce72989dafbb4e0c60f697418d1dc1954c62c15f9887a182ff4c6",
+        "maskSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea"
+      }
+    ],
+    "refinedRows": [
+      {
+        "model": "original",
+        "beforeError": 0.0389125,
+        "error": 0.02864375,
+        "fineError": 0.0293046875,
+        "fineResolution": 800,
+        "counts": [
+          3,
+          3
+        ],
+        "edges": 82,
+        "steps": 160,
+        "seconds": 1.5005030000000001,
+        "passed": true,
+        "featuresPassed": true,
+        "fineFeaturesPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      },
+      {
+        "model": "horizontal",
+        "beforeError": 0.038925,
+        "error": 0.03028125,
+        "fineError": 0.0309609375,
+        "fineResolution": 800,
+        "counts": [
+          3,
+          3
+        ],
+        "edges": 78,
+        "steps": 160,
+        "seconds": 1.022160875,
+        "passed": false,
+        "featuresPassed": true,
+        "fineFeaturesPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      },
+      {
+        "model": "vertical",
+        "beforeError": 0.03093125,
+        "error": 0.03035625,
+        "fineError": 0.031009375,
+        "fineResolution": 800,
+        "counts": [
+          3,
+          3
+        ],
+        "edges": 84,
+        "steps": 160,
+        "seconds": 1.0368054590000002,
+        "passed": false,
+        "featuresPassed": true,
+        "fineFeaturesPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    ]
+  },
+  "hunodan": {
+    "unchangedPreviousErrors": true,
+    "allPassed": true,
+    "maximumSeconds": 8.711137082999993,
+    "results": [
+      {
+        "id": "hjfig-01",
+        "seconds": 4.540659458,
+        "error": 0.009799111111111111,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjfig-02",
+        "seconds": 4.683447375,
+        "error": 0.013923555555555555,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjfig-03",
+        "seconds": 3.8428077909999994,
+        "error": 0.006634666666666666,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjfig-04",
+        "seconds": 4.354989125,
+        "error": 0.013824,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjfig-05",
+        "seconds": 3.3199773339999994,
+        "error": 0.009042960667083447,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjfla-01",
+        "seconds": 5.485912208000001,
+        "error": 0.013468424479166666,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjcur-01",
+        "seconds": 5.476875166000002,
+        "error": 0.005148444444444444,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjcur-02",
+        "seconds": 5.026572249999997,
+        "error": 0.005397333333333333,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjcur-03",
+        "seconds": 5.185215000000004,
+        "error": 0.004522666666666667,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjcur-04",
+        "seconds": 7.593006791,
+        "error": 0.005639111111111111,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjcur-05",
+        "seconds": 3.6348936669999965,
+        "error": 0.009436444444444445,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjhih-01",
+        "seconds": 6.594853833000001,
+        "error": 0.006040430615586996,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjhih-02",
+        "seconds": 4.863293082999997,
+        "error": 0.003899406226779104,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjhih-04",
+        "seconds": 7.955848833000004,
+        "error": 0.007776029627903062,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjstr-01",
+        "seconds": 4.4947903750000116,
+        "error": 0.007550237322696868,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjstr-02",
+        "seconds": 6.660972584000003,
+        "error": 0.004365548980933596,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjstr-03",
+        "seconds": 8.711137082999993,
+        "error": 0.0056129769369752365,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjsta-01",
+        "seconds": 5.019807374999989,
+        "error": 0.007929362880886427,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjsta-02",
+        "seconds": 4.540681832999995,
+        "error": 0.0038045247395833335,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjsta-03",
+        "seconds": 6.4399270410000025,
+        "error": 0.012332213049376572,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjsta-04",
+        "seconds": 6.982365833999997,
+        "error": 0.0050250552896055544,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjsta-05",
+        "seconds": 6.220332332999998,
+        "error": 0.010624446293860237,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      }
+    ]
+  },
+  "verification": {
+    "checks": [
+      {
+        "command": [
+          "node",
+          "scripts/inverse/hard-photo-benchmark.mjs",
+          "--crop=automatic",
+          "--target=mask",
+          "--seconds=10",
+          "--output=tmp/heart-learning/near-miss-paper-v1/final-corpus"
+        ],
+        "exitCode": 0,
+        "seconds": 302.935300083,
+        "log": "0.log"
+      },
+      {
+        "command": [
+          "node",
+          "scripts/inverse/hard-photo-benchmark.mjs",
+          "--ids=flettede-stonehenge",
+          "--crop=fixed",
+          "--crop-overrides=tmp/heart-learning/foreground-locator-v1/retry-crop.json",
+          "--seconds=10",
+          "--perturb=true",
+          "--output=tmp/heart-learning/near-miss-paper-v1/final-perturbations"
+        ],
+        "exitCode": 0,
+        "seconds": 32.12847445900002,
+        "log": "1.log"
+      },
+      {
+        "command": [
+          "env",
+          "INVERSE_SPEED_OUT=tmp/heart-learning/near-miss-paper-v1/final-hunodan",
+          "node",
+          "scripts/inverse/hunodan-speed-benchmark.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 122.92339229100003,
+        "log": "2.log"
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 7.735685041000011,
+        "log": "3.log"
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 5.923507000000029,
+        "log": "4.log"
+      },
+      {
+        "command": [
+          "npx",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 34.480015541,
+        "log": "5.log"
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "test:inverse"
+        ],
+        "exitCode": 0,
+        "seconds": 601.778681833,
+        "log": "6.log"
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 11.038150792000124,
+        "log": "7.log"
+      }
+    ],
+    "vitestPassed": 855,
+    "vitestExistingSkipped": 1,
+    "inversePassed": 731,
+    "svelteErrors": 0,
+    "svelteExistingWarnings": 7,
+    "browser": [
+      {
+        "name": "near-miss-shift-mask",
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "passed": true,
+        "pageErrors": [],
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.006399999976158142,
+          "prepareRoundTripSeconds": 0.17360000002384185,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 8.517200000047684,
+          "resultToReadySeconds": 0.38689999997615815,
+          "clickToReadySeconds": 9.084399999976158
+        },
+        "sourceResolution": 400,
+        "engineError": 0.0243375,
+        "sourceEditableError": 0.02439375,
+        "displayedError": 0.024,
+        "templateChecksPassed": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.02439375,
+          "sourceError": 0.02439375
+        },
+        "sharedSpans": 0,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "alternativeRefinement": {
+          "counts": [
+            3,
+            3
+          ],
+          "phase": 1,
+          "initialError": 0.091156005859375,
+          "error": 0.0856781005859375,
+          "featuresPassed": true,
+          "steps": 150,
+          "accepted": true,
+          "considered": 6,
+          "retained": 1
+        }
+      },
+      {
+        "name": "near-miss-mask",
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "passed": true,
+        "pageErrors": [],
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.006,
+          "prepareRoundTripSeconds": 0.1965,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 8.528100000023842,
+          "resultToReadySeconds": 0.34560000002384184,
+          "clickToReadySeconds": 9.076600000023841
+        },
+        "sourceResolution": 400,
+        "engineError": 0.02650625,
+        "sourceEditableError": 0.0266,
+        "displayedError": 0.027000000000000003,
+        "templateChecksPassed": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0266,
+          "sourceError": 0.0266
+        },
+        "sharedSpans": 2,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "alternativeRefinement": null
+      },
+      {
+        "name": "bird-mask",
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "passed": true,
+        "pageErrors": [],
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005799999952316284,
+          "prepareRoundTripSeconds": 0.18970000004768373,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 11.367600000023842,
+          "resultToReadySeconds": 1.0486000000238418,
+          "clickToReadySeconds": 12.612100000023842
+        },
+        "sourceResolution": 400,
+        "engineError": 0.02493125,
+        "sourceEditableError": 0.0251875,
+        "displayedError": 0.025,
+        "templateChecksPassed": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0251875,
+          "sourceError": 0.0251875
+        },
+        "sharedSpans": 28,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "alternativeRefinement": null
+      },
+      {
+        "name": "hard-flettede-puppy-half",
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "passed": true,
+        "pageErrors": [],
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005800000071525574,
+          "prepareRoundTripSeconds": 0.153,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 21.173600000023843,
+          "resultToReadySeconds": 0.6191000000238419,
+          "clickToReadySeconds": 21.951800000071525
+        },
+        "sourceResolution": 400,
+        "engineError": 0.00908125,
+        "sourceEditableError": 0.00915,
+        "displayedError": 0.009000000000000001,
+        "templateChecksPassed": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 4.6875e-06
+            }
+          ],
+          "originalSourceError": 0.00915,
+          "sourceError": 0.00915
+        },
+        "sharedSpans": 59,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "alternativeRefinement": null
+      },
+      {
+        "name": "hat",
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "passed": true,
+        "pageErrors": [],
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005600000023841858,
+          "prepareRoundTripSeconds": 0.22960000002384187,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 1.8065,
+          "resultToReadySeconds": 0.06379999995231628,
+          "clickToReadySeconds": 2.1058999999761583
+        },
+        "sourceResolution": 400,
+        "engineError": 0.001575,
+        "sourceEditableError": 0.001575,
+        "displayedError": 0.002,
+        "templateChecksPassed": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.001575,
+          "sourceError": 0.001575
+        },
+        "sharedSpans": 9,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "alternativeRefinement": null
+      }
+    ],
+    "servedWorkspaceSourceCheck": {
+      "origin": "http://127.0.0.1:5232",
+      "checkedAfterBrowserRun": true,
+      "allBrowserWorkspaceAndHarnessHashesMatch": true,
+      "staticFilesMatchPreview": [
+        {
+          "path": "static/inverse/worker.js",
+          "sha256": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70",
+          "url": "http://127.0.0.1:5232/inverse/worker.js"
+        },
+        {
+          "path": "static/inverse/worker-bootstrap.js",
+          "sha256": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+          "url": "http://127.0.0.1:5232/inverse/worker-bootstrap.js"
+        },
+        {
+          "path": "static/inverse/worker-controller.js",
+          "sha256": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+          "url": "http://127.0.0.1:5232/inverse/worker-controller.js"
+        },
+        {
+          "path": "static/inverse/compute-worker.js",
+          "sha256": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+          "url": "http://127.0.0.1:5232/inverse/compute-worker.js"
+        },
+        {
+          "path": "static/inverse/core/engine.js",
+          "sha256": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+          "url": "http://127.0.0.1:5232/inverse/core/engine.js"
+        },
+        {
+          "path": "static/inverse/core/stopped.js",
+          "sha256": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+          "url": "http://127.0.0.1:5232/inverse/core/stopped.js"
+        },
+        {
+          "path": "static/inverse/core/progress.js",
+          "sha256": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+          "url": "http://127.0.0.1:5232/inverse/core/progress.js"
+        },
+        {
+          "path": "static/inverse/core/feature-recovery.js",
+          "sha256": "6be5ef1c55009da6cff646e460a6601b6fab87212d3b87da4f3bb09fb2c962f9",
+          "url": "http://127.0.0.1:5232/inverse/core/feature-recovery.js"
+        },
+        {
+          "path": "static/inverse/core/solver.js",
+          "sha256": "cfc48549b0673167d0eeae4537cfc1f0d00c4cb4e6c34a10ee9972e42c65bcd6",
+          "url": "http://127.0.0.1:5232/inverse/core/solver.js"
+        },
+        {
+          "path": "static/inverse/core/routing.js",
+          "sha256": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+          "url": "http://127.0.0.1:5232/inverse/core/routing.js"
+        },
+        {
+          "path": "static/inverse/core/crop.js",
+          "sha256": "e44d3179ca229cb645779af3550ab2736547104c46684e0ccee402a1d1875ea6",
+          "url": "http://127.0.0.1:5232/inverse/core/crop.js"
+        },
+        {
+          "path": "static/inverse/locator/locator.js",
+          "sha256": "971c5205bd738b280b98e32899a8095d00c6520cadee7c8ec0e7e65529d0fbdd",
+          "url": "http://127.0.0.1:5232/inverse/locator/locator.js"
+        },
+        {
+          "path": "static/inverse/locator/fields.js",
+          "sha256": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
+          "url": "http://127.0.0.1:5232/inverse/locator/fields.js"
+        },
+        {
+          "path": "static/inverse/locator/math.js",
+          "sha256": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+          "url": "http://127.0.0.1:5232/inverse/locator/math.js"
+        },
+        {
+          "path": "static/inverse/locator/palette.js",
+          "sha256": "e6163193c14d753c2b93168c2e2e25602fb240117e1846a1c92a92308bc9084b",
+          "url": "http://127.0.0.1:5232/inverse/locator/palette.js"
+        },
+        {
+          "path": "static/inverse/locator/anchored.js",
+          "sha256": "c4f5276af229a7b9bbc1f686ea308697200cdd787bcdee2692d87a60bcdad991",
+          "url": "http://127.0.0.1:5232/inverse/locator/anchored.js"
+        },
+        {
+          "path": "static/inverse/locator/grid-refine.js",
+          "sha256": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+          "url": "http://127.0.0.1:5232/inverse/locator/grid-refine.js"
+        },
+        {
+          "path": "static/inverse/core/automatic.js",
+          "sha256": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+          "url": "http://127.0.0.1:5232/inverse/core/automatic.js"
+        },
+        {
+          "path": "static/inverse/core/input.js",
+          "sha256": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+          "url": "http://127.0.0.1:5232/inverse/core/input.js"
+        },
+        {
+          "path": "static/inverse/core/image-reference.js",
+          "sha256": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+          "url": "http://127.0.0.1:5232/inverse/core/image-reference.js"
+        },
+        {
+          "path": "static/inverse/core/image-features.js",
+          "sha256": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+          "url": "http://127.0.0.1:5232/inverse/core/image-features.js"
+        },
+        {
+          "path": "static/inverse/core/direct/image-objective.js",
+          "sha256": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/image-objective.js"
+        },
+        {
+          "path": "static/inverse/core/direct/prefer-matching.js",
+          "sha256": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/prefer-matching.js"
+        },
+        {
+          "path": "static/inverse/core/direct/symmetry.js",
+          "sha256": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/symmetry.js"
+        },
+        {
+          "path": "static/inverse/core/direct/finalize.js",
+          "sha256": "40c9d60e5bd327876da0465ab8d371a05430d43412520a32a0f3ab90f07284e4",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/finalize.js"
+        },
+        {
+          "path": "static/inverse/core/direct/topology.js",
+          "sha256": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/topology.js"
+        },
+        {
+          "path": "static/inverse/core/direct/fit.js",
+          "sha256": "94f79ea0c2f54b36fe05d604b9ad6a517898951bc76f0439fb4c82648198d12b",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/fit.js"
+        },
+        {
+          "path": "static/inverse/core/direct/share.js",
+          "sha256": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/share.js"
+        },
+        {
+          "path": "static/inverse/core/direct/initialize.js",
+          "sha256": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/initialize.js"
+        },
+        {
+          "path": "static/inverse/core/direct/counts.js",
+          "sha256": "54998b68a89739d8e40192dcce7b4e7d31ee6c5439b530603e1292ab189d1fcc",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/counts.js"
+        },
+        {
+          "path": "static/inverse/core/direct/feature-seeds.js",
+          "sha256": "9de0b1839c93b48d4f431bad56f735fd76bb448b8742f4ca979b5ba6053e514a",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/feature-seeds.js"
+        },
+        {
+          "path": "static/inverse/core/direct/feature-details.js",
+          "sha256": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/feature-details.js"
+        },
+        {
+          "path": "static/inverse/core/direct/matching.js",
+          "sha256": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/matching.js"
+        },
+        {
+          "path": "static/inverse/core/feature-shapes.js",
+          "sha256": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+          "url": "http://127.0.0.1:5232/inverse/core/feature-shapes.js"
+        },
+        {
+          "path": "static/inverse/core/self-returns.js",
+          "sha256": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+          "url": "http://127.0.0.1:5232/inverse/core/self-returns.js"
+        },
+        {
+          "path": "static/inverse/core/self-intersections.js",
+          "sha256": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+          "url": "http://127.0.0.1:5232/inverse/core/self-intersections.js"
+        },
+        {
+          "path": "static/inverse/core/direct/grid.js",
+          "sha256": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/grid.js"
+        },
+        {
+          "path": "static/inverse/core/junctions.js",
+          "sha256": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+          "url": "http://127.0.0.1:5232/inverse/core/junctions.js"
+        },
+        {
+          "path": "static/inverse/core/border.js",
+          "sha256": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+          "url": "http://127.0.0.1:5232/inverse/core/border.js"
+        },
+        {
+          "path": "static/inverse/core/material.js",
+          "sha256": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+          "url": "http://127.0.0.1:5232/inverse/core/material.js"
+        },
+        {
+          "path": "static/inverse/core/validate.js",
+          "sha256": "31cc29c6873896f53a2f999782dcd2292f0924611166932114b45534f5cbebd7",
+          "url": "http://127.0.0.1:5232/inverse/core/validate.js"
+        },
+        {
+          "path": "static/inverse/core/settings.js",
+          "sha256": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+          "url": "http://127.0.0.1:5232/inverse/core/settings.js"
+        },
+        {
+          "path": "static/inverse/core/direct/refine.js",
+          "sha256": "a7ba339daf17fe38a83df1b7fe22bfc922b1f5e94d5cb762495ae1658ce852cc",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/refine.js"
+        },
+        {
+          "path": "static/inverse/core/direct/clamped-features.js",
+          "sha256": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/clamped-features.js"
+        },
+        {
+          "path": "static/inverse/core/direct/primitive-selection.js",
+          "sha256": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/primitive-selection.js"
+        },
+        {
+          "path": "static/inverse/core/direct/primitives.js",
+          "sha256": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/primitives.js"
+        },
+        {
+          "path": "static/inverse/core/direct/shared-simplification.js",
+          "sha256": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/shared-simplification.js"
+        },
+        {
+          "path": "static/inverse/core/direct/curves.js",
+          "sha256": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/curves.js"
+        },
+        {
+          "path": "static/inverse/core/direct/curve-topology.js",
+          "sha256": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/curve-topology.js"
+        },
+        {
+          "path": "static/inverse/core/direct/short-returns.js",
+          "sha256": "d89c3a75df735ca5d519b354b0e47327f58ce56e55f86693de44ded98e857269",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/short-returns.js"
+        }
+      ],
+      "workspaceFileCount": 62,
+      "harnessFileCount": 22
+    }
+  },
+  "qualifications": [
+    "Scores compare with classified photographic masks, not ground-truth cutting paths. No physical assembly testing.",
+    "The original real-photo corpus remains 24/31; the newly passing crop perturbation is a separate regression.",
+    "The vertical translation remains rejected; rounded rays and border deviations remain visible.",
+    "Time-bounded fits vary on unchanged paths; individual before/after scores are retained.",
+    "The browser uses the UI 180-second allowance. Click-to-ready timings are separate from the native ten-second regression and Hunodan checks.",
+    "Continuation experiments start from saved image-derived fits and do not establish fresh end-to-end speed. Changing the material lattice also changes the fitting margin."
+  ]
+}

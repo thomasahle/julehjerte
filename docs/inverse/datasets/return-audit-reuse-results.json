@@ -1,0 +1,439 @@
+{
+  "schema": 1,
+  "status": "offline_only; local_speedup_verified_but_no_uniform_fresh_quality_gain",
+  "oracle": 1344,
+  "fixedProjections": [
+    {
+      "arm": "before",
+      "totalMillisecondsPer35Fixtures": [
+        1744.1808290000008,
+        1851.619876999999,
+        1630.4382929999992
+      ],
+      "medianMilliseconds": 1744.1808290000008,
+      "acceptedPerRun": 12,
+      "fixedWorkCoordinatesAndReportsEqual": true,
+      "medianReductionVsBefore": 0.0
+    },
+    {
+      "arm": "path-cache",
+      "totalMillisecondsPer35Fixtures": [
+        1177.1717130000009,
+        1223.0291250000012,
+        1160.8087939999998
+      ],
+      "medianMilliseconds": 1177.1717130000009,
+      "acceptedPerRun": 12,
+      "fixedWorkCoordinatesAndReportsEqual": true,
+      "medianReductionVsBefore": 0.3250861989608531
+    },
+    {
+      "arm": "curve-cache",
+      "totalMillisecondsPer35Fixtures": [
+        1198.7711650000006,
+        1068.3775789999997,
+        1065.0949570000012
+      ],
+      "medianMilliseconds": 1068.3775789999997,
+      "acceptedPerRun": 12,
+      "fixedWorkCoordinatesAndReportsEqual": true,
+      "medianReductionVsBefore": 0.3874616890425647
+    }
+  ],
+  "timedAnchor": {
+    "beforeRepairs": 4,
+    "pathCacheRepairs": 4,
+    "curveCacheRepairs": 4,
+    "attemptsPerArm": 8,
+    "scope": "Fixed saved cleanup with finite deadlines and 1x/2x/4x/8x clocks; all arms fail both repeats at 4x/8x. Not fresh fitting."
+  },
+  "fresh": {
+    "scope": "Six fixed-crop photos, two fresh-process repeats, three runtime arms; ten-second search and independent exported renderer. No whole-corpus or browser speed claim.",
+    "baselinePassed": 9,
+    "perArmTotal": 12,
+    "comparison": [
+      {
+        "arm": "path-cache",
+        "improvedErrors": 7,
+        "unchangedErrors": 2,
+        "increasedErrors": 3,
+        "maximumErrorIncrease": 0.0013437500000000012,
+        "passed": 10,
+        "total": 12
+      },
+      {
+        "arm": "curve-cache",
+        "improvedErrors": 6,
+        "unchangedErrors": 1,
+        "increasedErrors": 5,
+        "maximumErrorIncrease": 0.0013437500000000012,
+        "passed": 10,
+        "total": 12
+      }
+    ],
+    "rows": [
+      {
+        "arm": "before",
+        "id": "bird",
+        "repeat": 0,
+        "solveSeconds": 9.923972875,
+        "passed": true,
+        "error": 0.0247125,
+        "geometrySha256": "ae1918e69a56c704e234fe27465a9ee97b149fe6f20444be8a1e83940d0609f5"
+      },
+      {
+        "arm": "before",
+        "id": "bird",
+        "repeat": 1,
+        "solveSeconds": 9.754513082999999,
+        "passed": true,
+        "error": 0.02470625,
+        "geometrySha256": "7d6c228aa09cdc997124a91f5512bed284aa6ba1268c68597f9cdf8187edbc7f"
+      },
+      {
+        "arm": "before",
+        "id": "crown",
+        "repeat": 0,
+        "solveSeconds": 9.983377542,
+        "passed": true,
+        "error": 0.02273125,
+        "geometrySha256": "66258b05805918e87e57760bcd73947952f64b8e82b6ed434a2c3adf38bf477a"
+      },
+      {
+        "arm": "before",
+        "id": "crown",
+        "repeat": 1,
+        "solveSeconds": 10.006513166000001,
+        "passed": true,
+        "error": 0.02241875,
+        "geometrySha256": "316e423324ac4b7b995583757e0713a48814460a6323c539b15180cd468148c7"
+      },
+      {
+        "arm": "before",
+        "id": "fine-checker",
+        "repeat": 0,
+        "solveSeconds": 10.296783207999999,
+        "passed": true,
+        "error": 0.0221625,
+        "geometrySha256": "9e56813720b5edcf04f53798f34b319d8d01716c52569294c936ed14a177842e"
+      },
+      {
+        "arm": "before",
+        "id": "fine-checker",
+        "repeat": 1,
+        "solveSeconds": 10.794207042,
+        "passed": true,
+        "error": 0.017075,
+        "geometrySha256": "66d0e3d57c15c3dcbd128c3610724cf9c01f07c1dc974ed23de242d6cede6176"
+      },
+      {
+        "arm": "before",
+        "id": "flettede-viking",
+        "repeat": 0,
+        "solveSeconds": 9.688481208999999,
+        "passed": false,
+        "error": 0.03209375,
+        "geometrySha256": "6bf2b3bc37701428c6a76cbd6e585a267c0554df205f70e32ae6ae71fe0621e9"
+      },
+      {
+        "arm": "before",
+        "id": "flettede-viking",
+        "repeat": 1,
+        "solveSeconds": 9.874627083,
+        "passed": true,
+        "error": 0.02231875,
+        "geometrySha256": "ddbe38502f0a8c3b61e65679ea31d4b3823673d05d9eb605f6a9d30c2dc367ac"
+      },
+      {
+        "arm": "before",
+        "id": "jigsaw",
+        "repeat": 0,
+        "solveSeconds": 9.858016708000001,
+        "passed": true,
+        "error": 0.009775,
+        "geometrySha256": "484412b0d1e93930de8562997783c380aedfa647133a2a13ea124ebe63d6fffc"
+      },
+      {
+        "arm": "before",
+        "id": "jigsaw",
+        "repeat": 1,
+        "solveSeconds": 9.891007042,
+        "passed": true,
+        "error": 0.010125,
+        "geometrySha256": "28d1bfdb2256ace0b5112852409664d3ed4c00ff3608de73d1676b314570b299"
+      },
+      {
+        "arm": "before",
+        "id": "outline-star",
+        "repeat": 0,
+        "solveSeconds": 9.044484209,
+        "passed": false,
+        "error": 0.00754375,
+        "geometrySha256": "4b96c0c8e9d57320ccd99a0c82adec0e09d7a561510a21cce2d3e97bfeb0fc13"
+      },
+      {
+        "arm": "before",
+        "id": "outline-star",
+        "repeat": 1,
+        "solveSeconds": 9.300722250000002,
+        "passed": false,
+        "error": 0.00759375,
+        "geometrySha256": "e58b6704a6a2a2af70d402d1cf8781103b49899dcc433ca7f5b712fe5d48b7c1"
+      },
+      {
+        "arm": "curve-cache",
+        "id": "bird",
+        "repeat": 0,
+        "solveSeconds": 9.875426583,
+        "passed": true,
+        "error": 0.02470625,
+        "geometrySha256": "8fd95b265031bfe30f976a61114dddb14234b94ee94df7363d2611e430b5da91"
+      },
+      {
+        "arm": "curve-cache",
+        "id": "bird",
+        "repeat": 1,
+        "solveSeconds": 9.87732525,
+        "passed": true,
+        "error": 0.02470625,
+        "geometrySha256": "8fd95b265031bfe30f976a61114dddb14234b94ee94df7363d2611e430b5da91"
+      },
+      {
+        "arm": "curve-cache",
+        "id": "crown",
+        "repeat": 0,
+        "solveSeconds": 9.947465583000001,
+        "passed": true,
+        "error": 0.02241875,
+        "geometrySha256": "316e423324ac4b7b995583757e0713a48814460a6323c539b15180cd468148c7"
+      },
+      {
+        "arm": "curve-cache",
+        "id": "crown",
+        "repeat": 1,
+        "solveSeconds": 10.034727917,
+        "passed": true,
+        "error": 0.02273125,
+        "geometrySha256": "66258b05805918e87e57760bcd73947952f64b8e82b6ed434a2c3adf38bf477a"
+      },
+      {
+        "arm": "curve-cache",
+        "id": "fine-checker",
+        "repeat": 0,
+        "solveSeconds": 10.381011749999999,
+        "passed": true,
+        "error": 0.02245,
+        "geometrySha256": "f264c7b63ba63001158dabcbf47769a52ff8b46ce56ebb74fef49951dc99494b"
+      },
+      {
+        "arm": "curve-cache",
+        "id": "fine-checker",
+        "repeat": 1,
+        "solveSeconds": 10.49677325,
+        "passed": true,
+        "error": 0.01841875,
+        "geometrySha256": "b830cd40cc728414f3fa226294c5adcabccc785d396ee0eb0785012067a9f478"
+      },
+      {
+        "arm": "curve-cache",
+        "id": "flettede-viking",
+        "repeat": 0,
+        "solveSeconds": 10.1151885,
+        "passed": true,
+        "error": 0.02265625,
+        "geometrySha256": "4b2c8125fdfe05673332c956a7742048f043579e1fe8b136df8fbc715babc79f"
+      },
+      {
+        "arm": "curve-cache",
+        "id": "flettede-viking",
+        "repeat": 1,
+        "solveSeconds": 9.883551209,
+        "passed": true,
+        "error": 0.02148125,
+        "geometrySha256": "fde450cea0978bc2edf8c3c15e793d657e6524fda2dff02f85dddb9325410b73"
+      },
+      {
+        "arm": "curve-cache",
+        "id": "jigsaw",
+        "repeat": 0,
+        "solveSeconds": 9.773541917000001,
+        "passed": true,
+        "error": 0.00988125,
+        "geometrySha256": "a8c64f308561af49d2441d90a4137ef63c18a2207f7c775d35a8cbfacce3bce0"
+      },
+      {
+        "arm": "curve-cache",
+        "id": "jigsaw",
+        "repeat": 1,
+        "solveSeconds": 9.862825417,
+        "passed": true,
+        "error": 0.0101375,
+        "geometrySha256": "cf643699a5c2035aec7f67270c67ca8bb5e16758d1e7200d62a10454f97c8f33"
+      },
+      {
+        "arm": "curve-cache",
+        "id": "outline-star",
+        "repeat": 0,
+        "solveSeconds": 9.162446292,
+        "passed": false,
+        "error": 0.0074375,
+        "geometrySha256": "44472d94ea4039ea0888c7d175082b47a11de8d19bc6fb3536f752f51197a6fb"
+      },
+      {
+        "arm": "curve-cache",
+        "id": "outline-star",
+        "repeat": 1,
+        "solveSeconds": 9.012064208,
+        "passed": false,
+        "error": 0.00754375,
+        "geometrySha256": "4b96c0c8e9d57320ccd99a0c82adec0e09d7a561510a21cce2d3e97bfeb0fc13"
+      },
+      {
+        "arm": "path-cache",
+        "id": "bird",
+        "repeat": 0,
+        "solveSeconds": 9.813734625,
+        "passed": true,
+        "error": 0.02470625,
+        "geometrySha256": "8fd95b265031bfe30f976a61114dddb14234b94ee94df7363d2611e430b5da91"
+      },
+      {
+        "arm": "path-cache",
+        "id": "bird",
+        "repeat": 1,
+        "solveSeconds": 9.867296915999999,
+        "passed": true,
+        "error": 0.0247125,
+        "geometrySha256": "ae1918e69a56c704e234fe27465a9ee97b149fe6f20444be8a1e83940d0609f5"
+      },
+      {
+        "arm": "path-cache",
+        "id": "crown",
+        "repeat": 0,
+        "solveSeconds": 10.27274425,
+        "passed": true,
+        "error": 0.02241875,
+        "geometrySha256": "316e423324ac4b7b995583757e0713a48814460a6323c539b15180cd468148c7"
+      },
+      {
+        "arm": "path-cache",
+        "id": "crown",
+        "repeat": 1,
+        "solveSeconds": 10.29159475,
+        "passed": true,
+        "error": 0.02241875,
+        "geometrySha256": "316e423324ac4b7b995583757e0713a48814460a6323c539b15180cd468148c7"
+      },
+      {
+        "arm": "path-cache",
+        "id": "fine-checker",
+        "repeat": 0,
+        "solveSeconds": 10.30470425,
+        "passed": true,
+        "error": 0.021925,
+        "geometrySha256": "69b0ade4284bc252faa17a7ebf3e53c90f7b6624c7f30f762dd9ed621dbe1cec"
+      },
+      {
+        "arm": "path-cache",
+        "id": "fine-checker",
+        "repeat": 1,
+        "solveSeconds": 10.761978083,
+        "passed": true,
+        "error": 0.01841875,
+        "geometrySha256": "b830cd40cc728414f3fa226294c5adcabccc785d396ee0eb0785012067a9f478"
+      },
+      {
+        "arm": "path-cache",
+        "id": "flettede-viking",
+        "repeat": 0,
+        "solveSeconds": 10.191622959,
+        "passed": true,
+        "error": 0.02235625,
+        "geometrySha256": "c7a30fb9949107026be822e5b8f21ec349b53784b3159d278f9bc29cb9137b0f"
+      },
+      {
+        "arm": "path-cache",
+        "id": "flettede-viking",
+        "repeat": 1,
+        "solveSeconds": 9.852806375,
+        "passed": true,
+        "error": 0.021675,
+        "geometrySha256": "f2fcc2ed6aa94cab0b345e4bc00f9e7c275732917e704149a300ed98d7d86d37"
+      },
+      {
+        "arm": "path-cache",
+        "id": "jigsaw",
+        "repeat": 0,
+        "solveSeconds": 9.778748957999998,
+        "passed": true,
+        "error": 0.00981875,
+        "geometrySha256": "253461779f04f762e7f3d83e4c30391b8bc7840c3b9d32101b6b6bd29d978f5d"
+      },
+      {
+        "arm": "path-cache",
+        "id": "jigsaw",
+        "repeat": 1,
+        "solveSeconds": 9.858269374999999,
+        "passed": true,
+        "error": 0.00995625,
+        "geometrySha256": "db1e724168fae9d63984d642b5f22b6d1c0c59b06458731e96174fa758162843"
+      },
+      {
+        "arm": "path-cache",
+        "id": "outline-star",
+        "repeat": 0,
+        "solveSeconds": 9.127942374999998,
+        "passed": false,
+        "error": 0.00754375,
+        "geometrySha256": "9e8dac3c58c1483a94cbb9c5593f7dcaa632854a865452308580dfaf8170fa8a"
+      },
+      {
+        "arm": "path-cache",
+        "id": "outline-star",
+        "repeat": 1,
+        "solveSeconds": 9.050316166,
+        "passed": false,
+        "error": 0.00754375,
+        "geometrySha256": "4b96c0c8e9d57320ccd99a0c82adec0e09d7a561510a21cce2d3e97bfeb0fc13"
+      }
+    ]
+  },
+  "findings": [
+    "Both caches retain every checked witness and fixed-work result. Reusing whole paths has most of the measured local benefit.",
+    "All arms retain the outline-star failure; its missing edge fragment is diagnosed separately.",
+    "The first baseline Viking repeats the original failed suite. Four cached runs pass, but no return-projection events occur during the relevant refinement. The baseline second repetition also passes. These outcomes cannot be attributed to the cache.",
+    "The second fine-checker repeat increases error from 1.7075% to 1.841875% for both candidates. Strict no-regression is not established."
+  ],
+  "visualReview": "All 36 reconstructed images reviewed in the two contact sheets. The first baseline Viking has a visibly thicker/less complete curved silhouette; the other versions improve it. Fine-checker contacts remain uneven and vary across repetitions; several tiny seam/endpoint changes remain. Jigsaw, crown and bird differences are generally small. Review does not establish original cutting-path equivalence.",
+  "decision": "Do not integrate either cache yet. Resolve timed candidate selection and retain the source/image-quality evidence before adopting a local speed optimization.",
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/return-audit-reuse-v1/source.json",
+      "sha256": "9bbafde83ad8451bb55e66a6cabcc4ae6529fb78048ffadb0a8b486379b5ee41"
+    },
+    {
+      "path": "tmp/heart-learning/return-audit-reuse-v1/fresh-source.json",
+      "sha256": "4825ddfe2786d7a0c47b5fecf9dfca0b1159a3c6e976b9e331fddef0ec68780e"
+    },
+    {
+      "path": "tmp/heart-learning/return-audit-reuse-v1/oracle.json",
+      "sha256": "84405b83eaf3a68cf7b225f150e543c83b2460687dc901d78ada4710c23c614e"
+    },
+    {
+      "path": "tmp/heart-learning/return-audit-reuse-v1/state.json",
+      "sha256": "07eea1f7e93c81f3ed6a664890fad2b337ac5efd3df812266674f2c81060cae0"
+    },
+    {
+      "path": "tmp/heart-learning/return-audit-reuse-v1/fresh-state.json",
+      "sha256": "b05d75322fc17ec17d50682d4ec2586f5dc20dd410764263b9df878a1da0a28b"
+    },
+    {
+      "path": "tmp/heart-learning/return-audit-reuse-v1/fresh-comparison-0.png",
+      "sha256": "457c9ed939db4f15ff99e89c061ff2f90fd86e52ede3e574837eb513798db284"
+    },
+    {
+      "path": "tmp/heart-learning/return-audit-reuse-v1/fresh-comparison-1.png",
+      "sha256": "491e07f2ee8901935ac54510f6baa6860d75dd7f909a1e0fe3c91945d4c1c5ea"
+    }
+  ]
+}

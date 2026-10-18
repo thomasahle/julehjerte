@@ -1,0 +1,170 @@
+{
+  "schema": "real-contact-annotation-admission-1",
+  "status": "admitted as reviewed development annotations; no training or split allocation",
+  "annotations": [
+    {
+      "path": "scripts/inverse/datasets/real-annotations-contacts.json",
+      "sha256": "ba261af7ad7e24fbb0ce0c852a0fdcf387b73eae75a74431942d708d1b9a060b"
+    },
+    {
+      "path": "scripts/inverse/datasets/real-materials-contacts.json",
+      "sha256": "6aeacfcae467a130606c7ac68167a09b9bc24304ced813dd5d2163d59b43d13f"
+    }
+  ],
+  "scope": "Visible body and partial paper identities for the reviewed printed checker and muted teal/pale candle. Unknown boundaries and junctions stay unknown; no cutting paths or exact overlap corners are asserted.",
+  "verification": {
+    "checks": [
+      {
+        "stage": "compile-256",
+        "exitCode": 0
+      },
+      {
+        "stage": "verify-256",
+        "exitCode": 0
+      },
+      {
+        "stage": "compile-768",
+        "exitCode": 0
+      },
+      {
+        "stage": "verify-768",
+        "exitCode": 0
+      }
+    ],
+    "compiled": [
+      {
+        "resolution": 256,
+        "manifest": {
+          "path": "tmp/heart-learning/contact-annotation-final-v1/labels-256/manifest.json",
+          "sha256": "c39a27b2289992e4c735d5b43f91288df3f338b35cda2ca31f8e72f07332e028"
+        },
+        "instances": [
+          {
+            "id": "real-c0cc1ce97cf5e6a6-body-1",
+            "assetId": "real-c0cc1ce97cf5e6a6",
+            "splitGroupId": "real-split-018c84732bc5d243",
+            "splitStatus": "unassigned",
+            "allocation": "unassigned",
+            "bodyPixelCounts": {
+              "0": 43729,
+              "1": 9862,
+              "255": 11945
+            },
+            "materialPixelCounts": {
+              "0": 2837,
+              "1": 3020,
+              "255": 59679
+            }
+          },
+          {
+            "id": "real-c4a9ee6e2d0a4185-body-1",
+            "assetId": "real-c4a9ee6e2d0a4185",
+            "splitGroupId": "real-split-a47f6e30728781b2",
+            "splitStatus": "unassigned",
+            "allocation": "unassigned",
+            "bodyPixelCounts": {
+              "0": 28565,
+              "1": 18544,
+              "255": 18427
+            },
+            "materialPixelCounts": {
+              "0": 5653,
+              "1": 7606,
+              "255": 52277
+            }
+          }
+        ]
+      },
+      {
+        "resolution": 768,
+        "manifest": {
+          "path": "tmp/heart-learning/contact-annotation-final-v1/labels-768/manifest.json",
+          "sha256": "9d3cf6708d898162c453da04b5c122de5e7a58dbfca3a46f61b43655e88e8076"
+        },
+        "instances": [
+          {
+            "id": "real-c0cc1ce97cf5e6a6-body-1",
+            "assetId": "real-c0cc1ce97cf5e6a6",
+            "splitGroupId": "real-split-018c84732bc5d243",
+            "splitStatus": "unassigned",
+            "allocation": "unassigned",
+            "bodyPixelCounts": {
+              "0": 393607,
+              "1": 88731,
+              "255": 107486
+            },
+            "materialPixelCounts": {
+              "0": 25543,
+              "1": 27164,
+              "255": 537117
+            }
+          },
+          {
+            "id": "real-c4a9ee6e2d0a4185-body-1",
+            "assetId": "real-c4a9ee6e2d0a4185",
+            "splitGroupId": "real-split-a47f6e30728781b2",
+            "splitStatus": "unassigned",
+            "allocation": "unassigned",
+            "bodyPixelCounts": {
+              "0": 257114,
+              "1": 166955,
+              "255": 165755
+            },
+            "materialPixelCounts": {
+              "0": 50925,
+              "1": 68258,
+              "255": 470641
+            }
+          }
+        ]
+      }
+    ],
+    "reviewedRasterIdentity": {
+      "identicalPNGs": 16,
+      "artifact": {
+        "path": "tmp/heart-learning/contact-annotation-final-v1/comparison.json",
+        "sha256": "1c3daed170b4d3f9eeac240a320cdace02adb42cc092a77c4a4fdba25e9482c8"
+      }
+    },
+    "registryCounts": {
+      "bodyInstances": 23,
+      "materialInstances": 21,
+      "previousBodyInstances": 21,
+      "previousMaterialInstances": 19
+    },
+    "realAssetAudit": {
+      "path": "docs/inverse/datasets/real-validation.json",
+      "sha256": "8f90ab01e05e9561fe41def080ca98f2d63f83ee531744a56d1c752fcd00ff89"
+    }
+  },
+  "sourceKindCorrection": {
+    "id": "real-65e0031723ed4dfe",
+    "before": {
+      "kind": "photo",
+      "reviewStatus": "visually-reviewed-contact-sheet",
+      "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    },
+    "after": {
+      "kind": "photo-other-material",
+      "reviewStatus": "visually-reviewed-source-recheck",
+      "reviewMethod": "Native 1024x682 source inspected: pebbled leather-like surface, thick edges and fibrous backing. Excluded from paper-heart photo totals; precise leather composition is not established."
+    },
+    "sourceSha256": "65e0031723ed4dfe1f62f73c54581d0cc475e64e3b749ef8236a7ac71b8396f6",
+    "training": false
+  },
+  "currentSourceInventory": {
+    "verifiedAssetFiles": 1034,
+    "reviewedAssembledHeartPhotoFiles": 567,
+    "reviewedPhotoNearDuplicateGroups": 455,
+    "pinterestDownloadedPins": 470,
+    "pinterestSelectedPins": 487,
+    "pinterestPhotoFiles": 192
+  },
+  "limitations": [
+    "The two sources remain unassigned, and related checker/candle motif families must stay together in later evaluation.",
+    "They are reviewed development labels, not held-out generalization examples or physical joining ground truth.",
+    "Compiled RGB/body/material/overlay PNGs at both resolutions are byte-identical to those visually reviewed before admission. Only parent-path and manifest metadata changed.",
+    "Previous training inputs, reports, checkpoints and denominators are unchanged.",
+    "No training, model integration, pushing or deployment in this admission."
+  ]
+}

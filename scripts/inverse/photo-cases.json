@@ -22,7 +22,12 @@
           370
         ]
       ],
-      "cropInsetFraction": 0.03
+      "cropInsetFraction": 0.03,
+      "file": "scripts/inverse/fixtures/hard-photos/bibel-star-8.png",
+      "sha256": "cc903fba95b57912b6dc588b2bbc1f2885d53ee8d1b96abee3b2ec953d241f2b",
+      "decodedPixelsSha256": "845f3c6bf9e25e8adc28813289227eb25f3df2fc5cdefcaa2ac9ce7b16a3950e",
+      "width": 1070,
+      "height": 654
     },
     {
       "id": "bibel-star-curved",
@@ -45,7 +50,12 @@
           370
         ]
       ],
-      "cropInsetFraction": 0.04
+      "cropInsetFraction": 0.04,
+      "file": "scripts/inverse/fixtures/hard-photos/bibel-star-curved.png",
+      "sha256": "130b68f82bbfdab2f1b243e4b99e41926c746820bbde527041bc8def514e834b",
+      "decodedPixelsSha256": "a45a7a5a27d68cb06f064621751954ec7169d9b4565bfdb13c2bbe446982ac77",
+      "width": 1019,
+      "height": 656
     },
     {
       "id": "bibel-star-outline",
@@ -68,7 +78,12 @@
           376
         ]
       ],
-      "cropInsetFraction": 0.02
+      "cropInsetFraction": 0.02,
+      "file": "scripts/inverse/fixtures/hard-photos/bibel-star-outline.png",
+      "sha256": "50182945f46ea5e51dc4ab75227d73abfd332e07a4568a1acc52ae43c1c8638c",
+      "decodedPixelsSha256": "a58dc34d7dd3f2bf65fc981a7cd9fc934d59ca4db5c3d90d00abf00757c723f0",
+      "width": 995,
+      "height": 661
     },
     {
       "id": "bibel-cross",
@@ -91,7 +106,12 @@
           381
         ]
       ],
-      "cropInsetFraction": 0
+      "cropInsetFraction": 0,
+      "file": "scripts/inverse/fixtures/hard-photos/bibel-cross.png",
+      "sha256": "32ef80dff1690e3db72ae3713d3965b2094ca908e3c7926b8ed08ff534965284",
+      "decodedPixelsSha256": "33e4d4a76a66856636890091d9aa1b006abf3932c9fce0b7578a77d8c1be1807",
+      "width": 1043,
+      "height": 682
     },
     {
       "id": "flettede-puppy",
@@ -114,7 +134,12 @@
           606
         ]
       ],
-      "cropInsetFraction": 0
+      "cropInsetFraction": 0,
+      "file": "scripts/inverse/fixtures/hard-photos/flettede-puppy.png",
+      "sha256": "2a26b6c1531efa407da71dba64fe5db6a6f2e4a6c25226c84b6e62213784fad0",
+      "decodedPixelsSha256": "11e4028fec88a190b4c55bbc5d4023654c8044d5be7dd8d6ebab0da72d93460c",
+      "width": 779,
+      "height": 860
     },
     {
       "id": "flettede-stonehenge",
@@ -137,7 +162,12 @@
           333
         ]
       ],
-      "cropInsetFraction": 0
+      "cropInsetFraction": 0,
+      "file": "scripts/inverse/fixtures/hard-photos/flettede-stonehenge.png",
+      "sha256": "b9a1c5a2059b3781aef01b48d21b90110791cd6befc232999113c732c0a6aa24",
+      "decodedPixelsSha256": "867fdac5181320b2e898b95abb5ee778f6fc8aacab71a78a85be0ed6fa622248",
+      "width": 601,
+      "height": 601
     },
     {
       "id": "flettede-viking",
@@ -160,7 +190,12 @@
           874
         ]
       ],
-      "cropInsetFraction": 0.01
+      "cropInsetFraction": 0.01,
+      "file": "scripts/inverse/fixtures/hard-photos/flettede-viking.png",
+      "sha256": "c45ccc34f7db2462485c138435c4b258665a450dd51e8c9ff59d12ef41b0dd96",
+      "decodedPixelsSha256": "ba21ae598da5a5ca06cddf86c716e8cbafef42e1e326af58d35e6bc1435ee075",
+      "width": 1455,
+      "height": 1455
     }
   ],
   "cropNotes": "The listed inset removes photographed outer paper/background fringes. Both presets use the same effective crop. It is recorded as part of the target, not an alignment to reference cuts."

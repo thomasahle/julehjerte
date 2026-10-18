@@ -1,0 +1,138 @@
+{
+  "scope": "Two assistant-reviewed visible-body annotations and one approximate overlap reference. No cutting-path ground truth, new training allocation, or model training. New source groups are distinct from existing annotation groups and outside current QA reservations. Cross-corpus motif-family review remains pending.",
+  "audit": {
+    "passed": true,
+    "instances": 2,
+    "sourceGroups": 2,
+    "approximateOverlapReferences": 1,
+    "manifestSha256": "376469a5078feb06cc5d3544588c319b80453ae7b9fecd4de1c5fa23211a6a44",
+    "annotationsSha256": "470cab7fe80cb06709d90a718791af8ca790de83831ae8db0af0822d4559a5e5",
+    "scope": "All source hashes, inherited groups, transforms, known/unknown labels and RGB pixels; not an independent human annotation audit."
+  },
+  "combinedAnnotationCounts": {
+    "bodyInstances": 18,
+    "sourceGroups": 16,
+    "outsideQAInstances": 17,
+    "outsideQAGroups": 15,
+    "approximateOverlapReferences": 6
+  },
+  "sourceHashes": {
+    "scripts/inverse/datasets/real_annotations.py": "b505fb723dc45b644cb95a058ddf45317f6afb700c61fb88cb3d93571fb9e33c",
+    "scripts/inverse/datasets/real-annotations-pinterest.json": "470cab7fe80cb06709d90a718791af8ca790de83831ae8db0af0822d4559a5e5",
+    "docs/inverse/datasets/real-manifest.json": "149697fc7cdd535736dd8727bba7847bca10d74823a28bdfaf77c95c44a6ffb3"
+  },
+  "reviewed": [
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "assetId": "real-8c875dd0f298b5a4",
+      "sourceSize": [
+        440,
+        440
+      ],
+      "splitGroupId": "real-split-79fb92ea84d04dc8",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "small-hearts-in-checker-frame",
+        "crossCorpusReview": "pending"
+      },
+      "sourcePages": [
+        "https://dk.pinterest.com/pin/52284045669157402/"
+      ],
+      "uncertaintyPixels": 3,
+      "overlapCorners": {
+        "points": [
+          [
+            225,
+            141
+          ],
+          [
+            380,
+            281
+          ],
+          [
+            223,
+            427
+          ],
+          [
+            74,
+            281
+          ]
+        ],
+        "status": "approximate-visible-reference",
+        "order": "notch,right,tip,left",
+        "uncertaintyRadiusPixels": 6
+      },
+      "method": "Red/white heart with four small heart details on a saturated blue background. Both papers are foreground; the handle and cast shadow are excluded. The attachment is uncertain. Source-size outline and label overlays reviewed. The four overlap points are approximate visible references with six-pixel uncertainty, not measured physical corners or cutting labels."
+    },
+    {
+      "id": "real-3f7b76e1a98e808f-body-1",
+      "assetId": "real-3f7b76e1a98e808f",
+      "sourceSize": [
+        1334,
+        1000
+      ],
+      "splitGroupId": "real-split-fa81b0c40b1f06c4",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "four-point-star-frame",
+        "crossCorpusReview": "pending"
+      },
+      "sourcePages": [
+        "https://dk.pinterest.com/pin/195484440066787592/"
+      ],
+      "uncertaintyPixels": 12,
+      "overlapCorners": null,
+      "method": "Rotated green/pale four-point star motif on a pale surface. Both papers are foreground; the long horizontal handle and cast shadow are excluded. The tip and lower lobe are clipped by the source frame, with no hidden continuation inferred. Attachment and frame-edge regions are uncertain. The lower outer arc was corrected after source-grid review and RGB edge sampling. Source-size outlines and label overlays reviewed. No four-corner reference is provided because a physical corner is outside the photograph."
+    }
+  ],
+  "artifacts": {
+    "tmp/heart-learning/pinterest-body-review-v1/final-audit.json": {
+      "sha256": "3ee58948ce47a018b3d9c292dd14f5f2e0436d3100391dd7d4f2418683588071",
+      "bytes": 419
+    },
+    "tmp/heart-learning/pinterest-body-review-v1/review-annotations.json": {
+      "sha256": "470cab7fe80cb06709d90a718791af8ca790de83831ae8db0af0822d4559a5e5",
+      "bytes": 8864
+    },
+    "tmp/heart-learning/pinterest-body-review-v1/real-8c875dd0f298b5a4-review-outline.png": {
+      "sha256": "15496f76163a3098943b2b00767c4d81ab08cadb281bd978379d93f300f780ba",
+      "bytes": 257125
+    },
+    "tmp/heart-learning/pinterest-body-review-v1/real-3f7b76e1a98e808f-review-outline.png": {
+      "sha256": "86fc62daf29b90549e86957c995639cbdfa49b8e0dcbde7e7abdc38c1a412e24",
+      "bytes": 961925
+    },
+    "tmp/heart-learning/pinterest-body-review-v1/review-labels/index.html": {
+      "sha256": "d2b143bf30452186d33e1b446b1b75d6a2cabd4e5eb83e9652954533736c640d",
+      "bytes": 1794
+    },
+    "tmp/heart-learning/pinterest-body-review-v1/review-labels/manifest.json": {
+      "sha256": "376469a5078feb06cc5d3544588c319b80453ae7b9fecd4de1c5fa23211a6a44",
+      "bytes": 3311
+    },
+    "tmp/heart-learning/pinterest-body-review-v1/review-labels/real-3f7b76e1a98e808f-body-1-labels.png": {
+      "sha256": "c70186e8359cf3a98b6f7531e4380d76e840c69328af607ff807cc5f8666f899",
+      "bytes": 1243
+    },
+    "tmp/heart-learning/pinterest-body-review-v1/review-labels/real-3f7b76e1a98e808f-body-1-overlay.png": {
+      "sha256": "6d42fe9f383f78beae3a7bdc8bbc5963c5ecff388a496b65f878a1233fe03f48",
+      "bytes": 47110
+    },
+    "tmp/heart-learning/pinterest-body-review-v1/review-labels/real-3f7b76e1a98e808f-body-1-rgb.png": {
+      "sha256": "cff6f7ac1e93d155087f3a96cb0c6e36808fda6443343d0173d4361f8451a37e",
+      "bytes": 50600
+    },
+    "tmp/heart-learning/pinterest-body-review-v1/review-labels/real-8c875dd0f298b5a4-body-1-labels.png": {
+      "sha256": "ae279e37a1acfdbc67831d4a55c4d670f94c0e74d9f69b7c1b378d92508954ef",
+      "bytes": 1497
+    },
+    "tmp/heart-learning/pinterest-body-review-v1/review-labels/real-8c875dd0f298b5a4-body-1-overlay.png": {
+      "sha256": "0290fd4bc5b5feea810080a91ee39af11cb6c2a55ea3b7749a4932d70f78bcd5",
+      "bytes": 93680
+    },
+    "tmp/heart-learning/pinterest-body-review-v1/review-labels/real-8c875dd0f298b5a4-body-1-rgb.png": {
+      "sha256": "5684375760927d721181bef98ce52a1601e55c55868588d7ab256745cbd113d1",
+      "bytes": 97108
+    }
+  }
+}

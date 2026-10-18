@@ -22,6 +22,11 @@ Browser QA also found premature abandonment of the circle's topology proposal in
 
 This is local primitive selection and multiple initialization within one fitting process. It does not establish that every border topology can be reconstructed, nor that photographs yield exact original cutting paths.
 
+The subsequent [selective degree reduction](PRIMITIVE-SELECTION.md) retains
+this checkpoint competition and adds a bounded final proposal for useful
+subsets of straight spans. It runs after all fitting, matching and sharing,
+so a simplification cannot alter the input to later optimization stages.
+
 ## Measured results
 
 All 22 regular Hunodan photo crops pass the existing quality and ten-second benchmark criteria. The slowest takes 9.67 seconds. Twenty have no greater independent mask disagreement than the release baseline. The two identical-sheet selections, `hjfig-02` and `hjfig-04`, add 0.676 and 0.912 percentage points respectively, within the existing one-percentage-point matching preference.

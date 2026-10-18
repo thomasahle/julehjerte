@@ -1,11 +1,20 @@
 /** Typed boundary to the locally hosted, unbundled handoff engine. */
+
+// The progress event's own shape lives one layer up, in `engine.ts`, beside the
+// stages the UI has words for. `import type` is erased before anything runs, so
+// the cycle it makes exists only for the type checker; the wire protocol here
+// still needs no part of the bridge at run time.
+import type { EngineProgress } from './engine';
+
 export type Point = [number, number];
 export type ArtworkInput =
   | { type: 'svg' | 'json'; text: string }
+  | { type: 'mask'; mask: Uint8Array; resolution: number; weights?: Float32Array; validMask?: Uint8Array; seedCells?: number }
   | { type: 'pixels'; rgba: Uint8ClampedArray; imageWidth: number; imageHeight: number; quad?: Point[]; roi?: number[]; cropProvenance?: Record<string, unknown> };
 
 /** The pixel arm of ArtworkInput, which corner detection and the mask both need by name. */
 export type PixelsInput = Extract<ArtworkInput, { type: 'pixels' }>;
+export type MaskInput = Extract<ArtworkInput, { type: 'mask' }>;
 
 export interface CropProposal {
   quad: Point[];
@@ -22,12 +31,15 @@ export interface PreparedArtwork {
   vector: string;
   boundaries: string;
   mask: Uint8Array;
+  weights?: Float64Array;
+  validMask?: Uint8Array;
   resolution: number;
   metadata: {
     curves: number;
     width: number;
     direct?: boolean;
     originalBoundariesAvailable?: boolean;
+    originalBoundaryMethod?: 'pixel-edges';
     junctionRepairs?: { from: Point[]; to: Point }[];
     preprocessing?: {
       traceChangeFraction: number;
@@ -44,8 +56,11 @@ export interface DesignResult {
     resolution: number;
     wovenMask: Uint8Array;
     validMask?: Uint8Array;
+    weights?: Float64Array;
   };
   report: {
+    stoppedEarly?: boolean;
+    alternatives?: Array<{ counts: [number, number]; error: number; checkpointError?: number | null; geometry: string }>;
     templateExportAllowed: boolean;
     templateChecksPassed: boolean;
     slits: { left: number; right: number };
@@ -56,7 +71,13 @@ export interface DesignResult {
     warnings: string[];
     /** Which of the requested square symmetries the exported cuts satisfy (docs/inverse/SYMMETRY.md). */
     symmetry?: { requested: string[]; honoured: string[]; maxDeviationMm: number | null };
-    imageError?: { mismatchFraction: number; resolution: number } | null;
+    imageError?: {
+      mismatchFraction: number;
+      resolution: number;
+      wholeMismatchFraction?: number;
+      protectedMismatchFraction?: number | null;
+      editableChangeFraction?: number | null;
+    } | null;
     imageFidelity?: { features: { passed: boolean } };
     settings: { width: number; maxImageError?: number; paperColors: [string, string] };
   };
@@ -81,6 +102,7 @@ export class InverseWorker {
   private worker: Worker | null = null;
   private sequence = 0;
   private rejectPending: ((error: Error) => void) | null = null;
+  private pendingAction: string | null = null;
 
   constructor(private url: string, private createWorker = (url: string) => new Worker(url)) {}
 
@@ -88,7 +110,7 @@ export class InverseWorker {
     action: 'prepare' | 'solve' | 'saved' | 'archive' | 'detect-crops' | 'refine-crop',
     input: ArtworkInput | undefined,
     settings: Record<string, unknown>,
-    progress: (stage: string) => void = () => {}
+    progress: (event: EngineProgress) => void = () => {}
   ): Promise<T> {
     if (this.rejectPending) return Promise.reject(new Error('The engine is already working.'));
     return new Promise((resolve, reject) => {
@@ -96,13 +118,21 @@ export class InverseWorker {
         const worker = this.worker ??= this.createWorker(this.url);
         const id = ++this.sequence;
         this.rejectPending = reject;
+        this.pendingAction = action;
         worker.onmessage = ({ data }) => {
           if (data.id !== this.sequence) return;
           if (data.type === 'progress') {
-            progress(data.event.stage);
+            // The whole event, not `data.event.stage`: everything the search can
+            // say about itself while it runs — the counts it is trying, the
+            // error, the MILP's round and gap — arrives in these fields, and the
+            // panel is built out of them (PAINT.md §2, and §12 for what is still
+            // missing). The worker's message is untyped, so this is the one cast
+            // in the chain; `searchProgress.ts` reads every field defensively.
+            progress(data.event as EngineProgress);
             return;
           }
           this.rejectPending = null;
+          this.pendingAction = null;
           if (data.type === 'error') reject(new EngineError(data.message, data.report, data.code));
           else if (data.type === 'prepared') resolve(data.preview as T);
           else if (data.type === 'result') resolve(data.result as T);
@@ -123,12 +153,37 @@ export class InverseWorker {
     });
   }
 
+  /** Keep the current solve's id and promise; its normal result resolves it. */
+  useBest(): boolean {
+    if (!this.worker || !this.rejectPending || this.pendingAction !== 'solve') return false;
+    this.worker.postMessage({ id: this.sequence, action: 'stop' });
+    return true;
+  }
+
   stop(error: Error = new DOMException('Cancelled', 'AbortError')) {
+    const worker = this.worker, id = this.sequence, solving = this.pendingAction === 'solve';
     this.sequence++;
-    this.worker?.terminate();
     this.worker = null;
     this.rejectPending?.(error);
     this.rejectPending = null;
+    this.pendingAction = null;
+    if (!worker) return;
+    if (!solving) { worker.terminate(); return; }
+    // Cancel rejects immediately. Let the responsive controller explicitly
+    // terminate its CPU-bound child before terminating the controller itself;
+    // otherwise a browser may leave the orphan finishing a long native solve.
+    let terminated = false;
+    const terminate = () => {
+      if (terminated) return;
+      terminated = true;
+      clearTimeout(timer);
+      worker.terminate();
+    };
+    const timer = setTimeout(terminate, 1000);
+    worker.onmessage = ({ data }) => { if (data.id === id && data.type === 'cancelled') terminate(); };
+    worker.onerror = event => { event.preventDefault(); terminate(); };
+    worker.onmessageerror = terminate;
+    try { worker.postMessage({ id, action: 'cancel' }); } catch { terminate(); }
   }
 }
 

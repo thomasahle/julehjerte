@@ -1,0 +1,1110 @@
+{
+  "schema": "visible-shared-return-source-support-1",
+  "runtimeCommit": "14e6dbfd7d116e87e031af16670f615b047fc2c8",
+  "status": "Focused tests, eight paired diagnostic replays, eight fresh crop perturbations, sixteen editable replays and 22 Hunodan cases complete. Full photographic/application/inverse/browser release QA remains separate and unfinished.",
+  "comparison": {
+    "scope": "Fresh full design() solves from photograph pixels and fixed crops; no saved cuts. Three AB/BA/AB pairs with independent exported raster replay, then guarded replays of the two cleanup-sensitive Hunodan cases. Every numerical refinement checkpoint is identical between the six striped-heart runs; the earlier lower historical score remains recorded, not replaced.",
+    "rows": [
+      {
+        "id": "hjhih-01",
+        "policy": "production",
+        "repeat": "1",
+        "runtimeCommit": "14e6dbfd7d116e87e031af16670f615b047fc2c8",
+        "seconds": 7.018857375,
+        "error": 0.006040430615586996,
+        "sourceSha256": "f11704b067941ead5dde1ef74f63d5b70d1f7a50e9c3c7cafb5b852cb0f7d18a",
+        "decodedPixelsSha256": "2922c3dd9a71d122e06e9d0a469e623f877fdf503e824253614385f1dbf3f4f8",
+        "maskSha256": "a02bbceadda3acbc3ae67298e79ecc8e8f0dce4f0c8d61162c58e6e993804346",
+        "passed": true,
+        "refinementHistorySha256": "c188e5d07ee60bd40ad1d1967b25beff29f8c827ff76a033b0d99f2e9dc0cd99",
+        "lastRefinementStep": 749,
+        "shortReturnRepair": null,
+        "record": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjhih-01-production-1/record.json",
+        "recordSha256": "9f6f528570530a46b9b348561c46c4ad0d531aef7cbc8ad734baee016888cb60",
+        "previousReleaseError": 0.006040430615586996
+      },
+      {
+        "id": "hjsta-01",
+        "policy": "production",
+        "repeat": "1",
+        "runtimeCommit": "14e6dbfd7d116e87e031af16670f615b047fc2c8",
+        "seconds": 5.570857167,
+        "error": 0.007929362880886427,
+        "sourceSha256": "a83a175f4d960df6901354a6ea413c519efa2a8b180ca7018b8d09de37583651",
+        "decodedPixelsSha256": "460eb4c8faa5df42a744ea87f5e4609e329d369e5dc8d7ff28ab90de815808e7",
+        "maskSha256": "1e64a4a98de31d02ca46a0cea403c50172ba6b472c4167059c699a05acf7bbc2",
+        "passed": true,
+        "refinementHistorySha256": "e281b1cf6e153474427e01a983bd5496bffdddbd103e0cae8313cfb5b5edc26a",
+        "lastRefinementStep": 749,
+        "shortReturnRepair": null,
+        "record": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjsta-01-production-1/record.json",
+        "recordSha256": "740c1492ecf921756649328ff29e079b500925d551329f585d43a32d7077f52c",
+        "previousReleaseError": 0.007929362880886427
+      },
+      {
+        "id": "hjstr-03",
+        "policy": "prior-release",
+        "repeat": "1",
+        "runtimeCommit": "98de0d5e6c75a1a50a2891685775db779bddc9e4",
+        "seconds": 8.942714666,
+        "error": 0.0056129769369752365,
+        "sourceSha256": "902bc6920f02f7d5c25fec20517b50c9e97a719d8509696ae861bb1ed9d12256",
+        "decodedPixelsSha256": "44528341f498f4e6872e905f1c083c6f80fd5c0b95bd8e676edcc8f62c194f03",
+        "maskSha256": "d9ba414af2b114d628d5a1ee4df9b7c6cc875d31452495e8159a06d1e3021f11",
+        "passed": true,
+        "refinementHistorySha256": "87d14e767aa5422dd71c9c2f843ae0d78b8725e75ca0c886c11721bce06861ee",
+        "lastRefinementStep": 749,
+        "shortReturnRepair": null,
+        "record": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-1/record.json",
+        "recordSha256": "659741867bdfad994f12f7b05abb52b76b94588da90867228b667d5f5e750d3c",
+        "previousReleaseError": 0.0055399085981507066
+      },
+      {
+        "id": "hjstr-03",
+        "policy": "prior-release",
+        "repeat": "2",
+        "runtimeCommit": "98de0d5e6c75a1a50a2891685775db779bddc9e4",
+        "seconds": 8.821324959000002,
+        "error": 0.0056129769369752365,
+        "sourceSha256": "902bc6920f02f7d5c25fec20517b50c9e97a719d8509696ae861bb1ed9d12256",
+        "decodedPixelsSha256": "44528341f498f4e6872e905f1c083c6f80fd5c0b95bd8e676edcc8f62c194f03",
+        "maskSha256": "d9ba414af2b114d628d5a1ee4df9b7c6cc875d31452495e8159a06d1e3021f11",
+        "passed": true,
+        "refinementHistorySha256": "87d14e767aa5422dd71c9c2f843ae0d78b8725e75ca0c886c11721bce06861ee",
+        "lastRefinementStep": 749,
+        "shortReturnRepair": null,
+        "record": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-2/record.json",
+        "recordSha256": "9fbaab0e032a759635966d38349d3476276623d5bf6c45a8af8f7b630b483b1a",
+        "previousReleaseError": 0.0055399085981507066
+      },
+      {
+        "id": "hjstr-03",
+        "policy": "prior-release",
+        "repeat": "3",
+        "runtimeCommit": "98de0d5e6c75a1a50a2891685775db779bddc9e4",
+        "seconds": 8.7869185,
+        "error": 0.0056129769369752365,
+        "sourceSha256": "902bc6920f02f7d5c25fec20517b50c9e97a719d8509696ae861bb1ed9d12256",
+        "decodedPixelsSha256": "44528341f498f4e6872e905f1c083c6f80fd5c0b95bd8e676edcc8f62c194f03",
+        "maskSha256": "d9ba414af2b114d628d5a1ee4df9b7c6cc875d31452495e8159a06d1e3021f11",
+        "passed": true,
+        "refinementHistorySha256": "87d14e767aa5422dd71c9c2f843ae0d78b8725e75ca0c886c11721bce06861ee",
+        "lastRefinementStep": 749,
+        "shortReturnRepair": null,
+        "record": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-3/record.json",
+        "recordSha256": "a062f4253beebf1629ec1cd7ce73a9a7485f65ccce16018ac439caf84500182c",
+        "previousReleaseError": 0.0055399085981507066
+      },
+      {
+        "id": "hjstr-03",
+        "policy": "production",
+        "repeat": "1",
+        "runtimeCommit": "14e6dbfd7d116e87e031af16670f615b047fc2c8",
+        "seconds": 8.846117291,
+        "error": 0.0056129769369752365,
+        "sourceSha256": "902bc6920f02f7d5c25fec20517b50c9e97a719d8509696ae861bb1ed9d12256",
+        "decodedPixelsSha256": "44528341f498f4e6872e905f1c083c6f80fd5c0b95bd8e676edcc8f62c194f03",
+        "maskSha256": "d9ba414af2b114d628d5a1ee4df9b7c6cc875d31452495e8159a06d1e3021f11",
+        "passed": true,
+        "refinementHistorySha256": "87d14e767aa5422dd71c9c2f843ae0d78b8725e75ca0c886c11721bce06861ee",
+        "lastRefinementStep": 749,
+        "shortReturnRepair": null,
+        "record": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-1/record.json",
+        "recordSha256": "c28149b3c8b7e194ae3f4d216183c412c66d67806bb4d2d22e7429ebc655a416",
+        "previousReleaseError": 0.0055399085981507066
+      },
+      {
+        "id": "hjstr-03",
+        "policy": "production",
+        "repeat": "2",
+        "runtimeCommit": "14e6dbfd7d116e87e031af16670f615b047fc2c8",
+        "seconds": 8.776635500000001,
+        "error": 0.0056129769369752365,
+        "sourceSha256": "902bc6920f02f7d5c25fec20517b50c9e97a719d8509696ae861bb1ed9d12256",
+        "decodedPixelsSha256": "44528341f498f4e6872e905f1c083c6f80fd5c0b95bd8e676edcc8f62c194f03",
+        "maskSha256": "d9ba414af2b114d628d5a1ee4df9b7c6cc875d31452495e8159a06d1e3021f11",
+        "passed": true,
+        "refinementHistorySha256": "87d14e767aa5422dd71c9c2f843ae0d78b8725e75ca0c886c11721bce06861ee",
+        "lastRefinementStep": 749,
+        "shortReturnRepair": null,
+        "record": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-2/record.json",
+        "recordSha256": "03f1a918f3fd3319c018526009cf18e099979da9d6cd60398309d2b1c29e8449",
+        "previousReleaseError": 0.0055399085981507066
+      },
+      {
+        "id": "hjstr-03",
+        "policy": "production",
+        "repeat": "3",
+        "runtimeCommit": "14e6dbfd7d116e87e031af16670f615b047fc2c8",
+        "seconds": 8.908358958,
+        "error": 0.0056129769369752365,
+        "sourceSha256": "902bc6920f02f7d5c25fec20517b50c9e97a719d8509696ae861bb1ed9d12256",
+        "decodedPixelsSha256": "44528341f498f4e6872e905f1c083c6f80fd5c0b95bd8e676edcc8f62c194f03",
+        "maskSha256": "d9ba414af2b114d628d5a1ee4df9b7c6cc875d31452495e8159a06d1e3021f11",
+        "passed": true,
+        "refinementHistorySha256": "87d14e767aa5422dd71c9c2f843ae0d78b8725e75ca0c886c11721bce06861ee",
+        "lastRefinementStep": 749,
+        "shortReturnRepair": null,
+        "record": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-3/record.json",
+        "recordSha256": "fa293727934d364d7dd45267a6c199d1c5e418d934c31376860c1725118a91b7",
+        "previousReleaseError": 0.0055399085981507066
+      }
+    ]
+  },
+  "sourceHashes": {
+    "static/inverse/LICENSE.txt": "681b46f147610336a243b3c72cd08cd5904b2dee747e74c959ae57ade9e6b9df",
+    "static/inverse/THIRD_PARTY_NOTICES.txt": "dbfafe9f695b27fbcb1d5d213a4a8db7e7d216febadbd34f85e204329c26cb6e",
+    "static/inverse/compute-worker.js": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+    "static/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+    "static/inverse/core/chord-distance.js": "6be52281e3056d29ad7093f902b0f768410f3c414f049f164f94e969bd89dd48",
+    "static/inverse/core/crop.js": "e44d3179ca229cb645779af3550ab2736547104c46684e0ccee402a1d1875ea6",
+    "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+    "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+    "static/inverse/core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+    "static/inverse/core/direct/counts.js": "efdfa3fc371dc9d9cfbbc9ce763df8b8cdca6f8f6324b55fde9d23ed05f31d8e",
+    "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+    "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+    "static/inverse/core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+    "static/inverse/core/direct/feature-seeds.js": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+    "static/inverse/core/direct/finalize.js": "40c9d60e5bd327876da0465ab8d371a05430d43412520a32a0f3ab90f07284e4",
+    "static/inverse/core/direct/fit.js": "c2a838f842a6a9c4ca6e13eac1526e0f819f14a5cae58ac8a5c44c7ce2067fd6",
+    "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+    "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+    "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+    "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+    "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+    "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/native/PROVENANCE.json": "e9fbaef090fc05bdc9450210f527b1fb3fa6bc77ee86c1902eb97bb6ed0acd2a",
+    "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+    "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58",
+    "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+    "static/inverse/core/direct/outline-details.js": "ff9d4df5f27fd9ca97d15b115cc95c5692bd17e302f0dcd11c62e7295b85d8aa",
+    "static/inverse/core/direct/polish.js": "3f9df26508076465860a62ce72c2de3aeb67413a1d67ab1927dc37b89b7b622e",
+    "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+    "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+    "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+    "static/inverse/core/direct/refine.js": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+    "static/inverse/core/direct/rejected-routing.js": "26be56dd3367eeb0648833ca347f008af73c8717d58358664ff1d15bbd240540",
+    "static/inverse/core/direct/reroute.js": "84a8cf2cfb6bcb1101a63004f638d0f3dc398baf3fe15ec1068b20336535d9ed",
+    "static/inverse/core/direct/share.js": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+    "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+    "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+    "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+    "static/inverse/core/direct/short-returns.js": "9752a9e2a38045d8403ac1784ac7a788ff790e9eb8cca8a4b2aebfe1888f1a4b",
+    "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+    "static/inverse/core/direct/topology.js": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097",
+    "static/inverse/core/engine.js": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+    "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+    "static/inverse/core/feature-recovery.js": "50ec70198f735c32be604ae73e0c1d68dd4c8b30b9586595014c0f9adbfdd833",
+    "static/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+    "static/inverse/core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+    "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+    "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+    "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+    "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+    "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+    "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+    "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+    "static/inverse/core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+    "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+    "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+    "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+    "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+    "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+    "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+    "static/inverse/core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+    "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+    "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+    "static/inverse/core/solver.js": "29eeca095cfe123f378a424f099954e5ae082866b8ad437f1a6dbb064eddbbf1",
+    "static/inverse/core/spatial-color.js": "f170ff447ef905fc21121d286ac427a079b184ca077fd178065b0a3e247fb132",
+    "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+    "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+    "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+    "static/inverse/core/validate.js": "31cc29c6873896f53a2f999782dcd2292f0924611166932114b45534f5cbebd7",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+    "static/inverse/examples/jul.saved.json": "07c223ab98b8bb576df5775682941ad688ffd097d3b7b304861db3f26fa0d454",
+    "static/inverse/examples/star.png": "54ee86896412da50ccc8630593977cc6ce386fcfcc29007f311d80f6c463fa1b",
+    "static/inverse/examples/star.saved.json": "7b3a3164d830c59adfcb7d6b51207d6423971a850e360ac00a21fbb71ee5fa50",
+    "static/inverse/examples/waves.svg": "20ee4d65378489d0cc0d3b9e41cdebf2fc81ff3b096443c76105cf3430e6a7e3",
+    "static/inverse/locator/NOTICE.md": "4a9cc65be6ca309d2b57609d760e584ab78c345dae95c789e351bb69180d5b05",
+    "static/inverse/locator/anchored.js": "c4f5276af229a7b9bbc1f686ea308697200cdd787bcdee2692d87a60bcdad991",
+    "static/inverse/locator/background.js": "03d1c9b8f8237a97a7e8ed53d1dfa5117d1db079ba4162cac7117a8761f3441f",
+    "static/inverse/locator/fields.js": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
+    "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+    "static/inverse/locator/locator.js": "f4c769870e13481a30d149dbdad5a743b52d55d949bc9d898c2c7db0af434773",
+    "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+    "static/inverse/locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+    "static/inverse/locator/palette.js": "e6163193c14d753c2b93168c2e2e25602fb240117e1846a1c92a92308bc9084b",
+    "static/inverse/vendor/HIGHS-LICENSE.txt": "9f8d8dcf27789ac59c0d7c732d6682f148804a5e99d83e9f207d6c1882b98bfa",
+    "static/inverse/vendor/PROVENANCE.json": "f90544e4eeec519b0aa3b7069b601591d4bc0e6fcafed7227d9dc1dc045a8ba5",
+    "static/inverse/vendor/highs.mjs": "f2bdfd071d19c3745756a087026589e9240f329e38315a86f626823ae78a4036",
+    "static/inverse/vendor/highs.wasm": "528be4365bea1d4188988646b244263f50320df55782e14d6af5bce7cd45c840",
+    "static/inverse/worker-bootstrap.js": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+    "static/inverse/worker-controller.js": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+    "static/inverse/worker.js": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70",
+    "src/lib/inverse/presets.js": "17d4f9be7dded0eb6619be3449eb962b67ee04ca96fd61db2777cbf3efb8d954",
+    "scripts/inverse/export-renderer.mjs": "fb393f73b9c39780795c3951eb82d864fef7ab40ec63a90a4365aae6041afbbe",
+    "scripts/inverse/short-returns.test.mjs": "fa5f69bf333214a324f12feaa99f25eb24ffa86580a7a563ec82b9eddba277a3",
+    "scripts/inverse/refinement-checkpoints.test.mjs": "4f3471e895bee54b89e882802dffbab0b622a298d2b02df12d124dd426d45192",
+    "scripts/inverse/fixtures/visible-shared-return.json": "efe11965dacc1df1006b47a511bd7cb1dca214e8f33f74506025f40a15bb3400"
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/editor.log",
+      "bytes": 1105,
+      "sha256": "911dbfb99bac8feff569268adc13e661b2aa8de3f34b0e1725cc0958f3ed7ba1"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/editor/results.json",
+      "bytes": 103361,
+      "sha256": "9a055658748a026ccfbd82a9ce63bb63c9ee9ad374fb48324bc8c857d49cba57"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/engines/production/snapshot.json",
+      "bytes": 11111,
+      "sha256": "67a53ff7cd0a9b6f73047f9979bf0f2bd7541322df491cc6e8e7bdc51e3a72e3"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/hunodan-comparison.json",
+      "bytes": 3653,
+      "sha256": "21c02c0870700124df00b1650c5edf46b5e5ab2ffece762193d3195484b44e96"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/hunodan.log",
+      "bytes": 2864,
+      "sha256": "08ab7c5cf87cab46754d7b0ed8edfc0faccf2146f9ede2b3a19e3e2387ed3be3"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/hunodan/results.json",
+      "bytes": 810500,
+      "sha256": "feb10650be6c4fc92ab6bd0dea3f1d867068ce940aec0686f0759a874036ec1a"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/matrix-audit.log",
+      "bytes": 1772,
+      "sha256": "886706aabf1fd3bbcb20c953a0d24303d5d3d3d11bb58b6a196132760a954f77"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/matrix/frozen/production/report.json",
+      "bytes": 77874,
+      "sha256": "d709d9ae193b5c11644e654cf4490c22dd495f9b6eea42812147312895f56f46"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/matrix/production/production/report.json",
+      "bytes": 59992,
+      "sha256": "7454e375e950bbea25795d8463168f7fb894c26135c2e4a0e923bb3032d29b33"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/matrix/real-out-of-fold/production/report.json",
+      "bytes": 75182,
+      "sha256": "067e14de11724548adaefd23e3ac2b4d378bea099d9fc75de2560084269690b1"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/matrix/results.json",
+      "bytes": 1399895,
+      "sha256": "36c0ee9334e64578de1cc792f565a74ce655b488dca1ea39500877b3df807cc6"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/matrix/synthetic-control/production/report.json",
+      "bytes": 67410,
+      "sha256": "9e4bf58a257a9e1924b310595dec9adfd4f84c6f3ef5e8071bd5de57a4b3460b"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/matrix/x-minus-1/production/report.json",
+      "bytes": 58596,
+      "sha256": "10544faea8898d740c623b4d53050d3e6b814205b0212f761ea1bf37b990b6df"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/matrix/x-plus-1/production/report.json",
+      "bytes": 78406,
+      "sha256": "309c293942b85cd335780e494037d01c987c9f74313350f2f002b28e04fe03b4"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/matrix/y-minus-1/production/report.json",
+      "bytes": 85362,
+      "sha256": "09608139cfb408e2db1faa4f66928175ba26386d605f3404037338e9b9d88a5c"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/matrix/y-plus-1/production/report.json",
+      "bytes": 57754,
+      "sha256": "7f1a8ee079e7233dd3e29c7b402da138d025d06d860fdbd25cb3c407088bebe6"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-comparison.json",
+      "bytes": 7940,
+      "sha256": "d631d80f612936045ae085d320917a44f52328f14d9fd7ce4297d0af982c9bd6"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-driver.log",
+      "bytes": 2382,
+      "sha256": "7ffe6fac2d9167a9de51a91ea4259f2a7e91d9c82655948f15ef7441a0423525"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan-jobs.json",
+      "bytes": 2953,
+      "sha256": "363b422f366c88516f71f67bbed3e7945295a748023a2766277bfeed005e80cc"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjhih-01-production-1/cut_geometry.json",
+      "bytes": 54146,
+      "sha256": "df9facec711075be91afcf6f2ddf537842a1724fcd44ef1f68cdb0703d5f2c68"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjhih-01-production-1/independent.png",
+      "bytes": 11321,
+      "sha256": "5cde47544e1e0147fc9115a89252da3006a69c1951769ee579de383ade93fff2"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjhih-01-production-1/manufacturability_left.svg",
+      "bytes": 975469,
+      "sha256": "24bdea3590f4c18412973d9e5d9cb35d03297f4687bd19f1dffe99edae338c4d"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjhih-01-production-1/manufacturability_right.svg",
+      "bytes": 971821,
+      "sha256": "d3cba6f8f646129d374934e9584c9f7c12cf195901666e388ac6fb427b5d03a3"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjhih-01-production-1/print_templates.html",
+      "bytes": 13433,
+      "sha256": "5f85ff011a29a2689b2ab0ad5de46d05d9a68be9c326bbbb0204db2cf4055a89"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjhih-01-production-1/processed_design.svg",
+      "bytes": 9033,
+      "sha256": "5239e691797e8866c3e32583384e8124e709b323ebce112c2370042683db8887"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjhih-01-production-1/record.json",
+      "bytes": 59715,
+      "sha256": "9f6f528570530a46b9b348561c46c4ad0d531aef7cbc8ad734baee016888cb60"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjhih-01-production-1/report.html",
+      "bytes": 2011486,
+      "sha256": "25bd4f4c808b8184a79a0abd8301bd7d82976cb17df18561e3f54f9a22055896"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjhih-01-production-1/report.json",
+      "bytes": 42255,
+      "sha256": "4700f5848167890d1312e03087e06c8879f33332f013e779c5e43da6102bfe43"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjhih-01-production-1/template_left.svg",
+      "bytes": 6257,
+      "sha256": "7e3a4185b9f893d3010b7ccd6dc8878eeb7c7ad0b833034d9b91a0768c0403dd"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjhih-01-production-1/template_right.svg",
+      "bytes": 6264,
+      "sha256": "f818a2a2a91f5b4856caadf76531df410f5235c76d080300bd85a3eb40c8baac"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjhih-01-production-1/vector_target.svg",
+      "bytes": 12374,
+      "sha256": "69008ff39681c7cd170b6e103e0d621661d8abb0aec575840b00b6e837f9593a"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjhih-01-production-1/weave_preview.svg",
+      "bytes": 9760,
+      "sha256": "255b33b6dcde6dff5ee6015f340ffbc579d7c157ba190db38fc38c56ab7c299d"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjsta-01-production-1/cut_geometry.json",
+      "bytes": 27298,
+      "sha256": "ec714b590351efd48a2ca01d3c2a1ec25791b52fe9286389b1c6aa0b96eea005"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjsta-01-production-1/independent.png",
+      "bytes": 9163,
+      "sha256": "e4d066e073330265c4dea2118439e84bca83fc5da9c04af97534b494a19599a3"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjsta-01-production-1/manufacturability_left.svg",
+      "bytes": 632473,
+      "sha256": "8d18d8c0eca039351bf386cf5d0a05adab6475b047b8fa1ddbec54c1ca87f751"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjsta-01-production-1/manufacturability_right.svg",
+      "bytes": 632287,
+      "sha256": "f6f270a96186f0971f5a17b508d77fd2b4a37b883700e72847e471d59f6c5f7f"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjsta-01-production-1/print_templates.html",
+      "bytes": 8574,
+      "sha256": "199017d98d902ad808cd4c50dc7a88fd2c16ad9e4fe28d14adea2240f677a4c0"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjsta-01-production-1/processed_design.svg",
+      "bytes": 4559,
+      "sha256": "fc141507b041023a3aa452739a2266c54b89ecf04d7e10d131a88b66a5c680b5"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjsta-01-production-1/record.json",
+      "bytes": 55431,
+      "sha256": "740c1492ecf921756649328ff29e079b500925d551329f585d43a32d7077f52c"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjsta-01-production-1/report.html",
+      "bytes": 1320037,
+      "sha256": "471f7e8234cc3e005d27ad76e5a45ae04c05914a96e0ba12e20a642353315f0a"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjsta-01-production-1/report.json",
+      "bytes": 38535,
+      "sha256": "f66bc1f16e6c689802b157bd43f78a2d2a5d8040c04dd25e6a8f21fca307cb8f"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjsta-01-production-1/template_left.svg",
+      "bytes": 3831,
+      "sha256": "d877cf433a2843edd1803bf56c6aa63e62e0f2b0348368ebf7cad713f752e0ca"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjsta-01-production-1/template_right.svg",
+      "bytes": 3831,
+      "sha256": "b1e7540cc0efc4d0b9c0a6baa476e7cfe63a42abd06062d667cfdc836fb78f07"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjsta-01-production-1/vector_target.svg",
+      "bytes": 6229,
+      "sha256": "93e0e23958eeffd08711610e40c782c3c304b803220c0e1d8269cbcbd3657d15"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjsta-01-production-1/weave_preview.svg",
+      "bytes": 5201,
+      "sha256": "daec3606ad042db2ef3f9692220db408ebeebae15fb1d0d7577ea0d6abcfdf18"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-1/cut_geometry.json",
+      "bytes": 84227,
+      "sha256": "5ffc98f412dcae8e143a786b0f2dea156757837c0d08dbd8d0e9c123664e9cb5"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-1/independent.png",
+      "bytes": 12894,
+      "sha256": "3494f3b925bfe14bab1f5d670de233993639a50664c421fdcb3bf5a65e22e5cc"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-1/manufacturability_left.svg",
+      "bytes": 1480247,
+      "sha256": "574b8171ca13750f4771e7ca8cdb3ea209b53acba3032c3d91aa80461e14a56d"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-1/manufacturability_right.svg",
+      "bytes": 1496311,
+      "sha256": "34527a549a0c68976c9d7b8bd0d78e65e4c67d76f8583768bd4a498b1fa007a3"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-1/print_templates.html",
+      "bytes": 18415,
+      "sha256": "4a5f80ee00245d8cad2d03c9fd563d26a847f5530def7436d7608fe584c32b21"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-1/processed_design.svg",
+      "bytes": 14894,
+      "sha256": "24951090f301729d9460065bf8d883076e5aca4c4b5c9c41f4e04b5dcdc917a0"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-1/record.json",
+      "bytes": 59423,
+      "sha256": "659741867bdfad994f12f7b05abb52b76b94588da90867228b667d5f5e750d3c"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-1/report.html",
+      "bytes": 3041672,
+      "sha256": "8e3f4ed3a031ead6e3ee266f914673382006091d38452f735bad7dc5f4fd404d"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-1/report.json",
+      "bytes": 40017,
+      "sha256": "6db2d8eb92b8fef41aa6a32553ab9dd3403b9b0673f27c197182cefbfb53c201"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-1/template_left.svg",
+      "bytes": 8748,
+      "sha256": "d6d3724e64f43de2ee168af0c4c4d70775081f1ea490525378ec120844531512"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-1/template_right.svg",
+      "bytes": 8755,
+      "sha256": "4369855171ac57ae782b0e22f830ba4a73a5a2a877e977a190c89e1d9285e782"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-1/vector_target.svg",
+      "bytes": 20280,
+      "sha256": "9c29f9c9e3be1e59dfe2ce6ff7d9fc17d070f16fe13b2436e6d1c412d81bfcf7"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-1/weave_preview.svg",
+      "bytes": 14386,
+      "sha256": "94b32edbb8c436402310ac72376ccb80f520d674414b20c4bf2eb561f0c81ff8"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-2/cut_geometry.json",
+      "bytes": 84227,
+      "sha256": "5ffc98f412dcae8e143a786b0f2dea156757837c0d08dbd8d0e9c123664e9cb5"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-2/independent.png",
+      "bytes": 12894,
+      "sha256": "3494f3b925bfe14bab1f5d670de233993639a50664c421fdcb3bf5a65e22e5cc"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-2/manufacturability_left.svg",
+      "bytes": 1480247,
+      "sha256": "574b8171ca13750f4771e7ca8cdb3ea209b53acba3032c3d91aa80461e14a56d"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-2/manufacturability_right.svg",
+      "bytes": 1496311,
+      "sha256": "34527a549a0c68976c9d7b8bd0d78e65e4c67d76f8583768bd4a498b1fa007a3"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-2/print_templates.html",
+      "bytes": 18415,
+      "sha256": "4a5f80ee00245d8cad2d03c9fd563d26a847f5530def7436d7608fe584c32b21"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-2/processed_design.svg",
+      "bytes": 14894,
+      "sha256": "24951090f301729d9460065bf8d883076e5aca4c4b5c9c41f4e04b5dcdc917a0"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-2/record.json",
+      "bytes": 59442,
+      "sha256": "9fbaab0e032a759635966d38349d3476276623d5bf6c45a8af8f7b630b483b1a"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-2/report.html",
+      "bytes": 3041639,
+      "sha256": "951e5e9aa4c28a4aeb5557c7f12d281e4ec6fc4dacad9a1a5394e41cd6dcd3ac"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-2/report.json",
+      "bytes": 39984,
+      "sha256": "78afd244d02f615477a08f09753d8b61a492ce68b85787c8ecd3abc1d3c4b4a9"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-2/template_left.svg",
+      "bytes": 8748,
+      "sha256": "d6d3724e64f43de2ee168af0c4c4d70775081f1ea490525378ec120844531512"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-2/template_right.svg",
+      "bytes": 8755,
+      "sha256": "4369855171ac57ae782b0e22f830ba4a73a5a2a877e977a190c89e1d9285e782"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-2/vector_target.svg",
+      "bytes": 20280,
+      "sha256": "9c29f9c9e3be1e59dfe2ce6ff7d9fc17d070f16fe13b2436e6d1c412d81bfcf7"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-2/weave_preview.svg",
+      "bytes": 14386,
+      "sha256": "94b32edbb8c436402310ac72376ccb80f520d674414b20c4bf2eb561f0c81ff8"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-3/cut_geometry.json",
+      "bytes": 84227,
+      "sha256": "5ffc98f412dcae8e143a786b0f2dea156757837c0d08dbd8d0e9c123664e9cb5"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-3/independent.png",
+      "bytes": 12894,
+      "sha256": "3494f3b925bfe14bab1f5d670de233993639a50664c421fdcb3bf5a65e22e5cc"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-3/manufacturability_left.svg",
+      "bytes": 1480247,
+      "sha256": "574b8171ca13750f4771e7ca8cdb3ea209b53acba3032c3d91aa80461e14a56d"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-3/manufacturability_right.svg",
+      "bytes": 1496311,
+      "sha256": "34527a549a0c68976c9d7b8bd0d78e65e4c67d76f8583768bd4a498b1fa007a3"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-3/print_templates.html",
+      "bytes": 18415,
+      "sha256": "4a5f80ee00245d8cad2d03c9fd563d26a847f5530def7436d7608fe584c32b21"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-3/processed_design.svg",
+      "bytes": 14894,
+      "sha256": "24951090f301729d9460065bf8d883076e5aca4c4b5c9c41f4e04b5dcdc917a0"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-3/record.json",
+      "bytes": 59447,
+      "sha256": "a062f4253beebf1629ec1cd7ce73a9a7485f65ccce16018ac439caf84500182c"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-3/report.html",
+      "bytes": 3041660,
+      "sha256": "b6142bfd98d69ebb27c4f0eed7beff74b982480ded75d24de3770e5e07c6b221"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-3/report.json",
+      "bytes": 40005,
+      "sha256": "db07bb0a796adbec0dba2b7ba9397bf34687d04d7cf4437b76410599f7e768bf"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-3/template_left.svg",
+      "bytes": 8748,
+      "sha256": "d6d3724e64f43de2ee168af0c4c4d70775081f1ea490525378ec120844531512"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-3/template_right.svg",
+      "bytes": 8755,
+      "sha256": "4369855171ac57ae782b0e22f830ba4a73a5a2a877e977a190c89e1d9285e782"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-3/vector_target.svg",
+      "bytes": 20280,
+      "sha256": "9c29f9c9e3be1e59dfe2ce6ff7d9fc17d070f16fe13b2436e6d1c412d81bfcf7"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-prior-release-3/weave_preview.svg",
+      "bytes": 14386,
+      "sha256": "94b32edbb8c436402310ac72376ccb80f520d674414b20c4bf2eb561f0c81ff8"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-1/cut_geometry.json",
+      "bytes": 84227,
+      "sha256": "5ffc98f412dcae8e143a786b0f2dea156757837c0d08dbd8d0e9c123664e9cb5"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-1/independent.png",
+      "bytes": 12894,
+      "sha256": "3494f3b925bfe14bab1f5d670de233993639a50664c421fdcb3bf5a65e22e5cc"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-1/manufacturability_left.svg",
+      "bytes": 1480247,
+      "sha256": "574b8171ca13750f4771e7ca8cdb3ea209b53acba3032c3d91aa80461e14a56d"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-1/manufacturability_right.svg",
+      "bytes": 1496311,
+      "sha256": "34527a549a0c68976c9d7b8bd0d78e65e4c67d76f8583768bd4a498b1fa007a3"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-1/print_templates.html",
+      "bytes": 18415,
+      "sha256": "4a5f80ee00245d8cad2d03c9fd563d26a847f5530def7436d7608fe584c32b21"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-1/processed_design.svg",
+      "bytes": 14894,
+      "sha256": "24951090f301729d9460065bf8d883076e5aca4c4b5c9c41f4e04b5dcdc917a0"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-1/record.json",
+      "bytes": 59421,
+      "sha256": "c28149b3c8b7e194ae3f4d216183c412c66d67806bb4d2d22e7429ebc655a416"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-1/report.html",
+      "bytes": 3041672,
+      "sha256": "c7f143aa80d97feafd063e4999b8aab6a352c379a6f51667825a076524483d8f"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-1/report.json",
+      "bytes": 40017,
+      "sha256": "70df30aa196d3a54953ff4abde00adbd0aa9529b824168074ed76844ca90ad8b"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-1/template_left.svg",
+      "bytes": 8748,
+      "sha256": "d6d3724e64f43de2ee168af0c4c4d70775081f1ea490525378ec120844531512"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-1/template_right.svg",
+      "bytes": 8755,
+      "sha256": "4369855171ac57ae782b0e22f830ba4a73a5a2a877e977a190c89e1d9285e782"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-1/vector_target.svg",
+      "bytes": 20280,
+      "sha256": "9c29f9c9e3be1e59dfe2ce6ff7d9fc17d070f16fe13b2436e6d1c412d81bfcf7"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-1/weave_preview.svg",
+      "bytes": 14386,
+      "sha256": "94b32edbb8c436402310ac72376ccb80f520d674414b20c4bf2eb561f0c81ff8"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-2/cut_geometry.json",
+      "bytes": 84227,
+      "sha256": "5ffc98f412dcae8e143a786b0f2dea156757837c0d08dbd8d0e9c123664e9cb5"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-2/independent.png",
+      "bytes": 12894,
+      "sha256": "3494f3b925bfe14bab1f5d670de233993639a50664c421fdcb3bf5a65e22e5cc"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-2/manufacturability_left.svg",
+      "bytes": 1480247,
+      "sha256": "574b8171ca13750f4771e7ca8cdb3ea209b53acba3032c3d91aa80461e14a56d"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-2/manufacturability_right.svg",
+      "bytes": 1496311,
+      "sha256": "34527a549a0c68976c9d7b8bd0d78e65e4c67d76f8583768bd4a498b1fa007a3"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-2/print_templates.html",
+      "bytes": 18415,
+      "sha256": "4a5f80ee00245d8cad2d03c9fd563d26a847f5530def7436d7608fe584c32b21"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-2/processed_design.svg",
+      "bytes": 14894,
+      "sha256": "24951090f301729d9460065bf8d883076e5aca4c4b5c9c41f4e04b5dcdc917a0"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-2/record.json",
+      "bytes": 59435,
+      "sha256": "03f1a918f3fd3319c018526009cf18e099979da9d6cd60398309d2b1c29e8449"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-2/report.html",
+      "bytes": 3041679,
+      "sha256": "bfb76b493c36cdbf54c1c769ca0c2d39db79e3c6a0bbcec7c26bf77a3b759949"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-2/report.json",
+      "bytes": 40024,
+      "sha256": "68bec4fd9854d677da5f289a1aa50f43db4077c8f733eaf7955cb939bf67ee51"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-2/template_left.svg",
+      "bytes": 8748,
+      "sha256": "d6d3724e64f43de2ee168af0c4c4d70775081f1ea490525378ec120844531512"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-2/template_right.svg",
+      "bytes": 8755,
+      "sha256": "4369855171ac57ae782b0e22f830ba4a73a5a2a877e977a190c89e1d9285e782"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-2/vector_target.svg",
+      "bytes": 20280,
+      "sha256": "9c29f9c9e3be1e59dfe2ce6ff7d9fc17d070f16fe13b2436e6d1c412d81bfcf7"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-2/weave_preview.svg",
+      "bytes": 14386,
+      "sha256": "94b32edbb8c436402310ac72376ccb80f520d674414b20c4bf2eb561f0c81ff8"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-3/cut_geometry.json",
+      "bytes": 84227,
+      "sha256": "5ffc98f412dcae8e143a786b0f2dea156757837c0d08dbd8d0e9c123664e9cb5"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-3/independent.png",
+      "bytes": 12894,
+      "sha256": "3494f3b925bfe14bab1f5d670de233993639a50664c421fdcb3bf5a65e22e5cc"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-3/manufacturability_left.svg",
+      "bytes": 1480247,
+      "sha256": "574b8171ca13750f4771e7ca8cdb3ea209b53acba3032c3d91aa80461e14a56d"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-3/manufacturability_right.svg",
+      "bytes": 1496311,
+      "sha256": "34527a549a0c68976c9d7b8bd0d78e65e4c67d76f8583768bd4a498b1fa007a3"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-3/print_templates.html",
+      "bytes": 18415,
+      "sha256": "4a5f80ee00245d8cad2d03c9fd563d26a847f5530def7436d7608fe584c32b21"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-3/processed_design.svg",
+      "bytes": 14894,
+      "sha256": "24951090f301729d9460065bf8d883076e5aca4c4b5c9c41f4e04b5dcdc917a0"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-3/record.json",
+      "bytes": 59443,
+      "sha256": "fa293727934d364d7dd45267a6c199d1c5e418d934c31376860c1725118a91b7"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-3/report.html",
+      "bytes": 3041667,
+      "sha256": "6516b42c293b71d69d74a55a0bb1bd730d581bd4a16b5f115c7d5b51b3ca82c0"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-3/report.json",
+      "bytes": 40012,
+      "sha256": "1f33e0a057818bf199898d4cfe7f0657ff5856c626fa7774f7fa2580b6a05e7e"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-3/template_left.svg",
+      "bytes": 8748,
+      "sha256": "d6d3724e64f43de2ee168af0c4c4d70775081f1ea490525378ec120844531512"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-3/template_right.svg",
+      "bytes": 8755,
+      "sha256": "4369855171ac57ae782b0e22f830ba4a73a5a2a877e977a190c89e1d9285e782"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-3/vector_target.svg",
+      "bytes": 20280,
+      "sha256": "9c29f9c9e3be1e59dfe2ce6ff7d9fc17d070f16fe13b2436e6d1c412d81bfcf7"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjstr-03-production-3/weave_preview.svg",
+      "bytes": 14386,
+      "sha256": "94b32edbb8c436402310ac72376ccb80f520d674414b20c4bf2eb561f0c81ff8"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/run-paired-hunodan.py",
+      "bytes": 929,
+      "sha256": "344fdede5f0cb183953f513c5a0aead4cc0653a9c9b3fa7ff5c7437b6346bcb6"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/runner-initial-failure/hjstr-03-prior-release-1.log",
+      "bytes": 1334,
+      "sha256": "800a35a13fa7833d7f9584ac8801df9f373d5173574f8043d55de0f69f0af8b0"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/runner-initial-failure/paired-driver.log",
+      "bytes": 301,
+      "sha256": "5ff2ff1f91d962a8f35cc1022543eefce4032a98841651955c0f8fcb0f7e143e"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/runner-initial-failure/paired-hunodan-jobs.json",
+      "bytes": 375,
+      "sha256": "191434b9ecddc5a8d134567e3503e29ffbe5dc80ce8a355eedd14241c7134d31"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/solve-hunodan.mjs",
+      "bytes": 3365,
+      "sha256": "05dce5804b5b9267da2da2b611b2d471b4fead81525944fdd55ef6d22878db39"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-probe-v1/source-support-fresh-star-test.log",
+      "bytes": 208,
+      "sha256": "bc33bc42d813a5243b687b85c96c432d360e022372696bf73dee9c7d23a665c6"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-probe-v1/source-support-lint.log",
+      "bytes": 303,
+      "sha256": "cb1707a60557da2521fa6a9f94f31bccbbeb1e4fe2072bb48bfb60ccb691ace1"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-probe-v1/source-support-midpoint-tests.log",
+      "bytes": 1646,
+      "sha256": "59bdc43ac5e5315128eb51e0dd7996a7d690de78a8bdd3c3749d1c98a0f50f70"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-probe-v1/source-support-tests.log",
+      "bytes": 84405,
+      "sha256": "eb352c2dc48e99fffad270c5f4af08a9d549748d5e2fc3bca3dd970d079d54aa"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-probe-v1/source-support.json",
+      "bytes": 2058,
+      "sha256": "bbe974083acd4bb621f1d33dc804d9c6fbca78fda0413191f84c46bd18e9b303"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-probe-v1/source-support.mjs",
+      "bytes": 3215,
+      "sha256": "de0f4768b4a84e1dc4e1d1c0d647b0edf1ff0c664d5121da7ef36f2cfc42b5b3"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-v1/checks-release.json",
+      "bytes": 4316,
+      "sha256": "fa867c9975414744a58cb88a0f8e3d4a4891bf52e2490d3479f5a4c8f15afe05"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-v1/hunodan-source-support/results.json",
+      "bytes": 120733,
+      "sha256": "4076edb6bda6d539cbaf2ce5d0d0221b45a6da6ae4442325b8bb6399be47261c"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-v1/hunodan/results.json",
+      "bytes": 814506,
+      "sha256": "54f66e528152a5d2859da7c7bb8475b7129e760de7ac33ed58e6c24284ee8539"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-v1/release-driver.log",
+      "bytes": 3908,
+      "sha256": "7f8a7bee690a6c8592cdd4a36018c254cfb9408222995373698eba93a76f5aea"
+    }
+  ],
+  "broadChecksCompleted": {
+    "hunodanCases": 22,
+    "maximumHunodanSeconds": 8.101363291999995,
+    "hunodanComparison": [
+      {
+        "id": "hjfig-01",
+        "previousError": 0.009799111111111111,
+        "error": 0.009799111111111111,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjfig-02",
+        "previousError": 0.013340444444444445,
+        "error": 0.013340444444444445,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjfig-03",
+        "previousError": 0.006634666666666666,
+        "error": 0.006634666666666666,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjfig-04",
+        "previousError": 0.013824,
+        "error": 0.013824,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjfig-05",
+        "previousError": 0.009042960667083447,
+        "error": 0.009042960667083447,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjfla-01",
+        "previousError": 0.012166341145833334,
+        "error": 0.012166341145833334,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjcur-01",
+        "previousError": 0.005148444444444444,
+        "error": 0.005148444444444444,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjcur-02",
+        "previousError": 0.005219555555555555,
+        "error": 0.005219555555555555,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjcur-03",
+        "previousError": 0.004522666666666667,
+        "error": 0.004522666666666667,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjcur-04",
+        "previousError": 0.005639111111111111,
+        "error": 0.005639111111111111,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjcur-05",
+        "previousError": 0.009436444444444445,
+        "error": 0.009436444444444445,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjhih-01",
+        "previousError": 0.006040430615586996,
+        "error": 0.006040430615586996,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjhih-02",
+        "previousError": 0.003899406226779104,
+        "error": 0.003899406226779104,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjhih-04",
+        "previousError": 0.007776029627903062,
+        "error": 0.007776029627903062,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjstr-01",
+        "previousError": 0.007550237322696868,
+        "error": 0.007550237322696868,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjstr-02",
+        "previousError": 0.004365548980933596,
+        "error": 0.004365548980933596,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjstr-03",
+        "previousError": 0.0055399085981507066,
+        "error": 0.0056129769369752365,
+        "difference": 7.306833882452998e-05,
+        "pairedTimingEvidence": "paired-comparison.json"
+      },
+      {
+        "id": "hjsta-01",
+        "previousError": 0.007929362880886427,
+        "error": 0.007929362880886427,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjsta-02",
+        "previousError": 0.0038045247395833335,
+        "error": 0.0038045247395833335,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjsta-03",
+        "previousError": 0.012332213049376572,
+        "error": 0.012332213049376572,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjsta-04",
+        "previousError": 0.0050250552896055544,
+        "error": 0.0050250552896055544,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjsta-05",
+        "previousError": 0.010624446293860237,
+        "error": 0.010624446293860237,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      }
+    ],
+    "nativeCropCases": 8,
+    "editableReplays": 16
+  }
+}

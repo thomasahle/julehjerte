@@ -1,0 +1,509 @@
+{
+  "date": "2026-10-18",
+  "source": "https://juleflet.dk/",
+  "htmlSha256": "8c3ea7d797c689c02ca17643d08f560f7ccb7e440021a442470bec494acae7d4",
+  "designCount": 55,
+  "result": "No visible interior junction of degree above4 found. Numerical screen, not exact algebraic certification or a physical cutability audit.",
+  "method": {
+    "primary": "Numerical screen of all 55 live rendered colour-boundary SVGs, normalized to a 100-unit overlap. Adaptive chord tolerance .0025, Newton intersection refinement, canonical straight-span normalization and shared-curve cancellation, interior endpoints grouped to 5 decimals. Not an exact algebraic proof.",
+    "fallback": "Numerical screen of all 55 live rendered colour-boundary SVGs, normalized to a 100-unit overlap. Polygonal fallback: adaptive chord tolerance .0005, Newton intersection refinement, canonical straight-span normalization and shared-curve cancellation, interior endpoints grouped to 5 decimals. Not an exact algebraic proof.",
+    "falsePositive": "Triple-heart initially produced six raw incident segment ends near the border. Collinear retracing and differently parameterized straight overlaps cancel in the visible mask; canonical straight-span normalization removes that false count."
+  },
+  "designs": [
+    {
+      "id": "classic-3x3",
+      "url": "https://juleflet.dk/hjerte/classic-3x3/",
+      "renderedSvgSha256": "e7698dd159ebac1e2da550618d3e273341f9d7d2eeafba188c73bb537b2fa63a",
+      "templateSvgSha256": "976d7585ef1db2f5775e4c7b9fd8f7e2c4519db15819d57a44566dad0ed1e24f",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "ramme",
+      "url": "https://juleflet.dk/hjerte/ramme/",
+      "renderedSvgSha256": "5bf296644e3c42e6d5106d27aa9ed0f09fd12bb497aebd3fe053a600bc6dceb5",
+      "templateSvgSha256": "0ac54d589888b4e2be3642992e2a1c74179de9507ed553634ac97aabc668e8ce",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "gaver",
+      "url": "https://juleflet.dk/hjerte/gaver/",
+      "renderedSvgSha256": "16bbfa0c328836a1d6a07fc9e003cb8ef01bb853a362f3ce204db5f77b3231da",
+      "templateSvgSha256": "97bfd0f0463baf593f5db1e3ea2dff98c0dd2f1f32179a8ed7e19d1bb83717ca",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "jul",
+      "url": "https://juleflet.dk/hjerte/jul/",
+      "renderedSvgSha256": "68bc84382a9020b37812b9eaca69e605f9770c8862eedb9ab3962817050ab15d",
+      "templateSvgSha256": "273186ea791a5a66bb921fd1feadc197cc2f0240a02314f3013bef976db39013",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "stjerne",
+      "url": "https://juleflet.dk/hjerte/stjerne/",
+      "renderedSvgSha256": "29c301e03437aec7756851c8b7d78b83ac80bbe87012aaddb5a95efbe765a661",
+      "templateSvgSha256": "b0a39c86ff0accb5bb1054a538c030d334975aebe7762f722024ccb93978bce7",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "stjerne-ramme",
+      "url": "https://juleflet.dk/hjerte/stjerne-ramme/",
+      "renderedSvgSha256": "877a4797930c649f3ea59420b391d180a122c286a4057b36e0fc99bd9ebbee6d",
+      "templateSvgSha256": "3a4eeadb53e1a22d4e949aef51a616e55a33f77b99939ac128176a53bcfdf94d",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "5star",
+      "url": "https://juleflet.dk/hjerte/5star/",
+      "renderedSvgSha256": "1c3dc0ba11ddef409308cc934fa7f23612f998c0cfa19757b35e62f310b6169b",
+      "templateSvgSha256": "52f44887c1396839dc76bb6b9ce952d2ab1d552f1e19f1c2363b7b9f5a84aa72",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "simple-5star",
+      "url": "https://juleflet.dk/hjerte/simple-5star/",
+      "renderedSvgSha256": "fe9e981ba6ecb84dc1dd4fba45ecfef9a332c658dd7fbc2621a55c5efee79e1b",
+      "templateSvgSha256": "e249cd6cf70ad2107387f0c66495092cbdb61ade5392235a20775dccffddc278",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "sun",
+      "url": "https://juleflet.dk/hjerte/sun/",
+      "renderedSvgSha256": "5adb9272191dcc9111bd6daf4b4d03b5ba913f23cc67fa5d31bf766ffa005a9a",
+      "templateSvgSha256": "55de590e77d08cc9761cdcdddf6bc81e777573a3ee367cc844589f97cbbbcf80",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "explosion",
+      "url": "https://juleflet.dk/hjerte/explosion/",
+      "renderedSvgSha256": "9aebd7b92600e65771b9dc2d9178386f05532c7c775452b385387ad225c8a19b",
+      "templateSvgSha256": "b9362f3afd563963bb5ef0b2d0e5f71dd9cbda0ed1b815c2cda3bb8332e19b75",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "nihon",
+      "url": "https://juleflet.dk/hjerte/nihon/",
+      "renderedSvgSha256": "369bb54c7231efd012fecfeeb5ec3bb775c089328adb1ed5a405c2e6acdea8d3",
+      "templateSvgSha256": "b617b799dcc3dbf21099cde2d32683a0c658109811c8a3476cc880c95ad02e18",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "davidsstjerne-circ",
+      "url": "https://juleflet.dk/hjerte/davidsstjerne-circ/",
+      "renderedSvgSha256": "292006a762b8e6b044f549874769be93e5165beffd7d105c098cbdc9a332c7b5",
+      "templateSvgSha256": "a57eb54cbda639dbaa0494da979f1ba37ee896edf617648aea8d7a5179b4b605",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "david4",
+      "url": "https://juleflet.dk/hjerte/david4/",
+      "renderedSvgSha256": "7159c58e8bf38fccf6b6c2129b27b8d181869025eed785d77fb7282b59d22d00",
+      "templateSvgSha256": "6cca51d4d7c9a8d044b63538cd44137a1bde80efbce2bc2f86907bcfa044af8d",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "khatam",
+      "url": "https://juleflet.dk/hjerte/khatam/",
+      "renderedSvgSha256": "163aea724030be43df809a384edbeae7e76e1c94e19a0cee641fca50403d4e20",
+      "templateSvgSha256": "7b8cc690474632521e0f73d73b13a36271971d291a205526849a4aece64980c4",
+      "method": "polygonal-fallback",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "stjernegitter",
+      "url": "https://juleflet.dk/hjerte/stjernegitter/",
+      "renderedSvgSha256": "1d98d0f0c673c2d0d2b0bbe655555548ad37a9acee3797fbb8644f3969d7eff4",
+      "templateSvgSha256": "8875e1ead3fe0e1e9c571a3d57a5315a3e99bb2527aedf067a96ceaea85e981e",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "stjernerogkors",
+      "url": "https://juleflet.dk/hjerte/stjernerogkors/",
+      "renderedSvgSha256": "8493b79a0cd8d733de1b991b31e6a45f63449af650b53de65d7ab5c5b3df3556",
+      "templateSvgSha256": "2dcff34857fda887de35c83f538c477f9e2418a45fe8962fbd44f90fb9cdf1a8",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "circle",
+      "url": "https://juleflet.dk/hjerte/circle/",
+      "renderedSvgSha256": "b10b88854ff1711ef220420d01acb6126a6511285a7ee4efb89d6f652d2002fb",
+      "templateSvgSha256": "cefd9bfc430ce4b540bdab8e634f88568ef396eb7e15cad938fb5b4d66420fda",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "balls",
+      "url": "https://juleflet.dk/hjerte/balls/",
+      "renderedSvgSha256": "3807f76044003fb7101ae43406693db8f5f33936e7ed38193b02d5cf73df5458",
+      "templateSvgSha256": "f709d025d97a8ef5b995de8691953e6c28b4ea333c69fa04d877b8bd2c583ac7",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "kogle",
+      "url": "https://juleflet.dk/hjerte/kogle/",
+      "renderedSvgSha256": "fa9cd0600c06574c63f0a23f3f7bca5d38a944ef363ef761d4efb5c19bdb64a7",
+      "templateSvgSha256": "55590468408b937e164d045bf05695d8a329e7ba60d5cfdf4f62b6e6374e91a8",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "plus",
+      "url": "https://juleflet.dk/hjerte/plus/",
+      "renderedSvgSha256": "927be641c41aa5557473a52a82138f23e166cde426294a826209734c19217a8d",
+      "templateSvgSha256": "0e7840743e1e6640a309087c4172c652624dbda7fa26f71730e3255aacd64da7",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "plus3",
+      "url": "https://juleflet.dk/hjerte/plus3/",
+      "renderedSvgSha256": "3c84785d55af938211e6436f2784e79261ff0c0f56c0ceb03e40afa501c361a8",
+      "templateSvgSha256": "801e6a53b82ebaa353bb8f754ceb2ca1d096c69f0b0c4866a93eb94a8f43bf92",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "amy-weave-1",
+      "url": "https://juleflet.dk/hjerte/amy-weave-1/",
+      "renderedSvgSha256": "203bd3a6b0416fe5d47cf2f90825b0d8fb852980715320e80e058e14f7ebb285",
+      "templateSvgSha256": "320d6207ff13a0e8d5d720461845efb6870b4559fa90a03ff79fb44d62b783e1",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "amy-weave-2",
+      "url": "https://juleflet.dk/hjerte/amy-weave-2/",
+      "renderedSvgSha256": "dd1d3d63c77cebc46d175d8f841156fdbed60ad368d28475822623ba06e02e74",
+      "templateSvgSha256": "9958ca062ea955f1b7be85c3eb92f6987a211614fdab80b81016030348093444",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "amy-rosette",
+      "url": "https://juleflet.dk/hjerte/amy-rosette/",
+      "renderedSvgSha256": "a0880298de80b1f61f6e595651066be1e7076cae820846e8ff4ebded60177097",
+      "templateSvgSha256": "2b3bcee1aab78492e4418fb900e0addd7ed04fb8b76f588c71057fe156c8fa9e",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "amy-pattern",
+      "url": "https://juleflet.dk/hjerte/amy-pattern/",
+      "renderedSvgSha256": "90c221ca240a7c209fa73a83d81b3e93ed8d856387da718592887144c1a91e5d",
+      "templateSvgSha256": "22d6c88e7ff014d27c081cf0dd148593881413935b9939d0237f959fc27f3d9f",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "amy-flowering",
+      "url": "https://juleflet.dk/hjerte/amy-flowering/",
+      "renderedSvgSha256": "013be50e8dfc607c02f450b003a5f677b67683b737b5086dbeb4e2d1ee19f327",
+      "templateSvgSha256": "25f00711f5fc3cebaf27c3d00a1e04fd7bae2ae1d44e6ac2dbd610f037fcb1c6",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "amy-pinecone",
+      "url": "https://juleflet.dk/hjerte/amy-pinecone/",
+      "renderedSvgSha256": "4c3b571726b8ea7d8aa537660627a49eb18fb89152e99e2faffd1f673f35bcf8",
+      "templateSvgSha256": "775432a4c3c5ad61683daf20bf6b74a84b825a0955be70901832cd36f557d006",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "alhambra",
+      "url": "https://juleflet.dk/hjerte/alhambra/",
+      "renderedSvgSha256": "6605dfc55ade6653a8367b88f32e0ce4353b1e5b68686f399d453fe251c53a1f",
+      "templateSvgSha256": "91bff62f31c5fe80c79ab5308c31ef2f7f5c491f6f2803d99357b6f2e4d725ae",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "squares",
+      "url": "https://juleflet.dk/hjerte/squares/",
+      "renderedSvgSha256": "e153c85b9f496d2bd3cbf98f807a6eb2aa3ed137a751c2e4e71a0a0e69b70c5d",
+      "templateSvgSha256": "d3ec3b31eb1f748e63a2b0076d19d0fd45302a3e3563e6825fc695c2531d57bf",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "sildeben",
+      "url": "https://juleflet.dk/hjerte/sildeben/",
+      "renderedSvgSha256": "9a0224e9de03d6e2cc210d98265fd7c1872e0a745ff06a36ebf4d21ca13f17df",
+      "templateSvgSha256": "d71473b08dc55a7462b6b7949ae08f77c3c3eb97eac752e60589d0158034b739",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "puslespil",
+      "url": "https://juleflet.dk/hjerte/puslespil/",
+      "renderedSvgSha256": "493274e2e894f7a59d9b721dfb71ef7b9ed49401bb81d266f2b8644750c2a569",
+      "templateSvgSha256": "719ac3e829d27dfd826b7e02c59188a2c95341af2f259058fc5d4256d9aecb15",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "koelbuer",
+      "url": "https://juleflet.dk/hjerte/koelbuer/",
+      "renderedSvgSha256": "37f1672e34d43feaeef9498afc428bde8dfb36727497748f364650949f5fc30c",
+      "templateSvgSha256": "0aaa7bc813574de4d70331ead3a5b12d6369ee75edbee3b9edd0885d6291aa19",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "roserude",
+      "url": "https://juleflet.dk/hjerte/roserude/",
+      "renderedSvgSha256": "bcdb8f351bcd434ef6f36346df095a54233667a96618e852cb8354369fab83de",
+      "templateSvgSha256": "af5253d0dde8c3b9c2f57471e1849fa46c94250aa5bbb2933bb8f3f28c75fb1e",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "hanefod",
+      "url": "https://juleflet.dk/hjerte/hanefod/",
+      "renderedSvgSha256": "ad492eefe9fb838fc3d5d0fb5c801eda696cd389986c24e22ef0d15198f527ac",
+      "templateSvgSha256": "e078ef801214e0be9f25fe8f52a3578f38987c8b39a5c4df45b71d72e7f73279",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "flyvendegaes",
+      "url": "https://juleflet.dk/hjerte/flyvendegaes/",
+      "renderedSvgSha256": "c3587958dd3ade3d6fa5bb18aa9a73b8f43cde2261dc030069f2785046a2c1c6",
+      "templateSvgSha256": "b4c808b421429111a7c4f7991e3b4be21dd5f5cd3ecec67789c153f29480c08a",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "origami",
+      "url": "https://juleflet.dk/hjerte/origami/",
+      "renderedSvgSha256": "ad15343c46b8568ef40027f488bd4d16220414e620849eee885d160c10614c7a",
+      "templateSvgSha256": "6919014cd4bf49db7ceb1083733501bae126130c0f2fbb470443965eede52c21",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "drageskael",
+      "url": "https://juleflet.dk/hjerte/drageskael/",
+      "renderedSvgSha256": "25f205eacbdf54d2e00a3339f617d70325f50e880bd61b05a444ef7978517240",
+      "templateSvgSha256": "f165cd5c0b49fa693436d3eea347ca36006556d85f55b9b8da814c78024b01e6",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "hermanngitter",
+      "url": "https://juleflet.dk/hjerte/hermanngitter/",
+      "renderedSvgSha256": "b047df82faed98995adfec32362146da2e0014ceb83a52593a45f6a2cb8e8aa2",
+      "templateSvgSha256": "dc58a36d7ce686bc5a16ec5bd015e3e14395cddde86d81969e43cf1a6ca2448b",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 2,
+      "suspectCount": 0
+    },
+    {
+      "id": "tragt",
+      "url": "https://juleflet.dk/hjerte/tragt/",
+      "renderedSvgSha256": "bac17c570f299e1fccfb9dee64bbfc83e9111f101d11ad6f0026ab4019082c16",
+      "templateSvgSha256": "c8fbb1cdda31c4a5c81e448075a2ffcd19404f5af341f4fd0fda977bd05d566b",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "boelgebrud",
+      "url": "https://juleflet.dk/hjerte/boelgebrud/",
+      "renderedSvgSha256": "dfbdedcd520cdb924308cbe708c8702f043bdd9018ccb89fe34b31df6490d7a7",
+      "templateSvgSha256": "39c9fef5c89e143abccdd587e67b91a90caa11ba8c2a8a5c8658fc14f1f5f10d",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "glaskuppel",
+      "url": "https://juleflet.dk/hjerte/glaskuppel/",
+      "renderedSvgSha256": "11eedfd22b23cf72df3ca06495985fbd2696781a4a2b20597ffb0aa5653a5eb9",
+      "templateSvgSha256": "84ad78eea42574af93be8b7fe56497ffb639533ea79f6df86c20f40b53122c35",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "hvirvel",
+      "url": "https://juleflet.dk/hjerte/hvirvel/",
+      "renderedSvgSha256": "8ca3a10712d1d1ea0a7005846d99a775df053647fb69ec5ddf5a6d3aeb9f0a34",
+      "templateSvgSha256": "674f1b44313f6149bc7d2b35c111b336bed260587d4d36e50ebab2bffb68e181",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "juletrae",
+      "url": "https://juleflet.dk/hjerte/juletrae/",
+      "renderedSvgSha256": "b952bddf3217889f2f0d4c6df511927364b8db548818ff2ea4f5df0ea4448486",
+      "templateSvgSha256": "07c37334099b3fb3f8f7b3fd6171121102850de48de936bb8576a3d1ae3d7471",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "flower",
+      "url": "https://juleflet.dk/hjerte/flower/",
+      "renderedSvgSha256": "d4f610fe8202d39b6f203a2ed62129eafb23f8606d33a5e32e503c8628566503",
+      "templateSvgSha256": "05b36d3bcad88492e889ab311fcd6b0f96911d0d0e1ea29d5cbaa190e643f415",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "venus",
+      "url": "https://juleflet.dk/hjerte/venus/",
+      "renderedSvgSha256": "688ce046502a45119f6d143a9d7d523ec7606d4208cf642dcdf291dd737ac0a1",
+      "templateSvgSha256": "dfb6ff0d78251e48e0c129a161b0ca8939627c8b0698c4686fb9026a797affd6",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "angel",
+      "url": "https://juleflet.dk/hjerte/angel/",
+      "renderedSvgSha256": "fe1d4c7fb6c0d8ae9cfbfba064389409b3960f0fffeceea5ac484f4ed3d12aa8",
+      "templateSvgSha256": "83f43485d25109466ded4c4189bd3b71f1eae488cd3b8c5920851166fd72610e",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "snowflake",
+      "url": "https://juleflet.dk/hjerte/snowflake/",
+      "renderedSvgSha256": "ecce56a8a047ebafb45797b3180c3adfeee2b02d09bd1ed79ad1f8e30412a69a",
+      "templateSvgSha256": "108231f4649ec752bca11d2f74bb400518f4c0786e2ca9d1c40c8ca57faa8bd0",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "santa",
+      "url": "https://juleflet.dk/hjerte/santa/",
+      "renderedSvgSha256": "9ae5043e38a318fc64ab32b06059c4ab289bf0eb7108191c6675cf9fa26e9d70",
+      "templateSvgSha256": "5021dba761b2d31c822e44c767edfc57c80f61184e8733d9a3a977310c61baaa",
+      "method": "polygonal-fallback",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "dagognat",
+      "url": "https://juleflet.dk/hjerte/dagognat/",
+      "renderedSvgSha256": "c56341d68f8f8d54950dfc3419c763cf824f832f4eaa3b7d634e38423bb7a558",
+      "templateSvgSha256": "84ff804bd279f780700e43488549abc778fb2668944287a25115ea48671da6ea",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "triple-heart",
+      "url": "https://juleflet.dk/hjerte/triple-heart/",
+      "renderedSvgSha256": "46f38b48fd87f2b70280291ad59e0573d23a8833016f64db0fa943390afb0482",
+      "templateSvgSha256": "73f34f6da07f8fdb29a406088ff0704528273476dfe5740377971c6096377669",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "h4h2",
+      "url": "https://juleflet.dk/hjerte/h4h2/",
+      "renderedSvgSha256": "be7f3a82166efd84fe3bf8ec0f2c772accb398cf4d8fd7550ed1c7c4f4a0fc51",
+      "templateSvgSha256": "9b0d5ef128b5df86dc0bbe4cbbc1c06c3bf927d47201e4b31245a890c1c3bd00",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "nemt-hjerte",
+      "url": "https://juleflet.dk/hjerte/nemt-hjerte/",
+      "renderedSvgSha256": "caa707075c56166872ab2b9f92841b3a8ce0a7b4903b0bc9f558afd0570f0798",
+      "templateSvgSha256": "2cc313abd466d4c8c53b67dd22811ccf89da0ce66ff330191b7e4b2eb819ac20",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "lilje1",
+      "url": "https://juleflet.dk/hjerte/lilje1/",
+      "renderedSvgSha256": "56ea004a5c7550665c6846c6354c1b29a6c845316edd3bf1d5d0072d37a6202b",
+      "templateSvgSha256": "6045fba890d31f4cb380c4fbe35af08ad38e50e27f038709c8fffd70eff50186",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "lilje2",
+      "url": "https://juleflet.dk/hjerte/lilje2/",
+      "renderedSvgSha256": "9b6fad28c9085294c439510667ef58d73e35a57f6cab17867e1e749d73a86502",
+      "templateSvgSha256": "95bcc1e7e73bea3f00e72021aa1c1b275825d825140563ff6bfbf4fcd6e10888",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    },
+    {
+      "id": "hjertekloever",
+      "url": "https://juleflet.dk/hjerte/hjertekloever/",
+      "renderedSvgSha256": "5792fae5da8e1fc1c232add6928678f1b64619c62ab06608aec5a3287006133e",
+      "templateSvgSha256": "069929578f7ff83ef0fa9b4d0835246e9240baec5f81788b0f4e2977f4caeec4",
+      "method": "cubic-noding",
+      "maximumInteriorDegree": 4,
+      "suspectCount": 0
+    }
+  ]
+}

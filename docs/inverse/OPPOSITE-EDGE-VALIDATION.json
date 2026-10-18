@@ -1,0 +1,3271 @@
+{
+  "createdAt": "2026-10-11T20:21:52.624Z",
+  "algorithmCommit": "8d58feb",
+  "baselineCommit": "8caa6d1",
+  "sourceHashes": {
+    "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+    "static/inverse/core/feature-recovery.js": "5904ce56f6a5a3e05266dcd9342364efd0f75c1c77e4ecb4fd2fba5c812f9f10",
+    "scripts/inverse/border.test.mjs": "bba85891df3611e0a3a8a90329dabea473efea6c52434d980bab997a75dcfa35",
+    "scripts/inverse/feature-refinement.test.mjs": "ac456ba65ff62613e15368bf67023a69e2c9c563aede0ea808860265e6b077fe",
+    "scripts/inverse/paint-browser-test.mjs": "da5de5a71030df4f9882cb0f904719a762a43a405c0fd2b480928cf306f1c2a5"
+  },
+  "servedSourceHashes": {
+    "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+    "static/inverse/core/feature-recovery.js": "5904ce56f6a5a3e05266dcd9342364efd0f75c1c77e4ecb4fd2fba5c812f9f10",
+    "static/inverse/core/direct/fit.js": "6b16b0667ce6a380ba61fbbd9bba9eaebe330ee2fa16655e42bb2b7757d8f7d9"
+  },
+  "qa": {
+    "applicationPassed": 845,
+    "applicationExistingSkipped": 1,
+    "inversePassed": 543,
+    "typeErrors": 0,
+    "typeExistingWarnings": 7,
+    "lint": "passed",
+    "build": "passed",
+    "browserPassed": 14
+  },
+  "policy": "One-sided inward-profile routing seeds only after ordinary recovery fails; original crop, mask and all final gates unchanged. These are candidate reconstruction checks, not ground-truth path or physical-assembly verification.",
+  "capturedMask": {
+    "seconds": 5.98655075,
+    "error": 0.02394375,
+    "sourceSha256": "5a60916399cc8036f9a416c3229b971efc28790636f620e765cc10f803d80d5f",
+    "slits": {
+      "left": 3,
+      "right": 3
+    },
+    "checks": true,
+    "recovery": {
+      "borderSeedRetry": true,
+      "seconds": 2.3609355,
+      "refinement": {
+        "imageError": 0.0237625,
+        "featuresPassed": true,
+        "geometryPassed": true,
+        "paperPassed": true,
+        "steps": 160
+      },
+      "attempts": [
+        {
+          "smoothRadius": 0.3,
+          "seconds": 0.025908292000000076,
+          "error": "Sheet B has 1 start transitions but 3 end transitions. Opposite borders must agree."
+        },
+        {
+          "smoothRadius": 0.3,
+          "seconds": 0.04441466600000012,
+          "error": "Sheet B has 1 start transitions but 3 end transitions. Opposite borders must agree."
+        },
+        {
+          "smoothRadius": 0.3,
+          "borderSeed": {
+            "radiiMm": [
+              3,
+              3,
+              3,
+              5
+            ],
+            "changedSide": 3,
+            "transitionsBefore": [
+              3,
+              3,
+              3,
+              1
+            ],
+            "transitionsAfter": [
+              3,
+              3,
+              3,
+              3
+            ],
+            "changedPixels": 2979,
+            "changeFraction": 0.01861875,
+            "initializationOnly": true,
+            "traceImageError": 0.0331
+          },
+          "seconds": 0.04530366600000025,
+          "status": "no_validated_solution",
+          "termination": "candidate_graph_exhausted",
+          "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+        },
+        {
+          "smoothRadius": 0.5,
+          "borderSeed": {
+            "radiiMm": [
+              3,
+              3,
+              3,
+              5
+            ],
+            "changedSide": 3,
+            "transitionsBefore": [
+              3,
+              3,
+              3,
+              1
+            ],
+            "transitionsAfter": [
+              3,
+              3,
+              3,
+              3
+            ],
+            "changedPixels": 2979,
+            "changeFraction": 0.01861875,
+            "initializationOnly": true,
+            "traceImageError": 0.0331125
+          },
+          "seconds": 0.018319833000000018,
+          "status": "no_validated_solution",
+          "termination": "candidate_graph_exhausted",
+          "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+        },
+        {
+          "smoothRadius": 0.3,
+          "borderSeed": {
+            "radiiMm": [
+              3,
+              3,
+              3,
+              6
+            ],
+            "changedSide": 3,
+            "transitionsBefore": [
+              3,
+              3,
+              3,
+              1
+            ],
+            "transitionsAfter": [
+              3,
+              3,
+              3,
+              3
+            ],
+            "changedPixels": 3622,
+            "changeFraction": 0.0226375,
+            "initializationOnly": true,
+            "traceImageError": 0.0365875
+          },
+          "seconds": 0.060180875000000016,
+          "status": "no_validated_solution",
+          "termination": "candidate_graph_exhausted",
+          "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+        },
+        {
+          "smoothRadius": 0.5,
+          "borderSeed": {
+            "radiiMm": [
+              3,
+              3,
+              3,
+              6
+            ],
+            "changedSide": 3,
+            "transitionsBefore": [
+              3,
+              3,
+              3,
+              1
+            ],
+            "transitionsAfter": [
+              3,
+              3,
+              3,
+              3
+            ],
+            "changedPixels": 3622,
+            "changeFraction": 0.0226375,
+            "initializationOnly": true,
+            "traceImageError": 0.03713125
+          },
+          "seconds": 0.014421250000000328,
+          "status": "no_validated_solution",
+          "termination": "candidate_graph_exhausted",
+          "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+        },
+        {
+          "smoothRadius": 0.3,
+          "borderSeed": {
+            "radiiMm": [
+              3,
+              3,
+              3,
+              7
+            ],
+            "changedSide": 3,
+            "transitionsBefore": [
+              3,
+              3,
+              3,
+              1
+            ],
+            "transitionsAfter": [
+              3,
+              3,
+              3,
+              3
+            ],
+            "changedPixels": 3762,
+            "changeFraction": 0.0235125,
+            "initializationOnly": true,
+            "traceImageError": 0.0374375
+          },
+          "seconds": 0.04250533399999995,
+          "status": "no_validated_solution",
+          "termination": "candidate_graph_exhausted",
+          "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+        },
+        {
+          "smoothRadius": 0.5,
+          "borderSeed": {
+            "radiiMm": [
+              3,
+              3,
+              3,
+              7
+            ],
+            "changedSide": 3,
+            "transitionsBefore": [
+              3,
+              3,
+              3,
+              1
+            ],
+            "transitionsAfter": [
+              3,
+              3,
+              3,
+              3
+            ],
+            "changedPixels": 3762,
+            "changeFraction": 0.0235125,
+            "initializationOnly": true,
+            "traceImageError": 0.0380125
+          },
+          "seconds": 1.6816397919999995,
+          "status": "solved"
+        }
+      ]
+    }
+  },
+  "perturbations": {
+    "fixtureMaskSha256": "5a60916399cc8036f9a416c3229b971efc28790636f620e765cc10f803d80d5f",
+    "results": [
+      {
+        "name": "rim-noise",
+        "seconds": 5.698432125,
+        "maskSha256": "e47b3f606fbf1c00f038760d3c259648e2be32daa01700afb674dfcb1b47bcc1",
+        "sourceUnchanged": true,
+        "error": 0.02398125,
+        "slits": {
+          "left": 3,
+          "right": 3
+        },
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "missing": 0,
+        "recovery": {
+          "borderSeedRetry": true,
+          "seconds": 2.3660680410000006,
+          "refinement": {
+            "imageError": 0.0238,
+            "featuresPassed": true,
+            "geometryPassed": true,
+            "paperPassed": true,
+            "steps": 160
+          },
+          "attempts": [
+            {
+              "smoothRadius": 0.3,
+              "seconds": 0.02611366599999974,
+              "error": "Sheet B has 1 start transitions but 3 end transitions. Opposite borders must agree."
+            },
+            {
+              "smoothRadius": 0.3,
+              "seconds": 0.04812104199999976,
+              "error": "Sheet B has 1 start transitions but 3 end transitions. Opposite borders must agree."
+            },
+            {
+              "smoothRadius": 0.3,
+              "borderSeed": {
+                "radiiMm": [
+                  3,
+                  3,
+                  3,
+                  5
+                ],
+                "changedSide": 3,
+                "transitionsBefore": [
+                  3,
+                  3,
+                  3,
+                  1
+                ],
+                "transitionsAfter": [
+                  3,
+                  3,
+                  3,
+                  3
+                ],
+                "changedPixels": 2985,
+                "changeFraction": 0.01865625,
+                "initializationOnly": true,
+                "traceImageError": 0.0331375
+              },
+              "seconds": 0.044198832999999924,
+              "status": "no_validated_solution",
+              "termination": "candidate_graph_exhausted",
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+            },
+            {
+              "smoothRadius": 0.5,
+              "borderSeed": {
+                "radiiMm": [
+                  3,
+                  3,
+                  3,
+                  5
+                ],
+                "changedSide": 3,
+                "transitionsBefore": [
+                  3,
+                  3,
+                  3,
+                  1
+                ],
+                "transitionsAfter": [
+                  3,
+                  3,
+                  3,
+                  3
+                ],
+                "changedPixels": 2985,
+                "changeFraction": 0.01865625,
+                "initializationOnly": true,
+                "traceImageError": 0.03315
+              },
+              "seconds": 0.01859112499999992,
+              "status": "no_validated_solution",
+              "termination": "candidate_graph_exhausted",
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+            },
+            {
+              "smoothRadius": 0.3,
+              "borderSeed": {
+                "radiiMm": [
+                  3,
+                  3,
+                  3,
+                  6
+                ],
+                "changedSide": 3,
+                "transitionsBefore": [
+                  3,
+                  3,
+                  3,
+                  1
+                ],
+                "transitionsAfter": [
+                  3,
+                  3,
+                  3,
+                  3
+                ],
+                "changedPixels": 3628,
+                "changeFraction": 0.022675,
+                "initializationOnly": true,
+                "traceImageError": 0.036625
+              },
+              "seconds": 0.05930349999999999,
+              "status": "no_validated_solution",
+              "termination": "candidate_graph_exhausted",
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+            },
+            {
+              "smoothRadius": 0.5,
+              "borderSeed": {
+                "radiiMm": [
+                  3,
+                  3,
+                  3,
+                  6
+                ],
+                "changedSide": 3,
+                "transitionsBefore": [
+                  3,
+                  3,
+                  3,
+                  1
+                ],
+                "transitionsAfter": [
+                  3,
+                  3,
+                  3,
+                  3
+                ],
+                "changedPixels": 3628,
+                "changeFraction": 0.022675,
+                "initializationOnly": true,
+                "traceImageError": 0.03716875
+              },
+              "seconds": 0.014410166000000118,
+              "status": "no_validated_solution",
+              "termination": "candidate_graph_exhausted",
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+            },
+            {
+              "smoothRadius": 0.3,
+              "borderSeed": {
+                "radiiMm": [
+                  3,
+                  3,
+                  3,
+                  7
+                ],
+                "changedSide": 3,
+                "transitionsBefore": [
+                  3,
+                  3,
+                  3,
+                  1
+                ],
+                "transitionsAfter": [
+                  3,
+                  3,
+                  3,
+                  3
+                ],
+                "changedPixels": 3768,
+                "changeFraction": 0.02355,
+                "initializationOnly": true,
+                "traceImageError": 0.037475
+              },
+              "seconds": 0.04446195799999987,
+              "status": "no_validated_solution",
+              "termination": "candidate_graph_exhausted",
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+            },
+            {
+              "smoothRadius": 0.5,
+              "borderSeed": {
+                "radiiMm": [
+                  3,
+                  3,
+                  3,
+                  7
+                ],
+                "changedSide": 3,
+                "transitionsBefore": [
+                  3,
+                  3,
+                  3,
+                  1
+                ],
+                "transitionsAfter": [
+                  3,
+                  3,
+                  3,
+                  3
+                ],
+                "changedPixels": 3768,
+                "changeFraction": 0.02355,
+                "initializationOnly": true,
+                "traceImageError": 0.03805
+              },
+              "seconds": 1.7001033330000004,
+              "status": "solved"
+            }
+          ]
+        }
+      },
+      {
+        "name": "invert",
+        "seconds": 5.094577375000001,
+        "maskSha256": "99b1376b4c218b77bc0d10a80305231b1a9ab4254d62d73f2acd2830f32e4b9a",
+        "sourceUnchanged": true,
+        "error": 0.02394375,
+        "slits": {
+          "left": 3,
+          "right": 3
+        },
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "missing": 0,
+        "recovery": {
+          "borderSeedRetry": true,
+          "seconds": 2.0483341249999993,
+          "refinement": {
+            "imageError": 0.0237625,
+            "featuresPassed": true,
+            "geometryPassed": true,
+            "paperPassed": true,
+            "steps": 160
+          },
+          "attempts": [
+            {
+              "smoothRadius": 0.3,
+              "seconds": 0.002809957999999824,
+              "error": "Sheet B has 1 start transitions but 3 end transitions. Opposite borders must agree."
+            },
+            {
+              "smoothRadius": 0.3,
+              "seconds": 0.03409279200000128,
+              "error": "Sheet B has 1 start transitions but 3 end transitions. Opposite borders must agree."
+            },
+            {
+              "smoothRadius": 0.3,
+              "borderSeed": {
+                "radiiMm": [
+                  3,
+                  3,
+                  3,
+                  5
+                ],
+                "changedSide": 3,
+                "transitionsBefore": [
+                  3,
+                  3,
+                  3,
+                  1
+                ],
+                "transitionsAfter": [
+                  3,
+                  3,
+                  3,
+                  3
+                ],
+                "changedPixels": 2979,
+                "changeFraction": 0.01861875,
+                "initializationOnly": true,
+                "traceImageError": 0.0331
+              },
+              "seconds": 0.017427458000000114,
+              "status": "no_validated_solution",
+              "termination": "candidate_graph_exhausted",
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+            },
+            {
+              "smoothRadius": 0.5,
+              "borderSeed": {
+                "radiiMm": [
+                  3,
+                  3,
+                  3,
+                  5
+                ],
+                "changedSide": 3,
+                "transitionsBefore": [
+                  3,
+                  3,
+                  3,
+                  1
+                ],
+                "transitionsAfter": [
+                  3,
+                  3,
+                  3,
+                  3
+                ],
+                "changedPixels": 2979,
+                "changeFraction": 0.01861875,
+                "initializationOnly": true,
+                "traceImageError": 0.0331125
+              },
+              "seconds": 0.015826875000000656,
+              "status": "no_validated_solution",
+              "termination": "candidate_graph_exhausted",
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+            },
+            {
+              "smoothRadius": 0.3,
+              "borderSeed": {
+                "radiiMm": [
+                  3,
+                  3,
+                  3,
+                  6
+                ],
+                "changedSide": 3,
+                "transitionsBefore": [
+                  3,
+                  3,
+                  3,
+                  1
+                ],
+                "transitionsAfter": [
+                  3,
+                  3,
+                  3,
+                  3
+                ],
+                "changedPixels": 3622,
+                "changeFraction": 0.0226375,
+                "initializationOnly": true,
+                "traceImageError": 0.0365875
+              },
+              "seconds": 0.0414893749999992,
+              "status": "no_validated_solution",
+              "termination": "candidate_graph_exhausted",
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+            },
+            {
+              "smoothRadius": 0.5,
+              "borderSeed": {
+                "radiiMm": [
+                  3,
+                  3,
+                  3,
+                  6
+                ],
+                "changedSide": 3,
+                "transitionsBefore": [
+                  3,
+                  3,
+                  3,
+                  1
+                ],
+                "transitionsAfter": [
+                  3,
+                  3,
+                  3,
+                  3
+                ],
+                "changedPixels": 3622,
+                "changeFraction": 0.0226375,
+                "initializationOnly": true,
+                "traceImageError": 0.03713125
+              },
+              "seconds": 0.012628875000000334,
+              "status": "no_validated_solution",
+              "termination": "candidate_graph_exhausted",
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+            },
+            {
+              "smoothRadius": 0.3,
+              "borderSeed": {
+                "radiiMm": [
+                  3,
+                  3,
+                  3,
+                  7
+                ],
+                "changedSide": 3,
+                "transitionsBefore": [
+                  3,
+                  3,
+                  3,
+                  1
+                ],
+                "transitionsAfter": [
+                  3,
+                  3,
+                  3,
+                  3
+                ],
+                "changedPixels": 3762,
+                "changeFraction": 0.0235125,
+                "initializationOnly": true,
+                "traceImageError": 0.0374375
+              },
+              "seconds": 0.04132658400000037,
+              "status": "no_validated_solution",
+              "termination": "candidate_graph_exhausted",
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+            },
+            {
+              "smoothRadius": 0.5,
+              "borderSeed": {
+                "radiiMm": [
+                  3,
+                  3,
+                  3,
+                  7
+                ],
+                "changedSide": 3,
+                "transitionsBefore": [
+                  3,
+                  3,
+                  3,
+                  1
+                ],
+                "transitionsAfter": [
+                  3,
+                  3,
+                  3,
+                  3
+                ],
+                "changedPixels": 3762,
+                "changeFraction": 0.0235125,
+                "initializationOnly": true,
+                "traceImageError": 0.0380125
+              },
+              "seconds": 1.5236021660000005,
+              "status": "solved"
+            }
+          ]
+        }
+      },
+      {
+        "name": "rotate-90",
+        "seconds": 3.9737151670000004,
+        "maskSha256": "dccc887864dd85b707044dd8faa14b0ebad835c3f87813b7ab1effe16f6a873e",
+        "sourceUnchanged": true,
+        "error": 0.0251125,
+        "slits": {
+          "left": 3,
+          "right": 3
+        },
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "missing": 0,
+        "recovery": {
+          "borderSeedRetry": true,
+          "seconds": 1.106907208999999,
+          "refinement": {
+            "imageError": 0.02488125,
+            "featuresPassed": true,
+            "geometryPassed": true,
+            "paperPassed": true,
+            "steps": 160
+          },
+          "attempts": [
+            {
+              "smoothRadius": 0.3,
+              "seconds": 0.003389584000000468,
+              "error": "Sheet A has 1 start transitions but 3 end transitions. Opposite borders must agree."
+            },
+            {
+              "smoothRadius": 0.3,
+              "seconds": 0.04177654199999961,
+              "error": "Sheet A has 1 start transitions but 3 end transitions. Opposite borders must agree."
+            },
+            {
+              "smoothRadius": 0.3,
+              "borderSeed": {
+                "radiiMm": [
+                  5,
+                  3,
+                  3,
+                  3
+                ],
+                "changedSide": 0,
+                "transitionsBefore": [
+                  1,
+                  3,
+                  3,
+                  3
+                ],
+                "transitionsAfter": [
+                  3,
+                  3,
+                  3,
+                  3
+                ],
+                "changedPixels": 2979,
+                "changeFraction": 0.01861875,
+                "initializationOnly": true,
+                "traceImageError": 0.03443125
+              },
+              "seconds": 0.021782875000000784,
+              "status": "no_validated_solution",
+              "termination": "candidate_graph_exhausted",
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+            },
+            {
+              "smoothRadius": 0.5,
+              "borderSeed": {
+                "radiiMm": [
+                  5,
+                  3,
+                  3,
+                  3
+                ],
+                "changedSide": 0,
+                "transitionsBefore": [
+                  1,
+                  3,
+                  3,
+                  3
+                ],
+                "transitionsAfter": [
+                  3,
+                  3,
+                  3,
+                  3
+                ],
+                "changedPixels": 2979,
+                "changeFraction": 0.01861875,
+                "initializationOnly": true,
+                "traceImageError": 0.03405
+              },
+              "seconds": 0.017293416999998954,
+              "status": "no_validated_solution",
+              "termination": "candidate_graph_exhausted",
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+            },
+            {
+              "smoothRadius": 0.3,
+              "borderSeed": {
+                "radiiMm": [
+                  6,
+                  3,
+                  3,
+                  3
+                ],
+                "changedSide": 0,
+                "transitionsBefore": [
+                  1,
+                  3,
+                  3,
+                  3
+                ],
+                "transitionsAfter": [
+                  3,
+                  3,
+                  3,
+                  3
+                ],
+                "changedPixels": 3622,
+                "changeFraction": 0.0226375,
+                "initializationOnly": true,
+                "traceImageError": 0.0381625
+              },
+              "seconds": 0.0192762500000008,
+              "status": "no_validated_solution",
+              "termination": "candidate_graph_exhausted",
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+            },
+            {
+              "smoothRadius": 0.5,
+              "borderSeed": {
+                "radiiMm": [
+                  6,
+                  3,
+                  3,
+                  3
+                ],
+                "changedSide": 0,
+                "transitionsBefore": [
+                  1,
+                  3,
+                  3,
+                  3
+                ],
+                "transitionsAfter": [
+                  3,
+                  3,
+                  3,
+                  3
+                ],
+                "changedPixels": 3622,
+                "changeFraction": 0.0226375,
+                "initializationOnly": true,
+                "traceImageError": 0.03806875
+              },
+              "seconds": 0.016822125000000597,
+              "status": "no_validated_solution",
+              "termination": "candidate_graph_exhausted",
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+            },
+            {
+              "smoothRadius": 0.3,
+              "borderSeed": {
+                "radiiMm": [
+                  7,
+                  3,
+                  3,
+                  3
+                ],
+                "changedSide": 0,
+                "transitionsBefore": [
+                  1,
+                  3,
+                  3,
+                  3
+                ],
+                "transitionsAfter": [
+                  3,
+                  3,
+                  3,
+                  3
+                ],
+                "changedPixels": 3762,
+                "changeFraction": 0.0235125,
+                "initializationOnly": true,
+                "traceImageError": 0.0390125
+              },
+              "seconds": 0.016522666999999273,
+              "status": "no_validated_solution",
+              "termination": "candidate_graph_exhausted",
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+            },
+            {
+              "smoothRadius": 0.5,
+              "borderSeed": {
+                "radiiMm": [
+                  7,
+                  3,
+                  3,
+                  3
+                ],
+                "changedSide": 0,
+                "transitionsBefore": [
+                  1,
+                  3,
+                  3,
+                  3
+                ],
+                "transitionsAfter": [
+                  3,
+                  3,
+                  3,
+                  3
+                ],
+                "changedPixels": 3762,
+                "changeFraction": 0.0235125,
+                "initializationOnly": true,
+                "traceImageError": 0.03895
+              },
+              "seconds": 0.6088313749999997,
+              "status": "solved"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "hunodan": {
+    "maxSeconds": 8.446410334,
+    "medianSeconds": 5.155844895999999,
+    "results": [
+      {
+        "id": "hjfig-01",
+        "passed": true,
+        "seconds": 4.4284975,
+        "error": 0.009799111111111111,
+        "beforeError": 0.009799111111111111
+      },
+      {
+        "id": "hjfig-02",
+        "passed": true,
+        "seconds": 4.528473999999999,
+        "error": 0.013923555555555555,
+        "beforeError": 0.013923555555555555
+      },
+      {
+        "id": "hjfig-03",
+        "passed": true,
+        "seconds": 3.7356760830000004,
+        "error": 0.006634666666666666,
+        "beforeError": 0.006634666666666666
+      },
+      {
+        "id": "hjfig-04",
+        "passed": true,
+        "seconds": 4.142260583,
+        "error": 0.013824,
+        "beforeError": 0.013824
+      },
+      {
+        "id": "hjfig-05",
+        "passed": true,
+        "seconds": 3.161652333000002,
+        "error": 0.009042960667083447,
+        "beforeError": 0.009042960667083447
+      },
+      {
+        "id": "hjfla-01",
+        "passed": true,
+        "seconds": 5.391304625000001,
+        "error": 0.013468424479166666,
+        "beforeError": 0.013468424479166666
+      },
+      {
+        "id": "hjcur-01",
+        "passed": true,
+        "seconds": 5.669914,
+        "error": 0.005148444444444444,
+        "beforeError": 0.005148444444444444
+      },
+      {
+        "id": "hjcur-02",
+        "passed": true,
+        "seconds": 5.226821708000003,
+        "error": 0.005397333333333333,
+        "beforeError": 0.005397333333333333
+      },
+      {
+        "id": "hjcur-03",
+        "passed": true,
+        "seconds": 5.084868083999995,
+        "error": 0.004522666666666667,
+        "beforeError": 0.004522666666666667
+      },
+      {
+        "id": "hjcur-04",
+        "passed": true,
+        "seconds": 7.190339625000001,
+        "error": 0.005639111111111111,
+        "beforeError": 0.005639111111111111
+      },
+      {
+        "id": "hjcur-05",
+        "passed": true,
+        "seconds": 3.4241763330000032,
+        "error": 0.009436444444444445,
+        "beforeError": 0.009436444444444445
+      },
+      {
+        "id": "hjhih-01",
+        "passed": true,
+        "seconds": 6.460722874999999,
+        "error": 0.006040430615586996,
+        "beforeError": 0.006040430615586996
+      },
+      {
+        "id": "hjhih-02",
+        "passed": true,
+        "seconds": 4.860662708000003,
+        "error": 0.003899406226779104,
+        "beforeError": 0.003899406226779104
+      },
+      {
+        "id": "hjhih-04",
+        "passed": true,
+        "seconds": 7.5189318749999945,
+        "error": 0.007776029627903062,
+        "beforeError": 0.007776029627903062
+      },
+      {
+        "id": "hjstr-01",
+        "passed": true,
+        "seconds": 4.271204832999996,
+        "error": 0.007550237322696868,
+        "beforeError": 0.007550237322696868
+      },
+      {
+        "id": "hjstr-02",
+        "passed": true,
+        "seconds": 6.180145959000002,
+        "error": 0.004365548980933596,
+        "beforeError": 0.004365548980933596
+      },
+      {
+        "id": "hjstr-03",
+        "passed": true,
+        "seconds": 8.446410334,
+        "error": 0.0056129769369752365,
+        "beforeError": 0.0056129769369752365
+      },
+      {
+        "id": "hjsta-01",
+        "passed": true,
+        "seconds": 4.8649187919999966,
+        "error": 0.007929362880886427,
+        "beforeError": 0.007929362880886427
+      },
+      {
+        "id": "hjsta-02",
+        "passed": true,
+        "seconds": 4.336091415999996,
+        "error": 0.0038045247395833335,
+        "beforeError": 0.0038045247395833335
+      },
+      {
+        "id": "hjsta-03",
+        "passed": true,
+        "seconds": 6.216430165999991,
+        "error": 0.012332213049376572,
+        "beforeError": 0.012332213049376572
+      },
+      {
+        "id": "hjsta-04",
+        "passed": true,
+        "seconds": 6.8488459169999985,
+        "error": 0.005053050026595,
+        "beforeError": 0.005053050026595
+      },
+      {
+        "id": "hjsta-05",
+        "passed": true,
+        "seconds": 6.085134624999991,
+        "error": 0.010624446293860237,
+        "beforeError": 0.010624446293860237
+      }
+    ]
+  },
+  "web": {
+    "counts": {
+      "candidate_needs_review": 18,
+      "candidate_checks_passed": 11,
+      "no_crop": 15
+    },
+    "results": [
+      {
+        "id": "danish-silver-on-tree",
+        "sourceSha256": "960a8d2c6b1123b117fc96b13a915e292a67521590f5603dbdd2a7a75a7463fe",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 1,
+            "right": 1
+          },
+          "error": 0.03775,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 10.276506959,
+          "fitAndValidationSeconds": 7.620258834
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 1,
+            "right": 1
+          },
+          "error": 0.03775,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 8.367335166,
+          "fitAndValidationSeconds": 6.984308209
+        },
+        "borderSeedRetry": false,
+        "errorChange": 0
+      },
+      {
+        "id": "danish-green-yellow",
+        "sourceSha256": "5957b2a8f5e25981f400cef687784effdb6c8491b8f0886ab5117ea66d610d4f",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.0033125,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 6.975781583,
+          "fitAndValidationSeconds": 5.131882375000001
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.0033125,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 6.693436750000001,
+          "fitAndValidationSeconds": 4.971558917
+        },
+        "borderSeedRetry": false,
+        "errorChange": 0
+      },
+      {
+        "id": "danish-silver-white",
+        "sourceSha256": "9a2a6d6fdae42655ec1ee153635ea85556aea24ed79d5960f7837b6bb0a01458",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "error": 0.0551625,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 17,
+          "totalSeconds": 8.672864624999999,
+          "fitAndValidationSeconds": 7.651512875000001
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "error": 0.0551625,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 17,
+          "totalSeconds": 8.767935584,
+          "fitAndValidationSeconds": 7.656036791000003
+        },
+        "borderSeedRetry": false,
+        "borderSeedAttempts": [],
+        "errorChange": 0
+      },
+      {
+        "id": "danish-red-gold",
+        "sourceSha256": "8de9081d6aad37c1e63600cf1f51f5c205c2d383b89f22a16cb14aab63d36a96",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 6,
+            "right": 6
+          },
+          "error": 0.13795625,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 11,
+          "totalSeconds": 10.134526999999999,
+          "fitAndValidationSeconds": 9.207408542000001
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 6,
+            "right": 6
+          },
+          "error": 0.13795625,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 11,
+          "totalSeconds": 10.168345667,
+          "fitAndValidationSeconds": 9.211813916000002
+        },
+        "borderSeedRetry": false,
+        "borderSeedAttempts": [],
+        "errorChange": 0
+      },
+      {
+        "id": "danish-tree-red",
+        "sourceSha256": "6603c4c02f4c45d097a47b06bf003e62d5710ef33ce574b35f2a2e351d274b40",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0205375,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 4.460630834000003,
+          "fitAndValidationSeconds": 3.519268667000004
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0205375,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 4.626853415999998,
+          "fitAndValidationSeconds": 3.669916624999998
+        },
+        "borderSeedRetry": false,
+        "borderSeedAttempts": [],
+        "errorChange": 0
+      },
+      {
+        "id": "danish-tree-green",
+        "sourceSha256": "5a8c872aeae2452165ddc05753a2255effaba318a7eb4b5b57ad9fb4361c1439",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.01075,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 7.731412915999994,
+          "fitAndValidationSeconds": 6.502541124999996
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.01075,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 7.767111709000004,
+          "fitAndValidationSeconds": 6.5264182920000025
+        },
+        "borderSeedRetry": false,
+        "errorChange": 0
+      },
+      {
+        "id": "danish-tree-dots",
+        "sourceSha256": "b7a0ae1209a1fbc5092b1e1b453dae5a19decc11c33a12e12b345ba9cfb16063",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.1311,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 7,
+          "totalSeconds": 11.770353917,
+          "fitAndValidationSeconds": 9.858739416000004
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.1311,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 7,
+          "totalSeconds": 11.752798375000006,
+          "fitAndValidationSeconds": 9.828400459000004
+        },
+        "borderSeedRetry": false,
+        "borderSeedAttempts": [],
+        "errorChange": 0
+      },
+      {
+        "id": "gathering-pink-single",
+        "sourceSha256": "867f0e5852ebeba92db6e89b0d4883f88b12a30226a93bb2042d9bce0e17500b",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 1.8380115000000006
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 1.8575258749999994
+        },
+        "borderSeedRetry": false,
+        "errorChange": null
+      },
+      {
+        "id": "bibel-checker-2",
+        "sourceSha256": "d715441c747a0f9d93db029c5b97b4c0a9dff0f5d3bd6480a871ae8285abfb4b",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 1,
+            "right": 1
+          },
+          "error": 0.01753125,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 3.443970417000004,
+          "fitAndValidationSeconds": 2.3820362500000045
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 1,
+            "right": 1
+          },
+          "error": 0.01753125,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 3.437810166999996,
+          "fitAndValidationSeconds": 2.3811032919999997
+        },
+        "borderSeedRetry": false,
+        "errorChange": 0
+      },
+      {
+        "id": "bibel-checker-3",
+        "sourceSha256": "ca918edf5ebf69b903f8f0c95cf048280c7ed4e1dea135f5e14aca3529decbc7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "error": 0.014375,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 6.007565291000006,
+          "fitAndValidationSeconds": 5.009138624999992
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "error": 0.014375,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 6.164026124999997,
+          "fitAndValidationSeconds": 5.154039541000006
+        },
+        "borderSeedRetry": false,
+        "errorChange": 0
+      },
+      {
+        "id": "bibel-checker-4",
+        "sourceSha256": "8552792996b59b8c94b8ef67759ce53f9799c73683f55d673314415cefd9ac87",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0035625,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 5.406531417000005,
+          "fitAndValidationSeconds": 4.178507584000006
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0035625,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 5.529132291999995,
+          "fitAndValidationSeconds": 4.273247333000007
+        },
+        "borderSeedRetry": false,
+        "errorChange": 0
+      },
+      {
+        "id": "bibel-narrow-wide",
+        "sourceSha256": "f89f56183194d4035b3e4f0864d5ea7642912342a5717da2ad0c6c38da7da194",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 4,
+            "right": 5
+          },
+          "error": 0.02026875,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 9.979174165999996,
+          "fitAndValidationSeconds": 8.831200292000009
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 4,
+            "right": 5
+          },
+          "error": 0.02026875,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 9.953474084000002,
+          "fitAndValidationSeconds": 8.826328457999988
+        },
+        "borderSeedRetry": false,
+        "errorChange": 0
+      },
+      {
+        "id": "bibel-nested-heart-green",
+        "sourceSha256": "0c426b93e08995e5daf1714aca5cee453e5126781455e1f284f4f00c42a40990",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.8703401660000091
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.8722680840000103
+        },
+        "borderSeedRetry": false,
+        "errorChange": null
+      },
+      {
+        "id": "bibel-nested-heart-red",
+        "sourceSha256": "2a3c21b4bab08513abb8d5538143dd2670df0ce0fe3048ec16b93359914f97a2",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.02806875,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 10.998701082999993,
+          "fitAndValidationSeconds": 9.163505000000004
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.02806875,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 11.056736458999993,
+          "fitAndValidationSeconds": 9.189295291999995
+        },
+        "borderSeedRetry": false,
+        "errorChange": 0
+      },
+      {
+        "id": "bibel-angel",
+        "sourceSha256": "524ac9f34366e7db1cdf04687a802e0e89ea36589f8943f72e7fee4d9c6551d9",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.8824831249999988
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.8727188339999994
+        },
+        "borderSeedRetry": false,
+        "errorChange": null
+      },
+      {
+        "id": "danish-tree-group-top",
+        "sourceSha256": "2f5e6fcf603f627d3184407ff89e078880f62c3f6376af720e6030397d7461bc",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.39634841700000106
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.3961211669999902
+        },
+        "borderSeedRetry": false,
+        "errorChange": null
+      },
+      {
+        "id": "danish-tree-group-right",
+        "sourceSha256": "2f5e6fcf603f627d3184407ff89e078880f62c3f6376af720e6030397d7461bc",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.019225,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 6.4568922920000045,
+          "fitAndValidationSeconds": 5.490471332999994
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.019225,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 6.480614207999999,
+          "fitAndValidationSeconds": 5.502129791
+        },
+        "borderSeedRetry": false,
+        "borderSeedAttempts": [],
+        "errorChange": 0
+      },
+      {
+        "id": "danish-tree-group-left",
+        "sourceSha256": "2f5e6fcf603f627d3184407ff89e078880f62c3f6376af720e6030397d7461bc",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.3135570829999924
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.3210300419999985
+        },
+        "borderSeedRetry": false,
+        "errorChange": null
+      },
+      {
+        "id": "danish-tree-group-bottom",
+        "sourceSha256": "2f5e6fcf603f627d3184407ff89e078880f62c3f6376af720e6030397d7461bc",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.27372783300001174
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.28459691700000256
+        },
+        "borderSeedRetry": false,
+        "errorChange": null
+      },
+      {
+        "id": "gathering-striped-scene-top",
+        "sourceSha256": "fee1e0ab49ac2a4d4704e4011ff323cd35f8d754b24a14e45380ccd46f59089d",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0633125,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 19,
+          "totalSeconds": 9.82765804200001,
+          "fitAndValidationSeconds": 8.907682583000001
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0633125,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 19,
+          "totalSeconds": 9.775320667000008,
+          "fitAndValidationSeconds": 8.889815417000005
+        },
+        "borderSeedRetry": false,
+        "borderSeedAttempts": [],
+        "errorChange": 0
+      },
+      {
+        "id": "gathering-striped-scene-bottom",
+        "sourceSha256": "fee1e0ab49ac2a4d4704e4011ff323cd35f8d754b24a14e45380ccd46f59089d",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.235171875
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.21374854099999357
+        },
+        "borderSeedRetry": false,
+        "errorChange": null
+      },
+      {
+        "id": "gathering-hanging-trio-top",
+        "sourceSha256": "8430404de482224c669c12d30d76ca039a4d582a7b606e0b719d2ed1464341e9",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.9178762500000012
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.90135758299999
+        },
+        "borderSeedRetry": false,
+        "errorChange": null
+      },
+      {
+        "id": "gathering-hanging-trio-middle",
+        "sourceSha256": "8430404de482224c669c12d30d76ca039a4d582a7b606e0b719d2ed1464341e9",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.18695370899999397
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.19158470899998792
+        },
+        "borderSeedRetry": false,
+        "errorChange": null
+      },
+      {
+        "id": "gathering-hanging-trio-bottom",
+        "sourceSha256": "8430404de482224c669c12d30d76ca039a4d582a7b606e0b719d2ed1464341e9",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.804051999999996
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.8071082080000052
+        },
+        "borderSeedRetry": false,
+        "errorChange": null
+      },
+      {
+        "id": "vissevasse-arranged-r1c1",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.13695641700000852
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.15255354200000876
+        },
+        "borderSeedRetry": false,
+        "errorChange": null
+      },
+      {
+        "id": "vissevasse-arranged-r1c2",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.0270875,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 17,
+          "totalSeconds": 9.201163625000001,
+          "fitAndValidationSeconds": 8.42848266699999
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.0270875,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 17,
+          "totalSeconds": 9.182625583999995,
+          "fitAndValidationSeconds": 8.404164333000008
+        },
+        "borderSeedRetry": true,
+        "borderSeedAttempts": [
+          {
+            "borderSeed": {
+              "radiiMm": [
+                6,
+                3,
+                3,
+                3
+              ],
+              "changedSide": 0,
+              "transitionsBefore": [
+                6,
+                8,
+                4,
+                8
+              ],
+              "transitionsAfter": [
+                4,
+                8,
+                4,
+                8
+              ],
+              "changedPixels": 2590,
+              "changeFraction": 0.0161875,
+              "initializationOnly": true,
+              "traceImageError": 0.03426875
+            },
+            "smoothRadius": 0.3,
+            "seconds": 0.0565473750000092,
+            "termination": "candidate_graph_exhausted"
+          },
+          {
+            "borderSeed": {
+              "radiiMm": [
+                6,
+                3,
+                3,
+                3
+              ],
+              "changedSide": 0,
+              "transitionsBefore": [
+                6,
+                8,
+                4,
+                8
+              ],
+              "transitionsAfter": [
+                4,
+                8,
+                4,
+                8
+              ],
+              "changedPixels": 2590,
+              "changeFraction": 0.0161875,
+              "initializationOnly": true,
+              "traceImageError": 0.03609375
+            },
+            "smoothRadius": 0.5,
+            "seconds": 0.03340658300000359,
+            "termination": "candidate_graph_exhausted"
+          },
+          {
+            "borderSeed": {
+              "radiiMm": [
+                7,
+                3,
+                3,
+                3
+              ],
+              "changedSide": 0,
+              "transitionsBefore": [
+                6,
+                8,
+                4,
+                8
+              ],
+              "transitionsAfter": [
+                4,
+                8,
+                4,
+                8
+              ],
+              "changedPixels": 2664,
+              "changeFraction": 0.01665,
+              "initializationOnly": true,
+              "traceImageError": 0.0347375
+            },
+            "smoothRadius": 0.3,
+            "seconds": 0.03910108300000138,
+            "termination": "candidate_graph_exhausted"
+          },
+          {
+            "borderSeed": {
+              "radiiMm": [
+                7,
+                3,
+                3,
+                3
+              ],
+              "changedSide": 0,
+              "transitionsBefore": [
+                6,
+                8,
+                4,
+                8
+              ],
+              "transitionsAfter": [
+                4,
+                8,
+                4,
+                8
+              ],
+              "changedPixels": 2664,
+              "changeFraction": 0.01665,
+              "initializationOnly": true,
+              "traceImageError": 0.0366125
+            },
+            "smoothRadius": 0.5,
+            "seconds": 0.030706292000002577,
+            "termination": "candidate_graph_exhausted"
+          },
+          {
+            "borderSeed": {
+              "radiiMm": [
+                8,
+                3,
+                3,
+                3
+              ],
+              "changedSide": 0,
+              "transitionsBefore": [
+                6,
+                8,
+                4,
+                8
+              ],
+              "transitionsAfter": [
+                4,
+                8,
+                4,
+                8
+              ],
+              "changedPixels": 2754,
+              "changeFraction": 0.0172125,
+              "initializationOnly": true,
+              "traceImageError": 0.0350875
+            },
+            "smoothRadius": 0.3,
+            "seconds": 0.03649520900000061,
+            "termination": "candidate_graph_exhausted"
+          },
+          {
+            "borderSeed": {
+              "radiiMm": [
+                8,
+                3,
+                3,
+                3
+              ],
+              "changedSide": 0,
+              "transitionsBefore": [
+                6,
+                8,
+                4,
+                8
+              ],
+              "transitionsAfter": [
+                4,
+                8,
+                4,
+                8
+              ],
+              "changedPixels": 2754,
+              "changeFraction": 0.0172125,
+              "initializationOnly": true,
+              "traceImageError": 0.03708125
+            },
+            "smoothRadius": 0.5,
+            "seconds": 0.028320166000004973,
+            "termination": "candidate_graph_exhausted"
+          }
+        ],
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r1c3",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0326375,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 2,
+          "totalSeconds": 9.036725709000006,
+          "fitAndValidationSeconds": 8.309667708000008
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0326375,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 2,
+          "totalSeconds": 9.094744833000004,
+          "fitAndValidationSeconds": 8.383138374999994
+        },
+        "borderSeedRetry": true,
+        "borderSeedAttempts": [
+          {
+            "borderSeed": {
+              "radiiMm": [
+                7,
+                3,
+                3,
+                3
+              ],
+              "changedSide": 0,
+              "transitionsBefore": [
+                1,
+                3,
+                3,
+                3
+              ],
+              "transitionsAfter": [
+                3,
+                3,
+                3,
+                3
+              ],
+              "changedPixels": 3694,
+              "changeFraction": 0.0230875,
+              "initializationOnly": true,
+              "traceImageError": 0.0325875
+            },
+            "smoothRadius": 0.3,
+            "seconds": 0.02977850000000035,
+            "termination": "candidate_graph_exhausted"
+          },
+          {
+            "borderSeed": {
+              "radiiMm": [
+                7,
+                3,
+                3,
+                3
+              ],
+              "changedSide": 0,
+              "transitionsBefore": [
+                1,
+                3,
+                3,
+                3
+              ],
+              "transitionsAfter": [
+                3,
+                3,
+                3,
+                3
+              ],
+              "changedPixels": 3694,
+              "changeFraction": 0.0230875,
+              "initializationOnly": true,
+              "traceImageError": 0.0356125
+            },
+            "smoothRadius": 0.5,
+            "seconds": 0.015538666000007651,
+            "termination": "candidate_graph_exhausted"
+          }
+        ],
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r1c4",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.007725,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 7.252798125000001,
+          "fitAndValidationSeconds": 6.558049540999986
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.007725,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 7.378731,
+          "fitAndValidationSeconds": 6.663865499999985
+        },
+        "borderSeedRetry": false,
+        "borderSeedAttempts": [],
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r2c1",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0826,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 9.936113583999976,
+          "fitAndValidationSeconds": 9.128355582999998
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0826,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 9.937514208999985,
+          "fitAndValidationSeconds": 9.097311207999999
+        },
+        "borderSeedRetry": false,
+        "borderSeedAttempts": [],
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r2c2",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.05739375,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 9.893617041999999,
+          "fitAndValidationSeconds": 9.140534000000015
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.0574125,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 9.890047250000004,
+          "fitAndValidationSeconds": 9.140659583
+        },
+        "borderSeedRetry": false,
+        "borderSeedAttempts": [],
+        "errorChange": 0.000018749999999997935
+      },
+      {
+        "id": "vissevasse-arranged-r2c3",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.0985125,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 9.611459167000023,
+          "fitAndValidationSeconds": 8.812929000000004
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.0985125,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 9.594513749999983,
+          "fitAndValidationSeconds": 8.76063829100001
+        },
+        "borderSeedRetry": false,
+        "borderSeedAttempts": [],
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r3c1",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.154535332999978
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.14695358400000258
+        },
+        "borderSeedRetry": false,
+        "errorChange": null
+      },
+      {
+        "id": "vissevasse-arranged-r3c2",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.04849375,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 21,
+          "totalSeconds": 9.865823583000019,
+          "fitAndValidationSeconds": 9.06798425000001
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.04849375,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 21,
+          "totalSeconds": 9.906124374999985,
+          "fitAndValidationSeconds": 9.10037129099999
+        },
+        "borderSeedRetry": false,
+        "borderSeedAttempts": [],
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r3c3",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.13658125,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 3,
+          "totalSeconds": 9.82927125000002,
+          "fitAndValidationSeconds": 8.940397834000002
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.13658125,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 3,
+          "totalSeconds": 9.816090708000003,
+          "fitAndValidationSeconds": 8.939509625000007
+        },
+        "borderSeedRetry": true,
+        "borderSeedAttempts": [],
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r3c4",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "error": 0.0584375,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 10.024542125000007,
+          "fitAndValidationSeconds": 9.181172332999996
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "error": 0.058375,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 10.072548083000001,
+          "fitAndValidationSeconds": 9.219637667000002
+        },
+        "borderSeedRetry": false,
+        "borderSeedAttempts": [],
+        "errorChange": -0.00006250000000000006
+      },
+      {
+        "id": "vissevasse-arranged-r4c1",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.06788125,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 24,
+          "totalSeconds": 8.918238708000018,
+          "fitAndValidationSeconds": 8.133846374999994
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0664875,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 24,
+          "totalSeconds": 9.27610279200002,
+          "fitAndValidationSeconds": 8.49145299999998
+        },
+        "borderSeedRetry": true,
+        "borderSeedAttempts": [],
+        "errorChange": -0.0013937499999999992
+      },
+      {
+        "id": "vissevasse-arranged-r4c2",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.03785625,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 1,
+          "totalSeconds": 8.973867375000001,
+          "fitAndValidationSeconds": 8.187222917000007
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.03785625,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 1,
+          "totalSeconds": 9.018962083999998,
+          "fitAndValidationSeconds": 8.230247916000023
+        },
+        "borderSeedRetry": true,
+        "borderSeedAttempts": [
+          {
+            "borderSeed": {
+              "radiiMm": [
+                6,
+                3,
+                3,
+                3
+              ],
+              "changedSide": 0,
+              "transitionsBefore": [
+                1,
+                2,
+                3,
+                2
+              ],
+              "transitionsAfter": [
+                3,
+                2,
+                3,
+                2
+              ],
+              "changedPixels": 3364,
+              "changeFraction": 0.021025,
+              "initializationOnly": true,
+              "traceImageError": 0.03888125
+            },
+            "smoothRadius": 0.3,
+            "seconds": 0.03430191699997522,
+            "termination": "candidate_graph_exhausted"
+          },
+          {
+            "borderSeed": {
+              "radiiMm": [
+                6,
+                3,
+                3,
+                3
+              ],
+              "changedSide": 0,
+              "transitionsBefore": [
+                1,
+                2,
+                3,
+                2
+              ],
+              "transitionsAfter": [
+                3,
+                2,
+                3,
+                2
+              ],
+              "changedPixels": 3364,
+              "changeFraction": 0.021025,
+              "initializationOnly": true,
+              "traceImageError": 0.03939375
+            },
+            "smoothRadius": 0.5,
+            "seconds": 0.033613417000015036,
+            "termination": "candidate_graph_exhausted"
+          }
+        ],
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r4c3",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.035325,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 30,
+          "totalSeconds": 9.302141250000016,
+          "fitAndValidationSeconds": 8.589590084000024
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.035325,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 30,
+          "totalSeconds": 9.317069250000001,
+          "fitAndValidationSeconds": 8.595793666999992
+        },
+        "borderSeedRetry": false,
+        "borderSeedAttempts": [],
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-scattered-pale-fish",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.14572375000000465
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.14726766700000735
+        },
+        "borderSeedRetry": false,
+        "errorChange": null
+      },
+      {
+        "id": "vissevasse-scattered-yellow-checker",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.14228479099998367
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.1434184580000001
+        },
+        "borderSeedRetry": false,
+        "errorChange": null
+      },
+      {
+        "id": "vissevasse-scattered-blue-fish",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.13986462499998742
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.1395101250000007
+        },
+        "borderSeedRetry": false,
+        "errorChange": null
+      },
+      {
+        "id": "vissevasse-scattered-blue-checker",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.07458125,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 2,
+          "totalSeconds": 9.766746500000009,
+          "fitAndValidationSeconds": 8.913219666999998
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.07458125,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 2,
+          "totalSeconds": 9.707216458999989,
+          "fitAndValidationSeconds": 8.879108208999998
+        },
+        "borderSeedRetry": false,
+        "borderSeedAttempts": [],
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-scattered-green-checker",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0142,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 5.6266024169999875,
+          "fitAndValidationSeconds": 4.8095740410000145
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0142,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 5.579574333000026,
+          "fitAndValidationSeconds": 4.759917667000002
+        },
+        "borderSeedRetry": false,
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-scattered-purple-checker",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "error": 0.04591875,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 11,
+          "totalSeconds": 8.435455916000006,
+          "fitAndValidationSeconds": 7.650327667000005
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "error": 0.04591875,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 11,
+          "totalSeconds": 8.428107833999995,
+          "fitAndValidationSeconds": 7.6500555000000166
+        },
+        "borderSeedRetry": false,
+        "borderSeedAttempts": [],
+        "errorChange": 0
+      }
+    ]
+  },
+  "browser": {
+    "methodology": "Same physical ROI-crop upload, automatic crop and actual production 180s solve budget as prior browser run. Find-to-ready measured on page clock. Errors from engine are directly paired. The former failed group case did not reach independent export; its previous editable error is null.",
+    "results": [
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "web-danish-tree-group-right",
+        "passed": true,
+        "maskSha256": "5a60916399cc8036f9a416c3229b971efc28790636f620e765cc10f803d80d5f",
+        "sourceMaskUnchanged": true,
+        "cropUnchanged": true,
+        "beforeSeconds": 75.04010000002384,
+        "afterSeconds": 6.119200000047684,
+        "beforeEngineError": 0.05250625,
+        "afterEngineError": 0.0237625,
+        "beforeEditableError": null,
+        "afterEditableError": 0.02385,
+        "counts": [
+          3,
+          3
+        ],
+        "checks": true,
+        "exportReplayCompleted": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.02385,
+          "sourceError": 0.02385
+        },
+        "sharedSpans": 9,
+        "borderSeedRetry": true,
+        "pageErrors": []
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "web-danish-tree-red",
+        "passed": true,
+        "maskSha256": "242e845545caec329460d2fc50e591a50f485b23da38a67bb2a718397d7351d8",
+        "sourceMaskUnchanged": true,
+        "cropUnchanged": true,
+        "beforeSeconds": 4.496600000023842,
+        "afterSeconds": 4.481799999952316,
+        "beforeEngineError": 0.02020625,
+        "afterEngineError": 0.02020625,
+        "beforeEditableError": 0.02024375,
+        "afterEditableError": 0.02024375,
+        "counts": [
+          3,
+          3
+        ],
+        "checks": true,
+        "exportReplayCompleted": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.02024375,
+          "sourceError": 0.02024375
+        },
+        "sharedSpans": 7,
+        "borderSeedRetry": false,
+        "pageErrors": []
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "web-danish-tree-green",
+        "passed": true,
+        "maskSha256": "99fa80c07d5bccbb8354d2301e844e0231a84101b5f8d9351da0baf0747b5bb9",
+        "sourceMaskUnchanged": true,
+        "cropUnchanged": true,
+        "beforeSeconds": 7.9851000000238415,
+        "afterSeconds": 7.986399999976158,
+        "beforeEngineError": 0.01055,
+        "afterEngineError": 0.01055,
+        "beforeEditableError": 0.010575,
+        "afterEditableError": 0.010575,
+        "counts": [
+          3,
+          3
+        ],
+        "checks": true,
+        "exportReplayCompleted": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.010575,
+          "sourceError": 0.010575
+        },
+        "sharedSpans": 3,
+        "borderSeedRetry": false,
+        "pageErrors": []
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "hunodan-hjfig-05",
+        "passed": true,
+        "maskSha256": "0445f9d1abf328342785e2aa278e7a7c4072613fee0e9db8db5f08f3791b2aba",
+        "sourceMaskUnchanged": true,
+        "cropUnchanged": true,
+        "beforeSeconds": 4.9315,
+        "afterSeconds": 4.943,
+        "beforeEngineError": 0.0085625,
+        "afterEngineError": 0.0085625,
+        "beforeEditableError": 0.00861875,
+        "afterEditableError": 0.00861875,
+        "counts": [
+          4,
+          4
+        ],
+        "checks": true,
+        "exportReplayCompleted": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00861875,
+          "sourceError": 0.00861875
+        },
+        "sharedSpans": 4,
+        "borderSeedRetry": false,
+        "pageErrors": []
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "top-hat-preferred",
+        "passed": true,
+        "maskSha256": "c41bc699904f56cc07cd003be29111caeec37e585023705b3bc0f57d6c23f00f",
+        "sourceMaskUnchanged": true,
+        "cropUnchanged": true,
+        "beforeSeconds": 7.226,
+        "afterSeconds": 7.226,
+        "beforeEngineError": 0.003941680839002267,
+        "afterEngineError": 0.003941680839002267,
+        "beforeEditableError": 0.0040834041950113375,
+        "afterEditableError": 0.0040834041950113375,
+        "counts": [
+          3,
+          3
+        ],
+        "checks": true,
+        "exportReplayCompleted": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.0007875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0004625
+            }
+          ],
+          "originalSourceError": 0.004118835034013606,
+          "sourceError": 0.0040834041950113375
+        },
+        "sharedSpans": 43,
+        "sharedLengthMm": 228.28581422182742,
+        "borderSeedRetry": false,
+        "pageErrors": []
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "top-hat-independent",
+        "passed": true,
+        "maskSha256": "c41bc699904f56cc07cd003be29111caeec37e585023705b3bc0f57d6c23f00f",
+        "sourceMaskUnchanged": true,
+        "cropUnchanged": true,
+        "beforeSeconds": 5.9885,
+        "afterSeconds": 5.993900000095367,
+        "beforeEngineError": 0.0029584750566893424,
+        "afterEngineError": 0.0029584750566893424,
+        "beforeEditableError": 0.0029584750566893424,
+        "afterEditableError": 0.0029584750566893424,
+        "counts": [
+          2,
+          2
+        ],
+        "checks": true,
+        "exportReplayCompleted": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00036875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000325
+            }
+          ],
+          "originalSourceError": 0.0029584750566893424,
+          "sourceError": 0.0029584750566893424
+        },
+        "sharedSpans": 28,
+        "sharedLengthMm": 71.12407746187121,
+        "borderSeedRetry": false,
+        "pageErrors": []
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "web-bibel-checker-3",
+        "passed": true,
+        "maskSha256": "b7417d49a05f351d70203f50df5927543b6ee8384aa4a0ca3cd838c40d7f39c8",
+        "sourceMaskUnchanged": true,
+        "cropUnchanged": true,
+        "beforeSeconds": 5.8751999999284745,
+        "afterSeconds": 5.891799999952316,
+        "beforeEngineError": 0.01413125,
+        "afterEngineError": 0.01413125,
+        "beforeEditableError": 0.0142,
+        "afterEditableError": 0.0142,
+        "counts": [
+          2,
+          2
+        ],
+        "checks": true,
+        "exportReplayCompleted": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0142,
+          "sourceError": 0.0142
+        },
+        "sharedSpans": 0,
+        "borderSeedRetry": false,
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "web-danish-tree-group-right",
+        "passed": true,
+        "maskSha256": "5a60916399cc8036f9a416c3229b971efc28790636f620e765cc10f803d80d5f",
+        "sourceMaskUnchanged": true,
+        "cropUnchanged": true,
+        "beforeSeconds": 80.948,
+        "afterSeconds": 6.711,
+        "beforeEngineError": 0.05250625,
+        "afterEngineError": 0.0237625,
+        "beforeEditableError": null,
+        "afterEditableError": 0.02385,
+        "counts": [
+          3,
+          3
+        ],
+        "checks": true,
+        "exportReplayCompleted": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.02385,
+          "sourceError": 0.02385
+        },
+        "sharedSpans": 9,
+        "borderSeedRetry": true,
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "web-danish-tree-red",
+        "passed": true,
+        "maskSha256": "242e845545caec329460d2fc50e591a50f485b23da38a67bb2a718397d7351d8",
+        "sourceMaskUnchanged": true,
+        "cropUnchanged": true,
+        "beforeSeconds": 4.601,
+        "afterSeconds": 4.647,
+        "beforeEngineError": 0.02026875,
+        "afterEngineError": 0.02026875,
+        "beforeEditableError": 0.02031875,
+        "afterEditableError": 0.02031875,
+        "counts": [
+          3,
+          3
+        ],
+        "checks": true,
+        "exportReplayCompleted": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.02031875,
+          "sourceError": 0.02031875
+        },
+        "sharedSpans": 7,
+        "borderSeedRetry": false,
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "web-danish-tree-green",
+        "passed": true,
+        "maskSha256": "99fa80c07d5bccbb8354d2301e844e0231a84101b5f8d9351da0baf0747b5bb9",
+        "sourceMaskUnchanged": true,
+        "cropUnchanged": true,
+        "beforeSeconds": 8.676,
+        "afterSeconds": 8.37,
+        "beforeEngineError": 0.01054375,
+        "afterEngineError": 0.01054375,
+        "beforeEditableError": 0.01056875,
+        "afterEditableError": 0.01056875,
+        "counts": [
+          3,
+          3
+        ],
+        "checks": true,
+        "exportReplayCompleted": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.01056875,
+          "sourceError": 0.01056875
+        },
+        "sharedSpans": 3,
+        "borderSeedRetry": false,
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "hunodan-hjfig-05",
+        "passed": true,
+        "maskSha256": "0445f9d1abf328342785e2aa278e7a7c4072613fee0e9db8db5f08f3791b2aba",
+        "sourceMaskUnchanged": true,
+        "cropUnchanged": true,
+        "beforeSeconds": 5.631,
+        "afterSeconds": 5.677,
+        "beforeEngineError": 0.0085625,
+        "afterEngineError": 0.0085625,
+        "beforeEditableError": 0.00861875,
+        "afterEditableError": 0.00861875,
+        "counts": [
+          4,
+          4
+        ],
+        "checks": true,
+        "exportReplayCompleted": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00861875,
+          "sourceError": 0.00861875
+        },
+        "sharedSpans": 4,
+        "borderSeedRetry": false,
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "top-hat-preferred",
+        "passed": true,
+        "maskSha256": "c41bc699904f56cc07cd003be29111caeec37e585023705b3bc0f57d6c23f00f",
+        "sourceMaskUnchanged": true,
+        "cropUnchanged": true,
+        "beforeSeconds": 7.531,
+        "afterSeconds": 7.548,
+        "beforeEngineError": 0.003941680839002267,
+        "afterEngineError": 0.003941680839002267,
+        "beforeEditableError": 0.0040834041950113375,
+        "afterEditableError": 0.0040834041950113375,
+        "counts": [
+          3,
+          3
+        ],
+        "checks": true,
+        "exportReplayCompleted": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.0007875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0004625
+            }
+          ],
+          "originalSourceError": 0.004118835034013606,
+          "sourceError": 0.0040834041950113375
+        },
+        "sharedSpans": 43,
+        "sharedLengthMm": 228.28581422182341,
+        "borderSeedRetry": false,
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "top-hat-independent",
+        "passed": true,
+        "maskSha256": "c41bc699904f56cc07cd003be29111caeec37e585023705b3bc0f57d6c23f00f",
+        "sourceMaskUnchanged": true,
+        "cropUnchanged": true,
+        "beforeSeconds": 6.234,
+        "afterSeconds": 6.033,
+        "beforeEngineError": 0.0029584750566893424,
+        "afterEngineError": 0.0029584750566893424,
+        "beforeEditableError": 0.0029584750566893424,
+        "afterEditableError": 0.0029584750566893424,
+        "counts": [
+          2,
+          2
+        ],
+        "checks": true,
+        "exportReplayCompleted": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00036875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000325
+            }
+          ],
+          "originalSourceError": 0.0029584750566893424,
+          "sourceError": 0.0029584750566893424
+        },
+        "sharedSpans": 28,
+        "sharedLengthMm": 71.12407746164283,
+        "borderSeedRetry": false,
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "web-bibel-checker-3",
+        "passed": true,
+        "maskSha256": "b7417d49a05f351d70203f50df5927543b6ee8384aa4a0ca3cd838c40d7f39c8",
+        "sourceMaskUnchanged": true,
+        "cropUnchanged": true,
+        "beforeSeconds": 5.869000000000001,
+        "afterSeconds": 6.017,
+        "beforeEngineError": 0.01413125,
+        "afterEngineError": 0.01413125,
+        "beforeEditableError": 0.0142,
+        "afterEditableError": 0.0142,
+        "counts": [
+          2,
+          2
+        ],
+        "checks": true,
+        "exportReplayCompleted": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0142,
+          "sourceError": 0.0142
+        },
+        "sharedSpans": 0,
+        "borderSeedRetry": false,
+        "pageErrors": []
+      }
+    ]
+  }
+}

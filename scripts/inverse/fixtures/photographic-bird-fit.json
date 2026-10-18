@@ -1,0 +1,8 @@
+{
+  "sourceCatalogue": "scripts/inverse/hard-photo-cases.json",
+  "sourceCase": "bird",
+  "description": "Frozen automatic crop from the 31-heart corpus. Coordinates and classified pixels are held fixed during template initialization experiments; they are not ground-truth corners or cutting paths.",
+  "quad": [[1025.6523483686494,145.10074462846222],[1134.7393673965066,233.36789914703917],[1039.100544685888,330.8554844326094],[928.0282102167661,230.46109103450203]],
+  "maskSha256": "7137173fa17abe3f8f7788ddb7d321fe48258a4a3f4c2f8b3171b9ff9f15a16f",
+  "fittingProbabilitySha256": "7f117a45d4020e60ab62650d7e48d4917b4257ba611c692e67bdba7b4c6cd36d"
+}

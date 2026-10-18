@@ -1,0 +1,974 @@
+{
+  "change": "Borrow the existing polishing reserve only when the ordinary refinement cutoff has no geometric checkpoint. Continue until a geometry-and-paper pass or the bounded recovery cutoff, retaining all final acceptance gates.",
+  "maximumBorrowedMilliseconds": 1250,
+  "remainingPolishMilliseconds": 450,
+  "existingFinalizationReserveMilliseconds": 1300,
+  "sourceFiles": {
+    "static/inverse/core/direct/refine.js": "6e25d3eedcbc293a39149ecf1d56619abf2dc31a8ee24a4be65462ca44fce622",
+    "static/inverse/core/direct/fit.js": "a7e02f5edc3e6c87d5cc061f05448c7ed7be6ee09d505030b1667916a8050b89",
+    "scripts/inverse/geometry-recovery-budget.test.mjs": "6a0598ae4f0c104d1b15abe0c4484d99a7b82fcd7a9d424740b50a14c6fc2f57"
+  },
+  "beforeFullSuite": {
+    "runtime": "eaa358a",
+    "counts": {
+      "tests": 1065,
+      "suites": 0,
+      "pass": 1064,
+      "fail": 1,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "duration_ms": 1314326.912167
+    },
+    "sourceHashesMatch": true,
+    "summary": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/full/summary.json",
+    "summarySha256": "c6d0253c0800f783de42587fefe42975119327419c1388f6dd9273286c30c2c9",
+    "failure": "Viking acceptance assertion: independent error0.0470625 and geometry_failure. Its exact cuts were not captured; later replays are distinct outputs."
+  },
+  "qa": {
+    "path": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/geometry-reserve-qa/state.json",
+    "sha256": "59669525ff9e2e6aa91935de9861e67f91e6101986c12a394263a543a3601211",
+    "status": "complete",
+    "sourceFiles": 1046,
+    "sourceHashesUnchanged": true,
+    "focusedPasses": 32,
+    "applicationPasses": 874,
+    "applicationSkips": 1,
+    "stages": [
+      {
+        "name": "independent",
+        "status": "passed",
+        "exitCode": 0,
+        "seconds": 2.147583
+      },
+      {
+        "name": "focused",
+        "status": "passed",
+        "exitCode": 0,
+        "seconds": 174.634758
+      },
+      {
+        "name": "check",
+        "status": "passed",
+        "exitCode": 0,
+        "seconds": 11.378739499999995
+      },
+      {
+        "name": "lint",
+        "status": "passed",
+        "exitCode": 0,
+        "seconds": 7.551326665999994
+      },
+      {
+        "name": "application",
+        "status": "passed",
+        "exitCode": 0,
+        "seconds": 48.163103542000016
+      },
+      {
+        "name": "build",
+        "status": "passed",
+        "exitCode": 0,
+        "seconds": 23.169269875000026
+      }
+    ]
+  },
+  "finalReplayManifest": {
+    "path": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/geometry-reserve-final/manifests/16549.json",
+    "sha256": "eaeaa2679cf9b1861f0f374f052f058893ef6be23a4c5b6153c2672f9ec6528c",
+    "workingTree": true,
+    "runtimeHashesMatchQa": true
+  },
+  "variants": [
+    {
+      "name": "viking-slower",
+      "sourceMaskSha256": "7791de154fdbc94b618ece0bf018522573d57c231c46bc0385d24a9e2b9a9bb8",
+      "cutGeometry": {
+        "path": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/viking-slower/viking-clock-2/cut_geometry.json",
+        "sha256": "354f7924e35984d5093e1885e08b459bd5371e698eb62b062e5be465b5c06e33"
+      },
+      "report": {
+        "path": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/viking-slower/viking-clock-2/report.json",
+        "sha256": "0d217d36a5936def1291dfdcc264ac1e46eb170fadb9d0f8c7a549fef8daff01"
+      },
+      "clockFactor": 2,
+      "requestedSearchSeconds": 10,
+      "actualDesignSeconds": 5.295683958,
+      "reportedAccepted": false,
+      "geometryRecovery": null,
+      "independent": {
+        "name": "viking-slower",
+        "maskSha256": "7791de154fdbc94b618ece0bf018522573d57c231c46bc0385d24a9e2b9a9bb8",
+        "cutsSha256": "354f7924e35984d5093e1885e08b459bd5371e698eb62b062e5be465b5c06e33",
+        "geometryPassed": false,
+        "geometryIssues": [
+          {
+            "type": "inter_slit_clearance",
+            "family": 0,
+            "slits": [
+              2,
+              3
+            ],
+            "distanceLower": 1.0462989978505874
+          },
+          {
+            "type": "inter_slit_clearance",
+            "family": 0,
+            "slits": [
+              3,
+              4
+            ],
+            "distanceLower": 2.1943886104498125
+          },
+          {
+            "type": "inter_slit_clearance",
+            "family": 1,
+            "slits": [
+              2,
+              3
+            ],
+            "distanceLower": 1.4940178260442627
+          }
+        ],
+        "paper": null,
+        "errors": [
+          {
+            "resolution": 400,
+            "mismatch": 0.06800625,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0.0689671875,
+            "featuresPassed": true
+          }
+        ],
+        "reportedAccepted": false
+      }
+    },
+    {
+      "name": "geometry-reserve-final",
+      "sourceMaskSha256": "7791de154fdbc94b618ece0bf018522573d57c231c46bc0385d24a9e2b9a9bb8",
+      "cutGeometry": {
+        "path": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/geometry-reserve-final/viking-clock-2/cut_geometry.json",
+        "sha256": "9c3ab4533c10808f40b39b02c5f72c6a215811cceb7042ecdca5b324e26f8827"
+      },
+      "report": {
+        "path": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/geometry-reserve-final/viking-clock-2/report.json",
+        "sha256": "5bfda012b28c131feafcb85b7473f9a8bc7dd6e93e844d88341a786c5841a952"
+      },
+      "clockFactor": 2,
+      "requestedSearchSeconds": 10,
+      "actualDesignSeconds": 5.191763375,
+      "reportedAccepted": false,
+      "geometryRecovery": [
+        {
+          "counts": [
+            6,
+            6
+          ],
+          "steps": 160,
+          "maximumAdditionalMilliseconds": 1250
+        }
+      ],
+      "independent": {
+        "name": "geometry-reserve-final",
+        "maskSha256": "7791de154fdbc94b618ece0bf018522573d57c231c46bc0385d24a9e2b9a9bb8",
+        "cutsSha256": "9c3ab4533c10808f40b39b02c5f72c6a215811cceb7042ecdca5b324e26f8827",
+        "geometryPassed": true,
+        "geometryIssues": [],
+        "paper": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658,
+          "families": [
+            {
+              "family": 0,
+              "status": "pass",
+              "detachedCertainCoreIslands": 0,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    8.287754551435404
+                  ],
+                  "certainCoreLength": 5.5555555555555545,
+                  "possibleCoreLength": 6.11111111111111
+                },
+                {
+                  "interval": [
+                    8.287754551435404,
+                    15.665133321087835
+                  ],
+                  "certainCoreLength": 4.444444444444444,
+                  "possibleCoreLength": 5.277777777777777
+                },
+                {
+                  "interval": [
+                    15.665133321087835,
+                    73.7656107699332
+                  ],
+                  "certainCoreLength": 55.00000000000013,
+                  "possibleCoreLength": 55.833333333333464
+                },
+                {
+                  "interval": [
+                    73.7656107699332,
+                    77.64780644760025
+                  ],
+                  "certainCoreLength": 0.2777777777777778,
+                  "possibleCoreLength": 1.3888888888888888
+                },
+                {
+                  "interval": [
+                    77.64780644760025,
+                    82.15316501883086
+                  ],
+                  "certainCoreLength": 1.1111111111111112,
+                  "possibleCoreLength": 1.9444444444444442
+                },
+                {
+                  "interval": [
+                    82.15316501883086,
+                    96.16440347728572
+                  ],
+                  "certainCoreLength": 7.499999999999998,
+                  "possibleCoreLength": 8.88888888888889
+                },
+                {
+                  "interval": [
+                    96.16440347728572,
+                    100
+                  ],
+                  "certainCoreLength": 1.1111111111111112,
+                  "possibleCoreLength": 1.6666666666666665
+                }
+              ]
+            },
+            {
+              "family": 1,
+              "status": "pass",
+              "detachedCertainCoreIslands": 0,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    8.238143573002287
+                  ],
+                  "certainCoreLength": 5.277777777777777,
+                  "possibleCoreLength": 6.11111111111111
+                },
+                {
+                  "interval": [
+                    8.238143573002287,
+                    17.259285970134513
+                  ],
+                  "certainCoreLength": 6.11111111111111,
+                  "possibleCoreLength": 6.944444444444443
+                },
+                {
+                  "interval": [
+                    17.259285970134513,
+                    84.29180456412098
+                  ],
+                  "certainCoreLength": 63.88888888888904,
+                  "possibleCoreLength": 65.00000000000013
+                },
+                {
+                  "interval": [
+                    84.29180456412098,
+                    87.54329444471347
+                  ],
+                  "certainCoreLength": 0.2777777777777778,
+                  "possibleCoreLength": 1.1111111111111112
+                },
+                {
+                  "interval": [
+                    87.54329444471347,
+                    90.78049273120136
+                  ],
+                  "certainCoreLength": 0.2777777777777778,
+                  "possibleCoreLength": 1.1111111111111112
+                },
+                {
+                  "interval": [
+                    90.78049273120136,
+                    95.02278680339572
+                  ],
+                  "certainCoreLength": 0.5555555555555556,
+                  "possibleCoreLength": 1.3888888888888888
+                },
+                {
+                  "interval": [
+                    95.02278680339572,
+                    100
+                  ],
+                  "certainCoreLength": 2.222222222222222,
+                  "possibleCoreLength": 2.7777777777777772
+                }
+              ]
+            }
+          ],
+          "method": "Guarded lattice and independent unfolded polygon offsets",
+          "seconds": 0.5050834590000001,
+          "limitations": [
+            "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+            "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+            "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+            "Small tips and features below the explicitly stated area threshold are not certified."
+          ],
+          "latticeStatus": "pass",
+          "offset": {
+            "status": "pass",
+            "method": "Round polygon offsets of adaptively flattened unfolded cuts (Clipper2)",
+            "flatteningTolerance": 0.0005,
+            "arcTolerance": 0.0005,
+            "nominalDiameter": 2.50501002004008,
+            "requiredRemainingWidth": 2,
+            "minFeatureArea": 0.25,
+            "families": [
+              {
+                "family": 0,
+                "status": "pass",
+                "significantFloatingCount": 0,
+                "significantFloatingArea": 0,
+                "foldIntervals": [
+                  {
+                    "interval": [
+                      0,
+                      8.287754551435404
+                    ],
+                    "anchoredCoreLength": 5.7796430587768555
+                  },
+                  {
+                    "interval": [
+                      8.287754551435404,
+                      15.665133321087835
+                    ],
+                    "anchoredCoreLength": 4.87285090996984
+                  },
+                  {
+                    "interval": [
+                      15.665133321087835,
+                      73.7656107699332
+                    ],
+                    "anchoredCoreLength": 55.51843007506285
+                  },
+                  {
+                    "interval": [
+                      73.7656107699332,
+                      77.64780644760025
+                    ],
+                    "anchoredCoreLength": 0.9505952295267406
+                  },
+                  {
+                    "interval": [
+                      77.64780644760025,
+                      82.15316501883086
+                    ],
+                    "anchoredCoreLength": 1.5891485888251253
+                  },
+                  {
+                    "interval": [
+                      82.15316501883086,
+                      96.16440347728572
+                    ],
+                    "anchoredCoreLength": 8.522333145141602
+                  },
+                  {
+                    "interval": [
+                      96.16440347728572,
+                      100
+                    ],
+                    "anchoredCoreLength": 1.3308495301089067
+                  }
+                ],
+                "probes": [
+                  {
+                    "delta": 0,
+                    "passed": true,
+                    "significantFloatingCount": 0,
+                    "significantFloatingArea": 0,
+                    "foldIntervals": [
+                      {
+                        "interval": [
+                          0,
+                          8.287754551435404
+                        ],
+                        "anchoredCoreLength": 5.7796430587768555
+                      },
+                      {
+                        "interval": [
+                          8.287754551435404,
+                          15.665133321087835
+                        ],
+                        "anchoredCoreLength": 4.87285090996984
+                      },
+                      {
+                        "interval": [
+                          15.665133321087835,
+                          73.7656107699332
+                        ],
+                        "anchoredCoreLength": 55.51843007506285
+                      },
+                      {
+                        "interval": [
+                          73.7656107699332,
+                          77.64780644760025
+                        ],
+                        "anchoredCoreLength": 0.9505952295267406
+                      },
+                      {
+                        "interval": [
+                          77.64780644760025,
+                          82.15316501883086
+                        ],
+                        "anchoredCoreLength": 1.5891485888251253
+                      },
+                      {
+                        "interval": [
+                          82.15316501883086,
+                          96.16440347728572
+                        ],
+                        "anchoredCoreLength": 8.522333145141602
+                      },
+                      {
+                        "interval": [
+                          96.16440347728572,
+                          100
+                        ],
+                        "anchoredCoreLength": 1.3308495301089067
+                      }
+                    ]
+                  },
+                  {
+                    "delta": -0.0005,
+                    "passed": true,
+                    "significantFloatingCount": 0,
+                    "significantFloatingArea": 0,
+                    "foldIntervals": [
+                      {
+                        "interval": [
+                          0,
+                          8.287754551435404
+                        ],
+                        "anchoredCoreLength": 5.780644416809082
+                      },
+                      {
+                        "interval": [
+                          8.287754551435404,
+                          15.665133321087835
+                        ],
+                        "anchoredCoreLength": 4.873848516871037
+                      },
+                      {
+                        "interval": [
+                          15.665133321087835,
+                          73.7656107699332
+                        ],
+                        "anchoredCoreLength": 55.51945700667302
+                      },
+                      {
+                        "interval": [
+                          73.7656107699332,
+                          77.64780644760025
+                        ],
+                        "anchoredCoreLength": 0.9517256747399472
+                      },
+                      {
+                        "interval": [
+                          77.64780644760025,
+                          82.15316501883086
+                        ],
+                        "anchoredCoreLength": 1.5903080760133719
+                      },
+                      {
+                        "interval": [
+                          82.15316501883086,
+                          96.16440347728572
+                        ],
+                        "anchoredCoreLength": 8.523987770080566
+                      },
+                      {
+                        "interval": [
+                          96.16440347728572,
+                          100
+                        ],
+                        "anchoredCoreLength": 1.3318562817387516
+                      }
+                    ]
+                  },
+                  {
+                    "delta": 0.0005,
+                    "passed": true,
+                    "significantFloatingCount": 0,
+                    "significantFloatingArea": 0,
+                    "foldIntervals": [
+                      {
+                        "interval": [
+                          0,
+                          8.287754551435404
+                        ],
+                        "anchoredCoreLength": 5.778641700744629
+                      },
+                      {
+                        "interval": [
+                          8.287754551435404,
+                          15.665133321087835
+                        ],
+                        "anchoredCoreLength": 4.871854212884077
+                      },
+                      {
+                        "interval": [
+                          15.665133321087835,
+                          73.7656107699332
+                        ],
+                        "anchoredCoreLength": 55.517404753820315
+                      },
+                      {
+                        "interval": [
+                          73.7656107699332,
+                          77.64780644760025
+                        ],
+                        "anchoredCoreLength": 0.9494674005799482
+                      },
+                      {
+                        "interval": [
+                          77.64780644760025,
+                          82.15316501883086
+                        ],
+                        "anchoredCoreLength": 1.5879886304376498
+                      },
+                      {
+                        "interval": [
+                          82.15316501883086,
+                          96.16440347728572
+                        ],
+                        "anchoredCoreLength": 8.520676612854004
+                      },
+                      {
+                        "interval": [
+                          96.16440347728572,
+                          100
+                        ],
+                        "anchoredCoreLength": 1.329842581155333
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "family": 1,
+                "status": "pass",
+                "significantFloatingCount": 0,
+                "significantFloatingArea": 0,
+                "foldIntervals": [
+                  {
+                    "interval": [
+                      0,
+                      8.238143573002287
+                    ],
+                    "anchoredCoreLength": 5.73250675201416
+                  },
+                  {
+                    "interval": [
+                      8.238143573002287,
+                      17.259285970134513
+                    ],
+                    "anchoredCoreLength": 6.516789597421658
+                  },
+                  {
+                    "interval": [
+                      17.259285970134513,
+                      84.29180456412098
+                    ],
+                    "anchoredCoreLength": 64.51784229278564
+                  },
+                  {
+                    "interval": [
+                      84.29180456412098,
+                      87.54329444471347
+                    ],
+                    "anchoredCoreLength": 0.7457876205444336
+                  },
+                  {
+                    "interval": [
+                      87.54329444471347,
+                      90.78049273120136
+                    ],
+                    "anchoredCoreLength": 0.7231792037304814
+                  },
+                  {
+                    "interval": [
+                      90.78049273120136,
+                      95.02278680339572
+                    ],
+                    "anchoredCoreLength": 1.1435513550959655
+                  },
+                  {
+                    "interval": [
+                      95.02278680339572,
+                      100
+                    ],
+                    "anchoredCoreLength": 2.4726845923278518
+                  }
+                ],
+                "probes": [
+                  {
+                    "delta": 0,
+                    "passed": true,
+                    "significantFloatingCount": 0,
+                    "significantFloatingArea": 0,
+                    "foldIntervals": [
+                      {
+                        "interval": [
+                          0,
+                          8.238143573002287
+                        ],
+                        "anchoredCoreLength": 5.73250675201416
+                      },
+                      {
+                        "interval": [
+                          8.238143573002287,
+                          17.259285970134513
+                        ],
+                        "anchoredCoreLength": 6.516789597421658
+                      },
+                      {
+                        "interval": [
+                          17.259285970134513,
+                          84.29180456412098
+                        ],
+                        "anchoredCoreLength": 64.51784229278564
+                      },
+                      {
+                        "interval": [
+                          84.29180456412098,
+                          87.54329444471347
+                        ],
+                        "anchoredCoreLength": 0.7457876205444336
+                      },
+                      {
+                        "interval": [
+                          87.54329444471347,
+                          90.78049273120136
+                        ],
+                        "anchoredCoreLength": 0.7231792037304814
+                      },
+                      {
+                        "interval": [
+                          90.78049273120136,
+                          95.02278680339572
+                        ],
+                        "anchoredCoreLength": 1.1435513550959655
+                      },
+                      {
+                        "interval": [
+                          95.02278680339572,
+                          100
+                        ],
+                        "anchoredCoreLength": 2.4726845923278518
+                      }
+                    ]
+                  },
+                  {
+                    "delta": -0.0005,
+                    "passed": true,
+                    "significantFloatingCount": 0,
+                    "significantFloatingArea": 0,
+                    "foldIntervals": [
+                      {
+                        "interval": [
+                          0,
+                          8.238143573002287
+                        ],
+                        "anchoredCoreLength": 5.733508110046387
+                      },
+                      {
+                        "interval": [
+                          8.238143573002287,
+                          17.259285970134513
+                        ],
+                        "anchoredCoreLength": 6.517788548037686
+                      },
+                      {
+                        "interval": [
+                          17.259285970134513,
+                          84.29180456412098
+                        ],
+                        "anchoredCoreLength": 64.51884651184082
+                      },
+                      {
+                        "interval": [
+                          84.29180456412098,
+                          87.54329444471347
+                        ],
+                        "anchoredCoreLength": 0.7467870712280273
+                      },
+                      {
+                        "interval": [
+                          87.54329444471347,
+                          90.78049273120136
+                        ],
+                        "anchoredCoreLength": 0.7241840270777686
+                      },
+                      {
+                        "interval": [
+                          90.78049273120136,
+                          95.02278680339572
+                        ],
+                        "anchoredCoreLength": 1.1446839242785956
+                      },
+                      {
+                        "interval": [
+                          95.02278680339572,
+                          100
+                        ],
+                        "anchoredCoreLength": 2.4736870697139466
+                      }
+                    ]
+                  },
+                  {
+                    "delta": 0.0005,
+                    "passed": true,
+                    "significantFloatingCount": 0,
+                    "significantFloatingArea": 0,
+                    "foldIntervals": [
+                      {
+                        "interval": [
+                          0,
+                          8.238143573002287
+                        ],
+                        "anchoredCoreLength": 5.731508255004883
+                      },
+                      {
+                        "interval": [
+                          8.238143573002287,
+                          17.259285970134513
+                        ],
+                        "anchoredCoreLength": 6.515790954807345
+                      },
+                      {
+                        "interval": [
+                          17.259285970134513,
+                          84.29180456412098
+                        ],
+                        "anchoredCoreLength": 64.51683807373047
+                      },
+                      {
+                        "interval": [
+                          84.29180456412098,
+                          87.54329444471347
+                        ],
+                        "anchoredCoreLength": 0.7447853088378906
+                      },
+                      {
+                        "interval": [
+                          87.54329444471347,
+                          90.78049273120136
+                        ],
+                        "anchoredCoreLength": 0.7221762892262831
+                      },
+                      {
+                        "interval": [
+                          90.78049273120136,
+                          95.02278680339572
+                        ],
+                        "anchoredCoreLength": 1.1424176962655253
+                      },
+                      {
+                        "interval": [
+                          95.02278680339572,
+                          100
+                        ],
+                        "anchoredCoreLength": 2.471684113923615
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "limitations": [
+              "Finite flattening and radius probes, not an exact topology or physical strength certificate.",
+              "Offset topology need not vary monotonically with radius; passing probes do not certify all intermediate radii.",
+              "Features below the stated core-area threshold are not certified."
+            ],
+            "seconds": 0.406601667
+          }
+        },
+        "errors": [
+          {
+            "resolution": 400,
+            "mismatch": 0.0321,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0.0338484375,
+            "featuresPassed": true
+          }
+        ],
+        "reportedAccepted": false
+      }
+    }
+  ],
+  "limitations": [
+    "The2x replay still exceeds the unchanged3% image limit and remains unaccepted.",
+    "Separate timed runs are not an exact coordinate-matched intervention. Controlled clock unit tests establish the deadline behavior independently.",
+    "Visual inspection still shows border distortions and extra seams.",
+    "The final complete inverse suite and broader browser comparison have not yet run on this change.",
+    "This change does not fix the confirmed bauble crop failure."
+  ],
+  "fullSuite": {
+    "runtime": "94b53a5",
+    "status": "complete",
+    "tests": 1070,
+    "passed": 1070,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "seconds": 1302.505875416,
+    "sourceFiles": 1046,
+    "sourceHashesMatch": true,
+    "sourceManifestSha256": "1b705610f7c33af7fbf946d3e5f6fd0b00d8ae73c943fdfb45ae98c8f16cbe89",
+    "logSha256": "104422f6cd964aff92deec50f8b092989e315e6edbeec8019f77347a2a2495f0",
+    "summaryPath": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/geometry-reserve-full/summary.json",
+    "summarySha256": "1704dc9e2849f7b62673886494923b84fbb0dcad72a4c23bc0ecc4f98bfbb126",
+    "scope": "Complete npm run test:inverse on the committed runtime, without success-output capture instrumentation. Browser speed and fidelity are checked separately. A passing suite does not waive the independently recorded 2x Viking image-limit failure."
+  },
+  "browserQa": {
+    "runtime": "94b53a5",
+    "initialRun": {
+      "path": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/geometry-reserve-browser/comparison.json",
+      "sha256": "66cdb4a5bac31a71f909455ae6dae516df5f69658ab7ff0e839aef4b3ba99d50",
+      "cases": 33,
+      "passed": 32,
+      "failure": "The sloth-x-shift-mask assertion compared the unchanged native250 mask against a frozen400 Paint enlargement. Subsequent editable-output checks were not reached; this is not a measured geometry failure."
+    },
+    "hunodan": {
+      "hunodanWithinTenSeconds": 22,
+      "hunodanSlowerThanTenSeconds": [],
+      "hunodanErrorIncreases": {
+        "engineError": [],
+        "sourceEditableError": [],
+        "paintingEditableError": []
+      },
+      "allHunNativeFidelityAndSpeedTargetsMet": true,
+      "cases": 22,
+      "medianSeconds": 5.603350000143051,
+      "maximumSeconds": 8.585099999904633,
+      "nativeAndPaintingErrorsAllUnchanged": true,
+      "qualification": "One current run versus the historical eaa358a run, with matching inputs, crops, settings and browser version. Not an isolated causal speed comparison."
+    },
+    "harnessCorrection": {
+      "file": "scripts/inverse/paint-browser-test.mjs",
+      "method": "Check unchanged native mask identity and resolution before fitting assertions, then retain the existing frozen Paint checksum at its actual400-pixel grid. All image, feature, geometry and paper assertions retained.",
+      "productionSourceChanged": false
+    },
+    "followup": {
+      "path": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/native-mask-browser/current/results.json",
+      "sha256": "8b93bd31bbbb4297f798af7248d98ab3f1b6a32e8aa1e385ab4a786f9d15b3de",
+      "sourceManifest": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/native-mask-browser/source.json",
+      "sourceManifestSha256": "d8a0736b3e48cfda0fa27b4d7be537a7303f2e88c1f61c6fc13de25590858f44",
+      "sourceHashesUnchanged": true,
+      "passed": 7,
+      "failed": 0,
+      "cases": [
+        {
+          "name": "sloth-routing-mask",
+          "passed": true,
+          "sourceResolution": 250,
+          "paintingResolution": 400,
+          "sourceEditableError": 0.006736,
+          "paintingEditableError": 0.01143125,
+          "clickToReadySeconds": 8.784200000047683,
+          "independentGeometryPassed": true,
+          "independentPaperStatus": "pass"
+        },
+        {
+          "name": "sloth-x-shift-mask",
+          "passed": true,
+          "sourceResolution": 250,
+          "paintingResolution": 400,
+          "sourceEditableError": 0.009568,
+          "paintingEditableError": 0.013525,
+          "clickToReadySeconds": 9.030799999952317,
+          "independentGeometryPassed": true,
+          "independentPaperStatus": "pass"
+        },
+        {
+          "name": "sloth-y-shift-mask",
+          "passed": true,
+          "sourceResolution": 250,
+          "paintingResolution": 400,
+          "sourceEditableError": 0.013088,
+          "paintingEditableError": 0.0162,
+          "clickToReadySeconds": 9.949099999904632,
+          "independentGeometryPassed": true,
+          "independentPaperStatus": "pass"
+        },
+        {
+          "name": "sloth-frozen-mask",
+          "passed": true,
+          "sourceResolution": 250,
+          "paintingResolution": 400,
+          "sourceEditableError": 0.004912,
+          "paintingEditableError": 0.0102,
+          "clickToReadySeconds": 9.843200000047684,
+          "independentGeometryPassed": true,
+          "independentPaperStatus": "pass"
+        },
+        {
+          "name": "sloth-synthetic-mask",
+          "passed": true,
+          "sourceResolution": 250,
+          "paintingResolution": 400,
+          "sourceEditableError": 0.011456,
+          "paintingEditableError": 0.01490625,
+          "clickToReadySeconds": 27.5255,
+          "independentGeometryPassed": true,
+          "independentPaperStatus": "pass"
+        },
+        {
+          "name": "sloth-y-plus-mask",
+          "passed": true,
+          "sourceResolution": 250,
+          "paintingResolution": 400,
+          "sourceEditableError": 0.001456,
+          "paintingEditableError": 0.00596875,
+          "clickToReadySeconds": 12.605,
+          "independentGeometryPassed": true,
+          "independentPaperStatus": "pass"
+        },
+        {
+          "name": "near-miss-y-shift-mask",
+          "passed": true,
+          "sourceResolution": 400,
+          "paintingResolution": 400,
+          "sourceEditableError": 0.01348125,
+          "paintingEditableError": 0.01348125,
+          "clickToReadySeconds": 10.485599999904633,
+          "independentGeometryPassed": true,
+          "independentPaperStatus": "pass"
+        }
+      ]
+    },
+    "visualInspection": [
+      "hunodan-hjcur-04: result and Draw output",
+      "hunodan-hjfig-05: original photograph and result",
+      "star: Draw output",
+      "top-hat-free-small: Draw output"
+    ],
+    "remaining": [
+      "2x-clock Viking replay remains above3% error.",
+      "Bauble crop is wrong; all eight isolated lower-edge sampling hypotheses were unsupported.",
+      "Original,half-resolution andJPEG photographed stars each spend about12 seconds in rejected coarse MILP routing before an accepted grid fit."
+    ]
+  }
+}

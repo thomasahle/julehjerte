@@ -1,8 +1,9 @@
 {
   "description": "All 40 collage instances, with fresh visual overlap-crop review. Frames with unobserved corners remain incomplete. Reviewed corners are approximate photo annotations, not ground truth.",
   "source": {
-    "file": "tmp/inverse-robustness/hard-cases-srgb.png",
-    "rgbaFile": "tmp/inverse-robustness/hard-cases-srgb.rgba",
+    "file": "scripts/inverse/fixtures/hard-photos/collage.png",
+    "sha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+    "decodedPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
     "width": 1482,
     "height": 1112
   },

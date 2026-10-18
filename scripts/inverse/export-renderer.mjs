@@ -20,10 +20,15 @@ export async function renderExportedWeave(serialized, resolution) {
     paths.push(d);
   }
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${resolution}" height="${resolution}" viewBox="0 0 ${w} ${w}"><rect width="${w}" height="${w}" fill="${phase ? 'black' : 'white'}"/><path d="${paths.join(' ')}" fill="${phase ? 'white' : 'black'}" fill-rule="evenodd"/></svg>`;
-  const png = new Resvg(svg).render().asPng();
+  // This independent SVG contains only paths and a background rectangle.
+  // Scanning system fonts is unnecessary and can dominate replay timings.
+  const png = new Resvg(svg, { font: { loadSystemFonts: false } }).render().asPng();
   const canvas = createCanvas(resolution, resolution), context = canvas.getContext('2d');
   context.drawImage(await loadImage(png), 0, 0);
   const rgba = context.getImageData(0, 0, resolution, resolution).data;
   const mask = Uint8Array.from({ length: resolution * resolution }, (_, i) => Number(rgba[4 * i] < 128));
-  return { mask, svg, png, renderer: 'resvg from exported cut_geometry.json; antialias coverage threshold 0.5' };
+  // Keep fractional coverage too: thresholding alone can hide the thin seams
+  // shared-cut recovery is meant to remove, even in a high-resolution replay.
+  const coverage = Float32Array.from({ length: resolution * resolution }, (_, i) => 1 - rgba[4 * i] / 255);
+  return { mask, coverage, svg, png, renderer: 'resvg from exported cut_geometry.json; antialias coverage threshold 0.5' };
 }

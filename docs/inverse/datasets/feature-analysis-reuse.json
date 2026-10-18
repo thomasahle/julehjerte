@@ -1,0 +1,576 @@
+{
+  "schema": 1,
+  "baseRuntimeCommit": "24f5c70",
+  "baseWorkspaceCommit": "66aea0d",
+  "scope": "Byte-verified reuse of image feature analysis; no changes to region definitions, fitting objectives, or geometry/paper constraints.",
+  "policy": {
+    "reuse": "One entry per live source object in a WeakMap; verify every mask byte, resolution and physical width.",
+    "ownership": "Keep private copies of source pixels and feature arrays; return independently owned arrays.",
+    "bypass": "Weighted, partially observed, shared-memory, non-byte and nonstandard-size inputs use the original computation."
+  },
+  "semanticComparisons": {
+    "comparisons": 112,
+    "rows": [
+      {
+        "id": "crown",
+        "features": 4,
+        "beforeMilliseconds": 27.938408350000003,
+        "afterMilliseconds": 1.1358791499999996
+      },
+      {
+        "id": "flettede-viking",
+        "features": 5,
+        "beforeMilliseconds": 28.194579150000003,
+        "afterMilliseconds": 1.117406249999999
+      },
+      {
+        "id": "fine-checker",
+        "features": 14,
+        "beforeMilliseconds": 26.807816650000017,
+        "afterMilliseconds": 1.143972900000017
+      },
+      {
+        "id": "gingerbread",
+        "features": 1,
+        "beforeMilliseconds": 26.104810399999998,
+        "afterMilliseconds": 1.0915333500000088
+      }
+    ],
+    "notes": "Exact feature equality, source/returned-array mutation, resolution/width/observation changes. Timing is a microbenchmark of repeated analysis, not a solver speed claim."
+  },
+  "experiment": {
+    "order": [
+      "before-1",
+      "after-1",
+      "after-2",
+      "before-2"
+    ],
+    "configuration": {
+      "algorithm": "auto",
+      "polygonal": false,
+      "identicalSheets": false,
+      "resolution": 400,
+      "fitTolerance": 0.5,
+      "maxSpan": 15,
+      "smoothRadius": 0,
+      "snapRadius": 1.5,
+      "borderRadius": 3,
+      "gridPortals": false,
+      "neighbors": 16,
+      "connectorVariants": 2,
+      "junctionBalancePenalty": 0,
+      "gridPreference": 0,
+      "sharpPenalty": 50,
+      "acutePenalty": 30,
+      "turnPenalty": 3,
+      "maxTurn": 175,
+      "localNeighborhoodFactor": 8,
+      "roundHidden": false,
+      "timeLimit": 10,
+      "trials": 0,
+      "invert": false,
+      "removeSpecks": 0,
+      "fillHoles": 0
+    },
+    "source": "Four frozen 400-pixel masks prepared afresh for every solve; original photograph cropping is not exercised.",
+    "rows": [
+      {
+        "id": "crown",
+        "before": {
+          "seconds": [
+            9.517716792,
+            9.418946249999998
+          ],
+          "independentMaskErrors": [
+            0.02413125,
+            0.0245375
+          ],
+          "checked": true
+        },
+        "after": {
+          "seconds": [
+            9.476963041,
+            9.353260582999999
+          ],
+          "independentMaskErrors": [
+            0.02413125,
+            0.02413125
+          ],
+          "checked": true
+        }
+      },
+      {
+        "id": "flettede-viking",
+        "before": {
+          "seconds": [
+            9.531690458000005,
+            9.416540374999997
+          ],
+          "independentMaskErrors": [
+            0.0205875,
+            0.02055625
+          ],
+          "checked": true
+        },
+        "after": {
+          "seconds": [
+            9.366691374999995,
+            9.349956375000001
+          ],
+          "independentMaskErrors": [
+            0.02056875,
+            0.020275
+          ],
+          "checked": true
+        }
+      },
+      {
+        "id": "fine-checker",
+        "before": {
+          "seconds": [
+            9.47638708300001,
+            9.4867365
+          ],
+          "independentMaskErrors": [
+            0.01841875,
+            0.01850625
+          ],
+          "checked": true
+        },
+        "after": {
+          "seconds": [
+            9.431221458,
+            9.438626957999993
+          ],
+          "independentMaskErrors": [
+            0.0166625,
+            0.0166625
+          ],
+          "checked": true
+        }
+      },
+      {
+        "id": "gingerbread",
+        "before": {
+          "seconds": [
+            9.340026500000008,
+            9.351483874999976
+          ],
+          "independentMaskErrors": [
+            0.01106875,
+            0.01106875
+          ],
+          "checked": true
+        },
+        "after": {
+          "seconds": [
+            9.225634749999983,
+            9.247185333000001
+          ],
+          "independentMaskErrors": [
+            0.01094375,
+            0.01106875
+          ],
+          "checked": true
+        }
+      }
+    ],
+    "meanSeconds": {
+      "before": 9.442440979125,
+      "after": 9.361192484124997
+    },
+    "limitations": [
+      "Only two repetitions per condition. Wall-clock budgets can change iteration counts and selected geometry.",
+      "The repeated-analysis microbenchmark is not a whole-pipeline speedup.",
+      "Engine geometry/paper checks pass in all sixteen fits; independent SVG rendering measures image error, not physical assembly."
+    ]
+  },
+  "focusedValidation": {
+    "passed": 24,
+    "failed": 0,
+    "explicitCoreLint": true
+  },
+  "productionValidation": {
+    "status": "qa-native-and-browser-complete-historical-photo-error-gate-failed",
+    "runtimeCommit": "3997441",
+    "qaRun": "tmp/heart-learning/feature-reuse-qa-v1",
+    "inversePassed": 889,
+    "inverseFailed": 0,
+    "applicationPassed": 857,
+    "applicationSkipped": 1,
+    "sourceFilesVerified": 733,
+    "checks": [
+      {
+        "stage": "core-lint",
+        "exitCode": 0,
+        "seconds": 1.471535834
+      },
+      {
+        "stage": "check",
+        "exitCode": 0,
+        "seconds": 8.818212084
+      },
+      {
+        "stage": "lint",
+        "exitCode": 0,
+        "seconds": 6.034688124999999
+      },
+      {
+        "stage": "app",
+        "exitCode": 0,
+        "seconds": 22.154024583
+      },
+      {
+        "stage": "build",
+        "exitCode": 0,
+        "seconds": 11.820937459
+      },
+      {
+        "stage": "inverse",
+        "exitCode": 0,
+        "seconds": 945.5000823749999
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "tmp/heart-learning/feature-reuse-qa-v1/checks.json",
+        "sha256": "eb3376c53f367a2e420c1bef60f5cbaa83961c09d597a50f13c1b82e20ca68ab"
+      },
+      {
+        "path": "tmp/heart-learning/feature-reuse-qa-v1/source.json",
+        "sha256": "921e1fc4c75c2218607329d35c83ab7fe9a2833f5b90c56cbb368355adb129a0"
+      },
+      {
+        "path": "tmp/heart-learning/feature-reuse-qa-v1/inverse.log",
+        "sha256": "9cd65384f9fd37068cfc4357660bc3bc16d3c59d78052bc2f76dd3fab400b7c2"
+      },
+      {
+        "path": "tmp/heart-learning/feature-reuse-qa-v1/app.log",
+        "sha256": "5020ad95866c978a40899df0b0f11fe9dce61ad952f7fb8476b86e8b7f625c0e"
+      },
+      {
+        "path": "tmp/heart-learning/feature-reuse-release-v1/checks.json",
+        "sha256": "591650e3c7edf0515483b2fddc2c6b8f9201720572bc04bd15b4a4bc577ee10b"
+      },
+      {
+        "path": "tmp/heart-learning/feature-reuse-release-v1/native/checks.json",
+        "sha256": "4322210f2b2798890089ec8088693aae6c078fb257ca40207920ad274cb46262"
+      },
+      {
+        "path": "tmp/heart-learning/feature-reuse-release-v1/native/source.json",
+        "sha256": "83bac1ae775bcedd14d120007e65d9da9b34858e7d7a6543eb7b71d284c8c045"
+      },
+      {
+        "path": "tmp/heart-learning/feature-reuse-release-v1/native/native-gates.json",
+        "sha256": "fbffa39aee524b671c4d41eb1fa351ea91fee62cf85094593b41bcb79603a581"
+      },
+      {
+        "path": "tmp/heart-learning/feature-reuse-release-v1/native/photo-comparison.json",
+        "sha256": "b0473e55d01f28af4b7105d15b56846c1981bbca0bcc6d721edbf79d86b3d23c"
+      },
+      {
+        "path": "tmp/heart-learning/feature-reuse-release-v1/native/parent-photo-comparison.json",
+        "sha256": "c58830722f81262eb8317ca8795913a631a4deee81f28ff78d923e5e2205694d"
+      },
+      {
+        "path": "tmp/heart-learning/feature-reuse-release-v1/native/hunodan/results.json",
+        "sha256": "1d63a9caa744aae1e5573691a6d042b26945c4a7ec935c2dd81d7fc4ba5f8f37"
+      },
+      {
+        "path": "tmp/heart-learning/feature-reuse-release-v1/native/hunodan-editor/results.json",
+        "sha256": "580f45aca83645d36014ced8a57ec1f3da5188d3f5b2236c99e11c4ef4b1de50"
+      },
+      {
+        "path": "tmp/heart-learning/feature-reuse-release-v1/native/photo-editor/results.json",
+        "sha256": "0360debaf7e166ec27cd15369fdb65712bd805c9f349d6ddba74ff9083357e84"
+      },
+      {
+        "path": "tmp/heart-learning/feature-reuse-release-v1/browser/source.json",
+        "sha256": "921e1fc4c75c2218607329d35c83ab7fe9a2833f5b90c56cbb368355adb129a0"
+      },
+      {
+        "path": "tmp/heart-learning/feature-reuse-release-v1/browser/checks.json",
+        "sha256": "492a2606c226d095950d068054eda9cf31463cb56ed83641a43347411000dc8f"
+      },
+      {
+        "path": "tmp/heart-learning/feature-reuse-release-v1/browser/ordinary/results.json",
+        "sha256": "5c769c8708e9d06e5ea7469e40a6448886f07eeb4815edb2f716b48732fc3825"
+      },
+      {
+        "path": "tmp/heart-learning/feature-reuse-release-v1/browser/ten-second/results.json",
+        "sha256": "d7056fe0f9d78a3a12b48e761b8c61b1909a79fdf6f7b1278cb1b88bccf26c0f"
+      },
+      {
+        "path": "tmp/heart-learning/feature-reuse-release-v1/browser/entry-loading/results.json",
+        "sha256": "e0b180603d05a0b30a024ccbff044808a6e39bd5209904e060ad359410cff8dd"
+      },
+      {
+        "path": "tmp/heart-learning/feature-reuse-release-v1/browser/served-assets.json",
+        "sha256": "9357e4971c2a4e1f92cac1f9727a77e4358f10153bd87a9ae44036196c5b0052"
+      },
+      {
+        "path": "tmp/heart-learning/feature-reuse-release-v1/browser/review.png",
+        "sha256": "26ea6480cb97b7f78c084c6c6f91a2270514d88dae9f70711f5ce6ee01b35ab4"
+      }
+    ],
+    "releaseRun": "tmp/heart-learning/feature-reuse-release-v1",
+    "native": {
+      "hunodanPassed": 22,
+      "hunodanTotal": 22,
+      "hunodanErrorRegressions": [],
+      "photoPassed": 26,
+      "photoPassRegressions": [],
+      "photoErrorRegressions": [
+        {
+          "id": "crown",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.02411875,
+          "error": 0.02454375,
+          "errorDelta": 0.0004249999999999983
+        }
+      ],
+      "editablePassed": 48,
+      "editableTotal": 48,
+      "passed": false
+    },
+    "maximumHunodanSeconds": 9.322706709000002,
+    "immediateParentPhotoChanges": [
+      {
+        "id": "gift",
+        "before": 0.01858125,
+        "after": 0.018575,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": -6.249999999999312e-06
+      },
+      {
+        "id": "gingerbread",
+        "before": 0.01106875,
+        "after": 0.01094375,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": -0.0001250000000000001
+      },
+      {
+        "id": "warped-checker",
+        "before": 0.01366875,
+        "after": 0.0137875,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": 0.00011874999999999906
+      },
+      {
+        "id": "stacked-hearts",
+        "before": 0.00578125,
+        "after": 0.00584375,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": 6.250000000000006e-05
+      },
+      {
+        "id": "maple-leaf",
+        "before": 0.00885,
+        "after": 0.0087625,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": -8.750000000000077e-05
+      },
+      {
+        "id": "crown",
+        "before": 0.02413125,
+        "after": 0.02454375,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": 0.00041249999999999967
+      },
+      {
+        "id": "crossed-ribbons",
+        "before": 0.00884375,
+        "after": 0.00883125,
+        "beforePassed": false,
+        "afterPassed": false,
+        "delta": -1.2499999999998623e-05
+      },
+      {
+        "id": "bauble",
+        "before": 0.03125,
+        "after": 0.03125625,
+        "beforePassed": false,
+        "afterPassed": false,
+        "delta": 6.249999999999312e-06
+      },
+      {
+        "id": "flettede-viking",
+        "before": 0.0203625,
+        "after": 0.02020625,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": -0.00015625000000000014
+      }
+    ],
+    "browser": {
+      "passed": true,
+      "cases": [
+        {
+          "name": "stacked-hearts-mask",
+          "group": "ordinary",
+          "sourceEditableError": 0.0173,
+          "clickToReadySeconds": 16.659300000190736,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "conversionFidelityPassed": true
+        },
+        {
+          "name": "star",
+          "group": "ordinary",
+          "sourceEditableError": 0.0016,
+          "clickToReadySeconds": 2.0350999999046326,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "conversionFidelityPassed": true
+        },
+        {
+          "name": "top-hat-preferred",
+          "group": "ordinary",
+          "sourceEditableError": 0.004118835034013606,
+          "clickToReadySeconds": 8.856100000143051,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "conversionFidelityPassed": true
+        },
+        {
+          "name": "flower-native-mask",
+          "group": "ordinary",
+          "sourceEditableError": 0.00401875,
+          "clickToReadySeconds": 7.4525,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "conversionFidelityPassed": true
+        },
+        {
+          "name": "hard-flettede-viking",
+          "group": "ordinary",
+          "sourceEditableError": 0.01831875,
+          "clickToReadySeconds": 30.54060000014305,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "conversionFidelityPassed": true
+        },
+        {
+          "name": "maple-leaf-mask",
+          "group": "ordinary",
+          "sourceEditableError": 0.00883125,
+          "clickToReadySeconds": 13.476200000047683,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "conversionFidelityPassed": true
+        },
+        {
+          "name": "web-danish-tree-green",
+          "group": "ordinary",
+          "sourceEditableError": 0.0087625,
+          "clickToReadySeconds": 22.3125,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "conversionFidelityPassed": true
+        },
+        {
+          "name": "floral-checker-mask",
+          "group": "ten-second",
+          "sourceEditableError": 0.01364375,
+          "clickToReadySeconds": 10.331699999809265,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "conversionFidelityPassed": true
+        },
+        {
+          "name": "warped-checker-mask",
+          "group": "ten-second",
+          "sourceEditableError": 0.0159125,
+          "clickToReadySeconds": 11.074700000047685,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "conversionFidelityPassed": true
+        },
+        {
+          "name": "fine-checker-mask",
+          "group": "ten-second",
+          "sourceEditableError": 0.022725,
+          "clickToReadySeconds": 11.885,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "conversionFidelityPassed": true
+        },
+        {
+          "name": "blue-star-polishing-mask",
+          "group": "ten-second",
+          "sourceEditableError": 0.00415625,
+          "clickToReadySeconds": 10.003599999904633,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "conversionFidelityPassed": true
+        }
+      ],
+      "scope": "Eleven actual Chromium upload/example, worker and editable-export workflows; four request ten-second solver budgets. Click-to-ready includes additional preparation, conversion and UI time.",
+      "entryLoading": {
+        "passed": true,
+        "rows": [
+          {
+            "route": "/en/editor/",
+            "initialEngineRequests": 0,
+            "errors": [],
+            "failedRequests": []
+          },
+          {
+            "route": "/en/editor/paint/",
+            "initialEngineRequests": 0,
+            "errors": [],
+            "failedRequests": []
+          }
+        ]
+      }
+    },
+    "visualReview": "Inspected the eleven Draw screenshots together. Motifs remain recognizable and enclosed details survive; uneven checker boundaries and some frame details remain. Pixel agreement is against estimated masks, not original artwork."
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/feature-reuse-v1/source.json",
+      "sha256": "5c7781be6be4a3500d7e188683c230327758e3c383c201cf073967553e44477f"
+    },
+    {
+      "path": "tmp/heart-learning/feature-reuse-v1/semantics.json",
+      "sha256": "120c03a728eef5128ea10114a2a4656e4e1949d0bda75c31b949b11499a2783b"
+    },
+    {
+      "path": "tmp/heart-learning/feature-reuse-v1/report.json",
+      "sha256": "4a5936cf8127b4f1a329e1cc0f7e773209d38d28468432416d4ae1aff028cf4e"
+    },
+    {
+      "path": "tmp/heart-learning/feature-reuse-v1/checks.json",
+      "sha256": "810b08ffc658ca955cb4273031898f1e9bdf90f65a5cc68175b57a07d7ca41bc"
+    },
+    {
+      "path": "tmp/heart-learning/feature-reuse-v1/state.json",
+      "sha256": "b2edc9dbcf0167edfd6bc395d20dce053a9b5572a53595d3b2e4dea2616f2061"
+    },
+    {
+      "path": "tmp/heart-learning/feature-reuse-v1/resume.py",
+      "sha256": "d5fe68eb41ae7923924eb1172bbfaedd559820d4f7b6346f53c5744ec526072d"
+    },
+    {
+      "path": "tmp/heart-learning/feature-reuse-validation-v1/checks.json",
+      "sha256": "ba60666cd438f099453aab5f2409669112ef4ccc5aad0c63d155882c7c2626ed"
+    },
+    {
+      "path": "tmp/heart-learning/feature-reuse-validation-v1/focused.log",
+      "sha256": "9c2bd70a04f3d949dbaea14f0f6d91b026e726c331b16c4ff384d9452f03b091"
+    },
+    {
+      "path": "tmp/heart-learning/feature-reuse-validation-v1/lint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

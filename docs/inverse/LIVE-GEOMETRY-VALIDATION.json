@@ -1,0 +1,1584 @@
+{
+  "schema": 1,
+  "sourceCommit": "670deb94dc5283fe7d29a4d9b3ecdd9404cf7104",
+  "branch": "codex/solver-initialization",
+  "nodeVersion": "v25.6.1",
+  "origin": "http://127.0.0.1:5232",
+  "checks": {
+    "applicationPassed": 778,
+    "applicationSkipped": 1,
+    "enginePassed": 271,
+    "svelteErrors": 0,
+    "svelteExistingWarnings": 7,
+    "lint": true,
+    "build": true,
+    "browserPassed": 18,
+    "fallbackPassed": 1,
+    "controlsPassed": 2
+  },
+  "sourceHashes": {
+    "src/lib/inverse/engine.ts": "cc02161c6f0f29896b5aa445ae9bc4e002ba8eec16ef7768ea75bee3c6654709",
+    "src/lib/components/paint/PaintPage.svelte": "e98cdebe0e2abcad2924b7bca0752a2671023fee3dfab8f879a722e02204b86d",
+    "scripts/paint/search-progress-browser-test.mjs": "5215d83a3f260a4ecf92d2343f6d7ac493bba57fe6583a4e7a31b64449fffab6",
+    "scripts/inverse/progress.test.mjs": "a61549d75031a4dc19ba2e9e8c2a9eafdf8a824430eed40a5d2be31f3c923a8e",
+    "scripts/inverse/refinement-budget.test.mjs": "f5071cc98ce2ac9746ff47f20c5e7863ea99e071d5b8019799f4787518cc5b45",
+    "scripts/inverse/weighted-solve-benchmark.mjs": "8843649b97575497957d98dcd060c5453b81e0f6a3886c0edf642a5004b30eb2"
+  },
+  "servedEngineFiles": [
+    {
+      "file": "static/inverse/core/automatic.js",
+      "sha256": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047"
+    },
+    {
+      "file": "static/inverse/core/bezier.js",
+      "sha256": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d"
+    },
+    {
+      "file": "static/inverse/core/border.js",
+      "sha256": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46"
+    },
+    {
+      "file": "static/inverse/core/chord-distance.js",
+      "sha256": "cb79dd6d90d22b6bea6bb4bd0593cc8e32a18a09116084e53f5d942bcbef3c04"
+    },
+    {
+      "file": "static/inverse/core/crop.js",
+      "sha256": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88"
+    },
+    {
+      "file": "static/inverse/core/direct/boundary.js",
+      "sha256": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e"
+    },
+    {
+      "file": "static/inverse/core/direct/counts.js",
+      "sha256": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9"
+    },
+    {
+      "file": "static/inverse/core/direct/curves.js",
+      "sha256": "a3cad0cb2c96d62c0e1d99474777157eae8fb3fd6b7631f3af203243f4909ad3"
+    },
+    {
+      "file": "static/inverse/core/direct/finalize.js",
+      "sha256": "c7bc72b5c739811a60868bad6dc9a6db1ff38cb76a53e348ae2071ddb564eec9"
+    },
+    {
+      "file": "static/inverse/core/direct/fit.js",
+      "sha256": "2b98309761eed54c1c2854a535d695843df3d90639a2d38764c78f31f0512490"
+    },
+    {
+      "file": "static/inverse/core/direct/grid.js",
+      "sha256": "57ada8e2f1c794b0012ddedbb8b508f29971186c313e517a8f40ca3788e1dfbd"
+    },
+    {
+      "file": "static/inverse/core/direct/image-objective.js",
+      "sha256": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f"
+    },
+    {
+      "file": "static/inverse/core/direct/initialization-image.js",
+      "sha256": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7"
+    },
+    {
+      "file": "static/inverse/core/direct/initialize.js",
+      "sha256": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46"
+    },
+    {
+      "file": "static/inverse/core/direct/matching.js",
+      "sha256": "db113f3e5c6ed3be820f7c863a113e9181a02c7efa5ea66a46e56df7f2428414"
+    },
+    {
+      "file": "static/inverse/core/direct/math.js",
+      "sha256": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a"
+    },
+    {
+      "file": "static/inverse/core/direct/native.js",
+      "sha256": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46"
+    },
+    {
+      "file": "static/inverse/core/direct/native/PROVENANCE.json",
+      "sha256": "e9fbaef090fc05bdc9450210f527b1fb3fa6bc77ee86c1902eb97bb6ed0acd2a"
+    },
+    {
+      "file": "static/inverse/core/direct/native/boundary.c",
+      "sha256": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4"
+    },
+    {
+      "file": "static/inverse/core/direct/native/boundary.wasm",
+      "sha256": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58"
+    },
+    {
+      "file": "static/inverse/core/direct/prefer-matching.js",
+      "sha256": "1ff682f298014f8c29387ad3bbe330c52e4ee619defd5a2d116cb3703e0f5d48"
+    },
+    {
+      "file": "static/inverse/core/direct/primitive-selection.js",
+      "sha256": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904"
+    },
+    {
+      "file": "static/inverse/core/direct/primitives.js",
+      "sha256": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b"
+    },
+    {
+      "file": "static/inverse/core/direct/refine.js",
+      "sha256": "13e91f32104b457f6d7d471975a1737b803d1f4fc4d0c3eb5221a3d5e6d687fc"
+    },
+    {
+      "file": "static/inverse/core/direct/share.js",
+      "sha256": "247241745ec8b1ac03c41b7e619bda30e821bbddbad2c60d4ec2d51c8aea1e6d"
+    },
+    {
+      "file": "static/inverse/core/direct/shared-simplification.js",
+      "sha256": "9617dbe47fc1ac6d6d99a7dc228a160e783cf5a325992d7cc5f5e15719420ed5"
+    },
+    {
+      "file": "static/inverse/core/direct/symmetry.js",
+      "sha256": "ed9f633ea42af93b46293d0d753e21dd7a5921485d5d55847e5a02665c14cf13"
+    },
+    {
+      "file": "static/inverse/core/direct/topology.js",
+      "sha256": "bbe79bf0dca7c4786c7728413026fee9f77bb9bca5bb788be7d6674267ad9292"
+    },
+    {
+      "file": "static/inverse/core/engine.js",
+      "sha256": "e93024012b538423791490b66e61f4d568717701d3002d8a817cb6c10176caad"
+    },
+    {
+      "file": "static/inverse/core/export.js",
+      "sha256": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c"
+    },
+    {
+      "file": "static/inverse/core/feature-recovery.js",
+      "sha256": "37831af78afffd94b19a4145091d199f9771d12e505514e88cf1943e6023279e"
+    },
+    {
+      "file": "static/inverse/core/geometry.js",
+      "sha256": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a"
+    },
+    {
+      "file": "static/inverse/core/graph.js",
+      "sha256": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414"
+    },
+    {
+      "file": "static/inverse/core/image-features.js",
+      "sha256": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a"
+    },
+    {
+      "file": "static/inverse/core/image-reference.js",
+      "sha256": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b"
+    },
+    {
+      "file": "static/inverse/core/input.js",
+      "sha256": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87"
+    },
+    {
+      "file": "static/inverse/core/junctions.js",
+      "sha256": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250"
+    },
+    {
+      "file": "static/inverse/core/kernel-choice.js",
+      "sha256": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63"
+    },
+    {
+      "file": "static/inverse/core/mask-preview.js",
+      "sha256": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b"
+    },
+    {
+      "file": "static/inverse/core/material.js",
+      "sha256": "e691efc792c66cdc91a5c0ad8258ac380a29442bc68c73bd9a7a2a44cbb02fe3"
+    },
+    {
+      "file": "static/inverse/core/numerical-kernel.js",
+      "sha256": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e"
+    },
+    {
+      "file": "static/inverse/core/paper-backend.js",
+      "sha256": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81"
+    },
+    {
+      "file": "static/inverse/core/polygonal.js",
+      "sha256": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4"
+    },
+    {
+      "file": "static/inverse/core/portals.js",
+      "sha256": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40"
+    },
+    {
+      "file": "static/inverse/core/presets.js",
+      "sha256": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf"
+    },
+    {
+      "file": "static/inverse/core/progress.js",
+      "sha256": "95f0c4f24dbb699fc4fc7e55c9d5886c6c2559fbb94159987c9e689b4d4f1433"
+    },
+    {
+      "file": "static/inverse/core/rounding.js",
+      "sha256": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295"
+    },
+    {
+      "file": "static/inverse/core/settings.js",
+      "sha256": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48"
+    },
+    {
+      "file": "static/inverse/core/solver.js",
+      "sha256": "2a84908c6a08625d42da5a3d22f53eac6d9e3b6b8eaf10dd5025617ae1d7c936"
+    },
+    {
+      "file": "static/inverse/core/symmetry.js",
+      "sha256": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83"
+    },
+    {
+      "file": "static/inverse/core/unmix.js",
+      "sha256": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf"
+    },
+    {
+      "file": "static/inverse/core/validate.js",
+      "sha256": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273"
+    },
+    {
+      "file": "static/inverse/core/zip.js",
+      "sha256": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b"
+    }
+  ],
+  "datasets": {
+    "hunodan": {
+      "count": 22,
+      "median": 5.911026041500001,
+      "maximum": 8.542919040999987,
+      "geometryIdentical": 22,
+      "results": [
+        {
+          "id": "hjfig-01",
+          "seconds": 4.749039042000001,
+          "passed": true,
+          "error": 0.009799111111111111,
+          "previousError": 0.009799111111111111,
+          "errorChange": 0,
+          "geometrySha256": "d7ad5e34490ec434df08448000f24ff0cba34e62923d67eef6ddf2a13a640983",
+          "geometryIdentical": true
+        },
+        {
+          "id": "hjfig-02",
+          "seconds": 4.788794042,
+          "passed": true,
+          "error": 0.013952,
+          "previousError": 0.013952,
+          "errorChange": 0,
+          "geometrySha256": "a1437944191be21956d3340ab41b7d2699c3ad6df97978aa1f285ca6234482a3",
+          "geometryIdentical": true
+        },
+        {
+          "id": "hjfig-03",
+          "seconds": 3.827813542,
+          "passed": true,
+          "error": 0.006634666666666666,
+          "previousError": 0.006634666666666666,
+          "errorChange": 0,
+          "geometrySha256": "ce50b811ccfc67a307097b3d058c6d6ab6e47fbd1da7bf87584b6cda6cdaf8f6",
+          "geometryIdentical": true
+        },
+        {
+          "id": "hjfig-04",
+          "seconds": 4.153488167,
+          "passed": true,
+          "error": 0.013824,
+          "previousError": 0.013824,
+          "errorChange": 0,
+          "geometrySha256": "16695deef171fd7b1f248ef452407bbbcc4a0c65aeabdfbb6038ef5c56117db7",
+          "geometryIdentical": true
+        },
+        {
+          "id": "hjfig-05",
+          "seconds": 2.779205792000001,
+          "passed": true,
+          "error": 0.010231665331208341,
+          "previousError": 0.010231665331208341,
+          "errorChange": 0,
+          "geometrySha256": "6dd34d7040abff68e2459933fba7264ad1857c0fcbcbd4798e948c671ba105c1",
+          "geometryIdentical": true
+        },
+        {
+          "id": "hjfla-01",
+          "seconds": 6.202423415999998,
+          "passed": true,
+          "error": 0.013414171006944444,
+          "previousError": 0.013414171006944444,
+          "errorChange": 0,
+          "geometrySha256": "73906329a938f13462e0e545bee5a605f8fd22f5f17aba7d17b8727a811d8434",
+          "geometryIdentical": true
+        },
+        {
+          "id": "hjcur-01",
+          "seconds": 6.338985207999999,
+          "passed": true,
+          "error": 0.00512,
+          "previousError": 0.00512,
+          "errorChange": 0,
+          "geometrySha256": "f7ce461e37eb2a8c7391ff73fe9b714aa542f825867117474a86acdb3c043188",
+          "geometryIdentical": true
+        },
+        {
+          "id": "hjcur-02",
+          "seconds": 5.8078069170000015,
+          "passed": true,
+          "error": 0.005397333333333333,
+          "previousError": 0.005397333333333333,
+          "errorChange": 0,
+          "geometrySha256": "1cbce3c40af8c4e88ef802b271c9224061c6473b611707e7780c73ebb2b8ca1b",
+          "geometryIdentical": true
+        },
+        {
+          "id": "hjcur-03",
+          "seconds": 6.014245166,
+          "passed": true,
+          "error": 0.004522666666666667,
+          "previousError": 0.004522666666666667,
+          "errorChange": 0,
+          "geometrySha256": "ad97a002943d8e2647c3b8d9f4b9c7d0f6f1ee10dd5db85238f2366dd6ca91c3",
+          "geometryIdentical": true
+        },
+        {
+          "id": "hjcur-04",
+          "seconds": 7.474349875,
+          "passed": true,
+          "error": 0.0056248888888888885,
+          "previousError": 0.0056248888888888885,
+          "errorChange": 0,
+          "geometrySha256": "00b2d60e3db7b03ccfce44695a7960699ca7959fb82305ee80825b60dfae35a0",
+          "geometryIdentical": true
+        },
+        {
+          "id": "hjcur-05",
+          "seconds": 3.5441086250000007,
+          "passed": true,
+          "error": 0.009436444444444445,
+          "previousError": 0.009436444444444445,
+          "errorChange": 0,
+          "geometrySha256": "1b3822492ae13f4b6f73bc67284ce4eb568f292cb87b092b80be053e914817f7",
+          "geometryIdentical": true
+        },
+        {
+          "id": "hjhih-01",
+          "seconds": 7.483939290999988,
+          "passed": true,
+          "error": 0.0060202958468683725,
+          "previousError": 0.0060202958468683725,
+          "errorChange": 0,
+          "geometrySha256": "3a2c39a572098675b71e5fcfff21693356e55809e57888b5fbcf8ce1c0644062",
+          "geometryIdentical": true
+        },
+        {
+          "id": "hjhih-02",
+          "seconds": 5.765736917000002,
+          "passed": true,
+          "error": 0.003899406226779104,
+          "previousError": 0.003899406226779104,
+          "errorChange": 0,
+          "geometrySha256": "25db88ee2ae032dd7f5aaa85fe1a897b585797aa10fbdf37af94d73e24a81f2a",
+          "geometryIdentical": true
+        },
+        {
+          "id": "hjhih-04",
+          "seconds": 7.93103175000001,
+          "passed": true,
+          "error": 0.007678910190418844,
+          "previousError": 0.007678910190418844,
+          "errorChange": 0,
+          "geometrySha256": "78693d967702f585f8259f30b248fd8e2e4c1dcd56ecedd7772ff12918cd9f24",
+          "geometryIdentical": true
+        },
+        {
+          "id": "hjstr-01",
+          "seconds": 4.468223375000002,
+          "passed": true,
+          "error": 0.007543348420030173,
+          "previousError": 0.007543348420030173,
+          "errorChange": 0,
+          "geometrySha256": "6861c214414027bcc3129377af12915f89460866efc4e001b7d1d3a09c6214a2",
+          "geometryIdentical": true
+        },
+        {
+          "id": "hjstr-02",
+          "seconds": 6.132944583999997,
+          "passed": true,
+          "error": 0.004339250493096647,
+          "previousError": 0.004339250493096647,
+          "errorChange": 0,
+          "geometrySha256": "1f9b30ed09b01d280b6630c9326457f48f392b44c27910e37df2ab66e4078f48",
+          "geometryIdentical": true
+        },
+        {
+          "id": "hjstr-03",
+          "seconds": 8.412513959000004,
+          "passed": true,
+          "error": 0.005519980869380381,
+          "previousError": 0.005519980869380381,
+          "errorChange": 0,
+          "geometrySha256": "bedb2145ef2f6dc4f96c397a6387a9f83f8e85b5f5c1f65c6595a16f1e951049",
+          "geometryIdentical": true
+        },
+        {
+          "id": "hjsta-01",
+          "seconds": 4.597160416999992,
+          "passed": true,
+          "error": 0.007936288088642659,
+          "previousError": 0.007936288088642659,
+          "errorChange": 0,
+          "geometrySha256": "c885ff2d6b8feb0e8f6320c4748d6334f1dcb490ca21c61f0a94488f0556b566",
+          "geometryIdentical": true
+        },
+        {
+          "id": "hjsta-02",
+          "seconds": 4.9972716249999936,
+          "passed": true,
+          "error": 0.0036485460069444445,
+          "previousError": 0.0036485460069444445,
+          "errorChange": 0,
+          "geometrySha256": "9b7030771c6d18eaeea4dbbcbb997e55f632cc054888188929760e816c53b981",
+          "geometryIdentical": true
+        },
+        {
+          "id": "hjsta-03",
+          "seconds": 8.542919040999987,
+          "passed": true,
+          "error": 0.012339030193129683,
+          "previousError": 0.012339030193129683,
+          "errorChange": 0,
+          "geometrySha256": "218b01c64975e71c6f9fefecb8ea402009a499522b4cd80dd85a8a93705eab58",
+          "geometryIdentical": true
+        },
+        {
+          "id": "hjsta-04",
+          "seconds": 7.858363958000002,
+          "passed": true,
+          "error": 0.005053050026595,
+          "previousError": 0.005053050026595,
+          "errorChange": 0,
+          "geometrySha256": "91fed34a42462adb9f6ffd8850aaff86823d657d172243cac4ba10db7c0e17b8",
+          "geometryIdentical": true
+        },
+        {
+          "id": "hjsta-05",
+          "seconds": 7.4745091250000115,
+          "passed": true,
+          "error": 0.010624446293860237,
+          "previousError": 0.010624446293860237,
+          "errorChange": 0,
+          "geometrySha256": "5264f94cf71b86e1f551d2e2eb0b109e65ac4f83093f8cac2943e5d7e8d5f9d7",
+          "geometryIdentical": true
+        }
+      ]
+    },
+    "weighted": {
+      "count": 32,
+      "median": 4.903782874499999,
+      "maximum": 9.823542749999996,
+      "geometryIdentical": 31,
+      "results": [
+        {
+          "id": "top-hat-0.64-weighted",
+          "seconds": 3.257863083,
+          "passed": true,
+          "error": 0.00360107421875,
+          "previousError": 0.00360107421875,
+          "errorChange": 0,
+          "geometrySha256": "4034fb6d56a69cc8a48d2e45893a2396d3f60f722dd81eff7158b06dabdedf29",
+          "geometryIdentical": true,
+          "geometrySnapshots": 3,
+          "geometryBytes": 42023
+        },
+        {
+          "id": "top-hat-0.64-weighted-inverted",
+          "seconds": 3.02106725,
+          "passed": true,
+          "error": 0.003662109375,
+          "previousError": 0.003662109375,
+          "errorChange": 0,
+          "geometrySha256": "3ff292e23f7de70e30b01c35da643bdcc3c410acd417ebf836dcc45ab5b4afaf",
+          "geometryIdentical": true,
+          "geometrySnapshots": 2,
+          "geometryBytes": 28608
+        },
+        {
+          "id": "top-hat-0.64-weighted-shifted",
+          "seconds": 2.5534932910000006,
+          "passed": true,
+          "error": 0.00360107421875,
+          "previousError": 0.00360107421875,
+          "errorChange": 0,
+          "geometrySha256": "486d2f133066c1fdc2a44852483bfadcee8fc913c476812f4f513aba0745108a",
+          "geometryIdentical": true,
+          "geometrySnapshots": 3,
+          "geometryBytes": 40826
+        },
+        {
+          "id": "top-hat-0.64-weighted-free-noise",
+          "seconds": 2.936457292000001,
+          "passed": true,
+          "error": 0.00360107421875,
+          "previousError": 0.00360107421875,
+          "errorChange": 0,
+          "geometrySha256": "4034fb6d56a69cc8a48d2e45893a2396d3f60f722dd81eff7158b06dabdedf29",
+          "geometryIdentical": true,
+          "geometrySnapshots": 3,
+          "geometryBytes": 42023
+        },
+        {
+          "id": "top-hat-0.84-weighted",
+          "seconds": 6.669933083,
+          "passed": true,
+          "error": 0.0002834467120181406,
+          "previousError": 0.0002834467120181406,
+          "errorChange": 0,
+          "geometrySha256": "e9288ff49ea95f9bd9bf086ee5250bba42f12e7ef26b9b02bfcf9777349dd8e8",
+          "geometryIdentical": true,
+          "geometrySnapshots": 6,
+          "geometryBytes": 73938
+        },
+        {
+          "id": "top-hat-0.84-weighted-inverted",
+          "seconds": 9.823542749999996,
+          "passed": true,
+          "error": 0.00031887755102040814,
+          "previousError": 0.00021258503401360543,
+          "errorChange": 0.0001062925170068027,
+          "geometrySha256": "95148ec6d64c6d88a84b548b03c4e4f2c608d2f58fa113197289bfdd27ef9d1f",
+          "geometryIdentical": false,
+          "geometrySnapshots": 12,
+          "geometryBytes": 147851
+        },
+        {
+          "id": "top-hat-0.84-weighted-shifted",
+          "seconds": 6.644261375000002,
+          "passed": true,
+          "error": 0.00031887755102040814,
+          "previousError": 0.00031887755102040814,
+          "errorChange": 0,
+          "geometrySha256": "290877477fc55ca1508079224ec731b1123bd501ff9c4ce0f43504d476f42d4f",
+          "geometryIdentical": true,
+          "geometrySnapshots": 6,
+          "geometryBytes": 73938
+        },
+        {
+          "id": "top-hat-0.84-weighted-free-noise",
+          "seconds": 6.672535499999998,
+          "passed": true,
+          "error": 0.0002834467120181406,
+          "previousError": 0.0002834467120181406,
+          "errorChange": 0,
+          "geometrySha256": "e9288ff49ea95f9bd9bf086ee5250bba42f12e7ef26b9b02bfcf9777349dd8e8",
+          "geometryIdentical": true,
+          "geometrySnapshots": 6,
+          "geometryBytes": 73974
+        },
+        {
+          "id": "hat-0.64-weighted",
+          "seconds": 1.9479693750000007,
+          "passed": true,
+          "error": 0.00054931640625,
+          "previousError": 0.00054931640625,
+          "errorChange": 0,
+          "geometrySha256": "952fc6b3322f5aa88f3d640614123df10b0fe95a1d4acb2b66ce490a91a7b98a",
+          "geometryIdentical": true,
+          "geometrySnapshots": 2,
+          "geometryBytes": 31598
+        },
+        {
+          "id": "hat-0.64-weighted-inverted",
+          "seconds": 1.9443360829999947,
+          "passed": true,
+          "error": 0.00054931640625,
+          "previousError": 0.00054931640625,
+          "errorChange": 0,
+          "geometrySha256": "4a2afec9ef7daf491c3468ca2227ac583697a11b31d09e5a159b9781dbd7335f",
+          "geometryIdentical": true,
+          "geometrySnapshots": 2,
+          "geometryBytes": 31625
+        },
+        {
+          "id": "hat-0.64-weighted-shifted",
+          "seconds": 1.9489086249999963,
+          "passed": true,
+          "error": 0.00054931640625,
+          "previousError": 0.00054931640625,
+          "errorChange": 0,
+          "geometrySha256": "dc611dfeb53dc91a78366da35ad27b88884df7655c9dc32021a63332664062db",
+          "geometryIdentical": true,
+          "geometrySnapshots": 2,
+          "geometryBytes": 31616
+        },
+        {
+          "id": "hat-0.64-weighted-free-noise",
+          "seconds": 2.7787097079999947,
+          "passed": true,
+          "error": 0.00054931640625,
+          "previousError": 0.00054931640625,
+          "errorChange": 0,
+          "geometrySha256": "952fc6b3322f5aa88f3d640614123df10b0fe95a1d4acb2b66ce490a91a7b98a",
+          "geometryIdentical": true,
+          "geometrySnapshots": 2,
+          "geometryBytes": 31598
+        },
+        {
+          "id": "hat-0.84-weighted",
+          "seconds": 7.22983941700001,
+          "passed": true,
+          "error": 0.00007086167800453515,
+          "previousError": 0.00007086167800453515,
+          "errorChange": 0,
+          "geometrySha256": "6d89563ac5022b470c6f4bf8d631d61ac08f3f36576df8b7ec86029a03974b08",
+          "geometryIdentical": true,
+          "geometrySnapshots": 6,
+          "geometryBytes": 73976
+        },
+        {
+          "id": "hat-0.84-weighted-inverted",
+          "seconds": 6.960134917000003,
+          "passed": true,
+          "error": 0.0002834467120181406,
+          "previousError": 0.0002834467120181406,
+          "errorChange": 0,
+          "geometrySha256": "9b1fa5373e2b2aedae776a060abab1b51cc5859f2e0fd9db18d67c319f20361d",
+          "geometryIdentical": true,
+          "geometrySnapshots": 6,
+          "geometryBytes": 73931
+        },
+        {
+          "id": "hat-0.84-weighted-shifted",
+          "seconds": 7.399599750000008,
+          "passed": true,
+          "error": 0.0002834467120181406,
+          "previousError": 0.0002834467120181406,
+          "errorChange": 0,
+          "geometrySha256": "3e72541c3453f1b425bf88a6566c41e1fbcd8bb3dabb8a02d921a0e5280164f4",
+          "geometryIdentical": true,
+          "geometrySnapshots": 6,
+          "geometryBytes": 73752
+        },
+        {
+          "id": "hat-0.84-weighted-free-noise",
+          "seconds": 7.696963415999999,
+          "passed": true,
+          "error": 0.00007086167800453515,
+          "previousError": 0.00007086167800453515,
+          "errorChange": 0,
+          "geometrySha256": "6d89563ac5022b470c6f4bf8d631d61ac08f3f36576df8b7ec86029a03974b08",
+          "geometryIdentical": true,
+          "geometrySnapshots": 6,
+          "geometryBytes": 73979
+        },
+        {
+          "id": "house-0.64-weighted",
+          "seconds": 3.1197682500000083,
+          "passed": true,
+          "error": 0,
+          "previousError": 0,
+          "errorChange": 0,
+          "geometrySha256": "25c9a6587f3fa09d804a9eba76f34b5201463ca4e78fa437b3918e7ce61c053a",
+          "geometryIdentical": true,
+          "geometrySnapshots": 2,
+          "geometryBytes": 26349
+        },
+        {
+          "id": "house-0.64-weighted-inverted",
+          "seconds": 2.0268909580000036,
+          "passed": true,
+          "error": 0,
+          "previousError": 0,
+          "errorChange": 0,
+          "geometrySha256": "d47f8f0ee78e88a7bd2b33225b5fd22c7eb885a443b2d69944aa3e6a1fa94838",
+          "geometryIdentical": true,
+          "geometrySnapshots": 2,
+          "geometryBytes": 26356
+        },
+        {
+          "id": "house-0.64-weighted-shifted",
+          "seconds": 3.0878142910000026,
+          "passed": true,
+          "error": 0,
+          "previousError": 0,
+          "errorChange": 0,
+          "geometrySha256": "39a9da6e397e619edec90a92f4027c3679bb4f47306e9a8b671fa80459f74a49",
+          "geometryIdentical": true,
+          "geometrySnapshots": 2,
+          "geometryBytes": 26513
+        },
+        {
+          "id": "house-0.64-weighted-free-noise",
+          "seconds": 3.078910833000002,
+          "passed": true,
+          "error": 0,
+          "previousError": 0,
+          "errorChange": 0,
+          "geometrySha256": "25c9a6587f3fa09d804a9eba76f34b5201463ca4e78fa437b3918e7ce61c053a",
+          "geometryIdentical": true,
+          "geometrySnapshots": 2,
+          "geometryBytes": 26349
+        },
+        {
+          "id": "house-0.84-weighted",
+          "seconds": 6.549702665999997,
+          "passed": true,
+          "error": 0,
+          "previousError": 0,
+          "errorChange": 0,
+          "geometrySha256": "200599934ea9dcde6ed0f93eac39da1aeaf6bcbd66122de7d16c347cba461b37",
+          "geometryIdentical": true,
+          "geometrySnapshots": 5,
+          "geometryBytes": 61506
+        },
+        {
+          "id": "house-0.84-weighted-inverted",
+          "seconds": 6.95958858299999,
+          "passed": true,
+          "error": 0.003932823129251701,
+          "previousError": 0.003932823129251701,
+          "errorChange": 0,
+          "geometrySha256": "54df92aedaf7bad3ecdfe97a80b693c06bd9f79979d2636e61f56e0eb6a1a313",
+          "geometryIdentical": true,
+          "geometrySnapshots": 6,
+          "geometryBytes": 73808
+        },
+        {
+          "id": "house-0.84-weighted-shifted",
+          "seconds": 6.83840800000001,
+          "passed": true,
+          "error": 0,
+          "previousError": 0,
+          "errorChange": 0,
+          "geometrySha256": "02072a02639069b7a8aa09b0eb2a261792a3142394b1ce3b6fc7d7a95fc445a8",
+          "geometryIdentical": true,
+          "geometrySnapshots": 6,
+          "geometryBytes": 73819
+        },
+        {
+          "id": "house-0.84-weighted-free-noise",
+          "seconds": 6.641095915999991,
+          "passed": true,
+          "error": 0,
+          "previousError": 0,
+          "errorChange": 0,
+          "geometrySha256": "200599934ea9dcde6ed0f93eac39da1aeaf6bcbd66122de7d16c347cba461b37",
+          "geometryIdentical": true,
+          "geometrySnapshots": 6,
+          "geometryBytes": 73851
+        },
+        {
+          "id": "circle-0.64-weighted",
+          "seconds": 1.9645860000000102,
+          "passed": true,
+          "error": 0.0003662109375,
+          "previousError": 0.0003662109375,
+          "errorChange": 0,
+          "geometrySha256": "ebe5a56c5f2ebb0b4420e86c32ab8c42e32f2befd03e7d3754a6e7928346b3d7",
+          "geometryIdentical": true,
+          "geometrySnapshots": 2,
+          "geometryBytes": 26658
+        },
+        {
+          "id": "circle-0.64-weighted-inverted",
+          "seconds": 1.963389832999994,
+          "passed": true,
+          "error": 0.0003662109375,
+          "previousError": 0.0003662109375,
+          "errorChange": 0,
+          "geometrySha256": "225dfc75b4d2bac0974ea5e26566dbb409ff7ff661d1b73f7b22974324952ef6",
+          "geometryIdentical": true,
+          "geometrySnapshots": 2,
+          "geometryBytes": 26658
+        },
+        {
+          "id": "circle-0.64-weighted-shifted",
+          "seconds": 1.8944863750000076,
+          "passed": true,
+          "error": 0.0003662109375,
+          "previousError": 0.0003662109375,
+          "errorChange": 0,
+          "geometrySha256": "cfde5ae4df6a141b70716aaf096b603750a48cc06506b7ddfc2950f51a25ae8c",
+          "geometryIdentical": true,
+          "geometrySnapshots": 2,
+          "geometryBytes": 27178
+        },
+        {
+          "id": "circle-0.64-weighted-free-noise",
+          "seconds": 1.8643407080000034,
+          "passed": true,
+          "error": 0.0003662109375,
+          "previousError": 0.0003662109375,
+          "errorChange": 0,
+          "geometrySha256": "ebe5a56c5f2ebb0b4420e86c32ab8c42e32f2befd03e7d3754a6e7928346b3d7",
+          "geometryIdentical": true,
+          "geometrySnapshots": 2,
+          "geometryBytes": 26685
+        },
+        {
+          "id": "circle-0.84-weighted",
+          "seconds": 7.771006708000001,
+          "passed": true,
+          "error": 0.0002834467120181406,
+          "previousError": 0.0002834467120181406,
+          "errorChange": 0,
+          "geometrySha256": "1f99ac7734abfc4129ef34e0bab1c93f2a55868e0f42254ccfc04c0db00e43f3",
+          "geometryIdentical": true,
+          "geometrySnapshots": 7,
+          "geometryBytes": 86076
+        },
+        {
+          "id": "circle-0.84-weighted-inverted",
+          "seconds": 7.935487166999985,
+          "passed": true,
+          "error": 0.0002834467120181406,
+          "previousError": 0.0002834467120181406,
+          "errorChange": 0,
+          "geometrySha256": "a44508ab4f68ad50304a73fe8844a2de6284b9deb7ed6a4facc7ced8826c6a19",
+          "geometryIdentical": true,
+          "geometrySnapshots": 6,
+          "geometryBytes": 73900
+        },
+        {
+          "id": "circle-0.84-weighted-shifted",
+          "seconds": 6.7218430419999935,
+          "passed": true,
+          "error": 0.00031887755102040814,
+          "previousError": 0.00031887755102040814,
+          "errorChange": 0,
+          "geometrySha256": "f0e0bc352a8cf5a24adbd8bada4cf840d76dc7f739d77b87cb8bb0e654f993f4",
+          "geometryIdentical": true,
+          "geometrySnapshots": 6,
+          "geometryBytes": 73843
+        },
+        {
+          "id": "circle-0.84-weighted-free-noise",
+          "seconds": 7.097889333999977,
+          "passed": true,
+          "error": 0.0002834467120181406,
+          "previousError": 0.0002834467120181406,
+          "errorChange": 0,
+          "geometrySha256": "1f99ac7734abfc4129ef34e0bab1c93f2a55868e0f42254ccfc04c0db00e43f3",
+          "geometryIdentical": true,
+          "geometrySnapshots": 6,
+          "geometryBytes": 73805
+        }
+      ]
+    }
+  },
+  "browser": [
+    {
+      "browser": "firefox",
+      "browserVersion": "146.0.1",
+      "name": "top-hat",
+      "passed": true,
+      "sharedSpans": 41,
+      "sourceError": 0.0032064909297052154,
+      "geometrySha256": "0d45809cd308298bf4bc058718d4508e4ad175a951e4fa1bd395ee362b53d3dc",
+      "geometryIdentical": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.021,
+        "prepareRoundTripSeconds": 0.203,
+        "preparedToSolveRequestSeconds": 0,
+        "solveRoundTripSeconds": 16.561,
+        "resultToReadySeconds": 0.302,
+        "clickToReadySeconds": 17.087
+      },
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.0032064909297052154,
+        "sourceError": 0.0032064909297052154
+      }
+    },
+    {
+      "browser": "firefox",
+      "browserVersion": "146.0.1",
+      "name": "top-hat-independent",
+      "passed": true,
+      "sharedSpans": 30,
+      "sourceError": 0.0029584750566893424,
+      "geometrySha256": "7ec6b1d71dca13741a74c4de721d9498e2258da852cedf6a84ad5fb6abb2356a",
+      "geometryIdentical": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.016,
+        "prepareRoundTripSeconds": 0.202,
+        "preparedToSolveRequestSeconds": 0,
+        "solveRoundTripSeconds": 10.958,
+        "resultToReadySeconds": 0.098,
+        "clickToReadySeconds": 11.274
+      },
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0.00036875
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0.000325
+          }
+        ],
+        "originalSourceError": 0.0029584750566893424,
+        "sourceError": 0.0029584750566893424
+      }
+    },
+    {
+      "browser": "firefox",
+      "browserVersion": "146.0.1",
+      "name": "top-hat-anti",
+      "passed": true,
+      "sharedSpans": 39,
+      "sourceError": 0.0031887755102040817,
+      "geometrySha256": "c19720926b0f39a64577976c2b81cd28c2aaad1d80d3fb592291ad08ec4bdc9f",
+      "geometryIdentical": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.02,
+        "prepareRoundTripSeconds": 0.09,
+        "preparedToSolveRequestSeconds": 0,
+        "solveRoundTripSeconds": 11.901,
+        "resultToReadySeconds": 0.231,
+        "clickToReadySeconds": 12.242
+      },
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.0031887755102040817,
+        "sourceError": 0.0031887755102040817
+      }
+    },
+    {
+      "browser": "firefox",
+      "browserVersion": "146.0.1",
+      "name": "star",
+      "passed": true,
+      "sharedSpans": 12,
+      "sourceError": 0.0016,
+      "geometrySha256": "f3afeaf74cf3c71f0dff6952af4b27f849d818637d89079ea87b64b622593788",
+      "geometryIdentical": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.012,
+        "prepareRoundTripSeconds": 0.032,
+        "preparedToSolveRequestSeconds": 0,
+        "solveRoundTripSeconds": 4.329,
+        "resultToReadySeconds": 0.094,
+        "clickToReadySeconds": 4.467
+      },
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0.0000625
+          }
+        ],
+        "originalSourceError": 0.0016,
+        "sourceError": 0.0016
+      }
+    },
+    {
+      "browser": "firefox",
+      "browserVersion": "146.0.1",
+      "name": "hunodan",
+      "passed": true,
+      "sharedSpans": 5,
+      "sourceError": 0.00944375,
+      "geometrySha256": "6f1ce0ef0778395445135ef2f4c27ca1b8ec58550256878412fee5eba4ce7f8c",
+      "geometryIdentical": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.006,
+        "prepareRoundTripSeconds": 0.147,
+        "preparedToSolveRequestSeconds": 0,
+        "solveRoundTripSeconds": 6.42,
+        "resultToReadySeconds": 0.255,
+        "clickToReadySeconds": 6.828
+      },
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.00944375,
+        "sourceError": 0.00944375
+      }
+    },
+    {
+      "browser": "firefox",
+      "browserVersion": "146.0.1",
+      "name": "circle",
+      "passed": true,
+      "sharedSpans": 9,
+      "sourceError": 0.0009375,
+      "geometrySha256": "05f4a9c3c3d3cdd3aa13f5bb7a77a271867d2329cf1d1e9c67d74b9c069a00c1",
+      "geometryIdentical": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.007,
+        "prepareRoundTripSeconds": 0.204,
+        "preparedToSolveRequestSeconds": 0.001,
+        "solveRoundTripSeconds": 3.662,
+        "resultToReadySeconds": 0.032,
+        "clickToReadySeconds": 3.906
+      },
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0.00005
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0.000053125
+          }
+        ],
+        "originalSourceError": 0.0009375,
+        "sourceError": 0.0009375
+      }
+    },
+    {
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "name": "top-hat",
+      "passed": true,
+      "sharedSpans": 41,
+      "sourceError": 0.0032064909297052154,
+      "geometrySha256": "8d280c1ce866e51710c559a375f56f0c770668b4658226c3cc47c9dd843428dc",
+      "geometryIdentical": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.024599999964237212,
+        "prepareRoundTripSeconds": 0.24510000002384186,
+        "preparedToSolveRequestSeconds": 0.00009999996423721313,
+        "solveRoundTripSeconds": 9.114600000023842,
+        "resultToReadySeconds": 0.29410000002384185,
+        "clickToReadySeconds": 9.6785
+      },
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.0032064909297052154,
+        "sourceError": 0.0032064909297052154
+      }
+    },
+    {
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "name": "top-hat-independent",
+      "passed": true,
+      "sharedSpans": 30,
+      "sourceError": 0.0029584750566893424,
+      "geometrySha256": "327efa731a902821f9eb8e3800c0bf524d44b99bc376b9f3cb600fa693d38598",
+      "geometryIdentical": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.01819999998807907,
+        "prepareRoundTripSeconds": 0.24360000002384186,
+        "preparedToSolveRequestSeconds": 0.00009999996423721313,
+        "solveRoundTripSeconds": 5.750199999988079,
+        "resultToReadySeconds": 0.13160000002384187,
+        "clickToReadySeconds": 6.143699999988079
+      },
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0.00036875
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0.000325
+          }
+        ],
+        "originalSourceError": 0.0029584750566893424,
+        "sourceError": 0.0029584750566893424
+      }
+    },
+    {
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "name": "top-hat-anti",
+      "passed": true,
+      "sharedSpans": 39,
+      "sourceError": 0.0031887755102040817,
+      "geometrySha256": "be23cff721afd97a306eebd8cab151e648d4411e2e51d2bde3bd62fc8920611b",
+      "geometryIdentical": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.02019999998807907,
+        "prepareRoundTripSeconds": 0.10389999997615815,
+        "preparedToSolveRequestSeconds": 0.00020000004768371582,
+        "solveRoundTripSeconds": 7.3915,
+        "resultToReadySeconds": 0.29429999995231626,
+        "clickToReadySeconds": 7.810099999964237
+      },
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.0031887755102040817,
+        "sourceError": 0.0031887755102040817
+      }
+    },
+    {
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "name": "star",
+      "passed": true,
+      "sharedSpans": 12,
+      "sourceError": 0.0016,
+      "geometrySha256": "f3afeaf74cf3c71f0dff6952af4b27f849d818637d89079ea87b64b622593788",
+      "geometryIdentical": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.013300000011920929,
+        "prepareRoundTripSeconds": 0.04380000001192093,
+        "preparedToSolveRequestSeconds": 0.00009999996423721313,
+        "solveRoundTripSeconds": 1.7127000000476837,
+        "resultToReadySeconds": 0.09269999998807907,
+        "clickToReadySeconds": 1.8626000000238419
+      },
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0.0000625
+          }
+        ],
+        "originalSourceError": 0.0016,
+        "sourceError": 0.0016
+      }
+    },
+    {
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "name": "hunodan",
+      "passed": true,
+      "sharedSpans": 5,
+      "sourceError": 0.00944375,
+      "geometrySha256": "34774e21e848ea0f69828769a8e99998812cc32b213d2e361ac3b23d0e55cb44",
+      "geometryIdentical": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.005200000047683716,
+        "prepareRoundTripSeconds": 0.14989999997615813,
+        "preparedToSolveRequestSeconds": 0.00010000002384185791,
+        "solveRoundTripSeconds": 4.025099999964238,
+        "resultToReadySeconds": 0.434,
+        "clickToReadySeconds": 4.614300000011921
+      },
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.00944375,
+        "sourceError": 0.00944375
+      }
+    },
+    {
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "name": "circle",
+      "passed": true,
+      "sharedSpans": 9,
+      "sourceError": 0.00095,
+      "geometrySha256": "fb130cbd39e35156bf2ab78429d07904f10f9b214950f9563646b85b12b74ed0",
+      "geometryIdentical": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.005600000023841858,
+        "prepareRoundTripSeconds": 0.22380000001192094,
+        "preparedToSolveRequestSeconds": 0.00009999996423721313,
+        "solveRoundTripSeconds": 1.6669000000357628,
+        "resultToReadySeconds": 0.0365,
+        "clickToReadySeconds": 1.9329000000357628
+      },
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0.00005
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0.000053125
+          }
+        ],
+        "originalSourceError": 0.00095,
+        "sourceError": 0.00095
+      }
+    },
+    {
+      "browser": "webkit",
+      "browserVersion": "26.0",
+      "name": "top-hat",
+      "passed": true,
+      "sharedSpans": 41,
+      "sourceError": 0.0032064909297052154,
+      "geometrySha256": "789dc502db433aa6a05518fda08593211977b64caf12ed579e481dbd7b5ca1c5",
+      "geometryIdentical": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.019,
+        "prepareRoundTripSeconds": 0.301,
+        "preparedToSolveRequestSeconds": 0,
+        "solveRoundTripSeconds": 12.263,
+        "resultToReadySeconds": 0.563,
+        "clickToReadySeconds": 13.146
+      },
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.0032064909297052154,
+        "sourceError": 0.0032064909297052154
+      }
+    },
+    {
+      "browser": "webkit",
+      "browserVersion": "26.0",
+      "name": "top-hat-independent",
+      "passed": true,
+      "sharedSpans": 30,
+      "sourceError": 0.0029584750566893424,
+      "geometrySha256": "79b235d72c5259ad4c993b18547a4b255105c1cc2f197f6a003926dde8f9a319",
+      "geometryIdentical": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.016000000000000115,
+        "prepareRoundTripSeconds": 0.28199999999999986,
+        "preparedToSolveRequestSeconds": 0.001,
+        "solveRoundTripSeconds": 7.767,
+        "resultToReadySeconds": 0.074,
+        "clickToReadySeconds": 8.14
+      },
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0.00036875
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0.000325
+          }
+        ],
+        "originalSourceError": 0.0029584750566893424,
+        "sourceError": 0.0029584750566893424
+      }
+    },
+    {
+      "browser": "webkit",
+      "browserVersion": "26.0",
+      "name": "top-hat-anti",
+      "passed": true,
+      "sharedSpans": 39,
+      "sourceError": 0.0031887755102040817,
+      "geometrySha256": "a88af61f1d6f31cbd4cb93702d5a6ff951911bd4c5565e9c9d7af8cc47c66964",
+      "geometryIdentical": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.032,
+        "prepareRoundTripSeconds": 0.274,
+        "preparedToSolveRequestSeconds": 0.001,
+        "solveRoundTripSeconds": 12.354,
+        "resultToReadySeconds": 0.177,
+        "clickToReadySeconds": 12.838
+      },
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.0031887755102040817,
+        "sourceError": 0.0031887755102040817
+      }
+    },
+    {
+      "browser": "webkit",
+      "browserVersion": "26.0",
+      "name": "star",
+      "passed": true,
+      "sharedSpans": 12,
+      "sourceError": 0.0016,
+      "geometrySha256": "f3afeaf74cf3c71f0dff6952af4b27f849d818637d89079ea87b64b622593788",
+      "geometryIdentical": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.01,
+        "prepareRoundTripSeconds": 0.043,
+        "preparedToSolveRequestSeconds": 0,
+        "solveRoundTripSeconds": 2.027,
+        "resultToReadySeconds": 0.099,
+        "clickToReadySeconds": 2.179
+      },
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0.0000625
+          }
+        ],
+        "originalSourceError": 0.0016,
+        "sourceError": 0.0016
+      }
+    },
+    {
+      "browser": "webkit",
+      "browserVersion": "26.0",
+      "name": "hunodan",
+      "passed": true,
+      "sharedSpans": 5,
+      "sourceError": 0.00944375,
+      "geometrySha256": "84d6e09d41ee2b3acd5464e8ef3b8d156d275ff04a3a1b5c660988b006f1822d",
+      "geometryIdentical": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.006,
+        "prepareRoundTripSeconds": 0.20499999999999977,
+        "preparedToSolveRequestSeconds": 0,
+        "solveRoundTripSeconds": 5.775,
+        "resultToReadySeconds": 0.1740000000000009,
+        "clickToReadySeconds": 6.160000000000001
+      },
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.00944375,
+        "sourceError": 0.00944375
+      }
+    },
+    {
+      "browser": "webkit",
+      "browserVersion": "26.0",
+      "name": "circle",
+      "passed": true,
+      "sharedSpans": 9,
+      "sourceError": 0.0009375,
+      "geometrySha256": "564a64677df9f85dd4d3132ed314ac532bf792867a5d169834a8434c730ad0f6",
+      "geometryIdentical": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.005,
+        "prepareRoundTripSeconds": 0.23,
+        "preparedToSolveRequestSeconds": 0.001,
+        "solveRoundTripSeconds": 2.135,
+        "resultToReadySeconds": 0.056,
+        "clickToReadySeconds": 2.427
+      },
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0.00005
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0.000053125
+          }
+        ],
+        "originalSourceError": 0.0009375,
+        "sourceError": 0.0009375
+      }
+    }
+  ],
+  "controls": [
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 950
+      },
+      "pageErrors": [],
+      "dragSize": 74,
+      "progressEvents": 121,
+      "progressDisplays": 61,
+      "geometrySnapshots": 16,
+      "snapshotBytes": 269546,
+      "candidateStrokes": {
+        "left": 44,
+        "right": 44
+      },
+      "longTasks": [
+        {
+          "start": 14261.700000047684,
+          "duration": 298
+        }
+      ],
+      "error": 0.0031887755102040817,
+      "passed": true,
+      "previewWindow": {
+        "start": 8178.300000011921,
+        "end": 13194.800000011921,
+        "longTasks": []
+      },
+      "artifact": "tmp/live-geometry-controls-final/1440-progress.json"
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "pageErrors": [],
+      "dragSize": 74,
+      "progressEvents": 121,
+      "progressDisplays": 61,
+      "geometrySnapshots": 16,
+      "snapshotBytes": 269502,
+      "candidateStrokes": {
+        "left": 44,
+        "right": 44
+      },
+      "longTasks": [
+        {
+          "start": 15156.899999976158,
+          "duration": 301
+        }
+      ],
+      "error": 0.0031887755102040817,
+      "passed": true,
+      "previewWindow": {
+        "start": 8910.800000011921,
+        "end": 14065,
+        "longTasks": []
+      },
+      "artifact": "tmp/live-geometry-controls-final/390-progress.json"
+    }
+  ],
+  "fallback": {
+    "browser": "chromium",
+    "name": "top-hat-anti",
+    "numericalBackend": "javascript",
+    "blockedKernelRequests": 1,
+    "sourceError": 0.0031887755102040817,
+    "sharedSpans": 39,
+    "passed": true
+  },
+  "budgetRegression": {
+    "beforeCommit": "eebbffe03fc161e7d636bd86122a73cd3a4d9ae1",
+    "fixedCommit": "670deb9",
+    "before": {
+      "error": 0.00456172052154195,
+      "sharedSpans": 25,
+      "refinementSeconds": 1.744
+    },
+    "after": {
+      "error": 0.0029584750566893424,
+      "sharedSpans": 30,
+      "refinementSeconds": 3.651
+    },
+    "explanation": "The first-candidate threshold counted clearance/polishing reserves as refinement time. The correction checks usable refinement time; short requests retain their original path."
+  },
+  "interpretation": "Timed fits can choose different checkpoints. All 22 Hunodan and 18 browser geometries are unchanged; 31/32 weighted geometries are unchanged. One ten-second synthetic fit differs by three protected source pixels (6 mismatches before, 9 after). Fixed-step refinement is exactly equal with and without snapshots. These runs do not establish a uniform solver speed improvement.",
+  "artifacts": {
+    "tmp/live-geometry-hunodan-final/results.json": "397eb8fbcbc2b2f06ec84a3163a0c39b50e881e4f5f6cd9543f25042d6300ba6",
+    "tmp/live-geometry-weighted-final/results.json": "9daed8ad6f7a61ec85d6b318aaaeef1f9c4655edb2baf0e8891f843e8962fb99",
+    "tmp/live-geometry-browser-final/results.json": "cfae438488182cb70e48a831f42d89a525569db58d7ecbd63be5582f08f067a7",
+    "tmp/live-geometry-fallback-final/results.json": "3338b016120666582aa152aeafe94b91002b4c1168aec7fded5d17e0d0f41d6e",
+    "tmp/live-geometry-controls-final/results.json": "aff78b5f7db55df49aaf5326b8625965bd76b60596aff6f26a59d230ad8c5a57",
+    "tmp/live-geometry-controls-final/1440-progress.json": "e43b22be212fe5ebcf219be5e7861f8503b9d0dd956194f6f86f8d646250276b",
+    "tmp/live-geometry-controls-final/390-progress.json": "d3a089de2d9421d3c4ef2c2e60b8a12abc528b37fb7a228e7ec884eaf82ebc57",
+    "tmp/live-geometry-final-test.log": "d00916ae2fb2572aeb89b4a9e23831ab16a3236283d817d368b426a5bbf68142",
+    "tmp/live-geometry-final-check.log": "1be3902fa1acaae6b0990406476a41369d095dc32dda58ba4b2a1df01155978b",
+    "tmp/live-geometry-final-lint.log": "a552732ebea6b64b49ac0a1299170db75e8c45dbbc66c284f28e99be5613e5c7",
+    "tmp/live-geometry-final-build.log": "5379881f03fec192be50432bd5128daf808207161cf27476644a71518851cfbc",
+    "tmp/live-geometry-budget-before.log": "1c864656ea2d567a618b03e496f1aebeac4a2d6bd5d9dfd396b7d9ad895f8a57",
+    "tmp/live-geometry-budget-final.log": "bc23629a0b61fb9fcbaae23b678aa77db4d61127acfb32c5b851eb362c6b68dc",
+    "tmp/live-geometry-browser/results.json": "cc25f09859bc25ab4b8be359d6e96b9ceec3609a26c139cde789a63fbea8dfc9",
+    "tmp/live-geometry-firefox-reference/results.json": "24804e748b82ef10201a890c4f11dc568fb68517e56cb9d1aab86c27353237d2",
+    "tmp/live-geometry-hunodan/results.json": "c2b02e0bd529c5486f9872b090575a997735c400cd7d161dd4a07f6db7a93311",
+    "tmp/live-geometry-weighted/results.json": "dd819d6af6879f05155f54d5bfbb500dbce88d39e97776eb45456bf793bb1c7b",
+    "tmp/live-geometry-served-final.json": "a526248108a5827a2ae2bc07a2a001be0468f2c23ae1f0847b78048c797a5c1e"
+  }
+}

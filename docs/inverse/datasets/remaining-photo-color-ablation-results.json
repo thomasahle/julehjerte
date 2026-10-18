@@ -1,0 +1,822 @@
+{
+  "schema": "remaining-photo-color-ablation-results-1",
+  "status": "complete",
+  "state": {
+    "status": "complete",
+    "seconds": 35.63407275,
+    "sourceFilesVerified": 1084
+  },
+  "method": "Existing red-white-mixture classifier on the same four photo/crop combinations as the preceding crop study. Photo bytes, coordinates, observation coverage and all fitting settings except classifier mode are identical. The fitter receives binary masks in both arms; no soft-objective change.",
+  "outcome": {
+    "fits": 4,
+    "derivedMaskCandidatePasses": 3,
+    "automaticBenchmarkChange": 0,
+    "runtimeChange": false
+  },
+  "findings": [
+    "Both star crops pass the candidate checks at 0.646875% and 0.706875% disagreement against their changed masks. Rounded central-star tips and imperfect outer joins remain. True physical identity of the earlier lower-edge fragments is unresolved.",
+    "The automatic bauble crop still fails feature retention; the historical crop passes at 1.18375% disagreement against its changed target, despite discarding real frame detail.",
+    "For the automatic bauble crop, reviewed source-material agreement worsens from 21/26 to 18/26. All eight reviewed upper/lower red-frame samples are now classified as the other paper. For the historical crop it worsens from 19/26 to 18/26, with three samples outside the crop in both arms. Exported weave sample scores follow the classification scores.",
+    "The lower mixture target error is therefore not evidence of better photographic reconstruction. This rerun confirms the failure previously documented in source-photo-material-review.md, rather than establishing a new classifier improvement."
+  ],
+  "decision": "Keep the existing default. Do not count classifier-dependent acceptance as additional automatic benchmark successes. No production or neural model change.",
+  "visualReview": "Both two-row montages inspected in full. Each row shows the photograph, original binary mask, mixture binary mask and independent exported weave. The star preserves the main motif but has rounded corners. The bauble frame is visibly absent or fragmented before fitting; exported curves reproduce those omissions and introduce thin seams.",
+  "limits": [
+    "Two development photos, two pre-existing frozen crop proposals each; neither historical crop is asserted to be ground truth.",
+    "Different classifiers produce different targets. Sparse source-material samples are independent of fitting but are not dense segmentation or cutting-path ground truth.",
+    "No physical assembly or editable-export audit performed for this diagnostic; production remains the previously release-verified runtime."
+  ],
+  "results": [
+    {
+      "id": "outline-star",
+      "variant": "saved-automatic",
+      "status": "validated",
+      "passed": true,
+      "seconds": 6.791085625,
+      "maskSha256": "2a991c5fbc6d0e99c98600d5562274e2e1c6fb6194d08054b607038ce1b70e27",
+      "independentError": {
+        "mismatchPixels": 1035,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.00646875
+      },
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "report": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/remaining-color-ablation-v1/outline-star-saved-automatic/results.json",
+      "baselineReport": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/remaining-crop-ablation-v1/outline-star-saved-automatic/results.json",
+      "missingFeatures": []
+    },
+    {
+      "id": "outline-star",
+      "variant": "historical-visual",
+      "status": "validated",
+      "passed": true,
+      "seconds": 8.690004875000001,
+      "maskSha256": "4c892ffee698438a0194f1e3602ddc542f828970e55d3b394c999eb45a21c015",
+      "independentError": {
+        "mismatchPixels": 1131,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.00706875
+      },
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "report": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/remaining-color-ablation-v1/outline-star-historical-visual/results.json",
+      "baselineReport": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/remaining-crop-ablation-v1/outline-star-historical-visual/results.json",
+      "missingFeatures": []
+    },
+    {
+      "id": "bauble",
+      "variant": "saved-automatic",
+      "status": "failed",
+      "passed": false,
+      "seconds": 9.82176275,
+      "maskSha256": "e8c81ccccae5c4d53a1c83b3bd88c6a67bb1fb05e95da2a95c390a02a062e2bd",
+      "independentError": {
+        "mismatchPixels": 1895,
+        "observedPixels": 155413,
+        "observedFraction": 0.97133125,
+        "mismatchFraction": 0.012193317161370027,
+        "weightMass": 155413,
+        "mismatchWeight": 1895,
+        "wholeMismatchFraction": 0.012193317161370027,
+        "protectedPixels": 155413,
+        "protectedMismatchFraction": 0.012193317161370027,
+        "editablePixels": 0,
+        "editableChangeFraction": null
+      },
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "report": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/remaining-color-ablation-v1/bauble-saved-automatic/results.json",
+      "baselineReport": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/remaining-crop-ablation-v1/bauble-saved-automatic/results.json",
+      "missingFeatures": [
+        {
+          "value": 1,
+          "areaMm2": 8.875,
+          "centerMm": [
+            78.08978873239437,
+            57.54401408450704
+          ],
+          "weightMass": 142,
+          "retainedFraction": 0
+        }
+      ],
+      "materialReview": {
+        "baseline": {
+          "classified": {
+            "total": 26,
+            "covered": 26,
+            "correct": 21,
+            "mismatched": 5,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 0.8076923076923077,
+            "agreementCovered": 0.8076923076923077,
+            "phase": 1,
+            "phaseInferred": true,
+            "phaseAmbiguous": false,
+            "allReviewedSamplesMatch": false,
+            "groups": [
+              {
+                "id": "bauble-body",
+                "paper": 0,
+                "total": 4,
+                "covered": 4,
+                "correct": 4,
+                "mismatched": 0,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 1,
+                "agreementCovered": 1
+              },
+              {
+                "id": "upper-frame",
+                "paper": 0,
+                "total": 4,
+                "covered": 4,
+                "correct": 2,
+                "mismatched": 2,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 0.5,
+                "agreementCovered": 0.5
+              },
+              {
+                "id": "lower-frame",
+                "paper": 0,
+                "total": 4,
+                "covered": 4,
+                "correct": 1,
+                "mismatched": 3,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 0.25,
+                "agreementCovered": 0.25
+              },
+              {
+                "id": "corner-blocks",
+                "paper": 0,
+                "total": 4,
+                "covered": 4,
+                "correct": 4,
+                "mismatched": 0,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 1,
+                "agreementCovered": 1
+              },
+              {
+                "id": "white-gaps",
+                "paper": 1,
+                "total": 10,
+                "covered": 10,
+                "correct": 10,
+                "mismatched": 0,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 1,
+                "agreementCovered": 1
+              }
+            ],
+            "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+          },
+          "exported": {
+            "total": 26,
+            "covered": 26,
+            "correct": 21,
+            "mismatched": 5,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 0.8076923076923077,
+            "agreementCovered": 0.8076923076923077,
+            "phase": 1,
+            "phaseInferred": false,
+            "phaseAmbiguous": false,
+            "allReviewedSamplesMatch": false,
+            "groups": [
+              {
+                "id": "bauble-body",
+                "paper": 0,
+                "total": 4,
+                "covered": 4,
+                "correct": 4,
+                "mismatched": 0,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 1,
+                "agreementCovered": 1
+              },
+              {
+                "id": "upper-frame",
+                "paper": 0,
+                "total": 4,
+                "covered": 4,
+                "correct": 2,
+                "mismatched": 2,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 0.5,
+                "agreementCovered": 0.5
+              },
+              {
+                "id": "lower-frame",
+                "paper": 0,
+                "total": 4,
+                "covered": 4,
+                "correct": 1,
+                "mismatched": 3,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 0.25,
+                "agreementCovered": 0.25
+              },
+              {
+                "id": "corner-blocks",
+                "paper": 0,
+                "total": 4,
+                "covered": 4,
+                "correct": 4,
+                "mismatched": 0,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 1,
+                "agreementCovered": 1
+              },
+              {
+                "id": "white-gaps",
+                "paper": 1,
+                "total": 10,
+                "covered": 10,
+                "correct": 10,
+                "mismatched": 0,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 1,
+                "agreementCovered": 1
+              }
+            ],
+            "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+          }
+        },
+        "mixture": {
+          "classified": {
+            "total": 26,
+            "covered": 26,
+            "correct": 18,
+            "mismatched": 8,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 0.6923076923076923,
+            "agreementCovered": 0.6923076923076923,
+            "phase": 1,
+            "phaseInferred": true,
+            "phaseAmbiguous": false,
+            "allReviewedSamplesMatch": false,
+            "groups": [
+              {
+                "id": "bauble-body",
+                "paper": 0,
+                "total": 4,
+                "covered": 4,
+                "correct": 4,
+                "mismatched": 0,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 1,
+                "agreementCovered": 1
+              },
+              {
+                "id": "upper-frame",
+                "paper": 0,
+                "total": 4,
+                "covered": 4,
+                "correct": 0,
+                "mismatched": 4,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 0,
+                "agreementCovered": 0
+              },
+              {
+                "id": "lower-frame",
+                "paper": 0,
+                "total": 4,
+                "covered": 4,
+                "correct": 0,
+                "mismatched": 4,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 0,
+                "agreementCovered": 0
+              },
+              {
+                "id": "corner-blocks",
+                "paper": 0,
+                "total": 4,
+                "covered": 4,
+                "correct": 4,
+                "mismatched": 0,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 1,
+                "agreementCovered": 1
+              },
+              {
+                "id": "white-gaps",
+                "paper": 1,
+                "total": 10,
+                "covered": 10,
+                "correct": 10,
+                "mismatched": 0,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 1,
+                "agreementCovered": 1
+              }
+            ],
+            "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+          },
+          "exported": {
+            "total": 26,
+            "covered": 26,
+            "correct": 18,
+            "mismatched": 8,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 0.6923076923076923,
+            "agreementCovered": 0.6923076923076923,
+            "phase": 1,
+            "phaseInferred": false,
+            "phaseAmbiguous": false,
+            "allReviewedSamplesMatch": false,
+            "groups": [
+              {
+                "id": "bauble-body",
+                "paper": 0,
+                "total": 4,
+                "covered": 4,
+                "correct": 4,
+                "mismatched": 0,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 1,
+                "agreementCovered": 1
+              },
+              {
+                "id": "upper-frame",
+                "paper": 0,
+                "total": 4,
+                "covered": 4,
+                "correct": 0,
+                "mismatched": 4,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 0,
+                "agreementCovered": 0
+              },
+              {
+                "id": "lower-frame",
+                "paper": 0,
+                "total": 4,
+                "covered": 4,
+                "correct": 0,
+                "mismatched": 4,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 0,
+                "agreementCovered": 0
+              },
+              {
+                "id": "corner-blocks",
+                "paper": 0,
+                "total": 4,
+                "covered": 4,
+                "correct": 4,
+                "mismatched": 0,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 1,
+                "agreementCovered": 1
+              },
+              {
+                "id": "white-gaps",
+                "paper": 1,
+                "total": 10,
+                "covered": 10,
+                "correct": 10,
+                "mismatched": 0,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 1,
+                "agreementCovered": 1
+              }
+            ],
+            "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+          }
+        }
+      }
+    },
+    {
+      "id": "bauble",
+      "variant": "historical-visual",
+      "status": "validated",
+      "passed": true,
+      "seconds": 5.825091542,
+      "maskSha256": "6fc43d87b860c6b8a4b8efdc7e96417fe2e46a71cad8e444370dc13ff1e5e487",
+      "independentError": {
+        "mismatchPixels": 1894,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.0118375
+      },
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "report": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/remaining-color-ablation-v1/bauble-historical-visual/results.json",
+      "baselineReport": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/remaining-crop-ablation-v1/bauble-historical-visual/results.json",
+      "missingFeatures": [],
+      "materialReview": {
+        "baseline": {
+          "classified": {
+            "total": 26,
+            "covered": 23,
+            "correct": 19,
+            "mismatched": 4,
+            "outsideCrop": 3,
+            "unavailable": 0,
+            "coverage": 0.8846153846153846,
+            "agreementAllSamples": 0.7307692307692307,
+            "agreementCovered": 0.8260869565217391,
+            "phase": 1,
+            "phaseInferred": true,
+            "phaseAmbiguous": false,
+            "allReviewedSamplesMatch": false,
+            "groups": [
+              {
+                "id": "bauble-body",
+                "paper": 0,
+                "total": 4,
+                "covered": 4,
+                "correct": 4,
+                "mismatched": 0,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 1,
+                "agreementCovered": 1
+              },
+              {
+                "id": "upper-frame",
+                "paper": 0,
+                "total": 4,
+                "covered": 1,
+                "correct": 0,
+                "mismatched": 1,
+                "outsideCrop": 3,
+                "unavailable": 0,
+                "coverage": 0.25,
+                "agreementAllSamples": 0,
+                "agreementCovered": 0
+              },
+              {
+                "id": "lower-frame",
+                "paper": 0,
+                "total": 4,
+                "covered": 4,
+                "correct": 1,
+                "mismatched": 3,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 0.25,
+                "agreementCovered": 0.25
+              },
+              {
+                "id": "corner-blocks",
+                "paper": 0,
+                "total": 4,
+                "covered": 4,
+                "correct": 4,
+                "mismatched": 0,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 1,
+                "agreementCovered": 1
+              },
+              {
+                "id": "white-gaps",
+                "paper": 1,
+                "total": 10,
+                "covered": 10,
+                "correct": 10,
+                "mismatched": 0,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 1,
+                "agreementCovered": 1
+              }
+            ],
+            "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+          },
+          "exported": {
+            "total": 26,
+            "covered": 23,
+            "correct": 20,
+            "mismatched": 3,
+            "outsideCrop": 3,
+            "unavailable": 0,
+            "coverage": 0.8846153846153846,
+            "agreementAllSamples": 0.7692307692307693,
+            "agreementCovered": 0.8695652173913043,
+            "phase": 1,
+            "phaseInferred": false,
+            "phaseAmbiguous": false,
+            "allReviewedSamplesMatch": false,
+            "groups": [
+              {
+                "id": "bauble-body",
+                "paper": 0,
+                "total": 4,
+                "covered": 4,
+                "correct": 4,
+                "mismatched": 0,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 1,
+                "agreementCovered": 1
+              },
+              {
+                "id": "upper-frame",
+                "paper": 0,
+                "total": 4,
+                "covered": 1,
+                "correct": 0,
+                "mismatched": 1,
+                "outsideCrop": 3,
+                "unavailable": 0,
+                "coverage": 0.25,
+                "agreementAllSamples": 0,
+                "agreementCovered": 0
+              },
+              {
+                "id": "lower-frame",
+                "paper": 0,
+                "total": 4,
+                "covered": 4,
+                "correct": 2,
+                "mismatched": 2,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 0.5,
+                "agreementCovered": 0.5
+              },
+              {
+                "id": "corner-blocks",
+                "paper": 0,
+                "total": 4,
+                "covered": 4,
+                "correct": 4,
+                "mismatched": 0,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 1,
+                "agreementCovered": 1
+              },
+              {
+                "id": "white-gaps",
+                "paper": 1,
+                "total": 10,
+                "covered": 10,
+                "correct": 10,
+                "mismatched": 0,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 1,
+                "agreementCovered": 1
+              }
+            ],
+            "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+          }
+        },
+        "mixture": {
+          "classified": {
+            "total": 26,
+            "covered": 23,
+            "correct": 18,
+            "mismatched": 5,
+            "outsideCrop": 3,
+            "unavailable": 0,
+            "coverage": 0.8846153846153846,
+            "agreementAllSamples": 0.6923076923076923,
+            "agreementCovered": 0.782608695652174,
+            "phase": 1,
+            "phaseInferred": true,
+            "phaseAmbiguous": false,
+            "allReviewedSamplesMatch": false,
+            "groups": [
+              {
+                "id": "bauble-body",
+                "paper": 0,
+                "total": 4,
+                "covered": 4,
+                "correct": 4,
+                "mismatched": 0,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 1,
+                "agreementCovered": 1
+              },
+              {
+                "id": "upper-frame",
+                "paper": 0,
+                "total": 4,
+                "covered": 1,
+                "correct": 0,
+                "mismatched": 1,
+                "outsideCrop": 3,
+                "unavailable": 0,
+                "coverage": 0.25,
+                "agreementAllSamples": 0,
+                "agreementCovered": 0
+              },
+              {
+                "id": "lower-frame",
+                "paper": 0,
+                "total": 4,
+                "covered": 4,
+                "correct": 0,
+                "mismatched": 4,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 0,
+                "agreementCovered": 0
+              },
+              {
+                "id": "corner-blocks",
+                "paper": 0,
+                "total": 4,
+                "covered": 4,
+                "correct": 4,
+                "mismatched": 0,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 1,
+                "agreementCovered": 1
+              },
+              {
+                "id": "white-gaps",
+                "paper": 1,
+                "total": 10,
+                "covered": 10,
+                "correct": 10,
+                "mismatched": 0,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 1,
+                "agreementCovered": 1
+              }
+            ],
+            "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+          },
+          "exported": {
+            "total": 26,
+            "covered": 23,
+            "correct": 18,
+            "mismatched": 5,
+            "outsideCrop": 3,
+            "unavailable": 0,
+            "coverage": 0.8846153846153846,
+            "agreementAllSamples": 0.6923076923076923,
+            "agreementCovered": 0.782608695652174,
+            "phase": 1,
+            "phaseInferred": false,
+            "phaseAmbiguous": false,
+            "allReviewedSamplesMatch": false,
+            "groups": [
+              {
+                "id": "bauble-body",
+                "paper": 0,
+                "total": 4,
+                "covered": 4,
+                "correct": 4,
+                "mismatched": 0,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 1,
+                "agreementCovered": 1
+              },
+              {
+                "id": "upper-frame",
+                "paper": 0,
+                "total": 4,
+                "covered": 1,
+                "correct": 0,
+                "mismatched": 1,
+                "outsideCrop": 3,
+                "unavailable": 0,
+                "coverage": 0.25,
+                "agreementAllSamples": 0,
+                "agreementCovered": 0
+              },
+              {
+                "id": "lower-frame",
+                "paper": 0,
+                "total": 4,
+                "covered": 4,
+                "correct": 0,
+                "mismatched": 4,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 0,
+                "agreementCovered": 0
+              },
+              {
+                "id": "corner-blocks",
+                "paper": 0,
+                "total": 4,
+                "covered": 4,
+                "correct": 4,
+                "mismatched": 0,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 1,
+                "agreementCovered": 1
+              },
+              {
+                "id": "white-gaps",
+                "paper": 1,
+                "total": 10,
+                "covered": 10,
+                "correct": 10,
+                "mismatched": 0,
+                "outsideCrop": 0,
+                "unavailable": 0,
+                "coverage": 1,
+                "agreementAllSamples": 1,
+                "agreementCovered": 1
+              }
+            ],
+            "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+          }
+        }
+      }
+    }
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/remaining-color-ablation-v1/state.json": "c3bfbb69ca89a88a3ad0dc0b795d0744b484004f89b289553fae09be50624384",
+    "tmp/heart-learning/remaining-color-ablation-v1/source.json": "0cd6661ef5a236e5d7c771f34abae6089fd19b4e7dcbe5b0d636a042a7ddc0aa",
+    "tmp/heart-learning/remaining-color-ablation-v1/results.json": "9e9f49b6cf2cb24f8a4cbddf6be15dda8bd1c49fd1ca03b003d426a2b8d7e82e",
+    "tmp/heart-learning/remaining-color-ablation-v1/run.py": "8837e115b88d836933f838b7d3661fe25e3cccaffd9e5e42d59fcc43562d01ee",
+    "tmp/heart-learning/remaining-color-ablation-v1/diagnostics.json": "11e97eda2a8c2bcc744d5526052d1125d43ce9a196ec8dcabe40e82f0d59aaeb",
+    "tmp/heart-learning/remaining-color-ablation-v1/bauble-classification-comparison.png": "d1ac1c5faf9d9f3a086bd569f14256ed0f43f55578749232b1001007cf24ed2f",
+    "tmp/heart-learning/remaining-color-ablation-v1/outline-star-classification-comparison.png": "504ce1fdad17a914ac77a43113ec634f350a6ca7afde5fe728a3c3a2295f027b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/remaining-color-ablation-v1/outline-star-saved-automatic/results.json": "0ac5ca3877fa422eb6c9ea1dcdb15b3a4c38e6691579ba875dbc52ffaf67becc",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/remaining-color-ablation-v1/outline-star-historical-visual/results.json": "c5e6693741e7d6f1376296784a4c472252616f88904092ac7f3c50fac3e9ee77",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/remaining-color-ablation-v1/bauble-saved-automatic/results.json": "cacfebf4a204ed6f7c6defb79e2242eb9b1c6c62a10cfe3da4ab41b975b2620e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/remaining-color-ablation-v1/bauble-historical-visual/results.json": "2b7ea513ba9d36428d1ab5dea99939617498cea69abbc66971d0225992f2f4bb"
+  }
+}

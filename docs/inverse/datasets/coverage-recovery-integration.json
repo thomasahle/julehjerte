@@ -1,0 +1,511 @@
+{
+  "schema": "coverage-recovery-integration-1",
+  "status": "integrated-locally-full-qa-complete",
+  "implementation": [
+    "Feature emphasis and its halo multiply original coverage/importance instead of reintroducing ignored pixels.",
+    "Weighted fine and clearance grids receive native-resolution probabilities and weights resampled together; near-miss feature-grid refinement uses the same native pair.",
+    "Feature initialization and traced recovery are available for partially observed inputs. Tracing uses a canonical proposal in free regions; all ranking and refinement retain the original observed-image objective.",
+    "An initially illegal feature layout no longer gets the only refinement slot when an ordinary geometry-valid finalist is already available. That finalist goes first and the feature proposal remains queued. Full image/feature/paper gates remain unchanged."
+  ],
+  "rejectedShortFallback": {
+    "state": {
+      "status": "complete",
+      "secondsSinceResume": 17.058079709,
+      "sourceFilesVerified": 1151,
+      "resumedAfterSpaceInterruption": true
+    },
+    "results": [
+      {
+        "id": "photo-white-birds",
+        "repeat": 0,
+        "solveSeconds": 6.829741917,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "passed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "geometrySha256": "f9293812ec7340b112e10a031aa81955d5319acb7bfd09e9c428655ef63a6761",
+        "observedError": 0.0037687735548347177,
+        "wholeImageError": 0.00376875
+      },
+      {
+        "id": "hard-flettede-puppy-half",
+        "repeat": 0,
+        "solveSeconds": 12.210226083,
+        "selectedCounts": [
+          3,
+          5
+        ],
+        "passed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "geometrySha256": "01cf262fcb5cbae5c6237b13a1b1bef82b9f45c230a4e298e0c55694146b0299",
+        "observedError": 0.012143406597019046,
+        "wholeImageError": 0.01214990138067061
+      },
+      {
+        "id": "hunodan-hjfig-05",
+        "repeat": 0,
+        "solveSeconds": 5.1124677499999995,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "passed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "geometrySha256": "4098abd0c4adbfa9cc65182565ab7ad71ea2022a308652f437cee6572adaec82",
+        "observedError": 0.00810087348548887,
+        "wholeImageError": 0.00810080215551779
+      },
+      {
+        "id": "photo-bird",
+        "repeat": 0,
+        "solveSeconds": 10.115020583,
+        "selectedCounts": [
+          5,
+          5
+        ],
+        "passed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "geometrySha256": "699f4aaf5fd5171389b4d542952d4b302fa07e5945471af9cfda68f8965af522",
+        "observedError": 0.020962631016443852,
+        "wholeImageError": 0.02096875
+      },
+      {
+        "id": "free-house",
+        "repeat": 0,
+        "solveSeconds": 2.1486053330000003,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "passed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "geometrySha256": "b55fb52976447315268be293d6161ed5dc0fd1b3bccd624259900786225cfb8d",
+        "observedError": 0.0010833740234375,
+        "wholeImageError": 0.281725
+      },
+      {
+        "id": "free-hat",
+        "repeat": 0,
+        "solveSeconds": 2.5548860409999996,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "passed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "geometrySha256": "9ece843900e21536dc8c2315ec02c927eff26750d9d7b48165fb0b4106814f30",
+        "observedError": 0.00341796875,
+        "wholeImageError": 0.2827
+      },
+      {
+        "id": "photo-bauble",
+        "repeat": 0,
+        "solveSeconds": 9.681129708,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "passed": false,
+        "geometryPassed": true,
+        "paper": "pass",
+        "geometrySha256": "c6b60eb5de1bc5aaadfc26aa42a1e544f5160e9d3f69962c70e88b0595ae3dde",
+        "observedError": 0.054583593393088096,
+        "wholeImageError": 0.06673125
+      },
+      {
+        "id": "photo-white-birds",
+        "repeat": 1,
+        "solveSeconds": 7.016773291000001,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "passed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "geometrySha256": "f9293812ec7340b112e10a031aa81955d5319acb7bfd09e9c428655ef63a6761",
+        "observedError": 0.0037687735548347177,
+        "wholeImageError": 0.00376875
+      },
+      {
+        "id": "hard-flettede-puppy-half",
+        "repeat": 1,
+        "solveSeconds": 12.336073040999999,
+        "selectedCounts": [
+          3,
+          5
+        ],
+        "passed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "geometrySha256": "e118a158f61e982119ad9b07412e329d78215f5be732091d3db0252acf761eed",
+        "observedError": 0.01151881340442738,
+        "wholeImageError": 0.011525312294543063
+      },
+      {
+        "id": "hunodan-hjfig-05",
+        "repeat": 1,
+        "solveSeconds": 5.269399332999999,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "passed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "geometrySha256": "4098abd0c4adbfa9cc65182565ab7ad71ea2022a308652f437cee6572adaec82",
+        "observedError": 0.00810087348548887,
+        "wholeImageError": 0.00810080215551779
+      },
+      {
+        "id": "photo-bird",
+        "repeat": 1,
+        "solveSeconds": 10.135672875000001,
+        "selectedCounts": [
+          5,
+          5
+        ],
+        "passed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "geometrySha256": "de528a5d683d38e45ec4d33b8cef1d53edf53f9fa57045120b32b5253e599978",
+        "observedError": 0.020962631016443852,
+        "wholeImageError": 0.02096875
+      },
+      {
+        "id": "free-house",
+        "repeat": 1,
+        "solveSeconds": 2.2065330420000002,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "passed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "geometrySha256": "b55fb52976447315268be293d6161ed5dc0fd1b3bccd624259900786225cfb8d",
+        "observedError": 0.0010833740234375,
+        "wholeImageError": 0.281725
+      },
+      {
+        "id": "free-hat",
+        "repeat": 1,
+        "solveSeconds": 2.67170075,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "passed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "geometrySha256": "9ece843900e21536dc8c2315ec02c927eff26750d9d7b48165fb0b4106814f30",
+        "observedError": 0.00341796875,
+        "wholeImageError": 0.2827
+      },
+      {
+        "id": "photo-bauble",
+        "repeat": 1,
+        "solveSeconds": 9.688054,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "passed": false,
+        "geometryPassed": true,
+        "paper": "pass",
+        "geometrySha256": "c3887f29dc358811c4eb20157d0049164389b8890e577b7d9bdc2ab87aeba375",
+        "observedError": 0.0522221435787225,
+        "wholeImageError": 0.06436875
+      }
+    ]
+  },
+  "selectedValidStart": {
+    "state": {
+      "status": "complete",
+      "seconds": 111.110277458,
+      "sourceFilesVerified": 1150
+    },
+    "results": [
+      {
+        "id": "photo-white-birds",
+        "repeat": 0,
+        "solveSeconds": 6.743654332999999,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "passed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "geometrySha256": "f9293812ec7340b112e10a031aa81955d5319acb7bfd09e9c428655ef63a6761",
+        "observedError": 0.0037687735548347177,
+        "wholeImageError": 0.00376875
+      },
+      {
+        "id": "hard-flettede-puppy-half",
+        "repeat": 0,
+        "solveSeconds": 13.533199291999999,
+        "selectedCounts": [
+          3,
+          5
+        ],
+        "passed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "geometrySha256": "602b7d76237ca180fa4f6cc804213440dc9f338140decd12c58d83fecdccc719",
+        "observedError": 0.011768650681464047,
+        "wholeImageError": 0.011775147928994083
+      },
+      {
+        "id": "hunodan-hjfig-05",
+        "repeat": 0,
+        "solveSeconds": 5.131943458,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "passed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "geometrySha256": "4098abd0c4adbfa9cc65182565ab7ad71ea2022a308652f437cee6572adaec82",
+        "observedError": 0.00810087348548887,
+        "wholeImageError": 0.00810080215551779
+      },
+      {
+        "id": "photo-bird",
+        "repeat": 0,
+        "solveSeconds": 10.174741417000002,
+        "selectedCounts": [
+          5,
+          5
+        ],
+        "passed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "geometrySha256": "4cae3362f3506fbe59b18099de3c23f935da4e13d7e5d9a1cde616912027769d",
+        "observedError": 0.020962631016443852,
+        "wholeImageError": 0.02096875
+      },
+      {
+        "id": "free-house",
+        "repeat": 0,
+        "solveSeconds": 2.201694334,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "passed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "geometrySha256": "b55fb52976447315268be293d6161ed5dc0fd1b3bccd624259900786225cfb8d",
+        "observedError": 0.0010833740234375,
+        "wholeImageError": 0.281725
+      },
+      {
+        "id": "free-hat",
+        "repeat": 0,
+        "solveSeconds": 2.7080659999999996,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "passed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "geometrySha256": "9ece843900e21536dc8c2315ec02c927eff26750d9d7b48165fb0b4106814f30",
+        "observedError": 0.00341796875,
+        "wholeImageError": 0.2827
+      },
+      {
+        "id": "photo-bauble",
+        "repeat": 0,
+        "solveSeconds": 9.760776709,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "passed": false,
+        "geometryPassed": true,
+        "paper": "pass",
+        "geometrySha256": "8f587ba02356bf435aea865dc311adaae8da61ad5631b39890980e187bcd8a69",
+        "observedError": 0.04403750008043085,
+        "wholeImageError": 0.05999375
+      },
+      {
+        "id": "photo-white-birds",
+        "repeat": 1,
+        "solveSeconds": 6.962824042,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "passed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "geometrySha256": "f9293812ec7340b112e10a031aa81955d5319acb7bfd09e9c428655ef63a6761",
+        "observedError": 0.0037687735548347177,
+        "wholeImageError": 0.00376875
+      },
+      {
+        "id": "hard-flettede-puppy-half",
+        "repeat": 1,
+        "solveSeconds": 13.956806375,
+        "selectedCounts": [
+          3,
+          5
+        ],
+        "passed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "geometrySha256": "c12ff9e73dba47d62dcda257729058d50cc1dbddb8786e8c3f1fa32d8b855dc2",
+        "observedError": 0.011801524007389924,
+        "wholeImageError": 0.01180802103879027
+      },
+      {
+        "id": "hunodan-hjfig-05",
+        "repeat": 1,
+        "solveSeconds": 5.102542,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "passed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "geometrySha256": "4098abd0c4adbfa9cc65182565ab7ad71ea2022a308652f437cee6572adaec82",
+        "observedError": 0.00810087348548887,
+        "wholeImageError": 0.00810080215551779
+      },
+      {
+        "id": "photo-bird",
+        "repeat": 1,
+        "solveSeconds": 10.112643459,
+        "selectedCounts": [
+          5,
+          5
+        ],
+        "passed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "geometrySha256": "699f4aaf5fd5171389b4d542952d4b302fa07e5945471af9cfda68f8965af522",
+        "observedError": 0.020962631016443852,
+        "wholeImageError": 0.02096875
+      },
+      {
+        "id": "free-house",
+        "repeat": 1,
+        "solveSeconds": 2.210859042,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "passed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "geometrySha256": "b55fb52976447315268be293d6161ed5dc0fd1b3bccd624259900786225cfb8d",
+        "observedError": 0.0010833740234375,
+        "wholeImageError": 0.281725
+      },
+      {
+        "id": "free-hat",
+        "repeat": 1,
+        "solveSeconds": 2.469471375,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "passed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "geometrySha256": "9ece843900e21536dc8c2315ec02c927eff26750d9d7b48165fb0b4106814f30",
+        "observedError": 0.00341796875,
+        "wholeImageError": 0.2827
+      },
+      {
+        "id": "photo-bauble",
+        "repeat": 1,
+        "solveSeconds": 9.736810041999998,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "passed": false,
+        "geometryPassed": true,
+        "paper": "pass",
+        "geometrySha256": "ddf257ea1610f4d012fa761ba5751f1c7a27e1b0beeb41e13605553a46f1d594",
+        "observedError": 0.043754383481433345,
+        "wholeImageError": 0.05989375
+      }
+    ]
+  },
+  "focusedTests": {
+    "candidatePassed": 55,
+    "candidateFailed": 0,
+    "state": {
+      "status": "complete",
+      "exitCode": 0,
+      "seconds": 114.488697333,
+      "sourceFilesVerified": 1160
+    },
+    "integratedNewRegressionsPassed": 8,
+    "integratedNewRegressionsFailed": 0,
+    "productionDelta": "The final integration also gives the near-miss feature-grid branch a directly resampled native objective. None of the fourteen selected comparison fits used coarseRefinement or alternativeRefinement; the eight new tests were rerun on the actual integrated files."
+  },
+  "interpretation": [
+    "All fourteen selected comparison outputs pass geometry and paper checks; twelve pass complete candidate checks. The two bauble repeats remain fidelity failures.",
+    "The short legal fallback prevented invalid exports but increased bauble observed error to about 5%. Giving the ordinary finalist its full first window keeps it around 4.38\u20134.40%, close to the 4.34\u20134.38% baseline, without claiming a new success.",
+    "Prioritizing the ordinary candidate also runs on the puppy, increasing the targeted missing-corner replay to 13.5\u201314.0 seconds. It still retains 3+5 cuts and its small opening. This is not an across-the-board speedup.",
+    "The affected Hunodan case retains 4+4 cuts in 5.10\u20135.13 seconds. The bird eye survives, but total disagreement remains about 2.10%, above its unperturbed 1.96% baseline.",
+    "The free-border hat and house remain byte-identical. Original masks, coverage, thresholds and budgets were not changed.",
+    "Candidate contact sheets were visually inspected. Puppy joins, bird frame defects and bauble crop/motif errors remain; passing geometric checks does not establish physical assembly or original cutting-path recovery."
+  ],
+  "sourceSha256": {
+    "static/inverse/core/direct/feature-objective.js": "21fd41539230b3278371e6091f23663ee37defce8f313483955fcad2d7b44ee1",
+    "static/inverse/core/direct/feature-seeds.js": "3233277cdfb211df183aa3a39ad249022fa3718cf93f76542e22a66a3360ee30",
+    "static/inverse/core/direct/feature-details.js": "61e4e44bd3b87319d8a0eabe8afb914a50273e367b9376a98bb62451c4322941",
+    "static/inverse/core/direct/grid.js": "5f8615baa5c22476875ae836671f78e603a2c5381ec83f99f2feaff48e8d1b9b",
+    "static/inverse/core/direct/fit.js": "33213b762d3698c57658fbf7cab12db8eae2bbca855e790cdefaf3e8cf1a5965",
+    "static/inverse/core/feature-recovery.js": "87b0ee0444c7a1f547979cbbb1184e7db2da56e8b00d65f1da5cf32089ac6a7d",
+    "scripts/inverse/coverage-recovery.test.mjs": "27e0a08abda0dbd6397ed8ff1557a6e3dedc548023239b2ebdfba48fda73ab45",
+    "scripts/inverse/fixtures/coverage-fits.json": "0b4bc64eb98db5f928a7247888068d550c2da0bcf9a0bc19e6c61b2ed03936a1"
+  },
+  "artifactsSha256": {
+    "tmp/heart-learning/coverage-safe-comparison-v1/plan.json": "3272304584db7f676168938236f58c18791ee642fb2a63d3070f266e262a4902",
+    "tmp/heart-learning/coverage-safe-comparison-v1/state.json": "458bc0ae62e4ce604b2a1a73428ba080ed4eea7243078c104144f2b4dc1c7203",
+    "tmp/heart-learning/coverage-safe-comparison-v1/results.json": "18d949af081198efe374d89afa9479ef5d81ebaaae5b393c06397416b2b24a0e",
+    "tmp/heart-learning/coverage-safe-comparison-v1/source.json": "6b2e566e269f17baa0d2af266d013797cac200264cf4fb305576200f034a9757",
+    "tmp/heart-learning/coverage-safe-comparison-v1/resume-source.json": "d9ace2e4dbd17f88ec77cfd22350c8ffe6ce361a5aaba9d800b7379a4b42f382",
+    "tmp/heart-learning/coverage-safe-comparison-v1/interruption.json": "f31582a5cfc2baf00354d466767455906d90bb1060b66f989af7bed0541be863",
+    "tmp/heart-learning/coverage-valid-comparison-v1/plan.json": "07f73c023f602d9fbf0fab2cbf0955f8ee19e5437b057423fe36218e5e6fe035",
+    "tmp/heart-learning/coverage-valid-comparison-v1/state.json": "6ecefa50be3a8a8aff0535a9af8dacba193310dc7f92a88f0a7dbe9e24c83559",
+    "tmp/heart-learning/coverage-valid-comparison-v1/results.json": "0643ba58b2e82bfc005e4f2ba1bf3695807b4b6757dfb541459548b30f9f404f",
+    "tmp/heart-learning/coverage-valid-comparison-v1/source.json": "3735f0bc13f832bd45d1dda3716441683095c1e9a3c8794d25068051aa2ed860",
+    "tmp/heart-learning/coverage-valid-comparison-v1/contact.png": "399f49dd5a7e2f03cb2936161a1f7f2c6a6bcfbae58f69fe6d96abb0493d39f8",
+    "tmp/heart-learning/coverage-valid-checks-v1/state.json": "2eb6c060e70a4cf6ce9e783f4570b0e2720e7b06b2f0476a55d7df06f21b7807",
+    "tmp/heart-learning/coverage-valid-checks-v1/source.json": "7f2cbf2648c680d2a185b559a4cbdfbb8f4a75dbedfdbd357fdd7ec4d5174779",
+    "tmp/heart-learning/coverage-valid-checks-v1/tests.json": "1f48252c27550a7a3519239819cd790a158d12f59919e259cfa0aaec2a71a213",
+    "tmp/heart-learning/coverage-valid-checks-v1/tests.log": "3004f3c45a4662c3ae0efe132fa8ab968b4fc79c759590e29a3341cd8b734425"
+  },
+  "releaseQA": {
+    "status": "complete",
+    "directory": "tmp/heart-learning/coverage-release-v1",
+    "scope": "Check, lint, build, full test suite, 31 ordinary browser workflows plus real clipped-photo edit/undo/solve/export, all 55 fixed native masks and editable SVG/paper audits. Hunodan browser times must remain below 10 seconds.",
+    "record": "docs/inverse/datasets/coverage-recovery-release-qa.json",
+    "runtimeCommit": "2841a0e455696fa182aef7d480f70c03212ef763",
+    "applicationPassed": 874,
+    "applicationSkipped": 1,
+    "inversePassed": 1016,
+    "browserPassed": 32,
+    "nativePassed": 53,
+    "nativeTotal": 55,
+    "editablePassed": 55
+  }
+}

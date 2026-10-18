@@ -1,0 +1,411 @@
+{
+  "scope": "Consistent candidate/checkpoint/MILP geometry checks with bounded hidden-first projection and longer recovered-boundary refinement. Incomplete release; shifted-bird image retention remains unresolved; full QA running.",
+  "previousRelease": "turn-limit-v1",
+  "sourceHashes": {
+    "static/inverse/core/validate.js": "6476e80b1b34fd6511ba89ae89508e501daed670369ab8c26acdce7109c155db",
+    "static/inverse/core/solver.js": "ce84cc84c300b98b3e168cf57718a8f219e8763a34248a22364a22cf3820bd9d",
+    "static/inverse/core/direct/refine.js": "13240c98146531273c71c9600da3ae5a74fa8ed8eff103cb6ea78a1e693bce30",
+    "static/inverse/core/direct/fit.js": "69646aac8375fc9860002d96ecc716411c13028c93180adb2fd8db7ec3337983",
+    "scripts/inverse/final-return-repair.test.mjs": "ea6bb0dc46b17de338afcaaad0048a2c6d19aea999373ee6e02a92d559459043",
+    "scripts/inverse/diagnostics/build-short-return-runtime.mjs": "0e9df3d0ae74acfbed5f4b9c802d73002b8b6aba1718c43588ac4a8fe0f6dbb4",
+    "src/lib/inverse/shortReturns.test.ts": "94b8eed5df7b0e9e3fabecbfc9431d95cce8a15729c91bf2f599fca0dcae2c9f"
+  },
+  "artifacts": {
+    "tmp/heart-learning/final-integration-v1/strong-pipeline/hunodan/results.json": "a7cfa6056decec4bbbef3af4cb90e7e968e44cdce5782c6aacaa25ba3b3b1ce2",
+    "tmp/heart-learning/final-integration-v1/strong-pipeline/focused.log": "b7ecee77f77b9a7a369931429b5a2218fe568122587ed33d3c5660182e03b6e3",
+    "tmp/heart-learning/final-integration-v1/hidden-checkpoints/hunodan/results.json": "52e6a57c8b674c2b8320d05cd53fa6c4361e55daade30b9fafddc79908e61eb8",
+    "tmp/heart-learning/final-integration-v1/hidden-checkpoints/focused.log": "06d9281b47600d1f35a88ff968e00e5e633b3c32a77c5cafe1fb4306df2716e9",
+    "tmp/heart-learning/final-integration-v1/feature-ranking/focused.log": "090b264410ca9268b48253b973af6a8c4f32acc959150cbc2c987bba4d739e2c",
+    "tmp/heart-learning/final-integration-v1/proposal-trajectories/focused.log": "7e4debcdb28fe022ecae6937a93493fcf8eb1e454464f35da47763f9f4421363",
+    "tmp/heart-learning/final-integration-v1/full-detail/focused.log": "b320cda22cc6cf16f814c3d983da40af53eb796136818790a042e67ef13f78bc",
+    "tmp/heart-learning/final-integration-v1/routed-polish/results.json": "b50176ab9315c3568e15f506060b11e8b76158233ca46cac89b32fc34e7f789f",
+    "tmp/heart-learning/final-integration-v1/consistent-bird/results.json": "55cac01b44f7de81284e32d7fd10b8ddfe7ad3fb9a182020a80691f132aac5a3",
+    "tmp/heart-learning/final-integration-v1/consistent-unit.log": "0395acc154970d9ae1d597b3873b00b6b3bf11b86890c0c324552e4ac21b2675",
+    "tmp/heart-learning/final-integration-v1/qa-consistent-v1/checks.json": "1a23bbd9ba5a0ca6c5ee6863301b24d99296ee512a6f1c42f60023f0bd43d04d",
+    "tmp/heart-learning/final-integration-v1/qa-consistent-v1/app.log": "6461c0efa1f4c23bdbc3893b6d596e346041a3b0e322b4e3cffdac89e89bc17a",
+    "tmp/heart-learning/final-integration-v1/consistent-anchor.log": "c4a54b8eb3b5ebff712f4631645a901ecd1707796a7fc4b1003d4627376ab9ea",
+    "tmp/heart-learning/final-integration-v1/qa-consistent-v2/source.json": "ab04cdf268f9209a5acd227f142021fe721bbc8cd5e84c74e976f16dc16e3189",
+    "tmp/heart-learning/final-integration-v1/qa-consistent-v2/app.log": "c4944fe9746b63c2c6c24d7b0b4a2ec8c5ba404e3b003a509f3db6f69cd4bca9",
+    "tmp/heart-learning/final-integration-v1/qa-consistent-v2/build.log": "f2ce02484de603ab696dd01590be33d5f4d75a07c388190db4699d9524d06405",
+    "tmp/heart-learning/final-integration-v1/qa-consistent-v2/checks.json": "a20915882834f3f0198f2762850a6ccad543f199de09941fab914c04d4b03350",
+    "tmp/heart-learning/final-integration-v1/qa-consistent-v2/running.json": "d15fbb282809c2e86068f054769cff635587515747843e9b4ed2b2538a8d5761",
+    "tmp/heart-learning/final-integration-v1/qa-consistent-v2/failure-summary.json": "0cad7357b3fe1c0923d6cee76fe65e2babe70a52c279b799f8e2af6ff2142af1",
+    "tmp/heart-learning/final-integration-v1/qa-consistent-v2/inverse.log": "114256955d3045e785e1bfefcb24c6f6d69eff868c178a609269b5fbd6743528"
+  },
+  "consistentCheckPrototype": {
+    "photographicTests": {
+      "passed": 23,
+      "failed": 2,
+      "failure": "Shifted bird eye retention at 800-pixel independent export"
+    },
+    "hunodan": [
+      {
+        "id": "hjfig-01",
+        "previousError": 0.009799111111111111,
+        "prototypeError": 0.009799111111111111,
+        "prototypeSeconds": 4.399711042000001,
+        "passed": true
+      },
+      {
+        "id": "hjfig-02",
+        "previousError": 0.013340444444444445,
+        "prototypeError": 0.013340444444444445,
+        "prototypeSeconds": 5.583677041,
+        "passed": true
+      },
+      {
+        "id": "hjfig-03",
+        "previousError": 0.006634666666666666,
+        "prototypeError": 0.006634666666666666,
+        "prototypeSeconds": 3.7565877920000004,
+        "passed": true
+      },
+      {
+        "id": "hjfig-04",
+        "previousError": 0.013824,
+        "prototypeError": 0.013824,
+        "prototypeSeconds": 4.214567291999998,
+        "passed": true
+      },
+      {
+        "id": "hjfig-05",
+        "previousError": 0.009042960667083447,
+        "prototypeError": 0.01236252850689889,
+        "prototypeSeconds": 4.024125208000001,
+        "passed": true
+      },
+      {
+        "id": "hjfla-01",
+        "previousError": 0.012166341145833334,
+        "prototypeError": 0.012166341145833334,
+        "prototypeSeconds": 5.744413375,
+        "passed": true
+      },
+      {
+        "id": "hjcur-01",
+        "previousError": 0.005148444444444444,
+        "prototypeError": 0.005148444444444444,
+        "prototypeSeconds": 5.185994124999997,
+        "passed": true
+      },
+      {
+        "id": "hjcur-02",
+        "previousError": 0.005219555555555555,
+        "prototypeError": 0.005219555555555555,
+        "prototypeSeconds": 5.429046875,
+        "passed": true
+      },
+      {
+        "id": "hjcur-03",
+        "previousError": 0.004522666666666667,
+        "prototypeError": 0.004522666666666667,
+        "prototypeSeconds": 4.979422624999999,
+        "passed": true
+      },
+      {
+        "id": "hjcur-04",
+        "previousError": 0.005639111111111111,
+        "prototypeError": 0.005639111111111111,
+        "prototypeSeconds": 6.753007082999996,
+        "passed": true
+      },
+      {
+        "id": "hjcur-05",
+        "previousError": 0.009436444444444445,
+        "prototypeError": 0.009436444444444445,
+        "prototypeSeconds": 3.4231732499999996,
+        "passed": true
+      },
+      {
+        "id": "hjhih-01",
+        "previousError": 0.006040430615586996,
+        "prototypeError": 0.006040430615586996,
+        "prototypeSeconds": 6.231312375000002,
+        "passed": true
+      },
+      {
+        "id": "hjhih-02",
+        "previousError": 0.003899406226779104,
+        "prototypeError": 0.003899406226779104,
+        "prototypeSeconds": 4.874346459000001,
+        "passed": true
+      },
+      {
+        "id": "hjhih-04",
+        "previousError": 0.007776029627903062,
+        "prototypeError": 0.007776029627903062,
+        "prototypeSeconds": 7.321894917000005,
+        "passed": true
+      },
+      {
+        "id": "hjstr-01",
+        "previousError": 0.007550237322696868,
+        "prototypeError": 0.007550237322696868,
+        "prototypeSeconds": 4.160250167000005,
+        "passed": true
+      },
+      {
+        "id": "hjstr-02",
+        "previousError": 0.004365548980933596,
+        "prototypeError": 0.004365548980933596,
+        "prototypeSeconds": 6.323463833000002,
+        "passed": true
+      },
+      {
+        "id": "hjstr-03",
+        "previousError": 0.0056129769369752365,
+        "prototypeError": 0.0056129769369752365,
+        "prototypeSeconds": 7.980054749999995,
+        "passed": true
+      },
+      {
+        "id": "hjsta-01",
+        "previousError": 0.007929362880886427,
+        "prototypeError": 0.007929362880886427,
+        "prototypeSeconds": 4.703694625000003,
+        "passed": true
+      },
+      {
+        "id": "hjsta-02",
+        "previousError": 0.0038045247395833335,
+        "prototypeError": 0.0038045247395833335,
+        "prototypeSeconds": 4.160145875000002,
+        "passed": true
+      },
+      {
+        "id": "hjsta-03",
+        "previousError": 0.012332213049376572,
+        "prototypeError": 0.012332213049376572,
+        "prototypeSeconds": 6.003215291,
+        "passed": true
+      },
+      {
+        "id": "hjsta-04",
+        "previousError": 0.0050250552896055544,
+        "prototypeError": 0.0050250552896055544,
+        "prototypeSeconds": 6.422659125000005,
+        "passed": true
+      },
+      {
+        "id": "hjsta-05",
+        "previousError": 0.010624446293860237,
+        "prototypeError": 0.010624446293860237,
+        "prototypeSeconds": 5.553353625000003,
+        "passed": true
+      }
+    ]
+  },
+  "latestOrdinaryBird": {
+    "id": "hjfig-05",
+    "previousError": 0.009042960667083447,
+    "error": 0.008417790065951097,
+    "seconds": 5.681215,
+    "passed": true,
+    "checksPassed": true
+  },
+  "latestFocusedRegressions": {
+    "passed": 8,
+    "failed": 0
+  },
+  "fullQa": "tmp/heart-learning/final-integration-v1/qa-consistent-v2",
+  "applicationFollowup": {
+    "firstRun": {
+      "passed": 856,
+      "failed": 1,
+      "skipped": 1,
+      "failure": "Anchor required final repair to be accepted, but the earlier fitting stage already repaired it."
+    },
+    "testChange": "Require complete final validation, no increased image error and successful Draw conversion, without requiring a particular repair stage.",
+    "focusedReplay": {
+      "passed": 1,
+      "failed": 0
+    },
+    "fullReplay": {
+      "passed": 857,
+      "failed": 0,
+      "skipped": 1
+    }
+  },
+  "completedChecks": [
+    {
+      "stage": "check",
+      "command": [
+        "npm",
+        "run",
+        "check"
+      ],
+      "exitCode": 0,
+      "seconds": 7.862463542
+    },
+    {
+      "stage": "lint",
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "exitCode": 0,
+      "seconds": 6.569555542
+    },
+    {
+      "stage": "app",
+      "command": [
+        "npx",
+        "vitest",
+        "run",
+        "--maxWorkers=2"
+      ],
+      "exitCode": 0,
+      "seconds": 32.815645959
+    },
+    {
+      "stage": "build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exitCode": 0,
+      "seconds": 12.486990208000002
+    },
+    {
+      "stage": "inverse",
+      "command": [
+        "npm",
+        "run",
+        "test:inverse"
+      ],
+      "exitCode": 1,
+      "seconds": 862.375612542
+    }
+  ],
+  "fullInverseStatus": {
+    "total": 846,
+    "passed": 834,
+    "failed": 12,
+    "sourceFilesVerified": 840,
+    "releaseReady": false
+  },
+  "failures": [
+    {
+      "location": "scripts/inverse/clearance-routing.test.mjs:20:3",
+      "test": "\u2716 bounded repair resolves a nonlocal slit neck without changing the x-plus-1 artwork (134.91ms)",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "stack": [
+        "at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/clearance-routing.test.mjs:22:12)",
+        "at Test.runInAsyncScope (node:async_hooks:226:14)",
+        "at Test.run (node:internal/test_runner/test:1118:25)"
+      ]
+    },
+    {
+      "location": "scripts/inverse/clearance-routing.test.mjs:37:3",
+      "test": "\u2716 fresh x-plus-1 fitting carries repaired clearance through final export (9207.392708ms)",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "stack": [
+        "at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/clearance-routing.test.mjs:40:12)",
+        "at async Test.run (node:internal/test_runner/test:1125:7)",
+        "at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {"
+      ]
+    },
+    {
+      "location": "scripts/inverse/clearance-routing.test.mjs:20:3",
+      "test": "\u2716 bounded repair resolves a nonlocal slit neck without changing the y-minus-1 artwork (89.073125ms)",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "stack": [
+        "at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/clearance-routing.test.mjs:22:12)",
+        "at Test.runInAsyncScope (node:async_hooks:226:14)",
+        "at Test.run (node:internal/test_runner/test:1118:25)"
+      ]
+    },
+    {
+      "location": "scripts/inverse/clearance-routing.test.mjs:37:3",
+      "test": "\u2716 fresh y-minus-1 fitting carries repaired clearance through final export (9207.071125ms)",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "stack": [
+        "at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/clearance-routing.test.mjs:40:12)",
+        "at async Test.run (node:internal/test_runner/test:1125:7)",
+        "at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {"
+      ]
+    },
+    {
+      "location": "scripts/inverse/datasets/synthetic-motif.test.mjs:10:36",
+      "test": "\u2716 radial motif 0 has one closed motif and exact hidden approaches (32.89525ms)",
+      "error": "AssertionError [ERR_ASSERTION]: [{\"type\":\"short_self_clearance\",\"family\":0,\"slit\":0,\"curves\":[3,5],\"parameters\":[0.9977203432226514,0.0838887587059045],\"points\":[[31.83439569509806,66.33886261370058],[32.29981188860332,67.7505344274729]],\"distanceUpper\":1.4864149968888731,\"required\":1.5,\"arcSeparation\":3.0000000000000004,\"stationary\":false,\"totalTurning\":192.51341667577123,\"edgeChain\":[3,4,5]},{\"type\":\"short_self_clearance\",\"family\":0,\"slit\":1,\"curves\":[1,3],\"parameters\":[0.9140625,0.00018597934",
+      "stack": [
+        "at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/datasets/synthetic-motif.test.mjs:46:10)",
+        "at async Test.run (node:internal/test_runner/test:1125:7)",
+        "at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {"
+      ]
+    },
+    {
+      "location": "scripts/inverse/fitted-rerouting.test.mjs:53:33",
+      "test": "\u2716 a fresh shifted bird fit reroutes its rejected eye with a 10-second allowance (10379.171959ms)",
+      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "stack": [
+        "at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/fitted-rerouting.test.mjs:75:50)",
+        "at async Test.run (node:internal/test_runner/test:1125:7)",
+        "at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {"
+      ]
+    },
+    {
+      "location": "scripts/inverse/fitted-rerouting.test.mjs:53:33",
+      "test": "\u2716 a fresh shifted bird fit reroutes its rejected eye with a 180-second allowance (15793.271833ms)",
+      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "stack": [
+        "at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/fitted-rerouting.test.mjs:75:50)",
+        "at async Test.run (node:internal/test_runner/test:1125:7)",
+        "at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {"
+      ]
+    },
+    {
+      "location": "scripts/inverse/rejected-routing.test.mjs:36:1",
+      "test": "\u2716 continuous repair retains the original pixels and independently passes exported geometry (946.288833ms)",
+      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "stack": [
+        "at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/rejected-routing.test.mjs:46:10)",
+        "at async Test.run (node:internal/test_runner/test:1125:7)",
+        "at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {"
+      ]
+    },
+    {
+      "location": "scripts/inverse/rejected-routing.test.mjs:51:1",
+      "test": "\u2716 repair does not accept severe returns, expired work, different artwork or unsupported constraints (781.22125ms)",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "stack": [
+        "at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/rejected-routing.test.mjs:53:10)",
+        "at Test.runInAsyncScope (node:async_hooks:226:14)",
+        "at Test.run (node:internal/test_runner/test:1118:25)"
+      ]
+    },
+    {
+      "location": "scripts/inverse/search-scheduling.test.mjs:18:45",
+      "test": "\u2716 fresh frozen routing retains time for a valid template without changing the mask (9926.905667ms)",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "stack": [
+        "at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/search-scheduling.test.mjs:26:10)",
+        "at async Test.run (node:internal/test_runner/test:1125:7)",
+        "at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {"
+      ]
+    },
+    {
+      "location": "scripts/inverse/search-scheduling.test.mjs:18:45",
+      "test": "\u2716 fresh synthetic-control routing retains time for a valid template without changing the mask (8938.756333ms)",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "stack": [
+        "at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/search-scheduling.test.mjs:26:10)",
+        "at async Test.run (node:internal/test_runner/test:1125:7)",
+        "at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {"
+      ]
+    },
+    {
+      "location": "scripts/inverse/trace-order.test.mjs:10:1",
+      "test": "\u2716 alternative photographic traces get a turn before densifying an exhausted sparse graph (6640.772041ms)",
+      "error": "AssertionError [ERR_ASSERTION]: The ordinary dense graph must remain available as a fallback.",
+      "stack": [
+        "at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/trace-order.test.mjs:21:10)",
+        "at async Test.run (node:internal/test_runner/test:1125:7)",
+        "at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "schema": "inverse-photo-crop-perturbation-1",
+  "source": {
+    "file": "scripts/inverse/fixtures/hard-photos/collage.png",
+    "sha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+    "decodedPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+    "width": 1482,
+    "height": 1112
+  },
+  "scope": "Two automatic crop proposals for the same bauble, differing by less than 0.01 pixel. Neither is labelled as physical-corner ground truth. The targets differ in 15 classified pixels; no saved cutting paths are supplied.",
+  "resolution": 400,
+  "classification": "auto (Lab on this photograph)",
+  "cases": [
+    {
+      "id": "offline",
+      "quad": [
+        [
+          576.2279518380459,
+          916.4004768153825
+        ],
+        [
+          679.498692949357,
+          1010.0551017911937
+        ],
+        [
+          583.4353004962968,
+          1109.0941720723395
+        ],
+        [
+          471.6370800040514,
+          1013.4546059502242
+        ]
+      ],
+      "maskSha256": "20b38c7b0945412e646ed91ce068562d8c4e562bc713e37d5ddc3afd8639801d"
+    },
+    {
+      "id": "browser",
+      "quad": [
+        [
+          576.2272255036019,
+          916.4026642627249
+        ],
+        [
+          679.5045963929804,
+          1010.048977371169
+        ],
+        [
+          583.435274409928,
+          1109.0941608565504
+        ],
+        [
+          471.63938802037404,
+          1013.4565914797115
+        ]
+      ],
+      "maskSha256": "92431f8caa3e5c60e959947e2a0ee9685d99df15e6c52ed92b95a40fd9ab7547"
+    }
+  ]
+}

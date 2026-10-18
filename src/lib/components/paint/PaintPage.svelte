@@ -51,13 +51,8 @@
 		type PaintError,
 		type SymmetrySettings
 	} from '$lib/editor/session.svelte';
-	import {
-		clampFrameSize,
-		mismatchInside,
-		shapeCells,
-		solveTargetMask
-	} from '$lib/paint/frame';
-	import { createMask, isEmpty, maskMismatch, resample, type Mask } from '$lib/paint/mask';
+	import { clampFrameSize, frameMismatch, shapeCells } from '$lib/paint/frame';
+	import { cloneMask, createMask, isEmpty, maskMismatch, type Mask } from '$lib/paint/mask';
 	import { detectSymmetry, transformsFor } from '$lib/paint/symmetry';
 	import { rasterizeDesign } from '$lib/paint/rasterize';
 	import {
@@ -85,24 +80,35 @@
 		paperPair,
 		prepareImage,
 		prepareMask,
-		type AdvancedSettings
+		useBest as useBestResult,
+		type AdvancedSettings,
+		type EngineProgress
 	} from '$lib/inverse/engine';
 	import { EngineError, searchTimedOut } from '$lib/inverse/client';
-	import { convertValidatedCutGeometry, CutGeometryError } from '$lib/inverse/toHeartDesign';
+	import {
+		convertValidatedCutGeometry,
+		cutGeometryToDesign,
+		CutGeometryError,
+		type CutGeometry
+	} from '$lib/inverse/toHeartDesign';
+	import {
+		candidateGeometry,
+		createGeometryThrottle,
+		IDLE_PROGRESS,
+		reduceProgress,
+		type SearchProgress
+	} from '$lib/paint/searchProgress';
 	import { DEFAULT_COLORS, DEFAULT_COLORS_HEX, getColors, subscribeColors } from '$lib/stores/colors';
 	import { saveUserDesign } from '$lib/stores/collection';
 	import { toHexColors } from '$lib/utils/heartColors';
 	import { makeHeartAnchorId } from '$lib/utils/heartAnchors';
-	import type { HeartColors } from '$lib/types/heart';
+	import type { HeartColors, HeartDesign } from '$lib/types/heart';
 
 	interface Props {
 		lang: Language;
 	}
 
 	let { lang }: Props = $props();
-
-	/** The grid the difference from the mask is measured on (PAINT.md §2). */
-	const COMPARE_SIZE = 200;
 
 	let colors = $state<HeartColors>({ ...DEFAULT_COLORS });
 	let headerEl = $state.raw<HTMLElement | null>(null);
@@ -133,7 +139,7 @@
 	let showHelp = $state(false);
 	let showImport = $state(false);
 	let showingResult = $state(false);
-	let advanced = $state<AdvancedSettings>(defaultAdvanced(session.symmetry));
+	let advanced = $state<AdvancedSettings>(defaultAdvanced());
 
 	/** Bumped whenever the mask changed other than by a stroke; the canvas watches it. */
 	let revision = $state(0);
@@ -148,9 +154,52 @@
 	let canRedo = $state(false);
 	const history = createHistory();
 
-	let stage = $state('');
+	/**
+	 * What the search is doing, folded out of the engine's progress events.
+	 *
+	 * `$state.raw` because the reducer replaces the object rather than mutating
+	 * it: a checkpoint arrives a few times a second and the panel reads the whole
+	 * thing, so per-field reactivity would buy nothing and cost a proxy around an
+	 * array that is rebuilt anyway.
+	 */
+	let progress = $state.raw<SearchProgress>(IDLE_PROGRESS);
 	let elapsed = $state(0);
 	let timer: ReturnType<typeof setInterval> | null = null;
+
+	/**
+	 * The candidate the engine is looking at right now, drawn over the mask.
+	 *
+	 * Geometry snapshots arrive at refinement checkpoints and for validated MILP
+	 * incumbents. Rate-limited events retain their boolean validity flag, which
+	 * `candidateGeometry` ignores without clearing the last available preview.
+	 */
+	let candidate = $state.raw<HeartDesign | null>(null);
+	let solveStarted = $state(false);
+	let usingBest = $state(false);
+
+	/**
+	 * Converting a candidate is a full `cutGeometryToDesign`, so it is held to
+	 * four a second with the latest winning. This also coalesces worker messages
+	 * that arrive together after the main thread has been busy.
+	 */
+	const candidates = createGeometryThrottle<string | CutGeometry>((geometry) => {
+		try {
+			candidate = cutGeometryToDesign(geometry, {
+				name: t('paintHeartFromMask', lang),
+				colors: toHexColors(colors, DEFAULT_COLORS_HEX),
+				// Coarse, and no `enforce`: this is a picture of where the search has
+				// got to, redrawn a few times a second, not the heart anyone will cut.
+				// The tolerance keeps the conversion cheap and the missing enforcement
+				// keeps it from rasterising two designs to price a correction.
+				tolerance: 1.0
+			});
+		} catch (error) {
+			// A candidate mid-refinement need not be a legal heart — cuts may cross,
+			// a family may be empty. That is not a failure of the search, so it
+			// leaves the last good candidate on screen and says nothing.
+			console.debug('A candidate could not be drawn', error);
+		}
+	});
 	/** The rows the converter could hold the last heart to (PAINT.md §11). */
 	let honoured = $state<SymmetrySettings | null>(null);
 	/** "Vis det beskyttede motiv": the outline over the found heart. */
@@ -167,6 +216,11 @@
 		void revision;
 		void strokes;
 		return !session.mask || isEmpty(session.mask);
+	});
+	let hasMissingPhotoPixels = $derived.by(() => {
+		void revision;
+		void strokes;
+		return session.mask?.validMask?.some(v => !v) ?? false;
 	});
 	let busy = $derived(session.status === 'searching' || session.status === 'importing');
 	/**
@@ -238,17 +292,21 @@
 		});
 	}
 
-	// The column's own box changes with the viewport; what is inside it changes with
-	// the tool (the Markér hint) and with the result state (the panels stand down).
+	// The column *and every panel in it*, because only the panels can say that the
+	// fade is needed. The column is pinned top and bottom, so its own box never
+	// changes height whatever it holds: watching it alone caught the viewport and
+	// nothing else, and each content change — the Markér hint appearing, the panels
+	// standing down, Kanten collapsing under Fast — had to be named here by hand as
+	// a `void` line. That list went stale the first time a panel learned a new
+	// height, and it would again; the panels themselves cannot.
 	$effect(() => {
 		const el = leftColumnEl;
-		void tool;
-		void toolsStandby;
 		if (!el) return;
 		void tick().then(measureLeftColumn);
 		if (typeof ResizeObserver === 'undefined') return;
 		const observer = new ResizeObserver(measureLeftColumn);
 		observer.observe(el);
+		for (const panel of el.children) observer.observe(panel);
 		return () => observer.disconnect();
 	});
 
@@ -307,12 +365,6 @@
 	 * do nothing and at worst fold it under the rows we are leaving behind.
 	 */
 	function restore(step: MaskStep): void {
-		// The checkbox follows Mellem lapper, as it does when the row is switched by
-		// hand — but only when the row actually moves, so undoing a stroke cannot
-		// quietly re-tick a box the visitor unticked.
-		if (step.symmetry.lobes !== session.symmetry.lobes) {
-			advanced = { ...advanced, matchingSheets: step.symmetry.lobes === 'sym' };
-		}
 		session.mask = step.mask;
 		session.symmetry = { ...step.symmetry };
 		revision++;
@@ -431,7 +483,6 @@
 			syncHistoryFlags();
 		}
 		setSymmetry(next);
-		advanced = { ...advanced, matchingSheets: next.lobes === 'sym' };
 		revision++;
 	}
 
@@ -454,9 +505,6 @@
 
 	function useMask(mask: Mask, found: SymmetrySettings, source: string): void {
 		setMask(mask, { sourceName: source, symmetry: found, found });
-		// The rows arrived with the picture, so the checkbox that follows Mellem
-		// lapper follows them too.
-		advanced = { ...advanced, matchingSheets: found.lobes === 'sym' };
 		resetHistory(history);
 		syncHistoryFlags();
 		showingResult = false;
@@ -528,9 +576,19 @@
 		timer = setInterval(() => (elapsed = Math.floor((performance.now() - began) / 1000)), 1000);
 	}
 
+	/**
+	 * The search is over, however it ended: found, failed, Afbryd, or the page
+	 * being left. The candidate goes with the clock, because a conversion still
+	 * waiting in the throttle would otherwise land a picture of a half-finished
+	 * search over the answer a second after it arrived.
+	 */
 	function stopTimer(): void {
+		solveStarted = false;
+		usingBest = false;
 		if (timer) clearInterval(timer);
 		timer = null;
+		candidates.stop();
+		candidate = null;
 	}
 
 	function classify(err: unknown): PaintError {
@@ -544,14 +602,35 @@
 		return { kind: 'engine', detail: err instanceof Error ? err.message : String(err) };
 	}
 
+	/**
+	 * One progress event: the numbers the panel shows, and the candidate it draws.
+	 *
+	 * Both directions of PAINT.md §12 meet here. The reducer takes the whole event
+	 * — it has to, because the fitter says which counts it is trying and how wrong
+	 * they still are, and none of that survived the old `progress(data.event.
+	 * stage)` — and the candidate's cuts are lifted out separately, because they
+	 * are a picture rather than a number and cost a conversion to draw.
+	 */
+	function onProgress(event: EngineProgress): void {
+		progress = reduceProgress(progress, event);
+		const geometry = candidateGeometry(event);
+		if (geometry) candidates.push(geometry);
+	}
+
 	async function find(): Promise<void> {
 		settle();
 		const mask = session.mask;
 		if (!mask || maskEmpty || busy) return;
+		// "Find snit igen", from the panel's own result face: the heart on screen
+		// describes a search that is over, so the canvas goes back to the mask the
+		// new one is about — otherwise the visitor would watch a progress bar under
+		// the very heart they had just been told was not good enough.
+		backToMask();
 		notice = null;
 		session.error = null;
 		session.status = 'searching';
-		stage = 'preprocessing';
+		progress = reduceProgress(IDLE_PROGRESS, { stage: 'preprocessing' });
+		candidate = null;
 		startTimer();
 		try {
 			// The target itself has to be symmetric, or the search spends its time
@@ -559,21 +638,12 @@
 			setSymmetry(session.symmetry);
 			revision++;
 
-			// What the engine is actually asked to weave. With the band fixed that is
-			// the visitor's mask; with it free the band is replaced by a checker weave
-			// first, because the engine cannot yet be told to ignore a cell — see
-			// `frameWeights` and PAINT.md §11. The visitor's own mask is untouched.
-			//
-			// Nothing folds the target afterwards: the motif came out of the fold
-			// above, and the woven band is symmetric under every symmetry of the
-			// square by construction ($lib/paint/frame). A second fold over the whole
-			// square would undo both — it halved the checker whenever the block count
-			// was even, and it averaged the motif's own edge cells together with the
-			// band the checker had just overwritten.
+			// Preserve the original drawing; a free band carries zero image weight.
+			// Checker patterns may seed the search, but never replace this target.
 			const frame = { ...session.frame };
-			const target = solveTargetMask(mask, frame, advanced.frameCells);
-
-			await prepareMask(target, colors, (next) => (stage = next));
+			const target = cloneMask(mask);
+			await prepareMask(target, colors, onProgress, frame);
+			solveStarted = true;
 			const solved = await findCuts(
 				{
 					colors,
@@ -582,7 +652,7 @@
 					minWidthMm: advanced.minWidthMm,
 					matchingSheets: advanced.matchingSheets
 				},
-				(next) => (stage = next)
+				onProgress
 			);
 
 			const geometry = solved.files['cut_geometry.json'];
@@ -592,22 +662,19 @@
 			const converted = convertValidatedCutGeometry(geometry, {
 				name: session.sourceName ? t('paintHeartFromImage', lang) : t('paintHeartFromMask', lang),
 				colors: toHexColors(colors, DEFAULT_COLORS_HEX),
-				enforce: session.symmetry
+				enforce: session.symmetry,
+				reference: { mask: target, weights: frame.mode === 'free' ? shapeCells(frame, target.size) : undefined }
 			});
 
-			// The difference the panel reports is measured on the heart about to be
-			// shown, not on the engine's own number: that one describes the solution
-			// before simplifying and before the symmetry correction moved it. It is
-			// measured against the target the engine was given, not against the mask
-			// on screen, because with a free band those differ — and asking a heart to
-			// match a band nobody asked it to weave would be a number about nothing.
-			const woven = rasterizeDesign(converted.design, COMPARE_SIZE).data;
-			const wanted = resample(target.data, target.size, COMPARE_SIZE);
-			const mismatch = maskMismatch(woven, wanted);
-			// Inside the protected motif the target *is* the visitor's mask, so this
-			// is the number that says whether they got their own picture back.
-			const motifMismatch =
-				frame.mode === 'free' ? mismatchInside(woven, wanted, COMPARE_SIZE, frame) : undefined;
+			// Measure the actual editable heart against the original drawing. Changes
+			// outside the protected motif are permitted, and reported separately.
+			// Score at the drawing's resolution: shrinking a binary mask moves edge
+			// pixels and can exaggerate the disagreement with the fitted curves.
+			const woven = rasterizeDesign(converted.design, target.size).data;
+			const wanted = target.data;
+			const mismatch = maskMismatch(woven, wanted, target.validMask);
+			const regions = frame.mode === 'free'
+				? frameMismatch(woven, wanted, target.size, frame, target.validMask) : undefined;
 
 			// The rows the panel shows are the converter's, not `solved.report.symmetry.
 			// honoured` (PAINT.md §11). Both are true statements about different
@@ -630,8 +697,11 @@
 					cuts: [solved.report.slits.left, solved.report.slits.right],
 					clearanceMm: solved.report.validation.minimumInterSlitDistanceLower,
 					mismatch,
-					motifMismatch,
-					identical: solved.report.solver.matchingPreference?.identical ?? false
+					missingFeatures: solved.report.imageFidelity?.features.passed === false,
+					motifMismatch: regions?.inside,
+					borderChange: regions?.outside,
+					identical: solved.report.solver.matchingPreference?.identical ?? false,
+					stoppedEarly: solved.report.stoppedEarly ?? false
 				}
 			};
 			session.status = 'done';
@@ -815,6 +885,7 @@
 							{paintValue}
 							{revision}
 							frame={session.frame}
+							{candidate}
 							onFrameSizeStart={recordFrameFold}
 							onFrameSize={resizeFrame}
 							disabled={busy}
@@ -852,6 +923,9 @@
 					<p class="canvas-pill">
 						<strong>{t('paintMaskPill', lang, { size: session.mask?.size ?? 400 })}</strong>
 						<span>{t('paintCanvasHint', lang)}</span>
+						{#if hasMissingPhotoPixels}
+							<span>{t('paintMissingPhotoPixels', lang)}</span>
+						{/if}
 					</p>
 
 					{#if notice}
@@ -878,10 +952,10 @@
 					<!-- The column runs past one edge or the other and there is more of it
 					     out of sight. macOS draws nothing of an overlay scrollbar until a
 					     gesture starts, so without these a panel is simply not there as far
-					     as anyone can tell. Both edges, not just the bottom: with three
-					     panels the column overflows on every desktop height, so a visitor
-					     who has scrolled down to Kanten needs to be told Værktøj is up
-					     there as much as they needed to be told Kanten was below. -->
+					     as anyone can tell. Both edges, not just the bottom: a short window
+					     or a Kanten expanded under Fri still runs the column past both, so a
+					     visitor who has scrolled down to Kanten needs to be told Værktøj is
+					     up there as much as they needed to be told Kanten was below. -->
 					<div class="left-fade top" class:showing={leftColumnCutTop} aria-hidden="true"></div>
 					<div class="left-fade" class:showing={leftColumnCut} aria-hidden="true"></div>
 					<div class="right-panel" class:collapsed={panelCollapsed} id="paint-panel">
@@ -993,17 +1067,18 @@
 						result={session.result}
 						{showingResult}
 						{honoured}
-						frame={session.frame}
 						{showMotif}
 						onShowMotif={(next) => (showMotif = next)}
 						{elapsed}
-						{stage}
+						{progress}
 						{advanced}
 						onAdvanced={(next) => (advanced = next)}
-						onResetAdvanced={() => (advanced = defaultAdvanced(session.symmetry))}
+						onResetAdvanced={() => (advanced = defaultAdvanced())}
 						canFind={!maskEmpty && !busy}
 						onFind={find}
 						onCancel={abort}
+						onUseBest={solveStarted ? () => { if (!usingBest) usingBest = useBestResult(); } : undefined}
+						stopping={usingBest}
 						onOpenInDraw={openInDraw}
 						onBackToMask={backToMask}
 					/>
@@ -1104,14 +1179,14 @@
 		border-color: var(--green);
 	}
 
-	/* Three panels now (Værktøj, Symmetri, Kanten), which is taller than any
-	   desktop viewport — measured at 240px over on a 1440 x 950 window — so the
-	   column scrolls as a rule rather than only on a short laptop. It stays centred
-	   while it fits and scrolls from the top when it does not, which is what
-	   `safe center` says; a browser that does not know the keyword falls back to
-	   the top, the same answer for the case that matters. Centring with a transform
-	   instead cut the column off at *both* ends, with the top out of reach
-	   altogether.
+	/* Three panels (Værktøj, Symmetri, Kanten) that fit a desktop window in their
+	   default state — 732px against the 880 a 1440 x 950 viewport leaves — and run
+	   past it on a short one, or with Kanten expanded under Fri. So the column
+	   stays centred while it fits and scrolls from the top when it does not, which
+	   is what `safe center` says; a browser that does not know the keyword falls
+	   back to the top, the same answer for the case that matters. Centring with a
+	   transform instead cut the column off at *both* ends, with the top out of
+	   reach altogether.
 
 	   The padding is for the panels' shadow: `overflow-y: auto` computes overflow-x
 	   to `auto` as well, which clips anything drawn outside the box. */

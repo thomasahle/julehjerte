@@ -1,0 +1,4234 @@
+{
+  "schema": 1,
+  "implementationCommit": "99399ff",
+  "validationCommit": "635e8b4c35d91bf5ebbd99ce1d791c4e0b15070d",
+  "scope": "Fresh source-only fitting, independent geometry/export replay, and actual browser workflows. No original-cutting-path or physical-assembly claim. Photographic errors are measured against estimated masks.",
+  "qa": {
+    "checks": [
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 9.323093375000001
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 6.007591042000001
+      },
+      {
+        "stage": "app",
+        "command": [
+          "npx",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 32.270373625
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 12.317328249999996
+      },
+      {
+        "stage": "inverse",
+        "command": [
+          "npm",
+          "run",
+          "test:inverse"
+        ],
+        "exitCode": 0,
+        "seconds": 847.215286458
+      }
+    ],
+    "sourceFilesVerified": 840,
+    "inversePassed": 849,
+    "inverseFailed": 0
+  },
+  "releaseChecks": [
+    {
+      "stage": "hunodan",
+      "command": [
+        "node",
+        "scripts/inverse/hunodan-speed-benchmark.mjs"
+      ],
+      "environment": {
+        "INVERSE_SPEED_OUT": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/eye-routing-v1/release/hunodan",
+        "INVERSE_SPEED_MODULE": "",
+        "INVERSE_SPEED_SECONDS": "10",
+        "INVERSE_SPEED_SETTINGS": "{}",
+        "INVERSE_SPEED_RETAIN_CANDIDATES": "0",
+        "INVERSE_HUNODAN_IDS": ""
+      },
+      "exitCode": 0,
+      "seconds": 121.67405029199995
+    },
+    {
+      "stage": "photos",
+      "command": [
+        "node",
+        "scripts/inverse/hard-photo-benchmark.mjs",
+        "--crop=automatic",
+        "--target=mask",
+        "--seconds=10",
+        "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/eye-routing-v1/release/photos"
+      ],
+      "environment": {},
+      "exitCode": 0,
+      "seconds": 310.95633458399993
+    },
+    {
+      "stage": "hunodan-editor-input",
+      "command": [
+        "node",
+        "scripts/inverse/diagnostics/hunodan-editor-input.mjs",
+        "--run=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/eye-routing-v1/release/hunodan",
+        "--runtime=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/eye-routing-v1/release/runtime",
+        "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/eye-routing-v1/release/hunodan-editor-input"
+      ],
+      "environment": {},
+      "exitCode": 0,
+      "seconds": 6.590291999999863
+    },
+    {
+      "stage": "hunodan-editor",
+      "command": [
+        "node",
+        "scripts/inverse/hard-photo-editor-replay.mjs",
+        "--run=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/eye-routing-v1/release/hunodan-editor-input",
+        "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/eye-routing-v1/release/hunodan-editor"
+      ],
+      "environment": {},
+      "exitCode": 0,
+      "seconds": 16.016276584000025
+    },
+    {
+      "stage": "photo-editor",
+      "command": [
+        "node",
+        "scripts/inverse/hard-photo-editor-replay.mjs",
+        "--run=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/eye-routing-v1/release/photo-editor-input",
+        "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/eye-routing-v1/release/photo-editor"
+      ],
+      "environment": {},
+      "exitCode": 0,
+      "seconds": 23.473502625000037
+    },
+    {
+      "stage": "restart-preview",
+      "command": [
+        "python3",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/eye-routing-v1/release/restart-preview.py"
+      ],
+      "environment": {},
+      "exitCode": 0,
+      "seconds": 1.3362056249998204
+    },
+    {
+      "stage": "browser",
+      "command": [
+        "node",
+        "scripts/inverse/paint-browser-test.mjs"
+      ],
+      "environment": {
+        "PLAYWRIGHT_MODULE": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/collage-resolution-v1/playwright.mjs",
+        "INVERSE_TEST_URL": "http://127.0.0.1:5232",
+        "INVERSE_TEST_BROWSERS": "chromium",
+        "INVERSE_TEST_CASES": "flower-native-mask,flower-downsample-mask,hard-bibel-star-outline,hard-bibel-star-outline-half,hard-bibel-star-outline-jpeg75,hard-flettede-puppy,hard-flettede-viking,hunodan,star,top-hat-preferred,blue-star-polishing-mask,web-danish-tree-green,gold-routing-mask",
+        "INVERSE_TEST_OUTPUT": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/eye-routing-v1/release/browser"
+      },
+      "exitCode": 0,
+      "seconds": 173.06284595900001
+    }
+  ],
+  "sourceFilesVerified": 840,
+  "nativeGates": {
+    "hunodanPassed": 22,
+    "hunodanTotal": 22,
+    "hunodanErrorRegressions": [],
+    "photoPassed": 25,
+    "photoPassRegressions": [],
+    "photoErrorRegressions": [
+      {
+        "id": "floral-checker",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.01929375,
+        "error": 0.01941875,
+        "errorDelta": 0.0001250000000000001
+      },
+      {
+        "id": "gingerbread",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.014825,
+        "error": 0.0149375,
+        "errorDelta": 0.00011249999999999975
+      },
+      {
+        "id": "fine-checker",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0215875,
+        "error": 0.0221625,
+        "errorDelta": 0.0005750000000000026
+      },
+      {
+        "id": "orb",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.01438125,
+        "error": 0.01443125,
+        "errorDelta": 4.99999999999997e-05
+      },
+      {
+        "id": "maple-leaf",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.013325,
+        "error": 0.013425,
+        "errorDelta": 9.99999999999994e-05
+      }
+    ],
+    "editablePassed": 47,
+    "editableTotal": 47,
+    "passed": true
+  },
+  "hunodan": [
+    {
+      "id": "hjfig-01",
+      "passed": true,
+      "qualityPassed": true,
+      "seconds": 4.274513667,
+      "previousSeconds": 4.319872167,
+      "error": 0.009799111111111111,
+      "previousError": 0.009799111111111111,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "hjfig-02",
+      "passed": true,
+      "qualityPassed": true,
+      "seconds": 5.406189832999999,
+      "previousSeconds": 5.230667458,
+      "error": 0.013340444444444445,
+      "previousError": 0.013340444444444445,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "hjfig-03",
+      "passed": true,
+      "qualityPassed": true,
+      "seconds": 3.518050082999998,
+      "previousSeconds": 3.4112665420000012,
+      "error": 0.006634666666666666,
+      "previousError": 0.006634666666666666,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "hjfig-04",
+      "passed": true,
+      "qualityPassed": true,
+      "seconds": 3.934302834,
+      "previousSeconds": 3.8550879589999987,
+      "error": 0.013824,
+      "previousError": 0.013824,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "hjfig-05",
+      "passed": true,
+      "qualityPassed": true,
+      "seconds": 5.661986999999997,
+      "previousSeconds": 2.8985522079999972,
+      "error": 0.00844420572515387,
+      "previousError": 0.009042960667083447,
+      "errorDelta": -0.000598754941929576
+    },
+    {
+      "id": "hjfla-01",
+      "passed": true,
+      "qualityPassed": true,
+      "seconds": 6.1437884579999995,
+      "previousSeconds": 5.420008957999999,
+      "error": 0.012166341145833334,
+      "previousError": 0.012166341145833334,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "hjcur-01",
+      "passed": true,
+      "qualityPassed": true,
+      "seconds": 5.4719339169999985,
+      "previousSeconds": 5.112501833000002,
+      "error": 0.005148444444444444,
+      "previousError": 0.005148444444444444,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "hjcur-02",
+      "passed": true,
+      "qualityPassed": true,
+      "seconds": 5.655587458999995,
+      "previousSeconds": 5.099301249999997,
+      "error": 0.005219555555555555,
+      "previousError": 0.005219555555555555,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "hjcur-03",
+      "passed": true,
+      "qualityPassed": true,
+      "seconds": 5.294253375,
+      "previousSeconds": 4.721068542000001,
+      "error": 0.004522666666666667,
+      "previousError": 0.004522666666666667,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "hjcur-04",
+      "passed": true,
+      "qualityPassed": true,
+      "seconds": 6.726357582999997,
+      "previousSeconds": 6.660873374999996,
+      "error": 0.005639111111111111,
+      "previousError": 0.005639111111111111,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "hjcur-05",
+      "passed": true,
+      "qualityPassed": true,
+      "seconds": 3.2053443750000006,
+      "previousSeconds": 3.1166111659999953,
+      "error": 0.009436444444444445,
+      "previousError": 0.009436444444444445,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "hjhih-01",
+      "passed": true,
+      "qualityPassed": true,
+      "seconds": 6.660271457999996,
+      "previousSeconds": 5.8687272499999965,
+      "error": 0.006040430615586996,
+      "previousError": 0.006040430615586996,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "hjhih-02",
+      "passed": true,
+      "qualityPassed": true,
+      "seconds": 4.900452833000003,
+      "previousSeconds": 4.403444959000001,
+      "error": 0.003899406226779104,
+      "previousError": 0.003899406226779104,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "hjhih-04",
+      "passed": true,
+      "qualityPassed": true,
+      "seconds": 7.267858500000002,
+      "previousSeconds": 7.0571875840000065,
+      "error": 0.007776029627903062,
+      "previousError": 0.007776029627903062,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "hjstr-01",
+      "passed": true,
+      "qualityPassed": true,
+      "seconds": 4.177925749999995,
+      "previousSeconds": 3.9180458749999962,
+      "error": 0.007550237322696868,
+      "previousError": 0.007550237322696868,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "hjstr-02",
+      "passed": true,
+      "qualityPassed": true,
+      "seconds": 5.928904250000007,
+      "previousSeconds": 5.825761416999987,
+      "error": 0.004365548980933596,
+      "previousError": 0.004365548980933596,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "hjstr-03",
+      "passed": true,
+      "qualityPassed": true,
+      "seconds": 7.915125583000001,
+      "previousSeconds": 7.7930516250000075,
+      "error": 0.0056129769369752365,
+      "previousError": 0.0056129769369752365,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "hjsta-01",
+      "passed": true,
+      "qualityPassed": true,
+      "seconds": 4.755232000000004,
+      "previousSeconds": 4.618494458000001,
+      "error": 0.007929362880886427,
+      "previousError": 0.007929362880886427,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "hjsta-02",
+      "passed": true,
+      "qualityPassed": true,
+      "seconds": 4.671306750000003,
+      "previousSeconds": 4.148053374999988,
+      "error": 0.0038045247395833335,
+      "previousError": 0.0038045247395833335,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "hjsta-03",
+      "passed": true,
+      "qualityPassed": true,
+      "seconds": 6.4690706670000075,
+      "previousSeconds": 5.851659125000006,
+      "error": 0.012332213049376572,
+      "previousError": 0.012332213049376572,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "hjsta-04",
+      "passed": true,
+      "qualityPassed": true,
+      "seconds": 6.367919332999998,
+      "previousSeconds": 6.053228292,
+      "error": 0.0050250552896055544,
+      "previousError": 0.0050250552896055544,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "hjsta-05",
+      "passed": true,
+      "qualityPassed": true,
+      "seconds": 6.05630575,
+      "previousSeconds": 5.510360707999993,
+      "error": 0.010624446293860237,
+      "previousError": 0.010624446293860237,
+      "errorDelta": 0.0
+    }
+  ],
+  "photos": [
+    {
+      "id": "oval-figure",
+      "previousStatus": "incomplete",
+      "status": "incomplete",
+      "previousPassed": false,
+      "passed": false,
+      "previousError": null,
+      "error": null,
+      "errorDelta": null
+    },
+    {
+      "id": "eight-point-star",
+      "previousStatus": "incomplete",
+      "status": "incomplete",
+      "previousPassed": false,
+      "passed": false,
+      "previousError": null,
+      "error": null,
+      "errorDelta": null
+    },
+    {
+      "id": "small-figure",
+      "previousStatus": "incomplete",
+      "status": "incomplete",
+      "previousPassed": false,
+      "passed": false,
+      "previousError": null,
+      "error": null,
+      "errorDelta": null
+    },
+    {
+      "id": "deer",
+      "previousStatus": "incomplete",
+      "status": "incomplete",
+      "previousPassed": false,
+      "passed": false,
+      "previousError": null,
+      "error": null,
+      "errorDelta": null
+    },
+    {
+      "id": "top-checker",
+      "previousStatus": "incomplete",
+      "status": "incomplete",
+      "previousPassed": false,
+      "passed": false,
+      "previousError": null,
+      "error": null,
+      "errorDelta": null
+    },
+    {
+      "id": "top-candle",
+      "previousStatus": "incomplete",
+      "status": "incomplete",
+      "previousPassed": false,
+      "passed": false,
+      "previousError": null,
+      "error": null,
+      "errorDelta": null
+    },
+    {
+      "id": "top-tree",
+      "previousStatus": "incomplete",
+      "status": "incomplete",
+      "previousPassed": false,
+      "passed": false,
+      "previousError": null,
+      "error": null,
+      "errorDelta": null
+    },
+    {
+      "id": "partial-top-right",
+      "previousStatus": "incomplete",
+      "status": "incomplete",
+      "previousPassed": false,
+      "passed": false,
+      "previousError": null,
+      "error": null,
+      "errorDelta": null
+    },
+    {
+      "id": "partial-left-checker",
+      "previousStatus": "incomplete",
+      "status": "incomplete",
+      "previousPassed": false,
+      "passed": false,
+      "previousError": null,
+      "error": null,
+      "errorDelta": null
+    },
+    {
+      "id": "nested-squares",
+      "previousStatus": "no_crop",
+      "status": "no_crop",
+      "previousPassed": false,
+      "passed": false,
+      "previousError": null,
+      "error": null,
+      "errorDelta": null
+    },
+    {
+      "id": "outline-star",
+      "previousStatus": "failed",
+      "status": "failed",
+      "previousPassed": false,
+      "passed": false,
+      "previousError": 0.00815625,
+      "error": 0.00815625,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "floral-checker",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.01929375,
+      "error": 0.01941875,
+      "errorDelta": 0.0001250000000000001
+    },
+    {
+      "id": "dense-checker",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.00699375,
+      "error": 0.00699375,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "bird",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.02470625,
+      "error": 0.02470625,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "leaf",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.0265125,
+      "error": 0.025625,
+      "errorDelta": -0.0008875000000000029
+    },
+    {
+      "id": "partial-right-checker",
+      "previousStatus": "incomplete",
+      "status": "incomplete",
+      "previousPassed": false,
+      "passed": false,
+      "previousError": null,
+      "error": null,
+      "errorDelta": null
+    },
+    {
+      "id": "partial-left-abstract",
+      "previousStatus": "incomplete",
+      "status": "incomplete",
+      "previousPassed": false,
+      "passed": false,
+      "previousError": null,
+      "error": null,
+      "errorDelta": null
+    },
+    {
+      "id": "gift",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.02309375,
+      "error": 0.02303125,
+      "errorDelta": -6.250000000000006e-05
+    },
+    {
+      "id": "gingerbread",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.014825,
+      "error": 0.0149375,
+      "errorDelta": 0.00011249999999999975
+    },
+    {
+      "id": "white-birds",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.00379375,
+      "error": 0.00379375,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "flower",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.0050625,
+      "error": 0.0050625,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "warped-checker",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.01813125,
+      "error": 0.0178875,
+      "errorDelta": -0.0002437500000000009
+    },
+    {
+      "id": "round-checker",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.0121375,
+      "error": 0.0121375,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "santa",
+      "previousStatus": "no_crop",
+      "status": "no_crop",
+      "previousPassed": false,
+      "passed": false,
+      "previousError": null,
+      "error": null,
+      "errorDelta": null
+    },
+    {
+      "id": "partial-left-diamonds",
+      "previousStatus": "incomplete",
+      "status": "incomplete",
+      "previousPassed": false,
+      "passed": false,
+      "previousError": null,
+      "error": null,
+      "errorDelta": null
+    },
+    {
+      "id": "fine-checker",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.0215875,
+      "error": 0.0221625,
+      "errorDelta": 0.0005750000000000026
+    },
+    {
+      "id": "orb",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.01438125,
+      "error": 0.01443125,
+      "errorDelta": 4.99999999999997e-05
+    },
+    {
+      "id": "stacked-hearts",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.007425,
+      "error": 0.007425,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "jigsaw",
+      "previousStatus": "failed",
+      "status": "failed",
+      "previousPassed": false,
+      "passed": false,
+      "previousError": 0.0564375,
+      "error": 0.0564375,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "candle",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.0048375,
+      "error": 0.0048375,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "maple-leaf",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.013325,
+      "error": 0.013425,
+      "errorDelta": 9.99999999999994e-05
+    },
+    {
+      "id": "crown",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.02411875,
+      "error": 0.02411875,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "partial-bottom-left",
+      "previousStatus": "incomplete",
+      "status": "incomplete",
+      "previousPassed": false,
+      "passed": false,
+      "previousError": null,
+      "error": null,
+      "errorDelta": null
+    },
+    {
+      "id": "bottom-diamonds",
+      "previousStatus": "incomplete",
+      "status": "incomplete",
+      "previousPassed": false,
+      "passed": false,
+      "previousError": null,
+      "error": null,
+      "errorDelta": null
+    },
+    {
+      "id": "crossed-ribbons",
+      "previousStatus": "failed",
+      "status": "failed",
+      "previousPassed": false,
+      "passed": false,
+      "previousError": 0.02153125,
+      "error": 0.02153125,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "bauble",
+      "previousStatus": "failed",
+      "status": "failed",
+      "previousPassed": false,
+      "passed": false,
+      "previousError": 0.0919125,
+      "error": 0.0919125,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "glare-motif",
+      "previousStatus": "obscured",
+      "status": "obscured",
+      "previousPassed": false,
+      "passed": false,
+      "previousError": null,
+      "error": null,
+      "errorDelta": null
+    },
+    {
+      "id": "bottom-flower",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.0093875,
+      "error": 0.0093875,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "faceted-star",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.0065,
+      "error": 0.0065,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "partial-bottom-right",
+      "previousStatus": "incomplete",
+      "status": "incomplete",
+      "previousPassed": false,
+      "passed": false,
+      "previousError": null,
+      "error": null,
+      "errorDelta": null
+    },
+    {
+      "id": "bibel-star-8",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.003675,
+      "error": 0.003675,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "bibel-star-curved",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.00663125,
+      "error": 0.00663125,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "bibel-star-outline",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.0116,
+      "error": 0.0116,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "bibel-cross",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.00243125,
+      "error": 0.00243125,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "flettede-puppy",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.0103125,
+      "error": 0.0103125,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "flettede-stonehenge",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.01905,
+      "error": 0.01905,
+      "errorDelta": 0.0
+    },
+    {
+      "id": "flettede-viking",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.02056875,
+      "error": 0.02055,
+      "errorDelta": -1.8750000000001404e-05
+    }
+  ],
+  "editable": [
+    {
+      "id": "hjfig-01",
+      "preset": "automatic",
+      "geometrySha256": "d7ad5e34490ec434df08448000f24ff0cba34e62923d67eef6ddf2a13a640983",
+      "maskSha256": "0f602686e418c6e266fa6fc82f0a899b24920770cc69f3c1ce0c4004c8407fb6",
+      "independentEngineError": 0.009799111111111111,
+      "editableError": 0.009891555555555556,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 375,
+            "mismatch": 0
+          },
+          {
+            "resolution": 750,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.009891555555555556,
+        "sourceError": 0.009891555555555556
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "hjfig-02",
+      "preset": "automatic",
+      "geometrySha256": "bc90373c69a2bcc1236d56643df72e3c3e205aea3d3a4b8f2b93c88ec187be88",
+      "maskSha256": "4c05cb8452628b98627835e73725378d9bb85fb45254a154ddb8905c6e6a2778",
+      "independentEngineError": 0.013340444444444445,
+      "editableError": 0.013482666666666667,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 375,
+            "mismatch": 0
+          },
+          {
+            "resolution": 750,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.013482666666666667,
+        "sourceError": 0.013482666666666667
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "hjfig-03",
+      "preset": "automatic",
+      "geometrySha256": "ce50b811ccfc67a307097b3d058c6d6ab6e47fbd1da7bf87584b6cda6cdaf8f6",
+      "maskSha256": "745c42b5e196f2b0fe973d982cf03c11b175a09274e672f451d838e48d9e6af9",
+      "independentEngineError": 0.006634666666666666,
+      "editableError": 0.006677333333333334,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 375,
+            "mismatch": 0
+          },
+          {
+            "resolution": 750,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.006677333333333334,
+        "sourceError": 0.006677333333333334
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "hjfig-04",
+      "preset": "automatic",
+      "geometrySha256": "16695deef171fd7b1f248ef452407bbbcc4a0c65aeabdfbb6038ef5c56117db7",
+      "maskSha256": "668167ba630a222f2601c6ace30f79ba1c9d0d88f99b0214904ffbc545c339fb",
+      "independentEngineError": 0.013824,
+      "editableError": 0.014016,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 375,
+            "mismatch": 0
+          },
+          {
+            "resolution": 750,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.014016,
+        "sourceError": 0.014016
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "hjfig-05",
+      "preset": "automatic",
+      "geometrySha256": "77cc72cfcd70d173dd8e3a77f33d18ef81fb1a36cea22b5eb927bfe1bddaa432",
+      "maskSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+      "independentEngineError": 0.00844420572515387,
+      "editableError": 0.00827690655020296,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 337,
+            "mismatch": 0
+          },
+          {
+            "resolution": 674,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.00827690655020296,
+        "sourceError": 0.00827690655020296
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "hjfla-01",
+      "preset": "automatic",
+      "geometrySha256": "2adb545bc28461e7756f84b13f7b7470b9ae477659d6c862afc5b1c0b47a4073",
+      "maskSha256": "f5f772caadf20161dd72c25a4e06acf56e3122ddbd9b530c471121095a344f5d",
+      "independentEngineError": 0.012166341145833334,
+      "editableError": 0.012037489149305556,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 384,
+            "mismatch": 0
+          },
+          {
+            "resolution": 768,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.012037489149305556,
+        "sourceError": 0.012037489149305556
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "hjcur-01",
+      "preset": "automatic",
+      "geometrySha256": "049b9ebeddc1110704836a415214288788c8494bd69914e99140e1c6a00e499a",
+      "maskSha256": "31fdc1c6e540f367bbfe0030eba717b477959af8b240863b3f45181ede25cc80",
+      "independentEngineError": 0.005148444444444444,
+      "editableError": 0.0050702222222222225,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 375,
+            "mismatch": 0
+          },
+          {
+            "resolution": 750,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.0050702222222222225,
+        "sourceError": 0.0050702222222222225
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "hjcur-02",
+      "preset": "automatic",
+      "geometrySha256": "b6dec1adec3bcf53ef9122c6d6095f9c30ff233e7ef358b73502f7b739327cc8",
+      "maskSha256": "ee27e7b1a962204080c43d064b331286e929ae897f20ff8f5ac082e961caf4de",
+      "independentEngineError": 0.005219555555555555,
+      "editableError": 0.005056,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 375,
+            "mismatch": 0
+          },
+          {
+            "resolution": 750,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.005056,
+        "sourceError": 0.005056
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "hjcur-03",
+      "preset": "automatic",
+      "geometrySha256": "ad97a002943d8e2647c3b8d9f4b9c7d0f6f1ee10dd5db85238f2366dd6ca91c3",
+      "maskSha256": "b8f60a17331591b6f27bf7ba9684c6e25383aafef960915a64af88582b00f4cf",
+      "independentEngineError": 0.004522666666666667,
+      "editableError": 0.004231111111111111,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 375,
+            "mismatch": 0
+          },
+          {
+            "resolution": 750,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.004231111111111111,
+        "sourceError": 0.004231111111111111
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "hjcur-04",
+      "preset": "automatic",
+      "geometrySha256": "a525041d65f090550c374aa1d58e5b9a22afbeaaa8d21f397e32ed8cd26ae022",
+      "maskSha256": "52ded25560667c41851d3d6a56932079e74d1d448bfa12a3e71172ad3aed5536",
+      "independentEngineError": 0.005639111111111111,
+      "editableError": 0.005454222222222222,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 375,
+            "mismatch": 0
+          },
+          {
+            "resolution": 750,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.005454222222222222,
+        "sourceError": 0.005454222222222222
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "hjcur-05",
+      "preset": "automatic",
+      "geometrySha256": "1b3822492ae13f4b6f73bc67284ce4eb568f292cb87b092b80be053e914817f7",
+      "maskSha256": "c49156ccfdf43c4a11a0947e0b6dc16ca514f534199fc865db2224443ed3be76",
+      "independentEngineError": 0.009436444444444445,
+      "editableError": 0.009344,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 375,
+            "mismatch": 0
+          },
+          {
+            "resolution": 750,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.009344,
+        "sourceError": 0.009344
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "hjhih-01",
+      "preset": "automatic",
+      "geometrySha256": "df9facec711075be91afcf6f2ddf537842a1724fcd44ef1f68cdb0703d5f2c68",
+      "maskSha256": "a02bbceadda3acbc3ae67298e79ecc8e8f0dce4f0c8d61162c58e6e993804346",
+      "independentEngineError": 0.006040430615586996,
+      "editableError": 0.005993449488576875,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 386,
+            "mismatch": 0
+          },
+          {
+            "resolution": 772,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.005993449488576875,
+        "sourceError": 0.005993449488576875
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "hjhih-02",
+      "preset": "automatic",
+      "geometrySha256": "25db88ee2ae032dd7f5aaa85fe1a897b585797aa10fbdf37af94d73e24a81f2a",
+      "maskSha256": "430f17aa29b1ee5b3018bc5a76c51d02693d43c0136c8b53b4f56543eb8c116a",
+      "independentEngineError": 0.003899406226779104,
+      "editableError": 0.0038857719392728835,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 383,
+            "mismatch": 0
+          },
+          {
+            "resolution": 766,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.0038857719392728835,
+        "sourceError": 0.0038857719392728835
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "hjhih-04",
+      "preset": "automatic",
+      "geometrySha256": "8c34f52f04b01a4ba97e7e20eae725dfe423f2ef7eb1b1b8154c749e63d220d6",
+      "maskSha256": "8c86ff1087e3248e8450d6cca93b879ead9373a20e7fd9baddb540f93cad3e11",
+      "independentEngineError": 0.007776029627903062,
+      "editableError": 0.007691859448750073,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 393,
+            "mismatch": 0
+          },
+          {
+            "resolution": 786,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.007691859448750073,
+        "sourceError": 0.007691859448750073
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "hjstr-01",
+      "preset": "automatic",
+      "geometrySha256": "a7f33780db85389adc0d24217c4e7febf717857000a2b4ad93f677fcfd0860f2",
+      "maskSha256": "900ba653d4e9765749e3077f96826591e8ba8619daea61146e4b05ae48c9b5e9",
+      "independentEngineError": 0.007550237322696868,
+      "editableError": 0.007295347924029181,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 381,
+            "mismatch": 0
+          },
+          {
+            "resolution": 762,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.007295347924029181,
+        "sourceError": 0.007295347924029181
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "hjstr-02",
+      "preset": "automatic",
+      "geometrySha256": "febe020fdc59877ef5cf71c22eff1fbc4607a1eaae93baf40ec9611d46bdb270",
+      "maskSha256": "2ca1f380ea3e9403ff612efaf9d0f44d7e9eca41b4f35b78347dcc8d3f5d66d5",
+      "independentEngineError": 0.004365548980933596,
+      "editableError": 0.004128862590401052,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 390,
+            "mismatch": 0
+          },
+          {
+            "resolution": 780,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.004128862590401052,
+        "sourceError": 0.004128862590401052
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "hjstr-03",
+      "preset": "automatic",
+      "geometrySha256": "5ffc98f412dcae8e143a786b0f2dea156757837c0d08dbd8d0e9c123664e9cb5",
+      "maskSha256": "d9ba414af2b114d628d5a1ee4df9b7c6cc875d31452495e8159a06d1e3021f11",
+      "independentEngineError": 0.0056129769369752365,
+      "editableError": 0.005446912530555851,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 388,
+            "mismatch": 0
+          },
+          {
+            "resolution": 776,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.005446912530555851,
+        "sourceError": 0.005446912530555851
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "hjsta-01",
+      "preset": "automatic",
+      "geometrySha256": "ec714b590351efd48a2ca01d3c2a1ec25791b52fe9286389b1c6aa0b96eea005",
+      "maskSha256": "1e64a4a98de31d02ca46a0cea403c50172ba6b472c4167059c699a05acf7bbc2",
+      "independentEngineError": 0.007929362880886427,
+      "editableError": 0.007901662049861495,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 380,
+            "mismatch": 0
+          },
+          {
+            "resolution": 760,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.007901662049861495,
+        "sourceError": 0.007901662049861495
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "hjsta-02",
+      "preset": "automatic",
+      "geometrySha256": "ba755c3c9ca90e290630af6e8984e9167b4f865dfd5055a578378a6d2fba1cd7",
+      "maskSha256": "957426bf15cc8cdcc8f813c45de9965f0e08421af8d117da78a54ffe99fed1a6",
+      "independentEngineError": 0.0038045247395833335,
+      "editableError": 0.0035603841145833335,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 384,
+            "mismatch": 0
+          },
+          {
+            "resolution": 768,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.0035603841145833335,
+        "sourceError": 0.0035603841145833335
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "hjsta-03",
+      "preset": "automatic",
+      "geometrySha256": "94a7e2fae6933095c873744551ba72caf03ad1119701a8f6e162f1f6687266f5",
+      "maskSha256": "71928f2d6a8f59fd498bf144aa69020efad39b25bfdb4ed8f4887d2344845cad",
+      "independentEngineError": 0.012332213049376572,
+      "editableError": 0.012229955893079918,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 383,
+            "mismatch": 0
+          },
+          {
+            "resolution": 766,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.012229955893079918,
+        "sourceError": 0.012229955893079918
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "hjsta-04",
+      "preset": "automatic",
+      "geometrySha256": "0ec351fd7566f5570145c107913d323e6761f018527258f6def41cd4dcc67a1e",
+      "maskSha256": "40ef212bea0c4de0e21632a931e72ccb9c6d3a24c32384555d1d606341e7334d",
+      "independentEngineError": 0.0050250552896055544,
+      "editableError": 0.004843089499174155,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 378,
+            "mismatch": 0
+          },
+          {
+            "resolution": 756,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.004843089499174155,
+        "sourceError": 0.004843089499174155
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "hjsta-05",
+      "preset": "automatic",
+      "geometrySha256": "e5c679f439952dc25a281d54f49977ec76113eab8e1eead9473f77b881a9f5f2",
+      "maskSha256": "f6909fa97b2ec2b706ef6f0dd1ae779a6ef7b7aec276a1c1569dc016ce5e98f2",
+      "independentEngineError": 0.010624446293860237,
+      "editableError": 0.010611023114714489,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 386,
+            "mismatch": 0
+          },
+          {
+            "resolution": 772,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.010611023114714489,
+        "sourceError": 0.010611023114714489
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "floral-checker",
+      "preset": "automatic",
+      "geometrySha256": "ac716e0a2aa14fe4330455d313b8ff5045a508612c98cd7a100d8e174c4fa5dd",
+      "maskSha256": "351a7a00b7aba431e393477f0ae7747c3b2dda9ad8a40fd086e625d3d6ccb6f7",
+      "independentEngineError": 0.01941875,
+      "editableError": 0.01965,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.01965,
+        "sourceError": 0.01965
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "dense-checker",
+      "preset": "automatic",
+      "geometrySha256": "0ba6a61f0e66805d5d5db934f2ce9f574330700451e6a692794da8a14944c5af",
+      "maskSha256": "ff1cc0d30dbc0e6c908d2a731a5b5f0012c20224fd64713648cea42f258db664",
+      "independentEngineError": 0.00699375,
+      "editableError": 0.00676875,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.00676875,
+        "sourceError": 0.00676875
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "bird",
+      "preset": "automatic",
+      "geometrySha256": "f8b6dc9f52641fbd373b3382985120a0b564c1e434a179728bd5da9dab938303",
+      "maskSha256": "7137173fa17abe3f8f7788ddb7d321fe48258a4a3f4c2f8b3171b9ff9f15a16f",
+      "independentEngineError": 0.02470625,
+      "editableError": 0.02518125,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.02518125,
+        "sourceError": 0.02518125
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "leaf",
+      "preset": "automatic",
+      "geometrySha256": "9b40860903893878c81b717e7f1c35f18b35bc693ff09b84cbde0fd97556a287",
+      "maskSha256": "0e1fefda40bbe92da956dd2467d117af6a732d0223e695901cc0255a166651f4",
+      "independentEngineError": 0.025625,
+      "editableError": 0.0254875,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.0254875,
+        "sourceError": 0.0254875
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "gift",
+      "preset": "automatic",
+      "geometrySha256": "d60a6d48799b9be1ee6ee1b27679f7cf4da48f6cc36dd051ab07148be10ad33a",
+      "maskSha256": "27d7f1538cbba31b9e4b13270a70e7ffc36acc23f69a49d4646d5ee3f49b7738",
+      "independentEngineError": 0.02303125,
+      "editableError": 0.02330625,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.02330625,
+        "sourceError": 0.02330625
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "gingerbread",
+      "preset": "automatic",
+      "geometrySha256": "091c7580e34fabdc0d5c925e421483677f0c8696a4c69c6bce820f495765d37b",
+      "maskSha256": "58e23488bf3ab6809c751f87de2cb7b7316aab8fc591b0c1c107ecbc2e64823e",
+      "independentEngineError": 0.0149375,
+      "editableError": 0.01519375,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.01519375,
+        "sourceError": 0.01519375
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "white-birds",
+      "preset": "automatic",
+      "geometrySha256": "6c8c0ef9ecf16ffde3f8b46b9424f2c8f7d169e8b2e0de6f278547cd700fb1ce",
+      "maskSha256": "4c2f7e027c7efd6daad57573ee636a271679fa82f4170304628322ce87112c90",
+      "independentEngineError": 0.00379375,
+      "editableError": 0.00375,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.00375,
+        "sourceError": 0.00375
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "flower",
+      "preset": "automatic",
+      "geometrySha256": "8166aedab48b2bb9b365f503f6ac46592840520e5f26c9681480c1a32ddd942f",
+      "maskSha256": "a6329990af013948c3ba32058af40424949d57280ca3b5ab18ecaaca0f1787a0",
+      "independentEngineError": 0.0050625,
+      "editableError": 0.0051875,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.0051875,
+        "sourceError": 0.0051875
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "warped-checker",
+      "preset": "automatic",
+      "geometrySha256": "e3c5f3a0614a693acfc18a8d7df1a8a79c6e87acc6e1601f4205f676fc2e5639",
+      "maskSha256": "3508f08f46f539554f7fdab38f01f018bc7ec8d86db2309427b28e18b049c2de",
+      "independentEngineError": 0.0178875,
+      "editableError": 0.0182375,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.0182375,
+        "sourceError": 0.0182375
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "round-checker",
+      "preset": "automatic",
+      "geometrySha256": "869d72e1e5d88ad1b0ba87d6c4bca3d5a1f0427224a4b3e6c8d0c29471cb6864",
+      "maskSha256": "215c0cab5c8f635f9fbfad239d09f3fb2bc6dd2469764906d062fdfbac0e5e68",
+      "independentEngineError": 0.0121375,
+      "editableError": 0.012125,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.012125,
+        "sourceError": 0.012125
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "fine-checker",
+      "preset": "automatic",
+      "geometrySha256": "9e56813720b5edcf04f53798f34b319d8d01716c52569294c936ed14a177842e",
+      "maskSha256": "184fe9c3aaf1a4e8a3732e1180a17770ebb3ef60566861c89859bb5a1e36ad4a",
+      "independentEngineError": 0.0221625,
+      "editableError": 0.0225625,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.0225625,
+        "sourceError": 0.0225625
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "orb",
+      "preset": "automatic",
+      "geometrySha256": "6d9736653e0ae36c3c8ad28664b969bd5697068cc2030aee4cfcfa98ed75bc42",
+      "maskSha256": "4a9574d7d5bc6d22ff176926863814a6f9c298abd433f9e0fa432886a9929830",
+      "independentEngineError": 0.01443125,
+      "editableError": 0.01438125,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.01438125,
+        "sourceError": 0.01438125
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "stacked-hearts",
+      "preset": "automatic",
+      "geometrySha256": "64ec24b836d5dd71dca23d35c5814a2e337c3445f79d9c649806d65c4a3104a2",
+      "maskSha256": "9a7ed32b892c60e0889f4ef7df0a70073e15e1353225bf5736925f4a6f7f9c24",
+      "independentEngineError": 0.007425,
+      "editableError": 0.0073625,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.0073625,
+        "sourceError": 0.0073625
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "candle",
+      "preset": "automatic",
+      "geometrySha256": "1bc0dd1dba943690ef6f316b404c1a855be582f7ca0fd9b98fd70ef814ec26f7",
+      "maskSha256": "263a91fc0a1b6db6db4da860f4145bd52aa0973927285068f8cbe267c9bc175d",
+      "independentEngineError": 0.0048375,
+      "editableError": 0.0048,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.0048,
+        "sourceError": 0.0048
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "maple-leaf",
+      "preset": "automatic",
+      "geometrySha256": "6330957869f971bfdce2b62c0715021a732f4cf0962404d96bdc913b753ac064",
+      "maskSha256": "9b0908abdb6ceb0957b6344cfa5fbaeab4a46866c640ea8d1898b3dc31a8c101",
+      "independentEngineError": 0.013425,
+      "editableError": 0.01353125,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.01353125,
+        "sourceError": 0.01353125
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "crown",
+      "preset": "automatic",
+      "geometrySha256": "f40f658802de5734f36b1d94fbbec18064e537b5fc706071e7af343e0d418753",
+      "maskSha256": "28f4380aaf5bb197acbaf7750b4560e317c442740098abaf4c91eb88ac7866aa",
+      "independentEngineError": 0.02411875,
+      "editableError": 0.02450625,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.02450625,
+        "sourceError": 0.02450625
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "bottom-flower",
+      "preset": "automatic",
+      "geometrySha256": "a580fc671d38d5315d1594fe7ee3993b2bd428d98b617a2ef9a7c34744b88dc6",
+      "maskSha256": "c28a1d562809d85df72b62ed7c8da9eaa3eb5ae98c3af23e2630232ecc641a50",
+      "independentEngineError": 0.0093875,
+      "editableError": 0.00935625,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.00935625,
+        "sourceError": 0.00935625
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "faceted-star",
+      "preset": "automatic",
+      "geometrySha256": "229d2de8e9616388bc4ff178759a57fa3fbde8277a10d8ee6f06db8c97c5dcaa",
+      "maskSha256": "bce82438deb37467102b2a1155902d668bcabb46cc8419aa561d68f4f69c9f86",
+      "independentEngineError": 0.0065,
+      "editableError": 0.0065125,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.0065125,
+        "sourceError": 0.0065125
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "bibel-star-8",
+      "preset": "automatic",
+      "geometrySha256": "86835af75f4222c274fdd1757ba65e6494909876bac46bb31a18561628d53e97",
+      "maskSha256": "d679deeeed128c62414a104b457a76afd1f7a60ae90d7014579f5aa7fd8d0760",
+      "independentEngineError": 0.003675,
+      "editableError": 0.00365,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.00365,
+        "sourceError": 0.00365
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "bibel-star-curved",
+      "preset": "automatic",
+      "geometrySha256": "d4e520bac64dbd55e0f2ca8c1dbe9adbfc7d4f29d15714783362199a9abc1e30",
+      "maskSha256": "1f6c8ac1fbb7a2d13b56154c9c0c9dfe257990a6a057bce0f1a80fb0a98e52d2",
+      "independentEngineError": 0.00663125,
+      "editableError": 0.00635625,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.00635625,
+        "sourceError": 0.00635625
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "bibel-star-outline",
+      "preset": "automatic",
+      "geometrySha256": "4c9a25ea9b9317a32f57efe82c23cd260ded4e1aa313d40780c7dc38f47f706a",
+      "maskSha256": "069c4d534547341c69dc2233d6e210d5607f284d2d81b0d18623b06c148d4fe4",
+      "independentEngineError": 0.0116,
+      "editableError": 0.0115375,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.0115375,
+        "sourceError": 0.0115375
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "bibel-cross",
+      "preset": "automatic",
+      "geometrySha256": "9668da65c3b88ef077b3054d27e022b021851263785e9868f692bb7cc9fa0a05",
+      "maskSha256": "d191cd84d681ff1fa498ab6155bcf1b56dbf558168037d921edff536e801fdb3",
+      "independentEngineError": 0.00243125,
+      "editableError": 0.002425,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.002425,
+        "sourceError": 0.002425
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "flettede-puppy",
+      "preset": "automatic",
+      "geometrySha256": "7cdda85aa95f3bb6bb8a05acd4f2dcf8de9168f8338972387c11fe7385929303",
+      "maskSha256": "45bb41ffbb961e933cb29f4effbe47239533035ab522c7e654b7d9c1de1a0dad",
+      "independentEngineError": 0.0103125,
+      "editableError": 0.01029375,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 3.125e-06
+          }
+        ],
+        "originalSourceError": 0.01029375,
+        "sourceError": 0.01029375
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "flettede-stonehenge",
+      "preset": "automatic",
+      "geometrySha256": "d6fdb7b80050ee3070ac9a08e51d0d6c690480180df245daf5af0527bc6bffb5",
+      "maskSha256": "ff0bfa945a6368140b08b2f1f9709b1363b2e6fd8e9d19da4d824ffc97ba55c2",
+      "independentEngineError": 0.01905,
+      "editableError": 0.0188,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.0188,
+        "sourceError": 0.0188
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    },
+    {
+      "id": "flettede-viking",
+      "preset": "automatic",
+      "geometrySha256": "42899e9fb09565529a2e5a9a97e36e3abd3fdef87919abd8215649b1997c5908",
+      "maskSha256": "7791de154fdbc94b618ece0bf018522573d57c231c46bc0385d24a9e2b9a9bb8",
+      "independentEngineError": 0.02055,
+      "editableError": 0.02078125,
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 2.5e-05
+          },
+          {
+            "resolution": 800,
+            "mismatch": 1.25e-05
+          }
+        ],
+        "originalSourceError": 0.02078125,
+        "sourceError": 0.02078125
+      },
+      "missingFeatures": 0,
+      "completeCandidatePassed": true
+    }
+  ],
+  "browser": [
+    {
+      "name": "flower-native-mask",
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "passed": true,
+      "pageErrors": [],
+      "sourcePhoto": {
+        "id": "flower-native",
+        "sha256": "ff26866081f60d3f0636acffb408cde199c177aac7e97b907979b06ad5b6f35b",
+        "quad": null,
+        "fixedMaskSha256": "d3606045ae05979ef0b06135c902c0f4733b190b29674e8677659b160f536a07"
+      },
+      "solveSettings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "width": 100,
+        "minWidth": 2,
+        "cutError": 0.25,
+        "timeLimit": 180,
+        "preferMatchingSheets": true,
+        "matchingErrorAllowance": 0.01,
+        "progressGeometry": true,
+        "earlyStop": false,
+        "removeSpecks": 0,
+        "fillHoles": 0,
+        "minRadius": 0.8,
+        "kerf": 0,
+        "printShrinkPercent": 0.2,
+        "materialResolution": 360,
+        "trials": 12,
+        "requireMaterialCore": true,
+        "paperColors": [
+          "#b91313",
+          "#ffffff"
+        ],
+        "symmetry": {}
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.005900000095367432,
+        "prepareRoundTripSeconds": 0.16,
+        "preparedToSolveRequestSeconds": 0.00029999995231628417,
+        "solveRoundTripSeconds": 6.998399999856949,
+        "resultToReadySeconds": 0.64,
+        "clickToReadySeconds": 7.8045999999046325
+      },
+      "sourceEditableError": 0.00509375,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "sharedSpans": 14
+    },
+    {
+      "name": "flower-downsample-mask",
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "passed": true,
+      "pageErrors": [],
+      "sourcePhoto": {
+        "id": "flower-downsample",
+        "sha256": "401aa87e915c367ba1f55e3c3caa418d90c8d98537dbe9cd006d8576eeb039df",
+        "quad": null,
+        "fixedMaskSha256": "428aa6afafd78d0443a4610302b6ce9c78ad5b7cf50133e35d3730a30eb0525a"
+      },
+      "solveSettings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "width": 100,
+        "minWidth": 2,
+        "cutError": 0.25,
+        "timeLimit": 180,
+        "preferMatchingSheets": true,
+        "matchingErrorAllowance": 0.01,
+        "progressGeometry": true,
+        "earlyStop": false,
+        "removeSpecks": 0,
+        "fillHoles": 0,
+        "minRadius": 0.8,
+        "kerf": 0,
+        "printShrinkPercent": 0.2,
+        "materialResolution": 360,
+        "trials": 12,
+        "requireMaterialCore": true,
+        "paperColors": [
+          "#b91313",
+          "#ffffff"
+        ],
+        "symmetry": {}
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.0055,
+        "prepareRoundTripSeconds": 0.1692999999523163,
+        "preparedToSolveRequestSeconds": 0.00029999995231628417,
+        "solveRoundTripSeconds": 8.590299999952316,
+        "resultToReadySeconds": 0.5135,
+        "clickToReadySeconds": 9.278899999856948
+      },
+      "sourceEditableError": 0.00611875,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "sharedSpans": 27
+    },
+    {
+      "name": "hard-bibel-star-outline",
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "passed": true,
+      "pageErrors": [],
+      "sourcePhoto": {
+        "id": "bibel-star-outline",
+        "sha256": "50182945f46ea5e51dc4ab75227d73abfd332e07a4568a1acc52ae43c1c8638c",
+        "decodedPixelsSha256": "a58dc34d7dd3f2bf65fc981a7cd9fc934d59ca4db5c3d90d00abf00757c723f0",
+        "width": 995,
+        "height": 661
+      },
+      "solveSettings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "width": 100,
+        "minWidth": 2,
+        "cutError": 0.25,
+        "timeLimit": 180,
+        "preferMatchingSheets": true,
+        "matchingErrorAllowance": 0.01,
+        "progressGeometry": true,
+        "earlyStop": false,
+        "removeSpecks": 0,
+        "fillHoles": 0,
+        "minRadius": 0.8,
+        "kerf": 0,
+        "printShrinkPercent": 0.2,
+        "materialResolution": 360,
+        "trials": 12,
+        "requireMaterialCore": true,
+        "paperColors": [
+          "#b91313",
+          "#ffffff"
+        ],
+        "symmetry": {}
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.0052999999523162845,
+        "prepareRoundTripSeconds": 0.15409999990463258,
+        "preparedToSolveRequestSeconds": 0.00040000009536743164,
+        "solveRoundTripSeconds": 7.637200000047684,
+        "resultToReadySeconds": 0.19529999995231628,
+        "clickToReadySeconds": 7.9922999999523165
+      },
+      "sourceEditableError": 0.0115375,
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "sharedSpans": 11
+    },
+    {
+      "name": "hard-bibel-star-outline-half",
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "passed": true,
+      "pageErrors": [],
+      "sourcePhoto": {
+        "id": "bibel-star-outline",
+        "sha256": "50182945f46ea5e51dc4ab75227d73abfd332e07a4568a1acc52ae43c1c8638c",
+        "decodedPixelsSha256": "a58dc34d7dd3f2bf65fc981a7cd9fc934d59ca4db5c3d90d00abf00757c723f0",
+        "width": 995,
+        "height": 661
+      },
+      "solveSettings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "width": 100,
+        "minWidth": 2,
+        "cutError": 0.25,
+        "timeLimit": 180,
+        "preferMatchingSheets": true,
+        "matchingErrorAllowance": 0.01,
+        "progressGeometry": true,
+        "earlyStop": false,
+        "removeSpecks": 0,
+        "fillHoles": 0,
+        "minRadius": 0.8,
+        "kerf": 0,
+        "printShrinkPercent": 0.2,
+        "materialResolution": 360,
+        "trials": 12,
+        "requireMaterialCore": true,
+        "paperColors": [
+          "#b91313",
+          "#ffffff"
+        ],
+        "symmetry": {}
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.005400000095367431,
+        "prepareRoundTripSeconds": 0.16409999990463256,
+        "preparedToSolveRequestSeconds": 0.00030000019073486326,
+        "solveRoundTripSeconds": 8.498599999904632,
+        "resultToReadySeconds": 0.38909999990463257,
+        "clickToReadySeconds": 9.0575
+      },
+      "sourceEditableError": 0.01313125,
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "sharedSpans": 8
+    },
+    {
+      "name": "hard-bibel-star-outline-jpeg75",
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "passed": true,
+      "pageErrors": [],
+      "sourcePhoto": {
+        "id": "bibel-star-outline",
+        "sha256": "50182945f46ea5e51dc4ab75227d73abfd332e07a4568a1acc52ae43c1c8638c",
+        "decodedPixelsSha256": "a58dc34d7dd3f2bf65fc981a7cd9fc934d59ca4db5c3d90d00abf00757c723f0",
+        "width": 995,
+        "height": 661
+      },
+      "solveSettings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "width": 100,
+        "minWidth": 2,
+        "cutError": 0.25,
+        "timeLimit": 180,
+        "preferMatchingSheets": true,
+        "matchingErrorAllowance": 0.01,
+        "progressGeometry": true,
+        "earlyStop": false,
+        "removeSpecks": 0,
+        "fillHoles": 0,
+        "minRadius": 0.8,
+        "kerf": 0,
+        "printShrinkPercent": 0.2,
+        "materialResolution": 360,
+        "trials": 12,
+        "requireMaterialCore": true,
+        "paperColors": [
+          "#b91313",
+          "#ffffff"
+        ],
+        "symmetry": {}
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.005799999952316284,
+        "prepareRoundTripSeconds": 0.1805,
+        "preparedToSolveRequestSeconds": 0.00029999995231628417,
+        "solveRoundTripSeconds": 3.808799999952316,
+        "resultToReadySeconds": 0.35460000014305115,
+        "clickToReadySeconds": 4.35
+      },
+      "sourceEditableError": 0.01683125,
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "sharedSpans": 9
+    },
+    {
+      "name": "hard-flettede-puppy",
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "passed": true,
+      "pageErrors": [],
+      "sourcePhoto": {
+        "id": "flettede-puppy",
+        "sha256": "2a26b6c1531efa407da71dba64fe5db6a6f2e4a6c25226c84b6e62213784fad0",
+        "decodedPixelsSha256": "11e4028fec88a190b4c55bbc5d4023654c8044d5be7dd8d6ebab0da72d93460c",
+        "width": 779,
+        "height": 860
+      },
+      "solveSettings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "width": 100,
+        "minWidth": 2,
+        "cutError": 0.25,
+        "timeLimit": 180,
+        "preferMatchingSheets": true,
+        "matchingErrorAllowance": 0.01,
+        "progressGeometry": true,
+        "earlyStop": false,
+        "removeSpecks": 0,
+        "fillHoles": 0,
+        "minRadius": 0.8,
+        "kerf": 0,
+        "printShrinkPercent": 0.2,
+        "materialResolution": 360,
+        "trials": 12,
+        "requireMaterialCore": true,
+        "paperColors": [
+          "#b91313",
+          "#ffffff"
+        ],
+        "symmetry": {}
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.0052999999523162845,
+        "prepareRoundTripSeconds": 0.14990000009536744,
+        "preparedToSolveRequestSeconds": 0.00020000004768371582,
+        "solveRoundTripSeconds": 16.336399999856948,
+        "resultToReadySeconds": 0.765,
+        "clickToReadySeconds": 17.256799999952317
+      },
+      "sourceEditableError": 0.0106,
+      "selectedCounts": [
+        5,
+        3
+      ],
+      "sharedSpans": 43
+    },
+    {
+      "name": "hard-flettede-viking",
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "passed": true,
+      "pageErrors": [],
+      "sourcePhoto": {
+        "id": "flettede-viking",
+        "sha256": "c45ccc34f7db2462485c138435c4b258665a450dd51e8c9ff59d12ef41b0dd96",
+        "decodedPixelsSha256": "ba21ae598da5a5ca06cddf86c716e8cbafef42e1e326af58d35e6bc1435ee075",
+        "width": 1455,
+        "height": 1455
+      },
+      "solveSettings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "width": 100,
+        "minWidth": 2,
+        "cutError": 0.25,
+        "timeLimit": 180,
+        "preferMatchingSheets": true,
+        "matchingErrorAllowance": 0.01,
+        "progressGeometry": true,
+        "earlyStop": false,
+        "removeSpecks": 0,
+        "fillHoles": 0,
+        "minRadius": 0.8,
+        "kerf": 0,
+        "printShrinkPercent": 0.2,
+        "materialResolution": 360,
+        "trials": 12,
+        "requireMaterialCore": true,
+        "paperColors": [
+          "#b91313",
+          "#ffffff"
+        ],
+        "symmetry": {}
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.006399999856948852,
+        "prepareRoundTripSeconds": 0.19460000014305115,
+        "preparedToSolveRequestSeconds": 0.00029999995231628417,
+        "solveRoundTripSeconds": 27.855299999952315,
+        "resultToReadySeconds": 1.0662000000476837,
+        "clickToReadySeconds": 29.122799999952317
+      },
+      "sourceEditableError": 0.02008125,
+      "selectedCounts": [
+        6,
+        6
+      ],
+      "sharedSpans": 62
+    },
+    {
+      "name": "hunodan",
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "passed": true,
+      "pageErrors": [],
+      "sourcePhoto": null,
+      "solveSettings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "width": 100,
+        "minWidth": 2,
+        "cutError": 0.25,
+        "timeLimit": 180,
+        "preferMatchingSheets": true,
+        "matchingErrorAllowance": 0.01,
+        "progressGeometry": true,
+        "earlyStop": false,
+        "removeSpecks": 0,
+        "fillHoles": 0,
+        "minRadius": 0.8,
+        "kerf": 0,
+        "printShrinkPercent": 0.2,
+        "materialResolution": 360,
+        "trials": 12,
+        "requireMaterialCore": true,
+        "paperColors": [
+          "#b91313",
+          "#ffffff"
+        ],
+        "symmetry": {}
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.0055,
+        "prepareRoundTripSeconds": 0.156,
+        "preparedToSolveRequestSeconds": 0.00029999995231628417,
+        "solveRoundTripSeconds": 3.9879000000953675,
+        "resultToReadySeconds": 0.429,
+        "clickToReadySeconds": 4.578700000047684
+      },
+      "sourceEditableError": 0.00944375,
+      "selectedCounts": [
+        2,
+        2
+      ],
+      "sharedSpans": 5
+    },
+    {
+      "name": "star",
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "passed": true,
+      "pageErrors": [],
+      "sourcePhoto": null,
+      "solveSettings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "width": 100,
+        "minWidth": 2,
+        "cutError": 0.25,
+        "timeLimit": 180,
+        "preferMatchingSheets": true,
+        "matchingErrorAllowance": 0.01,
+        "progressGeometry": true,
+        "earlyStop": false,
+        "removeSpecks": 0,
+        "fillHoles": 0,
+        "minRadius": 0.8,
+        "kerf": 0,
+        "printShrinkPercent": 0.2,
+        "materialResolution": 360,
+        "trials": 12,
+        "requireMaterialCore": true,
+        "paperColors": [
+          "#b91313",
+          "#ffffff"
+        ],
+        "symmetry": {
+          "transpose": true
+        }
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.008299999952316284,
+        "prepareRoundTripSeconds": 0.033100000143051145,
+        "preparedToSolveRequestSeconds": 0.00039999985694885254,
+        "solveRoundTripSeconds": 1.7064000000953674,
+        "resultToReadySeconds": 0.2707999999523163,
+        "clickToReadySeconds": 2.019
+      },
+      "sourceEditableError": 0.0016,
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "sharedSpans": 12
+    },
+    {
+      "name": "top-hat-preferred",
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "passed": true,
+      "pageErrors": [],
+      "sourcePhoto": null,
+      "solveSettings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "width": 100,
+        "minWidth": 2,
+        "cutError": 0.25,
+        "timeLimit": 180,
+        "preferMatchingSheets": true,
+        "matchingErrorAllowance": 0.01,
+        "progressGeometry": true,
+        "earlyStop": false,
+        "removeSpecks": 0,
+        "fillHoles": 0,
+        "minRadius": 0.8,
+        "kerf": 0,
+        "printShrinkPercent": 0.2,
+        "materialResolution": 360,
+        "trials": 12,
+        "requireMaterialCore": true,
+        "paperColors": [
+          "#b91313",
+          "#ffffff"
+        ],
+        "symmetry": {}
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.019899999856948854,
+        "prepareRoundTripSeconds": 0.24480000019073486,
+        "preparedToSolveRequestSeconds": 0.00029999995231628417,
+        "solveRoundTripSeconds": 7.111,
+        "resultToReadySeconds": 0.24759999990463258,
+        "clickToReadySeconds": 7.623599999904632
+      },
+      "sourceEditableError": 0.004118835034013606,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "sharedSpans": 43
+    },
+    {
+      "name": "blue-star-polishing-mask",
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "passed": true,
+      "pageErrors": [],
+      "sourcePhoto": {
+        "id": "bibel-star-outline",
+        "sha256": "50182945f46ea5e51dc4ab75227d73abfd332e07a4568a1acc52ae43c1c8638c",
+        "quad": [
+          [
+            513.3545428148515,
+            146.27395317629365
+          ],
+          [
+            727.2435237755178,
+            382.2806819789985
+          ],
+          [
+            485.55361224150624,
+            596.6805118169444
+          ],
+          [
+            273.4449956033525,
+            371.1741352002313
+          ]
+        ],
+        "fixedMaskSha256": "3ce29580911b533c11961dfd4ff58799c3d9463dd09fb7303ce4edbc649ea0e9"
+      },
+      "solveSettings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "width": 100,
+        "minWidth": 2,
+        "cutError": 0.25,
+        "timeLimit": 180,
+        "preferMatchingSheets": true,
+        "matchingErrorAllowance": 0.01,
+        "progressGeometry": true,
+        "earlyStop": false,
+        "removeSpecks": 0,
+        "fillHoles": 0,
+        "minRadius": 0.8,
+        "kerf": 0,
+        "printShrinkPercent": 0.2,
+        "materialResolution": 360,
+        "trials": 12,
+        "requireMaterialCore": true,
+        "paperColors": [
+          "#b91313",
+          "#ffffff"
+        ],
+        "symmetry": {}
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.005400000095367431,
+        "prepareRoundTripSeconds": 0.14759999990463257,
+        "preparedToSolveRequestSeconds": 0.00040000009536743164,
+        "solveRoundTripSeconds": 8.083599999904633,
+        "resultToReadySeconds": 0.7445,
+        "clickToReadySeconds": 8.9815
+      },
+      "sourceEditableError": 0.0044625,
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "sharedSpans": 14
+    },
+    {
+      "name": "web-danish-tree-green",
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "passed": true,
+      "pageErrors": [],
+      "sourcePhoto": {
+        "id": "danish-tree-green",
+        "sha256": "5a8c872aeae2452165ddc05753a2255effaba318a7eb4b5b57ad9fb4361c1439",
+        "roi": null
+      },
+      "solveSettings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "width": 100,
+        "minWidth": 2,
+        "cutError": 0.25,
+        "timeLimit": 180,
+        "preferMatchingSheets": true,
+        "matchingErrorAllowance": 0.01,
+        "progressGeometry": true,
+        "earlyStop": false,
+        "removeSpecks": 0,
+        "fillHoles": 0,
+        "minRadius": 0.8,
+        "kerf": 0,
+        "printShrinkPercent": 0.2,
+        "materialResolution": 360,
+        "trials": 12,
+        "requireMaterialCore": true,
+        "paperColors": [
+          "#b91313",
+          "#ffffff"
+        ],
+        "symmetry": {}
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.005200000047683716,
+        "prepareRoundTripSeconds": 0.14839999985694885,
+        "preparedToSolveRequestSeconds": 0.00020000004768371582,
+        "solveRoundTripSeconds": 7.3432999999523165,
+        "resultToReadySeconds": 0.4451000001430511,
+        "clickToReadySeconds": 7.942200000047683
+      },
+      "sourceEditableError": 0.010575,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "sharedSpans": 3
+    },
+    {
+      "name": "gold-routing-mask",
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "passed": true,
+      "pageErrors": [],
+      "sourcePhoto": {
+        "id": "reviewed-crop-gold-angel",
+        "sha256": null,
+        "quad": null,
+        "fixedMaskSha256": "004d9473394c8869854e3b286389a6d992aeea6570409d92d699f138dce01239"
+      },
+      "solveSettings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "width": 100,
+        "minWidth": 2,
+        "cutError": 0.25,
+        "timeLimit": 180,
+        "preferMatchingSheets": true,
+        "matchingErrorAllowance": 0.01,
+        "progressGeometry": true,
+        "earlyStop": false,
+        "removeSpecks": 0,
+        "fillHoles": 0,
+        "minRadius": 0.8,
+        "kerf": 0,
+        "printShrinkPercent": 0.2,
+        "materialResolution": 360,
+        "trials": 12,
+        "requireMaterialCore": true,
+        "paperColors": [
+          "#b91313",
+          "#ffffff"
+        ],
+        "symmetry": {}
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.005400000095367431,
+        "prepareRoundTripSeconds": 0.19729999995231629,
+        "preparedToSolveRequestSeconds": 0.00029999995231628417,
+        "solveRoundTripSeconds": 6.919799999952316,
+        "resultToReadySeconds": 0.4243000001907349,
+        "clickToReadySeconds": 7.547100000143051
+      },
+      "sourceEditableError": 0.00818125,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "sharedSpans": 5
+    },
+    {
+      "name": "bird-mask",
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "passed": true,
+      "pageErrors": [],
+      "sourcePhoto": {
+        "id": "bird",
+        "sha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "quad": [
+          [
+            1025.6523483686494,
+            145.10074462846222
+          ],
+          [
+            1134.7393673965066,
+            233.36789914703917
+          ],
+          [
+            1039.100544685888,
+            330.8554844326094
+          ],
+          [
+            928.0282102167661,
+            230.46109103450203
+          ]
+        ],
+        "fixedMaskSha256": "7137173fa17abe3f8f7788ddb7d321fe48258a4a3f4c2f8b3171b9ff9f15a16f"
+      },
+      "solveSettings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "width": 100,
+        "minWidth": 2,
+        "cutError": 0.25,
+        "timeLimit": 180,
+        "preferMatchingSheets": true,
+        "matchingErrorAllowance": 0.01,
+        "progressGeometry": true,
+        "earlyStop": false,
+        "removeSpecks": 0,
+        "fillHoles": 0,
+        "minRadius": 0.8,
+        "kerf": 0,
+        "printShrinkPercent": 0.2,
+        "materialResolution": 360,
+        "trials": 12,
+        "requireMaterialCore": true,
+        "paperColors": [
+          "#b91313",
+          "#ffffff"
+        ],
+        "symmetry": {}
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.005700000047683716,
+        "prepareRoundTripSeconds": 0.19119999980926514,
+        "preparedToSolveRequestSeconds": 0.00030000019073486326,
+        "solveRoundTripSeconds": 10.3785,
+        "resultToReadySeconds": 1.0535,
+        "clickToReadySeconds": 11.629200000047684
+      },
+      "sourceEditableError": 0.02518125,
+      "selectedCounts": [
+        5,
+        5
+      ],
+      "sharedSpans": 33
+    },
+    {
+      "name": "bird-shift-mask",
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "passed": true,
+      "pageErrors": [],
+      "sourcePhoto": {
+        "id": "bird",
+        "sha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "quad": [
+          [
+            1026.6523483686494,
+            145.10074462846222
+          ],
+          [
+            1135.7393673965066,
+            233.36789914703917
+          ],
+          [
+            1040.100544685888,
+            330.8554844326094
+          ],
+          [
+            929.0282102167661,
+            230.46109103450203
+          ]
+        ],
+        "fixedMaskSha256": "bc122e4659773ece5abab69eae4934c528c8eba8feda8c0aa92d5e6ba86afe91"
+      },
+      "solveSettings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "width": 100,
+        "minWidth": 2,
+        "cutError": 0.25,
+        "timeLimit": 180,
+        "preferMatchingSheets": true,
+        "matchingErrorAllowance": 0.01,
+        "progressGeometry": true,
+        "earlyStop": false,
+        "removeSpecks": 0,
+        "fillHoles": 0,
+        "minRadius": 0.8,
+        "kerf": 0,
+        "printShrinkPercent": 0.2,
+        "materialResolution": 360,
+        "trials": 12,
+        "requireMaterialCore": true,
+        "paperColors": [
+          "#b91313",
+          "#ffffff"
+        ],
+        "symmetry": {}
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.005399999856948853,
+        "prepareRoundTripSeconds": 0.18770000004768372,
+        "preparedToSolveRequestSeconds": 0.00040000009536743164,
+        "solveRoundTripSeconds": 14.533799999952317,
+        "resultToReadySeconds": 0.6160999999046326,
+        "clickToReadySeconds": 15.343399999856949
+      },
+      "sourceEditableError": 0.02485,
+      "selectedCounts": [
+        5,
+        5
+      ],
+      "sharedSpans": 88
+    },
+    {
+      "name": "bird-y-shift-mask",
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "passed": true,
+      "pageErrors": [],
+      "sourcePhoto": {
+        "id": "bird",
+        "sha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "quad": [
+          [
+            1025.6523483686494,
+            146.10074462846222
+          ],
+          [
+            1134.7393673965066,
+            234.36789914703917
+          ],
+          [
+            1039.100544685888,
+            331.8554844326094
+          ],
+          [
+            928.0282102167661,
+            231.46109103450203
+          ]
+        ],
+        "fixedMaskSha256": "877e2d912dc8bc574c99154dc5a3de16a8d675c899f022c4a517f9216618dd72"
+      },
+      "solveSettings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "width": 100,
+        "minWidth": 2,
+        "cutError": 0.25,
+        "timeLimit": 180,
+        "preferMatchingSheets": true,
+        "matchingErrorAllowance": 0.01,
+        "progressGeometry": true,
+        "earlyStop": false,
+        "removeSpecks": 0,
+        "fillHoles": 0,
+        "minRadius": 0.8,
+        "kerf": 0,
+        "printShrinkPercent": 0.2,
+        "materialResolution": 360,
+        "trials": 12,
+        "requireMaterialCore": true,
+        "paperColors": [
+          "#b91313",
+          "#ffffff"
+        ],
+        "symmetry": {}
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.006,
+        "prepareRoundTripSeconds": 0.21170000004768372,
+        "preparedToSolveRequestSeconds": 0.00029999995231628417,
+        "solveRoundTripSeconds": 27.05039999985695,
+        "resultToReadySeconds": 1.263,
+        "clickToReadySeconds": 28.531399999856948
+      },
+      "sourceEditableError": 0.0210375,
+      "selectedCounts": [
+        6,
+        6
+      ],
+      "sharedSpans": 59
+    }
+  ],
+  "birdSVG": {
+    "scope": "Actual downloaded SVGs from three browser mask-upload flows; independent 400/800 pixel source comparison. Stronger 90% retention and 85% IoU gate applies to the horizontal-shift regression.",
+    "rows": [
+      {
+        "name": "bird-mask",
+        "sourceResolution": 400,
+        "maskSha256": "7137173fa17abe3f8f7788ddb7d321fe48258a4a3f4c2f8b3171b9ff9f15a16f",
+        "scores": {
+          "400": {
+            "error": 0.02518125,
+            "eye": {
+              "centerMm": [
+                23.56590909090909,
+                45.58863636363636
+              ],
+              "sourceAreaMm2": 3.4375,
+              "intersectionPixels": 51,
+              "retention": 0.9272727272727272,
+              "predictedComponentAreaMm2": 3.3125,
+              "touchesBorder": false,
+              "componentIoU": 0.8947368421052632
+            }
+          },
+          "800": {
+            "error": 0.026778125,
+            "eye": {
+              "centerMm": [
+                23.56590909090909,
+                45.58863636363636
+              ],
+              "sourceAreaMm2": 3.4375,
+              "intersectionPixels": 203,
+              "retention": 0.9227272727272727,
+              "predictedComponentAreaMm2": 3.34375,
+              "touchesBorder": false,
+              "componentIoU": 0.8787878787878788
+            }
+          }
+        },
+        "passed": true
+      },
+      {
+        "name": "bird-shift-mask",
+        "sourceResolution": 400,
+        "maskSha256": "bc122e4659773ece5abab69eae4934c528c8eba8feda8c0aa92d5e6ba86afe91",
+        "scores": {
+          "400": {
+            "error": 0.02485,
+            "eye": {
+              "centerMm": [
+                23.10141509433962,
+                46.09198113207547
+              ],
+              "sourceAreaMm2": 3.3125,
+              "intersectionPixels": 52,
+              "retention": 0.9811320754716981,
+              "predictedComponentAreaMm2": 3.25,
+              "touchesBorder": false,
+              "componentIoU": 0.9811320754716981
+            }
+          },
+          "800": {
+            "error": 0.0260625,
+            "eye": {
+              "centerMm": [
+                23.10141509433962,
+                46.09198113207547
+              ],
+              "sourceAreaMm2": 3.3125,
+              "intersectionPixels": 198,
+              "retention": 0.9339622641509434,
+              "predictedComponentAreaMm2": 3.1875,
+              "touchesBorder": false,
+              "componentIoU": 0.908256880733945
+            }
+          }
+        },
+        "passed": true
+      },
+      {
+        "name": "bird-y-shift-mask",
+        "sourceResolution": 400,
+        "maskSha256": "877e2d912dc8bc574c99154dc5a3de16a8d675c899f022c4a517f9216618dd72",
+        "scores": {
+          "400": {
+            "error": 0.0210375,
+            "eye": {
+              "centerMm": [
+                23.025862068965516,
+                44.97844827586207
+              ],
+              "sourceAreaMm2": 3.625,
+              "intersectionPixels": 55,
+              "retention": 0.9482758620689655,
+              "predictedComponentAreaMm2": 3.75,
+              "touchesBorder": false,
+              "componentIoU": 0.873015873015873
+            }
+          },
+          "800": {
+            "error": 0.0233578125,
+            "eye": {
+              "centerMm": [
+                23.025862068965516,
+                44.97844827586207
+              ],
+              "sourceAreaMm2": 3.625,
+              "intersectionPixels": 217,
+              "retention": 0.9353448275862069,
+              "predictedComponentAreaMm2": 3.8125,
+              "touchesBorder": false,
+              "componentIoU": 0.8378378378378378
+            }
+          }
+        },
+        "passed": true
+      }
+    ]
+  },
+  "birdChecks": [
+    {
+      "stage": "browser",
+      "exitCode": 0,
+      "seconds": 73.712594083,
+      "command": [
+        "node",
+        "scripts/inverse/paint-browser-test.mjs"
+      ]
+    },
+    {
+      "stage": "measure",
+      "exitCode": 0,
+      "seconds": 1.4336004170000365,
+      "command": [
+        "node",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/eye-routing-v1/bird-browser/measure.mjs"
+      ]
+    }
+  ],
+  "preview": {
+    "metadata": {
+      "pid": 83755,
+      "cwd": "/Users/ahle/repos/julehjerte-solver-initialization",
+      "origin": "http://127.0.0.1:5232",
+      "commit": "635e8b4c35d91bf5ebbd99ce1d791c4e0b15070d"
+    },
+    "assetsVerified": 158
+  },
+  "lazyLoading": {
+    "origin": "http://127.0.0.1:5232",
+    "scope": "Fresh browser contexts before any solver action; Draw and Paint entry pages. Static inverse solver files are not eagerly fetched.",
+    "rows": [
+      {
+        "route": "/en/editor/",
+        "engine": [],
+        "errors": [],
+        "scripts": [
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/entry/start.CAfrorWo.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/Cl2OJda_.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/DfNd-_eO.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/entry/app.Db85oCdM.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/HclGiUj8.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/xihTtKlq.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/nodes/0.BzaUnvOd.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/CifWgMGN.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/CVsqkyi2.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/DCIvvpOw.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/CrU-vIMq.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/BC1VEszk.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/nodes/3.DPjV0kyn.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/B_TQBcUg.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/BkL8ehCN.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/ByzQ-B4Q.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/BlLTHXR5.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/sx3rgXWi.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/Cf6SAkfr.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/CUF4yHE2.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/B-G376Ab.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/D9i4yxYK.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/nodes/1.BHgXH97L.js",
+            "type": "script"
+          },
+          {
+            "url": "https://www.googletagmanager.com/gtag/js?id=G-FTTXTT5KYB",
+            "type": "script"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "route": "/en/editor/paint/",
+        "engine": [],
+        "errors": [],
+        "scripts": [
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/entry/start.CAfrorWo.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/Cl2OJda_.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/DfNd-_eO.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/entry/app.Db85oCdM.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/HclGiUj8.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/xihTtKlq.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/nodes/0.BzaUnvOd.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/CifWgMGN.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/CVsqkyi2.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/DCIvvpOw.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/CrU-vIMq.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/BC1VEszk.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/nodes/7.BcY5s2UI.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/BkL8ehCN.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/BcgP4Vbc.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/B_TQBcUg.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/ByzQ-B4Q.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/BlLTHXR5.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/BqTt08HY.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/DYPY33RJ.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/Cf6SAkfr.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/C1ybdZ9O.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/CUF4yHE2.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/C3PMsUWc.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/Cc1DsFEd.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/BHGEE5Tn.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/chunks/BEAuxyeu.js",
+            "type": "script"
+          },
+          {
+            "url": "http://127.0.0.1:5232/_app/immutable/nodes/1.BHgXH97L.js",
+            "type": "script"
+          },
+          {
+            "url": "https://www.googletagmanager.com/gtag/js?id=G-FTTXTT5KYB",
+            "type": "script"
+          }
+        ],
+        "passed": true
+      }
+    ]
+  },
+  "visualReview": {
+    "files": [
+      "chromium-star/result.png",
+      "chromium-top-hat-preferred/draw.png",
+      "chromium-hard-bibel-star-outline/draw.png",
+      "chromium-bird-shift-mask/result.png"
+    ],
+    "observations": [
+      "Built-in star has clean straight bands. The hat retains its central shared seam.",
+      "Photographed star retains contour kinks and uneven bands. Bird eye is enclosed, but its head and surrounding border still have artifacts.",
+      "Screenshots do not replace numeric SVG validation or establish original cutting paths."
+    ]
+  },
+  "artifacts": {
+    "tmp/heart-learning/eye-routing-v1/release/running.json": {
+      "sha256": "65226c6f50e560de9c9f03c7a725ab13236f697ad7069359b640fb57bfa8ec77",
+      "bytes": 110
+    },
+    "tmp/heart-learning/eye-routing-v1/release/source.json": {
+      "sha256": "f194b58c21827ed52acff8ced87ad47cf4a970856edde955fac3e98b50c3b794",
+      "bytes": 98716
+    },
+    "tmp/heart-learning/eye-routing-v1/release/qa.json": {
+      "sha256": "8057a9c57a04820be08cfb338e16c76b5b13bb95eb4f1c4cbc9317289c85b3ae",
+      "bytes": 956
+    },
+    "tmp/heart-learning/eye-routing-v1/release/checks.json": {
+      "sha256": "f8bd47cd30f96c2bc8ff687e4a8f7a5faa6e3499e3c41a677dbdd490327c0ffe",
+      "bytes": 3549
+    },
+    "tmp/heart-learning/eye-routing-v1/release/runner.json": {
+      "sha256": "183eab83c82e2aa3375e0a8f2532e7691430ec03b971e555b198ec340d0872b9",
+      "bytes": 267
+    },
+    "tmp/heart-learning/eye-routing-v1/release/hunodan-comparison.json": {
+      "sha256": "dce1b04d2dfb8a1848cce82ed2fd3afeb87fcef8d629e609f00a0c7d21b32378",
+      "bytes": 5559
+    },
+    "tmp/heart-learning/eye-routing-v1/release/photo-comparison.json": {
+      "sha256": "32a72c94ad059bfd5b7296481b69838bad84eae93ed2d677a774da7d8d245245",
+      "bytes": 10532
+    },
+    "tmp/heart-learning/eye-routing-v1/release/native-gates.json": {
+      "sha256": "e55c56406d076acc6c8a6222a210ea562a3726e97589cdb504881d7e84e8785a",
+      "bytes": 1525
+    },
+    "tmp/heart-learning/eye-routing-v1/release/preview.json": {
+      "sha256": "0adb929d9a96151ff4e87b9271191cb303a0bb38e8e854348676a635a718ce1a",
+      "bytes": 175
+    },
+    "tmp/heart-learning/eye-routing-v1/release/served-assets.json": {
+      "sha256": "646b9a9b83eb9ab5e295029db857e927a6781a1b6480f0708652786d6d3d8556",
+      "bytes": 37710
+    },
+    "tmp/heart-learning/eye-routing-v1/release/lazy-loading.json": {
+      "sha256": "ea04aceaabac22ca67b8c389697b94d6c3b5270264bd01ddf4a6d4ffec556e26",
+      "bytes": 7063
+    },
+    "tmp/heart-learning/eye-routing-v1/release/restart-preview.py": {
+      "sha256": "8ad1a53f232205ca15f78b1127f9eb7a2ce3e638a539d1b6d6a8fbb9ce695bc0",
+      "bytes": 2152
+    },
+    "tmp/heart-learning/eye-routing-v1/release/after-qa.py": {
+      "sha256": "b175b42220c27255bfdad62c530f63f2228303c8e8aa71a3a64722a367a97610",
+      "bytes": 7609
+    },
+    "tmp/heart-learning/eye-routing-v1/release/lazy-loading.mjs": {
+      "sha256": "564d0d3e41be18b52d0830ee2904408dc0d911d6ebf4fe7a08d28bb3c909dc46",
+      "bytes": 1471
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser.log": {
+      "sha256": "c01154919dca590a87dbe17a67afc7b4ef3216251f4356bceb27d23bf1422eed",
+      "bytes": 237518
+    },
+    "tmp/heart-learning/eye-routing-v1/release/photos.log": {
+      "sha256": "04a497daafb3dbfd25c0e0f7d891233104543184f26788f44103c641fca0173b",
+      "bytes": 1660
+    },
+    "tmp/heart-learning/eye-routing-v1/release/runner.log": {
+      "sha256": "e6c419c19dc1512362fb7a4c0ba02f139a3fa63427811d22156c4f0536ff2965",
+      "bytes": 1516
+    },
+    "tmp/heart-learning/eye-routing-v1/release/photo-editor.log": {
+      "sha256": "4a93848ffdc4f5438d757b485bad62b2eeef937bbe5b63cd0cfb68846b248db8",
+      "bytes": 1772
+    },
+    "tmp/heart-learning/eye-routing-v1/release/hunodan.log": {
+      "sha256": "348476f8f49ec183f3707ee7d8f94c0382ad2c4760a0f72ddcc3fadf7841d142",
+      "bytes": 2906
+    },
+    "tmp/heart-learning/eye-routing-v1/release/hunodan-editor-input.log": {
+      "sha256": "85cda1172e1b0fefc26cddbc79a6f6fe30e464197bbe75504e1507ca21389908",
+      "bytes": 650
+    },
+    "tmp/heart-learning/eye-routing-v1/release/preview.log": {
+      "sha256": "871e85c321ccafc342ad01dcf3337f8e9ecdd5ac3163cc588adf0756f05cc1ac",
+      "bytes": 125
+    },
+    "tmp/heart-learning/eye-routing-v1/release/restart-preview.log": {
+      "sha256": "42df57e455531ca8566af11eade5bbf6d29d0c4f50a41616be7a02836b5af59b",
+      "bytes": 73
+    },
+    "tmp/heart-learning/eye-routing-v1/release/hunodan-editor.log": {
+      "sha256": "9a9f46c86dc6ddf4262ca7db33371cb04d242f53f8713cde76dcb74d8009578a",
+      "bytes": 2785
+    },
+    "tmp/heart-learning/eye-routing-v1/bird-browser/running.json": {
+      "sha256": "b3d6e5c0e20ba1e4c213d2cb1026675ed78883037615e4d2214d5e09dd285a5c",
+      "bytes": 51
+    },
+    "tmp/heart-learning/eye-routing-v1/bird-browser/measurements.json": {
+      "sha256": "fac74c041bef0630d68059c9c8c419533e32dc83d0ff39d0e8b4bcbccc45a882",
+      "bytes": 3538
+    },
+    "tmp/heart-learning/eye-routing-v1/bird-browser/checks.json": {
+      "sha256": "9c2453eb5df88af2ee8ac4b80c55d3f8d5d90b8e102bbc475e1047ee3c803738",
+      "bytes": 410
+    },
+    "tmp/heart-learning/eye-routing-v1/bird-browser/measure.mjs": {
+      "sha256": "2f7b5dbfa03343b56ca640c45a2a005fbb5a3277195d29b02c9c9b44e7bb5248",
+      "bytes": 2670
+    },
+    "tmp/heart-learning/eye-routing-v1/bird-browser/after-sharing.py": {
+      "sha256": "e0e478e96fabf116cb83c3e86be3cf511255cc0973affbb4c21dbb8c9af565cf",
+      "bytes": 2378
+    },
+    "tmp/heart-learning/eye-routing-v1/bird-browser/measure.log": {
+      "sha256": "620ac8bde23138d16b626c358fe30a371cf605432a5042bc322719c72708e632",
+      "bytes": 1975
+    },
+    "tmp/heart-learning/eye-routing-v1/bird-browser/browser.log": {
+      "sha256": "c7208bbdbdef2a94d9e26d16daaa5db5f3d869f4749344653bab2230cda1ed91",
+      "bytes": 57174
+    },
+    "tmp/heart-learning/eye-routing-v1/bird-browser/runner.log": {
+      "sha256": "78da30a8126e53d2b4c5f8948d469ac6fec9b9497f85f9b5fdd3570ce04fc2f8",
+      "bytes": 56
+    },
+    "tmp/heart-learning/eye-routing-v1/release/hunodan/results.json": {
+      "sha256": "5f0db7875c33036696ffa7859c323cff20b8d2afed7b2b0dad9b5012aa73c56b",
+      "bytes": 909794
+    },
+    "tmp/heart-learning/eye-routing-v1/release/photos/results.json": {
+      "sha256": "3f19dd9c03886a7df55d118fbeab48a35200e43ea8bff2606fb24ee30a10d35e",
+      "bytes": 4713337
+    },
+    "tmp/heart-learning/eye-routing-v1/release/hunodan-editor/results.json": {
+      "sha256": "021f8354481281cc9b9c1484e1ae6d5f4942ca64c79aa0ef150fa545215ca402",
+      "bytes": 163859
+    },
+    "tmp/heart-learning/eye-routing-v1/release/photo-editor/results.json": {
+      "sha256": "77714425f4d8e0f1b0471acd708ea9a2fddb33350bf1de5c979ec32bfd657065",
+      "bytes": 199398
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/results.json": {
+      "sha256": "59671fd7fba85507e0f538b856162f8e7cdb714899864c441a7bd667fc829169",
+      "bytes": 457343
+    },
+    "tmp/heart-learning/eye-routing-v1/bird-browser/browser/results.json": {
+      "sha256": "db0b5ffffdb6fd31a68f96a3c7c5b75cab35a4036c0fdc26206a932cf7a59b8d",
+      "bytes": 114159
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hard-flettede-puppy/editable.svg": {
+      "sha256": "ebc44f3454e495004c01c6748581d2566aac34e3d388c9cb116527aacb82c954",
+      "bytes": 23275
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-star/editable.svg": {
+      "sha256": "fb311ce80a88dd35e0f9a521e6f22dd9e185841ae1b9f9b6557817d9f7d1f83f",
+      "bytes": 7113
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hunodan/editable.svg": {
+      "sha256": "084ed763473a176a18271565b76c6033e2ace0b63a4ecf914e0da757afd9c594",
+      "bytes": 7736
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-web-danish-tree-green/editable.svg": {
+      "sha256": "c38c68dc13f34b8aa211b31ef6b45865d1d3c461e39a0bc45f0e68fa0c10ee85",
+      "bytes": 11943
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-gold-routing-mask/editable.svg": {
+      "sha256": "010f9132e8133fe8ceeb6adf53f478218130fbf9cd1635eb2c6e6540573680d7",
+      "bytes": 8434
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hard-flettede-viking/editable.svg": {
+      "sha256": "e9b6fcd3316e7964b75a6c95c2db8ff87fca03aa49bbea7e2d17b566861d0ee9",
+      "bytes": 35079
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-flower-native-mask/editable.svg": {
+      "sha256": "d6a63c2f58c54203b446b20176f5d3cf9e64e7515a3ff6954f60746d24ad50f8",
+      "bytes": 12231
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-flower-downsample-mask/editable.svg": {
+      "sha256": "93b97f32ceeeb7c20f1e72ef5e0b65d70301241993a74ec29fab0dce8c1bec20",
+      "bytes": 14703
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hard-bibel-star-outline/editable.svg": {
+      "sha256": "5e40a6a2587d25c6dccca3a3faea767aab70748cca1d6d96930afc9a2b3d5870",
+      "bytes": 9727
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hard-bibel-star-outline-half/editable.svg": {
+      "sha256": "041a19a0b8815fb761d6188dd1444c94b8c28d89bf5ab3c871826de308602aff",
+      "bytes": 14403
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-top-hat-preferred/editable.svg": {
+      "sha256": "0c9fc9985182e0cb501ff6caa07d151ccabe83cd4e4f3f2ef5444c9d152b4d20",
+      "bytes": 16194
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hard-bibel-star-outline-jpeg75/editable.svg": {
+      "sha256": "87c24692848a43aeaacd3a2dab746c5eaa5d45a6f8d2a3bc553d338bbaf815ca",
+      "bytes": 9212
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-blue-star-polishing-mask/editable.svg": {
+      "sha256": "760feb59e9ba71549ed67365910ada3f7aec15c97b7495649011f741c9a3585b",
+      "bytes": 15310
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hard-flettede-puppy/cut_geometry.json": {
+      "sha256": "d38e6117e7fdca76a335455114b4202d61672b3b097b96e34c1fa8050fc0dafe",
+      "bytes": 76528
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-star/cut_geometry.json": {
+      "sha256": "7e040bc9715127cdbf3d111dd6acb85beebb267bcfab69c198a9b3966de87601",
+      "bytes": 36275
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hunodan/cut_geometry.json": {
+      "sha256": "9a51ebaf947ad348ca12116e3510fe51585266cd9c428aa0ca516e829f8e5273",
+      "bytes": 27324
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-web-danish-tree-green/cut_geometry.json": {
+      "sha256": "0588e9f68a218a2f5a42199a216a73c519b594845882be4495ffb576d3e0753b",
+      "bytes": 45226
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-gold-routing-mask/cut_geometry.json": {
+      "sha256": "820a635360f5c58845dab755c17d38d364f3d365b1d80cb900bd2a0d309549b5",
+      "bytes": 29669
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hard-flettede-viking/cut_geometry.json": {
+      "sha256": "0889838f2373861e0af667130092712d4d8de964fe23180d78e581ca18747a37",
+      "bytes": 117555
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-flower-native-mask/cut_geometry.json": {
+      "sha256": "e275b03a59a8ca8df305dfc226339ff25bcd9138a2dbeba50c805980ab8878a7",
+      "bytes": 41832
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-flower-downsample-mask/cut_geometry.json": {
+      "sha256": "0b857f42c813e44269bc6da0b32808d013bd2262634e6b40d25046db0f4976b4",
+      "bytes": 46822
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hard-bibel-star-outline/cut_geometry.json": {
+      "sha256": "288ec06ba84f88c7422d53a4448709e1afd9975ce24d19f2517cd51af4fc86cb",
+      "bytes": 32301
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hard-bibel-star-outline-half/cut_geometry.json": {
+      "sha256": "50b4422f27905b1a54ca8b4477dc877c26883548640b987df4b28f9e42b8ad64",
+      "bytes": 52973
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-top-hat-preferred/cut_geometry.json": {
+      "sha256": "39f1f4067a585a1848603766697b8e86c5bcc1d98b49b022fc4121cacfa29667",
+      "bytes": 46870
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hard-bibel-star-outline-jpeg75/cut_geometry.json": {
+      "sha256": "8553fb86553272a807f3573e4425254bc0ba7866c2c19243e12e52c9ae183eb0",
+      "bytes": 30816
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-blue-star-polishing-mask/cut_geometry.json": {
+      "sha256": "0949ee08a362858fc5288cfc07d2f6b24b4033d7b6b12e68b31be9bad0869168",
+      "bytes": 54280
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hard-flettede-puppy/prepared.json": {
+      "sha256": "1ce51267d1b050525c33c0f62e061db3429476dc6c89246170d5eee978a29255",
+      "bytes": 320042
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-star/prepared.json": {
+      "sha256": "16846094e460d9c934f80d1e922cde35c0528a8eaec7696399d23910dc89576b",
+      "bytes": 320042
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hunodan/prepared.json": {
+      "sha256": "60b9df88990a65d4ffc89d0f19dfcb6e185e97726364371e7127704ea86680ac",
+      "bytes": 320042
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-web-danish-tree-green/prepared.json": {
+      "sha256": "b48a35d497b13034879be91fd42d2657bd5cfb3591ef6b679fec1a43a25e1b8a",
+      "bytes": 320042
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-gold-routing-mask/prepared.json": {
+      "sha256": "6663e0adccc59375fc86b70620908be827b1d05fde0298e75b9b88263f16840d",
+      "bytes": 320042
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hard-flettede-viking/prepared.json": {
+      "sha256": "f8ce4c23050885d089bce5cdbb36942aa9933756de231a270a7354350fa8d25d",
+      "bytes": 320042
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-flower-native-mask/prepared.json": {
+      "sha256": "ba5968743bb82e82756eca4e606c6177ff85328cc9a508bb7ac05d7d150d1df7",
+      "bytes": 320042
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-flower-downsample-mask/prepared.json": {
+      "sha256": "d11a95890cf3e40db220b41e6e116801b7f1a82b50a9a818a1b47f915a0f698a",
+      "bytes": 320042
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hard-bibel-star-outline/prepared.json": {
+      "sha256": "d6be241cc16a331619b131642e5209753534992831d700050a0318f65c99de6b",
+      "bytes": 320042
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hard-bibel-star-outline-half/prepared.json": {
+      "sha256": "fcaba5045361973a2475c95d335a9a762904fcd16b4912d320e767e6ceddbd2a",
+      "bytes": 320042
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-top-hat-preferred/prepared.json": {
+      "sha256": "e5c0a7c46136bec133f19ca5e67cf3260989136898a7cf0a80eda690593d4a4a",
+      "bytes": 640039
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hard-bibel-star-outline-jpeg75/prepared.json": {
+      "sha256": "ce59118334a9bd2fd6992279c987aa331fb0693a9e3f3237678c170c4f898b0b",
+      "bytes": 320042
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-blue-star-polishing-mask/prepared.json": {
+      "sha256": "e5d14c52da882a40f63286a04044920df764feabfe7846ca92b15b92022d4083",
+      "bytes": 320042
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hard-flettede-puppy/result.png": {
+      "sha256": "aa80387b0340a032651214682f0444ee36dbe4d4725f5dc815792f306438efd9",
+      "bytes": 172678
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-star/result.png": {
+      "sha256": "958edcaedd6edee695a3a100dc1ba1602ee7d9909f79d7fa5b0f6c0a7d4521ac",
+      "bytes": 165792
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hunodan/result.png": {
+      "sha256": "b718083b5a666c01b6fb8dbe78409509009cde16e82231391743f9db5afe022d",
+      "bytes": 159232
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-web-danish-tree-green/result.png": {
+      "sha256": "5f00c45614fa0c769f17920d951540ce8af58f34534c236ab52191243cf450d3",
+      "bytes": 173210
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-gold-routing-mask/result.png": {
+      "sha256": "a2af093fec81e3a415570e685af2edd8cbc67eb9b2f09eb1879f4ed528e8e577",
+      "bytes": 163396
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hard-flettede-viking/result.png": {
+      "sha256": "40612f68351f81e7eb30364b5fac2b5c5cd3919575cbdd5946c823d44b320696",
+      "bytes": 176090
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-flower-native-mask/result.png": {
+      "sha256": "829f3bf9b8bb6508c83f77506e3341040b313fdacce34b23e007efea18a6790d",
+      "bytes": 161426
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-flower-downsample-mask/result.png": {
+      "sha256": "fb51716496fe4b39618a5cb1a6cc42207f251e1b8b3e32470ae60bca342e9f82",
+      "bytes": 161318
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hard-bibel-star-outline/result.png": {
+      "sha256": "6fbc025119edcc797ff2c0bbf3971b00ac86cad55769d67994a9575467842043",
+      "bytes": 172622
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hard-bibel-star-outline-half/result.png": {
+      "sha256": "935c9a3fbcc877eab970f23bacd2b13131150d9a9e4ea6c5e8d3a50555c79300",
+      "bytes": 173083
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-top-hat-preferred/result.png": {
+      "sha256": "494327c688ff971ae61ca91b697335eb4b8e9b05082d223d34a17b7b880a5fbf",
+      "bytes": 182807
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hard-bibel-star-outline-jpeg75/result.png": {
+      "sha256": "59f6bc5c33bc37a08d0dff9beb1684f914cde9c7f3182bac466d3ff452e897b4",
+      "bytes": 172745
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-blue-star-polishing-mask/result.png": {
+      "sha256": "7a191191a99a19b35a5c9b70a74cce27db86f78a65902034949b2cb05a50ad56",
+      "bytes": 161713
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hard-flettede-puppy/draw.png": {
+      "sha256": "d12442a6286dfe8466ea0e2e05e9e8a07521a26cb3471d6a9a1ae6de8f95ec3c",
+      "bytes": 246482
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-star/draw.png": {
+      "sha256": "5a25aaac6681aa408b865dc1f89404beba01ce2c7f7a15157359adef59e0a5f2",
+      "bytes": 246442
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hunodan/draw.png": {
+      "sha256": "0ef4f44f8e532b920d2384ca0a95f20b32940e97e9555019716b1e4069310c42",
+      "bytes": 261631
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-web-danish-tree-green/draw.png": {
+      "sha256": "0d7af5ecd49c95a9a02dd3a829aff5669bbf8f7fb4af58b02e8e7f2cb005b4e4",
+      "bytes": 265344
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-gold-routing-mask/draw.png": {
+      "sha256": "881ae723a9983681b8068e54152c4a99f7e9df97e13b03ac282771d4a4cd022f",
+      "bytes": 267237
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hard-flettede-viking/draw.png": {
+      "sha256": "0fa09fc48257a5f12280cd4451b72683169706595df786720cd6dc20dbba7f97",
+      "bytes": 260369
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-flower-native-mask/draw.png": {
+      "sha256": "572a273827af8e10a83475b1d302c6c67a8aeca399f447952d63b026f7ec8654",
+      "bytes": 260673
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-flower-downsample-mask/draw.png": {
+      "sha256": "7242f5b65448df6c492c906629203717555e388b51975e20df5babf597e8f792",
+      "bytes": 260945
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hard-bibel-star-outline/draw.png": {
+      "sha256": "be0baf98ffe1354fac73d62527209446faf0c65d9d7d8de5ce26989a4f000d1a",
+      "bytes": 250189
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hard-bibel-star-outline-half/draw.png": {
+      "sha256": "3760d82ae1cefbab18e43acda3bcffd1389ba1b8d71104e3f981d4c136b23753",
+      "bytes": 252763
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-top-hat-preferred/draw.png": {
+      "sha256": "fac1baaaeb4b6e8f03606cb9f6144bfed55651ccae6c15cfb5e3aedbb0388531",
+      "bytes": 247522
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-hard-bibel-star-outline-jpeg75/draw.png": {
+      "sha256": "d5fc5cbe6a6ed8f6feed994aef93ffb3e3fa0afae6b04a0948d23796bd02f001",
+      "bytes": 250871
+    },
+    "tmp/heart-learning/eye-routing-v1/release/browser/chromium-blue-star-polishing-mask/draw.png": {
+      "sha256": "e7ba5c5c03ed06b30b11ce83d3d6505390ea588f58ee90130a4a9525786ba4bc",
+      "bytes": 251222
+    },
+    "tmp/heart-learning/eye-routing-v1/bird-browser/browser/chromium-bird-mask/editable.svg": {
+      "sha256": "7e82e90926612a2c5f8a00cd6692e8911ce92c5f22a9d75a9c30149ef4d9707e",
+      "bytes": 24165
+    },
+    "tmp/heart-learning/eye-routing-v1/bird-browser/browser/chromium-bird-shift-mask/editable.svg": {
+      "sha256": "eb125a8d4b41c26f75e29a2d4a668425a42817aabf9a36a2aa4fbe55e8e45048",
+      "bytes": 37549
+    },
+    "tmp/heart-learning/eye-routing-v1/bird-browser/browser/chromium-bird-y-shift-mask/editable.svg": {
+      "sha256": "7b62f3408f28372c8022b45869912eddc917892f7cac0ff35d90bf7471e7c43f",
+      "bytes": 36111
+    },
+    "tmp/heart-learning/eye-routing-v1/bird-browser/browser/chromium-bird-mask/cut_geometry.json": {
+      "sha256": "4ac314248dd50e600ad9cc34477d26f04c9d5e12ace66ea87e4a2cd61f201721",
+      "bytes": 83750
+    },
+    "tmp/heart-learning/eye-routing-v1/bird-browser/browser/chromium-bird-shift-mask/cut_geometry.json": {
+      "sha256": "dbf34cee785be1c120f534962c113fe9a081d6a3b21e44fea48de2bd83158599",
+      "bytes": 119451
+    },
+    "tmp/heart-learning/eye-routing-v1/bird-browser/browser/chromium-bird-y-shift-mask/cut_geometry.json": {
+      "sha256": "da52cd9f13db4e2901809fbfa70008ed8c6d0f4801105acff646077a8b0b3e7b",
+      "bytes": 122581
+    },
+    "tmp/heart-learning/eye-routing-v1/bird-browser/browser/chromium-bird-mask/prepared.json": {
+      "sha256": "435ba4bbf4d0b34d84cb0a006d4c79ad3bed6da1a51b9e692441cb5b634ba6bb",
+      "bytes": 320042
+    },
+    "tmp/heart-learning/eye-routing-v1/bird-browser/browser/chromium-bird-shift-mask/prepared.json": {
+      "sha256": "6eac149dfb83b94d81060f8842ab640969b9ffc6a38bcd9aa3ba3fb18ed691eb",
+      "bytes": 320042
+    },
+    "tmp/heart-learning/eye-routing-v1/bird-browser/browser/chromium-bird-y-shift-mask/prepared.json": {
+      "sha256": "d11f0f3801a657353994d797bc9b5c73e92eae323a236d1b532bf605caf3a096",
+      "bytes": 320042
+    },
+    "tmp/heart-learning/eye-routing-v1/bird-browser/browser/chromium-bird-mask/result.png": {
+      "sha256": "ee89beeb04fe5e322f4ab0d1a87aec98469e17f66ee30450a92500dd65791402",
+      "bytes": 176100
+    },
+    "tmp/heart-learning/eye-routing-v1/bird-browser/browser/chromium-bird-shift-mask/result.png": {
+      "sha256": "1209deaa2ec125897d72bcd0382475de5d8c5e3e50dd75b59fe73609f93c4dd9",
+      "bytes": 175962
+    },
+    "tmp/heart-learning/eye-routing-v1/bird-browser/browser/chromium-bird-y-shift-mask/result.png": {
+      "sha256": "a14717c92c265abeb3ebafb80b0db0b8614a23c2ebb2eb85bf5f6761ee9ee9ba",
+      "bytes": 176190
+    },
+    "tmp/heart-learning/eye-routing-v1/bird-browser/browser/chromium-bird-mask/draw.png": {
+      "sha256": "8d94d9fa87abc8fcf746a2a8953f2e8c5a090ba240a28f88f6890860ec6fe103",
+      "bytes": 269081
+    },
+    "tmp/heart-learning/eye-routing-v1/bird-browser/browser/chromium-bird-shift-mask/draw.png": {
+      "sha256": "7f30d2a08f4b89082c7fa269b226a67c318de7500041375712eb723953fad398",
+      "bytes": 266275
+    },
+    "tmp/heart-learning/eye-routing-v1/bird-browser/browser/chromium-bird-y-shift-mask/draw.png": {
+      "sha256": "5f1ef23db1e55142193f6e5c2add1d97587917c548d1cbed4825c7c8f7b9fbed",
+      "bytes": 263804
+    }
+  }
+}

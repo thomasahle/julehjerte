@@ -1,0 +1,573 @@
+{
+  "status": "complete-not-adopted",
+  "scope": "Fixed prepared masks and nearest-edge-extended one-pixel translations. Fresh fitting, no saved cutting geometry. This is a repeated development diagnostic, not a photo or browser evaluation.",
+  "runtimeCommit": "c000d30",
+  "change": "A 3.5-second gate skips an inexpensive clearance comparison that can correct count/routing choice. Try 3.0 seconds while retaining the overall budget, candidate criteria and final gates.",
+  "repeats": 2,
+  "cases": 6,
+  "runs": 24,
+  "sourceFilesVerified": 207,
+  "passes": {
+    "baseline": 8,
+    "earlier-comparison": 10
+  },
+  "rows": [
+    {
+      "case": "leaf-r1",
+      "variant": "baseline",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 9.265560666,
+      "errors": {
+        "400": 0.0132875,
+        "800": 0.014721875
+      },
+      "featuresPassed": true,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "comparisonCounts": [
+        3,
+        3
+      ],
+      "comparisonPreferred": true
+    },
+    {
+      "case": "leaf-r1",
+      "variant": "earlier-comparison",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 9.253159,
+      "errors": {
+        "400": 0.0131625,
+        "800": 0.01468125
+      },
+      "featuresPassed": true,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "comparisonCounts": [
+        3,
+        3
+      ],
+      "comparisonPreferred": true
+    },
+    {
+      "case": "leaf-x-plus-1-r1",
+      "variant": "baseline",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 9.468777375,
+      "errors": {
+        "400": 0.0178875,
+        "800": 0.0196265625
+      },
+      "featuresPassed": true,
+      "selectedCounts": [
+        4,
+        5
+      ],
+      "comparisonCounts": [
+        3,
+        5
+      ],
+      "comparisonPreferred": false
+    },
+    {
+      "case": "leaf-x-plus-1-r1",
+      "variant": "earlier-comparison",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 9.561944583,
+      "errors": {
+        "400": 0.017875,
+        "800": 0.0196296875
+      },
+      "featuresPassed": true,
+      "selectedCounts": [
+        4,
+        5
+      ],
+      "comparisonCounts": [
+        3,
+        5
+      ],
+      "comparisonPreferred": false
+    },
+    {
+      "case": "leaf-x-minus-1-r1",
+      "variant": "baseline",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 8.634081583999999,
+      "errors": {
+        "400": 0.01583125,
+        "800": 0.0175484375
+      },
+      "featuresPassed": true,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "comparisonCounts": null,
+      "comparisonPreferred": null
+    },
+    {
+      "case": "leaf-x-minus-1-r1",
+      "variant": "earlier-comparison",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 8.774781417,
+      "errors": {
+        "400": 0.01583125,
+        "800": 0.0175484375
+      },
+      "featuresPassed": true,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "comparisonCounts": null,
+      "comparisonPreferred": null
+    },
+    {
+      "case": "leaf-y-plus-1-r1",
+      "variant": "baseline",
+      "passed": false,
+      "nativePrepareAndSolveSeconds": 8.864662417000002,
+      "errors": {
+        "400": 0.04976875,
+        "800": 0.050278125
+      },
+      "featuresPassed": true,
+      "selectedCounts": [
+        3,
+        5
+      ],
+      "comparisonCounts": null,
+      "comparisonPreferred": null
+    },
+    {
+      "case": "leaf-y-plus-1-r1",
+      "variant": "earlier-comparison",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 9.104542040999998,
+      "errors": {
+        "400": 0.0127375,
+        "800": 0.01430625
+      },
+      "featuresPassed": true,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "comparisonCounts": [
+        3,
+        3
+      ],
+      "comparisonPreferred": true
+    },
+    {
+      "case": "leaf-y-minus-1-r1",
+      "variant": "baseline",
+      "passed": false,
+      "nativePrepareAndSolveSeconds": 9.072459292,
+      "errors": {
+        "400": 0.049975,
+        "800": 0.0504984375
+      },
+      "featuresPassed": true,
+      "selectedCounts": [
+        3,
+        5
+      ],
+      "comparisonCounts": [
+        4,
+        4
+      ],
+      "comparisonPreferred": false
+    },
+    {
+      "case": "leaf-y-minus-1-r1",
+      "variant": "earlier-comparison",
+      "passed": false,
+      "nativePrepareAndSolveSeconds": 9.006144416000001,
+      "errors": {
+        "400": 0.049975,
+        "800": 0.0504984375
+      },
+      "featuresPassed": true,
+      "selectedCounts": [
+        3,
+        5
+      ],
+      "comparisonCounts": [
+        4,
+        4
+      ],
+      "comparisonPreferred": false
+    },
+    {
+      "case": "outline-star-shift-r1",
+      "variant": "baseline",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 8.792715333,
+      "errors": {
+        "400": 0.00756875,
+        "800": 0.0091421875
+      },
+      "featuresPassed": true,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "comparisonCounts": null,
+      "comparisonPreferred": null
+    },
+    {
+      "case": "outline-star-shift-r1",
+      "variant": "earlier-comparison",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 8.723056125,
+      "errors": {
+        "400": 0.00756875,
+        "800": 0.0091421875
+      },
+      "featuresPassed": true,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "comparisonCounts": null,
+      "comparisonPreferred": null
+    },
+    {
+      "case": "leaf-r2",
+      "variant": "earlier-comparison",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 9.263300625,
+      "errors": {
+        "400": 0.0132875,
+        "800": 0.014721875
+      },
+      "featuresPassed": true,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "comparisonCounts": [
+        3,
+        3
+      ],
+      "comparisonPreferred": true
+    },
+    {
+      "case": "leaf-r2",
+      "variant": "baseline",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 9.239301750000001,
+      "errors": {
+        "400": 0.0132875,
+        "800": 0.014721875
+      },
+      "featuresPassed": true,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "comparisonCounts": [
+        3,
+        3
+      ],
+      "comparisonPreferred": true
+    },
+    {
+      "case": "leaf-x-plus-1-r2",
+      "variant": "earlier-comparison",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 9.465116582999999,
+      "errors": {
+        "400": 0.0178625,
+        "800": 0.019609375
+      },
+      "featuresPassed": true,
+      "selectedCounts": [
+        4,
+        5
+      ],
+      "comparisonCounts": [
+        3,
+        5
+      ],
+      "comparisonPreferred": false
+    },
+    {
+      "case": "leaf-x-plus-1-r2",
+      "variant": "baseline",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 9.478880584,
+      "errors": {
+        "400": 0.0178875,
+        "800": 0.0196265625
+      },
+      "featuresPassed": true,
+      "selectedCounts": [
+        4,
+        5
+      ],
+      "comparisonCounts": [
+        3,
+        5
+      ],
+      "comparisonPreferred": false
+    },
+    {
+      "case": "leaf-x-minus-1-r2",
+      "variant": "earlier-comparison",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 8.673449958,
+      "errors": {
+        "400": 0.01583125,
+        "800": 0.0175484375
+      },
+      "featuresPassed": true,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "comparisonCounts": null,
+      "comparisonPreferred": null
+    },
+    {
+      "case": "leaf-x-minus-1-r2",
+      "variant": "baseline",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 9.446033709,
+      "errors": {
+        "400": 0.015975,
+        "800": 0.01753125
+      },
+      "featuresPassed": true,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "comparisonCounts": null,
+      "comparisonPreferred": null
+    },
+    {
+      "case": "leaf-y-plus-1-r2",
+      "variant": "earlier-comparison",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 9.068049333,
+      "errors": {
+        "400": 0.0127375,
+        "800": 0.01430625
+      },
+      "featuresPassed": true,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "comparisonCounts": [
+        3,
+        3
+      ],
+      "comparisonPreferred": true
+    },
+    {
+      "case": "leaf-y-plus-1-r2",
+      "variant": "baseline",
+      "passed": false,
+      "nativePrepareAndSolveSeconds": 9.272279458000002,
+      "errors": {
+        "400": 0.05046875,
+        "800": 0.0509984375
+      },
+      "featuresPassed": true,
+      "selectedCounts": [
+        3,
+        5
+      ],
+      "comparisonCounts": null,
+      "comparisonPreferred": null
+    },
+    {
+      "case": "leaf-y-minus-1-r2",
+      "variant": "earlier-comparison",
+      "passed": false,
+      "nativePrepareAndSolveSeconds": 9.097262624999999,
+      "errors": {
+        "400": 0.05079375,
+        "800": 0.051334375
+      },
+      "featuresPassed": true,
+      "selectedCounts": [
+        3,
+        5
+      ],
+      "comparisonCounts": [
+        4,
+        4
+      ],
+      "comparisonPreferred": false
+    },
+    {
+      "case": "leaf-y-minus-1-r2",
+      "variant": "baseline",
+      "passed": false,
+      "nativePrepareAndSolveSeconds": 9.088012917,
+      "errors": {
+        "400": 0.049975,
+        "800": 0.0504984375
+      },
+      "featuresPassed": true,
+      "selectedCounts": [
+        3,
+        5
+      ],
+      "comparisonCounts": [
+        4,
+        4
+      ],
+      "comparisonPreferred": false
+    },
+    {
+      "case": "outline-star-shift-r2",
+      "variant": "earlier-comparison",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 8.833299499999999,
+      "errors": {
+        "400": 0.00756875,
+        "800": 0.0091421875
+      },
+      "featuresPassed": true,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "comparisonCounts": null,
+      "comparisonPreferred": null
+    },
+    {
+      "case": "outline-star-shift-r2",
+      "variant": "baseline",
+      "passed": true,
+      "nativePrepareAndSolveSeconds": 8.826029917000001,
+      "errors": {
+        "400": 0.00756875,
+        "800": 0.0091421875
+      },
+      "featuresPassed": true,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "comparisonCounts": null,
+      "comparisonPreferred": null
+    }
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/clearance-window-v1/protocol.json": "b2c767f6151cbc890c5dd84a1bfc52b4bcfe645185556ce3669627ce3a444471",
+    "tmp/heart-learning/clearance-window-v1/checks.json": "2cc6369eb7c8a951660c97ca96f5baba75c791a1fb1b49da5a621496a337c35b",
+    "tmp/heart-learning/clearance-window-v1/running.json": "4db7c8cd4152934c3aa77b86d606ab6213afc44878b9ad04ad0449fcd47069b8",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-r1/baseline-10/measurement.json": "765d06fd30e48a08ba1ec3ee8da7c3b17ce2fea1d7156b52dca6ef4ebb969304",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-r1/baseline-10/cut_geometry.json": "d27407dfb5cc598e911b9dc61aff360e1fb22a27e148df76b16249d414cab9ea",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-r1/baseline-10/weave-400.png": "095a43e289ad263aecd6024b4c15659d219feb53dd9c5fa390b1fbfd9c1e928f",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-r1/baseline-10/weave-800.png": "958697153a84b2469c8eef4e89d176a1ecf44abc737d6c7f3342ee0808257254",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-r1/earlier-comparison-10/measurement.json": "f94e1002c7ca79be67d398a11b9d398700d4286c0de4688bd67bbd545529f7aa",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-r1/earlier-comparison-10/cut_geometry.json": "54afc4aa277c6dbbb0279416b01cf881d7aaad9a11ff0c6436f582c0fa996c88",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-r1/earlier-comparison-10/weave-400.png": "710b87b566f4ce7d1fe4206b0ebddaae685be3350de73028d800afb29aea0f86",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-r1/earlier-comparison-10/weave-800.png": "f9803c659f2c03dcfc9d2dd3551b173235738e14d2697ee8354e8ade02e4b627",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-plus-1-r1/baseline-10/measurement.json": "d71b59a725979a7ee2dbce2f231a48c67a18de4ed0ac91fab3eee2a937dd00c9",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-plus-1-r1/baseline-10/cut_geometry.json": "1d2f2b89853ef9f572a3260c4ba843a22dfada0d949b0aa66d2544a616f845b2",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-plus-1-r1/baseline-10/weave-400.png": "fd70b5ae74852a9813f3e649eac852e5824f921ace626807dc27b66e5bbe9556",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-plus-1-r1/baseline-10/weave-800.png": "ba22a7760ecb1cd299c46b4b46dbbe3cbbfcdb382b2afdfb55c541d3bf37410e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-plus-1-r1/earlier-comparison-10/measurement.json": "e3d34737b32d43c854dd21f852d295029923f55668af7cab62def775966cfe88",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-plus-1-r1/earlier-comparison-10/cut_geometry.json": "2542ef1b641e18f9f3a0064319b61e41027a257005fde4efe878c5d4f4e20cce",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-plus-1-r1/earlier-comparison-10/weave-400.png": "9d9e992a5d059612f347421760f4d3d57338a4639b520cdf01184f183f4a963d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-plus-1-r1/earlier-comparison-10/weave-800.png": "8f8428d191432dac70f4ae1825e89de51aa03d73755ea96faf8837cbb987e097",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-minus-1-r1/baseline-10/measurement.json": "2566d5b1c73c3b015432c160861932d00d5bbbd8fa084a669cb2d5cfa3d9e90f",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-minus-1-r1/baseline-10/cut_geometry.json": "bbaa4f65222ba7081ab95543a737ac4795fbd7cd12598d2c918a43b59ca16b25",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-minus-1-r1/baseline-10/weave-400.png": "33cc8cd6fac67c479dc44821d16f9414fb5cdb9feb3864802d7de2de6a45dc88",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-minus-1-r1/baseline-10/weave-800.png": "5367800708b426a4604ba10500ca55342a8bf3631c276a9421b9db671c85110b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-minus-1-r1/earlier-comparison-10/measurement.json": "e33f649a65df0c53ead11a8555ee1c00759b2d42f2c009e4b43ed34ba076ba2f",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-minus-1-r1/earlier-comparison-10/cut_geometry.json": "bbaa4f65222ba7081ab95543a737ac4795fbd7cd12598d2c918a43b59ca16b25",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-minus-1-r1/earlier-comparison-10/weave-400.png": "33cc8cd6fac67c479dc44821d16f9414fb5cdb9feb3864802d7de2de6a45dc88",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-minus-1-r1/earlier-comparison-10/weave-800.png": "5367800708b426a4604ba10500ca55342a8bf3631c276a9421b9db671c85110b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-plus-1-r1/baseline-10/measurement.json": "2d30835a512f46c0131307cc9ae747e75fd24c2e260e2ce14748d9890a5f7b89",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-plus-1-r1/baseline-10/cut_geometry.json": "c838abae7235913e5d8e64e80651663a5054aa7b511d3effaae28ae1e0fd7052",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-plus-1-r1/baseline-10/weave-400.png": "a73361d3782b484122386e0f8adc24ab11fb5c108c07e3c389b8d7eb8de81d98",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-plus-1-r1/baseline-10/weave-800.png": "6b27764913de84591161c1d2e53af82312a79e8d2ed83beb51836ef5d19f5ec1",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-plus-1-r1/earlier-comparison-10/measurement.json": "8dc6fb7aeb0a6ddcbf4f5871cd825beda762ed9c153f8ad7b2e04046e9e5d79a",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-plus-1-r1/earlier-comparison-10/cut_geometry.json": "5a06d6de43a2217601e9b9215ebfe8d2093f0df36c2f26cbb555cea933a21317",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-plus-1-r1/earlier-comparison-10/weave-400.png": "036907034462df773f44b1fb135061395e98c2bfd3d71a1c341a872759f25e00",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-plus-1-r1/earlier-comparison-10/weave-800.png": "53d40ca1ff7e081520614a470536eff7dec25639020425ed8814872b0c934bed",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-minus-1-r1/baseline-10/measurement.json": "0f0c2dbe5dac5a16b397ca754231f7eb4d952ff0551c74cd422b565fe7cbffc3",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-minus-1-r1/baseline-10/cut_geometry.json": "2d615b40ac1e7d1100ff9b2353c2f80367fa71be372c7ac6f79f19459b44d19c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-minus-1-r1/baseline-10/weave-400.png": "724e84aab7b5dd98864c860fb5df83687fd4a0f1fe52bb48695506d7d7e1a48c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-minus-1-r1/baseline-10/weave-800.png": "41747d28c065761e42e21456163e027a27966ebd24d302ef073db3970a55325d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-minus-1-r1/earlier-comparison-10/measurement.json": "ca88eb1762ecdcc21a2449659062ac5f7b991960670f25043a01d81a85585917",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-minus-1-r1/earlier-comparison-10/cut_geometry.json": "2d615b40ac1e7d1100ff9b2353c2f80367fa71be372c7ac6f79f19459b44d19c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-minus-1-r1/earlier-comparison-10/weave-400.png": "724e84aab7b5dd98864c860fb5df83687fd4a0f1fe52bb48695506d7d7e1a48c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-minus-1-r1/earlier-comparison-10/weave-800.png": "41747d28c065761e42e21456163e027a27966ebd24d302ef073db3970a55325d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/outline-star-shift-r1/baseline-10/measurement.json": "2052fa1829b65e96dac6938b91457d80c7ba58d2d9787dc9b2398f85aa182cbb",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/outline-star-shift-r1/baseline-10/cut_geometry.json": "9e6da2fa44cc1c93b80e7a92e0c6e0592547576861a530d99cb3cd7b5602f54d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/outline-star-shift-r1/baseline-10/weave-400.png": "c0887fcfb5932bbc0c60b1e01d7ed815de528a72fb11deeb4723115b8ea85440",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/outline-star-shift-r1/baseline-10/weave-800.png": "b30b8cf8bc77df6299960a005fd8876a9eef845b564058fb595a8d62ac449b30",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/outline-star-shift-r1/earlier-comparison-10/measurement.json": "a21121a0fb40f51a3144845f466f8c6dbbc0a27b1057e4d33344afbbd3be4e59",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/outline-star-shift-r1/earlier-comparison-10/cut_geometry.json": "9e6da2fa44cc1c93b80e7a92e0c6e0592547576861a530d99cb3cd7b5602f54d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/outline-star-shift-r1/earlier-comparison-10/weave-400.png": "c0887fcfb5932bbc0c60b1e01d7ed815de528a72fb11deeb4723115b8ea85440",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/outline-star-shift-r1/earlier-comparison-10/weave-800.png": "b30b8cf8bc77df6299960a005fd8876a9eef845b564058fb595a8d62ac449b30",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-r2/earlier-comparison-10/measurement.json": "807151a3e13f1e3d2dfacfdb6be01996ab0507fd133dfd30fbd020aa16e2915c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-r2/earlier-comparison-10/cut_geometry.json": "d27407dfb5cc598e911b9dc61aff360e1fb22a27e148df76b16249d414cab9ea",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-r2/earlier-comparison-10/weave-400.png": "095a43e289ad263aecd6024b4c15659d219feb53dd9c5fa390b1fbfd9c1e928f",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-r2/earlier-comparison-10/weave-800.png": "958697153a84b2469c8eef4e89d176a1ecf44abc737d6c7f3342ee0808257254",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-r2/baseline-10/measurement.json": "9164d665a3fbd13f997ebee2e269d2aae286f5229e7dca9020e240402ce495bb",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-r2/baseline-10/cut_geometry.json": "d27407dfb5cc598e911b9dc61aff360e1fb22a27e148df76b16249d414cab9ea",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-r2/baseline-10/weave-400.png": "095a43e289ad263aecd6024b4c15659d219feb53dd9c5fa390b1fbfd9c1e928f",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-r2/baseline-10/weave-800.png": "958697153a84b2469c8eef4e89d176a1ecf44abc737d6c7f3342ee0808257254",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-plus-1-r2/earlier-comparison-10/measurement.json": "a98556c84c304d482322ca0b72c3eb8cb3d34574b2234f307ba96394af21ee98",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-plus-1-r2/earlier-comparison-10/cut_geometry.json": "6decc970e75678155f4a995497a490ab842602cd057877fdae669594baf6e8e1",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-plus-1-r2/earlier-comparison-10/weave-400.png": "e99ba2b86359ead9f78f1e00189f6db6f898f50819c017e33c1308b3ab9756b8",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-plus-1-r2/earlier-comparison-10/weave-800.png": "218c431a4a4d46a92f5cd70fa7770b63df8eef452b0814f6f688768ed7067cb7",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-plus-1-r2/baseline-10/measurement.json": "b6b472cef500554ac66dbdd95abe2de6704b1e6e8a9b6361fd54a7d3f43f0f79",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-plus-1-r2/baseline-10/cut_geometry.json": "1d2f2b89853ef9f572a3260c4ba843a22dfada0d949b0aa66d2544a616f845b2",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-plus-1-r2/baseline-10/weave-400.png": "fd70b5ae74852a9813f3e649eac852e5824f921ace626807dc27b66e5bbe9556",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-plus-1-r2/baseline-10/weave-800.png": "ba22a7760ecb1cd299c46b4b46dbbe3cbbfcdb382b2afdfb55c541d3bf37410e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-minus-1-r2/earlier-comparison-10/measurement.json": "f9959391e110b104c0b3c3fa7b5eeb31d0c720a1b10acdf66358e5110808765a",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-minus-1-r2/earlier-comparison-10/cut_geometry.json": "bbaa4f65222ba7081ab95543a737ac4795fbd7cd12598d2c918a43b59ca16b25",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-minus-1-r2/earlier-comparison-10/weave-400.png": "33cc8cd6fac67c479dc44821d16f9414fb5cdb9feb3864802d7de2de6a45dc88",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-minus-1-r2/earlier-comparison-10/weave-800.png": "5367800708b426a4604ba10500ca55342a8bf3631c276a9421b9db671c85110b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-minus-1-r2/baseline-10/measurement.json": "e17d75128d707315e2a202f4f99f5dd1fd9668e2744167939f12e3ac10f7a92a",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-minus-1-r2/baseline-10/cut_geometry.json": "bf8e5a3ca0e2adf1c769cd5174179a324a25b9a81b8e1302c775802fd052dd92",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-minus-1-r2/baseline-10/weave-400.png": "6c07b3ec6de3361c11c6ed3b97c4565993f1a860614d62bd10d57a918ee9f2d0",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-x-minus-1-r2/baseline-10/weave-800.png": "ee9d0de4592d21a56237b7a5a977a05cbb3b43676513a070402d90b6291f0244",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-plus-1-r2/earlier-comparison-10/measurement.json": "953f1322c45cd800fc1cd734d202e596d3db93f2e687e9c3f01fdd15db9cfa80",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-plus-1-r2/earlier-comparison-10/cut_geometry.json": "5a06d6de43a2217601e9b9215ebfe8d2093f0df36c2f26cbb555cea933a21317",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-plus-1-r2/earlier-comparison-10/weave-400.png": "036907034462df773f44b1fb135061395e98c2bfd3d71a1c341a872759f25e00",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-plus-1-r2/earlier-comparison-10/weave-800.png": "53d40ca1ff7e081520614a470536eff7dec25639020425ed8814872b0c934bed",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-plus-1-r2/baseline-10/measurement.json": "04ae8a881ef863bfc2321e1a69e54974b8a26584371fc26ee53e8ab0c2f0ed44",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-plus-1-r2/baseline-10/cut_geometry.json": "695bbaa4b98b0d12ce53ee4129289e5945a5063356f7a9e302186bdaa5db82f4",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-plus-1-r2/baseline-10/weave-400.png": "ea18ce9752fc3cf45d2f6dbe860798a250301d57b21aadb815238af83e6b83b3",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-plus-1-r2/baseline-10/weave-800.png": "296069a8a1e1bf98e2e0d14b3092b8b430df28516a37688def47856cc47ec5f9",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-minus-1-r2/earlier-comparison-10/measurement.json": "98c7580e38e352a634b28288d5c7528d401e1a868bb5a67c0170d087ad11fd4b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-minus-1-r2/earlier-comparison-10/cut_geometry.json": "3d66f689448ece9bbe00a87418140684b332ec8dcca9bf824039a252a97f5551",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-minus-1-r2/earlier-comparison-10/weave-400.png": "52f24afe1dc50f7517d3f7d897150daec37022103283da9dd31b14157db37155",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-minus-1-r2/earlier-comparison-10/weave-800.png": "6ac69072397824ab02f322f60f516eb85e7223c48971ee8c5bd96de0513c9729",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-minus-1-r2/baseline-10/measurement.json": "dcd77dce93b7f66e67d12328925c4f08c132eb22fc0f8ef08338dedddd9f99d0",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-minus-1-r2/baseline-10/cut_geometry.json": "2d615b40ac1e7d1100ff9b2353c2f80367fa71be372c7ac6f79f19459b44d19c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-minus-1-r2/baseline-10/weave-400.png": "724e84aab7b5dd98864c860fb5df83687fd4a0f1fe52bb48695506d7d7e1a48c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/leaf-y-minus-1-r2/baseline-10/weave-800.png": "41747d28c065761e42e21456163e027a27966ebd24d302ef073db3970a55325d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/outline-star-shift-r2/earlier-comparison-10/measurement.json": "a85689050904714857a3ec481a56d39af8a51f0eeee62f7c33638fd79d4dded4",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/outline-star-shift-r2/earlier-comparison-10/cut_geometry.json": "9e6da2fa44cc1c93b80e7a92e0c6e0592547576861a530d99cb3cd7b5602f54d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/outline-star-shift-r2/earlier-comparison-10/weave-400.png": "c0887fcfb5932bbc0c60b1e01d7ed815de528a72fb11deeb4723115b8ea85440",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/outline-star-shift-r2/earlier-comparison-10/weave-800.png": "b30b8cf8bc77df6299960a005fd8876a9eef845b564058fb595a8d62ac449b30",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/outline-star-shift-r2/baseline-10/measurement.json": "2ec1cf9f4dfee5adc622e52804341ab15a7ffca4398daa547682a7e546de1e35",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/outline-star-shift-r2/baseline-10/cut_geometry.json": "9e6da2fa44cc1c93b80e7a92e0c6e0592547576861a530d99cb3cd7b5602f54d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/outline-star-shift-r2/baseline-10/weave-400.png": "c0887fcfb5932bbc0c60b1e01d7ed815de528a72fb11deeb4723115b8ea85440",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-window-v1/runs/outline-star-shift-r2/baseline-10/weave-800.png": "b30b8cf8bc77df6299960a005fd8876a9eef845b564058fb595a8d62ac449b30"
+  },
+  "rootCauses": {
+    "downwardShift": "The baseline omits clearance comparison in both repeats. The 3.0-second window compares and selects 3+3 instead of 3+5, passing both repeats.",
+    "upwardShift": "Both variants compare 4+4 and retain 3+5. The 3+3 coarse seed has error 0.0782318115234375, outside best 0.061767578125 + 0.015, so it never enters the three-slot shortlist. Its error-plus-cut-count score is competitive."
+  },
+  "nextStudy": "tmp/heart-learning/clearance-counts-v1/protocol.json",
+  "adoption": "None; test a consistent low-cut shortlist objective alone and combined with this window, then widen corpus and browser evaluation."
+}

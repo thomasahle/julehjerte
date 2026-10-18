@@ -1,0 +1,5437 @@
+{
+  "description": "Replace string tile maps with bounded array indexes in guarded paper-core audits, preserving the original chord geometry and all discrete decisions.",
+  "sourceCommit": "4597b38bfd1c407216c359c39ec483bb2251194e",
+  "reference": "d623294",
+  "runtime": "v25.6.1",
+  "cpu": "Apple M2 Pro",
+  "engineHashes": {
+    "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+    "static/inverse/core/chord-distance.js": "cb79dd6d90d22b6bea6bb4bd0593cc8e32a18a09116084e53f5d942bcbef3c04",
+    "static/inverse/core/crop.js": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88",
+    "static/inverse/core/engine.js": "59e4354b5c7ec6190b140066b24b3f8959e58f5e2f0f0166298522fb485d4740",
+    "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+    "static/inverse/core/feature-recovery.js": "37831af78afffd94b19a4145091d199f9771d12e505514e88cf1943e6023279e",
+    "static/inverse/core/geometry.js": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+    "static/inverse/core/graph.js": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
+    "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+    "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+    "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+    "static/inverse/core/junctions.js": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
+    "static/inverse/core/kernel-choice.js": "5dba82d1c82e6b34dbce085edf10252093bbacbc15f605cf6530b9e1ebcf9c46",
+    "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+    "static/inverse/core/material.js": "e691efc792c66cdc91a5c0ad8258ac380a29442bc68c73bd9a7a2a44cbb02fe3",
+    "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+    "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+    "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+    "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+    "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/settings.js": "2fcdd67395cf3ebfcfcf4c885ea8fa5ae58b43dd52000660d0a52706b3b3665e",
+    "static/inverse/core/solver.js": "15bb96737f85ca0d290b6a06d792a3b18570f83a39b9801a498c91e3f466e412",
+    "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+    "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+    "static/inverse/core/validate.js": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+    "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+    "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+    "static/inverse/core/direct/curves.js": "a3cad0cb2c96d62c0e1d99474777157eae8fb3fd6b7631f3af203243f4909ad3",
+    "static/inverse/core/direct/finalize.js": "dd2097b415c274ceec20a485d4a62fab28ffc4ea40f323396a8acb84e5b8c4a7",
+    "static/inverse/core/direct/fit.js": "4df61135bc86b6ddb3b0b9f1922f9614c3852d02552c232846ea94d89f31a933",
+    "static/inverse/core/direct/grid.js": "57ada8e2f1c794b0012ddedbb8b508f29971186c313e517a8f40ca3788e1dfbd",
+    "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+    "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+    "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+    "static/inverse/core/direct/matching.js": "db113f3e5c6ed3be820f7c863a113e9181a02c7efa5ea66a46e56df7f2428414",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+    "static/inverse/core/direct/prefer-matching.js": "1ff682f298014f8c29387ad3bbe330c52e4ee619defd5a2d116cb3703e0f5d48",
+    "static/inverse/core/direct/primitive-selection.js": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904",
+    "static/inverse/core/direct/primitives.js": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b",
+    "static/inverse/core/direct/refine.js": "9c126408c3f7da97faf100504d57ca884315017a6665ee10259148455716fc9c",
+    "static/inverse/core/direct/share.js": "247241745ec8b1ac03c41b7e619bda30e821bbddbad2c60d4ec2d51c8aea1e6d",
+    "static/inverse/core/direct/symmetry.js": "ed9f633ea42af93b46293d0d753e21dd7a5921485d5d55847e5a02665c14cf13",
+    "static/inverse/core/direct/topology.js": "bbe79bf0dca7c4786c7728413026fee9f77bb9bca5bb788be7d6674267ad9292",
+    "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+    "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58"
+  },
+  "harnessHashes": {
+    "scripts/inverse/material-kernel-benchmark.mjs": "c470f8b04ac8e988dd7cf3190ca08f401d3f8779b6ad23bbb3b1957ba9f05b2e",
+    "scripts/inverse/material-browser-benchmark.mjs": "e8dde94cff008c2223d2b75e87609e4ce63ae1cdc9b3940486d92777b3dc9051",
+    "scripts/inverse/material-kernel.test.mjs": "d28283bff02bdd70e55f5b21b2a8c6d015f895b266ec59f0a60bb322c20049ca",
+    "tmp/paper-tiles-array-variants.mjs": "b452b11aaf121430a900e1310052da9afa0cbbb692aa11e7e6ba854390cb1452",
+    "tmp/make-fitting-profile.mjs": "858cec9e88beb2f44cad53be991a3c3860b0b98ae8869750f95aaa6128013a2d",
+    "tmp/fitting-profile-browser.mjs": "0530a7c8019d217a98eece5e334a69acb1a5e71ea688a8cbfaeb72664415fae9"
+  },
+  "artifactHashes": {
+    "tmp/paper-tiles-final-comparison/results.json": "496461255e955418f7db22e724152c376918f09b43377fda718b72fede7f08eb",
+    "tmp/paper-tiles-browser-comparison/results.json": "3ce193054cfa95a5a970992d94b0b4a46814e3901cac4002361c208bbea5f86a",
+    "tmp/paper-tiles-hunodan/results.json": "8a23936462c30ad825007cba64741ecfb81fd69bdf525ebd736d14ec68a13bdd",
+    "tmp/paper-tiles-weighted/results.json": "d5552bea940e030ecc375e8e88b0bd4dba8c0fa62ffa0f607a1ce6f39413e0ec",
+    "tmp/paper-tiles-release-browser/results.json": "55bff28e6934ad2fb08c6d0c329f65bd4b6c52c05eaeb8a67076165387c600d7",
+    "tmp/paper-tiles-release-fallback/results.json": "f2ebbde327773170415080722c4db15be3ebea7610cdf4df01911f6b7261fb32",
+    "tmp/paper-tiles-stages.json": "d0ac3914eb952909d14247ba71fc85fdd64fd0de1f5dc5a632db5b6b8ef12260",
+    "tmp/paper-tiles-browser-stages.json": "37aed0002f7ce4ff36505b14002bfcbdb5af55ca0ae669439b3b0dda6ce8716a",
+    "tmp/paper-tiles-served.json": "46223789d5936994b07ff100dd2d01e6c6b9905b1288db5f1b575fec046cb757",
+    "tmp/render-bins-hunodan/results.json": "6dbf7bbaf2d9cb30b8fa4cf06c7827ce0ecea5c0bd5d10bbe7fad454a1bc3729",
+    "tmp/render-bins-weighted/results.json": "09f33006035193f13d7bdb85eef50dff3ca77000f7428c42377d24360cb65571",
+    "tmp/paper-tiles-array-variants.json": "d777c78f1583a0fa9ab45e9917b91e8af7a559a9b876576d563746cee917b930",
+    "tmp/paper-tiles-fixture-hashes.json": "0a042f5c032d5e7d8edcf6bbd6ad233317bf18fc4fd83cb6e3cf1999945afb25",
+    "tmp/current-fitting-profile/chromium-top-hat/engine-report.json": "1131543345e1bce1571a1c9e06b1194a8cf450b457b627b0c9894f3dc205e41c",
+    "tmp/paper-tiles-audit-comparison.log": "cca19e3c54e7acb7ad36693c6d7f7bf63f4639cfad83ebf4ca379112f2aff833",
+    "tmp/paper-tiles-test.log": "b2f877d5bb621f0b60acab2cde8977e92d1352d3c5acf23943277f68b9c01901",
+    "tmp/paper-tiles-check.log": "1be3902fa1acaae6b0990406476a41369d095dc32dda58ba4b2a1df01155978b",
+    "tmp/paper-tiles-lint.log": "a552732ebea6b64b49ac0a1299170db75e8c45dbbc66c284f28e99be5613e5c7",
+    "tmp/paper-tiles-build.log": "bdf42351e986c4fb3dd2e48d95ecab33703b5a31159375ad60560c99c09744ee",
+    "tmp/paper-tiles-hunodan.log": "ad1f91d3e018abd36d8836e8b5f7a4dc5cf2513dca8aae1af265a670d4990086",
+    "tmp/paper-tiles-weighted.log": "a72d96849eac60b9938566b1c98cd4ad86901abdb5cbbf516c0411d5043e99ac",
+    "tmp/paper-tiles-browser-comparison.log": "72f8d17cebc6bfbe2169f0403234ba51fb3c6505a2bb7d7dc4d419b51d797d60",
+    "tmp/paper-tiles-release-browser.log": "1957aad03ebed907231966c8f164d2afb60b9ba06bde78e49a47baea1a977e3d",
+    "tmp/paper-tiles-release-fallback.log": "509a316e05b44f14230fc2235ad62834558e99c3ed6a22a1fe024f52c6fd1047"
+  },
+  "validation": {
+    "applicationTests": 722,
+    "engineTests": 254,
+    "typeErrors": 0,
+    "existingWarnings": 7,
+    "servedEngineFiles": 50,
+    "stages": [
+      {
+        "id": "audit-comparison",
+        "command": [
+          "node",
+          "scripts/inverse/material-kernel-benchmark.mjs",
+          "--reference=d623294",
+          "--hunodan=tmp/render-bins-hunodan",
+          "--weighted=tmp/render-bins-weighted",
+          "--output=tmp/paper-tiles-final-comparison"
+        ],
+        "log": "tmp/paper-tiles-audit-comparison.log",
+        "exit": 0,
+        "seconds": 14.945923250000002
+      },
+      {
+        "id": "test",
+        "command": [
+          "npm",
+          "test"
+        ],
+        "env": {
+          "VITEST_MAX_WORKERS": "2"
+        },
+        "log": "tmp/paper-tiles-test.log",
+        "exit": 0,
+        "seconds": 115.996804083
+      },
+      {
+        "id": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "log": "tmp/paper-tiles-check.log",
+        "exit": 0,
+        "seconds": 6.259947374999989
+      },
+      {
+        "id": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "log": "tmp/paper-tiles-lint.log",
+        "exit": 0,
+        "seconds": 4.710654624999996
+      },
+      {
+        "id": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "log": "tmp/paper-tiles-build.log",
+        "exit": 0,
+        "seconds": 7.108109708000003
+      },
+      {
+        "id": "hunodan",
+        "command": [
+          "node",
+          "scripts/inverse/hunodan-speed-benchmark.mjs"
+        ],
+        "env": {
+          "INVERSE_SPEED_OUT": "tmp/paper-tiles-hunodan"
+        },
+        "log": "tmp/paper-tiles-hunodan.log",
+        "exit": 0,
+        "seconds": 130.83480191699996
+      },
+      {
+        "id": "weighted",
+        "command": [
+          "node",
+          "scripts/inverse/weighted-solve-benchmark.mjs",
+          "--strategies=weighted",
+          "--variants=original,inverted,shifted,free-noise",
+          "--output=tmp/paper-tiles-weighted"
+        ],
+        "log": "tmp/paper-tiles-weighted.log",
+        "exit": 0,
+        "seconds": 165.273942209
+      }
+    ],
+    "browserStages": [
+      {
+        "id": "browser-comparison",
+        "command": [
+          "node",
+          "scripts/inverse/material-browser-benchmark.mjs"
+        ],
+        "env": {
+          "PLAYWRIGHT_MODULE": "/Users/ahle/.npm/_npx/e41f203b7505f1fb/node_modules/playwright/index.mjs",
+          "INVERSE_TEST_URL": "http://127.0.0.1:5232",
+          "INVERSE_TEST_BROWSERS": "chromium,firefox,webkit",
+          "INVERSE_PAPER_REFERENCE": "d623294",
+          "INVERSE_PAPER_HUNODAN": "tmp/render-bins-hunodan",
+          "INVERSE_PAPER_WEIGHTED": "tmp/render-bins-weighted",
+          "INVERSE_TEST_OUTPUT": "tmp/paper-tiles-browser-comparison"
+        },
+        "log": "tmp/paper-tiles-browser-comparison.log",
+        "exit": 0,
+        "seconds": 40.56651587500001
+      },
+      {
+        "id": "release-browser",
+        "command": [
+          "node",
+          "scripts/inverse/paint-browser-test.mjs"
+        ],
+        "env": {
+          "PLAYWRIGHT_MODULE": "/Users/ahle/.npm/_npx/e41f203b7505f1fb/node_modules/playwright/index.mjs",
+          "INVERSE_TEST_URL": "http://127.0.0.1:5232",
+          "INVERSE_TEST_BROWSERS": "chromium,firefox,webkit",
+          "INVERSE_TEST_CASES": "top-hat-anti,top-hat,top-hat-independent,star,hunodan,circle",
+          "INVERSE_TEST_OUTPUT": "tmp/paper-tiles-release-browser"
+        },
+        "log": "tmp/paper-tiles-release-browser.log",
+        "exit": 0,
+        "seconds": 179.738001834
+      },
+      {
+        "id": "release-fallback",
+        "command": [
+          "node",
+          "scripts/inverse/paint-browser-test.mjs"
+        ],
+        "env": {
+          "PLAYWRIGHT_MODULE": "/Users/ahle/.npm/_npx/e41f203b7505f1fb/node_modules/playwright/index.mjs",
+          "INVERSE_TEST_URL": "http://127.0.0.1:5232",
+          "INVERSE_TEST_BROWSERS": "chromium",
+          "INVERSE_TEST_CASES": "top-hat-anti",
+          "INVERSE_TEST_OUTPUT": "tmp/paper-tiles-release-fallback",
+          "INVERSE_TEST_DISABLE_NUMERICAL_KERNEL": "1"
+        },
+        "log": "tmp/paper-tiles-release-fallback.log",
+        "exit": 0,
+        "seconds": 13.255954333000002
+      }
+    ]
+  },
+  "profile": {
+    "method": "Instrumentation wrappers in an isolated Chromium worker. Diagnostic only; this is not clean end-to-end performance evidence.",
+    "seconds": 9.3605,
+    "functions": {
+      "prepareBoundaryValue": {
+        "calls": 10,
+        "milliseconds": 44.10000002384186,
+        "exclusiveMilliseconds": 44.10000002384186
+      },
+      "renderCurves": {
+        "calls": 156,
+        "milliseconds": 88.80000030994415,
+        "exclusiveMilliseconds": 88.80000030994415
+      },
+      "polygonIndex": {
+        "calls": 2690,
+        "milliseconds": 259.6000003218651,
+        "exclusiveMilliseconds": 259.6000003218651
+      },
+      "boundaryEvaluation": {
+        "calls": 280,
+        "milliseconds": 309.4000000357628,
+        "exclusiveMilliseconds": 275.8999996781349
+      },
+      "validate": {
+        "calls": 80,
+        "milliseconds": 632.6000003814697,
+        "exclusiveMilliseconds": 632.6000003814697
+      },
+      "materialAudit": {
+        "calls": 64,
+        "milliseconds": 1719.3999999165535,
+        "exclusiveMilliseconds": 1719.3999999165535
+      },
+      "nativeBoundaryGradient": {
+        "calls": 2475,
+        "milliseconds": 1167.6999996304512,
+        "exclusiveMilliseconds": 1167.6999996304512
+      },
+      "boundaryGradient": {
+        "calls": 2410,
+        "milliseconds": 1438.099999845028,
+        "exclusiveMilliseconds": 44.30000025033951
+      },
+      "curvePenalty": {
+        "calls": 2410,
+        "milliseconds": 970.7999995350838,
+        "exclusiveMilliseconds": 970.7999995350838
+      },
+      "refineCurves": {
+        "calls": 4,
+        "milliseconds": 5180.400000035763,
+        "exclusiveMilliseconds": 253.10000002384186
+      }
+    }
+  },
+  "fixedAudits": {
+    "method": "Serial alternating-order complete audits, including maps. Both policies are warmed once. Kernel load, input loading, comparison and hashing are outside each audit timer. Only elapsed time is excluded from exact output equality.",
+    "summary": {
+      "cases": 67,
+      "allIdentical": true,
+      "medianPairedSaving": 0.06373332619858918,
+      "groups": {
+        "controlled": {
+          "cases": 12,
+          "previousMedianSeconds": 0.007249854499999998,
+          "currentMedianSeconds": 0.006310165999999982,
+          "medianPairedSaving": 0.10436342294771483
+        },
+        "matching-hat": {
+          "cases": 1,
+          "previousMedianSeconds": 0.03467066699999986,
+          "currentMedianSeconds": 0.04148520900000017,
+          "medianPairedSaving": 0.08017607050801856
+        },
+        "hunodan": {
+          "cases": 22,
+          "previousMedianSeconds": 0.048923541500000285,
+          "currentMedianSeconds": 0.04747289550000005,
+          "medianPairedSaving": 0.02939184264425443
+        },
+        "weighted": {
+          "cases": 32,
+          "previousMedianSeconds": 0.03590493799999968,
+          "currentMedianSeconds": 0.032607353999999755,
+          "medianPairedSaving": 0.11184295005602196
+        }
+      }
+    },
+    "results": [
+      {
+        "id": "straight-80",
+        "group": "controlled",
+        "status": "pass",
+        "identical": true,
+        "previousMedianSeconds": 0.0013640420000000403,
+        "currentMedianSeconds": 0.0037638750000000415,
+        "medianPairedSaving": -1.3612159285740026,
+        "mapHashes": [
+          "00c774a96da133ce96092496baa698a76d8cdfc74559337fd0a2f15b35757aa0",
+          "00c774a96da133ce96092496baa698a76d8cdfc74559337fd0a2f15b35757aa0"
+        ],
+        "runs": [
+          {
+            "previous": 0.0015940410000000042,
+            "current": 0.0037638750000000415,
+            "saving": -1.3612159285740026
+          },
+          {
+            "current": 0.005729874999999993,
+            "previous": 0.0013640420000000403,
+            "saving": -3.200658777368896
+          },
+          {
+            "previous": 0.0013327499999999759,
+            "current": 0.0012327080000000023,
+            "saving": 0.07506434064901546
+          }
+        ]
+      },
+      {
+        "id": "straight-180",
+        "group": "controlled",
+        "status": "pass",
+        "identical": true,
+        "previousMedianSeconds": 0.006207791999999984,
+        "currentMedianSeconds": 0.005505666000000019,
+        "medianPairedSaving": 0.10693037702972341,
+        "mapHashes": [
+          "a2dd8b21a238576162dbfdaf6a3d4e014e08fd77d634397e969613c73f234598",
+          "a2dd8b21a238576162dbfdaf6a3d4e014e08fd77d634397e969613c73f234598"
+        ],
+        "runs": [
+          {
+            "current": 0.04545316700000001,
+            "previous": 0.04134762499999999,
+            "saving": -0.09929329677339438
+          },
+          {
+            "previous": 0.004949874999999963,
+            "current": 0.004420582999999965,
+            "saving": 0.10693037702972341
+          },
+          {
+            "current": 0.005505666000000019,
+            "previous": 0.006207791999999984,
+            "saving": 0.1131039828653998
+          }
+        ]
+      },
+      {
+        "id": "straight-360",
+        "group": "controlled",
+        "status": "pass",
+        "identical": true,
+        "previousMedianSeconds": 0.06602029199999992,
+        "currentMedianSeconds": 0.07281129099999999,
+        "medianPairedSaving": -0.10286229876111519,
+        "mapHashes": [
+          "fafbc0a1cff85a50082d5ba343f795bb6a47ffa27f01730940c2c2784ecaa055",
+          "fafbc0a1cff85a50082d5ba343f795bb6a47ffa27f01730940c2c2784ecaa055"
+        ],
+        "runs": [
+          {
+            "previous": 0.11515937500000001,
+            "current": 0.11096841599999993,
+            "saving": 0.03639268622289826
+          },
+          {
+            "current": 0.07281129099999999,
+            "previous": 0.06602029199999992,
+            "saving": -0.10286229876111519
+          },
+          {
+            "previous": 0.02568674999999996,
+            "current": 0.030200542000000042,
+            "saving": -0.17572452723680843
+          }
+        ]
+      },
+      {
+        "id": "neck-80",
+        "group": "controlled",
+        "status": "fail",
+        "identical": true,
+        "previousMedianSeconds": 0.013618791999999985,
+        "currentMedianSeconds": 0.01063920799999994,
+        "medianPairedSaving": 0.16882948679438192,
+        "mapHashes": [
+          "5f6dc2a663a3f9eff0a1ddf979248666d5df1512f48a9440b372946bfb6ea5ac",
+          "44062635306c646aa0d4f3f7c3f1f6d240f712f372e45a1a53106243bb964808"
+        ],
+        "runs": [
+          {
+            "current": 0.01843558399999995,
+            "previous": 0.015542291999999975,
+            "saving": -0.18615607016004976
+          },
+          {
+            "previous": 0.013618791999999985,
+            "current": 0.01063920799999994,
+            "saving": 0.21878474977810436
+          },
+          {
+            "current": 0.0029969590000000607,
+            "previous": 0.0036057089999999336,
+            "saving": 0.16882948679438192
+          }
+        ]
+      },
+      {
+        "id": "neck-180",
+        "group": "controlled",
+        "status": "fail",
+        "identical": true,
+        "previousMedianSeconds": 0.012011375000000043,
+        "currentMedianSeconds": 0.010256792000000018,
+        "medianPairedSaving": 0.12432999696575997,
+        "mapHashes": [
+          "a1575c792c00229e4ab13e867eb6242b3caaf8962328653459a7c134fe30888e",
+          "9bd2fcfa18a1f3e3b291bc9fb93122c3853f10a64abbc27d0fbc56cfa2fd581a"
+        ],
+        "runs": [
+          {
+            "previous": 0.01442866600000002,
+            "current": 0.012634750000000054,
+            "saving": 0.12432999696575997
+          },
+          {
+            "current": 0.010256792000000018,
+            "previous": 0.011661041000000068,
+            "saving": 0.12042226761744868
+          },
+          {
+            "previous": 0.012011375000000043,
+            "current": 0.00676070900000002,
+            "saving": 0.4371411266403725
+          }
+        ]
+      },
+      {
+        "id": "neck-360",
+        "group": "controlled",
+        "status": "fail",
+        "identical": true,
+        "previousMedianSeconds": 0.03298612500000013,
+        "currentMedianSeconds": 0.030341417000000093,
+        "medianPairedSaving": 0.10179646886570626,
+        "mapHashes": [
+          "0033566431af1d67fab0e501cdb5f669dc44c6dc320f9a7794be681fa1551882",
+          "970c43d5ca9ee430b5bb8bd887cd693ee8c050d2f3f6beb349d8167cfbbf7094"
+        ],
+        "runs": [
+          {
+            "current": 0.03487975000000006,
+            "previous": 0.03883279100000004,
+            "saving": 0.10179646886570626
+          },
+          {
+            "previous": 0.03298612500000013,
+            "current": 0.02629287499999987,
+            "saving": 0.20291107245850293
+          },
+          {
+            "current": 0.030341417000000093,
+            "previous": 0.0266892499999999,
+            "saving": -0.13684037580674646
+          }
+        ]
+      },
+      {
+        "id": "thin-80",
+        "group": "controlled",
+        "status": "fail",
+        "identical": true,
+        "previousMedianSeconds": 0.0021367499999998926,
+        "currentMedianSeconds": 0.0016926249999999073,
+        "medianPairedSaving": 0.20824472700992047,
+        "mapHashes": [
+          "25398d60140477ca5d5a1d7455467a6981243d5756c4544259178a3dbb761a64",
+          "00c774a96da133ce96092496baa698a76d8cdfc74559337fd0a2f15b35757aa0"
+        ],
+        "runs": [
+          {
+            "previous": 0.002659750000000031,
+            "current": 0.001992999999999938,
+            "saving": 0.2506814550240005
+          },
+          {
+            "current": 0.0016605419999998503,
+            "previous": 0.0020972919999999247,
+            "saving": 0.20824472700992047
+          },
+          {
+            "previous": 0.0021367499999998926,
+            "current": 0.0016926249999999073,
+            "saving": 0.20785070785071147
+          }
+        ]
+      },
+      {
+        "id": "thin-180",
+        "group": "controlled",
+        "status": "fail",
+        "identical": true,
+        "previousMedianSeconds": 0.008291917000000011,
+        "currentMedianSeconds": 0.007114665999999943,
+        "medianPairedSaving": 0.0669699189570081,
+        "mapHashes": [
+          "7c7422c372a9c1538f8e35147799cbd1f51d5d78d9a3502ea2e64abcfbb90c37",
+          "a2dd8b21a238576162dbfdaf6a3d4e014e08fd77d634397e969613c73f234598"
+        ],
+        "runs": [
+          {
+            "current": 0.008494250000000193,
+            "previous": 0.008956042000000025,
+            "saving": 0.05156206279513109
+          },
+          {
+            "previous": 0.008291917000000011,
+            "current": 0.006929249999999911,
+            "saving": 0.16433678725921863
+          },
+          {
+            "current": 0.007114665999999943,
+            "previous": 0.007625334000000066,
+            "saving": 0.0669699189570081
+          }
+        ]
+      },
+      {
+        "id": "thin-360",
+        "group": "controlled",
+        "status": "fail",
+        "identical": true,
+        "previousMedianSeconds": 0.027314125000000102,
+        "currentMedianSeconds": 0.0265775000000001,
+        "medianPairedSaving": 0.026968647174309912,
+        "mapHashes": [
+          "ed82f45bc82477f7dd72f27507699511e1b0852860cb64781737ae0801099d2b",
+          "fafbc0a1cff85a50082d5ba343f795bb6a47ffa27f01730940c2c2784ecaa055"
+        ],
+        "runs": [
+          {
+            "previous": 0.03175629200000003,
+            "current": 0.029908249999999952,
+            "saving": 0.058194514649256845
+          },
+          {
+            "current": 0.025908249999999952,
+            "previous": 0.026008207999999967,
+            "saving": 0.003843325153352173
+          },
+          {
+            "previous": 0.027314125000000102,
+            "current": 0.0265775000000001,
+            "saving": 0.026968647174309912
+          }
+        ]
+      },
+      {
+        "id": "thin-uncertain",
+        "group": "controlled",
+        "status": "uncertain",
+        "identical": true,
+        "previousMedianSeconds": 0.0018636670000000777,
+        "currentMedianSeconds": 0.001563666000000012,
+        "medianPairedSaving": 0.14608178614059908,
+        "mapHashes": [
+          "01d67ae53483d411ee8bfdd619d9f91b56d07fff09d1464c6b0a5208a38592af",
+          "b4c60621648dc2baae7aca0975fd4c31b222daab9913454c2e67a35436b5fd42"
+        ],
+        "runs": [
+          {
+            "current": 0.00264712499999996,
+            "previous": 0.0020948750000000017,
+            "saving": -0.2636195477056902
+          },
+          {
+            "previous": 0.0018311659999999392,
+            "current": 0.001563666000000012,
+            "saving": 0.14608178614059908
+          },
+          {
+            "current": 0.0015395420000002104,
+            "previous": 0.0018636670000000777,
+            "saving": 0.1739178726670879
+          }
+        ]
+      },
+      {
+        "id": "matching-neck",
+        "group": "controlled",
+        "status": "fail",
+        "identical": true,
+        "previousMedianSeconds": 0.0012937500000000455,
+        "currentMedianSeconds": 0.0010152909999999338,
+        "medianPairedSaving": 0.21523400966191453,
+        "mapHashes": [
+          "5f6dc2a663a3f9eff0a1ddf979248666d5df1512f48a9440b372946bfb6ea5ac",
+          "5f6dc2a663a3f9eff0a1ddf979248666d5df1512f48a9440b372946bfb6ea5ac"
+        ],
+        "runs": [
+          {
+            "previous": 0.001422207999999955,
+            "current": 0.001044832999999926,
+            "saving": 0.2653444503195319
+          },
+          {
+            "current": 0.0010095410000001265,
+            "previous": 0.001276540999999952,
+            "saving": 0.20915896943367707
+          },
+          {
+            "previous": 0.0012937500000000455,
+            "current": 0.0010152909999999338,
+            "saving": 0.21523400966191453
+          }
+        ]
+      },
+      {
+        "id": "matching-thin",
+        "group": "controlled",
+        "status": "uncertain",
+        "identical": true,
+        "previousMedianSeconds": 0.0008481669999998758,
+        "currentMedianSeconds": 0.0007566249999999855,
+        "medianPairedSaving": 0.10046069252482392,
+        "mapHashes": [
+          "01d67ae53483d411ee8bfdd619d9f91b56d07fff09d1464c6b0a5208a38592af",
+          "01d67ae53483d411ee8bfdd619d9f91b56d07fff09d1464c6b0a5208a38592af"
+        ],
+        "runs": [
+          {
+            "current": 0.0008767500000001292,
+            "previous": 0.0009120000000000345,
+            "saving": 0.03865131578936842
+          },
+          {
+            "previous": 0.00084112499999992,
+            "current": 0.0007566249999999855,
+            "saving": 0.10046069252482392
+          },
+          {
+            "current": 0.0007233749999998053,
+            "previous": 0.0008481669999998758,
+            "saving": 0.14713140218858867
+          }
+        ]
+      },
+      {
+        "id": "matching-hat",
+        "group": "matching-hat",
+        "status": "pass",
+        "identical": true,
+        "source": "scripts/inverse/fixtures/free-border-hat.json",
+        "sourceSha256": "5bd3e6c839b3b7508da3df791da88ee6c6567e81e166e8c8b21473baad1cc824",
+        "previousMedianSeconds": 0.03467066699999986,
+        "currentMedianSeconds": 0.04148520900000017,
+        "medianPairedSaving": 0.08017607050801856,
+        "mapHashes": [
+          "0984c10f57d38f4eaba8b39feea0542a063e395ffe6ae78be3eef0215a42d14e",
+          "0984c10f57d38f4eaba8b39feea0542a063e395ffe6ae78be3eef0215a42d14e"
+        ],
+        "runs": [
+          {
+            "previous": 0.04510124999999993,
+            "current": 0.04148520900000017,
+            "saving": 0.08017607050801856
+          },
+          {
+            "current": 0.02326883399999997,
+            "previous": 0.03467066699999986,
+            "saving": 0.32886108017477533
+          },
+          {
+            "previous": 0.026335458000000016,
+            "current": 0.051229790999999976,
+            "saving": -0.9452781493300759
+          }
+        ]
+      },
+      {
+        "id": "hjfig-01",
+        "group": "hunodan",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-hunodan/hjfig-01/cut_geometry.json",
+        "sourceSha256": "5a82b6c54b44ee34f132038998a7b2b4357e043be7946b27123e2c252aeedae4",
+        "previousMedianSeconds": 0.04238304200000016,
+        "currentMedianSeconds": 0.04228116599999999,
+        "medianPairedSaving": 0.0024036972145645707,
+        "mapHashes": [
+          "add845d0fc5c349307afd049235875e4fcfa4f6d1922027db206c24a64d39277",
+          "e0630e0e936f766f55f51c59e3aaec3d2eafcdb6172d7ea073c380c16c83714f"
+        ],
+        "runs": [
+          {
+            "current": 0.0509720420000001,
+            "previous": 0.042126874999999925,
+            "saving": -0.20996494518048614
+          },
+          {
+            "previous": 0.04255404099999987,
+            "current": 0.04187462500000015,
+            "saving": 0.015965957263605612
+          },
+          {
+            "current": 0.04228116599999999,
+            "previous": 0.04238304200000016,
+            "saving": 0.0024036972145645707
+          }
+        ]
+      },
+      {
+        "id": "hjfig-02",
+        "group": "hunodan",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-hunodan/hjfig-02/cut_geometry.json",
+        "sourceSha256": "a1437944191be21956d3340ab41b7d2699c3ad6df97978aa1f285ca6234482a3",
+        "previousMedianSeconds": 0.02247012500000028,
+        "currentMedianSeconds": 0.023749749999999948,
+        "medianPairedSaving": -0.018424463593295526,
+        "mapHashes": [
+          "1ae9b14fd0b76938639201acae26d71d88dddeda76e33e0bca3dced214f729e3",
+          "1ae9b14fd0b76938639201acae26d71d88dddeda76e33e0bca3dced214f729e3"
+        ],
+        "runs": [
+          {
+            "previous": 0.027766209000000118,
+            "current": 0.024024875000000067,
+            "saving": 0.13474414170116045
+          },
+          {
+            "current": 0.023749749999999948,
+            "previous": 0.022462541999999985,
+            "saving": -0.05730464521780143
+          },
+          {
+            "previous": 0.02247012500000028,
+            "current": 0.022884124999999585,
+            "saving": -0.018424463593295526
+          }
+        ]
+      },
+      {
+        "id": "hjfig-03",
+        "group": "hunodan",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-hunodan/hjfig-03/cut_geometry.json",
+        "sourceSha256": "ce50b811ccfc67a307097b3d058c6d6ab6e47fbd1da7bf87584b6cda6cdaf8f6",
+        "previousMedianSeconds": 0.04516820800000005,
+        "currentMedianSeconds": 0.0461378749999999,
+        "medianPairedSaving": -0.0031153885422654515,
+        "mapHashes": [
+          "8b5b7b43d08dfe49ef2ed8643a889892bc90f88b2bddff0157f8fd60c3183876",
+          "782e55ad36614b6aa363d5576637e1dd5fa79d173472e1dd4499ab382a25ea61"
+        ],
+        "runs": [
+          {
+            "current": 0.04674033299999974,
+            "previous": 0.04516820800000005,
+            "saving": -0.03480600780087806
+          },
+          {
+            "previous": 0.04495370800000001,
+            "current": 0.04431145900000001,
+            "saving": 0.014286897089779482
+          },
+          {
+            "current": 0.0461378749999999,
+            "previous": 0.04599458400000003,
+            "saving": -0.0031153885422654515
+          }
+        ]
+      },
+      {
+        "id": "hjfig-04",
+        "group": "hunodan",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-hunodan/hjfig-04/cut_geometry.json",
+        "sourceSha256": "16c40dae0bd8566f3ef7a35f5597c95e4bf8613cbf5a91e939ecda6fae488c79",
+        "previousMedianSeconds": 0.02003020800000013,
+        "currentMedianSeconds": 0.020050666999999977,
+        "medianPairedSaving": 0.02580267763570554,
+        "mapHashes": [
+          "607b0738e7305d07ee172c0d3058c74153b3195cfdecb197a6677041f1d9d437",
+          "607b0738e7305d07ee172c0d3058c74153b3195cfdecb197a6677041f1d9d437"
+        ],
+        "runs": [
+          {
+            "previous": 0.021405333000000155,
+            "current": 0.020050666999999977,
+            "saving": 0.06328637821239069
+          },
+          {
+            "current": 0.021244416000000002,
+            "previous": 0.01954479100000026,
+            "saving": -0.08696051034773
+          },
+          {
+            "previous": 0.02003020800000013,
+            "current": 0.019513374999999996,
+            "saving": 0.02580267763570554
+          }
+        ]
+      },
+      {
+        "id": "hjfig-05",
+        "group": "hunodan",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-hunodan/hjfig-05/cut_geometry.json",
+        "sourceSha256": "6dd34d7040abff68e2459933fba7264ad1857c0fcbcbd4798e948c671ba105c1",
+        "previousMedianSeconds": 0.04821166600000015,
+        "currentMedianSeconds": 0.04603962499999989,
+        "medianPairedSaving": 0.044807206104212405,
+        "mapHashes": [
+          "3c98ed169ce8bc6a3e7e4c9d32e19b4934c7a294996e04fa03c13e2f2f5fe056",
+          "3d9bda7353e37998c445ae2b67ce00ffd6357313800e78fb919e6cf1409fbc23"
+        ],
+        "runs": [
+          {
+            "current": 0.04752279200000021,
+            "previous": 0.04975204199999962,
+            "saving": 0.044807206104212405
+          },
+          {
+            "previous": 0.04821166600000015,
+            "current": 0.04532516700000042,
+            "saving": 0.059871380507774186
+          },
+          {
+            "current": 0.04603962499999989,
+            "previous": 0.048087290999999824,
+            "saving": 0.042582269814283036
+          }
+        ]
+      },
+      {
+        "id": "hjfla-01",
+        "group": "hunodan",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-hunodan/hjfla-01/cut_geometry.json",
+        "sourceSha256": "73906329a938f13462e0e545bee5a605f8fd22f5f17aba7d17b8727a811d8434",
+        "previousMedianSeconds": 0.05017595799999981,
+        "currentMedianSeconds": 0.0481697079999999,
+        "medianPairedSaving": 0.044421217416766634,
+        "mapHashes": [
+          "d50264f944ff867bf4d74f0e6152441c1d2b796c5f104594c7bd97c99de92cc8",
+          "8e8857f974f3c5be2a7ee92ca409d7742c3c6d1e69aa7aeb6e28d7db35c399ee"
+        ],
+        "runs": [
+          {
+            "previous": 0.05658212499999991,
+            "current": 0.0481697079999999,
+            "saving": 0.14867622946292702
+          },
+          {
+            "current": 0.04941108299999996,
+            "previous": 0.05017595799999981,
+            "saving": 0.015243854437215876
+          },
+          {
+            "previous": 0.04968254200000001,
+            "current": 0.04747558300000037,
+            "saving": 0.044421217416766634
+          }
+        ]
+      },
+      {
+        "id": "hjcur-01",
+        "group": "hunodan",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-hunodan/hjcur-01/cut_geometry.json",
+        "sourceSha256": "f7ce461e37eb2a8c7391ff73fe9b714aa542f825867117474a86acdb3c043188",
+        "previousMedianSeconds": 0.05196299999999974,
+        "currentMedianSeconds": 0.05207770900000014,
+        "medianPairedSaving": -0.002207513038130937,
+        "mapHashes": [
+          "636f49d148e44e2517143d3acbf2800a0ca43ed53f03d5d01628dae573a0655f",
+          "b3f7ae04a7fe695f7f6a227887fb525fe07929ed2ec9929b7e0fb44160ff7405"
+        ],
+        "runs": [
+          {
+            "current": 0.054016167000000226,
+            "previous": 0.051921499999999926,
+            "saving": -0.04034296004545901
+          },
+          {
+            "previous": 0.05196299999999974,
+            "current": 0.05207770900000014,
+            "saving": -0.002207513038130937
+          },
+          {
+            "current": 0.05093899999999985,
+            "previous": 0.05219200000000001,
+            "saving": 0.02400751072961671
+          }
+        ]
+      },
+      {
+        "id": "hjcur-02",
+        "group": "hunodan",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-hunodan/hjcur-02/cut_geometry.json",
+        "sourceSha256": "1cbce3c40af8c4e88ef802b271c9224061c6473b611707e7780c73ebb2b8ca1b",
+        "previousMedianSeconds": 0.05177858300000025,
+        "currentMedianSeconds": 0.04755783299999985,
+        "medianPairedSaving": 0.08151536321494901,
+        "mapHashes": [
+          "f6c80d9a3b644e1f856b3843b0faffe18c8840f044706c5bba90aaa95b25405e",
+          "60442afb9d0a6feb79825fcdafb4aac935196ce04c3f44dcc32f3eb0f12587d9"
+        ],
+        "runs": [
+          {
+            "previous": 0.05535566699999981,
+            "current": 0.04905387500000006,
+            "saving": 0.1138418583231916
+          },
+          {
+            "current": 0.04755783299999985,
+            "previous": 0.05177858300000025,
+            "saving": 0.08151536321494901
+          },
+          {
+            "previous": 0.04986645899999985,
+            "current": 0.04605837500000007,
+            "saving": 0.07636563887561765
+          }
+        ]
+      },
+      {
+        "id": "hjcur-03",
+        "group": "hunodan",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-hunodan/hjcur-03/cut_geometry.json",
+        "sourceSha256": "ad97a002943d8e2647c3b8d9f4b9c7d0f6f1ee10dd5db85238f2366dd6ca91c3",
+        "previousMedianSeconds": 0.047811374999999774,
+        "currentMedianSeconds": 0.04738795800000025,
+        "medianPairedSaving": 0.02481039472205826,
+        "mapHashes": [
+          "7094fe56d9bc7e6e848fb3872e69a01fcbbc82c929073ff33e31f1870585b8ae",
+          "dbe9522ceded70f43a488d831c83a79b0eb06e4ef66f3a3dcec48a97eca346e3"
+        ],
+        "runs": [
+          {
+            "current": 0.05544712499999969,
+            "previous": 0.047811374999999774,
+            "saving": -0.15970571856592608
+          },
+          {
+            "previous": 0.04778645800000004,
+            "current": 0.046182000000000244,
+            "saving": 0.033575579089787144
+          },
+          {
+            "current": 0.04738795800000025,
+            "previous": 0.04859358399999974,
+            "saving": 0.02481039472205826
+          }
+        ]
+      },
+      {
+        "id": "hjcur-04",
+        "group": "hunodan",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-hunodan/hjcur-04/cut_geometry.json",
+        "sourceSha256": "00b2d60e3db7b03ccfce44695a7960699ca7959fb82305ee80825b60dfae35a0",
+        "previousMedianSeconds": 0.06358824999999979,
+        "currentMedianSeconds": 0.06044741699999941,
+        "medianPairedSaving": 0.049393291999707434,
+        "mapHashes": [
+          "04b8b1c998a26bd0cab3fef5cca3786e8c47e50d64868834eb327fed1f3618e8",
+          "12402b05076385e63dc5182b392f98d7d793ce8bf2ee8c4a65cf977f331f0474"
+        ],
+        "runs": [
+          {
+            "previous": 0.07347770799999989,
+            "current": 0.060171750000000426,
+            "saving": 0.18108836492286184
+          },
+          {
+            "current": 0.06044741699999941,
+            "previous": 0.06358824999999979,
+            "saving": 0.049393291999707434
+          },
+          {
+            "previous": 0.06347862500000065,
+            "current": 0.06045737499999996,
+            "saving": 0.04759476122869166
+          }
+        ]
+      },
+      {
+        "id": "hjcur-05",
+        "group": "hunodan",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-hunodan/hjcur-05/cut_geometry.json",
+        "sourceSha256": "1b3822492ae13f4b6f73bc67284ce4eb568f292cb87b092b80be053e914817f7",
+        "previousMedianSeconds": 0.0388159169999999,
+        "currentMedianSeconds": 0.03703741600000012,
+        "medianPairedSaving": 0.04581885827918952,
+        "mapHashes": [
+          "9db9c832e3b47a3dab4a9545ca810aa8d44c5bdd101a44a62f073f0480e625a7",
+          "a0c73936fcfb49611714128887ae6f5b2f7f920e2a91e546bfeeb93a65602403"
+        ],
+        "runs": [
+          {
+            "current": 0.03967383300000074,
+            "previous": 0.04166679100000056,
+            "saving": 0.04783084927274073
+          },
+          {
+            "previous": 0.0388159169999999,
+            "current": 0.03703741600000012,
+            "saving": 0.04581885827918952
+          },
+          {
+            "current": 0.036828749999999674,
+            "previous": 0.03859612500000003,
+            "saving": 0.045791514044489
+          }
+        ]
+      },
+      {
+        "id": "hjhih-01",
+        "group": "hunodan",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-hunodan/hjhih-01/cut_geometry.json",
+        "sourceSha256": "90e7b42ab49da73fed7c6403d1f0bbb6c96f66a99066cfe6e48802391795b8a1",
+        "previousMedianSeconds": 0.056743750000000544,
+        "currentMedianSeconds": 0.055818707999999786,
+        "medianPairedSaving": 0.009730834991860449,
+        "mapHashes": [
+          "2c639cb9ec318ea6c90d748d75f25d3836730998e48372e2810362069be362ef",
+          "c214781f0e2fdeee3f36ad280b726a9048003a720a4f7c580fcda7117e35c44c"
+        ],
+        "runs": [
+          {
+            "previous": 0.06379675000000043,
+            "current": 0.055652374999999664,
+            "saving": 0.1276612836860923
+          },
+          {
+            "current": 0.055818707999999786,
+            "previous": 0.05636720799999966,
+            "saving": 0.009730834991860449
+          },
+          {
+            "previous": 0.056743750000000544,
+            "current": 0.05621262500000011,
+            "saving": 0.009360061680809384
+          }
+        ]
+      },
+      {
+        "id": "hjhih-02",
+        "group": "hunodan",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-hunodan/hjhih-02/cut_geometry.json",
+        "sourceSha256": "f2b5bf2a8900a58a771956257d0b681ee63022f6e01b7f85e7e2bc283d49bcef",
+        "previousMedianSeconds": 0.04707408299999952,
+        "currentMedianSeconds": 0.046589208000000326,
+        "medianPairedSaving": 0.005614287467528123,
+        "mapHashes": [
+          "2a31283f9d047fbc9ef1837f5faf685c7b9133d7d90533b129fb7bc1b4d74104",
+          "511d0d61876f168015e72a256208d761851b2eb3f9fbba7d552ace3602fce3d4"
+        ],
+        "runs": [
+          {
+            "current": 0.049358125000000655,
+            "previous": 0.04829879199999959,
+            "saving": -0.02193290879823806
+          },
+          {
+            "previous": 0.046852250000000824,
+            "current": 0.046589208000000326,
+            "saving": 0.005614287467528123
+          },
+          {
+            "current": 0.045851792000000384,
+            "previous": 0.04707408299999952,
+            "saving": 0.025965264156056822
+          }
+        ]
+      },
+      {
+        "id": "hjhih-04",
+        "group": "hunodan",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-hunodan/hjhih-04/cut_geometry.json",
+        "sourceSha256": "78693d967702f585f8259f30b248fd8e2e4c1dcd56ecedd7772ff12918cd9f24",
+        "previousMedianSeconds": 0.0626295,
+        "currentMedianSeconds": 0.06155345800000032,
+        "medianPairedSaving": 0.03424982910054297,
+        "mapHashes": [
+          "5996bfeebd4837e7e589e47502ce95c6ec6ac1933f70f2330f8ab84dafec0680",
+          "46b0e35b2d5723d9dd28a3d3223b09c2ee79ddc1066b43ae8a1134b69e93e058"
+        ],
+        "runs": [
+          {
+            "previous": 0.06841399999999977,
+            "current": 0.061632041999999276,
+            "saving": 0.09913114274856771
+          },
+          {
+            "current": 0.06155345800000032,
+            "previous": 0.0626295,
+            "saving": 0.017181072817117893
+          },
+          {
+            "previous": 0.06089691700000003,
+            "current": 0.05881120800000008,
+            "saving": 0.03424982910054297
+          }
+        ]
+      },
+      {
+        "id": "hjstr-01",
+        "group": "hunodan",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-hunodan/hjstr-01/cut_geometry.json",
+        "sourceSha256": "6861c214414027bcc3129377af12915f89460866efc4e001b7d1d3a09c6214a2",
+        "previousMedianSeconds": 0.04396120799999972,
+        "currentMedianSeconds": 0.04245770900000025,
+        "medianPairedSaving": 0.023913030234230193,
+        "mapHashes": [
+          "e1c87ecd872e40d69a7a4a952ebbe217ea53f6b44565f31a2c9fed6e6899a90e",
+          "1c75963bb95d831ef4e23bc4622065552ba825e35895c6a2b5befcee91a0b657"
+        ],
+        "runs": [
+          {
+            "current": 0.04432620800000041,
+            "previous": 0.04495595799999955,
+            "saving": 0.014008154380764193
+          },
+          {
+            "previous": 0.04396120799999972,
+            "current": 0.04153233400000045,
+            "saving": 0.055250392573363394
+          },
+          {
+            "current": 0.04245770900000025,
+            "previous": 0.04349787500000002,
+            "saving": 0.023913030234230193
+          }
+        ]
+      },
+      {
+        "id": "hjstr-02",
+        "group": "hunodan",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-hunodan/hjstr-02/cut_geometry.json",
+        "sourceSha256": "1f9b30ed09b01d280b6630c9326457f48f392b44c27910e37df2ab66e4078f48",
+        "previousMedianSeconds": 0.04963541700000042,
+        "currentMedianSeconds": 0.04614895799999977,
+        "medianPairedSaving": 0.054425500216579104,
+        "mapHashes": [
+          "1f49f830ee8674c46313b04d4d5f6dff7d8a358c770215055ea8605a7946628f",
+          "ceb97b35a6c22701804882099da36446d2a44689d71dbe7b5f0a5dee20065854"
+        ],
+        "runs": [
+          {
+            "previous": 0.05583991700000024,
+            "current": 0.04614895799999977,
+            "saving": 0.17354895065478748
+          },
+          {
+            "current": 0.046133082999999714,
+            "previous": 0.04878841699999975,
+            "saving": 0.054425500216579104
+          },
+          {
+            "previous": 0.04963541700000042,
+            "current": 0.047233250000000226,
+            "saving": 0.0483962288460309
+          }
+        ]
+      },
+      {
+        "id": "hjstr-03",
+        "group": "hunodan",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-hunodan/hjstr-03/cut_geometry.json",
+        "sourceSha256": "bedb2145ef2f6dc4f96c397a6387a9f83f8e85b5f5c1f65c6595a16f1e951049",
+        "previousMedianSeconds": 0.06559658399999989,
+        "currentMedianSeconds": 0.06339820899999996,
+        "medianPairedSaving": 0.03298100765280332,
+        "mapHashes": [
+          "fbb2e224b6ff52356276c46bc88515fa32e113bc82491801dc1486dcc2ecb2d5",
+          "22ef812c37c5bef1c9ad4ea1f7d62a67280364c027919bcd43c365e80f1d93f7"
+        ],
+        "runs": [
+          {
+            "current": 0.07089454100000057,
+            "previous": 0.065606041,
+            "saving": -0.08060995480584743
+          },
+          {
+            "previous": 0.06556045900000027,
+            "current": 0.06339820899999996,
+            "saving": 0.03298100765280332
+          },
+          {
+            "current": 0.06323225000000002,
+            "previous": 0.06559658399999989,
+            "saving": 0.03604355373139356
+          }
+        ]
+      },
+      {
+        "id": "hjsta-01",
+        "group": "hunodan",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-hunodan/hjsta-01/cut_geometry.json",
+        "sourceSha256": "59bf814ffb05e32c998a15a96b88426188cd00aafd5a7e814b2b602de109124d",
+        "previousMedianSeconds": 0.0416206659999998,
+        "currentMedianSeconds": 0.040959875000000465,
+        "medianPairedSaving": 0.00350634974697861,
+        "mapHashes": [
+          "9759bd4536573fb82fd7f5c4de682239f09b1f0feffd56d4ccb769de1283c6f3",
+          "e4401dcf1089c50c331fb7770c238b699926b1fa5aa0cfdccf8af33b7da39440"
+        ],
+        "runs": [
+          {
+            "previous": 0.041641749999999776,
+            "current": 0.0436987909999998,
+            "saving": -0.04939852431754277
+          },
+          {
+            "current": 0.04005291699999998,
+            "previous": 0.0416206659999998,
+            "saving": 0.03766756159067297
+          },
+          {
+            "previous": 0.04110400000000027,
+            "current": 0.040959875000000465,
+            "saving": 0.00350634974697861
+          }
+        ]
+      },
+      {
+        "id": "hjsta-02",
+        "group": "hunodan",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-hunodan/hjsta-02/cut_geometry.json",
+        "sourceSha256": "9b7030771c6d18eaeea4dbbcbb997e55f632cc054888188929760e816c53b981",
+        "previousMedianSeconds": 0.048140041999999994,
+        "currentMedianSeconds": 0.04867633399999977,
+        "medianPairedSaving": 0.06373332619858918,
+        "mapHashes": [
+          "4d46e60d1edce0b924c724674248b907fa2819101f580c68c6f4878327e2ebdc",
+          "f37cb40821530affa61ac33093a9d63d6016030019ebacdd9f397f1fd0e38c8f"
+        ],
+        "runs": [
+          {
+            "current": 0.04507191700000021,
+            "previous": 0.048140041999999994,
+            "saving": 0.06373332619858918
+          },
+          {
+            "previous": 0.04652766700000029,
+            "current": 0.04867633399999977,
+            "saving": -0.04618041562237507
+          },
+          {
+            "current": 0.05952179100000012,
+            "previous": 0.06948745899999995,
+            "saving": 0.14341678546627856
+          }
+        ]
+      },
+      {
+        "id": "hjsta-03",
+        "group": "hunodan",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-hunodan/hjsta-03/cut_geometry.json",
+        "sourceSha256": "ec6d698478e514b6dd3ed1efffc5ce7f280672c684693d7d80cc4185ecdaea2e",
+        "previousMedianSeconds": 0.062054665999999994,
+        "currentMedianSeconds": 0.059005165999999915,
+        "medianPairedSaving": 0.06456603924029902,
+        "mapHashes": [
+          "eeb22e6138386eeb6aa02bc3c8c09dd0cc8828b8ed1b947ca3463134a0a7b1f3",
+          "71f5f4cd885ec473f662b9aa928dcb0b285700e8a01db1523e35e5018cb6dd43"
+        ],
+        "runs": [
+          {
+            "previous": 0.06805025000000023,
+            "current": 0.06192358400000012,
+            "saving": 0.09003149878215122
+          },
+          {
+            "current": 0.059005165999999915,
+            "previous": 0.05843933299999935,
+            "saving": -0.00968240003698484
+          },
+          {
+            "previous": 0.062054665999999994,
+            "current": 0.05804804200000035,
+            "saving": 0.06456603924029902
+          }
+        ]
+      },
+      {
+        "id": "hjsta-04",
+        "group": "hunodan",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-hunodan/hjsta-04/cut_geometry.json",
+        "sourceSha256": "ff1b60549c2d7acc6fcc6bbdb352cd7c989e5e721b0ba5d8db4e68ab10731974",
+        "previousMedianSeconds": 0.05449070800000027,
+        "currentMedianSeconds": 0.05223266700000022,
+        "medianPairedSaving": 0.044607404267576145,
+        "mapHashes": [
+          "6c71031f78996f101f5c6caf566734b81381381a994fe59e41e46790df0b2401",
+          "2693df6e80b97f024990a68a32c74c5b30673d62b876eb7d49366a02a001fc55"
+        ],
+        "runs": [
+          {
+            "current": 0.05733824999999979,
+            "previous": 0.053829874999999444,
+            "saving": -0.06517523958583182
+          },
+          {
+            "previous": 0.05449070800000027,
+            "current": 0.05121149999999943,
+            "saving": 0.060179214408460635
+          },
+          {
+            "current": 0.05223266700000022,
+            "previous": 0.05467141700000047,
+            "saving": 0.044607404267576145
+          }
+        ]
+      },
+      {
+        "id": "hjsta-05",
+        "group": "hunodan",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-hunodan/hjsta-05/cut_geometry.json",
+        "sourceSha256": "5264f94cf71b86e1f551d2e2eb0b109e65ac4f83093f8cac2943e5d7e8d5f9d7",
+        "previousMedianSeconds": 0.06202995900000042,
+        "currentMedianSeconds": 0.06262995899999987,
+        "medianPairedSaving": 0.005840613243032089,
+        "mapHashes": [
+          "9196f2415a46b77f16de850871ebc3b0dfceec3d00c8d3663b8a0f5a06c34648",
+          "c8f5868de33a0c2250c994e204a96f50b26ae82a0155fea1fad4db2c28a9705a"
+        ],
+        "runs": [
+          {
+            "previous": 0.06759645799999998,
+            "current": 0.06265924999999971,
+            "saving": 0.073039448309559
+          },
+          {
+            "current": 0.06262995899999987,
+            "previous": 0.06166870800000015,
+            "saving": -0.015587338071031409
+          },
+          {
+            "previous": 0.06202995900000042,
+            "current": 0.06166766600000028,
+            "saving": 0.005840613243032089
+          }
+        ]
+      },
+      {
+        "id": "top-hat-0.64-weighted",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/top-hat-0.64-weighted/cut_geometry.json",
+        "sourceSha256": "4034fb6d56a69cc8a48d2e45893a2396d3f60f722dd81eff7158b06dabdedf29",
+        "previousMedianSeconds": 0.018303334000000178,
+        "currentMedianSeconds": 0.015360791999999492,
+        "medianPairedSaving": 0.15641564992359347,
+        "mapHashes": [
+          "5bb019fd212575da373e789625e064e09bd854e72c979156024cbdae9f02dba0",
+          "5bb019fd212575da373e789625e064e09bd854e72c979156024cbdae9f02dba0"
+        ],
+        "runs": [
+          {
+            "current": 0.015753125000001093,
+            "previous": 0.018303334000000178,
+            "saving": 0.13933029905912553
+          },
+          {
+            "previous": 0.018208958000001076,
+            "current": 0.015360791999999492,
+            "saving": 0.15641564992359347
+          },
+          {
+            "current": 0.015337375000000975,
+            "previous": 0.01845795800000087,
+            "saving": 0.16906436779191658
+          }
+        ]
+      },
+      {
+        "id": "top-hat-0.64-weighted-inverted",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/top-hat-0.64-weighted-inverted/cut_geometry.json",
+        "sourceSha256": "3ff292e23f7de70e30b01c35da643bdcc3c410acd417ebf836dcc45ab5b4afaf",
+        "previousMedianSeconds": 0.01852850000000035,
+        "currentMedianSeconds": 0.01596362500000032,
+        "medianPairedSaving": 0.1239126855637227,
+        "mapHashes": [
+          "d81601ae33d599e87245b49e88d450e847159b055939e3841226deca43874979",
+          "d81601ae33d599e87245b49e88d450e847159b055939e3841226deca43874979"
+        ],
+        "runs": [
+          {
+            "previous": 0.019649666000001162,
+            "current": 0.01731104099999902,
+            "saving": 0.11901601788050764
+          },
+          {
+            "current": 0.01596362500000032,
+            "previous": 0.01822149999999965,
+            "saving": 0.1239126855637227
+          },
+          {
+            "previous": 0.01852850000000035,
+            "current": 0.015250167000000146,
+            "saving": 0.17693461424293078
+          }
+        ]
+      },
+      {
+        "id": "top-hat-0.64-weighted-shifted",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/top-hat-0.64-weighted-shifted/cut_geometry.json",
+        "sourceSha256": "486d2f133066c1fdc2a44852483bfadcee8fc913c476812f4f513aba0745108a",
+        "previousMedianSeconds": 0.018451042000000598,
+        "currentMedianSeconds": 0.01583783299999959,
+        "medianPairedSaving": 0.14755611846968808,
+        "mapHashes": [
+          "24ed22cdacd3ef6025e8537bc3849f5927f0f71e482e6ce8f0daf2b5feefe762",
+          "24ed22cdacd3ef6025e8537bc3849f5927f0f71e482e6ce8f0daf2b5feefe762"
+        ],
+        "runs": [
+          {
+            "current": 0.015984707999999955,
+            "previous": 0.018751624999998967,
+            "saving": 0.14755611846968808
+          },
+          {
+            "previous": 0.018451042000000598,
+            "current": 0.01583783299999959,
+            "saving": 0.14162934537794247
+          },
+          {
+            "current": 0.015524625000000014,
+            "previous": 0.018236584000000222,
+            "saving": 0.14870981319748122
+          }
+        ]
+      },
+      {
+        "id": "top-hat-0.64-weighted-free-noise",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/top-hat-0.64-weighted-free-noise/cut_geometry.json",
+        "sourceSha256": "4034fb6d56a69cc8a48d2e45893a2396d3f60f722dd81eff7158b06dabdedf29",
+        "previousMedianSeconds": 0.017875207999999476,
+        "currentMedianSeconds": 0.015045915999999125,
+        "medianPairedSaving": 0.16473684947421374,
+        "mapHashes": [
+          "5bb019fd212575da373e789625e064e09bd854e72c979156024cbdae9f02dba0",
+          "5bb019fd212575da373e789625e064e09bd854e72c979156024cbdae9f02dba0"
+        ],
+        "runs": [
+          {
+            "previous": 0.019961750000000392,
+            "current": 0.015419084000001021,
+            "saving": 0.22756852480365108
+          },
+          {
+            "current": 0.014914249999999811,
+            "previous": 0.017855749999998807,
+            "saving": 0.16473684947421374
+          },
+          {
+            "previous": 0.017875207999999476,
+            "current": 0.015045915999999125,
+            "saving": 0.15828022812380327
+          }
+        ]
+      },
+      {
+        "id": "top-hat-0.84-weighted",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/top-hat-0.84-weighted/cut_geometry.json",
+        "sourceSha256": "023102ee543fb1e35b80bb4de3bc5e7237617c5191161c328ef0d4c37ea62bae",
+        "previousMedianSeconds": 0.033880166999999344,
+        "currentMedianSeconds": 0.0322963749999999,
+        "medianPairedSaving": 0.03195249621393015,
+        "mapHashes": [
+          "f4c9121429127daad32cd93e1840b2deedf1e7c6667445d68c1fd7cf94f2e09b",
+          "7750e445333e071bb6346bf888d89a4d63a8ed3129f952225a3b75c7c19abcad"
+        ],
+        "runs": [
+          {
+            "current": 0.03367200000000048,
+            "previous": 0.03478341700000055,
+            "saving": 0.03195249621393015
+          },
+          {
+            "previous": 0.03317262500000106,
+            "current": 0.0322963749999999,
+            "saving": 0.026414852608171113
+          },
+          {
+            "current": 0.03188354199999958,
+            "previous": 0.033880166999999344,
+            "saving": 0.058931970435677106
+          }
+        ]
+      },
+      {
+        "id": "top-hat-0.84-weighted-inverted",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/top-hat-0.84-weighted-inverted/cut_geometry.json",
+        "sourceSha256": "4d406a5a658a33c521d96621d3679873b7d1f1baceebcd7f8f0d022f7953e066",
+        "previousMedianSeconds": 0.034630208000000495,
+        "currentMedianSeconds": 0.03204800000000069,
+        "medianPairedSaving": 0.07456518886631491,
+        "mapHashes": [
+          "78833f6a791b0f6ddfe5a13e7b79e61a43592cb57c63572e02efc9e36428f06b",
+          "0c50c3815ec5d1632c1f65089e05d38f71d48cb2c3b94e9b788d21df5aa8423e"
+        ],
+        "runs": [
+          {
+            "previous": 0.038433708000000476,
+            "current": 0.033113417000000485,
+            "saving": 0.13842773119887175
+          },
+          {
+            "current": 0.03204800000000069,
+            "previous": 0.034630208000000495,
+            "saving": 0.07456518886631491
+          },
+          {
+            "previous": 0.033562792000000626,
+            "current": 0.03145766699999877,
+            "saving": 0.06272198689554254
+          }
+        ]
+      },
+      {
+        "id": "top-hat-0.84-weighted-shifted",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/top-hat-0.84-weighted-shifted/cut_geometry.json",
+        "sourceSha256": "64c7f20ecc29bd9f857deb61cc1914e13fd4911a93e1265d85a6274114bc2d1b",
+        "previousMedianSeconds": 0.03426720800000112,
+        "currentMedianSeconds": 0.03227850000000035,
+        "medianPairedSaving": 0.05649887382354357,
+        "mapHashes": [
+          "a5a0480f22bb8bf208a1877a613917ddafcc55609314294132c6d8ad4b25c761",
+          "6669e56f5b0c3f7882a2cde1f9e0f4110bc243bcacecb80340f25bd235e3d9eb"
+        ],
+        "runs": [
+          {
+            "current": 0.033000833000000056,
+            "previous": 0.03426720800000112,
+            "saving": 0.036955885054919535
+          },
+          {
+            "previous": 0.03432158399999935,
+            "current": 0.03227850000000035,
+            "saving": 0.05952767214936938
+          },
+          {
+            "current": 0.03189179200000035,
+            "previous": 0.033801541000000726,
+            "saving": 0.05649887382354357
+          }
+        ]
+      },
+      {
+        "id": "top-hat-0.84-weighted-free-noise",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/top-hat-0.84-weighted-free-noise/cut_geometry.json",
+        "sourceSha256": "023102ee543fb1e35b80bb4de3bc5e7237617c5191161c328ef0d4c37ea62bae",
+        "previousMedianSeconds": 0.03420383399999991,
+        "currentMedianSeconds": 0.03121125000000029,
+        "medianPairedSaving": 0.08670346032443366,
+        "mapHashes": [
+          "f4c9121429127daad32cd93e1840b2deedf1e7c6667445d68c1fd7cf94f2e09b",
+          "7750e445333e071bb6346bf888d89a4d63a8ed3129f952225a3b75c7c19abcad"
+        ],
+        "runs": [
+          {
+            "previous": 0.0394340830000001,
+            "current": 0.03121125000000029,
+            "saving": 0.20852096395901454
+          },
+          {
+            "current": 0.031129750000000057,
+            "previous": 0.034085041000000274,
+            "saving": 0.08670346032443366
+          },
+          {
+            "previous": 0.03420383399999991,
+            "current": 0.031870124999999465,
+            "saving": 0.06822945638200828
+          }
+        ]
+      },
+      {
+        "id": "hat-0.64-weighted",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/hat-0.64-weighted/cut_geometry.json",
+        "sourceSha256": "952fc6b3322f5aa88f3d640614123df10b0fe95a1d4acb2b66ce490a91a7b98a",
+        "previousMedianSeconds": 0.0374559160000008,
+        "currentMedianSeconds": 0.03275095800000054,
+        "medianPairedSaving": 0.13973311986282166,
+        "mapHashes": [
+          "7d9b9590cf6b20561d64c3e0c0d80ed36c23fa4aef3ea09f5eb9f4391f6797d5",
+          "aa90ad1976fbc60ef041b30a856a82f501a62d08d059ec732723e5640b110ba0"
+        ],
+        "runs": [
+          {
+            "current": 0.03336212499999965,
+            "previous": 0.039355540999998995,
+            "saving": 0.1522890004230788
+          },
+          {
+            "previous": 0.0374559160000008,
+            "current": 0.03222208400000091,
+            "saving": 0.13973311986282166
+          },
+          {
+            "current": 0.03275095800000054,
+            "previous": 0.03663199999999961,
+            "saving": 0.10594676785321888
+          }
+        ]
+      },
+      {
+        "id": "hat-0.64-weighted-inverted",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/hat-0.64-weighted-inverted/cut_geometry.json",
+        "sourceSha256": "4a2afec9ef7daf491c3468ca2227ac583697a11b31d09e5a159b9781dbd7335f",
+        "previousMedianSeconds": 0.037613000000001194,
+        "currentMedianSeconds": 0.032574875000000246,
+        "medianPairedSaving": 0.10922869683198322,
+        "mapHashes": [
+          "7d9b9590cf6b20561d64c3e0c0d80ed36c23fa4aef3ea09f5eb9f4391f6797d5",
+          "aa90ad1976fbc60ef041b30a856a82f501a62d08d059ec732723e5640b110ba0"
+        ],
+        "runs": [
+          {
+            "previous": 0.03852287500000057,
+            "current": 0.0391019580000011,
+            "saving": -0.01503218542231144
+          },
+          {
+            "current": 0.032574875000000246,
+            "previous": 0.036569290999999796,
+            "saving": 0.10922869683198322
+          },
+          {
+            "previous": 0.037613000000001194,
+            "current": 0.03256791599999997,
+            "saving": 0.13413139074259073
+          }
+        ]
+      },
+      {
+        "id": "hat-0.64-weighted-shifted",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/hat-0.64-weighted-shifted/cut_geometry.json",
+        "sourceSha256": "dc611dfeb53dc91a78366da35ad27b88884df7655c9dc32021a63332664062db",
+        "previousMedianSeconds": 0.036682125000001176,
+        "currentMedianSeconds": 0.030693750000000363,
+        "medianPairedSaving": 0.16325049325797292,
+        "mapHashes": [
+          "0f1d793274b891f4961449765bc26c57c36bb684c870fe0db35cc6bd54b218e2",
+          "c9ba2c8502f93d9a81d675e2cce1ba9ba8d884b3ea415222d0ece245dba05e97"
+        ],
+        "runs": [
+          {
+            "current": 0.03146683400000074,
+            "previous": 0.03933204100000148,
+            "saving": 0.19996946001354077
+          },
+          {
+            "previous": 0.03519762499999888,
+            "current": 0.030033083000000262,
+            "saving": 0.1467298432777433
+          },
+          {
+            "current": 0.030693750000000363,
+            "previous": 0.036682125000001176,
+            "saving": 0.16325049325797292
+          }
+        ]
+      },
+      {
+        "id": "hat-0.64-weighted-free-noise",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/hat-0.64-weighted-free-noise/cut_geometry.json",
+        "sourceSha256": "952fc6b3322f5aa88f3d640614123df10b0fe95a1d4acb2b66ce490a91a7b98a",
+        "previousMedianSeconds": 0.03706770900000083,
+        "currentMedianSeconds": 0.03259499999999935,
+        "medianPairedSaving": 0.11785300731884596,
+        "mapHashes": [
+          "7d9b9590cf6b20561d64c3e0c0d80ed36c23fa4aef3ea09f5eb9f4391f6797d5",
+          "aa90ad1976fbc60ef041b30a856a82f501a62d08d059ec732723e5640b110ba0"
+        ],
+        "runs": [
+          {
+            "previous": 0.038524082999998426,
+            "current": 0.0370661659999987,
+            "saving": 0.03784430118686499
+          },
+          {
+            "current": 0.03228125,
+            "previous": 0.036593957999999475,
+            "saving": 0.11785300731884596
+          },
+          {
+            "previous": 0.03706770900000083,
+            "current": 0.03259499999999935,
+            "saving": 0.12066321660185109
+          }
+        ]
+      },
+      {
+        "id": "hat-0.84-weighted",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/hat-0.84-weighted/cut_geometry.json",
+        "sourceSha256": "8b64849e56e50bd68e5f1f00aebd8d9689c042b80a68c01c5f7f70dd50258203",
+        "previousMedianSeconds": 0.03484483399999954,
+        "currentMedianSeconds": 0.03396574999999939,
+        "medianPairedSaving": 0.025228531724391656,
+        "mapHashes": [
+          "e1af2058b74f84d548bc88928f1382c5092eace0cbd4888449abc7cf99b82f50",
+          "c54036194aba4b48dac01d2924caa454c25d537c6c2fd7ab1c742096b2aa9a70"
+        ],
+        "runs": [
+          {
+            "current": 0.03415437500000007,
+            "previous": 0.03475524999999834,
+            "saving": 0.0172887549362557
+          },
+          {
+            "previous": 0.03484483399999954,
+            "current": 0.03396574999999939,
+            "saving": 0.025228531724391656
+          },
+          {
+            "current": 0.03365149999999994,
+            "previous": 0.037118625000000974,
+            "saving": 0.0934066119098147
+          }
+        ]
+      },
+      {
+        "id": "hat-0.84-weighted-inverted",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/hat-0.84-weighted-inverted/cut_geometry.json",
+        "sourceSha256": "61582f2484eab72d29683ba60dcd7f3c20113231732cc799016f73a4f386f2ef",
+        "previousMedianSeconds": 0.034825165999998714,
+        "currentMedianSeconds": 0.033270582999999535,
+        "medianPairedSaving": 0.053873856624208405,
+        "mapHashes": [
+          "585c9698b2a594df29c2c82bbf07af23119b8405ae2506a1f22fd8e2f2c4b72e",
+          "f68d74932737d9ec359994aa30f928179d915baac037b9af85ce13bce932fb18"
+        ],
+        "runs": [
+          {
+            "previous": 0.037522499999999126,
+            "current": 0.033270582999999535,
+            "saving": 0.11331646345525193
+          },
+          {
+            "current": 0.03337104199999885,
+            "previous": 0.034578417000000625,
+            "saving": 0.03491701196158725
+          },
+          {
+            "previous": 0.034825165999998714,
+            "current": 0.032949000000000526,
+            "saving": 0.053873856624208405
+          }
+        ]
+      },
+      {
+        "id": "hat-0.84-weighted-shifted",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/hat-0.84-weighted-shifted/cut_geometry.json",
+        "sourceSha256": "06e0bd119f0d91492526bd589be8fb9d80ad95aa6a8ba0f2b197d5798db48e3e",
+        "previousMedianSeconds": 0.03608870799999932,
+        "currentMedianSeconds": 0.036178874999999604,
+        "medianPairedSaving": -0.016400559421525296,
+        "mapHashes": [
+          "7077a66c6de9d67088fcb634b8c86de90f2a9c98e64189b0ed5aa9c1d754ac06",
+          "2f48a43c9b3638c3606dd77f64a4f09abfb1aa80727c202100bf6990b8c70371"
+        ],
+        "runs": [
+          {
+            "current": 0.036680582999999385,
+            "previous": 0.03608870799999932,
+            "saving": -0.016400559421525296
+          },
+          {
+            "previous": 0.03502912499999911,
+            "current": 0.036178874999999604,
+            "saving": -0.03282268683561229
+          },
+          {
+            "current": 0.035698291999999125,
+            "previous": 0.03653712499999892,
+            "saving": 0.022958374530010817
+          }
+        ]
+      },
+      {
+        "id": "hat-0.84-weighted-free-noise",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/hat-0.84-weighted-free-noise/cut_geometry.json",
+        "sourceSha256": "8b64849e56e50bd68e5f1f00aebd8d9689c042b80a68c01c5f7f70dd50258203",
+        "previousMedianSeconds": 0.036068208000000594,
+        "currentMedianSeconds": 0.034170084000001225,
+        "medianPairedSaving": 0.06223618634262529,
+        "mapHashes": [
+          "e1af2058b74f84d548bc88928f1382c5092eace0cbd4888449abc7cf99b82f50",
+          "c54036194aba4b48dac01d2924caa454c25d537c6c2fd7ab1c742096b2aa9a70"
+        ],
+        "runs": [
+          {
+            "previous": 0.037918416000000434,
+            "current": 0.034170084000001225,
+            "saving": 0.09885254700510604
+          },
+          {
+            "current": 0.03311529200000041,
+            "previous": 0.03531304100000125,
+            "saving": 0.06223618634262529
+          },
+          {
+            "previous": 0.036068208000000594,
+            "current": 0.03431033299999944,
+            "saving": 0.04873751975704255
+          }
+        ]
+      },
+      {
+        "id": "house-0.64-weighted",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/house-0.64-weighted/cut_geometry.json",
+        "sourceSha256": "25c9a6587f3fa09d804a9eba76f34b5201463ca4e78fa437b3918e7ce61c053a",
+        "previousMedianSeconds": 0.038081958000000665,
+        "currentMedianSeconds": 0.03189450000000033,
+        "medianPairedSaving": 0.17848144518644815,
+        "mapHashes": [
+          "754c8ec009eada9d650e010656a70689af4386564b37587fd79002cf302a99a9",
+          "b33015d81f4177bbfa42357154b68032d77fa2ded46713a0a066ff8a57cffe15"
+        ],
+        "runs": [
+          {
+            "current": 0.03189450000000033,
+            "previous": 0.0388238339999989,
+            "saving": 0.17848144518644815
+          },
+          {
+            "previous": 0.038081958000000665,
+            "current": 0.030452499999999418,
+            "saving": 0.20034311260994286
+          },
+          {
+            "current": 0.034625708999999914,
+            "previous": 0.03494820900000013,
+            "saving": 0.00922794069361943
+          }
+        ]
+      },
+      {
+        "id": "house-0.64-weighted-inverted",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/house-0.64-weighted-inverted/cut_geometry.json",
+        "sourceSha256": "d47f8f0ee78e88a7bd2b33225b5fd22c7eb885a443b2d69944aa3e6a1fa94838",
+        "previousMedianSeconds": 0.04127070800000001,
+        "currentMedianSeconds": 0.03365450000000055,
+        "medianPairedSaving": 0.15076260657449392,
+        "mapHashes": [
+          "754c8ec009eada9d650e010656a70689af4386564b37587fd79002cf302a99a9",
+          "b33015d81f4177bbfa42357154b68032d77fa2ded46713a0a066ff8a57cffe15"
+        ],
+        "runs": [
+          {
+            "previous": 0.03962908400000015,
+            "current": 0.03365450000000055,
+            "saving": 0.15076260657449392
+          },
+          {
+            "current": 0.031816124999999376,
+            "previous": 0.04127070800000001,
+            "saving": 0.22908700766656664
+          },
+          {
+            "previous": 0.04851770899999974,
+            "current": 0.05664045900000019,
+            "saving": -0.16741825134407096
+          }
+        ]
+      },
+      {
+        "id": "house-0.64-weighted-shifted",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/house-0.64-weighted-shifted/cut_geometry.json",
+        "sourceSha256": "39a9da6e397e619edec90a92f4027c3679bb4f47306e9a8b671fa80459f74a49",
+        "previousMedianSeconds": 0.04334270800000013,
+        "currentMedianSeconds": 0.03523170799999934,
+        "medianPairedSaving": 0.18713643826778814,
+        "mapHashes": [
+          "7c5f3e4b6a19909a21c985c8621a399446e93431064ae7479bc23331086bd6c7",
+          "163ac4d8b626a8f78b80d558aec290dcf1c40edcbf43aeb323a18733e895cf3e"
+        ],
+        "runs": [
+          {
+            "current": 0.03523170799999934,
+            "previous": 0.04334270800000013,
+            "saving": 0.18713643826778814
+          },
+          {
+            "previous": 0.04943875000000116,
+            "current": 0.035628042000000276,
+            "saving": 0.27934986220324265
+          },
+          {
+            "current": 0.03329679199999919,
+            "previous": 0.03968991699999969,
+            "saving": 0.16107680446901806
+          }
+        ]
+      },
+      {
+        "id": "house-0.64-weighted-free-noise",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/house-0.64-weighted-free-noise/cut_geometry.json",
+        "sourceSha256": "25c9a6587f3fa09d804a9eba76f34b5201463ca4e78fa437b3918e7ce61c053a",
+        "previousMedianSeconds": 0.0394666670000006,
+        "currentMedianSeconds": 0.030256208000000697,
+        "medianPairedSaving": 0.2126119238799833,
+        "mapHashes": [
+          "754c8ec009eada9d650e010656a70689af4386564b37587fd79002cf302a99a9",
+          "b33015d81f4177bbfa42357154b68032d77fa2ded46713a0a066ff8a57cffe15"
+        ],
+        "runs": [
+          {
+            "previous": 0.03603720799999974,
+            "current": 0.029777667000000292,
+            "saving": 0.17369661378871226
+          },
+          {
+            "current": 0.031075582999999823,
+            "previous": 0.0394666670000006,
+            "saving": 0.2126119238799833
+          },
+          {
+            "previous": 0.043162624999999025,
+            "current": 0.030256208000000697,
+            "saving": 0.2990183521043639
+          }
+        ]
+      },
+      {
+        "id": "house-0.84-weighted",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/house-0.84-weighted/cut_geometry.json",
+        "sourceSha256": "0ba23edf24b9ae21ef30f678b24fc17fd5beb0b39b108f913d6c8838db2f449c",
+        "previousMedianSeconds": 0.03504370800000106,
+        "currentMedianSeconds": 0.03248541599999953,
+        "medianPairedSaving": 0.07234939923480821,
+        "mapHashes": [
+          "0097ec1edd6f3eb8acd291ec16c24b35c8a656781e47dc0a9a408cbd3441a33b",
+          "18085fbc09425e1931e8b0c3d08500e0a3e95388c2a9b2a5d9f4a5354d76aecb"
+        ],
+        "runs": [
+          {
+            "current": 0.03197654200000034,
+            "previous": 0.0344704589999983,
+            "saving": 0.07234939923480821
+          },
+          {
+            "previous": 0.03790037499999926,
+            "current": 0.03248541599999953,
+            "saving": 0.14287349399576743
+          },
+          {
+            "current": 0.033910542000001445,
+            "previous": 0.03504370800000106,
+            "saving": 0.0323357904933913
+          }
+        ]
+      },
+      {
+        "id": "house-0.84-weighted-inverted",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/house-0.84-weighted-inverted/cut_geometry.json",
+        "sourceSha256": "649cc0aed5dea654a872cc05777d16c11f5509fff0ec4fb927eaf6d6dbf57df7",
+        "previousMedianSeconds": 0.0571362079999999,
+        "currentMedianSeconds": 0.04293370800000048,
+        "medianPairedSaving": 0.14743934354200683,
+        "mapHashes": [
+          "8714db13bc936595ab6029980703b29a03902e8b2cdb03a9287ba19d8b03ff36",
+          "ac12b21b766730454541f351d7ab8f93cac8c332bdf63ddfa9c3cc035a375920"
+        ],
+        "runs": [
+          {
+            "previous": 0.03702854200000002,
+            "current": 0.04273016699999971,
+            "saving": -0.15397919259147952
+          },
+          {
+            "current": 0.04293370800000048,
+            "previous": 0.061628375000000235,
+            "saving": 0.30334512308656014
+          },
+          {
+            "previous": 0.0571362079999999,
+            "current": 0.04871208300000035,
+            "saving": 0.14743934354200683
+          }
+        ]
+      },
+      {
+        "id": "house-0.84-weighted-shifted",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/house-0.84-weighted-shifted/cut_geometry.json",
+        "sourceSha256": "b1031c534aed079a5e549c135d795b3c6f852b7885f6dc1f2401621c3e6ca172",
+        "previousMedianSeconds": 0.04244574999999895,
+        "currentMedianSeconds": 0.041638417000000115,
+        "medianPairedSaving": 0.09849631588556296,
+        "mapHashes": [
+          "fe8f5312a119b2af9fdcf1d29eeb0efe8ff03440b3f794d8dcfb6293c380a72e",
+          "8bdfa008f4c8efea541440654d179ef04de54459cd8cd498350dbb69e72b52b0"
+        ],
+        "runs": [
+          {
+            "current": 0.041638417000000115,
+            "previous": 0.05318375000000015,
+            "saving": 0.2170838460996075
+          },
+          {
+            "previous": 0.04244574999999895,
+            "current": 0.03826499999999942,
+            "saving": 0.09849631588556296
+          },
+          {
+            "current": 0.04259229199999936,
+            "previous": 0.04189416600000004,
+            "saving": -0.016664038615766152
+          }
+        ]
+      },
+      {
+        "id": "house-0.84-weighted-free-noise",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/house-0.84-weighted-free-noise/cut_geometry.json",
+        "sourceSha256": "0ba23edf24b9ae21ef30f678b24fc17fd5beb0b39b108f913d6c8838db2f449c",
+        "previousMedianSeconds": 0.03468416699999943,
+        "currentMedianSeconds": 0.03261970800000017,
+        "medianPairedSaving": 0.059521654361752274,
+        "mapHashes": [
+          "0097ec1edd6f3eb8acd291ec16c24b35c8a656781e47dc0a9a408cbd3441a33b",
+          "18085fbc09425e1931e8b0c3d08500e0a3e95388c2a9b2a5d9f4a5354d76aecb"
+        ],
+        "runs": [
+          {
+            "previous": 0.03469658399999935,
+            "current": 0.032468667000001006,
+            "saving": 0.06421142208115893
+          },
+          {
+            "current": 0.03261970800000017,
+            "previous": 0.03468416699999943,
+            "saving": 0.059521654361752274
+          },
+          {
+            "previous": 0.03433862500000032,
+            "current": 0.03853750000000036,
+            "saving": -0.12227848377737915
+          }
+        ]
+      },
+      {
+        "id": "circle-0.64-weighted",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/circle-0.64-weighted/cut_geometry.json",
+        "sourceSha256": "ebe5a56c5f2ebb0b4420e86c32ab8c42e32f2befd03e7d3754a6e7928346b3d7",
+        "previousMedianSeconds": 0.03791229199999907,
+        "currentMedianSeconds": 0.03457354200000009,
+        "medianPairedSaving": 0.12867417775741097,
+        "mapHashes": [
+          "33c07db0153f8f19b8029a528951efee246add0e950b09cb6bc230ad30a4b23e",
+          "922b5dba21dee45b13fd178e94ff36db1ac4c7a523b9885e223cca27915b9795"
+        ],
+        "runs": [
+          {
+            "current": 0.03303395900000032,
+            "previous": 0.03791229199999907,
+            "saving": 0.12867417775741097
+          },
+          {
+            "previous": 0.0423627919999999,
+            "current": 0.03579399999999987,
+            "saving": 0.1550604124487368
+          },
+          {
+            "current": 0.03457354200000009,
+            "previous": 0.036883583000000726,
+            "saving": 0.06263060180461832
+          }
+        ]
+      },
+      {
+        "id": "circle-0.64-weighted-inverted",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/circle-0.64-weighted-inverted/cut_geometry.json",
+        "sourceSha256": "225dfc75b4d2bac0974ea5e26566dbb409ff7ff661d1b73f7b22974324952ef6",
+        "previousMedianSeconds": 0.036568208999999116,
+        "currentMedianSeconds": 0.032699208,
+        "medianPairedSaving": 0.13072265268316008,
+        "mapHashes": [
+          "33c07db0153f8f19b8029a528951efee246add0e950b09cb6bc230ad30a4b23e",
+          "922b5dba21dee45b13fd178e94ff36db1ac4c7a523b9885e223cca27915b9795"
+        ],
+        "runs": [
+          {
+            "previous": 0.04062437499999942,
+            "current": 0.033297083000001296,
+            "saving": 0.180366885644351
+          },
+          {
+            "current": 0.032699208,
+            "previous": 0.036568208999999116,
+            "saving": 0.10580231041665755
+          },
+          {
+            "previous": 0.03651783299999988,
+            "current": 0.031744124999999256,
+            "saving": 0.13072265268316008
+          }
+        ]
+      },
+      {
+        "id": "circle-0.64-weighted-shifted",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/circle-0.64-weighted-shifted/cut_geometry.json",
+        "sourceSha256": "cfde5ae4df6a141b70716aaf096b603750a48cc06506b7ddfc2950f51a25ae8c",
+        "previousMedianSeconds": 0.035849583999999594,
+        "currentMedianSeconds": 0.03161454199999934,
+        "medianPairedSaving": 0.1144572032800607,
+        "mapHashes": [
+          "29e6870c26d593955ffdb1dd41e70bf6ee5477b58ff5a12a5d3c1c150d7c3ae7",
+          "6387236d7f570bd806b3c03614c7cc5f599e626c4b683c1896d0723272ec619b"
+        ],
+        "runs": [
+          {
+            "current": 0.03676483300000109,
+            "previous": 0.036270916999999826,
+            "saving": -0.01361741143741324
+          },
+          {
+            "previous": 0.035849583999999594,
+            "current": 0.03149745899999835,
+            "saving": 0.12139959559924873
+          },
+          {
+            "current": 0.03161454199999934,
+            "previous": 0.03570074999999997,
+            "saving": 0.1144572032800607
+          }
+        ]
+      },
+      {
+        "id": "circle-0.64-weighted-free-noise",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/circle-0.64-weighted-free-noise/cut_geometry.json",
+        "sourceSha256": "ebe5a56c5f2ebb0b4420e86c32ab8c42e32f2befd03e7d3754a6e7928346b3d7",
+        "previousMedianSeconds": 0.03707562499999949,
+        "currentMedianSeconds": 0.031671082999999274,
+        "medianPairedSaving": 0.14628779833226602,
+        "mapHashes": [
+          "33c07db0153f8f19b8029a528951efee246add0e950b09cb6bc230ad30a4b23e",
+          "922b5dba21dee45b13fd178e94ff36db1ac4c7a523b9885e223cca27915b9795"
+        ],
+        "runs": [
+          {
+            "previous": 0.04129833400000098,
+            "current": 0.03197820800000045,
+            "saving": 0.22567801403321264
+          },
+          {
+            "current": 0.031671082999999274,
+            "previous": 0.03707562499999949,
+            "saving": 0.1457707590903805
+          },
+          {
+            "previous": 0.03667370800000026,
+            "current": 0.031308791999999815,
+            "saving": 0.14628779833226602
+          }
+        ]
+      },
+      {
+        "id": "circle-0.84-weighted",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/circle-0.84-weighted/cut_geometry.json",
+        "sourceSha256": "b1169827c0a3043abcb2497fc82553c39fabba1fc57e0272f5b20dc0f407d360",
+        "previousMedianSeconds": 0.035626874999999926,
+        "currentMedianSeconds": 0.03469700000000012,
+        "medianPairedSaving": 0.01152958140954341,
+        "mapHashes": [
+          "4bbd2b55dbd60bca364d3bbb991aa95b2c4be5fc110470d74cbac8e5f8f02227",
+          "94eb92ab47e822eecf6469a8d9c4914f83e013c8339574d52dad32b653fdc9bb"
+        ],
+        "runs": [
+          {
+            "current": 0.040620750000000046,
+            "previous": 0.03569845899999927,
+            "saving": -0.13788525157348874
+          },
+          {
+            "previous": 0.03510170800000014,
+            "current": 0.03469700000000012,
+            "saving": 0.01152958140954341
+          },
+          {
+            "current": 0.03464433300000019,
+            "previous": 0.035626874999999926,
+            "saving": 0.027578674806581827
+          }
+        ]
+      },
+      {
+        "id": "circle-0.84-weighted-inverted",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/circle-0.84-weighted-inverted/cut_geometry.json",
+        "sourceSha256": "e57601d1e07fb3b855adf4e0b37e69f993144ac54a1d5447e786009f59151063",
+        "previousMedianSeconds": 0.0353879160000015,
+        "currentMedianSeconds": 0.03371958400000039,
+        "medianPairedSaving": 0.04565890036837916,
+        "mapHashes": [
+          "637c09acb705ed42e47955088fc0015b1a15a2ff24a3b67c29d014deae83f01a",
+          "a5a28c99732b434f96a385cc57d5b02b0c1dddc71cd8cdb832c821774de4135e"
+        ],
+        "runs": [
+          {
+            "previous": 0.03937008299999979,
+            "current": 0.03371958400000039,
+            "saving": 0.14352265907083384
+          },
+          {
+            "current": 0.03470400000000154,
+            "previous": 0.0353879160000015,
+            "saving": 0.019326258149813924
+          },
+          {
+            "previous": 0.03502329199999986,
+            "current": 0.033424166999999214,
+            "saving": 0.04565890036837916
+          }
+        ]
+      },
+      {
+        "id": "circle-0.84-weighted-shifted",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/circle-0.84-weighted-shifted/cut_geometry.json",
+        "sourceSha256": "4cac4959716ba93b6eb811205b5fe671ecf7d07195f446cb3e09c7f0de964ee6",
+        "previousMedianSeconds": 0.03570170899999903,
+        "currentMedianSeconds": 0.03398637500000041,
+        "medianPairedSaving": 0.048046271398343054,
+        "mapHashes": [
+          "f52ace5b8a6e1c095ad5b1db5f6c325e1ca6b209c2a077b54c8ae42d72e5b284",
+          "11136b91c0390694ec912508f4c20d2768e2498df9cebfb42e0f7e23af6187cb"
+        ],
+        "runs": [
+          {
+            "current": 0.03554512500000055,
+            "previous": 0.03546049999999923,
+            "saving": -0.0023864581718060496
+          },
+          {
+            "previous": 0.03570170899999903,
+            "current": 0.03398637500000041,
+            "saving": 0.048046271398343054
+          },
+          {
+            "current": 0.033941875000000434,
+            "previous": 0.03673250000000007,
+            "saving": 0.07597155107873499
+          }
+        ]
+      },
+      {
+        "id": "circle-0.84-weighted-free-noise",
+        "group": "weighted",
+        "status": "pass",
+        "identical": true,
+        "source": "tmp/render-bins-weighted/circle-0.84-weighted-free-noise/cut_geometry.json",
+        "sourceSha256": "b1169827c0a3043abcb2497fc82553c39fabba1fc57e0272f5b20dc0f407d360",
+        "previousMedianSeconds": 0.035960291999999755,
+        "currentMedianSeconds": 0.034521375000000264,
+        "medianPairedSaving": 0.04824070950257131,
+        "mapHashes": [
+          "4bbd2b55dbd60bca364d3bbb991aa95b2c4be5fc110470d74cbac8e5f8f02227",
+          "94eb92ab47e822eecf6469a8d9c4914f83e013c8339574d52dad32b653fdc9bb"
+        ],
+        "runs": [
+          {
+            "previous": 0.03654154200000084,
+            "current": 0.034521375000000264,
+            "saving": 0.05528412019395712
+          },
+          {
+            "current": 0.03422554200000013,
+            "previous": 0.035960291999999755,
+            "saving": 0.04824070950257131
+          },
+          {
+            "previous": 0.03526620899999944,
+            "current": 0.03570604100000128,
+            "saving": -0.01247176865542432
+          }
+        ]
+      }
+    ]
+  },
+  "browserAudits": {
+    "method": "Same complete audit, including maps. Four rounds rotate policy order after one warmup for each policy and input. Loading, warmups and exact comparisons are outside audit timers. current selects the measured backend; cachedJavaScript and forcedWasm isolate backend costs with the same outline reuse.",
+    "cases": [
+      {
+        "id": "straight",
+        "cfg": {
+          "width": 60,
+          "minWidth": 3,
+          "cutError": 0,
+          "printShrinkPercent": 0,
+          "materialResolution": 360
+        }
+      },
+      {
+        "id": "neck",
+        "cfg": {
+          "width": 60,
+          "minWidth": 3,
+          "cutError": 0,
+          "printShrinkPercent": 0,
+          "materialResolution": 360
+        }
+      },
+      {
+        "id": "matching-neck",
+        "cfg": {
+          "width": 60,
+          "minWidth": 3,
+          "cutError": 0,
+          "printShrinkPercent": 0,
+          "materialResolution": 80
+        }
+      },
+      {
+        "id": "matching-thin",
+        "cfg": {
+          "width": 60,
+          "minWidth": 0.7,
+          "cutError": 0,
+          "printShrinkPercent": 0,
+          "materialResolution": 80
+        }
+      },
+      {
+        "id": "matching-hat",
+        "source": "scripts/inverse/fixtures/free-border-hat.json",
+        "sourceSha256": "5bd3e6c839b3b7508da3df791da88ee6c6567e81e166e8c8b21473baad1cc824",
+        "cfg": {
+          "width": 100,
+          "materialResolution": 360
+        }
+      },
+      {
+        "id": "hjcur-04",
+        "source": "tmp/render-bins-hunodan/hjcur-04/cut_geometry.json",
+        "sourceSha256": "00b2d60e3db7b03ccfce44695a7960699ca7959fb82305ee80825b60dfae35a0",
+        "cfg": {
+          "width": 100,
+          "materialResolution": 360
+        }
+      },
+      {
+        "id": "hjhih-04",
+        "source": "tmp/render-bins-hunodan/hjhih-04/cut_geometry.json",
+        "sourceSha256": "78693d967702f585f8259f30b248fd8e2e4c1dcd56ecedd7772ff12918cd9f24",
+        "cfg": {
+          "width": 100,
+          "materialResolution": 360
+        }
+      },
+      {
+        "id": "top-hat",
+        "source": "tmp/render-bins-weighted/top-hat-0.84-weighted/cut_geometry.json",
+        "sourceSha256": "023102ee543fb1e35b80bb4de3bc5e7237617c5191161c328ef0d4c37ea62bae",
+        "cfg": {
+          "width": 100,
+          "materialResolution": 360
+        }
+      },
+      {
+        "id": "circle",
+        "source": "tmp/render-bins-weighted/circle-0.84-weighted/cut_geometry.json",
+        "sourceSha256": "b1169827c0a3043abcb2497fc82553c39fabba1fc57e0272f5b20dc0f407d360",
+        "cfg": {
+          "width": 100,
+          "materialResolution": 360
+        }
+      }
+    ],
+    "summary": [
+      {
+        "browser": "chromium",
+        "cases": 9,
+        "fullResolutionCases": 7,
+        "medianFullResolutionSaving": 0.16608513614753007,
+        "slowerFullResolutionCases": [],
+        "qualification": "Full-resolution (360-cell) audit timings; small 80-cell controls remain in the exact-equality corpus and complete timing rows."
+      },
+      {
+        "browser": "firefox",
+        "cases": 9,
+        "fullResolutionCases": 7,
+        "medianFullResolutionSaving": 0.04424778761061954,
+        "slowerFullResolutionCases": [
+          {
+            "id": "matching-hat",
+            "saving": -0.013157894736842035
+          }
+        ],
+        "qualification": "Full-resolution (360-cell) audit timings; small 80-cell controls remain in the exact-equality corpus and complete timing rows."
+      },
+      {
+        "browser": "webkit",
+        "cases": 9,
+        "fullResolutionCases": 7,
+        "medianFullResolutionSaving": -0.011299435028217397,
+        "slowerFullResolutionCases": [
+          {
+            "id": "straight",
+            "saving": -0.16455696202531755
+          },
+          {
+            "id": "neck",
+            "saving": -0.14583333333332793
+          },
+          {
+            "id": "top-hat",
+            "saving": -0.01764705882351847
+          },
+          {
+            "id": "circle",
+            "saving": -0.011299435028217397
+          }
+        ],
+        "qualification": "Full-resolution (360-cell) audit timings; small 80-cell controls remain in the exact-equality corpus and complete timing rows."
+      }
+    ],
+    "results": [
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "id": "straight",
+        "resolution": 360,
+        "status": "pass",
+        "identical": true,
+        "previousSeconds": 0.021450000017881395,
+        "currentSeconds": 0.016,
+        "saving": 0.25407925470107706,
+        "runs": [
+          {
+            "previous": 0.0215,
+            "cachedJavaScript": 0.029299999952316285,
+            "forcedWasm": 0.0175,
+            "current": 0.0205
+          },
+          {
+            "cachedJavaScript": 0.052,
+            "forcedWasm": 0.01839999997615814,
+            "current": 0.018,
+            "previous": 0.025900000035762788
+          },
+          {
+            "forcedWasm": 0.014199999988079071,
+            "current": 0.014,
+            "previous": 0.019800000011920928,
+            "cachedJavaScript": 0.024599999964237212
+          },
+          {
+            "current": 0.013399999976158141,
+            "previous": 0.021400000035762787,
+            "cachedJavaScript": 0.024,
+            "forcedWasm": 0.013
+          }
+        ]
+      },
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "id": "neck",
+        "resolution": 360,
+        "status": "fail",
+        "identical": true,
+        "previousSeconds": 0.02835000002384186,
+        "currentSeconds": 0.02494999998807907,
+        "saving": 0.11992945442340208,
+        "runs": [
+          {
+            "cachedJavaScript": 0.04559999996423721,
+            "forcedWasm": 0.024900000035762787,
+            "current": 0.0245,
+            "previous": 0.03679999995231628
+          },
+          {
+            "forcedWasm": 0.02469999998807907,
+            "current": 0.024400000035762787,
+            "previous": 0.02630000001192093,
+            "cachedJavaScript": 0.048799999952316285
+          },
+          {
+            "current": 0.02630000001192093,
+            "previous": 0.02880000001192093,
+            "cachedJavaScript": 0.04769999998807907,
+            "forcedWasm": 0.026100000023841857
+          },
+          {
+            "previous": 0.027900000035762786,
+            "cachedJavaScript": 0.047799999952316284,
+            "forcedWasm": 0.026600000023841858,
+            "current": 0.025399999976158143
+          }
+        ]
+      },
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "id": "matching-neck",
+        "resolution": 80,
+        "status": "fail",
+        "identical": true,
+        "previousSeconds": 0.0015,
+        "currentSeconds": 0.0011000000238418578,
+        "saving": 0.26666665077209484,
+        "runs": [
+          {
+            "forcedWasm": 0.0010999999642372132,
+            "current": 0.0011000000238418578,
+            "previous": 0.0015,
+            "cachedJavaScript": 0.0015
+          },
+          {
+            "current": 0.0011000000238418578,
+            "previous": 0.0015,
+            "cachedJavaScript": 0.0016000000238418578,
+            "forcedWasm": 0.001199999988079071
+          },
+          {
+            "previous": 0.0015,
+            "cachedJavaScript": 0.001599999964237213,
+            "forcedWasm": 0.0009000000357627869,
+            "current": 0.001199999988079071
+          },
+          {
+            "cachedJavaScript": 0.0014000000357627868,
+            "forcedWasm": 0.0010999999642372132,
+            "current": 0.0011000000238418578,
+            "previous": 0.001300000011920929
+          }
+        ]
+      },
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "id": "matching-thin",
+        "resolution": 80,
+        "status": "uncertain",
+        "identical": true,
+        "previousSeconds": 0.0011500000059604643,
+        "currentSeconds": 0.0011500000059604643,
+        "saving": 0,
+        "runs": [
+          {
+            "current": 0.001300000011920929,
+            "previous": 0.0010999999642372132,
+            "cachedJavaScript": 0.0016000000238418578,
+            "forcedWasm": 0.0008999999761581421
+          },
+          {
+            "previous": 0.001199999988079071,
+            "cachedJavaScript": 0.0015,
+            "forcedWasm": 0.0010999999642372132,
+            "current": 0.0011000000238418578
+          },
+          {
+            "cachedJavaScript": 0.001599999964237213,
+            "forcedWasm": 0.0009000000357627869,
+            "current": 0.0010999999642372132,
+            "previous": 0.001699999988079071
+          },
+          {
+            "forcedWasm": 0.0008999999761581421,
+            "current": 0.001199999988079071,
+            "previous": 0.0011000000238418578,
+            "cachedJavaScript": 0.0015
+          }
+        ]
+      },
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "id": "matching-hat",
+        "resolution": 360,
+        "status": "pass",
+        "identical": true,
+        "previousSeconds": 0.03125000002980233,
+        "currentSeconds": 0.02349999997019768,
+        "saving": 0.24800000167083747,
+        "runs": [
+          {
+            "previous": 0.04269999998807907,
+            "cachedJavaScript": 0.08210000002384185,
+            "forcedWasm": 0.0235,
+            "current": 0.028899999976158143
+          },
+          {
+            "cachedJavaScript": 0.039599999964237215,
+            "forcedWasm": 0.02280000001192093,
+            "current": 0.022699999988079072,
+            "previous": 0.026600000023841858
+          },
+          {
+            "forcedWasm": 0.02280000001192093,
+            "current": 0.022699999988079072,
+            "previous": 0.0255,
+            "cachedJavaScript": 0.03390000003576279
+          },
+          {
+            "current": 0.024299999952316284,
+            "previous": 0.03590000003576279,
+            "cachedJavaScript": 0.03469999998807907,
+            "forcedWasm": 0.023100000023841858
+          }
+        ]
+      },
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "id": "hjcur-04",
+        "resolution": 360,
+        "status": "pass",
+        "identical": true,
+        "previousSeconds": 0.0649500000178814,
+        "currentSeconds": 0.0587999999821186,
+        "saving": 0.09468822223355877,
+        "runs": [
+          {
+            "cachedJavaScript": 0.08339999997615814,
+            "forcedWasm": 0.05880000001192093,
+            "current": 0.05859999996423721,
+            "previous": 0.06440000003576278
+          },
+          {
+            "forcedWasm": 0.05980000001192093,
+            "current": 0.058,
+            "previous": 0.064,
+            "cachedJavaScript": 0.08039999997615814
+          },
+          {
+            "current": 0.059,
+            "previous": 0.06630000001192093,
+            "cachedJavaScript": 0.08229999995231628,
+            "forcedWasm": 0.062400000035762786
+          },
+          {
+            "previous": 0.0655,
+            "cachedJavaScript": 0.08980000001192093,
+            "forcedWasm": 0.06560000002384186,
+            "current": 0.07009999996423721
+          }
+        ]
+      },
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "id": "hjhih-04",
+        "resolution": 360,
+        "status": "pass",
+        "identical": true,
+        "previousSeconds": 0.07165000000596047,
+        "currentSeconds": 0.05975,
+        "saving": 0.16608513614753007,
+        "runs": [
+          {
+            "forcedWasm": 0.059,
+            "current": 0.060900000035762784,
+            "previous": 0.06639999997615814,
+            "cachedJavaScript": 0.08280000001192094
+          },
+          {
+            "current": 0.05869999998807907,
+            "previous": 0.06680000001192093,
+            "cachedJavaScript": 0.0805,
+            "forcedWasm": 0.07789999997615814
+          },
+          {
+            "previous": 0.07830000001192093,
+            "cachedJavaScript": 0.10030000001192092,
+            "forcedWasm": 0.05869999998807907,
+            "current": 0.05980000001192093
+          },
+          {
+            "cachedJavaScript": 0.08330000001192094,
+            "forcedWasm": 0.05809999996423721,
+            "current": 0.059699999988079074,
+            "previous": 0.0765
+          }
+        ]
+      },
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "id": "top-hat",
+        "resolution": 360,
+        "status": "pass",
+        "identical": true,
+        "previousSeconds": 0.05714999997615815,
+        "currentSeconds": 0.039800000011920925,
+        "saving": 0.30358705111942785,
+        "runs": [
+          {
+            "current": 0.0445,
+            "previous": 0.04369999998807907,
+            "cachedJavaScript": 0.056800000011920926,
+            "forcedWasm": 0.03459999996423721
+          },
+          {
+            "previous": 0.04489999997615814,
+            "cachedJavaScript": 0.057300000011920926,
+            "forcedWasm": 0.033100000023841857,
+            "current": 0.03369999998807907
+          },
+          {
+            "cachedJavaScript": 0.05639999997615814,
+            "forcedWasm": 0.034,
+            "current": 0.03510000002384186,
+            "previous": 0.079
+          },
+          {
+            "forcedWasm": 0.05279999995231628,
+            "current": 0.31360000002384186,
+            "previous": 0.06939999997615814,
+            "cachedJavaScript": 0.06370000004768371
+          }
+        ]
+      },
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "id": "circle",
+        "resolution": 360,
+        "status": "pass",
+        "identical": true,
+        "previousSeconds": 0.042249999999999996,
+        "currentSeconds": 0.03990000000596046,
+        "saving": 0.05562130163407186,
+        "runs": [
+          {
+            "previous": 0.04209999996423721,
+            "cachedJavaScript": 0.062100000023841855,
+            "forcedWasm": 0.03769999998807907,
+            "current": 0.03640000003576278
+          },
+          {
+            "cachedJavaScript": 0.05919999998807907,
+            "forcedWasm": 0.036200000047683714,
+            "current": 0.03759999996423721,
+            "previous": 0.04240000003576279
+          },
+          {
+            "forcedWasm": 0.038899999976158145,
+            "current": 0.04220000004768371,
+            "previous": 0.045399999976158144,
+            "cachedJavaScript": 0.0745
+          },
+          {
+            "current": 0.0435,
+            "previous": 0.0415,
+            "cachedJavaScript": 0.06410000002384186,
+            "forcedWasm": 0.045899999976158144
+          }
+        ]
+      },
+      {
+        "browser": "firefox",
+        "version": "146.0.1",
+        "id": "straight",
+        "resolution": 360,
+        "status": "pass",
+        "identical": true,
+        "previousSeconds": 0.0235,
+        "currentSeconds": 0.022,
+        "saving": 0.06382978723404265,
+        "runs": [
+          {
+            "previous": 0.029,
+            "cachedJavaScript": 0.023,
+            "forcedWasm": 0.096,
+            "current": 0.022
+          },
+          {
+            "cachedJavaScript": 0.023,
+            "forcedWasm": 0.096,
+            "current": 0.022,
+            "previous": 0.023
+          },
+          {
+            "forcedWasm": 0.095,
+            "current": 0.022,
+            "previous": 0.023,
+            "cachedJavaScript": 0.023
+          },
+          {
+            "current": 0.023,
+            "previous": 0.024,
+            "cachedJavaScript": 0.025,
+            "forcedWasm": 0.094
+          }
+        ]
+      },
+      {
+        "browser": "firefox",
+        "version": "146.0.1",
+        "id": "neck",
+        "resolution": 360,
+        "status": "fail",
+        "identical": true,
+        "previousSeconds": 0.044,
+        "currentSeconds": 0.043,
+        "saving": 0.022727272727272707,
+        "runs": [
+          {
+            "cachedJavaScript": 0.045,
+            "forcedWasm": 0.186,
+            "current": 0.043,
+            "previous": 0.047
+          },
+          {
+            "forcedWasm": 0.183,
+            "current": 0.045,
+            "previous": 0.045,
+            "cachedJavaScript": 0.043
+          },
+          {
+            "current": 0.043,
+            "previous": 0.043,
+            "cachedJavaScript": 0.043,
+            "forcedWasm": 0.183
+          },
+          {
+            "previous": 0.043,
+            "cachedJavaScript": 0.043,
+            "forcedWasm": 0.181,
+            "current": 0.043
+          }
+        ]
+      },
+      {
+        "browser": "firefox",
+        "version": "146.0.1",
+        "id": "matching-neck",
+        "resolution": 80,
+        "status": "fail",
+        "identical": true,
+        "previousSeconds": 0.002,
+        "currentSeconds": 0.002,
+        "saving": 0,
+        "runs": [
+          {
+            "forcedWasm": 0.005,
+            "current": 0.001,
+            "previous": 0.002,
+            "cachedJavaScript": 0.002
+          },
+          {
+            "current": 0.002,
+            "previous": 0.002,
+            "cachedJavaScript": 0.002,
+            "forcedWasm": 0.005
+          },
+          {
+            "previous": 0.001,
+            "cachedJavaScript": 0.002,
+            "forcedWasm": 0.005,
+            "current": 0.002
+          },
+          {
+            "cachedJavaScript": 0.002,
+            "forcedWasm": 0.005,
+            "current": 0.002,
+            "previous": 0.002
+          }
+        ]
+      },
+      {
+        "browser": "firefox",
+        "version": "146.0.1",
+        "id": "matching-thin",
+        "resolution": 80,
+        "status": "uncertain",
+        "identical": true,
+        "previousSeconds": 0.001,
+        "currentSeconds": 0.0015,
+        "saving": -0.5,
+        "runs": [
+          {
+            "current": 0.001,
+            "previous": 0.002,
+            "cachedJavaScript": 0.001,
+            "forcedWasm": 0.005
+          },
+          {
+            "previous": 0.001,
+            "cachedJavaScript": 0.001,
+            "forcedWasm": 0.005,
+            "current": 0.002
+          },
+          {
+            "cachedJavaScript": 0.001,
+            "forcedWasm": 0.005,
+            "current": 0.001,
+            "previous": 0.001
+          },
+          {
+            "forcedWasm": 0.004,
+            "current": 0.002,
+            "previous": 0.001,
+            "cachedJavaScript": 0.001
+          }
+        ]
+      },
+      {
+        "browser": "firefox",
+        "version": "146.0.1",
+        "id": "matching-hat",
+        "resolution": 360,
+        "status": "pass",
+        "identical": true,
+        "previousSeconds": 0.038,
+        "currentSeconds": 0.0385,
+        "saving": -0.013157894736842035,
+        "runs": [
+          {
+            "previous": 0.036,
+            "cachedJavaScript": 0.034,
+            "forcedWasm": 0.114,
+            "current": 0.041
+          },
+          {
+            "cachedJavaScript": 0.038,
+            "forcedWasm": 0.153,
+            "current": 0.044,
+            "previous": 0.04
+          },
+          {
+            "forcedWasm": 0.114,
+            "current": 0.035,
+            "previous": 0.039,
+            "cachedJavaScript": 0.038
+          },
+          {
+            "current": 0.036,
+            "previous": 0.037,
+            "cachedJavaScript": 0.035,
+            "forcedWasm": 0.114
+          }
+        ]
+      },
+      {
+        "browser": "firefox",
+        "version": "146.0.1",
+        "id": "hjcur-04",
+        "resolution": 360,
+        "status": "pass",
+        "identical": true,
+        "previousSeconds": 0.092,
+        "currentSeconds": 0.086,
+        "saving": 0.0652173913043479,
+        "runs": [
+          {
+            "cachedJavaScript": 0.086,
+            "forcedWasm": 0.242,
+            "current": 0.087,
+            "previous": 0.092
+          },
+          {
+            "forcedWasm": 0.243,
+            "current": 0.085,
+            "previous": 0.091,
+            "cachedJavaScript": 0.085
+          },
+          {
+            "current": 0.085,
+            "previous": 0.093,
+            "cachedJavaScript": 0.084,
+            "forcedWasm": 0.245
+          },
+          {
+            "previous": 0.092,
+            "cachedJavaScript": 0.085,
+            "forcedWasm": 0.246,
+            "current": 0.088
+          }
+        ]
+      },
+      {
+        "browser": "firefox",
+        "version": "146.0.1",
+        "id": "hjhih-04",
+        "resolution": 360,
+        "status": "pass",
+        "identical": true,
+        "previousSeconds": 0.093,
+        "currentSeconds": 0.0885,
+        "saving": 0.048387096774193616,
+        "runs": [
+          {
+            "forcedWasm": 0.254,
+            "current": 0.086,
+            "previous": 0.09,
+            "cachedJavaScript": 0.085
+          },
+          {
+            "current": 0.085,
+            "previous": 0.095,
+            "cachedJavaScript": 0.095,
+            "forcedWasm": 0.26
+          },
+          {
+            "previous": 0.109,
+            "cachedJavaScript": 0.09,
+            "forcedWasm": 0.319,
+            "current": 0.095
+          },
+          {
+            "cachedJavaScript": 0.092,
+            "forcedWasm": 0.253,
+            "current": 0.091,
+            "previous": 0.091
+          }
+        ]
+      },
+      {
+        "browser": "firefox",
+        "version": "146.0.1",
+        "id": "top-hat",
+        "resolution": 360,
+        "status": "pass",
+        "identical": true,
+        "previousSeconds": 0.0565,
+        "currentSeconds": 0.054,
+        "saving": 0.04424778761061954,
+        "runs": [
+          {
+            "current": 0.054,
+            "previous": 0.061,
+            "cachedJavaScript": 0.054,
+            "forcedWasm": 0.214
+          },
+          {
+            "previous": 0.056,
+            "cachedJavaScript": 0.054,
+            "forcedWasm": 0.209,
+            "current": 0.054
+          },
+          {
+            "cachedJavaScript": 0.055,
+            "forcedWasm": 0.205,
+            "current": 0.055,
+            "previous": 0.057
+          },
+          {
+            "forcedWasm": 0.209,
+            "current": 0.054,
+            "previous": 0.056,
+            "cachedJavaScript": 0.056
+          }
+        ]
+      },
+      {
+        "browser": "firefox",
+        "version": "146.0.1",
+        "id": "circle",
+        "resolution": 360,
+        "status": "pass",
+        "identical": true,
+        "previousSeconds": 0.059,
+        "currentSeconds": 0.058,
+        "saving": 0.016949152542372725,
+        "runs": [
+          {
+            "previous": 0.06,
+            "cachedJavaScript": 0.059,
+            "forcedWasm": 0.218,
+            "current": 0.058
+          },
+          {
+            "cachedJavaScript": 0.059,
+            "forcedWasm": 0.214,
+            "current": 0.057,
+            "previous": 0.059
+          },
+          {
+            "forcedWasm": 0.211,
+            "current": 0.058,
+            "previous": 0.059,
+            "cachedJavaScript": 0.058
+          },
+          {
+            "current": 0.06,
+            "previous": 0.058,
+            "cachedJavaScript": 0.06,
+            "forcedWasm": 0.212
+          }
+        ]
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "id": "straight",
+        "resolution": 360,
+        "status": "pass",
+        "identical": true,
+        "previousSeconds": 0.039500000000000056,
+        "currentSeconds": 0.04600000000000011,
+        "saving": -0.16455696202531755,
+        "runs": [
+          {
+            "previous": 0.03900000000000011,
+            "cachedJavaScript": 0.040999999999999884,
+            "forcedWasm": 0.039,
+            "current": 0.046
+          },
+          {
+            "cachedJavaScript": 0.039,
+            "forcedWasm": 0.035,
+            "current": 0.047,
+            "previous": 0.04
+          },
+          {
+            "forcedWasm": 0.035,
+            "current": 0.04600000000000023,
+            "previous": 0.043999999999999775,
+            "cachedJavaScript": 0.04
+          },
+          {
+            "current": 0.046,
+            "previous": 0.035,
+            "cachedJavaScript": 0.038,
+            "forcedWasm": 0.03900000000000023
+          }
+        ]
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "id": "neck",
+        "resolution": 360,
+        "status": "fail",
+        "identical": true,
+        "previousSeconds": 0.04800000000000023,
+        "currentSeconds": 0.055,
+        "saving": -0.14583333333332793,
+        "runs": [
+          {
+            "cachedJavaScript": 0.06,
+            "forcedWasm": 0.052,
+            "current": 0.056,
+            "previous": 0.049
+          },
+          {
+            "forcedWasm": 0.053,
+            "current": 0.056,
+            "previous": 0.049,
+            "cachedJavaScript": 0.056
+          },
+          {
+            "current": 0.054,
+            "previous": 0.04700000000000046,
+            "cachedJavaScript": 0.05499999999999954,
+            "forcedWasm": 0.048
+          },
+          {
+            "previous": 0.04699999999999954,
+            "cachedJavaScript": 0.057,
+            "forcedWasm": 0.04900000000000045,
+            "current": 0.05399999999999955
+          }
+        ]
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "id": "matching-neck",
+        "resolution": 80,
+        "status": "fail",
+        "identical": true,
+        "previousSeconds": 0.002999999999999773,
+        "currentSeconds": 0.0030000000000002273,
+        "saving": -1.5143442055887135e-13,
+        "runs": [
+          {
+            "forcedWasm": 0.003,
+            "current": 0.003,
+            "previous": 0.004,
+            "cachedJavaScript": 0.0030000000000004546
+          },
+          {
+            "current": 0.0030000000000004546,
+            "previous": 0.002999999999999545,
+            "cachedJavaScript": 0.003,
+            "forcedWasm": 0.003
+          },
+          {
+            "previous": 0.003,
+            "cachedJavaScript": 0.0030000000000004546,
+            "forcedWasm": 0.002999999999999545,
+            "current": 0.003
+          },
+          {
+            "cachedJavaScript": 0.003,
+            "forcedWasm": 0.003,
+            "current": 0.0030000000000004546,
+            "previous": 0.002999999999999545
+          }
+        ]
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "id": "matching-thin",
+        "resolution": 80,
+        "status": "uncertain",
+        "identical": true,
+        "previousSeconds": 0.003,
+        "currentSeconds": 0.003,
+        "saving": 0,
+        "runs": [
+          {
+            "current": 0.003,
+            "previous": 0.003,
+            "cachedJavaScript": 0.002,
+            "forcedWasm": 0.003
+          },
+          {
+            "previous": 0.003,
+            "cachedJavaScript": 0.003,
+            "forcedWasm": 0.002,
+            "current": 0.003
+          },
+          {
+            "cachedJavaScript": 0.003,
+            "forcedWasm": 0.002,
+            "current": 0.003,
+            "previous": 0.003
+          },
+          {
+            "forcedWasm": 0.002,
+            "current": 0.003,
+            "previous": 0.003,
+            "cachedJavaScript": 0.002
+          }
+        ]
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "id": "matching-hat",
+        "resolution": 360,
+        "status": "pass",
+        "identical": true,
+        "previousSeconds": 0.060499999999999776,
+        "currentSeconds": 0.05850000000000023,
+        "saving": 0.033057851239661984,
+        "runs": [
+          {
+            "previous": 0.06,
+            "cachedJavaScript": 0.06,
+            "forcedWasm": 0.056,
+            "current": 0.058
+          },
+          {
+            "cachedJavaScript": 0.059000000000000455,
+            "forcedWasm": 0.05599999999999954,
+            "current": 0.05700000000000045,
+            "previous": 0.06099999999999955
+          },
+          {
+            "forcedWasm": 0.056,
+            "current": 0.06,
+            "previous": 0.061,
+            "cachedJavaScript": 0.06600000000000046
+          },
+          {
+            "current": 0.059000000000000455,
+            "previous": 0.06,
+            "cachedJavaScript": 0.05999999999999955,
+            "forcedWasm": 0.056
+          }
+        ]
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "id": "hjcur-04",
+        "resolution": 360,
+        "status": "pass",
+        "identical": true,
+        "previousSeconds": 0.155,
+        "currentSeconds": 0.1445,
+        "saving": 0.06774193548387097,
+        "runs": [
+          {
+            "cachedJavaScript": 0.155,
+            "forcedWasm": 0.147,
+            "current": 0.149,
+            "previous": 0.156
+          },
+          {
+            "forcedWasm": 0.14,
+            "current": 0.143,
+            "previous": 0.16200000000000092,
+            "cachedJavaScript": 0.15299999999999908
+          },
+          {
+            "current": 0.144,
+            "previous": 0.151,
+            "cachedJavaScript": 0.147,
+            "forcedWasm": 0.141
+          },
+          {
+            "previous": 0.154,
+            "cachedJavaScript": 0.148,
+            "forcedWasm": 0.145,
+            "current": 0.145
+          }
+        ]
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "id": "hjhih-04",
+        "resolution": 360,
+        "status": "pass",
+        "identical": true,
+        "previousSeconds": 0.14900000000000047,
+        "currentSeconds": 0.1445,
+        "saving": 0.030201342281882315,
+        "runs": [
+          {
+            "forcedWasm": 0.142,
+            "current": 0.148,
+            "previous": 0.1500000000000009,
+            "cachedJavaScript": 0.1459999999999991
+          },
+          {
+            "current": 0.141,
+            "previous": 0.147,
+            "cachedJavaScript": 0.14400000000000182,
+            "forcedWasm": 0.141
+          },
+          {
+            "previous": 0.148,
+            "cachedJavaScript": 0.143,
+            "forcedWasm": 0.138,
+            "current": 0.141
+          },
+          {
+            "cachedJavaScript": 0.14500000000000182,
+            "forcedWasm": 0.13799999999999818,
+            "current": 0.154,
+            "previous": 0.152
+          }
+        ]
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "id": "top-hat",
+        "resolution": 360,
+        "status": "pass",
+        "identical": true,
+        "previousSeconds": 0.085,
+        "currentSeconds": 0.08649999999999908,
+        "saving": -0.01764705882351847,
+        "runs": [
+          {
+            "current": 0.087,
+            "previous": 0.085,
+            "cachedJavaScript": 0.09,
+            "forcedWasm": 0.085
+          },
+          {
+            "previous": 0.086,
+            "cachedJavaScript": 0.091,
+            "forcedWasm": 0.08100000000000182,
+            "current": 0.08599999999999818
+          },
+          {
+            "cachedJavaScript": 0.087,
+            "forcedWasm": 0.083,
+            "current": 0.086,
+            "previous": 0.085
+          },
+          {
+            "forcedWasm": 0.08200000000000182,
+            "current": 0.08699999999999818,
+            "previous": 0.085,
+            "cachedJavaScript": 0.088
+          }
+        ]
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "id": "circle",
+        "resolution": 360,
+        "status": "pass",
+        "identical": true,
+        "previousSeconds": 0.08850000000000181,
+        "currentSeconds": 0.08949999999999908,
+        "saving": -0.011299435028217397,
+        "runs": [
+          {
+            "previous": 0.086,
+            "cachedJavaScript": 0.092,
+            "forcedWasm": 0.08400000000000182,
+            "current": 0.09099999999999818
+          },
+          {
+            "cachedJavaScript": 0.09499999999999818,
+            "forcedWasm": 0.087,
+            "current": 0.088,
+            "previous": 0.08900000000000181
+          },
+          {
+            "forcedWasm": 0.087,
+            "current": 0.087,
+            "previous": 0.08800000000000181,
+            "cachedJavaScript": 0.09099999999999818
+          },
+          {
+            "current": 0.091,
+            "previous": 0.092,
+            "cachedJavaScript": 0.09,
+            "forcedWasm": 0.084
+          }
+        ]
+      }
+    ]
+  },
+  "prototypes": {
+    "method": "Isolated browser modules: d623294 string maps, numeric maps and dense neighbor arrays. Five fixed complete audits per runtime at 360 cells. Same forced-Wasm backend to isolate lookup, with four rotating rounds after warmup. Full results/maps must match except elapsed time. No source mutations to the production server.",
+    "sourceHashes": {
+      "previous": "d1445856faeb8ecadc8626a1c471341db8a75758cced22f43bf4930fa4d82652",
+      "numericMap": "0402bd87bd1118e92cf90ce08326476bfb39667ecd9a2c702a1b5bd648fb4806",
+      "dense": "9dc149f071a32c0c8bfa34c8846146f2da1a7d915f86ba8ef37a5a81e5d2e181",
+      "arrays": "e691efc792c66cdc91a5c0ad8258ac380a29442bc68c73bd9a7a2a44cbb02fe3"
+    },
+    "results": [
+      {
+        "browser": "chromium",
+        "id": "top-hat",
+        "identical": true,
+        "runs": [
+          {
+            "previous": 39.5,
+            "numericMap": 31.100000023841858,
+            "dense": 32.30000001192093,
+            "arrays": 24.5
+          },
+          {
+            "numericMap": 24,
+            "dense": 23.899999976158142,
+            "arrays": 38.5,
+            "previous": 32.89999997615814
+          },
+          {
+            "dense": 33.59999996423721,
+            "arrays": 28,
+            "previous": 61.90000003576279,
+            "numericMap": 27.899999976158142
+          },
+          {
+            "arrays": 26.600000023841858,
+            "previous": 29.5,
+            "numericMap": 29.69999998807907,
+            "dense": 28.19999998807907
+          }
+        ]
+      },
+      {
+        "browser": "chromium",
+        "id": "top-hat-anti",
+        "identical": true,
+        "runs": [
+          {
+            "previous": 48.10000002384186,
+            "numericMap": 49.60000002384186,
+            "dense": 48.200000047683716,
+            "arrays": 42
+          },
+          {
+            "numericMap": 43.19999998807907,
+            "dense": 43.30000001192093,
+            "arrays": 42.60000002384186,
+            "previous": 47.59999996423721
+          },
+          {
+            "dense": 45.19999998807907,
+            "arrays": 44.10000002384186,
+            "previous": 48.5,
+            "numericMap": 43.59999996423721
+          },
+          {
+            "arrays": 44.30000001192093,
+            "previous": 48.5,
+            "numericMap": 51.09999996423721,
+            "dense": 50.39999997615814
+          }
+        ]
+      },
+      {
+        "browser": "chromium",
+        "id": "hjcur-04",
+        "identical": true,
+        "runs": [
+          {
+            "previous": 65.29999995231628,
+            "numericMap": 68.90000003576279,
+            "dense": 62.10000002384186,
+            "arrays": 69
+          },
+          {
+            "numericMap": 57.39999997615814,
+            "dense": 60.80000001192093,
+            "arrays": 61.700000047683716,
+            "previous": 65.69999998807907
+          },
+          {
+            "dense": 60.19999998807907,
+            "arrays": 59.80000001192093,
+            "previous": 66,
+            "numericMap": 57.30000001192093
+          },
+          {
+            "arrays": 60.19999998807907,
+            "previous": 66,
+            "numericMap": 57.60000002384186,
+            "dense": 61.80000001192093
+          }
+        ]
+      },
+      {
+        "browser": "chromium",
+        "id": "hjhih-04",
+        "identical": true,
+        "runs": [
+          {
+            "previous": 91.10000002384186,
+            "numericMap": 68.09999996423721,
+            "dense": 69.30000001192093,
+            "arrays": 69.30000001192093
+          },
+          {
+            "numericMap": 62.30000001192093,
+            "dense": 62.69999998807907,
+            "arrays": 60.30000001192093,
+            "previous": 63.10000002384186
+          },
+          {
+            "dense": 60.39999997615814,
+            "arrays": 60,
+            "previous": 65.10000002384186,
+            "numericMap": 59.09999996423721
+          },
+          {
+            "arrays": 60,
+            "previous": 65.59999996423721,
+            "numericMap": 59.80000001192093,
+            "dense": 65.19999998807907
+          }
+        ]
+      },
+      {
+        "browser": "chromium",
+        "id": "circle",
+        "identical": true,
+        "runs": [
+          {
+            "previous": 38.80000001192093,
+            "numericMap": 36.90000003576279,
+            "dense": 37.200000047683716,
+            "arrays": 36
+          },
+          {
+            "numericMap": 36.09999996423721,
+            "dense": 37.89999997615814,
+            "arrays": 37.80000001192093,
+            "previous": 40.10000002384186
+          },
+          {
+            "dense": 37.39999997615814,
+            "arrays": 36.59999996423721,
+            "previous": 39,
+            "numericMap": 36.30000001192093
+          },
+          {
+            "arrays": 36.59999996423721,
+            "previous": 39.5,
+            "numericMap": 37.39999997615814,
+            "dense": 37.89999997615814
+          }
+        ]
+      },
+      {
+        "browser": "firefox",
+        "id": "top-hat",
+        "identical": true,
+        "runs": [
+          {
+            "previous": 118,
+            "numericMap": 122,
+            "dense": 126,
+            "arrays": 119
+          },
+          {
+            "numericMap": 123,
+            "dense": 127,
+            "arrays": 115,
+            "previous": 117
+          },
+          {
+            "dense": 116,
+            "arrays": 117,
+            "previous": 117,
+            "numericMap": 114
+          },
+          {
+            "arrays": 116,
+            "previous": 118,
+            "numericMap": 119,
+            "dense": 119
+          }
+        ]
+      },
+      {
+        "browser": "firefox",
+        "id": "top-hat-anti",
+        "identical": true,
+        "runs": [
+          {
+            "previous": 233,
+            "numericMap": 234,
+            "dense": 231,
+            "arrays": 231
+          },
+          {
+            "numericMap": 230,
+            "dense": 229,
+            "arrays": 233,
+            "previous": 236
+          },
+          {
+            "dense": 232,
+            "arrays": 228,
+            "previous": 235,
+            "numericMap": 233
+          },
+          {
+            "arrays": 234,
+            "previous": 235,
+            "numericMap": 233,
+            "dense": 234
+          }
+        ]
+      },
+      {
+        "browser": "firefox",
+        "id": "hjcur-04",
+        "identical": true,
+        "runs": [
+          {
+            "previous": 254,
+            "numericMap": 253,
+            "dense": 247,
+            "arrays": 249
+          },
+          {
+            "numericMap": 252,
+            "dense": 249,
+            "arrays": 251,
+            "previous": 255
+          },
+          {
+            "dense": 251,
+            "arrays": 250,
+            "previous": 256,
+            "numericMap": 251
+          },
+          {
+            "arrays": 247,
+            "previous": 253,
+            "numericMap": 249,
+            "dense": 248
+          }
+        ]
+      },
+      {
+        "browser": "firefox",
+        "id": "hjhih-04",
+        "identical": true,
+        "runs": [
+          {
+            "previous": 255,
+            "numericMap": 248,
+            "dense": 247,
+            "arrays": 242
+          },
+          {
+            "numericMap": 247,
+            "dense": 247,
+            "arrays": 255,
+            "previous": 308
+          },
+          {
+            "dense": 365,
+            "arrays": 277,
+            "previous": 294,
+            "numericMap": 270
+          },
+          {
+            "arrays": 251,
+            "previous": 268,
+            "numericMap": 255,
+            "dense": 283
+          }
+        ]
+      },
+      {
+        "browser": "firefox",
+        "id": "circle",
+        "identical": true,
+        "runs": [
+          {
+            "previous": 233,
+            "numericMap": 226,
+            "dense": 221,
+            "arrays": 221
+          },
+          {
+            "numericMap": 223,
+            "dense": 222,
+            "arrays": 219,
+            "previous": 221
+          },
+          {
+            "dense": 218,
+            "arrays": 219,
+            "previous": 224,
+            "numericMap": 222
+          },
+          {
+            "arrays": 219,
+            "previous": 220,
+            "numericMap": 220,
+            "dense": 222
+          }
+        ]
+      },
+      {
+        "browser": "webkit",
+        "id": "top-hat",
+        "identical": true,
+        "runs": [
+          {
+            "previous": 58,
+            "numericMap": 56,
+            "dense": 54,
+            "arrays": 60
+          },
+          {
+            "numericMap": 51,
+            "dense": 52,
+            "arrays": 54.999999999999545,
+            "previous": 55
+          },
+          {
+            "dense": 51,
+            "arrays": 49,
+            "previous": 54.000000000000455,
+            "numericMap": 53
+          },
+          {
+            "arrays": 48,
+            "previous": 54,
+            "numericMap": 54.00000000000091,
+            "dense": 53
+          }
+        ]
+      },
+      {
+        "browser": "webkit",
+        "id": "top-hat-anti",
+        "identical": true,
+        "runs": [
+          {
+            "previous": 111,
+            "numericMap": 109,
+            "dense": 109,
+            "arrays": 100
+          },
+          {
+            "numericMap": 131.0000000000009,
+            "dense": 103.00000000000091,
+            "arrays": 102,
+            "previous": 106
+          },
+          {
+            "dense": 113,
+            "arrays": 114,
+            "previous": 126.00000000000182,
+            "numericMap": 111
+          },
+          {
+            "arrays": 111,
+            "previous": 126,
+            "numericMap": 202,
+            "dense": 205
+          }
+        ]
+      },
+      {
+        "browser": "webkit",
+        "id": "hjcur-04",
+        "identical": true,
+        "runs": [
+          {
+            "previous": 146.00000000000182,
+            "numericMap": 137,
+            "dense": 139,
+            "arrays": 133
+          },
+          {
+            "numericMap": 131.99999999999818,
+            "dense": 131,
+            "arrays": 133,
+            "previous": 144
+          },
+          {
+            "dense": 134,
+            "arrays": 136,
+            "previous": 139,
+            "numericMap": 134
+          },
+          {
+            "arrays": 132.00000000000182,
+            "previous": 140,
+            "numericMap": 132,
+            "dense": 131
+          }
+        ]
+      },
+      {
+        "browser": "webkit",
+        "id": "hjhih-04",
+        "identical": true,
+        "runs": [
+          {
+            "previous": 149,
+            "numericMap": 128,
+            "dense": 127,
+            "arrays": 135
+          },
+          {
+            "numericMap": 138.00000000000364,
+            "dense": 126.99999999999636,
+            "arrays": 125,
+            "previous": 147
+          },
+          {
+            "dense": 136,
+            "arrays": 127,
+            "previous": 151,
+            "numericMap": 140.00000000000364
+          },
+          {
+            "arrays": 139,
+            "previous": 147,
+            "numericMap": 139.00000000000364,
+            "dense": 138
+          }
+        ]
+      },
+      {
+        "browser": "webkit",
+        "id": "circle",
+        "identical": true,
+        "runs": [
+          {
+            "previous": 87,
+            "numericMap": 99,
+            "dense": 94,
+            "arrays": 93
+          },
+          {
+            "numericMap": 95.00000000000364,
+            "dense": 94,
+            "arrays": 96,
+            "previous": 90
+          },
+          {
+            "dense": 93,
+            "arrays": 95,
+            "previous": 89,
+            "numericMap": 93.99999999999636
+          },
+          {
+            "arrays": 93.99999999999636,
+            "previous": 88.00000000000364,
+            "numericMap": 96,
+            "dense": 95
+          }
+        ]
+      }
+    ],
+    "qualification": "Exploratory rotating-order forced-Wasm comparisons. Complete maps were serialized after each timer, which can affect later garbage collection. Final production-module comparisons above use direct map comparisons and actual automatic backend selection."
+  },
+  "outlyingTrialRegression": {
+    "reference": "d623294",
+    "results": [
+      {
+        "mode": "warped",
+        "width": 73,
+        "resolution": 121,
+        "minWidth": 0.7,
+        "status": "uncertain",
+        "hash": "3b6996ea215bb55a532e18ab3542cf97edb65fd5f9dfc8b5d5a1a2ade62fcc59"
+      },
+      {
+        "mode": "outside-left",
+        "width": 100,
+        "resolution": 80,
+        "minWidth": 3,
+        "status": "fail",
+        "hash": "3c5da4c3cb5e0711e14445829b9f665550654a866327e25ad4608014cb88712d"
+      },
+      {
+        "mode": "outside-right",
+        "width": 20,
+        "resolution": 180,
+        "minWidth": 1,
+        "status": "fail",
+        "hash": "62ce7187750f748b1a647d01fbf9b26b3d1d86d8548e5255d8f2a797cc831bd9"
+      },
+      {
+        "mode": "warped",
+        "width": 20.3,
+        "resolution": 81,
+        "minWidth": 0.2,
+        "status": "uncertain",
+        "hash": "2fe9740638634322d63608441581c1ae752627abb12e35055091f12c208af48c"
+      }
+    ]
+  },
+  "freshHunodan": {
+    "criteria": "Each prepare + solve + validate + export <=10 seconds; independent error <= that case’s validated release error, plus at most 1 percentage point for an identical pair; unchanged geometry, strict paper and substantial feature checks. Decode and independent external replay are timed separately.",
+    "passed": 22,
+    "total": 22,
+    "medianSeconds": 5.131605416999999,
+    "maximumSeconds": 8.469926458000002,
+    "sameError": 22,
+    "betterError": 0,
+    "worseError": 0,
+    "results": [
+      {
+        "id": "hjfig-01",
+        "seconds": 4.542387,
+        "error": 0.009799111111111111,
+        "previousError": 0.009799111111111111,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "id": "hjfig-02",
+        "seconds": 4.6691263329999995,
+        "error": 0.013952,
+        "previousError": 0.013952,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "id": "hjfig-03",
+        "seconds": 3.9132192080000006,
+        "error": 0.006634666666666666,
+        "previousError": 0.006634666666666666,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "id": "hjfig-04",
+        "seconds": 4.371724166,
+        "error": 0.013824,
+        "previousError": 0.013824,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "id": "hjfig-05",
+        "seconds": 2.676873499999998,
+        "error": 0.010231665331208341,
+        "previousError": 0.010231665331208341,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "id": "hjfla-01",
+        "seconds": 5.713016875000001,
+        "error": 0.013414171006944444,
+        "previousError": 0.013414171006944444,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "id": "hjcur-01",
+        "seconds": 5.930671917,
+        "error": 0.00512,
+        "previousError": 0.00512,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "id": "hjcur-02",
+        "seconds": 5.1325151669999975,
+        "error": 0.005397333333333333,
+        "previousError": 0.005397333333333333,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "id": "hjcur-03",
+        "seconds": 5.130695667,
+        "error": 0.004522666666666667,
+        "previousError": 0.004522666666666667,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "id": "hjcur-04",
+        "seconds": 7.252320958999997,
+        "error": 0.0056248888888888885,
+        "previousError": 0.0056248888888888885,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "id": "hjcur-05",
+        "seconds": 3.4673458329999995,
+        "error": 0.009436444444444445,
+        "previousError": 0.009436444444444445,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "id": "hjhih-01",
+        "seconds": 6.574007166999996,
+        "error": 0.0060202958468683725,
+        "previousError": 0.0060202958468683725,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "id": "hjhih-02",
+        "seconds": 4.859334915999993,
+        "error": 0.003899406226779104,
+        "previousError": 0.003899406226779104,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "id": "hjhih-04",
+        "seconds": 7.59544404100001,
+        "error": 0.007678910190418844,
+        "previousError": 0.007678910190418844,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "id": "hjstr-01",
+        "seconds": 4.189793624999991,
+        "error": 0.007543348420030173,
+        "previousError": 0.007543348420030173,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "id": "hjstr-02",
+        "seconds": 6.315420166999989,
+        "error": 0.004339250493096647,
+        "previousError": 0.004339250493096647,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "id": "hjstr-03",
+        "seconds": 8.469926458000002,
+        "error": 0.005519980869380381,
+        "previousError": 0.005519980869380381,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "id": "hjsta-01",
+        "seconds": 4.452349208999992,
+        "error": 0.007936288088642659,
+        "previousError": 0.007936288088642659,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "id": "hjsta-02",
+        "seconds": 4.293234042000011,
+        "error": 0.0036485460069444445,
+        "previousError": 0.0036485460069444445,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "id": "hjsta-03",
+        "seconds": 6.255791499999992,
+        "error": 0.012339030193129683,
+        "previousError": 0.012339030193129683,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "id": "hjsta-04",
+        "seconds": 6.823156665999996,
+        "error": 0.005053050026595,
+        "previousError": 0.005053050026595,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "id": "hjsta-05",
+        "seconds": 6.361870750000002,
+        "error": 0.010624446293860237,
+        "previousError": 0.010624446293860237,
+        "qualityPassed": true,
+        "speedPassed": true
+      }
+    ]
+  },
+  "freshFreeBorder": {
+    "method": "Fresh automatic mask solves. Frames fixed before fitting. Checker strategy replaces the band; weighted strategy retains the original mask with zero band weights. Exported controls are independently rendered with resvg. Geometric and paper checks remain enabled. Variants swap both colours, translate by one source pixel in both axes with background fill, or alter only zero-weight pixels; the protected frame stays fixed.",
+    "passed": 32,
+    "total": 32,
+    "medianSeconds": 4.602998978999998,
+    "maximumSeconds": 7.7073628329999995,
+    "sameError": 32,
+    "betterError": 0,
+    "worseError": 0,
+    "results": [
+      {
+        "shape": "top-hat",
+        "size": 0.64,
+        "variant": "original",
+        "seconds": 2.7506968749999996,
+        "error": 0.00360107421875,
+        "previousError": 0.00360107421875,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "top-hat",
+        "size": 0.64,
+        "variant": "inverted",
+        "seconds": 2.3760874579999993,
+        "error": 0.003662109375,
+        "previousError": 0.003662109375,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "top-hat",
+        "size": 0.64,
+        "variant": "shifted",
+        "seconds": 2.370138084,
+        "error": 0.00360107421875,
+        "previousError": 0.00360107421875,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "top-hat",
+        "size": 0.64,
+        "variant": "free-noise",
+        "seconds": 2.3837272499999997,
+        "error": 0.00360107421875,
+        "previousError": 0.00360107421875,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "top-hat",
+        "size": 0.84,
+        "variant": "original",
+        "seconds": 5.979081250000001,
+        "error": 0.0002834467120181406,
+        "previousError": 0.0002834467120181406,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "top-hat",
+        "size": 0.84,
+        "variant": "inverted",
+        "seconds": 7.7073628329999995,
+        "error": 0.00021258503401360543,
+        "previousError": 0.00021258503401360543,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "top-hat",
+        "size": 0.84,
+        "variant": "shifted",
+        "seconds": 5.983115540999999,
+        "error": 0.00031887755102040814,
+        "previousError": 0.00031887755102040814,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "top-hat",
+        "size": 0.84,
+        "variant": "free-noise",
+        "seconds": 5.909726624999999,
+        "error": 0.0002834467120181406,
+        "previousError": 0.0002834467120181406,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "hat",
+        "size": 0.64,
+        "variant": "original",
+        "seconds": 1.8624883340000016,
+        "error": 0.00054931640625,
+        "previousError": 0.00054931640625,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "hat",
+        "size": 0.64,
+        "variant": "inverted",
+        "seconds": 1.9933472909999983,
+        "error": 0.00054931640625,
+        "previousError": 0.00054931640625,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "hat",
+        "size": 0.64,
+        "variant": "shifted",
+        "seconds": 1.9114705000000032,
+        "error": 0.00054931640625,
+        "previousError": 0.00054931640625,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "hat",
+        "size": 0.64,
+        "variant": "free-noise",
+        "seconds": 1.968121583,
+        "error": 0.00054931640625,
+        "previousError": 0.00054931640625,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "hat",
+        "size": 0.84,
+        "variant": "original",
+        "seconds": 6.639624000000003,
+        "error": 0.00007086167800453515,
+        "previousError": 0.00007086167800453515,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "hat",
+        "size": 0.84,
+        "variant": "inverted",
+        "seconds": 6.615376583999998,
+        "error": 0.0002834467120181406,
+        "previousError": 0.0002834467120181406,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "hat",
+        "size": 0.84,
+        "variant": "shifted",
+        "seconds": 6.957506834,
+        "error": 0.0002834467120181406,
+        "previousError": 0.0002834467120181406,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "hat",
+        "size": 0.84,
+        "variant": "free-noise",
+        "seconds": 6.882097666999995,
+        "error": 0.00007086167800453515,
+        "previousError": 0.00007086167800453515,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "house",
+        "size": 0.64,
+        "variant": "original",
+        "seconds": 3.200109541999991,
+        "error": 0,
+        "previousError": 0,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "house",
+        "size": 0.64,
+        "variant": "inverted",
+        "seconds": 2.141875165999998,
+        "error": 0,
+        "previousError": 0,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "house",
+        "size": 0.64,
+        "variant": "shifted",
+        "seconds": 3.296271332999997,
+        "error": 0,
+        "previousError": 0,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "house",
+        "size": 0.64,
+        "variant": "free-noise",
+        "seconds": 3.2129981659999904,
+        "error": 0,
+        "previousError": 0,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "house",
+        "size": 0.84,
+        "variant": "original",
+        "seconds": 6.356929625000005,
+        "error": 0,
+        "previousError": 0,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "house",
+        "size": 0.84,
+        "variant": "inverted",
+        "seconds": 7.332659874999997,
+        "error": 0.003932823129251701,
+        "previousError": 0.003932823129251701,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "house",
+        "size": 0.84,
+        "variant": "shifted",
+        "seconds": 6.736205000000002,
+        "error": 0,
+        "previousError": 0,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "house",
+        "size": 0.84,
+        "variant": "free-noise",
+        "seconds": 6.472068666999999,
+        "error": 0,
+        "previousError": 0,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "circle",
+        "size": 0.64,
+        "variant": "original",
+        "seconds": 2.266496792000005,
+        "error": 0.0003662109375,
+        "previousError": 0.0003662109375,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "circle",
+        "size": 0.64,
+        "variant": "inverted",
+        "seconds": 1.9192877089999965,
+        "error": 0.0003662109375,
+        "previousError": 0.0003662109375,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "circle",
+        "size": 0.64,
+        "variant": "shifted",
+        "seconds": 1.8909152500000055,
+        "error": 0.0003662109375,
+        "previousError": 0.0003662109375,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "circle",
+        "size": 0.64,
+        "variant": "free-noise",
+        "seconds": 2.071780832999997,
+        "error": 0.0003662109375,
+        "previousError": 0.0003662109375,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "circle",
+        "size": 0.84,
+        "variant": "original",
+        "seconds": 6.677962709000014,
+        "error": 0.0002834467120181406,
+        "previousError": 0.0002834467120181406,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "circle",
+        "size": 0.84,
+        "variant": "inverted",
+        "seconds": 6.775801582999993,
+        "error": 0.0002834467120181406,
+        "previousError": 0.0002834467120181406,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "circle",
+        "size": 0.84,
+        "variant": "shifted",
+        "seconds": 6.290879291999998,
+        "error": 0.00031887755102040814,
+        "previousError": 0.00031887755102040814,
+        "qualityPassed": true,
+        "speedPassed": true
+      },
+      {
+        "shape": "circle",
+        "size": 0.84,
+        "variant": "free-noise",
+        "seconds": 6.904375708000007,
+        "error": 0.0002834467120181406,
+        "previousError": 0.0002834467120181406,
+        "qualityPassed": true,
+        "speedPassed": true
+      }
+    ]
+  },
+  "productionBrowsers": {
+    "method": "Page-clock timestamps from the Find click, worker requests/replies and the first visible, enabled Open in Draw button. DOM readiness is not a paint timestamp. Result capture and artifact writes happen afterward and have separate Node-clock durations. Version 1 solveAndConversionSeconds included harness capture and artifact writes and is not directly comparable.",
+    "passed": 18,
+    "results": [
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "top-hat-anti",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.02589999997615814,
+          "prepareRoundTripSeconds": 0.0949000000357628,
+          "preparedToSolveRequestSeconds": 0.00019999998807907106,
+          "solveRoundTripSeconds": 8.230199999988079,
+          "resultToReadySeconds": 0.36789999997615813,
+          "clickToReadySeconds": 8.719099999964238
+        },
+        "engineError": 0.0032064909297052154,
+        "sourceEditableError": 0.0031887755102040817,
+        "sharedSpans": 107,
+        "numericalBackend": "wasm",
+        "symmetryControlChecks": {
+          "paint": true,
+          "draw": true
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "anti"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0031887755102040817,
+          "sourceError": 0.0031887755102040817
+        },
+        "passed": true,
+        "geometrySha256": "502ab5174970387f8ba789443cda3aedb9e49ddb3ee0b3ee2bc8b2c00c274709",
+        "editableSVGSha256": "01d455f4d5335d8307526ab93bfeb01327efa3b643fee1099544cfb8fe1f76e4"
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "top-hat",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.02480000001192093,
+          "prepareRoundTripSeconds": 0.24019999998807906,
+          "preparedToSolveRequestSeconds": 0.00019999998807907106,
+          "solveRoundTripSeconds": 9.291600000023841,
+          "resultToReadySeconds": 0.34489999997615817,
+          "clickToReadySeconds": 9.901699999988079
+        },
+        "engineError": 0.0031887755102040817,
+        "sourceEditableError": 0.0032064909297052154,
+        "sharedSpans": 114,
+        "numericalBackend": "wasm",
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0032064909297052154,
+          "sourceError": 0.0032064909297052154
+        },
+        "passed": true,
+        "geometrySha256": "d2e98879de6b699368b7cc3dbb13b77716bcffa7aadf0aef67388aeba2907da6",
+        "editableSVGSha256": "71c74acb82fb04d178db1b5feb8239e7a1db9a4850ebea8d0ecef7a187590ba3"
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "top-hat-independent",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.018100000023841857,
+          "prepareRoundTripSeconds": 0.25319999998807907,
+          "preparedToSolveRequestSeconds": 0.00019999998807907106,
+          "solveRoundTripSeconds": 5.550300000011921,
+          "resultToReadySeconds": 0.14480000001192092,
+          "clickToReadySeconds": 5.966600000023842
+        },
+        "engineError": 0.0029584750566893424,
+        "sourceEditableError": 0.0029584750566893424,
+        "sharedSpans": 40,
+        "numericalBackend": "wasm",
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00036875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000325
+            }
+          ],
+          "originalSourceError": 0.0029584750566893424,
+          "sourceError": 0.0029584750566893424
+        },
+        "passed": true,
+        "geometrySha256": "4422fadf39c0872ed6f30ea1520e605c80d57ab0070f361b914b53965e68a513",
+        "editableSVGSha256": "b819281fda120872deaa76fd50f4f76cf8437b7df5adc2e53f29ad5676f626d4"
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "star",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.012699999988079072,
+          "prepareRoundTripSeconds": 0.03769999998807907,
+          "preparedToSolveRequestSeconds": 0.00010000002384185791,
+          "solveRoundTripSeconds": 1.7505999999642372,
+          "resultToReadySeconds": 0.10290000003576279,
+          "clickToReadySeconds": 1.904
+        },
+        "engineError": 0.0016,
+        "sourceEditableError": 0.0016,
+        "sharedSpans": 12,
+        "numericalBackend": "wasm",
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0000625
+            }
+          ],
+          "originalSourceError": 0.0016,
+          "sourceError": 0.0016
+        },
+        "passed": true,
+        "geometrySha256": "f3afeaf74cf3c71f0dff6952af4b27f849d818637d89079ea87b64b622593788",
+        "editableSVGSha256": "d2ecb7405bac6637411178db86cb744c1e66766131edf663130a4f761ded4bd7"
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "hunodan",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0055,
+          "prepareRoundTripSeconds": 0.146,
+          "preparedToSolveRequestSeconds": 0.00010000002384185791,
+          "solveRoundTripSeconds": 4.007300000011921,
+          "resultToReadySeconds": 0.43169999998807906,
+          "clickToReadySeconds": 4.590600000023842
+        },
+        "engineError": 0.00943125,
+        "sourceEditableError": 0.00944375,
+        "sharedSpans": 8,
+        "numericalBackend": "wasm",
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00944375,
+          "sourceError": 0.00944375
+        },
+        "passed": true,
+        "geometrySha256": "3a228e613cb949c85e39c5f630119bd9ea96db3cccf647c5e857cdf1a6e72acd",
+        "editableSVGSha256": "a7eb34b6f14c6edffe566a2a429198191edfc630901032c9b9a88589f1f772b7"
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "circle",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0055,
+          "prepareRoundTripSeconds": 0.25539999997615814,
+          "preparedToSolveRequestSeconds": 0.00020000004768371582,
+          "solveRoundTripSeconds": 1.7515999999642373,
+          "resultToReadySeconds": 0.047600000023841856,
+          "clickToReadySeconds": 2.060300000011921
+        },
+        "engineError": 0.000925,
+        "sourceEditableError": 0.00095,
+        "sharedSpans": 9,
+        "numericalBackend": "wasm",
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00005
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000053125
+            }
+          ],
+          "originalSourceError": 0.00095,
+          "sourceError": 0.00095
+        },
+        "passed": true,
+        "geometrySha256": "fb130cbd39e35156bf2ab78429d07904f10f9b214950f9563646b85b12b74ed0",
+        "editableSVGSha256": "34f7bbe74754c2efd13fde8bee42587798cd03de6b9a68306aaaa40663f43657"
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "top-hat-anti",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.023,
+          "prepareRoundTripSeconds": 0.086,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 12.427,
+          "resultToReadySeconds": 0.36,
+          "clickToReadySeconds": 12.896
+        },
+        "engineError": 0.0032064909297052154,
+        "sourceEditableError": 0.0031887755102040817,
+        "sharedSpans": 107,
+        "numericalBackend": "wasm",
+        "symmetryControlChecks": {
+          "paint": true,
+          "draw": true
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "anti"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0031887755102040817,
+          "sourceError": 0.0031887755102040817
+        },
+        "passed": true,
+        "geometrySha256": "e784c0b48ddad112e09939db53b7570cb7ab1bb31e0da1a2667a985cb650937a",
+        "editableSVGSha256": "c13a4e4893ab3f3f57e2c56fd8e99ff3e65de63f78f665b2f8d0c3c9cbe6e3f0"
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "top-hat",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.021,
+          "prepareRoundTripSeconds": 0.199,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 16.24,
+          "resultToReadySeconds": 0.483,
+          "clickToReadySeconds": 16.943
+        },
+        "engineError": 0.0031887755102040817,
+        "sourceEditableError": 0.0032064909297052154,
+        "sharedSpans": 114,
+        "numericalBackend": "wasm",
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0032064909297052154,
+          "sourceError": 0.0032064909297052154
+        },
+        "passed": true,
+        "geometrySha256": "8a12465dc7d6b0400990df61f75959fad96d9c73cddf02e3887715787c39965a",
+        "editableSVGSha256": "9cee08a4d34072dad1d689a95536c4ab42bc6d3f8c7cfd4a92cf1a82cc0ad6af"
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "top-hat-independent",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.016,
+          "prepareRoundTripSeconds": 0.21,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 9.172,
+          "resultToReadySeconds": 0.188,
+          "clickToReadySeconds": 9.586
+        },
+        "engineError": 0.004552862811791384,
+        "sourceEditableError": 0.00456172052154195,
+        "sharedSpans": 32,
+        "numericalBackend": "wasm",
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00005
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0000515625
+            }
+          ],
+          "originalSourceError": 0.00456172052154195,
+          "sourceError": 0.00456172052154195
+        },
+        "passed": true,
+        "geometrySha256": "7cfd0992555229627af7d42b41357cce2afb943b5a5d167eed50a2a9f943fd64",
+        "editableSVGSha256": "ffc8387df41409d4e84cc531d2ee0d085e7d4176ef7301e7ab58c5b6b6ac795d"
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "star",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.013,
+          "prepareRoundTripSeconds": 0.036,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 4.676,
+          "resultToReadySeconds": 0.1,
+          "clickToReadySeconds": 4.825
+        },
+        "engineError": 0.0016,
+        "sourceEditableError": 0.0016,
+        "sharedSpans": 12,
+        "numericalBackend": "wasm",
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0000625
+            }
+          ],
+          "originalSourceError": 0.0016,
+          "sourceError": 0.0016
+        },
+        "passed": true,
+        "geometrySha256": "f3afeaf74cf3c71f0dff6952af4b27f849d818637d89079ea87b64b622593788",
+        "editableSVGSha256": "54bbe35af173f75109c6276edc5647eafa478fec6efed7ba62d87f259c61dbb2"
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "hunodan",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.006,
+          "prepareRoundTripSeconds": 0.148,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 6.502,
+          "resultToReadySeconds": 0.296,
+          "clickToReadySeconds": 6.952
+        },
+        "engineError": 0.00943125,
+        "sourceEditableError": 0.00944375,
+        "sharedSpans": 8,
+        "numericalBackend": "wasm",
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00944375,
+          "sourceError": 0.00944375
+        },
+        "passed": true,
+        "geometrySha256": "30ae4b0355e3640d1a3200763a8aa3bd1028a3afdac9019dad61fd52737dfb11",
+        "editableSVGSha256": "b43b280692a9f72969bd194812841c1ae1f43dd6b579e0072cf9687d38ae5d15"
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "circle",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.008,
+          "prepareRoundTripSeconds": 0.215,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 3.681,
+          "resultToReadySeconds": 0.042,
+          "clickToReadySeconds": 3.946
+        },
+        "engineError": 0.000925,
+        "sourceEditableError": 0.0009375,
+        "sharedSpans": 9,
+        "numericalBackend": "wasm",
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00005
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000053125
+            }
+          ],
+          "originalSourceError": 0.0009375,
+          "sourceError": 0.0009375
+        },
+        "passed": true,
+        "geometrySha256": "05f4a9c3c3d3cdd3aa13f5bb7a77a271867d2329cf1d1e9c67d74b9c069a00c1",
+        "editableSVGSha256": "258197b7422e5d3b507ffc1f8b1ae3e2d37f3667871f77442efde8f3011bfe12"
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "top-hat-anti",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.022999999999999774,
+          "prepareRoundTripSeconds": 0.15,
+          "preparedToSolveRequestSeconds": 0.001,
+          "solveRoundTripSeconds": 11.362000000000002,
+          "resultToReadySeconds": 0.2549999999999982,
+          "clickToReadySeconds": 11.791
+        },
+        "engineError": 0.0032064909297052154,
+        "sourceEditableError": 0.0031887755102040817,
+        "sharedSpans": 107,
+        "numericalBackend": "wasm",
+        "symmetryControlChecks": {
+          "paint": true,
+          "draw": true
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "anti"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0031887755102040817,
+          "sourceError": 0.0031887755102040817
+        },
+        "passed": true,
+        "geometrySha256": "845153a50381f563f4a502b19bbd8399295e9fe2b197692a860a850e4fd9c368",
+        "editableSVGSha256": "4436b515e6fb219759e59aeb45fab0d1f528b0fbe038450d1df04ca4811628dc"
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "top-hat",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.01900000000000023,
+          "prepareRoundTripSeconds": 0.2749999999999998,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 12.027,
+          "resultToReadySeconds": 0.281,
+          "clickToReadySeconds": 12.602
+        },
+        "engineError": 0.0031887755102040817,
+        "sourceEditableError": 0.0032064909297052154,
+        "sharedSpans": 114,
+        "numericalBackend": "wasm",
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0032064909297052154,
+          "sourceError": 0.0032064909297052154
+        },
+        "passed": true,
+        "geometrySha256": "f08ece38c9fbc875dfea1025431e27458b71610c5b604989cb6206813d429e0d",
+        "editableSVGSha256": "a1b8ddcb5a8de88120fdf326bac8ac51c04ff0fd04b7b099e6bf027ab55e513b"
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "top-hat-independent",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.015000000000000114,
+          "prepareRoundTripSeconds": 0.2759999999999999,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 7.452,
+          "resultToReadySeconds": 0.098,
+          "clickToReadySeconds": 7.841
+        },
+        "engineError": 0.0029584750566893424,
+        "sourceEditableError": 0.0029584750566893424,
+        "sharedSpans": 40,
+        "numericalBackend": "wasm",
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00036875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000325
+            }
+          ],
+          "originalSourceError": 0.0029584750566893424,
+          "sourceError": 0.0029584750566893424
+        },
+        "passed": true,
+        "geometrySha256": "a17b40692f46e582e0632cf121ac7af48f833cb359e833b57ea859e90efdc266",
+        "editableSVGSha256": "cda81fa2dce4c4ba3a6440bdfaeb5fd5fc5ac112b724255f77f1919ffd81f920"
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "star",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.009,
+          "prepareRoundTripSeconds": 0.046000000000000055,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 1.967,
+          "resultToReadySeconds": 0.1,
+          "clickToReadySeconds": 2.122
+        },
+        "engineError": 0.0016,
+        "sourceEditableError": 0.0016,
+        "sharedSpans": 12,
+        "numericalBackend": "wasm",
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0000625
+            }
+          ],
+          "originalSourceError": 0.0016,
+          "sourceError": 0.0016
+        },
+        "passed": true,
+        "geometrySha256": "f3afeaf74cf3c71f0dff6952af4b27f849d818637d89079ea87b64b622593788",
+        "editableSVGSha256": "8d17420d6d012ba3c306a69c53e42ae9ef86a355d68a94cd5914f7d625594d62"
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "hunodan",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.006,
+          "prepareRoundTripSeconds": 0.19999999999999976,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 5.899,
+          "resultToReadySeconds": 0.236,
+          "clickToReadySeconds": 6.341
+        },
+        "engineError": 0.00943125,
+        "sourceEditableError": 0.00944375,
+        "sharedSpans": 8,
+        "numericalBackend": "wasm",
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00944375,
+          "sourceError": 0.00944375
+        },
+        "passed": true,
+        "geometrySha256": "3e23af6066f9db0053225e2e9269a2b273050f250e60fe5e15295245743850c0",
+        "editableSVGSha256": "552102cf90544098ccdda2f918210c5e3cab63496500915ad31618f17be169aa"
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "circle",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.006,
+          "prepareRoundTripSeconds": 0.223,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 1.95,
+          "resultToReadySeconds": 0.05,
+          "clickToReadySeconds": 2.229
+        },
+        "engineError": 0.000925,
+        "sourceEditableError": 0.0009375,
+        "sharedSpans": 9,
+        "numericalBackend": "wasm",
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00005
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000053125
+            }
+          ],
+          "originalSourceError": 0.0009375,
+          "sourceError": 0.0009375
+        },
+        "passed": true,
+        "geometrySha256": "564a64677df9f85dd4d3132ed314ac532bf792867a5d169834a8434c730ad0f6",
+        "editableSVGSha256": "ab230194b1767ea23b2186fa46aac427f592f52f53608cce2216c943dfa1bbc9"
+      }
+    ]
+  },
+  "javascriptFallback": {
+    "passed": 1,
+    "actualWasmRequestBlocked": true,
+    "results": [
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "top-hat-anti",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.025900000035762788,
+          "prepareRoundTripSeconds": 0.0885,
+          "preparedToSolveRequestSeconds": 0.00030000001192092895,
+          "solveRoundTripSeconds": 8.480899999976158,
+          "resultToReadySeconds": 0.3563000000119209,
+          "clickToReadySeconds": 8.951900000035764
+        },
+        "engineError": 0.0032064909297052154,
+        "sourceEditableError": 0.0031887755102040817,
+        "sharedSpans": 107,
+        "numericalBackend": "javascript",
+        "symmetryControlChecks": {
+          "paint": true,
+          "draw": true
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "anti"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0031887755102040817,
+          "sourceError": 0.0031887755102040817
+        },
+        "passed": true,
+        "geometrySha256": "502ab5174970387f8ba789443cda3aedb9e49ddb3ee0b3ee2bc8b2c00c274709",
+        "editableSVGSha256": "01d455f4d5335d8307526ab93bfeb01327efa3b643fee1099544cfb8fe1f76e4"
+      }
+    ]
+  },
+  "qualification": "No changed clearance thresholds, seeding, chord distances, topology or acceptance rules. Fresh solves are wall-clock limited and can reach different checkpoints despite identical individual audit decisions. Full-solve timing comparisons are not randomized A/B experiments; no claim of uniform speedup."
+}

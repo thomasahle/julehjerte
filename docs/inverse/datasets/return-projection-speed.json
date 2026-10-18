@@ -1,0 +1,1518 @@
+{
+  "scope": "Local return projection performance and final-geometry safety. No whole-corpus speed or real-photo success-rate claim.",
+  "baselineCommit": "382534c",
+  "change": "Intermediate iterations evaluate complete short-return constraints. A separate full geometry audit remains mandatory before accepting repaired coordinates. All budgets, tolerances, symmetry and displacement limits are unchanged.",
+  "projectionMatrix": {
+    "cases": 104,
+    "acceptedRepairs": 27,
+    "decisionChanges": 0,
+    "acceptedSerializedGeometryChanges": 0,
+    "baselineMilliseconds": 5743.878123999991,
+    "candidateMilliseconds": 4017.685629000002,
+    "baseline": "tmp/heart-learning/return-projection-speed-v1/baseline/projector-cases/results.json",
+    "baselineSha256": "e565ca69315d0eca4deb165518725c28a912b138051bbc44be859b2448e6abf7",
+    "candidate": "tmp/heart-learning/return-projection-speed-v1/return-only/projector-cases/results.json",
+    "candidateSha256": "81fc4f7ac2f18f2bfee30f97867ac6d9267d0561a52f3b609edce2f1ec5466b0",
+    "timingScope": "Projection only; excludes the initial audit and separate final verification. No repairs needed and unrepairable inputs also occur among these probes."
+  },
+  "anchors": [
+    {
+      "path": "tmp/heart-learning/return-projection-speed-v1/baseline/anchor-0/measured.json",
+      "sha256": "b8f3bd4f3004f551ccce03b1ffe55205d75af7b283b8872057aaa363da1d5b0b",
+      "variant": "baseline",
+      "applied": true,
+      "repairSeconds": 2.194930709,
+      "cpuSeconds": 3.168038,
+      "finishSeconds": 0.2379994999999999,
+      "templateChecksPassed": true,
+      "metrics": [
+        {
+          "resolution": 400,
+          "error": 0.00875
+        },
+        {
+          "resolution": 800,
+          "error": 0.009796875
+        }
+      ],
+      "sourceHashes": {
+        "scripts/inverse/fixtures/editor-anchor-return.json": "b5b2bfc62c35d28ce27dd33a8d29ac62915c5d0d86fab74b35b6a807c4c17d17",
+        "scripts/inverse/fixtures/anchor-upload-mask.json": "e540514ae180c4eb68cdbcb8290aed793cbe0cd2699efeffaaab06647f96ed03"
+      },
+      "maskSha256": "0445f9d1abf328342785e2aa278e7a7c4072613fee0e9db8db5f08f3791b2aba"
+    },
+    {
+      "path": "tmp/heart-learning/return-projection-speed-v1/baseline/anchor-1/measured.json",
+      "sha256": "88f1cfc6a2506d896d5be40f0ed0c3a02b78bc7dbe0285c7040ece4467d0c3f1",
+      "variant": "baseline",
+      "applied": false,
+      "repairSeconds": 2.960579083,
+      "cpuSeconds": 4.100527,
+      "finishSeconds": null,
+      "templateChecksPassed": null,
+      "metrics": null,
+      "sourceHashes": {
+        "scripts/inverse/fixtures/editor-anchor-return.json": "b5b2bfc62c35d28ce27dd33a8d29ac62915c5d0d86fab74b35b6a807c4c17d17",
+        "scripts/inverse/fixtures/anchor-upload-mask.json": "e540514ae180c4eb68cdbcb8290aed793cbe0cd2699efeffaaab06647f96ed03"
+      },
+      "maskSha256": "0445f9d1abf328342785e2aa278e7a7c4072613fee0e9db8db5f08f3791b2aba"
+    },
+    {
+      "path": "tmp/heart-learning/return-projection-speed-v1/return-only/anchor-0/measured.json",
+      "sha256": "e2310935b90a0ef1b9213588205dd3b6806108719e02f51d119d2a8a68c710cf",
+      "variant": "return-only",
+      "applied": true,
+      "repairSeconds": 1.649535792,
+      "cpuSeconds": 2.73812,
+      "finishSeconds": 0.24079420800000004,
+      "templateChecksPassed": true,
+      "metrics": [
+        {
+          "resolution": 400,
+          "error": 0.0087375
+        },
+        {
+          "resolution": 800,
+          "error": 0.0097703125
+        }
+      ],
+      "sourceHashes": {
+        "scripts/inverse/fixtures/editor-anchor-return.json": "b5b2bfc62c35d28ce27dd33a8d29ac62915c5d0d86fab74b35b6a807c4c17d17",
+        "scripts/inverse/fixtures/anchor-upload-mask.json": "e540514ae180c4eb68cdbcb8290aed793cbe0cd2699efeffaaab06647f96ed03"
+      },
+      "maskSha256": "0445f9d1abf328342785e2aa278e7a7c4072613fee0e9db8db5f08f3791b2aba"
+    },
+    {
+      "path": "tmp/heart-learning/return-projection-speed-v1/return-only/anchor-1/measured.json",
+      "sha256": "af40ae87420d6691434b5d3f2ea733258eabeddcd3b63edff6cc58e52d0d9a50",
+      "variant": "return-only",
+      "applied": true,
+      "repairSeconds": 1.7174945,
+      "cpuSeconds": 2.914216,
+      "finishSeconds": 0.27261245800000006,
+      "templateChecksPassed": true,
+      "metrics": [
+        {
+          "resolution": 400,
+          "error": 0.0087375
+        },
+        {
+          "resolution": 800,
+          "error": 0.0097703125
+        }
+      ],
+      "sourceHashes": {
+        "scripts/inverse/fixtures/editor-anchor-return.json": "b5b2bfc62c35d28ce27dd33a8d29ac62915c5d0d86fab74b35b6a807c4c17d17",
+        "scripts/inverse/fixtures/anchor-upload-mask.json": "e540514ae180c4eb68cdbcb8290aed793cbe0cd2699efeffaaab06647f96ed03"
+      },
+      "maskSha256": "0445f9d1abf328342785e2aa278e7a7c4072613fee0e9db8db5f08f3791b2aba"
+    }
+  ],
+  "productionChecks": {
+    "targetedPassed": 12,
+    "targetedFailed": 0,
+    "anchorApplicationPassed": 1,
+    "anchorApplicationFailed": 0,
+    "replayCases": 104,
+    "replayAccepted": 27,
+    "replayMatchesAllBaselineDecisionsAndAcceptedGeometry": true,
+    "replay": "tmp/heart-learning/return-projection-speed-v1/production/replay/results.json",
+    "replaySha256": "716d1a47089a168f47a7d4a16b0966c231073499cf6207faac56e1a5c4c05f4a"
+  },
+  "changedSourceHashes": {
+    "static/inverse/core/direct/short-return-project.js": "0626bed05c4574f94947bea0ca74c43b2dae88e509aade233386c103b811df0d",
+    "scripts/inverse/short-return-audits.test.mjs": "1c14343643875f6824bf51b89ad63ff1b9d0ca454817cfde0aab8d55da9987cb",
+    "scripts/inverse/diagnostics/return-projection-study.mjs": "91a850dfdcdeb70b9a7f66b741b3484aa95eef0a88f631c93fa8f82a4f5132f0"
+  },
+  "limitations": [
+    "Timing observations came from serial processes on a shared machine. They do not establish browser or mobile latency.",
+    "The anchor comparison contains two fresh processes per method; the baseline succeeds once and fails once.",
+    "Independent SVG comparisons cover the repaired anchor at 400 and 800 pixels. The 104 projection probes use separate full geometry checks, not a photographic target.",
+    "Full QA, all 22 Hunodan comparisons, the 31-photo comparison and all 47 accepted editable pairs pass their gates. Browser release checks are still running; 99399ff remains the last fully validated release."
+  ],
+  "fullQA": {
+    "baseCommit": "c000d30f82e323190bb3370c4d9582a8243eed3d",
+    "sourceFilesVerified": 845,
+    "status": "passed",
+    "checks": [
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 8.908422958
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 6.225188082999999
+      },
+      {
+        "stage": "app",
+        "command": [
+          "npx",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 24.371685833
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 14.946506458999998
+      },
+      {
+        "stage": "inverse",
+        "command": [
+          "npm",
+          "run",
+          "test:inverse"
+        ],
+        "exitCode": 0,
+        "seconds": 876.877963833,
+        "tests": 853,
+        "pass": 853,
+        "fail": 0,
+        "skipped": 0
+      }
+    ],
+    "applicationPassed": 857,
+    "applicationSkipped": 1,
+    "inversePassed": 853,
+    "inverseFailed": 0,
+    "sourceScope": "Pinned application, runtime, harness and existing data files at c000d30. The later eee5518 commit adds only separately verified material annotations and documentation; pinned files are unchanged.",
+    "artifactsSha256": {
+      "tmp/heart-learning/return-projection-speed-v1/production-qa/source.json": "628069ded10264542980061feb7d7ea2d22cdbc2ff026c68c6a2e120a14052b3",
+      "tmp/heart-learning/return-projection-speed-v1/production-qa/checks.json": "88108230d3942279e559c301c63efbe3cd3bc99270cf6cc63ea81d912b443053",
+      "tmp/heart-learning/return-projection-speed-v1/production-qa/running.json": "d38b7e2d4d8755bb3457d9f8dbca6cf6a2ab3675a921f0d1d08ce384dd7d63d3",
+      "tmp/heart-learning/return-projection-speed-v1/production-qa/check.log": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+      "tmp/heart-learning/return-projection-speed-v1/production-qa/lint.log": "f1a4b272f2f106d9cc645be00a12d8ac4dea14308d11091a0ea8c493d6036f90",
+      "tmp/heart-learning/return-projection-speed-v1/production-qa/app.log": "c1b897711e1b2821e158bae877705bdfd63618c22006bab654c1d42c57eab9de",
+      "tmp/heart-learning/return-projection-speed-v1/production-qa/build.log": "0c3a2b88dd75d8907e6a3a46fda31e62c0ce075ea017ed2537300cc680448753",
+      "tmp/heart-learning/return-projection-speed-v1/production-qa/inverse.log": "b26669f8eaf71d50c8131618336301bfbaba6f4b0f6b084caf433fc8d3c12099"
+    }
+  },
+  "hunodanReplay": {
+    "status": "passed",
+    "runtimeCommit": "c000d30f82e323190bb3370c4d9582a8243eed3d",
+    "previousRuntimeCommit": "99399ff60485b9a049eb2b31142021da0439c9bc",
+    "passed": 22,
+    "total": 22,
+    "maximumSeconds": 8.099764666999995,
+    "unchangedErrors": 21,
+    "improvedErrors": 1,
+    "inputCatalogSha256": "b2a2f8908a54eec466c02dfbd8d0284509b6d482eed1cbdd9f016229e5ba9e1c",
+    "settingsAndBaselineUnchanged": true,
+    "rows": [
+      {
+        "id": "hjfig-01",
+        "passed": true,
+        "seconds": 4.363523583,
+        "previousSeconds": 4.274513667,
+        "error": 0.009799111111111111,
+        "previousError": 0.009799111111111111,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjfig-02",
+        "passed": true,
+        "seconds": 5.434474792,
+        "previousSeconds": 5.406189832999999,
+        "error": 0.013340444444444445,
+        "previousError": 0.013340444444444445,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjfig-03",
+        "passed": true,
+        "seconds": 3.6660795,
+        "previousSeconds": 3.518050082999998,
+        "error": 0.006634666666666666,
+        "previousError": 0.006634666666666666,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjfig-04",
+        "passed": true,
+        "seconds": 4.208836833000001,
+        "previousSeconds": 3.934302834,
+        "error": 0.013824,
+        "previousError": 0.013824,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjfig-05",
+        "passed": true,
+        "seconds": 5.2420919580000005,
+        "previousSeconds": 5.661986999999997,
+        "error": 0.008021555177909465,
+        "previousError": 0.00844420572515387,
+        "errorDelta": -0.00042265054724440615
+      },
+      {
+        "id": "hjfla-01",
+        "passed": true,
+        "seconds": 6.352111583000002,
+        "previousSeconds": 6.1437884579999995,
+        "error": 0.012166341145833334,
+        "previousError": 0.012166341145833334,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjcur-01",
+        "passed": true,
+        "seconds": 5.634226791000001,
+        "previousSeconds": 5.4719339169999985,
+        "error": 0.005148444444444444,
+        "previousError": 0.005148444444444444,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjcur-02",
+        "passed": true,
+        "seconds": 5.613092582999998,
+        "previousSeconds": 5.655587458999995,
+        "error": 0.005219555555555555,
+        "previousError": 0.005219555555555555,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjcur-03",
+        "passed": true,
+        "seconds": 5.253994291999995,
+        "previousSeconds": 5.294253375,
+        "error": 0.004522666666666667,
+        "previousError": 0.004522666666666667,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjcur-04",
+        "passed": true,
+        "seconds": 6.894460207999996,
+        "previousSeconds": 6.726357582999997,
+        "error": 0.005639111111111111,
+        "previousError": 0.005639111111111111,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjcur-05",
+        "passed": true,
+        "seconds": 3.228655666999999,
+        "previousSeconds": 3.2053443750000006,
+        "error": 0.009436444444444445,
+        "previousError": 0.009436444444444445,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjhih-01",
+        "passed": true,
+        "seconds": 7.052782375000002,
+        "previousSeconds": 6.660271457999996,
+        "error": 0.006040430615586996,
+        "previousError": 0.006040430615586996,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjhih-02",
+        "passed": true,
+        "seconds": 5.010377124999992,
+        "previousSeconds": 4.900452833000003,
+        "error": 0.003899406226779104,
+        "previousError": 0.003899406226779104,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjhih-04",
+        "passed": true,
+        "seconds": 7.393697708000007,
+        "previousSeconds": 7.267858500000002,
+        "error": 0.007776029627903062,
+        "previousError": 0.007776029627903062,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjstr-01",
+        "passed": true,
+        "seconds": 4.288644916000004,
+        "previousSeconds": 4.177925749999995,
+        "error": 0.007550237322696868,
+        "previousError": 0.007550237322696868,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjstr-02",
+        "passed": true,
+        "seconds": 6.013898541000002,
+        "previousSeconds": 5.928904250000007,
+        "error": 0.004365548980933596,
+        "previousError": 0.004365548980933596,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjstr-03",
+        "passed": true,
+        "seconds": 8.099764666999995,
+        "previousSeconds": 7.915125583000001,
+        "error": 0.0056129769369752365,
+        "previousError": 0.0056129769369752365,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjsta-01",
+        "passed": true,
+        "seconds": 4.889066791999998,
+        "previousSeconds": 4.755232000000004,
+        "error": 0.007929362880886427,
+        "previousError": 0.007929362880886427,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjsta-02",
+        "passed": true,
+        "seconds": 4.574962916999997,
+        "previousSeconds": 4.671306750000003,
+        "error": 0.0038045247395833335,
+        "previousError": 0.0038045247395833335,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjsta-03",
+        "passed": true,
+        "seconds": 6.728603791999994,
+        "previousSeconds": 6.4690706670000075,
+        "error": 0.012332213049376572,
+        "previousError": 0.012332213049376572,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjsta-04",
+        "passed": true,
+        "seconds": 6.355950958000001,
+        "previousSeconds": 6.367919332999998,
+        "error": 0.0050250552896055544,
+        "previousError": 0.0050250552896055544,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjsta-05",
+        "passed": true,
+        "seconds": 6.238812375000008,
+        "previousSeconds": 6.05630575,
+        "error": 0.010624446293860237,
+        "previousError": 0.010624446293860237,
+        "errorDelta": 0.0
+      }
+    ],
+    "scope": "Frozen photographs and crop coordinates, verified encoded and decoded input checksums. Timings include preparation, solving, validation and export; image decoding and independent replay are separate. This does not establish automatic cropping or browser latency.",
+    "artifactsSha256": {
+      "tmp/heart-learning/return-projection-speed-v1/production-release/hunodan/results.json": "f4ad14d979b7edaf82d34236ca3a9e4b8a86abcfa8efd2b9b21f3cc08612c932",
+      "tmp/heart-learning/eye-routing-v1/release/hunodan/results.json": "5f0db7875c33036696ffa7859c323cff20b8d2afed7b2b0dad9b5012aa73c56b",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/source.json": "628069ded10264542980061feb7d7ea2d22cdbc2ff026c68c6a2e120a14052b3"
+    }
+  },
+  "nativeReleaseComparison": {
+    "status": "passed",
+    "catalogEntries": 47,
+    "photoEvaluated": 31,
+    "excludedIncomplete": 15,
+    "excludedObscured": 1,
+    "photoPassed": 25,
+    "photoImprovedErrors": 7,
+    "photoErrorRegressions": [],
+    "photoPassRegressions": [],
+    "remainingFailures": [
+      "nested-squares",
+      "outline-star",
+      "santa",
+      "jigsaw",
+      "crossed-ribbons",
+      "bauble"
+    ],
+    "photoInputAndMaskHashesUnchanged": true,
+    "photoComparison": [
+      {
+        "id": "oval-figure",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "eight-point-star",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "small-figure",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "deer",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "top-checker",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "top-candle",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "top-tree",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "partial-top-right",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "partial-left-checker",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "nested-squares",
+        "previousStatus": "no_crop",
+        "status": "no_crop",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "outline-star",
+        "previousStatus": "failed",
+        "status": "failed",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": 0.00815625,
+        "error": 0.00815625,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "floral-checker",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.01941875,
+        "error": 0.01940625,
+        "errorDelta": -1.2499999999998623e-05
+      },
+      {
+        "id": "dense-checker",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.00699375,
+        "error": 0.00699375,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "bird",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.02470625,
+        "error": 0.02470625,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "leaf",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.025625,
+        "error": 0.0131625,
+        "errorDelta": -0.012462499999999998
+      },
+      {
+        "id": "partial-right-checker",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "partial-left-abstract",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "gift",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.02303125,
+        "error": 0.02303125,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "gingerbread",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0149375,
+        "error": 0.014825,
+        "errorDelta": -0.00011249999999999975
+      },
+      {
+        "id": "white-birds",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.00379375,
+        "error": 0.00379375,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "flower",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0050625,
+        "error": 0.0050625,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "warped-checker",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0178875,
+        "error": 0.01755,
+        "errorDelta": -0.000337500000000001
+      },
+      {
+        "id": "round-checker",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0121375,
+        "error": 0.0121375,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "santa",
+        "previousStatus": "no_crop",
+        "status": "no_crop",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "partial-left-diamonds",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "fine-checker",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0221625,
+        "error": 0.0216875,
+        "errorDelta": -0.0004750000000000032
+      },
+      {
+        "id": "orb",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.01443125,
+        "error": 0.01443125,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "stacked-hearts",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.007425,
+        "error": 0.007425,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "jigsaw",
+        "previousStatus": "failed",
+        "status": "failed",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": 0.0564375,
+        "error": 0.0564375,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "candle",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0048375,
+        "error": 0.0048375,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "maple-leaf",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.013425,
+        "error": 0.013325,
+        "errorDelta": -9.99999999999994e-05
+      },
+      {
+        "id": "crown",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.02411875,
+        "error": 0.02411875,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "partial-bottom-left",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "bottom-diamonds",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "crossed-ribbons",
+        "previousStatus": "failed",
+        "status": "failed",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": 0.02153125,
+        "error": 0.02153125,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "bauble",
+        "previousStatus": "failed",
+        "status": "failed",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": 0.0919125,
+        "error": 0.0919125,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "glare-motif",
+        "previousStatus": "obscured",
+        "status": "obscured",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "bottom-flower",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0093875,
+        "error": 0.0093875,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "faceted-star",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0065,
+        "error": 0.0065,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "partial-bottom-right",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "bibel-star-8",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.003675,
+        "error": 0.003675,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "bibel-star-curved",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.00663125,
+        "error": 0.00663125,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "bibel-star-outline",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0116,
+        "error": 0.0116,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "bibel-cross",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.00243125,
+        "error": 0.00243125,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "flettede-puppy",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0103125,
+        "error": 0.0103125,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "flettede-stonehenge",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.01905,
+        "error": 0.01905,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "flettede-viking",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.02055,
+        "error": 0.02024375,
+        "errorDelta": -0.0003062499999999975
+      }
+    ],
+    "editablePassed": 47,
+    "editableTotal": 47,
+    "editableScope": "Actual conversion, SVG serialization/reparse, source-feature and nominal geometry/paper checks on all 22 Hunodan and 25 accepted photograph pairs.",
+    "leafEditableError": 0.01310625,
+    "previewOrigin": "http://127.0.0.1:5232",
+    "servedAssetsVerified": 158,
+    "artifactsSha256": {
+      "tmp/heart-learning/return-projection-speed-v1/production-release/photos/results.json": "8936c8af6a1a1fd4fac39a9b2d12be7f7976c86319842c88290c59bf10e8bcfc",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/photo-comparison.json": "de6a67c3fb1b8a9d65d6c792f65707bb9d0984f1d46b8ad31d6ccdd86819dd09",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/hunodan-comparison.json": "a744323250b994863996a3a1a36226d366ba7f20b290c77be17b256b6c9740e5",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/native-gates.json": "eb0f0a9c45905d1bd52673448498b12d18f602f3ed748787ed41ecdf3517aeb9",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/photo-editor/results.json": "57f3585b4d72a76ea5fa28c6526d83132f8e27282d36f0d488507e000ae8ef24",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/hunodan-editor/results.json": "5e4eb6feba19e8c38d3c6fdfd2e7214a7b357d3dee19085d803a2bf7802375fc",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/served-assets.json": "007137c0793012b06a3a014db58499129c6cb1939e363858671473f21eb32e70"
+    }
+  },
+  "nativeVisualReview": {
+    "reviewedAt": "2026-10-14T22:59:21.285941+00:00",
+    "reviewer": "assistant",
+    "scope": "Native exported-mask comparison for all seven changed photograph fits plus the Hunodan bird. Leaf editable SVG render also inspected; not all browser screenshots or original artwork.",
+    "observations": [
+      "Leaf lower frame follows the source mask more closely; small kinks and a thin bottom opening remain.",
+      "Other changes are visually small. Checker boundaries remain uneven and gingerbread/Viking retain faint seams. No perfect-artwork reconstruction claim.",
+      "Hunodan bird eye and silhouette remain intact.",
+      "Leaf editable render preserves the inspected native silhouette."
+    ],
+    "artifactsSha256": {
+      "tmp/heart-learning/return-projection-speed-v1/production-release/photo-changes-review-1.png": "6d7a5d4d976c3cef224facb14d07a2e0295401140efdb5f983a05db130b76b05",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/photo-changes-review-2.png": "72643073599dd8b5fed20fa2399b4bdf1b1080a1b8d8830d4e5275304d1f95ac",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/photo-changes-review-3.png": "023f1e3371d5787ce975da6381c5f1d7e7e1047e8a2275d822e8f14cabf1ed2f",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/photo-editor/leaf-automatic-weave.png": "148506b7416c437e91e99293b23a00d1838ca1cb5779e1636b36ce66b10bc51e",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/hunodan/hjfig-05/independent.png": "47f381e0df8a40894af97349d5d402b1d5204c728ddba22022ae465e06b92ff7",
+      "tmp/heart-learning/eye-routing-v1/release/hunodan/hjfig-05/independent.png": "c259521d1910e968f261346051c0353ab4166a164091a16e9a23c477b896abad"
+    }
+  },
+  "browserRelease": {
+    "status": "passed",
+    "runtimeCommit": "c000d30",
+    "sourceFilesVerified": 845,
+    "mainPassed": 16,
+    "mainTotal": 16,
+    "additionalPassed": 4,
+    "additionalScope": "Shifted-star and leaf uploads, ordinary allowance and explicit ten-second worker requests. Actual downloaded SVGs independently checked at 400/800 pixels.",
+    "mainRows": [
+      {
+        "name": "flower-native-mask",
+        "passed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.010200000047683715,
+          "prepareRoundTripSeconds": 0.21679999995231627,
+          "preparedToSolveRequestSeconds": 0.00040000009536743164,
+          "solveRoundTripSeconds": 7.0645,
+          "resultToReadySeconds": 0.6180999999046326,
+          "clickToReadySeconds": 7.91
+        },
+        "editableError": 0.009925,
+        "engineError": 0.00490625
+      },
+      {
+        "name": "flower-downsample-mask",
+        "passed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005400000095367431,
+          "prepareRoundTripSeconds": 0.1662000000476837,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 8.628299999952317,
+          "resultToReadySeconds": 0.5231000001430511,
+          "clickToReadySeconds": 9.323300000190734
+        },
+        "editableError": 0.01035,
+        "engineError": 0.00593125
+      },
+      {
+        "name": "hard-bibel-star-outline",
+        "passed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0055,
+          "prepareRoundTripSeconds": 0.158,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 7.7225,
+          "resultToReadySeconds": 0.1885,
+          "clickToReadySeconds": 8.074799999952317
+        },
+        "editableError": 0.016825,
+        "engineError": 0.0113875
+      },
+      {
+        "name": "hard-bibel-star-outline-half",
+        "passed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005199999809265137,
+          "prepareRoundTripSeconds": 0.1675,
+          "preparedToSolveRequestSeconds": 0.00030000019073486326,
+          "solveRoundTripSeconds": 8.379799999952317,
+          "resultToReadySeconds": 0.38870000004768374,
+          "clickToReadySeconds": 8.9415
+        },
+        "editableError": 0.017875,
+        "engineError": 0.01300625
+      },
+      {
+        "name": "hard-bibel-star-outline-jpeg75",
+        "passed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0052999999523162845,
+          "prepareRoundTripSeconds": 0.16020000004768373,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 3.8420999999046326,
+          "resultToReadySeconds": 0.3529000000953674,
+          "clickToReadySeconds": 4.360799999952317
+        },
+        "editableError": 0.022075,
+        "engineError": 0.0167875
+      },
+      {
+        "name": "hard-flettede-puppy",
+        "passed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0052999999523162845,
+          "prepareRoundTripSeconds": 0.164,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 17.2195,
+          "resultToReadySeconds": 0.766,
+          "clickToReadySeconds": 18.155099999904632
+        },
+        "editableError": 0.01905,
+        "engineError": 0.01050625
+      },
+      {
+        "name": "hard-flettede-viking",
+        "passed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005600000143051147,
+          "prepareRoundTripSeconds": 0.19629999995231628,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 28.326200000047685,
+          "resultToReadySeconds": 1.1832000000476837,
+          "clickToReadySeconds": 29.71160000014305
+        },
+        "editableError": 0.028675,
+        "engineError": 0.01919375
+      },
+      {
+        "name": "hunodan",
+        "passed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0050999999046325685,
+          "prepareRoundTripSeconds": 0.16290000009536743,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 4.246799999952317,
+          "resultToReadySeconds": 0.44890000009536746,
+          "clickToReadySeconds": 4.864
+        },
+        "editableError": 0.01315,
+        "engineError": 0.00943125
+      },
+      {
+        "name": "star",
+        "passed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0085,
+          "prepareRoundTripSeconds": 0.03790000009536743,
+          "preparedToSolveRequestSeconds": 0.00040000009536743164,
+          "solveRoundTripSeconds": 1.72,
+          "resultToReadySeconds": 0.2755999999046326,
+          "clickToReadySeconds": 2.0424000000953675
+        },
+        "editableError": 0.00465,
+        "engineError": 0.0016
+      },
+      {
+        "name": "top-hat-preferred",
+        "passed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.019800000190734864,
+          "prepareRoundTripSeconds": 0.24809999990463258,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 7.228400000095368,
+          "resultToReadySeconds": 0.24170000004768372,
+          "clickToReadySeconds": 7.738300000190735
+        },
+        "editableError": 0.0021258503401360546,
+        "engineError": 0.003941680839002267
+      },
+      {
+        "name": "blue-star-polishing-mask",
+        "passed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0055,
+          "prepareRoundTripSeconds": 0.1427000000476837,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 7.9934000000953676,
+          "resultToReadySeconds": 0.7515,
+          "clickToReadySeconds": 8.893400000095367
+        },
+        "editableError": 0.01105,
+        "engineError": 0.0044625
+      },
+      {
+        "name": "web-danish-tree-green",
+        "passed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005,
+          "prepareRoundTripSeconds": 0.1515,
+          "preparedToSolveRequestSeconds": 0.00040000009536743164,
+          "solveRoundTripSeconds": 7.526399999856949,
+          "resultToReadySeconds": 0.4579000000953674,
+          "clickToReadySeconds": 8.141200000047684
+        },
+        "editableError": 0.017925,
+        "engineError": 0.01055
+      },
+      {
+        "name": "gold-routing-mask",
+        "passed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0052999999523162845,
+          "prepareRoundTripSeconds": 0.1962000000476837,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 6.7145,
+          "resultToReadySeconds": 0.45209999990463257,
+          "clickToReadySeconds": 7.3683999998569485
+        },
+        "editableError": 0.01435,
+        "engineError": 0.00783125
+      },
+      {
+        "name": "bird-mask",
+        "passed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005900000095367432,
+          "prepareRoundTripSeconds": 0.18170000004768372,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 10.482299999952316,
+          "resultToReadySeconds": 1.113100000143051,
+          "clickToReadySeconds": 11.783300000190735
+        },
+        "editableError": 0.0291,
+        "engineError": 0.02493125
+      },
+      {
+        "name": "bird-shift-mask",
+        "passed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.006200000047683716,
+          "prepareRoundTripSeconds": 0.17819999980926512,
+          "preparedToSolveRequestSeconds": 0.00030000019073486326,
+          "solveRoundTripSeconds": 15.006,
+          "resultToReadySeconds": 0.6665999999046326,
+          "clickToReadySeconds": 15.857299999952316
+        },
+        "editableError": 0.02935,
+        "engineError": 0.02465625
+      },
+      {
+        "name": "bird-y-shift-mask",
+        "passed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.012,
+          "prepareRoundTripSeconds": 0.18739999985694886,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 27.162900000095366,
+          "resultToReadySeconds": 1.3205,
+          "clickToReadySeconds": 28.683099999904634
+        },
+        "editableError": 0.02625,
+        "engineError": 0.02101875
+      }
+    ],
+    "additionalMeasurements": {
+      "scope": "Actual browser-downloaded editable SVGs at 400/800 pixels. Normal app allowance versus an explicit ten-second request intervention; no curve/target substitution.",
+      "rows": [
+        {
+          "mode": "normal-browser",
+          "name": "outline-star-shift-mask",
+          "maskSha256": "3338849d32ecafd54d2365fc664ec97ee5fbca5b54534290d873f6919437f5f4",
+          "svgSha256": "0f998de2ace6d79392214b614ded623895f09c457fe3eb0ce3435a015e68e651",
+          "scores": {
+            "400": {
+              "error": 0.0075875,
+              "features": {
+                "passed": true,
+                "referenceAvailable": true,
+                "minimumRetention": 0.6,
+                "minimumAreaFraction": 0.0003,
+                "minimumCoreRadiusFraction": 0.005,
+                "borderClearancePixels": 1,
+                "regions": [
+                  {
+                    "value": 1,
+                    "areaMm2": 827.5625,
+                    "centerMm": [
+                      45.77659353523148,
+                      47.56316554640888
+                    ],
+                    "retainedFraction": 0.992749792311759
+                  }
+                ],
+                "missing": [],
+                "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+              }
+            },
+            "800": {
+              "error": 0.009165625,
+              "features": {
+                "passed": true,
+                "referenceAvailable": true,
+                "minimumRetention": 0.6,
+                "minimumAreaFraction": 0.0003,
+                "minimumCoreRadiusFraction": 0.005,
+                "borderClearancePixels": 1,
+                "regions": [
+                  {
+                    "value": 1,
+                    "areaMm2": 827.5625,
+                    "centerMm": [
+                      45.77659353523148,
+                      47.56316554640888
+                    ],
+                    "retainedFraction": 0.9911638093799562
+                  }
+                ],
+                "missing": [],
+                "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+              }
+            }
+          },
+          "passed": true
+        },
+        {
+          "mode": "normal-browser",
+          "name": "leaf-mask",
+          "maskSha256": "0e1fefda40bbe92da956dd2467d117af6a732d0223e695901cc0255a166651f4",
+          "svgSha256": "0477b30e228c29c0434244781a5f3ffcb550714ea9f89d923aa56f22298d1b97",
+          "scores": {
+            "400": {
+              "error": 0.0254875,
+              "features": {
+                "passed": true,
+                "referenceAvailable": true,
+                "minimumRetention": 0.6,
+                "minimumAreaFraction": 0.0003,
+                "minimumCoreRadiusFraction": 0.005,
+                "borderClearancePixels": 1,
+                "regions": [
+                  {
+                    "value": 1,
+                    "areaMm2": 1232.125,
+                    "centerMm": [
+                      47.192743735416464,
+                      42.4492619458253
+                    ],
+                    "retainedFraction": 0.9919853910926245
+                  }
+                ],
+                "missing": [],
+                "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+              }
+            },
+            "800": {
+              "error": 0.026840625,
+              "features": {
+                "passed": true,
+                "referenceAvailable": true,
+                "minimumRetention": 0.6,
+                "minimumAreaFraction": 0.0003,
+                "minimumCoreRadiusFraction": 0.005,
+                "borderClearancePixels": 1,
+                "regions": [
+                  {
+                    "value": 1,
+                    "areaMm2": 1232.125,
+                    "centerMm": [
+                      47.192743735416464,
+                      42.4492619458253
+                    ],
+                    "retainedFraction": 0.9905016739373035
+                  }
+                ],
+                "missing": [],
+                "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+              }
+            }
+          },
+          "passed": true
+        },
+        {
+          "mode": "short-browser",
+          "name": "outline-star-shift-mask",
+          "maskSha256": "3338849d32ecafd54d2365fc664ec97ee5fbca5b54534290d873f6919437f5f4",
+          "svgSha256": "0a03533a0fb0790c5c9acbe98c702f54c49d0b3d6d836f5462191f9b99686c05",
+          "scores": {
+            "400": {
+              "error": 0.00775625,
+              "features": {
+                "passed": true,
+                "referenceAvailable": true,
+                "minimumRetention": 0.6,
+                "minimumAreaFraction": 0.0003,
+                "minimumCoreRadiusFraction": 0.005,
+                "borderClearancePixels": 1,
+                "regions": [
+                  {
+                    "value": 1,
+                    "areaMm2": 827.5625,
+                    "centerMm": [
+                      45.77659353523148,
+                      47.56316554640888
+                    ],
+                    "retainedFraction": 0.9922966543312438
+                  }
+                ],
+                "missing": [],
+                "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+              }
+            },
+            "800": {
+              "error": 0.009265625,
+              "features": {
+                "passed": true,
+                "referenceAvailable": true,
+                "minimumRetention": 0.6,
+                "minimumAreaFraction": 0.0003,
+                "minimumCoreRadiusFraction": 0.005,
+                "borderClearancePixels": 1,
+                "regions": [
+                  {
+                    "value": 1,
+                    "areaMm2": 827.5625,
+                    "centerMm": [
+                      45.77659353523148,
+                      47.56316554640888
+                    ],
+                    "retainedFraction": 0.9905596254059361
+                  }
+                ],
+                "missing": [],
+                "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+              }
+            }
+          },
+          "passed": true
+        },
+        {
+          "mode": "short-browser",
+          "name": "leaf-mask",
+          "maskSha256": "0e1fefda40bbe92da956dd2467d117af6a732d0223e695901cc0255a166651f4",
+          "svgSha256": "97c757b6e9f70f77f9448a3d1462e1764a5d62fbb33cba82fc94570d49e7cace",
+          "scores": {
+            "400": {
+              "error": 0.01315625,
+              "features": {
+                "passed": true,
+                "referenceAvailable": true,
+                "minimumRetention": 0.6,
+                "minimumAreaFraction": 0.0003,
+                "minimumCoreRadiusFraction": 0.005,
+                "borderClearancePixels": 1,
+                "regions": [
+                  {
+                    "value": 1,
+                    "areaMm2": 1232.125,
+                    "centerMm": [
+                      47.192743735416464,
+                      42.4492619458253
+                    ],
+                    "retainedFraction": 0.9950796388353454
+                  }
+                ],
+                "missing": [],
+                "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+              }
+            },
+            "800": {
+              "error": 0.014828125,
+              "features": {
+                "passed": true,
+                "referenceAvailable": true,
+                "minimumRetention": 0.6,
+                "minimumAreaFraction": 0.0003,
+                "minimumCoreRadiusFraction": 0.005,
+                "borderClearancePixels": 1,
+                "regions": [
+                  {
+                    "value": 1,
+                    "areaMm2": 1232.125,
+                    "centerMm": [
+                      47.192743735416464,
+                      42.4492619458253
+                    ],
+                    "retainedFraction": 0.993329613472659
+                  }
+                ],
+                "missing": [],
+                "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+              }
+            }
+          },
+          "passed": true
+        }
+      ]
+    },
+    "entryLoading": {
+      "buildVersion": {
+        "version": "1792017218476"
+      },
+      "baseline": {
+        "commit": "635e8b4c35d91bf5ebbd99ce1d791c4e0b15070d",
+        "assetsFile": "tmp/heart-learning/eye-routing-v1/release/served-assets.json",
+        "loadingFile": "tmp/heart-learning/eye-routing-v1/release/lazy-loading.json",
+        "assetsSha256": "646b9a9b83eb9ab5e295029db857e927a6781a1b6480f0708652786d6d3d8556",
+        "loadingSha256": "ea04aceaabac22ca67b8c389697b94d6c3b5270264bd01ddf4a6d4ffec556e26"
+      },
+      "applicationComparison": {
+        "beforeBytes": 1907733,
+        "afterBytes": 1907733,
+        "beforeCount": 68,
+        "afterCount": 68,
+        "identicalContent": 31
+      },
+      "passed": true
+    },
+    "entryRoutes": [
+      {
+        "route": "/en/editor/",
+        "passed": true,
+        "engine": [],
+        "errors": [],
+        "scriptComparison": {
+          "beforeBytes": 473483,
+          "afterBytes": 473483,
+          "beforeCount": 23,
+          "afterCount": 23
+        }
+      },
+      {
+        "route": "/en/editor/paint/",
+        "passed": true,
+        "engine": [],
+        "errors": [],
+        "scriptComparison": {
+          "beforeBytes": 503384,
+          "afterBytes": 503384,
+          "beforeCount": 28,
+          "afterCount": 28
+        }
+      }
+    ],
+    "harnessCorrections": [
+      "Original local harness required filenames/bytes from the older build; SvelteKit build-version changes propagate hashed names through importers. Identical bytes are not claimed: 31 of 68 application assets match exactly, while all JS/CSS size multisets match.",
+      "First new-harness replay used a method call on a recorded URL string; second included blocked external analytics in the baseline. Both errors and failed reports are retained; the third replay passes."
+    ],
+    "visualReview": [
+      {
+        "file": "tmp/heart-learning/return-projection-speed-v1/production-release/browser/chromium-top-hat-preferred/result.png",
+        "sha256": "494327c688ff971ae61ca91b697335eb4b8e9b05082d223d34a17b7b880a5fbf",
+        "observation": "Recognizable matching-sheet hat; tiny nicks remain along straight edges and the free border has curved lobes."
+      },
+      {
+        "file": "tmp/heart-learning/return-projection-speed-v1/production-release/browser/chromium-star/draw.png",
+        "sha256": "e509e090bfd4bd839ddf9959a473ccb2af47d9c53052684564559be1a9c99afc",
+        "observation": "Central outlined star and checker border survive conversion; colored cut overlays and editing controls visible."
+      },
+      {
+        "file": "tmp/heart-learning/return-projection-speed-v1/production-release/browser/chromium-hard-flettede-viking/result.png",
+        "sha256": "3153f5ed726b52af727c6417469dbd723b448f1abe9d9c50c6b8752d49a1e24b",
+        "observation": "Ship silhouette remains recognizable; narrow upper-right frame seam, uneven edges and bottom-frame artifacts remain."
+      },
+      {
+        "file": "tmp/heart-learning/return-projection-speed-v1/production-release/browser/chromium-gold-routing-mask/draw.png",
+        "sha256": "ce8d708b8e12e18e0106598fe48609fb7317dcd724b50801305de07e37f8cb26",
+        "observation": "Angel silhouette, head and wings preserved in the editable result; cut overlays and adjoining frame visible."
+      }
+    ],
+    "artifactsSha256": {
+      "tmp/heart-learning/return-projection-speed-v1/production-release/checks.json": "a9e866d500e538311dae20f4ec9dad3dd2073500236e4c5e1d074317ee8666e1",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/source.json": "628069ded10264542980061feb7d7ea2d22cdbc2ff026c68c6a2e120a14052b3",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/browser/results.json": "6e759d77e9d64a97bc4c9f3a753e50d4bc13c0cafcb1336e7eb293f6faaa8f4d",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/served-assets.json": "007137c0793012b06a3a014db58499129c6cb1939e363858671473f21eb32e70",
+      "tmp/heart-learning/return-projection-speed-v1/browser-study/checks.json": "f8f7e80eab9d263490743a706fadab83d94a0ea64a95c87b2601e79d3989ffaa",
+      "tmp/heart-learning/return-projection-speed-v1/browser-study/measurements.json": "aba340460824d37cf5bdbe8656b1fefc79603988a4fd980674883632f4784fb7",
+      "tmp/heart-learning/return-projection-speed-v1/browser-study/normal-browser/results.json": "a3aab95dbc2da4e7b3b1b52dab055882092f40e2fe03132cf5780c1c3c2fa346",
+      "tmp/heart-learning/return-projection-speed-v1/browser-study/short-browser/results.json": "be0a7a762eac1cb381dfdbbf1cea2e0fa7b724b8a0a6bbea427a1d128327fdcd",
+      "tmp/heart-learning/return-projection-speed-v1/browser-study/lazy-loading.log": "d10abab044fdfd2af4bd8aab8200b8f6b88af07328b6b92c71aaf8e5a6958a12",
+      "tmp/heart-learning/return-projection-speed-v1/browser-loading/results.json": "e3c5effe16d7b4deba214f21bf0fdb085af3704935835ad5477aae351bd0c497",
+      "tmp/heart-learning/return-projection-speed-v1/browser-loading-v2/results.json": "9dad5cc8c765e2275f6a89e9bf92a8b202c61dfaf597774a82cfce9ef3be9caf",
+      "tmp/heart-learning/return-projection-speed-v1/browser-loading-v3/results.json": "eaa962caaffdd70b43ad7376df08ccb32d80a23666062c62c09c528ad4a164d4",
+      "scripts/inverse/entry-loading-browser-test.mjs": "7a49f5ec378443a49d025c6fed43403e2004fb94a6d291128ce7192f7acd7780",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/browser/chromium-top-hat-preferred/result.png": "494327c688ff971ae61ca91b697335eb4b8e9b05082d223d34a17b7b880a5fbf",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/browser/chromium-star/draw.png": "e509e090bfd4bd839ddf9959a473ccb2af47d9c53052684564559be1a9c99afc",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/browser/chromium-hard-flettede-viking/result.png": "3153f5ed726b52af727c6417469dbd723b448f1abe9d9c50c6b8752d49a1e24b",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/browser/chromium-gold-routing-mask/draw.png": "ce8d708b8e12e18e0106598fe48609fb7317dcd724b50801305de07e37f8cb26"
+    },
+    "limitations": [
+      "Browser flows use the ordinary 180-second allowance except the two explicitly budgeted extra flows; native ten-second timings are not browser latency guarantees.",
+      "The same six hard-photo failures remain; numerical and geometry checks do not prove original artwork or physical assembly.",
+      "Full check/lint/app/build/inverse QA predates the added browser-only harness. That harness separately passes ESLint and its real-browser replay; runtime source hashes remain unchanged."
+    ]
+  }
+}

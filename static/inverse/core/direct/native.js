@@ -1,20 +1,11 @@
-/** Optional acceleration of the existing boundary derivative. Geometry checks
- * and exported-curve rendering remain independent JavaScript implementations. */
-let runtime=null,loading=null;
-export function loadBoundaryKernel(){
-  return loading??=(async()=>{
-    try{
-      const url=new URL('./native/boundary.wasm',import.meta.url);
-      const bytes=typeof process!=='undefined'&&process.versions?.node
-        ?await(await import('node:fs/promises')).readFile(url)
-        :await(await fetch(url)).arrayBuffer();
-      runtime=(await WebAssembly.instantiate(bytes,{})).instance.exports;
-      return{backend:'wasm',method:'Same continuous boundary formula; float64, no fast-math'};
-    }catch(error){return{backend:'javascript',reason:error.message};}
-  })();
-}
+/** Optional acceleration of the existing boundary derivative. Curve-distance
+ * checks and exported-curve rendering remain independent of this kernel. The
+ * shared runtime also accelerates discrete paper-lattice operations. */
+import {loadNumericalKernel,numericalKernel,kernelMemory} from '../numerical-kernel.js';
+export const loadBoundaryKernel=loadNumericalKernel;
 const graphTables=new WeakMap();
 export function nativeBoundaryGradient(graph,points,prob,n,phase,index,table){
+  const runtime=numericalKernel();
   if(!runtime)return null;
   let geometry=graphTables.get(graph);
   if(!geometry){
@@ -23,13 +14,11 @@ export function nativeBoundaryGradient(graph,points,prob,n,phase,index,table){
   }
   const bins=index.bins,segments=index.segments,nb=bins.length,nquad=table.B.length;
   const binCount=bins.reduce((s,b)=>s+b.length,0);
-  let end=Number(runtime.__heap_base.value);
-  const alloc=bytes=>{const at=end;end+=Math.ceil(bytes/8)*8;return at;};
+  const arena=kernelMemory(),alloc=arena.alloc;
   const p=alloc(points.length*8),e=alloc(geometry.edges.byteLength),o=alloc(geometry.occurrences.byteLength),v=alloc(geometry.visible.byteLength);
   const ss=alloc(segments.length*5*8),starts=alloc((nb+1)*4),ids=alloc(binCount*4),target=alloc(n*n*8);
   const B=alloc(nquad*4*8),D=alloc(nquad*4*8),out=alloc(points.length*8);
-  if(end>runtime.memory.buffer.byteLength)runtime.memory.grow(Math.ceil((end-runtime.memory.buffer.byteLength)/65536));
-  const doubles=new Float64Array(runtime.memory.buffer),integers=new Int32Array(runtime.memory.buffer);
+  const {doubles,integers}=arena.views();
   doubles.set(points,p/8);integers.set(geometry.edges,e/4);integers.set(geometry.occurrences,o/4);integers.set(geometry.visible,v/4);
   let at=ss/8;for(const segment of segments)for(let i=0;i<5;i++)doubles[at++]=segment[i];
   at=0;for(let i=0;i<nb;i++){integers[starts/4+i]=at;integers.set(bins[i],ids/4+at);at+=bins[i].length;}integers[starts/4+nb]=at;

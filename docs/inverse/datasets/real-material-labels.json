@@ -1,0 +1,604 @@
+{
+  "schema": "woven-heart-real-material-study-1",
+  "status": "complete",
+  "recordedAt": "2026-10-14T09:17:00.036384+00:00",
+  "implementationCommits": [
+    "abb12d7",
+    "5d2c8e9681b2c68009ee4e879ea1ebc69bc47f99"
+  ],
+  "scope": "Three new partial material annotations on existing photographs and body labels, plus a tested offline joint model/loss. No model trained, no app behavior changed, no automatic benchmark improvement claimed.",
+  "counts": {
+    "existingHeartInstances": 3,
+    "sourceGroups": 3,
+    "newSourcePhotos": 0,
+    "knownMaterialPixels256": 37381,
+    "newMaterialTrainingRuns": 0
+  },
+  "sourceManifest": {
+    "path": "docs/inverse/datasets/real-manifest.json",
+    "sha256": "149697fc7cdd535736dd8727bba7847bca10d74823a28bdfaf77c95c44a6ffb3"
+  },
+  "implementationSha256": {
+    "scripts/inverse/datasets/real_materials.py": "7f6052d404e66b971bc76821e4de75d7fee38972cdd2af30fa076037faaf878a",
+    "scripts/inverse/datasets/real-materials.json": "fae5ef1cf8f1fbf4661776e05454da849be1dcada9f778d88e522d5d29773709",
+    "scripts/inverse/learning/real_materials_learning.py": "cc3fa5448f9804c5f4e2ae3c407dbb9281a1cfbf3c332ab7d7a9e3d753907a16",
+    "scripts/inverse/learning/real_materials.test.py": "645ad2d24c440e5db8010e1cf540059dbf6634fe14abce3164a3e5bd9e67140e",
+    "scripts/inverse/learning/real_foreground.py": "aaf28c48c7728725bc681a8950c8b5f5a4e2dc9f1ad49f227fb5f02b3bc5d416",
+    "scripts/inverse/datasets/real_annotations.py": "b505fb723dc45b644cb95a058ddf45317f6afb700c61fb88cb3d93571fb9e33c"
+  },
+  "labelManifests": {
+    "final-256": "ded1a05499b1026a7e8a967431631e2785fec490023b61b82d4baa9bf2d21e41",
+    "final-768": "52e72a55e8b81c76daf7969b62518d56bd9b2fe6c3bf83f812442a13b5762d74"
+  },
+  "instances": [
+    {
+      "id": "real-cf2d0fcff65d7386-body-1",
+      "assetId": "real-cf2d0fcff65d7386",
+      "imageSha256": "cf2d0fcff65d7386a7295376e03a6b3f027645b74c361e0035bcc46220a6a6d9",
+      "nearDuplicateGroup": "real-cf2d0fcff65d7386",
+      "splitGroupId": "real-split-561720ec89d3174d",
+      "splitStatus": "unassigned",
+      "trainingRightsStatus": "not-cleared",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "regular-checkerboard",
+        "crossCorpusReview": "pending"
+      },
+      "transform": {
+        "scale": 0.4266666666666667,
+        "offset": [
+          0.0,
+          18.346666666666664
+        ],
+        "resolution": 256
+      },
+      "bodyPixelCounts": {
+        "0": 26390,
+        "1": 27671,
+        "255": 11475
+      },
+      "materialPixelCounts": {
+        "0": 9548,
+        "1": 9156,
+        "255": 46832
+      },
+      "assets": {
+        "rgb": {
+          "path": "real-cf2d0fcff65d7386-body-1-rgb.png",
+          "sha256": "46ca9f23ede4db5bfc16a9d53be33c4c18c1502ed0be518c4212be13a041cb0f"
+        },
+        "body": {
+          "path": "real-cf2d0fcff65d7386-body-1-body.png",
+          "sha256": "413c386c6f0e78844f8c2634c409b8dc9eedcdfee3de4ac4b34807fa34e6e8bc"
+        },
+        "materials": {
+          "path": "real-cf2d0fcff65d7386-body-1-materials.png",
+          "sha256": "18ff0e44102e05def001f3db8a89c331308c647ba4a3a4dde438029a7a2e5ffd"
+        },
+        "overlay": {
+          "path": "real-cf2d0fcff65d7386-body-1-overlay.png",
+          "sha256": "45ef72bb86c4023abbf94895c2841fe1f92423065f2f744cc5341acd1eb22420"
+        }
+      }
+    },
+    {
+      "id": "real-cdae5c890b6933cd-body-1",
+      "assetId": "real-cdae5c890b6933cd",
+      "imageSha256": "cdae5c890b6933cdbdf4182133239e0cfd3e965bf289617aea32a74266e59c51",
+      "nearDuplicateGroup": "real-cdae5c890b6933cd",
+      "splitGroupId": "real-split-e15997e1ba929b7f",
+      "splitStatus": "unassigned",
+      "trainingRightsStatus": "not-cleared",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "decorative-two-paper-checkerboard",
+        "crossCorpusReview": "pending"
+      },
+      "transform": {
+        "scale": 0.34829931972789113,
+        "offset": [
+          1.4210854715202004e-14,
+          47.020408163265316
+        ],
+        "resolution": 256
+      },
+      "bodyPixelCounts": {
+        "0": 30624,
+        "1": 8782,
+        "255": 26130
+      },
+      "materialPixelCounts": {
+        "0": 2822,
+        "1": 3229,
+        "255": 59485
+      },
+      "assets": {
+        "rgb": {
+          "path": "real-cdae5c890b6933cd-body-1-rgb.png",
+          "sha256": "76b64dca5c7ab64e4da6ab4a00fb68aa1a06e1ebb914a3f629b9deb38878d1c5"
+        },
+        "body": {
+          "path": "real-cdae5c890b6933cd-body-1-body.png",
+          "sha256": "82034f178126c4545cfccbea02c829b30aed0e511caf73ebea89c582383c79fe"
+        },
+        "materials": {
+          "path": "real-cdae5c890b6933cd-body-1-materials.png",
+          "sha256": "75f390dcbf09281ec006c8796fff6ccc7593bc65ed4aabf418f3f29001e5886d"
+        },
+        "overlay": {
+          "path": "real-cdae5c890b6933cd-body-1-overlay.png",
+          "sha256": "2c24597b17e66196436899ba4eb29ec70a5a30f22f910c0496223ec17d989dc2"
+        }
+      }
+    },
+    {
+      "id": "real-68d8f25d8891df62-body-1",
+      "assetId": "real-68d8f25d8891df62",
+      "imageSha256": "68d8f25d8891df62c4ac48949b0552e95ce0a73a07c0be99b9dfc0a1dcdcbfd4",
+      "nearDuplicateGroup": "real-68d8f25d8891df62",
+      "splitGroupId": "real-split-6459d28c6c10b90f",
+      "splitStatus": "unassigned",
+      "trainingRightsStatus": "not-cleared",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "floral-blue-gold",
+        "crossCorpusReview": "pending"
+      },
+      "transform": {
+        "scale": 0.5481798715203426,
+        "offset": [
+          29.327623126338324,
+          0.0
+        ],
+        "resolution": 256
+      },
+      "bodyPixelCounts": {
+        "0": 24337,
+        "1": 22211,
+        "255": 18988
+      },
+      "materialPixelCounts": {
+        "0": 5055,
+        "1": 7571,
+        "255": 52910
+      },
+      "assets": {
+        "rgb": {
+          "path": "real-68d8f25d8891df62-body-1-rgb.png",
+          "sha256": "63d73c019f9ceaeed49204f3b1fb2934020e02ee4b945cbd0600bccad44e1551"
+        },
+        "body": {
+          "path": "real-68d8f25d8891df62-body-1-body.png",
+          "sha256": "6aa4f9d07a61edc50ba71b406bd9363235f09f9c573e101f37a02e870d027e01"
+        },
+        "materials": {
+          "path": "real-68d8f25d8891df62-body-1-materials.png",
+          "sha256": "1133bd8f91e692001aa2291b6f0d74fd78d4cb848f296d8d4daf1cc2774669ac"
+        },
+        "overlay": {
+          "path": "real-68d8f25d8891df62-body-1-overlay.png",
+          "sha256": "4c9723e4af469d59bf98a860b114de65e71babc1ec22a56b111538cd56ba2b56"
+        }
+      }
+    }
+  ],
+  "integrityAudit": {
+    "passed": true,
+    "labelAudit256": {
+      "passed": true,
+      "instances": 3,
+      "sourceGroups": 3,
+      "manifestSha256": "ded1a05499b1026a7e8a967431631e2785fec490023b61b82d4baa9bf2d21e41",
+      "annotationsSha256": "fae5ef1cf8f1fbf4661776e05454da849be1dcada9f778d88e522d5d29773709",
+      "scope": "Source bytes, body references, grouping, transforms and every output pixel; annotation correctness still requires visual review."
+    },
+    "labelAudit768": {
+      "passed": true,
+      "instances": 3,
+      "sourceGroups": 3,
+      "manifestSha256": "52e72a55e8b81c76daf7969b62518d56bd9b2fe6c3bf83f812442a13b5762d74",
+      "annotationsSha256": "fae5ef1cf8f1fbf4661776e05454da849be1dcada9f778d88e522d5d29773709",
+      "scope": "Source bytes, body references, grouping, transforms and every output pixel; annotation correctness still requires visual review."
+    },
+    "currentTrainingAdmissionChecked": true,
+    "unchangedBodyAndRGB": [
+      {
+        "id": "real-cf2d0fcff65d7386-body-1",
+        "kind": "body",
+        "historicalPath": "tmp/heart-learning/real-annotation-supplement-v1/labels-reviewed/real-cf2d0fcff65d7386-body-1-labels.png",
+        "sha256": "413c386c6f0e78844f8c2634c409b8dc9eedcdfee3de4ac4b34807fa34e6e8bc",
+        "byteIdentical": true
+      },
+      {
+        "id": "real-cf2d0fcff65d7386-body-1",
+        "kind": "rgb",
+        "historicalPath": "tmp/heart-learning/real-annotation-supplement-v1/labels-reviewed/real-cf2d0fcff65d7386-body-1-rgb.png",
+        "sha256": "46ca9f23ede4db5bfc16a9d53be33c4c18c1502ed0be518c4212be13a041cb0f",
+        "byteIdentical": true
+      },
+      {
+        "id": "real-cdae5c890b6933cd-body-1",
+        "kind": "body",
+        "historicalPath": "tmp/heart-learning/real-scene-annotation-v1/reviewed-labels/real-cdae5c890b6933cd-body-1-labels.png",
+        "sha256": "82034f178126c4545cfccbea02c829b30aed0e511caf73ebea89c582383c79fe",
+        "byteIdentical": true
+      },
+      {
+        "id": "real-cdae5c890b6933cd-body-1",
+        "kind": "rgb",
+        "historicalPath": "tmp/heart-learning/real-scene-annotation-v1/reviewed-labels/real-cdae5c890b6933cd-body-1-rgb.png",
+        "sha256": "76b64dca5c7ab64e4da6ab4a00fb68aa1a06e1ebb914a3f629b9deb38878d1c5",
+        "byteIdentical": true
+      },
+      {
+        "id": "real-68d8f25d8891df62-body-1",
+        "kind": "body",
+        "historicalPath": "tmp/heart-learning/real-annotation-v1/labels-filtered/real-68d8f25d8891df62-body-1-labels.png",
+        "sha256": "6aa4f9d07a61edc50ba71b406bd9363235f09f9c573e101f37a02e870d027e01",
+        "byteIdentical": true
+      },
+      {
+        "id": "real-68d8f25d8891df62-body-1",
+        "kind": "rgb",
+        "historicalPath": "tmp/heart-learning/real-annotation-v1/labels-filtered/real-68d8f25d8891df62-body-1-rgb.png",
+        "sha256": "63d73c019f9ceaeed49204f3b1fb2934020e02ee4b945cbd0600bccad44e1551",
+        "byteIdentical": true
+      }
+    ],
+    "independentlyRecomputedClassifierScores": [
+      {
+        "id": "real-cf2d0fcff65d7386-body-1",
+        "wrong": 0,
+        "knownPixels": 18704,
+        "error": 0.0
+      },
+      {
+        "id": "real-cdae5c890b6933cd-body-1",
+        "wrong": 32,
+        "knownPixels": 6051,
+        "error": 0.005288382085605685
+      },
+      {
+        "id": "real-68d8f25d8891df62-body-1",
+        "wrong": 53,
+        "knownPixels": 12626,
+        "error": 0.004197687311896087
+      }
+    ],
+    "artifacts": {
+      "tmp/heart-learning/material-labels-v1/color-baseline.mjs": "ce9b87551a621dd67d77d442b146804d8a068bf9e6d5b8ac11d1c476e6d4bc83",
+      "tmp/heart-learning/material-labels-v1/color-baseline.json": "d48ce3b88e27e47aba9a73c4acf073f00dccaf1a4877fd10b8f3f926aff6f560",
+      "tmp/heart-learning/material-labels-v1/baseline-review.png": "d4f65db453ed08ae3ae109f4983bea7378ae2ce001532c16795d6289d726d8cd",
+      "tmp/heart-learning/material-labels-v1/audit.py": "a8b3958e7008b944ebb56896b8880fa79e9a363f2c3b997454e54aa1ae57c507",
+      "tmp/heart-learning/material-labels-v1/learning-tests.log": "febad5a3e226aff6b039aa0148f3c30b7bf0c29486002a86b45a74613c770a82"
+    }
+  },
+  "classificationDiagnostic": {
+    "schema": "woven-heart-material-color-diagnostic-1",
+    "scope": "Existing automatic two-colour classifier given only reviewed known-body RGB pixels. Material annotations are used solely for scoring and one global phase choice. Annotation-assisted diagnostic, not automatic cropping, trained prediction or full template reconstruction. Scores exclude uncertain and unannotated material, including seams.",
+    "labelsManifestSha256": "ded1a05499b1026a7e8a967431631e2785fec490023b61b82d4baa9bf2d21e41",
+    "sourceHashes": {
+      "tmp/heart-learning/material-labels-v1/color-baseline.mjs": "ce9b87551a621dd67d77d442b146804d8a068bf9e6d5b8ac11d1c476e6d4bc83",
+      "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+      "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf"
+    },
+    "rows": [
+      {
+        "id": "real-cf2d0fcff65d7386-body-1",
+        "knownBodyPixels": 27671,
+        "knownMaterialPixels": 18704,
+        "knownBodyMaterialCoverage": 0.6759423222868707,
+        "wrong": 0,
+        "error": 0,
+        "phase": 1,
+        "byPaper": [
+          {
+            "paper": 0,
+            "knownPixels": 9548,
+            "wrong": 0,
+            "error": 0
+          },
+          {
+            "paper": 1,
+            "knownPixels": 9156,
+            "wrong": 0,
+            "error": 0
+          }
+        ],
+        "classification": {
+          "method": "lab",
+          "threshold": null,
+          "labCenters": [
+            [
+              41.47532299970625,
+              23.994844739040914,
+              -64.32943173578363
+            ],
+            [
+              78.93281772928096,
+              -1.7923241064992226,
+              78.57446612639878
+            ]
+          ],
+          "inverted": false,
+          "dither": false
+        },
+        "prediction": {
+          "path": "tmp/heart-learning/material-labels-v1/real-cf2d0fcff65d7386-body-1-body-only-classifier.bin",
+          "sha256": "e87cd62116a04bf6c23857abce7e9053cc31ddb814ec93e251caba3cf6640a5e"
+        }
+      },
+      {
+        "id": "real-cdae5c890b6933cd-body-1",
+        "knownBodyPixels": 8782,
+        "knownMaterialPixels": 6051,
+        "knownBodyMaterialCoverage": 0.6890230015941698,
+        "wrong": 32,
+        "error": 0.005288382085605685,
+        "phase": 1,
+        "byPaper": [
+          {
+            "paper": 0,
+            "knownPixels": 2822,
+            "wrong": 28,
+            "error": 0.009922041105598866
+          },
+          {
+            "paper": 1,
+            "knownPixels": 3229,
+            "wrong": 4,
+            "error": 0.0012387736141220192
+          }
+        ],
+        "classification": {
+          "method": "lab",
+          "threshold": null,
+          "labCenters": [
+            [
+              54.23599714342281,
+              10.22368803845931,
+              0.566718937022248
+            ],
+            [
+              74.8066880973767,
+              -2.894755301118701,
+              -4.571947531198059
+            ]
+          ],
+          "inverted": false,
+          "dither": false
+        },
+        "prediction": {
+          "path": "tmp/heart-learning/material-labels-v1/real-cdae5c890b6933cd-body-1-body-only-classifier.bin",
+          "sha256": "765971473daf9381031cc77838c56210472cfbde7088a6e48dfab2c191978d42"
+        }
+      },
+      {
+        "id": "real-68d8f25d8891df62-body-1",
+        "knownBodyPixels": 22211,
+        "knownMaterialPixels": 12626,
+        "knownBodyMaterialCoverage": 0.5684570708207645,
+        "wrong": 53,
+        "error": 0.004197687311896087,
+        "phase": 1,
+        "byPaper": [
+          {
+            "paper": 0,
+            "knownPixels": 5055,
+            "wrong": 53,
+            "error": 0.010484668644906034
+          },
+          {
+            "paper": 1,
+            "knownPixels": 7571,
+            "wrong": 0,
+            "error": 0
+          }
+        ],
+        "classification": {
+          "method": "lab",
+          "threshold": null,
+          "labCenters": [
+            [
+              34.146604666805175,
+              11.434779192480052,
+              -28.612743613540513
+            ],
+            [
+              55.30001044531747,
+              8.319295080194681,
+              28.998359340371728
+            ]
+          ],
+          "inverted": false,
+          "dither": false
+        },
+        "prediction": {
+          "path": "tmp/heart-learning/material-labels-v1/real-68d8f25d8891df62-body-1-body-only-classifier.bin",
+          "sha256": "2dcd2176d77a6ab7f825f45641fa6836848c9bd960e81e12fe2f87a4132e9362"
+        }
+      }
+    ]
+  },
+  "visualReview": {
+    "sourceResolutionImages": 3,
+    "materialOverlays768": 3,
+    "classifierErrorPanels": 3,
+    "rejectedCandidate": "The existing printed-black-grid photograph does not make both paper identities sufficiently clear; it has no material labels.",
+    "reviewer": "assistant",
+    "limitations": "Conservative interior polygons leave uncertain seams and narrow fringes unlabelled. Correctness is not an independent human audit; labels are not cutting paths."
+  },
+  "checks": {
+    "learningTests": 77,
+    "learningModules": 13,
+    "inversePassed": 811,
+    "inverseFailed": 1,
+    "inverseFailure": {
+      "test": "scripts/inverse/finalist-diversity.test.mjs",
+      "name": "small resolution changes retain a checked three-cut flower instead of crowding it out",
+      "actualSlits": {
+        "left": 4,
+        "right": 2
+      },
+      "expectedSlits": {
+        "left": 3,
+        "right": 3
+      },
+      "reproducedWithoutAppChanges": true,
+      "diagnostic": "docs/inverse/datasets/flower-budget-diagnostic.json"
+    },
+    "applicationPassed": 855,
+    "applicationSkipped": 1,
+    "serialRepositoryChecks": [
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 10.7410645
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 6.958910249999999
+      },
+      {
+        "stage": "app",
+        "command": [
+          "npx",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 42.434395875
+      },
+      {
+        "stage": "inverse",
+        "command": [
+          "npm",
+          "run",
+          "test:inverse"
+        ],
+        "exitCode": 1,
+        "seconds": 841.1574005
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": null,
+        "note": "Run separately after the inverse suite stopped the driver. Terminal session 12585 exited 0."
+      }
+    ],
+    "gallery": {
+      "browserVersion": "145.0.7632.6",
+      "results": [
+        {
+          "folder": "final-256",
+          "images": [
+            {
+              "source": "real-cf2d0fcff65d7386-body-1-rgb.png",
+              "loaded": true
+            },
+            {
+              "source": "real-cf2d0fcff65d7386-body-1-overlay.png",
+              "loaded": true
+            },
+            {
+              "source": "real-cdae5c890b6933cd-body-1-rgb.png",
+              "loaded": true
+            },
+            {
+              "source": "real-cdae5c890b6933cd-body-1-overlay.png",
+              "loaded": true
+            },
+            {
+              "source": "real-68d8f25d8891df62-body-1-rgb.png",
+              "loaded": true
+            },
+            {
+              "source": "real-68d8f25d8891df62-body-1-overlay.png",
+              "loaded": true
+            }
+          ],
+          "errors": [],
+          "passed": true
+        },
+        {
+          "folder": "final-768",
+          "images": [
+            {
+              "source": "real-cf2d0fcff65d7386-body-1-rgb.png",
+              "loaded": true
+            },
+            {
+              "source": "real-cf2d0fcff65d7386-body-1-overlay.png",
+              "loaded": true
+            },
+            {
+              "source": "real-cdae5c890b6933cd-body-1-rgb.png",
+              "loaded": true
+            },
+            {
+              "source": "real-cdae5c890b6933cd-body-1-overlay.png",
+              "loaded": true
+            },
+            {
+              "source": "real-68d8f25d8891df62-body-1-rgb.png",
+              "loaded": true
+            },
+            {
+              "source": "real-68d8f25d8891df62-body-1-overlay.png",
+              "loaded": true
+            }
+          ],
+          "errors": [],
+          "passed": true
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "Repository QA is not all green: one existing flower finalist test fails and was reproduced with the unchanged production source. It remains unresolved.",
+    "No neural quality, ONNX size or browser inference speed result.",
+    "Classifier scores use reviewed known-body RGB, with one global label exchange chosen only for scoring. These are not automatic crop/reconstruction scores.",
+    "Interiors cover 56.85\u201368.90% of known body. Scores exclude uncertainty and do not measure seam localization.",
+    "No change to the automatic 25/31 and 22/22 benchmarks; those were not rerun as benchmarks in this study.",
+    "Existing body/family groups and QA reservations are inherited; there is no new split allocation."
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/material-labels-v1/audit.py": "a8b3958e7008b944ebb56896b8880fa79e9a363f2c3b997454e54aa1ae57c507",
+    "tmp/heart-learning/material-labels-v1/audit.json": "996b941c54c0ef9cd07e670709d843cb6576a179aeeee18b7bef785998789f06",
+    "tmp/heart-learning/material-labels-v1/color-baseline.mjs": "ce9b87551a621dd67d77d442b146804d8a068bf9e6d5b8ac11d1c476e6d4bc83",
+    "tmp/heart-learning/material-labels-v1/color-baseline.json": "d48ce3b88e27e47aba9a73c4acf073f00dccaf1a4877fd10b8f3f926aff6f560",
+    "tmp/heart-learning/material-labels-v1/baseline-review.png": "d4f65db453ed08ae3ae109f4983bea7378ae2ce001532c16795d6289d726d8cd",
+    "tmp/heart-learning/material-labels-v1/check-gallery.mjs": "41bf38888993834dfcdbd71ed6dba30ff12c48a404bb037b9b1d836fd2205f8a",
+    "tmp/heart-learning/material-labels-v1/gallery-checks.json": "df8f02f43124f4e91305230091ddecb0b525f4f81b285f07abd81dfe853910f0",
+    "tmp/heart-learning/material-labels-v1/final-256-gallery.png": "3c94c5873525bc61afc334ca23eebc3a77c5f4cb987a003a99cc091699da4261",
+    "tmp/heart-learning/material-labels-v1/final-768-gallery.png": "b81ebb4b6ab7cf7f663fb260e08b5733705a646d732b5fe7ee79d0933646a852",
+    "tmp/heart-learning/material-labels-v1/run-checks.py": "facc29a4e1cff2051162936dfaa4cb88ee6765b434816f11030a0e05c8f426ea",
+    "tmp/heart-learning/material-labels-v1/collect.py": "be37c8405f7f2c71df228aed394bfacc2f52541a84f5ac1dc3594ea37e3bf0a4",
+    "tmp/heart-learning/material-labels-v1/checks.json": "b9d2332ba71050f73b5048abf0c9b56fec27d2663d1def1ebbb3d45052e3129d",
+    "tmp/heart-learning/material-labels-v1/checks-with-build.json": "497bea7abc3d51d20e52983b4a7510c49ded7d55f91db023596c2e86767d15e7",
+    "tmp/heart-learning/material-labels-v1/learning-tests.log": "febad5a3e226aff6b039aa0148f3c30b7bf0c29486002a86b45a74613c770a82",
+    "tmp/heart-learning/material-labels-v1/learning-tests-final.log": "8c079df101866620960cb168da0b2cd9f819a9ca9543d4d1f026230bf189594f",
+    "tmp/heart-learning/material-labels-v1/check.log": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+    "tmp/heart-learning/material-labels-v1/lint.log": "f1a4b272f2f106d9cc645be00a12d8ac4dea14308d11091a0ea8c493d6036f90",
+    "tmp/heart-learning/material-labels-v1/app.log": "2bdf48895890a92415308a66cfa8585af1bdbadaf92cc076efb60b7d5f1c8096",
+    "tmp/heart-learning/material-labels-v1/inverse.log": "93bb45cb8f3fb13fcd693e738b6fda182d6de82362c368079471ffb61f45f3ef",
+    "tmp/heart-learning/material-labels-v1/build.log": "357113c8de31afcc3fe48f3d5719a24a0d098a165d384d46a939cf8ed26745e7"
+  }
+}

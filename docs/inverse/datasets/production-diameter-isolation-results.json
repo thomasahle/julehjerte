@@ -1,0 +1,865 @@
+{
+  "schema": "production-diameter-isolation-results-1",
+  "status": "complete-rejected-crop-diagnostic",
+  "deployed": false,
+  "training": false,
+  "neuralInference": false,
+  "scope": "Production cropper, original RGB photographs only. No neural fields or model inference. Only palette diameter-loss coefficient changes from 20 to zero; production palette search, geometry, support gates and budgets are unchanged.",
+  "plan": "docs/inverse/datasets/production-diameter-isolation-plan.json",
+  "summary": {
+    "baseline": {
+      "count": 9,
+      "ids": [
+        "real-39f3a1ba97852876-body-1",
+        "real-5330aa8b62176216-body-1",
+        "real-80794af7903e5d29-body-1",
+        "real-8c875dd0f298b5a4-body-1",
+        "real-a414dfffbd2362ae-body-1",
+        "real-abf590088db891f9-body-1",
+        "real-b87b0b19f12724f3-body-1",
+        "real-cf2d0fcff65d7386-body-1",
+        "real-d5b0aa8d4d2465ee-body-1"
+      ],
+      "gainsAgainstBaseline": [],
+      "lossesAgainstBaseline": [],
+      "reasons": {
+        "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 3,
+        "Crowded frame: select one heart with a rough rectangle": 6,
+        "Multiple substantial foreground components": 4
+      }
+    },
+    "no-diameter": {
+      "count": 10,
+      "ids": [
+        "real-12ce3c9180f7f317-body-1",
+        "real-39f3a1ba97852876-body-1",
+        "real-5330aa8b62176216-body-1",
+        "real-80794af7903e5d29-body-1",
+        "real-8c875dd0f298b5a4-body-1",
+        "real-a414dfffbd2362ae-body-1",
+        "real-abf590088db891f9-body-1",
+        "real-b87b0b19f12724f3-body-1",
+        "real-cf2d0fcff65d7386-body-1",
+        "real-d5b0aa8d4d2465ee-body-1"
+      ],
+      "gainsAgainstBaseline": [
+        "real-12ce3c9180f7f317-body-1"
+      ],
+      "lossesAgainstBaseline": [],
+      "reasons": {
+        "Crowded frame: select one heart with a rough rectangle": 6,
+        "Multiple substantial foreground components": 4,
+        "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 2
+      }
+    }
+  },
+  "baselineCoordinatesExactlyReproduced": true,
+  "sourceFilesVerified": 102,
+  "visualReview": {
+    "allCropPanels": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "independentCheckerCornerPanel": true
+  },
+  "cornerAudit": {
+    "status": "complete",
+    "scope": "Post-hoc geometric check on six existing approximate visible references. Corners compared in fixed notch/right/tip/left order, with no best permutation, target fit or new annotation. Normalization uses mean reference side length. Uncertainty is reported separately, not treated as exact ground truth. Missing crops remain unavailable.",
+    "referencePhotos": 6,
+    "references": {
+      "real-8c875dd0f298b5a4-body-1": {
+        "points": [
+          [
+            225,
+            141
+          ],
+          [
+            380,
+            281
+          ],
+          [
+            223,
+            427
+          ],
+          [
+            74,
+            281
+          ]
+        ],
+        "status": "approximate-visible-reference",
+        "order": "notch,right,tip,left",
+        "uncertaintyRadiusPixels": 6
+      },
+      "real-5330aa8b62176216-body-1": {
+        "points": [
+          [
+            119.0,
+            40.0
+          ],
+          [
+            221.0,
+            144.0
+          ],
+          [
+            126.0,
+            239.0
+          ],
+          [
+            28.0,
+            145.0
+          ]
+        ],
+        "uncertaintyRadiusPixels": 6.0,
+        "status": "approximate-visible-reference",
+        "order": "notch,right,tip,left"
+      },
+      "real-abf590088db891f9-body-1": {
+        "points": [
+          [
+            128.0,
+            45.0
+          ],
+          [
+            225.0,
+            140.0
+          ],
+          [
+            125.0,
+            240.0
+          ],
+          [
+            27.0,
+            140.0
+          ]
+        ],
+        "uncertaintyRadiusPixels": 6.0,
+        "status": "approximate-visible-reference",
+        "order": "notch,right,tip,left"
+      },
+      "real-995899fe049540ed-body-1": {
+        "points": [
+          [
+            787.5,
+            212.3426
+          ],
+          [
+            1370.0,
+            699.4815
+          ],
+          [
+            812.5,
+            1304.0333
+          ],
+          [
+            247.5,
+            699.4815
+          ]
+        ],
+        "uncertaintyRadiusPixels": 15.0,
+        "status": "approximate-visible-reference",
+        "order": "notch,right,tip,left"
+      },
+      "real-12ce3c9180f7f317-body-1": {
+        "points": [
+          [
+            1523.8125,
+            541.8427
+          ],
+          [
+            2665.4625,
+            1611.0144
+          ],
+          [
+            1518.975,
+            2810.809
+          ],
+          [
+            387.0,
+            1552.9599
+          ]
+        ],
+        "uncertaintyRadiusPixels": 29.0273,
+        "status": "approximate-visible-reference",
+        "order": "notch,right,tip,left"
+      },
+      "real-d5b0aa8d4d2465ee-body-1": {
+        "points": [
+          [
+            420.75,
+            113.5363
+          ],
+          [
+            558.0,
+            317.0023
+          ],
+          [
+            343.125,
+            448.5246
+          ],
+          [
+            221.625,
+            238.3138
+          ]
+        ],
+        "uncertaintyRadiusPixels": 6.75,
+        "status": "approximate-visible-reference",
+        "order": "notch,right,tip,left"
+      }
+    },
+    "rows": [
+      {
+        "run": "production-diameter-isolation-v1",
+        "id": "real-12ce3c9180f7f317-body-1",
+        "method": "baseline",
+        "proposed": false,
+        "referenceUncertaintyPixels": 29.0273,
+        "referenceMeanSidePixels": 1609.3110618156265,
+        "referenceOrder": "notch,right,tip,left"
+      },
+      {
+        "run": "production-diameter-isolation-v1",
+        "id": "real-12ce3c9180f7f317-body-1",
+        "method": "no-diameter",
+        "proposed": true,
+        "referenceUncertaintyPixels": 29.0273,
+        "referenceMeanSidePixels": 1609.3110618156265,
+        "referenceOrder": "notch,right,tip,left",
+        "cornerErrorPixels": [
+          240.3585948217233,
+          6.175655620114126,
+          9.23088698135672,
+          127.56818485463553
+        ],
+        "maximumCornerErrorSideFraction": 0.14935496345283955,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.13131786628204686
+      },
+      {
+        "run": "production-diameter-isolation-v1",
+        "id": "real-5330aa8b62176216-body-1",
+        "method": "baseline",
+        "proposed": true,
+        "referenceUncertaintyPixels": 6.0,
+        "referenceMeanSidePixels": 138.69028614139583,
+        "referenceOrder": "notch,right,tip,left",
+        "cornerErrorPixels": [
+          7.222927430196005,
+          2.8062380326849463,
+          1.4095575166610799,
+          3.407441771636683
+        ],
+        "maximumCornerErrorSideFraction": 0.052079548115086985,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.008817686257775986
+      },
+      {
+        "run": "production-diameter-isolation-v1",
+        "id": "real-5330aa8b62176216-body-1",
+        "method": "no-diameter",
+        "proposed": true,
+        "referenceUncertaintyPixels": 6.0,
+        "referenceMeanSidePixels": 138.69028614139583,
+        "referenceOrder": "notch,right,tip,left",
+        "cornerErrorPixels": [
+          6.045194158727315,
+          5.335894135426923,
+          1.4095575166610799,
+          5.667803898545585
+        ],
+        "maximumCornerErrorSideFraction": 0.043587725765914076,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.00032586390860308304
+      },
+      {
+        "run": "production-diameter-isolation-v1",
+        "id": "real-8c875dd0f298b5a4-body-1",
+        "method": "baseline",
+        "proposed": true,
+        "referenceUncertaintyPixels": 6,
+        "referenceMeanSidePixels": 209.4456998764857,
+        "referenceOrder": "notch,right,tip,left",
+        "cornerErrorPixels": [
+          3.6283398773086635,
+          10.894483193069547,
+          12.398429565820315,
+          2.736633910093686
+        ],
+        "maximumCornerErrorSideFraction": 0.05919639110820569,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.03054934796748559
+      },
+      {
+        "run": "production-diameter-isolation-v1",
+        "id": "real-8c875dd0f298b5a4-body-1",
+        "method": "no-diameter",
+        "proposed": true,
+        "referenceUncertaintyPixels": 6,
+        "referenceMeanSidePixels": 209.4456998764857,
+        "referenceOrder": "notch,right,tip,left",
+        "cornerErrorPixels": [
+          3.6283398773086635,
+          10.894483193069547,
+          12.398429565820315,
+          2.736633910093686
+        ],
+        "maximumCornerErrorSideFraction": 0.05919639110820569,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.03054934796748559
+      },
+      {
+        "run": "production-diameter-isolation-v1",
+        "id": "real-995899fe049540ed-body-1",
+        "method": "baseline",
+        "proposed": false,
+        "referenceUncertaintyPixels": 15.0,
+        "referenceMeanSidePixels": 784.1114051273668,
+        "referenceOrder": "notch,right,tip,left"
+      },
+      {
+        "run": "production-diameter-isolation-v1",
+        "id": "real-995899fe049540ed-body-1",
+        "method": "no-diameter",
+        "proposed": false,
+        "referenceUncertaintyPixels": 15.0,
+        "referenceMeanSidePixels": 784.1114051273668,
+        "referenceOrder": "notch,right,tip,left"
+      },
+      {
+        "run": "production-diameter-isolation-v1",
+        "id": "real-abf590088db891f9-body-1",
+        "method": "baseline",
+        "proposed": true,
+        "referenceUncertaintyPixels": 6.0,
+        "referenceMeanSidePixels": 138.96634024760576,
+        "referenceOrder": "notch,right,tip,left",
+        "cornerErrorPixels": [
+          3.8463637279753256,
+          3.646398591000304,
+          1.489741756410253,
+          5.522140888177457
+        ],
+        "maximumCornerErrorSideFraction": 0.03973725492330218,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.0
+      },
+      {
+        "run": "production-diameter-isolation-v1",
+        "id": "real-abf590088db891f9-body-1",
+        "method": "no-diameter",
+        "proposed": true,
+        "referenceUncertaintyPixels": 6.0,
+        "referenceMeanSidePixels": 138.96634024760576,
+        "referenceOrder": "notch,right,tip,left",
+        "cornerErrorPixels": [
+          0.8293408296480032,
+          1.4405268115798298,
+          1.489741756410253,
+          2.5297106565342053
+        ],
+        "maximumCornerErrorSideFraction": 0.018203765401224845,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.0
+      },
+      {
+        "run": "production-diameter-isolation-v1",
+        "id": "real-d5b0aa8d4d2465ee-body-1",
+        "method": "baseline",
+        "proposed": true,
+        "referenceUncertaintyPixels": 6.75,
+        "referenceMeanSidePixels": 243.78729352075823,
+        "referenceOrder": "notch,right,tip,left",
+        "cornerErrorPixels": [
+          4.654306719383166,
+          9.675953168234248,
+          7.523486590623203,
+          5.751773796841401
+        ],
+        "maximumCornerErrorSideFraction": 0.039690145571144586,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.012002074127727686
+      },
+      {
+        "run": "production-diameter-isolation-v1",
+        "id": "real-d5b0aa8d4d2465ee-body-1",
+        "method": "no-diameter",
+        "proposed": true,
+        "referenceUncertaintyPixels": 6.75,
+        "referenceMeanSidePixels": 243.78729352075823,
+        "referenceOrder": "notch,right,tip,left",
+        "cornerErrorPixels": [
+          4.654306719383166,
+          9.675953168234248,
+          7.523486590623203,
+          5.751773796841401
+        ],
+        "maximumCornerErrorSideFraction": 0.039690145571144586,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.012002074127727686
+      },
+      {
+        "run": "locator-diameter-isolation-v1",
+        "id": "real-12ce3c9180f7f317-body-1",
+        "method": "baseline",
+        "proposed": true,
+        "referenceUncertaintyPixels": 29.0273,
+        "referenceMeanSidePixels": 1609.3110618156265,
+        "referenceOrder": "notch,right,tip,left",
+        "cornerErrorPixels": [
+          21.09518634231083,
+          3.6746315515489454,
+          15.027922135846024,
+          8.62032809635503
+        ],
+        "maximumCornerErrorSideFraction": 0.013108209371599804,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.0
+      },
+      {
+        "run": "locator-diameter-isolation-v1",
+        "id": "real-12ce3c9180f7f317-body-1",
+        "method": "no-diameter",
+        "proposed": true,
+        "referenceUncertaintyPixels": 29.0273,
+        "referenceMeanSidePixels": 1609.3110618156265,
+        "referenceOrder": "notch,right,tip,left",
+        "cornerErrorPixels": [
+          26.23810846881653,
+          43.03352154855168,
+          15.027922135846024,
+          11.288743502414528
+        ],
+        "maximumCornerErrorSideFraction": 0.02674033788098195,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.008703240710189271
+      },
+      {
+        "run": "locator-diameter-isolation-v1",
+        "id": "real-5330aa8b62176216-body-1",
+        "method": "baseline",
+        "proposed": true,
+        "referenceUncertaintyPixels": 6.0,
+        "referenceMeanSidePixels": 138.69028614139583,
+        "referenceOrder": "notch,right,tip,left",
+        "cornerErrorPixels": [
+          8.369059826521244,
+          3.0861674051884136,
+          3.3651028275644155,
+          3.4803767420402885
+        ],
+        "maximumCornerErrorSideFraction": 0.0603435183484222,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.017081656491111204
+      },
+      {
+        "run": "locator-diameter-isolation-v1",
+        "id": "real-5330aa8b62176216-body-1",
+        "method": "no-diameter",
+        "proposed": true,
+        "referenceUncertaintyPixels": 6.0,
+        "referenceMeanSidePixels": 138.69028614139583,
+        "referenceOrder": "notch,right,tip,left",
+        "cornerErrorPixels": [
+          7.939433372584343,
+          2.6059166816564505,
+          3.3651028275644155,
+          4.034603509509055
+        ],
+        "maximumCornerErrorSideFraction": 0.05724577829834476,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.01398391644103377
+      },
+      {
+        "run": "locator-diameter-isolation-v1",
+        "id": "real-8c875dd0f298b5a4-body-1",
+        "method": "baseline",
+        "proposed": true,
+        "referenceUncertaintyPixels": 6,
+        "referenceMeanSidePixels": 209.4456998764857,
+        "referenceOrder": "notch,right,tip,left",
+        "cornerErrorPixels": [
+          2.460151594789048,
+          9.612635867226938,
+          12.470758511405325,
+          3.0651775650289204
+        ],
+        "maximumCornerErrorSideFraction": 0.05954172617895512,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.030894683038235022
+      },
+      {
+        "run": "locator-diameter-isolation-v1",
+        "id": "real-8c875dd0f298b5a4-body-1",
+        "method": "no-diameter",
+        "proposed": true,
+        "referenceUncertaintyPixels": 6,
+        "referenceMeanSidePixels": 209.4456998764857,
+        "referenceOrder": "notch,right,tip,left",
+        "cornerErrorPixels": [
+          7.849647779796862,
+          10.172685173831955,
+          12.470758511405325,
+          4.031315416326671
+        ],
+        "maximumCornerErrorSideFraction": 0.05954172617895512,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.030894683038235022
+      },
+      {
+        "run": "locator-diameter-isolation-v1",
+        "id": "real-995899fe049540ed-body-1",
+        "method": "baseline",
+        "proposed": false,
+        "referenceUncertaintyPixels": 15.0,
+        "referenceMeanSidePixels": 784.1114051273668,
+        "referenceOrder": "notch,right,tip,left"
+      },
+      {
+        "run": "locator-diameter-isolation-v1",
+        "id": "real-995899fe049540ed-body-1",
+        "method": "no-diameter",
+        "proposed": true,
+        "referenceUncertaintyPixels": 15.0,
+        "referenceMeanSidePixels": 784.1114051273668,
+        "referenceOrder": "notch,right,tip,left",
+        "cornerErrorPixels": [
+          31.09242127543421,
+          81.02505331292446,
+          17.964648281841605,
+          11.827754451893496
+        ],
+        "maximumCornerErrorSideFraction": 0.10333359875024799,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.08420366402169563
+      },
+      {
+        "run": "locator-diameter-isolation-v1",
+        "id": "real-abf590088db891f9-body-1",
+        "method": "baseline",
+        "proposed": true,
+        "referenceUncertaintyPixels": 6.0,
+        "referenceMeanSidePixels": 138.96634024760576,
+        "referenceOrder": "notch,right,tip,left",
+        "cornerErrorPixels": [
+          3.403948015313903,
+          4.555578198478684,
+          1.0520831436762959,
+          4.5404659623763255
+        ],
+        "maximumCornerErrorSideFraction": 0.03278188221954828,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.0
+      },
+      {
+        "run": "locator-diameter-isolation-v1",
+        "id": "real-abf590088db891f9-body-1",
+        "method": "no-diameter",
+        "proposed": true,
+        "referenceUncertaintyPixels": 6.0,
+        "referenceMeanSidePixels": 138.96634024760576,
+        "referenceOrder": "notch,right,tip,left",
+        "cornerErrorPixels": [
+          3.0672903763039496,
+          4.570363520259937,
+          1.0520831436762959,
+          2.234940805333207
+        ],
+        "maximumCornerErrorSideFraction": 0.03288827720523265,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.0
+      },
+      {
+        "run": "locator-diameter-isolation-v1",
+        "id": "real-d5b0aa8d4d2465ee-body-1",
+        "method": "baseline",
+        "proposed": false,
+        "referenceUncertaintyPixels": 6.75,
+        "referenceMeanSidePixels": 243.78729352075823,
+        "referenceOrder": "notch,right,tip,left"
+      },
+      {
+        "run": "locator-diameter-isolation-v1",
+        "id": "real-d5b0aa8d4d2465ee-body-1",
+        "method": "no-diameter",
+        "proposed": false,
+        "referenceUncertaintyPixels": 6.75,
+        "referenceMeanSidePixels": 243.78729352075823,
+        "referenceOrder": "notch,right,tip,left"
+      },
+      {
+        "run": "mobilesam-paper-prompts-v1",
+        "id": "real-12ce3c9180f7f317-body-1",
+        "method": "unchanged",
+        "proposed": false,
+        "referenceUncertaintyPixels": 29.0273,
+        "referenceMeanSidePixels": 1609.3110618156265,
+        "referenceOrder": "notch,right,tip,left"
+      },
+      {
+        "run": "mobilesam-paper-prompts-v1",
+        "id": "real-12ce3c9180f7f317-body-1",
+        "method": "sam-box-point",
+        "proposed": true,
+        "referenceUncertaintyPixels": 29.0273,
+        "referenceMeanSidePixels": 1609.3110618156265,
+        "referenceOrder": "notch,right,tip,left",
+        "cornerErrorPixels": [
+          21.09518634231083,
+          3.6746315515489454,
+          15.027922135846024,
+          8.62032809635503
+        ],
+        "maximumCornerErrorSideFraction": 0.013108209371599804,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.0
+      },
+      {
+        "run": "mobilesam-paper-prompts-v1",
+        "id": "real-12ce3c9180f7f317-body-1",
+        "method": "sam-box-papers",
+        "proposed": true,
+        "referenceUncertaintyPixels": 29.0273,
+        "referenceMeanSidePixels": 1609.3110618156265,
+        "referenceOrder": "notch,right,tip,left",
+        "cornerErrorPixels": [
+          21.028391958467225,
+          3.4695774024330226,
+          15.051444162785828,
+          8.86636194160839
+        ],
+        "maximumCornerErrorSideFraction": 0.01306670441620091,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.0
+      },
+      {
+        "run": "mobilesam-paper-prompts-v1",
+        "id": "real-5330aa8b62176216-body-1",
+        "method": "unchanged",
+        "proposed": false,
+        "referenceUncertaintyPixels": 6.0,
+        "referenceMeanSidePixels": 138.69028614139583,
+        "referenceOrder": "notch,right,tip,left"
+      },
+      {
+        "run": "mobilesam-paper-prompts-v1",
+        "id": "real-5330aa8b62176216-body-1",
+        "method": "sam-box-point",
+        "proposed": true,
+        "referenceUncertaintyPixels": 6.0,
+        "referenceMeanSidePixels": 138.69028614139583,
+        "referenceOrder": "notch,right,tip,left",
+        "cornerErrorPixels": [
+          8.369059826521244,
+          3.0861674051884136,
+          3.3651028275644155,
+          3.4803767420402885
+        ],
+        "maximumCornerErrorSideFraction": 0.0603435183484222,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.017081656491111204
+      },
+      {
+        "run": "mobilesam-paper-prompts-v1",
+        "id": "real-5330aa8b62176216-body-1",
+        "method": "sam-box-papers",
+        "proposed": true,
+        "referenceUncertaintyPixels": 6.0,
+        "referenceMeanSidePixels": 138.69028614139583,
+        "referenceOrder": "notch,right,tip,left",
+        "cornerErrorPixels": [
+          8.276183543702478,
+          2.960283281190754,
+          3.3960381744650023,
+          3.428949912421352
+        ],
+        "maximumCornerErrorSideFraction": 0.0596738515289012,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.016411989671590202
+      },
+      {
+        "run": "mobilesam-paper-prompts-v1",
+        "id": "real-8c875dd0f298b5a4-body-1",
+        "method": "sam-box-point",
+        "proposed": true,
+        "referenceUncertaintyPixels": 6,
+        "referenceMeanSidePixels": 209.4456998764857,
+        "referenceOrder": "notch,right,tip,left",
+        "cornerErrorPixels": [
+          2.460151594789048,
+          9.612635867226938,
+          12.470758511405325,
+          3.0651775650289204
+        ],
+        "maximumCornerErrorSideFraction": 0.05954172617895512,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.030894683038235022
+      },
+      {
+        "run": "mobilesam-paper-prompts-v1",
+        "id": "real-8c875dd0f298b5a4-body-1",
+        "method": "sam-box-papers",
+        "proposed": true,
+        "referenceUncertaintyPixels": 6,
+        "referenceMeanSidePixels": 209.4456998764857,
+        "referenceOrder": "notch,right,tip,left",
+        "cornerErrorPixels": [
+          2.2595006935397897,
+          8.842414922261117,
+          13.990061065801578,
+          1.7619841966262713
+        ],
+        "maximumCornerErrorSideFraction": 0.06679564714888774,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.038148604008167636
+      },
+      {
+        "run": "mobilesam-paper-prompts-v1",
+        "id": "real-8c875dd0f298b5a4-body-1",
+        "method": "unchanged",
+        "proposed": false,
+        "referenceUncertaintyPixels": 6,
+        "referenceMeanSidePixels": 209.4456998764857,
+        "referenceOrder": "notch,right,tip,left"
+      },
+      {
+        "run": "mobilesam-paper-prompts-v1",
+        "id": "real-995899fe049540ed-body-1",
+        "method": "unchanged",
+        "proposed": false,
+        "referenceUncertaintyPixels": 15.0,
+        "referenceMeanSidePixels": 784.1114051273668,
+        "referenceOrder": "notch,right,tip,left"
+      },
+      {
+        "run": "mobilesam-paper-prompts-v1",
+        "id": "real-995899fe049540ed-body-1",
+        "method": "sam-box-point",
+        "proposed": false,
+        "referenceUncertaintyPixels": 15.0,
+        "referenceMeanSidePixels": 784.1114051273668,
+        "referenceOrder": "notch,right,tip,left"
+      },
+      {
+        "run": "mobilesam-paper-prompts-v1",
+        "id": "real-995899fe049540ed-body-1",
+        "method": "sam-box-papers",
+        "proposed": false,
+        "referenceUncertaintyPixels": 15.0,
+        "referenceMeanSidePixels": 784.1114051273668,
+        "referenceOrder": "notch,right,tip,left"
+      },
+      {
+        "run": "mobilesam-paper-prompts-v1",
+        "id": "real-abf590088db891f9-body-1",
+        "method": "sam-box-papers",
+        "proposed": true,
+        "referenceUncertaintyPixels": 6.0,
+        "referenceMeanSidePixels": 138.96634024760576,
+        "referenceOrder": "notch,right,tip,left",
+        "cornerErrorPixels": [
+          3.3882453851984375,
+          4.558480614652454,
+          1.042642302923415,
+          4.534923953671521
+        ],
+        "maximumCornerErrorSideFraction": 0.03280276796906574,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.0
+      },
+      {
+        "run": "mobilesam-paper-prompts-v1",
+        "id": "real-abf590088db891f9-body-1",
+        "method": "unchanged",
+        "proposed": false,
+        "referenceUncertaintyPixels": 6.0,
+        "referenceMeanSidePixels": 138.96634024760576,
+        "referenceOrder": "notch,right,tip,left"
+      },
+      {
+        "run": "mobilesam-paper-prompts-v1",
+        "id": "real-abf590088db891f9-body-1",
+        "method": "sam-box-point",
+        "proposed": true,
+        "referenceUncertaintyPixels": 6.0,
+        "referenceMeanSidePixels": 138.96634024760576,
+        "referenceOrder": "notch,right,tip,left",
+        "cornerErrorPixels": [
+          3.403948015313903,
+          4.555578198478684,
+          1.0520831436762959,
+          4.5404659623763255
+        ],
+        "maximumCornerErrorSideFraction": 0.03278188221954828,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.0
+      },
+      {
+        "run": "mobilesam-paper-prompts-v1",
+        "id": "real-d5b0aa8d4d2465ee-body-1",
+        "method": "sam-box-papers",
+        "proposed": true,
+        "referenceUncertaintyPixels": 6.75,
+        "referenceMeanSidePixels": 243.78729352075823,
+        "referenceOrder": "notch,right,tip,left",
+        "cornerErrorPixels": [
+          2.476000481319882,
+          5.113233529473977,
+          8.41256449779796,
+          5.2568427496446715
+        ],
+        "maximumCornerErrorSideFraction": 0.03450780545739001,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.006819734013973108
+      },
+      {
+        "run": "mobilesam-paper-prompts-v1",
+        "id": "real-d5b0aa8d4d2465ee-body-1",
+        "method": "unchanged",
+        "proposed": true,
+        "referenceUncertaintyPixels": 6.75,
+        "referenceMeanSidePixels": 243.78729352075823,
+        "referenceOrder": "notch,right,tip,left",
+        "cornerErrorPixels": [
+          2.72857072658287,
+          5.667355653265168,
+          8.157174949911767,
+          4.791002072246984
+        ],
+        "maximumCornerErrorSideFraction": 0.03346021374660854,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.005772142303191643
+      },
+      {
+        "run": "mobilesam-paper-prompts-v1",
+        "id": "real-d5b0aa8d4d2465ee-body-1",
+        "method": "sam-box-point",
+        "proposed": false,
+        "referenceUncertaintyPixels": 6.75,
+        "referenceMeanSidePixels": 243.78729352075823,
+        "referenceOrder": "notch,right,tip,left"
+      }
+    ],
+    "sourceHashes": {
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/report.json": "47b1b5e1f8a50d53152a744d00b3750b7c1e96ca0d88511662fb4e1778122a29",
+      "scripts/inverse/datasets/real-materials-motifs.json": "5e439770d03347a528746a325ce995fb8f917d096fb480113fb45e4af97ec100",
+      "scripts/inverse/datasets/real-annotations-motifs.json": "753cd9c44d1b24077024ba3f9a2f40408a5d13624416c1f8e9402a80b3b6580e",
+      "scripts/inverse/datasets/real-materials-pinterest.json": "1909f24e8868be1d74458944655009b4e4fdce15fa64e1703a3f2f44bab751ae",
+      "scripts/inverse/datasets/real-annotations-pinterest.json": "a972cf961544f85565b2f8edc3df872dd27c2ca3333ea5c01d04e1867b19aaa9",
+      "scripts/inverse/datasets/real-materials-printed.json": "96368a150b75fc0aa04aa03eda43293b094235cd2741abaa7a55bc4fab0feee2",
+      "scripts/inverse/datasets/real-annotations.json": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5",
+      "scripts/inverse/datasets/real-materials.json": "fae5ef1cf8f1fbf4661776e05454da849be1dcada9f778d88e522d5d29773709",
+      "scripts/inverse/datasets/real-annotations-supplement.json": "db3a35a1bb2b50477d8a203e137a123e996193c5e8bf922a929e5b0ebedf0e25",
+      "scripts/inverse/datasets/real-annotations-scenes.json": "7a6a64262ab878f25c928c1ad4d07620e4ede8b6cd0d2ea79c3bd100c9c8e536",
+      "scripts/inverse/datasets/real-materials-colors.json": "a7567a3a9452d038bb8dcbacbab6117f376b60de268e39c7c636ee2e75c67fe9",
+      "scripts/inverse/datasets/real-materials-curved.json": "2b2dea584e023ac296d603aedb17efd802a7082e54e4fd7f936182461abfad12",
+      "scripts/inverse/datasets/real-materials-hanging.json": "9376385a12d03d5e5e31356f61201912dc40bf037631273cd4a109189cea2727",
+      "scripts/inverse/datasets/real-materials-palettes.json": "0269eaf9a4ef159b41b4b7e2717afe5254e8fac3b9eeeb5e434cbc81745accba",
+      "scripts/inverse/datasets/real-annotations-palettes.json": "2b8c2f11b6390608cee50c5adfb42280a2f72ca3d6309f4aad6ffc7ae081fd4f",
+      "scripts/inverse/datasets/real-materials-protruding.json": "beea1b34e342ee7152d1933e04182c81f1e0fd2d6c110ccdbae2e2c5eac71676",
+      "scripts/inverse/datasets/real-materials-paper-scenes.json": "c4857fc3cceec4c2150353515dfb679ea8055bf65a30c10a4bd724d0bb118741",
+      "scripts/inverse/datasets/real-annotations-paper-scenes.json": "2f153ec1b274adac461bf384c06f72303f3b50914e4a3faa9716962a13fb3ee0",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/production-diameter-isolation-v1/results/report.json": "6a37fcdb1d24c4fcd019b5a03d77ac126a67171c84dcda665a76c8ceb7eb1422",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/locator-diameter-isolation-v1/results/report.json": "1185feed44d21ed5c5522d2d6cf818e78a494f54ae277206baf94cb19e31838e",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/mobilesam-paper-prompts-v1/results/report.json": "264a573319f7a4e770e05483a3f7124bc074f4bff7f05194ac55aea1d1502be5"
+    }
+  },
+  "findings": [
+    "Production crop proposals rise from 9 to 10, with the yellow/teal checker as the sole gain.",
+    "The new checker proposal is visibly displaced. Against the existing approximate visible reference, its largest corner offset is 14.94% of mean square side length, well beyond the recorded reference uncertainty.",
+    "The SAM baseline has 1.31% maximum corner offset on the same photograph; SAM with the diameter term removed has 2.67%. Accurate segmentation and a suitable crop objective are both needed.",
+    "Known-region physical outline IoU of .975 did not certify correct overlap corners in this case.",
+    "No full template replay is justified by this unconvincing new crop. Existing accepted production crops can also move; global objective removal is not adopted."
+  ],
+  "nextHypothesis": "Separate outer-cap colour purity from the reward for contrast across a lobe diameter. A valid shared/invisible cut or same-colour frame need not create a visible colour step. This is an untested mechanism, not yet a fix.",
+  "artifactsSha256": {
+    "tmp/heart-learning/production-diameter-isolation-v1/state.json": "24fa9f0e4bdf4b394228c59e716ec4809b9c3bad19aa6f4487f7191da90835c8",
+    "tmp/heart-learning/production-diameter-isolation-v1/source.json": "48d05a856291cc62e12c68f95354b769dd56c83568df3ecb257b577004c32946",
+    "tmp/heart-learning/production-diameter-isolation-v1/results/report.json": "6a37fcdb1d24c4fcd019b5a03d77ac126a67171c84dcda665a76c8ceb7eb1422",
+    "tmp/heart-learning/production-diameter-isolation-v1/review.json": "8d9427753d805f6d50d709fc53f8937da54942a9453b0183e35cabc30c9a7bdc",
+    "tmp/heart-learning/production-diameter-isolation-v1/review.py": "9cce74bc8c9bbb580c43eebb905babf21aa3a343e854ba01353dab889fc63b20",
+    "tmp/heart-learning/production-diameter-isolation-v1/corner-audit.py": "b5e5fa1238ccac0d12139e9747939c11aa342eb2dab67f82563905b59ad042f4",
+    "tmp/heart-learning/production-diameter-isolation-v1/corner-audit.json": "206a5e68b8a60e0d9aa6ff7a4944eb7c26cf772cfcc34758bef3b80092195e3e",
+    "tmp/heart-learning/production-diameter-isolation-v1/checker-corner-audit.png": "b59a3241225ac550df3caa0fb54a6546541a477177dfcc800092387f60d7bd49",
+    "tmp/heart-learning/production-diameter-isolation-v1/comparison-1.png": "5ab2c547b9951555e21aa45a6a89d9f541ffe0253a2a6cc2ff971c5f9644e2ec",
+    "tmp/heart-learning/production-diameter-isolation-v1/comparison-2.png": "ab8daa2570076b15a667d2d378a01e44f31346f68258fee06368b35f4ca986a0",
+    "tmp/heart-learning/production-diameter-isolation-v1/comparison-3.png": "06c31b31a4f04749d0df5bb3feb378c3e71bb3bfbb6c491a0c25fc0bf17ffb5d",
+    "tmp/heart-learning/production-diameter-isolation-v1/comparison-4.png": "ad71667885461c6f1280b432b55c2287a5c3b61b8a18e29b5d952f984faada06",
+    "tmp/heart-learning/production-diameter-isolation-v1/comparison-5.png": "21bc309bb8de363e1ed2612a54f8851f45a2e6f16bf9323a8e15ee6cef508d70",
+    "tmp/heart-learning/production-diameter-isolation-v1/comparison-6.png": "37658fc9558bd1fcc4c84b92200e2d1c1f6afaaf0b8d54200a8c282b655005e4"
+  }
+}

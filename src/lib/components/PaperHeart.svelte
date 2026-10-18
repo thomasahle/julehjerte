@@ -32,6 +32,8 @@
 	import { inferOverlapRect } from '$lib/utils/overlapRect';
 	import { BASE_CANVAS_SIZE, CENTER, MAX_GRID_SIZE, MIN_GRID_SIZE, PRECISION_GRID_SIZE, STRIP_WIDTH } from '$lib/constants';
 	import { computeWeaveData } from '$lib/rendering/svgWeave';
+	import HeartWeaveFill from './HeartWeaveFill.svelte';
+	import SharedCutOverlay from './editor/SharedCutOverlay.svelte';
 	import { computeHeartViewBoxFromOverlap } from '$lib/rendering/heartSvg';
 	import { bezierPathBBox, closestPointOnBezier } from '$lib/geometry/curves';
 	import { Point } from '$lib/geometry/point';
@@ -2019,6 +2021,9 @@
 			return `translate(${-panX} ${-panY}) translate(${cx} ${cy}) scale(${userZoom * fitScale}) translate(${-cx} ${-cy})`;
 		});
 
+	// Keep selection and invalid-cut warnings above the two-colour overlap cue.
+	let overlapExcluded = $derived(new Set([...issueFingerIds, ...(selectedFingerId ? [selectedFingerId] : [])]));
+
 	let curveUiScale = $derived.by(() => {
 		const baseScale = viewBoxRect.width / Math.max(1, effectiveSize);
 		return baseScale / (userZoom * fitScale);
@@ -3077,40 +3082,13 @@
 						<g transform={viewTransform}>
 							<g bind:this={rotatedGroup} transform={rotationTransform}>
 								<defs>
-									<clipPath id="overlap-{componentId}">
-										<rect
-											x={weaveData.overlap.left}
-											y={weaveData.overlap.top}
-											width={weaveData.overlap.width}
-											height={weaveData.overlap.height}
-										/>
-									</clipPath>
 									<filter id="heart-shadow-{componentId}" x="-50%" y="-50%" width="200%" height="200%">
 										<feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#000" flood-opacity="0.22" />
 									</filter>
 								</defs>
 
 								<g filter="url(#heart-shadow-{componentId})">
-									<path d={weaveData.leftLobeClip} fill={heartColors.left} />
-									<path d={weaveData.rightLobeClip} fill={heartColors.right} />
-
-									<g clip-path="url(#overlap-{componentId})">
-										<rect
-											x={weaveData.overlap.left}
-											y={weaveData.overlap.top}
-											width={weaveData.overlap.width}
-											height={weaveData.overlap.height}
-											fill={heartColors.left}
-										/>
-										<path
-											d={[
-												...weaveData.rightOnTopStrips.map((s) => s.pathData),
-												...weaveData.leftOnTopStrips.map((s) => s.pathData)
-											].join(' ')}
-											fill={heartColors.right}
-											fill-rule="evenodd"
-										/>
-									</g>
+									<HeartWeaveFill {fingers} weave={weaveData} colors={heartColors} idPrefix={componentId} />
 								</g>
 
 								{#if !readonly}
@@ -3180,6 +3158,11 @@
 											/>
 										{/if}
 									{/each}
+
+									{#if showCurves}
+										<SharedCutOverlay {fingers} excluded={overlapExcluded} idPrefix={componentId}
+											unitsPerPixel={curveUiScale} bounds={weaveData.overlap} />
+									{/if}
 
 									{#if selectedFinger}
 										{@const segs = fingerToSegments(selectedFinger)}

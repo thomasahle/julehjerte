@@ -1,0 +1,209 @@
+{
+  "schema": "real-motif-body-annotation-review-1",
+  "scope": "Two reviewed non-checker motif bodies; labels and uncertainty only, no cuts, exact corners or model training. The original pilot, folds and earlier two-image supplement are unchanged.",
+  "verification": {
+    "passed": true,
+    "instances": 2,
+    "sourceGroups": 2,
+    "approximateOverlapReferences": 0,
+    "manifestSha256": "413f4948bc4735fd2ae8559ad30c67dd528dfbf57b8a730925a797a459a83aec",
+    "annotationsSha256": "753cd9c44d1b24077024ba3f9a2f40408a5d13624416c1f8e9402a80b3b6580e",
+    "scope": "All source hashes, inherited groups, transforms, known/unknown labels and RGB pixels; not an independent human annotation audit."
+  },
+  "totalInstances": 14,
+  "totalSourceGroups": 12,
+  "addedInstances": 2,
+  "addedGroups": 2,
+  "newGroupsDisjointFromEarlierLabels": true,
+  "globalAllocation": "unassigned",
+  "crossCorpusMotifReview": "pending",
+  "sourceHashes": {
+    "scripts/inverse/datasets/real-annotations.json": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5",
+    "scripts/inverse/datasets/real-annotations-supplement.json": "db3a35a1bb2b50477d8a203e137a123e996193c5e8bf922a929e5b0ebedf0e25",
+    "scripts/inverse/datasets/real-annotations-motifs.json": "753cd9c44d1b24077024ba3f9a2f40408a5d13624416c1f8e9402a80b3b6580e",
+    "docs/inverse/datasets/real-manifest.json": "a900f3f3baaeba87e4d5bb3eedc595f0276ca1684110cdd4dc1f3ba1cc531dd8",
+    "scripts/inverse/datasets/real_annotations.py": "c494ee86dd54020e0f8a6ad61e62d88ed20d05552469e798878fbbd3a402176a"
+  },
+  "sources": [
+    {
+      "id": "real-2044b1d98ed6f262",
+      "sha256": "2044b1d98ed6f262c52cdc80544b8b22ea909a2d8923dbfc27e4c41f91da3047",
+      "localPath": "tmp/heart-training-real/assets/2044b1d98ed6f262c52cdc80544b8b22ea909a2d8923dbfc27e4c41f91da3047.jpg",
+      "splitGroupId": "real-split-43d9db9ff4061e07",
+      "splitStatus": "unassigned",
+      "nearDuplicateGroup": "real-2044b1d98ed6f262",
+      "trainingRightsStatus": "not-cleared"
+    },
+    {
+      "id": "real-45744a03afddccb1",
+      "sha256": "45744a03afddccb18b4b01fb770d6cfdcfbd35d25dad796e99b62a6dd9cbad33",
+      "localPath": "tmp/heart-training-real/assets/45744a03afddccb18b4b01fb770d6cfdcfbd35d25dad796e99b62a6dd9cbad33.jpg",
+      "splitGroupId": "real-split-8e4db6249b2748c6",
+      "splitStatus": "unassigned",
+      "nearDuplicateGroup": "real-45744a03afddccb1",
+      "trainingRightsStatus": "not-cleared"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/boar-outline-review.png",
+      "bytes": 349518,
+      "sha256": "40bbfbe79449830e219c3ff09baa6085287930c84e164cce53ccca886cf70ae3"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/boar-review.png",
+      "bytes": 347766,
+      "sha256": "ce93e1c1c20f6d945c61061eca9c7a337c8b16af567f5349b0208b4063bab636"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/candidates-first-24.png",
+      "bytes": 978119,
+      "sha256": "96fae57536aaacf48c72eadf73a6f56dd28cfd71d445e40250273e01808968d4"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/candidates.json",
+      "bytes": 153445,
+      "sha256": "bedc8a6dc5feb47df50c2c087bdb108b55833a88b7c2d5de635b38b6573c2ccb"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/candidates.png",
+      "bytes": 4486,
+      "sha256": "f2e56a9121451a8e9ac80f4a884c253a5753a24eecfa818611b9b299481b526c"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/draft-export.log",
+      "bytes": 426,
+      "sha256": "4d27f31b451ba12a2a2e28135e1923b76c0840326abdca8dd7c49fca537bb98c"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/draft-labels/manifest.json",
+      "bytes": 596,
+      "sha256": "6bde34bc322bc17c1de5b5fecf6d7156caf12ed7f7281b102ff93b36dec2850b"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/draft-labels/real-2044b1d98ed6f262-body-1-labels.png",
+      "bytes": 1504,
+      "sha256": "d95187d0d1c5080784e53e8f2ebf3f610987dc0254912c885668a8378c91377d"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/draft-labels/real-2044b1d98ed6f262-body-1-rgb.png",
+      "bytes": 51362,
+      "sha256": "2c59b386b405e63effdd332487bc27143cf985dbabb123305ed8e2c62c09f93b"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/draft-missing-optional-corners.json",
+      "bytes": 7876,
+      "sha256": "8458de68eb33f9472e1c52324108f0eca97dc7dc1e8a026d40aee19596e2fe5e"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/draft-v2-export.log",
+      "bytes": 419,
+      "sha256": "aacb24458cdafe81c9473a2aada2e150716e7e9a7bbb98274c5e926bda8ff652"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/draft-v2-labels/index.html",
+      "bytes": 1610,
+      "sha256": "b623d97cd9690d04913f950f245e5fe861dd976223a50bb612157300445b8313"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/draft-v2-labels/manifest.json",
+      "bytes": 3274,
+      "sha256": "5e162cadc64447fa8ce73c50cd84b89f239f0ccd51b762810c894cf3dcffa2ac"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/draft-v2-labels/real-2044b1d98ed6f262-body-1-labels.png",
+      "bytes": 1504,
+      "sha256": "d95187d0d1c5080784e53e8f2ebf3f610987dc0254912c885668a8378c91377d"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/draft-v2-labels/real-2044b1d98ed6f262-body-1-overlay.png",
+      "bytes": 48862,
+      "sha256": "667c9fab4fc28f7c060944bd92f10a95a5f2ef1fa04625ca1949b1abc9d18be1"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/draft-v2-labels/real-2044b1d98ed6f262-body-1-rgb.png",
+      "bytes": 51362,
+      "sha256": "2c59b386b405e63effdd332487bc27143cf985dbabb123305ed8e2c62c09f93b"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/draft-v2-labels/real-45744a03afddccb1-body-1-labels.png",
+      "bytes": 1457,
+      "sha256": "705fdd7adcf96c30bd33b541d5e470eaf93afcaa3bc834f1056451682c8adcf8"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/draft-v2-labels/real-45744a03afddccb1-body-1-overlay.png",
+      "bytes": 85759,
+      "sha256": "fb2eb3850a0163528ef887c0763c2950c819ebbfa0084451bee28c278f8d3b8a"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/draft-v2-labels/real-45744a03afddccb1-body-1-rgb.png",
+      "bytes": 88847,
+      "sha256": "a8a93e49a128a5a5a37c25f1704026b2a70c7d0329ea2f7635f1a94392fd1c79"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/draft-v2.json",
+      "bytes": 7936,
+      "sha256": "aa473eb4b4fb3fc0a8e33795caf13f8d1ab1fb042cc6df8cb9a2769572ac6aaf"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/draft.json",
+      "bytes": 7876,
+      "sha256": "8458de68eb33f9472e1c52324108f0eca97dc7dc1e8a026d40aee19596e2fe5e"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/rabbit-outline-review.png",
+      "bytes": 821019,
+      "sha256": "f10138bf008bd12f48fff2979fd13e97df2aa28f04a93e71a73a48c25a7eda9e"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/rabbit-review.png",
+      "bytes": 817483,
+      "sha256": "df86df7e3da2368988175b19140fea646218983e3e3acb1f53062e4482ef197a"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/reviewed-export.log",
+      "bytes": 419,
+      "sha256": "c744cf5f46d4fcf7e905d6fdb8c8f164cf429db11e37e10c0c2cd67ba1734e28"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/reviewed-labels/index.html",
+      "bytes": 1770,
+      "sha256": "103b4ecbf0f181c21d07ea06d9b6348769dbf83b393a7f3c11f5e951a805dca4"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/reviewed-labels/manifest.json",
+      "bytes": 3274,
+      "sha256": "413f4948bc4735fd2ae8559ad30c67dd528dfbf57b8a730925a797a459a83aec"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/reviewed-labels/real-2044b1d98ed6f262-body-1-labels.png",
+      "bytes": 1504,
+      "sha256": "d95187d0d1c5080784e53e8f2ebf3f610987dc0254912c885668a8378c91377d"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/reviewed-labels/real-2044b1d98ed6f262-body-1-overlay.png",
+      "bytes": 48862,
+      "sha256": "667c9fab4fc28f7c060944bd92f10a95a5f2ef1fa04625ca1949b1abc9d18be1"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/reviewed-labels/real-2044b1d98ed6f262-body-1-rgb.png",
+      "bytes": 51362,
+      "sha256": "2c59b386b405e63effdd332487bc27143cf985dbabb123305ed8e2c62c09f93b"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/reviewed-labels/real-45744a03afddccb1-body-1-labels.png",
+      "bytes": 1457,
+      "sha256": "705fdd7adcf96c30bd33b541d5e470eaf93afcaa3bc834f1056451682c8adcf8"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/reviewed-labels/real-45744a03afddccb1-body-1-overlay.png",
+      "bytes": 85759,
+      "sha256": "fb2eb3850a0163528ef887c0763c2950c819ebbfa0084451bee28c278f8d3b8a"
+    },
+    {
+      "path": "tmp/heart-learning/real-motif-annotation-v1/reviewed-labels/real-45744a03afddccb1-body-1-rgb.png",
+      "bytes": 88847,
+      "sha256": "a8a93e49a128a5a5a37c25f1704026b2a70c7d0329ea2f7635f1a94392fd1c79"
+    }
+  ]
+}

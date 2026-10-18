@@ -1,0 +1,183 @@
+{
+  "schema": "mobilesam-paper-prompts-results-1",
+  "status": "complete-crop-diagnostic-not-integrated",
+  "training": false,
+  "deployed": false,
+  "scope": "Development photographs; automatically prompted pretrained segmentation, no annotation, supplied corners, ROI, retraining or templates. Frozen RGB material estimates are unchanged. Pretraining overlap with these public photographs is unknown.",
+  "plan": "docs/inverse/datasets/mobilesam-paper-prompts-plan.json",
+  "summary": {
+    "unchanged": {
+      "predictionMetricMeans": {
+        "knownRegionIoU": 0.7985058069087312,
+        "backgroundFalsePositive": 0.08871456273908904,
+        "paperFalseNegative": 0.032322961304116826
+      },
+      "count": 3,
+      "ids": [
+        "real-c4a9ee6e2d0a4185-body-1",
+        "real-cf2d0fcff65d7386-body-1",
+        "real-d5b0aa8d4d2465ee-body-1"
+      ],
+      "gainsAgainstUnchanged": [],
+      "lossesAgainstUnchanged": [],
+      "reasons": {
+        "The two-colour foreground does not clearly support both heart lobes and lower edges.": 12,
+        "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 7
+      }
+    },
+    "sam-box-point": {
+      "predictionMetricMeans": {
+        "knownRegionIoU": 0.9069512753087982,
+        "backgroundFalsePositive": 0.06562842511180068,
+        "paperFalseNegative": 0.02471341142926454
+      },
+      "count": 14,
+      "ids": [
+        "real-12ce3c9180f7f317-body-1",
+        "real-2044b1d98ed6f262-body-1",
+        "real-340f5e5b0f447889-body-1",
+        "real-39f3a1ba97852876-body-1",
+        "real-5330aa8b62176216-body-1",
+        "real-710703159f609111-body-1",
+        "real-80794af7903e5d29-body-1",
+        "real-8c875dd0f298b5a4-body-1",
+        "real-a414dfffbd2362ae-body-1",
+        "real-abf590088db891f9-body-1",
+        "real-b87b0b19f12724f3-body-1",
+        "real-c0cc1ce97cf5e6a6-body-1",
+        "real-c4a9ee6e2d0a4185-body-1",
+        "real-e936e08ac62db19b-body-1"
+      ],
+      "gainsAgainstUnchanged": [
+        "real-12ce3c9180f7f317-body-1",
+        "real-2044b1d98ed6f262-body-1",
+        "real-340f5e5b0f447889-body-1",
+        "real-39f3a1ba97852876-body-1",
+        "real-5330aa8b62176216-body-1",
+        "real-710703159f609111-body-1",
+        "real-80794af7903e5d29-body-1",
+        "real-8c875dd0f298b5a4-body-1",
+        "real-a414dfffbd2362ae-body-1",
+        "real-abf590088db891f9-body-1",
+        "real-b87b0b19f12724f3-body-1",
+        "real-c0cc1ce97cf5e6a6-body-1",
+        "real-e936e08ac62db19b-body-1"
+      ],
+      "lossesAgainstUnchanged": [
+        "real-cf2d0fcff65d7386-body-1",
+        "real-d5b0aa8d4d2465ee-body-1"
+      ],
+      "reasons": {
+        "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 2,
+        "The two-colour foreground does not clearly support both heart lobes and lower edges.": 5,
+        "Crowded frame: select one heart with a rough rectangle": 1
+      }
+    },
+    "sam-box-papers": {
+      "predictionMetricMeans": {
+        "knownRegionIoU": 0.9136858400905495,
+        "backgroundFalsePositive": 0.06756522357217046,
+        "paperFalseNegative": 0.004333575002696816
+      },
+      "count": 14,
+      "ids": [
+        "real-12ce3c9180f7f317-body-1",
+        "real-2044b1d98ed6f262-body-1",
+        "real-39f3a1ba97852876-body-1",
+        "real-5330aa8b62176216-body-1",
+        "real-710703159f609111-body-1",
+        "real-80794af7903e5d29-body-1",
+        "real-8c875dd0f298b5a4-body-1",
+        "real-a414dfffbd2362ae-body-1",
+        "real-abf590088db891f9-body-1",
+        "real-b87b0b19f12724f3-body-1",
+        "real-c4a9ee6e2d0a4185-body-1",
+        "real-cdae5c890b6933cd-body-1",
+        "real-d5b0aa8d4d2465ee-body-1",
+        "real-e936e08ac62db19b-body-1"
+      ],
+      "gainsAgainstUnchanged": [
+        "real-12ce3c9180f7f317-body-1",
+        "real-2044b1d98ed6f262-body-1",
+        "real-39f3a1ba97852876-body-1",
+        "real-5330aa8b62176216-body-1",
+        "real-710703159f609111-body-1",
+        "real-80794af7903e5d29-body-1",
+        "real-8c875dd0f298b5a4-body-1",
+        "real-a414dfffbd2362ae-body-1",
+        "real-abf590088db891f9-body-1",
+        "real-b87b0b19f12724f3-body-1",
+        "real-cdae5c890b6933cd-body-1",
+        "real-e936e08ac62db19b-body-1"
+      ],
+      "lossesAgainstUnchanged": [
+        "real-cf2d0fcff65d7386-body-1"
+      ],
+      "reasons": {
+        "The two-colour foreground does not clearly support both heart lobes and lower edges.": 6,
+        "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 1,
+        "Crowded frame: select one heart with a rough rectangle": 1
+      }
+    }
+  },
+  "singlePointFieldsByteIdentical": true,
+  "singlePointCropCoordinatesExactlyReproduced": true,
+  "unchangedControlReproduced": true,
+  "sourceFilesVerified": 102,
+  "gainsAgainstSinglePoint": [
+    "real-cdae5c890b6933cd-body-1",
+    "real-d5b0aa8d4d2465ee-body-1"
+  ],
+  "lossesAgainstSinglePoint": [
+    "real-340f5e5b0f447889-body-1",
+    "real-c0cc1ce97cf5e6a6-body-1"
+  ],
+  "allSeedsAvailable": true,
+  "visualReview": {
+    "maskAndCropPanels": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "promptPanels": [
+      1,
+      2
+    ]
+  },
+  "findings": [
+    "Two predicted-paper points recover the hand-held printed checker and foliage checker, but lose aircraft and red/white ribbon checker. Proposal count remains 14/22.",
+    "Known-paper false negatives fall from 2.47% to 0.43%, but mean known-background false positives rise from 6.56% to 6.76%. Mean known-region IoU changes from 90.70% to 91.37%.",
+    "On the ribbon checker (real-c0cc1ce97cf5e6a6), one automatically chosen paper point is visibly on the blue background. The original body field falsely includes that region, so a colour-specific deepest-point rule amplifies an upstream segmentation mistake.",
+    "The hand-held printed checker now includes both papers; the blue/yellow checker also includes both, but retains too much background and still produces no crop.",
+    "No full fitting replay was run for the two-paper arm. No policy chooses the better arm per photograph, and the union of their outcomes is not claimed as a validated algorithm."
+  ],
+  "nextStep": "Test a constrained prompt fallback and isolate locator shape/colour losses on accurate silhouettes; verify complete templates before integration.",
+  "artifactsSha256": {
+    "tmp/heart-learning/mobilesam-paper-prompts-v1/probe/plan.json": "b660f0898d37c30b737d043ef2da2eb277181815452a566ae99a00e7ba79fe73",
+    "tmp/heart-learning/mobilesam-paper-prompts-v1/probe/manifest.json": "bae5a131bae054284a3aeb6da0fa0e33a1428a25fa65f07be4f62b229ed828a5",
+    "tmp/heart-learning/mobilesam-paper-prompts-v1/state.json": "24fa9f0e4bdf4b394228c59e716ec4809b9c3bad19aa6f4487f7191da90835c8",
+    "tmp/heart-learning/mobilesam-paper-prompts-v1/source.json": "4c379160c2399abc8dd3e20f56c9169ea93f8d7c65f08882be71164fff35b3e4",
+    "tmp/heart-learning/mobilesam-paper-prompts-v1/results/report.json": "264a573319f7a4e770e05483a3f7124bc074f4bff7f05194ac55aea1d1502be5",
+    "tmp/heart-learning/mobilesam-paper-prompts-v1/review.json": "e25f848d5586d4d73695b6ca84808670b15ac85aee76ee5786edf59e3629eb56",
+    "tmp/heart-learning/mobilesam-paper-prompts-v1/review.py": "b8cbcad555740ad1299c1c048097db6554e3dde0be9e7e42240285c7c5e74990",
+    "tmp/heart-learning/mobilesam-paper-prompts-v1/comparison-1.png": "3a01f1762b287cb5c3e609be7b801d1d02b56a8533f6c6d6da1bbff21c03666c",
+    "tmp/heart-learning/mobilesam-paper-prompts-v1/comparison-2.png": "93225f170c9a1f679061e7e0f5d94aa5a7850baff3f0152d601a8c75ac0ef0be",
+    "tmp/heart-learning/mobilesam-paper-prompts-v1/comparison-3.png": "130511528fababf3ef6ac83ff9671ab7fe76c323778ef30604fb2d6d0078c12c",
+    "tmp/heart-learning/mobilesam-paper-prompts-v1/comparison-4.png": "9fc3f30152f204276eef1254903f2c56e0c7845b1ae417e2d347cb78f369fb9d",
+    "tmp/heart-learning/mobilesam-paper-prompts-v1/comparison-5.png": "7ccb71d772603ae8ca1287884a5720aac736ddebeb2d4a63ba49f52abb4a80b5",
+    "tmp/heart-learning/mobilesam-paper-prompts-v1/comparison-6.png": "5d6b88bc1b50bbdc5fbd6a3f3d0f3ed12bca319cc08b52b70d09e697c31f920a",
+    "tmp/heart-learning/mobilesam-paper-prompts-v1/prompts-1.png": "83d1737e03b2746f0c4cb976c1d270cd07b44f03ce0bbccbbaf52d431e19c3f5",
+    "tmp/heart-learning/mobilesam-paper-prompts-v1/prompts-2.png": "c4b6857e2b31e5e46075b0f30db56df07fa3da38bd47296d2971c0526b85889a",
+    "tmp/heart-learning/mobilesam-paper-prompts-v1/prompt-tests.log": "203e8d11dc9529763cb172c4d4acdffe3b67db7d123ed6f2223ef9c377a8923b",
+    "tmp/heart-learning/mobilesam-paper-prompts-v1/source-verification.json": "5e954a753f3b641e2a2c674dce21d8c5c4418b853f49565d527410e328475a58"
+  },
+  "verification": {
+    "promptAndAlignmentTests": 9,
+    "pythonCompilePassed": true,
+    "applicationSourcesMatchCompletedFullQA": 801,
+    "experimentSourcesReverified": true
+  }
+}

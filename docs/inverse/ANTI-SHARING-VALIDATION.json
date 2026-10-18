@@ -1,0 +1,1356 @@
+{
+  "description": "Extend shared-cut repair to anti-transposition and keep required single-choice controls connected to their model.",
+  "sourceCommit": "a02d6b1c8a4797869b13eada52654e39aff30a95",
+  "engineHashes": {
+    "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+    "static/inverse/core/chord-distance.js": "cb79dd6d90d22b6bea6bb4bd0593cc8e32a18a09116084e53f5d942bcbef3c04",
+    "static/inverse/core/crop.js": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88",
+    "static/inverse/core/engine.js": "59e4354b5c7ec6190b140066b24b3f8959e58f5e2f0f0166298522fb485d4740",
+    "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+    "static/inverse/core/feature-recovery.js": "37831af78afffd94b19a4145091d199f9771d12e505514e88cf1943e6023279e",
+    "static/inverse/core/geometry.js": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+    "static/inverse/core/graph.js": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
+    "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+    "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+    "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+    "static/inverse/core/junctions.js": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
+    "static/inverse/core/kernel-choice.js": "5dba82d1c82e6b34dbce085edf10252093bbacbc15f605cf6530b9e1ebcf9c46",
+    "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+    "static/inverse/core/material.js": "d1445856faeb8ecadc8626a1c471341db8a75758cced22f43bf4930fa4d82652",
+    "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+    "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+    "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+    "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+    "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/settings.js": "2fcdd67395cf3ebfcfcf4c885ea8fa5ae58b43dd52000660d0a52706b3b3665e",
+    "static/inverse/core/solver.js": "15bb96737f85ca0d290b6a06d792a3b18570f83a39b9801a498c91e3f466e412",
+    "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+    "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+    "static/inverse/core/validate.js": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+    "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+    "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+    "static/inverse/core/direct/curves.js": "18fe358d46448eb844b69fe5f35bee1cc8adb87cd5c5462382a59dbbd92fe08a",
+    "static/inverse/core/direct/finalize.js": "dd2097b415c274ceec20a485d4a62fab28ffc4ea40f323396a8acb84e5b8c4a7",
+    "static/inverse/core/direct/fit.js": "4df61135bc86b6ddb3b0b9f1922f9614c3852d02552c232846ea94d89f31a933",
+    "static/inverse/core/direct/grid.js": "57ada8e2f1c794b0012ddedbb8b508f29971186c313e517a8f40ca3788e1dfbd",
+    "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+    "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+    "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+    "static/inverse/core/direct/matching.js": "db113f3e5c6ed3be820f7c863a113e9181a02c7efa5ea66a46e56df7f2428414",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+    "static/inverse/core/direct/prefer-matching.js": "1ff682f298014f8c29387ad3bbe330c52e4ee619defd5a2d116cb3703e0f5d48",
+    "static/inverse/core/direct/primitive-selection.js": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904",
+    "static/inverse/core/direct/primitives.js": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b",
+    "static/inverse/core/direct/refine.js": "9c126408c3f7da97faf100504d57ca884315017a6665ee10259148455716fc9c",
+    "static/inverse/core/direct/share.js": "247241745ec8b1ac03c41b7e619bda30e821bbddbad2c60d4ec2d51c8aea1e6d",
+    "static/inverse/core/direct/symmetry.js": "ed9f633ea42af93b46293d0d753e21dd7a5921485d5d55847e5a02665c14cf13",
+    "static/inverse/core/direct/topology.js": "bbe79bf0dca7c4786c7728413026fee9f77bb9bca5bb788be7d6674267ad9292",
+    "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+    "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58"
+  },
+  "servedEngineFilesVerified": 50,
+  "artifactHashes": {
+    "scripts/inverse/fixtures/free-border-hat.json": "5bd3e6c839b3b7508da3df791da88ee6c6567e81e166e8c8b21473baad1cc824",
+    "scripts/inverse/sharing.test.mjs": "b4f6fdfcc1e4f5ebaa06c47da269accaee2575cd1353bfdbe7e0ae612802a30f",
+    "tmp/anti-sharing-comparison.json": "18271c69f5fe475c119ab36f663ea962180b46986dd80a03c4d35b46e341aaa3",
+    "tmp/anti-sharing-tests.log": "d7fceb7a357455ec4c86a17bd24bc1cc3c6e5f06404d8f00bdca4f1f31fd42ee",
+    "tmp/anti-sharing-stages.json": "d4d5947292aba64320a1f85fe3205f765dbcb9facb8bfa33e81e27c10b2dde89",
+    "tmp/anti-sharing-controls-final-stages.json": "0d1262b8df00bb4ab3ccf7ef858cf799c43a622293118274afc9262f7e7df645",
+    "tmp/anti-sharing-release-browser-stages.json": "9beba8b094f8a7a88e9f5ac848572851426c17874f0852ff8bb939d87585a428",
+    "tmp/anti-sharing-controls-final-application-tests.log": "701126947fb0c4858aa0ff676cd0e4b7c8761600bc8f86f17db1e8e236078670",
+    "tmp/anti-sharing-test.log": "f24a89e4628e8c6eb6430f956c00c0f69bae8f063475990f16b312b3f4fcd8e9",
+    "tmp/anti-sharing-check.log": "1be3902fa1acaae6b0990406476a41369d095dc32dda58ba4b2a1df01155978b",
+    "tmp/anti-sharing-lint.log": "a552732ebea6b64b49ac0a1299170db75e8c45dbbc66c284f28e99be5613e5c7",
+    "tmp/anti-sharing-build.log": "ca739eb65c7dd4c1d8b14c52d61cd8a72b1d523ca129374a8ab11cb1a1bd5b9e",
+    "tmp/anti-sharing-hunodan.log": "83f3e98bb27afb74137529ffee81dd05ad0d194dbf51c6496b8fdeec5ba1af47",
+    "tmp/anti-sharing-weighted.log": "67e07ef352a6f87d7004e6ab573291c24c9b2d6c703a11b2541880fdd7bbc350",
+    "tmp/anti-sharing-controls-final-check.log": "1be3902fa1acaae6b0990406476a41369d095dc32dda58ba4b2a1df01155978b",
+    "tmp/anti-sharing-controls-final-lint.log": "a552732ebea6b64b49ac0a1299170db75e8c45dbbc66c284f28e99be5613e5c7",
+    "tmp/anti-sharing-controls-final-build.log": "2b9eba35dd23077e5f824b4fcd0ab3775fbfb3ab35e41b207beea1f7bda9b68a",
+    "tmp/anti-sharing-hunodan/results.json": "dbee237c65cd7ff87382dd7779214929482d1670f0d3b134e75915af2ec2ecdd",
+    "tmp/anti-sharing-weighted/results.json": "8338ea58fd1c9c5039c1f19a18eeacd7dd6d41f9d7e64d456f457c773bc427f7",
+    "tmp/anti-sharing-release-browser/results.json": "a9067e9d0bab6cf0f80105188d91c08e047fdaea39604e80985487ac2b66ea95",
+    "tmp/anti-sharing-release-browser.log": "394f44e6c7fbe6f377d5645f7289deac9befc79f19facf9cad1329dd6ad60313",
+    "tmp/anti-sharing-release-fallback/results.json": "870f3fd668bf4d0700b16b4b600591ba873496fcd786becbc4f138f146f9f820",
+    "tmp/anti-sharing-release-fallback.log": "c96942759bdc246795af19f618f7f45cac29587de558f4cfba64666cc7de1b8e"
+  },
+  "validation": {
+    "applicationTests": 722,
+    "engineTests": 250,
+    "sharingTests": 7,
+    "typeErrors": 0,
+    "existingWarnings": 7,
+    "checks": [
+      {
+        "stage": "test",
+        "command": [
+          "npm",
+          "test"
+        ],
+        "environment": {
+          "VITEST_MAX_WORKERS": "2"
+        },
+        "exitCode": 0,
+        "seconds": 123.602275291
+      },
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "environment": {},
+        "exitCode": 0,
+        "seconds": 6.425969249999994
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "environment": {},
+        "exitCode": 0,
+        "seconds": 5.013324665999988
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "environment": {},
+        "exitCode": 0,
+        "seconds": 7.7157302079999965
+      },
+      {
+        "stage": "hunodan",
+        "command": [
+          "node",
+          "scripts/inverse/hunodan-speed-benchmark.mjs"
+        ],
+        "environment": {
+          "INVERSE_SPEED_OUT": "tmp/anti-sharing-hunodan"
+        },
+        "exitCode": 0,
+        "seconds": 152.56830112500003
+      },
+      {
+        "stage": "weighted",
+        "command": [
+          "node",
+          "scripts/inverse/weighted-solve-benchmark.mjs",
+          "--shapes=top-hat",
+          "--strategies=weighted",
+          "--variants=original,inverted,shifted,free-noise",
+          "--output=tmp/anti-sharing-weighted"
+        ],
+        "environment": {},
+        "exitCode": 0,
+        "seconds": 49.93385537500001
+      }
+    ],
+    "controlChecks": [
+      {
+        "stage": "check",
+        "exitCode": 0,
+        "seconds": 6.0167545
+      },
+      {
+        "stage": "lint",
+        "exitCode": 0,
+        "seconds": 5.14782675
+      },
+      {
+        "stage": "build",
+        "exitCode": 0,
+        "seconds": 8.013067666
+      },
+      {
+        "stage": "application-tests",
+        "exitCode": 0,
+        "seconds": 19.030571249999998
+      }
+    ],
+    "applicationTestsAfterFinalControls": true
+  },
+  "fixedGeometry": {
+    "method": "Run old and current final shared-cut recovery on identical saved geometry and masks, without fitting. Diagnostic deadline is unlimited. The anti fixture is a quarter turn of the committed ordinary hat, including its original mask.",
+    "reference": "ad64c58d18b1e74b273f6220ec563d831d94fa98",
+    "previousSourceSha256": "9a3723c2aea8dfe1bcf24f29e184aa4a90e953098f70ed7d76c038a305e140a7",
+    "currentSourceSha256": "247241745ec8b1ac03c41b7e619bda30e821bbddbad2c60d4ec2d51c8aea1e6d",
+    "results": [
+      {
+        "mode": "matching",
+        "previous": {
+          "seconds": 0.758504708,
+          "geometrySha256": "a1f30dc05456782184a63a47bbef19eb946fecd659759fc8b519e425685c81d8",
+          "maskError": 0.029475,
+          "coverageError": 0.030620624993403907,
+          "hiddenLengthMm": 215.16600260496577,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "symmetry": {
+            "requested": [
+              "transpose"
+            ],
+            "honoured": [
+              "transpose"
+            ],
+            "maxDeviationMm": 0
+          }
+        },
+        "current": {
+          "seconds": 0.6005820410000001,
+          "geometrySha256": "a1f30dc05456782184a63a47bbef19eb946fecd659759fc8b519e425685c81d8",
+          "maskError": 0.029475,
+          "coverageError": 0.030620624993403907,
+          "hiddenLengthMm": 215.16600260496577,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "symmetry": {
+            "requested": [
+              "transpose"
+            ],
+            "honoured": [
+              "transpose"
+            ],
+            "maxDeviationMm": 0
+          }
+        }
+      },
+      {
+        "mode": "independent",
+        "previous": {
+          "seconds": 1.1890370840000004,
+          "geometrySha256": "6b17dd0863630ac9525051c713e9000b2be9c79393f1f7ec3c45bcde270488e1",
+          "maskError": 0.029475,
+          "coverageError": 0.03062052695423481,
+          "hiddenLengthMm": 215.16550364115136,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "symmetry": {
+            "requested": [],
+            "honoured": [],
+            "maxDeviationMm": null
+          }
+        },
+        "current": {
+          "seconds": 1.0331474999999992,
+          "geometrySha256": "6b17dd0863630ac9525051c713e9000b2be9c79393f1f7ec3c45bcde270488e1",
+          "maskError": 0.029475,
+          "coverageError": 0.03062052695423481,
+          "hiddenLengthMm": 215.16550364115136,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "symmetry": {
+            "requested": [],
+            "honoured": [],
+            "maxDeviationMm": null
+          }
+        }
+      },
+      {
+        "mode": "anti",
+        "previous": {
+          "seconds": 0.000007750000000669388,
+          "geometrySha256": "84812b0b3953c25547f7468ed533091e52aaf70c518b7fed57996847623d78b3",
+          "maskError": 0.031925,
+          "coverageError": 0.030880594370828476,
+          "hiddenLengthMm": 0,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "symmetry": {
+            "requested": [
+              "antiTranspose"
+            ],
+            "honoured": [
+              "antiTranspose"
+            ],
+            "maxDeviationMm": 7.105427357601002e-15
+          }
+        },
+        "current": {
+          "seconds": 0.6902973750000001,
+          "geometrySha256": "42adc750be3667829a43b477cdaffeac4133c113b5a73e8f7efb6052d51ad57e",
+          "maskError": 0.029475,
+          "coverageError": 0.030626562496565746,
+          "hiddenLengthMm": 215.1660026049658,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "symmetry": {
+            "requested": [
+              "antiTranspose"
+            ],
+            "honoured": [
+              "antiTranspose"
+            ],
+            "maxDeviationMm": 1.7763568394002505e-15
+          }
+        }
+      }
+    ]
+  },
+  "benchmarks": {
+    "hunodan": {
+      "method": "Each prepare + solve + validate + export <=10 seconds; independent error <= that case’s validated release error, plus at most 1 percentage point for an identical pair; unchanged geometry, strict paper and substantial feature checks. Decode and independent external replay are timed separately.",
+      "runtime": "v25.6.1",
+      "cpu": "Apple M2 Pro",
+      "medianSeconds": 5.9562947295000015,
+      "maximumSeconds": 9.004306500000006,
+      "rows": [
+        {
+          "id": "hjfig-01",
+          "seconds": 4.627442667,
+          "error": 0.009799111111111111,
+          "previousError": 0.009799111111111111,
+          "passed": true
+        },
+        {
+          "id": "hjfig-02",
+          "seconds": 4.699773458999999,
+          "error": 0.013952,
+          "previousError": 0.013952,
+          "passed": true
+        },
+        {
+          "id": "hjfig-03",
+          "seconds": 4.020832583,
+          "error": 0.006634666666666666,
+          "previousError": 0.006634666666666666,
+          "passed": true
+        },
+        {
+          "id": "hjfig-04",
+          "seconds": 4.214063459000001,
+          "error": 0.013824,
+          "previousError": 0.013824,
+          "passed": true
+        },
+        {
+          "id": "hjfig-05",
+          "seconds": 2.5951570829999984,
+          "error": 0.010231665331208341,
+          "previousError": 0.010231665331208341,
+          "passed": true
+        },
+        {
+          "id": "hjfla-01",
+          "seconds": 6.565623957999996,
+          "error": 0.013414171006944444,
+          "previousError": 0.013414171006944444,
+          "passed": true
+        },
+        {
+          "id": "hjcur-01",
+          "seconds": 6.460912624999997,
+          "error": 0.00512,
+          "previousError": 0.00512,
+          "passed": true
+        },
+        {
+          "id": "hjcur-02",
+          "seconds": 5.8713042500000014,
+          "error": 0.005397333333333333,
+          "previousError": 0.005397333333333333,
+          "passed": true
+        },
+        {
+          "id": "hjcur-03",
+          "seconds": 5.993431250000001,
+          "error": 0.004522666666666667,
+          "previousError": 0.004522666666666667,
+          "passed": true
+        },
+        {
+          "id": "hjcur-04",
+          "seconds": 7.677625541000001,
+          "error": 0.0056248888888888885,
+          "previousError": 0.0056248888888888885,
+          "passed": true
+        },
+        {
+          "id": "hjcur-05",
+          "seconds": 3.7756557910000046,
+          "error": 0.009436444444444445,
+          "previousError": 0.009436444444444445,
+          "passed": true
+        },
+        {
+          "id": "hjhih-01",
+          "seconds": 7.804663459000003,
+          "error": 0.0060202958468683725,
+          "previousError": 0.0060202958468683725,
+          "passed": true
+        },
+        {
+          "id": "hjhih-02",
+          "seconds": 5.919158209000001,
+          "error": 0.003899406226779104,
+          "previousError": 0.003899406226779104,
+          "passed": true
+        },
+        {
+          "id": "hjhih-04",
+          "seconds": 8.733517042000006,
+          "error": 0.007678910190418844,
+          "previousError": 0.007756605740406218,
+          "passed": true
+        },
+        {
+          "id": "hjstr-01",
+          "seconds": 5.067631500000003,
+          "error": 0.007543348420030173,
+          "previousError": 0.007543348420030173,
+          "passed": true
+        },
+        {
+          "id": "hjstr-02",
+          "seconds": 6.420765874999997,
+          "error": 0.004339250493096647,
+          "previousError": 0.004339250493096647,
+          "passed": true
+        },
+        {
+          "id": "hjstr-03",
+          "seconds": 9.004306500000006,
+          "error": 0.005519980869380381,
+          "previousError": 0.005513338293123605,
+          "passed": true
+        },
+        {
+          "id": "hjsta-01",
+          "seconds": 4.722741458000004,
+          "error": 0.007936288088642659,
+          "previousError": 0.007936288088642659,
+          "passed": true
+        },
+        {
+          "id": "hjsta-02",
+          "seconds": 5.012391208000001,
+          "error": 0.0036485460069444445,
+          "previousError": 0.0036485460069444445,
+          "passed": true
+        },
+        {
+          "id": "hjsta-03",
+          "seconds": 7.329032458000001,
+          "error": 0.012339030193129683,
+          "previousError": 0.012339030193129683,
+          "passed": true
+        },
+        {
+          "id": "hjsta-04",
+          "seconds": 7.097014167000015,
+          "error": 0.005053050026595,
+          "previousError": 0.005053050026595,
+          "passed": true
+        },
+        {
+          "id": "hjsta-05",
+          "seconds": 7.137294333999977,
+          "error": 0.010624446293860237,
+          "previousError": 0.010624446293860237,
+          "passed": true
+        }
+      ]
+    },
+    "weighted": {
+      "method": "Fresh automatic mask solves. Frames fixed before fitting. Checker strategy replaces the band; weighted strategy retains the original mask with zero band weights. Exported controls are independently rendered with resvg. Geometric and paper checks remain enabled. Variants swap both colours, translate by one source pixel in both axes with background fill, or alter only zero-weight pixels; the protected frame stays fixed.",
+      "runtime": "v25.6.1",
+      "cpu": "Apple M2 Pro",
+      "medianSeconds": 4.808455729000002,
+      "maximumSeconds": 8.159956124999997,
+      "rows": [
+        {
+          "id": "top-hat/0.64/original/weighted",
+          "seconds": 2.8417264159999998,
+          "error": 0.00360107421875,
+          "previousError": 0.00360107421875,
+          "passed": true
+        },
+        {
+          "id": "top-hat/0.64/inverted/weighted",
+          "seconds": 2.4796696249999997,
+          "error": 0.003662109375,
+          "previousError": 0.003662109375,
+          "passed": true
+        },
+        {
+          "id": "top-hat/0.64/shifted/weighted",
+          "seconds": 3.2856809160000005,
+          "error": 0.00360107421875,
+          "previousError": 0.00360107421875,
+          "passed": true
+        },
+        {
+          "id": "top-hat/0.64/free-noise/weighted",
+          "seconds": 2.7324094580000002,
+          "error": 0.00360107421875,
+          "previousError": 0.00360107421875,
+          "passed": true
+        },
+        {
+          "id": "top-hat/0.84/original/weighted",
+          "seconds": 6.548353166000001,
+          "error": 0.0002834467120181406,
+          "previousError": 0.0002834467120181406,
+          "passed": true
+        },
+        {
+          "id": "top-hat/0.84/inverted/weighted",
+          "seconds": 8.159956124999997,
+          "error": 0.00021258503401360543,
+          "previousError": 0.00021258503401360543,
+          "passed": true
+        },
+        {
+          "id": "top-hat/0.84/shifted/weighted",
+          "seconds": 6.996636375000002,
+          "error": 0.00031887755102040814,
+          "previousError": 0.00031887755102040814,
+          "passed": true
+        },
+        {
+          "id": "top-hat/0.84/free-noise/weighted",
+          "seconds": 6.331230542000005,
+          "error": 0.0002834467120181406,
+          "previousError": 0.0002834467120181406,
+          "passed": true
+        }
+      ]
+    }
+  },
+  "browser": {
+    "origin": "http://127.0.0.1:5232",
+    "commit": "a02d6b1c8a4797869b13eada52654e39aff30a95",
+    "timingMethod": "Page-clock timestamps from the Find click, worker requests/replies and the first visible, enabled Open in Draw button. DOM readiness is not a paint timestamp. Result capture and artifact writes happen afterward and have separate Node-clock durations. Version 1 solveAndConversionSeconds included harness capture and artifact writes and is not directly comparable.",
+    "sourceHashes": {
+      "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+      "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+      "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+      "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+      "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+      "static/inverse/core/direct/prefer-matching.js": "1ff682f298014f8c29387ad3bbe330c52e4ee619defd5a2d116cb3703e0f5d48",
+      "static/inverse/core/direct/symmetry.js": "ed9f633ea42af93b46293d0d753e21dd7a5921485d5d55847e5a02665c14cf13",
+      "src/lib/inverse/engine.ts": "3801ce556deb99d9338d9790867cfe7c9a9b10293b03300f6aae5537f7ed7b96",
+      "static/inverse/core/direct/finalize.js": "dd2097b415c274ceec20a485d4a62fab28ffc4ea40f323396a8acb84e5b8c4a7",
+      "static/inverse/core/direct/topology.js": "bbe79bf0dca7c4786c7728413026fee9f77bb9bca5bb788be7d6674267ad9292",
+      "static/inverse/core/direct/fit.js": "4df61135bc86b6ddb3b0b9f1922f9614c3852d02552c232846ea94d89f31a933",
+      "static/inverse/core/direct/share.js": "247241745ec8b1ac03c41b7e619bda30e821bbddbad2c60d4ec2d51c8aea1e6d",
+      "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+      "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+      "src/lib/inverse/toHeartDesign.ts": "41edadce4a5be5b8c7dd977a3761e5c7992bb462633f8651e0d9f0293370e931",
+      "src/lib/inverse/simplifyCurves.ts": "c693b9eb86084926d941d7e60a1a38178156d081657feabce41ff03261714173",
+      "src/lib/editor/curveIssues.ts": "293535d5f73d3dd4c9a7bbfc1c83b25ba81558d593644743496cf9e8afa5358e",
+      "src/lib/components/paint/PaintPage.svelte": "0db3cacfb5b08f7b63586a5515cdea9fa5b8bdea0a494d480e02736ff5cb8832",
+      "src/lib/inverse/conversionFidelity.ts": "45db43e0919b98cfe03c115bda7473896de0da1aeec89e94ee74bbaeffdbb589",
+      "static/inverse/core/direct/refine.js": "9c126408c3f7da97faf100504d57ca884315017a6665ee10259148455716fc9c",
+      "static/inverse/core/direct/primitive-selection.js": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904",
+      "src/lib/components/editor/SymmetryRows.svelte": "1bf99195778a11baf02bff2bf0ab9983a9ab6ae3d5d52b7f29f17eb0efb57884",
+      "src/lib/components/ui/toggle-group/toggle-group.svelte": "ef3ac7b6559268d4e5b8f34870b91939fc39a92718a5d90b650c383f0ca178d4",
+      "src/lib/components/paint/FramePanel.svelte": "af18640357bf0a09f74a8ec30ae63cb7c82ec2ec94ca617b63a088232c0ba785",
+      "src/lib/components/paint/MaskToolPanel.svelte": "131c6b381e1f085a54c30816f8882d31b62042ba11f55122a3f6fbce52940a6f"
+    },
+    "harnessHashes": {
+      "scripts/inverse/paint-browser-test.mjs": "781b32ddc22da61bce20cacc674988974b1dc6a3416a16f7b9d74243c6632aaa",
+      "scripts/inverse/paint-observer.mjs": "0f5722fac31af0cac42a400dca990cd2201a50b2a4958552c6696d3b33bdb807",
+      "scripts/inverse/motif-fixture.mjs": "2bedee2c003accb663b0b5a4b5ae981ea1cfbfaf2db0abb19babf4f4156aac49"
+    },
+    "rows": [
+      {
+        "id": "chromium-top-hat-anti",
+        "passed": true,
+        "browserVersion": "145.0.7632.6",
+        "clickToReadySeconds": 8.450699999988078,
+        "motifError": 0.0031887755102040817,
+        "sharedSpans": 107,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "anti"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "anti"
+        },
+        "engineSymmetry": {
+          "requested": [
+            "antiTranspose"
+          ],
+          "honoured": [
+            "antiTranspose"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "controlChecks": {
+          "paint": true,
+          "draw": true
+        },
+        "numericalBackend": "wasm",
+        "fidelity": {
+          "passed": true,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0031887755102040817,
+          "sourceError": 0.0031887755102040817
+        },
+        "preparedSha256": "e683b8bba15cdd11bc6fda4dc9b27041278ebbc881bf21c145fc592d872c5e37",
+        "geometrySha256": "502ab5174970387f8ba789443cda3aedb9e49ddb3ee0b3ee2bc8b2c00c274709",
+        "editableSvgSha256": "01d455f4d5335d8307526ab93bfeb01327efa3b643fee1099544cfb8fe1f76e4"
+      },
+      {
+        "id": "chromium-top-hat",
+        "passed": true,
+        "browserVersion": "145.0.7632.6",
+        "clickToReadySeconds": 10.4225,
+        "motifError": 0.0032064909297052154,
+        "sharedSpans": 114,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "engineSymmetry": {
+          "requested": [
+            "transpose"
+          ],
+          "honoured": [
+            "transpose"
+          ],
+          "maxDeviationMm": 0
+        },
+        "numericalBackend": "wasm",
+        "fidelity": {
+          "passed": true,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0032064909297052154,
+          "sourceError": 0.0032064909297052154
+        },
+        "preparedSha256": "e5c0a7c46136bec133f19ca5e67cf3260989136898a7cf0a80eda690593d4a4a",
+        "geometrySha256": "d2e98879de6b699368b7cc3dbb13b77716bcffa7aadf0aef67388aeba2907da6",
+        "editableSvgSha256": "71c74acb82fb04d178db1b5feb8239e7a1db9a4850ebea8d0ecef7a187590ba3"
+      },
+      {
+        "id": "chromium-top-hat-independent",
+        "passed": true,
+        "browserVersion": "145.0.7632.6",
+        "clickToReadySeconds": 6.235599999964237,
+        "motifError": 0.0029584750566893424,
+        "sharedSpans": 40,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "engineSymmetry": {
+          "requested": [],
+          "honoured": [],
+          "maxDeviationMm": null
+        },
+        "numericalBackend": "wasm",
+        "fidelity": {
+          "passed": true,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00036875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000325
+            }
+          ],
+          "originalSourceError": 0.0029584750566893424,
+          "sourceError": 0.0029584750566893424
+        },
+        "preparedSha256": "e5c0a7c46136bec133f19ca5e67cf3260989136898a7cf0a80eda690593d4a4a",
+        "geometrySha256": "4422fadf39c0872ed6f30ea1520e605c80d57ab0070f361b914b53965e68a513",
+        "editableSvgSha256": "b819281fda120872deaa76fd50f4f76cf8437b7df5adc2e53f29ad5676f626d4"
+      },
+      {
+        "id": "chromium-star",
+        "passed": true,
+        "browserVersion": "145.0.7632.6",
+        "clickToReadySeconds": 1.9680999999642372,
+        "motifError": 0.0016,
+        "sharedSpans": 12,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "engineSymmetry": {
+          "requested": [
+            "transpose"
+          ],
+          "honoured": [
+            "transpose"
+          ],
+          "maxDeviationMm": 0
+        },
+        "numericalBackend": "wasm",
+        "fidelity": {
+          "passed": true,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0000625
+            }
+          ],
+          "originalSourceError": 0.0016,
+          "sourceError": 0.0016
+        },
+        "preparedSha256": "16846094e460d9c934f80d1e922cde35c0528a8eaec7696399d23910dc89576b",
+        "geometrySha256": "f3afeaf74cf3c71f0dff6952af4b27f849d818637d89079ea87b64b622593788",
+        "editableSvgSha256": "d2ecb7405bac6637411178db86cb744c1e66766131edf663130a4f761ded4bd7"
+      },
+      {
+        "id": "chromium-hunodan",
+        "passed": true,
+        "browserVersion": "145.0.7632.6",
+        "clickToReadySeconds": 4.8435,
+        "motifError": 0.00944375,
+        "sharedSpans": 8,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "engineSymmetry": {
+          "requested": [],
+          "honoured": [],
+          "maxDeviationMm": null
+        },
+        "numericalBackend": "wasm",
+        "fidelity": {
+          "passed": true,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00944375,
+          "sourceError": 0.00944375
+        },
+        "preparedSha256": "60b9df88990a65d4ffc89d0f19dfcb6e185e97726364371e7127704ea86680ac",
+        "geometrySha256": "3a228e613cb949c85e39c5f630119bd9ea96db3cccf647c5e857cdf1a6e72acd",
+        "editableSvgSha256": "a7eb34b6f14c6edffe566a2a429198191edfc630901032c9b9a88589f1f772b7"
+      },
+      {
+        "id": "firefox-top-hat-anti",
+        "passed": true,
+        "browserVersion": "146.0.1",
+        "clickToReadySeconds": 12.872,
+        "motifError": 0.0031887755102040817,
+        "sharedSpans": 107,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "anti"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "anti"
+        },
+        "engineSymmetry": {
+          "requested": [
+            "antiTranspose"
+          ],
+          "honoured": [
+            "antiTranspose"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "controlChecks": {
+          "paint": true,
+          "draw": true
+        },
+        "numericalBackend": "wasm",
+        "fidelity": {
+          "passed": true,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0031887755102040817,
+          "sourceError": 0.0031887755102040817
+        },
+        "preparedSha256": "e683b8bba15cdd11bc6fda4dc9b27041278ebbc881bf21c145fc592d872c5e37",
+        "geometrySha256": "e784c0b48ddad112e09939db53b7570cb7ab1bb31e0da1a2667a985cb650937a",
+        "editableSvgSha256": "c13a4e4893ab3f3f57e2c56fd8e99ff3e65de63f78f665b2f8d0c3c9cbe6e3f0"
+      },
+      {
+        "id": "firefox-top-hat",
+        "passed": true,
+        "browserVersion": "146.0.1",
+        "clickToReadySeconds": 17.627,
+        "motifError": 0.0032064909297052154,
+        "sharedSpans": 114,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "engineSymmetry": {
+          "requested": [
+            "transpose"
+          ],
+          "honoured": [
+            "transpose"
+          ],
+          "maxDeviationMm": 0
+        },
+        "numericalBackend": "wasm",
+        "fidelity": {
+          "passed": true,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0032064909297052154,
+          "sourceError": 0.0032064909297052154
+        },
+        "preparedSha256": "e5c0a7c46136bec133f19ca5e67cf3260989136898a7cf0a80eda690593d4a4a",
+        "geometrySha256": "8a12465dc7d6b0400990df61f75959fad96d9c73cddf02e3887715787c39965a",
+        "editableSvgSha256": "9cee08a4d34072dad1d689a95536c4ab42bc6d3f8c7cfd4a92cf1a82cc0ad6af"
+      },
+      {
+        "id": "firefox-top-hat-independent",
+        "passed": true,
+        "browserVersion": "146.0.1",
+        "clickToReadySeconds": 9.725,
+        "motifError": 0.003489937641723356,
+        "sharedSpans": 31,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "engineSymmetry": {
+          "requested": [],
+          "honoured": [],
+          "maxDeviationMm": null
+        },
+        "numericalBackend": "wasm",
+        "fidelity": {
+          "passed": true,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.0000625
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0000859375
+            }
+          ],
+          "originalSourceError": 0.003489937641723356,
+          "sourceError": 0.003489937641723356
+        },
+        "preparedSha256": "e5c0a7c46136bec133f19ca5e67cf3260989136898a7cf0a80eda690593d4a4a",
+        "geometrySha256": "6c975f3c0ee5188673c0881d2851f56a9da2ad12dc221ab932eeaafe59847255",
+        "editableSvgSha256": "c966f602ad2beb9aa27024c69b3ff1cc14375010552980016eaef46fd60aed01"
+      },
+      {
+        "id": "firefox-star",
+        "passed": true,
+        "browserVersion": "146.0.1",
+        "clickToReadySeconds": 5.083,
+        "motifError": 0.0016,
+        "sharedSpans": 12,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "engineSymmetry": {
+          "requested": [
+            "transpose"
+          ],
+          "honoured": [
+            "transpose"
+          ],
+          "maxDeviationMm": 0
+        },
+        "numericalBackend": "wasm",
+        "fidelity": {
+          "passed": true,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0000625
+            }
+          ],
+          "originalSourceError": 0.0016,
+          "sourceError": 0.0016
+        },
+        "preparedSha256": "16846094e460d9c934f80d1e922cde35c0528a8eaec7696399d23910dc89576b",
+        "geometrySha256": "f3afeaf74cf3c71f0dff6952af4b27f849d818637d89079ea87b64b622593788",
+        "editableSvgSha256": "54bbe35af173f75109c6276edc5647eafa478fec6efed7ba62d87f259c61dbb2"
+      },
+      {
+        "id": "firefox-hunodan",
+        "passed": true,
+        "browserVersion": "146.0.1",
+        "clickToReadySeconds": 7.342,
+        "motifError": 0.00944375,
+        "sharedSpans": 8,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "engineSymmetry": {
+          "requested": [],
+          "honoured": [],
+          "maxDeviationMm": null
+        },
+        "numericalBackend": "wasm",
+        "fidelity": {
+          "passed": true,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00944375,
+          "sourceError": 0.00944375
+        },
+        "preparedSha256": "60b9df88990a65d4ffc89d0f19dfcb6e185e97726364371e7127704ea86680ac",
+        "geometrySha256": "30ae4b0355e3640d1a3200763a8aa3bd1028a3afdac9019dad61fd52737dfb11",
+        "editableSvgSha256": "b43b280692a9f72969bd194812841c1ae1f43dd6b579e0072cf9687d38ae5d15"
+      },
+      {
+        "id": "webkit-top-hat-anti",
+        "passed": true,
+        "browserVersion": "26.0",
+        "clickToReadySeconds": 12.39,
+        "motifError": 0.0031887755102040817,
+        "sharedSpans": 107,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "anti"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "anti"
+        },
+        "engineSymmetry": {
+          "requested": [
+            "antiTranspose"
+          ],
+          "honoured": [
+            "antiTranspose"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "controlChecks": {
+          "paint": true,
+          "draw": true
+        },
+        "numericalBackend": "wasm",
+        "fidelity": {
+          "passed": true,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0031887755102040817,
+          "sourceError": 0.0031887755102040817
+        },
+        "preparedSha256": "e683b8bba15cdd11bc6fda4dc9b27041278ebbc881bf21c145fc592d872c5e37",
+        "geometrySha256": "845153a50381f563f4a502b19bbd8399295e9fe2b197692a860a850e4fd9c368",
+        "editableSvgSha256": "4436b515e6fb219759e59aeb45fab0d1f528b0fbe038450d1df04ca4811628dc"
+      },
+      {
+        "id": "webkit-top-hat",
+        "passed": true,
+        "browserVersion": "26.0",
+        "clickToReadySeconds": 13.693,
+        "motifError": 0.0032064909297052154,
+        "sharedSpans": 114,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "engineSymmetry": {
+          "requested": [
+            "transpose"
+          ],
+          "honoured": [
+            "transpose"
+          ],
+          "maxDeviationMm": 0
+        },
+        "numericalBackend": "wasm",
+        "fidelity": {
+          "passed": true,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0032064909297052154,
+          "sourceError": 0.0032064909297052154
+        },
+        "preparedSha256": "e5c0a7c46136bec133f19ca5e67cf3260989136898a7cf0a80eda690593d4a4a",
+        "geometrySha256": "f08ece38c9fbc875dfea1025431e27458b71610c5b604989cb6206813d429e0d",
+        "editableSvgSha256": "a1b8ddcb5a8de88120fdf326bac8ac51c04ff0fd04b7b099e6bf027ab55e513b"
+      },
+      {
+        "id": "webkit-top-hat-independent",
+        "passed": true,
+        "browserVersion": "26.0",
+        "clickToReadySeconds": 9.478,
+        "motifError": 0.0029584750566893424,
+        "sharedSpans": 40,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "engineSymmetry": {
+          "requested": [],
+          "honoured": [],
+          "maxDeviationMm": null
+        },
+        "numericalBackend": "wasm",
+        "fidelity": {
+          "passed": true,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00036875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000325
+            }
+          ],
+          "originalSourceError": 0.0029584750566893424,
+          "sourceError": 0.0029584750566893424
+        },
+        "preparedSha256": "e5c0a7c46136bec133f19ca5e67cf3260989136898a7cf0a80eda690593d4a4a",
+        "geometrySha256": "a17b40692f46e582e0632cf121ac7af48f833cb359e833b57ea859e90efdc266",
+        "editableSvgSha256": "cda81fa2dce4c4ba3a6440bdfaeb5fd5fc5ac112b724255f77f1919ffd81f920"
+      },
+      {
+        "id": "webkit-star",
+        "passed": true,
+        "browserVersion": "26.0",
+        "clickToReadySeconds": 2.2670000000000003,
+        "motifError": 0.0016,
+        "sharedSpans": 12,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "engineSymmetry": {
+          "requested": [
+            "transpose"
+          ],
+          "honoured": [
+            "transpose"
+          ],
+          "maxDeviationMm": 0
+        },
+        "numericalBackend": "wasm",
+        "fidelity": {
+          "passed": true,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0000625
+            }
+          ],
+          "originalSourceError": 0.0016,
+          "sourceError": 0.0016
+        },
+        "preparedSha256": "16846094e460d9c934f80d1e922cde35c0528a8eaec7696399d23910dc89576b",
+        "geometrySha256": "f3afeaf74cf3c71f0dff6952af4b27f849d818637d89079ea87b64b622593788",
+        "editableSvgSha256": "8d17420d6d012ba3c306a69c53e42ae9ef86a355d68a94cd5914f7d625594d62"
+      },
+      {
+        "id": "webkit-hunodan",
+        "passed": true,
+        "browserVersion": "26.0",
+        "clickToReadySeconds": 6.621,
+        "motifError": 0.00944375,
+        "sharedSpans": 8,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "engineSymmetry": {
+          "requested": [],
+          "honoured": [],
+          "maxDeviationMm": null
+        },
+        "numericalBackend": "wasm",
+        "fidelity": {
+          "passed": true,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00944375,
+          "sourceError": 0.00944375
+        },
+        "preparedSha256": "60b9df88990a65d4ffc89d0f19dfcb6e185e97726364371e7127704ea86680ac",
+        "geometrySha256": "3e23af6066f9db0053225e2e9269a2b273050f250e60fe5e15295245743850c0",
+        "editableSvgSha256": "552102cf90544098ccdda2f918210c5e3cab63496500915ad31618f17be169aa"
+      }
+    ]
+  },
+  "fallback": {
+    "origin": "http://127.0.0.1:5232",
+    "commit": "a02d6b1c8a4797869b13eada52654e39aff30a95",
+    "timingMethod": "Page-clock timestamps from the Find click, worker requests/replies and the first visible, enabled Open in Draw button. DOM readiness is not a paint timestamp. Result capture and artifact writes happen afterward and have separate Node-clock durations. Version 1 solveAndConversionSeconds included harness capture and artifact writes and is not directly comparable.",
+    "sourceHashes": {
+      "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+      "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+      "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+      "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+      "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+      "static/inverse/core/direct/prefer-matching.js": "1ff682f298014f8c29387ad3bbe330c52e4ee619defd5a2d116cb3703e0f5d48",
+      "static/inverse/core/direct/symmetry.js": "ed9f633ea42af93b46293d0d753e21dd7a5921485d5d55847e5a02665c14cf13",
+      "src/lib/inverse/engine.ts": "3801ce556deb99d9338d9790867cfe7c9a9b10293b03300f6aae5537f7ed7b96",
+      "static/inverse/core/direct/finalize.js": "dd2097b415c274ceec20a485d4a62fab28ffc4ea40f323396a8acb84e5b8c4a7",
+      "static/inverse/core/direct/topology.js": "bbe79bf0dca7c4786c7728413026fee9f77bb9bca5bb788be7d6674267ad9292",
+      "static/inverse/core/direct/fit.js": "4df61135bc86b6ddb3b0b9f1922f9614c3852d02552c232846ea94d89f31a933",
+      "static/inverse/core/direct/share.js": "247241745ec8b1ac03c41b7e619bda30e821bbddbad2c60d4ec2d51c8aea1e6d",
+      "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+      "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+      "src/lib/inverse/toHeartDesign.ts": "41edadce4a5be5b8c7dd977a3761e5c7992bb462633f8651e0d9f0293370e931",
+      "src/lib/inverse/simplifyCurves.ts": "c693b9eb86084926d941d7e60a1a38178156d081657feabce41ff03261714173",
+      "src/lib/editor/curveIssues.ts": "293535d5f73d3dd4c9a7bbfc1c83b25ba81558d593644743496cf9e8afa5358e",
+      "src/lib/components/paint/PaintPage.svelte": "0db3cacfb5b08f7b63586a5515cdea9fa5b8bdea0a494d480e02736ff5cb8832",
+      "src/lib/inverse/conversionFidelity.ts": "45db43e0919b98cfe03c115bda7473896de0da1aeec89e94ee74bbaeffdbb589",
+      "static/inverse/core/direct/refine.js": "9c126408c3f7da97faf100504d57ca884315017a6665ee10259148455716fc9c",
+      "static/inverse/core/direct/primitive-selection.js": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904",
+      "src/lib/components/editor/SymmetryRows.svelte": "1bf99195778a11baf02bff2bf0ab9983a9ab6ae3d5d52b7f29f17eb0efb57884",
+      "src/lib/components/ui/toggle-group/toggle-group.svelte": "ef3ac7b6559268d4e5b8f34870b91939fc39a92718a5d90b650c383f0ca178d4",
+      "src/lib/components/paint/FramePanel.svelte": "af18640357bf0a09f74a8ec30ae63cb7c82ec2ec94ca617b63a088232c0ba785",
+      "src/lib/components/paint/MaskToolPanel.svelte": "131c6b381e1f085a54c30816f8882d31b62042ba11f55122a3f6fbce52940a6f"
+    },
+    "harnessHashes": {
+      "scripts/inverse/paint-browser-test.mjs": "781b32ddc22da61bce20cacc674988974b1dc6a3416a16f7b9d74243c6632aaa",
+      "scripts/inverse/paint-observer.mjs": "0f5722fac31af0cac42a400dca990cd2201a50b2a4958552c6696d3b33bdb807",
+      "scripts/inverse/motif-fixture.mjs": "2bedee2c003accb663b0b5a4b5ae981ea1cfbfaf2db0abb19babf4f4156aac49"
+    },
+    "rows": [
+      {
+        "id": "chromium-top-hat-anti",
+        "passed": true,
+        "browserVersion": "145.0.7632.6",
+        "clickToReadySeconds": 10.014399999976158,
+        "motifError": 0.0031887755102040817,
+        "sharedSpans": 107,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "anti"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "anti"
+        },
+        "engineSymmetry": {
+          "requested": [
+            "antiTranspose"
+          ],
+          "honoured": [
+            "antiTranspose"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "controlChecks": {
+          "paint": true,
+          "draw": true
+        },
+        "numericalBackend": "javascript",
+        "blockedKernelRequests": 1,
+        "fidelity": {
+          "passed": true,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0031887755102040817,
+          "sourceError": 0.0031887755102040817
+        },
+        "preparedSha256": "e683b8bba15cdd11bc6fda4dc9b27041278ebbc881bf21c145fc592d872c5e37",
+        "geometrySha256": "502ab5174970387f8ba789443cda3aedb9e49ddb3ee0b3ee2bc8b2c00c274709",
+        "editableSvgSha256": "01d455f4d5335d8307526ab93bfeb01327efa3b643fee1099544cfb8fe1f76e4"
+      }
+    ]
+  },
+  "uiFailure": {
+    "file": "tmp/anti-sharing-browser/results.json",
+    "sha256": "c8f6828a25bb287f9a9797bd82a4eab51461a78910783b00beba76d1df50bdd8",
+    "browsers": [
+      "chromium",
+      "firefox",
+      "webkit"
+    ],
+    "stage": "Reselecting an already active Anti button, before any solve; no radio remained checked."
+  },
+  "limits": [
+    "Only unconstrained fitting or one transpose/antiTranspose request is supported by final sharing; combined square and chord symmetries retain their existing exclusion.",
+    "The fixed-geometry comparison uses an unlimited diagnostic deadline; production retains its two-second final-sharing allocation inside the overall budget.",
+    "Whole-mask fixture error and protected-motif browser error use different targets and denominators.",
+    "Timed fresh runs may choose different checkpoints under machine load. The fixed-geometry comparison isolates the changed repair.",
+    "Exact common controls guarantee coincidence of the recovered spans; sampled image scores do not prove all possible subpixel seams are absent."
+  ]
+}

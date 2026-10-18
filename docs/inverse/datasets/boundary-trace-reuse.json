@@ -1,0 +1,296 @@
+{
+  "schema": "boundary-trace-reuse-1",
+  "status": "qa-complete-strict-error-gate-not-met",
+  "scope": "Reuse cleanup, raster adjacency, repaired pixel chains and source component count across tracing tolerances. Curve fitting, noding, sampled pixels, acceptance gates and solver scheduling remain unchanged.",
+  "baselineCoreCommit": "1f05224",
+  "changes": [
+    "A local prepared tracer creates independent curves and sampled masks for every tolerance. No global cache is introduced.",
+    "Topology initialization reuses that tracer and its already-computed sample when comparing simplified boundaries."
+  ],
+  "equivalence": {
+    "cases": 29,
+    "targets": 145,
+    "baselineMilliseconds": 38132.73288299999,
+    "currentMilliseconds": 29485.443207000004,
+    "ratio": 0.7732318398859095,
+    "medianCaseRatio": 0.7768255691082696
+  },
+  "validation": {
+    "exactPhotographicTargets": 145,
+    "photographs": 29,
+    "comparison": "All control coordinates and preprocessing metadata match the pre-change runtime exactly at five border radii; four alternating-order timing pairs per target.",
+    "frozenFixtures": "48 pre-change trace/sampling outputs across four photographic masks, four straight/curved/strict-symmetry configurations and three tolerances.",
+    "focusedTests": {
+      "passed": 33,
+      "total": 33,
+      "seconds": 19.682733667
+    },
+    "interimQa": {
+      "path": "tmp/heart-learning/trace-reuse-v1/qa/interim-qa.json",
+      "sha256": "7ca4fba60f1997cdfd1cbc93b58e3d232bdf9b2c9a11ecf5a257eaadeec36e01",
+      "bytes": 1723
+    },
+    "fullQa": {
+      "checks": [
+        {
+          "stage": "check",
+          "command": [
+            "npm",
+            "run",
+            "check"
+          ],
+          "exitCode": 0,
+          "seconds": 10.692955292
+        },
+        {
+          "stage": "lint",
+          "command": [
+            "npm",
+            "run",
+            "lint"
+          ],
+          "exitCode": 0,
+          "seconds": 7.562123583
+        },
+        {
+          "stage": "build",
+          "command": [
+            "npm",
+            "run",
+            "build"
+          ],
+          "exitCode": 0,
+          "seconds": 21.788631834000004
+        },
+        {
+          "stage": "preview",
+          "command": [
+            "python3",
+            "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/trace-reuse-v1/qa/restart-preview.py"
+          ],
+          "exitCode": 0,
+          "seconds": 1.6783490830000005
+        },
+        {
+          "stage": "browser",
+          "command": [
+            "node",
+            "scripts/inverse/paint-browser-test.mjs"
+          ],
+          "exitCode": 0,
+          "seconds": 21.329056416999997
+        },
+        {
+          "stage": "test",
+          "command": [
+            "npm",
+            "test"
+          ],
+          "exitCode": 0,
+          "seconds": 1097.71831725
+        },
+        {
+          "stage": "native",
+          "command": [
+            "python3",
+            "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/trace-reuse-v1/qa/native/run.py"
+          ],
+          "exitCode": 0,
+          "seconds": 532.367147167
+        }
+      ],
+      "inverseTests": {
+        "passed": 940,
+        "failed": 0
+      },
+      "applicationTests": {
+        "passed": 857,
+        "skipped": 1
+      },
+      "native": {
+        "hunodanPassed": 22,
+        "hunodanTotal": 22,
+        "hunodanErrorRegressions": [
+          {
+            "id": "hjfla-01",
+            "passed": true,
+            "qualityPassed": true,
+            "seconds": 9.591457040999998,
+            "previousSeconds": 9.567687624999998,
+            "error": 0.007127549913194444,
+            "previousError": 0.007107204861111111,
+            "errorDelta": 2.0345052083333044e-05
+          }
+        ],
+        "photoPassed": 26,
+        "photoPassRegressions": [],
+        "photoErrorRegressions": [
+          {
+            "id": "floral-checker",
+            "previousStatus": "validated",
+            "status": "validated",
+            "previousPassed": true,
+            "passed": true,
+            "previousError": 0.013425,
+            "error": 0.01360625,
+            "errorDelta": 0.00018125000000000085
+          },
+          {
+            "id": "warped-checker",
+            "previousStatus": "validated",
+            "status": "validated",
+            "previousPassed": true,
+            "passed": true,
+            "previousError": 0.0136,
+            "error": 0.01424375,
+            "errorDelta": 0.0006437500000000002
+          },
+          {
+            "id": "round-checker",
+            "previousStatus": "validated",
+            "status": "validated",
+            "previousPassed": true,
+            "passed": true,
+            "previousError": 0.01214375,
+            "error": 0.01215,
+            "errorDelta": 6.249999999999312e-06
+          },
+          {
+            "id": "fine-checker",
+            "previousStatus": "validated",
+            "status": "validated",
+            "previousPassed": true,
+            "passed": true,
+            "previousError": 0.01663125,
+            "error": 0.0179125,
+            "errorDelta": 0.0012812500000000011
+          },
+          {
+            "id": "orb",
+            "previousStatus": "validated",
+            "status": "validated",
+            "previousPassed": true,
+            "passed": true,
+            "previousError": 0.01134375,
+            "error": 0.0118875,
+            "errorDelta": 0.0005437500000000008
+          },
+          {
+            "id": "maple-leaf",
+            "previousStatus": "validated",
+            "status": "validated",
+            "previousPassed": true,
+            "passed": true,
+            "previousError": 0.00868125,
+            "error": 0.00869375,
+            "errorDelta": 1.2500000000000358e-05
+          },
+          {
+            "id": "bottom-flower",
+            "previousStatus": "validated",
+            "status": "validated",
+            "previousPassed": true,
+            "passed": true,
+            "previousError": 0.0093125,
+            "error": 0.0093375,
+            "errorDelta": 2.5000000000000716e-05
+          },
+          {
+            "id": "faceted-star",
+            "previousStatus": "validated",
+            "status": "validated",
+            "previousPassed": true,
+            "passed": true,
+            "previousError": 0.0065,
+            "error": 0.00713125,
+            "errorDelta": 0.0006312499999999999
+          }
+        ],
+        "editablePassed": 48,
+        "editableTotal": 48,
+        "passed": false
+      },
+      "maxHunodanSeconds": 9.591457040999998,
+      "hunodanAggregateSeconds": 128.48924928700004,
+      "previousHunodanAggregateSeconds": 134.672191082,
+      "visualReview": {
+        "path": "tmp/heart-learning/trace-reuse-v1/qa/photo-visual-review.json",
+        "sha256": "67cebdacc5af1908c8c1d2c8792f762bdddc3541177315a3d02fdee5ec358e8b",
+        "bytes": 6925
+      },
+      "sourceVerification": {
+        "status": "complete",
+        "sourceFilesVerified": 781,
+        "nativeGatesPassed": false
+      }
+    }
+  },
+  "limitations": [
+    "Measured 22.7% gain is boundary preparation only, not whole-solve throughput.",
+    "Full tests pass on this run, including the earlier sloth timeout case. Timed search still changes outputs: one Hunodan and eight accepted photographic errors increase relative to 1f05224, so the strict no-regression gate fails.",
+    "Jigsaw returns to 0.9744% disagreement in this run, but the controlled delay study still skips its useful initialization under reduced remaining time. The scheduling failure is unresolved.",
+    "A faster preparation does not repair bad crops, printed-material confusion, or guarantee faithful motif connectivity."
+  ],
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/trace-reuse-v1/compare.mjs",
+      "sha256": "7349fa78e16b9a81d0a2cb9bda23d604e8cc6a57b8ae5e14a723cb452ce3470d",
+      "bytes": 2874
+    },
+    {
+      "path": "tmp/heart-learning/trace-reuse-v1/comparison.json",
+      "sha256": "60ac627f3145601ece42b330a7b07bcd225abfc1b05849b8d7ad1b8abe5b5549",
+      "bytes": 100992
+    },
+    {
+      "path": "tmp/heart-learning/trace-reuse-v1/freeze.mjs",
+      "sha256": "180e003c5f7f872dd0a2a492b086a7ecbbc1ca671eb43f904c497fdf29ecc3bd",
+      "bytes": 2140
+    },
+    {
+      "path": "scripts/inverse/fixtures/trace-reuse.json",
+      "sha256": "41d2ee883c2832043c52720c33c119107bfe897741c5db585f8d81a1f394efd5",
+      "bytes": 22593
+    },
+    {
+      "path": "scripts/inverse/trace-reuse.test.mjs",
+      "sha256": "c4463a405673f759fbaa707fb2a2a48912f5c98639be419e4ad6f6593e15ba11",
+      "bytes": 2199
+    },
+    {
+      "path": "tmp/heart-learning/trace-reuse-v1/focused.log",
+      "sha256": "2a649396c21a7004363b0cb5b14e7237ee562ba1a7f1bafabd308e4c4dd7b524",
+      "bytes": 3243
+    },
+    {
+      "path": "tmp/heart-learning/trace-reuse-v1/qa/qa-checks.json",
+      "sha256": "d7e90f0d541471b66735041d888f4fc8c9212595c701749494215640104486e0",
+      "bytes": 1204
+    },
+    {
+      "path": "tmp/heart-learning/trace-reuse-v1/qa/native/native-gates.json",
+      "sha256": "318e3dcc5786bde31730b3d1f77041b372d67b1fb9ba36f1a476db08314edb64",
+      "bytes": 2611
+    },
+    {
+      "path": "tmp/heart-learning/trace-reuse-v1/qa/native/hunodan-comparison.json",
+      "sha256": "a8f107be370190cd46f1fcd884b08862f38b608f7af87879d1f8e586b6ae9123",
+      "bytes": 5557
+    },
+    {
+      "path": "tmp/heart-learning/trace-reuse-v1/qa/native/photo-comparison.json",
+      "sha256": "e94774d821f8f0b6bfc4dabf93e99ac593300ff98f11c090fdcd790a49b52054",
+      "bytes": 10676
+    },
+    {
+      "path": "tmp/heart-learning/trace-reuse-v1/qa/photo-visual-review.json",
+      "sha256": "67cebdacc5af1908c8c1d2c8792f762bdddc3541177315a3d02fdee5ec358e8b",
+      "bytes": 6925
+    }
+  ],
+  "schedulingDiagnostic": {
+    "report": "docs/inverse/datasets/jigsaw-scheduling-diagnostic.json",
+    "conclusion": "Both runtimes retain the useful four-by-four feature-weighted start at zero/one-second delay, and skip it at two/three-second delay. The latter fits use four-by-three cuts and visibly lose boundary puzzle tabs. The native failure has the same skipped-init signature; hardware contention is not established by this experiment.",
+    "notFixed": true
+  }
+}

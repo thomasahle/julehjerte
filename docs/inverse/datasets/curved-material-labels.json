@@ -1,0 +1,109 @@
+{
+  "schema": "woven-heart-additional-material-labels-1",
+  "status": "admitted-after-source-and-compiled-overlay-review",
+  "scope": "Eleventh partial material annotation; an existing development photo, not a new held-out case or training run.",
+  "annotations": "scripts/inverse/datasets/real-materials-curved.json",
+  "root": "tmp/heart-learning/curved-material-labels-v1",
+  "source": {
+    "id": "real-d5b0aa8d4d2465ee-body-1",
+    "assetId": "real-d5b0aa8d4d2465ee",
+    "imageSha256": "d5b0aa8d4d2465eeee9b25ff43d919d584705256523c711f545d04bae4bde3a6",
+    "nearDuplicateGroup": "real-d5b0aa8d4d2465ee",
+    "splitGroupId": "real-split-4cd39a54715c7740",
+    "splitStatus": "unassigned",
+    "trainingRightsStatus": "not-cleared",
+    "allocation": "unassigned",
+    "motif": {
+      "candidateFamily": "four-by-four-tree",
+      "crossCorpusReview": "pending"
+    },
+    "transform": {
+      "scale": 0.35555555555555557,
+      "offset": [
+        0.0,
+        42.66666666666666
+      ],
+      "resolution": 256
+    },
+    "bodyPixelCounts": {
+      "0": 29909,
+      "1": 12560,
+      "255": 23067
+    },
+    "materialPixelCounts": {
+      "0": 1682,
+      "1": 2373,
+      "255": 61481
+    },
+    "assets": {
+      "rgb": {
+        "path": "real-d5b0aa8d4d2465ee-body-1-rgb.png",
+        "sha256": "9b81cac3f570253cd9953725e6e6bcd640d21e9dadfed17178382299b330f3f7"
+      },
+      "body": {
+        "path": "real-d5b0aa8d4d2465ee-body-1-body.png",
+        "sha256": "dd66132bf418490b435fa0a835b2967a0000f1eee661d3748b7726659f8ed7c4"
+      },
+      "materials": {
+        "path": "real-d5b0aa8d4d2465ee-body-1-materials.png",
+        "sha256": "c9c252b6bec2510b5851714b3f9aa3a4c8d872ee0bdff6066526f0a0f398d850"
+      },
+      "overlay": {
+        "path": "real-d5b0aa8d4d2465ee-body-1-overlay.png",
+        "sha256": "6f4a64667cc4a36fc2eceabafa8e4d25cf270856a16cbea7114ad879b1fc1457"
+      }
+    }
+  },
+  "checks": [
+    {
+      "resolution": 256,
+      "compilerPassed": true,
+      "identicalToVisuallyReviewedAssets": true,
+      "manifestSha256": "c58d7dcec6ff687a9d835267e392b43df0e0b98e582ae2c962de6460b3a31e8b"
+    },
+    {
+      "resolution": 768,
+      "compilerPassed": true,
+      "identicalToVisuallyReviewedAssets": true,
+      "manifestSha256": "5978e18a564dd38d03fa58a1f6d93dd0266e1fadc65f110af782444eba67543f"
+    }
+  ],
+  "bodyAndRgbMatchEarlierTrainingExport": true,
+  "review": {
+    "sourceSize": [
+      720,
+      480
+    ],
+    "reviewedOverlayResolutions": [
+      256,
+      768
+    ],
+    "materialPolygons": 11,
+    "redPolygons": 6,
+    "whitePolygons": 5,
+    "uncertaintyPixels": 5,
+    "finding": "All retained labels lie in the intended paper. Shadowed gray cells retain white-sheet identity; seams and painted background are excluded.",
+    "metadataNote": "Existing body candidateFamily four-by-four-tree is misleading: the visible motif is a curved checker; trees are in the painted background. Family metadata and parent hashes remain unchanged pending grouped review."
+  },
+  "limits": [
+    "Assistant-reviewed partial visible identity; no cutting-path ground truth.",
+    "Source rights, split allocation and grouping unchanged.",
+    "No model has consumed this annotation.",
+    "The separately inspected hand-held printed-heart photo was excluded because pale ink could not confidently be assigned to a second sheet."
+  ],
+  "artifacts": {
+    "scripts/inverse/datasets/real-materials-curved.json": "2b2dea584e023ac296d603aedb17efd802a7082e54e4fd7f936182461abfad12",
+    "tmp/heart-learning/curved-material-labels-v1/admitted-256/real-d5b0aa8d4d2465ee-body-1-rgb.png": "9b81cac3f570253cd9953725e6e6bcd640d21e9dadfed17178382299b330f3f7",
+    "tmp/heart-learning/curved-material-labels-v1/admitted-256/index.html": "0ac46fa51c34887861d5afd39878511854896dc44c17072c6b6ea088cb94e5d8",
+    "tmp/heart-learning/curved-material-labels-v1/admitted-256/real-d5b0aa8d4d2465ee-body-1-overlay.png": "6f4a64667cc4a36fc2eceabafa8e4d25cf270856a16cbea7114ad879b1fc1457",
+    "tmp/heart-learning/curved-material-labels-v1/admitted-256/real-d5b0aa8d4d2465ee-body-1-body.png": "dd66132bf418490b435fa0a835b2967a0000f1eee661d3748b7726659f8ed7c4",
+    "tmp/heart-learning/curved-material-labels-v1/admitted-256/manifest.json": "c58d7dcec6ff687a9d835267e392b43df0e0b98e582ae2c962de6460b3a31e8b",
+    "tmp/heart-learning/curved-material-labels-v1/admitted-256/real-d5b0aa8d4d2465ee-body-1-materials.png": "c9c252b6bec2510b5851714b3f9aa3a4c8d872ee0bdff6066526f0a0f398d850",
+    "tmp/heart-learning/curved-material-labels-v1/admitted-768/real-d5b0aa8d4d2465ee-body-1-rgb.png": "f4fdbc5a31ef54b133ddf39992a28cf8dcd9b7314594b3d2acb005ebc5592537",
+    "tmp/heart-learning/curved-material-labels-v1/admitted-768/index.html": "d512ed5419bc3acd361cb0839a824372683d259e376fcefa13c2844b061cef55",
+    "tmp/heart-learning/curved-material-labels-v1/admitted-768/real-d5b0aa8d4d2465ee-body-1-overlay.png": "a97f35deb0f2e9708d803720516437e14ff53c44d31d3f286d4e5b98c98e472e",
+    "tmp/heart-learning/curved-material-labels-v1/admitted-768/real-d5b0aa8d4d2465ee-body-1-body.png": "a8a9187da550429c01b6bb46ee1c882830e38957523a2933bf060af58f73799c",
+    "tmp/heart-learning/curved-material-labels-v1/admitted-768/manifest.json": "5978e18a564dd38d03fa58a1f6d93dd0266e1fadc65f110af782444eba67543f",
+    "tmp/heart-learning/curved-material-labels-v1/admitted-768/real-d5b0aa8d4d2465ee-body-1-materials.png": "537a1b03ef433c7587846021f7b54d8324488ebcd6344fe07953420ec6682f18"
+  }
+}

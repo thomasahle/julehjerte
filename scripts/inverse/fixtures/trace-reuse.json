@@ -1,0 +1,637 @@
+{
+  "scope": "Exact preprocessing outputs from the pre-refactor 1f05224 runtime, frozen before using the reusable tracer. Photographic crops are diagnostic fixed inputs, not artwork ground truth.",
+  "cases": [
+    {
+      "id": "jigsaw",
+      "file": "scripts/inverse/fixtures/hard-photos/collage.png",
+      "sourceFileSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+      "decodedPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+      "quad": [
+        [
+          796.940953842628,
+          631.6593539438662
+        ],
+        [
+          856.2204646604408,
+          748.7890866349005
+        ],
+        [
+          764.8124220376249,
+          864.0519986487432
+        ],
+        [
+          715.8813933469556,
+          745.1522092092067
+        ]
+      ],
+      "importSettings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "timeLimit": 10,
+        "trials": 0
+      },
+      "resolution": 400,
+      "maskSha256": "5c3d1ae064e795a787a92a91d5403bc7bdb0f4780dfeb75606ce1f9531b58788",
+      "variants": [
+        {
+          "settings": {
+            "width": 100,
+            "maxSpan": 40,
+            "geometryTolerance": 0.01,
+            "mixedBoundaries": true,
+            "borderRadius": 0,
+            "snapRadius": 0
+          },
+          "outputs": [
+            {
+              "fitTolerance": 0.35,
+              "shapeSha256": "69b02fb85a3c027fab7adca8aa0b0de160693062dda5c9817b663199b3806a6d",
+              "sampleSha256": "188c0195b7d896a4a9166a863aed507e8176f7dd3f12a1bfed4fec0c08c46902"
+            },
+            {
+              "fitTolerance": 0.5,
+              "shapeSha256": "621a96db7cc3604c8c9591d377e836c55b755224060d25ed7d208ce5256bd8e4",
+              "sampleSha256": "50058c6edb7102d136cf96be870371a13201818157b35139a1aa50cd59ac4aa0"
+            },
+            {
+              "fitTolerance": 0.75,
+              "shapeSha256": "32c598aa7e853fd3c285d36c1e124baa23c85001ed7d3bd84aa8f934f600c94b",
+              "sampleSha256": "e5dd42de049df77294b54f0531b6a8f7ce94325fad6cb6e8d9289816c98d7e05"
+            }
+          ]
+        },
+        {
+          "settings": {
+            "width": 100,
+            "maxSpan": 40,
+            "geometryTolerance": 0.01,
+            "mixedBoundaries": true,
+            "borderRadius": 2,
+            "snapRadius": 1.5,
+            "smoothRadius": 0.3
+          },
+          "outputs": [
+            {
+              "fitTolerance": 0.35,
+              "shapeSha256": "1016be0604be91a4278171e52eb935b9aeadc10dacfac73b216ed2231e12d754",
+              "sampleSha256": "637c72ac4d22433cb53d6ae5a9e4db59ac3ad49011a7bc9ea357cad7b17f56f8"
+            },
+            {
+              "fitTolerance": 0.5,
+              "shapeSha256": "77325ae80bdb90dd59cd66e1b101c1cffd03935bcd850e2f106adb941e00e392",
+              "sampleSha256": "14d77f910e3b071ee04d6de358b640c5942c08aa894d8ef3c9a1c5475a683569"
+            },
+            {
+              "fitTolerance": 0.75,
+              "shapeSha256": "612c0ca22ed41664aee9aaef8a82f3ae0fac7bd4a26663f636ecc7e4ef0d3ca1",
+              "sampleSha256": "e103f7dec7ac0a70b9e427b7600c143e4129b313b14e647f0358f7bf06e20f12"
+            }
+          ]
+        },
+        {
+          "settings": {
+            "width": 100,
+            "maxSpan": 40,
+            "geometryTolerance": 0.01,
+            "polygonal": true
+          },
+          "outputs": [
+            {
+              "fitTolerance": 0.35,
+              "shapeSha256": "52b27b62a5f50038d4e6a7e3c71ec1791df4d70df3d8353a5857f34cc3e5bf13",
+              "sampleSha256": "fdc8b71f9158a7acd151e17eaded4459a6616355e0ad23204d474b8822230291"
+            },
+            {
+              "fitTolerance": 0.5,
+              "shapeSha256": "4d5bf3edcd8cc6643105875bc352e85bfa549b0647edb0e3050b107418fdd51c",
+              "sampleSha256": "d5a7fe056bb7a1f538466d44fb95f8f9a08e792ca3ffbfbeb65efa8204c1c985"
+            },
+            {
+              "fitTolerance": 0.75,
+              "shapeSha256": "fd4c3901eccd6f43b0b0148f2ba9480ba40ac33433056b480b83b6a645f4b242",
+              "sampleSha256": "de50985a245a375936a70e4e41d606c7ef72b485c269f5584e1467de3ea8f7bc"
+            }
+          ]
+        },
+        {
+          "settings": {
+            "width": 100,
+            "maxSpan": 40,
+            "geometryTolerance": 0.01,
+            "polygonal": true,
+            "identicalSheets": true
+          },
+          "outputs": [
+            {
+              "fitTolerance": 0.35,
+              "shapeSha256": "0cca1b2a804da438e99ad4cfc5d15804c6c3fcc21f5ca06ef94f6a69106793fe",
+              "sampleSha256": "3380f9f78362f1abec788a01434fcd1d06ae7a8da3a8617e345a7120e7a15c8c"
+            },
+            {
+              "fitTolerance": 0.5,
+              "shapeSha256": "28d051ec12e2f06d7ad51a9252fc4a31857105c51566395262b4644d251e42e3",
+              "sampleSha256": "da9c817dbf6267a358ff916eaa56d97e0f7068b7c166d61b2870a5d841d8ea9a"
+            },
+            {
+              "fitTolerance": 0.75,
+              "shapeSha256": "4119a2ba0cbb6244c4c03eb6e01bcde68ea0005c007ab8ee5713dbc5b23b0238",
+              "sampleSha256": "191d32fbd2167921d65edbd8c0bf4223b5e45b0e866027e34d1a7cb92aeebde5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dense-checker",
+      "file": "scripts/inverse/fixtures/hard-photos/collage.png",
+      "sourceFileSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+      "decodedPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+      "quad": [
+        [
+          824.3637759965004,
+          169.25568526873215
+        ],
+        [
+          925.6879214394025,
+          250.01664849307951
+        ],
+        [
+          837.5322148453769,
+          339.1106360621789
+        ],
+        [
+          733.4422670902453,
+          251.36690779712663
+        ]
+      ],
+      "importSettings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "timeLimit": 10,
+        "trials": 0
+      },
+      "resolution": 400,
+      "maskSha256": "ff1cc0d30dbc0e6c908d2a731a5b5f0012c20224fd64713648cea42f258db664",
+      "variants": [
+        {
+          "settings": {
+            "width": 100,
+            "maxSpan": 40,
+            "geometryTolerance": 0.01,
+            "mixedBoundaries": true,
+            "borderRadius": 0,
+            "snapRadius": 0
+          },
+          "outputs": [
+            {
+              "fitTolerance": 0.35,
+              "shapeSha256": "f472b5dfc5f8b0c7ab1bbc02f220e58f23c4c7c33b79f1a8794474a38342f9d9",
+              "sampleSha256": "6ff9c32652e81ab2a4f68878bcc1e85cef87d676921006f73a74b0142b5e1ecb"
+            },
+            {
+              "fitTolerance": 0.5,
+              "shapeSha256": "1566ecac8d9471b333340452d994f659cb05418befc518d2e37ff64d789998a7",
+              "sampleSha256": "62cae4d04d4db6c232df8dda7bf23b8d533bb0535e92bda019e36429619be14f"
+            },
+            {
+              "fitTolerance": 0.75,
+              "shapeSha256": "c58ac710d77e51b3ec2de727039bb89dd62f3ddbcea4c399495d9a1b1dce3ccd",
+              "sampleSha256": "acb1f36a1d3b277ee02782c5855e9f9216e2746d0b08d49ec8a4ce248cd68cea"
+            }
+          ]
+        },
+        {
+          "settings": {
+            "width": 100,
+            "maxSpan": 40,
+            "geometryTolerance": 0.01,
+            "mixedBoundaries": true,
+            "borderRadius": 2,
+            "snapRadius": 1.5,
+            "smoothRadius": 0.3
+          },
+          "outputs": [
+            {
+              "fitTolerance": 0.35,
+              "shapeSha256": "7d6d0f6c78487c35092c443cad5b12de0e2b8cb4aa469494f8a7d8640aed4ea2",
+              "sampleSha256": "7983d166dd1d08763d5bc1fdecca7b39c5a0e8f558541e4017fd1596162d79e6"
+            },
+            {
+              "fitTolerance": 0.5,
+              "shapeSha256": "9793384f75a31f0c8b77f10a0ff01ca1cb3dd9c37487c13d0676e66954fabde8",
+              "sampleSha256": "a5f1f5fc063f5c0cd122b28359cea5b9296c3a45c7d0af2c77c84b0a27047d9f"
+            },
+            {
+              "fitTolerance": 0.75,
+              "shapeSha256": "98534ce20642958e40920a8bd32fde5a5a68dbf8295a86517d3b9a65816582f2",
+              "sampleSha256": "ab3e3508867c147cc28f6ecec9ecd667c7c6dc71a55ff8e7a87dfbdbf2bd6c82"
+            }
+          ]
+        },
+        {
+          "settings": {
+            "width": 100,
+            "maxSpan": 40,
+            "geometryTolerance": 0.01,
+            "polygonal": true
+          },
+          "outputs": [
+            {
+              "fitTolerance": 0.35,
+              "shapeSha256": "cb15bd9e8d64fcd808b10d94e07f4e4415dd2637f2d6ae92aaf8be9ce41dd05a",
+              "sampleSha256": "e811d719f6efb4510987adec1692b52eacab7f5818b9ccf60c8b3a63a8511573"
+            },
+            {
+              "fitTolerance": 0.5,
+              "shapeSha256": "d50a9a6bd41219022cee5af43c610b4d8af6d7c574b77f40e578475ef2a82bab",
+              "sampleSha256": "65a086fd02cee90f5d2dfc2208ee9393c666cc840e48f5fa0a9523c2a3ce7fc9"
+            },
+            {
+              "fitTolerance": 0.75,
+              "shapeSha256": "1d3a8735ab9cce4349c4475085b8bf9918fb2938d186c3c8555dea5ae4efd08e",
+              "sampleSha256": "24181c9169eb007be3816b21e32d47a9ad47dfd079871863478036cbb6688c2e"
+            }
+          ]
+        },
+        {
+          "settings": {
+            "width": 100,
+            "maxSpan": 40,
+            "geometryTolerance": 0.01,
+            "polygonal": true,
+            "identicalSheets": true
+          },
+          "outputs": [
+            {
+              "fitTolerance": 0.35,
+              "shapeSha256": "02da8b41742428c90efff9d9b5501e02335efa1c721e478f6e1b73db6d0b4540",
+              "sampleSha256": "95bef3403beb6ffee353b9955fdd70b4c34f8a96ca5655213aaffdfd852106c7"
+            },
+            {
+              "fitTolerance": 0.5,
+              "shapeSha256": "7f011818f91b66d4a63d0865a8c236261a262d52ce2119b6ba986aec39a6cdba",
+              "sampleSha256": "433a7710c6f8325b4611e3c9bce89a5309882cdf5f2e097c3adbfb9f96a9b9bd"
+            },
+            {
+              "fitTolerance": 0.75,
+              "shapeSha256": "7ab17592d4fa6b3b7debc36830003196382d230922dc719f9e0311497c33e5a7",
+              "sampleSha256": "d9d42474c946217636dabbc00658864d6540e4829c8e08b2f139ab9f39c13249"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "floral-checker",
+      "file": "scripts/inverse/fixtures/hard-photos/collage.png",
+      "sourceFileSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+      "decodedPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+      "quad": [
+        [
+          637.713936325853,
+          172.55782760328333
+        ],
+        [
+          725.4227705830424,
+          253.30008188828606
+        ],
+        [
+          631.0724913134218,
+          329.0430481823762
+        ],
+        [
+          530.8384533560435,
+          248.12682310994776
+        ]
+      ],
+      "importSettings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "timeLimit": 10,
+        "trials": 0
+      },
+      "resolution": 400,
+      "maskSha256": "351a7a00b7aba431e393477f0ae7747c3b2dda9ad8a40fd086e625d3d6ccb6f7",
+      "variants": [
+        {
+          "settings": {
+            "width": 100,
+            "maxSpan": 40,
+            "geometryTolerance": 0.01,
+            "mixedBoundaries": true,
+            "borderRadius": 0,
+            "snapRadius": 0
+          },
+          "outputs": [
+            {
+              "fitTolerance": 0.35,
+              "shapeSha256": "5175205d145082c03e236d20158772ffc52e7d6f1a148ea84c1c9cba17a1967d",
+              "sampleSha256": "d5d52583a05013c73fb9388f702e33fc9401cec1d9ec52905fbe88a47f5d0496"
+            },
+            {
+              "fitTolerance": 0.5,
+              "shapeSha256": "d8df61fe0c34bfe662c1ada5444b8e5587fe778838621ecc5aece7382d0272dd",
+              "sampleSha256": "2d601c022d233f2bf9f44bbb720be237d1883bbdbc0c871e6f02c3563870308f"
+            },
+            {
+              "fitTolerance": 0.75,
+              "shapeSha256": "4017c7979f65405605f396a71246cd3d1a2594f6f557a5303dcd4f98a0f9cff6",
+              "sampleSha256": "3645ac5b1046a18d0808b4dcbd1f1d4e878d94898eff30e2acce2d66ae883c95"
+            }
+          ]
+        },
+        {
+          "settings": {
+            "width": 100,
+            "maxSpan": 40,
+            "geometryTolerance": 0.01,
+            "mixedBoundaries": true,
+            "borderRadius": 2,
+            "snapRadius": 1.5,
+            "smoothRadius": 0.3
+          },
+          "outputs": [
+            {
+              "fitTolerance": 0.35,
+              "shapeSha256": "c7d8dd3537947f79a62620f27d997df318b9ebb92fcaa0c5d309668a842004b3",
+              "sampleSha256": "5004fc429505d65139ebce3cf17e15ef2caf46fa9cefe27763354cf72bd1fbc9"
+            },
+            {
+              "fitTolerance": 0.5,
+              "shapeSha256": "57eeda0e5b58e56f680f34c4f72cbd428d005bcdc3de693f293ef2999f35c21d",
+              "sampleSha256": "5a2ebe9ee42951c6b1b649ad76512081971f50b3f1ab23e367bc5655b1916bbf"
+            },
+            {
+              "fitTolerance": 0.75,
+              "shapeSha256": "a263c2a03fe1581aac1fcaade7a342605c26675b0a2e9aa97c363d695e2c59cc",
+              "sampleSha256": "4a2721cccb7448219ef1f4045a3d7ae147305bbcf7db23ad96a9c0a32df80f06"
+            }
+          ]
+        },
+        {
+          "settings": {
+            "width": 100,
+            "maxSpan": 40,
+            "geometryTolerance": 0.01,
+            "polygonal": true
+          },
+          "outputs": [
+            {
+              "fitTolerance": 0.35,
+              "shapeSha256": "c996db0cf4fa26ddf0c4df52128e77825479019bc74e940eaeb30429b07c948e",
+              "sampleSha256": "00366dd0f8d1dde94a2e9b8043a7811c150e501556cf1bddce0262d8fe738931"
+            },
+            {
+              "fitTolerance": 0.5,
+              "shapeSha256": "ccfbcaae78689da1d91cbcc6fe29a8920ab533290cbf28ee626819e892511fb9",
+              "sampleSha256": "14d39ce93d45797171264d9c7d3cea18cd801bfb020c92e3e4fdd0617d7964dc"
+            },
+            {
+              "fitTolerance": 0.75,
+              "shapeSha256": "180cdc06bfb62104334dd1d4fc21745e46f1282b09a3a758dd71089eb8cc7d42",
+              "sampleSha256": "bd3781255271b13d9552ca37b962073636ae3759e14f48adf11e74f1718f03d3"
+            }
+          ]
+        },
+        {
+          "settings": {
+            "width": 100,
+            "maxSpan": 40,
+            "geometryTolerance": 0.01,
+            "polygonal": true,
+            "identicalSheets": true
+          },
+          "outputs": [
+            {
+              "fitTolerance": 0.35,
+              "shapeSha256": "6d2d7c56b1adc0f8f9496e70902839d58988b152457b00a8604e4613e450c566",
+              "sampleSha256": "0a23cbdbc6435582d074c01523a4bc4a783f6a06b9a479bd209437e0b4e80ae7"
+            },
+            {
+              "fitTolerance": 0.5,
+              "shapeSha256": "ccd3e9ab1e7ab25d2365b80395b9239bffe1353dc13b1a05375e1c2368d69e70",
+              "sampleSha256": "73f80be386fd1f591143a9269ddfdcbc21b6d7cfd4e76d1261d9e0de79c53b50"
+            },
+            {
+              "fitTolerance": 0.75,
+              "shapeSha256": "3a2bacc4f2f8ba95606d96787e5c4e7be89d68af4193b10e540f7917edf3c628",
+              "sampleSha256": "0af2c5765a9ab38ba0c43116ff33fa450067384f184dd1ff6bc58daf92e2c80b"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gift",
+      "file": "scripts/inverse/fixtures/hard-photos/collage.png",
+      "sourceFileSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+      "decodedPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+      "quad": [
+        [
+          264.8878818271703,
+          374.174952703159
+        ],
+        [
+          299.4463822705883,
+          491.4192336918708
+        ],
+        [
+          228.13534804554146,
+          580.6628780659917
+        ],
+        [
+          154.01969081220352,
+          477.003346191405
+        ]
+      ],
+      "importSettings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "timeLimit": 10,
+        "trials": 0
+      },
+      "resolution": 400,
+      "maskSha256": "27d7f1538cbba31b9e4b13270a70e7ffc36acc23f69a49d4646d5ee3f49b7738",
+      "variants": [
+        {
+          "settings": {
+            "width": 100,
+            "maxSpan": 40,
+            "geometryTolerance": 0.01,
+            "mixedBoundaries": true,
+            "borderRadius": 0,
+            "snapRadius": 0
+          },
+          "outputs": [
+            {
+              "fitTolerance": 0.35,
+              "shapeSha256": "91840969017934a24f26af0ab3af9e6f66419fe62b361e0902220ccfe4d9f183",
+              "sampleSha256": "7597272b520b5d1c483847f1ac6bda402c45f84f1d1d0233cd610b50ff0aed8e"
+            },
+            {
+              "fitTolerance": 0.5,
+              "shapeSha256": "50ff8065c5aa87d30c3b5b5625b8c444012404e6e691f95811b9a2ffdbcb4eb8",
+              "sampleSha256": "a1449882fd87157c9f7901bd4472553e6dadbc52527c00be8c3e5a326662877e"
+            },
+            {
+              "fitTolerance": 0.75,
+              "shapeSha256": "8c8a7cd9996d465ae0987e274fade559e5510c9adaa85e93a02ededb47e59690",
+              "sampleSha256": "6c954599ebfebd997568140b3d301c03928bceb4324fc288b14f6d37e1b84897"
+            }
+          ]
+        },
+        {
+          "settings": {
+            "width": 100,
+            "maxSpan": 40,
+            "geometryTolerance": 0.01,
+            "mixedBoundaries": true,
+            "borderRadius": 2,
+            "snapRadius": 1.5,
+            "smoothRadius": 0.3
+          },
+          "outputs": [
+            {
+              "fitTolerance": 0.35,
+              "shapeSha256": "c718f6ad2adc97954cb4eddd99fbcc8313a9650e5deac9ed6cc00c3e30354d1d",
+              "sampleSha256": "4ee004913c7d0242737a974cd9347ec1a525bc72a0eda83a43938e85ac5cc436"
+            },
+            {
+              "fitTolerance": 0.5,
+              "shapeSha256": "13e3b0508f42f9db31e52107dc73cd01e77d79c745323301e944dfafc4f1c67f",
+              "sampleSha256": "e615fa2be77a534bd4d551da7574725f457a48944c697afc14b92a1146012803"
+            },
+            {
+              "fitTolerance": 0.75,
+              "shapeSha256": "950044116521626bc633404f5ea9a7e29489fa6798e3276f2b4da16b88f90e10",
+              "sampleSha256": "3d4aec300f7ea7efad8c761247ef4eee433fd52eafe70c3d60ddb66e3c07dc15"
+            }
+          ]
+        },
+        {
+          "settings": {
+            "width": 100,
+            "maxSpan": 40,
+            "geometryTolerance": 0.01,
+            "polygonal": true
+          },
+          "outputs": [
+            {
+              "fitTolerance": 0.35,
+              "shapeSha256": "fc3220f19a075d7625d19acfd25846a82964d0f94cb66ad785e8d7f9d11e7e1a",
+              "sampleSha256": "67069250b2e5527bd718cec62e0bc1401a31f2742cebf75540c0141fe25831b3"
+            },
+            {
+              "fitTolerance": 0.5,
+              "shapeSha256": "3af85a050e72163217c4745c9166966fd75a0eed12f912783eadf60483013f72",
+              "sampleSha256": "7206f1b27920986f21c8074a76dbe6ffca2e01a8206b009658029a9cdaa9f44b"
+            },
+            {
+              "fitTolerance": 0.75,
+              "shapeSha256": "c1ad868c74f7284777c41757a2f3b01f107ee16775b4bc95d215b69018f0c1df",
+              "sampleSha256": "8dc249db332a6a2383e4703f2ebf6493f038f5317076c597e21753ac00e3b750"
+            }
+          ]
+        },
+        {
+          "settings": {
+            "width": 100,
+            "maxSpan": 40,
+            "geometryTolerance": 0.01,
+            "polygonal": true,
+            "identicalSheets": true
+          },
+          "outputs": [
+            {
+              "fitTolerance": 0.35,
+              "shapeSha256": "a8dae60d2c10b1e4da717c4bee84e2939d6417fe8e806c191fd0b78f63b91f81",
+              "sampleSha256": "4f298961f453da4e995c0f7e2875442c5ffce0c31582e00b24a8ed85d2e6fd3f"
+            },
+            {
+              "fitTolerance": 0.5,
+              "shapeSha256": "ab88c22534d366a044840210f137caa6687238f6f51505c3882c04b2166a06ef",
+              "sampleSha256": "4605f59f0e766c1b7dd826bc936e56dc75375cf0745cfe05b504818d6f509a6f"
+            },
+            {
+              "fitTolerance": 0.75,
+              "shapeSha256": "ed3c09edbe06bd1fdc09b17b0d66e00fdfc00e903b2fb641746b072d5a5e6198",
+              "sampleSha256": "f53d8e63fcb5fe376bda35d9086f4abb66396e91866d9afe911c80a46cd6edbe"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

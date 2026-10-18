@@ -1,0 +1,49 @@
+{
+  "schema": "notch-overlap-results-1",
+  "status": "complete-offline-prototype-no-gain",
+  "plan": "docs/inverse/datasets/notch-overlap-plan.json",
+  "deployed": false,
+  "summary": {
+    "status": "complete",
+    "additionalAcceptedCrops": 0,
+    "unchangedCropsMasksAndCoverage": 22,
+    "allPassFailOutcomesRetained": true,
+    "changedExportIds": [
+      "real-8c875dd0f298b5a4-body-1",
+      "real-1498fed65a8e41b7",
+      "real-31ed1172998ab1c5"
+    ],
+    "cohorts": {
+      "previous-development": {
+        "checked-derived-mask": 15,
+        "review-required": 3,
+        "crop-unresolved": 4
+      },
+      "new-source": {
+        "checked-derived-mask": 4,
+        "crop-unresolved": 16
+      }
+    },
+    "editableConverted": 22,
+    "editableComplete": 19
+  },
+  "findings": [
+    "All twenty previously unsupported images remain unsupported. Some notch positions appear useful, but cap colour purity and pre-corner edge support reject them.",
+    "A cap-independent local-support variant is evaluated separately. Neither prototype is deployed."
+  ],
+  "verification": {
+    "sourceFilesVerified": 888,
+    "allTwentyUprightProposalPanelsInspected": true,
+    "allThreeChangedExportPanelsInspected": true,
+    "allStagesPassed": true
+  },
+  "artifactsSha256": {
+    "tmp/heart-learning/notch-overlap-v1/state.json": "a43812094f7eae25dfa0d8024341b164df7721f66495c8eea35e3ca06ed07a0b",
+    "tmp/heart-learning/notch-overlap-v1/source.json": "2a4c03c592862bd0dfa31128a17e282e54971b4fdb8d5ea00e7996dddfa45215",
+    "tmp/heart-learning/notch-overlap-v1/checks.json": "b20f4c2e90fe9927d8c41885b06e34d2daa1648bcd5003fa6d1a13f0549455eb",
+    "tmp/heart-learning/notch-overlap-v1/results/report.json": "876a8d9c7081e7d75a5f2ca57da209b4cbc70435d3f96a28c826043ef5a0d3dd",
+    "tmp/heart-learning/notch-overlap-v1/pipeline/report.json": "157a3f32543888c97624335ff791da00b081367353141d13905f4dcbf4aa009a",
+    "tmp/heart-learning/notch-overlap-v1/editable/results.json": "2a4feec2d84d1c3ebafe413d64b63465bf8fa669174d1513f607f276264e555e",
+    "tmp/heart-learning/notch-overlap-v1/audit.json": "b5ab8ca42400da9c829ddb6d58fc76d8aa7ccb651a233eed0d846ade28de142a"
+  }
+}

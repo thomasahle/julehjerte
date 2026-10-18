@@ -294,7 +294,10 @@ describe('the Kugle drawing from Inkscape', () => {
       'b.svg'
     );
     const summary = importSummary(broken.design!, broken.report, 'en');
-    expect(summary.warnings).toBe(3);
+    // The incomplete cut also pulls the imported endpoint back into its own
+    // last segment. The stricter geometry check reports that reversal.
+    expect(summary.warnings).toBe(4);
+    expect(summary.text).toContain('Curves that cross or touch: 1.');
     expect(summary.text).toContain('Not edge to edge (check them): v1 #1, v1 #2.');
     expect(summary.text).toContain('horizontal cuts belong to the left half, vertical ones to the right): blob.');
   });

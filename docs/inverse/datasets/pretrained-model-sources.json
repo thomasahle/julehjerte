@@ -1,0 +1,212 @@
+{
+  "schema_version": 1,
+  "retrieved_at_utc": "2026-10-12T15:12:41.566128+00:00",
+  "scope": "Primary-source checkpoint and source metadata review; selected student binary verified. No inference, training, dependency installation, ONNX conversion or browser benchmark.",
+  "models": [
+    {
+      "role": "first_student",
+      "model_id": "timm/mobilenetv3_small_100.lamb_in1k",
+      "revision": "1824797e7887cbec1990e4adbd6675960a36c589",
+      "metadata_url": "https://huggingface.co/api/models/timm/mobilenetv3_small_100.lamb_in1k/revision/1824797e7887cbec1990e4adbd6675960a36c589?blobs=true",
+      "model_card_url": "https://huggingface.co/timm/mobilenetv3_small_100.lamb_in1k/raw/1824797e7887cbec1990e4adbd6675960a36c589/README.md",
+      "model_card_sha256": "3950face80991c4f91fb1ead491d787639e08a737f948fd630dd938ae8f78c18",
+      "declared_weight_license": "apache-2.0",
+      "config_url": "https://huggingface.co/timm/mobilenetv3_small_100.lamb_in1k/resolve/1824797e7887cbec1990e4adbd6675960a36c589/config.json",
+      "config": {
+        "architecture": "mobilenetv3_small_100",
+        "num_classes": 1000,
+        "num_features": 1024,
+        "pretrained_cfg": {
+          "tag": "lamb_in1k",
+          "custom_load": false,
+          "input_size": [
+            3,
+            224,
+            224
+          ],
+          "fixed_input_size": false,
+          "interpolation": "bicubic",
+          "crop_pct": 0.875,
+          "crop_mode": "center",
+          "mean": [
+            0.485,
+            0.456,
+            0.406
+          ],
+          "std": [
+            0.229,
+            0.224,
+            0.225
+          ],
+          "num_classes": 1000,
+          "pool_size": [
+            7,
+            7
+          ],
+          "first_conv": "conv_stem",
+          "classifier": "classifier"
+        }
+      },
+      "artifact": {
+        "url": "https://huggingface.co/timm/mobilenetv3_small_100.lamb_in1k/resolve/1824797e7887cbec1990e4adbd6675960a36c589/model.safetensors",
+        "bytes": 10241912,
+        "publisher_lfs_sha256": "46d2c063b18125884c48937afa4c49e18128869e52e8db96df48bf0a4d7ff697",
+        "downloaded": true,
+        "hash_verified": true,
+        "local_path": "tmp/heart-training-models/mobilenetv3_small_100.lamb_in1k-1824797e7887.safetensors",
+        "actual_bytes": 10241912,
+        "actual_sha256": "46d2c063b18125884c48937afa4c49e18128869e52e8db96df48bf0a4d7ff697"
+      }
+    },
+    {
+      "role": "student_ablation",
+      "model_id": "timm/mobilenetv4_conv_small.e2400_r224_in1k",
+      "revision": "331fb803779522b685cf942e15f914fb6741c1eb",
+      "metadata_url": "https://huggingface.co/api/models/timm/mobilenetv4_conv_small.e2400_r224_in1k/revision/331fb803779522b685cf942e15f914fb6741c1eb?blobs=true",
+      "model_card_url": "https://huggingface.co/timm/mobilenetv4_conv_small.e2400_r224_in1k/raw/331fb803779522b685cf942e15f914fb6741c1eb/README.md",
+      "model_card_sha256": "864651a7a9c0457023728da202cb1119abf3fa0872ded374ba736efde6454eb7",
+      "declared_weight_license": "apache-2.0",
+      "config_url": "https://huggingface.co/timm/mobilenetv4_conv_small.e2400_r224_in1k/resolve/331fb803779522b685cf942e15f914fb6741c1eb/config.json",
+      "config": {
+        "architecture": "mobilenetv4_conv_small",
+        "num_classes": 1000,
+        "num_features": 960,
+        "pretrained_cfg": {
+          "tag": "e2400_r224_in1k",
+          "custom_load": false,
+          "input_size": [
+            3,
+            224,
+            224
+          ],
+          "test_input_size": [
+            3,
+            256,
+            256
+          ],
+          "fixed_input_size": false,
+          "interpolation": "bicubic",
+          "crop_pct": 0.875,
+          "test_crop_pct": 0.95,
+          "crop_mode": "center",
+          "mean": [
+            0.485,
+            0.456,
+            0.406
+          ],
+          "std": [
+            0.229,
+            0.224,
+            0.225
+          ],
+          "num_classes": 1000,
+          "pool_size": [
+            7,
+            7
+          ],
+          "first_conv": "conv_stem",
+          "classifier": "classifier"
+        }
+      },
+      "artifact": {
+        "url": "https://huggingface.co/timm/mobilenetv4_conv_small.e2400_r224_in1k/resolve/331fb803779522b685cf942e15f914fb6741c1eb/model.safetensors",
+        "bytes": 15223016,
+        "publisher_lfs_sha256": "7a7102ec18f62bbfb555b6fe829bbb5af749516b84174926c29ffdfdfc03aec4",
+        "downloaded": false,
+        "hash_verified": false
+      }
+    },
+    {
+      "role": "optional_offline_teacher",
+      "model_id": "facebook/dinov2-small",
+      "revision": "ed25f3a31f01632728cabb09d1542f84ab7b0056",
+      "metadata_url": "https://huggingface.co/api/models/facebook/dinov2-small/revision/ed25f3a31f01632728cabb09d1542f84ab7b0056?blobs=true",
+      "model_card_url": "https://huggingface.co/facebook/dinov2-small/raw/ed25f3a31f01632728cabb09d1542f84ab7b0056/README.md",
+      "model_card_sha256": "4c20dca454a8e5c670e8de5c7e6040f512aeca5438516f7623eedc4e3b00599c",
+      "declared_weight_license": "apache-2.0",
+      "config_url": "https://huggingface.co/facebook/dinov2-small/resolve/ed25f3a31f01632728cabb09d1542f84ab7b0056/config.json",
+      "config": {
+        "architectures": [
+          "Dinov2Model"
+        ],
+        "attention_probs_dropout_prob": 0.0,
+        "drop_path_rate": 0.0,
+        "hidden_act": "gelu",
+        "hidden_dropout_prob": 0.0,
+        "hidden_size": 384,
+        "image_size": 518,
+        "initializer_range": 0.02,
+        "layer_norm_eps": 1e-06,
+        "layerscale_value": 1.0,
+        "mlp_ratio": 4,
+        "model_type": "dinov2",
+        "num_attention_heads": 6,
+        "num_channels": 3,
+        "num_hidden_layers": 12,
+        "patch_size": 14,
+        "qkv_bias": true,
+        "torch_dtype": "float32",
+        "transformers_version": "4.32.0.dev0",
+        "use_swiglu_ffn": false
+      },
+      "artifact": {
+        "url": "https://huggingface.co/facebook/dinov2-small/resolve/ed25f3a31f01632728cabb09d1542f84ab7b0056/model.safetensors",
+        "bytes": 88249960,
+        "publisher_lfs_sha256": "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1",
+        "downloaded": false,
+        "hash_verified": false
+      }
+    }
+  ],
+  "code_sources": [
+    {
+      "name": "timm_code_license",
+      "url": "https://raw.githubusercontent.com/huggingface/pytorch-image-models/cfc742eb6a4bc4bb35ef20c9b2d5a2a31f599bba/LICENSE",
+      "bytes": 11343,
+      "sha256": "71b111620fa32c17a80ccd6db2da759d31a591e497d8b5f382174f59d1b59d49"
+    },
+    {
+      "name": "timm_encoder",
+      "url": "https://raw.githubusercontent.com/huggingface/pytorch-image-models/cfc742eb6a4bc4bb35ef20c9b2d5a2a31f599bba/timm/models/mobilenetv3.py",
+      "bytes": 62563,
+      "sha256": "725a92e5485f85411fac323e6c573833d87aee9524df51e390455229020a5703"
+    },
+    {
+      "name": "timm_export",
+      "url": "https://raw.githubusercontent.com/huggingface/pytorch-image-models/cfc742eb6a4bc4bb35ef20c9b2d5a2a31f599bba/onnx_export.py",
+      "bytes": 6170,
+      "sha256": "991161a798af3a633eb27b74d39fb0744c4179123543c9d9cb378344a810d4b4"
+    },
+    {
+      "name": "dinov2_model_license",
+      "url": "https://raw.githubusercontent.com/facebookresearch/dinov2/7764ea0f912e53c92e82eb78a2a1631e92725fc8/MODEL_CARD.md",
+      "bytes": 9152,
+      "sha256": "70ca59606bee0a5fbb1baec80e7e29a93cd7cfbe26ca1910c52a852c4aab09d0"
+    },
+    {
+      "name": "hawp_code_license",
+      "url": "https://raw.githubusercontent.com/cherubicXN/hawp/92ae446875ef9296fc95de7313519aabd638ebb5/LICENSE",
+      "bytes": 1064,
+      "sha256": "de29724b40426ec422c5c13d4ecab16a04dced5f6dd753921202a589f9c7d5e0"
+    },
+    {
+      "name": "hawp_inference",
+      "url": "https://raw.githubusercontent.com/cherubicXN/hawp/92ae446875ef9296fc95de7313519aabd638ebb5/hawp/ssl/models/detector.py",
+      "bytes": 23750,
+      "sha256": "b5742d6928087bf00b516cd661665294bf1d7504cf749a1424071089689b5ac6"
+    },
+    {
+      "name": "mlsd_license",
+      "url": "https://raw.githubusercontent.com/navervision/mlsd/453cafa09467d0272760578d35c1fda38e8895a5/LICENSE",
+      "bytes": 11348,
+      "sha256": "b8a6637c19443e6792ce93c37fe1faac3c745e319ffcd90ac8be0a170a9a1900"
+    }
+  ],
+  "cautions": [
+    "License declarations refer to these exact checkpoints, not all weights sharing an architecture or repository.",
+    "Publisher artifact sizes are not final student or compressed ONNX sizes.",
+    "Safetensors API tensor counts include buffers and are not used here as trainable-parameter counts.",
+    "HAWP separate release weight license was not established from the inspected sources.",
+    "Browser operator coverage does not prove the custom architecture exports or performs acceptably."
+  ]
+}

@@ -1,0 +1,5171 @@
+{
+  "schema": "woven-heart-foreground-background-study-1",
+  "decision": "Keep offline: improved isolated-photo recovery, unresolved collage crops and one lost synthetic crop; visible defects remain in numerically accepted pairs.",
+  "auditSourceSha256": "c0d0f5923d63b6045acec9240a072cb4cba023c276d69aa0b4f850f2c14b6e80",
+  "rawReports": {
+    "tmp/heart-learning/foreground-v1/imagenet/report.json": "02d3c50eadf75c49b08b1fbce5113164577217f3f40f753c343ede6efdce2169",
+    "tmp/heart-learning/foreground-refinement-v1/background-trained/report.json": "cf2925a2d676daf0ee7d4e92ca5718e9209239fe705f2d1ad4e0fcd218179b4a",
+    "tmp/heart-learning/foreground-refinement-v1/background-training/batch/manifest.json": "9bf317cbc2ba9c5c157773d932b3caf3d849f6b2fae4b883d23606d8f22f613e",
+    "tmp/heart-learning/foreground-refinement-v1/background-training/corners/manifest.json": "5da2704ff3a1ae246922dd6c81473831289926be85a2527c64171e15927245ac",
+    "tmp/heart-learning/foreground-refinement-v1/background-probe/manifest.json": "858638cea051b1eeaee59f8dade656fd06609df4ac7d36530325eb7e209e22e7",
+    "tmp/heart-learning/foreground-refinement-v1/background-evaluation/report.json": "f3f6b3941fcb11a8b0be336c88d365fd5562616bf82c030c31fdf77dc0d8b8c8",
+    "tmp/heart-learning/foreground-refinement-v1/background-after/report.json": "f0c1c4a4dad98c978056b252014ff1fa59d1cf6fe369adbd37441fbd4ccac216",
+    "tmp/heart-learning/foreground-v1/probe/manifest.json": "c04deacbc8a0ea1b161c90ba615ffa99af50f0b77845a88ad620d1fe4e8f5c9c",
+    "tmp/heart-learning/foreground-refinement-v1/augmented-probe/manifest.json": "4defef504ff591f07a207a08faca66c9dfca274b625546d6c5f37166803fa87c",
+    "tmp/heart-learning/foreground-v1/replay/report.json": "f0321671db694c61816c84a3eef03a3379a6ae54cf9db1408105782a803cf90e",
+    "tmp/heart-learning/foreground-refinement-v1/replay/report.json": "5afd0807f7698b74badfecf0cba3a6f0303a2e082d2badfc15f4c541c5465b3e",
+    "tmp/heart-learning/foreground-refinement-v1/holes/report.json": "251973d39b12498e65d095fd1dc63f10904c815ed93ad221a0d7f2df8f42e6c0",
+    "tmp/heart-learning/foreground-refinement-v1/augmented-replay/report.json": "d82f496b5af93f3c86b81b16d50e6b7aa90bdd362e340d880065c0abe98e283d"
+  },
+  "verifiedReferencedArtifacts": 1110,
+  "unchangedTrainingSplitsAndUpdateBudgets": true,
+  "training": {
+    "original": {
+      "selectedEpoch": 20,
+      "parameters": 880449,
+      "checkpointSha256": "bfda0c9ea3ee165fff532a04e67329f0615ea7a8f73564ac19312dee587c29a6",
+      "initialization": {
+        "name": "imagenet",
+        "torchvision": "0.23.0",
+        "url": "https://download.pytorch.org/models/mobilenet_v3_small-047dcff4.pth",
+        "sha256": "047dcff4addef86ea5bc2eff13c9614dc11f47ab1160d0a71a25e7db994f4e1f",
+        "bytes": 10306551,
+        "weights": "TorchVision MobileNet_V3_Small_Weights.IMAGENET1K_V1",
+        "note": "Different checkpoint from the researched timm LAMB weights; TorchVision is already installed."
+      },
+      "optimizerUpdates": 1020,
+      "trainingEpochSeconds": 119.560814416,
+      "nativeInferenceMedianSeconds": 0.009394291500015584,
+      "splits": {
+        "development": {
+          "views": 104,
+          "geometries": 26
+        },
+        "recipe-test": {
+          "views": 128,
+          "geometries": 32
+        },
+        "recipe-validation": {
+          "views": 128,
+          "geometries": 32
+        },
+        "train": {
+          "views": 408,
+          "geometries": 102
+        }
+      },
+      "metrics": {
+        "development": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 104,
+          "iou": 0.9884519085315768,
+          "pixelError": 0.003471961388221154,
+          "boundaryF1": 0.9867024977734624,
+          "backgroundFalsePositive": 0.002614976076826095,
+          "paperFalseNegative": 0.0054126301521212495,
+          "loss": 0.08259193083414665
+        },
+        "recipe-test": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 128,
+          "iou": 0.9886643511333203,
+          "pixelError": 0.003417491912841797,
+          "boundaryF1": 0.9880627073616618,
+          "backgroundFalsePositive": 0.0023097959261439453,
+          "paperFalseNegative": 0.005912572732392169,
+          "loss": 0.0808709911070764
+        },
+        "recipe-validation": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 128,
+          "iou": 0.9887725717474455,
+          "pixelError": 0.0033495426177978516,
+          "boundaryF1": 0.9885990422603745,
+          "backgroundFalsePositive": 0.0024966099051823513,
+          "paperFalseNegative": 0.005276376806846857,
+          "loss": 0.08046664018183947
+        },
+        "train": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 408,
+          "iou": 0.9889696170542683,
+          "pixelError": 0.0033363641477098653,
+          "boundaryF1": 0.9881919480288007,
+          "backgroundFalsePositive": 0.002593411625165129,
+          "paperFalseNegative": 0.004998979001398904,
+          "loss": 0.08176526953192319
+        }
+      }
+    },
+    "background_augmented": {
+      "selectedEpoch": 20,
+      "parameters": 880449,
+      "checkpointSha256": "fe037f1f0ab8cbd93b359b6bf047b0e3a5f253b5f57df3a32427701f86eae39b",
+      "initialization": {
+        "name": "imagenet",
+        "torchvision": "0.23.0",
+        "url": "https://download.pytorch.org/models/mobilenet_v3_small-047dcff4.pth",
+        "sha256": "047dcff4addef86ea5bc2eff13c9614dc11f47ab1160d0a71a25e7db994f4e1f",
+        "bytes": 10306551,
+        "weights": "TorchVision MobileNet_V3_Small_Weights.IMAGENET1K_V1",
+        "note": "Different checkpoint from the researched timm LAMB weights; TorchVision is already installed."
+      },
+      "optimizerUpdates": 1020,
+      "trainingEpochSeconds": 116.175132172,
+      "nativeInferenceMedianSeconds": 0.009110020999997914,
+      "splits": {
+        "development": {
+          "views": 104,
+          "geometries": 26
+        },
+        "recipe-test": {
+          "views": 128,
+          "geometries": 32
+        },
+        "recipe-validation": {
+          "views": 128,
+          "geometries": 32
+        },
+        "train": {
+          "views": 408,
+          "geometries": 102
+        }
+      },
+      "metrics": {
+        "development": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 104,
+          "iou": 0.9824011825326842,
+          "pixelError": 0.0052785139817457935,
+          "boundaryF1": 0.9668148696740979,
+          "backgroundFalsePositive": 0.003946425949327047,
+          "paperFalseNegative": 0.008407907535922014,
+          "loss": 0.09368295222520828
+        },
+        "recipe-test": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 128,
+          "iou": 0.98396847262678,
+          "pixelError": 0.004868507385253906,
+          "boundaryF1": 0.9749886066820941,
+          "backgroundFalsePositive": 0.003447287865998996,
+          "paperFalseNegative": 0.008147292474793153,
+          "loss": 0.09164807992056012
+        },
+        "recipe-validation": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 128,
+          "iou": 0.983485973987976,
+          "pixelError": 0.00496220588684082,
+          "boundaryF1": 0.9730913710382705,
+          "backgroundFalsePositive": 0.0036081477250783475,
+          "paperFalseNegative": 0.008001080804913265,
+          "loss": 0.09252933505922556
+        },
+        "train": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 408,
+          "iou": 0.9834936747479252,
+          "pixelError": 0.005013933368757659,
+          "boundaryF1": 0.9730268905430309,
+          "backgroundFalsePositive": 0.0037077423987603394,
+          "paperFalseNegative": 0.00804349253645312,
+          "loss": 0.09216203525954601
+        }
+      }
+    }
+  },
+  "variantSampling": {
+    "seed": 2738,
+    "augmentedSourceViews": 408,
+    "additionalViews": 2040,
+    "policy": "Choose uniformly between the original photograph and its available variants once per source view per epoch. Training order, reflection draws and update count are unchanged."
+  },
+  "diagnostic": {
+    "sourceManifestSha256": "6649301431add7c3a7b7ba2ccb374723bc165fd3a64c9adede0ad11b3a54133d",
+    "sourceViewIds": [
+      "channel-751393-v1",
+      "channel-755429-v2",
+      "channel-775609-v0",
+      "channel-795789-v0",
+      "channel-807897-v2",
+      "channel-811933-v3",
+      "channel-815969-v1",
+      "channel-820005-v3",
+      "frame-748366-v1",
+      "frame-756438-v1",
+      "frame-760474-v0",
+      "frame-764510-v0",
+      "frame-776618-v2",
+      "frame-780654-v3",
+      "frame-829086-v2",
+      "frame-833122-v3"
+    ],
+    "variants": [
+      {
+        "name": "baseline"
+      },
+      {
+        "name": "background-white",
+        "interventions": {
+          "background": [
+            255,
+            255,
+            255
+          ]
+        }
+      },
+      {
+        "name": "background-black",
+        "interventions": {
+          "background": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      {
+        "name": "background-gray",
+        "interventions": {
+          "background": [
+            128,
+            128,
+            128
+          ]
+        }
+      },
+      {
+        "name": "background-plain",
+        "interventions": {
+          "backgroundStyle": "plain"
+        }
+      },
+      {
+        "name": "background-white-plain",
+        "interventions": {
+          "background": [
+            255,
+            255,
+            255
+          ],
+          "backgroundStyle": "plain"
+        }
+      }
+    ]
+  },
+  "trainingImports": [
+    {
+      "path": "tmp/heart-learning/foreground-refinement-v1/background-training/batch/manifest.json",
+      "sha256": "9bf317cbc2ba9c5c157773d932b3caf3d849f6b2fae4b883d23606d8f22f613e",
+      "sourceViews": 204,
+      "sourceViewIds": [
+        "6649301431ad:lattice-713051-v0",
+        "6649301431ad:lattice-713051-v1",
+        "6649301431ad:lattice-713051-v2",
+        "6649301431ad:lattice-713051-v3",
+        "6649301431ad:lattice-717087-v0",
+        "6649301431ad:lattice-717087-v1",
+        "6649301431ad:lattice-717087-v2",
+        "6649301431ad:lattice-717087-v3",
+        "6649301431ad:lattice-721123-v0",
+        "6649301431ad:lattice-721123-v1",
+        "6649301431ad:lattice-721123-v2",
+        "6649301431ad:lattice-721123-v3",
+        "6649301431ad:lattice-729195-v0",
+        "6649301431ad:lattice-729195-v1",
+        "6649301431ad:lattice-729195-v2",
+        "6649301431ad:lattice-729195-v3",
+        "6649301431ad:lattice-733231-v0",
+        "6649301431ad:lattice-733231-v1",
+        "6649301431ad:lattice-733231-v2",
+        "6649301431ad:lattice-733231-v3",
+        "6649301431ad:lattice-737267-v0",
+        "6649301431ad:lattice-737267-v1",
+        "6649301431ad:lattice-737267-v2",
+        "6649301431ad:lattice-737267-v3",
+        "6649301431ad:lattice-741303-v0",
+        "6649301431ad:lattice-741303-v1",
+        "6649301431ad:lattice-741303-v2",
+        "6649301431ad:lattice-741303-v3",
+        "6649301431ad:lattice-745339-v0",
+        "6649301431ad:lattice-745339-v1",
+        "6649301431ad:lattice-745339-v2",
+        "6649301431ad:lattice-745339-v3",
+        "6649301431ad:lattice-749375-v0",
+        "6649301431ad:lattice-749375-v1",
+        "6649301431ad:lattice-749375-v2",
+        "6649301431ad:lattice-749375-v3",
+        "6649301431ad:lattice-753411-v0",
+        "6649301431ad:lattice-753411-v1",
+        "6649301431ad:lattice-753411-v2",
+        "6649301431ad:lattice-753411-v3",
+        "6649301431ad:lattice-757447-v0",
+        "6649301431ad:lattice-757447-v1",
+        "6649301431ad:lattice-757447-v2",
+        "6649301431ad:lattice-757447-v3",
+        "6649301431ad:lattice-761483-v0",
+        "6649301431ad:lattice-761483-v1",
+        "6649301431ad:lattice-761483-v2",
+        "6649301431ad:lattice-761483-v3",
+        "6649301431ad:lattice-765519-v0",
+        "6649301431ad:lattice-765519-v1",
+        "6649301431ad:lattice-765519-v2",
+        "6649301431ad:lattice-765519-v3",
+        "6649301431ad:lattice-769555-v0",
+        "6649301431ad:lattice-769555-v1",
+        "6649301431ad:lattice-769555-v2",
+        "6649301431ad:lattice-769555-v3",
+        "6649301431ad:lattice-773591-v0",
+        "6649301431ad:lattice-773591-v1",
+        "6649301431ad:lattice-773591-v2",
+        "6649301431ad:lattice-773591-v3",
+        "6649301431ad:lattice-777627-v0",
+        "6649301431ad:lattice-777627-v1",
+        "6649301431ad:lattice-777627-v2",
+        "6649301431ad:lattice-777627-v3",
+        "6649301431ad:lattice-781663-v0",
+        "6649301431ad:lattice-781663-v1",
+        "6649301431ad:lattice-781663-v2",
+        "6649301431ad:lattice-781663-v3",
+        "6649301431ad:lattice-785699-v0",
+        "6649301431ad:lattice-785699-v1",
+        "6649301431ad:lattice-785699-v2",
+        "6649301431ad:lattice-785699-v3",
+        "6649301431ad:lattice-789735-v0",
+        "6649301431ad:lattice-789735-v1",
+        "6649301431ad:lattice-789735-v2",
+        "6649301431ad:lattice-789735-v3",
+        "6649301431ad:lattice-797807-v0",
+        "6649301431ad:lattice-797807-v1",
+        "6649301431ad:lattice-797807-v2",
+        "6649301431ad:lattice-797807-v3",
+        "6649301431ad:lattice-805879-v0",
+        "6649301431ad:lattice-805879-v1",
+        "6649301431ad:lattice-805879-v2",
+        "6649301431ad:lattice-805879-v3",
+        "6649301431ad:lattice-809915-v0",
+        "6649301431ad:lattice-809915-v1",
+        "6649301431ad:lattice-809915-v2",
+        "6649301431ad:lattice-809915-v3",
+        "6649301431ad:lattice-813951-v0",
+        "6649301431ad:lattice-813951-v1",
+        "6649301431ad:lattice-813951-v2",
+        "6649301431ad:lattice-813951-v3",
+        "6649301431ad:lattice-817987-v0",
+        "6649301431ad:lattice-817987-v1",
+        "6649301431ad:lattice-817987-v2",
+        "6649301431ad:lattice-817987-v3",
+        "6649301431ad:lattice-830095-v0",
+        "6649301431ad:lattice-830095-v1",
+        "6649301431ad:lattice-830095-v2",
+        "6649301431ad:lattice-830095-v3",
+        "6649301431ad:lattice-834131-v0",
+        "6649301431ad:lattice-834131-v1",
+        "6649301431ad:lattice-834131-v2",
+        "6649301431ad:lattice-834131-v3",
+        "6649301431ad:lattice-838167-v0",
+        "6649301431ad:lattice-838167-v1",
+        "6649301431ad:lattice-838167-v2",
+        "6649301431ad:lattice-838167-v3",
+        "6649301431ad:shared-lattice-714060-v0",
+        "6649301431ad:shared-lattice-714060-v1",
+        "6649301431ad:shared-lattice-714060-v2",
+        "6649301431ad:shared-lattice-714060-v3",
+        "6649301431ad:shared-lattice-718096-v0",
+        "6649301431ad:shared-lattice-718096-v1",
+        "6649301431ad:shared-lattice-718096-v2",
+        "6649301431ad:shared-lattice-718096-v3",
+        "6649301431ad:shared-lattice-734240-v0",
+        "6649301431ad:shared-lattice-734240-v1",
+        "6649301431ad:shared-lattice-734240-v2",
+        "6649301431ad:shared-lattice-734240-v3",
+        "6649301431ad:shared-lattice-738276-v0",
+        "6649301431ad:shared-lattice-738276-v1",
+        "6649301431ad:shared-lattice-738276-v2",
+        "6649301431ad:shared-lattice-738276-v3",
+        "6649301431ad:shared-lattice-742312-v0",
+        "6649301431ad:shared-lattice-742312-v1",
+        "6649301431ad:shared-lattice-742312-v2",
+        "6649301431ad:shared-lattice-742312-v3",
+        "6649301431ad:shared-lattice-746348-v0",
+        "6649301431ad:shared-lattice-746348-v1",
+        "6649301431ad:shared-lattice-746348-v2",
+        "6649301431ad:shared-lattice-746348-v3",
+        "6649301431ad:shared-lattice-750384-v0",
+        "6649301431ad:shared-lattice-750384-v1",
+        "6649301431ad:shared-lattice-750384-v2",
+        "6649301431ad:shared-lattice-750384-v3",
+        "6649301431ad:shared-lattice-762492-v0",
+        "6649301431ad:shared-lattice-762492-v1",
+        "6649301431ad:shared-lattice-762492-v2",
+        "6649301431ad:shared-lattice-762492-v3",
+        "6649301431ad:shared-lattice-766528-v0",
+        "6649301431ad:shared-lattice-766528-v1",
+        "6649301431ad:shared-lattice-766528-v2",
+        "6649301431ad:shared-lattice-766528-v3",
+        "6649301431ad:shared-lattice-770564-v0",
+        "6649301431ad:shared-lattice-770564-v1",
+        "6649301431ad:shared-lattice-770564-v2",
+        "6649301431ad:shared-lattice-770564-v3",
+        "6649301431ad:shared-lattice-778636-v0",
+        "6649301431ad:shared-lattice-778636-v1",
+        "6649301431ad:shared-lattice-778636-v2",
+        "6649301431ad:shared-lattice-778636-v3",
+        "6649301431ad:shared-lattice-782672-v0",
+        "6649301431ad:shared-lattice-782672-v1",
+        "6649301431ad:shared-lattice-782672-v2",
+        "6649301431ad:shared-lattice-782672-v3",
+        "6649301431ad:shared-lattice-786708-v0",
+        "6649301431ad:shared-lattice-786708-v1",
+        "6649301431ad:shared-lattice-786708-v2",
+        "6649301431ad:shared-lattice-786708-v3",
+        "6649301431ad:shared-lattice-790744-v0",
+        "6649301431ad:shared-lattice-790744-v1",
+        "6649301431ad:shared-lattice-790744-v2",
+        "6649301431ad:shared-lattice-790744-v3",
+        "6649301431ad:shared-lattice-794780-v0",
+        "6649301431ad:shared-lattice-794780-v1",
+        "6649301431ad:shared-lattice-794780-v2",
+        "6649301431ad:shared-lattice-794780-v3",
+        "6649301431ad:shared-lattice-798816-v0",
+        "6649301431ad:shared-lattice-798816-v1",
+        "6649301431ad:shared-lattice-798816-v2",
+        "6649301431ad:shared-lattice-798816-v3",
+        "6649301431ad:shared-lattice-802852-v0",
+        "6649301431ad:shared-lattice-802852-v1",
+        "6649301431ad:shared-lattice-802852-v2",
+        "6649301431ad:shared-lattice-802852-v3",
+        "6649301431ad:shared-lattice-806888-v0",
+        "6649301431ad:shared-lattice-806888-v1",
+        "6649301431ad:shared-lattice-806888-v2",
+        "6649301431ad:shared-lattice-806888-v3",
+        "6649301431ad:shared-lattice-814960-v0",
+        "6649301431ad:shared-lattice-814960-v1",
+        "6649301431ad:shared-lattice-814960-v2",
+        "6649301431ad:shared-lattice-814960-v3",
+        "6649301431ad:shared-lattice-818996-v0",
+        "6649301431ad:shared-lattice-818996-v1",
+        "6649301431ad:shared-lattice-818996-v2",
+        "6649301431ad:shared-lattice-818996-v3",
+        "6649301431ad:shared-lattice-823032-v0",
+        "6649301431ad:shared-lattice-823032-v1",
+        "6649301431ad:shared-lattice-823032-v2",
+        "6649301431ad:shared-lattice-823032-v3",
+        "6649301431ad:shared-lattice-827068-v0",
+        "6649301431ad:shared-lattice-827068-v1",
+        "6649301431ad:shared-lattice-827068-v2",
+        "6649301431ad:shared-lattice-827068-v3",
+        "6649301431ad:shared-lattice-835140-v0",
+        "6649301431ad:shared-lattice-835140-v1",
+        "6649301431ad:shared-lattice-835140-v2",
+        "6649301431ad:shared-lattice-835140-v3",
+        "6649301431ad:shared-lattice-839176-v0",
+        "6649301431ad:shared-lattice-839176-v1",
+        "6649301431ad:shared-lattice-839176-v2",
+        "6649301431ad:shared-lattice-839176-v3"
+      ],
+      "variantViewsIncludingBaseline": 1224,
+      "summary": {
+        "selectedViews": 204,
+        "designs": 51,
+        "variantsPerView": 6,
+        "generatedRows": 1224,
+        "matchedOriginalImageHashes": 1224,
+        "seconds": 192.473369583
+      }
+    },
+    {
+      "path": "tmp/heart-learning/foreground-refinement-v1/background-training/corners/manifest.json",
+      "sha256": "5da2704ff3a1ae246922dd6c81473831289926be85a2527c64171e15927245ac",
+      "sourceViews": 204,
+      "sourceViewIds": [
+        "180ecc34ae42:corner-lattice-1008112-v0",
+        "180ecc34ae42:corner-lattice-1008112-v1",
+        "180ecc34ae42:corner-lattice-1008112-v2",
+        "180ecc34ae42:corner-lattice-1008112-v3",
+        "180ecc34ae42:corner-lattice-1011139-v0",
+        "180ecc34ae42:corner-lattice-1011139-v1",
+        "180ecc34ae42:corner-lattice-1011139-v2",
+        "180ecc34ae42:corner-lattice-1011139-v3",
+        "180ecc34ae42:corner-lattice-1021229-v0",
+        "180ecc34ae42:corner-lattice-1021229-v1",
+        "180ecc34ae42:corner-lattice-1021229-v2",
+        "180ecc34ae42:corner-lattice-1021229-v3",
+        "180ecc34ae42:corner-lattice-1034346-v0",
+        "180ecc34ae42:corner-lattice-1034346-v1",
+        "180ecc34ae42:corner-lattice-1034346-v2",
+        "180ecc34ae42:corner-lattice-1034346-v3",
+        "180ecc34ae42:corner-lattice-1035355-v0",
+        "180ecc34ae42:corner-lattice-1035355-v1",
+        "180ecc34ae42:corner-lattice-1035355-v2",
+        "180ecc34ae42:corner-lattice-1035355-v3",
+        "180ecc34ae42:corner-lattice-1051499-v0",
+        "180ecc34ae42:corner-lattice-1051499-v1",
+        "180ecc34ae42:corner-lattice-1051499-v2",
+        "180ecc34ae42:corner-lattice-1051499-v3",
+        "180ecc34ae42:corner-lattice-1061589-v0",
+        "180ecc34ae42:corner-lattice-1061589-v1",
+        "180ecc34ae42:corner-lattice-1061589-v2",
+        "180ecc34ae42:corner-lattice-1061589-v3",
+        "180ecc34ae42:corner-lattice-1063607-v0",
+        "180ecc34ae42:corner-lattice-1063607-v1",
+        "180ecc34ae42:corner-lattice-1063607-v2",
+        "180ecc34ae42:corner-lattice-1063607-v3",
+        "180ecc34ae42:corner-lattice-12145-v0",
+        "180ecc34ae42:corner-lattice-12145-v1",
+        "180ecc34ae42:corner-lattice-12145-v2",
+        "180ecc34ae42:corner-lattice-12145-v3",
+        "180ecc34ae42:corner-lattice-15172-v0",
+        "180ecc34ae42:corner-lattice-15172-v1",
+        "180ecc34ae42:corner-lattice-15172-v2",
+        "180ecc34ae42:corner-lattice-15172-v3",
+        "180ecc34ae42:corner-lattice-18199-v0",
+        "180ecc34ae42:corner-lattice-18199-v1",
+        "180ecc34ae42:corner-lattice-18199-v2",
+        "180ecc34ae42:corner-lattice-18199-v3",
+        "180ecc34ae42:corner-lattice-2002061-v0",
+        "180ecc34ae42:corner-lattice-2002061-v1",
+        "180ecc34ae42:corner-lattice-2002061-v2",
+        "180ecc34ae42:corner-lattice-2002061-v3",
+        "180ecc34ae42:corner-lattice-2007106-v0",
+        "180ecc34ae42:corner-lattice-2007106-v1",
+        "180ecc34ae42:corner-lattice-2007106-v2",
+        "180ecc34ae42:corner-lattice-2007106-v3",
+        "180ecc34ae42:corner-lattice-2009124-v0",
+        "180ecc34ae42:corner-lattice-2009124-v1",
+        "180ecc34ae42:corner-lattice-2009124-v2",
+        "180ecc34ae42:corner-lattice-2009124-v3",
+        "180ecc34ae42:corner-lattice-2017196-v0",
+        "180ecc34ae42:corner-lattice-2017196-v1",
+        "180ecc34ae42:corner-lattice-2017196-v2",
+        "180ecc34ae42:corner-lattice-2017196-v3",
+        "180ecc34ae42:corner-lattice-20217-v0",
+        "180ecc34ae42:corner-lattice-20217-v1",
+        "180ecc34ae42:corner-lattice-20217-v2",
+        "180ecc34ae42:corner-lattice-20217-v3",
+        "180ecc34ae42:corner-lattice-2026277-v0",
+        "180ecc34ae42:corner-lattice-2026277-v1",
+        "180ecc34ae42:corner-lattice-2026277-v2",
+        "180ecc34ae42:corner-lattice-2026277-v3",
+        "180ecc34ae42:corner-lattice-2033340-v0",
+        "180ecc34ae42:corner-lattice-2033340-v1",
+        "180ecc34ae42:corner-lattice-2033340-v2",
+        "180ecc34ae42:corner-lattice-2033340-v3",
+        "180ecc34ae42:corner-lattice-2045448-v0",
+        "180ecc34ae42:corner-lattice-2045448-v1",
+        "180ecc34ae42:corner-lattice-2045448-v2",
+        "180ecc34ae42:corner-lattice-2045448-v3",
+        "180ecc34ae42:corner-lattice-22235-v0",
+        "180ecc34ae42:corner-lattice-22235-v1",
+        "180ecc34ae42:corner-lattice-22235-v2",
+        "180ecc34ae42:corner-lattice-22235-v3",
+        "180ecc34ae42:corner-lattice-23244-v0",
+        "180ecc34ae42:corner-lattice-23244-v1",
+        "180ecc34ae42:corner-lattice-23244-v2",
+        "180ecc34ae42:corner-lattice-23244-v3",
+        "180ecc34ae42:corner-lattice-24253-v0",
+        "180ecc34ae42:corner-lattice-24253-v1",
+        "180ecc34ae42:corner-lattice-24253-v2",
+        "180ecc34ae42:corner-lattice-24253-v3",
+        "180ecc34ae42:corner-lattice-25262-v0",
+        "180ecc34ae42:corner-lattice-25262-v1",
+        "180ecc34ae42:corner-lattice-25262-v2",
+        "180ecc34ae42:corner-lattice-25262-v3",
+        "180ecc34ae42:corner-lattice-28289-v0",
+        "180ecc34ae42:corner-lattice-28289-v1",
+        "180ecc34ae42:corner-lattice-28289-v2",
+        "180ecc34ae42:corner-lattice-28289-v3",
+        "180ecc34ae42:corner-lattice-3001055-v0",
+        "180ecc34ae42:corner-lattice-3001055-v1",
+        "180ecc34ae42:corner-lattice-3001055-v2",
+        "180ecc34ae42:corner-lattice-3001055-v3",
+        "180ecc34ae42:corner-lattice-3014172-v0",
+        "180ecc34ae42:corner-lattice-3014172-v1",
+        "180ecc34ae42:corner-lattice-3014172-v2",
+        "180ecc34ae42:corner-lattice-3014172-v3",
+        "180ecc34ae42:corner-lattice-3041415-v0",
+        "180ecc34ae42:corner-lattice-3041415-v1",
+        "180ecc34ae42:corner-lattice-3041415-v2",
+        "180ecc34ae42:corner-lattice-3041415-v3",
+        "180ecc34ae42:corner-lattice-3042424-v0",
+        "180ecc34ae42:corner-lattice-3042424-v1",
+        "180ecc34ae42:corner-lattice-3042424-v2",
+        "180ecc34ae42:corner-lattice-3042424-v3",
+        "180ecc34ae42:corner-lattice-3044442-v0",
+        "180ecc34ae42:corner-lattice-3044442-v1",
+        "180ecc34ae42:corner-lattice-3044442-v2",
+        "180ecc34ae42:corner-lattice-3044442-v3",
+        "180ecc34ae42:corner-lattice-3056550-v0",
+        "180ecc34ae42:corner-lattice-3056550-v1",
+        "180ecc34ae42:corner-lattice-3056550-v2",
+        "180ecc34ae42:corner-lattice-3056550-v3",
+        "180ecc34ae42:corner-lattice-3059577-v0",
+        "180ecc34ae42:corner-lattice-3059577-v1",
+        "180ecc34ae42:corner-lattice-3059577-v2",
+        "180ecc34ae42:corner-lattice-3059577-v3",
+        "180ecc34ae42:corner-lattice-3064-v0",
+        "180ecc34ae42:corner-lattice-3064-v1",
+        "180ecc34ae42:corner-lattice-3064-v2",
+        "180ecc34ae42:corner-lattice-3064-v3",
+        "180ecc34ae42:corner-lattice-37370-v0",
+        "180ecc34ae42:corner-lattice-37370-v1",
+        "180ecc34ae42:corner-lattice-37370-v2",
+        "180ecc34ae42:corner-lattice-37370-v3",
+        "180ecc34ae42:corner-lattice-4038391-v0",
+        "180ecc34ae42:corner-lattice-4038391-v1",
+        "180ecc34ae42:corner-lattice-4038391-v2",
+        "180ecc34ae42:corner-lattice-4038391-v3",
+        "180ecc34ae42:corner-lattice-40397-v0",
+        "180ecc34ae42:corner-lattice-40397-v1",
+        "180ecc34ae42:corner-lattice-40397-v2",
+        "180ecc34ae42:corner-lattice-40397-v3",
+        "180ecc34ae42:corner-lattice-43424-v0",
+        "180ecc34ae42:corner-lattice-43424-v1",
+        "180ecc34ae42:corner-lattice-43424-v2",
+        "180ecc34ae42:corner-lattice-43424-v3",
+        "180ecc34ae42:corner-lattice-46451-v0",
+        "180ecc34ae42:corner-lattice-46451-v1",
+        "180ecc34ae42:corner-lattice-46451-v2",
+        "180ecc34ae42:corner-lattice-46451-v3",
+        "180ecc34ae42:corner-lattice-47460-v0",
+        "180ecc34ae42:corner-lattice-47460-v1",
+        "180ecc34ae42:corner-lattice-47460-v2",
+        "180ecc34ae42:corner-lattice-47460-v3",
+        "180ecc34ae42:corner-lattice-5004088-v0",
+        "180ecc34ae42:corner-lattice-5004088-v1",
+        "180ecc34ae42:corner-lattice-5004088-v2",
+        "180ecc34ae42:corner-lattice-5004088-v3",
+        "180ecc34ae42:corner-lattice-5029313-v0",
+        "180ecc34ae42:corner-lattice-5029313-v1",
+        "180ecc34ae42:corner-lattice-5029313-v2",
+        "180ecc34ae42:corner-lattice-5029313-v3",
+        "180ecc34ae42:corner-lattice-5048484-v0",
+        "180ecc34ae42:corner-lattice-5048484-v1",
+        "180ecc34ae42:corner-lattice-5048484-v2",
+        "180ecc34ae42:corner-lattice-5048484-v3",
+        "180ecc34ae42:corner-lattice-50487-v0",
+        "180ecc34ae42:corner-lattice-50487-v1",
+        "180ecc34ae42:corner-lattice-50487-v2",
+        "180ecc34ae42:corner-lattice-50487-v3",
+        "180ecc34ae42:corner-lattice-5053529-v0",
+        "180ecc34ae42:corner-lattice-5053529-v1",
+        "180ecc34ae42:corner-lattice-5053529-v2",
+        "180ecc34ae42:corner-lattice-5053529-v3",
+        "180ecc34ae42:corner-lattice-5082-v0",
+        "180ecc34ae42:corner-lattice-5082-v1",
+        "180ecc34ae42:corner-lattice-5082-v2",
+        "180ecc34ae42:corner-lattice-5082-v3",
+        "180ecc34ae42:corner-lattice-54523-v0",
+        "180ecc34ae42:corner-lattice-54523-v1",
+        "180ecc34ae42:corner-lattice-54523-v2",
+        "180ecc34ae42:corner-lattice-54523-v3",
+        "180ecc34ae42:corner-lattice-55532-v0",
+        "180ecc34ae42:corner-lattice-55532-v1",
+        "180ecc34ae42:corner-lattice-55532-v2",
+        "180ecc34ae42:corner-lattice-55532-v3",
+        "180ecc34ae42:corner-lattice-60577-v0",
+        "180ecc34ae42:corner-lattice-60577-v1",
+        "180ecc34ae42:corner-lattice-60577-v2",
+        "180ecc34ae42:corner-lattice-60577-v3",
+        "180ecc34ae42:corner-lattice-6091-v0",
+        "180ecc34ae42:corner-lattice-6091-v1",
+        "180ecc34ae42:corner-lattice-6091-v2",
+        "180ecc34ae42:corner-lattice-6091-v3",
+        "180ecc34ae42:corner-lattice-62595-v0",
+        "180ecc34ae42:corner-lattice-62595-v1",
+        "180ecc34ae42:corner-lattice-62595-v2",
+        "180ecc34ae42:corner-lattice-62595-v3",
+        "180ecc34ae42:corner-lattice-7027301-v0",
+        "180ecc34ae42:corner-lattice-7027301-v1",
+        "180ecc34ae42:corner-lattice-7027301-v2",
+        "180ecc34ae42:corner-lattice-7027301-v3",
+        "180ecc34ae42:corner-lattice-9039415-v0",
+        "180ecc34ae42:corner-lattice-9039415-v1",
+        "180ecc34ae42:corner-lattice-9039415-v2",
+        "180ecc34ae42:corner-lattice-9039415-v3"
+      ],
+      "variantViewsIncludingBaseline": 1224,
+      "summary": {
+        "selectedViews": 204,
+        "designs": 51,
+        "variantsPerView": 6,
+        "generatedRows": 1224,
+        "matchedOriginalImageHashes": 1224,
+        "seconds": 187.34713875
+      }
+    }
+  ],
+  "backgroundControls": {
+    "original": {
+      "metrics": {
+        "baseline": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 16,
+          "iou": 0.9895711102740029,
+          "pixelError": 0.0031948089599609375,
+          "boundaryF1": 0.9898919809240502,
+          "backgroundFalsePositive": 0.00216406221943088,
+          "paperFalseNegative": 0.005606315099742021
+        },
+        "background-white": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 16,
+          "iou": 0.752473030063616,
+          "pixelError": 0.12998485565185547,
+          "boundaryF1": 0.4610116959822361,
+          "backgroundFalsePositive": 0.16807786830473884,
+          "paperFalseNegative": 0.039087192813094945
+        },
+        "background-black": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 16,
+          "iou": 0.9215366890664047,
+          "pixelError": 0.025705337524414062,
+          "boundaryF1": 0.6333914469936335,
+          "backgroundFalsePositive": 0.02327381388278801,
+          "paperFalseNegative": 0.030813002904801816
+        },
+        "background-gray": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 16,
+          "iou": 0.991184127841271,
+          "pixelError": 0.0027256011962890625,
+          "boundaryF1": 0.9987916808225841,
+          "backgroundFalsePositive": 0.0016762294866849675,
+          "paperFalseNegative": 0.005038207918294525
+        },
+        "background-plain": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 16,
+          "iou": 0.9421132309921998,
+          "pixelError": 0.019372940063476562,
+          "boundaryF1": 0.7969823369468116,
+          "backgroundFalsePositive": 0.025208423679908665,
+          "paperFalseNegative": 0.005689776060090279
+        },
+        "background-white-plain": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 16,
+          "iou": 0.5278177404719275,
+          "pixelError": 0.2682151794433594,
+          "boundaryF1": 0.26062337027802823,
+          "backgroundFalsePositive": 0.3614544110722064,
+          "paperFalseNegative": 0.05893684347185674
+        }
+      },
+      "paired": {
+        "baseline": {
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0
+        },
+        "background-white": {
+          "paperCoreMeanAbsoluteRGBChange": 0.00019893454998840286,
+          "paperCoreMeanAbsolutePredictionChange": 0.035251057415734977,
+          "paperCoreFalseNegativeFraction": 0.013292902043602527
+        },
+        "background-black": {
+          "paperCoreMeanAbsoluteRGBChange": 0.00019692137511452383,
+          "paperCoreMeanAbsolutePredictionChange": 0.010957960039377213,
+          "paperCoreFalseNegativeFraction": 0.0018766488656885617
+        },
+        "background-gray": {
+          "paperCoreMeanAbsoluteRGBChange": 0.00019495113067811632,
+          "paperCoreMeanAbsolutePredictionChange": 0.0016121266198751982,
+          "paperCoreFalseNegativeFraction": 0.0
+        },
+        "background-plain": {
+          "paperCoreMeanAbsoluteRGBChange": 2.1802825386807918e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.015452747786184773,
+          "paperCoreFalseNegativeFraction": 0.002242070373920741
+        },
+        "background-white-plain": {
+          "paperCoreMeanAbsoluteRGBChange": 0.00019817369210911693,
+          "paperCoreMeanAbsolutePredictionChange": 0.07540601427899674,
+          "paperCoreFalseNegativeFraction": 0.0330570193451798
+        }
+      }
+    },
+    "background_augmented": {
+      "metrics": {
+        "baseline": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 16,
+          "iou": 0.9851430398413117,
+          "pixelError": 0.004643440246582031,
+          "boundaryF1": 0.9854044677689278,
+          "backgroundFalsePositive": 0.0032992760937498944,
+          "paperFalseNegative": 0.0075270292441061695
+        },
+        "background-white": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 16,
+          "iou": 0.9779327628144845,
+          "pixelError": 0.006893157958984375,
+          "boundaryF1": 0.9436664795076821,
+          "backgroundFalsePositive": 0.004555291115136849,
+          "paperFalseNegative": 0.012059655979478424
+        },
+        "background-black": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 16,
+          "iou": 0.9915722172648957,
+          "pixelError": 0.00262451171875,
+          "boundaryF1": 0.9993090167975961,
+          "backgroundFalsePositive": 0.002692367706090296,
+          "paperFalseNegative": 0.0024293096115569936
+        },
+        "background-gray": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 16,
+          "iou": 0.9860835738797047,
+          "pixelError": 0.004319190979003906,
+          "boundaryF1": 0.9911373707360231,
+          "backgroundFalsePositive": 0.003316276945170716,
+          "paperFalseNegative": 0.006470255335754922
+        },
+        "background-plain": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 16,
+          "iou": 0.9851537586093957,
+          "pixelError": 0.004633903503417969,
+          "boundaryF1": 0.9853798542576437,
+          "backgroundFalsePositive": 0.0032229584103080702,
+          "paperFalseNegative": 0.007665789091549952
+        },
+        "background-white-plain": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 16,
+          "iou": 0.9787489733411765,
+          "pixelError": 0.006625175476074219,
+          "boundaryF1": 0.9520921631915633,
+          "backgroundFalsePositive": 0.0045333832437355025,
+          "paperFalseNegative": 0.011167006328161278
+        }
+      },
+      "paired": {
+        "baseline": {
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0
+        },
+        "background-white": {
+          "paperCoreMeanAbsoluteRGBChange": 0.00019893454998840286,
+          "paperCoreMeanAbsolutePredictionChange": 0.003375015512574464,
+          "paperCoreFalseNegativeFraction": 0.0
+        },
+        "background-black": {
+          "paperCoreMeanAbsoluteRGBChange": 0.00019692137511452383,
+          "paperCoreMeanAbsolutePredictionChange": 0.003533654409693554,
+          "paperCoreFalseNegativeFraction": 0.0
+        },
+        "background-gray": {
+          "paperCoreMeanAbsoluteRGBChange": 0.00019495113067811632,
+          "paperCoreMeanAbsolutePredictionChange": 0.0018515312622184865,
+          "paperCoreFalseNegativeFraction": 0.0
+        },
+        "background-plain": {
+          "paperCoreMeanAbsoluteRGBChange": 2.1802825386807918e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.0011214086043764837,
+          "paperCoreFalseNegativeFraction": 0.0
+        },
+        "background-white-plain": {
+          "paperCoreMeanAbsoluteRGBChange": 0.00019817369210911693,
+          "paperCoreMeanAbsolutePredictionChange": 0.0034345632884651423,
+          "paperCoreFalseNegativeFraction": 0.0
+        }
+      }
+    }
+  },
+  "evaluation": {
+    "original": {
+      "real": {
+        "views": 31,
+        "statuses": {
+          "crop-unresolved": 31
+        },
+        "supportedOutlines": 0,
+        "checkedPairs": 0
+      },
+      "synthetic": {
+        "views": 12,
+        "statuses": {
+          "checked-pair": 11,
+          "review-required": 1
+        },
+        "supportedOutlines": 12,
+        "checkedPairs": 11,
+        "checkedPairMeanLatentMismatch": 0.00763125658908034,
+        "checkedPairMeanObservedFraction": 0.9910876341540404,
+        "checkedPairMaximumCornerErrorPixels": 4.382178981566596
+      }
+    },
+    "seeded_rgb": {
+      "real": {
+        "views": 31,
+        "statuses": {
+          "crop-unresolved": 30,
+          "checked-pair": 1
+        },
+        "supportedOutlines": 1,
+        "checkedPairs": 1
+      },
+      "synthetic": {
+        "views": 12,
+        "statuses": {
+          "checked-pair": 11,
+          "crop-unresolved": 1
+        },
+        "supportedOutlines": 11,
+        "checkedPairs": 11,
+        "checkedPairMeanLatentMismatch": 0.007513653823024473,
+        "checkedPairMeanObservedFraction": 0.9892467151988636,
+        "checkedPairMaximumCornerErrorPixels": 4.099400385502246
+      }
+    },
+    "fill_holes": {
+      "real": {
+        "views": 31,
+        "statuses": {
+          "crop-unresolved": 31
+        },
+        "supportedOutlines": 0,
+        "checkedPairs": 0
+      },
+      "synthetic": {
+        "views": 12,
+        "statuses": {
+          "checked-pair": 11,
+          "review-required": 1
+        },
+        "supportedOutlines": 12,
+        "checkedPairs": 11,
+        "checkedPairMeanLatentMismatch": 0.0076275407814774265,
+        "checkedPairMeanObservedFraction": 0.9910876341540404,
+        "checkedPairMaximumCornerErrorPixels": 4.382178981566596
+      }
+    },
+    "background_augmented": {
+      "real": {
+        "views": 31,
+        "statuses": {
+          "crop-unresolved": 25,
+          "checked-pair": 5,
+          "review-required": 1
+        },
+        "supportedOutlines": 6,
+        "checkedPairs": 5
+      },
+      "synthetic": {
+        "views": 12,
+        "statuses": {
+          "checked-pair": 10,
+          "crop-unresolved": 2
+        },
+        "supportedOutlines": 10,
+        "checkedPairs": 10,
+        "checkedPairMeanLatentMismatch": 0.006541468380815062,
+        "checkedPairMeanObservedFraction": 0.98956298828125,
+        "checkedPairMaximumCornerErrorPixels": 4.399464170787617
+      }
+    }
+  },
+  "rows": [
+    {
+      "id": "real-nested-squares",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-outline-star",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-floral-checker",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-dense-checker",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-bird",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-leaf",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-gift",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-gingerbread",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-white-birds",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-flower",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-warped-checker",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-round-checker",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-santa",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-fine-checker",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-orb",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-stacked-hearts",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-jigsaw",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-candle",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-maple-leaf",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-crown",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-crossed-ribbons",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-bauble",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-bottom-flower",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-faceted-star",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-bibel-star-8",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-bibel-star-curved",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-bibel-star-outline",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-bibel-cross",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-flettede-puppy",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-flettede-stonehenge",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "No nondegenerate heart-shape fit"
+    },
+    {
+      "id": "real-flettede-viking",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "original",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "synthetic-corner-lattice-3036370-v0",
+      "group": "development",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.8470588235294118,
+          0.8823529411764706
+        ],
+        "lobeOutlineSupport": [
+          0.8888888888888888,
+          1
+        ],
+        "capColourLoss": [
+          0.008835356148055763,
+          0.012060331475316877
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        1.5495214274311468,
+        0.7429632652496666,
+        2.5741574604457753,
+        0.8833075178726739
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.006288061568324573,
+        "inverted": false,
+        "observedPixels": 146309,
+        "observedFraction": 0.9922214084201388
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.006076181232870158,
+        "inverted": false,
+        "observedPixels": 146309,
+        "observedFraction": 0.9922214084201388
+      },
+      "independentImageError": 0.002285427517361111,
+      "checkedPair": true,
+      "experiment": "original",
+      "slits": {
+        "left": 4,
+        "right": 3
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 5.541386792000004,
+      "totalMeasuredSeconds": 6.256519751000026
+    },
+    {
+      "id": "synthetic-corner-lattice-37-v0",
+      "group": "development",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.9871794871794872,
+          0.8974358974358975
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.009318391587364798,
+          0.009712600227968759
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        1.254271664470692,
+        0.8792665799919487,
+        1.1231761078126343,
+        0.878407030914686
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.01822975209989577,
+        "inverted": false,
+        "observedPixels": 146793,
+        "observedFraction": 0.9955037434895834
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.01780057632175921,
+        "inverted": false,
+        "observedPixels": 146793,
+        "observedFraction": 0.9955037434895834
+      },
+      "independentImageError": 0.004509819878472222,
+      "checkedPair": true,
+      "experiment": "original",
+      "slits": {
+        "left": 7,
+        "right": 4
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 7.988816250000004,
+      "totalMeasuredSeconds": 8.880070375000024
+    },
+    {
+      "id": "synthetic-corner-lattice-1031319-v0",
+      "group": "development",
+      "status": "review-required",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": false,
+        "outOfFrameCorners": [
+          2
+        ],
+        "lowerEdgeSupport": [
+          0.797752808988764,
+          1
+        ],
+        "lobeOutlineSupport": [
+          0.75,
+          0.9444444444444444
+        ],
+        "capColourLoss": [
+          0.0118847695459552,
+          0.01675587548835575
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        6.093084893843863,
+        20.20078067520756,
+        1.5648811718837332,
+        3.5879556040772096
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.008892904343410963,
+        "inverted": false,
+        "observedPixels": 133927,
+        "observedFraction": 0.9082505967881944
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.03339879187915805,
+        "inverted": false,
+        "observedPixels": 133927,
+        "observedFraction": 0.9082505967881944
+      },
+      "independentImageError": 0.044026692708333336,
+      "checkedPair": false,
+      "experiment": "original",
+      "slits": {
+        "left": 1,
+        "right": 6
+      },
+      "templateChecksPassed": false,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 9.079531583000003,
+      "totalMeasuredSeconds": 11.278960999999995
+    },
+    {
+      "id": "synthetic-corner-lattice-49478-v0",
+      "group": "development",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.9591836734693877,
+          0.9693877551020408
+        ],
+        "lobeOutlineSupport": [
+          0.9722222222222222,
+          1
+        ],
+        "capColourLoss": [
+          0.016990548811311297,
+          0.013977759838594173
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        3.139814589241854,
+        0.5639827312572175,
+        1.987663381462086,
+        1.53944718095471
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.008710121407588488,
+        "inverted": false,
+        "observedPixels": 146037,
+        "observedFraction": 0.9903767903645834
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.008812835103432691,
+        "inverted": false,
+        "observedPixels": 146037,
+        "observedFraction": 0.9903767903645834
+      },
+      "independentImageError": 0.0030042860243055555,
+      "checkedPair": true,
+      "experiment": "original",
+      "slits": {
+        "left": 7,
+        "right": 2
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 6.993232041999989,
+      "totalMeasuredSeconds": 7.608588626000014
+    },
+    {
+      "id": "synthetic-channel-775609-v0",
+      "group": "recipe-validation",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          0.7926829268292683
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.012661161746482007,
+          0.010269338984288797
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        2.066324180482356,
+        2.4165544695101304,
+        1.9281707642732793,
+        1.1280662715229055
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.0015792364734962922,
+        "inverted": false,
+        "observedPixels": 145640,
+        "observedFraction": 0.9876844618055556
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.006536665751167262,
+        "inverted": false,
+        "observedPixels": 145640,
+        "observedFraction": 0.9876844618055556
+      },
+      "independentImageError": 0.0078125,
+      "checkedPair": true,
+      "experiment": "original",
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 3.0155568750000095,
+      "totalMeasuredSeconds": 3.8682686659999774
+    },
+    {
+      "id": "synthetic-channel-807897-v0",
+      "group": "recipe-validation",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          0.9418604651162791
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.013145884612415053,
+          0.01088152912613292
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        2.20044714286461,
+        4.382178981566596,
+        1.8639730567104493,
+        1.3659027521332734
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.0009885931558935362,
+        "inverted": false,
+        "observedPixels": 144650,
+        "observedFraction": 0.9809705946180556
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.007652955409609402,
+        "inverted": false,
+        "observedPixels": 144650,
+        "observedFraction": 0.9809705946180556
+      },
+      "independentImageError": 0.00762939453125,
+      "checkedPair": true,
+      "experiment": "original",
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 1.245133833000029,
+      "totalMeasuredSeconds": 2.935612709000026
+    },
+    {
+      "id": "synthetic-channel-795789-v0",
+      "group": "recipe-validation",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          1
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.015273466571546077,
+          0.01045921606412075
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        1.2415236627181263,
+        0.21192623044381212,
+        0.9509286709429285,
+        0.6987190431881701
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.001678947225318796,
+        "inverted": false,
+        "observedPixels": 147116,
+        "observedFraction": 0.9976942274305556
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.004363903314391364,
+        "inverted": false,
+        "observedPixels": 147116,
+        "observedFraction": 0.9976942274305556
+      },
+      "independentImageError": 0.003913031684027778,
+      "checkedPair": true,
+      "experiment": "original",
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 0.9800937080000295,
+      "totalMeasuredSeconds": 1.9100855820000682
+    },
+    {
+      "id": "synthetic-channel-755429-v0",
+      "group": "recipe-validation",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.7236842105263158,
+          1
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.010156987618131164,
+          0.0063030554205917855
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        1.3039220392188224,
+        0.46713452445461695,
+        1.8156584058212488,
+        1.100847981784473
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.0022531133930522177,
+        "inverted": false,
+        "observedPixels": 146464,
+        "observedFraction": 0.9932725694444444
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.0064589250600830235,
+        "inverted": false,
+        "observedPixels": 146464,
+        "observedFraction": 0.9932725694444444
+      },
+      "independentImageError": 0.007256401909722222,
+      "checkedPair": true,
+      "experiment": "original",
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 1.2434506249999977,
+      "totalMeasuredSeconds": 2.4397480410000165
+    },
+    {
+      "id": "synthetic-frame-764510-v0",
+      "group": "recipe-test",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          1
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.009623073705266605,
+          0.012155743048517877
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        1.3355033031872108,
+        1.1844751837496326,
+        0.5455219067369348,
+        0.7941040137604929
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.004026487163860224,
+        "inverted": false,
+        "observedPixels": 146033,
+        "observedFraction": 0.9903496636284722
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.0038963795854361685,
+        "inverted": false,
+        "observedPixels": 146033,
+        "observedFraction": 0.9903496636284722
+      },
+      "independentImageError": 0.001559787326388889,
+      "checkedPair": true,
+      "experiment": "original",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 5.620900916000013,
+      "totalMeasuredSeconds": 7.122011667000027
+    },
+    {
+      "id": "synthetic-frame-776618-v0",
+      "group": "recipe-test",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.9642857142857143,
+          1
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.008866447691565693,
+          0.020135737805561008
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        1.4105319969150603,
+        1.7423216576724447,
+        0.9400456227116826,
+        1.1587484182954493
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.004909861204616086,
+        "inverted": false,
+        "observedPixels": 147051,
+        "observedFraction": 0.99725341796875
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.008956076463267846,
+        "inverted": false,
+        "observedPixels": 147051,
+        "observedFraction": 0.99725341796875
+      },
+      "independentImageError": 0.009880913628472222,
+      "checkedPair": true,
+      "experiment": "original",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 4.374012500000012,
+      "totalMeasuredSeconds": 4.969464582999964
+    },
+    {
+      "id": "synthetic-frame-760474-v0",
+      "group": "recipe-test",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          0.7317073170731707
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.014041231062250229,
+          0.014367221044907428
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        0.3752629024672575,
+        0.8407888534097152,
+        1.7533812148154,
+        0.19057791300908702
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.004404415324092697,
+        "inverted": false,
+        "observedPixels": 146671,
+        "observedFraction": 0.9946763780381944
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.007615684082061212,
+        "inverted": false,
+        "observedPixels": 146671,
+        "observedFraction": 0.9946763780381944
+      },
+      "independentImageError": 0.008619520399305556,
+      "checkedPair": true,
+      "experiment": "original",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 2.1000656249999885,
+      "totalMeasuredSeconds": 2.9272014589999773
+    },
+    {
+      "id": "synthetic-frame-829086-v0",
+      "group": "recipe-test",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.9578947368421052,
+          0.7684210526315789
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.011415742950270917,
+          0.015398729677736415
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        0.9913007074963341,
+        0.7917898712962315,
+        3.0496029759913768,
+        2.3269332575224393
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.0047100748639465175,
+        "inverted": false,
+        "observedPixels": 144796,
+        "observedFraction": 0.9819607204861112
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.005773640155805409,
+        "inverted": false,
+        "observedPixels": 144796,
+        "observedFraction": 0.9819607204861112
+      },
+      "independentImageError": 0.010918511284722222,
+      "checkedPair": true,
+      "experiment": "original",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 4.559489957999962,
+      "totalMeasuredSeconds": 5.65610499799998
+    },
+    {
+      "id": "real-nested-squares",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-outline-star",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-floral-checker",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-dense-checker",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-bird",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-leaf",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-gift",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-gingerbread",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-white-birds",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-flower",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-warped-checker",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-round-checker",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-santa",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-fine-checker",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-orb",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-stacked-hearts",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-jigsaw",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-candle",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-maple-leaf",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-crown",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-crossed-ribbons",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-bauble",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-bottom-flower",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-faceted-star",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-bibel-star-8",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "Crowded frame: select one heart with a rough rectangle"
+    },
+    {
+      "id": "real-bibel-star-curved",
+      "group": "real",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          0.967479674796748
+        ],
+        "lobeOutlineSupport": [
+          0.8611111111111112,
+          0.9444444444444444
+        ],
+        "capColourLoss": [
+          0.005118764763680246,
+          8.07288679246818e-05
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "independentImageError": 0.00714375,
+      "checkedPair": true,
+      "experiment": "seeded_rgb",
+      "slits": {
+        "left": 5,
+        "right": 5
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 7.434629750000007,
+      "totalMeasuredSeconds": 8.538943667000005
+    },
+    {
+      "id": "real-bibel-star-outline",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-bibel-cross",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-flettede-puppy",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-flettede-stonehenge",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "No nondegenerate heart-shape fit"
+    },
+    {
+      "id": "real-flettede-viking",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "synthetic-corner-lattice-3036370-v0",
+      "group": "development",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.8181818181818182,
+          1
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.0004451664400139727,
+          0.00061511808016239
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        0.8924565003311723,
+        0.4115444527119318,
+        1.2495026532091986,
+        0.7095094150334135
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.006290250112325895,
+        "inverted": false,
+        "observedPixels": 146894,
+        "observedFraction": 0.9961886935763888
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.006303865372309285,
+        "inverted": false,
+        "observedPixels": 146894,
+        "observedFraction": 0.9961886935763888
+      },
+      "independentImageError": 0.0017835828993055555,
+      "checkedPair": true,
+      "experiment": "seeded_rgb",
+      "slits": {
+        "left": 4,
+        "right": 3
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 6.445691250000004,
+      "totalMeasuredSeconds": 7.4080745830000065
+    },
+    {
+      "id": "synthetic-corner-lattice-37-v0",
+      "group": "development",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          0.85
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.00047726841010773774,
+          0.0004965629854866335
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        1.500488494358891,
+        1.5847455146077327,
+        1.4353916110960927,
+        0.9681163632622609
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.017858605718030638,
+        "inverted": false,
+        "observedPixels": 146484,
+        "observedFraction": 0.993408203125
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.017059883673302204,
+        "inverted": false,
+        "observedPixels": 146484,
+        "observedFraction": 0.993408203125
+      },
+      "independentImageError": 0.004482693142361111,
+      "checkedPair": true,
+      "experiment": "seeded_rgb",
+      "slits": {
+        "left": 7,
+        "right": 4
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 8.095500165999997,
+      "totalMeasuredSeconds": 9.751695665999982
+    },
+    {
+      "id": "synthetic-corner-lattice-1031319-v0",
+      "group": "development",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "seeded_rgb",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "synthetic-corner-lattice-49478-v0",
+      "group": "development",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.98989898989899,
+          1
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.0008769996843711665,
+          0.0007245725713270695
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        0.9304776577747613,
+        2.027205729390699,
+        1.765567306347329,
+        2.249007555967528
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.010117624293355817,
+        "inverted": false,
+        "observedPixels": 144698,
+        "observedFraction": 0.9812961154513888
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.010400973061134224,
+        "inverted": false,
+        "observedPixels": 144698,
+        "observedFraction": 0.9812961154513888
+      },
+      "independentImageError": 0.004014756944444444,
+      "checkedPair": true,
+      "experiment": "seeded_rgb",
+      "slits": {
+        "left": 7,
+        "right": 2
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 8.572155249999996,
+      "totalMeasuredSeconds": 9.589675708000012
+    },
+    {
+      "id": "synthetic-channel-775609-v0",
+      "group": "recipe-validation",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.9879518072289156,
+          0.8072289156626506
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.0006589515801375,
+          0.0005183702482139027
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        0.2389455599230632,
+        1.780691664338285,
+        2.1306454970217654,
+        1.1991253670455246
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.0018317793050256863,
+        "inverted": false,
+        "observedPixels": 145214,
+        "observedFraction": 0.9847954644097222
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.0019075295770380266,
+        "inverted": false,
+        "observedPixels": 145214,
+        "observedFraction": 0.9847954644097222
+      },
+      "independentImageError": 0.005628797743055556,
+      "checkedPair": true,
+      "experiment": "seeded_rgb",
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 2.7980710830000026,
+      "totalMeasuredSeconds": 3.8863052900000215
+    },
+    {
+      "id": "synthetic-channel-807897-v0",
+      "group": "recipe-validation",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          0.9080459770114943
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.000656792252809192,
+          0.0005488581224624453
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        2.430385284484763,
+        3.7957986496204414,
+        1.7103481547623696,
+        2.1746002762423036
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.0009125853820414259,
+        "inverted": false,
+        "observedPixels": 144644,
+        "observedFraction": 0.9809299045138888
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.008227095489615885,
+        "inverted": false,
+        "observedPixels": 144644,
+        "observedFraction": 0.9809299045138888
+      },
+      "independentImageError": 0.00848388671875,
+      "checkedPair": true,
+      "experiment": "seeded_rgb",
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 1.1839924589999864,
+      "totalMeasuredSeconds": 3.3158598769999843
+    },
+    {
+      "id": "synthetic-channel-795789-v0",
+      "group": "recipe-validation",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.975609756097561,
+          1
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.0007757020533675712,
+          0.0005306175524829778
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        1.279442714934844,
+        0.4963457445835437,
+        0.7537537975235372,
+        0.672208215606097
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.0017000095200533122,
+        "inverted": false,
+        "observedPixels": 147058,
+        "observedFraction": 0.9973008897569444
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.0041140230385290156,
+        "inverted": false,
+        "observedPixels": 147058,
+        "observedFraction": 0.9973008897569444
+      },
+      "independentImageError": 0.003872341579861111,
+      "checkedPair": true,
+      "experiment": "seeded_rgb",
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 0.9724317920000031,
+      "totalMeasuredSeconds": 2.270819083000005
+    },
+    {
+      "id": "synthetic-channel-755429-v0",
+      "group": "recipe-validation",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          0.75
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.0005043226255820629,
+          0.0003184735966937728
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        0.9400240311005665,
+        4.099400385502246,
+        1.7396134557328664,
+        0.23465300521709925
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.002407666008571291,
+        "inverted": false,
+        "observedPixels": 145369,
+        "observedFraction": 0.9858466254340278
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.004519533050375252,
+        "inverted": false,
+        "observedPixels": 145369,
+        "observedFraction": 0.9858466254340278
+      },
+      "independentImageError": 0.005330403645833333,
+      "checkedPair": true,
+      "experiment": "seeded_rgb",
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 1.4394375419999996,
+      "totalMeasuredSeconds": 3.1282527099999893
+    },
+    {
+      "id": "synthetic-frame-764510-v0",
+      "group": "recipe-test",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          0.9753086419753086
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.0005032389353821406,
+          0.0006250469911284134
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        1.3268700025274753,
+        1.092643842152905,
+        0.6940233546085663,
+        0.17731306837731695
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.004013537998700899,
+        "inverted": false,
+        "observedPixels": 146255,
+        "observedFraction": 0.9918551974826388
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.0066937882465556734,
+        "inverted": false,
+        "observedPixels": 146255,
+        "observedFraction": 0.9918551974826388
+      },
+      "independentImageError": 0.009650336371527778,
+      "checkedPair": true,
+      "experiment": "seeded_rgb",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 4.809888291999989,
+      "totalMeasuredSeconds": 6.655502625999986
+    },
+    {
+      "id": "synthetic-frame-776618-v0",
+      "group": "recipe-test",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.9764705882352941,
+          1
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.00045196496833173187,
+          0.0010211723348910245
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        1.0618718852255817,
+        2.3317622633667137,
+        0.8888447292401938,
+        1.160924053693166
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.004828486711460515,
+        "inverted": false,
+        "observedPixels": 147044,
+        "observedFraction": 0.9972059461805556
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.009092516525665787,
+        "inverted": false,
+        "observedPixels": 147044,
+        "observedFraction": 0.9972059461805556
+      },
+      "independentImageError": 0.010457356770833334,
+      "checkedPair": true,
+      "experiment": "seeded_rgb",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 3.5846476250000125,
+      "totalMeasuredSeconds": 4.376158667000011
+    },
+    {
+      "id": "synthetic-frame-760474-v0",
+      "group": "recipe-test",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          0.7195121951219512
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.000708904927022691,
+          0.0007309445949925356
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        0.05849246530077392,
+        1.4372519441466662,
+        1.5677773558926729,
+        0.2046501149774156
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.00394144528768452,
+        "inverted": false,
+        "observedPixels": 146393,
+        "observedFraction": 0.9927910698784722
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.007944368924743669,
+        "inverted": false,
+        "observedPixels": 146393,
+        "observedFraction": 0.9927910698784722
+      },
+      "independentImageError": 0.008761935763888888,
+      "checkedPair": true,
+      "experiment": "seeded_rgb",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 1.916071874999994,
+      "totalMeasuredSeconds": 2.9858576260000143
+    },
+    {
+      "id": "synthetic-frame-829086-v0",
+      "group": "recipe-test",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.9791666666666666,
+          0.7916666666666666
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.0005648462891203095,
+          0.0007837320908532261
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        1.0189305807192155,
+        1.1407918223763844,
+        3.139987462387623,
+        2.04397359019675
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.005452494793144249,
+        "inverted": false,
+        "observedPixels": 144521,
+        "observedFraction": 0.9800957573784722
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.00638661509400018,
+        "inverted": false,
+        "observedPixels": 144521,
+        "observedFraction": 0.9800957573784722
+      },
+      "independentImageError": 0.011128743489583334,
+      "checkedPair": true,
+      "experiment": "seeded_rgb",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 4.1120384170000035,
+      "totalMeasuredSeconds": 5.397195166999982
+    },
+    {
+      "id": "real-nested-squares",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-outline-star",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-floral-checker",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-dense-checker",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-bird",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-leaf",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-gift",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-gingerbread",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-white-birds",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-flower",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-warped-checker",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-round-checker",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-santa",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-fine-checker",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-orb",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-stacked-hearts",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-jigsaw",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-candle",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-maple-leaf",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-crown",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-crossed-ribbons",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-bauble",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-bottom-flower",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-faceted-star",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-bibel-star-8",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-bibel-star-curved",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-bibel-star-outline",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-bibel-cross",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-flettede-puppy",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-flettede-stonehenge",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "Crowded frame: select one heart with a rough rectangle"
+    },
+    {
+      "id": "real-flettede-viking",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "fill_holes",
+      "initialRejectionReason": "No nondegenerate heart-shape fit"
+    },
+    {
+      "id": "synthetic-corner-lattice-3036370-v0",
+      "group": "development",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.8470588235294118,
+          0.8823529411764706
+        ],
+        "lobeOutlineSupport": [
+          0.8888888888888888,
+          1
+        ],
+        "capColourLoss": [
+          0.008835377055240116,
+          0.012060331475316877
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        1.5495214274311468,
+        0.7429632652496666,
+        2.5741574604457753,
+        0.8833075178726739
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.006288061568324573,
+        "inverted": false,
+        "observedPixels": 146309,
+        "observedFraction": 0.9922214084201388
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.006076181232870158,
+        "inverted": false,
+        "observedPixels": 146309,
+        "observedFraction": 0.9922214084201388
+      },
+      "independentImageError": 0.002285427517361111,
+      "checkedPair": true,
+      "experiment": "fill_holes",
+      "slits": {
+        "left": 4,
+        "right": 3
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 6.2497246250000025,
+      "totalMeasuredSeconds": 7.058881668000013
+    },
+    {
+      "id": "synthetic-corner-lattice-37-v0",
+      "group": "development",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.9871794871794872,
+          0.8974358974358975
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.009318374291135047,
+          0.009712600227968759
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        1.254271664470692,
+        0.8792665799919487,
+        1.1231761078126343,
+        0.878407030914686
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.01822975209989577,
+        "inverted": false,
+        "observedPixels": 146793,
+        "observedFraction": 0.9955037434895834
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.01775970243812716,
+        "inverted": false,
+        "observedPixels": 146793,
+        "observedFraction": 0.9955037434895834
+      },
+      "independentImageError": 0.00445556640625,
+      "checkedPair": true,
+      "experiment": "fill_holes",
+      "slits": {
+        "left": 7,
+        "right": 4
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 9.17776466700001,
+      "totalMeasuredSeconds": 10.28963258400002
+    },
+    {
+      "id": "synthetic-corner-lattice-1031319-v0",
+      "group": "development",
+      "status": "review-required",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": false,
+        "outOfFrameCorners": [
+          2
+        ],
+        "lowerEdgeSupport": [
+          0.797752808988764,
+          1
+        ],
+        "lobeOutlineSupport": [
+          0.75,
+          0.9444444444444444
+        ],
+        "capColourLoss": [
+          0.011884767487910921,
+          0.01675587548835575
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        6.093084893843863,
+        20.20078067520756,
+        1.5648811718837332,
+        3.5879556040772096
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.008892904343410963,
+        "inverted": false,
+        "observedPixels": 133927,
+        "observedFraction": 0.9082505967881944
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.03339879187915805,
+        "inverted": false,
+        "observedPixels": 133927,
+        "observedFraction": 0.9082505967881944
+      },
+      "independentImageError": 0.044026692708333336,
+      "checkedPair": false,
+      "experiment": "fill_holes",
+      "slits": {
+        "left": 1,
+        "right": 6
+      },
+      "templateChecksPassed": false,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 9.098570666999994,
+      "totalMeasuredSeconds": 11.402976418000007
+    },
+    {
+      "id": "synthetic-corner-lattice-49478-v0",
+      "group": "development",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.9591836734693877,
+          0.9693877551020408
+        ],
+        "lobeOutlineSupport": [
+          0.9722222222222222,
+          1
+        ],
+        "capColourLoss": [
+          0.016990561685025624,
+          0.013977759838594173
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        3.139814589241854,
+        0.5639827312572175,
+        1.987663381462086,
+        1.53944718095471
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.008710121407588488,
+        "inverted": false,
+        "observedPixels": 146037,
+        "observedFraction": 0.9903767903645834
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.008812835103432691,
+        "inverted": false,
+        "observedPixels": 146037,
+        "observedFraction": 0.9903767903645834
+      },
+      "independentImageError": 0.0030042860243055555,
+      "checkedPair": true,
+      "experiment": "fill_holes",
+      "slits": {
+        "left": 7,
+        "right": 2
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 6.930285292000001,
+      "totalMeasuredSeconds": 7.656142167
+    },
+    {
+      "id": "synthetic-channel-775609-v0",
+      "group": "recipe-validation",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          0.7926829268292683
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.012661163431894822,
+          0.010269338984288797
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        2.066324180482356,
+        2.4165544695101304,
+        1.9281707642732793,
+        1.1280662715229055
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.0015792364734962922,
+        "inverted": false,
+        "observedPixels": 145640,
+        "observedFraction": 0.9876844618055556
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.006536665751167262,
+        "inverted": false,
+        "observedPixels": 145640,
+        "observedFraction": 0.9876844618055556
+      },
+      "independentImageError": 0.0078125,
+      "checkedPair": true,
+      "experiment": "fill_holes",
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 3.14428916700001,
+      "totalMeasuredSeconds": 4.145903251000013
+    },
+    {
+      "id": "synthetic-channel-807897-v0",
+      "group": "recipe-validation",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          0.9418604651162791
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.013145884930004983,
+          0.01088152912613292
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        2.20044714286461,
+        4.382178981566596,
+        1.8639730567104493,
+        1.3659027521332734
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.0009885931558935362,
+        "inverted": false,
+        "observedPixels": 144650,
+        "observedFraction": 0.9809705946180556
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.007652955409609402,
+        "inverted": false,
+        "observedPixels": 144650,
+        "observedFraction": 0.9809705946180556
+      },
+      "independentImageError": 0.00762939453125,
+      "checkedPair": true,
+      "experiment": "fill_holes",
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 1.2591968749999942,
+      "totalMeasuredSeconds": 3.1831569170000034
+    },
+    {
+      "id": "synthetic-channel-795789-v0",
+      "group": "recipe-validation",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          1
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.01527347409803467,
+          0.01045921606412075
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        1.2415236627181263,
+        0.21192623044381212,
+        0.9509286709429285,
+        0.6987190431881701
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.001678947225318796,
+        "inverted": false,
+        "observedPixels": 147116,
+        "observedFraction": 0.9976942274305556
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.004363903314391364,
+        "inverted": false,
+        "observedPixels": 147116,
+        "observedFraction": 0.9976942274305556
+      },
+      "independentImageError": 0.003913031684027778,
+      "checkedPair": true,
+      "experiment": "fill_holes",
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 0.9451594590000022,
+      "totalMeasuredSeconds": 1.9454549159999837
+    },
+    {
+      "id": "synthetic-channel-755429-v0",
+      "group": "recipe-validation",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.7236842105263158,
+          1
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.010156983806697125,
+          0.0063030554205917855
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        1.3039220392188224,
+        0.46713452445461695,
+        1.8156584058212488,
+        1.100847981784473
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.0022531133930522177,
+        "inverted": false,
+        "observedPixels": 146464,
+        "observedFraction": 0.9932725694444444
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.0064589250600830235,
+        "inverted": false,
+        "observedPixels": 146464,
+        "observedFraction": 0.9932725694444444
+      },
+      "independentImageError": 0.007256401909722222,
+      "checkedPair": true,
+      "experiment": "fill_holes",
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 1.1982628339999937,
+      "totalMeasuredSeconds": 2.4745220020000005
+    },
+    {
+      "id": "synthetic-frame-764510-v0",
+      "group": "recipe-test",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          1
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.00962307367248679,
+          0.012155743048517877
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        1.3355033031872108,
+        1.1844751837496326,
+        0.5455219067369348,
+        0.7941040137604929
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.004026487163860224,
+        "inverted": false,
+        "observedPixels": 146033,
+        "observedFraction": 0.9903496636284722
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.0038963795854361685,
+        "inverted": false,
+        "observedPixels": 146033,
+        "observedFraction": 0.9903496636284722
+      },
+      "independentImageError": 0.001559787326388889,
+      "checkedPair": true,
+      "experiment": "fill_holes",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 5.474357416999992,
+      "totalMeasuredSeconds": 7.075704251000002
+    },
+    {
+      "id": "synthetic-frame-776618-v0",
+      "group": "recipe-test",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.9642857142857143,
+          1
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.008866450685226327,
+          0.020135737805561008
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        1.4105319969150603,
+        1.7423216576724447,
+        0.9400456227116826,
+        1.1587484182954493
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.004909861204616086,
+        "inverted": false,
+        "observedPixels": 147051,
+        "observedFraction": 0.99725341796875
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.008956076463267846,
+        "inverted": false,
+        "observedPixels": 147051,
+        "observedFraction": 0.99725341796875
+      },
+      "independentImageError": 0.009880913628472222,
+      "checkedPair": true,
+      "experiment": "fill_holes",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 4.475299250000011,
+      "totalMeasuredSeconds": 5.128117583999992
+    },
+    {
+      "id": "synthetic-frame-760474-v0",
+      "group": "recipe-test",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          0.7317073170731707
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.014041236803851491,
+          0.014367221044907428
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        0.3752629024672575,
+        0.8407888534097152,
+        1.7533812148154,
+        0.19057791300908702
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.004404415324092697,
+        "inverted": false,
+        "observedPixels": 146671,
+        "observedFraction": 0.9946763780381944
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.007615684082061212,
+        "inverted": false,
+        "observedPixels": 146671,
+        "observedFraction": 0.9946763780381944
+      },
+      "independentImageError": 0.008619520399305556,
+      "checkedPair": true,
+      "experiment": "fill_holes",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 2.0026743750000024,
+      "totalMeasuredSeconds": 2.898785376000017
+    },
+    {
+      "id": "synthetic-frame-829086-v0",
+      "group": "recipe-test",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.9578947368421052,
+          0.7684210526315789
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.011415744190752721,
+          0.015398729677736415
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        0.9913007074963341,
+        0.7917898712962315,
+        3.0496029759913768,
+        2.3269332575224393
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.0047100748639465175,
+        "inverted": false,
+        "observedPixels": 144796,
+        "observedFraction": 0.9819607204861112
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.005773640155805409,
+        "inverted": false,
+        "observedPixels": 144796,
+        "observedFraction": 0.9819607204861112
+      },
+      "independentImageError": 0.010918511284722222,
+      "checkedPair": true,
+      "experiment": "fill_holes",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 4.560619584,
+      "totalMeasuredSeconds": 5.730352541000014
+    },
+    {
+      "id": "real-nested-squares",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "background_augmented",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-outline-star",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "background_augmented",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-floral-checker",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "background_augmented",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-dense-checker",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "background_augmented",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-bird",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "background_augmented",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-leaf",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "background_augmented",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-gift",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "background_augmented",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-gingerbread",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "background_augmented",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-white-birds",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "background_augmented",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-flower",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "background_augmented",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-warped-checker",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "background_augmented",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-round-checker",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "background_augmented",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-santa",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "background_augmented",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-fine-checker",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "background_augmented",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-orb",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "background_augmented",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-stacked-hearts",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "background_augmented",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-jigsaw",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "background_augmented",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-candle",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "background_augmented",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-maple-leaf",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "background_augmented",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-crown",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "background_augmented",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-crossed-ribbons",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "background_augmented",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-bauble",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "background_augmented",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-bottom-flower",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "background_augmented",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-faceted-star",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "background_augmented",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-bibel-star-8",
+      "group": "real",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.6788990825688074,
+          0.6513761467889908
+        ],
+        "lobeOutlineSupport": [
+          0.8333333333333334,
+          0.75
+        ],
+        "capColourLoss": [
+          0.0031711769652892907,
+          0.04124092492957468
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "independentImageError": 0.00530625,
+      "checkedPair": true,
+      "experiment": "background_augmented",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 7.957611084000003,
+      "totalMeasuredSeconds": 8.813260417999997
+    },
+    {
+      "id": "real-bibel-star-curved",
+      "group": "real",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          1
+        ],
+        "lobeOutlineSupport": [
+          0.8611111111111112,
+          0.8333333333333334
+        ],
+        "capColourLoss": [
+          0.01491782691653978,
+          0.012755847927668072
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "independentImageError": 0.01011875,
+      "checkedPair": true,
+      "experiment": "background_augmented",
+      "slits": {
+        "left": 5,
+        "right": 5
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 7.582351583000011,
+      "totalMeasuredSeconds": 8.560908792000008
+    },
+    {
+      "id": "real-bibel-star-outline",
+      "group": "real",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.8389830508474576,
+          0.6694915254237288
+        ],
+        "lobeOutlineSupport": [
+          0.6944444444444444,
+          0.6944444444444444
+        ],
+        "capColourLoss": [
+          0.007154415243940677,
+          0.011126831439203035
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "independentImageError": 0.015125,
+      "checkedPair": true,
+      "experiment": "background_augmented",
+      "slits": {
+        "left": 4,
+        "right": 4
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 9.36954058300001,
+      "totalMeasuredSeconds": 10.512707791000015
+    },
+    {
+      "id": "real-bibel-cross",
+      "group": "real",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          0.975
+        ],
+        "lobeOutlineSupport": [
+          0.6666666666666666,
+          0.6666666666666666
+        ],
+        "capColourLoss": [
+          0.011496929169245397,
+          0.012094429730981947
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "independentImageError": 0.00939375,
+      "checkedPair": true,
+      "experiment": "background_augmented",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 5.879925792000009,
+      "totalMeasuredSeconds": 7.925808000000018
+    },
+    {
+      "id": "real-flettede-puppy",
+      "group": "real",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.8181818181818182,
+          0.8601398601398601
+        ],
+        "lobeOutlineSupport": [
+          0.7777777777777778,
+          0.9166666666666666
+        ],
+        "capColourLoss": [
+          0.01050864940823402,
+          0.008818475659547976
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "independentImageError": 0.0185,
+      "checkedPair": true,
+      "experiment": "background_augmented",
+      "slits": {
+        "left": 3,
+        "right": 5
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 9.312157084000006,
+      "totalMeasuredSeconds": 10.357121042000001
+    },
+    {
+      "id": "real-flettede-stonehenge",
+      "group": "real",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "background_augmented",
+      "initialRejectionReason": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-flettede-viking",
+      "group": "real",
+      "status": "review-required",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          0.8770949720670391
+        ],
+        "lobeOutlineSupport": [
+          0.7222222222222222,
+          0.8611111111111112
+        ],
+        "capColourLoss": [
+          0.011012248395511157,
+          0.01702169215081863
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "independentImageError": 0.068275,
+      "checkedPair": false,
+      "experiment": "background_augmented",
+      "slits": {
+        "left": 6,
+        "right": 6
+      },
+      "templateChecksPassed": false,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 9.239302291999993,
+      "totalMeasuredSeconds": 10.372672875999996
+    },
+    {
+      "id": "synthetic-corner-lattice-3036370-v0",
+      "group": "development",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.8255813953488372,
+          0.9302325581395349
+        ],
+        "lobeOutlineSupport": [
+          0.9722222222222222,
+          0.9722222222222222
+        ],
+        "capColourLoss": [
+          0.009752044547988288,
+          0.012332712367990896
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        1.5203798336213,
+        1.129974191565707,
+        1.8873040033464479,
+        0.8156542093140525
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.006606409652053316,
+        "inverted": false,
+        "observedPixels": 146373,
+        "observedFraction": 0.9926554361979166
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.006831861067273336,
+        "inverted": false,
+        "observedPixels": 146373,
+        "observedFraction": 0.9926554361979166
+      },
+      "independentImageError": 0.002081976996527778,
+      "checkedPair": true,
+      "experiment": "background_augmented",
+      "slits": {
+        "left": 4,
+        "right": 3
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 5.45686099999999,
+      "totalMeasuredSeconds": 6.169334956999984
+    },
+    {
+      "id": "synthetic-corner-lattice-37-v0",
+      "group": "development",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.9615384615384616,
+          0.9615384615384616
+        ],
+        "lobeOutlineSupport": [
+          0.9722222222222222,
+          0.9722222222222222
+        ],
+        "capColourLoss": [
+          0.008118072289263046,
+          0.007744927950345075
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        1.515910532569736,
+        0.9025084590066037,
+        1.503955459888883,
+        1.159114157336728
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.017211281435819105,
+        "inverted": false,
+        "observedPixels": 146648,
+        "observedFraction": 0.9945203993055556
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.016399814521848237,
+        "inverted": false,
+        "observedPixels": 146648,
+        "observedFraction": 0.9945203993055556
+      },
+      "independentImageError": 0.005093044704861111,
+      "checkedPair": true,
+      "experiment": "background_augmented",
+      "slits": {
+        "left": 7,
+        "right": 4
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 9.204292042,
+      "totalMeasuredSeconds": 10.02536304200001
+    },
+    {
+      "id": "synthetic-corner-lattice-1031319-v0",
+      "group": "development",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "background_augmented",
+      "initialRejectionReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "synthetic-corner-lattice-49478-v0",
+      "group": "development",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.8736842105263158,
+          0.9368421052631579
+        ],
+        "lobeOutlineSupport": [
+          0.9722222222222222,
+          0.9722222222222222
+        ],
+        "capColourLoss": [
+          0.012513344378785547,
+          0.011698959117713188
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        0.9300410047806706,
+        1.9885795622446538,
+        3.005010001996893,
+        2.65525875410359
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.009966501481132858,
+        "inverted": false,
+        "observedPixels": 144484,
+        "observedFraction": 0.9798448350694444
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.01026411228925002,
+        "inverted": false,
+        "observedPixels": 144484,
+        "observedFraction": 0.9798448350694444
+      },
+      "independentImageError": 0.004733615451388889,
+      "checkedPair": true,
+      "experiment": "background_augmented",
+      "slits": {
+        "left": 7,
+        "right": 2
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 6.978909583000001,
+      "totalMeasuredSeconds": 7.641528041000014
+    },
+    {
+      "id": "synthetic-channel-775609-v0",
+      "group": "recipe-validation",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.6785714285714286,
+          0.8095238095238095
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.009356526729570904,
+          0.007162797513583248
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        2.7534250928667836,
+        4.399464170787617,
+        2.7794380293242824,
+        1.0805280350932247
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.001829344346355863,
+        "inverted": false,
+        "observedPixels": 144314,
+        "observedFraction": 0.9786919487847222
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.001635322976287817,
+        "inverted": false,
+        "observedPixels": 144314,
+        "observedFraction": 0.9786919487847222
+      },
+      "independentImageError": 0.004801432291666667,
+      "checkedPair": true,
+      "experiment": "background_augmented",
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 2.7067452909999994,
+      "totalMeasuredSeconds": 4.691841541000035
+    },
+    {
+      "id": "synthetic-channel-807897-v0",
+      "group": "recipe-validation",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          0.8941176470588236
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.008825514603796639,
+          0.010267905300633373
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        2.33356143444802,
+        4.077793764380251,
+        1.8255253888991732,
+        2.248621875365901
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.0009959263844414167,
+        "inverted": false,
+        "observedPixels": 144589,
+        "observedFraction": 0.9805569118923612
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.0078083395002386076,
+        "inverted": false,
+        "observedPixels": 144589,
+        "observedFraction": 0.9805569118923612
+      },
+      "independentImageError": 0.007826063368055556,
+      "checkedPair": true,
+      "experiment": "background_augmented",
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 1.0912400000000197,
+      "totalMeasuredSeconds": 2.739772042000046
+    },
+    {
+      "id": "synthetic-channel-795789-v0",
+      "group": "recipe-validation",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.9135802469135802,
+          1
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.009223130209780581,
+          0.008196746519645482
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        1.0889147169389946,
+        1.0767651452344351,
+        0.642074009937452,
+        0.661134573710228
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.001483043640940168,
+        "inverted": false,
+        "observedPixels": 146995,
+        "observedFraction": 0.9968736436631944
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.0035171264328718666,
+        "inverted": false,
+        "observedPixels": 146995,
+        "observedFraction": 0.9968736436631944
+      },
+      "independentImageError": 0.0030381944444444445,
+      "checkedPair": true,
+      "experiment": "background_augmented",
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 1.0141652919999906,
+      "totalMeasuredSeconds": 1.9340457509999818
+    },
+    {
+      "id": "synthetic-channel-755429-v0",
+      "group": "recipe-validation",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.8148148148148148,
+          0.8888888888888888
+        ],
+        "lobeOutlineSupport": [
+          1,
+          0.9722222222222222
+        ],
+        "capColourLoss": [
+          0.009637416205557156,
+          0.004129607112993785
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        0.9943915868771368,
+        1.7547735447468504,
+        0.6121664785379863,
+        0.6117412030646412
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.0024275982461284583,
+        "inverted": false,
+        "observedPixels": 146647,
+        "observedFraction": 0.9945136176215278
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.0032936234631461944,
+        "inverted": false,
+        "observedPixels": 146647,
+        "observedFraction": 0.9945136176215278
+      },
+      "independentImageError": 0.004048665364583333,
+      "checkedPair": true,
+      "experiment": "background_augmented",
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 1.0681230409999845,
+      "totalMeasuredSeconds": 2.7579588320000075
+    },
+    {
+      "id": "synthetic-frame-764510-v0",
+      "group": "recipe-test",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          0.925
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.008191022201767515,
+          0.00833521704148521
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        1.598681433968994,
+        1.2370310626997065,
+        0.5800047982051587,
+        0.4092087748964489
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.004175794085432639,
+        "inverted": false,
+        "observedPixels": 146080,
+        "observedFraction": 0.9906684027777778
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.004257940854326396,
+        "inverted": false,
+        "observedPixels": 146080,
+        "observedFraction": 0.9906684027777778
+      },
+      "independentImageError": 0.0018853081597222222,
+      "checkedPair": true,
+      "experiment": "background_augmented",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 5.728984916999995,
+      "totalMeasuredSeconds": 7.574600750999973
+    },
+    {
+      "id": "synthetic-frame-776618-v0",
+      "group": "recipe-test",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          1
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.008409350762016087,
+          0.016404397497933314
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        1.3887758364026412,
+        0.0693877361477962,
+        1.224912592435678,
+        1.0697256294192787
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.005596164961071635,
+        "inverted": false,
+        "observedPixels": 147065,
+        "observedFraction": 0.9973483615451388
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.006357732975215041,
+        "inverted": false,
+        "observedPixels": 147065,
+        "observedFraction": 0.9973483615451388
+      },
+      "independentImageError": 0.007554796006944444,
+      "checkedPair": true,
+      "experiment": "background_augmented",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 4.532589958000026,
+      "totalMeasuredSeconds": 5.139946417000028
+    },
+    {
+      "id": "synthetic-frame-760474-v0",
+      "group": "recipe-test",
+      "status": "checked-pair",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          0.7160493827160493
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.015168181284689731,
+          0.008421522404370848
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cornerErrorsPixels": [
+        1.0871835696246104,
+        0.9008843357525569,
+        2.0600724745076016,
+        0.9193858626213025
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.004500770679910944,
+        "inverted": false,
+        "observedPixels": 145975,
+        "observedFraction": 0.9899563259548612
+      },
+      "exportedReference": {
+        "mismatchFraction": 0.005048809727693098,
+        "inverted": false,
+        "observedPixels": 145975,
+        "observedFraction": 0.9899563259548612
+      },
+      "independentImageError": 0.009175618489583334,
+      "checkedPair": true,
+      "experiment": "background_augmented",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true,
+      "independentFeaturesPassed": true,
+      "solveSeconds": 4.944244417000009,
+      "totalMeasuredSeconds": 5.617434335000002
+    },
+    {
+      "id": "synthetic-frame-829086-v0",
+      "group": "recipe-test",
+      "status": "crop-unresolved",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "experiment": "background_augmented",
+      "initialRejectionReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    }
+  ],
+  "commonAcceptedSynthetic": {
+    "ids": [
+      "synthetic-channel-755429-v0",
+      "synthetic-channel-775609-v0",
+      "synthetic-channel-795789-v0",
+      "synthetic-channel-807897-v0",
+      "synthetic-corner-lattice-3036370-v0",
+      "synthetic-corner-lattice-37-v0",
+      "synthetic-corner-lattice-49478-v0",
+      "synthetic-frame-760474-v0",
+      "synthetic-frame-764510-v0",
+      "synthetic-frame-776618-v0"
+    ],
+    "scores": {
+      "original": {
+        "meanLatentMismatch": 0.007817018232407835,
+        "meanObservedFraction": 0.9920003255208334
+      },
+      "background_augmented": {
+        "meanLatentMismatch": 0.006541468380815062,
+        "meanObservedFraction": 0.98956298828125
+      }
+    },
+    "qualification": "Same case IDs, but errors remain conditional on each crop's observed portion of the true overlap."
+  },
+  "qualifications": [
+    "No real photograph is used for training or checkpoint selection. Original development loss selects epoch 20; threshold stays 0.5.",
+    "Single training runs with equal update budgets, not a multi-seed estimate. Recipe holdouts are not topology-disjoint.",
+    "All accepted new crop proposals are fitted and independently rendered. Geometry and source-feature acceptance thresholds are unchanged.",
+    "The 12 synthetic pipeline views are fixed diagnostics; conditional latent errors cover only their observed true overlap.",
+    "These repeatedly inspected real cases guide development. No claim of fresh unseen-photo generalization or a new full production benchmark.",
+    "All six returned real crops remain needs_review. Numerical acceptance does not certify unknown original artwork or physical assembly."
+  ]
+}

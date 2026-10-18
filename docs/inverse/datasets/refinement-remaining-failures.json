@@ -1,0 +1,323 @@
+{
+  "schema": "refinement-corpus-remaining-failures-1",
+  "status": "read-only-diagnosis",
+  "scope": "Saved fixed-mask results and original photo crops; no target edits, new solver runs, corrected-crop success or physical ground truth claimed.",
+  "results": [
+    {
+      "id": "photo-outline-star",
+      "status": "failed-unchanged",
+      "independentError": {
+        "mismatchPixels": 1198,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.0074875
+      },
+      "geometryPassed": true,
+      "paper": "pass",
+      "imageFidelity": {
+        "passed": false,
+        "features": {
+          "passed": false,
+          "referenceAvailable": true,
+          "minimumRetention": 0.6,
+          "minimumAreaFraction": 0.0003,
+          "minimumCoreRadiusFraction": 0.005,
+          "borderClearancePixels": 1,
+          "regions": [
+            {
+              "value": 0,
+              "areaMm2": 4.25,
+              "centerMm": [
+                7.154411764705881,
+                98.7904411764706
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 826.875,
+              "centerMm": [
+                46.24285714285714,
+                47.06449357520786
+              ],
+              "retainedFraction": 0.9893424036281179
+            }
+          ],
+          "missing": [
+            {
+              "value": 0,
+              "areaMm2": 4.25,
+              "centerMm": [
+                7.154411764705881,
+                98.7904411764706
+              ],
+              "retainedFraction": 0
+            }
+          ],
+          "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+        },
+        "maximumMismatchFraction": 0.03,
+        "referenceAvailable": true
+      },
+      "automaticQuad": [
+        [
+          430.32931226516513,
+          171.9092353088924
+        ],
+        [
+          525.2431230765773,
+          267.80938630026435
+        ],
+        [
+          403.3299806510149,
+          349.9830567410715
+        ],
+        [
+          320.83807769917655,
+          259.9176512630082
+        ]
+      ],
+      "sourceSize": [
+        1482,
+        1112
+      ],
+      "outOfFrameCorners": [],
+      "visualObservation": "Rectified photograph and annotated source region visually inspected. The rejected feature lies along the noisy bottom edge of the photographed overlap. The reconstruction retains the main star; exact physical identity of that small bright fragment is not established.",
+      "earlyFeatureInitialization": {
+        "boost": 16,
+        "baseCounts": [
+          3,
+          3
+        ],
+        "missedRegions": 1,
+        "emphasizedRegions": 0,
+        "skippedBorderRegions": 1,
+        "boundaryBandMm": 2.50501002004008,
+        "hypotheses": 0,
+        "attempts": [],
+        "retained": 0,
+        "stage": "before-recovery",
+        "scheduled": 0
+      },
+      "featureInitialization": null,
+      "coverageQualification": "The existing feature-grid initializer explicitly skips this near-border region; changing the gate or dropping the feature has not been tested."
+    },
+    {
+      "id": "photo-bauble",
+      "status": "failed-unchanged",
+      "independentError": {
+        "mismatchPixels": 6808,
+        "observedPixels": 155413,
+        "observedFraction": 0.97133125,
+        "mismatchFraction": 0.043805859226705615,
+        "weightMass": 155413,
+        "mismatchWeight": 6808,
+        "wholeMismatchFraction": 0.043805859226705615,
+        "protectedPixels": 155413,
+        "protectedMismatchFraction": 0.043805859226705615,
+        "editablePixels": 0,
+        "editableChangeFraction": null
+      },
+      "geometryPassed": true,
+      "paper": "pass",
+      "imageFidelity": {
+        "passed": false,
+        "features": {
+          "passed": false,
+          "referenceAvailable": true,
+          "minimumRetention": 0.6,
+          "minimumAreaFraction": 0.0003,
+          "minimumCoreRadiusFraction": 0.005,
+          "borderClearancePixels": 1,
+          "regions": [
+            {
+              "value": 1,
+              "areaMm2": 98.6875,
+              "centerMm": [
+                34.23535465484484,
+                13.191339455351489
+              ],
+              "weightMass": 1579,
+              "retainedFraction": 0.9455351488283724
+            },
+            {
+              "value": 1,
+              "areaMm2": 72.8125,
+              "centerMm": [
+                68.6406652360515,
+                24.0818669527897
+              ],
+              "weightMass": 1165,
+              "retainedFraction": 0.9553648068669528
+            },
+            {
+              "value": 1,
+              "areaMm2": 102.625,
+              "centerMm": [
+                10.175548112058465,
+                26.016138855054816
+              ],
+              "weightMass": 1642,
+              "retainedFraction": 0.9585870889159561
+            },
+            {
+              "value": 1,
+              "areaMm2": 1776.4375,
+              "centerMm": [
+                37.45343999577807,
+                58.05657829926467
+              ],
+              "weightMass": 28423,
+              "retainedFraction": 0.9951095943426098
+            },
+            {
+              "value": 1,
+              "areaMm2": 35.875,
+              "centerMm": [
+                82.38371080139373,
+                38.16202090592334
+              ],
+              "weightMass": 574,
+              "retainedFraction": 0.7195121951219512
+            },
+            {
+              "value": 1,
+              "areaMm2": 8.4375,
+              "centerMm": [
+                83.9675925925926,
+                44.995370370370374
+              ],
+              "weightMass": 135,
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 44.75,
+              "centerMm": [
+                79.14629888268156,
+                56.90398044692738
+              ],
+              "weightMass": 716,
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 14.875,
+              "centerMm": [
+                75.87289915966386,
+                77.88235294117646
+              ],
+              "weightMass": 238,
+              "retainedFraction": 0
+            }
+          ],
+          "missing": [
+            {
+              "value": 1,
+              "areaMm2": 8.4375,
+              "centerMm": [
+                83.9675925925926,
+                44.995370370370374
+              ],
+              "weightMass": 135,
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 44.75,
+              "centerMm": [
+                79.14629888268156,
+                56.90398044692738
+              ],
+              "weightMass": 716,
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 14.875,
+              "centerMm": [
+                75.87289915966386,
+                77.88235294117646
+              ],
+              "weightMass": 238,
+              "retainedFraction": 0
+            }
+          ],
+          "method": "Both colours in the observed region; free pixels split components and do not enter their area or retention. At least 60% of each substantial weighted region with a solid core must remain its original colour. Regions touching the square border or its one-pixel neighbourhood are excluded. Small interior regions must also remain separate from the square boundary.",
+          "enclosures": {
+            "components": [
+              {
+                "centerMm": [
+                  83.9675925925926,
+                  44.995370370370374
+                ],
+                "sourceAreaMm2": 8.4375,
+                "intersectionPixels": 0,
+                "retention": 0,
+                "predictedComponentAreaMm2": 0,
+                "touchesBorder": null,
+                "componentIoU": 0
+              },
+              {
+                "centerMm": [
+                  75.87289915966386,
+                  77.88235294117646
+                ],
+                "sourceAreaMm2": 14.875,
+                "intersectionPixels": 0,
+                "retention": 0,
+                "predictedComponentAreaMm2": 0,
+                "touchesBorder": null,
+                "componentIoU": 0
+              }
+            ],
+            "opened": 0
+          }
+        },
+        "maximumMismatchFraction": 0.03,
+        "referenceAvailable": true
+      },
+      "automaticQuad": [
+        [
+          585.124945734859,
+          905.2805093237887
+        ],
+        [
+          680.4272015903496,
+          1020.2331968915895
+        ],
+        [
+          619.5033182277817,
+          1139.311696191154
+        ],
+        [
+          466.440010833398,
+          1022.8877039896092
+        ]
+      ],
+      "sourceSize": [
+        1482,
+        1112
+      ],
+      "outOfFrameCorners": [
+        2
+      ],
+      "visualObservation": "Rectified photograph and annotated source region visually inspected. The lower/right crop includes visible background, and the bottom corner falls below the photograph. Several isolated classified regions lie along that contaminated side. This is direct evidence of crop error; no corrected crop or new fit has been run.",
+      "earlyFeatureInitialization": null,
+      "featureInitialization": null,
+      "coverageQualification": "The bauble has partial observation coverage; current fit.js gates feature initialization and recovery on absence of source weights. This may compound the crop problem, but changing that gate has not been tested."
+    }
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/refinement-completion-v1/corpus/photo-outline-star/candidate/engine-report.json": "9cd4746e6e8f9de179b273331faec0287af687b795b5cbb60e863a48ee2bcf49",
+    "tmp/heart-learning/refinement-completion-v1/corpus/photo-outline-star/candidate/result.json": "e94865f1f8156b3b75ee0a6493bc87566bb042fbc140837b3463a0c7af772f18",
+    "tmp/heart-learning/primitive-boundary-groups-v1/qa/photos/outline-star/source.png": "9e56f7fcf528648da9c0e99e8a1251ea9c598bedfb254f9ce9de8e5fa3c557b2",
+    "tmp/heart-learning/primitive-boundary-groups-v1/qa/photos/outline-star/crop.png": "2518423f266911e09eb9a8f43decca557a6f5aa95f20bc0bd4a049ca2298f83b",
+    "tmp/heart-learning/refinement-completion-v1/corpus/photo-bauble/candidate/engine-report.json": "4680bf21429f6688171ec4236ec5ec14fcc56423a4fc48c9ce0316787fe4f4b8",
+    "tmp/heart-learning/refinement-completion-v1/corpus/photo-bauble/candidate/result.json": "0e34881079a747b756edfa81e7a5f9e585f5a09fa78f0f2febebfb49709ca9c2",
+    "tmp/heart-learning/primitive-boundary-groups-v1/qa/photos/bauble/source.png": "c20ca00cf11766e46545cc25a0fae67a36b73da71cc79c867f29d3c70241a0f4",
+    "tmp/heart-learning/primitive-boundary-groups-v1/qa/photos/bauble/crop.png": "286b5cc63b40cf55d269990ad9c8fb8064436efd14b8c8090df637365824f53a",
+    "tmp/heart-learning/primitive-boundary-groups-v1/qa/photos/results.json": "058b0e252c7ad7be3eb59aebfe8d17b37ec9bc9efd6a87ccb888c0fb2bd2a9a6",
+    "static/inverse/core/direct/fit.js": "34e979ad044a1911841331ee4d5c793f626b551e2db4abaa02da8e7916810312"
+  }
+}

@@ -1,0 +1,655 @@
+{
+  "sourceCommit": "048fcc517bc78b9db2a085d2a18f6f650f8fac68",
+  "algorithmCommit": "9c57add",
+  "uiFixCommit": "b742e47",
+  "previous": "0d59a90",
+  "origin": "http://127.0.0.1:5232",
+  "checks": {
+    "application": 787,
+    "engine": 391,
+    "optionalFixtureSkipped": 1,
+    "svelteErrors": 0,
+    "svelteExistingWarnings": 7,
+    "lintPassed": true,
+    "buildPassed": true
+  },
+  "datasets": {
+    "hunodan": {
+      "cases": 22,
+      "medianSeconds": 4.882768791499998,
+      "maxSeconds": 8.019632541999993,
+      "changed": [],
+      "allPassed": true,
+      "allGeometryIdenticalToPrevious": true,
+      "checkpointRetention": true
+    },
+    "weighted": {
+      "cases": 32,
+      "medianSeconds": 4.453267416999998,
+      "maxSeconds": 8.082081542,
+      "changed": [],
+      "allPassed": true,
+      "allGeometryIdenticalToPrevious": true,
+      "checkpointRetention": true
+    }
+  },
+  "controlled": {
+    "cases": 21,
+    "allPassed": true,
+    "method": "Analytic fitted perturbations, served cleanup and validation modules; independent resvg comparison with known unperturbed cuts. No fresh optimization or UI injection.",
+    "rows": [
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "full-square",
+        "coverageBefore": 0.006967314634320792,
+        "coverageAfter": 0.001135238976337132,
+        "seconds": 0.14359999996423722,
+        "hiddenLength": 84.8528137423857,
+        "maskBefore": 0.0083,
+        "maskAfter": 0,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "both-diagonals",
+        "coverageBefore": 0.006967314634320792,
+        "coverageAfter": 0.0007620251283573452,
+        "seconds": 0.1772999999523163,
+        "hiddenLength": 84.8528137423857,
+        "maskBefore": 0.0083,
+        "maskAfter": 0,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "unequal-mirrors",
+        "coverageBefore": 0.006967804837820586,
+        "coverageAfter": 0.0011357291770895245,
+        "seconds": 0.12519999998807907,
+        "hiddenLength": 84.8528137423857,
+        "maskBefore": 0.0083,
+        "maskAfter": 0,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "unequal-half-turn",
+        "coverageBefore": 0.006967804837820586,
+        "coverageAfter": 0.0007622579732502345,
+        "seconds": 0.17389999997615815,
+        "hiddenLength": 84.85281374238569,
+        "maskBefore": 0.0083,
+        "maskAfter": 0,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "chord-only",
+        "coverageBefore": 0.006967314634320792,
+        "coverageAfter": 0.001135238976337132,
+        "seconds": 0.098,
+        "hiddenLength": 84.8528137423857,
+        "maskBefore": 0.0083,
+        "maskAfter": 0,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "chord-mirrors",
+        "coverageBefore": 0.006967804837820586,
+        "coverageAfter": 0.0011357291770895245,
+        "seconds": 0.10960000002384186,
+        "hiddenLength": 84.85281374238572,
+        "maskBefore": 0.0083,
+        "maskAfter": 0,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "chord-anti",
+        "coverageBefore": 0.0038321262244338868,
+        "coverageAfter": 0.0000805376832257025,
+        "seconds": 0.06710000002384185,
+        "hiddenLength": 84.85281374238572,
+        "maskBefore": 0.004125,
+        "maskAfter": 0,
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "full-square",
+        "coverageBefore": 0.006967314634320792,
+        "coverageAfter": 0.001135238976337132,
+        "seconds": 0.121,
+        "hiddenLength": 84.8528137423857,
+        "maskBefore": 0.0083,
+        "maskAfter": 0,
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "both-diagonals",
+        "coverageBefore": 0.006967314634320792,
+        "coverageAfter": 0.0007620251283573452,
+        "seconds": 0.139,
+        "hiddenLength": 84.8528137423857,
+        "maskBefore": 0.0083,
+        "maskAfter": 0,
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "unequal-mirrors",
+        "coverageBefore": 0.006967804837820586,
+        "coverageAfter": 0.0011357291770895245,
+        "seconds": 0.12,
+        "hiddenLength": 84.85281374238572,
+        "maskBefore": 0.0083,
+        "maskAfter": 0,
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "unequal-half-turn",
+        "coverageBefore": 0.006967804837820586,
+        "coverageAfter": 0.0007622579732502345,
+        "seconds": 0.185,
+        "hiddenLength": 84.85281374238569,
+        "maskBefore": 0.0083,
+        "maskAfter": 0,
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "chord-only",
+        "coverageBefore": 0.006967314634320792,
+        "coverageAfter": 0.001135238976337132,
+        "seconds": 0.108,
+        "hiddenLength": 84.8528137423857,
+        "maskBefore": 0.0083,
+        "maskAfter": 0,
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "chord-mirrors",
+        "coverageBefore": 0.006967804837820586,
+        "coverageAfter": 0.0011357291770895245,
+        "seconds": 0.116,
+        "hiddenLength": 84.85281374238572,
+        "maskBefore": 0.0083,
+        "maskAfter": 0,
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "chord-anti",
+        "coverageBefore": 0.0038321262244338868,
+        "coverageAfter": 0.0000805376832257025,
+        "seconds": 0.077,
+        "hiddenLength": 84.85281374238572,
+        "maskBefore": 0.004125,
+        "maskAfter": 0,
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "full-square",
+        "coverageBefore": 0.006967314634320792,
+        "coverageAfter": 0.001135238976337132,
+        "seconds": 0.15400000000000005,
+        "hiddenLength": 84.8528137423857,
+        "maskBefore": 0.0083,
+        "maskAfter": 0,
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "both-diagonals",
+        "coverageBefore": 0.006967314634320792,
+        "coverageAfter": 0.0007620251283573452,
+        "seconds": 0.10199999999999977,
+        "hiddenLength": 84.8528137423857,
+        "maskBefore": 0.0083,
+        "maskAfter": 0,
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "unequal-mirrors",
+        "coverageBefore": 0.006967804837820586,
+        "coverageAfter": 0.0011357291770895245,
+        "seconds": 0.086,
+        "hiddenLength": 84.85281374238572,
+        "maskBefore": 0.0083,
+        "maskAfter": 0,
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "unequal-half-turn",
+        "coverageBefore": 0.006967804837820586,
+        "coverageAfter": 0.0007622579732502345,
+        "seconds": 0.135,
+        "hiddenLength": 84.85281374238569,
+        "maskBefore": 0.0083,
+        "maskAfter": 0,
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "chord-only",
+        "coverageBefore": 0.006967314634320792,
+        "coverageAfter": 0.001135238976337132,
+        "seconds": 0.072,
+        "hiddenLength": 84.8528137423857,
+        "maskBefore": 0.0083,
+        "maskAfter": 0,
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "chord-mirrors",
+        "coverageBefore": 0.006967804837820586,
+        "coverageAfter": 0.0011357291770895245,
+        "seconds": 0.0960000000000009,
+        "hiddenLength": 84.85281374238572,
+        "maskBefore": 0.0083,
+        "maskAfter": 0,
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "chord-anti",
+        "coverageBefore": 0.0038321262244338868,
+        "coverageAfter": 0.0000805376832257025,
+        "seconds": 0.05,
+        "hiddenLength": 84.85281374238572,
+        "maskBefore": 0.004125,
+        "maskAfter": 0,
+        "passed": true
+      }
+    ]
+  },
+  "freshChords": {
+    "cases": 6,
+    "allPassed": true,
+    "referenceEngine": "0d59a90f8919b0d5fb248b7b62b96e0ab047f800",
+    "comparison": [
+      {
+        "name": "chord-frame-sym",
+        "browser": "chromium",
+        "before": {
+          "sourceError": 0.0015,
+          "sharedSpans": 0,
+          "seconds": 3.247900000035763
+        },
+        "after": {
+          "sourceError": 0.0002875,
+          "sharedSpans": 32,
+          "seconds": 3.3559000000357626
+        }
+      },
+      {
+        "name": "chord-frame-anti",
+        "browser": "chromium",
+        "before": {
+          "sourceError": 0.0015,
+          "sharedSpans": 0,
+          "seconds": 2.510800000011921
+        },
+        "after": {
+          "sourceError": 0.0000125,
+          "sharedSpans": 2,
+          "seconds": 2.5598000000119208
+        }
+      }
+    ],
+    "rows": [
+      {
+        "browser": "chromium",
+        "name": "chord-frame-sym",
+        "engineError": 0.00005625,
+        "sourceEditableError": 0.0002875,
+        "sharedSpans": 32,
+        "exportedChordDeviationMm": 2.5263741715914672e-14,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.013300000011920929,
+          "prepareRoundTripSeconds": 0.08060000002384186,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 3.0151000000238417,
+          "resultToReadySeconds": 0.24660000002384186,
+          "clickToReadySeconds": 3.3559000000357626
+        }
+      },
+      {
+        "browser": "chromium",
+        "name": "chord-frame-anti",
+        "engineError": 0.0000125,
+        "sourceEditableError": 0.0000125,
+        "sharedSpans": 2,
+        "exportedChordDeviationMm": 3.789561257387201e-14,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.007899999976158142,
+          "prepareRoundTripSeconds": 0.07540000003576279,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 2.430900000035763,
+          "resultToReadySeconds": 0.04519999998807907,
+          "clickToReadySeconds": 2.5598000000119208
+        }
+      },
+      {
+        "browser": "firefox",
+        "name": "chord-frame-sym",
+        "engineError": 0.00005,
+        "sourceEditableError": 0.00020625,
+        "sharedSpans": 32,
+        "exportedChordDeviationMm": 2.5263741715914672e-14,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.012,
+          "prepareRoundTripSeconds": 0.079,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 5.016,
+          "resultToReadySeconds": 0.173,
+          "clickToReadySeconds": 5.28
+        }
+      },
+      {
+        "browser": "firefox",
+        "name": "chord-frame-anti",
+        "engineError": 0.0000125,
+        "sourceEditableError": 0.0000125,
+        "sharedSpans": 2,
+        "exportedChordDeviationMm": 3.789561257387201e-14,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.013,
+          "prepareRoundTripSeconds": 0.078,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 3.597,
+          "resultToReadySeconds": 0.039,
+          "clickToReadySeconds": 3.727
+        }
+      },
+      {
+        "browser": "webkit",
+        "name": "chord-frame-sym",
+        "engineError": 0.00005625,
+        "sourceEditableError": 0.00028125,
+        "sharedSpans": 32,
+        "exportedChordDeviationMm": 2.5263741715914672e-14,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.009,
+          "prepareRoundTripSeconds": 0.09,
+          "preparedToSolveRequestSeconds": 0.001,
+          "solveRoundTripSeconds": 3.322,
+          "resultToReadySeconds": 0.12,
+          "clickToReadySeconds": 3.542
+        }
+      },
+      {
+        "browser": "webkit",
+        "name": "chord-frame-anti",
+        "engineError": 0.0000125,
+        "sourceEditableError": 0.0000125,
+        "sharedSpans": 2,
+        "exportedChordDeviationMm": 3.789561257387201e-14,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.008,
+          "prepareRoundTripSeconds": 0.08,
+          "preparedToSolveRequestSeconds": 0.001,
+          "solveRoundTripSeconds": 2.369,
+          "resultToReadySeconds": 0.041,
+          "clickToReadySeconds": 2.499
+        }
+      }
+    ]
+  },
+  "browser": {
+    "cases": 18,
+    "allPassed": true,
+    "allGeometryIdenticalToPrevious": true,
+    "rows": [
+      {
+        "browser": "chromium",
+        "name": "star",
+        "sourceError": 0.0016,
+        "sharedSpans": 12
+      },
+      {
+        "browser": "chromium",
+        "name": "hunodan",
+        "sourceError": 0.00944375,
+        "sharedSpans": 5
+      },
+      {
+        "browser": "chromium",
+        "name": "circle",
+        "sourceError": 0.00095,
+        "sharedSpans": 9
+      },
+      {
+        "browser": "chromium",
+        "name": "top-hat",
+        "sourceError": 0.0032064909297052154,
+        "sharedSpans": 41
+      },
+      {
+        "browser": "chromium",
+        "name": "top-hat-independent",
+        "sourceError": 0.0029584750566893424,
+        "sharedSpans": 30
+      },
+      {
+        "browser": "chromium",
+        "name": "top-hat-anti",
+        "sourceError": 0.0031887755102040817,
+        "sharedSpans": 39
+      },
+      {
+        "browser": "firefox",
+        "name": "star",
+        "sourceError": 0.0016,
+        "sharedSpans": 12
+      },
+      {
+        "browser": "firefox",
+        "name": "hunodan",
+        "sourceError": 0.00944375,
+        "sharedSpans": 5
+      },
+      {
+        "browser": "firefox",
+        "name": "circle",
+        "sourceError": 0.0009375,
+        "sharedSpans": 9
+      },
+      {
+        "browser": "firefox",
+        "name": "top-hat",
+        "sourceError": 0.0032064909297052154,
+        "sharedSpans": 41
+      },
+      {
+        "browser": "firefox",
+        "name": "top-hat-independent",
+        "sourceError": 0.0029584750566893424,
+        "sharedSpans": 30
+      },
+      {
+        "browser": "firefox",
+        "name": "top-hat-anti",
+        "sourceError": 0.0031887755102040817,
+        "sharedSpans": 39
+      },
+      {
+        "browser": "webkit",
+        "name": "star",
+        "sourceError": 0.0016,
+        "sharedSpans": 12
+      },
+      {
+        "browser": "webkit",
+        "name": "hunodan",
+        "sourceError": 0.00944375,
+        "sharedSpans": 5
+      },
+      {
+        "browser": "webkit",
+        "name": "circle",
+        "sourceError": 0.0009375,
+        "sharedSpans": 9
+      },
+      {
+        "browser": "webkit",
+        "name": "top-hat",
+        "sourceError": 0.0032064909297052154,
+        "sharedSpans": 41
+      },
+      {
+        "browser": "webkit",
+        "name": "top-hat-independent",
+        "sourceError": 0.0029584750566893424,
+        "sharedSpans": 30
+      },
+      {
+        "browser": "webkit",
+        "name": "top-hat-anti",
+        "sourceError": 0.0031887755102040817,
+        "sharedSpans": 39
+      }
+    ]
+  },
+  "sourceHashes": {
+    "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+    "static/inverse/core/direct/symmetry.js": "bfb16921dbdcb5ce5a2f8148487821b392c2855943541fadf7eb0d77064fbd6d",
+    "static/inverse/core/direct/refine.js": "c7790637d6afdc445e50241d569b1a7dd1db558b43b68ce881178a0bf22b8800",
+    "static/inverse/core/direct/share.js": "0dadebbd59b068e8e1e504fdcb16db7197b7828dd7b0499643067828c7eeb8fd",
+    "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+    "scripts/inverse/chord-projection.test.mjs": "3254ed52f3be93cf0c30202ebbb443ace493264f0165f9470bd0b1267d3343a0",
+    "scripts/inverse/isometry-projection.test.mjs": "1f4dde8e3153c5be390c6d976232522348059345af7412bc7cea2319c0f1c607",
+    "scripts/inverse/sharing-orbit.test.mjs": "07d01c6dd89cee2b45fa93da6f8f3d805f2f5fabdd2da8b80c58a67dc470b63a",
+    "scripts/inverse/sharing-orbit-browser-test.mjs": "8034d43ae07d2d6e18160ad397885d59eb5fca2404252e5816518f411222bd78",
+    "scripts/inverse/fixtures/symmetric-frame.mjs": "ca630f8d9da965c653289335296bd87d5f46a7782fb6e1871202a7c48d41bd90",
+    "scripts/inverse/paint-observer.mjs": "1e295aacf3b488ff4d1bfe73b67f0976b88d6e2d3ea03dbca9f5b69e222568b7",
+    "src/lib/components/paint/FindCutsPanel.svelte": "52ca14ffbbd90cdb4e9b5e294a38c21c98925dfbbc2378d37d2538bc60600f16",
+    "src/lib/components/paint/FindCutsPanel.test.ts": "450349741c7fd39707e0cb2ec613e750847308b988b5898b28ecc5dc86400c57",
+    "src/lib/editor/session.svelte.ts": "da88cc6dcaaa165fd92d5ba7ec44f27e61eaf16143488dbd22abbc4847bed7be",
+    "src/lib/inverse/client.ts": "0d4ec0517e11b23d19a0b075bd228311dc799d2fda326d284a64875e80ee3504",
+    "src/lib/i18n/translations.ts": "7f4dda67b963b1ac91a40d889d3fe07c8d44288831d0d4faddec0b91ac8aaca5",
+    "scripts/inverse/paint-browser-test.mjs": "2df49996187883d69a44b48f2b77d2054dbd197bcd6ccd3752054ec8dd5588ac",
+    "scripts/inverse/motif-fixture.mjs": "4c735dc7b27f39ce30362830ef911b79347a8b7f43d01b4eaeaf5750460355f1"
+  },
+  "servedSourceHashes": {
+    "static/inverse/compute-worker.js": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+    "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+    "static/inverse/core/chord-distance.js": "cb79dd6d90d22b6bea6bb4bd0593cc8e32a18a09116084e53f5d942bcbef3c04",
+    "static/inverse/core/crop.js": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88",
+    "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+    "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+    "static/inverse/core/direct/curves.js": "a3cad0cb2c96d62c0e1d99474777157eae8fb3fd6b7631f3af203243f4909ad3",
+    "static/inverse/core/direct/finalize.js": "6ad14f5ee83a7efc6d8ae9605f278a65eeef1e2325846221a51f2be2e2ab12d3",
+    "static/inverse/core/direct/fit.js": "156f5278d3d410041fb4aa4de6fcc603eb92256ef1da068685d84ceac25397f7",
+    "static/inverse/core/direct/grid.js": "57ada8e2f1c794b0012ddedbb8b508f29971186c313e517a8f40ca3788e1dfbd",
+    "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+    "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+    "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+    "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+    "static/inverse/core/direct/matching.js": "db113f3e5c6ed3be820f7c863a113e9181a02c7efa5ea66a46e56df7f2428414",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+    "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+    "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58",
+    "static/inverse/core/direct/prefer-matching.js": "2e07c19f7e09a296bf93677c53ff78de489e85fc3064d295c4149c8cc567cf00",
+    "static/inverse/core/direct/primitive-selection.js": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904",
+    "static/inverse/core/direct/primitives.js": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b",
+    "static/inverse/core/direct/refine.js": "c7790637d6afdc445e50241d569b1a7dd1db558b43b68ce881178a0bf22b8800",
+    "static/inverse/core/direct/share.js": "0dadebbd59b068e8e1e504fdcb16db7197b7828dd7b0499643067828c7eeb8fd",
+    "static/inverse/core/direct/shared-simplification.js": "9617dbe47fc1ac6d6d99a7dc228a160e783cf5a325992d7cc5f5e15719420ed5",
+    "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+    "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+    "static/inverse/core/direct/symmetry.js": "bfb16921dbdcb5ce5a2f8148487821b392c2855943541fadf7eb0d77064fbd6d",
+    "static/inverse/core/direct/topology.js": "bbe79bf0dca7c4786c7728413026fee9f77bb9bca5bb788be7d6674267ad9292",
+    "static/inverse/core/engine.js": "f4c7f3f11b4543b9270ef849d3924fd67ea722574abdef8a861b118cdf3731c1",
+    "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+    "static/inverse/core/feature-recovery.js": "37831af78afffd94b19a4145091d199f9771d12e505514e88cf1943e6023279e",
+    "static/inverse/core/geometry.js": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+    "static/inverse/core/graph.js": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
+    "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+    "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+    "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+    "static/inverse/core/junctions.js": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
+    "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+    "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+    "static/inverse/core/material.js": "1d7d4e33811d46aa4e815bf9e4a410a8844c9bba7e50fdb6e0fa850181801898",
+    "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+    "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+    "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+    "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+    "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+    "static/inverse/core/progress.js": "5034d4c14b1abdf9c656208a13f0d24cf7254a1ce6323f452bb45f39d67e5370",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+    "static/inverse/core/solver.js": "de7d3b887d0b2faf28af21ba9b29de331b4566ff5374523db15fbbb0487dd8ea",
+    "static/inverse/core/stopped.js": "f2c50e6dca6ac2a1ea8d7b2fa1c5984109a5502dca728601f4e9e885ebf406a8",
+    "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+    "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+    "static/inverse/core/validate.js": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+    "static/inverse/worker-bootstrap.js": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+    "static/inverse/worker-controller.js": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+    "static/inverse/worker.js": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70"
+  },
+  "artifacts": {
+    "tmp/chord-hunodan/results.json": "9e411ca69dd4e50b3bd4a2d7b94a07d4cbec3f1eda8ec333032a80bf58ee7e57",
+    "tmp/orbit-hunodan/results.json": "5c18580b071fc1761e0468a17af6cd7da51566675bc2dbae13905717c3c8fccf",
+    "tmp/chord-weighted/results.json": "98f34f856db64753a588c7d8e4b4df8c918bf1abeec223b060b3bf508595a7ce",
+    "tmp/orbit-weighted/results.json": "316f81010bf85ceb617cd2db9692a1f1faaad7d55a62c9d421eb5e8f688fcca3",
+    "tmp/chord-controlled-browser/results.json": "c49b5580fce0fc1adae5d8c3738e4730e4a05d8970d52133c96fc47ab02a1eed",
+    "tmp/chord-paint-fixed-browser/chromium-chord-frame-sym/prepared.json": "754762a833a4dd34a2708cd80223e0f561fdb54168324475e31f28df9390d7fc",
+    "tmp/chord-reference-fixed-ui-browser/chromium-chord-frame-sym/prepared.json": "754762a833a4dd34a2708cd80223e0f561fdb54168324475e31f28df9390d7fc",
+    "tmp/chord-paint-fixed-browser/chromium-chord-frame-anti/prepared.json": "621be95afe2ad198c5fe013b2b65c821ef6d82906e7d5438e1c9b384847da244",
+    "tmp/chord-reference-fixed-ui-browser/chromium-chord-frame-anti/prepared.json": "621be95afe2ad198c5fe013b2b65c821ef6d82906e7d5438e1c9b384847da244",
+    "tmp/chord-paint-fixed-browser/results.json": "fc3d65977606be4ffc996f979887fb8420e062bb577f03239646caa1343f259b",
+    "tmp/chord-reference-fixed-ui-browser/results.json": "5960620f07bf90143703a0425f440cff29c15cf9d52401faa5436638dcc4a32d",
+    "tmp/chord-reference-browser/results.json": "07e6518d54fef32c6e2509b86704d517aad70c3a13c546d7901715fd66786208",
+    "tmp/chord-before.log": "4316b0ad115a5adff0814ea46cd8595748ed438fe74f0d6480ef88dd915b9499",
+    "tmp/chord-after.log": "3b42a42a38d1d0e261168bcbae4ac0aef19f91d5849208c3ecefa13bf59661d4",
+    "tmp/chord-normal-browser/results.json": "d6684fd49a93cde24b5c0bf2242db07e2ebe79a63990d6b6f6457fdb1d2cd6a7",
+    "tmp/orbit-paint-browser/results.json": "49b0791c37ad7309727328ecd2073f48540b8c405fba759111a6db989e282f55",
+    "tmp/chord-test.log": "509ea3afb60c322f4d7f6af1d0aadeca837fdf75e36fb0921b85f405a4564e25",
+    "tmp/chord-check.log": "1be3902fa1acaae6b0990406476a41369d095dc32dda58ba4b2a1df01155978b",
+    "tmp/chord-lint.log": "a552732ebea6b64b49ac0a1299170db75e8c45dbbc66c284f28e99be5613e5c7",
+    "tmp/chord-build.log": "d92b89ac8284ad8c8e19f1dcb118b5e722b4513b21050fd9941cb39422293115"
+  },
+  "uiRegression": {
+    "oldBrowserError": [
+      "Cannot read properties of null (reading 'toLocaleString')"
+    ],
+    "oldHarnessFailure": "page.waitForFunction: Timeout 190000ms exceeded.\n    at /Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/paint-browser-test.mjs:159:16",
+    "classification": "Result-panel rendering failure after a one-cut solve; previous harness waited until its readiness timeout.",
+    "fixedBy": "Nullable clearance in result types and conditional display; both languages and border modes tested."
+  }
+}

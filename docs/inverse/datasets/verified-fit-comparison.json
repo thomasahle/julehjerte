@@ -1,0 +1,1718 @@
+{
+  "schema": "verified-fit-comparison-1",
+  "runtimeCommit": "002e15e",
+  "workingCommit": "002e15e4d237ad5dbdd7701c65ef5b5a6da1ab16",
+  "geometryMicrobenchmark": {
+    "baselineRevision": "2a147c7",
+    "baselineGeometrySha256": "e9ada76afbaa0ef4bd957cbc4c8c20f09f471cf6ba0c33b84a774aba10a9da84",
+    "geometrySha256": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+    "fixtureFile": "scripts/inverse/fixtures/floral-checker-refinement-checkpoint.json",
+    "fixtureSha256": "633a09bcc778ef62d03ffba096f37a8949b9526a92d49946be98d3e4ce70b20b",
+    "node": "v25.6.1",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "repeats": 7,
+    "iterations": 10,
+    "results": [
+      {
+        "name": "clearance",
+        "equalOutputs": true,
+        "timesMs": {
+          "before": [
+            27.87995,
+            27.9874917,
+            27.610275,
+            27.39658750000001,
+            27.290241700000003,
+            27.485108400000037,
+            27.25123749999998
+          ],
+          "after": [
+            14.365358399999996,
+            13.379237499999999,
+            13.22516250000001,
+            13.304983300000004,
+            13.90445410000002,
+            13.375645799999983,
+            13.337691599999971
+          ]
+        },
+        "beforeMs": 27.485108400000037,
+        "afterMs": 13.375645799999983,
+        "speedup": 2.054862158506027
+      },
+      {
+        "name": "intersections",
+        "equalOutputs": true,
+        "timesMs": {
+          "before": [
+            31.69021670000002,
+            31.243979199999966,
+            31.82954590000004,
+            31.384029199999986,
+            31.184037500000066,
+            33.06797079999997,
+            32.44890829999995
+          ],
+          "after": [
+            11.20444590000002,
+            11.296808400000009,
+            11.381579199999942,
+            11.190654200000063,
+            11.42288750000007,
+            11.23504579999999,
+            11.117320899999958
+          ]
+        },
+        "beforeMs": 31.69021670000002,
+        "afterMs": 11.23504579999999,
+        "speedup": 2.8206575446270143
+      },
+      {
+        "name": "simplicity",
+        "equalOutputs": true,
+        "timesMs": {
+          "before": [
+            3.319054099999994,
+            3.0427082999999584,
+            2.9688082999999095,
+            2.9133333000000676,
+            2.93130000000001,
+            2.955529099999967,
+            2.926154200000019
+          ],
+          "after": [
+            1.9620499999999992,
+            1.5388750000000073,
+            1.3529582999999548,
+            1.3603916000000027,
+            1.3687707999999474,
+            1.3169832999999926,
+            1.316966599999978
+          ]
+        },
+        "beforeMs": 2.955529099999967,
+        "afterMs": 1.3603916000000027,
+        "speedup": 2.1725575929754055
+      },
+      {
+        "name": "neighbours",
+        "equalOutputs": true,
+        "timesMs": {
+          "before": [
+            0.14437920000000304,
+            0.11439159999999901,
+            0.1316541999999572,
+            0.20608750000001236,
+            0.11032090000007884,
+            0.1111667000000125,
+            0.09908329999998386
+          ],
+          "after": [
+            0.11302919999998266,
+            0.08433750000003784,
+            0.19414160000005723,
+            0.07970840000007229,
+            0.0728291999999783,
+            0.0711500000000342,
+            0.07634170000001177
+          ]
+        },
+        "beforeMs": 0.11439159999999901,
+        "afterMs": 0.07970840000007229,
+        "speedup": 1.4351260343940573
+      }
+    ],
+    "scope": "Interleaved geometry-query microbenchmark, not whole-solve speedup. Exact outputs are compared before timing."
+  },
+  "geometryRegression": {
+    "checks": [
+      {
+        "name": "hard-photos-final",
+        "command": [
+          "node",
+          "scripts/inverse/hard-photo-benchmark.mjs",
+          "--crop=automatic",
+          "--target=mask",
+          "--seconds=10",
+          "--output=tmp/heart-learning/browser-search-v1/hard-photos-final"
+        ],
+        "environment": {},
+        "exitCode": 0,
+        "seconds": 306.14401870800003,
+        "log": "tmp/heart-learning/browser-search-v1/hard-photos-final.log"
+      },
+      {
+        "name": "hunodan",
+        "command": [
+          "node",
+          "scripts/inverse/hunodan-speed-benchmark.mjs"
+        ],
+        "environment": {
+          "INVERSE_SPEED_OUT": "tmp/heart-learning/browser-search-v1/hunodan"
+        },
+        "exitCode": 0,
+        "seconds": 120.78320283400001,
+        "log": "tmp/heart-learning/browser-search-v1/hunodan.log"
+      },
+      {
+        "name": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "environment": {},
+        "exitCode": 0,
+        "seconds": 8.750384625000038,
+        "log": "tmp/heart-learning/browser-search-v1/check.log"
+      },
+      {
+        "name": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "environment": {},
+        "exitCode": 0,
+        "seconds": 6.282293791999962,
+        "log": "tmp/heart-learning/browser-search-v1/lint.log"
+      },
+      {
+        "name": "vitest",
+        "command": [
+          "./node_modules/.bin/vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "environment": {},
+        "exitCode": 0,
+        "seconds": 33.741235958000004,
+        "log": "tmp/heart-learning/browser-search-v1/vitest.log"
+      },
+      {
+        "name": "inverse",
+        "command": [
+          "npm",
+          "run",
+          "test:inverse"
+        ],
+        "environment": {},
+        "exitCode": 0,
+        "seconds": 628.4119989999999,
+        "log": "tmp/heart-learning/browser-search-v1/inverse.log"
+      },
+      {
+        "name": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "environment": {},
+        "exitCode": 0,
+        "seconds": 11.785111499999857,
+        "log": "tmp/heart-learning/browser-search-v1/build.log"
+      }
+    ],
+    "photos": {
+      "statuses": {
+        "incomplete": 15,
+        "no_crop": 3,
+        "failed": 4,
+        "validated": 24,
+        "obscured": 1
+      },
+      "statusChanges": [],
+      "inputChanges": [],
+      "errorChanges": [
+        {
+          "case": "floral-checker",
+          "before": 0.02038125,
+          "after": 0.01941875,
+          "delta": -0.0009625000000000015
+        },
+        {
+          "case": "dense-checker",
+          "before": 0.00698125,
+          "after": 0.00699375,
+          "delta": 1.2500000000000358e-05
+        },
+        {
+          "case": "bird",
+          "before": 0.0247125,
+          "after": 0.02470625,
+          "delta": -6.249999999999312e-06
+        },
+        {
+          "case": "gingerbread",
+          "before": 0.01506875,
+          "after": 0.0153625,
+          "delta": 0.0002937499999999989
+        },
+        {
+          "case": "warped-checker",
+          "before": 0.018475,
+          "after": 0.0178875,
+          "delta": -0.0005874999999999977
+        },
+        {
+          "case": "fine-checker",
+          "before": 0.02245,
+          "after": 0.0215875,
+          "delta": -0.0008625000000000022
+        },
+        {
+          "case": "orb",
+          "before": 0.01439375,
+          "after": 0.01438125,
+          "delta": -1.2500000000000358e-05
+        },
+        {
+          "case": "maple-leaf",
+          "before": 0.013425,
+          "after": 0.01315625,
+          "delta": -0.0002687499999999999
+        },
+        {
+          "case": "crown",
+          "before": 0.0241375,
+          "after": 0.02411875,
+          "delta": -1.8749999999997935e-05
+        },
+        {
+          "case": "flettede-puppy",
+          "before": 0.0103125,
+          "after": 0.01031875,
+          "delta": 6.249999999999312e-06
+        },
+        {
+          "case": "flettede-viking",
+          "before": 0.02023125,
+          "after": 0.0203375,
+          "delta": 0.00010625000000000218
+        }
+      ]
+    }
+  },
+  "pairedSchedulingExperiment": [
+    {
+      "case": "floral-checker",
+      "before": {
+        "seconds": 26.732464249999996,
+        "solverSeconds": 26.387011792000003,
+        "maskSha256": "351a7a00b7aba431e393477f0ae7747c3b2dda9ad8a40fd086e625d3d6ccb6f7",
+        "error": 0.01885625,
+        "checked": true,
+        "counts": {
+          "left": 7,
+          "right": 7
+        },
+        "packets": 16,
+        "featuresPassed": true,
+        "fineSeeds": [
+          {
+            "counts": [
+              7,
+              7
+            ],
+            "phase": -1,
+            "error": 0.0518798828125
+          },
+          {
+            "counts": [
+              7,
+              8
+            ],
+            "phase": 1,
+            "error": 0.05291748046875
+          },
+          {
+            "counts": [
+              7,
+              8
+            ],
+            "phase": -1,
+            "error": 0.054718017578125
+          },
+          {
+            "counts": [
+              8,
+              8
+            ],
+            "phase": -1,
+            "error": 0.062255859375
+          }
+        ]
+      },
+      "simpler-comparison": {
+        "seconds": 23.442431042,
+        "solverSeconds": 23.103090624999997,
+        "maskSha256": "351a7a00b7aba431e393477f0ae7747c3b2dda9ad8a40fd086e625d3d6ccb6f7",
+        "error": 0.0165625,
+        "checked": true,
+        "counts": {
+          "left": 7,
+          "right": 7
+        },
+        "packets": 15,
+        "featuresPassed": true,
+        "fineSeeds": [
+          {
+            "counts": [
+              7,
+              7
+            ],
+            "phase": -1,
+            "error": 0.0518798828125
+          },
+          {
+            "counts": [
+              7,
+              8
+            ],
+            "phase": 1,
+            "error": 0.05291748046875
+          },
+          {
+            "counts": [
+              7,
+              8
+            ],
+            "phase": -1,
+            "error": 0.054718017578125
+          }
+        ]
+      }
+    },
+    {
+      "case": "maple-leaf",
+      "before": {
+        "seconds": 20.516016167,
+        "solverSeconds": 20.388118,
+        "maskSha256": "9b0908abdb6ceb0957b6344cfa5fbaeab4a46866c640ea8d1898b3dc31a8c101",
+        "error": 0.01135,
+        "checked": true,
+        "counts": {
+          "left": 3,
+          "right": 3
+        },
+        "packets": 37,
+        "featuresPassed": true,
+        "fineSeeds": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.0364837646484375
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.032989501953125
+          },
+          {
+            "counts": [
+              3,
+              5
+            ],
+            "phase": -1,
+            "error": 0.04119873046875
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": 1,
+            "error": 0.0396728515625
+          },
+          {
+            "counts": [
+              3,
+              5
+            ],
+            "phase": 1,
+            "error": 0.0456390380859375
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.0499114990234375
+          }
+        ]
+      },
+      "simpler-comparison": {
+        "seconds": 14.490522375000001,
+        "solverSeconds": 14.3631355,
+        "maskSha256": "9b0908abdb6ceb0957b6344cfa5fbaeab4a46866c640ea8d1898b3dc31a8c101",
+        "error": 0.01135,
+        "checked": true,
+        "counts": {
+          "left": 3,
+          "right": 3
+        },
+        "packets": 33,
+        "featuresPassed": true,
+        "fineSeeds": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.0364837646484375
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.032989501953125
+          },
+          {
+            "counts": [
+              3,
+              5
+            ],
+            "phase": -1,
+            "error": 0.04119873046875
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.0499114990234375
+          }
+        ]
+      }
+    },
+    {
+      "case": "candle",
+      "before": {
+        "seconds": 5.047785,
+        "solverSeconds": 4.950624374999999,
+        "maskSha256": "263a91fc0a1b6db6db4da860f4145bd52aa0973927285068f8cbe267c9bc175d",
+        "error": 0.0048375,
+        "checked": true,
+        "counts": {
+          "left": 1,
+          "right": 1
+        },
+        "packets": 28,
+        "featuresPassed": true,
+        "fineSeeds": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.026763916015625
+          },
+          {
+            "counts": [
+              1,
+              1
+            ],
+            "phase": 1,
+            "error": 0.0382232666015625
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": -1,
+            "error": 0.03912353515625
+          }
+        ]
+      },
+      "simpler-comparison": {
+        "seconds": 5.02346775,
+        "solverSeconds": 4.926108333,
+        "maskSha256": "263a91fc0a1b6db6db4da860f4145bd52aa0973927285068f8cbe267c9bc175d",
+        "error": 0.0048375,
+        "checked": true,
+        "counts": {
+          "left": 1,
+          "right": 1
+        },
+        "packets": 28,
+        "featuresPassed": true,
+        "fineSeeds": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.026763916015625
+          },
+          {
+            "counts": [
+              1,
+              1
+            ],
+            "phase": 1,
+            "error": 0.0382232666015625
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": -1,
+            "error": 0.03912353515625
+          }
+        ]
+      }
+    },
+    {
+      "case": "warped-checker",
+      "before": {
+        "seconds": 26.267351917,
+        "solverSeconds": 25.892405708000002,
+        "maskSha256": "3508f08f46f539554f7fdab38f01f018bc7ec8d86db2309427b28e18b049c2de",
+        "error": 0.01774375,
+        "checked": true,
+        "counts": {
+          "left": 9,
+          "right": 9
+        },
+        "packets": 18,
+        "featuresPassed": true,
+        "fineSeeds": [
+          {
+            "counts": [
+              9,
+              9
+            ],
+            "phase": -1,
+            "error": 0.049407958984375
+          },
+          {
+            "counts": [
+              9,
+              10
+            ],
+            "phase": 1,
+            "error": 0.0559844970703125
+          },
+          {
+            "counts": [
+              9,
+              10
+            ],
+            "phase": -1,
+            "error": 0.0569305419921875
+          },
+          {
+            "counts": [
+              9,
+              9
+            ],
+            "phase": -1,
+            "error": 0.049346923828125
+          },
+          {
+            "counts": [
+              9,
+              9
+            ],
+            "phase": -1,
+            "error": 0.0489044189453125
+          }
+        ]
+      },
+      "simpler-comparison": {
+        "seconds": 26.141658083000003,
+        "solverSeconds": 25.767320417,
+        "maskSha256": "3508f08f46f539554f7fdab38f01f018bc7ec8d86db2309427b28e18b049c2de",
+        "error": 0.0178875,
+        "checked": true,
+        "counts": {
+          "left": 9,
+          "right": 9
+        },
+        "packets": 19,
+        "featuresPassed": true,
+        "fineSeeds": [
+          {
+            "counts": [
+              9,
+              9
+            ],
+            "phase": -1,
+            "error": 0.049407958984375
+          },
+          {
+            "counts": [
+              9,
+              10
+            ],
+            "phase": 1,
+            "error": 0.0559844970703125
+          },
+          {
+            "counts": [
+              9,
+              10
+            ],
+            "phase": -1,
+            "error": 0.0569305419921875
+          },
+          {
+            "counts": [
+              9,
+              9
+            ],
+            "phase": -1,
+            "error": 0.049346923828125
+          },
+          {
+            "counts": [
+              9,
+              9
+            ],
+            "phase": -1,
+            "error": 0.0489044189453125
+          }
+        ]
+      }
+    },
+    {
+      "case": "fine-checker",
+      "before": {
+        "seconds": 26.779967709,
+        "solverSeconds": 26.389489916,
+        "maskSha256": "184fe9c3aaf1a4e8a3732e1180a17770ebb3ef60566861c89859bb5a1e36ad4a",
+        "error": 0.02244375,
+        "checked": true,
+        "counts": {
+          "left": 10,
+          "right": 9
+        },
+        "packets": 13,
+        "featuresPassed": true,
+        "fineSeeds": [
+          {
+            "counts": [
+              9,
+              10
+            ],
+            "phase": 1,
+            "error": 0.0549774169921875
+          },
+          {
+            "counts": [
+              10,
+              10
+            ],
+            "phase": -1,
+            "error": 0.0608367919921875
+          },
+          {
+            "counts": [
+              10,
+              10
+            ],
+            "phase": 1,
+            "error": 0.05908203125
+          },
+          {
+            "counts": [
+              9,
+              10
+            ],
+            "phase": 1,
+            "error": 0.0525054931640625
+          },
+          {
+            "counts": [
+              9,
+              10
+            ],
+            "phase": 1,
+            "error": 0.05401611328125
+          }
+        ]
+      },
+      "simpler-comparison": {
+        "seconds": 26.90229125,
+        "solverSeconds": 26.487688833,
+        "maskSha256": "184fe9c3aaf1a4e8a3732e1180a17770ebb3ef60566861c89859bb5a1e36ad4a",
+        "error": 0.0218625,
+        "checked": true,
+        "counts": {
+          "left": 10,
+          "right": 9
+        },
+        "packets": 12,
+        "featuresPassed": true,
+        "fineSeeds": [
+          {
+            "counts": [
+              9,
+              10
+            ],
+            "phase": 1,
+            "error": 0.0549774169921875
+          },
+          {
+            "counts": [
+              10,
+              10
+            ],
+            "phase": -1,
+            "error": 0.0608367919921875
+          },
+          {
+            "counts": [
+              10,
+              10
+            ],
+            "phase": 1,
+            "error": 0.05908203125
+          },
+          {
+            "counts": [
+              9,
+              10
+            ],
+            "phase": 1,
+            "error": 0.0525054931640625
+          },
+          {
+            "counts": [
+              9,
+              10
+            ],
+            "phase": 1,
+            "error": 0.05401611328125
+          }
+        ]
+      }
+    }
+  ],
+  "pairedEngineHashes": {
+    "before": {
+      "worker.js": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70",
+      "worker-bootstrap.js": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+      "THIRD_PARTY_NOTICES.txt": "dbfafe9f695b27fbcb1d5d213a4a8db7e7d216febadbd34f85e204329c26cb6e",
+      "LICENSE.txt": "681b46f147610336a243b3c72cd08cd5904b2dee747e74c959ae57ade9e6b9df",
+      "worker-controller.js": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+      "compute-worker.js": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+      "locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+      "locator/palette.js": "e6163193c14d753c2b93168c2e2e25602fb240117e1846a1c92a92308bc9084b",
+      "locator/locator.js": "f4c769870e13481a30d149dbdad5a743b52d55d949bc9d898c2c7db0af434773",
+      "locator/background.js": "03d1c9b8f8237a97a7e8ed53d1dfa5117d1db079ba4162cac7117a8761f3441f",
+      "locator/fields.js": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
+      "locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+      "locator/anchored.js": "c4f5276af229a7b9bbc1f686ea308697200cdd787bcdee2692d87a60bcdad991",
+      "locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+      "locator/NOTICE.md": "4a9cc65be6ca309d2b57609d760e584ab78c345dae95c789e351bb69180d5b05",
+      "core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+      "core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+      "core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+      "core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+      "core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+      "core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+      "core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+      "core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+      "core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+      "core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+      "core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+      "core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+      "core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+      "core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+      "core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+      "core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+      "core/solver.js": "cfc48549b0673167d0eeae4537cfc1f0d00c4cb4e6c34a10ee9972e42c65bcd6",
+      "core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+      "core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+      "core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+      "core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+      "core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+      "core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+      "core/chord-distance.js": "6be52281e3056d29ad7093f902b0f768410f3c414f049f164f94e969bd89dd48",
+      "core/feature-recovery.js": "6be5ef1c55009da6cff646e460a6601b6fab87212d3b87da4f3bb09fb2c962f9",
+      "core/engine.js": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+      "core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+      "core/validate.js": "31cc29c6873896f53a2f999782dcd2292f0924611166932114b45534f5cbebd7",
+      "core/crop.js": "e44d3179ca229cb645779af3550ab2736547104c46684e0ccee402a1d1875ea6",
+      "core/spatial-color.js": "f170ff447ef905fc21121d286ac427a079b184ca077fd178065b0a3e247fb132",
+      "core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+      "core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+      "core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+      "core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+      "core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+      "core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+      "core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+      "core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+      "core/direct/short-returns.js": "d89c3a75df735ca5d519b354b0e47327f58ce56e55f86693de44ded98e857269",
+      "core/direct/feature-seeds.js": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+      "core/direct/finalize.js": "40c9d60e5bd327876da0465ab8d371a05430d43412520a32a0f3ab90f07284e4",
+      "core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+      "core/direct/refine.js": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+      "core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+      "core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+      "core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+      "core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+      "core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+      "core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+      "core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+      "core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+      "core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+      "core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+      "core/direct/outline-details.js": "ff9d4df5f27fd9ca97d15b115cc95c5692bd17e302f0dcd11c62e7295b85d8aa",
+      "core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+      "core/direct/fit.js": "0a53ee7d7153bffd0f11ad2fa1e295995496fecfb23be79dcf016c9118b5e6eb",
+      "core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+      "core/direct/counts.js": "fbfcc89f1399bb76f2654b7476c52bd6aa29e2170ad1759e890268d9e392b23e",
+      "core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+      "core/direct/polish.js": "3f9df26508076465860a62ce72c2de3aeb67413a1d67ab1927dc37b89b7b622e",
+      "core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+      "core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+      "core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+      "core/direct/topology.js": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097",
+      "core/direct/reroute.js": "84a8cf2cfb6bcb1101a63004f638d0f3dc398baf3fe15ec1068b20336535d9ed",
+      "core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+      "core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+      "core/direct/share.js": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+      "core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58",
+      "core/direct/native/PROVENANCE.json": "e9fbaef090fc05bdc9450210f527b1fb3fa6bc77ee86c1902eb97bb6ed0acd2a",
+      "core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+      "examples/star.saved.json": "7b3a3164d830c59adfcb7d6b51207d6423971a850e360ac00a21fbb71ee5fa50",
+      "examples/waves.svg": "20ee4d65378489d0cc0d3b9e41cdebf2fc81ff3b096443c76105cf3430e6a7e3",
+      "examples/star.png": "54ee86896412da50ccc8630593977cc6ce386fcfcc29007f311d80f6c463fa1b",
+      "examples/jul.saved.json": "07c223ab98b8bb576df5775682941ad688ffd097d3b7b304861db3f26fa0d454",
+      "vendor/HIGHS-LICENSE.txt": "9f8d8dcf27789ac59c0d7c732d6682f148804a5e99d83e9f207d6c1882b98bfa",
+      "vendor/PROVENANCE.json": "f90544e4eeec519b0aa3b7069b601591d4bc0e6fcafed7227d9dc1dc045a8ba5",
+      "vendor/highs.wasm": "528be4365bea1d4188988646b244263f50320df55782e14d6af5bce7cd45c840",
+      "vendor/highs.mjs": "f2bdfd071d19c3745756a087026589e9240f329e38315a86f626823ae78a4036"
+    },
+    "simpler-comparison": {
+      "worker.js": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70",
+      "worker-bootstrap.js": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+      "THIRD_PARTY_NOTICES.txt": "dbfafe9f695b27fbcb1d5d213a4a8db7e7d216febadbd34f85e204329c26cb6e",
+      "LICENSE.txt": "681b46f147610336a243b3c72cd08cd5904b2dee747e74c959ae57ade9e6b9df",
+      "worker-controller.js": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+      "compute-worker.js": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+      "locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+      "locator/palette.js": "e6163193c14d753c2b93168c2e2e25602fb240117e1846a1c92a92308bc9084b",
+      "locator/locator.js": "f4c769870e13481a30d149dbdad5a743b52d55d949bc9d898c2c7db0af434773",
+      "locator/background.js": "03d1c9b8f8237a97a7e8ed53d1dfa5117d1db079ba4162cac7117a8761f3441f",
+      "locator/fields.js": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
+      "locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+      "locator/anchored.js": "c4f5276af229a7b9bbc1f686ea308697200cdd787bcdee2692d87a60bcdad991",
+      "locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+      "locator/NOTICE.md": "4a9cc65be6ca309d2b57609d760e584ab78c345dae95c789e351bb69180d5b05",
+      "core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+      "core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+      "core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+      "core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+      "core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+      "core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+      "core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+      "core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+      "core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+      "core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+      "core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+      "core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+      "core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+      "core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+      "core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+      "core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+      "core/solver.js": "cfc48549b0673167d0eeae4537cfc1f0d00c4cb4e6c34a10ee9972e42c65bcd6",
+      "core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+      "core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+      "core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+      "core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+      "core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+      "core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+      "core/chord-distance.js": "6be52281e3056d29ad7093f902b0f768410f3c414f049f164f94e969bd89dd48",
+      "core/feature-recovery.js": "6be5ef1c55009da6cff646e460a6601b6fab87212d3b87da4f3bb09fb2c962f9",
+      "core/engine.js": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+      "core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+      "core/validate.js": "31cc29c6873896f53a2f999782dcd2292f0924611166932114b45534f5cbebd7",
+      "core/crop.js": "e44d3179ca229cb645779af3550ab2736547104c46684e0ccee402a1d1875ea6",
+      "core/spatial-color.js": "f170ff447ef905fc21121d286ac427a079b184ca077fd178065b0a3e247fb132",
+      "core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+      "core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+      "core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+      "core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+      "core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+      "core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+      "core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+      "core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+      "core/direct/short-returns.js": "d89c3a75df735ca5d519b354b0e47327f58ce56e55f86693de44ded98e857269",
+      "core/direct/feature-seeds.js": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+      "core/direct/finalize.js": "40c9d60e5bd327876da0465ab8d371a05430d43412520a32a0f3ab90f07284e4",
+      "core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+      "core/direct/refine.js": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+      "core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+      "core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+      "core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+      "core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+      "core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+      "core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+      "core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+      "core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+      "core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+      "core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+      "core/direct/outline-details.js": "ff9d4df5f27fd9ca97d15b115cc95c5692bd17e302f0dcd11c62e7295b85d8aa",
+      "core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+      "core/direct/fit.js": "be9980abeeea7898680f091dd794eabb9d10dbc8c28e440fad31250e6905ceec",
+      "core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+      "core/direct/counts.js": "fbfcc89f1399bb76f2654b7476c52bd6aa29e2170ad1759e890268d9e392b23e",
+      "core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+      "core/direct/polish.js": "3f9df26508076465860a62ce72c2de3aeb67413a1d67ab1927dc37b89b7b622e",
+      "core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+      "core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+      "core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+      "core/direct/topology.js": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097",
+      "core/direct/reroute.js": "84a8cf2cfb6bcb1101a63004f638d0f3dc398baf3fe15ec1068b20336535d9ed",
+      "core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+      "core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+      "core/direct/share.js": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+      "core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58",
+      "core/direct/native/PROVENANCE.json": "e9fbaef090fc05bdc9450210f527b1fb3fa6bc77ee86c1902eb97bb6ed0acd2a",
+      "core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+      "examples/star.saved.json": "7b3a3164d830c59adfcb7d6b51207d6423971a850e360ac00a21fbb71ee5fa50",
+      "examples/waves.svg": "20ee4d65378489d0cc0d3b9e41cdebf2fc81ff3b096443c76105cf3430e6a7e3",
+      "examples/star.png": "54ee86896412da50ccc8630593977cc6ce386fcfcc29007f311d80f6c463fa1b",
+      "examples/jul.saved.json": "07c223ab98b8bb576df5775682941ad688ffd097d3b7b304861db3f26fa0d454",
+      "vendor/HIGHS-LICENSE.txt": "9f8d8dcf27789ac59c0d7c732d6682f148804a5e99d83e9f207d6c1882b98bfa",
+      "vendor/PROVENANCE.json": "f90544e4eeec519b0aa3b7069b601591d4bc0e6fcafed7227d9dc1dc045a8ba5",
+      "vendor/highs.wasm": "528be4365bea1d4188988646b244263f50320df55782e14d6af5bce7cd45c840",
+      "vendor/highs.mjs": "f2bdfd071d19c3745756a087026589e9240f329e38315a86f626823ae78a4036"
+    }
+  },
+  "releaseChecks": [
+    {
+      "name": "hard-photos-final",
+      "command": [
+        "node",
+        "scripts/inverse/hard-photo-benchmark.mjs",
+        "--crop=automatic",
+        "--target=mask",
+        "--seconds=10",
+        "--output=tmp/heart-learning/browser-search-v2/hard-photos-final"
+      ],
+      "environment": {},
+      "exitCode": 0,
+      "seconds": 304.832376916,
+      "log": "tmp/heart-learning/browser-search-v2/hard-photos-final.log"
+    },
+    {
+      "name": "hunodan",
+      "command": [
+        "node",
+        "scripts/inverse/hunodan-speed-benchmark.mjs"
+      ],
+      "environment": {
+        "INVERSE_SPEED_OUT": "tmp/heart-learning/browser-search-v2/hunodan"
+      },
+      "exitCode": 0,
+      "seconds": 117.54098454199999,
+      "log": "tmp/heart-learning/browser-search-v2/hunodan.log"
+    },
+    {
+      "name": "check",
+      "command": [
+        "npm",
+        "run",
+        "check"
+      ],
+      "environment": {},
+      "exitCode": 0,
+      "seconds": 8.407528417000037,
+      "log": "tmp/heart-learning/browser-search-v2/check.log"
+    },
+    {
+      "name": "lint",
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "environment": {},
+      "exitCode": 0,
+      "seconds": 5.976471457999992,
+      "log": "tmp/heart-learning/browser-search-v2/lint.log"
+    },
+    {
+      "name": "vitest",
+      "command": [
+        "./node_modules/.bin/vitest",
+        "run",
+        "--maxWorkers=2"
+      ],
+      "environment": {},
+      "exitCode": 0,
+      "seconds": 33.79938379199996,
+      "log": "tmp/heart-learning/browser-search-v2/vitest.log"
+    },
+    {
+      "name": "inverse",
+      "command": [
+        "npm",
+        "run",
+        "test:inverse"
+      ],
+      "environment": {},
+      "exitCode": 0,
+      "seconds": 644.404032875,
+      "log": "tmp/heart-learning/browser-search-v2/inverse.log"
+    },
+    {
+      "name": "build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "environment": {},
+      "exitCode": 0,
+      "seconds": 12.108289499999955,
+      "log": "tmp/heart-learning/browser-search-v2/build.log"
+    }
+  ],
+  "inverseTestsPassed": 758,
+  "applicationTestsPassed": 855,
+  "applicationTestsSkipped": 1,
+  "releasePhotos": {
+    "statuses": {
+      "incomplete": 15,
+      "no_crop": 3,
+      "failed": 4,
+      "validated": 24,
+      "obscured": 1
+    },
+    "statusChanges": [],
+    "inputChanges": [],
+    "errorChanges": [
+      {
+        "id": "floral-checker",
+        "before": 0.01941875,
+        "after": 0.01929375
+      },
+      {
+        "id": "gingerbread",
+        "before": 0.0153625,
+        "after": 0.015075
+      },
+      {
+        "id": "fine-checker",
+        "before": 0.0215875,
+        "after": 0.02141875
+      },
+      {
+        "id": "maple-leaf",
+        "before": 0.01315625,
+        "after": 0.01334375
+      },
+      {
+        "id": "bauble",
+        "before": 0.0919125,
+        "after": 0.0929625
+      },
+      {
+        "id": "flettede-puppy",
+        "before": 0.01031875,
+        "after": 0.0103125
+      },
+      {
+        "id": "flettede-viking",
+        "before": 0.0203375,
+        "after": 0.02023125
+      }
+    ],
+    "extraGridComparisons": []
+  },
+  "releaseHunodan": {
+    "passed": 22,
+    "total": 22,
+    "maximumSeconds": 8.282159832999998,
+    "errorChanges": []
+  },
+  "browser": [
+    {
+      "name": "maple-leaf-mask",
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.006100000023841858,
+        "prepareRoundTripSeconds": 0.153,
+        "preparedToSolveRequestSeconds": 0.00029999995231628417,
+        "solveRoundTripSeconds": 15.030700000047684,
+        "resultToReadySeconds": 0.744,
+        "clickToReadySeconds": 15.934100000023841
+      },
+      "engineError": 0.01119375,
+      "sourceEditableError": 0.0112875,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "extraGridComparisons": [
+        {
+          "reason": "simpler-layout",
+          "acceptedCounts": [
+            [
+              4,
+              4
+            ]
+          ],
+          "selectedCounts": [
+            3,
+            3
+          ],
+          "phase": -1
+        }
+      ],
+      "templateChecksPassed": true,
+      "pageErrors": [],
+      "passed": true
+    },
+    {
+      "name": "floral-checker-mask",
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.005600000023841858,
+        "prepareRoundTripSeconds": 0.18729999995231628,
+        "preparedToSolveRequestSeconds": 0.00040000009536743164,
+        "solveRoundTripSeconds": 24.347899999976157,
+        "resultToReadySeconds": 0.6081999999284744,
+        "clickToReadySeconds": 25.149399999976158
+      },
+      "engineError": 0.0170125,
+      "sourceEditableError": 0.017225,
+      "selectedCounts": [
+        7,
+        7
+      ],
+      "extraGridComparisons": [
+        {
+          "reason": "simpler-layout",
+          "acceptedCounts": [
+            [
+              7,
+              7
+            ],
+            [
+              7,
+              8
+            ]
+          ],
+          "selectedCounts": null,
+          "phase": null
+        }
+      ],
+      "templateChecksPassed": true,
+      "pageErrors": [],
+      "passed": true
+    },
+    {
+      "name": "faded-frame-mask",
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.006199999928474426,
+        "prepareRoundTripSeconds": 0.17460000002384185,
+        "preparedToSolveRequestSeconds": 0.0005,
+        "solveRoundTripSeconds": 14.064100000023842,
+        "resultToReadySeconds": 0.32010000002384187,
+        "clickToReadySeconds": 14.5655
+      },
+      "engineError": 0.014675,
+      "sourceEditableError": 0.01490625,
+      "selectedCounts": [
+        4,
+        5
+      ],
+      "extraGridComparisons": [],
+      "templateChecksPassed": true,
+      "pageErrors": [],
+      "passed": true
+    },
+    {
+      "name": "web-danish-tree-group-right",
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.006,
+        "prepareRoundTripSeconds": 0.17630000007152558,
+        "preparedToSolveRequestSeconds": 0.00029999995231628417,
+        "solveRoundTripSeconds": 5.897,
+        "resultToReadySeconds": 0.2947000000476837,
+        "clickToReadySeconds": 6.374300000071526
+      },
+      "engineError": 0.0237625,
+      "sourceEditableError": 0.02385,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "extraGridComparisons": null,
+      "templateChecksPassed": true,
+      "pageErrors": [],
+      "passed": true
+    },
+    {
+      "name": "star",
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.008800000071525574,
+        "prepareRoundTripSeconds": 0.0345,
+        "preparedToSolveRequestSeconds": 0.00029999995231628417,
+        "solveRoundTripSeconds": 1.8885,
+        "resultToReadySeconds": 0.09710000002384186,
+        "clickToReadySeconds": 2.0292000000476835
+      },
+      "engineError": 0.0016,
+      "sourceEditableError": 0.0016,
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "extraGridComparisons": null,
+      "templateChecksPassed": true,
+      "pageErrors": [],
+      "passed": true
+    }
+  ],
+  "mapleIdenticalArtifacts": [
+    {
+      "file": "prepared.json",
+      "sha256": "4a1e09081b6be8ed4900cd5d4a911cfac09b7b2049cc48f7df888a74456e2c6c",
+      "identical": true
+    },
+    {
+      "file": "cut_geometry.json",
+      "sha256": "8262983cc07bbe364133df9a1609c12d93c3053c0a34e3c5c674a622b38c60e5",
+      "identical": true
+    },
+    {
+      "file": "editable.svg",
+      "sha256": "b36ea10baaef72ba3423e8505d3deb28d2202b30f6b510e32bbeda232de1d5cf",
+      "identical": true
+    },
+    {
+      "file": "draw.png",
+      "sha256": "42213af211ddce1ea7e831e7bee84c0f3d9a593cca390e6e06fcaa5e779bdacd",
+      "identical": true
+    }
+  ],
+  "browserComparison": [
+    {
+      "case": "maple-leaf-mask",
+      "beforeSeconds": 21.881,
+      "afterSeconds": 15.934100000023841,
+      "beforeError": 0.0112875,
+      "afterError": 0.0112875,
+      "beforeCounts": [
+        3,
+        3
+      ],
+      "afterCounts": [
+        3,
+        3
+      ],
+      "passedBefore": true,
+      "passedAfter": true
+    },
+    {
+      "case": "floral-checker-mask",
+      "beforeSeconds": 27.9085,
+      "afterSeconds": 25.149399999976158,
+      "beforeError": 0.0189625,
+      "afterError": 0.017225,
+      "beforeCounts": [
+        7,
+        7
+      ],
+      "afterCounts": [
+        7,
+        7
+      ],
+      "passedBefore": true,
+      "passedAfter": true
+    }
+  ],
+  "browserBaselineCommand": {
+    "command": [
+      "node",
+      "scripts/inverse/paint-browser-test.mjs"
+    ],
+    "environment": {
+      "PLAYWRIGHT_MODULE": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/collage-resolution-v1/playwright.mjs",
+      "INVERSE_TEST_URL": "http://127.0.0.1:5232",
+      "INVERSE_TEST_BROWSERS": "chromium",
+      "INVERSE_TEST_CASES": "maple-leaf-mask,floral-checker-mask",
+      "INVERSE_TEST_ENGINE_REFERENCE": "87e3eb4",
+      "INVERSE_TEST_OUTPUT": "tmp/heart-learning/browser-search-v2/browser-baseline"
+    },
+    "exitCode": 0,
+    "seconds": 62.947029917
+  },
+  "browserBaselineReferenceHashes": {
+    "static/inverse/compute-worker.js": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+    "static/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+    "static/inverse/core/chord-distance.js": "6be52281e3056d29ad7093f902b0f768410f3c414f049f164f94e969bd89dd48",
+    "static/inverse/core/crop.js": "e44d3179ca229cb645779af3550ab2736547104c46684e0ccee402a1d1875ea6",
+    "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+    "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+    "static/inverse/core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+    "static/inverse/core/direct/counts.js": "fbfcc89f1399bb76f2654b7476c52bd6aa29e2170ad1759e890268d9e392b23e",
+    "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+    "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+    "static/inverse/core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+    "static/inverse/core/direct/feature-seeds.js": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+    "static/inverse/core/direct/finalize.js": "40c9d60e5bd327876da0465ab8d371a05430d43412520a32a0f3ab90f07284e4",
+    "static/inverse/core/direct/fit.js": "0a53ee7d7153bffd0f11ad2fa1e295995496fecfb23be79dcf016c9118b5e6eb",
+    "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+    "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+    "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+    "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+    "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+    "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+    "static/inverse/core/direct/native/PROVENANCE.json": "e9fbaef090fc05bdc9450210f527b1fb3fa6bc77ee86c1902eb97bb6ed0acd2a",
+    "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+    "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58",
+    "static/inverse/core/direct/outline-details.js": "ff9d4df5f27fd9ca97d15b115cc95c5692bd17e302f0dcd11c62e7295b85d8aa",
+    "static/inverse/core/direct/polish.js": "3f9df26508076465860a62ce72c2de3aeb67413a1d67ab1927dc37b89b7b622e",
+    "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+    "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+    "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+    "static/inverse/core/direct/refine.js": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+    "static/inverse/core/direct/reroute.js": "84a8cf2cfb6bcb1101a63004f638d0f3dc398baf3fe15ec1068b20336535d9ed",
+    "static/inverse/core/direct/share.js": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+    "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+    "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+    "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+    "static/inverse/core/direct/short-returns.js": "d89c3a75df735ca5d519b354b0e47327f58ce56e55f86693de44ded98e857269",
+    "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+    "static/inverse/core/direct/topology.js": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097",
+    "static/inverse/core/engine.js": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+    "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+    "static/inverse/core/feature-recovery.js": "6be5ef1c55009da6cff646e460a6601b6fab87212d3b87da4f3bb09fb2c962f9",
+    "static/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+    "static/inverse/core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+    "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+    "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+    "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+    "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+    "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+    "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+    "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+    "static/inverse/core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+    "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+    "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+    "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+    "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+    "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+    "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+    "static/inverse/core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+    "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+    "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+    "static/inverse/core/solver.js": "cfc48549b0673167d0eeae4537cfc1f0d00c4cb4e6c34a10ee9972e42c65bcd6",
+    "static/inverse/core/spatial-color.js": "f170ff447ef905fc21121d286ac427a079b184ca077fd178065b0a3e247fb132",
+    "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+    "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+    "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+    "static/inverse/core/validate.js": "31cc29c6873896f53a2f999782dcd2292f0924611166932114b45534f5cbebd7",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+    "static/inverse/worker-bootstrap.js": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+    "static/inverse/worker-controller.js": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+    "static/inverse/worker.js": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70"
+  },
+  "browserBaselineRequests": {
+    "/inverse/worker-bootstrap.js": 4,
+    "/inverse/worker.js": 4,
+    "/inverse/worker-controller.js": 4,
+    "/inverse/core/engine.js": 6,
+    "/inverse/core/settings.js": 6,
+    "/inverse/core/stopped.js": 4,
+    "/inverse/core/zip.js": 4,
+    "/inverse/core/crop.js": 4,
+    "/inverse/core/automatic.js": 6,
+    "/inverse/core/feature-shapes.js": 6,
+    "/inverse/core/progress.js": 6,
+    "/inverse/core/direct/fit.js": 6,
+    "/inverse/core/symmetry.js": 6,
+    "/inverse/core/direct/symmetry.js": 6,
+    "/inverse/core/bezier.js": 6,
+    "/inverse/core/input.js": 6,
+    "/inverse/core/image-reference.js": 6,
+    "/inverse/core/graph.js": 6,
+    "/inverse/core/routing.js": 6,
+    "/inverse/core/validate.js": 6,
+    "/inverse/core/material.js": 6,
+    "/inverse/core/rounding.js": 6,
+    "/inverse/core/export.js": 6,
+    "/inverse/core/image-features.js": 6,
+    "/inverse/core/direct/matching.js": 6,
+    "/inverse/core/numerical-kernel.js": 6,
+    "/inverse/core/direct/finalize.js": 6,
+    "/inverse/core/direct/prefer-matching.js": 6,
+    "/inverse/core/presets.js": 6,
+    "/inverse/core/direct/topology.js": 6,
+    "/inverse/core/mask-preview.js": 6,
+    "/inverse/core/direct/grid.js": 6,
+    "/inverse/core/direct/curves.js": 6,
+    "/inverse/core/direct/share.js": 6,
+    "/inverse/core/direct/refine.js": 6,
+    "/inverse/core/direct/math.js": 6,
+    "/inverse/core/direct/counts.js": 6,
+    "/inverse/core/feature-recovery.js": 6,
+    "/inverse/core/direct/native.js": 6,
+    "/inverse/core/direct/image-objective.js": 6,
+    "/inverse/core/direct/feature-seeds.js": 6,
+    "/inverse/core/direct/boundary.js": 6,
+    "/inverse/core/direct/feature-details.js": 6,
+    "/inverse/core/direct/reroute.js": 6,
+    "/inverse/core/direct/clamped-features.js": 6,
+    "/inverse/core/direct/polish.js": 6,
+    "/inverse/core/direct/chord-tangent.js": 6,
+    "/inverse/core/direct/isometry-projection.js": 6,
+    "/inverse/core/geometry.js": 6,
+    "/inverse/core/junctions.js": 6,
+    "/inverse/core/border.js": 6,
+    "/inverse/core/unmix.js": 6,
+    "/inverse/core/polygonal.js": 6,
+    "/inverse/core/portals.js": 6,
+    "/inverse/core/solver.js": 6,
+    "/inverse/core/self-intersections.js": 6,
+    "/inverse/core/self-returns.js": 6,
+    "/inverse/core/chord-distance.js": 6,
+    "/inverse/core/paper-backend.js": 6,
+    "/inverse/core/direct/short-returns.js": 6,
+    "/inverse/core/direct/sharing-orbit.js": 6,
+    "/inverse/core/direct/shared-span.js": 6,
+    "/inverse/core/direct/primitives.js": 6,
+    "/inverse/core/direct/primitive-selection.js": 6,
+    "/inverse/core/direct/shared-simplification.js": 6,
+    "/inverse/core/direct/curve-topology.js": 6,
+    "/inverse/core/direct/initialize.js": 6,
+    "/inverse/core/direct/initialization-image.js": 6,
+    "/inverse/core/kernel-choice.js": 6,
+    "/inverse/core/direct/outline-details.js": 6,
+    "/inverse/compute-worker.js": 2,
+    "/inverse/core/direct/native/boundary.wasm": 2
+  },
+  "browserCommand": {
+    "command": [
+      "node",
+      "scripts/inverse/paint-browser-test.mjs"
+    ],
+    "environment": {
+      "PLAYWRIGHT_MODULE": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/collage-resolution-v1/playwright.mjs",
+      "INVERSE_TEST_URL": "http://127.0.0.1:5232",
+      "INVERSE_TEST_BROWSERS": "chromium",
+      "INVERSE_TEST_CASES": "maple-leaf-mask,floral-checker-mask,faded-frame-mask,web-danish-tree-group-right,star",
+      "INVERSE_TEST_OUTPUT": "tmp/heart-learning/browser-search-v2/browser"
+    },
+    "exitCode": 0,
+    "seconds": 89.535250333
+  },
+  "finalLint": {
+    "command": [
+      "npm",
+      "run",
+      "lint"
+    ],
+    "exitCode": 0,
+    "seconds": 6.5080955000000005
+  },
+  "served": [
+    {
+      "file": "static/inverse/core/geometry.js",
+      "url": "http://127.0.0.1:5232/inverse/core/geometry.js",
+      "sha256": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89"
+    },
+    {
+      "file": "static/inverse/core/direct/counts.js",
+      "url": "http://127.0.0.1:5232/inverse/core/direct/counts.js",
+      "sha256": "efdfa3fc371dc9d9cfbbc9ce763df8b8cdca6f8f6324b55fde9d23ed05f31d8e"
+    },
+    {
+      "file": "static/inverse/core/direct/fit.js",
+      "url": "http://127.0.0.1:5232/inverse/core/direct/fit.js",
+      "sha256": "4d96e0131b1a79d117569d1fb1ddcad4cb1dd02871266fc6164b1eb57ecdce8a"
+    }
+  ],
+  "exportCoverage": {
+    "svgCases": [
+      "maple-leaf-mask",
+      "floral-checker-mask",
+      "faded-frame-mask",
+      "web-danish-tree-group-right",
+      "star"
+    ],
+    "pdfCases": [
+      "maple-leaf-mask",
+      "floral-checker-mask",
+      "faded-frame-mask",
+      "star"
+    ]
+  },
+  "browserHarnessHashes": {
+    "scripts/inverse/paint-browser-test.mjs": "3a521b0bd9a4dbc113e294b3a75a2c6165723de70f74d3b2b9bbfba8c32d673a",
+    "scripts/inverse/paint-observer.mjs": "ecd64762564fd41b3e872a330b5449ce9d8f7671906510b8f37b4a54c76ab67c",
+    "scripts/inverse/motif-fixture.mjs": "4c735dc7b27f39ce30362830ef911b79347a8b7f43d01b4eaeaf5750460355f1",
+    "scripts/inverse/tree-fixture.mjs": "771d6383cf90e840c911543258e26cd82c5d287336e65f53898045f429a1d84a",
+    "scripts/inverse/crop-fixture.mjs": "29d35f169e1c599ebdea6a20147d7cd8fddf22f0d53aaa3a8d690156161307bd",
+    "scripts/inverse/web-photo-data.mjs": "6fd029ea17d02efc1ca72cb2080f0dfc9b972d14ab1b5f7911002ae43608fee5",
+    "scripts/inverse/hard-photo-data.mjs": "84ba890531eab12a9a22e056a2e4a0043414eaca7db3f82b5956718869556d9f",
+    "scripts/inverse/editable-paper-audit.mjs": "f34d170dfb9830c4ba51c5fa2565a0740977a994130313afd2dcd79f065c2429",
+    "scripts/inverse/feature-component-metrics.mjs": "655cb4d75a7e5e09c4386204409eabb41fb8cf98bc5c9b5f32a143759d86fc8e",
+    "scripts/inverse/fixtures/photographic-bird-fit.json": "cbcbb713ddc5c3e55f57d892d1fcdf41408fa26fa8f97cf96c615e2fcc3a9dc8",
+    "scripts/inverse/fixtures/photographic-leaf-routing.json": "34879781b5946e8ec818c6d152a676cb91bb6ce1364c1ab05a01cc4f6228e360",
+    "scripts/inverse/fixtures/photographic-checkerboard-fits.json": "0ee81f7c7609d66f75879218ce3c174ad3d9891a3bbc96e08a11a59ecaedf7fd",
+    "scripts/inverse/stop-browser-hooks.mjs": "f16ce129c448832d997ca6dd7d216f8e818374cbcf0d3d42ed2df6e93190a09c",
+    "scripts/inverse/fixtures/flower-resolution/source.json": "ec0d6c2cc519c5b60ea73e945ce2ddc70c3c6b34d8e7fea83ff71b3f2549f471",
+    "scripts/inverse/fixtures/flower-resolution/native.png": "ff26866081f60d3f0636acffb408cde199c177aac7e97b907979b06ad5b6f35b",
+    "scripts/inverse/fixtures/flower-resolution/downsample.png": "401aa87e915c367ba1f55e3c3caa418d90c8d98537dbe9cd006d8576eeb039df",
+    "scripts/inverse/fixtures/photographic-anchor-perturbation.json": "e659013a84242e465c1910f8c72a6f2d7d558b22ee5b7476b68f69b1b4cfc0e9",
+    "scripts/inverse/fixtures/photographic-anchor-perturbation.png": "fbe7dec61239342c470a8d8d227fc47f0c55d52a5c07488f26485a07bf84a10d",
+    "scripts/inverse/fixtures/faded-frame-mask.json": "ccb3d80aa471feba772451e416c1dcd7fe466dd208a4e67e57491455c72c546b",
+    "scripts/inverse/fixtures/faded-frame-mask.png": "8d88be6bd3febd2c47ee79fc9e480deed6e6fb71b6790746d4330b10da1fa8c0",
+    "scripts/inverse/fixtures/photographic-gift-fit.json": "3f628a763911f70f6da2b3a84524dd561bd3cfa5982b17a5d4a1ae39f5280e31",
+    "scripts/inverse/fixtures/browser-puppy-half-mask.json": "73da68cccbf9ad38996b4aa9d91914d1a546a0cfb347617f1daee261e26ad161",
+    "scripts/inverse/fixtures/photographic-puppy-fit.json": "e6b587e30dfbf6ca25e6b417a0ff8e1b871297a16f7c8b57ced6829f12352116",
+    "scripts/inverse/fixtures/photographic-near-miss-seed.json": "96a90648f7204bd77a4552fda385e949549b70077cc17ef5cb0b344feb6a49ef",
+    "scripts/inverse/fixtures/maple-comparison.json": "1f02088e45c3d1dbdb13ddb0d17c6f25e82331de846d084419873040f33b5450"
+  },
+  "browserRuntimeHashes": {
+    "static/inverse/worker.js": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70",
+    "static/inverse/worker-bootstrap.js": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+    "static/inverse/worker-controller.js": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+    "static/inverse/compute-worker.js": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+    "static/inverse/core/engine.js": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+    "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+    "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+    "static/inverse/core/feature-recovery.js": "6be5ef1c55009da6cff646e460a6601b6fab87212d3b87da4f3bb09fb2c962f9",
+    "static/inverse/core/solver.js": "cfc48549b0673167d0eeae4537cfc1f0d00c4cb4e6c34a10ee9972e42c65bcd6",
+    "static/inverse/core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+    "static/inverse/core/crop.js": "e44d3179ca229cb645779af3550ab2736547104c46684e0ccee402a1d1875ea6",
+    "static/inverse/locator/locator.js": "f4c769870e13481a30d149dbdad5a743b52d55d949bc9d898c2c7db0af434773",
+    "static/inverse/locator/fields.js": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
+    "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+    "static/inverse/locator/palette.js": "e6163193c14d753c2b93168c2e2e25602fb240117e1846a1c92a92308bc9084b",
+    "static/inverse/locator/anchored.js": "c4f5276af229a7b9bbc1f686ea308697200cdd787bcdee2692d87a60bcdad991",
+    "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+    "static/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+    "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+    "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+    "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+    "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+    "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+    "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+    "src/lib/inverse/engine.ts": "8f6674a430cb5f89ff597eb1f290a730173a5d82afcb42263a14762ded568618",
+    "static/inverse/core/direct/finalize.js": "40c9d60e5bd327876da0465ab8d371a05430d43412520a32a0f3ab90f07284e4",
+    "static/inverse/core/direct/topology.js": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097",
+    "static/inverse/core/direct/fit.js": "4d96e0131b1a79d117569d1fb1ddcad4cb1dd02871266fc6164b1eb57ecdce8a",
+    "static/inverse/core/direct/share.js": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+    "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+    "static/inverse/core/direct/counts.js": "efdfa3fc371dc9d9cfbbc9ce763df8b8cdca6f8f6324b55fde9d23ed05f31d8e",
+    "static/inverse/core/direct/feature-seeds.js": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+    "static/inverse/core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+    "static/inverse/core/direct/outline-details.js": "ff9d4df5f27fd9ca97d15b115cc95c5692bd17e302f0dcd11c62e7295b85d8aa",
+    "static/inverse/core/direct/polish.js": "3f9df26508076465860a62ce72c2de3aeb67413a1d67ab1927dc37b89b7b622e",
+    "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+    "src/lib/inverse/toHeartDesign.ts": "eb405a8bb15abebd46f07ed17457ebc44735221e92b9bc866a4ad5dc3c05c66f",
+    "src/lib/inverse/simplifyCurves.ts": "c693b9eb86084926d941d7e60a1a38178156d081657feabce41ff03261714173",
+    "src/lib/editor/curveIssues.ts": "293535d5f73d3dd4c9a7bbfc1c83b25ba81558d593644743496cf9e8afa5358e",
+    "src/lib/components/paint/PaintPage.svelte": "266fe756e5876ffe4293518a87d48c6f0f1813f37e112e19712678101f8d47af",
+    "src/lib/inverse/conversionFidelity.ts": "45db43e0919b98cfe03c115bda7473896de0da1aeec89e94ee74bbaeffdbb589",
+    "static/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+    "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+    "static/inverse/core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+    "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+    "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+    "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+    "static/inverse/core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+    "static/inverse/core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+    "static/inverse/core/validate.js": "31cc29c6873896f53a2f999782dcd2292f0924611166932114b45534f5cbebd7",
+    "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+    "static/inverse/core/direct/refine.js": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+    "static/inverse/core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+    "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+    "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+    "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+    "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+    "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+    "static/inverse/core/direct/short-returns.js": "d89c3a75df735ca5d519b354b0e47327f58ce56e55f86693de44ded98e857269",
+    "src/lib/components/editor/SymmetryRows.svelte": "1bf99195778a11baf02bff2bf0ab9983a9ab6ae3d5d52b7f29f17eb0efb57884",
+    "src/lib/components/ui/toggle-group/toggle-group.svelte": "ef3ac7b6559268d4e5b8f34870b91939fc39a92718a5d90b650c383f0ca178d4",
+    "src/lib/components/paint/FramePanel.svelte": "9d048e201f9c83b3343d487f716dc835cfe9e61067fa228c8b4c043f7624bc1f",
+    "src/lib/components/paint/MaskToolPanel.svelte": "b37ff23378e86b8411f911a2c2106d8d3f410ab395b0c08915d4329b4ec143cb",
+    "src/lib/i18n/translations.ts": "408c079b8f04fd6da92d8b463442b7cbfb64846b5005e0b7e875dd4b8efff758",
+    "src/lib/components/paint/FindCutsPanel.svelte": "f47863c444d17e05c6d3076595c00e5c8c0e1b29ce1c7a11878a49299d0a48e1"
+  },
+  "artifacts": {
+    "tmp/heart-learning/browser-search-v2/browser/results.json": "0eba1a4d7459737531192c5376c60c385d1e815d2a01371389d3907e7c96b46f",
+    "tmp/heart-learning/browser-search-v2/browser/chromium-star/prepared.json": "16846094e460d9c934f80d1e922cde35c0528a8eaec7696399d23910dc89576b",
+    "tmp/heart-learning/browser-search-v2/browser/chromium-star/cut_geometry.json": "7e040bc9715127cdbf3d111dd6acb85beebb267bcfab69c198a9b3966de87601",
+    "tmp/heart-learning/browser-search-v2/browser/chromium-star/editable.svg": "9724587ad2a86e36eaa6dba585e87d8ae67f5b958269b4c20c76cc9dfafec698",
+    "tmp/heart-learning/browser-search-v2/browser/chromium-star/engine-report.json": "5a064874c80afe8c6f8cfa1b7cf3020bb945b87e9a0c9c3ade9683f500d78202",
+    "tmp/heart-learning/browser-search-v2/browser/chromium-star/template.pdf": "5c085d795dd0c4b62f0a626f4fab75c02334bff741f0dd49c0f8f556458a307c",
+    "tmp/heart-learning/browser-search-v2/browser/chromium-maple-leaf-mask/prepared.json": "4a1e09081b6be8ed4900cd5d4a911cfac09b7b2049cc48f7df888a74456e2c6c",
+    "tmp/heart-learning/browser-search-v2/browser/chromium-maple-leaf-mask/cut_geometry.json": "8262983cc07bbe364133df9a1609c12d93c3053c0a34e3c5c674a622b38c60e5",
+    "tmp/heart-learning/browser-search-v2/browser/chromium-maple-leaf-mask/editable.svg": "b36ea10baaef72ba3423e8505d3deb28d2202b30f6b510e32bbeda232de1d5cf",
+    "tmp/heart-learning/browser-search-v2/browser/chromium-maple-leaf-mask/engine-report.json": "0966c55a80ccdaf156413b397f87b084366f7d95839af19a7d519d46a3914edb",
+    "tmp/heart-learning/browser-search-v2/browser/chromium-maple-leaf-mask/template.pdf": "fc5263adccb8200a6ea365ad9fe4d45ad62abf80d1a67c3ff32a8b906f41e5f0",
+    "tmp/heart-learning/browser-search-v2/browser/chromium-web-danish-tree-group-right/prepared.json": "6f2b6bcf18be083dc1048475ee870ae6c0dde1e5819b49de7735cce41d4e8bb6",
+    "tmp/heart-learning/browser-search-v2/browser/chromium-web-danish-tree-group-right/cut_geometry.json": "03eec82f71986716d1727f790fe19b3cda1a0823ef062f953bd20592ec50ebfb",
+    "tmp/heart-learning/browser-search-v2/browser/chromium-web-danish-tree-group-right/editable.svg": "76ed768c3d94b76844b0a4fd030cd762703e35386543c539a92ba4be302bf492",
+    "tmp/heart-learning/browser-search-v2/browser/chromium-web-danish-tree-group-right/engine-report.json": "4dd73c614c5f54c6d0a15e497b6ecb24d76c4edda1cd73207e8728fa7cc0f801",
+    "tmp/heart-learning/browser-search-v2/browser/chromium-faded-frame-mask/prepared.json": "33b451a7d1398cb4a8cc37a28c225aecc1456316803c8e7029f9dac6009f5688",
+    "tmp/heart-learning/browser-search-v2/browser/chromium-faded-frame-mask/cut_geometry.json": "0563b45272bfbbe72c112eeafd15946b8c595cc89fa38d3c46f0fb30a835cb2a",
+    "tmp/heart-learning/browser-search-v2/browser/chromium-faded-frame-mask/editable.svg": "4460187f3652a0d72ef97300c2e4d08f6f5a924ea6893ce8141da9c4bbb98f2d",
+    "tmp/heart-learning/browser-search-v2/browser/chromium-faded-frame-mask/engine-report.json": "a1c87d548de51970d959f87d40841e85e9b302f4935ee95338a8e49c5a87d13e",
+    "tmp/heart-learning/browser-search-v2/browser/chromium-faded-frame-mask/template.pdf": "50344c8cb4ea5cc9ffeca7fdff2b93a072fe436d97de1bf00e79e8c41e3d8dea",
+    "tmp/heart-learning/browser-search-v2/browser/chromium-floral-checker-mask/prepared.json": "9909ba02418c9ed59515b67108a86d0a875757bd24364322d0a5d72f1d7f3038",
+    "tmp/heart-learning/browser-search-v2/browser/chromium-floral-checker-mask/cut_geometry.json": "90aeb56ad1ff0ac87e313ed089f040f140ed09acdc5f1d89a39075d356e23367",
+    "tmp/heart-learning/browser-search-v2/browser/chromium-floral-checker-mask/editable.svg": "86e00bb3eb2df94f0953d5943316830bd552b9cd1cd91201a427477efdf453dc",
+    "tmp/heart-learning/browser-search-v2/browser/chromium-floral-checker-mask/engine-report.json": "d8b77da3296b3c9caf4db18cc3dbe4d8597b07d38526ef2ad887535ecea8252d",
+    "tmp/heart-learning/browser-search-v2/browser/chromium-floral-checker-mask/template.pdf": "8c3276228801eebeb08b41b6e3885daac4dccb0b2a09acb9dbcb0ee34b577b2a"
+  },
+  "visualReview": {
+    "gallery": {
+      "images": 15,
+      "errors": []
+    },
+    "gallerySha256": "a3b07f36a4c24c328153dfdd9788aa35dcf8ec23732db999b561c920af68fa1b",
+    "reviewed": [
+      "geometry-gallery.png",
+      "browser/chromium-maple-leaf-mask/input.png",
+      "browser/chromium-maple-leaf-mask/result.png",
+      "browser-baseline/chromium-maple-leaf-mask/result.png",
+      "browser/chromium-floral-checker-mask/result.png"
+    ],
+    "findings": "Maple cutting geometry, editable SVG and Draw screenshot are byte-identical. Photographic border irregularities and thin seams remain; numerical acceptance is not original-artwork ground truth."
+  },
+  "scope": "Selected development masks, fixed benchmark crops and browser QA; not held-out real-photo ground truth. No acceptance threshold was weakened."
+}

@@ -1,0 +1,181 @@
+{
+  "schema": "locator-contrast-fallback-results-1",
+  "status": "complete-offline-development-replay",
+  "deployment": false,
+  "training": false,
+  "plan": "docs/inverse/datasets/locator-contrast-fallback-plan.json",
+  "scope": "Actual original-cropper-then-contrast-fallback selection, fresh ten-second fitting and editable export on all 22 development photos. No target scores or annotations choose crops. Frozen SAM body/RGB paper fields; not the production RGB-only cropper.",
+  "selectionAudit": {
+    "status": "complete",
+    "retainedPrimaryIds": [
+      "real-12ce3c9180f7f317-body-1",
+      "real-2044b1d98ed6f262-body-1",
+      "real-340f5e5b0f447889-body-1",
+      "real-39f3a1ba97852876-body-1",
+      "real-5330aa8b62176216-body-1",
+      "real-710703159f609111-body-1",
+      "real-80794af7903e5d29-body-1",
+      "real-8c875dd0f298b5a4-body-1",
+      "real-a414dfffbd2362ae-body-1",
+      "real-abf590088db891f9-body-1",
+      "real-b87b0b19f12724f3-body-1",
+      "real-c0cc1ce97cf5e6a6-body-1",
+      "real-c4a9ee6e2d0a4185-body-1",
+      "real-e936e08ac62db19b-body-1"
+    ],
+    "gainedIds": [
+      "real-3f7b76e1a98e808f-body-1",
+      "real-45744a03afddccb1-body-1"
+    ],
+    "unresolvedIds": [
+      "real-68d8f25d8891df62-body-1",
+      "real-990ac34431be87fe-body-1",
+      "real-995899fe049540ed-body-1",
+      "real-cdae5c890b6933cd-body-1",
+      "real-cf2d0fcff65d7386-body-1",
+      "real-d5b0aa8d4d2465ee-body-1"
+    ],
+    "primarySupportedCoordinatesExactlyReproduced": true,
+    "actualFallbackCalls": 8,
+    "cropTimeSeconds": {
+      "median": 0.6393376245,
+      "maximum": 5.141757791,
+      "includes": "Fresh original attempt and conditional alternative, excluding model inference and PNG decoding"
+    },
+    "cornerReferences": [
+      {
+        "id": "real-12ce3c9180f7f317-body-1",
+        "metrics": {
+          "cornerErrorPixels": [
+            21.09518634231083,
+            3.6746315515489454,
+            15.027922135846024,
+            8.62032809635503
+          ],
+          "referenceMeanSidePixels": 1609.3110618156265,
+          "referenceUncertaintyPixels": 29.0273,
+          "maximumCornerErrorSideFraction": 0.013108209371599804,
+          "maximumExcessBeyondReferenceUncertaintySideFraction": 0.0
+        }
+      },
+      {
+        "id": "real-5330aa8b62176216-body-1",
+        "metrics": {
+          "cornerErrorPixels": [
+            8.369059826521244,
+            3.0861674051884136,
+            3.3651028275644155,
+            3.4803767420402885
+          ],
+          "referenceMeanSidePixels": 138.69028614139583,
+          "referenceUncertaintyPixels": 6.0,
+          "maximumCornerErrorSideFraction": 0.0603435183484222,
+          "maximumExcessBeyondReferenceUncertaintySideFraction": 0.017081656491111204
+        }
+      },
+      {
+        "id": "real-8c875dd0f298b5a4-body-1",
+        "metrics": {
+          "cornerErrorPixels": [
+            2.460151594789048,
+            9.612635867226938,
+            12.470758511405325,
+            3.0651775650289204
+          ],
+          "referenceMeanSidePixels": 209.4456998764857,
+          "referenceUncertaintyPixels": 6.0,
+          "maximumCornerErrorSideFraction": 0.05954172617895512,
+          "maximumExcessBeyondReferenceUncertaintySideFraction": 0.030894683038235022
+        }
+      },
+      {
+        "id": "real-995899fe049540ed-body-1",
+        "metrics": null
+      },
+      {
+        "id": "real-abf590088db891f9-body-1",
+        "metrics": {
+          "cornerErrorPixels": [
+            3.403948015313903,
+            4.555578198478684,
+            1.0520831436762959,
+            4.5404659623763255
+          ],
+          "referenceMeanSidePixels": 138.96634024760576,
+          "referenceUncertaintyPixels": 6.0,
+          "maximumCornerErrorSideFraction": 0.03278188221954828,
+          "maximumExcessBeyondReferenceUncertaintySideFraction": 0.0
+        }
+      },
+      {
+        "id": "real-d5b0aa8d4d2465ee-body-1",
+        "metrics": null
+      }
+    ],
+    "sourceHashes": {
+      "tmp/heart-learning/locator-contrast-fallback-v1/results/report.json": "23bd06fc9544691fc37e892f7d67db79d65ffdb6769c0e5e6450026955d15c03",
+      "tmp/heart-learning/locator-diameter-components-v1/results/report.json": "e6ff3e8a8a0afe9b9e4e25698b36306903a06aa68d9609e304f6de1d329f1c6c",
+      "tmp/heart-learning/locator-diameter-components-v1/corner-audit.json": "312f66264351e24a3e52d15616e4677d60f6478f874521cc02b16aae100785d9",
+      "scripts/inverse/learning/corner_metrics.py": "c224cd837038403b4562efdac42dea448fa27b0b82859685adb0324a49200626"
+    }
+  },
+  "pipeline": {
+    "cases": 22,
+    "statuses": {
+      "checked-derived-mask": 13,
+      "review-required": 3,
+      "crop-unresolved": 6
+    },
+    "previousChecked": 12,
+    "currentChecked": 13,
+    "gained": [
+      "real-45744a03afddccb1-body-1"
+    ],
+    "lost": [],
+    "unchangedPrimaryTargets": 14,
+    "timedSolveErrorDifferencesOnUnchangedTargets": [
+      {
+        "id": "real-8c875dd0f298b5a4-body-1",
+        "before": 0.01940625,
+        "after": 0.0194
+      },
+      {
+        "id": "real-a414dfffbd2362ae-body-1",
+        "before": 0.0103375,
+        "after": 0.009675
+      }
+    ],
+    "exported": 16,
+    "editableConversionsPassed": 16,
+    "completeEditablePassed": 13,
+    "solveTimeSeconds": {
+      "median": 7.686177562500001,
+      "maximum": 9.625274958000002,
+      "includes": "Design preparation inside engine, fitting and export; separate source decoding and crop search excluded."
+    }
+  },
+  "review": {
+    "allFourReconstructionPanelsInspected": true,
+    "outputs": 16,
+    "rabbit": "Passes at 0.5675% estimated-mask disagreement, with recognizable silhouette and frame.",
+    "star": "0.7495% observed-mask disagreement, but the thin edge-strip feature is omitted; still fails.",
+    "remainingFailures": "Six unresolved crops; star border feature; bicycle shape outside the regular published-cut model; printed-heart checker mistakes decoration for paper identity.",
+    "artifactLimitations": "Some accepted checker and frame reconstructions retain small visible deviations. Partial interior labels cannot certify motif boundaries or exact cutting paths."
+  },
+  "sourceFilesVerified": 876,
+  "repositoryQA": "docs/inverse/datasets/locator-diameter-components-results.json#repositoryQA",
+  "nextStep": "With these selected crops fixed, compare interpolated coarse material probabilities against original crop RGB classified with the same frozen palettes. Cross-score exports against both masks and existing independent source-paper observations; retain all geometry, feature and time gates.",
+  "artifactsSha256": {
+    "tmp/heart-learning/locator-contrast-fallback-v1/plan.json": "79725dbcb14995581ef4e20ef070b0fe11a9b918d756204935520109e11df518",
+    "tmp/heart-learning/locator-contrast-fallback-v1/state.json": "62f943c0bb4e3e1ca523bfa8bc5da68fd54cd8c4ab2c5906d1a8128558cbb6c1",
+    "tmp/heart-learning/locator-contrast-fallback-v1/source.json": "fe69911128978b56e6de0a096b847cdac7fd01a17fb74877cd966e40c8f9087d",
+    "tmp/heart-learning/locator-contrast-fallback-v1/checks.json": "0bd7e6bf2b39143d61c3052157b5539ec006136dd520372da5b0e2ffd2c0b60e",
+    "tmp/heart-learning/locator-contrast-fallback-v1/results/report.json": "23bd06fc9544691fc37e892f7d67db79d65ffdb6769c0e5e6450026955d15c03",
+    "tmp/heart-learning/locator-contrast-fallback-v1/selection-audit.json": "e4aa48233b3a825f0c04f523ca6399736ae39118cc213b2e1c82987d91c3e8d0",
+    "tmp/heart-learning/locator-contrast-fallback-v1/pipeline/report.json": "fdcee15fdf8f7506b4d4f8830ddb227e2f2226f1f32e00d67f44f169cd920bdc",
+    "tmp/heart-learning/locator-contrast-fallback-v1/editable/results.json": "1c40f89fa62169f2e334efa3f550daf7c6fe5281946ca5e4cc6cb490aa1c489a",
+    "tmp/heart-learning/locator-contrast-fallback-v1/source-paper-scores.json": "030c5f8c617a00ee025ab16ed1c8634e7a6713fe18c1c8a820a373e39a0bdcd1",
+    "tmp/heart-learning/locator-contrast-fallback-v1/reconstruction-figures.json": "0e0bee9638bef527c80dce1bd96f39bf4110f971d15d6e4abcb8f23bcbdc0777",
+    "tmp/heart-learning/locator-contrast-fallback-v1/review-audit.json": "2147096d4fcfdff17dd634432f1a6a6e65083f3509ef2d32f070125ac709b95c"
+  }
+}

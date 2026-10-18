@@ -1,0 +1,429 @@
+{
+  "sourceCommit": "a16ec31cb948f70e065378f83e122b20e495e5c1",
+  "baseline": "1501486",
+  "tests": {
+    "application": 778,
+    "engine": 274,
+    "optionalFixtureRecordingSkipped": 1,
+    "typeErrors": 0,
+    "existingTypeWarnings": 7,
+    "lintPassed": true,
+    "buildPassed": true
+  },
+  "audit": {
+    "audit": {
+      "backend": "auto",
+      "rounds": 5,
+      "cases": 67,
+      "allIdentical": true,
+      "medianPairedSaving": 0.08818603847111217,
+      "groups": {
+        "controlled": {
+          "cases": 12,
+          "previousMedianSeconds": 0.004584271000000001,
+          "currentMedianSeconds": 0.0036802914999999816,
+          "medianPairedSaving": 0.013675873233627622
+        },
+        "matching-hat": {
+          "cases": 1,
+          "previousMedianSeconds": 0.027392916000000014,
+          "currentMedianSeconds": 0.020466957999999976,
+          "medianPairedSaving": 0.17202491074582638
+        },
+        "hunodan": {
+          "cases": 22,
+          "previousMedianSeconds": 0.04694760449999967,
+          "currentMedianSeconds": 0.03958918749999975,
+          "medianPairedSaving": 0.16211725664543797
+        },
+        "weighted": {
+          "cases": 32,
+          "previousMedianSeconds": 0.033019021000000065,
+          "currentMedianSeconds": 0.030833999999998925,
+          "medianPairedSaving": 0.06375394942425638
+        }
+      }
+    },
+    "audit-wasm": {
+      "backend": "wasm",
+      "rounds": 5,
+      "cases": 67,
+      "allIdentical": true,
+      "medianPairedSaving": 0.09448745173385975,
+      "groups": {
+        "controlled": {
+          "cases": 12,
+          "previousMedianSeconds": 0.0044605835000000125,
+          "currentMedianSeconds": 0.0036624165000000066,
+          "medianPairedSaving": 0.03248898593389238
+        },
+        "matching-hat": {
+          "cases": 1,
+          "previousMedianSeconds": 0.02706008299999985,
+          "currentMedianSeconds": 0.01973175000000015,
+          "medianPairedSaving": 0.1765241986513163
+        },
+        "hunodan": {
+          "cases": 22,
+          "previousMedianSeconds": 0.046438187500000366,
+          "currentMedianSeconds": 0.03860389600000076,
+          "medianPairedSaving": 0.17489353168862332
+        },
+        "weighted": {
+          "cases": 32,
+          "previousMedianSeconds": 0.0318647289999999,
+          "currentMedianSeconds": 0.029396458499998515,
+          "medianPairedSaving": 0.07955056764692375
+        }
+      }
+    },
+    "browser": {
+      "cases": 27,
+      "rounds": 4,
+      "policies": [
+        "previous",
+        "cachedJavaScript",
+        "forcedWasm",
+        "current"
+      ],
+      "allIdentical": true,
+      "browsers": [
+        "firefox",
+        "chromium",
+        "webkit"
+      ]
+    }
+  },
+  "datasets": {
+    "hunodan": {
+      "cases": 22,
+      "allPassed": true,
+      "medianSeconds": 5.403644270999999,
+      "maximumSeconds": 8.798220125,
+      "geometryIdenticalToPrevious": 22,
+      "changed": []
+    },
+    "weighted": {
+      "cases": 32,
+      "allPassed": true,
+      "medianSeconds": 4.536214770999999,
+      "maximumSeconds": 8.035158540999998,
+      "geometryIdenticalToPrevious": 31,
+      "changed": [
+        {
+          "id": "top-hat-0.84-weighted-inverted",
+          "geometrySha256": "a816489c67e14dd448b1ebdc1d269ebb0ee06092f70c13fcf6c8e5a32f42d576",
+          "previousGeometrySha256": "95148ec6d64c6d88a84b548b03c4e4f2c608d2f58fa113197289bfdd27ef9d1f",
+          "error": 0.00021258503401360543,
+          "previousError": 0.00031887755102040814,
+          "seconds": 8.035158540999998,
+          "previousSeconds": 9.823542749999996
+        }
+      ]
+    }
+  },
+  "browser": {
+    "browser": {
+      "cases": 18,
+      "allPassed": true,
+      "allGeometryIdenticalToPrevious": true,
+      "rows": [
+        {
+          "browser": "firefox",
+          "name": "top-hat",
+          "seconds": 16.151,
+          "sourceError": 0.0032064909297052154,
+          "sharedSpans": 41,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "firefox",
+          "name": "top-hat-independent",
+          "seconds": 10.656,
+          "sourceError": 0.0029584750566893424,
+          "sharedSpans": 30,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "firefox",
+          "name": "top-hat-anti",
+          "seconds": 11.618,
+          "sourceError": 0.0031887755102040817,
+          "sharedSpans": 39,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "firefox",
+          "name": "star",
+          "seconds": 4.59,
+          "sourceError": 0.0016,
+          "sharedSpans": 12,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "firefox",
+          "name": "hunodan",
+          "seconds": 6.609,
+          "sourceError": 0.00944375,
+          "sharedSpans": 5,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "firefox",
+          "name": "circle",
+          "seconds": 3.811,
+          "sourceError": 0.0009375,
+          "sharedSpans": 9,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "chromium",
+          "name": "top-hat",
+          "seconds": 9.48919999998808,
+          "sourceError": 0.0032064909297052154,
+          "sharedSpans": 41,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "chromium",
+          "name": "top-hat-independent",
+          "seconds": 5.878900000035763,
+          "sourceError": 0.0029584750566893424,
+          "sharedSpans": 30,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "chromium",
+          "name": "top-hat-anti",
+          "seconds": 7.497899999976158,
+          "sourceError": 0.0031887755102040817,
+          "sharedSpans": 39,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "chromium",
+          "name": "star",
+          "seconds": 1.853,
+          "sourceError": 0.0016,
+          "sharedSpans": 12,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "chromium",
+          "name": "hunodan",
+          "seconds": 4.544300000011921,
+          "sourceError": 0.00944375,
+          "sharedSpans": 5,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "chromium",
+          "name": "circle",
+          "seconds": 1.952699999988079,
+          "sourceError": 0.00095,
+          "sharedSpans": 9,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "webkit",
+          "name": "top-hat",
+          "seconds": 10.034,
+          "sourceError": 0.0032064909297052154,
+          "sharedSpans": 41,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "webkit",
+          "name": "top-hat-independent",
+          "seconds": 5.882,
+          "sourceError": 0.0029584750566893424,
+          "sharedSpans": 30,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "webkit",
+          "name": "top-hat-anti",
+          "seconds": 9.448,
+          "sourceError": 0.0031887755102040817,
+          "sharedSpans": 39,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "webkit",
+          "name": "star",
+          "seconds": 2.005,
+          "sourceError": 0.0016,
+          "sharedSpans": 12,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "webkit",
+          "name": "hunodan",
+          "seconds": 3.9,
+          "sourceError": 0.00944375,
+          "sharedSpans": 5,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "webkit",
+          "name": "circle",
+          "seconds": 1.909,
+          "sourceError": 0.0009375,
+          "sharedSpans": 9,
+          "numericalBackend": "wasm"
+        }
+      ]
+    },
+    "fallback": {
+      "cases": 1,
+      "allPassed": true,
+      "allGeometryIdenticalToPrevious": true,
+      "rows": [
+        {
+          "browser": "chromium",
+          "name": "top-hat-anti",
+          "seconds": 8.623600000023842,
+          "sourceError": 0.0031887755102040817,
+          "sharedSpans": 39,
+          "numericalBackend": "javascript",
+          "blockedKernelRequests": 1
+        }
+      ]
+    }
+  },
+  "servedSourceHashes": {
+    "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+    "static/inverse/core/chord-distance.js": "cb79dd6d90d22b6bea6bb4bd0593cc8e32a18a09116084e53f5d942bcbef3c04",
+    "static/inverse/core/crop.js": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88",
+    "static/inverse/core/engine.js": "e93024012b538423791490b66e61f4d568717701d3002d8a817cb6c10176caad",
+    "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+    "static/inverse/core/feature-recovery.js": "37831af78afffd94b19a4145091d199f9771d12e505514e88cf1943e6023279e",
+    "static/inverse/core/geometry.js": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+    "static/inverse/core/graph.js": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
+    "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+    "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+    "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+    "static/inverse/core/junctions.js": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
+    "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+    "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+    "static/inverse/core/material.js": "1d7d4e33811d46aa4e815bf9e4a410a8844c9bba7e50fdb6e0fa850181801898",
+    "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+    "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+    "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+    "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+    "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+    "static/inverse/core/progress.js": "95f0c4f24dbb699fc4fc7e55c9d5886c6c2559fbb94159987c9e689b4d4f1433",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+    "static/inverse/core/solver.js": "2a84908c6a08625d42da5a3d22f53eac6d9e3b6b8eaf10dd5025617ae1d7c936",
+    "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+    "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+    "static/inverse/core/validate.js": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+    "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+    "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+    "static/inverse/core/direct/curves.js": "a3cad0cb2c96d62c0e1d99474777157eae8fb3fd6b7631f3af203243f4909ad3",
+    "static/inverse/core/direct/finalize.js": "c7bc72b5c739811a60868bad6dc9a6db1ff38cb76a53e348ae2071ddb564eec9",
+    "static/inverse/core/direct/fit.js": "2b98309761eed54c1c2854a535d695843df3d90639a2d38764c78f31f0512490",
+    "static/inverse/core/direct/grid.js": "57ada8e2f1c794b0012ddedbb8b508f29971186c313e517a8f40ca3788e1dfbd",
+    "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+    "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+    "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+    "static/inverse/core/direct/matching.js": "db113f3e5c6ed3be820f7c863a113e9181a02c7efa5ea66a46e56df7f2428414",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+    "static/inverse/core/direct/prefer-matching.js": "1ff682f298014f8c29387ad3bbe330c52e4ee619defd5a2d116cb3703e0f5d48",
+    "static/inverse/core/direct/primitive-selection.js": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904",
+    "static/inverse/core/direct/primitives.js": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b",
+    "static/inverse/core/direct/refine.js": "13e91f32104b457f6d7d471975a1737b803d1f4fc4d0c3eb5221a3d5e6d687fc",
+    "static/inverse/core/direct/share.js": "247241745ec8b1ac03c41b7e619bda30e821bbddbad2c60d4ec2d51c8aea1e6d",
+    "static/inverse/core/direct/shared-simplification.js": "9617dbe47fc1ac6d6d99a7dc228a160e783cf5a325992d7cc5f5e15719420ed5",
+    "static/inverse/core/direct/symmetry.js": "ed9f633ea42af93b46293d0d753e21dd7a5921485d5d55847e5a02665c14cf13",
+    "static/inverse/core/direct/topology.js": "bbe79bf0dca7c4786c7728413026fee9f77bb9bca5bb788be7d6674267ad9292",
+    "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+    "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58",
+    "static/inverse/worker.js": "27a0feb9b4536cc5feeaa5c4a40122adbf1cbdd4b95f559b007238e46b981b4d"
+  },
+  "rawArtifacts": {
+    "tmp/paper-index-stages.json": "325a253c49140166c20e55f3c2498b9a04a3995e445a41e9fca4d0a810abe1c9",
+    "tmp/paper-index-browser-stages.json": "cf35b01616d478a1b95e591fb997cc2df1da9b9987311fd1178de75f9759a9cc",
+    "tmp/checkpoint-profile/hat/profile.json": "aa7fb1a23979f33d23a776c5f24cebd309c7b7be9c6c04b7fb501ef2b1655d7e",
+    "tmp/checkpoint-profile/hat/results.json": "76cbaac6d5ea7d49dc60e44b52dca719950ce810ae46866c58b27187137f10fb",
+    "tmp/checkpoint-profile/paired.mjs": "3fc9c9f794a4649fffe48b42ef6b1a3759288b646b53aad0dd328b24a4eb5281",
+    "tmp/paper-index-audit/results.json": "885b3ebe97074484ba058a87b6e21e6dcaff2c5522143c4c5cc9fc8eb4dd5081",
+    "tmp/paper-index-audit-wasm/results.json": "50ca68f54a4a09b8743c650a51c5516344b94a95b433cc17e805fc3e7419c343",
+    "tmp/paper-index-audit-browser/results.json": "7fead1ccb94bbf3c2cfc0c0c633cf913f4cc648e1adde1049802edae10793728",
+    "tmp/paper-index-hunodan/results.json": "9ec4fc1cd8218064a245a9da5c4c44fcb3057d4fe31ff578c77ca8beb5467c2b",
+    "tmp/live-geometry-hunodan-final/results.json": "397eb8fbcbc2b2f06ec84a3163a0c39b50e881e4f5f6cd9543f25042d6300ba6",
+    "tmp/paper-index-weighted/results.json": "9f003ea0528f92901b941634d196455d58e4042f30a9a075aa31a6f1292b57da",
+    "tmp/live-geometry-weighted-final/results.json": "9daed8ad6f7a61ec85d6b318aaaeef1f9c4655edb2baf0e8891f843e8962fb99",
+    "tmp/paper-index-paired/results.json": "51056ec3f35fe527f31e5c965ce7121e67d98ca4b966e6e61f76cf6a113f4f76",
+    "tmp/paper-index-browser/results.json": "a6345e748b8503e9af96dabf0da069d7896b77010299f73a2e94f35b76ec17a6",
+    "tmp/live-geometry-browser-final/results.json": "cfae438488182cb70e48a831f42d89a525569db58d7ecbd63be5582f08f067a7",
+    "tmp/paper-index-fallback/results.json": "4b33563aa92516ca85a4151e25facc77e1e5d22a894242a757a4b7575061949d",
+    "tmp/live-geometry-fallback-final/results.json": "3338b016120666582aa152aeafe94b91002b4c1168aec7fded5d17e0d0f41d6e",
+    "tmp/paper-index-test.log": "00c379325f8a8cd37807f10925ff56fc8cb74ac288f23ade86d73877ab7b505d",
+    "tmp/paper-index-check.log": "1be3902fa1acaae6b0990406476a41369d095dc32dda58ba4b2a1df01155978b",
+    "tmp/paper-index-lint.log": "a552732ebea6b64b49ac0a1299170db75e8c45dbbc66c284f28e99be5613e5c7",
+    "tmp/paper-index-build.log": "2e2a4a671e0116d9d51fb6d759bbe76e984f33883a8b8d8d12a74bbd15d489fa",
+    "tmp/paper-index-audit.log": "40dd18a63ab182b562fe682c42f1a68def91dc7c20dfa00bc05beb30a020b165",
+    "tmp/paper-index-hunodan.log": "b9c6ed2c3c7d0e45a5daac2375fa352457537f5965c27c21b0536c925fa217c0",
+    "tmp/paper-index-weighted.log": "8ea9da3c0873c5f3d65d735926a8781cdc12c476b688571227581d196db607e9",
+    "tmp/paper-index-audit-wasm.log": "0501b52a392a64136205fe29c440c441b0fcf06504c15b50d6129d4390d3d330",
+    "tmp/paper-index-paired.log": "ae1f420b3d824d9f812a9ca1aaaaf65fbb036d004e37c106149773f699585219",
+    "tmp/paper-index-audit-browser.log": "18cd36a2bdc149c7885c63d872fdb6e863eebf7f81cab5844330e013d2790f52",
+    "tmp/paper-index-browser.log": "795400498d544ba0af705afa83d25ba8b947a9a40e902cf1ccdd00d44b59a45c",
+    "tmp/paper-index-fallback.log": "c37bb3ee62a779dba359266790cf28eaab466e7b340d5aa8277c8a62a4aafc69"
+  },
+  "diagnostic": {
+    "case": "top-hat-0.84-weighted-inverted",
+    "seconds": 8.786636041,
+    "checks": 63,
+    "exactCoordinateRepeats": 0,
+    "totals": {
+      "solution": {
+        "calls": 63,
+        "milliseconds": 8.531416000003446
+      },
+      "validate": {
+        "calls": 63,
+        "milliseconds": 347.05287500000486
+      },
+      "materialAudit": {
+        "calls": 58,
+        "milliseconds": 1897.9600840000062
+      }
+    },
+    "instrumented": true
+  },
+  "paired": {
+    "pairs": 9,
+    "solves": 18,
+    "allGeometryIdentical": true,
+    "fasterPairs": 8,
+    "medianPairedSaving": 0.03866414384064132,
+    "maximumCurrentSeconds": 8.652770208999998,
+    "cases": [
+      {
+        "id": "top-hat-0.84",
+        "previousMedianSeconds": 6.700224875,
+        "currentMedianSeconds": 6.592419708,
+        "medianPairedSaving": 0.03866414384064132
+      },
+      {
+        "id": "top-hat-inverted-0.84",
+        "previousMedianSeconds": 8.478828083,
+        "currentMedianSeconds": 8.164094834,
+        "medianPairedSaving": 0.037119899816230206
+      },
+      {
+        "id": "circle-0.84",
+        "previousMedianSeconds": 7.354719875,
+        "currentMedianSeconds": 6.959589,
+        "medianPairedSaving": 0.05372480280902603
+      }
+    ]
+  }
+}

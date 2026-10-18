@@ -1,0 +1,645 @@
+{
+  "scope": "Offline initialization-budget experiments plus a confirmed, corrected cumulative HiGHS clock bug. Production phase allocations are unchanged. No release or corpus claim.",
+  "baseCommit": "523c377",
+  "experiments": [
+    {
+      "caseId": "shifted-star",
+      "runtime": "tmp/heart-learning/topology-budget-v1/half/inverse",
+      "maskSha256": "3338849d32ecafd54d2365fc664ec97ee5fbca5b54534290d873f6919437f5f4",
+      "seconds": 9.445278709,
+      "metrics": [
+        {
+          "resolution": 400,
+          "error": 0.0076625
+        },
+        {
+          "resolution": 800,
+          "error": 0.0092171875
+        }
+      ],
+      "passed": true,
+      "slits": {
+        "left": 3,
+        "right": 3
+      },
+      "topology": {
+        "method": "mixed-boundary-topology",
+        "accepted": false,
+        "borderRecovery": {
+          "trigger": "Sheet A has 1 start transitions but 18 end transitions. Opposite borders must agree.",
+          "accepted": false,
+          "attempts": [
+            {
+              "borderRadius": 0.5,
+              "imageError": 0.00760625,
+              "endpointIssue": "Sheet A has 3 start transitions but 11 end transitions. Opposite borders must agree.",
+              "segments": 173,
+              "accepted": false
+            },
+            {
+              "borderRadius": 1,
+              "imageError": 0.01026875,
+              "endpointIssue": "Sheet A has 3 start transitions but 5 end transitions. Opposite borders must agree.",
+              "segments": 156,
+              "accepted": false
+            },
+            {
+              "borderRadius": 2,
+              "imageError": 0.0119875,
+              "endpointIssue": "Sheet B has 3 start transitions but 1 end transitions. Opposite borders must agree.",
+              "segments": 148,
+              "accepted": false
+            },
+            {
+              "borderRadius": 3,
+              "imageError": 0.01546875,
+              "endpointIssue": null,
+              "segments": 151,
+              "accepted": false
+            }
+          ]
+        },
+        "boundarySegments": 177,
+        "boundarySimplification": [
+          {
+            "fitTolerance": 0.5,
+            "segments": 105,
+            "imageError": 0.00706875,
+            "maximumError": 0.002,
+            "accepted": false
+          },
+          {
+            "fitTolerance": 0.6,
+            "segments": 90,
+            "imageError": 0.00715625,
+            "maximumError": 0.002,
+            "accepted": false
+          },
+          {
+            "fitTolerance": 0.75,
+            "segments": 77,
+            "imageError": 0.0093875,
+            "maximumError": 0.002,
+            "accepted": false
+          }
+        ],
+        "traceError": 0.00474375,
+        "seconds": 0.3774921669999999
+      },
+      "coarseTopology": {
+        "method": "coarse-boundary-topology",
+        "maximumError": 0.025,
+        "accepted": false,
+        "attempts": [
+          {
+            "preprocessing": {
+              "fitTolerance": 1,
+              "smoothRadius": 0.3,
+              "snapRadius": 0.75,
+              "borderRadius": 1,
+              "maxSpan": 40,
+              "polygonal": false,
+              "mixedBoundaries": true
+            },
+            "segments": 44,
+            "imageError": 0.01531875,
+            "endpointIssue": "Sheet A has 3 start transitions but 5 end transitions. Opposite borders must agree.",
+            "featuresPassed": true
+          },
+          {
+            "preprocessing": {
+              "fitTolerance": 1.5,
+              "smoothRadius": 0.3,
+              "snapRadius": 0.75,
+              "borderRadius": 1,
+              "maxSpan": 40,
+              "polygonal": false,
+              "mixedBoundaries": true
+            },
+            "segments": 36,
+            "imageError": 0.016,
+            "endpointIssue": "Sheet A has 3 start transitions but 5 end transitions. Opposite borders must agree.",
+            "featuresPassed": true
+          },
+          {
+            "preprocessing": {
+              "fitTolerance": 1,
+              "smoothRadius": 0.3,
+              "snapRadius": 0.75,
+              "borderRadius": 2,
+              "maxSpan": 40,
+              "polygonal": false,
+              "mixedBoundaries": true
+            },
+            "segments": 41,
+            "imageError": 0.01791875,
+            "endpointIssue": "Sheet B has 3 start transitions but 1 end transitions. Opposite borders must agree.",
+            "featuresPassed": true
+          },
+          {
+            "preprocessing": {
+              "fitTolerance": 1.5,
+              "smoothRadius": 0.3,
+              "snapRadius": 0.75,
+              "borderRadius": 2,
+              "maxSpan": 40,
+              "polygonal": false,
+              "mixedBoundaries": true
+            },
+            "segments": 35,
+            "imageError": 0.01723125,
+            "endpointIssue": "Sheet B has 3 start transitions but 1 end transitions. Opposite borders must agree.",
+            "featuresPassed": true
+          },
+          {
+            "preprocessing": {
+              "fitTolerance": 1,
+              "smoothRadius": 0.3,
+              "snapRadius": 0.75,
+              "borderRadius": 3,
+              "maxSpan": 40,
+              "polygonal": false,
+              "mixedBoundaries": true
+            },
+            "segments": 43,
+            "imageError": 0.02156875,
+            "endpointIssue": null,
+            "featuresPassed": true
+          },
+          {
+            "preprocessing": {
+              "fitTolerance": 1.5,
+              "smoothRadius": 0.3,
+              "snapRadius": 0.75,
+              "borderRadius": 3,
+              "maxSpan": 40,
+              "polygonal": false,
+              "mixedBoundaries": true
+            },
+            "segments": 38,
+            "imageError": 0.02065625,
+            "endpointIssue": null,
+            "featuresPassed": true,
+            "routing": {
+              "method": "mixed-boundary-topology",
+              "accepted": false,
+              "boundarySegments": 38,
+              "traceError": 0.02065625,
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+              "solver": {
+                "binaryVariables": 2862,
+                "continuousVariables": 2248,
+                "linearConstraints": 23141,
+                "turnAuxiliaries": 158,
+                "crossingConflicts": 1763,
+                "widthPairs": 3307,
+                "coefficientQuantum": 1e-07,
+                "stopAfterValidated": true,
+                "graph": {
+                  "visibleEdges": 85,
+                  "hiddenCandidates": 392,
+                  "vertices": 91,
+                  "buildSeconds": 0.010404374999999619,
+                  "guidePortals": 47,
+                  "guideCount": 13,
+                  "guideSkip": null,
+                  "vertexNormalization": {
+                    "collapsedSegments": 0,
+                    "closedSplits": 0,
+                    "maximumEndpointMoveMm": 4.263256414560601e-14
+                  },
+                  "unconnectedNeighbors": false,
+                  "candidateMethod": "border-inferred guide portals, nearest portal neighbours and tangent-shaped cubic variants; adaptive noding",
+                  "delaunayCandidates": false
+                },
+                "history": [
+                  {
+                    "round": 1,
+                    "status": 13
+                  }
+                ],
+                "elapsedSeconds": 0.6140402920000001,
+                "solverVersion": {
+                  "major": 1,
+                  "minor": 15,
+                  "patch": 1,
+                  "string": "1.15.1",
+                  "gitHash": "04024d7"
+                },
+                "solverRuntime": "locally hosted HiGHS WebAssembly",
+                "physicalAssemblyTested": false,
+                "status": "no_validated_solution",
+                "termination": "time_limit"
+              },
+              "seconds": 0.629104292
+            }
+          }
+        ],
+        "seconds": 0.998444125
+      },
+      "recovery": {
+        "budget": 1.871445968405908,
+        "seconds": 1.8749998750000005,
+        "weight": 0.04777018229166674,
+        "accepted": false
+      },
+      "reportPath": "tmp/heart-learning/topology-budget-v1/half/shifted-star/report.json",
+      "reportSha256": "049af35f3ce65420875a5e4f7281d7abf215b20145eaa068dc4b44cced0658d0",
+      "rejectedCandidates": []
+    },
+    {
+      "caseId": "sloth-frozen",
+      "runtime": "tmp/heart-learning/topology-budget-v1/half/inverse",
+      "maskSha256": "a8982a2283b5456498b52de1ec512872810276a52fc944e40acf550a4265ddfc",
+      "seconds": 9.521154542,
+      "metrics": [
+        {
+          "resolution": 250,
+          "error": 0.0072
+        },
+        {
+          "resolution": 500,
+          "error": 0.010504
+        }
+      ],
+      "passed": true,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "recovery": {
+        "budget": 5.747106825,
+        "seconds": 4.9330908749999995,
+        "weight": 1,
+        "accepted": true,
+        "refinement": {
+          "imageError": 0.007216,
+          "featuresPassed": true,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "steps": 190
+        }
+      },
+      "reportPath": "tmp/heart-learning/topology-budget-v1/half/sloth-frozen/report.json",
+      "reportSha256": "1efd3fdff5865baa19404ae893b759875c6d2245bfb95f6b0abd5354e302822e",
+      "rejectedCandidates": [
+        {
+          "elapsedSeconds": null,
+          "remainingSeconds": null,
+          "repairAccepted": true,
+          "repairSteps": 125,
+          "repairSeconds": 1.6500464169999995
+        }
+      ]
+    },
+    {
+      "caseId": "sloth-synthetic-control",
+      "runtime": "tmp/heart-learning/topology-budget-v1/half/inverse",
+      "maskSha256": "9d4accdee263a24380ff50f12f1739f29044b582e057c2835fe1b3461a6e62d3",
+      "seconds": 9.269319209,
+      "metrics": [
+        {
+          "resolution": 250,
+          "error": 0.053472
+        },
+        {
+          "resolution": 500,
+          "error": 0.053736
+        }
+      ],
+      "passed": false,
+      "slits": {
+        "left": 3,
+        "right": 3
+      },
+      "topology": {
+        "method": "mixed-boundary-topology",
+        "accepted": false,
+        "boundarySegments": 146,
+        "boundarySimplification": [
+          {
+            "fitTolerance": 0.5,
+            "segments": 129,
+            "imageError": 0.005408,
+            "maximumError": 0.002,
+            "accepted": false
+          },
+          {
+            "fitTolerance": 0.6,
+            "segments": 92,
+            "imageError": 0.006928,
+            "maximumError": 0.002,
+            "accepted": false
+          },
+          {
+            "fitTolerance": 0.75,
+            "segments": 70,
+            "imageError": 0.008592,
+            "maximumError": 0.002,
+            "accepted": false
+          }
+        ],
+        "traceError": 0.004704,
+        "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+        "solver": {
+          "binaryVariables": 5670,
+          "continuousVariables": 4480,
+          "linearConstraints": 53753,
+          "turnAuxiliaries": 342,
+          "crossingConflicts": 3160,
+          "widthPairs": 8767,
+          "coefficientQuantum": 1e-07,
+          "stopAfterValidated": true,
+          "graph": {
+            "visibleEdges": 175,
+            "hiddenCandidates": 770,
+            "vertices": 179,
+            "buildSeconds": 0.04327637500000003,
+            "guidePortals": 29,
+            "guideCount": 9,
+            "guideSkip": null,
+            "vertexNormalization": {
+              "collapsedSegments": 0,
+              "closedSplits": 0,
+              "maximumEndpointMoveMm": 2.842170943040401e-14
+            },
+            "unconnectedNeighbors": false,
+            "candidateMethod": "border-inferred guide portals, nearest portal neighbours and tangent-shaped cubic variants; adaptive noding",
+            "delaunayCandidates": false
+          },
+          "history": [
+            {
+              "round": 1,
+              "status": 13
+            }
+          ],
+          "elapsedSeconds": 1.610559416,
+          "solverVersion": {
+            "major": 1,
+            "minor": 15,
+            "patch": 1,
+            "string": "1.15.1",
+            "gitHash": "04024d7"
+          },
+          "solverRuntime": "locally hosted HiGHS WebAssembly",
+          "physicalAssemblyTested": false,
+          "status": "no_validated_solution",
+          "termination": "time_limit"
+        },
+        "seconds": 1.666720083
+      },
+      "recovery": {
+        "budget": 4.6593303380999975,
+        "seconds": 4.661813417,
+        "weight": 1,
+        "accepted": false
+      },
+      "reportPath": "tmp/heart-learning/topology-budget-v1/half/sloth-synthetic-control/report.json",
+      "reportSha256": "fde1ead7da09d1685c58df640c5b723056b6a6e2cb48b3a3680ecd2a3039f7c8",
+      "rejectedCandidates": []
+    },
+    {
+      "caseId": "sloth-synthetic-control",
+      "runtime": "tmp/heart-learning/topology-budget-v1/half-tail/inverse",
+      "maskSha256": "9d4accdee263a24380ff50f12f1739f29044b582e057c2835fe1b3461a6e62d3",
+      "seconds": 9.262136167000001,
+      "metrics": [
+        {
+          "resolution": 250,
+          "error": 0.003872
+        },
+        {
+          "resolution": 500,
+          "error": 0.00698
+        }
+      ],
+      "passed": true,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "recovery": {
+        "budget": 5.4506265372,
+        "seconds": 5.398305666000001,
+        "weight": 1,
+        "accepted": true,
+        "refinement": {
+          "imageError": 0.003584,
+          "featuresPassed": true,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "steps": 165
+        }
+      },
+      "reportPath": "tmp/heart-learning/topology-budget-v1/half-tail/sloth-synthetic-control/report.json",
+      "reportSha256": "717ff06b03b8fa3f24a1bf9e62a84e72edd4c26a138d76274d14165816dad39c",
+      "rejectedCandidates": [
+        {
+          "elapsedSeconds": 3.6013617079999998,
+          "remainingSeconds": 1.6895857041999998,
+          "repairAccepted": true,
+          "repairSteps": 160,
+          "repairSeconds": 1.5403385830000007
+        }
+      ]
+    },
+    {
+      "caseId": "sloth-synthetic-control",
+      "runtime": "tmp/heart-learning/topology-budget-v1/three-quarter/inverse",
+      "maskSha256": "9d4accdee263a24380ff50f12f1739f29044b582e057c2835fe1b3461a6e62d3",
+      "seconds": 9.316811458,
+      "metrics": [
+        {
+          "resolution": 250,
+          "error": 0.007824
+        },
+        {
+          "resolution": 500,
+          "error": 0.010528
+        }
+      ],
+      "passed": true,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "recovery": {
+        "budget": 5.652986587199999,
+        "seconds": 5.840814916999999,
+        "weight": 1,
+        "accepted": true,
+        "refinement": {
+          "imageError": 0.00776,
+          "featuresPassed": true,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "steps": 45
+        }
+      },
+      "reportPath": "tmp/heart-learning/topology-budget-v1/three-quarter/sloth-synthetic-control/report.json",
+      "reportSha256": "cbbb0f99479c03e5ade1663739154f14852d37a55505148375670416e95d275a",
+      "rejectedCandidates": [
+        {
+          "elapsedSeconds": 4.212291625,
+          "remainingSeconds": 1.2744555041999996,
+          "repairAccepted": true,
+          "repairSteps": 115,
+          "repairSeconds": 1.3214752080000007
+        }
+      ]
+    },
+    {
+      "caseId": "sloth-synthetic-control",
+      "runtime": "tmp/heart-learning/topology-budget-v1/three-quarter-tail/inverse",
+      "maskSha256": "9d4accdee263a24380ff50f12f1739f29044b582e057c2835fe1b3461a6e62d3",
+      "seconds": 9.225140417,
+      "metrics": [
+        {
+          "resolution": 250,
+          "error": 0.003872
+        },
+        {
+          "resolution": 500,
+          "error": 0.00698
+        }
+      ],
+      "passed": true,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "recovery": {
+        "budget": 5.8803556113000015,
+        "seconds": 5.785794875,
+        "weight": 1,
+        "accepted": true,
+        "refinement": {
+          "imageError": 0.003584,
+          "featuresPassed": true,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "steps": 125
+        }
+      },
+      "reportPath": "tmp/heart-learning/topology-budget-v1/three-quarter-tail/sloth-synthetic-control/report.json",
+      "reportSha256": "554a9cc1445d502349eecac3f85d871211555504291cfa3380dc4cab99617a5a",
+      "rejectedCandidates": [
+        {
+          "elapsedSeconds": 3.9023389159999997,
+          "remainingSeconds": 1.8335009023000008,
+          "repairAccepted": true,
+          "repairSteps": 160,
+          "repairSeconds": 1.6333117919999995
+        }
+      ]
+    }
+  ],
+  "focused": {
+    "runtime": "tmp/heart-learning/topology-budget-v1/three-quarter/inverse",
+    "log": "tmp/heart-learning/topology-budget-v1/three-quarter/focused.log",
+    "logSha256": "f50711482af58830ea5efea7ab17b2a8e215ca42aa6cdbd759266fe2d76f3dd9",
+    "passed": 11,
+    "failed": 3,
+    "seconds": 97.928678083,
+    "failures": [
+      {
+        "case": "photographic junction",
+        "reason": "Independent error 0.0132875 is above the fixed improvement threshold."
+      },
+      {
+        "case": "original outline star",
+        "reason": "No featureRecovery report; the asserted speculative recovery path was not entered."
+      },
+      {
+        "case": "frozen sloth",
+        "reason": "Final template checks fail after the first rejected candidate repair stops without a valid checkpoint.",
+        "recoveryBudgetSeconds": 5.9970311631,
+        "candidateSeconds": 2.928125709,
+        "remainingSecondsAtCandidate": 2.8882767881,
+        "repairSeconds": 1.6028124579999994,
+        "repairSteps": 85,
+        "repairReason": "refinement_rejected"
+      }
+    ]
+  },
+  "limitations": [
+    "Fresh-process timings vary with JIT and concurrent external work. The larger focused run overlapped other worktrees\u2019 generator benchmarks and Vitest. Those processes were observed but not modified.",
+    "The repair-tail eligibility variants reached their first candidates with more than 0.75 seconds remaining, so these runs do not test the proposed eligibility change.",
+    "Reports from successful recovery previously omitted earlier initialization timings; missing values are not zero.",
+    "No 22-Hunodan/31-photo replay or browser QA has run on these offline variants."
+  ],
+  "boundedRepairFocused": {
+    "runtime": "tmp/heart-learning/topology-budget-v1/bounded-repair/inverse",
+    "sourceManifest": "tmp/heart-learning/topology-budget-v1/bounded-repair/source.json",
+    "sourceManifestSha256": "9ef3657c3f74539e9608cafd7f8661935436931f42dbf015a0b9429936a033f1",
+    "log": "tmp/heart-learning/topology-budget-v1/bounded-repair/focused.log",
+    "logSha256": "a4468898c9cdc563b53973077871a2bd5679c53d0e3735f010a39c4269f9521f",
+    "passed": 14,
+    "failed": 0,
+    "seconds": 85.774262417,
+    "policy": "0.75-second shared short initialization; up to three seconds of repair within the existing caller deadline; original repair eligibility guard. Predates the clock correction."
+  },
+  "nativeClockRegression": {
+    "upstreamDocumentation": "https://ergo-code.github.io/HiGHS/dev/interfaces/c_api/",
+    "regression": "scripts/inverse/solver-clock.test.mjs",
+    "inheritedSecondsBeforeFix": 0.012634541,
+    "beforeLog": "tmp/heart-learning/routing-timing-v1/clock-before.log",
+    "afterLog": "tmp/heart-learning/routing-timing-v1/clock-after.log",
+    "targetedPassed": 18,
+    "targetedFailed": 0,
+    "targetedSeconds": 2.690482917,
+    "change": "Reset native clocks before each run; preserve the decreasing outer wall-clock allowance and persistent MILP model.",
+    "productionQA": {
+      "path": "tmp/heart-learning/routing-clock-v1/production-qa",
+      "checkPassed": true,
+      "lintPassed": true,
+      "applicationPassed": 856,
+      "applicationFailed": 1,
+      "applicationSkipped": 1,
+      "failure": "src/lib/inverse/shortReturns.test.ts: anchor repair applied=false",
+      "buildPassed": true,
+      "inversePassed": 852,
+      "inverseFailed": 0,
+      "inverseSeconds": 905.3102018330001,
+      "overallStatus": "Application failure retained; all remaining checks completed."
+    }
+  },
+  "anchorRepairDiagnostic": {
+    "replays": [
+      {
+        "path": "tmp/heart-learning/routing-clock-v1/anchor-probe.json",
+        "sha256": "f266a36ce4846f8750169b103b11f85f4a20ea4676b433bda39465e6ca9f63d6",
+        "applied": false,
+        "reason": "refinement_geometry",
+        "seconds": 3.902642,
+        "refinementSteps": 160,
+        "sourceErrorBefore": 0.0090375,
+        "sourceErrorAfter": null,
+        "scope": "Direct local repair only; no MILP, final export or Draw conversion."
+      },
+      {
+        "path": "tmp/heart-learning/routing-clock-v1/anchor-baseline.json",
+        "sha256": "3bf425a94be3f70084a77efd180d60f64c5008adf5bb647db36e4c680b854154",
+        "applied": false,
+        "reason": "refinement_geometry",
+        "seconds": 3.609250334,
+        "refinementSteps": 160,
+        "sourceErrorBefore": 0.0090375,
+        "sourceErrorAfter": null,
+        "scope": "Direct local repair only; no MILP, final export or Draw conversion."
+      },
+      {
+        "path": "tmp/heart-learning/routing-clock-v1/anchor-history.json",
+        "sha256": "dbcade775e99312768c9360dbe833c173bba98c66d8a394ebb8f1ff4ad999d07",
+        "applied": true,
+        "reason": null,
+        "seconds": 2.5335928749999996,
+        "refinementSteps": 160,
+        "sourceErrorBefore": 0.0090375,
+        "sourceErrorAfter": 0.008425,
+        "scope": "Direct local repair only; no MILP, final export or Draw conversion."
+      }
+    ],
+    "observation": "Both current and frozen 99399ff direct replays fail. A third instrumented replay succeeds; its hidden/all-control projections share a 400 ms cutoff. This is a separate timing-sensitive repair, not proof of a regression from clock reset."
+  }
+}

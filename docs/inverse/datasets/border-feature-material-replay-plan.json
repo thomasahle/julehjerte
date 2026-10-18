@@ -1,0 +1,21 @@
+{
+  "schema": "border-feature-material-replay-plan-1",
+  "status": "declared-before-outcomes",
+  "runtimeCommit": "97f5c49f63a19fd421410494f05735de8b82c738",
+  "scope": "Repeat all 44 material-resolution fitting attempts with the guarded border-feature retry. Both arms use the original study crops, observed pixels, frozen paper colours and binary masks. All 22 photographs remain in each denominator.",
+  "comparison": "tmp/heart-learning/material-resolution-v1/pipeline/report.json",
+  "invariants": [
+    "Ten-second search allowance; no saved curves or counts used as seeds.",
+    "No classifier, crop, palette, source-coverage or acceptance changes.",
+    "Compare independent original-mask error, features, geometry, paper checks and editable conversion.",
+    "A newly legal warning-bearing candidate is not counted as a complete checked reconstruction.",
+    "Inspect every changed exported weave. Report regressions and unchanged outputs."
+  ],
+  "sourceSha256": {
+    "tmp/heart-learning/border-feature-routing-v1/material-replay/run.py": "3ba8471cbc7c95e0a8299d19ca5b566efa2aa2e9d4b7290b593f4a7389e02cfb",
+    "tmp/heart-learning/border-feature-routing-v1/material-replay/editor-input.mjs": "da2005873ee1d72da172ddffc81f1446093ac76d6671a6ae03caa2b35cc34a4b",
+    "tmp/heart-learning/border-feature-routing-v1/material-replay/review-reconstructions.py": "ad901cfc9a27805df81656b2fe9edbf4f93ada5a84b4219f4a11d78ea35398dc",
+    "tmp/heart-learning/border-feature-routing-v1/material-replay/score-source.py": "2eb32f8b11062921a30bcb4cea374cdbc7120a05410c5531f7e3af4cd5fbe12d",
+    "tmp/heart-learning/border-feature-routing-v1/material-replay/after-qa.py": "cfd496ec59d8bbde6bbdf71ab5cd792118a581459bb7d2b26c9fa081463332fd"
+  }
+}

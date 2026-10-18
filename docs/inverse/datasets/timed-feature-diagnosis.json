@@ -1,0 +1,532 @@
+{
+  "schema": "timed-photographic-fit-diagnosis-1",
+  "runtimeRevision": "fc7957e",
+  "status": "diagnostic-only; timing-sensitive fidelity failure remains unresolved",
+  "fullQA": {
+    "inverse": {
+      "tests": 905,
+      "passed": 904,
+      "failed": 1,
+      "failure": "original near-miss, 1.5x clock: independent 800-pixel error 0.03035 exceeds unchanged strict 0.03 bound",
+      "failedGeometryCaptured": false
+    },
+    "stages": [
+      {
+        "stage": "core-lint",
+        "command": [
+          "npx",
+          "eslint",
+          "--no-ignore",
+          "static/inverse/core/direct/finalize.js",
+          "static/inverse/core/direct/rejected-routing.js",
+          "scripts/inverse/matching-deadline.test.mjs",
+          "scripts/inverse/provisional-routing-repair.test.mjs",
+          "static/inverse/core/direct/grid.js",
+          "static/inverse/core/direct/prefer-matching.js",
+          "static/inverse/core/image-reference.js",
+          "scripts/inverse/image-scoring.test.mjs",
+          "static/inverse/core/kernel-choice.js",
+          "static/inverse/core/paper-backend.js",
+          "scripts/inverse/kernel-choice.test.mjs",
+          "scripts/inverse/paper-backend.test.mjs",
+          "scripts/inverse/material-kernel.test.mjs",
+          "scripts/inverse/paper-calibration-benchmark.mjs",
+          "static/inverse/core/feature-recovery.js",
+          "scripts/inverse/late-routing-repair.test.mjs",
+          "scripts/inverse/clearance-initializer.test.mjs",
+          "scripts/inverse/clearance-initializer-geometry.test.mjs",
+          "scripts/inverse/leaf-clearance-fixture.mjs",
+          "scripts/inverse/coarse-topology.test.mjs",
+          "scripts/inverse/feature-refinement.test.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 2.057840416
+      },
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 10.015877
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 7.095416750000002
+      },
+      {
+        "stage": "app",
+        "command": [
+          "npx",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 24.958851416
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 16.289947542
+      },
+      {
+        "stage": "inverse",
+        "command": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "--test-reporter=tap",
+          "scripts/inverse/anchor-perturbation.test.mjs",
+          "scripts/inverse/anchored-crop.test.mjs",
+          "scripts/inverse/automatic.test.mjs",
+          "scripts/inverse/background-crop.test.mjs",
+          "scripts/inverse/border-profile-proposals.test.mjs",
+          "scripts/inverse/border.test.mjs",
+          "scripts/inverse/boundary-preflight.test.mjs",
+          "scripts/inverse/boundary-value.test.mjs",
+          "scripts/inverse/box-pruning.test.mjs",
+          "scripts/inverse/chord-distance.test.mjs",
+          "scripts/inverse/chord-projection.test.mjs",
+          "scripts/inverse/chord-tangent.test.mjs",
+          "scripts/inverse/clamped-features.test.mjs",
+          "scripts/inverse/clearance-initializer-geometry.test.mjs",
+          "scripts/inverse/clearance-initializer.test.mjs",
+          "scripts/inverse/clearance-projection.test.mjs",
+          "scripts/inverse/clearance-routing.test.mjs",
+          "scripts/inverse/clearance-witnesses.test.mjs",
+          "scripts/inverse/closed-boundary.test.mjs",
+          "scripts/inverse/coarse-topology.test.mjs",
+          "scripts/inverse/comparison-search.test.mjs",
+          "scripts/inverse/compute-worker.test.mjs",
+          "scripts/inverse/connector-budget.test.mjs",
+          "scripts/inverse/connector-subdivision.test.mjs",
+          "scripts/inverse/core.test.mjs",
+          "scripts/inverse/corner-border-seeds.test.mjs",
+          "scripts/inverse/corner-topology.test.mjs",
+          "scripts/inverse/count-strategy.test.mjs",
+          "scripts/inverse/crop-evidence.test.mjs",
+          "scripts/inverse/crop.test.mjs",
+          "scripts/inverse/curve-rendering.test.mjs",
+          "scripts/inverse/curve-topology.test.mjs",
+          "scripts/inverse/datasets/app-baseline.test.mjs",
+          "scripts/inverse/datasets/foreground-labels.test.mjs",
+          "scripts/inverse/datasets/photo-labels.test.mjs",
+          "scripts/inverse/datasets/synthetic-interventions.test.mjs",
+          "scripts/inverse/datasets/synthetic-motif.test.mjs",
+          "scripts/inverse/datasets/synthetic-print.test.mjs",
+          "scripts/inverse/datasets/synthetic-training.test.mjs",
+          "scripts/inverse/direct.test.mjs",
+          "scripts/inverse/edge-topology.test.mjs",
+          "scripts/inverse/editable-paper-audit.test.mjs",
+          "scripts/inverse/export-renderer.test.mjs",
+          "scripts/inverse/feature-details.test.mjs",
+          "scripts/inverse/feature-enclosure.test.mjs",
+          "scripts/inverse/feature-enclosures.test.mjs",
+          "scripts/inverse/feature-near-miss.test.mjs",
+          "scripts/inverse/feature-refinement.test.mjs",
+          "scripts/inverse/feature-seeds.test.mjs",
+          "scripts/inverse/feature-shapes.test.mjs",
+          "scripts/inverse/final-return-repair.test.mjs",
+          "scripts/inverse/finalist-diversity.test.mjs",
+          "scripts/inverse/fitted-rerouting.test.mjs",
+          "scripts/inverse/foreground-crop.test.mjs",
+          "scripts/inverse/foreground-probe-origin.test.mjs",
+          "scripts/inverse/foreground-refine.test.mjs",
+          "scripts/inverse/graph-boundary-ablations.test.mjs",
+          "scripts/inverse/graph-oracle.test.mjs",
+          "scripts/inverse/grid-parity.test.mjs",
+          "scripts/inverse/hard-photo-data.test.mjs",
+          "scripts/inverse/hard-photo-report.test.mjs",
+          "scripts/inverse/hard-photo-target.test.mjs",
+          "scripts/inverse/identical-paper.test.mjs",
+          "scripts/inverse/image-features.test.mjs",
+          "scripts/inverse/image-scoring.test.mjs",
+          "scripts/inverse/initialization-image.test.mjs",
+          "scripts/inverse/initialization.test.mjs",
+          "scripts/inverse/integration.test.mjs",
+          "scripts/inverse/interior-palette-crop.test.mjs",
+          "scripts/inverse/intersection-endpoints.test.mjs",
+          "scripts/inverse/isometry-projection.test.mjs",
+          "scripts/inverse/junction-routing.test.mjs",
+          "scripts/inverse/junctions.test.mjs",
+          "scripts/inverse/kernel-choice.test.mjs",
+          "scripts/inverse/late-routing-repair.test.mjs",
+          "scripts/inverse/linear-controls.test.mjs",
+          "scripts/inverse/lobe-crop.test.mjs",
+          "scripts/inverse/lower-edge-support.test.mjs",
+          "scripts/inverse/mask-comparison.test.mjs",
+          "scripts/inverse/mask-preview.test.mjs",
+          "scripts/inverse/matching-deadline.test.mjs",
+          "scripts/inverse/matching-seeds.test.mjs",
+          "scripts/inverse/matching.test.mjs",
+          "scripts/inverse/material-index.test.mjs",
+          "scripts/inverse/material-kernel.test.mjs",
+          "scripts/inverse/mixed-primitives.test.mjs",
+          "scripts/inverse/native-boundary.test.mjs",
+          "scripts/inverse/neighbor-retry-scheduling.test.mjs",
+          "scripts/inverse/numerical-speed.test.mjs",
+          "scripts/inverse/oriented-crop.test.mjs",
+          "scripts/inverse/outline-details.test.mjs",
+          "scripts/inverse/paint-observer.test.mjs",
+          "scripts/inverse/paper-backend.test.mjs",
+          "scripts/inverse/paper-rollback.test.mjs",
+          "scripts/inverse/paper-verification.test.mjs",
+          "scripts/inverse/photo-counts.test.mjs",
+          "scripts/inverse/photo-material-samples.test.mjs",
+          "scripts/inverse/photographic-refinement-budget.test.mjs",
+          "scripts/inverse/polishing-paper.test.mjs",
+          "scripts/inverse/primitive-selection.test.mjs",
+          "scripts/inverse/progress.test.mjs",
+          "scripts/inverse/provisional-routing-repair.test.mjs",
+          "scripts/inverse/reference.test.mjs",
+          "scripts/inverse/refinement-budget.test.mjs",
+          "scripts/inverse/refinement-checkpoints.test.mjs",
+          "scripts/inverse/rejected-routing.test.mjs",
+          "scripts/inverse/relaxation.test.mjs",
+          "scripts/inverse/row-kernel.test.mjs",
+          "scripts/inverse/sampling-rollback.test.mjs",
+          "scripts/inverse/search-scheduling.test.mjs",
+          "scripts/inverse/self-intersections.test.mjs",
+          "scripts/inverse/self-return-projection.test.mjs",
+          "scripts/inverse/self-return-subdivision.test.mjs",
+          "scripts/inverse/self-returns.test.mjs",
+          "scripts/inverse/shadow-crop.test.mjs",
+          "scripts/inverse/shared-return-search.test.mjs",
+          "scripts/inverse/shared-sampling.test.mjs",
+          "scripts/inverse/shared-simplification.test.mjs",
+          "scripts/inverse/sharing-orbit.test.mjs",
+          "scripts/inverse/sharing-order.test.mjs",
+          "scripts/inverse/sharing-paired-knots.test.mjs",
+          "scripts/inverse/sharing.test.mjs",
+          "scripts/inverse/short-budget-features.test.mjs",
+          "scripts/inverse/short-return-audits.test.mjs",
+          "scripts/inverse/short-returns.test.mjs",
+          "scripts/inverse/solver-clock.test.mjs",
+          "scripts/inverse/spatial-color.test.mjs",
+          "scripts/inverse/stopped.test.mjs",
+          "scripts/inverse/straight-artwork.test.mjs",
+          "scripts/inverse/symmetry-fit.test.mjs",
+          "scripts/inverse/topology-phases.test.mjs",
+          "scripts/inverse/trace-order.test.mjs",
+          "scripts/inverse/turn-limit-refinement.test.mjs",
+          "scripts/inverse/unmix.test.mjs",
+          "scripts/inverse/weak-feature-routing.test.mjs",
+          "scripts/inverse/weighted-image.test.mjs",
+          "scripts/inverse/weighted-pipeline.test.mjs",
+          "scripts/inverse/whole-return-editor.test.mjs",
+          "scripts/inverse/worker-controller.test.mjs"
+        ],
+        "exitCode": 1,
+        "seconds": 1056.537865959
+      }
+    ],
+    "sourceVerification": {
+      "passed": true,
+      "files": 744,
+      "scope": "All pinned sources still match after the 904/905 full run, before failure-capture helper edits."
+    },
+    "nativeAndBrowserStages": "not started"
+  },
+  "capturedReplay": {
+    "checks": [
+      {
+        "repeat": 0,
+        "file": "feature-near-miss",
+        "exitCode": 0,
+        "seconds": 69.94321341599999
+      },
+      {
+        "repeat": 1,
+        "file": "feature-near-miss",
+        "exitCode": 0,
+        "seconds": 70.65660666699995
+      },
+      {
+        "repeat": 0,
+        "file": "feature-seeds",
+        "exitCode": 0,
+        "seconds": 96.01028233299996
+      }
+    ],
+    "fits": 24,
+    "sourceFilesVerified": 109,
+    "sourceGeometryAndIndependent400And800Renders": "tmp/heart-learning/timed-feature-replay-v1",
+    "interpretation": "Both 11-test near-miss replays and the 10-test feature file pass. This does not cancel the failed complete-suite run. One feature-file case is an intentional rejection and is not counted as an accepted reconstruction."
+  },
+  "comparison": [
+    {
+      "capture": "tmp/heart-learning/timed-feature-replay-v1/0-feature-near-miss/feature-near-miss.test-0",
+      "clockScale": 1,
+      "result": {
+        "milliseconds": 9227.836667,
+        "reportedSeconds": 9.046070958,
+        "sourceSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+        "templateChecks": true,
+        "geometry": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 400,
+            "error": 0.01156875,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0129515625,
+            "featuresPassed": true
+          }
+        ]
+      },
+      "earlyFeatureInitialization": {
+        "baseCounts": [
+          3,
+          3
+        ],
+        "hypotheses": 10,
+        "coarseRefinement": {
+          "counts": [
+            3,
+            3
+          ],
+          "phase": 1,
+          "initialError": 0.092742919921875,
+          "error": 0.08782958984375,
+          "featuresPassed": true,
+          "steps": 150,
+          "accepted": true
+        },
+        "alternativeRefinement": null,
+        "retained": 1
+      },
+      "outlineDetail": {
+        "residualCoreFraction": 0.00480625,
+        "addedCurves": 85,
+        "fixedBorderMm": 8,
+        "maximumLengthMm": 4,
+        "frozenCoordinates": 84,
+        "applied": true,
+        "errorBefore": 0.02710625,
+        "errorAfter": 0.0115,
+        "steps": 160,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      },
+      "checkpoints": [
+        {
+          "step": -1,
+          "error": 0.0270875,
+          "geometry": true,
+          "paper": "pass"
+        },
+        {
+          "step": 0,
+          "error": 0.0264,
+          "geometry": true,
+          "paper": "fail"
+        },
+        {
+          "step": 40,
+          "error": 0.01884375,
+          "geometry": true,
+          "paper": "pass"
+        },
+        {
+          "step": 80,
+          "error": 0.014975,
+          "geometry": false
+        },
+        {
+          "step": 80,
+          "error": 0.0149875,
+          "geometry": true,
+          "paper": "pass"
+        },
+        {
+          "step": 120,
+          "error": 0.0126625,
+          "geometry": false
+        },
+        {
+          "step": 120,
+          "error": 0.0127375,
+          "geometry": true,
+          "paper": "pass"
+        },
+        {
+          "step": 159,
+          "error": 0.0113625,
+          "geometry": false
+        },
+        {
+          "step": 159,
+          "error": 0.01155,
+          "geometry": true,
+          "paper": "pass"
+        }
+      ]
+    },
+    {
+      "capture": "tmp/heart-learning/timed-feature-replay-v1/0-feature-near-miss/feature-near-miss.test-4",
+      "clockScale": 1.5,
+      "result": {
+        "milliseconds": 6126.760875,
+        "reportedSeconds": 9.028540875,
+        "sourceSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+        "templateChecks": true,
+        "geometry": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 400,
+            "error": 0.0280125,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.02909375,
+            "featuresPassed": true
+          }
+        ]
+      },
+      "earlyFeatureInitialization": {
+        "baseCounts": [
+          3,
+          3
+        ],
+        "hypotheses": 10,
+        "coarseRefinement": {
+          "counts": [
+            3,
+            3
+          ],
+          "phase": 1,
+          "initialError": 0.092742919921875,
+          "error": 0.08782958984375,
+          "featuresPassed": true,
+          "steps": 150,
+          "accepted": true
+        },
+        "alternativeRefinement": null,
+        "retained": 1
+      },
+      "outlineDetail": {
+        "residualCoreFraction": 0.0063875,
+        "addedCurves": 79,
+        "fixedBorderMm": 8,
+        "maximumLengthMm": 4,
+        "frozenCoordinates": 84,
+        "applied": true,
+        "errorBefore": 0.02936875,
+        "errorAfter": 0.02790625,
+        "steps": 125,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      },
+      "checkpoints": [
+        {
+          "step": -1,
+          "error": 0.02934375,
+          "geometry": true,
+          "paper": "pass"
+        },
+        {
+          "step": 0,
+          "error": 0.0287,
+          "geometry": true,
+          "paper": "pass"
+        },
+        {
+          "step": 40,
+          "error": 0.0184,
+          "geometry": true,
+          "paper": "fail"
+        },
+        {
+          "step": 80,
+          "error": 0.0206625,
+          "geometry": true,
+          "paper": "fail"
+        },
+        {
+          "step": 120,
+          "error": 0.0226625,
+          "geometry": true,
+          "paper": "fail"
+        },
+        {
+          "step": 124,
+          "error": 0.02785625,
+          "geometry": true,
+          "paper": "pass"
+        }
+      ]
+    }
+  ],
+  "diagnosis": [
+    "The source mask SHA-256 is identical between the original normal and accelerated-clock comparisons; crop variation does not explain this comparison.",
+    "Both schedules select the same accepted three-by-three feature grid after testing ten count/phase hypotheses.",
+    "The normal broad pass reaches 749 steps and its detailed pass 160; the accelerated broad pass reaches 489 steps and detailed pass 125.",
+    "The accelerated detailed pass reaches lower-error checkpoints (about 1.84%) that fail paper checks, then returns a valid higher-error candidate. Rejected geometry was not captured, so this does not establish whether finer verification would rescue it.",
+    "Spending less on extra count hypotheses is an isolated scheduling experiment, not an integrated fix. Final image, feature, geometry and paper checks are unchanged."
+  ],
+  "failureCapture": {
+    "helper": "scripts/inverse/diagnostics/fit-failure.mjs",
+    "scope": "The two timing-sensitive photographic fidelity assertions",
+    "retained": [
+      "typed source arrays and seed cells",
+      "solver report",
+      "byte-identical exported cut geometry",
+      "measured limit, scale and test context",
+      "SHA-256 checksums"
+    ],
+    "behavior": "Only writes on the original strict assertion failure; successful fits do not write. Diagnostic I/O failures preserve the AssertionError. Capture happens after fitting.",
+    "manualVerification": {
+      "passed": true,
+      "sourceRoundtrip": true,
+      "geometryByteIdentical": true,
+      "hashesVerified": true,
+      "strictEqualityFails": true,
+      "successDoesNoIO": true,
+      "ioFailurePreservesAssertion": true,
+      "sourceUnchanged": true,
+      "artifacts": "tmp/heart-learning/fit-failure-capture-v1/manual-CURDLo/fit-nvmyEh"
+    },
+    "lint": "helper and both modified test files passed"
+  },
+  "artifactSha256": {
+    "tmp/heart-learning/timed-feature-replay-v1/checks.json": "740ea0bde1ccb7e06d3c8d046b14b3714e22d0826daee0671d767dd5cdb76ad8",
+    "tmp/heart-learning/timed-feature-replay-v1/source.json": "3059f0af478e121082d923562650b9de0845e5412252400dd4ee1c14f22fcc5a",
+    "tmp/heart-learning/timed-feature-replay-v1/state.json": "40c5300d2f8590d5ec9002f4e06b5d045c2f5be2f15323d86b60956f56b20588",
+    "tmp/heart-learning/matching-tree-verified-release-v1/qa/inverse.log": "8e9045b3c384a5e1674589de5f90f7a6946f35645ea54c337f5dd35f264b4edf",
+    "tmp/heart-learning/matching-tree-verified-release-v1/qa/checks.json": "12142f8cff58abac88722f08eb9371d14110ae9797c12940256b4fd4a03c7ef5",
+    "tmp/heart-learning/matching-tree-verified-release-v1/source-verification.json": "4f0d97fdf6aa7d2c0e35457cd02f18e37b163feba40f7540cd2c6ba6be30c2ec",
+    "tmp/heart-learning/fit-failure-capture-v1/selfcheck.json": "18be3275c750c2e15a82ede4715c3487e7c887a8e7144a6879bb28171cd63361",
+    "tmp/heart-learning/timed-feature-replay-v1/0-feature-near-miss/feature-near-miss.test-0/woven-400.png": "6c54d971bf7aa5a51f28cc56008ff03169dbda8b44d295dfcc4e17fdd2808488",
+    "tmp/heart-learning/timed-feature-replay-v1/0-feature-near-miss/feature-near-miss.test-0/report.json": "59a22308d383c616ec998a86a5c6e094530727abe5718fdd6f0656d08dbf1e87",
+    "tmp/heart-learning/timed-feature-replay-v1/0-feature-near-miss/feature-near-miss.test-0/result.json": "daba1d95c2eb9865a601d63b268effa3ca5b172a64e5cf0652724ec8b826eb88",
+    "tmp/heart-learning/timed-feature-replay-v1/0-feature-near-miss/feature-near-miss.test-0/events.json": "07707a7b53b566c7ff7d576f0df31483e85995034a9040ff557e83b8ec899453",
+    "tmp/heart-learning/timed-feature-replay-v1/0-feature-near-miss/feature-near-miss.test-0/cut_geometry.json": "5255e6710d2763844f7c82e1691a30dbb1ddefb0d2d77b478206f5a42361b83b",
+    "tmp/heart-learning/timed-feature-replay-v1/0-feature-near-miss/feature-near-miss.test-0/woven-800.png": "43911a252c66b3f946f60cc2a3ea9a78856a90815a429311a93551441d655033",
+    "tmp/heart-learning/timed-feature-replay-v1/0-feature-near-miss/feature-near-miss.test-4/woven-400.png": "685f0e91054efa0e7c22607c0f1a45109197b7e46136365b305486035897775f",
+    "tmp/heart-learning/timed-feature-replay-v1/0-feature-near-miss/feature-near-miss.test-4/report.json": "9e1af94b4120d19f8094c133101c1a78062ebfa1e09fbcba0fba498f6fe02d05",
+    "tmp/heart-learning/timed-feature-replay-v1/0-feature-near-miss/feature-near-miss.test-4/result.json": "1aa9edd3a6b08d71bc7970ce032f08146b9a1c02e2927b4999173f233ad6732e",
+    "tmp/heart-learning/timed-feature-replay-v1/0-feature-near-miss/feature-near-miss.test-4/events.json": "e0dc816b1cc1368dd35d78be716dfefa7b09e74cbab57458645c1f9da2098aee",
+    "tmp/heart-learning/timed-feature-replay-v1/0-feature-near-miss/feature-near-miss.test-4/cut_geometry.json": "7b044aebb34dc31326128df72b03455c906356f87ebf8ea6f5e8f0c2ecea39d1",
+    "tmp/heart-learning/timed-feature-replay-v1/0-feature-near-miss/feature-near-miss.test-4/woven-800.png": "74088084b395305d6f5d630b36d5df51b16f0b92bbd29cafa0291562070c881e"
+  },
+  "releaseClaim": "None. No runtime, acceptance limit, user option, crop or model changes."
+}

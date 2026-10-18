@@ -1,0 +1,176 @@
+{
+  "source": "tmp/heart-learning/paper-rollback-native-v1/photos/results.json",
+  "case": "jigsaw",
+  "convention": "Recorded working pixel-centre samples mapped to original pixel-edge coordinates using scale and workingROI. Cyan: returned quad. Yellow/magenta: left/right edge points and fitted lines.",
+  "left": {
+    "a": 0.411531668149437,
+    "b": -3.6292077564943925,
+    "inliers": 25,
+    "total": 46,
+    "support": 0.5434782608695652,
+    "tolerancePx": 2.097,
+    "rms": 0.9841055436521332,
+    "span": 34.79694570172995,
+    "initial": {
+      "a": 0.3368657322901543,
+      "b": 7.442686128188611,
+      "inliers": 34,
+      "total": 46,
+      "support": 0.7391304347826086,
+      "tolerancePx": 2.097,
+      "rms": 0.9615809536315099,
+      "span": 37
+    },
+    "segmentation": {
+      "a": 0.411531668149437,
+      "b": -3.6292077564943925,
+      "inliers": 0,
+      "total": 46,
+      "support": 0,
+      "tolerancePx": 2.097,
+      "rms": null,
+      "span": 0
+    }
+  },
+  "right": {
+    "a": -0.7930395044317302,
+    "b": 378.3547642953796,
+    "inliers": 29,
+    "total": 46,
+    "support": 0.6304347826086957,
+    "tolerancePx": 2.097,
+    "rms": 0.9924967714223794,
+    "span": 40.68814824494595,
+    "initial": {
+      "a": -0.8080363535287844,
+      "b": 383.01697649149315,
+      "inliers": 34,
+      "total": 46,
+      "support": 0.7391304347826086,
+      "tolerancePx": 2.097,
+      "rms": 0.9649740413469832,
+      "span": 43
+    },
+    "segmentation": {
+      "a": -0.7930395044317302,
+      "b": 378.3547642953796,
+      "inliers": 31,
+      "total": 46,
+      "support": 0.6739130434782609,
+      "tolerancePx": 2.097,
+      "rms": 1.1821705235628825,
+      "span": 42
+    }
+  },
+  "lowerEdgeSupport": [
+    0.5434782608695652,
+    0.6304347826086957
+  ],
+  "lobeOutlineSupport": [
+    0.5,
+    0.2222222222222222
+  ],
+  "quad": [
+    [
+      796.940953842628,
+      631.6593539438662
+    ],
+    [
+      856.2204646604408,
+      748.7890866349005
+    ],
+    [
+      764.8124220376249,
+      864.0519986487432
+    ],
+    [
+      715.8813933469556,
+      745.1522092092067
+    ]
+  ],
+  "schema": 1,
+  "photo": {
+    "path": "scripts/inverse/fixtures/hard-photos/collage.png",
+    "sha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36"
+  },
+  "sourcePixels": [
+    {
+      "point": [
+        725,
+        770
+      ],
+      "rgb": [
+        154,
+        124,
+        123
+      ],
+      "red": 0.0041066251520995,
+      "white": 0.08339277848834076,
+      "mixture": 0.9309372489631178,
+      "paper": 0.9369565470638789,
+      "review": "Visible background/shadow left of the paper edge in the original photo. Selected after inspecting the erroneous line; diagnostic observation, not blind labels."
+    },
+    {
+      "point": [
+        735,
+        790
+      ],
+      "rgb": [
+        167,
+        154,
+        146
+      ],
+      "red": 0.0006016350883717726,
+      "white": 0.5616366799711773,
+      "mixture": 0.26266998869300945,
+      "paper": 0.6769760278363055,
+      "review": "Visible background/shadow left of the paper edge in the original photo. Selected after inspecting the erroneous line; diagnostic observation, not blind labels."
+    },
+    {
+      "point": [
+        745,
+        790
+      ],
+      "rgb": [
+        167,
+        149,
+        144
+      ],
+      "red": 0.0009622597936464125,
+      "white": 0.45320180629819046,
+      "mixture": 0.6299169211001945,
+      "paper": 0.7978339645602393,
+      "review": "Visible background/shadow left of the paper edge in the original photo. Selected after inspecting the erroneous line; diagnostic observation, not blind labels."
+    }
+  ],
+  "initialTipPixelEdges": [
+    755.8883004682065,
+    874.9805329113009
+  ],
+  "refinedTipPixelEdges": [
+    764.8124220376249,
+    864.0519986487432
+  ],
+  "finding": "The red/white paper field admits visible background along the left lower side. The scanline edge samples follow that expanded region; local RGB adjustment searches only five pixels on either side of the initial line. The line intersection remains below the visible paper tip.",
+  "confirmedConstraint": "locator.js model() assigns B=lines.tip for every shape candidate. Subsequent lobe and notch optimization cannot move the wrong tip or change the two fitted lower lines.",
+  "scope": "Read-only reconstruction of recorded edge evidence, visual source review and three direct evaluations of the current colour formula. No new detection or template solve; no production change.",
+  "nextExperiment": "Compare stronger paper-boundary evidence and alternative lower-line hypotheses against unchanged source-photo observations. Do not select corners using template fitting error.",
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/jigsaw-edge-review-v1/edge-samples.png",
+      "sha256": "ee6bfdec2b24db70ac776b0f197305e593842d05f0134bf787de6992cdf2f07b"
+    },
+    {
+      "path": "static/inverse/locator/locator.js",
+      "sha256": "bb745954e2fa2b59abf8be98ded36b75b134295363f913dab04d3a4ad1c6a419"
+    },
+    {
+      "path": "static/inverse/locator/fields.js",
+      "sha256": "569c2235139acdc3c22f1fee94158ae59406b682e7ef16e822de215fd94b36ea"
+    },
+    {
+      "path": "tmp/heart-learning/paper-rollback-native-v1/photos/results.json",
+      "sha256": "5ef5ae1e0027d922a2519bebe30ca28607496de6c5fd02a986148ffb1602f27b"
+    }
+  ]
+}

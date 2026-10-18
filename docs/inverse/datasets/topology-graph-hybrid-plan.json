@@ -1,0 +1,41 @@
+{
+  "status": "complete; all_24_exported_images_visually_reviewed; policy_not_integrated",
+  "question": "Can a bounded sparse coarse probe preserve useful seeds while leaving earlier time for detailed recovery?",
+  "baseline": "Unchanged runtime from 9cedec4, identical to the preceding completed three-arm study.",
+  "candidate": "At most 1.1 seconds for coarse preparation plus sparse routing (at most 0.8 per routing attempt). Detailed recovery follows. Guided coarse fallback can use only the unspent part of the original coarse allowance, with the original final-refinement reserve and caller deadline.",
+  "unchanged": [
+    "Source photograph/crop/mask/probability",
+    "Initialization counts",
+    "Objectives and tolerances",
+    "Image/geometry/paper/feature/export gates",
+    "Ten-second request"
+  ],
+  "cases": [
+    "routing-x-plus-1",
+    "routing-y-minus-1",
+    "danish-tree-green",
+    "bibel-star-outline",
+    "real-abf590088db891f9-body-1",
+    "leaf-upward"
+  ],
+  "arms": [
+    "before",
+    "hybrid"
+  ],
+  "repeats": 2,
+  "timing": "Serial fresh processes; reversed arm order in the second repeat; decode excluded and independent replay measured separately.",
+  "qualification": "Development cases include related perturbations and an irregular published motif; preserve all historical outcomes. A smaller error alone does not establish a simpler or cleaner cut.",
+  "previousEvidence": "docs/inverse/datasets/topology-graph-budget-results.json",
+  "productionIntegrated": false,
+  "runtimePatch": {
+    "path": "docs/inverse/datasets/topology-graph-hybrid.patch",
+    "sha256": "bd872046bdaea0d1fa282065de4d91588dcceb691db1dc53f2d237cad3a256cf",
+    "appliedToProduction": false
+  },
+  "artifactRoot": "tmp/heart-learning/topology-graph-hybrid-v1",
+  "sourcePins": {
+    "path": "tmp/heart-learning/topology-graph-hybrid-v1/source.json",
+    "sha256": "a325f334e006fc9f96553ea8618a66cdd8aa3ad0428c26401b1e4c528b9f5317"
+  },
+  "results": "docs/inverse/datasets/topology-graph-hybrid-results.json"
+}

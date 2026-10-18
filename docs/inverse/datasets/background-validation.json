@@ -1,0 +1,745 @@
+{
+  "schema": "heart-background-validation-1",
+  "date": "2026-10-12",
+  "sourceCommit": "cb2a4f14afe54446d14eeeebefef874a8390634f",
+  "productionCommits": [
+    "638a430",
+    "f92be90"
+  ],
+  "scope": "Correlated background color fallback, guarded orientation correction and synthetic full-pipeline coverage. No production learned model.",
+  "commands": [
+    {
+      "command": [
+        "npm",
+        "run",
+        "check"
+      ],
+      "exitCode": 0,
+      "seconds": 8.477424333,
+      "log": "tmp/heart-learning/background-qa/0.log",
+      "logSha256": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "exitCode": 0,
+      "seconds": 6.469207209,
+      "log": "tmp/heart-learning/background-qa/1.log",
+      "logSha256": "a552732ebea6b64b49ac0a1299170db75e8c45dbbc66c284f28e99be5613e5c7"
+    },
+    {
+      "command": [
+        "npm",
+        "exec",
+        "vitest",
+        "run",
+        "--",
+        "--maxWorkers=2"
+      ],
+      "exitCode": 0,
+      "seconds": 34.800649250000006,
+      "log": "tmp/heart-learning/background-qa/2.log",
+      "logSha256": "6d9db0b7ff69feecf9108a54c0d41bee9912e83037033a685e6af78188432945"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:inverse"
+      ],
+      "exitCode": 0,
+      "seconds": 489.748756208,
+      "log": "tmp/heart-learning/background-qa/3.log",
+      "logSha256": "712fe2231a8cea3769901da80b6c8bde0960ad39e954aa4b1ae90e53ab722088"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exitCode": 0,
+      "seconds": 9.71889458399994,
+      "log": "tmp/heart-learning/background-qa/4.log",
+      "logSha256": "3ad88d505a62ea911e2157770ce89e2566b2299759392ea892df5f3f5ff88fa4"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:learning"
+      ],
+      "exitCode": 0,
+      "seconds": 9.127248500000064,
+      "log": "tmp/heart-learning/background-qa/5.log",
+      "logSha256": "72a128964a139f198327bf70874cd7f63d192acf7491f1c1fbab8a9bf310a5d0"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/inverse/datasets/real-collect.test.py"
+      ],
+      "exitCode": 0,
+      "seconds": 0.11810608299992964,
+      "log": "tmp/heart-learning/background-qa/6.log",
+      "logSha256": "26f599755db571bd9b1e025f21092acc4379cafd3617fe7b8b69ba0155bf7fdf"
+    }
+  ],
+  "counts": {
+    "applicationPassed": 855,
+    "applicationSkipped": 1,
+    "inversePassed": 670,
+    "learningPassed": 33,
+    "collectorPassed": 13,
+    "typeErrors": 0,
+    "existingTypeWarnings": 7
+  },
+  "browser": {
+    "url": "http://127.0.0.1:5232/en/editor/paint/",
+    "version": "145.0.7632.6",
+    "status": "passed",
+    "rows": [
+      {
+        "id": "channel-715069-v3--baseline",
+        "status": "passed",
+        "file": "tmp/heart-learning/color-interventions-v1/views/channel-715069-v3--baseline/photo.jpg",
+        "sha256": "cdf12ae979a607d84c9baaeed6d5ce1f0c440855afcef47fefaf44d996108b33",
+        "secondsToMask": 3.14,
+        "secondsToTemplates": 7.336,
+        "cornerErrorsPixels": [
+          2.838496467029271,
+          1.1846684650561257,
+          1.2892606880921325,
+          4.160172853304542
+        ],
+        "appliedMask": true,
+        "errors": [],
+        "files": [
+          "cut_geometry.json",
+          "report.json",
+          "vector_target.svg",
+          "processed_design.svg",
+          "weave_preview.svg",
+          "manufacturability_left.svg",
+          "manufacturability_right.svg",
+          "template_left.svg",
+          "template_right.svg",
+          "print_templates.html",
+          "disturbance.svg",
+          "report.html"
+        ],
+        "templateChecksPassed": true,
+        "slits": {
+          "left": 1,
+          "right": 1
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 400,
+          "mismatchPixels": 1510,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0094375,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "matchingPreference": {
+          "enabled": true,
+          "identical": true,
+          "rmsTemplateDifferenceMm": 0,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0.009275,
+          "method": "Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.",
+          "baselineImageError": 0.00085625,
+          "baselineCounts": [
+            1,
+            1
+          ],
+          "baselinePhase": 1,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.01085625,
+          "attempts": [
+            {
+              "proposal": "copy-second-sheet",
+              "refined": false,
+              "imageError": 0.02118125,
+              "withinAllowance": false
+            },
+            {
+              "proposal": "copy-first-sheet",
+              "refined": false,
+              "imageError": 0.02125625,
+              "withinAllowance": false
+            },
+            {
+              "proposal": "copy-second-sheet",
+              "refined": true,
+              "steps": 200,
+              "imageError": 0.01040625,
+              "withinAllowance": true,
+              "featuresPassed": true,
+              "geometryPassed": true,
+              "paperPassed": true
+            }
+          ],
+          "status": "matched",
+          "seconds": 0.5657999999523163,
+          "selectedImageError": 0.0094375,
+          "additionalImageError": 0.00858125
+        }
+      },
+      {
+        "id": "channel-783681-v0--baseline",
+        "status": "passed",
+        "file": "tmp/heart-learning/color-interventions-v1/views/channel-783681-v0--baseline/photo.jpg",
+        "sha256": "28b926b7095ed343e1a5e8682cbf474055908ecbcec3b4582ac02fa9200b114e",
+        "secondsToMask": 2.171,
+        "secondsToTemplates": 5.665,
+        "cornerErrorsPixels": [
+          0.5834337648597394,
+          0.2575903047794817,
+          1.552347385277185,
+          1.4875745638866325
+        ],
+        "appliedMask": true,
+        "errors": [],
+        "files": [
+          "cut_geometry.json",
+          "report.json",
+          "vector_target.svg",
+          "processed_design.svg",
+          "weave_preview.svg",
+          "manufacturability_left.svg",
+          "manufacturability_right.svg",
+          "template_left.svg",
+          "template_right.svg",
+          "print_templates.html",
+          "disturbance.svg",
+          "report.html"
+        ],
+        "templateChecksPassed": true,
+        "slits": {
+          "left": 1,
+          "right": 1
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 400,
+          "mismatchPixels": 1751,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01094375,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "matchingPreference": {
+          "enabled": true,
+          "identical": true,
+          "rmsTemplateDifferenceMm": 0,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0.00781875,
+          "method": "Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.",
+          "baselineImageError": 0.00590625,
+          "baselineCounts": [
+            1,
+            1
+          ],
+          "baselinePhase": 0,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.01590625,
+          "attempts": [
+            {
+              "proposal": "average-sheets",
+              "refined": false,
+              "imageError": 0.01094375,
+              "withinAllowance": true,
+              "featuresPassed": true,
+              "geometryPassed": true,
+              "paperPassed": true
+            }
+          ],
+          "status": "matched",
+          "seconds": 0.05690000009536743,
+          "selectedImageError": 0.01094375,
+          "additionalImageError": 0.0050375
+        }
+      },
+      {
+        "id": "channel-795789-v2--baseline",
+        "status": "passed",
+        "file": "tmp/heart-learning/color-interventions-v1/views/channel-795789-v2--baseline/photo.jpg",
+        "sha256": "36731c0b1bf368e65ae743ae1c84ad7fbaf51559dd63e7bf4ee2f91e9aecd78a",
+        "secondsToMask": 2.163,
+        "secondsToTemplates": 5.087,
+        "cornerErrorsPixels": [
+          3.917477929203791,
+          5.592307352089839,
+          1.4167662528145177,
+          1.682403401205822
+        ],
+        "appliedMask": true,
+        "errors": [],
+        "files": [
+          "cut_geometry.json",
+          "report.json",
+          "vector_target.svg",
+          "processed_design.svg",
+          "weave_preview.svg",
+          "manufacturability_left.svg",
+          "manufacturability_right.svg",
+          "template_left.svg",
+          "template_right.svg",
+          "print_templates.html",
+          "disturbance.svg",
+          "report.html"
+        ],
+        "templateChecksPassed": true,
+        "slits": {
+          "left": 1,
+          "right": 1
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 400,
+          "mismatchPixels": 679,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00424375,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "matchingPreference": {
+          "enabled": true,
+          "identical": false,
+          "rmsTemplateDifferenceMm": 1.626120631097143,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0.01290625,
+          "method": "Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.",
+          "baselineImageError": 0.00425,
+          "baselineCounts": [
+            1,
+            1
+          ],
+          "baselinePhase": 0,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.01425,
+          "attempts": [
+            {
+              "proposal": "copy-first-sheet",
+              "refined": false,
+              "imageError": 0.0148625,
+              "withinAllowance": false
+            },
+            {
+              "proposal": "copy-second-sheet",
+              "refined": false,
+              "imageError": 0.0154375,
+              "withinAllowance": false
+            },
+            {
+              "proposal": "copy-first-sheet",
+              "refined": true,
+              "steps": 200,
+              "imageError": 0.0147125,
+              "withinAllowance": false
+            },
+            {
+              "proposal": "copy-second-sheet",
+              "refined": true,
+              "steps": 200,
+              "imageError": 0.0147125,
+              "withinAllowance": false
+            },
+            {
+              "proposal": "matching-grid",
+              "counts": [
+                1,
+                1
+              ],
+              "phase": 1,
+              "refined": true,
+              "steps": 200,
+              "imageError": 0.014775,
+              "withinAllowance": false
+            }
+          ],
+          "status": "no_valid_matching_candidate",
+          "seconds": 0.9508999999761582,
+          "selectedImageError": 0.00424375,
+          "additionalImageError": -6.250000000000179e-06
+        }
+      },
+      {
+        "id": "frame-764510-v3--baseline",
+        "status": "passed",
+        "file": "tmp/heart-learning/color-interventions-v1/views/frame-764510-v3--baseline/photo.jpg",
+        "sha256": "d3b202927a2baed2793432a48af6169c5359be9455c002b223fd1289af10972f",
+        "secondsToMask": 1.706,
+        "secondsToTemplates": 4.802,
+        "cornerErrorsPixels": [
+          1.2941892066064338,
+          0.6114073623391468,
+          3.907747540560774,
+          0.4493425717099781
+        ],
+        "appliedMask": true,
+        "errors": [],
+        "files": [
+          "cut_geometry.json",
+          "report.json",
+          "vector_target.svg",
+          "processed_design.svg",
+          "weave_preview.svg",
+          "manufacturability_left.svg",
+          "manufacturability_right.svg",
+          "template_left.svg",
+          "template_right.svg",
+          "print_templates.html",
+          "report.html"
+        ],
+        "templateChecksPassed": true,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 400,
+          "mismatchPixels": 704,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0044,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "matchingPreference": {
+          "enabled": true,
+          "identical": false,
+          "rmsTemplateDifferenceMm": 1.464710494699548,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0.01684375,
+          "method": "Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.",
+          "baselineImageError": 0.0044375,
+          "baselineCounts": [
+            2,
+            2
+          ],
+          "baselinePhase": 0,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.014437499999999999,
+          "attempts": [],
+          "status": "image_bound_exceeds_allowance",
+          "seconds": 0.005200000047683716,
+          "selectedImageError": 0.0044,
+          "additionalImageError": -3.749999999999934e-05
+        }
+      },
+      {
+        "id": "frame-829086-v3--baseline",
+        "status": "passed",
+        "file": "tmp/heart-learning/color-interventions-v1/views/frame-829086-v3--baseline/photo.jpg",
+        "sha256": "2c13c6fb735ef12e6ca9c9482394fd1ee11621b8c19360efc404253419d52ad7",
+        "secondsToMask": 2.959,
+        "secondsToTemplates": 7.652,
+        "cornerErrorsPixels": [
+          1.1148232329429655,
+          0.9658896003032976,
+          1.5726556441334447,
+          0.6915338769108152
+        ],
+        "appliedMask": true,
+        "errors": [],
+        "files": [
+          "cut_geometry.json",
+          "report.json",
+          "vector_target.svg",
+          "processed_design.svg",
+          "weave_preview.svg",
+          "manufacturability_left.svg",
+          "manufacturability_right.svg",
+          "template_left.svg",
+          "template_right.svg",
+          "print_templates.html",
+          "disturbance.svg",
+          "report.html"
+        ],
+        "templateChecksPassed": true,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 400,
+          "mismatchPixels": 1322,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0082625,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "matchingPreference": {
+          "enabled": true,
+          "identical": true,
+          "rmsTemplateDifferenceMm": 0,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0.0074875,
+          "method": "Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.",
+          "baselineImageError": 0.0024125,
+          "baselineCounts": [
+            2,
+            2
+          ],
+          "baselinePhase": 0,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.0124125,
+          "attempts": [
+            {
+              "proposal": "copy-first-sheet",
+              "refined": false,
+              "imageError": 0.0489625,
+              "withinAllowance": false
+            },
+            {
+              "proposal": "copy-second-sheet",
+              "refined": false,
+              "imageError": 0.0489625,
+              "withinAllowance": false
+            },
+            {
+              "proposal": "matching-grid",
+              "counts": [
+                2,
+                2
+              ],
+              "phase": 1,
+              "refined": true,
+              "steps": 200,
+              "imageError": 0.00905,
+              "withinAllowance": true,
+              "featuresPassed": true,
+              "geometryPassed": true,
+              "paperPassed": true
+            }
+          ],
+          "status": "matched",
+          "seconds": 0.5345,
+          "selectedImageError": 0.0082625,
+          "additionalImageError": 0.005850000000000001
+        }
+      },
+      {
+        "id": "frame-756438-v0--baseline",
+        "status": "passed",
+        "file": "tmp/heart-learning/color-interventions-v1/views/frame-756438-v0--baseline/photo.jpg",
+        "sha256": "004f539ac42c4ffabca3bf94c60de5a79438a3c091e25a61d2438da87c7f22ae",
+        "secondsToMask": 2.27,
+        "secondsToTemplates": 7.274,
+        "cornerErrorsPixels": [
+          1.8004050618728709,
+          2.3812359361012096,
+          2.0605663312651923,
+          1.1668095351413712
+        ],
+        "appliedMask": true,
+        "errors": [],
+        "files": [
+          "cut_geometry.json",
+          "report.json",
+          "vector_target.svg",
+          "processed_design.svg",
+          "weave_preview.svg",
+          "manufacturability_left.svg",
+          "manufacturability_right.svg",
+          "template_left.svg",
+          "template_right.svg",
+          "print_templates.html",
+          "disturbance.svg",
+          "report.html"
+        ],
+        "templateChecksPassed": true,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 400,
+          "mismatchPixels": 887,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00554375,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "matchingPreference": {
+          "enabled": true,
+          "identical": false,
+          "rmsTemplateDifferenceMm": 9.572543462574483,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0.02139375,
+          "method": "Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.",
+          "baselineImageError": 0.00555625,
+          "baselineCounts": [
+            2,
+            2
+          ],
+          "baselinePhase": 0,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.01555625,
+          "attempts": [],
+          "status": "image_bound_exceeds_allowance",
+          "seconds": 0.007100000023841858,
+          "selectedImageError": 0.00554375,
+          "additionalImageError": -1.2500000000000358e-05
+        }
+      },
+      {
+        "id": "selected-sideways-heart",
+        "status": "passed",
+        "file": "tmp/heart-learning/background-browser-v1/two-hearts.png",
+        "sha256": "75e53ba8dde3352206f8a6dfa0b8956923ee3a29bccea954bb521840a95727d0",
+        "secondsToMask": 5.067,
+        "cornerErrorsPixels": [
+          0.5837354045484525,
+          1.4088407356537862,
+          0.931934380319744,
+          0.7687917110365199
+        ],
+        "appliedMask": true,
+        "errors": []
+      }
+    ],
+    "servedSources": [
+      {
+        "url": "http://127.0.0.1:5232/inverse/core/crop.js",
+        "sha256": "e44d3179ca229cb645779af3550ab2736547104c46684e0ccee402a1d1875ea6"
+      },
+      {
+        "url": "http://127.0.0.1:5232/inverse/locator/locator.js",
+        "sha256": "b076ecec04b3bc65aef2d8ad03ccabd45fbc6802eee96b9ed3f4eecf9f8d989f"
+      },
+      {
+        "url": "http://127.0.0.1:5232/inverse/locator/orientation.js",
+        "sha256": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28"
+      },
+      {
+        "url": "http://127.0.0.1:5232/inverse/locator/palette.js",
+        "sha256": "e6163193c14d753c2b93168c2e2e25602fb240117e1846a1c92a92308bc9084b"
+      },
+      {
+        "url": "http://127.0.0.1:5232/inverse/locator/background.js",
+        "sha256": "eae48361dab5485076b8442949ad750b83a381631e007e6d0e9e60c43bb279b8"
+      }
+    ],
+    "runner": {
+      "path": "tmp/heart-learning/browser-background-check.mjs",
+      "sha256": "ba383e920aa9211e309dcdf80a9d627baf882a9211de2398c9eabb322ff17215"
+    },
+    "evidence": [
+      {
+        "path": "tmp/heart-learning/background-browser-v1/channel-715069-v3--baseline-cuts.json",
+        "sha256": "6974e86c8cb53f0a8678f4ba32525d0f4555196f01ce1ad035c98f06ed69538d"
+      },
+      {
+        "path": "tmp/heart-learning/background-browser-v1/channel-715069-v3--baseline-templates.png",
+        "sha256": "fc321368228eb55f3af7fcb7be6c667a47b1c426bdfb98bce5edfbb28760134a"
+      },
+      {
+        "path": "tmp/heart-learning/background-browser-v1/channel-715069-v3--baseline.png",
+        "sha256": "4e7d4cf94124fe88ce958b22517be5c355941233eb996af99a3d265b3609f3e2"
+      },
+      {
+        "path": "tmp/heart-learning/background-browser-v1/channel-783681-v0--baseline-cuts.json",
+        "sha256": "a765931ceffd014fd522e3b49334f630ce6d5fb0e67005b058aa36cb406e4a4f"
+      },
+      {
+        "path": "tmp/heart-learning/background-browser-v1/channel-783681-v0--baseline-templates.png",
+        "sha256": "e9fca5d1d38e8f2b907e91ff9b2d50133f266f99b376e224676d418b1a92c4a3"
+      },
+      {
+        "path": "tmp/heart-learning/background-browser-v1/channel-783681-v0--baseline.png",
+        "sha256": "6b543ffa7d2cbf4fb8edd73054ce722f4f93269d77e00668c09108a8a6adf285"
+      },
+      {
+        "path": "tmp/heart-learning/background-browser-v1/channel-795789-v2--baseline-cuts.json",
+        "sha256": "c103f1b4416dfc6e21a730deb926c8a8b549981f83b97fc4d344042cc0549fd9"
+      },
+      {
+        "path": "tmp/heart-learning/background-browser-v1/channel-795789-v2--baseline-templates.png",
+        "sha256": "013a7fb0d38fc12f54669c47f88d09852b104ea853ec0bbc4deabcaaf6ccc565"
+      },
+      {
+        "path": "tmp/heart-learning/background-browser-v1/channel-795789-v2--baseline.png",
+        "sha256": "f2390f7536d176827ab89d843786ee22641652ba6e9b8e4e05ac497b24baf5c9"
+      },
+      {
+        "path": "tmp/heart-learning/background-browser-v1/frame-756438-v0--baseline-cuts.json",
+        "sha256": "7425acd5dabe0a260a85819c7e5ecb5cb51c6d0e8a05ea5157a9aac5b21782db"
+      },
+      {
+        "path": "tmp/heart-learning/background-browser-v1/frame-756438-v0--baseline-templates.png",
+        "sha256": "6a27103a7e5a111070629e1e528d63109ee2256a88d5a2f0156579ad554fb3bc"
+      },
+      {
+        "path": "tmp/heart-learning/background-browser-v1/frame-756438-v0--baseline.png",
+        "sha256": "de710326955a144677e7236439f0c99e1bd9fdd8e5f9f13363f5b2494b8ff2a6"
+      },
+      {
+        "path": "tmp/heart-learning/background-browser-v1/frame-764510-v3--baseline-cuts.json",
+        "sha256": "1e850d864302efc888e31b26f9e642d72ced5edca403fce571b3c3e7dd0d5069"
+      },
+      {
+        "path": "tmp/heart-learning/background-browser-v1/frame-764510-v3--baseline-templates.png",
+        "sha256": "dda63a4b7741acb8f2c297aba2275792f8e366e49b3d7f2509030a358dd24a9a"
+      },
+      {
+        "path": "tmp/heart-learning/background-browser-v1/frame-764510-v3--baseline.png",
+        "sha256": "9ef01a856d2080228f8bbca1bb92cc06f0b4c0060aad1ae1eb96b54468928973"
+      },
+      {
+        "path": "tmp/heart-learning/background-browser-v1/frame-829086-v3--baseline-cuts.json",
+        "sha256": "28b05d1350acfb3e1a1e748b691f89a9534239e584ce4d667a04728f0295716b"
+      },
+      {
+        "path": "tmp/heart-learning/background-browser-v1/frame-829086-v3--baseline-templates.png",
+        "sha256": "4ed880acb0e9142887cfcf085a5839620f1ea5ca33686b46fc188164f34439b4"
+      },
+      {
+        "path": "tmp/heart-learning/background-browser-v1/frame-829086-v3--baseline.png",
+        "sha256": "aa854199694aca73ee688ddeb954e052f16da5a1fc8dd5e0fe400abcf2c2c9b5"
+      },
+      {
+        "path": "tmp/heart-learning/background-browser-v1/report.json",
+        "sha256": "41ec4d1af9b28c765ea74b64126b0b7d91729058561adac5efd8c713d04cdbcb"
+      },
+      {
+        "path": "tmp/heart-learning/background-browser-v1/selected-sideways-heart.png",
+        "sha256": "7ba18b221014d4736993b8393f3546256809d8bf6dc88cbc374c4c2a9957e734"
+      },
+      {
+        "path": "tmp/heart-learning/background-browser-v1/two-hearts.png",
+        "sha256": "75e53ba8dde3352206f8a6dfa0b8956923ee3a29bccea954bb521840a95727d0"
+      }
+    ]
+  },
+  "results": {
+    "path": "docs/inverse/datasets/background-photo-results.json",
+    "sha256": "96cc4a1d9b406687f6d72e3a29ebf48e75c2589e94017c55121bfb8c145d61bc"
+  },
+  "priorCropRegressions": {
+    "path": "tmp/heart-learning/background-diagnosis-v1/existing-crop-tests.log",
+    "sha256": "2a367b0c8f945473ab218cf724dcefe2703fe94f0bf25ee9f722526539b93add"
+  },
+  "newFocusedRegressions": {
+    "path": "tmp/heart-learning/background-diagnosis-v1/new-crop-tests-v3.log",
+    "sha256": "c8fba0045ac01a4c873a9c5899f27488b2e998f7acaeb02e0d045d0875411066"
+  },
+  "sampleManifest": {
+    "path": "tmp/heart-learning/background-coverage-input-v1/manifest.json",
+    "sha256": "79b1467f014fd88e2805ba99304a632a890f07068fda6432d70b583d9054d131"
+  }
+}

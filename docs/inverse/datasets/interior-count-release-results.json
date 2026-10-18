@@ -1,0 +1,202 @@
+{
+  "sourceCommit": "9f75a40",
+  "scope": "Serial nice-15 QA of the integrated interior-count proposal, followed by a focused repair-deadline correction. Full suite was not green and has not been repeated after that correction.",
+  "fullQA": {
+    "status": "failed",
+    "pid": 33254,
+    "stages": [
+      {
+        "name": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "status": "passed",
+        "log": "check.log",
+        "pid": 33289,
+        "exitCode": 0,
+        "seconds": 12.578927208
+      },
+      {
+        "name": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "status": "passed",
+        "log": "lint.log",
+        "pid": 33693,
+        "exitCode": 0,
+        "seconds": 11.200494625000001
+      },
+      {
+        "name": "application",
+        "command": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "--maxWorkers=1"
+        ],
+        "status": "passed",
+        "log": "application.log",
+        "pid": 34097,
+        "exitCode": 0,
+        "seconds": 55.37601579099999
+      },
+      {
+        "name": "inverse",
+        "command": [
+          "npm",
+          "run",
+          "test:inverse"
+        ],
+        "status": "failed",
+        "log": "inverse.log",
+        "pid": 35774,
+        "exitCode": 1,
+        "seconds": 1269.1682315829999
+      },
+      {
+        "name": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "status": "passed",
+        "log": "build.log",
+        "pid": 78188,
+        "exitCode": 0,
+        "seconds": 21.230418333999978
+      }
+    ],
+    "scope": "check, lint, application tests with one worker, serial inverse tests, build. npm test is split into its two phases to avoid parallel Vitest workers. No browser QA in this controller.",
+    "sourceFiles": 1015,
+    "priority": 15,
+    "minimumFreeGiB": 10
+  },
+  "inverse": {
+    "tests": 1035,
+    "passed": 1028,
+    "failed": 7,
+    "failures": [
+      "\u2716 fresh fitting continues an unfinished verified initializer within the remaining search allowance (7841.564042ms)",
+      "\u2716 fresh fitting retains the stacked motif on the resampled mask (7964.296708ms)",
+      "\u2716 early feature routing recovers the frozen puppy opening within a ten-second search (10312.654167ms)",
+      "\u2716 the main fitter reconstructs the dense binary photo target with legal editable-sized counts (10135.006875ms)",
+      "\u2716 a late horizontal same-count proposal retains the motif with 4200ms left (10507.036084ms)",
+      "\u2716 a late routing candidate uses the repair time already provided by its caller (7547.765917ms)",
+      "\u2716 a late routing candidate cannot manufacture an unprovided repair allowance (8125.784625ms)"
+    ]
+  },
+  "integratedProposalAudit": {
+    "unchangedExistingMasks": 55,
+    "proceduralControlsPassed": 8,
+    "seconds": 0.64883675
+  },
+  "binaryEditableReplay": [
+    {
+      "id": "binary-checker-baseline",
+      "conversionPassed": true,
+      "completeCandidatePassed": false,
+      "editableError": 0.0521125,
+      "independentEngineError": 0.05199375,
+      "geometrySha256": "7ed22d26f7ba5fb21522519b40ca3f162f42870b0187ad12777466f0061b3c95",
+      "maskSha256": "9ac385b123d8f9783d50523b4c68f609ccb94287780ce2cdc8a4e8de7020fa9c"
+    },
+    {
+      "id": "binary-checker-interior-supported",
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "editableError": 0.0264,
+      "independentEngineError": 0.02704375,
+      "geometrySha256": "28afd1e1c8e5e41ff3338a72808b0af7743db0c6053726006a17c7dba680ccce",
+      "maskSha256": "9ac385b123d8f9783d50523b4c68f609ccb94287780ce2cdc8a4e8de7020fa9c"
+    }
+  ],
+  "repairFollowup": {
+    "testsPassed": 8,
+    "rootCause": "The repair caller supplied the pre-polish work cutoff as its overall retention deadline. A completed, independently checked candidate could therefore be discarded even while later-stage time remained. Separate work and retention deadlines preserve the candidate without allowing new repair work beyond the cutoff.",
+    "overallDeadlineExtended": false,
+    "acceptanceRelaxed": false
+  },
+  "denseFollowup": {
+    "testsPassed": 6,
+    "qualification": "Passed after the repair change in isolation; this does not establish the cause of the prior full-suite geometry failure or eliminate timing sensitivity."
+  },
+  "browserQA": "pending",
+  "unresolved": "Five other full-suite failures have not been resolved, including the dense-case failure despite its later passing focused replay.",
+  "artifacts": {
+    "tmp/heart-learning/interior-count-release-v1/qa/state.json": {
+      "sha256": "3bbec44a2212f8048fd99b719742c66f4fe2e63d63e60c12b07d2a73775c37ba",
+      "bytes": 1581
+    },
+    "tmp/heart-learning/interior-count-release-v1/qa/source.json": {
+      "sha256": "6f52c9d216d967bd84820f56dfee2019ef4aba15302090bef64000e409eec6c3",
+      "bytes": 117810
+    },
+    "tmp/heart-learning/interior-count-release-v1/qa/inverse.log": {
+      "sha256": "d3fa1f4f0689863859f9c7a1f7455c523f558fe61426617ef2a2eb831b447f09",
+      "bytes": 121751
+    },
+    "tmp/heart-learning/interior-count-release-v1/qa/check.log": {
+      "sha256": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+      "bytes": 13474
+    },
+    "tmp/heart-learning/interior-count-release-v1/qa/lint.log": {
+      "sha256": "2b7add329ca80a0f26dcb26c7eb139cd28b3768793c6b0797002f91a54119a34",
+      "bytes": 519
+    },
+    "tmp/heart-learning/interior-count-release-v1/qa/application.log": {
+      "sha256": "6e95a6b0cb13a3dd874b6db80f8c4399244b9775ac813a7d383a56e6eccccde5",
+      "bytes": 258
+    },
+    "tmp/heart-learning/interior-count-release-v1/qa/build.log": {
+      "sha256": "e7f316e9965895c59f3416936d0a927f195bf71a271e50bcd68aa1b2fe7a8258",
+      "bytes": 26116
+    },
+    "tmp/heart-learning/interior-count-release-v1/policy-audit.json": {
+      "sha256": "7d43bd5c5be141ef1cb9f768029b8647e133c6b018b1f28e54c6dd89fd73742f",
+      "bytes": 42071
+    },
+    "tmp/heart-learning/interior-count-release-v1/repair-followup.log": {
+      "sha256": "c7164d8430e44a15f836d9aba92991a3650436328bbdc70ee44b2018fab87125",
+      "bytes": 862
+    },
+    "tmp/heart-learning/interior-count-release-v1/dense-followup.log": {
+      "sha256": "df67edef7373c3ef63f4d423aa21501117fc70a68f1ba8933e7d5d401af4dad5",
+      "bytes": 704
+    },
+    "tmp/heart-learning/interior-count-release-v1/binary-editable/results.json": {
+      "sha256": "e65321fe13ca5b23e163631b1aae89e7ea4aee7f16265c16cd783b0f4f86e338",
+      "bytes": 98496
+    }
+  },
+  "postRepairChecks": {
+    "commit": "5e48e29",
+    "stages": [
+      {
+        "name": "check",
+        "status": "passed",
+        "exitCode": 0,
+        "seconds": 10.256052749999998
+      },
+      {
+        "name": "lint",
+        "status": "passed",
+        "exitCode": 0,
+        "seconds": 6.928958792000003
+      },
+      {
+        "name": "build",
+        "status": "passed",
+        "exitCode": 0,
+        "seconds": 16.044425708000006
+      }
+    ],
+    "applicationTestsRepeated": false,
+    "fullInverseSuiteRepeated": false
+  }
+}

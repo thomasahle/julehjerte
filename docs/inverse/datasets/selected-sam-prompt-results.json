@@ -1,0 +1,363 @@
+{
+  "schema": "selected-sam-prompt-results-1",
+  "status": "paired-inference-crops-fits-editable-and-roundoff-followup-complete",
+  "runtimeCommit": "fd85519",
+  "deployed": false,
+  "trainingPerformed": false,
+  "sources": 7,
+  "attempts": 14,
+  "comparison": "Box-only MobileSAM with automatic largest-CNN-component box versus the frozen supplied selection. Same full-image encoding, RGB material estimate, letterbox, original/no-contrast/projective crop policy and ten-second fit request. No point prompts or target-based arm selection.",
+  "scope": "Inspected development photos; some source groups overlap the fixed CNN training. No held-out or automatic-detection claim. Distinct from the prior 20-photo cohort and its two-paper SAM policy.",
+  "counts": {
+    "automatic": {
+      "cropCandidates": 4,
+      "checkedMasks": 2,
+      "checkedIntendedObject": 1
+    },
+    "selection": {
+      "cropCandidates": 5,
+      "checkedMasks": 3,
+      "checkedIntendedObject": 3
+    },
+    "editableConverted": 8,
+    "editableComplete": 5
+  },
+  "rows": [
+    {
+      "id": "real-7e2c5568d27c2860-roi__automatic-box",
+      "sourceId": "real-7e2c5568d27c2860",
+      "arm": "automatic-box",
+      "status": "crop-unresolved",
+      "wrongSelectedObject": false,
+      "independentMaskError": null,
+      "editableError": null,
+      "editableChecksPassed": false,
+      "error": null
+    },
+    {
+      "id": "real-7e2c5568d27c2860-roi__selection-box",
+      "sourceId": "real-7e2c5568d27c2860",
+      "arm": "selection-box",
+      "status": "checked-derived-mask",
+      "wrongSelectedObject": false,
+      "independentMaskError": 0.00413125,
+      "editableError": 0.004075,
+      "editableChecksPassed": true,
+      "error": null
+    },
+    {
+      "id": "real-ca2f9adc67ee4cea-roi__selection-box",
+      "sourceId": "real-ca2f9adc67ee4cea",
+      "arm": "selection-box",
+      "status": "checked-derived-mask",
+      "wrongSelectedObject": false,
+      "independentMaskError": 0.00815625,
+      "editableError": 0.00815,
+      "editableChecksPassed": true,
+      "error": null
+    },
+    {
+      "id": "real-ca2f9adc67ee4cea-roi__automatic-box",
+      "sourceId": "real-ca2f9adc67ee4cea",
+      "arm": "automatic-box",
+      "status": "checked-derived-mask",
+      "wrongSelectedObject": true,
+      "independentMaskError": 0.00390625,
+      "editableError": 0.00384375,
+      "editableChecksPassed": true,
+      "error": null
+    },
+    {
+      "id": "real-f1af2fbb127278e4-roi__automatic-box",
+      "sourceId": "real-f1af2fbb127278e4",
+      "arm": "automatic-box",
+      "status": "review-required",
+      "wrongSelectedObject": false,
+      "independentMaskError": 0.05795625,
+      "editableError": 0.05851875,
+      "editableChecksPassed": false,
+      "error": null
+    },
+    {
+      "id": "real-f1af2fbb127278e4-roi__selection-box",
+      "sourceId": "real-f1af2fbb127278e4",
+      "arm": "selection-box",
+      "status": "review-required",
+      "wrongSelectedObject": false,
+      "independentMaskError": 0.06595618339219302,
+      "editableError": 0.06625621151982998,
+      "editableChecksPassed": false,
+      "error": null
+    },
+    {
+      "id": "real-80c07aedd993f117-roi__selection-box",
+      "sourceId": "real-80c07aedd993f117",
+      "arm": "selection-box",
+      "status": "failed",
+      "wrongSelectedObject": false,
+      "independentMaskError": null,
+      "editableError": null,
+      "editableChecksPassed": false,
+      "error": "Prediction window must contain the source photograph."
+    },
+    {
+      "id": "real-80c07aedd993f117-roi__automatic-box",
+      "sourceId": "real-80c07aedd993f117",
+      "arm": "automatic-box",
+      "status": "crop-unresolved",
+      "wrongSelectedObject": false,
+      "independentMaskError": null,
+      "editableError": null,
+      "editableChecksPassed": false,
+      "error": null
+    },
+    {
+      "id": "real-3f24113792188631-roi__automatic-box",
+      "sourceId": "real-3f24113792188631",
+      "arm": "automatic-box",
+      "status": "review-required",
+      "wrongSelectedObject": false,
+      "independentMaskError": 0.0860625,
+      "editableError": 0.08591875,
+      "editableChecksPassed": false,
+      "error": null
+    },
+    {
+      "id": "real-3f24113792188631-roi__selection-box",
+      "sourceId": "real-3f24113792188631",
+      "arm": "selection-box",
+      "status": "crop-unresolved",
+      "wrongSelectedObject": false,
+      "independentMaskError": null,
+      "editableError": null,
+      "editableChecksPassed": false,
+      "error": null
+    },
+    {
+      "id": "real-3a89de4eae04a025-roi__selection-box",
+      "sourceId": "real-3a89de4eae04a025",
+      "arm": "selection-box",
+      "status": "checked-derived-mask",
+      "wrongSelectedObject": false,
+      "independentMaskError": 0.0072129958934676755,
+      "editableError": 0.00720049503403359,
+      "editableChecksPassed": true,
+      "error": null
+    },
+    {
+      "id": "real-3a89de4eae04a025-roi__automatic-box",
+      "sourceId": "real-3a89de4eae04a025",
+      "arm": "automatic-box",
+      "status": "checked-derived-mask",
+      "wrongSelectedObject": false,
+      "independentMaskError": 0.010377918789659591,
+      "editableError": 0.010184114282141853,
+      "editableChecksPassed": true,
+      "error": null
+    },
+    {
+      "id": "real-e1b1492e32f6cdf5-roi__automatic-box",
+      "sourceId": "real-e1b1492e32f6cdf5",
+      "arm": "automatic-box",
+      "status": "crop-unresolved",
+      "wrongSelectedObject": false,
+      "independentMaskError": null,
+      "editableError": null,
+      "editableChecksPassed": false,
+      "error": null
+    },
+    {
+      "id": "real-e1b1492e32f6cdf5-roi__selection-box",
+      "sourceId": "real-e1b1492e32f6cdf5",
+      "arm": "selection-box",
+      "status": "crop-unresolved",
+      "wrongSelectedObject": false,
+      "independentMaskError": null,
+      "editableError": null,
+      "editableChecksPassed": false,
+      "error": null
+    }
+  ],
+  "visualReview": {
+    "fields": 14,
+    "cropPanels": 7,
+    "exportedWeaves": 8,
+    "findings": [
+      "Selection isolates the intended cross and star instead of multiple baskets or the neighboring heart. The automatic star-scene success is the wrong basket and is excluded from intended-object success.",
+      "Pale printed checker has a complete silhouette with either SAM box; supplied selection suppresses the handle. Both yield checked 2/2-cut checker masks, but uneven cell boundaries and point-contact uncertainty remain.",
+      "Pale-checker right/left corners lie inside approximate visible ranges; both tips overshoot the range and lie slightly outside the photograph. Unknown notch is unscored. Partial observation coverage remains active.",
+      "Cross retains a false small central diamond. Star retains rounded joins and thin seams.",
+      "Dense checker crop is plausible but its current low-count fitting loses cells. The separate expanded-count experiment uses the earlier RGB crop/target and is not merged into these results.",
+      "Automatic gold-tree crop includes extra paper/background; material field and weave lose the intended tree. Selected box does not produce a supported crop.",
+      "Painted heart remains a segmentation failure in both arms.",
+      "Red/green printed source gets a selected crop but fails BEFORE fitting: inverse letterbox width 3729.9999999999995 versus 3730 is rejected as incomplete prediction coverage. Numerical repair and replay are pending; this is not a solver timeout."
+    ]
+  },
+  "paleCheckerCornerReview": [
+    {
+      "arm": "selection-box",
+      "corners": [
+        {
+          "corner": "notch",
+          "point": [
+            341.08930219135146,
+            271.9761683209497
+          ],
+          "distanceOutsideApproximateRange": null
+        },
+        {
+          "corner": "right",
+          "point": [
+            491.4478170851282,
+            444.69281731100455
+          ],
+          "distanceOutsideApproximateRange": 0.0
+        },
+        {
+          "corner": "tip",
+          "point": [
+            305.6515821818202,
+            615.8160131210248
+          ],
+          "distanceOutsideApproximateRange": 6.816013121024753
+        },
+        {
+          "corner": "left",
+          "point": [
+            164.322831152703,
+            421.15624837748715
+          ],
+          "distanceOutsideApproximateRange": 0.0
+        }
+      ]
+    },
+    {
+      "arm": "automatic-box",
+      "corners": [
+        {
+          "corner": "notch",
+          "point": [
+            339.8783566844964,
+            270.87271968862365
+          ],
+          "distanceOutsideApproximateRange": null
+        },
+        {
+          "corner": "right",
+          "point": [
+            491.5352618532435,
+            444.30610019769466
+          ],
+          "distanceOutsideApproximateRange": 0.0
+        },
+        {
+          "corner": "tip",
+          "point": [
+            304.2379714408556,
+            618.1885013489975
+          ],
+          "distanceOutsideApproximateRange": 9.188501348997534
+        },
+        {
+          "corner": "left",
+          "point": [
+            165.32555291943888,
+            421.8135327165133
+          ],
+          "distanceOutsideApproximateRange": 0.0
+        }
+      ]
+    }
+  ],
+  "numericalFollowup": {
+    "commit": "0216298",
+    "focusedTestsPassed": 5,
+    "pipelineReplay": "complete",
+    "qualification": "Allow only dimension-scaled floating-point roundoff, including field-edge interpolation; genuine 1e-6-pixel truncations still reject on all four sides. Original failed record retained.",
+    "currentRuntime": "ff4827e",
+    "previousTargetsByteIdentical": 8,
+    "previousCoverageCountsUnchanged": 8,
+    "formerlyRejectedTargetRectifies": true,
+    "status": "review-required",
+    "independentMaskError": 0.00723125,
+    "editableError": 0.00721875,
+    "editableConversion": true,
+    "completeCandidate": false,
+    "remainingFailure": "Frozen paper calibration, conditioned on the incorrect original CNN body, estimated blue/green colors instead of the photographed red/green. The rectified mask and export are nearly uniform. Existing feature checks reject the lost interior region despite <1% global mask disagreement. Corrected prompting did not recompute material calibration in this controlled test.",
+    "visualReview": "Inspected the failed target field, original photograph/crop, palette estimates and nearly uniform exported weave. No new successful reconstruction is claimed."
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/selected-sam-prompt-v1/plan.json",
+      "sha256": "c4a65fc35f9292e59731afeb2629bf945afbf9ff4df2840740e94e0487580c14"
+    },
+    {
+      "path": "tmp/heart-learning/selected-sam-prompt-v1/pins.json",
+      "sha256": "98d73c71750bd2c21bd48083cc52bf6e82c49651e715925139edbb55f89b5bec"
+    },
+    {
+      "path": "tmp/heart-learning/selected-sam-prompt-v1/frontend/manifest.json",
+      "sha256": "16ed4feb95ec3b4d4b8d8a33cb0513fc6dfa3e79f40f96ed878757fb6d27d487"
+    },
+    {
+      "path": "tmp/heart-learning/selected-sam-prompt-v1/sam/manifest.json",
+      "sha256": "3f4000741fbd1968d437a0b7cb2b1272334291fe99d3017023c7a1ed14ced217"
+    },
+    {
+      "path": "tmp/heart-learning/selected-sam-prompt-v1/probe/manifest.json",
+      "sha256": "3f436f00fdcbf66243ce126b5b28563f10093b498f57a997d350f7ae6e9bbedb"
+    },
+    {
+      "path": "tmp/heart-learning/selected-sam-prompt-v1/results/report.json",
+      "sha256": "0fbfe35b21b8ee119440a5dfca602717b1c2e402dc8028c400aaebc6acd10f06"
+    },
+    {
+      "path": "tmp/heart-learning/selected-sam-prompt-v1/pipeline/report.json",
+      "sha256": "3bc5b4b3a69be51cddc5cc63a836c1d6b2a0f78bbf5df7f9b148694581f2cfb0"
+    },
+    {
+      "path": "tmp/heart-learning/selected-sam-prompt-v1/editable/results.json",
+      "sha256": "246b598b6254198e4121a29987791f15b8cd9dfb766ac53243addb9cc016bf7d"
+    },
+    {
+      "path": "tmp/heart-learning/selected-sam-prompt-v1/crop-review/real-f1af2fbb127278e4.png",
+      "sha256": "353b7ac353a4b96bd8d5da4389a0697a1cc94bdace8e15a88c4d33957dd63d04"
+    },
+    {
+      "path": "tmp/heart-learning/selected-sam-prompt-v1/crop-review/real-e1b1492e32f6cdf5.png",
+      "sha256": "cd227122d73cdd5180a55d964cfa865443ef1496c897ea984bda851e5b85b894"
+    },
+    {
+      "path": "tmp/heart-learning/selected-sam-prompt-v1/crop-review/real-7e2c5568d27c2860.png",
+      "sha256": "b7ebf142691ca78bb2655252f5712e5c5596742d61d387057ea3979c7a34646c"
+    },
+    {
+      "path": "tmp/heart-learning/selected-sam-prompt-v1/crop-review/real-80c07aedd993f117.png",
+      "sha256": "56966f1d3ba6cb5d69f105dcab6474edb62a44a13acac1734aa6b9c335b518d6"
+    },
+    {
+      "path": "tmp/heart-learning/selected-sam-prompt-v1/crop-review/real-3a89de4eae04a025.png",
+      "sha256": "451042ab827a39332c31750ed966d25632c78139cca56a43340330ef3af093bb"
+    },
+    {
+      "path": "tmp/heart-learning/selected-sam-prompt-v1/crop-review/real-3f24113792188631.png",
+      "sha256": "8f79daef7fa0a2998656ef42ebe5c86e66fe349a69a38de733e02ba36eccd8c4"
+    },
+    {
+      "path": "tmp/heart-learning/selected-sam-prompt-v1/crop-review/real-ca2f9adc67ee4cea.png",
+      "sha256": "37584b3498b7259a45627dbce66789fd0e4d38cb66a32ab78cb03a6349b6e959"
+    },
+    {
+      "path": "tmp/heart-learning/selected-sam-prompt-v1/roundoff-targets.json",
+      "sha256": "db9598fb590d937a8afb2beccb781fe52877efadd2e0078de7d3e959328d4d11"
+    },
+    {
+      "path": "tmp/heart-learning/selected-sam-prompt-v1/roundoff-pipeline/report.json",
+      "sha256": "8a2666bb44afcc731348e3cd6fd1e7801a951ad1a66475762b75b55f25c19019"
+    },
+    {
+      "path": "tmp/heart-learning/selected-sam-prompt-v1/roundoff-editable/results.json",
+      "sha256": "bb9c5d83066b4ff8c0d2cbc220865d235e30efc6cd10efed09744f0e9a4f0980"
+    }
+  ]
+}

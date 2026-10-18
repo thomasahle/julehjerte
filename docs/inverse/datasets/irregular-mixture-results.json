@@ -1,0 +1,126 @@
+{
+  "schema": "irregular-mixture-results-1",
+  "status": "fixed; focused and browser checks passed",
+  "problem": "Compacting observed pixels before spatial red/white palette estimation destroyed the square layout for irregularly clipped photographs, throwing an error. Even square observation counts changed the original inset coordinates.",
+  "change": "Retain the original square and ignore unobserved samples at their original positions. Keep missing probability neutral at 0.5, exclude missing residuals, and invert only observed pixels.",
+  "verification": {
+    "focusedTests": {
+      "passed": 18,
+      "total": 18,
+      "artifact": {
+        "path": "tmp/heart-learning/irregular-mixture-fix-v1/focused.log",
+        "sha256": "57b390b2c46c85869c776bd58294ef1d8e7ea3575abf78c6679f382a8dc59f39"
+      }
+    },
+    "typecheck": {
+      "errors": 0,
+      "existingWarnings": 7,
+      "artifact": {
+        "path": "tmp/heart-learning/irregular-mixture-fix-v1/check.log",
+        "sha256": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092"
+      }
+    },
+    "lint": {
+      "errors": 0,
+      "existingWarnings": 2,
+      "artifact": {
+        "path": "tmp/heart-learning/irregular-mixture-fix-v1/lint.log",
+        "sha256": "2b7add329ca80a0f26dcb26c7eb139cd28b3768793c6b0797002f91a54119a34"
+      }
+    },
+    "build": {
+      "passed": true,
+      "artifact": {
+        "path": "tmp/heart-learning/irregular-mixture-fix-v1/build.log",
+        "sha256": "b947a252634a5f27ca436b9830424a8fca3ce8ed8884cd9aefeb567d21e318ad"
+      }
+    },
+    "servedAssets": {
+      "path": "tmp/heart-learning/irregular-mixture-fix-v1/served-assets.json",
+      "sha256": "bc72002b949fe8bc890abc6f8d2272c0e4e0c1aef01d860808001614d6e910e6"
+    },
+    "browser": {
+      "status": "passed",
+      "mixturePreview": {
+        "resolution": 400,
+        "observedPixels": 157191,
+        "foregroundPixels": 112421,
+        "method": "red-white-mixture"
+      },
+      "scope": "Real collage upload and ROI; toggle red/white mixture, then return to Automatic and replay paint, undo/redo, production worker, Draw and downloaded SVG. The exported fit uses Automatic classification.",
+      "clickToReadySeconds": 7.7886000001430515,
+      "exportedObservedError": 0.005490136203726677,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "pageErrors": [],
+      "artifact": {
+        "path": "tmp/heart-learning/irregular-mixture-fix-v1/browser/results.json",
+        "sha256": "3afdc291d748ab78335130e63cf0e0372e9d87b25b4378f2af89536618669097"
+      },
+      "visualReview": "The red/white preview shows both crossing bands and hatching over the missing tip. The exported Automatic fit retains both bands, with small contour irregularities; geometry and paper checks pass.",
+      "screenshots": [
+        {
+          "path": "tmp/heart-learning/irregular-mixture-fix-v1/browser/mixture-import.png",
+          "sha256": "2254bacaf2e986b26397178d472f4fde76c79a93d2ff0a36f4b919d2e3034da1"
+        },
+        {
+          "path": "tmp/heart-learning/irregular-mixture-fix-v1/browser/import.png",
+          "sha256": "1c1a4df0ea892f83d7e5482ebc9fd0f9a0bb3e5c3cf7003d3a2167fd153ccbce"
+        },
+        {
+          "path": "tmp/heart-learning/irregular-mixture-fix-v1/browser/mask.png",
+          "sha256": "e88ce813fbf4c76bdd812f91b28d24e7abb1c298a69e1bc067a9da64e644bcc4"
+        },
+        {
+          "path": "tmp/heart-learning/irregular-mixture-fix-v1/browser/result.png",
+          "sha256": "28e289f23f3e1447bd8a7e8c9c8db81231c04377bf8bf3922aa044761e3192b5"
+        },
+        {
+          "path": "tmp/heart-learning/irregular-mixture-fix-v1/browser/draw.png",
+          "sha256": "5d6dca6d3235b2fda6ad56bfb7f0fe43fc7337390014e6038f60c8b833572e44"
+        }
+      ]
+    },
+    "fullQA": {
+      "status": "complete",
+      "commit": "d71e2d114ed962d92eafaccf3bcc21f283ab75c0",
+      "sourceFilesVerified": 797,
+      "applicationTests": {
+        "passed": 865,
+        "skipped": 1
+      },
+      "inverseTests": {
+        "passed": 962,
+        "total": 967,
+        "failed": 5
+      },
+      "typecheckErrors": 0,
+      "lintErrors": 0,
+      "buildPassed": true,
+      "checks": {
+        "path": "tmp/heart-learning/irregular-mixture-fix-v1/full-qa/checks.json",
+        "sha256": "aa3f8ba980e4858503940ba2b5f01ddf75ae93f91399ed06a5573c6875f07b8d"
+      },
+      "testLog": {
+        "path": "tmp/heart-learning/irregular-mixture-fix-v1/full-qa/test.log",
+        "sha256": "f8fb885c1d2cfbe578dd7f95a65fbabef0f2013b34ba04757287f50eca0ddd15"
+      },
+      "sourceManifest": {
+        "path": "tmp/heart-learning/irregular-mixture-fix-v1/full-qa/source.json",
+        "sha256": "2df16723cb33e8f9057d893999dd4290e17071ae0c7d4915a3342a3dbc97235d"
+      },
+      "qualification": "Five pre-existing fitter regression assertions still fail. The observer regression is fixed. Later outcome-based test corrections are recorded separately and are not retroactively counted as passing this run."
+    }
+  },
+  "regressions": [
+    "4095 observed pixels of a 64-square image retain the original palette inset and sample count.",
+    "Changing RGB values beneath an irregular missing interior region cannot alter palettes, classification, probabilities or residuals.",
+    "Inversion leaves missing pixels neutral.",
+    "The browser observer retains the original typed validity during timing and owns a copy when collected."
+  ],
+  "limitations": [
+    "No claim that mixture classification is the best choice for every photograph.",
+    "The complete frozen-source QA passes 962/967 inverse tests and all 865 application tests (one skipped). Five pre-existing fitter regression assertions remain; follow-up outcome audits distinguish obsolete route assertions from actual quality regressions.",
+    "No changes pushed or deployed."
+  ]
+}

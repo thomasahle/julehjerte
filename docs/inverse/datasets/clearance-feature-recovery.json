@@ -1,0 +1,2306 @@
+{
+  "schema": "clearance-feature-recovery-1",
+  "status": "followup-qa-in-progress",
+  "commit": "423462a",
+  "scope": "Robustness to a 116-pixel (0.0725%) resampling perturbation in a fixed 400x400 learned development mask; cropping and slit-count candidates held unchanged. Not an original-artwork accuracy claim.",
+  "findings": [
+    "The perturbed 4x4 alternative has a lower clearance score but misses a source colour region; the old feature-retention gate prevents its bounded repair.",
+    "Simply enabling refinement is insufficient: its initially valid paper creates a safe rollback point. Useful later checkpoints are uncertain at 360px, and repeated rollbacks discard their progress.",
+    "A fixed 125-step comparison on identical curves reduces independent error from 6.9475% to 1.849375% when the existing finer paper verification is enabled.",
+    "A final uncertain checkpoint can miss the in-loop time reserve. The helper now evaluates this retained candidate against the original source and independently audits its actual curves at 700px before accepting it."
+  ],
+  "changes": [
+    "Allow one lower-scoring, geometry-valid alternative with missing source colours into the bounded helper when no image-passing candidate exists. Immediate promotion still requires retained features.",
+    "Use the main fitter's paper verification before rollback; preserve the same 1.2-second overall helper cap and ten-second search deadline.",
+    "Compare the retained uncertain checkpoint and incumbent using original-source error; retain complete geometry, feature and material checks. Crossings, weighted borders and requested symmetry remain excluded."
+  ],
+  "runs": [
+    {
+      "name": "original-control",
+      "artifact": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/original-control/report.json",
+        "sha256": "6f054ac426c6852229375c379c6089e99a142cafc4aca5f98a13851cd1af943b",
+        "bytes": 137006
+      },
+      "status": "complete",
+      "seconds": 9.686700167000001,
+      "independentImageError": 0.012375,
+      "checkedPair": true,
+      "comparison": {
+        "initialCounts": [
+          3,
+          5
+        ],
+        "initialGridError": 0.060455322265625,
+        "initialClearanceError": 0.08343505859375,
+        "alternativeCounts": [
+          4,
+          4
+        ],
+        "alternativeGridError": 0.0612030029296875,
+        "alternativeClearanceError": 0.0753936767578125,
+        "initialColours": true,
+        "alternativeColours": true,
+        "alternativeGeometry": false,
+        "seconds": 1.3417075420000002,
+        "preferred": true
+      },
+      "repair": {
+        "accepted": true,
+        "method": "clearance-initializer-refinement",
+        "steps": 85,
+        "imageError": 0.02536875,
+        "paperVerification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass",
+          "source": "clearance-initializer-refinement"
+        },
+        "seconds": 1.007313792
+      }
+    },
+    {
+      "name": "resampled-control",
+      "artifact": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/resampled-control/report.json",
+        "sha256": "e9b0e2d550b29d0773c4a72b5dd7221c91c2e706576db8891ad9b1acf19908ef",
+        "bytes": 125561
+      },
+      "status": "complete",
+      "seconds": 9.546484083,
+      "independentImageError": 0.030375,
+      "checkedPair": false,
+      "comparison": {
+        "initialCounts": [
+          3,
+          5
+        ],
+        "initialGridError": 0.060638427734375,
+        "initialClearanceError": 0.0811920166015625,
+        "alternativeCounts": [
+          4,
+          4
+        ],
+        "alternativeGridError": 0.062835693359375,
+        "alternativeClearanceError": 0.074920654296875,
+        "initialColours": true,
+        "alternativeColours": false,
+        "alternativeGeometry": true,
+        "alternativePaper": "pass",
+        "seconds": 0.4661776669999999,
+        "preferred": false
+      },
+      "repair": {}
+    },
+    {
+      "name": "resampled-prototype",
+      "artifact": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/resampled-prototype/report.json",
+        "sha256": "7ff175c02f505584cb555864d3b9955c305bbde9a0e289162185dcbe50e9ddda",
+        "bytes": 133382
+      },
+      "status": "complete",
+      "seconds": 9.574842917,
+      "independentImageError": 0.03155625,
+      "checkedPair": false,
+      "comparison": {
+        "initialCounts": [
+          3,
+          5
+        ],
+        "initialGridError": 0.060638427734375,
+        "initialClearanceError": 0.0811920166015625,
+        "alternativeCounts": [
+          4,
+          4
+        ],
+        "alternativeGridError": 0.062835693359375,
+        "alternativeClearanceError": 0.074920654296875,
+        "initialColours": true,
+        "alternativeColours": false,
+        "alternativeGeometry": true,
+        "alternativePaper": "pass",
+        "seconds": 1.1025353340000001,
+        "preferred": false
+      },
+      "repair": {
+        "accepted": false,
+        "method": "clearance-initializer-refinement",
+        "trigger": "missing-source-feature",
+        "steps": 125,
+        "imageError": 0.06956875,
+        "reason": "refinement_rejected",
+        "seconds": 0.6695945839999995
+      }
+    },
+    {
+      "name": "original-prototype",
+      "artifact": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/original-prototype/report.json",
+        "sha256": "f52ffd75a328960473a975b2ca72adb56f5d28bdf266ad512929f819929fef80",
+        "bytes": 122102
+      },
+      "status": "complete",
+      "seconds": 9.723794416999999,
+      "independentImageError": 0.02373125,
+      "checkedPair": true,
+      "comparison": {
+        "initialCounts": [
+          3,
+          5
+        ],
+        "initialGridError": 0.060455322265625,
+        "initialClearanceError": 0.08343505859375,
+        "alternativeCounts": [
+          4,
+          4
+        ],
+        "alternativeGridError": 0.0612030029296875,
+        "alternativeClearanceError": 0.0753936767578125,
+        "initialColours": true,
+        "alternativeColours": true,
+        "alternativeGeometry": false,
+        "seconds": 0.9828972920000005,
+        "preferred": false
+      },
+      "repair": {
+        "accepted": false,
+        "method": "clearance-initializer-refinement",
+        "trigger": "inter-slit-clearance",
+        "steps": 55,
+        "imageError": 0.03211875,
+        "reason": "refinement_rejected",
+        "seconds": 0.6453445419999998
+      }
+    },
+    {
+      "name": "resampled-verified-prototype",
+      "artifact": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/resampled-verified-prototype/report.json",
+        "sha256": "a687a0de4bd1e9928d79bca61ffce3aa934e1a2d5297dc8c44062dc60b5506b1",
+        "bytes": 134939
+      },
+      "status": "complete",
+      "seconds": 9.549363332999999,
+      "independentImageError": 0.03240625,
+      "checkedPair": false,
+      "comparison": {
+        "initialCounts": [
+          3,
+          5
+        ],
+        "initialGridError": 0.060638427734375,
+        "initialClearanceError": 0.0811920166015625,
+        "alternativeCounts": [
+          4,
+          4
+        ],
+        "alternativeGridError": 0.062835693359375,
+        "alternativeClearanceError": 0.074920654296875,
+        "initialColours": true,
+        "alternativeColours": false,
+        "alternativeGeometry": true,
+        "alternativePaper": "pass",
+        "seconds": 1.318437709,
+        "preferred": false
+      },
+      "repair": {
+        "accepted": false,
+        "method": "clearance-initializer-refinement",
+        "trigger": "missing-source-feature",
+        "steps": 85,
+        "imageError": 0.0347125,
+        "reason": "refinement_rejected",
+        "seconds": 0.8551510420000004
+      }
+    },
+    {
+      "name": "resampled-alternative-prototype",
+      "artifact": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/resampled-alternative-prototype/report.json",
+        "sha256": "24087bc489a7dc8d7a92815af2814336873002ea0c84d841bd7543233ba4faa7",
+        "bytes": 137459
+      },
+      "status": "complete",
+      "seconds": 9.700219875,
+      "independentImageError": 0.01330625,
+      "checkedPair": true,
+      "comparison": {
+        "initialCounts": [
+          3,
+          5
+        ],
+        "initialGridError": 0.060638427734375,
+        "initialClearanceError": 0.0811920166015625,
+        "alternativeCounts": [
+          4,
+          4
+        ],
+        "alternativeGridError": 0.062835693359375,
+        "alternativeClearanceError": 0.074920654296875,
+        "initialColours": true,
+        "alternativeColours": false,
+        "alternativeGeometry": true,
+        "alternativePaper": "pass",
+        "seconds": 1.4731782920000005,
+        "preferred": true
+      },
+      "repair": {
+        "accepted": true,
+        "method": "clearance-initializer-refinement",
+        "trigger": "missing-source-feature",
+        "steps": 85,
+        "usedPaperAlternative": true,
+        "imageError": 0.02341875,
+        "paperVerification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass",
+          "source": "clearance-initializer-refinement"
+        },
+        "seconds": 0.9915622089999997
+      }
+    },
+    {
+      "name": "resampled-integrated",
+      "artifact": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/resampled-integrated/report.json",
+        "sha256": "0c9cfa75560a747d188f5274e829f83b9a09f0b3ccabf84c0c117da05fe314e8",
+        "bytes": 131285
+      },
+      "status": "complete",
+      "seconds": 9.709506333000002,
+      "independentImageError": 0.0135875,
+      "checkedPair": true,
+      "comparison": {
+        "initialCounts": [
+          3,
+          5
+        ],
+        "initialGridError": 0.060638427734375,
+        "initialClearanceError": 0.0811920166015625,
+        "alternativeCounts": [
+          4,
+          4
+        ],
+        "alternativeGridError": 0.062835693359375,
+        "alternativeClearanceError": 0.074920654296875,
+        "initialColours": true,
+        "alternativeColours": false,
+        "alternativeGeometry": true,
+        "alternativePaper": "pass",
+        "seconds": 1.493566667,
+        "preferred": true
+      },
+      "repair": {
+        "accepted": true,
+        "method": "clearance-initializer-refinement",
+        "trigger": "missing-source-feature",
+        "steps": 75,
+        "checkpoints": [
+          {
+            "imageError": 0.024475,
+            "featuresPassed": true,
+            "geometryPassed": true,
+            "paperAlternative": true,
+            "paper": "pass"
+          }
+        ],
+        "imageError": 0.024475,
+        "paperVerification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass",
+          "source": "clearance-initializer-refinement"
+        },
+        "usedPaperAlternative": true,
+        "seconds": 0.9755560409999998
+      }
+    }
+  ],
+  "fixedWork": {
+    "artifact": {
+      "path": "tmp/heart-learning/initializer-perturbation-v1/frozen-refinement/report.json",
+      "sha256": "4d74bb8684a77ec4e6fc211ccb1e877d290d13ad76b1a8df7a2895258db9afa1",
+      "bytes": 20686
+    },
+    "rows": [
+      {
+        "verifyBeforeRollback": false,
+        "steps": 125,
+        "seconds": 0.7953971660000001,
+        "independentImageError": 0.069475,
+        "featuresPassed": false,
+        "geometryPassed": true,
+        "paper": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658,
+          "families": [
+            {
+              "family": 0,
+              "status": "pass",
+              "detachedCertainCoreIslands": 0,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    22.87104764666868
+                  ],
+                  "certainCoreLength": 20.000000000000032,
+                  "possibleCoreLength": 20.55555555555559
+                },
+                {
+                  "interval": [
+                    22.87104764666868,
+                    52.51889351234684
+                  ],
+                  "certainCoreLength": 26.38888888888894,
+                  "possibleCoreLength": 27.500000000000053
+                },
+                {
+                  "interval": [
+                    52.51889351234684,
+                    71.67573874842034
+                  ],
+                  "certainCoreLength": 16.38888888888891,
+                  "possibleCoreLength": 16.944444444444468
+                },
+                {
+                  "interval": [
+                    71.67573874842034,
+                    96.73215287930073
+                  ],
+                  "certainCoreLength": 20.833333333333368,
+                  "possibleCoreLength": 21.944444444444482
+                },
+                {
+                  "interval": [
+                    96.73215287930073,
+                    100
+                  ],
+                  "certainCoreLength": 0.5555555555555556,
+                  "possibleCoreLength": 1.1111111111111112
+                }
+              ]
+            },
+            {
+              "family": 1,
+              "status": "pass",
+              "detachedCertainCoreIslands": 0,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    4.900231825383484
+                  ],
+                  "certainCoreLength": 1.9444444444444442,
+                  "possibleCoreLength": 2.7777777777777772
+                },
+                {
+                  "interval": [
+                    4.900231825383484,
+                    56.792517348132826
+                  ],
+                  "certainCoreLength": 35.83333333333341,
+                  "possibleCoreLength": 39.16666666666675
+                },
+                {
+                  "interval": [
+                    56.792517348132826,
+                    60.026554916903486
+                  ],
+                  "certainCoreLength": 0.2777777777777778,
+                  "possibleCoreLength": 1.1111111111111112
+                },
+                {
+                  "interval": [
+                    60.026554916903486,
+                    96.73215287930073
+                  ],
+                  "certainCoreLength": 26.944444444444496,
+                  "possibleCoreLength": 28.888888888888946
+                },
+                {
+                  "interval": [
+                    96.73215287930073,
+                    100
+                  ],
+                  "certainCoreLength": 0.5555555555555556,
+                  "possibleCoreLength": 1.1111111111111112
+                }
+              ]
+            }
+          ],
+          "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+          "seconds": 0.022748207999999978,
+          "limitations": [
+            "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+            "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+            "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+            "Small tips and features below the explicitly stated area threshold are not certified."
+          ]
+        }
+      },
+      {
+        "verifyBeforeRollback": true,
+        "steps": 125,
+        "seconds": 1.238350792,
+        "independentImageError": 0.01849375,
+        "featuresPassed": true,
+        "geometryPassed": true,
+        "paper": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.14285714285714285,
+          "clearanceGuard": 0.11101525445522108,
+          "families": [
+            {
+              "family": 0,
+              "status": "pass",
+              "detachedCertainCoreIslands": 0,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    22.718080586508147
+                  ],
+                  "certainCoreLength": 19.857142857142826,
+                  "possibleCoreLength": 20.428571428571395
+                },
+                {
+                  "interval": [
+                    22.718080586508147,
+                    53.139248679897655
+                  ],
+                  "certainCoreLength": 26.71428571428566,
+                  "possibleCoreLength": 27.285714285714228
+                },
+                {
+                  "interval": [
+                    53.139248679897655,
+                    72.15204906830424
+                  ],
+                  "certainCoreLength": 16.285714285714267,
+                  "possibleCoreLength": 16.714285714285694
+                },
+                {
+                  "interval": [
+                    72.15204906830424,
+                    96.73215287930073
+                  ],
+                  "certainCoreLength": 21.142857142857107,
+                  "possibleCoreLength": 21.571428571428534
+                },
+                {
+                  "interval": [
+                    96.73215287930073,
+                    100
+                  ],
+                  "certainCoreLength": 0.42857142857142855,
+                  "possibleCoreLength": 0.9999999999999998
+                }
+              ]
+            },
+            {
+              "family": 1,
+              "status": "pass",
+              "detachedCertainCoreIslands": 0,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    3.2678471206992734
+                  ],
+                  "certainCoreLength": 0.42857142857142855,
+                  "possibleCoreLength": 0.9999999999999998
+                },
+                {
+                  "interval": [
+                    3.2678471206992734,
+                    56.83868353939625
+                  ],
+                  "certainCoreLength": 33.57142857142853,
+                  "possibleCoreLength": 37.28571428571432
+                },
+                {
+                  "interval": [
+                    56.83868353939625,
+                    60.085512599185016
+                  ],
+                  "certainCoreLength": 0.5714285714285714,
+                  "possibleCoreLength": 0.9999999999999998
+                },
+                {
+                  "interval": [
+                    60.085512599185016,
+                    96.73215287930073
+                  ],
+                  "certainCoreLength": 28.71428571428565,
+                  "possibleCoreLength": 29.999999999999932
+                },
+                {
+                  "interval": [
+                    96.73215287930073,
+                    100
+                  ],
+                  "certainCoreLength": 0.42857142857142855,
+                  "possibleCoreLength": 0.9999999999999998
+                }
+              ]
+            }
+          ],
+          "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+          "seconds": 0.07575437500000044,
+          "limitations": [
+            "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+            "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+            "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+            "Small tips and features below the explicitly stated area threshold are not certified."
+          ]
+        }
+      }
+    ]
+  },
+  "tests": {
+    "fixedWork": {
+      "path": "tmp/heart-learning/initializer-perturbation-v1/fixed-work.log",
+      "sha256": "daf1e981853dfe6c3c6b7ffd9e7df2b9e33cfb8f6ade70d103aa876cefdb0445",
+      "bytes": 237
+    },
+    "initialFocused": {
+      "path": "tmp/heart-learning/initializer-perturbation-v1/focused.log",
+      "sha256": "3641bae824cd83032111381f27f5e78bbcc4e3096e0412a6d61a4aaa5b65e928",
+      "bytes": 1746
+    },
+    "initialFailure": "The clock-controlled test expected 81 updates, but the existing batched deadline check completes 85. Its expected work count was corrected; the fresh-fit and prior-clearance tests passed on that first focused run.",
+    "fixtures": [
+      "scripts/inverse/fixtures/clearance-feature-initializer.json",
+      "scripts/inverse/clearance-feature-geometry.test.mjs",
+      "scripts/inverse/clearance-feature.test.mjs"
+    ]
+  },
+  "visualReview": {
+    "artifact": {
+      "path": "tmp/heart-learning/initializer-perturbation-v1/integrated-comparison.png",
+      "sha256": "af7d7dc56f8d9c81664906650496c86fd586f62c52c1127d38f6a9f553a44931",
+      "bytes": 25830
+    },
+    "observation": "The integrated resampled fit has smaller broad deformations and 1.35875% derived-mask disagreement, but the middle hearts still contain unwanted splits/channels and the border remains imperfect. Existing colour-retention checks do not certify faithful large enclosed motifs."
+  },
+  "qa": {
+    "revision": "423462a",
+    "state": {
+      "status": "complete",
+      "sourceFilesVerified": 776
+    },
+    "checks": [
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 10.741588916000001
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 7.833285666999998
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 16.079859791999997
+      },
+      {
+        "stage": "preview",
+        "command": [
+          "python3",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/initializer-perturbation-v1/qa/restart-preview.py"
+        ],
+        "exitCode": 0,
+        "seconds": 1.2549954159999999
+      },
+      {
+        "stage": "browser",
+        "command": [
+          "node",
+          "scripts/inverse/paint-browser-test.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 20.653928333000003
+      },
+      {
+        "stage": "test",
+        "command": [
+          "npm",
+          "test"
+        ],
+        "exitCode": 0,
+        "seconds": 1058.170311917
+      },
+      {
+        "stage": "native",
+        "command": [
+          "python3",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/initializer-perturbation-v1/qa/native/run.py"
+        ],
+        "exitCode": 0,
+        "seconds": 524.3093491250002
+      }
+    ],
+    "inverseTestsPassed": 933,
+    "inverseTestsFailed": 0,
+    "applicationTestsPassed": 857,
+    "applicationTestsSkipped": 1,
+    "sourceFilesVerified": 776,
+    "freshCorpus": {
+      "gate": {
+        "hunodanPassed": 22,
+        "hunodanTotal": 22,
+        "hunodanErrorRegressions": [],
+        "photoPassed": 25,
+        "photoPassRegressions": [
+          {
+            "id": "flettede-viking",
+            "previousStatus": "validated",
+            "status": "failed",
+            "previousPassed": true,
+            "passed": false,
+            "previousError": 0.02055625,
+            "error": 0.03209375,
+            "errorDelta": 0.011537499999999996
+          }
+        ],
+        "photoErrorRegressions": [
+          {
+            "id": "floral-checker",
+            "previousStatus": "validated",
+            "status": "validated",
+            "previousPassed": true,
+            "passed": true,
+            "previousError": 0.01315,
+            "error": 0.01359375,
+            "errorDelta": 0.0004437499999999997
+          },
+          {
+            "id": "dense-checker",
+            "previousStatus": "validated",
+            "status": "validated",
+            "previousPassed": true,
+            "passed": true,
+            "previousError": 0.00699375,
+            "error": 0.00700625,
+            "errorDelta": 1.2500000000000358e-05
+          },
+          {
+            "id": "gingerbread",
+            "previousStatus": "validated",
+            "status": "validated",
+            "previousPassed": true,
+            "passed": true,
+            "previousError": 0.010875,
+            "error": 0.01094375,
+            "errorDelta": 6.87500000000011e-05
+          },
+          {
+            "id": "warped-checker",
+            "previousStatus": "validated",
+            "status": "validated",
+            "previousPassed": true,
+            "passed": true,
+            "previousError": 0.013575,
+            "error": 0.0141625,
+            "errorDelta": 0.0005874999999999995
+          },
+          {
+            "id": "round-checker",
+            "previousStatus": "validated",
+            "status": "validated",
+            "previousPassed": true,
+            "passed": true,
+            "previousError": 0.01214375,
+            "error": 0.01215,
+            "errorDelta": 6.249999999999312e-06
+          },
+          {
+            "id": "fine-checker",
+            "previousStatus": "validated",
+            "status": "validated",
+            "previousPassed": true,
+            "passed": true,
+            "previousError": 0.01663125,
+            "error": 0.01841875,
+            "errorDelta": 0.001787500000000001
+          },
+          {
+            "id": "orb",
+            "previousStatus": "validated",
+            "status": "validated",
+            "previousPassed": true,
+            "passed": true,
+            "previousError": 0.01134375,
+            "error": 0.0118875,
+            "errorDelta": 0.0005437500000000008
+          }
+        ],
+        "editablePassed": 47,
+        "editableTotal": 47,
+        "passed": false
+      },
+      "hunodanMaximumSeconds": 9.546644625,
+      "hunodanErrorsUnchanged": 22,
+      "photoInputsAndCropsExactlyReproduced": true,
+      "acceptedPhotoErrorsImproved": 1,
+      "acceptedPhotoErrorsUnchanged": 17,
+      "completePhotoCases": 31
+    },
+    "visualReview": {
+      "scope": "Every available prior/new photo render with different PNG bytes, including equal-error pairs; crop, binary target, previous and current weave from left to right.",
+      "cases": [
+        "outline-star",
+        "floral-checker",
+        "dense-checker",
+        "leaf",
+        "gingerbread",
+        "warped-checker",
+        "round-checker",
+        "fine-checker",
+        "orb",
+        "maple-leaf",
+        "flettede-puppy",
+        "flettede-viking"
+      ],
+      "figures": [
+        {
+          "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/initializer-perturbation-v1/qa/photo-changes-1.png",
+          "ids": [
+            "outline-star",
+            "floral-checker",
+            "dense-checker",
+            "leaf"
+          ],
+          "sha256": "4d3798b4390e62c0ba929cd701799e2e9d49442850d25f5c1dc3464bf4e2d641"
+        },
+        {
+          "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/initializer-perturbation-v1/qa/photo-changes-2.png",
+          "ids": [
+            "gingerbread",
+            "warped-checker",
+            "round-checker",
+            "fine-checker"
+          ],
+          "sha256": "8ba30ef9578a77ac37960d54fb83ffad2964666c12b64d43c1cac5a2d9bfac33"
+        },
+        {
+          "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/initializer-perturbation-v1/qa/photo-changes-3.png",
+          "ids": [
+            "orb",
+            "maple-leaf",
+            "flettede-puppy",
+            "flettede-viking"
+          ],
+          "sha256": "db7cfade7677472e4778e0f5e17061595513b70d6d023ec3f31209fbe924b0b7"
+        }
+      ],
+      "findings": [
+        "All twelve changed render pairs were inspected, including the equal-error leaf and puppy.",
+        "The Viking visibly regresses, with larger border distortions, seams and altered narrow motif detail. It also fails the paper/image checks; this is not dismissed as scoring noise.",
+        "Floral, warped and fine checkers retain curved or displaced cells and the defects already in their estimated masks; fine-checker error increases by 0.17875 percentage points.",
+        "The outline star remains rejected despite a low pixel error. The accepted leaf/maple-leaf and puppy retain their broad silhouettes but still show seams and imperfect boundaries.",
+        "Smaller mask errors are not asserted to imply uniformly better visual artwork."
+      ]
+    },
+    "artifacts": [
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa/qa-checks.json",
+        "sha256": "094a5ef933e0d3afcca27c5677bd07e6ea456b61af1aca880b6c5cc26dd1ba98",
+        "bytes": 1247
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa/qa-state.json",
+        "sha256": "4e16ecd8e200117befc41f90e928fe36f603d0feb02f0b7db49ee6bba8486d60",
+        "bytes": 57
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa/qa-source.json",
+        "sha256": "4d7286beb8aae5cda11ca7aac62cb350261c55a59fc31985453d7d9a89ce2cfd",
+        "bytes": 89037
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa/test.log",
+        "sha256": "1c3b4aa1fb19dd69e6b58038c8287fdd5cc57e6ec6736f99e85dea7849818651",
+        "bytes": 88836
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa/native/native-gates.json",
+        "sha256": "3530c01a65a2cd035e84edcca90f607c1e8f3db29d95cd02d739cb6a70cefd62",
+        "bytes": 2320
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa/native/hunodan-comparison.json",
+        "sha256": "5349e819583c04136ca7482c2592f3a7fb03673470305b7122e63fcc9effe955",
+        "bytes": 5519
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa/native/photo-comparison.json",
+        "sha256": "f085185470d174f96aeeb98eeb7a3c15657ddbaf536b3fa43c1fde198e532b58",
+        "bytes": 10548
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa/native/hunodan-editor/results.json",
+        "sha256": "b351ff08b5eddb16c51cbe5797c4af0f839e0aeef54a6ae8a2938708ffee553c",
+        "bytes": 439586
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa/native/photo-editor/results.json",
+        "sha256": "672673b0baf47e1185035dcb4a0122788940dfaf58ef1a778a3f441b6488ea90",
+        "bytes": 545182
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa/photo-figure-index.json",
+        "sha256": "c022c45d58d900be7ad678fa1067d693b6325a1a6e5c50ab422e571723ffa962",
+        "bytes": 3497
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa/corpus-visual-review.json",
+        "sha256": "3a02bf607e1aa0feedc0550ac960f2cee16c1dc0e4676175eaf92a4e231788c6",
+        "bytes": 2252
+      }
+    ]
+  },
+  "limitations": [
+    "Fresh deadline-bound controls vary: the same resampled baseline previously gave 7.439375%, while the new cold control gives 3.0375% and still fails paper. The exact 7.4% outcome is not presented as deterministic.",
+    "Independent geometry checks and a low total pixel error do not prove that all heart silhouettes are faithfully reconstructed.",
+    "The first full run loses the Viking acceptance (25/31 versus 26/31), with seven additional accepted-photo error increases. Its 22 Hunodan errors are unchanged. The narrower follow-up restores the focused Viking solve; its full corpus check is still pending."
+  ],
+  "componentReview": {
+    "scope": "Posthoc saved-export diagnostics. The 800px source is nearest-neighbour replication of the same 400px mask, not new image information. Stable enclosures are source-confidence heuristics, not artwork ground truth.",
+    "artifacts": [
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/feature-review.mjs",
+        "sha256": "fc7053c64779a2f65a25d74302bc492f683603503121d5a85399cfb130cbfb88",
+        "bytes": 2764
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/feature-review.json",
+        "sha256": "25b651f1bc98711fb94fd966991e2c71b8f387faeef9c8f78ef9a230bf574756",
+        "bytes": 18494
+      }
+    ],
+    "rows": [
+      {
+        "name": "original-control",
+        "sourceReportSha256": "6f054ac426c6852229375c379c6089e99a142cafc4aca5f98a13851cd1af943b",
+        "geometrySha256": "8a89362fde766e133be34682e8f171c2f47d4230e64bfba3334ebff3d3b532c1",
+        "sourceMaskSha256": "9e52e7d9b61188cf5167b481f7e7dc28370f45f5279463164934b4b6cd5ffaa9",
+        "scales": [
+          {
+            "resolution": 400,
+            "featureCount": 7,
+            "stableEnclosures": 6,
+            "retainedEnclosures": 5,
+            "productionFidelityPassed": true,
+            "stableRegions": [
+              {
+                "value": 1,
+                "centerMm": [
+                  13.169446325770402,
+                  15.461945479173721
+                ],
+                "sourceAreaMm2": 184.5625,
+                "intersectionPixels": 2933,
+                "retention": 0.993227226549272,
+                "predictedComponentAreaMm2": 194.9375,
+                "touchesBorder": false,
+                "componentIoU": 0.9343740044600192
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  63.53983305615965,
+                  39.36080017909684
+                ],
+                "sourceAreaMm2": 488.5625,
+                "intersectionPixels": 7775,
+                "retention": 0.994627094793399,
+                "predictedComponentAreaMm2": 488.3125,
+                "touchesBorder": false,
+                "componentIoU": 0.9898154042011458
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  39.29348887153456,
+                  40.34259078484967
+                ],
+                "sourceAreaMm2": 160.0625,
+                "intersectionPixels": 2528,
+                "retention": 0.9871144084342054,
+                "predictedComponentAreaMm2": 160.875,
+                "touchesBorder": false,
+                "componentIoU": 0.9696969696969697
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  37.945615708459414,
+                  63.85733785028285
+                ],
+                "sourceAreaMm2": 475.0625,
+                "intersectionPixels": 7576,
+                "retention": 0.996710959084331,
+                "predictedComponentAreaMm2": 474.875,
+                "touchesBorder": false,
+                "componentIoU": 0.993834448379903
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  64.1469614921781,
+                  65.02010629763338
+                ],
+                "sourceAreaMm2": 155.8125,
+                "intersectionPixels": 2462,
+                "retention": 0.9875651825110309,
+                "predictedComponentAreaMm2": 657.8125,
+                "touchesBorder": true,
+                "componentIoU": 0.2332322849564229
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  87.72610069302895,
+                  88.87387892376681
+                ],
+                "sourceAreaMm2": 153.3125,
+                "intersectionPixels": 2425,
+                "retention": 0.9885854056257644,
+                "predictedComponentAreaMm2": 153.6875,
+                "touchesBorder": false,
+                "componentIoU": 0.975070365902694
+              }
+            ]
+          },
+          {
+            "resolution": 800,
+            "featureCount": 7,
+            "stableEnclosures": 6,
+            "retainedEnclosures": 5,
+            "productionFidelityPassed": true,
+            "stableRegions": [
+              {
+                "value": 1,
+                "centerMm": [
+                  13.169446325770402,
+                  15.461945479173721
+                ],
+                "sourceAreaMm2": 184.5625,
+                "intersectionPixels": 11686,
+                "retention": 0.9893328818151033,
+                "predictedComponentAreaMm2": 194.984375,
+                "touchesBorder": false,
+                "componentIoU": 0.9270924236414121
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  63.53983305615965,
+                  39.36080017909684
+                ],
+                "sourceAreaMm2": 488.5625,
+                "intersectionPixels": 31058,
+                "retention": 0.9932838684917488,
+                "predictedComponentAreaMm2": 488.34375,
+                "touchesBorder": false,
+                "componentIoU": 0.9870963640986524
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  39.29348887153456,
+                  40.34259078484967
+                ],
+                "sourceAreaMm2": 160.0625,
+                "intersectionPixels": 10096,
+                "retention": 0.9855525185474424,
+                "predictedComponentAreaMm2": 160.84375,
+                "touchesBorder": false,
+                "componentIoU": 0.9668645853284812
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  37.945615708459414,
+                  63.85733785028285
+                ],
+                "sourceAreaMm2": 475.0625,
+                "intersectionPixels": 30254,
+                "retention": 0.9950664386264965,
+                "predictedComponentAreaMm2": 475.5,
+                "touchesBorder": false,
+                "componentIoU": 0.9892747367732653
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  64.1469614921781,
+                  65.02010629763338
+                ],
+                "sourceAreaMm2": 155.8125,
+                "intersectionPixels": 9818,
+                "retention": 0.98455675892499,
+                "predictedComponentAreaMm2": 657.578125,
+                "touchesBorder": true,
+                "componentIoU": 0.2324392149435356
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  87.72610069302895,
+                  88.87387892376681
+                ],
+                "sourceAreaMm2": 153.3125,
+                "intersectionPixels": 9679,
+                "retention": 0.9864451691805952,
+                "predictedComponentAreaMm2": 153.78125,
+                "touchesBorder": false,
+                "componentIoU": 0.9703258145363408
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "resampled-control",
+        "sourceReportSha256": "e9b0e2d550b29d0773c4a72b5dd7221c91c2e706576db8891ad9b1acf19908ef",
+        "geometrySha256": "94a450d42453288635294a143b11fea0d3f9b2dce82d795e38deaffefb6427d9",
+        "sourceMaskSha256": "88a77851c564c157375f2c319f9a62b49799a7dfc710d7dde256afcb0d095ce7",
+        "scales": [
+          {
+            "resolution": 400,
+            "featureCount": 7,
+            "stableEnclosures": 6,
+            "retainedEnclosures": 3,
+            "productionFidelityPassed": true,
+            "stableRegions": [
+              {
+                "value": 1,
+                "centerMm": [
+                  13.153552005438478,
+                  15.455897348742353
+                ],
+                "sourceAreaMm2": 183.875,
+                "intersectionPixels": 2875,
+                "retention": 0.9772263766145479,
+                "predictedComponentAreaMm2": 183.875,
+                "touchesBorder": false,
+                "componentIoU": 0.9554669325357261
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  63.5496413015629,
+                  39.358986676915194
+                ],
+                "sourceAreaMm2": 487.875,
+                "intersectionPixels": 7788,
+                "retention": 0.9976940814757879,
+                "predictedComponentAreaMm2": 488.6875,
+                "touchesBorder": false,
+                "componentIoU": 0.9937476075028709
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  39.28689167974882,
+                  40.34242543171115
+                ],
+                "sourceAreaMm2": 159.25,
+                "intersectionPixels": 2524,
+                "retention": 0.9905808477237049,
+                "predictedComponentAreaMm2": 160.875,
+                "touchesBorder": false,
+                "componentIoU": 0.9715165511932256
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  37.954389665172684,
+                  63.853051674136566
+                ],
+                "sourceAreaMm2": 474.125,
+                "intersectionPixels": 7546,
+                "retention": 0.9947271289216979,
+                "predictedComponentAreaMm2": 780.75,
+                "touchesBorder": true,
+                "componentIoU": 0.6021385253750399
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  64.1374698310539,
+                  65.02041432019308
+                ],
+                "sourceAreaMm2": 155.375,
+                "intersectionPixels": 2461,
+                "retention": 0.9899436846339501,
+                "predictedComponentAreaMm2": 780.75,
+                "touchesBorder": true,
+                "componentIoU": 0.19661260685467763
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  87.72424366312347,
+                  88.87765739983647
+                ],
+                "sourceAreaMm2": 152.875,
+                "intersectionPixels": 2409,
+                "retention": 0.9848732624693377,
+                "predictedComponentAreaMm2": 197.875,
+                "touchesBorder": true,
+                "componentIoU": 0.752107399313144
+              }
+            ]
+          },
+          {
+            "resolution": 800,
+            "featureCount": 7,
+            "stableEnclosures": 6,
+            "retainedEnclosures": 3,
+            "productionFidelityPassed": true,
+            "stableRegions": [
+              {
+                "value": 1,
+                "centerMm": [
+                  13.153552005438478,
+                  15.455897348742353
+                ],
+                "sourceAreaMm2": 183.875,
+                "intersectionPixels": 11488,
+                "retention": 0.9762066621346023,
+                "predictedComponentAreaMm2": 183.734375,
+                "touchesBorder": false,
+                "componentIoU": 0.9542320790763352
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  63.5496413015629,
+                  39.358986676915194
+                ],
+                "sourceAreaMm2": 487.875,
+                "intersectionPixels": 31085,
+                "retention": 0.9955482961824238,
+                "predictedComponentAreaMm2": 488.109375,
+                "touchesBorder": false,
+                "componentIoU": 0.9906622474345083
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  39.28689167974882,
+                  40.34242543171115
+                ],
+                "sourceAreaMm2": 159.25,
+                "intersectionPixels": 10051,
+                "retention": 0.9861656200941915,
+                "predictedComponentAreaMm2": 160.484375,
+                "touchesBorder": false,
+                "componentIoU": 0.9653284671532847
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  37.954389665172684,
+                  63.853051674136566
+                ],
+                "sourceAreaMm2": 474.125,
+                "intersectionPixels": 30122,
+                "retention": 0.9926838913788558,
+                "predictedComponentAreaMm2": 779.765625,
+                "touchesBorder": true,
+                "componentIoU": 0.6009136792546931
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  64.1374698310539,
+                  65.02041432019308
+                ],
+                "sourceAreaMm2": 155.375,
+                "intersectionPixels": 9789,
+                "retention": 0.9844127111826226,
+                "predictedComponentAreaMm2": 779.765625,
+                "touchesBorder": true,
+                "componentIoU": 0.19554534558529765
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  87.72424366312347,
+                  88.87765739983647
+                ],
+                "sourceAreaMm2": 152.875,
+                "intersectionPixels": 9591,
+                "retention": 0.9802739165985282,
+                "predictedComponentAreaMm2": 197.421875,
+                "touchesBorder": true,
+                "componentIoU": 0.7476613657623947
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "resampled-integrated",
+        "sourceReportSha256": "0c9cfa75560a747d188f5274e829f83b9a09f0b3ccabf84c0c117da05fe314e8",
+        "geometrySha256": "3d316467341bae1b84b142c62068702c6f4f6684bdd50e2e247aa27410d5681d",
+        "sourceMaskSha256": "88a77851c564c157375f2c319f9a62b49799a7dfc710d7dde256afcb0d095ce7",
+        "scales": [
+          {
+            "resolution": 400,
+            "featureCount": 7,
+            "stableEnclosures": 6,
+            "retainedEnclosures": 5,
+            "productionFidelityPassed": true,
+            "stableRegions": [
+              {
+                "value": 1,
+                "centerMm": [
+                  13.153552005438478,
+                  15.455897348742353
+                ],
+                "sourceAreaMm2": 183.875,
+                "intersectionPixels": 2915,
+                "retention": 0.9908225696804894,
+                "predictedComponentAreaMm2": 183.6875,
+                "touchesBorder": false,
+                "componentIoU": 0.9828051247471342
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  63.5496413015629,
+                  39.358986676915194
+                ],
+                "sourceAreaMm2": 487.875,
+                "intersectionPixels": 7778,
+                "retention": 0.9964130156290033,
+                "predictedComponentAreaMm2": 487.875,
+                "touchesBorder": false,
+                "componentIoU": 0.9928516721981108
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  39.28689167974882,
+                  40.34242543171115
+                ],
+                "sourceAreaMm2": 159.25,
+                "intersectionPixels": 1712,
+                "retention": 0.6718995290423861,
+                "predictedComponentAreaMm2": 107.1875,
+                "touchesBorder": false,
+                "componentIoU": 0.671109368874951
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  37.954389665172684,
+                  63.853051674136566
+                ],
+                "sourceAreaMm2": 474.125,
+                "intersectionPixels": 7563,
+                "retention": 0.9969680991299763,
+                "predictedComponentAreaMm2": 473.8125,
+                "touchesBorder": false,
+                "componentIoU": 0.9946081009994739
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  64.1374698310539,
+                  65.02041432019308
+                ],
+                "sourceAreaMm2": 155.375,
+                "intersectionPixels": 2463,
+                "retention": 0.9907481898632341,
+                "predictedComponentAreaMm2": 658.5625,
+                "touchesBorder": true,
+                "componentIoU": 0.23323863636363637
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  87.72424366312347,
+                  88.87765739983647
+                ],
+                "sourceAreaMm2": 152.875,
+                "intersectionPixels": 2425,
+                "retention": 0.991414554374489,
+                "predictedComponentAreaMm2": 154,
+                "touchesBorder": false,
+                "componentIoU": 0.9758551307847082
+              }
+            ]
+          },
+          {
+            "resolution": 800,
+            "featureCount": 7,
+            "stableEnclosures": 6,
+            "retainedEnclosures": 5,
+            "productionFidelityPassed": true,
+            "stableRegions": [
+              {
+                "value": 1,
+                "centerMm": [
+                  13.153552005438478,
+                  15.455897348742353
+                ],
+                "sourceAreaMm2": 183.875,
+                "intersectionPixels": 11622,
+                "retention": 0.9875934738273283,
+                "predictedComponentAreaMm2": 183.546875,
+                "touchesBorder": false,
+                "componentIoU": 0.977213486925082
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  63.5496413015629,
+                  39.358986676915194
+                ],
+                "sourceAreaMm2": 487.875,
+                "intersectionPixels": 31058,
+                "retention": 0.9946835767358442,
+                "predictedComponentAreaMm2": 487.8125,
+                "touchesBorder": false,
+                "componentIoU": 0.9895494806601669
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  39.28689167974882,
+                  40.34242543171115
+                ],
+                "sourceAreaMm2": 159.25,
+                "intersectionPixels": 6831,
+                "retention": 0.6702315541601256,
+                "predictedComponentAreaMm2": 107.546875,
+                "touchesBorder": false,
+                "componentIoU": 0.6668293635298711
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  37.954389665172684,
+                  63.853051674136566
+                ],
+                "sourceAreaMm2": 474.125,
+                "intersectionPixels": 30199,
+                "retention": 0.9952214605852887,
+                "predictedComponentAreaMm2": 474.28125,
+                "touchesBorder": false,
+                "componentIoU": 0.9901636119217023
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  64.1374698310539,
+                  65.02041432019308
+                ],
+                "sourceAreaMm2": 155.375,
+                "intersectionPixels": 9820,
+                "retention": 0.9875301689460981,
+                "predictedComponentAreaMm2": 658.46875,
+                "touchesBorder": true,
+                "componentIoU": 0.23233804949604883
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  87.72424366312347,
+                  88.87765739983647
+                ],
+                "sourceAreaMm2": 152.875,
+                "intersectionPixels": 9657,
+                "retention": 0.9870196238757154,
+                "predictedComponentAreaMm2": 154.046875,
+                "touchesBorder": false,
+                "componentIoU": 0.9670538754255958
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "interpretation": "At both 400 and 800 pixels, the integrated output keeps 5 of 6 source-stable regions enclosed, up from 3 in the rejected resampled control. These six include two checker regions and four hearts. One heart remains open to the border, and another is split: its largest component retains only 67.2% (400px) / 67.0% (800px) of the source heart. The production fidelity check still passes. This is not complete motif recovery."
+  },
+  "borderFollowup": {
+    "status": "diagnostic-rejected-for-edge-spacing",
+    "artifacts": [
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/routing-preflight.json",
+        "sha256": "d895081c1e682d5fad2bdf30874ad0ac6f66a081932d0f0f3c39a036033ca29c",
+        "bytes": 87
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/border-profiles.json",
+        "sha256": "003d30480b69ed0dbdd9ae2d8a2f5c9941e28577ecd92a347b6d706c0c474ec5",
+        "bytes": 2833
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/fine-border-profiles.json",
+        "sha256": "0ae9d456417081fa33e6bfed70c112dcc44efb7aa5096de8125d1e3d1ce571e5",
+        "bytes": 3877
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/independent-border-probe.json",
+        "sha256": "afe29431478f358175a75ecd499d10377a28f670f8f6c2b392fd19474991a995",
+        "bytes": 3837
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/independent-border-probe.u8",
+        "sha256": "ed01949b6a79dc2c679aa07385c9e0e6c07290a0683f9f49cb20a995fdb53c69",
+        "bytes": 160000
+      }
+    ],
+    "findings": [
+      "The current learned mask has outer-edge transition counts [6,0,4,6], although the direct fitter estimates [3,3] from inset evidence. The corner-fragment helper has no proposal.",
+      "A uniform 1mm border interpretation restores [3,3,3,3] but changes 822/160000 pixels (0.51375%), just above the existing 0.5% topology-initialization allowance. A 0.75mm interpretation still misses two right-edge endpoints.",
+      "Combining already measured 0.5mm top/bottom/left interpretations with the 1mm right interpretation changes 740 pixels (0.4625%), restores [3,3,3,3] and retains every source feature and all six stable enclosures.",
+      "These side radii were selected after inspecting this case. No general selector, traced-curve error, new MILP result or template success is claimed. The input reference remains unchanged; the combined mask is only a possible initialization."
+    ],
+    "edgeSpacingFollowup": {
+      "minimumPixels": 10.02004008016032,
+      "rightEdgeRunPixels": 8,
+      "conclusion": "The earlier 740-pixel combined proposal has consistent counts but an undersized edge strip. It is rejected; see independent-border-proposals.json for the bounded general selector and wider offline controls."
+    }
+  },
+  "editableFocused": {
+    "artifact": {
+      "path": "tmp/heart-learning/initializer-perturbation-v1/editable/results.json",
+      "sha256": "d7981402e20b04acd506cfc9545abe27062aa0839712c99394c5a6f575192c84",
+      "bytes": 69055
+    },
+    "scope": "All three saved original, rejected resampled control and integrated exports; no new fit.",
+    "rows": [
+      {
+        "id": "stacked-hearts-original-control",
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "editableError": 0.01258125,
+        "editorIssues": [],
+        "missingFeatures": 0
+      },
+      {
+        "id": "stacked-hearts-resampled-control",
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "editableError": 0.030575,
+        "editorIssues": [],
+        "missingFeatures": 0
+      },
+      {
+        "id": "stacked-hearts-resampled-integrated",
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "editableError": 0.01366875,
+        "editorIssues": [],
+        "missingFeatures": 0
+      }
+    ],
+    "note": "The converter logs an out-of-range control-coordinate warning for the integrated pair; its final editor intersection and independent physical checks pass. The warning is retained in editable.log.",
+    "log": {
+      "path": "tmp/heart-learning/initializer-perturbation-v1/editable.log",
+      "sha256": "7ac4099867bb47d074725faf06de3f821b95fb26f961d5d4d52f8e3e72a1eb7b",
+      "bytes": 513
+    }
+  },
+  "followup": {
+    "commit": "897e022",
+    "reason": "The broad feature retry consumed 0.890 seconds on the Viking four-cut seed, which had zero retention of the required interior opening both before and after clearance. This deprived the viable six-cut seed of refinement time.",
+    "evidence": [
+      {
+        "name": "viking-diagnostic",
+        "artifact": {
+          "path": "tmp/heart-learning/initializer-perturbation-v1/viking-diagnostic/report.json",
+          "sha256": "42ecabcf60516a51d7bcad7e1985731dc1ad4369377a9c6f6b9a6e09f4a940c7",
+          "bytes": 117762
+        },
+        "seconds": 9.605611041,
+        "error": 0.03209375,
+        "checkedPair": false,
+        "comparison": {
+          "initialCounts": [
+            6,
+            6
+          ],
+          "initialGridError": 0.04638671875,
+          "initialClearanceError": 0.0796051025390625,
+          "alternativeCounts": [
+            4,
+            4
+          ],
+          "alternativeGridError": 0.0569305419921875,
+          "alternativeClearanceError": 0.0563201904296875,
+          "initialColours": true,
+          "alternativeColours": false,
+          "alternativeGeometry": true,
+          "alternativePaper": "pass",
+          "seconds": 1.3483302499999996,
+          "preferred": false
+        },
+        "initializerArtifact": {
+          "path": "tmp/heart-learning/initializer-perturbation-v1/viking-diagnostic/initializers.json",
+          "sha256": "fa5bbaddab3490d0e00b11647788655b03d8b93d0c246af00bedd2e4d03a8876",
+          "bytes": 180052
+        },
+        "featureDiagnostic": {
+          "fineFeatures": {
+            "passed": false,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 0,
+                "areaMm2": 51.5625,
+                "centerMm": [
+                  47.41287878787879,
+                  56.99560606060606
+                ],
+                "retainedFraction": 0
+              },
+              {
+                "value": 1,
+                "areaMm2": 158.5,
+                "centerMm": [
+                  14.408517350157728,
+                  15.145011829652997
+                ],
+                "retainedFraction": 0.9893533123028391
+              },
+              {
+                "value": 1,
+                "areaMm2": 147.5,
+                "centerMm": [
+                  85.19735169491526,
+                  15.877012711864406
+                ],
+                "retainedFraction": 0.9088983050847458
+              },
+              {
+                "value": 1,
+                "areaMm2": 1942.125,
+                "centerMm": [
+                  45.96876810195018,
+                  48.65838804144944
+                ],
+                "retainedFraction": 0.9064491214520177
+              },
+              {
+                "value": 1,
+                "areaMm2": 58.1875,
+                "centerMm": [
+                  95.61345327604725,
+                  95.43461331901182
+                ],
+                "retainedFraction": 0.9602577873254565
+              }
+            ],
+            "missing": [
+              {
+                "value": 0,
+                "areaMm2": 51.5625,
+                "centerMm": [
+                  47.41287878787879,
+                  56.99560606060606
+                ],
+                "retainedFraction": 0
+              }
+            ],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          },
+          "clearFeatures": {
+            "passed": false,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 0,
+                "areaMm2": 51.5625,
+                "centerMm": [
+                  47.41287878787879,
+                  56.99560606060606
+                ],
+                "retainedFraction": 0
+              },
+              {
+                "value": 1,
+                "areaMm2": 158.5,
+                "centerMm": [
+                  14.408517350157728,
+                  15.145011829652997
+                ],
+                "retainedFraction": 0.9905362776025236
+              },
+              {
+                "value": 1,
+                "areaMm2": 147.5,
+                "centerMm": [
+                  85.19735169491526,
+                  15.877012711864406
+                ],
+                "retainedFraction": 0.9165254237288135
+              },
+              {
+                "value": 1,
+                "areaMm2": 1942.125,
+                "centerMm": [
+                  45.96876810195018,
+                  48.65838804144944
+                ],
+                "retainedFraction": 0.9068352963892643
+              },
+              {
+                "value": 1,
+                "areaMm2": 58.1875,
+                "centerMm": [
+                  95.61345327604725,
+                  95.43461331901182
+                ],
+                "retainedFraction": 0.9613319011815252
+              }
+            ],
+            "missing": [
+              {
+                "value": 0,
+                "areaMm2": 51.5625,
+                "centerMm": [
+                  47.41287878787879,
+                  56.99560606060606
+                ],
+                "retainedFraction": 0
+              }
+            ],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          }
+        }
+      },
+      {
+        "name": "resampled-diagnostic",
+        "artifact": {
+          "path": "tmp/heart-learning/initializer-perturbation-v1/resampled-diagnostic/report.json",
+          "sha256": "ac57849baecc4fd14973d1151fef92224f1e5eaf1b8fd180a7a26c16ef2a4f51",
+          "bytes": 132787
+        },
+        "seconds": 9.690910792,
+        "error": 0.013375,
+        "checkedPair": true,
+        "comparison": {
+          "initialCounts": [
+            3,
+            5
+          ],
+          "initialGridError": 0.060638427734375,
+          "initialClearanceError": 0.0811920166015625,
+          "alternativeCounts": [
+            4,
+            4
+          ],
+          "alternativeGridError": 0.062835693359375,
+          "alternativeClearanceError": 0.074920654296875,
+          "initialColours": true,
+          "alternativeColours": false,
+          "alternativeGeometry": true,
+          "alternativePaper": "pass",
+          "seconds": 1.4143489580000006,
+          "preferred": true
+        },
+        "initializerArtifact": {
+          "path": "tmp/heart-learning/initializer-perturbation-v1/resampled-diagnostic/initializers.json",
+          "sha256": "7a2e22de6a6af857abe783d728afdf35858c9e5c2f67cd021aa58d39473d0109",
+          "bytes": 166305
+        },
+        "featureDiagnostic": {
+          "fineFeatures": {
+            "passed": true,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 1,
+                "areaMm2": 183.875,
+                "centerMm": [
+                  13.153552005438478,
+                  15.455897348742353
+                ],
+                "retainedFraction": 0.8212100611828688
+              },
+              {
+                "value": 1,
+                "areaMm2": 487.875,
+                "centerMm": [
+                  63.5496413015629,
+                  39.358986676915194
+                ],
+                "retainedFraction": 0.9191647450678965
+              },
+              {
+                "value": 1,
+                "areaMm2": 159.25,
+                "centerMm": [
+                  39.28689167974882,
+                  40.34242543171115
+                ],
+                "retainedFraction": 0.9266091051805337
+              },
+              {
+                "value": 1,
+                "areaMm2": 474.5,
+                "centerMm": [
+                  87.63372629083246,
+                  63.448169125395154
+                ],
+                "retainedFraction": 0.9296628029504742
+              },
+              {
+                "value": 1,
+                "areaMm2": 474.125,
+                "centerMm": [
+                  37.954389665172684,
+                  63.853051674136566
+                ],
+                "retainedFraction": 0.9782494068020037
+              },
+              {
+                "value": 1,
+                "areaMm2": 155.375,
+                "centerMm": [
+                  64.1374698310539,
+                  65.02041432019308
+                ],
+                "retainedFraction": 0.9090909090909091
+              },
+              {
+                "value": 1,
+                "areaMm2": 152.875,
+                "centerMm": [
+                  87.72424366312347,
+                  88.87765739983647
+                ],
+                "retainedFraction": 0.874897792313982
+              }
+            ],
+            "missing": [],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          },
+          "clearFeatures": {
+            "passed": false,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 1,
+                "areaMm2": 183.875,
+                "centerMm": [
+                  13.153552005438478,
+                  15.455897348742353
+                ],
+                "retainedFraction": 0.5863358259687288
+              },
+              {
+                "value": 1,
+                "areaMm2": 487.875,
+                "centerMm": [
+                  63.5496413015629,
+                  39.358986676915194
+                ],
+                "retainedFraction": 0.9344094286446324
+              },
+              {
+                "value": 1,
+                "areaMm2": 159.25,
+                "centerMm": [
+                  39.28689167974882,
+                  40.34242543171115
+                ],
+                "retainedFraction": 0.43995290423861855
+              },
+              {
+                "value": 1,
+                "areaMm2": 474.5,
+                "centerMm": [
+                  87.63372629083246,
+                  63.448169125395154
+                ],
+                "retainedFraction": 0.9379610115911485
+              },
+              {
+                "value": 1,
+                "areaMm2": 474.125,
+                "centerMm": [
+                  37.954389665172684,
+                  63.853051674136566
+                ],
+                "retainedFraction": 0.9794358027946217
+              },
+              {
+                "value": 1,
+                "areaMm2": 155.375,
+                "centerMm": [
+                  64.1374698310539,
+                  65.02041432019308
+                ],
+                "retainedFraction": 0.8817377312952535
+              },
+              {
+                "value": 1,
+                "areaMm2": 152.875,
+                "centerMm": [
+                  87.72424366312347,
+                  88.87765739983647
+                ],
+                "retainedFraction": 0.8254292722812756
+              }
+            ],
+            "missing": [
+              {
+                "value": 1,
+                "areaMm2": 183.875,
+                "centerMm": [
+                  13.153552005438478,
+                  15.455897348742353
+                ],
+                "retainedFraction": 0.5863358259687288
+              },
+              {
+                "value": 1,
+                "areaMm2": 159.25,
+                "centerMm": [
+                  39.28689167974882,
+                  40.34242543171115
+                ],
+                "retainedFraction": 0.43995290423861855
+              }
+            ],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          }
+        }
+      },
+      {
+        "name": "viking-gated",
+        "artifact": {
+          "path": "tmp/heart-learning/initializer-perturbation-v1/viking-gated/report.json",
+          "sha256": "d946216e204da7e4fdbaf7a8f404f955232e1aef7bed5cb985cf95f5e55cd5e0",
+          "bytes": 98590
+        },
+        "seconds": 9.864037415999999,
+        "error": 0.02148125,
+        "checkedPair": true,
+        "comparison": {
+          "initialCounts": [
+            6,
+            6
+          ],
+          "initialGridError": 0.04638671875,
+          "initialClearanceError": 0.0796051025390625,
+          "alternativeCounts": [
+            4,
+            4
+          ],
+          "alternativeGridError": 0.0569305419921875,
+          "alternativeClearanceError": 0.0563201904296875,
+          "initialColours": true,
+          "alternativeColours": false,
+          "alternativeGeometry": true,
+          "alternativePaper": "pass",
+          "seconds": 0.4660599999999995,
+          "preferred": false
+        }
+      }
+    ],
+    "decision": "Only retry missing colours when this same seed retained them before clearance preparation. The stacked-heart fine seed passes that check; the Viking alternative does not. Existing checks and the overall deadlines remain unchanged.",
+    "focusedTests": {
+      "passed": 4,
+      "artifact": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/gated-focused.log",
+        "sha256": "5e01b368861d7cf5c63acaae28746103b50713c54dcaf9ea5e2efbc000e4bff4",
+        "bytes": 515
+      }
+    },
+    "fullQa": {
+      "state": {
+        "status": "failed",
+        "stage": "test",
+        "exitCode": 1
+      },
+      "root": "tmp/heart-learning/initializer-perturbation-v1/qa-gated",
+      "checks": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa-gated/qa-checks.json",
+        "sha256": "37badfe920dec065846d0dc35b4f47d6291004b3ecdea96642bd53ae3dd5aee0",
+        "bytes": 993
+      },
+      "sourceHashes": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa-gated/qa-source.json",
+        "sha256": "418054380d66a2adb1b1c89ccf0c52a830a655ad8b53959700806594ab3c033e",
+        "bytes": 89160
+      },
+      "testLog": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa-gated/test.log",
+        "sha256": "c540cc9ee10ee66d67382754b8ddd7fcbec664270d794c3a6b16ee2a0ae76bdc",
+        "bytes": 94409
+      },
+      "inverseTests": {
+        "total": 934,
+        "passed": 933,
+        "failed": 1
+      },
+      "failure": {
+        "case": "resampled-stacked-hearts",
+        "independentImageError": 0.03549375,
+        "termination": "paper_failure",
+        "repairSteps": 50,
+        "repairAccepted": false,
+        "checkpointErrors": [
+          0.031275,
+          0.0347125
+        ]
+      },
+      "nativeBenchmarkRun": false
+    },
+    "regressionTest": "scripts/inverse/clearance-feature-budget.test.mjs"
+  },
+  "continuation": {
+    "status": "focused-and-browser-verified-full-qa-one-routing-failure",
+    "cause": "The bounded helper required a finished image error before handing a starting shape to the main fit. In the full-suite failure, 50 updates produced legal, colour-retaining checkpoints at 3.13% and 3.47% but both were discarded by the 3% final image limit. The unchanged crop was not responsible for this rejection.",
+    "change": "Feature recovery may return a distinct continuation only after geometry, paper and source-feature checks pass and original-source error improves. It does not return an accepted candidate above the final limit. The main fitter resumes from those verified coordinates within its existing deadline; final source-image, feature, geometry and paper gates remain unchanged. The Viking pre-clearance feature guard remains in force.",
+    "regressions": [
+      "scripts/inverse/clearance-feature-continuation.test.mjs",
+      "scripts/inverse/clearance-feature-handoff.test.mjs"
+    ],
+    "tests": {
+      "priorBehaviorFailure": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/continuation-before.log",
+        "sha256": "3706253d1ef522aa94ebf07d9076a458f266ac5e4eafd53292516e7b505527e7",
+        "bytes": 983
+      },
+      "focusedFivePassed": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/continuation-focused.log",
+        "sha256": "640c09e05aecd5154ce8e33cb1b24e484001cfee6dad39c4e5d57723ecc42142",
+        "bytes": 620
+      },
+      "handoffHarnessInitialFailure": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/continuation-handoff.log",
+        "sha256": "caffc78d031e0edeeb618b597193fd9dc9a82384717a23618a9ba7e8e337ad3e",
+        "bytes": 1371
+      },
+      "handoffPassedAfterCallbackFix": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/continuation-handoff-v2.log",
+        "sha256": "7dada4cfcc062e3fd7a9ebf327faed759941337ab99fedd10556102efa4d2a83",
+        "bytes": 233
+      }
+    },
+    "runs": [
+      {
+        "name": "original",
+        "report": {
+          "path": "tmp/heart-learning/initializer-perturbation-v1/continuation-v1/original/report.json",
+          "sha256": "b87135137985b4c83fb5498629a83ed24159cfce32f81a3fde368150657bf370",
+          "bytes": 137085
+        },
+        "independentImageError": 0.01233125,
+        "checkedPair": true,
+        "measuredSolveSeconds": 9.844671667,
+        "clockAdvanceMilliseconds": 0,
+        "repairSteps": 85,
+        "repairImageError": 0.02536875,
+        "repairAccepted": true,
+        "continued": false,
+        "preferred": true
+      },
+      {
+        "name": "resampled",
+        "report": {
+          "path": "tmp/heart-learning/initializer-perturbation-v1/continuation-v1/resampled/report.json",
+          "sha256": "254bd82cd53eac327ffc0f2db4f814243864869725196421c6685b465a8e600a",
+          "bytes": 131857
+        },
+        "independentImageError": 0.0134625,
+        "checkedPair": true,
+        "measuredSolveSeconds": 9.681995708,
+        "clockAdvanceMilliseconds": 0,
+        "repairSteps": 85,
+        "repairImageError": 0.02341875,
+        "repairAccepted": true,
+        "continued": false,
+        "preferred": true
+      },
+      {
+        "name": "forced-handoff",
+        "report": {
+          "path": "tmp/heart-learning/initializer-perturbation-v1/continuation-v1/forced-handoff/report.json",
+          "sha256": "1abee1bd2d7bd704bcd109208590ba0cb103c8bfb32035a5c399f3039ff926fb",
+          "bytes": 132164
+        },
+        "independentImageError": 0.01385,
+        "checkedPair": true,
+        "measuredSolveSeconds": 9.477153042,
+        "clockAdvanceMilliseconds": 267.7555419999999,
+        "repairSteps": 45,
+        "repairImageError": 0.03305625,
+        "repairAccepted": false,
+        "continued": true,
+        "preferred": true
+      }
+    ],
+    "editable": {
+      "passed": 3,
+      "total": 3,
+      "report": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/continuation-v1/editable/results.json",
+        "sha256": "da11a9b296925e9c5c0888672eb095aada9c62dc8153de9bfbbfeaf9787cbda9",
+        "bytes": 69100
+      }
+    },
+    "visualReview": {
+      "image": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/continuation-v1/comparison.png",
+        "sha256": "8703941102a9fe20ae2b94982742761d6247ce8fd2708424f93bef6d5e04f733",
+        "bytes": 56760
+      },
+      "inspected": true,
+      "notes": "The ordinary and forced-handoff results recover the large checker regions compared with the rejected control. Both still split one small heart and connect another heart to the border. These are remaining fidelity defects despite passing current image/feature and paper checks; this is an initialization robustness fix, not a faithful-reconstruction claim."
+    },
+    "components": {
+      "path": "tmp/heart-learning/initializer-perturbation-v1/continuation-v1/feature-review.json",
+      "sha256": "7ab56850ab7b622151dcde3d8894217dac45e52649940101973c312bede1c86d",
+      "bytes": 18527
+    },
+    "qa": {
+      "status": "failed",
+      "root": "tmp/heart-learning/initializer-perturbation-v1/qa-continuation",
+      "checks": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa-continuation/qa-checks.json",
+        "sha256": "587ee29a966b2bcd3dc8918350acbbad1142dd36b5b0786954d137439b385cf6",
+        "bytes": 997
+      },
+      "testLog": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa-continuation/test.log",
+        "sha256": "17a240753e4835f3efce752045cf12ff00393a71c82a43c4f865b4f13012eaf1",
+        "bytes": 159441
+      },
+      "sourceHashes": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa-continuation/qa-source.json",
+        "sha256": "baa83cf651c6cf99113ff7186c5e1dedb2edf8dbf12a4f0b9baf6c7e78a82c13",
+        "bytes": 89413
+      },
+      "inverseTests": {
+        "total": 936,
+        "passed": 935,
+        "failed": 1
+      },
+      "failure": {
+        "name": "fresh synthetic-control routing retains time for a valid template without changing the mask",
+        "report": {
+          "path": "tmp/heart-learning/initializer-perturbation-v1/qa-continuation/sloth-failure/report.json",
+          "sha256": "99f80cb106ca533d41c1a68ebb5e698602d848e78725b2110b6d3b6167db0715",
+          "bytes": 53242
+        },
+        "cuts": {
+          "path": "tmp/heart-learning/initializer-perturbation-v1/qa-continuation/sloth-failure/cut_geometry.json",
+          "sha256": "2af53fb9c071db72fec6f52be346e1c05854c38c09f11856398a408f684b6023",
+          "bytes": 36283
+        },
+        "clearanceComparison": null,
+        "nativePointSampleError": 0.053536,
+        "termination": "geometry_failure",
+        "initialRoutingSeconds": 2.510760415999999,
+        "initialRoutingTermination": "time_limit",
+        "recoveryRoutingSeconds": 4.099972500000002,
+        "recoveryRoutingTermination": "time_limit"
+      },
+      "externalLoadAfterRun": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa-continuation/sloth-failure/external-load-after.json",
+        "sha256": "d917095a341e68873e9259f955ccd9e121f6a92187ed60a795d416ab0fd01730",
+        "bytes": 570
+      },
+      "interpretation": "The failed solve never entered the changed clearance-handoff branch. Both initial and sparse feature-recovery MILPs reached their limits without an integer candidate. Other-worktree CPU load was observed afterward, but is not telemetry during the failed solve and does not establish causation. The failure remains recorded even if a focused retry passes.",
+      "nativeBenchmark": {
+        "status": "completed-separately-after-failed-full-QA",
+        "gates": {
+          "hunodanPassed": 22,
+          "hunodanTotal": 22,
+          "hunodanErrorRegressions": [],
+          "photoPassed": 26,
+          "photoPassRegressions": [],
+          "photoErrorRegressions": [
+            {
+              "id": "floral-checker",
+              "previousStatus": "validated",
+              "status": "validated",
+              "previousPassed": true,
+              "passed": true,
+              "previousError": 0.01315,
+              "error": 0.013425,
+              "errorDelta": 0.0002749999999999992
+            },
+            {
+              "id": "dense-checker",
+              "previousStatus": "validated",
+              "status": "validated",
+              "previousPassed": true,
+              "passed": true,
+              "previousError": 0.00699375,
+              "error": 0.00700625,
+              "errorDelta": 1.2500000000000358e-05
+            },
+            {
+              "id": "gift",
+              "previousStatus": "validated",
+              "status": "validated",
+              "previousPassed": true,
+              "passed": true,
+              "previousError": 0.01665,
+              "error": 0.0166625,
+              "errorDelta": 1.2499999999998623e-05
+            },
+            {
+              "id": "gingerbread",
+              "previousStatus": "validated",
+              "status": "validated",
+              "previousPassed": true,
+              "passed": true,
+              "previousError": 0.010875,
+              "error": 0.01094375,
+              "errorDelta": 6.87500000000011e-05
+            },
+            {
+              "id": "warped-checker",
+              "previousStatus": "validated",
+              "status": "validated",
+              "previousPassed": true,
+              "passed": true,
+              "previousError": 0.013575,
+              "error": 0.0136,
+              "errorDelta": 2.499999999999898e-05
+            },
+            {
+              "id": "stacked-hearts",
+              "previousStatus": "validated",
+              "status": "validated",
+              "previousPassed": true,
+              "passed": true,
+              "previousError": 0.00566875,
+              "error": 0.0059375,
+              "errorDelta": 0.0002687499999999999
+            },
+            {
+              "id": "jigsaw",
+              "previousStatus": "validated",
+              "status": "validated",
+              "previousPassed": true,
+              "passed": true,
+              "previousError": 0.00974375,
+              "error": 0.01780625,
+              "errorDelta": 0.008062499999999998
+            },
+            {
+              "id": "crown",
+              "previousStatus": "validated",
+              "status": "validated",
+              "previousPassed": true,
+              "passed": true,
+              "previousError": 0.02241875,
+              "error": 0.022725,
+              "errorDelta": 0.0003062499999999975
+            },
+            {
+              "id": "flettede-viking",
+              "previousStatus": "validated",
+              "status": "validated",
+              "previousPassed": true,
+              "passed": true,
+              "previousError": 0.02055625,
+              "error": 0.02101875,
+              "errorDelta": 0.00046249999999999764
+            }
+          ],
+          "editablePassed": 48,
+          "editableTotal": 48,
+          "passed": false
+        },
+        "maximumHunodanSeconds": 9.567687625,
+        "visualReview": {
+          "path": "tmp/heart-learning/initializer-perturbation-v1/qa-continuation/photo-visual-review.json",
+          "sha256": "012072e6f4471fe41db38704821442d66d23e3c0574e7356471963e9159e533d",
+          "bytes": 5953
+        },
+        "checks": {
+          "path": "tmp/heart-learning/initializer-perturbation-v1/qa-continuation/native/checks.json",
+          "sha256": "e308af7e8329bd98c129e26fe66242c2889aa8bff6105c6be701ed8afc3b5759",
+          "bytes": 2655
+        },
+        "gateReport": {
+          "path": "tmp/heart-learning/initializer-perturbation-v1/qa-continuation/native/native-gates.json",
+          "sha256": "6901c0dc7a3cb13b269fceebdeb031b0611595ff5ae0b76c537b7f08730c610b",
+          "bytes": 2567
+        },
+        "interpretation": "22/22 Hunodan retain every image error and stay below ten seconds. Photos remain 26/31, but nine accepted-photo errors increase, including visible jigsaw tab loss. All 48 accepted editable outputs pass. Strict no-regression gate fails."
+      },
+      "orderedSchedulingRetry": {
+        "passed": 4,
+        "total": 4,
+        "seconds": 36.840334583,
+        "log": {
+          "path": "tmp/heart-learning/post-continuation-diagnostics-v1/sloth-focused.log",
+          "sha256": "05641053abaa10f42a0ebc45cd4926d908d07f5bb19ac601864dbd496641fce9",
+          "bytes": 537
+        },
+        "interpretation": "Passing ordered replay does not erase the full-run MILP timeout."
+      }
+    },
+    "timingQualification": "The forced-handoff diagnostic advances the global clock once after the first 40-step checkpoint, reducing all later remaining allowances. Its measured runtime and clock advance are separately recorded; the ordinary runs use an unchanged wall clock."
+  }
+}

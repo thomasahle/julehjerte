@@ -1,0 +1,1465 @@
+{
+  "schema": "woven-heart-material-appearance-sensitivity-1",
+  "status": "complete-offline-diagnostic",
+  "scope": "Seventeen already inspected development photos; fixed perturbations of resized model RGB, no geometry/annotation/threshold changes. Padding remains unchanged. Appearance changes are empirical sRGB transforms, not a calibrated camera model. No training, held-out selection, crop replay or deployment.",
+  "variants": [
+    [
+      "baseline",
+      "identity",
+      1
+    ],
+    [
+      "darker",
+      "exposure",
+      0.95
+    ],
+    [
+      "brighter",
+      "exposure",
+      1.05
+    ],
+    [
+      "gamma-low",
+      "gamma",
+      0.9
+    ],
+    [
+      "gamma-high",
+      "gamma",
+      1.1
+    ],
+    [
+      "muted",
+      "saturation",
+      0.85
+    ],
+    [
+      "saturated",
+      "saturation",
+      1.15
+    ]
+  ],
+  "models": [
+    "synthetic-control",
+    "previous-mixed",
+    "expanded-mixed"
+  ],
+  "evidence": {
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-expanded-pilot-v1/appearance-plan.json": "3727a721dbe4f773c56a64fe5272358213f48661e6745e1b43f7dfd24c4281e0",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-expanded-pilot-v1/appearance-sensitivity.py": "eb550d3a465c8fa6075b1035132c4f74207361ba6866268efca2c424bb7c35e3",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-expanded-pilot-v1/appearance-v1/report.json": "ce565c5088d87fad93870046c2f2fe2b023b9fa2edc4e5322cfde9ceb2eaaef8",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-expanded-pilot-v1/appearance-v1/visual-review.json": "4e270def471d907025a9b7755bbf1eb3170f32d8f29692c8d255d92eda526697",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-expanded-pilot-v1/record-appearance.py": "282d452ac1358439c6a7c062b4b33c012adf109846c4d50357213b54e6068f9d"
+  },
+  "validation": {
+    "baselinePredictionsExactlyReproduced": true,
+    "paddingUnchanged": true,
+    "labelsAndGeometryUnchanged": true,
+    "images": 17,
+    "models": 3,
+    "variantsIncludingBaseline": 7,
+    "inferredPhotoVariants": 357,
+    "expandedModelInstancesVisuallyReviewed": 17
+  },
+  "results": {
+    "synthetic-control": {
+      "variantMacroMeans": {
+        "baseline": {
+          "bodyIoU": 0.8015275706305636,
+          "bodyPixelError": 0.08019544585658371,
+          "bodyFalseNegative": 0.0394828989839807,
+          "backgroundFalsePositive": 0.08861287676389176,
+          "materialPixelError": 0.20910931965362292,
+          "materialJointError": 0.22008173230331962,
+          "jointRegionPixelError": 0.1285800005715256,
+          "balancedMaterialJointError": 0.21738025261469537,
+          "phaseInvariantMaterialPredictionChange": 0.0,
+          "knownBodyPredictionChange": 0.0
+        },
+        "darker": {
+          "bodyIoU": 0.804347718009979,
+          "bodyPixelError": 0.07854779982452263,
+          "bodyFalseNegative": 0.038292281247983166,
+          "backgroundFalsePositive": 0.08680390822420855,
+          "materialPixelError": 0.20883006014819333,
+          "materialJointError": 0.21938005879605593,
+          "jointRegionPixelError": 0.12651625029107416,
+          "balancedMaterialJointError": 0.2095877227059668,
+          "phaseInvariantMaterialPredictionChange": 0.013580702818396856,
+          "knownBodyPredictionChange": 0.00497914405657808
+        },
+        "brighter": {
+          "bodyIoU": 0.7977842580645116,
+          "bodyPixelError": 0.08229448686545578,
+          "bodyFalseNegative": 0.04094033842137795,
+          "backgroundFalsePositive": 0.09078926844161708,
+          "materialPixelError": 0.2148087998109231,
+          "materialJointError": 0.22656908583339863,
+          "jointRegionPixelError": 0.13183082877994312,
+          "balancedMaterialJointError": 0.2239762592699172,
+          "phaseInvariantMaterialPredictionChange": 0.013920562277547035,
+          "knownBodyPredictionChange": 0.006044356931088685
+        },
+        "gamma-low": {
+          "bodyIoU": 0.8028957741241433,
+          "bodyPixelError": 0.07941092831657781,
+          "bodyFalseNegative": 0.04043196999744883,
+          "backgroundFalsePositive": 0.08668441685369513,
+          "materialPixelError": 0.20050650421144897,
+          "materialJointError": 0.21173092100588625,
+          "jointRegionPixelError": 0.1247080408924641,
+          "balancedMaterialJointError": 0.21019018242767606,
+          "phaseInvariantMaterialPredictionChange": 0.022180494701609398,
+          "knownBodyPredictionChange": 0.008767372844654661
+        },
+        "gamma-high": {
+          "bodyIoU": 0.8000610691416321,
+          "bodyPixelError": 0.08098461004525664,
+          "bodyFalseNegative": 0.03876636464707211,
+          "backgroundFalsePositive": 0.09033091516652537,
+          "materialPixelError": 0.21596809347962706,
+          "materialJointError": 0.22667453713360147,
+          "jointRegionPixelError": 0.1312725785650891,
+          "balancedMaterialJointError": 0.2229275710324345,
+          "phaseInvariantMaterialPredictionChange": 0.01783468393251679,
+          "knownBodyPredictionChange": 0.008070982764594675
+        },
+        "muted": {
+          "bodyIoU": 0.8017545965262176,
+          "bodyPixelError": 0.07987071885202617,
+          "bodyFalseNegative": 0.04004878363626327,
+          "backgroundFalsePositive": 0.08783015093632116,
+          "materialPixelError": 0.1956679423059417,
+          "materialJointError": 0.20850531311725218,
+          "jointRegionPixelError": 0.1253401229901914,
+          "balancedMaterialJointError": 0.2113302701877616,
+          "phaseInvariantMaterialPredictionChange": 0.038700801856547735,
+          "knownBodyPredictionChange": 0.0050589719848263175
+        },
+        "saturated": {
+          "bodyIoU": 0.8007762707405149,
+          "bodyPixelError": 0.08079533523810911,
+          "bodyFalseNegative": 0.039098273076147605,
+          "backgroundFalsePositive": 0.08957989439286057,
+          "materialPixelError": 0.22033055108532407,
+          "materialJointError": 0.23007203056328795,
+          "jointRegionPixelError": 0.13039234449505566,
+          "balancedMaterialJointError": 0.23015913751586078,
+          "phaseInvariantMaterialPredictionChange": 0.03867504193032007,
+          "knownBodyPredictionChange": 0.004963187831220183
+        }
+      },
+      "perInstanceDiagnosticExtrema": [
+        {
+          "id": "real-2044b1d98ed6f262-body-1",
+          "baselineMaterialPixelError": 0.4229486942026301,
+          "maximumPredictionChange": {
+            "variant": "saturated",
+            "materialPixelError": 0.2826449342470828,
+            "phaseInvariantMaterialPredictionChange": 0.10008464870786236,
+            "knownBodyPredictionChange": 0.007611758274107406
+          },
+          "minimumObservedError": {
+            "variant": "saturated",
+            "materialPixelError": 0.2826449342470828,
+            "phaseInvariantMaterialPredictionChange": 0.10008464870786236,
+            "knownBodyPredictionChange": 0.007611758274107406
+          },
+          "maximumObservedError": {
+            "variant": "brighter",
+            "materialPixelError": 0.4553621040933506,
+            "phaseInvariantMaterialPredictionChange": 0.02833242045511129,
+            "knownBodyPredictionChange": 0.004752092182177552
+          }
+        },
+        {
+          "id": "real-45744a03afddccb1-body-1",
+          "baselineMaterialPixelError": 0.0,
+          "maximumPredictionChange": {
+            "variant": "gamma-low",
+            "materialPixelError": 0.0,
+            "phaseInvariantMaterialPredictionChange": 0.0029450594089570426,
+            "knownBodyPredictionChange": 0.006048006048006048
+          },
+          "minimumObservedError": {
+            "variant": "darker",
+            "materialPixelError": 0.0,
+            "phaseInvariantMaterialPredictionChange": 0.001726414136285163,
+            "knownBodyPredictionChange": 0.002751002751002751
+          },
+          "maximumObservedError": {
+            "variant": "darker",
+            "materialPixelError": 0.0,
+            "phaseInvariantMaterialPredictionChange": 0.001726414136285163,
+            "knownBodyPredictionChange": 0.002751002751002751
+          }
+        },
+        {
+          "id": "real-8c875dd0f298b5a4-body-1",
+          "baselineMaterialPixelError": 0.01689616672869371,
+          "maximumPredictionChange": {
+            "variant": "saturated",
+            "materialPixelError": 0.0989951618905843,
+            "phaseInvariantMaterialPredictionChange": 0.09401610156370956,
+            "knownBodyPredictionChange": 0.0017975883681715505
+          },
+          "minimumObservedError": {
+            "variant": "muted",
+            "materialPixelError": 0.0029028656494231486,
+            "phaseInvariantMaterialPredictionChange": 0.037892862672240284,
+            "knownBodyPredictionChange": 0.0010340110082402724
+          },
+          "maximumObservedError": {
+            "variant": "saturated",
+            "materialPixelError": 0.0989951618905843,
+            "phaseInvariantMaterialPredictionChange": 0.09401610156370956,
+            "knownBodyPredictionChange": 0.0017975883681715505
+          }
+        },
+        {
+          "id": "real-3f7b76e1a98e808f-body-1",
+          "baselineMaterialPixelError": 0.34691629955947134,
+          "maximumPredictionChange": {
+            "variant": "gamma-low",
+            "materialPixelError": 0.25183553597650515,
+            "phaseInvariantMaterialPredictionChange": 0.07916046165301564,
+            "knownBodyPredictionChange": 0.0029427912594707367
+          },
+          "minimumObservedError": {
+            "variant": "gamma-low",
+            "materialPixelError": 0.25183553597650515,
+            "phaseInvariantMaterialPredictionChange": 0.07916046165301564,
+            "knownBodyPredictionChange": 0.0029427912594707367
+          },
+          "maximumObservedError": {
+            "variant": "gamma-high",
+            "materialPixelError": 0.3958333333333333,
+            "phaseInvariantMaterialPredictionChange": 0.039650037230081904,
+            "knownBodyPredictionChange": 0.0027451411002525528
+          }
+        },
+        {
+          "id": "real-995899fe049540ed-body-1",
+          "baselineMaterialPixelError": 0.23005530481215433,
+          "maximumPredictionChange": {
+            "variant": "saturated",
+            "materialPixelError": 0.23126311105460556,
+            "phaseInvariantMaterialPredictionChange": 0.027174991073908042,
+            "knownBodyPredictionChange": 0.005056607982748043
+          },
+          "minimumObservedError": {
+            "variant": "muted",
+            "materialPixelError": 0.22573262983917106,
+            "phaseInvariantMaterialPredictionChange": 0.02352521125084302,
+            "knownBodyPredictionChange": 0.005428417393244223
+          },
+          "maximumObservedError": {
+            "variant": "brighter",
+            "materialPixelError": 0.2321530735490433,
+            "phaseInvariantMaterialPredictionChange": 0.007180545086682271,
+            "knownBodyPredictionChange": 0.007715045267795728
+          }
+        },
+        {
+          "id": "real-b87b0b19f12724f3-body-1",
+          "baselineMaterialPixelError": 0.34806157354618017,
+          "maximumPredictionChange": {
+            "variant": "gamma-low",
+            "materialPixelError": 0.3127137970353478,
+            "phaseInvariantMaterialPredictionChange": 0.031241473396998634,
+            "knownBodyPredictionChange": 0.011633634337985223
+          },
+          "minimumObservedError": {
+            "variant": "gamma-low",
+            "materialPixelError": 0.3127137970353478,
+            "phaseInvariantMaterialPredictionChange": 0.031241473396998634,
+            "knownBodyPredictionChange": 0.011633634337985223
+          },
+          "maximumObservedError": {
+            "variant": "gamma-high",
+            "materialPixelError": 0.3691562143671608,
+            "phaseInvariantMaterialPredictionChange": 0.020463847203274217,
+            "knownBodyPredictionChange": 0.011469449982408819
+          }
+        },
+        {
+          "id": "real-cf2d0fcff65d7386-body-1",
+          "baselineMaterialPixelError": 0.45599871685201027,
+          "maximumPredictionChange": {
+            "variant": "muted",
+            "materialPixelError": 0.4030153977758768,
+            "phaseInvariantMaterialPredictionChange": 0.0409815330129016,
+            "knownBodyPredictionChange": 0.0038105103494200997
+          },
+          "minimumObservedError": {
+            "variant": "muted",
+            "materialPixelError": 0.4030153977758768,
+            "phaseInvariantMaterialPredictionChange": 0.0409815330129016,
+            "knownBodyPredictionChange": 0.0038105103494200997
+          },
+          "maximumObservedError": {
+            "variant": "gamma-low",
+            "materialPixelError": 0.4680816937553465,
+            "phaseInvariantMaterialPredictionChange": 0.010299591630226592,
+            "knownBodyPredictionChange": 0.001868259928599175
+          }
+        },
+        {
+          "id": "real-cdae5c890b6933cd-body-1",
+          "baselineMaterialPixelError": 0.10031399768633284,
+          "maximumPredictionChange": {
+            "variant": "gamma-high",
+            "materialPixelError": 0.12460750289208396,
+            "phaseInvariantMaterialPredictionChange": 0.027897973126850377,
+            "knownBodyPredictionChange": 0.011343450236004669
+          },
+          "minimumObservedError": {
+            "variant": "gamma-low",
+            "materialPixelError": 0.07932573128408528,
+            "phaseInvariantMaterialPredictionChange": 0.025848326121612388,
+            "knownBodyPredictionChange": 0.0100999847738923
+          },
+          "maximumObservedError": {
+            "variant": "gamma-high",
+            "materialPixelError": 0.12460750289208396,
+            "phaseInvariantMaterialPredictionChange": 0.027897973126850377,
+            "knownBodyPredictionChange": 0.011343450236004669
+          }
+        },
+        {
+          "id": "real-68d8f25d8891df62-body-1",
+          "baselineMaterialPixelError": 0.39014731506415334,
+          "maximumPredictionChange": {
+            "variant": "gamma-low",
+            "materialPixelError": 0.3453191826389989,
+            "phaseInvariantMaterialPredictionChange": 0.04196119040115258,
+            "knownBodyPredictionChange": 0.00917332645870929
+          },
+          "minimumObservedError": {
+            "variant": "gamma-low",
+            "materialPixelError": 0.3453191826389989,
+            "phaseInvariantMaterialPredictionChange": 0.04196119040115258,
+            "knownBodyPredictionChange": 0.00917332645870929
+          },
+          "maximumObservedError": {
+            "variant": "gamma-high",
+            "materialPixelError": 0.423728813559322,
+            "phaseInvariantMaterialPredictionChange": 0.0325514384764306,
+            "knownBodyPredictionChange": 0.009602990461459139
+          }
+        },
+        {
+          "id": "real-5330aa8b62176216-body-1",
+          "baselineMaterialPixelError": 0.0,
+          "maximumPredictionChange": {
+            "variant": "brighter",
+            "materialPixelError": 0.0,
+            "phaseInvariantMaterialPredictionChange": 0.002369084979385884,
+            "knownBodyPredictionChange": 0.002894569003581416
+          },
+          "minimumObservedError": {
+            "variant": "darker",
+            "materialPixelError": 0.0,
+            "phaseInvariantMaterialPredictionChange": 0.0022152482924127745,
+            "knownBodyPredictionChange": 0.0031562249587074194
+          },
+          "maximumObservedError": {
+            "variant": "darker",
+            "materialPixelError": 0.0,
+            "phaseInvariantMaterialPredictionChange": 0.0022152482924127745,
+            "knownBodyPredictionChange": 0.0031562249587074194
+          }
+        },
+        {
+          "id": "real-abf590088db891f9-body-1",
+          "baselineMaterialPixelError": 0.07678491243825775,
+          "maximumPredictionChange": {
+            "variant": "muted",
+            "materialPixelError": 0.15204310731926357,
+            "phaseInvariantMaterialPredictionChange": 0.09697422953476052,
+            "knownBodyPredictionChange": 0.003547954612340996
+          },
+          "minimumObservedError": {
+            "variant": "saturated",
+            "materialPixelError": 0.021014818140996858,
+            "phaseInvariantMaterialPredictionChange": 0.08263999252126765,
+            "knownBodyPredictionChange": 0.004692456100192931
+          },
+          "maximumObservedError": {
+            "variant": "muted",
+            "materialPixelError": 0.15204310731926357,
+            "phaseInvariantMaterialPredictionChange": 0.09697422953476052,
+            "knownBodyPredictionChange": 0.003547954612340996
+          }
+        },
+        {
+          "id": "real-990ac34431be87fe-body-1",
+          "baselineMaterialPixelError": 0.0,
+          "maximumPredictionChange": {
+            "variant": "gamma-low",
+            "materialPixelError": 0.0,
+            "phaseInvariantMaterialPredictionChange": 0.005930558550787147,
+            "knownBodyPredictionChange": 0.0030811861532735016
+          },
+          "minimumObservedError": {
+            "variant": "darker",
+            "materialPixelError": 0.0,
+            "phaseInvariantMaterialPredictionChange": 0.003234850118611171,
+            "knownBodyPredictionChange": 0.0012200670002895074
+          },
+          "maximumObservedError": {
+            "variant": "darker",
+            "materialPixelError": 0.0,
+            "phaseInvariantMaterialPredictionChange": 0.003234850118611171,
+            "knownBodyPredictionChange": 0.0012200670002895074
+          }
+        },
+        {
+          "id": "real-12ce3c9180f7f317-body-1",
+          "baselineMaterialPixelError": 0.14414216761737605,
+          "maximumPredictionChange": {
+            "variant": "saturated",
+            "materialPixelError": 0.1810004387889425,
+            "phaseInvariantMaterialPredictionChange": 0.032169149715641464,
+            "knownBodyPredictionChange": 0.003285572330672821
+          },
+          "minimumObservedError": {
+            "variant": "gamma-high",
+            "materialPixelError": 0.10838086880210619,
+            "phaseInvariantMaterialPredictionChange": 0.021213495691008687,
+            "knownBodyPredictionChange": 0.0025162675898323557
+          },
+          "maximumObservedError": {
+            "variant": "gamma-low",
+            "materialPixelError": 0.19964896884598507,
+            "phaseInvariantMaterialPredictionChange": 0.02812183803775165,
+            "knownBodyPredictionChange": 0.002772702503445844
+          }
+        },
+        {
+          "id": "real-d5b0aa8d4d2465ee-body-1",
+          "baselineMaterialPixelError": 0.03477188655980271,
+          "maximumPredictionChange": {
+            "variant": "saturated",
+            "materialPixelError": 0.15462392108508013,
+            "phaseInvariantMaterialPredictionChange": 0.09036624203821655,
+            "knownBodyPredictionChange": 0.00963055405119028
+          },
+          "minimumObservedError": {
+            "variant": "muted",
+            "materialPixelError": 0.001972872996300863,
+            "phaseInvariantMaterialPredictionChange": 0.07714968152866242,
+            "knownBodyPredictionChange": 0.011679107113423908
+          },
+          "maximumObservedError": {
+            "variant": "saturated",
+            "materialPixelError": 0.15462392108508013,
+            "phaseInvariantMaterialPredictionChange": 0.09036624203821655,
+            "knownBodyPredictionChange": 0.00963055405119028
+          }
+        },
+        {
+          "id": "real-39f3a1ba97852876-body-1",
+          "baselineMaterialPixelError": 0.4457948468643656,
+          "maximumPredictionChange": {
+            "variant": "muted",
+            "materialPixelError": 0.4122508507535245,
+            "phaseInvariantMaterialPredictionChange": 0.06829372725326482,
+            "knownBodyPredictionChange": 0.010177194381995311
+          },
+          "minimumObservedError": {
+            "variant": "muted",
+            "materialPixelError": 0.4122508507535245,
+            "phaseInvariantMaterialPredictionChange": 0.06829372725326482,
+            "knownBodyPredictionChange": 0.010177194381995311
+          },
+          "maximumObservedError": {
+            "variant": "darker",
+            "materialPixelError": 0.48565872630043755,
+            "phaseInvariantMaterialPredictionChange": 0.033290515949475484,
+            "knownBodyPredictionChange": 0.014842749051176059
+          }
+        },
+        {
+          "id": "real-e936e08ac62db19b-body-1",
+          "baselineMaterialPixelError": 0.47916312298009867,
+          "maximumPredictionChange": {
+            "variant": "muted",
+            "materialPixelError": 0.4235414186086069,
+            "phaseInvariantMaterialPredictionChange": 0.04864032837352488,
+            "knownBodyPredictionChange": 0.009480534051385617
+          },
+          "minimumObservedError": {
+            "variant": "muted",
+            "materialPixelError": 0.4235414186086069,
+            "phaseInvariantMaterialPredictionChange": 0.04864032837352488,
+            "knownBodyPredictionChange": 0.009480534051385617
+          },
+          "maximumObservedError": {
+            "variant": "saturated",
+            "materialPixelError": 0.4919203946249362,
+            "phaseInvariantMaterialPredictionChange": 0.024114930733709596,
+            "knownBodyPredictionChange": 0.009789072141815326
+          }
+        },
+        {
+          "id": "real-340f5e5b0f447889-body-1",
+          "baselineMaterialPixelError": 0.06286342920006287,
+          "maximumPredictionChange": {
+            "variant": "saturated",
+            "materialPixelError": 0.19550526481219552,
+            "phaseInvariantMaterialPredictionChange": 0.09329913433792883,
+            "knownBodyPredictionChange": 0.00836306615458037
+          },
+          "minimumObservedError": {
+            "variant": "muted",
+            "materialPixelError": 0.016815967311016818,
+            "phaseInvariantMaterialPredictionChange": 0.052100032061558194,
+            "knownBodyPredictionChange": 0.008408517601072654
+          },
+          "maximumObservedError": {
+            "variant": "saturated",
+            "materialPixelError": 0.19550526481219552,
+            "phaseInvariantMaterialPredictionChange": 0.09329913433792883,
+            "knownBodyPredictionChange": 0.00836306615458037
+          }
+        }
+      ]
+    },
+    "previous-mixed": {
+      "variantMacroMeans": {
+        "baseline": {
+          "bodyIoU": 0.8383079490032067,
+          "bodyPixelError": 0.060398742244980264,
+          "bodyFalseNegative": 0.04254960020154259,
+          "backgroundFalsePositive": 0.06200644688276952,
+          "materialPixelError": 0.19418307448542374,
+          "materialJointError": 0.21093839936353648,
+          "jointRegionPixelError": 0.09525545244417967,
+          "balancedMaterialJointError": 0.21468607210338767,
+          "phaseInvariantMaterialPredictionChange": 0.0,
+          "knownBodyPredictionChange": 0.0
+        },
+        "darker": {
+          "bodyIoU": 0.838919611457723,
+          "bodyPixelError": 0.060401013694723255,
+          "bodyFalseNegative": 0.04153107704930545,
+          "backgroundFalsePositive": 0.06229095085859243,
+          "materialPixelError": 0.1878790540519375,
+          "materialJointError": 0.20452930874898315,
+          "jointRegionPixelError": 0.0944551016357915,
+          "balancedMaterialJointError": 0.20775251909278072,
+          "phaseInvariantMaterialPredictionChange": 0.011378196329861846,
+          "knownBodyPredictionChange": 0.004442964754850967
+        },
+        "brighter": {
+          "bodyIoU": 0.8352925172852205,
+          "bodyPixelError": 0.061256099734894806,
+          "bodyFalseNegative": 0.04375097705887973,
+          "backgroundFalsePositive": 0.06272792781735949,
+          "materialPixelError": 0.19981499476734868,
+          "materialJointError": 0.21720759122308664,
+          "jointRegionPixelError": 0.09590765884086132,
+          "balancedMaterialJointError": 0.2222765512542542,
+          "phaseInvariantMaterialPredictionChange": 0.014969510763457886,
+          "knownBodyPredictionChange": 0.005572783709493415
+        },
+        "gamma-low": {
+          "bodyIoU": 0.8360087428154266,
+          "bodyPixelError": 0.06099367094898955,
+          "bodyFalseNegative": 0.043039364948131244,
+          "backgroundFalsePositive": 0.06242983432095938,
+          "materialPixelError": 0.19383873241757876,
+          "materialJointError": 0.21047094761509916,
+          "jointRegionPixelError": 0.09377557560437288,
+          "balancedMaterialJointError": 0.21515757197951083,
+          "phaseInvariantMaterialPredictionChange": 0.019839742962891132,
+          "knownBodyPredictionChange": 0.006124684997795611
+        },
+        "gamma-high": {
+          "bodyIoU": 0.8407167256893208,
+          "bodyPixelError": 0.0597048348709535,
+          "bodyFalseNegative": 0.04174099207049321,
+          "backgroundFalsePositive": 0.06144955841074323,
+          "materialPixelError": 0.18078807007580047,
+          "materialJointError": 0.19750932028881715,
+          "jointRegionPixelError": 0.09202276436043712,
+          "balancedMaterialJointError": 0.20122197198480585,
+          "phaseInvariantMaterialPredictionChange": 0.014680667079445976,
+          "knownBodyPredictionChange": 0.005271149027487463
+        },
+        "muted": {
+          "bodyIoU": 0.8369121186678494,
+          "bodyPixelError": 0.0612684198610377,
+          "bodyFalseNegative": 0.041163382700264026,
+          "backgroundFalsePositive": 0.0631998864024911,
+          "materialPixelError": 0.20570943008415918,
+          "materialJointError": 0.22013443452284517,
+          "jointRegionPixelError": 0.0968654214534069,
+          "balancedMaterialJointError": 0.22383711038449616,
+          "phaseInvariantMaterialPredictionChange": 0.02068345219992379,
+          "knownBodyPredictionChange": 0.006486409556808619
+        },
+        "saturated": {
+          "bodyIoU": 0.8400193610793577,
+          "bodyPixelError": 0.05939782170220494,
+          "bodyFalseNegative": 0.04315806310673631,
+          "backgroundFalsePositive": 0.060790582059779136,
+          "materialPixelError": 0.18129691547111343,
+          "materialJointError": 0.19963068980886833,
+          "jointRegionPixelError": 0.09180014582256898,
+          "balancedMaterialJointError": 0.20376562731797307,
+          "phaseInvariantMaterialPredictionChange": 0.018481542670762272,
+          "knownBodyPredictionChange": 0.006013272790969011
+        }
+      },
+      "perInstanceDiagnosticExtrema": [
+        {
+          "id": "real-2044b1d98ed6f262-body-1",
+          "baselineMaterialPixelError": 0.0008334876829042416,
+          "maximumPredictionChange": {
+            "variant": "muted",
+            "materialPixelError": 0.0011113169105389886,
+            "phaseInvariantMaterialPredictionChange": 0.005975202907932082,
+            "knownBodyPredictionChange": 0.002376046091088776
+          },
+          "minimumObservedError": {
+            "variant": "saturated",
+            "materialPixelError": 0.0006482681978144101,
+            "phaseInvariantMaterialPredictionChange": 0.0038340885325897525,
+            "knownBodyPredictionChange": 0.0015770217418730813
+          },
+          "maximumObservedError": {
+            "variant": "muted",
+            "materialPixelError": 0.0011113169105389886,
+            "phaseInvariantMaterialPredictionChange": 0.005975202907932082,
+            "knownBodyPredictionChange": 0.002376046091088776
+          }
+        },
+        {
+          "id": "real-45744a03afddccb1-body-1",
+          "baselineMaterialPixelError": 0.0067931405848728355,
+          "maximumPredictionChange": {
+            "variant": "gamma-low",
+            "materialPixelError": 0.005301963383315384,
+            "phaseInvariantMaterialPredictionChange": 0.006753325886056667,
+            "knownBodyPredictionChange": 0.009849009849009849
+          },
+          "minimumObservedError": {
+            "variant": "gamma-low",
+            "materialPixelError": 0.005301963383315384,
+            "phaseInvariantMaterialPredictionChange": 0.006753325886056667,
+            "knownBodyPredictionChange": 0.009849009849009849
+          },
+          "maximumObservedError": {
+            "variant": "gamma-high",
+            "materialPixelError": 0.0072901996520586525,
+            "phaseInvariantMaterialPredictionChange": 0.005788565045191429,
+            "knownBodyPredictionChange": 0.010101010101010102
+          }
+        },
+        {
+          "id": "real-8c875dd0f298b5a4-body-1",
+          "baselineMaterialPixelError": 0.2963900260513584,
+          "maximumPredictionChange": {
+            "variant": "saturated",
+            "materialPixelError": 0.2584294752512095,
+            "phaseInvariantMaterialPredictionChange": 0.03665428084842855,
+            "knownBodyPredictionChange": 0.012678565747192262
+          },
+          "minimumObservedError": {
+            "variant": "saturated",
+            "materialPixelError": 0.2584294752512095,
+            "phaseInvariantMaterialPredictionChange": 0.03665428084842855,
+            "knownBodyPredictionChange": 0.012678565747192262
+          },
+          "maximumObservedError": {
+            "variant": "brighter",
+            "materialPixelError": 0.3263863044287309,
+            "phaseInvariantMaterialPredictionChange": 0.024500696702275893,
+            "knownBodyPredictionChange": 0.005058700009544717
+          }
+        },
+        {
+          "id": "real-3f7b76e1a98e808f-body-1",
+          "baselineMaterialPixelError": 0.48393906020558003,
+          "maximumPredictionChange": {
+            "variant": "gamma-low",
+            "materialPixelError": 0.3186490455212922,
+            "phaseInvariantMaterialPredictionChange": 0.1327717795979151,
+            "knownBodyPredictionChange": 0.004194575601185901
+          },
+          "minimumObservedError": {
+            "variant": "gamma-low",
+            "materialPixelError": 0.3186490455212922,
+            "phaseInvariantMaterialPredictionChange": 0.1327717795979151,
+            "knownBodyPredictionChange": 0.004194575601185901
+          },
+          "maximumObservedError": {
+            "variant": "brighter",
+            "materialPixelError": 0.46319750367107193,
+            "phaseInvariantMaterialPredictionChange": 0.041930379746835444,
+            "knownBodyPredictionChange": 0.0038212364115515537
+          }
+        },
+        {
+          "id": "real-995899fe049540ed-body-1",
+          "baselineMaterialPixelError": 0.13088805543194965,
+          "maximumPredictionChange": {
+            "variant": "muted",
+            "materialPixelError": 0.11614010552412433,
+            "phaseInvariantMaterialPredictionChange": 0.017653826318086246,
+            "knownBodyPredictionChange": 0.0028629324608205834
+          },
+          "minimumObservedError": {
+            "variant": "muted",
+            "materialPixelError": 0.11614010552412433,
+            "phaseInvariantMaterialPredictionChange": 0.017653826318086246,
+            "knownBodyPredictionChange": 0.0028629324608205834
+          },
+          "maximumObservedError": {
+            "variant": "saturated",
+            "materialPixelError": 0.14576314283898037,
+            "phaseInvariantMaterialPredictionChange": 0.016582695283056295,
+            "knownBodyPredictionChange": 0.003271922812366381
+          }
+        },
+        {
+          "id": "real-b87b0b19f12724f3-body-1",
+          "baselineMaterialPixelError": 0.00028506271379703536,
+          "maximumPredictionChange": {
+            "variant": "saturated",
+            "materialPixelError": 0.0059863169897377425,
+            "phaseInvariantMaterialPredictionChange": 0.01937244201909959,
+            "knownBodyPredictionChange": 0.0073882960009381965
+          },
+          "minimumObservedError": {
+            "variant": "muted",
+            "materialPixelError": 0.0,
+            "phaseInvariantMaterialPredictionChange": 0.015416098226466576,
+            "knownBodyPredictionChange": 0.009874516242523747
+          },
+          "maximumObservedError": {
+            "variant": "gamma-high",
+            "materialPixelError": 0.0059863169897377425,
+            "phaseInvariantMaterialPredictionChange": 0.01077762619372442,
+            "knownBodyPredictionChange": 0.006942652750087956
+          }
+        },
+        {
+          "id": "real-cf2d0fcff65d7386-body-1",
+          "baselineMaterialPixelError": 0.0,
+          "maximumPredictionChange": {
+            "variant": "saturated",
+            "materialPixelError": 0.0,
+            "phaseInvariantMaterialPredictionChange": 0.003794586390083481,
+            "knownBodyPredictionChange": 0.001424316975268678
+          },
+          "minimumObservedError": {
+            "variant": "darker",
+            "materialPixelError": 0.0,
+            "phaseInvariantMaterialPredictionChange": 0.0006866394420151061,
+            "knownBodyPredictionChange": 0.0006104215608294334
+          },
+          "maximumObservedError": {
+            "variant": "darker",
+            "materialPixelError": 0.0,
+            "phaseInvariantMaterialPredictionChange": 0.0006866394420151061,
+            "knownBodyPredictionChange": 0.0006104215608294334
+          }
+        },
+        {
+          "id": "real-cdae5c890b6933cd-body-1",
+          "baselineMaterialPixelError": 0.4666997190547017,
+          "maximumPredictionChange": {
+            "variant": "muted",
+            "materialPixelError": 0.47215336308048256,
+            "phaseInvariantMaterialPredictionChange": 0.007173764518332954,
+            "knownBodyPredictionChange": 0.015733644622646297
+          },
+          "minimumObservedError": {
+            "variant": "saturated",
+            "materialPixelError": 0.46570814741365063,
+            "phaseInvariantMaterialPredictionChange": 0.0048963789569574125,
+            "knownBodyPredictionChange": 0.022382378318022637
+          },
+          "maximumObservedError": {
+            "variant": "muted",
+            "materialPixelError": 0.47215336308048256,
+            "phaseInvariantMaterialPredictionChange": 0.007173764518332954,
+            "knownBodyPredictionChange": 0.015733644622646297
+          }
+        },
+        {
+          "id": "real-68d8f25d8891df62-body-1",
+          "baselineMaterialPixelError": 0.0006336131791541264,
+          "maximumPredictionChange": {
+            "variant": "muted",
+            "materialPixelError": 0.004752098843655948,
+            "phaseInvariantMaterialPredictionChange": 0.015532844086263563,
+            "knownBodyPredictionChange": 0.006509409641660221
+          },
+          "minimumObservedError": {
+            "variant": "saturated",
+            "materialPixelError": 0.0003168065895770632,
+            "phaseInvariantMaterialPredictionChange": 0.008239160776191978,
+            "knownBodyPredictionChange": 0.004790753630660823
+          },
+          "maximumObservedError": {
+            "variant": "muted",
+            "materialPixelError": 0.004752098843655948,
+            "phaseInvariantMaterialPredictionChange": 0.015532844086263563,
+            "knownBodyPredictionChange": 0.006509409641660221
+          }
+        },
+        {
+          "id": "real-5330aa8b62176216-body-1",
+          "baselineMaterialPixelError": 0.29568637089836547,
+          "maximumPredictionChange": {
+            "variant": "gamma-high",
+            "materialPixelError": 0.2559911515300479,
+            "phaseInvariantMaterialPredictionChange": 0.020367977355239677,
+            "knownBodyPredictionChange": 0.0028782155063860407
+          },
+          "minimumObservedError": {
+            "variant": "gamma-high",
+            "materialPixelError": 0.2559911515300479,
+            "phaseInvariantMaterialPredictionChange": 0.020367977355239677,
+            "knownBodyPredictionChange": 0.0028782155063860407
+          },
+          "maximumObservedError": {
+            "variant": "muted",
+            "materialPixelError": 0.30502642251444023,
+            "phaseInvariantMaterialPredictionChange": 0.014029905851947572,
+            "knownBodyPredictionChange": 0.0024366710821109093
+          }
+        },
+        {
+          "id": "real-abf590088db891f9-body-1",
+          "baselineMaterialPixelError": 0.0,
+          "maximumPredictionChange": {
+            "variant": "muted",
+            "materialPixelError": 0.0,
+            "phaseInvariantMaterialPredictionChange": 0.008164282820728553,
+            "knownBodyPredictionChange": 0.0044145057388574604
+          },
+          "minimumObservedError": {
+            "variant": "darker",
+            "materialPixelError": 0.0,
+            "phaseInvariantMaterialPredictionChange": 0.0012776167772895828,
+            "knownBodyPredictionChange": 0.0017658022955429843
+          },
+          "maximumObservedError": {
+            "variant": "darker",
+            "materialPixelError": 0.0,
+            "phaseInvariantMaterialPredictionChange": 0.0012776167772895828,
+            "knownBodyPredictionChange": 0.0017658022955429843
+          }
+        },
+        {
+          "id": "real-990ac34431be87fe-body-1",
+          "baselineMaterialPixelError": 0.09,
+          "maximumPredictionChange": {
+            "variant": "brighter",
+            "materialPixelError": 0.16666666666666666,
+            "phaseInvariantMaterialPredictionChange": 0.050140176838473154,
+            "knownBodyPredictionChange": 0.0075271930187352665
+          },
+          "minimumObservedError": {
+            "variant": "darker",
+            "materialPixelError": 0.049666666666666665,
+            "phaseInvariantMaterialPredictionChange": 0.027064912659046796,
+            "knownBodyPredictionChange": 0.005293850035154473
+          },
+          "maximumObservedError": {
+            "variant": "brighter",
+            "materialPixelError": 0.16666666666666666,
+            "phaseInvariantMaterialPredictionChange": 0.050140176838473154,
+            "knownBodyPredictionChange": 0.0075271930187352665
+          }
+        },
+        {
+          "id": "real-12ce3c9180f7f317-body-1",
+          "baselineMaterialPixelError": 0.4496489688459851,
+          "maximumPredictionChange": {
+            "variant": "brighter",
+            "materialPixelError": 0.44273804300131636,
+            "phaseInvariantMaterialPredictionChange": 0.016782387216077596,
+            "knownBodyPredictionChange": 0.0012661473859665994
+          },
+          "minimumObservedError": {
+            "variant": "brighter",
+            "materialPixelError": 0.44273804300131636,
+            "phaseInvariantMaterialPredictionChange": 0.016782387216077596,
+            "knownBodyPredictionChange": 0.0012661473859665994
+          },
+          "maximumObservedError": {
+            "variant": "darker",
+            "materialPixelError": 0.4576568670469504,
+            "phaseInvariantMaterialPredictionChange": 0.015037856320435436,
+            "knownBodyPredictionChange": 0.0009776581081514248
+          }
+        },
+        {
+          "id": "real-d5b0aa8d4d2465ee-body-1",
+          "baselineMaterialPixelError": 0.00468557336621455,
+          "maximumPredictionChange": {
+            "variant": "muted",
+            "materialPixelError": 0.02096177558569667,
+            "phaseInvariantMaterialPredictionChange": 0.02388535031847134,
+            "knownBodyPredictionChange": 0.005580541100567472
+          },
+          "minimumObservedError": {
+            "variant": "darker",
+            "materialPixelError": 0.0002466091245376079,
+            "phaseInvariantMaterialPredictionChange": 0.006847133757961784,
+            "knownBodyPredictionChange": 0.0028020438437448493
+          },
+          "maximumObservedError": {
+            "variant": "muted",
+            "materialPixelError": 0.02096177558569667,
+            "phaseInvariantMaterialPredictionChange": 0.02388535031847134,
+            "knownBodyPredictionChange": 0.005580541100567472
+          }
+        },
+        {
+          "id": "real-39f3a1ba97852876-body-1",
+          "baselineMaterialPixelError": 0.19348565872630044,
+          "maximumPredictionChange": {
+            "variant": "muted",
+            "materialPixelError": 0.2639766650461838,
+            "phaseInvariantMaterialPredictionChange": 0.049132947976878616,
+            "knownBodyPredictionChange": 0.003843643483936471
+          },
+          "minimumObservedError": {
+            "variant": "gamma-high",
+            "materialPixelError": 0.1545940690325717,
+            "phaseInvariantMaterialPredictionChange": 0.027403125669021623,
+            "knownBodyPredictionChange": 0.004786423961128436
+          },
+          "maximumObservedError": {
+            "variant": "muted",
+            "materialPixelError": 0.2639766650461838,
+            "phaseInvariantMaterialPredictionChange": 0.049132947976878616,
+            "knownBodyPredictionChange": 0.003843643483936471
+          }
+        },
+        {
+          "id": "real-e936e08ac62db19b-body-1",
+          "baselineMaterialPixelError": 0.4704881782616091,
+          "maximumPredictionChange": {
+            "variant": "saturated",
+            "materialPixelError": 0.4817145773090662,
+            "phaseInvariantMaterialPredictionChange": 0.013442791174961518,
+            "knownBodyPredictionChange": 0.008442724110849321
+          },
+          "minimumObservedError": {
+            "variant": "muted",
+            "materialPixelError": 0.4626637183194421,
+            "phaseInvariantMaterialPredictionChange": 0.01210877373011801,
+            "knownBodyPredictionChange": 0.009732974307191743
+          },
+          "maximumObservedError": {
+            "variant": "saturated",
+            "materialPixelError": 0.4817145773090662,
+            "phaseInvariantMaterialPredictionChange": 0.013442791174961518,
+            "knownBodyPredictionChange": 0.008442724110849321
+          }
+        },
+        {
+          "id": "real-340f5e5b0f447889-body-1",
+          "baselineMaterialPixelError": 0.41065535124941066,
+          "maximumPredictionChange": {
+            "variant": "muted",
+            "materialPixelError": 0.4736759390224737,
+            "phaseInvariantMaterialPredictionChange": 0.05121833921128567,
+            "knownBodyPredictionChange": 0.014998977342453923
+          },
+          "minimumObservedError": {
+            "variant": "gamma-high",
+            "materialPixelError": 0.3525066792393525,
+            "phaseInvariantMaterialPredictionChange": 0.04151971785828791,
+            "knownBodyPredictionChange": 0.00904483785196464
+          },
+          "maximumObservedError": {
+            "variant": "muted",
+            "materialPixelError": 0.4736759390224737,
+            "phaseInvariantMaterialPredictionChange": 0.05121833921128567,
+            "knownBodyPredictionChange": 0.014998977342453923
+          }
+        }
+      ]
+    },
+    "expanded-mixed": {
+      "variantMacroMeans": {
+        "baseline": {
+          "bodyIoU": 0.8182523994227476,
+          "bodyPixelError": 0.06836725925578283,
+          "bodyFalseNegative": 0.04879978201792262,
+          "backgroundFalsePositive": 0.0648222626643233,
+          "materialPixelError": 0.14900812957657086,
+          "materialJointError": 0.16243807853840544,
+          "jointRegionPixelError": 0.08750716687948908,
+          "balancedMaterialJointError": 0.16834457726621774,
+          "phaseInvariantMaterialPredictionChange": 0.0,
+          "knownBodyPredictionChange": 0.0
+        },
+        "darker": {
+          "bodyIoU": 0.8176373670852608,
+          "bodyPixelError": 0.06888515832032027,
+          "bodyFalseNegative": 0.049682687636204814,
+          "backgroundFalsePositive": 0.06469738093993423,
+          "materialPixelError": 0.14564016940831462,
+          "materialJointError": 0.15964066295579518,
+          "jointRegionPixelError": 0.08764820687906344,
+          "balancedMaterialJointError": 0.16552919590668047,
+          "phaseInvariantMaterialPredictionChange": 0.009741448292993754,
+          "knownBodyPredictionChange": 0.004609922556423396
+        },
+        "brighter": {
+          "bodyIoU": 0.816673658994272,
+          "bodyPixelError": 0.06887657945916159,
+          "bodyFalseNegative": 0.04849215717911018,
+          "backgroundFalsePositive": 0.0659513863457982,
+          "materialPixelError": 0.14636496968925478,
+          "materialJointError": 0.16001348097242427,
+          "jointRegionPixelError": 0.08715871960108357,
+          "balancedMaterialJointError": 0.1662619942461696,
+          "phaseInvariantMaterialPredictionChange": 0.014436807441870517,
+          "knownBodyPredictionChange": 0.004833382310433124
+        },
+        "gamma-low": {
+          "bodyIoU": 0.8181153106837378,
+          "bodyPixelError": 0.06832236508834796,
+          "bodyFalseNegative": 0.04779295794296805,
+          "backgroundFalsePositive": 0.06554222221285291,
+          "materialPixelError": 0.15215469267854012,
+          "materialJointError": 0.1651806810664461,
+          "jointRegionPixelError": 0.08831275158635674,
+          "balancedMaterialJointError": 0.17079502132995925,
+          "phaseInvariantMaterialPredictionChange": 0.010006337284065326,
+          "knownBodyPredictionChange": 0.004717146330736765
+        },
+        "gamma-high": {
+          "bodyIoU": 0.8182627577131354,
+          "bodyPixelError": 0.06840266328460995,
+          "bodyFalseNegative": 0.05010216985683369,
+          "backgroundFalsePositive": 0.06393245747024269,
+          "materialPixelError": 0.1457797485468103,
+          "materialJointError": 0.16100452871541585,
+          "jointRegionPixelError": 0.08672627817188934,
+          "balancedMaterialJointError": 0.16714951930522642,
+          "phaseInvariantMaterialPredictionChange": 0.010874157300676139,
+          "knownBodyPredictionChange": 0.004890876118445519
+        },
+        "muted": {
+          "bodyIoU": 0.8175289173928609,
+          "bodyPixelError": 0.06880182538321583,
+          "bodyFalseNegative": 0.048864675864776136,
+          "backgroundFalsePositive": 0.06510871924691063,
+          "materialPixelError": 0.1499372728334135,
+          "materialJointError": 0.16328430381167275,
+          "jointRegionPixelError": 0.08759164703538268,
+          "balancedMaterialJointError": 0.16925089818389433,
+          "phaseInvariantMaterialPredictionChange": 0.019485130439750573,
+          "knownBodyPredictionChange": 0.0049753688455415
+        },
+        "saturated": {
+          "bodyIoU": 0.8190656114978454,
+          "bodyPixelError": 0.06780257696252245,
+          "bodyFalseNegative": 0.049287583911075884,
+          "backgroundFalsePositive": 0.0639164731850254,
+          "materialPixelError": 0.1477274865855153,
+          "materialJointError": 0.16292273017694686,
+          "jointRegionPixelError": 0.0871147476841148,
+          "balancedMaterialJointError": 0.16788606154894564,
+          "phaseInvariantMaterialPredictionChange": 0.020638941551861995,
+          "knownBodyPredictionChange": 0.004966891191449668
+        }
+      },
+      "perInstanceDiagnosticExtrema": [
+        {
+          "id": "real-2044b1d98ed6f262-body-1",
+          "baselineMaterialPixelError": 0.34108168179292464,
+          "maximumPredictionChange": {
+            "variant": "saturated",
+            "materialPixelError": 0.2961659566586405,
+            "phaseInvariantMaterialPredictionChange": 0.047851416621022755,
+            "knownBodyPredictionChange": 0.0051726313133437065
+          },
+          "minimumObservedError": {
+            "variant": "saturated",
+            "materialPixelError": 0.2961659566586405,
+            "phaseInvariantMaterialPredictionChange": 0.047851416621022755,
+            "knownBodyPredictionChange": 0.0051726313133437065
+          },
+          "maximumObservedError": {
+            "variant": "muted",
+            "materialPixelError": 0.35839970364882384,
+            "phaseInvariantMaterialPredictionChange": 0.031170641836379027,
+            "knownBodyPredictionChange": 0.007674839143782329
+          }
+        },
+        {
+          "id": "real-45744a03afddccb1-body-1",
+          "baselineMaterialPixelError": 0.005964708806229807,
+          "maximumPredictionChange": {
+            "variant": "brighter",
+            "materialPixelError": 0.00604755198409411,
+            "phaseInvariantMaterialPredictionChange": 0.0055346806133847876,
+            "knownBodyPredictionChange": 0.002856002856002856
+          },
+          "minimumObservedError": {
+            "variant": "gamma-low",
+            "materialPixelError": 0.005964708806229807,
+            "phaseInvariantMaterialPredictionChange": 0.004062150908906266,
+            "knownBodyPredictionChange": 0.003381003381003381
+          },
+          "maximumObservedError": {
+            "variant": "darker",
+            "materialPixelError": 0.0062960815176870185,
+            "phaseInvariantMaterialPredictionChange": 0.004468365999796892,
+            "knownBodyPredictionChange": 0.002982002982002982
+          }
+        },
+        {
+          "id": "real-8c875dd0f298b5a4-body-1",
+          "baselineMaterialPixelError": 0.000595459620394492,
+          "maximumPredictionChange": {
+            "variant": "muted",
+            "materialPixelError": 0.000744324525493115,
+            "phaseInvariantMaterialPredictionChange": 0.006850905712958663,
+            "knownBodyPredictionChange": 0.0009862874232445674
+          },
+          "minimumObservedError": {
+            "variant": "saturated",
+            "materialPixelError": 0.000446594715295869,
+            "phaseInvariantMaterialPredictionChange": 0.006502554575011612,
+            "knownBodyPredictionChange": 0.0018771276764977252
+          },
+          "maximumObservedError": {
+            "variant": "muted",
+            "materialPixelError": 0.000744324525493115,
+            "phaseInvariantMaterialPredictionChange": 0.006850905712958663,
+            "knownBodyPredictionChange": 0.0009862874232445674
+          }
+        },
+        {
+          "id": "real-3f7b76e1a98e808f-body-1",
+          "baselineMaterialPixelError": 0.07195301027900147,
+          "maximumPredictionChange": {
+            "variant": "muted",
+            "materialPixelError": 0.06497797356828194,
+            "phaseInvariantMaterialPredictionChange": 0.01545048399106478,
+            "knownBodyPredictionChange": 0.003360052706709125
+          },
+          "minimumObservedError": {
+            "variant": "muted",
+            "materialPixelError": 0.06497797356828194,
+            "phaseInvariantMaterialPredictionChange": 0.01545048399106478,
+            "knownBodyPredictionChange": 0.003360052706709125
+          },
+          "maximumObservedError": {
+            "variant": "saturated",
+            "materialPixelError": 0.08030469897209985,
+            "phaseInvariantMaterialPredictionChange": 0.014007818317200297,
+            "knownBodyPredictionChange": 0.0032941693203030636
+          }
+        },
+        {
+          "id": "real-995899fe049540ed-body-1",
+          "baselineMaterialPixelError": 0.13902485538109466,
+          "maximumPredictionChange": {
+            "variant": "muted",
+            "materialPixelError": 0.1180471680122052,
+            "phaseInvariantMaterialPredictionChange": 0.020232475106121316,
+            "knownBodyPredictionChange": 0.002323808815601123
+          },
+          "minimumObservedError": {
+            "variant": "muted",
+            "materialPixelError": 0.1180471680122052,
+            "phaseInvariantMaterialPredictionChange": 0.020232475106121316,
+            "knownBodyPredictionChange": 0.002323808815601123
+          },
+          "maximumObservedError": {
+            "variant": "saturated",
+            "materialPixelError": 0.1561884177738224,
+            "phaseInvariantMaterialPredictionChange": 0.017574483278454397,
+            "knownBodyPredictionChange": 0.002082132698778606
+          }
+        },
+        {
+          "id": "real-b87b0b19f12724f3-body-1",
+          "baselineMaterialPixelError": 0.11830102622576967,
+          "maximumPredictionChange": {
+            "variant": "muted",
+            "materialPixelError": 0.0766818700114025,
+            "phaseInvariantMaterialPredictionChange": 0.03956343792633015,
+            "knownBodyPredictionChange": 0.007059927289785387
+          },
+          "minimumObservedError": {
+            "variant": "muted",
+            "materialPixelError": 0.0766818700114025,
+            "phaseInvariantMaterialPredictionChange": 0.03956343792633015,
+            "knownBodyPredictionChange": 0.007059927289785387
+          },
+          "maximumObservedError": {
+            "variant": "saturated",
+            "materialPixelError": 0.14338654503990877,
+            "phaseInvariantMaterialPredictionChange": 0.0330150068212824,
+            "knownBodyPredictionChange": 0.005840272076932098
+          }
+        },
+        {
+          "id": "real-cf2d0fcff65d7386-body-1",
+          "baselineMaterialPixelError": 0.0,
+          "maximumPredictionChange": {
+            "variant": "muted",
+            "materialPixelError": 0.0,
+            "phaseInvariantMaterialPredictionChange": 0.004408947996096997,
+            "knownBodyPredictionChange": 0.0010543645141599305
+          },
+          "minimumObservedError": {
+            "variant": "darker",
+            "materialPixelError": 0.0,
+            "phaseInvariantMaterialPredictionChange": 0.0007227783600159011,
+            "knownBodyPredictionChange": 0.0004254453302750597
+          },
+          "maximumObservedError": {
+            "variant": "darker",
+            "materialPixelError": 0.0,
+            "phaseInvariantMaterialPredictionChange": 0.0007227783600159011,
+            "knownBodyPredictionChange": 0.0004254453302750597
+          }
+        },
+        {
+          "id": "real-cdae5c890b6933cd-body-1",
+          "baselineMaterialPixelError": 0.45331350190051234,
+          "maximumPredictionChange": {
+            "variant": "saturated",
+            "materialPixelError": 0.4452156668319286,
+            "phaseInvariantMaterialPredictionChange": 0.00888180368936461,
+            "knownBodyPredictionChange": 0.013195960006090444
+          },
+          "minimumObservedError": {
+            "variant": "saturated",
+            "materialPixelError": 0.4452156668319286,
+            "phaseInvariantMaterialPredictionChange": 0.00888180368936461,
+            "knownBodyPredictionChange": 0.013195960006090444
+          },
+          "maximumObservedError": {
+            "variant": "muted",
+            "materialPixelError": 0.45827136010576763,
+            "phaseInvariantMaterialPredictionChange": 0.007401503074470508,
+            "knownBodyPredictionChange": 0.008399736080799879
+          }
+        },
+        {
+          "id": "real-68d8f25d8891df62-body-1",
+          "baselineMaterialPixelError": 0.0,
+          "maximumPredictionChange": {
+            "variant": "muted",
+            "materialPixelError": 0.0,
+            "phaseInvariantMaterialPredictionChange": 0.004457250911710414,
+            "knownBodyPredictionChange": 0.004554438429148406
+          },
+          "minimumObservedError": {
+            "variant": "darker",
+            "materialPixelError": 0.0,
+            "phaseInvariantMaterialPredictionChange": 0.002206114087614245,
+            "knownBodyPredictionChange": 0.005241900833548165
+          },
+          "maximumObservedError": {
+            "variant": "darker",
+            "materialPixelError": 0.0,
+            "phaseInvariantMaterialPredictionChange": 0.002206114087614245,
+            "knownBodyPredictionChange": 0.005241900833548165
+          }
+        },
+        {
+          "id": "real-5330aa8b62176216-body-1",
+          "baselineMaterialPixelError": 0.28057023473024456,
+          "maximumPredictionChange": {
+            "variant": "darker",
+            "materialPixelError": 0.31879070910655033,
+            "phaseInvariantMaterialPredictionChange": 0.018460402436773122,
+            "knownBodyPredictionChange": 0.003041750478339793
+          },
+          "minimumObservedError": {
+            "variant": "brighter",
+            "materialPixelError": 0.24910900823399287,
+            "phaseInvariantMaterialPredictionChange": 0.018368100424589254,
+            "knownBodyPredictionChange": 0.002273136110157157
+          },
+          "maximumObservedError": {
+            "variant": "darker",
+            "materialPixelError": 0.31879070910655033,
+            "phaseInvariantMaterialPredictionChange": 0.018460402436773122,
+            "knownBodyPredictionChange": 0.003041750478339793
+          }
+        },
+        {
+          "id": "real-abf590088db891f9-body-1",
+          "baselineMaterialPixelError": 0.13102828917826673,
+          "maximumPredictionChange": {
+            "variant": "saturated",
+            "materialPixelError": 0.17871576111360574,
+            "phaseInvariantMaterialPredictionChange": 0.04636814060016827,
+            "knownBodyPredictionChange": 0.005722507439259671
+          },
+          "minimumObservedError": {
+            "variant": "muted",
+            "materialPixelError": 0.11333632689717109,
+            "phaseInvariantMaterialPredictionChange": 0.028419182948490232,
+            "knownBodyPredictionChange": 0.0034498544848108304
+          },
+          "maximumObservedError": {
+            "variant": "saturated",
+            "materialPixelError": 0.17871576111360574,
+            "phaseInvariantMaterialPredictionChange": 0.04636814060016827,
+            "knownBodyPredictionChange": 0.005722507439259671
+          }
+        },
+        {
+          "id": "real-990ac34431be87fe-body-1",
+          "baselineMaterialPixelError": 0.0,
+          "maximumPredictionChange": {
+            "variant": "muted",
+            "materialPixelError": 0.010666666666666666,
+            "phaseInvariantMaterialPredictionChange": 0.022859607504852275,
+            "knownBodyPredictionChange": 0.0036602010008685223
+          },
+          "minimumObservedError": {
+            "variant": "darker",
+            "materialPixelError": 0.0,
+            "phaseInvariantMaterialPredictionChange": 0.002587880094888937,
+            "knownBodyPredictionChange": 0.0042185367467637205
+          },
+          "maximumObservedError": {
+            "variant": "muted",
+            "materialPixelError": 0.010666666666666666,
+            "phaseInvariantMaterialPredictionChange": 0.022859607504852275,
+            "knownBodyPredictionChange": 0.0036602010008685223
+          }
+        },
+        {
+          "id": "real-12ce3c9180f7f317-body-1",
+          "baselineMaterialPixelError": 0.027863097849934182,
+          "maximumPredictionChange": {
+            "variant": "muted",
+            "materialPixelError": 0.01645458534444932,
+            "phaseInvariantMaterialPredictionChange": 0.021597292488049962,
+            "knownBodyPredictionChange": 0.003157354873866077
+          },
+          "minimumObservedError": {
+            "variant": "muted",
+            "materialPixelError": 0.01645458534444932,
+            "phaseInvariantMaterialPredictionChange": 0.021597292488049962,
+            "knownBodyPredictionChange": 0.003157354873866077
+          },
+          "maximumObservedError": {
+            "variant": "saturated",
+            "materialPixelError": 0.0411364633611233,
+            "phaseInvariantMaterialPredictionChange": 0.01744530895642162,
+            "knownBodyPredictionChange": 0.00317338205596692
+          }
+        },
+        {
+          "id": "real-d5b0aa8d4d2465ee-body-1",
+          "baselineMaterialPixelError": 0.21948212083847102,
+          "maximumPredictionChange": {
+            "variant": "muted",
+            "materialPixelError": 0.25770653514180025,
+            "phaseInvariantMaterialPredictionChange": 0.03248407643312102,
+            "knownBodyPredictionChange": 0.005933739904400857
+          },
+          "minimumObservedError": {
+            "variant": "darker",
+            "materialPixelError": 0.1871763255240444,
+            "phaseInvariantMaterialPredictionChange": 0.01735668789808917,
+            "knownBodyPredictionChange": 0.006286938708234242
+          },
+          "maximumObservedError": {
+            "variant": "muted",
+            "materialPixelError": 0.25770653514180025,
+            "phaseInvariantMaterialPredictionChange": 0.03248407643312102,
+            "knownBodyPredictionChange": 0.005933739904400857
+          }
+        },
+        {
+          "id": "real-39f3a1ba97852876-body-1",
+          "baselineMaterialPixelError": 0.27418570734078757,
+          "maximumPredictionChange": {
+            "variant": "brighter",
+            "materialPixelError": 0.32766164316966456,
+            "phaseInvariantMaterialPredictionChange": 0.04196103618068936,
+            "knownBodyPredictionChange": 0.006019290738994851
+          },
+          "minimumObservedError": {
+            "variant": "darker",
+            "materialPixelError": 0.23918327661643168,
+            "phaseInvariantMaterialPredictionChange": 0.032005994433740095,
+            "knownBodyPredictionChange": 0.004012860492663234
+          },
+          "maximumObservedError": {
+            "variant": "brighter",
+            "materialPixelError": 0.32766164316966456,
+            "phaseInvariantMaterialPredictionChange": 0.04196103618068936,
+            "knownBodyPredictionChange": 0.006019290738994851
+          }
+        },
+        {
+          "id": "real-e936e08ac62db19b-body-1",
+          "baselineMaterialPixelError": 0.39292396666099677,
+          "maximumPredictionChange": {
+            "variant": "brighter",
+            "materialPixelError": 0.2871236604864773,
+            "phaseInvariantMaterialPredictionChange": 0.07696254489481785,
+            "knownBodyPredictionChange": 0.009592729720632784
+          },
+          "minimumObservedError": {
+            "variant": "brighter",
+            "materialPixelError": 0.2871236604864773,
+            "phaseInvariantMaterialPredictionChange": 0.07696254489481785,
+            "knownBodyPredictionChange": 0.009592729720632784
+          },
+          "maximumObservedError": {
+            "variant": "saturated",
+            "materialPixelError": 0.4233713216533424,
+            "phaseInvariantMaterialPredictionChange": 0.03889173935351462,
+            "knownBodyPredictionChange": 0.009424436216762033
+          }
+        },
+        {
+          "id": "real-340f5e5b0f447889-body-1",
+          "baselineMaterialPixelError": 0.07685054219707685,
+          "maximumPredictionChange": {
+            "variant": "saturated",
+            "materialPixelError": 0.022945151658022946,
+            "phaseInvariantMaterialPredictionChange": 0.047451106123757615,
+            "knownBodyPredictionChange": 0.01388541690339295
+          },
+          "minimumObservedError": {
+            "variant": "saturated",
+            "materialPixelError": 0.022945151658022946,
+            "phaseInvariantMaterialPredictionChange": 0.047451106123757615,
+            "knownBodyPredictionChange": 0.01388541690339295
+          },
+          "maximumObservedError": {
+            "variant": "gamma-low",
+            "materialPixelError": 0.11472575829011472,
+            "phaseInvariantMaterialPredictionChange": 0.030618788073100353,
+            "knownBodyPredictionChange": 0.00806763175238052
+          }
+        }
+      ]
+    }
+  },
+  "interpretation": [
+    "On these fixed small perturbations the expanded model has average phase-invariant material changes of 0.97% to 2.06% of known-body pixels, depending on variant. Averages conceal larger per-photo effects.",
+    "Increasing orange/yellow exposure by 5% changes 7.70% of known-body material predictions and lowers observed disagreement from 39.29% to 28.71%. It remains unsuitable for reconstruction.",
+    "Small appearance changes affect predictions without moving a single corner or cutting path. This isolates a neural appearance sensitivity, but does not attribute every failure to it.",
+    "Systematically absent motifs, foreground clutter and unlabelled fine boundaries remain. Appearance augmentation is a testable follow-up, not an established solution.",
+    "No per-image best-variant selection, retraining, crop or solver run, production source change, or model deployment."
+  ]
+}

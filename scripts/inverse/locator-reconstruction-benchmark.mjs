@@ -1,3 +1,4 @@
+import { benchmarkArtifactEntries } from './benchmark-artifacts.mjs';
 /** Evaluate every entry from a recorded locator run; unresolved crops stay in the denominator.
  * INVERSE_LOCATOR_RUN=tmp/inverse-locator/<run>/results.json node scripts/inverse/locator-reconstruction-benchmark.mjs
  * A geometric pass is provisional when the photographed crop still needs human review.
@@ -48,7 +49,7 @@ for (const entry of locator.results) {
       run.passesNumericalCriteria = result.report.templateChecksPassed && mismatches / observed <= criteria.maximumIndependentImageError;
       run.status = run.passesNumericalCriteria ? 'provisional_pair' : 'criteria_failed';
       const directory = path.join(output, `${entry.id}-${preset}`); await fs.mkdir(directory);
-      for (const [name, bytes] of Object.entries(result.files)) await fs.writeFile(path.join(directory, name), bytes);
+      for (const [name, bytes] of benchmarkArtifactEntries(result.files)) await fs.writeFile(path.join(directory, name), bytes);
       await fs.writeFile(path.join(directory, 'independent-weave.png'), rendered.png);
     } catch (error) { run.status = error.report?.termination || 'error'; run.message = error.message; run.report = error.report; }
     run.totalSeconds = (performance.now() - start) / 1000;

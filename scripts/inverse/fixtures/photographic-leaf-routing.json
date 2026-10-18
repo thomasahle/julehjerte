@@ -1,0 +1,27 @@
+{
+  "sourceCatalogue": "scripts/inverse/hard-photo-cases.json",
+  "sourceCase": "leaf",
+  "provenance": "Frozen automatic crop from the 81b79cb release replay, before fitting. This image exposes candidate expansion consuming the time needed to try later provisional border interpretations. No cutting paths or template-derived corners enter the test.",
+  "quad": [
+    [
+      1235.5072438016873,
+      145.52072912190997
+    ],
+    [
+      1341.7257925238364,
+      234.1742107665826
+    ],
+    [
+      1244.5550489255436,
+      319.4221884532836
+    ],
+    [
+      1142.1879331018463,
+      219.8564731472379
+    ]
+  ],
+  "sourceFileSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+  "decodedPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+  "maskSha256": "0e1fefda40bbe92da956dd2467d117af6a732d0223e695901cc0255a166651f4",
+  "fittingProbabilitySha256": "0b2df6adc7d433f55c5a346671412402e9aa6412fc524d3363a78cbfb1d20d48"
+}

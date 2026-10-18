@@ -1,0 +1,122 @@
+{
+  "schema": "woven-heart-additional-material-labels-1",
+  "status": "admitted-after-source-and-compiled-overlay-review",
+  "scope": "One additional material-labelled instance on an existing photograph and body annotation. Ten admitted material instances total; no additional photographs, body annotations, split assignments or trained model.",
+  "annotations": "scripts/inverse/datasets/real-materials-protruding.json",
+  "root": "tmp/heart-learning/protruding-material-labels-v1",
+  "source": {
+    "id": "real-340f5e5b0f447889-body-1",
+    "assetId": "real-340f5e5b0f447889",
+    "imageSha256": "340f5e5b0f447889be78bcba0be828f90452b19d1ba1370f8eeafc79ceda6f8e",
+    "nearDuplicateGroup": "real-340f5e5b0f447889",
+    "splitGroupId": "real-split-66587aa0e20b89c8",
+    "splitStatus": "unassigned",
+    "trainingRightsStatus": "not-cleared",
+    "allocation": "unassigned",
+    "motif": {
+      "candidateFamily": "dragonfly-protrusions",
+      "crossCorpusReview": "pending"
+    },
+    "transform": {
+      "scale": 0.24311490978157646,
+      "offset": [
+        38.533713200379864,
+        0.0
+      ],
+      "resolution": 256
+    },
+    "bodyPixelCounts": {
+      "0": 31527,
+      "1": 12476,
+      "255": 21533
+    },
+    "materialPixelCounts": {
+      "0": 3609,
+      "1": 2754,
+      "255": 59173
+    },
+    "assets": {
+      "rgb": {
+        "path": "real-340f5e5b0f447889-body-1-rgb.png",
+        "sha256": "1e1b1f0a5b7de04dd73fcd29bf18649ba8842d919d3e4d6a417e8e77e0e7db3d"
+      },
+      "body": {
+        "path": "real-340f5e5b0f447889-body-1-body.png",
+        "sha256": "b56842a4050026d4a3d236bfc0dd8f9b51e0323b3669be0a30f8d6014f0bfe1b"
+      },
+      "materials": {
+        "path": "real-340f5e5b0f447889-body-1-materials.png",
+        "sha256": "0b543ec98b1cbb05d2fe10b92834c2570c1b78aca0e4b108a30478ba66ac1001"
+      },
+      "overlay": {
+        "path": "real-340f5e5b0f447889-body-1-overlay.png",
+        "sha256": "b17cb8c7fed9ec368bae2639da3451f855bc71d62746f99e160a27983677cc49"
+      }
+    }
+  },
+  "checks": [
+    {
+      "resolution": 256,
+      "compilerAudit": {
+        "passed": true,
+        "instances": 1,
+        "sourceGroups": 1,
+        "manifestSha256": "46523de5649374bc270df2e10951c093dd5797134b776fa6d1fcf706a64e4636",
+        "annotationsSha256": "beea1b34e342ee7152d1933e04182c81f1e0fd2d6c110ccdbae2e2c5eac71676",
+        "scope": "Source bytes, body references, grouping, transforms and every output pixel; annotation correctness still requires visual review."
+      },
+      "identicalToVisuallyReviewedAssets": true
+    },
+    {
+      "resolution": 768,
+      "compilerAudit": {
+        "passed": true,
+        "instances": 1,
+        "sourceGroups": 1,
+        "manifestSha256": "fead7a7f180f93448a60268512974bcc01fc064a8e6d3ddf926a07fa6bee6646",
+        "annotationsSha256": "beea1b34e342ee7152d1933e04182c81f1e0fd2d6c110ccdbae2e2c5eac71676",
+        "scope": "Source bytes, body references, grouping, transforms and every output pixel; annotation correctness still requires visual review."
+      },
+      "identicalToVisuallyReviewedAssets": true
+    }
+  ],
+  "bodyAndRgbMatchEarlierTrainingExport": true,
+  "review": {
+    "sourceSize": [
+      736,
+      1053
+    ],
+    "reviewedOverlayResolutions": [
+      256,
+      768
+    ],
+    "change": "Replaced a narrow white connection around the left protrusion with two conservative regions before compiling.",
+    "uncertaintyPixels": 5,
+    "materialPolygons": 7
+  },
+  "limits": [
+    "Assistant-reviewed visible paper identities, not an independent human review or cutting paths.",
+    "This photograph already entered foreground development; it is not a new held-out test.",
+    "Uncertain seams, fine tips, handle, shadow and background remain unlabelled. Existing body uncertainty takes precedence.",
+    "Source allocation and family-review status remain unchanged; no model has consumed the new material labels."
+  ],
+  "artifacts": {
+    "scripts/inverse/datasets/real-materials-protruding.json": "beea1b34e342ee7152d1933e04182c81f1e0fd2d6c110ccdbae2e2c5eac71676",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/protruding-material-labels-v1/final-annotations.json": "beea1b34e342ee7152d1933e04182c81f1e0fd2d6c110ccdbae2e2c5eac71676",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/protruding-material-labels-v1/source-outlines.png": "66f47fcbba5336c4087254c026fb4c8b5638f79bcacabc12197f0174cbe99cbb",
+    "scripts/inverse/datasets/real_materials.py": "86ec6dd4d4d8af2289eda79925cd7c68d9df87719a49adf9fb2d0078858a175e",
+    "scripts/inverse/datasets/real_annotations.py": "b505fb723dc45b644cb95a058ddf45317f6afb700c61fb88cb3d93571fb9e33c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/protruding-material-labels-v1/admitted-256/index.html": "5da4be15daa92013dc28adcd9d4853385279252380546b01f1160f826e1a7731",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/protruding-material-labels-v1/admitted-256/real-340f5e5b0f447889-body-1-rgb.png": "1e1b1f0a5b7de04dd73fcd29bf18649ba8842d919d3e4d6a417e8e77e0e7db3d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/protruding-material-labels-v1/admitted-256/real-340f5e5b0f447889-body-1-materials.png": "0b543ec98b1cbb05d2fe10b92834c2570c1b78aca0e4b108a30478ba66ac1001",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/protruding-material-labels-v1/admitted-256/real-340f5e5b0f447889-body-1-body.png": "b56842a4050026d4a3d236bfc0dd8f9b51e0323b3669be0a30f8d6014f0bfe1b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/protruding-material-labels-v1/admitted-256/real-340f5e5b0f447889-body-1-overlay.png": "b17cb8c7fed9ec368bae2639da3451f855bc71d62746f99e160a27983677cc49",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/protruding-material-labels-v1/admitted-256/manifest.json": "46523de5649374bc270df2e10951c093dd5797134b776fa6d1fcf706a64e4636",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/protruding-material-labels-v1/admitted-768/index.html": "53c7b2578071d5d71147f959a8ff30b3c81787dc7b4a6dbd42d7090fcc2a37d2",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/protruding-material-labels-v1/admitted-768/real-340f5e5b0f447889-body-1-rgb.png": "15006858e1718fd626b0f2f3a0e30697e6dde2680618114c4268be12c4e7bff7",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/protruding-material-labels-v1/admitted-768/real-340f5e5b0f447889-body-1-materials.png": "0a226f00e7cc97c292798c678e2f98ea809b6360593f2bc9352db0087f600080",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/protruding-material-labels-v1/admitted-768/real-340f5e5b0f447889-body-1-body.png": "e3ec9a3e114a03bd4fd47a00198a382119c31d1c4217666a8d77d8164bee5140",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/protruding-material-labels-v1/admitted-768/real-340f5e5b0f447889-body-1-overlay.png": "4b00dd836a066b57a6a962b8ad8467d3e9163373b9bcc48deb955fbd91050d20",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/protruding-material-labels-v1/admitted-768/manifest.json": "fead7a7f180f93448a60268512974bcc01fc064a8e6d3ddf926a07fa6bee6646"
+  }
+}

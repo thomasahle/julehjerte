@@ -1,0 +1,5588 @@
+{
+  "schema": "woven-heart-sampling-fallback-1",
+  "baselineCommit": "31ce66e",
+  "firstFallbackCommit": "b96d94f",
+  "initialSchedulingCommit": "ed2b27d",
+  "cycleSkipCommit": "4574a41",
+  "implementationCommit": "7972977",
+  "changedCoreFiles": [
+    "static/inverse/core/direct/counts.js",
+    "static/inverse/core/direct/feature-seeds.js",
+    "static/inverse/core/direct/fit.js",
+    "static/inverse/core/direct/refine.js"
+  ],
+  "decision": "Compare one fresh 98-sample feature grid before free refinement of a coarse 16-control feature layout. Require geometry and paper validity, plus lower unweighted clearance error if the incumbent geometry is valid. Retain its original clearance grid. Skip only exact repeated rollback blocks; retain the final partial block. Targets, cut constraints and final acceptance thresholds stay fixed.",
+  "replay": {
+    "identicalInputsAndCrops": true,
+    "rows": [
+      {
+        "name": "original",
+        "before": {
+          "passed": true,
+          "seconds": 7.859671249999999,
+          "errors": [
+            {
+              "resolution": 400,
+              "error": 0.0266875,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0274375,
+              "featuresPassed": true
+            }
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "samplingRecovery": null
+        },
+        "after": {
+          "passed": true,
+          "seconds": 8.216384166,
+          "errors": [
+            {
+              "resolution": 400,
+              "error": 0.0266875,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0274375,
+              "featuresPassed": true
+            }
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "samplingRecovery": {
+            "counts": [
+              3,
+              3
+            ],
+            "initializationResolution": 98,
+            "emphasizedRegions": 1,
+            "attempts": [
+              {
+                "phase": 1,
+                "error": 0.080902099609375,
+                "featuresPassed": false
+              },
+              {
+                "phase": -1,
+                "error": 0.1369781494140625,
+                "featuresPassed": true
+              }
+            ],
+            "retained": 0,
+            "reason": "coarse-feature-alternative",
+            "scheduled": 0,
+            "remainingSeconds": 5.641121918,
+            "elapsedSeconds": 4.554893666
+          }
+        }
+      },
+      {
+        "name": "horizontal",
+        "before": {
+          "passed": true,
+          "seconds": 7.1648267500000005,
+          "errors": [
+            {
+              "resolution": 400,
+              "error": 0.0246625,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.025496875,
+              "featuresPassed": true
+            }
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "samplingRecovery": null
+        },
+        "after": {
+          "passed": true,
+          "seconds": 7.519114959,
+          "errors": [
+            {
+              "resolution": 400,
+              "error": 0.0246625,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.025496875,
+              "featuresPassed": true
+            }
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "samplingRecovery": {
+            "counts": [
+              3,
+              3
+            ],
+            "initializationResolution": 98,
+            "emphasizedRegions": 1,
+            "attempts": [
+              {
+                "phase": 1,
+                "error": 0.0812225341796875,
+                "featuresPassed": false
+              },
+              {
+                "phase": -1,
+                "error": 0.1348724365234375,
+                "featuresPassed": true
+              }
+            ],
+            "retained": 0,
+            "reason": "coarse-feature-alternative",
+            "scheduled": 0,
+            "remainingSeconds": 5.782659083,
+            "elapsedSeconds": 4.41224375
+          }
+        }
+      },
+      {
+        "name": "vertical",
+        "before": {
+          "passed": false,
+          "seconds": 8.385063208,
+          "errors": [
+            {
+              "resolution": 400,
+              "error": 0.03093125,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0319015625,
+              "featuresPassed": true
+            }
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "samplingRecovery": null
+        },
+        "after": {
+          "passed": true,
+          "seconds": 7.512806082999999,
+          "errors": [
+            {
+              "resolution": 400,
+              "error": 0.02893125,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.029946875,
+              "featuresPassed": true
+            }
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "samplingRecovery": {
+            "counts": [
+              3,
+              3
+            ],
+            "initializationResolution": 98,
+            "emphasizedRegions": 1,
+            "attempts": [
+              {
+                "phase": 1,
+                "error": 0.082305908203125,
+                "featuresPassed": true
+              },
+              {
+                "phase": -1,
+                "error": 0.142059326171875,
+                "featuresPassed": true
+              }
+            ],
+            "retained": 1,
+            "reason": "coarse-feature-alternative",
+            "scheduled": 1,
+            "remainingSeconds": 5.933947875000002,
+            "elapsedSeconds": 4.267595125,
+            "preflight": {
+              "initialCounts": [
+                3,
+                3
+              ],
+              "initialError": 0.0836029052734375,
+              "initialGeometry": {
+                "passed": true,
+                "issues": [],
+                "nominalWidthRequired": 2.50501002004008,
+                "minimumInterSlitDistanceLower": 4.316288877353825,
+                "minimumOuterSideClearance": 4.758915920709967,
+                "boundaryParityMatches": true,
+                "forwardSampleMismatchPixels": null,
+                "forwardBoundaryAmbiguousPixels": 0,
+                "forwardSampleResolution": 101,
+                "geometryTolerance": 0.01,
+                "sharedCurvesStoredOnce": true,
+                "physicalAssemblyTested": false,
+                "limitations": [
+                  "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                  "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                  "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                  "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+                ]
+              },
+              "alternativeCounts": [
+                3,
+                3
+              ],
+              "alternativeError": 0.076507568359375,
+              "alternativeGeometry": {
+                "passed": true,
+                "issues": [],
+                "nominalWidthRequired": 2.50501002004008,
+                "minimumInterSlitDistanceLower": 4.371409437128596,
+                "minimumOuterSideClearance": 5.37429808144185,
+                "boundaryParityMatches": true,
+                "forwardSampleMismatchPixels": null,
+                "forwardBoundaryAmbiguousPixels": 0,
+                "forwardSampleResolution": 101,
+                "geometryTolerance": 0.01,
+                "sharedCurvesStoredOnce": true,
+                "physicalAssemblyTested": false,
+                "limitations": [
+                  "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                  "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                  "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                  "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+                ]
+              },
+              "alternativePaper": "pass",
+              "preferred": true
+            }
+          }
+        }
+      },
+      {
+        "name": "puppy-half",
+        "before": {
+          "passed": true,
+          "seconds": 9.387237084,
+          "errors": [
+            {
+              "resolution": 390,
+              "error": 0.008625904010519395,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 780,
+              "error": 0.009814266929651545,
+              "featuresPassed": true
+            }
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "samplingRecovery": null
+        },
+        "after": {
+          "passed": true,
+          "seconds": 9.435074166000001,
+          "errors": [
+            {
+              "resolution": 390,
+              "error": 0.008783694937541092,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 780,
+              "error": 0.009870151216305063,
+              "featuresPassed": true
+            }
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "samplingRecovery": null
+        }
+      },
+      {
+        "name": "-1,0",
+        "before": {
+          "passed": true,
+          "seconds": 6.660276917000003,
+          "errors": [
+            {
+              "resolution": 400,
+              "error": 0.0276125,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0284796875,
+              "featuresPassed": true
+            }
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "samplingRecovery": null
+        },
+        "after": {
+          "passed": true,
+          "seconds": 7.094261999999995,
+          "errors": [
+            {
+              "resolution": 400,
+              "error": 0.0276125,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0284796875,
+              "featuresPassed": true
+            }
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "samplingRecovery": {
+            "counts": [
+              3,
+              3
+            ],
+            "initializationResolution": 98,
+            "emphasizedRegions": 1,
+            "attempts": [
+              {
+                "phase": 1,
+                "error": 0.0867767333984375,
+                "featuresPassed": true
+              },
+              {
+                "phase": -1,
+                "error": 0.1217041015625,
+                "featuresPassed": false
+              }
+            ],
+            "retained": 1,
+            "reason": "coarse-feature-alternative",
+            "scheduled": 1,
+            "remainingSeconds": 6.172386917000003,
+            "elapsedSeconds": 3.994655958000003,
+            "preflight": {
+              "initialCounts": [
+                3,
+                3
+              ],
+              "initialError": 0.0777130126953125,
+              "initialGeometry": {
+                "passed": true,
+                "issues": [],
+                "nominalWidthRequired": 2.50501002004008,
+                "minimumInterSlitDistanceLower": 3.9972834788132494,
+                "minimumOuterSideClearance": 4.729159728950833,
+                "boundaryParityMatches": true,
+                "forwardSampleMismatchPixels": null,
+                "forwardBoundaryAmbiguousPixels": 0,
+                "forwardSampleResolution": 101,
+                "geometryTolerance": 0.01,
+                "sharedCurvesStoredOnce": true,
+                "physicalAssemblyTested": false,
+                "limitations": [
+                  "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                  "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                  "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                  "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+                ]
+              },
+              "alternativeCounts": [
+                3,
+                3
+              ],
+              "alternativeError": 0.080352783203125,
+              "alternativeGeometry": {
+                "passed": true,
+                "issues": [],
+                "nominalWidthRequired": 2.50501002004008,
+                "minimumInterSlitDistanceLower": 3.857091141667007,
+                "minimumOuterSideClearance": 5.461661748750771,
+                "boundaryParityMatches": true,
+                "forwardSampleMismatchPixels": null,
+                "forwardBoundaryAmbiguousPixels": 0,
+                "forwardSampleResolution": 101,
+                "geometryTolerance": 0.01,
+                "sharedCurvesStoredOnce": true,
+                "physicalAssemblyTested": false,
+                "limitations": [
+                  "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                  "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                  "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                  "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+                ]
+              },
+              "alternativePaper": "pass",
+              "preferred": false
+            }
+          }
+        }
+      },
+      {
+        "name": "0,-1",
+        "before": {
+          "passed": true,
+          "seconds": 9.332062083000004,
+          "errors": [
+            {
+              "resolution": 400,
+              "error": 0.0260125,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0268296875,
+              "featuresPassed": true
+            }
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "samplingRecovery": null
+        },
+        "after": {
+          "passed": true,
+          "seconds": 9.399502625,
+          "errors": [
+            {
+              "resolution": 400,
+              "error": 0.02614375,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.027059375,
+              "featuresPassed": true
+            }
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "samplingRecovery": null
+        }
+      },
+      {
+        "name": "1,1",
+        "before": {
+          "passed": false,
+          "seconds": 7.9339684590000035,
+          "errors": [
+            {
+              "resolution": 400,
+              "error": 0.04244375,
+              "featuresPassed": false
+            },
+            {
+              "resolution": 800,
+              "error": 0.043428125,
+              "featuresPassed": false
+            }
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "samplingRecovery": null
+        },
+        "after": {
+          "passed": false,
+          "seconds": 8.101365249999995,
+          "errors": [
+            {
+              "resolution": 400,
+              "error": 0.0277375,
+              "featuresPassed": false
+            },
+            {
+              "resolution": 800,
+              "error": 0.028825,
+              "featuresPassed": false
+            }
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "samplingRecovery": {
+            "counts": [
+              3,
+              3
+            ],
+            "initializationResolution": 98,
+            "emphasizedRegions": 1,
+            "attempts": [
+              {
+                "phase": 1,
+                "error": 0.0993194580078125,
+                "featuresPassed": true
+              },
+              {
+                "phase": -1,
+                "error": 0.135986328125,
+                "featuresPassed": false
+              }
+            ],
+            "retained": 0,
+            "reason": "coarse-feature-alternative",
+            "scheduled": 0,
+            "remainingSeconds": 5.901519915999997,
+            "elapsedSeconds": 4.269335500000001
+          }
+        }
+      },
+      {
+        "name": "-1,1",
+        "before": {
+          "passed": true,
+          "seconds": 6.859251875000002,
+          "errors": [
+            {
+              "resolution": 400,
+              "error": 0.026775,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.027584375,
+              "featuresPassed": true
+            }
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "samplingRecovery": null
+        },
+        "after": {
+          "passed": true,
+          "seconds": 7.769116874999993,
+          "errors": [
+            {
+              "resolution": 400,
+              "error": 0.026775,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.027584375,
+              "featuresPassed": true
+            }
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "samplingRecovery": {
+            "counts": [
+              3,
+              3
+            ],
+            "initializationResolution": 98,
+            "emphasizedRegions": 1,
+            "attempts": [
+              {
+                "phase": 1,
+                "error": 0.0824432373046875,
+                "featuresPassed": true
+              },
+              {
+                "phase": -1,
+                "error": 0.128692626953125,
+                "featuresPassed": true
+              }
+            ],
+            "retained": 1,
+            "reason": "coarse-feature-alternative",
+            "scheduled": 1,
+            "remainingSeconds": 6.180845625000002,
+            "elapsedSeconds": 3.988905374999995,
+            "preflight": {
+              "initialCounts": [
+                3,
+                3
+              ],
+              "initialError": 0.0748138427734375,
+              "initialGeometry": {
+                "passed": true,
+                "issues": [],
+                "nominalWidthRequired": 2.50501002004008,
+                "minimumInterSlitDistanceLower": 4.126093194631924,
+                "minimumOuterSideClearance": 7.764492288801865,
+                "boundaryParityMatches": true,
+                "forwardSampleMismatchPixels": null,
+                "forwardBoundaryAmbiguousPixels": 0,
+                "forwardSampleResolution": 101,
+                "geometryTolerance": 0.01,
+                "sharedCurvesStoredOnce": true,
+                "physicalAssemblyTested": false,
+                "limitations": [
+                  "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                  "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                  "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                  "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+                ]
+              },
+              "alternativeCounts": [
+                3,
+                3
+              ],
+              "alternativeError": 0.07855224609375,
+              "alternativeGeometry": {
+                "passed": true,
+                "issues": [],
+                "nominalWidthRequired": 2.50501002004008,
+                "minimumInterSlitDistanceLower": 4.173736614035558,
+                "minimumOuterSideClearance": 7.713904961530986,
+                "boundaryParityMatches": true,
+                "forwardSampleMismatchPixels": null,
+                "forwardBoundaryAmbiguousPixels": 0,
+                "forwardSampleResolution": 101,
+                "geometryTolerance": 0.01,
+                "sharedCurvesStoredOnce": true,
+                "physicalAssemblyTested": false,
+                "limitations": [
+                  "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                  "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                  "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                  "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+                ]
+              },
+              "alternativePaper": "pass",
+              "preferred": false
+            }
+          }
+        }
+      },
+      {
+        "name": "1,-1",
+        "before": {
+          "passed": false,
+          "seconds": 8.426068541999994,
+          "errors": [
+            {
+              "resolution": 400,
+              "error": 0.03820625,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.039065625,
+              "featuresPassed": true
+            }
+          ],
+          "geometryPassed": true,
+          "paperStatus": "uncertain",
+          "samplingRecovery": null
+        },
+        "after": {
+          "passed": true,
+          "seconds": 7.1309962079999965,
+          "errors": [
+            {
+              "resolution": 400,
+              "error": 0.0273375,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0280125,
+              "featuresPassed": true
+            }
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "samplingRecovery": {
+            "counts": [
+              3,
+              3
+            ],
+            "initializationResolution": 98,
+            "emphasizedRegions": 1,
+            "attempts": [
+              {
+                "phase": 1,
+                "error": 0.0793609619140625,
+                "featuresPassed": true
+              },
+              {
+                "phase": -1,
+                "error": 0.1358489990234375,
+                "featuresPassed": true
+              }
+            ],
+            "retained": 1,
+            "reason": "invalid-initial-geometry",
+            "scheduled": 1,
+            "remainingSeconds": 6.146320042000006,
+            "elapsedSeconds": 4.028994290999996,
+            "preflight": {
+              "initialCounts": [
+                5,
+                3
+              ],
+              "initialError": 0.0712738037109375,
+              "initialGeometry": {
+                "passed": false,
+                "issues": [
+                  {
+                    "type": "inter_slit_clearance",
+                    "family": 0,
+                    "slits": [
+                      2,
+                      3
+                    ],
+                    "distanceLower": 0.707409943432224
+                  },
+                  {
+                    "type": "inter_slit_clearance",
+                    "family": 0,
+                    "slits": [
+                      3,
+                      4
+                    ],
+                    "distanceLower": 1.448570828627177
+                  }
+                ],
+                "nominalWidthRequired": 2.50501002004008,
+                "minimumInterSlitDistanceLower": 0.707409943432224,
+                "minimumOuterSideClearance": 6.545174343062982,
+                "boundaryParityMatches": true,
+                "forwardSampleMismatchPixels": null,
+                "forwardBoundaryAmbiguousPixels": 0,
+                "forwardSampleResolution": 101,
+                "geometryTolerance": 0.01,
+                "sharedCurvesStoredOnce": true,
+                "physicalAssemblyTested": false,
+                "limitations": [
+                  "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                  "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                  "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                  "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+                ]
+              },
+              "alternativeCounts": [
+                3,
+                3
+              ],
+              "alternativeError": 0.053802490234375,
+              "alternativeGeometry": {
+                "passed": true,
+                "issues": [],
+                "nominalWidthRequired": 2.50501002004008,
+                "minimumInterSlitDistanceLower": 3.2576937972054814,
+                "minimumOuterSideClearance": 8.305065311577472,
+                "boundaryParityMatches": true,
+                "forwardSampleMismatchPixels": null,
+                "forwardBoundaryAmbiguousPixels": 0,
+                "forwardSampleResolution": 101,
+                "geometryTolerance": 0.01,
+                "sharedCurvesStoredOnce": true,
+                "physicalAssemblyTested": false,
+                "limitations": [
+                  "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                  "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                  "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                  "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+                ]
+              },
+              "alternativePaper": "pass",
+              "preferred": true
+            }
+          }
+        }
+      },
+      {
+        "name": "-1,-1",
+        "before": {
+          "passed": false,
+          "seconds": 8.020625416999989,
+          "errors": [
+            {
+              "resolution": 400,
+              "error": 0.03218125,
+              "featuresPassed": false
+            },
+            {
+              "resolution": 800,
+              "error": 0.03303125,
+              "featuresPassed": false
+            }
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "samplingRecovery": null
+        },
+        "after": {
+          "passed": true,
+          "seconds": 7.681142791999998,
+          "errors": [
+            {
+              "resolution": 400,
+              "error": 0.0250875,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0261234375,
+              "featuresPassed": true
+            }
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "samplingRecovery": {
+            "counts": [
+              3,
+              3
+            ],
+            "initializationResolution": 98,
+            "emphasizedRegions": 1,
+            "attempts": [
+              {
+                "phase": 1,
+                "error": 0.0865631103515625,
+                "featuresPassed": true
+              },
+              {
+                "phase": -1,
+                "error": 0.134490966796875,
+                "featuresPassed": true
+              }
+            ],
+            "retained": 1,
+            "reason": "invalid-initial-geometry",
+            "scheduled": 1,
+            "remainingSeconds": 6.1279953329999985,
+            "elapsedSeconds": 4.039210583000007,
+            "preflight": {
+              "initialCounts": [
+                5,
+                3
+              ],
+              "initialError": 0.086700439453125,
+              "initialGeometry": {
+                "passed": false,
+                "issues": [
+                  {
+                    "type": "inter_slit_clearance",
+                    "family": 0,
+                    "slits": [
+                      2,
+                      3
+                    ],
+                    "distanceLower": 0.5969144226354977
+                  }
+                ],
+                "nominalWidthRequired": 2.50501002004008,
+                "minimumInterSlitDistanceLower": 0.5969144226354977,
+                "minimumOuterSideClearance": 4.698995624322649,
+                "boundaryParityMatches": true,
+                "forwardSampleMismatchPixels": null,
+                "forwardBoundaryAmbiguousPixels": 0,
+                "forwardSampleResolution": 101,
+                "geometryTolerance": 0.01,
+                "sharedCurvesStoredOnce": true,
+                "physicalAssemblyTested": false,
+                "limitations": [
+                  "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                  "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                  "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                  "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+                ]
+              },
+              "alternativeCounts": [
+                3,
+                3
+              ],
+              "alternativeError": 0.0865631103515625,
+              "alternativeGeometry": {
+                "passed": true,
+                "issues": [],
+                "nominalWidthRequired": 2.50501002004008,
+                "minimumInterSlitDistanceLower": 3.257845879552636,
+                "minimumOuterSideClearance": 4.91657181877828,
+                "boundaryParityMatches": true,
+                "forwardSampleMismatchPixels": null,
+                "forwardBoundaryAmbiguousPixels": 0,
+                "forwardSampleResolution": 101,
+                "geometryTolerance": 0.01,
+                "sharedCurvesStoredOnce": true,
+                "physicalAssemblyTested": false,
+                "limitations": [
+                  "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                  "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                  "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                  "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+                ]
+              },
+              "alternativePaper": "pass",
+              "preferred": true
+            }
+          }
+        }
+      }
+    ]
+  },
+  "corpus": {
+    "identicalInputsAndCrops": true,
+    "rows": [
+      {
+        "before": {
+          "id": "oval-figure",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "oval-figure",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "eight-point-star",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "eight-point-star",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "small-figure",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "small-figure",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "deer",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "deer",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "top-checker",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "top-checker",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "top-candle",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "top-candle",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "top-tree",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "top-tree",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "partial-top-right",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "partial-top-right",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "partial-left-checker",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "partial-left-checker",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "nested-squares",
+          "status": "no_crop"
+        },
+        "after": {
+          "id": "nested-squares",
+          "status": "no_crop"
+        }
+      },
+      {
+        "before": {
+          "id": "outline-star",
+          "status": "failed",
+          "passed": false,
+          "error": 0.00815625,
+          "solveAndValidationSeconds": 8.989238957999998,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": false,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "outline-star",
+          "status": "failed",
+          "passed": false,
+          "error": 0.00815625,
+          "solveAndValidationSeconds": 9.133083333,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": false,
+          "samplingRecovery": null
+        }
+      },
+      {
+        "before": {
+          "id": "floral-checker",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02280625,
+          "solveAndValidationSeconds": 9.504009334,
+          "counts": {
+            "left": 7,
+            "right": 7
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "floral-checker",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02038125,
+          "solveAndValidationSeconds": 9.512221208,
+          "counts": {
+            "left": 7,
+            "right": 7
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        }
+      },
+      {
+        "before": {
+          "id": "dense-checker",
+          "status": "validated",
+          "passed": true,
+          "error": 0.00698125,
+          "solveAndValidationSeconds": 9.064922041,
+          "counts": {
+            "left": 7,
+            "right": 7
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "dense-checker",
+          "status": "validated",
+          "passed": true,
+          "error": 0.007025,
+          "solveAndValidationSeconds": 9.165234290999997,
+          "counts": {
+            "left": 7,
+            "right": 7
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        }
+      },
+      {
+        "before": {
+          "id": "bird",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0247125,
+          "solveAndValidationSeconds": 9.403080499999996,
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "bird",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0247,
+          "solveAndValidationSeconds": 9.364313915999999,
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        }
+      },
+      {
+        "before": {
+          "id": "leaf",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0265125,
+          "solveAndValidationSeconds": 7.806497125000002,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "leaf",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0265125,
+          "solveAndValidationSeconds": 8.16033625,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        }
+      },
+      {
+        "before": {
+          "id": "partial-right-checker",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "partial-right-checker",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "partial-left-abstract",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "partial-left-abstract",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "gift",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02266875,
+          "solveAndValidationSeconds": 9.459803415999994,
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "gift",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02856875,
+          "solveAndValidationSeconds": 10.789330541999997,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        }
+      },
+      {
+        "before": {
+          "id": "gingerbread",
+          "status": "validated",
+          "passed": true,
+          "error": 0.015475,
+          "solveAndValidationSeconds": 9.300395124999996,
+          "counts": {
+            "left": 5,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "gingerbread",
+          "status": "validated",
+          "passed": true,
+          "error": 0.01766875,
+          "solveAndValidationSeconds": 9.352095875,
+          "counts": {
+            "left": 5,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        }
+      },
+      {
+        "before": {
+          "id": "white-birds",
+          "status": "validated",
+          "passed": true,
+          "error": 0.00379375,
+          "solveAndValidationSeconds": 5.325777208999993,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "white-birds",
+          "status": "validated",
+          "passed": true,
+          "error": 0.00379375,
+          "solveAndValidationSeconds": 6.149795375000002,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        }
+      },
+      {
+        "before": {
+          "id": "flower",
+          "status": "validated",
+          "passed": true,
+          "error": 0.01145,
+          "solveAndValidationSeconds": 5.341288625000001,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "flower",
+          "status": "validated",
+          "passed": true,
+          "error": 0.01145,
+          "solveAndValidationSeconds": 5.542377917000005,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        }
+      },
+      {
+        "before": {
+          "id": "warped-checker",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0184625,
+          "solveAndValidationSeconds": 9.511683040999996,
+          "counts": {
+            "left": 9,
+            "right": 9
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "warped-checker",
+          "status": "validated",
+          "passed": true,
+          "error": 0.01789375,
+          "solveAndValidationSeconds": 9.563433416999993,
+          "counts": {
+            "left": 9,
+            "right": 9
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        }
+      },
+      {
+        "before": {
+          "id": "round-checker",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0121375,
+          "solveAndValidationSeconds": 9.306168000000005,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "round-checker",
+          "status": "validated",
+          "passed": true,
+          "error": 0.01214375,
+          "solveAndValidationSeconds": 9.321320166999998,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        }
+      },
+      {
+        "before": {
+          "id": "santa",
+          "status": "no_crop"
+        },
+        "after": {
+          "id": "santa",
+          "status": "no_crop"
+        }
+      },
+      {
+        "before": {
+          "id": "partial-left-diamonds",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "partial-left-diamonds",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "fine-checker",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02245,
+          "solveAndValidationSeconds": 9.514083375000016,
+          "counts": {
+            "left": 10,
+            "right": 9
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "fine-checker",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02245,
+          "solveAndValidationSeconds": 9.439583084000013,
+          "counts": {
+            "left": 10,
+            "right": 9
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        }
+      },
+      {
+        "before": {
+          "id": "orb",
+          "status": "validated",
+          "passed": true,
+          "error": 0.01439375,
+          "solveAndValidationSeconds": 9.310396416000003,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "orb",
+          "status": "validated",
+          "passed": true,
+          "error": 0.01439375,
+          "solveAndValidationSeconds": 9.370818375000002,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        }
+      },
+      {
+        "before": {
+          "id": "stacked-hearts",
+          "status": "validated",
+          "passed": true,
+          "error": 0.00753125,
+          "solveAndValidationSeconds": 5.233888166999997,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "stacked-hearts",
+          "status": "validated",
+          "passed": true,
+          "error": 0.00753125,
+          "solveAndValidationSeconds": 5.522733582999994,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        }
+      },
+      {
+        "before": {
+          "id": "jigsaw",
+          "status": "failed",
+          "passed": false,
+          "error": 0.0688875,
+          "solveAndValidationSeconds": 8.98855249999999,
+          "counts": {
+            "left": 3,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "jigsaw",
+          "status": "failed",
+          "passed": false,
+          "error": 0.0688875,
+          "solveAndValidationSeconds": 9.045805042000023,
+          "counts": {
+            "left": 3,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        }
+      },
+      {
+        "before": {
+          "id": "candle",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0048375,
+          "solveAndValidationSeconds": 4.288959541999997,
+          "counts": {
+            "left": 1,
+            "right": 1
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "candle",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0048375,
+          "solveAndValidationSeconds": 4.592145208000002,
+          "counts": {
+            "left": 1,
+            "right": 1
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        }
+      },
+      {
+        "before": {
+          "id": "maple-leaf",
+          "status": "validated",
+          "passed": true,
+          "error": 0.013325,
+          "solveAndValidationSeconds": 9.332171082999993,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "maple-leaf",
+          "status": "validated",
+          "passed": true,
+          "error": 0.013325,
+          "solveAndValidationSeconds": 9.395598041999998,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        }
+      },
+      {
+        "before": {
+          "id": "crown",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02454375,
+          "solveAndValidationSeconds": 9.420448874999973,
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "crown",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02435625,
+          "solveAndValidationSeconds": 9.335596832999988,
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        }
+      },
+      {
+        "before": {
+          "id": "partial-bottom-left",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "partial-bottom-left",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "bottom-diamonds",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "bottom-diamonds",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "crossed-ribbons",
+          "status": "failed",
+          "passed": false,
+          "error": 0.02153125,
+          "solveAndValidationSeconds": 4.484378417,
+          "counts": {
+            "left": 3,
+            "right": 1
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": false,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "crossed-ribbons",
+          "status": "failed",
+          "passed": false,
+          "error": 0.02153125,
+          "solveAndValidationSeconds": 4.516306167000002,
+          "counts": {
+            "left": 3,
+            "right": 1
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": false,
+          "samplingRecovery": null
+        }
+      },
+      {
+        "before": {
+          "id": "bauble",
+          "status": "failed",
+          "passed": false,
+          "error": 0.0929625,
+          "solveAndValidationSeconds": 8.906121791999992,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": false,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "bauble",
+          "status": "failed",
+          "passed": false,
+          "error": 0.0929625,
+          "solveAndValidationSeconds": 8.932280916999996,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": false,
+          "samplingRecovery": null
+        }
+      },
+      {
+        "before": {
+          "id": "glare-motif",
+          "status": "obscured"
+        },
+        "after": {
+          "id": "glare-motif",
+          "status": "obscured"
+        }
+      },
+      {
+        "before": {
+          "id": "bottom-flower",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0093875,
+          "solveAndValidationSeconds": 7.521736082999996,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "bottom-flower",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0093875,
+          "solveAndValidationSeconds": 7.659367999999987,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        }
+      },
+      {
+        "before": {
+          "id": "faceted-star",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0065,
+          "solveAndValidationSeconds": 8.849718500000018,
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "faceted-star",
+          "status": "validated",
+          "passed": true,
+          "error": 0.00649375,
+          "solveAndValidationSeconds": 9.153863792000019,
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        }
+      },
+      {
+        "before": {
+          "id": "partial-bottom-right",
+          "status": "incomplete"
+        },
+        "after": {
+          "id": "partial-bottom-right",
+          "status": "incomplete"
+        }
+      },
+      {
+        "before": {
+          "id": "bibel-star-8",
+          "status": "validated",
+          "passed": true,
+          "error": 0.003675,
+          "solveAndValidationSeconds": 3.6693424589999775,
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "bibel-star-8",
+          "status": "validated",
+          "passed": true,
+          "error": 0.003675,
+          "solveAndValidationSeconds": 4.030074708000029,
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        }
+      },
+      {
+        "before": {
+          "id": "bibel-star-curved",
+          "status": "validated",
+          "passed": true,
+          "error": 0.00663125,
+          "solveAndValidationSeconds": 6.723241792000016,
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "bibel-star-curved",
+          "status": "validated",
+          "passed": true,
+          "error": 0.00663125,
+          "solveAndValidationSeconds": 8.283654374999983,
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        }
+      },
+      {
+        "before": {
+          "id": "bibel-star-outline",
+          "status": "no_crop"
+        },
+        "after": {
+          "id": "bibel-star-outline",
+          "status": "no_crop"
+        }
+      },
+      {
+        "before": {
+          "id": "bibel-cross",
+          "status": "validated",
+          "passed": true,
+          "error": 0.00243125,
+          "solveAndValidationSeconds": 3.358521040999971,
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "bibel-cross",
+          "status": "validated",
+          "passed": true,
+          "error": 0.00243125,
+          "solveAndValidationSeconds": 3.5609855420000387,
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        }
+      },
+      {
+        "before": {
+          "id": "flettede-puppy",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0103125,
+          "solveAndValidationSeconds": 9.365680416999966,
+          "counts": {
+            "left": 3,
+            "right": 5
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "flettede-puppy",
+          "status": "validated",
+          "passed": true,
+          "error": 0.01031875,
+          "solveAndValidationSeconds": 9.338727167000005,
+          "counts": {
+            "left": 3,
+            "right": 5
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": {
+            "counts": [
+              3,
+              3
+            ],
+            "initializationResolution": 98,
+            "emphasizedRegions": 1,
+            "attempts": [
+              {
+                "phase": -1,
+                "error": 0.0401153564453125,
+                "featuresPassed": false
+              },
+              {
+                "phase": 1,
+                "error": 0.1206817626953125,
+                "featuresPassed": false
+              }
+            ],
+            "retained": 0,
+            "reason": "invalid-initial-geometry",
+            "scheduled": 0,
+            "remainingSeconds": 7.259718791999971,
+            "elapsedSeconds": 2.9180463750000345
+          }
+        }
+      },
+      {
+        "before": {
+          "id": "flettede-stonehenge",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02491875,
+          "solveAndValidationSeconds": 6.820775458999968,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "flettede-stonehenge",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02491875,
+          "solveAndValidationSeconds": 7.639862332999997,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": {
+            "counts": [
+              3,
+              3
+            ],
+            "initializationResolution": 98,
+            "emphasizedRegions": 1,
+            "attempts": [
+              {
+                "phase": 1,
+                "error": 0.0845184326171875,
+                "featuresPassed": true
+              },
+              {
+                "phase": -1,
+                "error": 0.144317626953125,
+                "featuresPassed": true
+              }
+            ],
+            "retained": 1,
+            "reason": "coarse-feature-alternative",
+            "scheduled": 1,
+            "remainingSeconds": 6.209371958000004,
+            "elapsedSeconds": 3.9556892089999747,
+            "preflight": {
+              "initialCounts": [
+                3,
+                3
+              ],
+              "initialError": 0.07476806640625,
+              "initialGeometry": {
+                "passed": true,
+                "issues": [],
+                "nominalWidthRequired": 2.50501002004008,
+                "minimumInterSlitDistanceLower": 4.247849210030008,
+                "minimumOuterSideClearance": 5.000340100429085,
+                "boundaryParityMatches": true,
+                "forwardSampleMismatchPixels": null,
+                "forwardBoundaryAmbiguousPixels": 0,
+                "forwardSampleResolution": 101,
+                "geometryTolerance": 0.01,
+                "sharedCurvesStoredOnce": true,
+                "physicalAssemblyTested": false,
+                "limitations": [
+                  "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                  "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                  "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                  "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+                ]
+              },
+              "alternativeCounts": [
+                3,
+                3
+              ],
+              "alternativeError": 0.0768585205078125,
+              "alternativeGeometry": {
+                "passed": true,
+                "issues": [],
+                "nominalWidthRequired": 2.50501002004008,
+                "minimumInterSlitDistanceLower": 4.108234294381896,
+                "minimumOuterSideClearance": 4.925903347796677,
+                "boundaryParityMatches": true,
+                "forwardSampleMismatchPixels": null,
+                "forwardBoundaryAmbiguousPixels": 0,
+                "forwardSampleResolution": 101,
+                "geometryTolerance": 0.01,
+                "sharedCurvesStoredOnce": true,
+                "physicalAssemblyTested": false,
+                "limitations": [
+                  "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                  "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                  "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                  "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+                ]
+              },
+              "alternativePaper": "pass",
+              "preferred": false
+            }
+          }
+        }
+      },
+      {
+        "before": {
+          "id": "flettede-viking",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02231875,
+          "solveAndValidationSeconds": 9.472015707999992,
+          "counts": {
+            "left": 6,
+            "right": 6
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "flettede-viking",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02300625,
+          "solveAndValidationSeconds": 9.494278417000023,
+          "counts": {
+            "left": 6,
+            "right": 6
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        }
+      }
+    ]
+  },
+  "perturbations": {
+    "identicalInputsAndCrops": true,
+    "rows": [
+      {
+        "before": {
+          "id": "flettede-stonehenge--crop-x-plus-1",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0246625,
+          "solveAndValidationSeconds": 7.786242915999999,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "flettede-stonehenge--crop-x-plus-1",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0246625,
+          "solveAndValidationSeconds": 8.146209791,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": {
+            "counts": [
+              3,
+              3
+            ],
+            "initializationResolution": 98,
+            "emphasizedRegions": 1,
+            "attempts": [
+              {
+                "phase": 1,
+                "error": 0.0812225341796875,
+                "featuresPassed": false
+              },
+              {
+                "phase": -1,
+                "error": 0.1348724365234375,
+                "featuresPassed": true
+              }
+            ],
+            "retained": 0,
+            "reason": "coarse-feature-alternative",
+            "scheduled": 0,
+            "remainingSeconds": 5.503187666,
+            "elapsedSeconds": 4.690043084
+          }
+        }
+      },
+      {
+        "before": {
+          "id": "flettede-stonehenge--crop-y-plus-1",
+          "status": "failed",
+          "passed": false,
+          "error": 0.03093125,
+          "solveAndValidationSeconds": 8.463032540999999,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "flettede-stonehenge--crop-y-plus-1",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02893125,
+          "solveAndValidationSeconds": 7.568203166999998,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": {
+            "counts": [
+              3,
+              3
+            ],
+            "initializationResolution": 98,
+            "emphasizedRegions": 1,
+            "attempts": [
+              {
+                "phase": 1,
+                "error": 0.082305908203125,
+                "featuresPassed": true
+              },
+              {
+                "phase": -1,
+                "error": 0.142059326171875,
+                "featuresPassed": true
+              }
+            ],
+            "retained": 1,
+            "reason": "coarse-feature-alternative",
+            "scheduled": 1,
+            "remainingSeconds": 5.975665125,
+            "elapsedSeconds": 4.210688999999999,
+            "preflight": {
+              "initialCounts": [
+                3,
+                3
+              ],
+              "initialError": 0.0836029052734375,
+              "initialGeometry": {
+                "passed": true,
+                "issues": [],
+                "nominalWidthRequired": 2.50501002004008,
+                "minimumInterSlitDistanceLower": 4.316288877353825,
+                "minimumOuterSideClearance": 4.758915920709967,
+                "boundaryParityMatches": true,
+                "forwardSampleMismatchPixels": null,
+                "forwardBoundaryAmbiguousPixels": 0,
+                "forwardSampleResolution": 101,
+                "geometryTolerance": 0.01,
+                "sharedCurvesStoredOnce": true,
+                "physicalAssemblyTested": false,
+                "limitations": [
+                  "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                  "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                  "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                  "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+                ]
+              },
+              "alternativeCounts": [
+                3,
+                3
+              ],
+              "alternativeError": 0.076507568359375,
+              "alternativeGeometry": {
+                "passed": true,
+                "issues": [],
+                "nominalWidthRequired": 2.50501002004008,
+                "minimumInterSlitDistanceLower": 4.371409437128596,
+                "minimumOuterSideClearance": 5.37429808144185,
+                "boundaryParityMatches": true,
+                "forwardSampleMismatchPixels": null,
+                "forwardBoundaryAmbiguousPixels": 0,
+                "forwardSampleResolution": 101,
+                "geometryTolerance": 0.01,
+                "sharedCurvesStoredOnce": true,
+                "physicalAssemblyTested": false,
+                "limitations": [
+                  "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                  "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                  "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                  "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+                ]
+              },
+              "alternativePaper": "pass",
+              "preferred": true
+            }
+          }
+        }
+      },
+      {
+        "before": {
+          "id": "flettede-stonehenge--jpeg-75",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02413125,
+          "solveAndValidationSeconds": 6.877231040999999,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "flettede-stonehenge--jpeg-75",
+          "status": "validated",
+          "passed": true,
+          "error": 0.0232875,
+          "solveAndValidationSeconds": 8.076040416,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": {
+            "counts": [
+              3,
+              3
+            ],
+            "initializationResolution": 98,
+            "emphasizedRegions": 1,
+            "attempts": [
+              {
+                "phase": 1,
+                "error": 0.0779266357421875,
+                "featuresPassed": true
+              },
+              {
+                "phase": -1,
+                "error": 0.135833740234375,
+                "featuresPassed": true
+              }
+            ],
+            "retained": 1,
+            "reason": "coarse-feature-alternative",
+            "scheduled": 1,
+            "remainingSeconds": 6.0709282920000005,
+            "elapsedSeconds": 4.126489207999999,
+            "preflight": {
+              "initialCounts": [
+                3,
+                3
+              ],
+              "initialError": 0.0759429931640625,
+              "initialGeometry": {
+                "passed": true,
+                "issues": [],
+                "nominalWidthRequired": 2.50501002004008,
+                "minimumInterSlitDistanceLower": 4.145146338429779,
+                "minimumOuterSideClearance": 4.530830488448316,
+                "boundaryParityMatches": true,
+                "forwardSampleMismatchPixels": null,
+                "forwardBoundaryAmbiguousPixels": 0,
+                "forwardSampleResolution": 101,
+                "geometryTolerance": 0.01,
+                "sharedCurvesStoredOnce": true,
+                "physicalAssemblyTested": false,
+                "limitations": [
+                  "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                  "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                  "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                  "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+                ]
+              },
+              "alternativeCounts": [
+                3,
+                3
+              ],
+              "alternativeError": 0.0706787109375,
+              "alternativeGeometry": {
+                "passed": true,
+                "issues": [],
+                "nominalWidthRequired": 2.50501002004008,
+                "minimumInterSlitDistanceLower": 3.942623345011263,
+                "minimumOuterSideClearance": 4.772949756467014,
+                "boundaryParityMatches": true,
+                "forwardSampleMismatchPixels": null,
+                "forwardBoundaryAmbiguousPixels": 0,
+                "forwardSampleResolution": 101,
+                "geometryTolerance": 0.01,
+                "sharedCurvesStoredOnce": true,
+                "physicalAssemblyTested": false,
+                "limitations": [
+                  "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                  "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                  "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                  "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+                ]
+              },
+              "alternativePaper": "pass",
+              "preferred": true
+            }
+          }
+        }
+      },
+      {
+        "before": {
+          "id": "flettede-stonehenge--half-resolution",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02218518559397799,
+          "solveAndValidationSeconds": 6.758445917000001,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": null
+        },
+        "after": {
+          "id": "flettede-stonehenge--half-resolution",
+          "status": "validated",
+          "passed": true,
+          "error": 0.02218518559397799,
+          "solveAndValidationSeconds": 7.005757290999998,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "samplingRecovery": {
+            "counts": [
+              3,
+              3
+            ],
+            "initializationResolution": 98,
+            "emphasizedRegions": 1,
+            "attempts": [
+              {
+                "phase": 1,
+                "error": 0.092193603515625,
+                "featuresPassed": true
+              },
+              {
+                "phase": -1,
+                "error": 0.12939453125,
+                "featuresPassed": true
+              }
+            ],
+            "retained": 0,
+            "reason": "coarse-feature-alternative",
+            "scheduled": 0,
+            "remainingSeconds": 6.405881291999998,
+            "elapsedSeconds": 3.767601167000001
+          }
+        }
+      }
+    ]
+  },
+  "hunodan": {
+    "unchangedPreviousErrors": true,
+    "maximumSeconds": 9.185788583,
+    "results": [
+      {
+        "id": "hjfig-01",
+        "seconds": 4.713308542,
+        "error": 0.009799111111111111,
+        "passed": true
+      },
+      {
+        "id": "hjfig-02",
+        "seconds": 5.546579042000001,
+        "error": 0.013923555555555555,
+        "passed": true
+      },
+      {
+        "id": "hjfig-03",
+        "seconds": 7.2129215,
+        "error": 0.006634666666666666,
+        "passed": true
+      },
+      {
+        "id": "hjfig-04",
+        "seconds": 4.776566875,
+        "error": 0.013824,
+        "passed": true
+      },
+      {
+        "id": "hjfig-05",
+        "seconds": 3.4469379579999986,
+        "error": 0.009042960667083447,
+        "passed": true
+      },
+      {
+        "id": "hjfla-01",
+        "seconds": 5.813824334,
+        "error": 0.013468424479166666,
+        "passed": true
+      },
+      {
+        "id": "hjcur-01",
+        "seconds": 5.767275208000003,
+        "error": 0.005148444444444444,
+        "passed": true
+      },
+      {
+        "id": "hjcur-02",
+        "seconds": 5.299289124999996,
+        "error": 0.005397333333333333,
+        "passed": true
+      },
+      {
+        "id": "hjcur-03",
+        "seconds": 6.012027834,
+        "error": 0.004522666666666667,
+        "passed": true
+      },
+      {
+        "id": "hjcur-04",
+        "seconds": 7.760870125000001,
+        "error": 0.005639111111111111,
+        "passed": true
+      },
+      {
+        "id": "hjcur-05",
+        "seconds": 3.685716500000002,
+        "error": 0.009436444444444445,
+        "passed": true
+      },
+      {
+        "id": "hjhih-01",
+        "seconds": 6.841490165999996,
+        "error": 0.006040430615586996,
+        "passed": true
+      },
+      {
+        "id": "hjhih-02",
+        "seconds": 5.070866041000001,
+        "error": 0.003899406226779104,
+        "passed": true
+      },
+      {
+        "id": "hjhih-04",
+        "seconds": 8.368467958000009,
+        "error": 0.007776029627903062,
+        "passed": true
+      },
+      {
+        "id": "hjstr-01",
+        "seconds": 4.583930791999999,
+        "error": 0.007550237322696868,
+        "passed": true
+      },
+      {
+        "id": "hjstr-02",
+        "seconds": 6.8839654999999915,
+        "error": 0.004365548980933596,
+        "passed": true
+      },
+      {
+        "id": "hjstr-03",
+        "seconds": 9.185788583,
+        "error": 0.0056129769369752365,
+        "passed": true
+      },
+      {
+        "id": "hjsta-01",
+        "seconds": 5.304696790999995,
+        "error": 0.007929362880886427,
+        "passed": true
+      },
+      {
+        "id": "hjsta-02",
+        "seconds": 4.76809925,
+        "error": 0.0038045247395833335,
+        "passed": true
+      },
+      {
+        "id": "hjsta-03",
+        "seconds": 6.743132041999997,
+        "error": 0.012332213049376572,
+        "passed": true
+      },
+      {
+        "id": "hjsta-04",
+        "seconds": 7.075276375000001,
+        "error": 0.0050250552896055544,
+        "passed": true
+      },
+      {
+        "id": "hjsta-05",
+        "seconds": 6.454602667000014,
+        "error": 0.010624446293860237,
+        "passed": true
+      }
+    ]
+  },
+  "preflight": [
+    {
+      "name": "original",
+      "method": "Offline diagnostic of newly initialized and clearance-fitted grids, before any free refinement. No saved geometry, no deadlines, no production acceptance claim.",
+      "maskSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+      "probabilitySha256": "d609c5f7fd0b218a53b44872a94f6794a666d163d55904d544f183b9ae726b23",
+      "rows": [
+        {
+          "kind": "ordinary",
+          "initialization": {
+            "boost": 16,
+            "baseCounts": [
+              3,
+              3
+            ],
+            "missedRegions": 1,
+            "emphasizedRegions": 1,
+            "skippedBorderRegions": 0,
+            "boundaryBandMm": 2.50501002004008,
+            "hypotheses": 10,
+            "jointHypotheses": 0,
+            "finerHypotheses": 0,
+            "coarseRefinement": {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "initialError": 0.092742919921875,
+              "error": 0.08782958984375,
+              "featuresPassed": true,
+              "steps": 150,
+              "accepted": true
+            },
+            "alternativeRefinement": null,
+            "attempts": [
+              {
+                "counts": [
+                  3,
+                  3
+                ],
+                "controlPoints": 16,
+                "phase": 1,
+                "error": 0.092742919921875,
+                "featuresPassed": true,
+                "missing": 0,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  3,
+                  4
+                ],
+                "controlPoints": 16,
+                "phase": 1,
+                "error": 0.0970458984375,
+                "featuresPassed": true,
+                "missing": 0,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  4,
+                  3
+                ],
+                "controlPoints": 16,
+                "phase": 1,
+                "error": 0.115814208984375,
+                "featuresPassed": true,
+                "missing": 0,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  5,
+                  3
+                ],
+                "controlPoints": 16,
+                "phase": 1,
+                "error": 0.10003662109375,
+                "featuresPassed": true,
+                "missing": 0,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  3,
+                  5
+                ],
+                "controlPoints": 16,
+                "phase": 1,
+                "error": 0.1043853759765625,
+                "featuresPassed": true,
+                "missing": 0,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  3,
+                  4
+                ],
+                "controlPoints": 16,
+                "phase": -1,
+                "error": 0.1075592041015625,
+                "featuresPassed": false,
+                "missing": 1,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  4,
+                  3
+                ],
+                "controlPoints": 16,
+                "phase": -1,
+                "error": 0.1047821044921875,
+                "featuresPassed": false,
+                "missing": 1,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  3,
+                  5
+                ],
+                "controlPoints": 16,
+                "phase": -1,
+                "error": 0.1154327392578125,
+                "featuresPassed": false,
+                "missing": 1,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  3,
+                  3
+                ],
+                "controlPoints": 16,
+                "phase": -1,
+                "error": 0.1243438720703125,
+                "featuresPassed": true,
+                "missing": 0,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  5,
+                  3
+                ],
+                "controlPoints": 16,
+                "phase": -1,
+                "error": 0.115386962890625,
+                "featuresPassed": false,
+                "missing": 1,
+                "protectFeatures": false
+              }
+            ],
+            "retained": 1
+          },
+          "seeds": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "k": 16,
+              "phase": 1,
+              "error": 0.08782958984375
+            }
+          ],
+          "fine": {
+            "counts": [
+              3,
+              3
+            ],
+            "k": 16,
+            "error": 0.085052490234375,
+            "features": true
+          },
+          "clearance": {
+            "error": 0.085052490234375,
+            "features": true,
+            "colours": true
+          },
+          "initial": {
+            "geometry": true,
+            "paper": true,
+            "paperDetails": {
+              "status": "pass",
+              "requiredRemainingWidth": 2,
+              "nominalDiameter": 2.50501002004008,
+              "gridSpacing": 0.2777777777777778,
+              "clearanceGuard": 0.20641855032959658,
+              "families": [
+                {
+                  "family": 0,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        15.070509515346291
+                      ],
+                      "certainCoreLength": 10.000000000000004,
+                      "possibleCoreLength": 11.111111111111118
+                    },
+                    {
+                      "interval": [
+                        15.070509515346291,
+                        22.901601071981297
+                      ],
+                      "certainCoreLength": 4.999999999999999,
+                      "possibleCoreLength": 5.833333333333332
+                    },
+                    {
+                      "interval": [
+                        22.901601071981297,
+                        95.06484684612488
+                      ],
+                      "certainCoreLength": 62.50000000000015,
+                      "possibleCoreLength": 64.72222222222236
+                    },
+                    {
+                      "interval": [
+                        95.06484684612488,
+                        100
+                      ],
+                      "certainCoreLength": 2.222222222222222,
+                      "possibleCoreLength": 2.7777777777777772
+                    }
+                  ]
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        7.640065325212733
+                      ],
+                      "certainCoreLength": 4.722222222222221,
+                      "possibleCoreLength": 5.5555555555555545
+                    },
+                    {
+                      "interval": [
+                        7.640065325212733,
+                        31.188013379142852
+                      ],
+                      "certainCoreLength": 20.55555555555559,
+                      "possibleCoreLength": 21.388888888888925
+                    },
+                    {
+                      "interval": [
+                        31.188013379142852,
+                        88.40478352198005
+                      ],
+                      "certainCoreLength": 52.50000000000012,
+                      "possibleCoreLength": 53.611111111111235
+                    },
+                    {
+                      "interval": [
+                        88.40478352198005,
+                        100
+                      ],
+                      "certainCoreLength": 8.61111111111111,
+                      "possibleCoreLength": 9.444444444444446
+                    }
+                  ]
+                }
+              ],
+              "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+              "seconds": 0.14962258399999973,
+              "limitations": [
+                "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+                "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+                "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+                "Small tips and features below the explicitly stated area threshold are not certified."
+              ]
+            },
+            "error": 0.0847625732421875,
+            "preferred": true,
+            "history": [
+              {
+                "step": -1,
+                "error": 0.0847625732421875,
+                "score": 0.08237228484488082,
+                "primitives": {
+                  "curved": 33,
+                  "straight": 45
+                },
+                "straightened": true,
+                "geometry": true,
+                "paper": "pass",
+                "preferred": true,
+                "issues": []
+              }
+            ]
+          },
+          "seconds": 1.819169958
+        },
+        {
+          "kind": "sampling",
+          "initialization": {
+            "counts": [
+              3,
+              3
+            ],
+            "initializationResolution": 98,
+            "emphasizedRegions": 1,
+            "attempts": [
+              {
+                "phase": 1,
+                "error": 0.080902099609375,
+                "featuresPassed": false
+              },
+              {
+                "phase": -1,
+                "error": 0.1369781494140625,
+                "featuresPassed": true
+              }
+            ],
+            "retained": 0
+          },
+          "seeds": [],
+          "seconds": 0.2296395419999999
+        }
+      ]
+    },
+    {
+      "name": "horizontal",
+      "method": "Offline diagnostic of newly initialized and clearance-fitted grids, before any free refinement. No saved geometry, no deadlines, no production acceptance claim.",
+      "maskSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+      "probabilitySha256": "250e43d02e140e51b9c03b5a0ca00885fea0f6f5bbfe13a1493968876750c3ac",
+      "rows": [
+        {
+          "kind": "ordinary",
+          "initialization": {
+            "boost": 16,
+            "baseCounts": [
+              3,
+              3
+            ],
+            "missedRegions": 1,
+            "emphasizedRegions": 1,
+            "skippedBorderRegions": 0,
+            "boundaryBandMm": 2.50501002004008,
+            "hypotheses": 10,
+            "jointHypotheses": 0,
+            "finerHypotheses": 0,
+            "coarseRefinement": {
+              "counts": [
+                5,
+                3
+              ],
+              "phase": 1,
+              "initialError": 0.099090576171875,
+              "error": 0.09490966796875,
+              "featuresPassed": true,
+              "steps": 150,
+              "accepted": false
+            },
+            "alternativeRefinement": {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "initialError": 0.091156005859375,
+              "error": 0.0856781005859375,
+              "featuresPassed": true,
+              "steps": 150,
+              "accepted": true,
+              "considered": 6,
+              "retained": 1
+            },
+            "attempts": [
+              {
+                "counts": [
+                  3,
+                  3
+                ],
+                "controlPoints": 16,
+                "phase": 1,
+                "error": 0.0819549560546875,
+                "featuresPassed": false,
+                "missing": 1,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  3,
+                  5
+                ],
+                "controlPoints": 16,
+                "phase": 1,
+                "error": 0.0999908447265625,
+                "featuresPassed": true,
+                "missing": 0,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  3,
+                  4
+                ],
+                "controlPoints": 16,
+                "phase": 1,
+                "error": 0.11187744140625,
+                "featuresPassed": true,
+                "missing": 0,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  5,
+                  3
+                ],
+                "controlPoints": 16,
+                "phase": 1,
+                "error": 0.099090576171875,
+                "featuresPassed": true,
+                "missing": 0,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  5,
+                  3
+                ],
+                "controlPoints": 16,
+                "phase": -1,
+                "error": 0.103179931640625,
+                "featuresPassed": true,
+                "missing": 0,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  4,
+                  3
+                ],
+                "controlPoints": 16,
+                "phase": 1,
+                "error": 0.1160888671875,
+                "featuresPassed": true,
+                "missing": 0,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  4,
+                  3
+                ],
+                "controlPoints": 16,
+                "phase": -1,
+                "error": 0.0992431640625,
+                "featuresPassed": false,
+                "missing": 1,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  3,
+                  4
+                ],
+                "controlPoints": 16,
+                "phase": -1,
+                "error": 0.126861572265625,
+                "featuresPassed": false,
+                "missing": 1,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  3,
+                  5
+                ],
+                "controlPoints": 16,
+                "phase": -1,
+                "error": 0.1110992431640625,
+                "featuresPassed": false,
+                "missing": 1,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  3,
+                  3
+                ],
+                "controlPoints": 16,
+                "phase": -1,
+                "error": 0.1328125,
+                "featuresPassed": false,
+                "missing": 1,
+                "protectFeatures": false
+              }
+            ],
+            "retained": 1
+          },
+          "seeds": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "k": 16,
+              "phase": 1,
+              "error": 0.0856781005859375
+            }
+          ],
+          "fine": {
+            "counts": [
+              3,
+              3
+            ],
+            "k": 16,
+            "error": 0.0856781005859375,
+            "features": true
+          },
+          "clearance": {
+            "error": 0.0856781005859375,
+            "features": true,
+            "colours": true
+          },
+          "initial": {
+            "geometry": true,
+            "paper": true,
+            "paperDetails": {
+              "status": "pass",
+              "requiredRemainingWidth": 2,
+              "nominalDiameter": 2.50501002004008,
+              "gridSpacing": 0.2777777777777778,
+              "clearanceGuard": 0.20641855032959658,
+              "families": [
+                {
+                  "family": 0,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        9.224581506552832
+                      ],
+                      "certainCoreLength": 6.11111111111111,
+                      "possibleCoreLength": 6.944444444444443
+                    },
+                    {
+                      "interval": [
+                        9.224581506552832,
+                        28.632997012812577
+                      ],
+                      "certainCoreLength": 16.66666666666669,
+                      "possibleCoreLength": 17.222222222222246
+                    },
+                    {
+                      "interval": [
+                        28.632997012812577,
+                        95.24409179803416
+                      ],
+                      "certainCoreLength": 59.72222222222236,
+                      "possibleCoreLength": 61.388888888889035
+                    },
+                    {
+                      "interval": [
+                        95.24409179803416,
+                        100
+                      ],
+                      "certainCoreLength": 1.9444444444444442,
+                      "possibleCoreLength": 2.4999999999999996
+                    }
+                  ]
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        8.673260381451321
+                      ],
+                      "certainCoreLength": 5.833333333333332,
+                      "possibleCoreLength": 6.3888888888888875
+                    },
+                    {
+                      "interval": [
+                        8.673260381451321,
+                        49.25966460955928
+                      ],
+                      "certainCoreLength": 31.111111111111175,
+                      "possibleCoreLength": 33.3333333333334
+                    },
+                    {
+                      "interval": [
+                        49.25966460955928,
+                        84.68990543842706
+                      ],
+                      "certainCoreLength": 32.500000000000064,
+                      "possibleCoreLength": 33.3333333333334
+                    },
+                    {
+                      "interval": [
+                        84.68990543842706,
+                        100
+                      ],
+                      "certainCoreLength": 11.388888888888896,
+                      "possibleCoreLength": 12.222222222222232
+                    }
+                  ]
+                }
+              ],
+              "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+              "seconds": 0.1380980420000001,
+              "limitations": [
+                "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+                "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+                "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+                "Small tips and features below the explicitly stated area threshold are not certified."
+              ]
+            },
+            "error": 0.085479736328125,
+            "preferred": true,
+            "history": [
+              {
+                "step": -1,
+                "error": 0.085479736328125,
+                "score": 0.08289597357431097,
+                "primitives": {
+                  "curved": 35,
+                  "straight": 43
+                },
+                "straightened": true,
+                "geometry": true,
+                "paper": "pass",
+                "preferred": true,
+                "issues": []
+              }
+            ]
+          },
+          "seconds": 1.662459625
+        },
+        {
+          "kind": "sampling",
+          "initialization": {
+            "counts": [
+              3,
+              3
+            ],
+            "initializationResolution": 98,
+            "emphasizedRegions": 1,
+            "attempts": [
+              {
+                "phase": 1,
+                "error": 0.0812225341796875,
+                "featuresPassed": false
+              },
+              {
+                "phase": -1,
+                "error": 0.1348724365234375,
+                "featuresPassed": true
+              }
+            ],
+            "retained": 0
+          },
+          "seeds": [],
+          "seconds": 0.21583691599999974
+        }
+      ]
+    },
+    {
+      "name": "vertical",
+      "method": "Offline diagnostic of newly initialized and clearance-fitted grids, before any free refinement. No saved geometry, no deadlines, no production acceptance claim.",
+      "maskSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+      "probabilitySha256": "6466b2be539d90b28d67882a07374a1eb508bee20581481c5ed567d1d454efbe",
+      "rows": [
+        {
+          "kind": "ordinary",
+          "initialization": {
+            "boost": 16,
+            "baseCounts": [
+              3,
+              3
+            ],
+            "missedRegions": 1,
+            "emphasizedRegions": 1,
+            "skippedBorderRegions": 0,
+            "boundaryBandMm": 2.50501002004008,
+            "hypotheses": 10,
+            "jointHypotheses": 0,
+            "finerHypotheses": 0,
+            "coarseRefinement": {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "initialError": 0.0922698974609375,
+              "error": 0.0886688232421875,
+              "featuresPassed": true,
+              "steps": 150,
+              "accepted": true
+            },
+            "alternativeRefinement": null,
+            "attempts": [
+              {
+                "counts": [
+                  3,
+                  3
+                ],
+                "controlPoints": 16,
+                "phase": 1,
+                "error": 0.0922698974609375,
+                "featuresPassed": true,
+                "missing": 0,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  5,
+                  3
+                ],
+                "controlPoints": 16,
+                "phase": 1,
+                "error": 0.09710693359375,
+                "featuresPassed": true,
+                "missing": 0,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  3,
+                  4
+                ],
+                "controlPoints": 16,
+                "phase": -1,
+                "error": 0.101104736328125,
+                "featuresPassed": false,
+                "missing": 1,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  3,
+                  5
+                ],
+                "controlPoints": 16,
+                "phase": 1,
+                "error": 0.1136932373046875,
+                "featuresPassed": true,
+                "missing": 0,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  4,
+                  3
+                ],
+                "controlPoints": 16,
+                "phase": 1,
+                "error": 0.1107940673828125,
+                "featuresPassed": true,
+                "missing": 0,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  3,
+                  4
+                ],
+                "controlPoints": 16,
+                "phase": 1,
+                "error": 0.1050872802734375,
+                "featuresPassed": false,
+                "missing": 1,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  4,
+                  3
+                ],
+                "controlPoints": 16,
+                "phase": -1,
+                "error": 0.11700439453125,
+                "featuresPassed": false,
+                "missing": 1,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  5,
+                  3
+                ],
+                "controlPoints": 16,
+                "phase": -1,
+                "error": 0.1228790283203125,
+                "featuresPassed": false,
+                "missing": 1,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  3,
+                  5
+                ],
+                "controlPoints": 16,
+                "phase": -1,
+                "error": 0.1152496337890625,
+                "featuresPassed": false,
+                "missing": 2,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  3,
+                  3
+                ],
+                "controlPoints": 16,
+                "phase": -1,
+                "error": 0.1325836181640625,
+                "featuresPassed": false,
+                "missing": 1,
+                "protectFeatures": false
+              }
+            ],
+            "retained": 1
+          },
+          "seeds": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "k": 16,
+              "phase": 1,
+              "error": 0.0886688232421875
+            }
+          ],
+          "fine": {
+            "counts": [
+              3,
+              3
+            ],
+            "k": 16,
+            "error": 0.0862579345703125,
+            "features": true
+          },
+          "clearance": {
+            "error": 0.0836029052734375,
+            "features": true,
+            "colours": true
+          },
+          "initial": {
+            "geometry": true,
+            "paper": true,
+            "paperDetails": {
+              "status": "pass",
+              "requiredRemainingWidth": 2,
+              "nominalDiameter": 2.50501002004008,
+              "gridSpacing": 0.2777777777777778,
+              "clearanceGuard": 0.20641855032959658,
+              "families": [
+                {
+                  "family": 0,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        17.705633664378517
+                      ],
+                      "certainCoreLength": 11.388888888888896,
+                      "possibleCoreLength": 12.77777777777779
+                    },
+                    {
+                      "interval": [
+                        17.705633664378517,
+                        23.830100352052817
+                      ],
+                      "certainCoreLength": 3.3333333333333326,
+                      "possibleCoreLength": 4.166666666666666
+                    },
+                    {
+                      "interval": [
+                        23.830100352052817,
+                        95.24108407929003
+                      ],
+                      "certainCoreLength": 63.055555555555706,
+                      "possibleCoreLength": 65.00000000000013
+                    },
+                    {
+                      "interval": [
+                        95.24108407929003,
+                        100
+                      ],
+                      "certainCoreLength": 1.9444444444444442,
+                      "possibleCoreLength": 2.4999999999999996
+                    }
+                  ]
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        8.014569979430831
+                      ],
+                      "certainCoreLength": 5.277777777777777,
+                      "possibleCoreLength": 5.833333333333332
+                    },
+                    {
+                      "interval": [
+                        8.014569979430831,
+                        49.05674524996098
+                      ],
+                      "certainCoreLength": 31.666666666666732,
+                      "possibleCoreLength": 33.61111111111118
+                    },
+                    {
+                      "interval": [
+                        49.05674524996098,
+                        83.52953002821975
+                      ],
+                      "certainCoreLength": 31.388888888888953,
+                      "possibleCoreLength": 32.500000000000064
+                    },
+                    {
+                      "interval": [
+                        83.52953002821975,
+                        100
+                      ],
+                      "certainCoreLength": 11.944444444444454,
+                      "possibleCoreLength": 13.055555555555568
+                    }
+                  ]
+                }
+              ],
+              "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+              "seconds": 0.1400902920000001,
+              "limitations": [
+                "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+                "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+                "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+                "Small tips and features below the explicitly stated area threshold are not certified."
+              ]
+            },
+            "error": 0.083251953125,
+            "preferred": true,
+            "history": [
+              {
+                "step": -1,
+                "error": 0.083251953125,
+                "score": 0.0789001383170731,
+                "primitives": {
+                  "curved": 31,
+                  "straight": 47
+                },
+                "straightened": true,
+                "geometry": true,
+                "paper": "pass",
+                "preferred": true,
+                "issues": []
+              }
+            ]
+          },
+          "seconds": 1.406719375
+        },
+        {
+          "kind": "sampling",
+          "initialization": {
+            "counts": [
+              3,
+              3
+            ],
+            "initializationResolution": 98,
+            "emphasizedRegions": 1,
+            "attempts": [
+              {
+                "phase": 1,
+                "error": 0.082305908203125,
+                "featuresPassed": true
+              },
+              {
+                "phase": -1,
+                "error": 0.142059326171875,
+                "featuresPassed": true
+              }
+            ],
+            "retained": 1
+          },
+          "seeds": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "k": 16,
+              "phase": 1,
+              "error": 0.082305908203125
+            }
+          ],
+          "fine": {
+            "counts": [
+              3,
+              3
+            ],
+            "k": 16,
+            "error": 0.0783233642578125,
+            "features": true
+          },
+          "clearance": {
+            "error": 0.076507568359375,
+            "features": true,
+            "colours": true
+          },
+          "initial": {
+            "geometry": true,
+            "paper": true,
+            "paperDetails": {
+              "status": "pass",
+              "requiredRemainingWidth": 2,
+              "nominalDiameter": 2.50501002004008,
+              "gridSpacing": 0.2777777777777778,
+              "clearanceGuard": 0.20641855032959658,
+              "families": [
+                {
+                  "family": 0,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        17.291941643851487
+                      ],
+                      "certainCoreLength": 11.111111111111118,
+                      "possibleCoreLength": 12.50000000000001
+                    },
+                    {
+                      "interval": [
+                        17.291941643851487,
+                        24.286421588350915
+                      ],
+                      "certainCoreLength": 4.166666666666666,
+                      "possibleCoreLength": 4.999999999999999
+                    },
+                    {
+                      "interval": [
+                        24.286421588350915,
+                        94.62570191855815
+                      ],
+                      "certainCoreLength": 62.22222222222237,
+                      "possibleCoreLength": 64.16666666666681
+                    },
+                    {
+                      "interval": [
+                        94.62570191855815,
+                        100
+                      ],
+                      "certainCoreLength": 2.4999999999999996,
+                      "possibleCoreLength": 3.3333333333333326
+                    }
+                  ]
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        7.9323857381442595
+                      ],
+                      "certainCoreLength": 4.999999999999999,
+                      "possibleCoreLength": 5.833333333333332
+                    },
+                    {
+                      "interval": [
+                        7.9323857381442595,
+                        47.43015680314797
+                      ],
+                      "certainCoreLength": 30.555555555555618,
+                      "possibleCoreLength": 32.77777777777784
+                    },
+                    {
+                      "interval": [
+                        47.43015680314797,
+                        83.95540633727575
+                      ],
+                      "certainCoreLength": 33.61111111111118,
+                      "possibleCoreLength": 34.72222222222229
+                    },
+                    {
+                      "interval": [
+                        83.95540633727575,
+                        100
+                      ],
+                      "certainCoreLength": 11.944444444444454,
+                      "possibleCoreLength": 12.77777777777779
+                    }
+                  ]
+                }
+              ],
+              "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+              "seconds": 0.05789625000000024,
+              "limitations": [
+                "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+                "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+                "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+                "Small tips and features below the explicitly stated area threshold are not certified."
+              ]
+            },
+            "error": 0.075897216796875,
+            "preferred": true,
+            "history": [
+              {
+                "step": -1,
+                "error": 0.075897216796875,
+                "score": 0.07165287977130683,
+                "primitives": {
+                  "curved": 27,
+                  "straight": 51
+                },
+                "straightened": true,
+                "geometry": true,
+                "paper": "pass",
+                "preferred": true,
+                "issues": []
+              }
+            ]
+          },
+          "seconds": 0.7719342920000002
+        }
+      ]
+    },
+    {
+      "name": "negative-diagonal-raw",
+      "method": "Offline diagnostic of newly initialized and clearance-fitted grids, before any free refinement. No saved geometry, no deadlines, no production acceptance claim.",
+      "maskSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+      "probabilitySha256": "e02873ac8ffeba37b4ba01394e20ac4cd801d6aeb77ab5b410fd6acb5ad0b20b",
+      "rows": [
+        {
+          "kind": "ordinary",
+          "initialization": {
+            "boost": 16,
+            "baseCounts": [
+              3,
+              3
+            ],
+            "missedRegions": 1,
+            "emphasizedRegions": 1,
+            "skippedBorderRegions": 0,
+            "boundaryBandMm": 2.50501002004008,
+            "hypotheses": 10,
+            "jointHypotheses": 0,
+            "finerHypotheses": 0,
+            "coarseRefinement": null,
+            "alternativeRefinement": null,
+            "attempts": [
+              {
+                "counts": [
+                  3,
+                  3
+                ],
+                "controlPoints": 16,
+                "phase": 1,
+                "error": 0.0857086181640625,
+                "featuresPassed": true,
+                "missing": 0,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  5,
+                  3
+                ],
+                "controlPoints": 16,
+                "phase": 1,
+                "error": 0.0854034423828125,
+                "featuresPassed": true,
+                "missing": 0,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  3,
+                  5
+                ],
+                "controlPoints": 16,
+                "phase": 1,
+                "error": 0.097747802734375,
+                "featuresPassed": true,
+                "missing": 0,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  3,
+                  4
+                ],
+                "controlPoints": 16,
+                "phase": 1,
+                "error": 0.09576416015625,
+                "featuresPassed": true,
+                "missing": 0,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  4,
+                  3
+                ],
+                "controlPoints": 16,
+                "phase": 1,
+                "error": 0.109771728515625,
+                "featuresPassed": true,
+                "missing": 0,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  4,
+                  3
+                ],
+                "controlPoints": 16,
+                "phase": -1,
+                "error": 0.1048126220703125,
+                "featuresPassed": true,
+                "missing": 0,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  5,
+                  3
+                ],
+                "controlPoints": 16,
+                "phase": -1,
+                "error": 0.1241912841796875,
+                "featuresPassed": true,
+                "missing": 0,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  3,
+                  4
+                ],
+                "controlPoints": 16,
+                "phase": -1,
+                "error": 0.093475341796875,
+                "featuresPassed": false,
+                "missing": 1,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  3,
+                  5
+                ],
+                "controlPoints": 16,
+                "phase": -1,
+                "error": 0.1147613525390625,
+                "featuresPassed": true,
+                "missing": 0,
+                "protectFeatures": false
+              },
+              {
+                "counts": [
+                  3,
+                  3
+                ],
+                "controlPoints": 16,
+                "phase": -1,
+                "error": 0.123443603515625,
+                "featuresPassed": true,
+                "missing": 0,
+                "protectFeatures": false
+              }
+            ],
+            "retained": 2
+          },
+          "seeds": [
+            {
+              "counts": [
+                5,
+                3
+              ],
+              "k": 16,
+              "phase": 1,
+              "error": 0.0854034423828125
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "k": 16,
+              "phase": 1,
+              "error": 0.0857086181640625
+            }
+          ],
+          "fine": {
+            "counts": [
+              5,
+              3
+            ],
+            "k": 16,
+            "error": 0.0806427001953125,
+            "features": true
+          },
+          "raw": {
+            "geometry": {
+              "passed": false,
+              "issues": [
+                {
+                  "type": "inter_slit_clearance",
+                  "family": 0,
+                  "slits": [
+                    2,
+                    3
+                  ],
+                  "distanceLower": 0.5969144226354977
+                }
+              ],
+              "nominalWidthRequired": 2.50501002004008,
+              "minimumInterSlitDistanceLower": 0.5969144226354977,
+              "minimumOuterSideClearance": 4.698995624322649,
+              "boundaryParityMatches": true,
+              "forwardSampleMismatchPixels": null,
+              "forwardBoundaryAmbiguousPixels": 0,
+              "forwardSampleResolution": 101,
+              "geometryTolerance": 0.01,
+              "sharedCurvesStoredOnce": true,
+              "physicalAssemblyTested": false,
+              "limitations": [
+                "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+              ]
+            },
+            "paper": {
+              "status": "fail",
+              "requiredRemainingWidth": 2,
+              "nominalDiameter": 2.50501002004008,
+              "gridSpacing": 0.2777777777777778,
+              "clearanceGuard": 0.20641855032959658,
+              "families": [
+                {
+                  "family": 0,
+                  "status": "fail",
+                  "detachedCertainCoreIslands": 4,
+                  "detachedPossibleCoreIslands": 2,
+                  "detachedPossibleArea": 1756.4814814814818,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        15.502602381082726
+                      ],
+                      "certainCoreLength": 10.55555555555556,
+                      "possibleCoreLength": 11.666666666666675
+                    },
+                    {
+                      "interval": [
+                        15.502602381082726,
+                        24.304697566802147
+                      ],
+                      "certainCoreLength": 5.833333333333332,
+                      "possibleCoreLength": 6.666666666666665
+                    },
+                    {
+                      "interval": [
+                        24.304697566802147,
+                        69.76157659688094
+                      ],
+                      "certainCoreLength": 35.27777777777785,
+                      "possibleCoreLength": 37.77777777777786
+                    },
+                    {
+                      "interval": [
+                        69.76157659688094,
+                        73.03934517173354
+                      ],
+                      "certainCoreLength": 0,
+                      "possibleCoreLength": 0
+                    },
+                    {
+                      "interval": [
+                        73.03934517173354,
+                        95.30100437567735
+                      ],
+                      "certainCoreLength": 17.500000000000025,
+                      "possibleCoreLength": 18.61111111111114
+                    },
+                    {
+                      "interval": [
+                        95.30100437567735,
+                        100
+                      ],
+                      "certainCoreLength": 1.9444444444444442,
+                      "possibleCoreLength": 2.4999999999999996
+                    }
+                  ]
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        8.628597150801575
+                      ],
+                      "certainCoreLength": 5.833333333333332,
+                      "possibleCoreLength": 6.3888888888888875
+                    },
+                    {
+                      "interval": [
+                        8.628597150801575,
+                        31.894009873325185
+                      ],
+                      "certainCoreLength": 20.55555555555559,
+                      "possibleCoreLength": 21.111111111111146
+                    },
+                    {
+                      "interval": [
+                        31.894009873325185,
+                        88.56855868537683
+                      ],
+                      "certainCoreLength": 53.33333333333346,
+                      "possibleCoreLength": 54.16666666666679
+                    },
+                    {
+                      "interval": [
+                        88.56855868537683,
+                        100
+                      ],
+                      "certainCoreLength": 8.61111111111111,
+                      "possibleCoreLength": 9.166666666666668
+                    }
+                  ]
+                }
+              ],
+              "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+              "seconds": 0.14981404099999987,
+              "limitations": [
+                "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+                "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+                "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+                "Small tips and features below the explicitly stated area threshold are not certified."
+              ]
+            }
+          },
+          "clearance": {
+            "error": 0.086700439453125,
+            "features": true,
+            "colours": true
+          },
+          "initial": {
+            "geometry": false,
+            "paper": false,
+            "error": 0.0861358642578125,
+            "preferred": true,
+            "history": [
+              {
+                "step": -1,
+                "error": 0.0861358642578125,
+                "score": 0.0840107565367823,
+                "primitives": {
+                  "curved": 48,
+                  "straight": 56
+                },
+                "straightened": true,
+                "geometry": false,
+                "preferred": true,
+                "issues": [
+                  {
+                    "type": "inter_slit_clearance",
+                    "family": 0,
+                    "slits": [
+                      2,
+                      3
+                    ],
+                    "distanceLower": 0.5969144226354977
+                  }
+                ]
+              },
+              {
+                "step": -1,
+                "error": 0.086700439453125,
+                "score": 0.0862593007066286,
+                "primitives": {
+                  "curved": 104,
+                  "straight": 0
+                },
+                "straightened": false,
+                "geometry": false,
+                "preferred": true,
+                "issues": [
+                  {
+                    "type": "inter_slit_clearance",
+                    "family": 0,
+                    "slits": [
+                      2,
+                      3
+                    ],
+                    "distanceLower": 0.5969144226354977
+                  }
+                ]
+              }
+            ]
+          },
+          "seconds": 1.440915417
+        },
+        {
+          "kind": "sampling",
+          "initialization": {
+            "counts": [
+              3,
+              3
+            ],
+            "initializationResolution": 98,
+            "emphasizedRegions": 1,
+            "attempts": [
+              {
+                "phase": 1,
+                "error": 0.0865631103515625,
+                "featuresPassed": true
+              },
+              {
+                "phase": -1,
+                "error": 0.134490966796875,
+                "featuresPassed": true
+              }
+            ],
+            "retained": 1
+          },
+          "seeds": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "k": 16,
+              "phase": 1,
+              "error": 0.0865631103515625
+            }
+          ],
+          "fine": {
+            "counts": [
+              3,
+              3
+            ],
+            "k": 16,
+            "error": 0.0865631103515625,
+            "features": true
+          },
+          "raw": {
+            "geometry": {
+              "passed": true,
+              "issues": [],
+              "nominalWidthRequired": 2.50501002004008,
+              "minimumInterSlitDistanceLower": 3.257845879552636,
+              "minimumOuterSideClearance": 4.91657181877828,
+              "boundaryParityMatches": true,
+              "forwardSampleMismatchPixels": null,
+              "forwardBoundaryAmbiguousPixels": 0,
+              "forwardSampleResolution": 101,
+              "geometryTolerance": 0.01,
+              "sharedCurvesStoredOnce": true,
+              "physicalAssemblyTested": false,
+              "limitations": [
+                "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+              ]
+            },
+            "paper": {
+              "status": "pass",
+              "requiredRemainingWidth": 2,
+              "nominalDiameter": 2.50501002004008,
+              "gridSpacing": 0.2777777777777778,
+              "clearanceGuard": 0.20641855032959658,
+              "families": [
+                {
+                  "family": 0,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        15.769858111750612
+                      ],
+                      "certainCoreLength": 10.83333333333334,
+                      "possibleCoreLength": 11.944444444444454
+                    },
+                    {
+                      "interval": [
+                        15.769858111750612,
+                        23.127983005770872
+                      ],
+                      "certainCoreLength": 4.444444444444444,
+                      "possibleCoreLength": 5.277777777777777
+                    },
+                    {
+                      "interval": [
+                        23.127983005770872,
+                        95.08342818122172
+                      ],
+                      "certainCoreLength": 62.77777777777793,
+                      "possibleCoreLength": 65.00000000000013
+                    },
+                    {
+                      "interval": [
+                        95.08342818122172,
+                        100
+                      ],
+                      "certainCoreLength": 1.9444444444444442,
+                      "possibleCoreLength": 2.7777777777777772
+                    }
+                  ]
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        8.593559299401148
+                      ],
+                      "certainCoreLength": 5.833333333333332,
+                      "possibleCoreLength": 6.3888888888888875
+                    },
+                    {
+                      "interval": [
+                        8.593559299401148,
+                        31.34026457018147
+                      ],
+                      "certainCoreLength": 20.000000000000032,
+                      "possibleCoreLength": 20.55555555555559
+                    },
+                    {
+                      "interval": [
+                        31.34026457018147,
+                        87.72191981185927
+                      ],
+                      "certainCoreLength": 52.7777777777779,
+                      "possibleCoreLength": 53.611111111111235
+                    },
+                    {
+                      "interval": [
+                        87.72191981185927,
+                        100
+                      ],
+                      "certainCoreLength": 9.166666666666668,
+                      "possibleCoreLength": 10.000000000000004
+                    }
+                  ]
+                }
+              ],
+              "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+              "seconds": 0.05783545800000002,
+              "limitations": [
+                "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+                "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+                "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+                "Small tips and features below the explicitly stated area threshold are not certified."
+              ]
+            }
+          },
+          "clearance": {
+            "error": 0.0865631103515625,
+            "features": true,
+            "colours": true
+          },
+          "initial": {
+            "geometry": true,
+            "paper": true,
+            "paperDetails": {
+              "status": "pass",
+              "requiredRemainingWidth": 2,
+              "nominalDiameter": 2.50501002004008,
+              "gridSpacing": 0.2777777777777778,
+              "clearanceGuard": 0.20641855032959658,
+              "families": [
+                {
+                  "family": 0,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        15.769858111750612
+                      ],
+                      "certainCoreLength": 10.83333333333334,
+                      "possibleCoreLength": 11.944444444444454
+                    },
+                    {
+                      "interval": [
+                        15.769858111750612,
+                        23.127983005770872
+                      ],
+                      "certainCoreLength": 4.444444444444444,
+                      "possibleCoreLength": 5.277777777777777
+                    },
+                    {
+                      "interval": [
+                        23.127983005770872,
+                        95.08342818122172
+                      ],
+                      "certainCoreLength": 62.77777777777793,
+                      "possibleCoreLength": 65.00000000000013
+                    },
+                    {
+                      "interval": [
+                        95.08342818122172,
+                        100
+                      ],
+                      "certainCoreLength": 1.9444444444444442,
+                      "possibleCoreLength": 2.7777777777777772
+                    }
+                  ]
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        8.593559299401148
+                      ],
+                      "certainCoreLength": 5.833333333333332,
+                      "possibleCoreLength": 6.3888888888888875
+                    },
+                    {
+                      "interval": [
+                        8.593559299401148,
+                        31.34026457018147
+                      ],
+                      "certainCoreLength": 20.000000000000032,
+                      "possibleCoreLength": 20.55555555555559
+                    },
+                    {
+                      "interval": [
+                        31.34026457018147,
+                        87.72191981185927
+                      ],
+                      "certainCoreLength": 53.05555555555568,
+                      "possibleCoreLength": 53.888888888889014
+                    },
+                    {
+                      "interval": [
+                        87.72191981185927,
+                        100
+                      ],
+                      "certainCoreLength": 9.166666666666668,
+                      "possibleCoreLength": 10.000000000000004
+                    }
+                  ]
+                }
+              ],
+              "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+              "seconds": 0.03972845799999959,
+              "limitations": [
+                "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+                "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+                "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+                "Small tips and features below the explicitly stated area threshold are not certified."
+              ]
+            },
+            "error": 0.0857696533203125,
+            "preferred": true,
+            "history": [
+              {
+                "step": -1,
+                "error": 0.0857696533203125,
+                "score": 0.08157143241613096,
+                "primitives": {
+                  "curved": 28,
+                  "straight": 50
+                },
+                "straightened": true,
+                "geometry": true,
+                "paper": "pass",
+                "preferred": true,
+                "issues": []
+              }
+            ]
+          },
+          "seconds": 0.8565432090000004
+        }
+      ]
+    }
+  ],
+  "schedulingOnlyAttempt": {
+    "checksBeforeInterruption": [
+      {
+        "name": "replay",
+        "command": [
+          "node",
+          "scripts/inverse/initializer-resolution-replay.mjs",
+          "--policies=baseline",
+          "--cases=original;horizontal;vertical;puppy-half;-1,0;0,-1;1,1;-1,1;1,-1;-1,-1",
+          "--output=tmp/heart-learning/sampling-fallback-v1/release-replay"
+        ],
+        "exitCode": 0,
+        "seconds": 89.043777
+      },
+      {
+        "name": "corpus",
+        "command": [
+          "node",
+          "scripts/inverse/hard-photo-benchmark.mjs",
+          "--crop=automatic",
+          "--target=mask",
+          "--seconds=10",
+          "--output=tmp/heart-learning/sampling-fallback-v1/release-corpus"
+        ],
+        "exitCode": 0,
+        "seconds": 312.41677479099997
+      },
+      {
+        "name": "perturbations",
+        "command": [
+          "node",
+          "scripts/inverse/hard-photo-benchmark.mjs",
+          "--ids=flettede-stonehenge",
+          "--crop=fixed",
+          "--crop-overrides=tmp/heart-learning/foreground-locator-v1/retry-crop.json",
+          "--seconds=10",
+          "--perturb=true",
+          "--output=tmp/heart-learning/sampling-fallback-v1/release-perturbations"
+        ],
+        "exitCode": 0,
+        "seconds": 35.849486625
+      },
+      {
+        "name": "hunodan",
+        "command": [
+          "env",
+          "INVERSE_SPEED_OUT=tmp/heart-learning/sampling-fallback-v1/release-hunodan",
+          "node",
+          "scripts/inverse/hunodan-speed-benchmark.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 135.39630329099998
+      },
+      {
+        "name": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 8.806958792000046
+      },
+      {
+        "name": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 6.287978040999974
+      },
+      {
+        "name": "vitest",
+        "command": [
+          "npm",
+          "exec",
+          "--",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 37.35757533399999
+      }
+    ],
+    "perturbations": [
+      {
+        "id": "flettede-stonehenge--crop-x-plus-1",
+        "status": "validated",
+        "samplingRecovery": null
+      },
+      {
+        "id": "flettede-stonehenge--crop-y-plus-1",
+        "status": "failed",
+        "samplingRecovery": {
+          "scheduled": 0,
+          "reason": "insufficient-time",
+          "remainingSeconds": 2.9842761250000005
+        }
+      },
+      {
+        "id": "flettede-stonehenge--jpeg-75",
+        "status": "validated",
+        "samplingRecovery": null
+      },
+      {
+        "id": "flettede-stonehenge--half-resolution",
+        "status": "validated",
+        "samplingRecovery": null
+      }
+    ],
+    "fullInverseSuiteCompleted": false,
+    "reason": "Interrupted the ongoing full suite after inspecting the vertical-shift failure: the retry was skipped with 2.984 seconds left. Preserve this failed attempt separately from the cycle-skip implementation."
+  },
+  "rollbackProbe": {
+    "report": "tmp/heart-learning/sampling-fallback-v1/rollback-probe/preflight.json",
+    "sha256": "36b61556dbb274f40ee6a3de67828375f967169e4e088befeb8ea44fcad7b409",
+    "unitRegression": "scripts/inverse/sampling-rollback.test.mjs",
+    "coldProcessFailureBeforeEarlyComparison": {
+      "log": "tmp/heart-learning/sampling-fallback-v1/cold-vertical.log",
+      "sha256": "616931f5b9940984304e33d507ecde6607712a901fae85512c44cb3568e9a909",
+      "independent800PixelError": 0.0302421875
+    },
+    "coldProcessPassAfterEarlyComparison": {
+      "log": "tmp/heart-learning/sampling-fallback-v1/early-cold-vertical.log",
+      "sha256": "5af4f1f0d98209a40cc94e65fb6d7a0439d9471301f7956e859fbb9a854bce23"
+    },
+    "finalPartialBlockPreserved": true
+  },
+  "visualDetailReview": {
+    "method": "Post-hoc visual diagnostic. Manual fixed rectangular window around the sun detail; same vertical crop and rendered export. This window is not an independently annotated ground-truth motif and did not enter optimization or acceptance. Source input encodes the original binary mask as red/white; rendered black means source red.",
+    "source": "tmp/heart-learning/sampling-fallback-v1/browser-fallback/chromium-near-miss-y-shift-mask/input.png",
+    "render": "tmp/heart-learning/sampling-fallback-v1/verified-replay/baseline/vertical.png",
+    "regions": [
+      {
+        "name": "whole_square",
+        "rectangle": [
+          0,
+          0,
+          400,
+          400
+        ],
+        "mismatchPixels": 4629,
+        "pixels": 160000,
+        "error": 0.02893125
+      },
+      {
+        "name": "sun_detail_review_window",
+        "rectangle": [
+          60,
+          50,
+          230,
+          225
+        ],
+        "mismatchPixels": 2280,
+        "pixels": 29750,
+        "error": 0.07663865546218487
+      }
+    ]
+  },
+  "firstFallbackFailure": {
+    "qa": [
+      {
+        "name": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 7.811729000000001
+      },
+      {
+        "name": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 5.935388583
+      },
+      {
+        "name": "vitest",
+        "command": [
+          "npm",
+          "exec",
+          "--",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 35.770203916
+      },
+      {
+        "name": "inverse",
+        "command": [
+          "npm",
+          "run",
+          "test:inverse"
+        ],
+        "exitCode": 1,
+        "seconds": 645.3416841669999
+      }
+    ],
+    "reason": "Full inverse suite failed two of 735 tests: vertical-shift independent 800-pixel error was 3.00203125%; negative-diagonal retry was not scheduled. Merely lowering the retry time threshold still skipped it in a repeated run.",
+    "repeatLogSha256": "98dc6ee2531f86e38d22c2d486970dcce71c761605e677c3fed2b82d34e25856"
+  },
+  "verification": {
+    "checks": [
+      {
+        "name": "replay",
+        "command": [
+          "node",
+          "scripts/inverse/initializer-resolution-replay.mjs",
+          "--policies=baseline",
+          "--cases=original;horizontal;vertical;puppy-half;-1,0;0,-1;1,1;-1,1;1,-1;-1,-1",
+          "--output=tmp/heart-learning/sampling-fallback-v1/verified-replay"
+        ],
+        "exitCode": 0,
+        "seconds": 85.96641875
+      },
+      {
+        "name": "corpus",
+        "command": [
+          "node",
+          "scripts/inverse/hard-photo-benchmark.mjs",
+          "--crop=automatic",
+          "--target=mask",
+          "--seconds=10",
+          "--output=tmp/heart-learning/sampling-fallback-v1/verified-corpus"
+        ],
+        "exitCode": 0,
+        "seconds": 315.261455208
+      },
+      {
+        "name": "perturbations",
+        "command": [
+          "node",
+          "scripts/inverse/hard-photo-benchmark.mjs",
+          "--ids=flettede-stonehenge",
+          "--crop=fixed",
+          "--crop-overrides=tmp/heart-learning/foreground-locator-v1/retry-crop.json",
+          "--seconds=10",
+          "--perturb=true",
+          "--output=tmp/heart-learning/sampling-fallback-v1/verified-perturbations"
+        ],
+        "exitCode": 0,
+        "seconds": 33.15724133400005
+      },
+      {
+        "name": "hunodan",
+        "command": [
+          "env",
+          "INVERSE_SPEED_OUT=tmp/heart-learning/sampling-fallback-v1/verified-hunodan",
+          "node",
+          "scripts/inverse/hunodan-speed-benchmark.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 132.68216137500002
+      },
+      {
+        "name": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 8.262918374999913
+      },
+      {
+        "name": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 6.300857665999956
+      },
+      {
+        "name": "vitest",
+        "command": [
+          "npm",
+          "exec",
+          "--",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 35.093615750000026
+      },
+      {
+        "name": "inverse",
+        "command": [
+          "npm",
+          "run",
+          "test:inverse"
+        ],
+        "exitCode": 0,
+        "seconds": 642.7029306249999
+      },
+      {
+        "name": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 14.378572666999844
+      }
+    ],
+    "focusedChecks": [
+      {
+        "command": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "scripts/inverse/feature-near-miss.test.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 39.273632875,
+        "log": "0.log"
+      },
+      {
+        "command": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "scripts/inverse/feature-near-miss.test.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 38.402144041999996,
+        "log": "1.log"
+      },
+      {
+        "command": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "scripts/inverse/count-strategy.test.mjs",
+          "scripts/inverse/feature-seeds.test.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 99.82662133299999,
+        "log": "2.log"
+      }
+    ],
+    "vitestPassed": 855,
+    "vitestExistingSkipped": 1,
+    "inversePassed": 736,
+    "svelteErrors": 0,
+    "svelteExistingWarnings": 7,
+    "browser": [
+      {
+        "name": "near-miss-y-shift-mask",
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "passed": true,
+        "pageErrors": [],
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.006,
+          "prepareRoundTripSeconds": 0.2022000000476837,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 8.362600000023843,
+          "resultToReadySeconds": 0.7431999999284744,
+          "clickToReadySeconds": 9.314299999952317
+        },
+        "engineError": 0.02871875,
+        "sourceEditableError": 0.02874375,
+        "templateChecksPassed": true,
+        "samplingRecovery": {
+          "counts": [
+            3,
+            3
+          ],
+          "initializationResolution": 98,
+          "emphasizedRegions": 1,
+          "attempts": [
+            {
+              "phase": 1,
+              "error": 0.082305908203125,
+              "featuresPassed": true
+            },
+            {
+              "phase": -1,
+              "error": 0.142059326171875,
+              "featuresPassed": true
+            }
+          ],
+          "retained": 1,
+          "reason": "coarse-feature-alternative",
+          "scheduled": 1,
+          "remainingSeconds": 175.683,
+          "elapsedSeconds": 4.506200000047683,
+          "preflight": {
+            "initialCounts": [
+              3,
+              3
+            ],
+            "initialError": 0.0836029052734375,
+            "initialGeometry": {
+              "passed": true,
+              "issues": [],
+              "nominalWidthRequired": 2.50501002004008,
+              "minimumInterSlitDistanceLower": 4.316288877353827,
+              "minimumOuterSideClearance": 4.758915920709967,
+              "boundaryParityMatches": true,
+              "forwardSampleMismatchPixels": null,
+              "forwardBoundaryAmbiguousPixels": 0,
+              "forwardSampleResolution": 101,
+              "geometryTolerance": 0.01,
+              "sharedCurvesStoredOnce": true,
+              "physicalAssemblyTested": false,
+              "limitations": [
+                "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+              ]
+            },
+            "alternativeCounts": [
+              3,
+              3
+            ],
+            "alternativeError": 0.076507568359375,
+            "alternativeGeometry": {
+              "passed": true,
+              "issues": [],
+              "nominalWidthRequired": 2.50501002004008,
+              "minimumInterSlitDistanceLower": 4.371409437128596,
+              "minimumOuterSideClearance": 5.37429808144185,
+              "boundaryParityMatches": true,
+              "forwardSampleMismatchPixels": null,
+              "forwardBoundaryAmbiguousPixels": 0,
+              "forwardSampleResolution": 101,
+              "geometryTolerance": 0.01,
+              "sharedCurvesStoredOnce": true,
+              "physicalAssemblyTested": false,
+              "limitations": [
+                "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+              ]
+            },
+            "alternativePaper": "pass",
+            "preferred": true
+          }
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.02874375,
+          "sourceError": 0.02874375
+        },
+        "sharedSpans": 2,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      },
+      {
+        "name": "near-miss-diagonal-mask",
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "passed": true,
+        "pageErrors": [],
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005700000047683716,
+          "prepareRoundTripSeconds": 0.2575,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 9.218700000047683,
+          "resultToReadySeconds": 0.3292999999523163,
+          "clickToReadySeconds": 9.811600000023843
+        },
+        "engineError": 0.0248875,
+        "sourceEditableError": 0.0249875,
+        "templateChecksPassed": true,
+        "samplingRecovery": {
+          "counts": [
+            3,
+            3
+          ],
+          "initializationResolution": 98,
+          "emphasizedRegions": 1,
+          "attempts": [
+            {
+              "phase": 1,
+              "error": 0.0865631103515625,
+              "featuresPassed": true
+            },
+            {
+              "phase": -1,
+              "error": 0.134490966796875,
+              "featuresPassed": true
+            }
+          ],
+          "retained": 1,
+          "reason": "invalid-initial-geometry",
+          "scheduled": 1,
+          "remainingSeconds": 175.2697999999523,
+          "elapsedSeconds": 4.916899999976158,
+          "preflight": {
+            "initialCounts": [
+              5,
+              3
+            ],
+            "initialError": 0.086700439453125,
+            "initialGeometry": {
+              "passed": false,
+              "issues": [
+                {
+                  "type": "inter_slit_clearance",
+                  "family": 0,
+                  "slits": [
+                    2,
+                    3
+                  ],
+                  "distanceLower": 0.5969144226354977
+                }
+              ],
+              "nominalWidthRequired": 2.50501002004008,
+              "minimumInterSlitDistanceLower": 0.5969144226354977,
+              "minimumOuterSideClearance": 4.698995624322649,
+              "boundaryParityMatches": true,
+              "forwardSampleMismatchPixels": null,
+              "forwardBoundaryAmbiguousPixels": 0,
+              "forwardSampleResolution": 101,
+              "geometryTolerance": 0.01,
+              "sharedCurvesStoredOnce": true,
+              "physicalAssemblyTested": false,
+              "limitations": [
+                "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+              ]
+            },
+            "alternativeCounts": [
+              3,
+              3
+            ],
+            "alternativeError": 0.0865631103515625,
+            "alternativeGeometry": {
+              "passed": true,
+              "issues": [],
+              "nominalWidthRequired": 2.50501002004008,
+              "minimumInterSlitDistanceLower": 3.257845879552636,
+              "minimumOuterSideClearance": 4.91657181877828,
+              "boundaryParityMatches": true,
+              "forwardSampleMismatchPixels": null,
+              "forwardBoundaryAmbiguousPixels": 0,
+              "forwardSampleResolution": 101,
+              "geometryTolerance": 0.01,
+              "sharedCurvesStoredOnce": true,
+              "physicalAssemblyTested": false,
+              "limitations": [
+                "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+              ]
+            },
+            "alternativePaper": "pass",
+            "preferred": true
+          }
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 9.375e-05
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0001109375
+            }
+          ],
+          "originalSourceError": 0.02499375,
+          "sourceError": 0.0249875
+        },
+        "sharedSpans": 1,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      },
+      {
+        "name": "near-miss-shift-mask",
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "passed": true,
+        "pageErrors": [],
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.007200000047683716,
+          "prepareRoundTripSeconds": 0.3756999999284744,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 8.985100000023841,
+          "resultToReadySeconds": 0.39020000004768374,
+          "clickToReadySeconds": 9.758600000023842
+        },
+        "engineError": 0.0243375,
+        "sourceEditableError": 0.02439375,
+        "templateChecksPassed": true,
+        "samplingRecovery": {
+          "counts": [
+            3,
+            3
+          ],
+          "initializationResolution": 98,
+          "emphasizedRegions": 1,
+          "attempts": [
+            {
+              "phase": 1,
+              "error": 0.0812225341796875,
+              "featuresPassed": false
+            },
+            {
+              "phase": -1,
+              "error": 0.1348724365234375,
+              "featuresPassed": true
+            }
+          ],
+          "retained": 0,
+          "reason": "coarse-feature-alternative",
+          "scheduled": 0,
+          "remainingSeconds": 175.12860000002385,
+          "elapsedSeconds": 5.062299999952316
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.02439375,
+          "sourceError": 0.02439375
+        },
+        "sharedSpans": 0,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      },
+      {
+        "name": "near-miss-mask",
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "passed": true,
+        "pageErrors": [],
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.006100000023841858,
+          "prepareRoundTripSeconds": 0.20089999997615815,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 8.528300000071525,
+          "resultToReadySeconds": 0.3665,
+          "clickToReadySeconds": 9.102100000023842
+        },
+        "engineError": 0.02650625,
+        "sourceEditableError": 0.0266,
+        "templateChecksPassed": true,
+        "samplingRecovery": {
+          "counts": [
+            3,
+            3
+          ],
+          "initializationResolution": 98,
+          "emphasizedRegions": 1,
+          "attempts": [
+            {
+              "phase": 1,
+              "error": 0.080902099609375,
+              "featuresPassed": false
+            },
+            {
+              "phase": -1,
+              "error": 0.1369781494140625,
+              "featuresPassed": true
+            }
+          ],
+          "retained": 0,
+          "reason": "coarse-feature-alternative",
+          "scheduled": 0,
+          "remainingSeconds": 175.45420000004768,
+          "elapsedSeconds": 4.734399999976159
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0266,
+          "sourceError": 0.0266
+        },
+        "sharedSpans": 2,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      },
+      {
+        "name": "bird-mask",
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "passed": true,
+        "pageErrors": [],
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005300000071525574,
+          "prepareRoundTripSeconds": 0.199,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 11.872800000071525,
+          "resultToReadySeconds": 1.0828999999761582,
+          "clickToReadySeconds": 13.160300000071526
+        },
+        "engineError": 0.02493125,
+        "sourceEditableError": 0.0251875,
+        "templateChecksPassed": true,
+        "samplingRecovery": null,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0251875,
+          "sourceError": 0.0251875
+        },
+        "sharedSpans": 28,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      },
+      {
+        "name": "hard-flettede-puppy-half",
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "passed": true,
+        "pageErrors": [],
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.006,
+          "prepareRoundTripSeconds": 0.2525,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 25.0485,
+          "resultToReadySeconds": 0.7229000000953675,
+          "clickToReadySeconds": 26.030200000047685
+        },
+        "engineError": 0.00908125,
+        "sourceEditableError": 0.00915,
+        "templateChecksPassed": true,
+        "samplingRecovery": {
+          "counts": [
+            3,
+            3
+          ],
+          "initializationResolution": 98,
+          "emphasizedRegions": 1,
+          "attempts": [
+            {
+              "phase": -1,
+              "error": 0.037841796875,
+              "featuresPassed": false
+            },
+            {
+              "phase": 1,
+              "error": 0.131256103515625,
+              "featuresPassed": false
+            }
+          ],
+          "retained": 0,
+          "reason": "invalid-initial-geometry",
+          "scheduled": 0,
+          "remainingSeconds": 177.01310000002385,
+          "elapsedSeconds": 3.181299999952316
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 4.6875e-06
+            }
+          ],
+          "originalSourceError": 0.00915,
+          "sourceError": 0.00915
+        },
+        "sharedSpans": 59,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      },
+      {
+        "name": "hat",
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "passed": true,
+        "pageErrors": [],
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.007399999976158142,
+          "prepareRoundTripSeconds": 0.2922000000476837,
+          "preparedToSolveRequestSeconds": 0.0005,
+          "solveRoundTripSeconds": 2.1595,
+          "resultToReadySeconds": 0.08519999992847442,
+          "clickToReadySeconds": 2.5447999999523163
+        },
+        "engineError": 0.001575,
+        "sourceEditableError": 0.001575,
+        "templateChecksPassed": true,
+        "samplingRecovery": null,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.001575,
+          "sourceError": 0.001575
+        },
+        "sharedSpans": 9,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    ],
+    "servedSourceCheck": {
+      "origin": "http://127.0.0.1:5232",
+      "checkedAfterBrowserRun": true,
+      "allBrowserWorkspaceAndHarnessHashesMatch": true,
+      "staticFilesMatchPreview": [
+        {
+          "path": "static/inverse/worker.js",
+          "sha256": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70",
+          "url": "http://127.0.0.1:5232/inverse/worker.js"
+        },
+        {
+          "path": "static/inverse/worker-bootstrap.js",
+          "sha256": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+          "url": "http://127.0.0.1:5232/inverse/worker-bootstrap.js"
+        },
+        {
+          "path": "static/inverse/worker-controller.js",
+          "sha256": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+          "url": "http://127.0.0.1:5232/inverse/worker-controller.js"
+        },
+        {
+          "path": "static/inverse/compute-worker.js",
+          "sha256": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+          "url": "http://127.0.0.1:5232/inverse/compute-worker.js"
+        },
+        {
+          "path": "static/inverse/core/engine.js",
+          "sha256": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+          "url": "http://127.0.0.1:5232/inverse/core/engine.js"
+        },
+        {
+          "path": "static/inverse/core/stopped.js",
+          "sha256": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+          "url": "http://127.0.0.1:5232/inverse/core/stopped.js"
+        },
+        {
+          "path": "static/inverse/core/progress.js",
+          "sha256": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+          "url": "http://127.0.0.1:5232/inverse/core/progress.js"
+        },
+        {
+          "path": "static/inverse/core/feature-recovery.js",
+          "sha256": "6be5ef1c55009da6cff646e460a6601b6fab87212d3b87da4f3bb09fb2c962f9",
+          "url": "http://127.0.0.1:5232/inverse/core/feature-recovery.js"
+        },
+        {
+          "path": "static/inverse/core/solver.js",
+          "sha256": "cfc48549b0673167d0eeae4537cfc1f0d00c4cb4e6c34a10ee9972e42c65bcd6",
+          "url": "http://127.0.0.1:5232/inverse/core/solver.js"
+        },
+        {
+          "path": "static/inverse/core/routing.js",
+          "sha256": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+          "url": "http://127.0.0.1:5232/inverse/core/routing.js"
+        },
+        {
+          "path": "static/inverse/core/crop.js",
+          "sha256": "e44d3179ca229cb645779af3550ab2736547104c46684e0ccee402a1d1875ea6",
+          "url": "http://127.0.0.1:5232/inverse/core/crop.js"
+        },
+        {
+          "path": "static/inverse/locator/locator.js",
+          "sha256": "971c5205bd738b280b98e32899a8095d00c6520cadee7c8ec0e7e65529d0fbdd",
+          "url": "http://127.0.0.1:5232/inverse/locator/locator.js"
+        },
+        {
+          "path": "static/inverse/locator/fields.js",
+          "sha256": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
+          "url": "http://127.0.0.1:5232/inverse/locator/fields.js"
+        },
+        {
+          "path": "static/inverse/locator/math.js",
+          "sha256": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+          "url": "http://127.0.0.1:5232/inverse/locator/math.js"
+        },
+        {
+          "path": "static/inverse/locator/palette.js",
+          "sha256": "e6163193c14d753c2b93168c2e2e25602fb240117e1846a1c92a92308bc9084b",
+          "url": "http://127.0.0.1:5232/inverse/locator/palette.js"
+        },
+        {
+          "path": "static/inverse/locator/anchored.js",
+          "sha256": "c4f5276af229a7b9bbc1f686ea308697200cdd787bcdee2692d87a60bcdad991",
+          "url": "http://127.0.0.1:5232/inverse/locator/anchored.js"
+        },
+        {
+          "path": "static/inverse/locator/grid-refine.js",
+          "sha256": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+          "url": "http://127.0.0.1:5232/inverse/locator/grid-refine.js"
+        },
+        {
+          "path": "static/inverse/core/automatic.js",
+          "sha256": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+          "url": "http://127.0.0.1:5232/inverse/core/automatic.js"
+        },
+        {
+          "path": "static/inverse/core/input.js",
+          "sha256": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+          "url": "http://127.0.0.1:5232/inverse/core/input.js"
+        },
+        {
+          "path": "static/inverse/core/image-reference.js",
+          "sha256": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+          "url": "http://127.0.0.1:5232/inverse/core/image-reference.js"
+        },
+        {
+          "path": "static/inverse/core/image-features.js",
+          "sha256": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+          "url": "http://127.0.0.1:5232/inverse/core/image-features.js"
+        },
+        {
+          "path": "static/inverse/core/direct/image-objective.js",
+          "sha256": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/image-objective.js"
+        },
+        {
+          "path": "static/inverse/core/direct/prefer-matching.js",
+          "sha256": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/prefer-matching.js"
+        },
+        {
+          "path": "static/inverse/core/direct/symmetry.js",
+          "sha256": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/symmetry.js"
+        },
+        {
+          "path": "static/inverse/core/direct/finalize.js",
+          "sha256": "40c9d60e5bd327876da0465ab8d371a05430d43412520a32a0f3ab90f07284e4",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/finalize.js"
+        },
+        {
+          "path": "static/inverse/core/direct/topology.js",
+          "sha256": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/topology.js"
+        },
+        {
+          "path": "static/inverse/core/direct/fit.js",
+          "sha256": "5de43c9f614d9567ab09d0ef755079fadf708c35ed18535f80dbf0cec10a9103",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/fit.js"
+        },
+        {
+          "path": "static/inverse/core/direct/share.js",
+          "sha256": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/share.js"
+        },
+        {
+          "path": "static/inverse/core/direct/initialize.js",
+          "sha256": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/initialize.js"
+        },
+        {
+          "path": "static/inverse/core/direct/counts.js",
+          "sha256": "fbfcc89f1399bb76f2654b7476c52bd6aa29e2170ad1759e890268d9e392b23e",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/counts.js"
+        },
+        {
+          "path": "static/inverse/core/direct/feature-seeds.js",
+          "sha256": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/feature-seeds.js"
+        },
+        {
+          "path": "static/inverse/core/direct/feature-details.js",
+          "sha256": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/feature-details.js"
+        },
+        {
+          "path": "static/inverse/core/direct/matching.js",
+          "sha256": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/matching.js"
+        },
+        {
+          "path": "static/inverse/core/feature-shapes.js",
+          "sha256": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+          "url": "http://127.0.0.1:5232/inverse/core/feature-shapes.js"
+        },
+        {
+          "path": "static/inverse/core/self-returns.js",
+          "sha256": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+          "url": "http://127.0.0.1:5232/inverse/core/self-returns.js"
+        },
+        {
+          "path": "static/inverse/core/self-intersections.js",
+          "sha256": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+          "url": "http://127.0.0.1:5232/inverse/core/self-intersections.js"
+        },
+        {
+          "path": "static/inverse/core/direct/grid.js",
+          "sha256": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/grid.js"
+        },
+        {
+          "path": "static/inverse/core/junctions.js",
+          "sha256": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+          "url": "http://127.0.0.1:5232/inverse/core/junctions.js"
+        },
+        {
+          "path": "static/inverse/core/border.js",
+          "sha256": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+          "url": "http://127.0.0.1:5232/inverse/core/border.js"
+        },
+        {
+          "path": "static/inverse/core/material.js",
+          "sha256": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+          "url": "http://127.0.0.1:5232/inverse/core/material.js"
+        },
+        {
+          "path": "static/inverse/core/validate.js",
+          "sha256": "31cc29c6873896f53a2f999782dcd2292f0924611166932114b45534f5cbebd7",
+          "url": "http://127.0.0.1:5232/inverse/core/validate.js"
+        },
+        {
+          "path": "static/inverse/core/settings.js",
+          "sha256": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+          "url": "http://127.0.0.1:5232/inverse/core/settings.js"
+        },
+        {
+          "path": "static/inverse/core/direct/refine.js",
+          "sha256": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/refine.js"
+        },
+        {
+          "path": "static/inverse/core/direct/clamped-features.js",
+          "sha256": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/clamped-features.js"
+        },
+        {
+          "path": "static/inverse/core/direct/primitive-selection.js",
+          "sha256": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/primitive-selection.js"
+        },
+        {
+          "path": "static/inverse/core/direct/primitives.js",
+          "sha256": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/primitives.js"
+        },
+        {
+          "path": "static/inverse/core/direct/shared-simplification.js",
+          "sha256": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/shared-simplification.js"
+        },
+        {
+          "path": "static/inverse/core/direct/curves.js",
+          "sha256": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/curves.js"
+        },
+        {
+          "path": "static/inverse/core/direct/curve-topology.js",
+          "sha256": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/curve-topology.js"
+        },
+        {
+          "path": "static/inverse/core/direct/short-returns.js",
+          "sha256": "d89c3a75df735ca5d519b354b0e47327f58ce56e55f86693de44ded98e857269",
+          "url": "http://127.0.0.1:5232/inverse/core/direct/short-returns.js"
+        }
+      ],
+      "workspaceFileCount": 62,
+      "harnessFileCount": 22
+    }
+  },
+  "rawReports": {
+    "tmp/heart-learning/near-miss-paper-v1/final-corpus/results.json": "d06ca52dc13aabf2171426bbea4ae2fac1cf36a844ba34781188601a158e3b62",
+    "tmp/heart-learning/sampling-fallback-v1/verified-corpus/results.json": "d2512f00812a7480eda96b2a291d996eaa126ba37049d05dbd6cba9bce027fc0",
+    "tmp/heart-learning/near-miss-paper-v1/final-perturbations/results.json": "c167fadd65ae7a4ca8517d5a191ff1b948fe166b0999b74f4aabc8b7c5faf243",
+    "tmp/heart-learning/sampling-fallback-v1/verified-perturbations/results.json": "2b387f85e3272dd72e2bd819337205cccc42881a7d2f776912336bea9bff8d1d",
+    "tmp/heart-learning/sampling-fallback-v1/verified-replay/results.json": "d4dec4d9e87efe6b98d8510f735d72e7e897f7cd56a92608fbf63e9ba35631db",
+    "tmp/heart-learning/initializer-resolution-v1/release-replay/results.json": "07b10cc8bfb21736fa617de702b2ede2563d1e8a1c7771a87c80873f3b5f8e0c",
+    "tmp/heart-learning/sampling-fallback-v1/verified-hunodan/results.json": "6db4fca9d6c0719be09f44ea487d5d6e8470d1a5a630022a8fd24ed4db9e4155",
+    "tmp/heart-learning/near-miss-paper-v1/final-hunodan/results.json": "052021d5944769eb2935c891a30d14432f81970914c350eaf2b696fd3a403b2a",
+    "tmp/heart-learning/sampling-fallback-v1/verified-checks/report.json": "a01e59367f7d30055d68ef133e9095fd7d8d6811b39004e813082b0499aa30fa",
+    "tmp/heart-learning/sampling-fallback-v1/verified-browser/results.json": "c218c9742aa448a04aca6e647014351f54a71771dc2e5ebd645675c10417fbb6",
+    "tmp/heart-learning/sampling-fallback-v1/verified-served-source-check.json": "435f2ac3446285dda6fdbeb2de40599e9887c2ad26eb644cfb844b8debbb4256",
+    "tmp/heart-learning/sampling-fallback-v1/initial-checks/qa.json": "5418f35da6fb7bd2bc000d72b7869ce596932bd5bf3daa79c934c3b8935a5c08",
+    "tmp/heart-learning/sampling-fallback-v1/preflight-checks/report.json": "df3698a2bfb93185fd0b8615c40d726fb0bbc573d3995d70a623dac4ed414017",
+    "tmp/heart-learning/sampling-fallback-v1/preflight/original/preflight.json": "9172d4f02aca59be46b6a3bf800ae4ac94483c875c6b18e8a4222e48237f56e7",
+    "tmp/heart-learning/sampling-fallback-v1/preflight/horizontal/preflight.json": "9f096bf95b2d1c5f1990c259b1585ca87e6623ffaa8a37596028ebf0a4bebad7",
+    "tmp/heart-learning/sampling-fallback-v1/preflight/vertical/preflight.json": "93c6284126745162cbfe7fe8444d7ac2a4935f6d706b06e925c144d494a902e5",
+    "tmp/heart-learning/sampling-fallback-v1/preflight/negative-diagonal-raw/preflight.json": "90388cfd0f8b88b154bbd12dea56e4d90b49adf04a35fe6d8c917f17dde49eef",
+    "tmp/heart-learning/sampling-fallback-v1/release-checks/report.json": "be096128ff537f36f069b14bff82fb931092e22f2d954f5a8e7dc94209f4261f",
+    "tmp/heart-learning/sampling-fallback-v1/release-perturbations/results.json": "dce77118327627af3e31d17908a4e702ef62b228505799bacd3b6f2f25947605",
+    "tmp/heart-learning/sampling-fallback-v1/visual-detail-review.json": "8a5ee296280a833f9e79247332715737ac42cb362c08f6b86a24599b9d03e8fa"
+  },
+  "artifactManifest": {
+    "path": "tmp/heart-learning/sampling-fallback-v1/artifacts.json",
+    "sha256": "c1c986f5c57f642822f167221d9987dd4e4acc46354eeac264add4fa379ba7ac",
+    "hashedFiles": 3586
+  },
+  "qualifications": [
+    "The nine translations are a development study of one photograph, not nine independent motif families.",
+    "Independent image errors use the fixed classified photographic masks, not unavailable ground-truth artwork or cutting geometry.",
+    "Native ten-second checks and browser click-to-ready timings are distinct; browser runs use the UI budget.",
+    "No physical assembly testing. The nominal geometry and guarded paper-core checks retain their documented limits.",
+    "Original collage benchmark successes remain separate from new crop-perturbation successes."
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "schema": "curve-evaluation-cache-results-1",
+  "status": "runtime-integrated-release-qa-pending",
+  "implementation": "Cache Bernstein bases for each parameter set across least-squares fitting, error measurement and Newton reparameterization. Cache derivative controls once per reparameterization pass. The arithmetic expressions, order, fit tolerance, pass count and selection remain unchanged.",
+  "evidence": {
+    "inputs": 110,
+    "distinctGeometrySerializations": 65,
+    "identicalConvertedResults": 110,
+    "identicalSvgFiles": 110,
+    "baselineSeconds": 55.20615353699999,
+    "candidateSeconds": 36.75419970800005,
+    "totalStageReductionFraction": 0.33423726608000615,
+    "medianBaselineSeconds": 0.4594940210000004,
+    "medianCandidateSeconds": 0.3014639165000001,
+    "denseHunodan": [
+      {
+        "id": "hunodan-hjstr-03",
+        "fitVariant": "baseline",
+        "referenceResolution": 400,
+        "geometrySha256": "f56429ad6c7a2faceb7df95a22be4962cf6834878da575768a79c727408c2e1d",
+        "baselineSeconds": 0.8586618340000023,
+        "candidateSeconds": 0.5421764170000024,
+        "identicalConverted": true,
+        "identicalSvg": true,
+        "svgSha256": "af5243767ba98b890f198c9224e228c2b6da4a32184331ea9b42be617d395851",
+        "tolerance": 0.1,
+        "sourceError": 0.00808125
+      },
+      {
+        "id": "hunodan-hjstr-03",
+        "fitVariant": "candidate",
+        "referenceResolution": 400,
+        "geometrySha256": "f56429ad6c7a2faceb7df95a22be4962cf6834878da575768a79c727408c2e1d",
+        "baselineSeconds": 0.8697525410000017,
+        "candidateSeconds": 0.5519122090000019,
+        "identicalConverted": true,
+        "identicalSvg": true,
+        "svgSha256": "af5243767ba98b890f198c9224e228c2b6da4a32184331ea9b42be617d395851",
+        "tolerance": 0.1,
+        "sourceError": 0.00808125
+      }
+    ]
+  },
+  "method": "Two separate SSR module loaders select the unchanged or cached simplifier. Alternate arm order for each saved fit; compare every scalar coordinate, fidelity result, chosen tolerance and complete serialized SVG. Browser cases use their actual 400px painting reference; photo benchmark cases retain their native masks and observation coverage.",
+  "limitations": [
+    "Conversion replay timings exclude module loading, fitting and browser rendering. The combined actual-browser measurements are recorded separately below; full QA stopped at a pre-existing native conversion fidelity gap.",
+    "The 110 inputs come from two fitted variants of 55 cases, with repeated geometry; they are not 110 independent photographs.",
+    "No fit-quality or legality threshold is relaxed. Existing photographic reconstruction defects remain."
+  ],
+  "earlierCache": {
+    "path": "tmp/heart-learning/curve-evaluation-cache-v1/results.json",
+    "baselineSeconds": 55.76239224400001,
+    "candidateSeconds": 51.446037204999996,
+    "outcome": "Identical outputs with about 8% stage saving. Reusing bases across all consumers in each fitting pass gives the selected larger improvement."
+  },
+  "profile": "tmp/heart-learning/editable-latency-v1/results.json",
+  "qaState": "tmp/heart-learning/supported-count-bound-runtime-v1/qa/state.json",
+  "artifactsSha256": {
+    "tmp/heart-learning/curve-evaluation-cache-v2/state.json": "24d4ef548fbaa00cc2369d9ff253f548bda0aec9e520ef03b8e24c4c3e587550",
+    "tmp/heart-learning/curve-evaluation-cache-v2/results.json": "63277c1affa548abccbeb607832263ea3f21a3b732e9f15142d0c906f6f1cd13",
+    "tmp/heart-learning/curve-evaluation-cache-v2/source.json": "df6e9c7e6241b2150c70ad575eca59034265c5a56e3da1b28e8dfd58876bf1aa",
+    "tmp/heart-learning/curve-evaluation-cache-v2/baseline.ts": "c693b9eb86084926d941d7e60a1a38178156d081657feabce41ff03261714173",
+    "tmp/heart-learning/curve-evaluation-cache-v2/candidate.ts": "f3dabba08a0ab3b9ee3beddf222adbbc9d0ad38f7d45727c779775f7750483e4",
+    "tmp/heart-learning/curve-evaluation-cache-v2/replay.mjs": "8432e4da977dfeddfc54e77cd98b5776b9a5d8d8014b338fbd4136a25f24639a",
+    "tmp/heart-learning/curve-evaluation-cache-v2/run.py": "7665e2c46052c4b5adfd3fdc2387fc628b67285732fc1f4342a6d16a8af7e57b",
+    "tmp/heart-learning/editable-latency-v1/state.json": "c2ae657c92660121c682691de8adff973ee76df1f646d25786cd1b404243a56c",
+    "tmp/heart-learning/editable-latency-v1/results.json": "5ccc284ea26eee49237e0e577822668f35730c5ea62ff969001544f5fb103baf",
+    "tmp/heart-learning/editable-latency-v1/hjstr-03.cpuprofile": "09dc53453b80c17d225fa158c6b3245c02c6885dc77ab813ba970fd6330b95c6",
+    "tmp/heart-learning/editable-latency-v1/hjcur-05.cpuprofile": "413b6b45dc1bf6e553123151d5a1e5e55f0a13bd9bae749f70244b400f65e1f7",
+    "tmp/heart-learning/curve-evaluation-cache-v1/state.json": "e890c255257d6c1a20de91fd5ba4ccb4672fd71d834bd1721717b55637527636",
+    "tmp/heart-learning/curve-evaluation-cache-v1/results.json": "18fb2b3e5ff7eb5c72006f4b146797b5635dc27e18cb5093f4ad22ccc2b8d6c9",
+    "tmp/heart-learning/curve-evaluation-cache-v1/source.json": "a95a13f2e302cf5643637a90991708fc315e004ced95f416004405b9b822ae18",
+    "tmp/heart-learning/curve-evaluation-cache-v1/candidate.ts": "eccb2520b2a0762804060e89449a106f89f5b166769d121d9df7423d56672df4",
+    "tmp/heart-learning/curve-evaluation-cache-v2/focused.log": "61128c008127bd9180163a42ea5dcaf67668b9b47e91bd45a9126114b0fbcbdb"
+  },
+  "focusedTests": {
+    "passed": 61,
+    "files": 3
+  },
+  "combinedBrowserQa": {
+    "passed": 22,
+    "cases": 22,
+    "underTenSeconds": 22,
+    "medianSeconds": 5.984049999952316,
+    "maximumSeconds": 9.851599999904632,
+    "identicalToNativeImport": [
+      "all 22 painting masks",
+      "all 22 cutting geometries",
+      "all 22 editable SVG files",
+      "all 22 painting errors"
+    ],
+    "qaRoot": "tmp/heart-learning/supported-count-bound-runtime-v1/qa",
+    "fullQa": "Stopped at hard-photo native conversion assertion before full npm test."
+  },
+  "followup": "native-conversion-fidelity-results.json",
+  "fullRuntimeQa": {
+    "record": "native-conversion-fidelity-results.json",
+    "applicationPassed": 874,
+    "applicationSkipped": 1,
+    "inversePassed": 1003,
+    "browserWorkflowsPassed": 29,
+    "hunodanUnderTenSeconds": 21,
+    "hunodanMaximumSeconds": 10.244800000190734
+  }
+}

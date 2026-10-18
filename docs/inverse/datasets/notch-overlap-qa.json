@@ -1,0 +1,40 @@
+{
+  "schema": "notch-overlap-repository-qa-1",
+  "status": "complete",
+  "scope": "Existing affine and local-support JavaScript prototypes; the later Python occlusion pilot has separate tests and dataset verification. No application implementation changed.",
+  "applicationTests": 865,
+  "applicationTestsSkipped": 1,
+  "inverseTests": 989,
+  "sourceFilesVerified": 880,
+  "checks": [
+    {
+      "stage": "check",
+      "exitCode": 0,
+      "seconds": 10.422490332999999
+    },
+    {
+      "stage": "lint",
+      "exitCode": 0,
+      "seconds": 6.935108457999998
+    },
+    {
+      "stage": "build",
+      "exitCode": 0,
+      "seconds": 15.872937541000002
+    },
+    {
+      "stage": "test",
+      "exitCode": 0,
+      "seconds": 1109.136924042
+    }
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/notch-overlap-qa-v1/state.json": "82f8a87f29e3a2d4c275add9d532bec60b492f69cbbcf1e37718013603e22ff8",
+    "tmp/heart-learning/notch-overlap-qa-v1/checks.json": "2fe638b9a9449c9d10c5b1f2264848e39af1f6c48ca9c9b696b86cd4117f7380",
+    "tmp/heart-learning/notch-overlap-qa-v1/source.json": "8328d55bd01a760b0e0b221c487ed106ea1496662d2e73a2fbf27129b4a7604e",
+    "tmp/heart-learning/notch-overlap-qa-v1/check.log": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+    "tmp/heart-learning/notch-overlap-qa-v1/lint.log": "2b7add329ca80a0f26dcb26c7eb139cd28b3768793c6b0797002f91a54119a34",
+    "tmp/heart-learning/notch-overlap-qa-v1/build.log": "01d110e1fab52e0b0ab02d87fb7145e825678fe14358652b21506417b6ae9766",
+    "tmp/heart-learning/notch-overlap-qa-v1/test.log": "2341b494d928e5d8372360a79dd9a34bc8d555bf69ee28c2aab95fb931858741"
+  }
+}

@@ -3,10 +3,12 @@
  * initialization policies can be compared with identical downstream checks.
  */
 import {gridModel,gridMask,mismatch} from './grid.js';
-import {resize} from './math.js';
 import {symmetricCounts} from './symmetry.js';
 import {requestedSymmetry} from '../settings.js';
-import {initializeGrid,borderGrid,separableGrid} from './initialize.js';
+import {borderGrid,gridInitializer} from './initialize.js';
+import {resizeObjective} from './image-objective.js';
+import {initializationImage} from './initialization-image.js';
+import {interiorCountEvidence} from './interior-counts.js';
 
 export function borderEvidence(prob,n){
   const rows=[];
@@ -58,36 +60,119 @@ export function gridFinalists(coarse,evidence,limit=3){
     const reserve=coarse.find(r=>r.model.counts.every((c,i)=>c===supported[i]));
     if(reserve)chosen[Math.min(limit-1,chosen.length)]=reserve;
   }
+  // A few noisy pixels can put three elaborate grids ahead of a simpler
+  // routing that becomes the better fit once its curves can move. Reserve
+  // one existing slot for a competitive low-cut seed. Keep the best seed and
+  // any opposing-border reservation; final image and geometry checks still
+  // select the result, with no extra disagreement allowance.
+  if(limit>=3&&chosen.length===limit){
+    const total=r=>r.model.counts[0]+r.model.counts[1],balance=r=>Math.abs(r.model.counts[0]-r.model.counts[1]);
+    const finite=coarse.filter(r=>Number.isFinite(r.error));
+    // Use the same image-plus-cut-count preference as fine-grid comparison.
+    // A raw-image cutoff can drop the simpler routing after a one-pixel shift
+    // even though it remains competitive under the solver's own objective.
+    const score=r=>r.error+.005*total(r),best=Math.min(...finite.map(score)),largest=Math.max(...chosen.map(total));
+    // Reserve different cut counts, ranked by that objective. Choosing the
+    // fewest cuts inside the window can favour a worse five-cut flower over
+    // the useful six-cut start. A second colour phase of an existing count
+    // pair adds no count diversity; it stays in the ordinary remaining queue.
+    const represented=new Set(chosen.map(r=>r.model.counts.join(',')));
+    const simpler=finite.filter(r=>!represented.has(r.model.counts.join(','))&&score(r)<=best+.015&&total(r)<largest).sort((a,b)=>score(a)-score(b)||total(a)-total(b)||balance(a)-balance(b))[0];
+    if(simpler&&!chosen.includes(simpler)){
+      // Simplification must reduce the replaced pair's count, not merely the
+      // largest count elsewhere in the shortlist. Keep existing simpler starts.
+      const replace=chosen.map((r,i)=>i>0&&total(r)>total(simpler)&&(!supported||!r.model.counts.every((c,j)=>c===supported[j]))?i:-1).filter(i=>i>=0).at(-1);
+      if(replace!==undefined)chosen[replace]=simpler;
+    }
+  }
   return chosen;
 }
-export function countHypotheses({prob,n,cfg,evidence,maximumCount=gridCountLimit(evidence)}){
+/** Minimum-width preparation can reverse the fine-grid ranking. Compare one
+ * already initialized alternative before committing the curve-fit budget.
+ * An early comparison cannot add cuts: preparing a larger rejected grid can
+ * consume the later recovery's budget. Those grids keep their ordinary turn.
+ * Use the existing cut-count preference; this proposes work, not acceptance.
+ */
+export function clearanceComparisonSeed(remaining,incumbent,clear){
+  const cuts=r=>r.model.counts[0]+r.model.counts[1],score=r=>r.error+.005*cuts(r);
+  if(!Number.isFinite(clear.error)||clear.error<=incumbent.error)return null;
+  return remaining.filter(r=>Number.isFinite(r.error)&&cuts(r)<=cuts(incumbent)&&score(r)<score(clear))
+    .sort((a,b)=>score(a)-score(b))[0]||null;
+}
+// After a verified fit, reserve extra search for a competitive simplification.
+// Use the fine-grid ranking's existing 0.005-per-cut preference and the
+// finalist reservation's 0.015 window. This is a scheduling heuristic, not a
+// lower bound on final image error; ordinary finalists still run unchanged.
+export function simplerComparisonSeed(remaining,coarse,acceptedCounts){
+  const total=counts=>counts[0]+counts[1],score=r=>r.error+.005*total(r.model.counts);
+  const finite=coarse.filter(r=>Number.isFinite(r.error));
+  if(!finite.length||!acceptedCounts.length)return null;
+  const limit=Math.min(...finite.map(score))+.015,simplest=Math.min(...acceptedCounts.map(total));
+  return remaining.find(r=>Number.isFinite(r.error)&&total(r.model.counts)<simplest&&score(r)<=limit)||null;
+}
+export function countHypotheses({prob,n,cfg,evidence,maximumCount=gridCountLimit(evidence),weights=null}){
   const options=[],seen=new Set();
   const add=(counts,phase)=>{if(counts.some(c=>c<1||c>maximumCount||(c+1)*(cfg.nominalWidth+.35)>=cfg.width)||!symmetricCounts(cfg.symmetry,counts))return;const key=counts+':'+phase;if(!seen.has(key)){seen.add(key);options.push({counts,phase});}};
   for(let count=1;count<=maximumCount;count++)for(const phase of[1,-1])add([count,count],phase);
   const modes=sides=>{const counts=new Map();for(const r of evidence)if(sides.includes(r.side)&&r.count>=1&&r.count<=maximumCount)counts.set(r.count,(counts.get(r.count)||0)+1);return[...counts].sort((a,b)=>b[1]-a[1]).slice(0,2).map(x=>x[0]);};
   for(const a of modes([0,2]))for(const b of modes([1,3]))for(const phase of[1,-1])add([a,b],phase);
-  const small=resize(prob,n,64);
-  for(const o of options){const model=gridModel(o.counts);model.z.fill(0);o.initialError=mismatch(gridMask(model,64,o.phase),small);}
+  const small=resizeObjective(prob,n,64,weights);
+  for(const o of options){const model=gridModel(o.counts);model.z.fill(0);o.initialError=mismatch(gridMask(model,64,o.phase),small.probability,small.weights);}
   options.sort((a,b)=>a.initialError-b.initialError||a.counts[0]+a.counts[1]-b.counts[0]-b.counts[1]);
   if(!options.length)throw new Error(requestedSymmetry(cfg.symmetry).length?'The requested symmetry allows no slit counts here: a mirrored family needs an even number of cuts, a transposition needs equal counts, and the strip width limits the rest.':'The requested strip width leaves no room for a woven grid.');
   return options;
 }
 
-export function initializeCounts({options,fullProb,resolution,prob,n,evidence},{rounds=18,sharedWork=false}={}){
-    const seeds=[];
+/** Add only image-supported dense starts. Keep every ordinary count/phase,
+ * including simpler routings and any existing border-driven dense proposals.
+ * The eleven-cut expansion fits the editor's twelve-strip grid. This does not
+ * enlarge the later recovery search or its time allowance. */
+export function extendInteriorCountHypotheses(args,cfg){
+  const previousMaximum=gridCountLimit(args.evidence);
+  const bands=interiorCountEvidence(args.guideProb||args.fullProb,args.resolution,args.fullWeights);
+  const supported=bands.filter(b=>b.bands>=25&&b.fractionAboveEight>=.75);
+  const maximumCount=Math.max(previousMaximum,Math.min(11,Math.max(0,...supported.map(b=>b.median+1))));
+  if(maximumCount===previousMaximum)return{options:args.options,report:{previousMaximum,maximumCount,added:0,bands}};
+  const options=args.options.slice(),seen=new Set(options.map(o=>o.counts+':'+o.phase));
+  for(const o of countHypotheses({...args,cfg,maximumCount})){
+    const key=o.counts+':'+o.phase;
+    if(!seen.has(key)){seen.add(key);options.push(o);}
+  }
+  options.sort((a,b)=>a.initialError-b.initialError||a.counts[0]+a.counts[1]-b.counts[0]-b.counts[1]);
+  return{options,report:{previousMaximum,maximumCount,added:options.length-args.options.length,bands}};
+}
+
+// Reuse projection work without pruning any count or phase. The explicit false
+// option preserves the original initializer for paired benchmark comparisons.
+export function initializeCounts({options,fullProb,resolution,prob,n,evidence,weights=null,fullWeights=null,guideProb=null},{rounds=18,k=16,sharedWork=true,retainAlternatives=false,initializationResolution=96,native=true}={}){
+    const seeds=[],fitter=gridInitializer(fullProb,resolution,{weights:fullWeights,sharedWork,native}),guideFitter=guideProb?gridInitializer(guideProb,resolution,{sharedWork,native}):null;
+    const score=sharedWork?initializationImage(prob,n,weights)(n).score:mask=>mismatch(mask,prob,weights);
     for(const o of options){
-      const uniform=gridModel(o.counts);uniform.z.fill(0);
-      const raw={model:uniform,phase:o.phase,floor:.008,error:mismatch(gridMask(uniform,n,o.phase),prob),steps:0};
+      const uniform=gridModel(o.counts,k);uniform.z.fill(0);
+      const raw={model:uniform,phase:o.phase,floor:.008,error:score(gridMask(uniform,n,o.phase)),steps:0};
       const choices=[raw];
       // Keep both uniform and border-informed proposals: photographed endpoints
       // are useful evidence, but must not eliminate a better interior layout.
-      for(const initial of[null,borderGrid(o.counts,evidence,{sharedWork})?.z,separableGrid(fullProb,resolution,o.counts,o.phase,{sharedWork}).z].filter(v=>v!==undefined)){
-        const result=initializeGrid(fullProb,resolution,o.counts,o.phase,{initial,scoreResolution:96,rounds,sharedWork});
-        result.error=mismatch(gridMask(result.model,n,result.phase,result.floor),prob);
+      for(const initial of[null,borderGrid(o.counts,evidence,{k,sharedWork})?.z,fitter.separable(o.counts,o.phase,{k}).z].filter(v=>v!==undefined)){
+        const result=fitter.initialize(o.counts,o.phase,{k,initial,resolution:initializationResolution,scoreResolution:96,rounds});
+        result.error=score(gridMask(result.model,n,result.phase,result.floor));
         choices.push(result);
       }
+      // A supporting checker supplies additional layouts, never a required
+      // border. Both the guided layout and its weighted refinement compete
+      // using only the actual observed-image objective.
+      if(guideProb){
+        const guide=guideFitter.initialize(o.counts,o.phase,{k,resolution:initializationResolution,scoreResolution:96,rounds});
+        const refined=fitter.initialize(o.counts,o.phase,{k,initial:guide.model.z,resolution:initializationResolution,scoreResolution:96,rounds});
+        for(const result of[guide,refined]){result.error=score(gridMask(result.model,n,result.phase,result.floor));choices.push(result);}
+      }
       const initializationRounds=choices.filter(r=>r!==raw).map(r=>r.steps);
-      choices.sort((a,b)=>a.error-b.error);seeds.push({...choices[0],initializationRounds,seedKind:choices[0]===raw?'uniform':'row-dynamic-programming'});
+      const initializationTerminations=choices.filter(r=>r!==raw).map(r=>r.termination);
+      choices.sort((a,b)=>a.error-b.error);seeds.push({...choices[0],initializationRounds,initializationTerminations,seedKind:choices[0]===raw?'uniform':'row-dynamic-programming',
+        // A weighted mean can prefer erasing one small source region. Keep
+        // already computed alternatives for callers with a separate fidelity
+        // gate, without changing the ordinary winner or doing extra search.
+        ...(retainAlternatives?{alternatives:choices.slice(1)}:{})});
     }
     seeds.sort((a,b)=>a.error+.001*(a.model.counts[0]+a.model.counts[1])-b.error-.001*(b.model.counts[0]+b.model.counts[1]));
   return{seeds,report:{strategy:sharedWork?'shared-work':'all',hypotheses:options.length,fullyInitialized:options.length}};

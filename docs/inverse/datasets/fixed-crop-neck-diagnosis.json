@@ -1,0 +1,243 @@
+{
+  "schema": "fixed-crop-motif-neck-diagnosis-1",
+  "scope": "Historical geometry diagnosis of an appearance-mask reinterpretation. Primary publisher verification subsequently established that the small hearts are printed decoration; see printed-heart-source-correction.json. No known cutting-path recovery failure is established by these necks.",
+  "source": "docs/inverse/datasets/fixed-crop-material-diagnosis.json",
+  "configuration": {
+    "width": 100,
+    "nominalWidth": 2.50501002004008,
+    "geometryTolerance": 0.01,
+    "maxImageError": 0.03
+  },
+  "geometry": {
+    "passed": true,
+    "minimumInterSlitDistanceLower": 2.9523683947871824,
+    "nominalWidthRequired": 2.50501002004008
+  },
+  "neckPairs": [
+    {
+      "motif": 0,
+      "cuts": [
+        0,
+        1
+      ],
+      "curves": [
+        0,
+        13
+      ],
+      "family": "A",
+      "measuredPolylineDistanceMm": 3.0472049964316894,
+      "toleranceAdjustedLowerMm": 3.0452049964316896
+    },
+    {
+      "motif": 3,
+      "cuts": [
+        3,
+        4
+      ],
+      "curves": [
+        59,
+        72
+      ],
+      "family": "A",
+      "measuredPolylineDistanceMm": 3.02799642725366,
+      "toleranceAdjustedLowerMm": 3.02599642725366
+    }
+  ],
+  "indexConvention": "Zero-based cut and global curve indices in cut_geometry.json; source motifs ordered from upper-left to lower-right.",
+  "sourceMotifs": [
+    {
+      "index": 0,
+      "areaMm2": 261.0625,
+      "retention": 0.9887479051951161,
+      "touchesBorder": true
+    },
+    {
+      "index": 1,
+      "areaMm2": 245.4375,
+      "retention": 0.9938884644766998,
+      "touchesBorder": false
+    },
+    {
+      "index": 2,
+      "areaMm2": 233.25,
+      "retention": 0.9895498392282959,
+      "touchesBorder": false
+    },
+    {
+      "index": 3,
+      "areaMm2": 229.9375,
+      "retention": 0.9910301712421854,
+      "touchesBorder": true
+    }
+  ],
+  "visualReview": {
+    "inspected": true,
+    "image": {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/neck-review/overlay.png",
+      "sha256": "c6e49cec67135663cccae1c1da272c0500b6424df163c04c814cf3e64c087501",
+      "bytes": 590092
+    },
+    "notes": "The first heart connects to the top through a channel bounded by A0 and A1. The fourth connects to the bottom between A3 and A4. Both sides of each unwanted connection are cuts in the same sheet; the overlays identify their exported curve references."
+  },
+  "findings": [
+    "These are approximately 3 mm channels between distinct same-sheet cuts, not small misalignment between cuts from opposite sheets.",
+    "Collapsing either pair into a shared segment would violate the same-sheet clearance rule. Recovering the intended isolated motifs needs a different routing or cut assignment, rather than merely snapping these two curves together.",
+    "All four heart regions are much larger than the existing small-enclosure cutoff (4 * nominalWidth^2). Their colour-retention checks pass while two remain connected to the border. The source-stability diagnostic recognizes all four as enclosed.",
+    "The legal five-by-three grid fit is therefore not a faithful motif reconstruction even though its independent whole-mask error is only 1.724375%."
+  ],
+  "nextExperiment": {
+    "status": "retired-before-execution",
+    "plan": {
+      "path": "tmp/heart-learning/rgb-border-routing-v1/plan.json",
+      "sha256": "53096a740a27548b869fb4705d5ba6cd976a98b2bf6497e73bf2f2bd070abec7",
+      "bytes": 1449
+    },
+    "scope": "Fresh source tracing/MILP proposals from the better RGB mask, with four border radii and two tracing tolerances; score against the unchanged source and check all four motif enclosures. Use the existing independent renderer and geometry/paper checks.",
+    "preprocessing": [
+      {
+        "name": "radius-0.5",
+        "radius": 0.5,
+        "maskSha256": "bf2fe227bd8f06d5dccbf098c8fcc62a22c1b4cce6170c5e48086394a441145d",
+        "metadata": {
+          "radiusMm": 0.5,
+          "depthPixels": 2,
+          "profileNoiseRadiusMm": 0.5,
+          "profilePixelsChanged": 0,
+          "editedBandWidthMm": 0.5,
+          "changedPixels": 399,
+          "changeFraction": 0.00249375,
+          "transitionsBefore": [
+            0,
+            3,
+            9,
+            4
+          ],
+          "transitionsAfter": [
+            0,
+            3,
+            5,
+            4
+          ],
+          "method": "Majority across and along inward edge profiles; suppress sub-strip noise before bounded border extension."
+        }
+      },
+      {
+        "name": "radius-1",
+        "radius": 1,
+        "maskSha256": "386cc49d94440bf42e2fd52ec98d2c7be8e0c0945176461eaccfc17e01844b4c",
+        "metadata": {
+          "radiusMm": 1,
+          "depthPixels": 4,
+          "profileNoiseRadiusMm": 1,
+          "profilePixelsChanged": 0,
+          "editedBandWidthMm": 1,
+          "changedPixels": 1606,
+          "changeFraction": 0.0100375,
+          "transitionsBefore": [
+            0,
+            3,
+            9,
+            4
+          ],
+          "transitionsAfter": [
+            3,
+            3,
+            3,
+            3
+          ],
+          "method": "Majority across and along inward edge profiles; suppress sub-strip noise before bounded border extension."
+        }
+      },
+      {
+        "name": "radius-2",
+        "radius": 2,
+        "maskSha256": "c7b1ad03590aaca9b1a1a2889b21cfca4d9302ce994c6742232f05985aebe9a0",
+        "metadata": {
+          "radiusMm": 2,
+          "depthPixels": 8,
+          "profileNoiseRadiusMm": 1.25,
+          "profilePixelsChanged": 0,
+          "editedBandWidthMm": 2,
+          "changedPixels": 2084,
+          "changeFraction": 0.013025,
+          "transitionsBefore": [
+            0,
+            3,
+            9,
+            4
+          ],
+          "transitionsAfter": [
+            3,
+            3,
+            3,
+            5
+          ],
+          "method": "Majority across and along inward edge profiles; suppress sub-strip noise before bounded border extension."
+        }
+      },
+      {
+        "name": "radius-3",
+        "radius": 3,
+        "maskSha256": "37b09d7db4397a830919a3557828ff6cbed775e2e0ceb3903e387035eaac15fa",
+        "metadata": {
+          "radiusMm": 3,
+          "depthPixels": 12,
+          "profileNoiseRadiusMm": 1.25,
+          "profilePixelsChanged": 3,
+          "editedBandWidthMm": 3,
+          "changedPixels": 2930,
+          "changeFraction": 0.0183125,
+          "transitionsBefore": [
+            0,
+            3,
+            9,
+            4
+          ],
+          "transitionsAfter": [
+            3,
+            5,
+            5,
+            5
+          ],
+          "method": "Majority across and along inward edge profiles; suppress sub-strip noise before bounded border extension."
+        }
+      }
+    ],
+    "deferredUntil": "The live full QA and native benchmarks and the queued initializer comparison have terminated.",
+    "reason": "The raw RGB-classified target deliberately includes red ink. Fitting it as a two-paper weave is an artwork reinterpretation, not recovery of this photograph\u2019s published cutting template."
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/fit-v1/rgb-auto/cut_geometry.json",
+      "sha256": "e3d609ecab09a4d459d8f4b6be3f9a3e38dee38f91cea6e7070b6981aa01c2c7",
+      "bytes": 52455
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/neck-review/curves.json",
+      "sha256": "aedef6d955fff477287174a9283121a288cfa6907e591f5c455ec573528a046e",
+      "bytes": 16809
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/neck-review/distances.json",
+      "sha256": "1128eebe15afc6c5298ab8aa27687424574ebcea890febb0bdd159ceafef614d",
+      "bytes": 853
+    },
+    {
+      "path": "tmp/heart-learning/rgb-border-routing-v1/route-one.mjs",
+      "sha256": "b6f2a0a50f7ade7e30ac15fca55ae91a24981cf5648d825bda51a3c2540d2235",
+      "bytes": 8793
+    },
+    {
+      "path": "tmp/heart-learning/rgb-border-routing-v1/run.py",
+      "sha256": "bcffd1d98ff7f576eb4fc37e48568ccbeec1120de067760f2cd14a9a265c1340",
+      "bytes": 2075
+    },
+    {
+      "path": "tmp/heart-learning/rgb-border-routing-v1/inputs/report.json",
+      "sha256": "d513e9da400854b3d835e9d5d3e008ffa2d23b2c2fb3ccd750ea9bba9c928bd0",
+      "bytes": 4268
+    }
+  ],
+  "smallEnclosureMaximumAreaMm2": 25.100300802004814,
+  "sourceCorrection": "docs/inverse/datasets/printed-heart-source-correction.json"
+}

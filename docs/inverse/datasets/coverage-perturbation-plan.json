@@ -1,0 +1,229 @@
+{
+  "schema": "coverage-perturbation-study-1",
+  "status": "original-matrix-and-bird-extension-complete",
+  "runtimeCommit": "1561381",
+  "question": "Can one unobserved corner pixel cause a discontinuous mask-to-template result, and are feature scheduling or coarse image resampling responsible?",
+  "scope": "Three fixed native masks, two counterbalanced repeats. No crop, classifier, target-mask, budget, geometry or paper acceptance changes.",
+  "caseIds": [
+    "photo-white-birds",
+    "hard-flettede-puppy-half",
+    "hunodan-hjfig-05"
+  ],
+  "baselineFits": 18,
+  "candidateFits": 18,
+  "baselineVariants": [
+    "baseline",
+    "all-valid",
+    "missing-corner"
+  ],
+  "candidateVariants": {
+    "weighted-features": {
+      "changes": [
+        {
+          "path": "static/inverse/core/direct/feature-details.js",
+          "beforeSha256": "b4c07ebd50fe821c37cd61ca1404c70370f50120a4c2058f7c11e743b4cfcb49",
+          "candidatePath": "tmp/heart-learning/weighted-feature-recovery-v1/runtime/inverse/core/direct/feature-details.js",
+          "afterSha256": "61e4e44bd3b87319d8a0eabe8afb914a50273e367b9376a98bb62451c4322941"
+        },
+        {
+          "path": "static/inverse/core/direct/feature-objective.js",
+          "beforeSha256": null,
+          "candidatePath": "tmp/heart-learning/weighted-feature-recovery-v1/runtime/inverse/core/direct/feature-objective.js",
+          "afterSha256": "21fd41539230b3278371e6091f23663ee37defce8f313483955fcad2d7b44ee1"
+        },
+        {
+          "path": "static/inverse/core/direct/feature-seeds.js",
+          "beforeSha256": "759fbba9c6858369949be81d7d3c25e126da769913f089fdd100b3fa650c4b6d",
+          "candidatePath": "tmp/heart-learning/weighted-feature-recovery-v1/runtime/inverse/core/direct/feature-seeds.js",
+          "afterSha256": "f82d3a8fbd39e352ec59e995cecd376676a6846e7986afc66b5cd7b3332873b9"
+        },
+        {
+          "path": "static/inverse/core/direct/fit.js",
+          "beforeSha256": "34e979ad044a1911841331ee4d5c793f626b551e2db4abaa02da8e7916810312",
+          "candidatePath": "tmp/heart-learning/weighted-feature-recovery-v1/runtime/inverse/core/direct/fit.js",
+          "afterSha256": "5bf3475666118a2b3442651ab3513d33f44ffe4ca95f95b3e5fc32d0af43216e"
+        }
+      ],
+      "patch": "tmp/heart-learning/weighted-feature-recovery-v1/candidate.patch",
+      "patchSha256": "ec4fcd508f066bf6ce0a25998b7d706b6f7e3e13f64b0a8df80d6e0f05cd4550"
+    },
+    "native-grid": {
+      "changes": [
+        {
+          "path": "static/inverse/core/direct/fit.js",
+          "beforeSha256": "34e979ad044a1911841331ee4d5c793f626b551e2db4abaa02da8e7916810312",
+          "candidatePath": "tmp/heart-learning/coverage-native-grid-v1/runtime/inverse/core/direct/fit.js",
+          "afterSha256": "3c4503d13ff4eb38079fd6082bea97fce7f09d2d136a9c3b05ebe53fae6717b1"
+        },
+        {
+          "path": "static/inverse/core/direct/grid.js",
+          "beforeSha256": "9aec9a72390448102547ce457bde22a0beb05521b9f9fc60034ecdd113ecfb85",
+          "candidatePath": "tmp/heart-learning/coverage-native-grid-v1/runtime/inverse/core/direct/grid.js",
+          "afterSha256": "5f8615baa5c22476875ae836671f78e603a2c5381ec83f99f2feaff48e8d1b9b"
+        }
+      ],
+      "patch": "tmp/heart-learning/coverage-native-grid-v1/candidate.patch",
+      "patchSha256": "4e90bd64f3bd5807dabfdba2e0b9648c93c2a921a1ad6740290127666ad4e676"
+    },
+    "combined": {
+      "changes": [
+        {
+          "path": "static/inverse/core/direct/feature-details.js",
+          "beforeSha256": "b4c07ebd50fe821c37cd61ca1404c70370f50120a4c2058f7c11e743b4cfcb49",
+          "candidatePath": "tmp/heart-learning/coverage-combined-v1/runtime/inverse/core/direct/feature-details.js",
+          "afterSha256": "61e4e44bd3b87319d8a0eabe8afb914a50273e367b9376a98bb62451c4322941"
+        },
+        {
+          "path": "static/inverse/core/direct/feature-objective.js",
+          "beforeSha256": null,
+          "candidatePath": "tmp/heart-learning/coverage-combined-v1/runtime/inverse/core/direct/feature-objective.js",
+          "afterSha256": "21fd41539230b3278371e6091f23663ee37defce8f313483955fcad2d7b44ee1"
+        },
+        {
+          "path": "static/inverse/core/direct/feature-seeds.js",
+          "beforeSha256": "759fbba9c6858369949be81d7d3c25e126da769913f089fdd100b3fa650c4b6d",
+          "candidatePath": "tmp/heart-learning/coverage-combined-v1/runtime/inverse/core/direct/feature-seeds.js",
+          "afterSha256": "f82d3a8fbd39e352ec59e995cecd376676a6846e7986afc66b5cd7b3332873b9"
+        },
+        {
+          "path": "static/inverse/core/direct/fit.js",
+          "beforeSha256": "34e979ad044a1911841331ee4d5c793f626b551e2db4abaa02da8e7916810312",
+          "candidatePath": "tmp/heart-learning/coverage-combined-v1/runtime/inverse/core/direct/fit.js",
+          "afterSha256": "1b7bbb567c5f1debfb1b7cb985777c39acfeb07d2abde4370c3f2ce6eda35d0c"
+        },
+        {
+          "path": "static/inverse/core/direct/grid.js",
+          "beforeSha256": "9aec9a72390448102547ce457bde22a0beb05521b9f9fc60034ecdd113ecfb85",
+          "candidatePath": "tmp/heart-learning/coverage-combined-v1/runtime/inverse/core/direct/grid.js",
+          "afterSha256": "5f8615baa5c22476875ae836671f78e603a2c5381ec83f99f2feaff48e8d1b9b"
+        }
+      ],
+      "patch": "tmp/heart-learning/coverage-combined-v1/candidate.patch",
+      "patchSha256": "4c59143d63ce09c88a89fd0bc78943e80923292a75feb4c19f0351ea9671606b"
+    }
+  },
+  "confirmedHelperIssue": {
+    "status": "confirmed-helper-precondition",
+    "sourceWeightAtIgnoredPixel": 0,
+    "featureObjectiveWeightAtIgnoredPixel": 0.0625,
+    "ignoredColourA": 1,
+    "ignoredColourB": 0,
+    "conclusion": "Current feature emphasis restores a positive objective weight at an unobserved pixel. Removing weighted-search guards requires composing emphasis with source coverage first.",
+    "scope": "Pure objective helper fixture; no full fitting or production-path performance claim."
+  },
+  "candidateObjectiveProbe": {
+    "status": "pure-objective-probe-passed",
+    "measurements": [
+      {
+        "resolution": 96,
+        "ignoredColourInvariant": true,
+        "unweightedByteEquivalent": true
+      },
+      {
+        "resolution": 256,
+        "ignoredColourInvariant": true,
+        "unweightedByteEquivalent": true
+      },
+      {
+        "resolution": 400,
+        "ignoredColourInvariant": true,
+        "unweightedByteEquivalent": true
+      }
+    ],
+    "detailHalo": {
+      "beforeMissingPixelWeight": 1,
+      "afterMissingPixelWeight": 0,
+      "fractionalObservedFeatureWeight": 0.25,
+      "ignoredColourInvariant": true
+    },
+    "scope": "No fit, timing, geometry-validity or full-pipeline success claim."
+  },
+  "confirmedResamplingIssue": {
+    "status": "confirmed-field-difference",
+    "method": "Compare production coarse-gradient fields for the same mask, with only validMask[0] set to zero. Unweighted grids sample native-to-96; weighted grids sample native-to-256-to-96. Direct native weighted resampling is a proposed control, not an integrated change.",
+    "rows": [
+      {
+        "id": "photo-white-birds",
+        "resolution": 400,
+        "currentVsBaseline": {
+          "changedPixels": 561,
+          "changedBinaryPixels": 6,
+          "meanAbsoluteDifference": 0.001469769965280351,
+          "maxAbsoluteDifference": 0.07629999999999837,
+          "changedAwayFromCorner": 533
+        },
+        "directVsBaseline": {
+          "changedPixels": 0,
+          "changedBinaryPixels": 0,
+          "meanAbsoluteDifference": 2.580798334852991e-15,
+          "maxAbsoluteDifference": 1.8318679906315083e-14,
+          "changedAwayFromCorner": 0
+        }
+      },
+      {
+        "id": "hard-flettede-puppy-half",
+        "resolution": 390,
+        "currentVsBaseline": {
+          "changedPixels": 578,
+          "changedBinaryPixels": 3,
+          "meanAbsoluteDifference": 0.0012668518424090744,
+          "maxAbsoluteDifference": 0.07262656147271504,
+          "changedAwayFromCorner": 553
+        },
+        "directVsBaseline": {
+          "changedPixels": 1,
+          "changedBinaryPixels": 0,
+          "meanAbsoluteDifference": 5.699993489981287e-06,
+          "maxAbsoluteDifference": 0.05253114000366754,
+          "changedAwayFromCorner": 0
+        }
+      },
+      {
+        "id": "hunodan-hjfig-05",
+        "resolution": 337,
+        "currentVsBaseline": {
+          "changedPixels": 1032,
+          "changedBinaryPixels": 7,
+          "meanAbsoluteDifference": 0.0023679626583875137,
+          "maxAbsoluteDifference": 0.08523562768008575,
+          "changedAwayFromCorner": 1013
+        },
+        "directVsBaseline": {
+          "changedPixels": 0,
+          "changedBinaryPixels": 0,
+          "meanAbsoluteDifference": 2.3342064518892773e-15,
+          "maxAbsoluteDifference": 2.1538326677728037e-14,
+          "changedAwayFromCorner": 0
+        }
+      }
+    ]
+  },
+  "candidateGridProbe": {
+    "status": "small-grid-probe-passed",
+    "unweightedExact": true,
+    "ignoredColourInvariant": true,
+    "ambiguousAndUnpairedObjectivesRejected": true,
+    "steps": 12,
+    "scope": "Small deterministic grid fixture, not full template or timing validation."
+  },
+  "successEvidenceRequired": [
+    "Preserve source masks and observed-pixel colours exactly.",
+    "Report both observed and original-full-mask errors, feature retention/enclosure, count choices, geometry/paper checks and actual durations.",
+    "Retain failures and both repeats; do not attribute every timer-dependent change to the intervention.",
+    "No promotion based on helper or field probes alone. Compare full fitter results and independently rendered exports.",
+    "Before production integration, cover existing partial crops and free-border behavior, and complete required repository/browser checks."
+  ],
+  "execution": "Prepared scripts require completed release QA before baseline fits, and completed baseline before candidate fits. All heavy work remains serial.",
+  "qualification": "Neither full-fitting experiment has started. These deterministic helper/field differences establish implementation discontinuities, not their eventual impact on template quality.",
+  "artifactsSha256": {
+    "tmp/heart-learning/coverage-perturbation-v1/plan.json": "d9771091b96dbc5f254114ae76ab000ca33c7bedaa6f1276a158c3c541e93867",
+    "tmp/heart-learning/coverage-perturbation-v1/replay.mjs": "3a1970de64333c3c75b3b87087f3ae20c9dde20b5662c71600cb79613bb2356c",
+    "tmp/heart-learning/coverage-perturbation-v1/run.py": "7263048372d9292d579e0c6bc0988250d373cb1975a50fc9d9ca92b70550ceac",
+    "tmp/heart-learning/coverage-perturbation-v1/objective-precondition.json": "d64beb88a56cfffbbe042b14d2e12a16472091e3153ae38192f6bb9fe1c8a869",
+    "tmp/heart-learning/coverage-perturbation-v1/resampling-diagnosis.json": "1f8fecbf65bbab41c8ec1c5df596cd447df4d05ad71e67f4e15ae11aaca3c4d2",
+    "tmp/heart-learning/coverage-candidate-comparison-v1/plan.json": "28d1d7ce14c8079834e15add48306388f7b61e1f8c9730ca4017c5e4b27a5dd1",
+    "tmp/heart-learning/coverage-candidate-comparison-v1/replay.mjs": "52a056904b2a60035e96fe1f3d3b8fda6835715dcc6d9900ea1c14957bd07e4d",
+    "tmp/heart-learning/coverage-candidate-comparison-v1/run.py": "02ca0c764b52f86cd808810b2f914be20c524209c2524347781910d023185bce"
+  },
+  "results": "docs/inverse/datasets/coverage-perturbation-results.json"
+}

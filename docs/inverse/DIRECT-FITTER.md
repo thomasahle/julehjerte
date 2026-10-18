@@ -1,5 +1,12 @@
 # Direct Bézier fitting: browser port and photographic benchmark
 
+This is the historical first-port benchmark. The current app uses one automatic
+workflow, expands dense count hypotheses from repeated border evidence, and
+tries additional layouts when the first three fail and budget remains. See the
+[full-pipeline follow-up](FULL-PIPELINE.md) for current photo failures, template
+pairing repairs and verification; the original measurements below remain dated
+to that experiment.
+
 The app now offers **Pattern style → Fit curves to image** at `/en/generate/` and its Danish counterpart. It fits independent cutting curves for both sheets inside the existing JavaScript worker. It needs no Python service, PyTorch runtime, traced interior graph or saved cutting templates. **General** and **Matching sheets** retain their existing solvers.
 
 The first full comparison produced **11/31 accepted pairs, versus 3/31 for tracing**, using the same source photographs, fixed crops, general colour conversion, 60-second search budget and normal app checks. Nine of the 24 complete collage motifs pass direct fitting; two of seven individual photographs pass. The yellow individual star still works with General and fails direct fitting. Choosing whichever method succeeds would give 12/31, but the app does not perform that automatic selection, and it is not the direct fitter's score.
@@ -56,6 +63,8 @@ A separate run on the Pro archive's actual 256-pixel rectified images passes **4
 Five complete collage cases—star, dense checkerboard, flower, stacked hearts and bottom flower—were rerun with four perturbations each: a one-pixel horizontal crop shift, a one-pixel vertical shift, JPEG quality 75, and half-resolution input. **20/20 retain accepted exports**, with independent mismatch between 0.63% and 2.93%.
 
 However, **five of the twenty change slit counts** relative to their unperturbed fits. The two shifted stacked-heart crops choose 4+3 instead of 3+3; three flower variants choose 3+3 instead of the original crop's 4+4. All were fresh fits. The stacked-heart runs contain valid 3+3 alternatives, but the final image objective prefers the extra cut for a small reduction in error. Thus noisy border transitions no longer abort the solve, while topology stability and preference for a plausible simple design remain unresolved. Export success is a weaker robustness criterion than recovering identical cuts.
+
+The fitter now uses a bounded stability preference for unweighted photographs. When the smoothed inset profiles on both opposing edges agree on a count, a finalist with that consensus count receives one refinement opportunity if its coarse error is within one percentage point of the current finalist. After validation, that consensus topology is preferred when its full image disagreement remains within one percentage point of the best valid candidate. Weighted/free-border targets keep the previous fast path because their 32-case perturbation suite already retained stable counts. This addresses the observed “extra slit from a marginal edge change” mechanism without imposing a hard border constraint. The 22-case Hunodan replay remains 22/22 accepted; its median was 5.09 s and maximum 8.76 s on the recorded Apple M2 Pro run, compared with 5.30 s and 8.12 s in the preceding baseline. The rule is intentionally conservative: it cannot recover a missing topology when no consensus count is present, and it does not claim invariance under large crop or colour changes.
 
 The next useful changes are a stronger treatment of crop uncertainty, search moves that change the path layout together, and a tested preference for simpler shared geometry when photographic error differences are small. Increasing runtime or loosening the image threshold alone does not address the observed causes.
 

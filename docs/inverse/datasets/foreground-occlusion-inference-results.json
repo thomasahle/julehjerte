@@ -1,0 +1,93 @@
+{
+  "schema": "foreground-occlusion-inference-results-1",
+  "status": "complete-controlled-diagnosis",
+  "deployed": false,
+  "trainingPerformed": false,
+  "dataset": "docs/inverse/datasets/foreground-occlusion-results.json",
+  "sourceGeometries": 16,
+  "sourceFamily": "procedural-lattice",
+  "scope": "Training-source perturbation diagnostic, not held-out performance. This checkpoint is the synthetic scene foreground model, not the later material-adapted/MobileSAM pipeline.",
+  "cnn": {
+    "checkpointSha256": "3e94244975ee6641626b5b93c3948974bfa33609f461aae828e40bdf0a889fe6",
+    "photosInferred": 32,
+    "mean": {
+      "hiddenPaperProbabilityBefore": 0.9787979498505592,
+      "hiddenPaperProbabilityAfter": 0.8932185620069504,
+      "hiddenPaperProbabilityDrop": 0.08557938784360886,
+      "foregroundOutsidePaperBefore": 0.06732034659944475,
+      "foregroundOutsidePaperAfter": 0.08014280628412962,
+      "amodalIoUBefore": 0.9790382107872059,
+      "amodalIoUAfter": 0.9775231454400042,
+      "unaffectedPaperMeanAbsoluteChange": 0.004240896989358589,
+      "unaffectedBackgroundMeanAbsoluteChange": 0.0030019475670997053
+    }
+  },
+  "sam": {
+    "modelCommit": "f706ad9c4eb7f219c00d9050e46328518ffb65d2",
+    "checkpointSha256": "6dbb90523a35330fedd7f1d3dfc66f995213d81b29a5ca8108dbcdd4e37d6c2f",
+    "imageEncodings": 32,
+    "masks": 48,
+    "mean": {
+      "sam-original": {
+        "hiddenPaperProbability": 0.9831039309501648,
+        "foregroundOutsidePaper": 0.006585268762137275,
+        "amodalIoU": 0.9916463159270216
+      },
+      "sam-occluded-fixed-prompt": {
+        "hiddenPaperProbability": 0.1456668971804902,
+        "foregroundOutsidePaper": 0.10908612867933698,
+        "amodalIoU": 0.9793809235827606
+      },
+      "sam-occluded-adaptive-prompt": {
+        "hiddenPaperProbability": 0.1497903645504266,
+        "foregroundOutsidePaper": 0.10713453782955185,
+        "amodalIoU": 0.9795157910603992
+      }
+    },
+    "unchangedAutomaticPrompts": 1,
+    "meanAbsoluteProbabilityChangeFixedVsAdaptivePrompt": 0.00014378460764419287,
+    "pairsWithHiddenPaperMeanBelowHalfFixedPrompt": 16
+  },
+  "findings": [
+    "The synthetic-scene CNN retains most hidden paper; its mean probability on the covered region decreases from 97.88% to 89.32%.",
+    "With the original box and point held fixed, SAM hidden-paper probability decreases from 98.31% to 14.57%; recomputing prompts yields 14.98%. The perturbation effect therefore persists without changing prompts.",
+    "This is expected visible-object segmentation behavior, not evidence of a broken SAM implementation. Treating nonvisible paper as certain background is the problematic downstream assumption.",
+    "Mean amodal IoU stays high (CNN 97.90% to 97.75%, SAM 99.16% to 97.94% at fixed prompts) despite notch changes. Whole-body overlap alone is inadequate for crop confidence.",
+    "The CNN uses these source geometries in training. This is a mechanism check, not a new generalization benchmark."
+  ],
+  "nextStep": "Test complete-shape support and visible-object support as separate evidence in crop estimation, with an occlusion/observation mask. Compare against the frozen real-photo pipeline; do not globally union masks or retrain just to label covering objects as paper.",
+  "visualReview": {
+    "status": "complete",
+    "allSixteenCNNPairsInspected": true,
+    "allSixteenSAMThreeArmPanelsInspected": true,
+    "notes": [
+      "The small CNN generally retains paper beneath the ribbon, although some notches become deeper and the contours remain blurry.",
+      "SAM follows the covering object closely and removes the hidden paper in most cases. The red ribbon on the first source is partially retained, including some foreground object beyond the paper.",
+      "Fixed-prompt and recomputed-prompt SAM outputs have nearly identical notch changes.",
+      "Whole-outline IoU hides the local severity: the occluder changes a small fraction of the body but can move the apparent notch into the overlap.",
+      "These are training geometries and controlled synthetic ribbons. This does not establish held-out accuracy, real-photo improvement, or superiority of the coarse CNN for all crop evidence."
+    ],
+    "panelsSha256": {
+      "tmp/heart-learning/foreground-occlusion-pilot-v1/prediction-review-1.png": "da505435d854af065d911d9aaa0594a6c78d5cb30247b2aac53c3e978f0a1032",
+      "tmp/heart-learning/foreground-occlusion-pilot-v1/prediction-review-2.png": "566dc0ef9b7e9baa852262dbb791c49ce99254a8e74fa5ecb417f0a44c99eb21",
+      "tmp/heart-learning/foreground-occlusion-pilot-v1/prediction-review-3.png": "920d857ed8c0f5ee2c1084af071fbc0c75abeb314d91ec975d5957efc57cabde",
+      "tmp/heart-learning/foreground-occlusion-pilot-v1/prediction-review-4.png": "fa68687b0468c8b7f7d68980cb6e510e24ae8497ccfec1e38a3a30823c8e1210",
+      "tmp/heart-learning/foreground-occlusion-pilot-v1/sam-review-1.png": "801e8b008a64eef712e984b8340a11b478dc5984cdc797bf7b22285b0015c975",
+      "tmp/heart-learning/foreground-occlusion-pilot-v1/sam-review-2.png": "94a8eafc79e49a24ba4f0f332dd11a73fd7148b60d2695599fd152e37150bafb",
+      "tmp/heart-learning/foreground-occlusion-pilot-v1/sam-review-3.png": "658427ead24fa3b5fd1aec87bd90dc795bbce90dec1dff30fb46f1d5ad894fbf",
+      "tmp/heart-learning/foreground-occlusion-pilot-v1/sam-review-4.png": "6e414d264e602e13ecfc7043a1b3376e857a8c8639993433b54b013faaea7f2d"
+    }
+  },
+  "artifactsSha256": {
+    "tmp/heart-learning/foreground-occlusion-pilot-v1/frozen-probe-plan.json": "b944d2b29fadf532b1372d323d2372bb50f79e0397bb37cf87325d7bdc26e0f8",
+    "tmp/heart-learning/foreground-occlusion-pilot-v1/frozen-probe.py": "0af287aef74c750659d6616daf82a3a6a3d75576c4173ea6c81df3b304cc8a3e",
+    "tmp/heart-learning/foreground-occlusion-pilot-v1/frozen-probe-results.json": "4c7d7342fdf5c5281eb34df190429eb4d1ff34f56bec0d3676ef081871b9c970",
+    "tmp/heart-learning/foreground-occlusion-pilot-v1/frozen-probe-predictions.npz": "b4a2412b4ca1b12d28ff0ceff92d33df8ccaff9b15d28ca9af9acb26f0a400f0",
+    "tmp/heart-learning/foreground-occlusion-pilot-v1/sam-probe-plan.json": "8d9bf98d2f26960b25b15ee6bb6c2f93443cf4589884542b6c3cbcb3f6d41b21",
+    "tmp/heart-learning/foreground-occlusion-pilot-v1/sam-probe.py": "23b7cd3b2c2757c69ff89bd3b3ea3eeb9edf333ba06cf87e6527f6bc3af895f8",
+    "tmp/heart-learning/foreground-occlusion-pilot-v1/sam-probe-results.json": "89a5443be7e8369204d60d7113891f94ad15150f807a2a00a980e188aa1aa612",
+    "tmp/heart-learning/foreground-occlusion-pilot-v1/sam-probe-predictions.npz": "9b38fc6f3191d9028fa550ad63fcadb4058e58a28d85839bbeeecef1890a7c71",
+    "tmp/heart-learning/foreground-occlusion-pilot-v1/sam-probe.log": "9273907a5cf674e5dce35ca8116b1113ac146b03b18d6c5f0b4a644c01199625",
+    "tmp/heart-learning/foreground-occlusion-pilot-v1/inference-visual-review.json": "214b2a67afae8e238b519c2b295e38906736e86363534e8a1c85dff82c26ed5a"
+  }
+}

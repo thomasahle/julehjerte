@@ -1,0 +1,1179 @@
+{
+  "scope": "Serial low-priority diagnosis of deadline-sensitive grid clearance comparison; no new training or scraping. These are local Node tests, not browser throughput measurements.",
+  "fullSuiteBeforeFix": {
+    "runtimeRevision": "0b67ca9",
+    "head": "e17a217",
+    "tests": 1056,
+    "passed": 1042,
+    "failed": 14,
+    "seconds": 1657.812107125,
+    "sourceFiles": 1037,
+    "sourceManifest": "tmp/heart-learning/repair-budget-2026-10-17/qa-tail/full/source.json",
+    "sourceManifestSha256": "94991c0503cf869e10f9218ec90d83166b859aedc2db6fef09a0b8c9b1bde6cf",
+    "sourceHashesMatchedAfterRun": true,
+    "log": "tmp/heart-learning/repair-budget-2026-10-17/qa-tail/full/inverse.log",
+    "logSha256": "1338d406a550822f6c2735ab42fe9c878ba5d1a74b639171390f4d87d7a50d4e",
+    "failures": [
+      {
+        "location": "scripts/inverse/clearance-feature-budget.test.mjs:12:1",
+        "test": "a simpler seed that never contained the Viking opening leaves time for the viable routing (10610.181167ms)",
+        "assertion": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  false !== true\n  \n      at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/clearance-feature-budget.test.mjs:30:10)\n      at async Test.run (node:internal/test_runner/test:1125:7)\n      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: false,\n    expected: true,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }"
+      },
+      {
+        "location": "scripts/inverse/clearance-feature-handoff.test.mjs:8:1",
+        "test": "fresh fitting continues an unfinished verified initializer within the remaining search allowance (9685.147583ms)",
+        "assertion": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  false !== true\n  \n      at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/clearance-feature-handoff.test.mjs:24:10)\n      at async Test.run (node:internal/test_runner/test:1125:7)\n      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: false,\n    expected: true,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }"
+      },
+      {
+        "location": "scripts/inverse/clearance-feature.test.mjs:9:3",
+        "test": "fresh fitting retains the stacked motif on the resampled mask (10760.78625ms)",
+        "assertion": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  false !== true\n  \n      at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/clearance-feature.test.mjs:15:12)\n      at async Test.run (node:internal/test_runner/test:1125:7)\n      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: false,\n    expected: true,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }"
+      },
+      {
+        "location": "scripts/inverse/clearance-feature.test.mjs:9:3",
+        "test": "fresh fitting retains the stacked motif on the original mask (10201.759292ms)",
+        "assertion": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  false !== true\n  \n      at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/clearance-feature.test.mjs:15:12)\n      at async Test.run (node:internal/test_runner/test:1125:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: false,\n    expected: true,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }"
+      },
+      {
+        "location": "scripts/inverse/clearance-initializer.test.mjs:47:1",
+        "test": "fresh fitting finds a checked pair for the upward-shifted photograph without saved cuts (9440.077208ms)",
+        "assertion": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  false !== true\n  \n      at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/clearance-initializer.test.mjs:50:12)\n      at async Test.run (node:internal/test_runner/test:1125:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: false,\n    expected: true,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }"
+      },
+      {
+        "location": "scripts/inverse/feature-near-miss.test.mjs:63:109",
+        "test": "the vertical near-miss layout produces checked exports within the original short search (1.5x clock) (8380.728917ms)",
+        "assertion": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  false !== true\n  \n      at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/feature-near-miss.test.mjs:109:10)\n      at async Test.run (node:internal/test_runner/test:1125:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: false,\n    expected: true,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }"
+      },
+      {
+        "location": "scripts/inverse/feature-seeds.test.mjs:56:1",
+        "test": "the full fitter retains the bird eye through clearance, refinement and independent export (26346.980041ms)",
+        "assertion": "TypeError: Cannot read properties of null (reading 'applied')\n      at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/feature-seeds.test.mjs:69:51)\n      at async Test.run (node:internal/test_runner/test:1125:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7)"
+      },
+      {
+        "location": "scripts/inverse/feature-seeds.test.mjs:207:1",
+        "test": "early feature routing recovers the frozen puppy opening within a ten-second search (10637.279791ms)",
+        "assertion": "AssertionError [ERR_ASSERTION]: Graceful Stop must retain the candidate after its finer paper check passes\n      at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/feature-seeds.test.mjs:212:10)\n      at async Test.run (node:internal/test_runner/test:1125:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {\n    generatedMessage: false,\n    code: 'ERR_ASSERTION',\n    actual: false,\n    expected: true,\n    operator: '==',\n    diff: 'simple'\n  }"
+      },
+      {
+        "location": "scripts/inverse/feature-seeds.test.mjs:233:1",
+        "test": "a one-pixel crop shift cannot discard a feature-preserving fine-grid checkpoint (11365.18ms)",
+        "assertion": "AssertionError [ERR_ASSERTION]: Independent 400-pixel disagreement is 0.02568125; required < 0.018. Captured fit: tmp/inverse-test-failures/fit-cD7H92\n      at assertFitError (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/diagnostics/fit-failure.mjs:32:10)\n      at async TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/feature-seeds.test.mjs:251:3)\n      at async Test.run (node:internal/test_runner/test:1125:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {\n    generatedMessage: false,\n    code: 'ERR_ASSERTION',\n    actual: false,\n    expected: true,\n    operator: '==',\n    diff: 'simple'\n  }"
+      },
+      {
+        "location": "scripts/inverse/fitted-rerouting.test.mjs:53:33",
+        "test": "a fresh shifted bird fit reroutes its rejected eye with a 10-second allowance (10555.442084ms)",
+        "assertion": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  + actual - expected\n  \n  + 'grid'\n  - 'fitted-boundary-rerouting'\n  \n      at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/fitted-rerouting.test.mjs:62:10)\n      at async Test.run (node:internal/test_runner/test:1125:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: 'grid',\n    expected: 'fitted-boundary-rerouting',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }"
+      },
+      {
+        "location": "scripts/inverse/fitted-rerouting.test.mjs:53:33",
+        "test": "a fresh shifted bird fit reroutes its rejected eye with a 180-second allowance (125386.548917ms)",
+        "assertion": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  + actual - expected\n  \n  + 'grid'\n  - 'fitted-boundary-rerouting'\n  \n      at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/fitted-rerouting.test.mjs:62:10)\n      at async Test.run (node:internal/test_runner/test:1125:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: 'grid',\n    expected: 'fitted-boundary-rerouting',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }"
+      },
+      {
+        "location": "scripts/inverse/interior-counts.test.mjs:85:1",
+        "test": "the main fitter reconstructs the dense binary photo target with legal editable-sized counts (10307.328375ms)",
+        "assertion": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  false !== true\n  \n      at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/interior-counts.test.mjs:97:10)\n      at async Test.run (node:internal/test_runner/test:1125:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: false,\n    expected: true,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }"
+      },
+      {
+        "location": "scripts/inverse/junction-routing.test.mjs:43:1",
+        "test": "a short probe tries simpler junctions before densifying exhausted traces (2089.914334ms)",
+        "assertion": "AssertionError [ERR_ASSERTION]: A sub-0.75-second probe must not skip the simpler boundary.\n  + actual - expected\n  \n  + undefined\n  - true\n  \n      at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/junction-routing.test.mjs:48:10)\n      at async Test.run (node:internal/test_runner/test:1125:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {\n    generatedMessage: false,\n    code: 'ERR_ASSERTION',\n    actual: undefined,\n    expected: true,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }"
+      },
+      {
+        "location": "scripts/inverse/supported-count-bound.test.mjs:11:1",
+        "test": "a finer-verified supported grid stops before other counts that cannot displace it (9860.321625ms)",
+        "assertion": "TypeError: Cannot read properties of undefined (reading 'requestedResolution')\n      at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/supported-count-bound.test.mjs:25:41)\n      at async Test.run (node:internal/test_runner/test:1125:7)\n      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3)"
+      }
+    ]
+  },
+  "pairedReplays": [
+    {
+      "run": "replay-clearance/baseline",
+      "revision": "e91fd81",
+      "results": [
+        {
+          "capture": "tmp/heart-learning/repair-budget-2026-10-17/replay-clearance/baseline/captures/90237-1.json",
+          "captureSha256": "c657432072a807cf48ba1449f2e3927a58319de804d52908d50e5b453cd21bf3",
+          "maskSha256": "88a77851c564c157375f2c319f9a62b49799a7dfc710d7dde256afcb0d095ce7",
+          "requestedTimeLimit": 10,
+          "templateChecksPassed": true,
+          "engineMaskDisagreement": 0.018025,
+          "solverSeconds": 9.040515708000001,
+          "termination": "candidate_found",
+          "selectedInitialization": "grid",
+          "clearanceComparisonAttempted": true,
+          "repair": {
+            "accepted": false,
+            "continued": true,
+            "reason": "continue_refinement",
+            "steps": 45,
+            "seconds": 0.9179270420000003,
+            "imageError": 0.03305625
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 0.4608271250000002
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.6024602919999997
+            },
+            {
+              "stage": "directInitializing",
+              "seconds": 0.5319157919999998
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.2033367079999998
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.3415812909999995
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.3421073750000005
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.9181936250000008
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.40896691699999976
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.2469532080000008
+            },
+            {
+              "stage": "directPolishing",
+              "seconds": 1.3933495410000014
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.06696862499999952
+            }
+          ],
+          "boundaryBackends": [
+            "wasm",
+            "wasm"
+          ],
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1,
+              "error": 0.060638427734375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": -1,
+              "error": 0.062835693359375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.0785064697265625,
+              "steps": 150
+            },
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1,
+              "error": 0.0839080810546875,
+              "steps": 150
+            }
+          ]
+        },
+        {
+          "capture": "tmp/heart-learning/repair-budget-2026-10-17/replay-clearance/baseline/captures/90237-2.json",
+          "captureSha256": "d72cca3644f4a25b247fa761ccc29c400753445ba8cc1c1ea95904329c084a4c",
+          "maskSha256": "9e52e7d9b61188cf5167b481f7e7dc28370f45f5279463164934b4b6cd5ffaa9",
+          "requestedTimeLimit": 10,
+          "templateChecksPassed": true,
+          "engineMaskDisagreement": 0.01420625,
+          "solverSeconds": 9.147702124999999,
+          "termination": "candidate_found",
+          "selectedInitialization": "grid",
+          "clearanceComparisonAttempted": true,
+          "repair": {
+            "accepted": true,
+            "steps": 115,
+            "seconds": 0.7358588329999984,
+            "imageError": 0.02193125
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 0.41549187499999973
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.5950657499999997
+            },
+            {
+              "stage": "directInitializing",
+              "seconds": 0.47543087500000003
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.21122520799999983
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.35391733399999975
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.5012450409999983
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.7361205829999999
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.8556682499999988
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.2598638749999991
+            },
+            {
+              "stage": "directPolishing",
+              "seconds": 1.1231249580000002
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.421965959000001
+            }
+          ],
+          "boundaryBackends": [
+            "wasm",
+            "wasm"
+          ],
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1,
+              "error": 0.060455322265625,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": -1,
+              "error": 0.0612030029296875,
+              "steps": 150
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.088836669921875,
+              "steps": 150
+            },
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1,
+              "error": 0.0855865478515625,
+              "steps": 150
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run": "replay-clearance/current",
+      "revision": "0b67ca9",
+      "results": [
+        {
+          "capture": "tmp/heart-learning/repair-budget-2026-10-17/replay-clearance/current/captures/91508-1.json",
+          "captureSha256": "66d841624e83b73defb3c768e303f740386da82c8c0e060c5c7728abb9488b9b",
+          "maskSha256": "88a77851c564c157375f2c319f9a62b49799a7dfc710d7dde256afcb0d095ce7",
+          "requestedTimeLimit": 10,
+          "templateChecksPassed": false,
+          "engineMaskDisagreement": 0.03421875,
+          "solverSeconds": 9.069168416,
+          "termination": "paper_failure",
+          "selectedInitialization": "grid",
+          "clearanceComparisonAttempted": false,
+          "repair": {},
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 0.5446392080000001
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.8124031249999998
+            },
+            {
+              "stage": "directInitializing",
+              "seconds": 0.5613838340000002
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.21908908299999985
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.33922104200000014
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 1.1207833340000006
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 1.8303017499999987
+            }
+          ],
+          "boundaryBackends": [
+            "wasm"
+          ],
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1,
+              "error": 0.060638427734375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": -1,
+              "error": 0.062835693359375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.0785064697265625,
+              "steps": 150
+            },
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1,
+              "error": 0.0839080810546875,
+              "steps": 150
+            }
+          ]
+        },
+        {
+          "capture": "tmp/heart-learning/repair-budget-2026-10-17/replay-clearance/current/captures/91508-2.json",
+          "captureSha256": "32fa57b9318afc86c8cd2c88a593dc3ccf3bc99a16aedfb55fd5240a001ae42d",
+          "maskSha256": "9e52e7d9b61188cf5167b481f7e7dc28370f45f5279463164934b4b6cd5ffaa9",
+          "requestedTimeLimit": 10,
+          "templateChecksPassed": true,
+          "engineMaskDisagreement": 0.0159125,
+          "solverSeconds": 9.077919833,
+          "termination": "candidate_found",
+          "selectedInitialization": "clearance-repair",
+          "clearanceComparisonAttempted": true,
+          "repair": {
+            "accepted": true,
+            "steps": 115,
+            "seconds": 0.9976928750000006,
+            "imageError": 0.02193125
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 0.4608098750000008
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.6202435829999995
+            },
+            {
+              "stage": "directInitializing",
+              "seconds": 0.54486175
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.2585674589999999
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.46338975000000027
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.4537264579999974
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.9979180420000011
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.1586498329999995
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.2693970829999998
+            },
+            {
+              "stage": "directPolishing",
+              "seconds": 1.323962625
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.2676337080000012
+            }
+          ],
+          "boundaryBackends": [
+            "wasm",
+            "wasm"
+          ],
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1,
+              "error": 0.060455322265625,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": -1,
+              "error": 0.0612030029296875,
+              "steps": 150
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.088836669921875,
+              "steps": 150
+            },
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1,
+              "error": 0.0855865478515625,
+              "steps": 150
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run": "replay-clearance-reverse/current",
+      "revision": "0b67ca9",
+      "results": [
+        {
+          "capture": "tmp/heart-learning/repair-budget-2026-10-17/replay-clearance-reverse/current/captures/93470-1.json",
+          "captureSha256": "da3eec6164c8efd8f1b8eb21cc50a852bd110dff0ab8fe70ad3ad76303950e9a",
+          "maskSha256": "88a77851c564c157375f2c319f9a62b49799a7dfc710d7dde256afcb0d095ce7",
+          "requestedTimeLimit": 10,
+          "templateChecksPassed": false,
+          "engineMaskDisagreement": 0.03714375,
+          "solverSeconds": 9.077297083,
+          "termination": "paper_failure",
+          "selectedInitialization": "grid",
+          "clearanceComparisonAttempted": true,
+          "repair": {
+            "accepted": false,
+            "reason": "insufficient_time",
+            "seconds": 1.8708999999944353e-05
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 0.5232314580000001
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.6913505
+            },
+            {
+              "stage": "directInitializing",
+              "seconds": 0.5462186249999995
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.2192116249999999
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.34242604200000004
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.3472667920000003
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.0002578750000002401
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.889336542
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 1.9591819159999995
+            }
+          ],
+          "boundaryBackends": [
+            "wasm"
+          ],
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1,
+              "error": 0.060638427734375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": -1,
+              "error": 0.062835693359375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.0785064697265625,
+              "steps": 150
+            },
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1,
+              "error": 0.0839080810546875,
+              "steps": 150
+            }
+          ]
+        },
+        {
+          "capture": "tmp/heart-learning/repair-budget-2026-10-17/replay-clearance-reverse/current/captures/93470-2.json",
+          "captureSha256": "2ec580a67a64c16f3a8d3732192c6f66986df0fdda51e18ae30bcd4834f1935e",
+          "maskSha256": "9e52e7d9b61188cf5167b481f7e7dc28370f45f5279463164934b4b6cd5ffaa9",
+          "requestedTimeLimit": 10,
+          "templateChecksPassed": true,
+          "engineMaskDisagreement": 0.014375,
+          "solverSeconds": 9.056743374999998,
+          "termination": "candidate_found",
+          "selectedInitialization": "grid",
+          "clearanceComparisonAttempted": true,
+          "repair": {
+            "accepted": true,
+            "steps": 125,
+            "seconds": 0.7478288749999993,
+            "imageError": 0.021125
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 0.45855549999999856
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.6421540000000004
+            },
+            {
+              "stage": "directInitializing",
+              "seconds": 0.5231471249999995
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.21390683400000127
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.34930929099999775
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.31191749999999957
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.7480746250000011
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.5349003340000017
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.30714079200000194
+            },
+            {
+              "stage": "directPolishing",
+              "seconds": 1.153062041000001
+            }
+          ],
+          "boundaryBackends": [
+            "wasm",
+            "wasm"
+          ],
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1,
+              "error": 0.060455322265625,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": -1,
+              "error": 0.0612030029296875,
+              "steps": 150
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.088836669921875,
+              "steps": 150
+            },
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1,
+              "error": 0.0855865478515625,
+              "steps": 150
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run": "replay-clearance-reverse/baseline",
+      "revision": "e91fd81",
+      "results": [
+        {
+          "capture": "tmp/heart-learning/repair-budget-2026-10-17/replay-clearance-reverse/baseline/captures/94653-1.json",
+          "captureSha256": "5f44c6483a5f891f66cd6cc75094f26abc76e355e4fea62b93cdbb43d30b1a17",
+          "maskSha256": "88a77851c564c157375f2c319f9a62b49799a7dfc710d7dde256afcb0d095ce7",
+          "requestedTimeLimit": 10,
+          "templateChecksPassed": true,
+          "engineMaskDisagreement": 0.01985,
+          "solverSeconds": 9.132318042000001,
+          "termination": "candidate_found",
+          "selectedInitialization": "clearance-repair",
+          "clearanceComparisonAttempted": true,
+          "repair": {
+            "accepted": false,
+            "continued": true,
+            "reason": "continue_refinement",
+            "steps": 85,
+            "seconds": 1.0350969999999997,
+            "imageError": 0.0347125
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 0.45487445799999976
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.7255874169999997
+            },
+            {
+              "stage": "directInitializing",
+              "seconds": 0.5580654580000001
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.22094879200000014
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.3640997499999994
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.3235010000000002
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 1.0353182920000008
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.1537009590000016
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.251269542
+            },
+            {
+              "stage": "directPolishing",
+              "seconds": 1.152742624999999
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.33250995800000055
+            }
+          ],
+          "boundaryBackends": [
+            "wasm",
+            "wasm"
+          ],
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1,
+              "error": 0.060638427734375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": -1,
+              "error": 0.062835693359375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.0785064697265625,
+              "steps": 150
+            },
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1,
+              "error": 0.0839080810546875,
+              "steps": 150
+            }
+          ]
+        },
+        {
+          "capture": "tmp/heart-learning/repair-budget-2026-10-17/replay-clearance-reverse/baseline/captures/94653-2.json",
+          "captureSha256": "8880968fc59c85b9708c02837ed7b84672ad597996168f9f2aa36c515cf60278",
+          "maskSha256": "9e52e7d9b61188cf5167b481f7e7dc28370f45f5279463164934b4b6cd5ffaa9",
+          "requestedTimeLimit": 10,
+          "templateChecksPassed": true,
+          "engineMaskDisagreement": 0.01215625,
+          "solverSeconds": 9.096283542000002,
+          "termination": "candidate_found",
+          "selectedInitialization": "grid",
+          "clearanceComparisonAttempted": true,
+          "repair": {
+            "accepted": true,
+            "steps": 85,
+            "seconds": 0.6301488749999989,
+            "imageError": 0.02536875
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 0.43350404199999865
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.6323342079999984
+            },
+            {
+              "stage": "directInitializing",
+              "seconds": 0.5112865419999998
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.2116266660000001
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.35283987500000147
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.3233577079999995
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.6303936250000006
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.898581000000002
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.3158135419999999
+            },
+            {
+              "stage": "directPolishing",
+              "seconds": 1.0956365829999994
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.49087645800000246
+            }
+          ],
+          "boundaryBackends": [
+            "wasm",
+            "wasm"
+          ],
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1,
+              "error": 0.060455322265625,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": -1,
+              "error": 0.0612030029296875,
+              "steps": 150
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.088836669921875,
+              "steps": 150
+            },
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1,
+              "error": 0.0855865478515625,
+              "steps": 150
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "delayedInitialization": {
+    "before": {
+      "testLog": "tmp/heart-learning/repair-budget-2026-10-17/clearance-late-before.log",
+      "testLogSha256": "4a2fb131330e51f0a5fd1c90796ce6c2eedd400e340def951bfb2554e0a1478c",
+      "results": [
+        {
+          "capture": "tmp/heart-learning/repair-budget-2026-10-17/clearance-late-before/captures/3095-1.json",
+          "captureSha256": "159b39d755d28d94091f536615e22663b7c772f544fbd18d9d63dc428adbd207",
+          "maskSha256": "88a77851c564c157375f2c319f9a62b49799a7dfc710d7dde256afcb0d095ce7",
+          "requestedTimeLimit": 10,
+          "templateChecksPassed": false,
+          "engineMaskDisagreement": 0.03325625,
+          "solverSeconds": 9.022695084,
+          "termination": "paper_failure",
+          "selectedInitialization": "grid",
+          "clearanceComparisonAttempted": false,
+          "repair": {},
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 0.43648283300000024
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.615212375
+            },
+            {
+              "stage": "directInitializing",
+              "seconds": 0.5174197089999998
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.20914333400000032
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.9093525010000003
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 1.2659115829999992
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 1.8480347089999996
+            }
+          ],
+          "boundaryBackends": [
+            "wasm"
+          ],
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1,
+              "error": 0.060638427734375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": -1,
+              "error": 0.062835693359375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.0785064697265625,
+              "steps": 150
+            },
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1,
+              "error": 0.0839080810546875,
+              "steps": 150
+            }
+          ]
+        }
+      ]
+    },
+    "proposed": {
+      "testLog": "tmp/heart-learning/repair-budget-2026-10-17/clearance-late.log",
+      "testLogSha256": "b0e2d949d802ee3cf30f895a451687c51d573eabb7df885dc36abafaee451408",
+      "results": [
+        {
+          "capture": "tmp/heart-learning/repair-budget-2026-10-17/clearance-late/captures/2026-1.json",
+          "captureSha256": "930fc712b7d1ce0e0d75a6091da659a28e5265928dcc34f3137969ec663eb0eb",
+          "maskSha256": "88a77851c564c157375f2c319f9a62b49799a7dfc710d7dde256afcb0d095ce7",
+          "requestedTimeLimit": 10,
+          "templateChecksPassed": true,
+          "engineMaskDisagreement": 0.01901875,
+          "solverSeconds": 9.013313708,
+          "termination": "candidate_found",
+          "selectedInitialization": "clearance-repair",
+          "clearanceComparisonAttempted": true,
+          "repair": {
+            "accepted": false,
+            "continued": true,
+            "reason": "continue_refinement",
+            "steps": 45,
+            "seconds": 0.970421292,
+            "imageError": 0.03305625
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 0.442849584
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.6816692090000002
+            },
+            {
+              "stage": "directInitializing",
+              "seconds": 0.5269245000000001
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.22659758300000066
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.7848853759999993
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.31170087499999954
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.9706514999999999
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.16424633400000038
+            },
+            {
+              "stage": "directPolishing",
+              "seconds": 1.0501917910000003
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.2815552499999994
+            }
+          ],
+          "boundaryBackends": [
+            "wasm",
+            "wasm"
+          ],
+          "fineGrids": [
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1,
+              "error": 0.060638427734375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": -1,
+              "error": 0.062835693359375,
+              "steps": 150
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "error": 0.0785064697265625,
+              "steps": 150
+            },
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1,
+              "error": 0.0839080810546875,
+              "steps": 150
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "metricQualification": "engineMaskDisagreement comes from the engine report. Successful tests additionally require independent exported rendering below 3%, feature retention and nominal geometry/paper checks; the delayed test checks 400 and 800 pixels. No physical assembly validation.",
+  "conclusion": "The resampled mask passes both earlier-engine replays and fails both current-engine replays. Fine-grid coordinates are not captured here, but counts, phases and reported fine-grid errors are identical. All these replays select WebAssembly boundary kernels. The current failures skip clearance comparison or reject its repair for insufficient time. This implicates deadline scheduling; it does not establish that the scalar evaluator itself slowed the full pipeline.",
+  "remaining": "Other full-suite failures, end-to-end Hunodan speed and sensitivity under heavier load remain unresolved. The preview retains its previously validated build.",
+  "remainingHandoffDiagnosis": {
+    "scope": "Observed during the focused follow-up, before any second correction.",
+    "log": "tmp/heart-learning/repair-budget-2026-10-17/qa-clearance-window/focused.log",
+    "initialIssue": "inter_slit_clearance",
+    "initialDistanceLower": 1.1843540822827323,
+    "repairSteps": 45,
+    "finalGeometryPassed": true,
+    "featuresPassed": true,
+    "imageError": 0.036875,
+    "reason": "refinement_rejected",
+    "mechanism": "The continuation gate permits a geometrically legal improvement above the final image limit only when recoverFeatures is true. This call repairs spacing instead, so it is discarded before a possible finer paper audit. Paper validity and eventual final image fidelity are not yet established for this candidate."
+  },
+  "followupQA": {
+    "directory": "tmp/heart-learning/repair-budget-2026-10-17/qa-clearance-window",
+    "sourceManifestSha256": "a01482dd11c7803bcad35db196282ccb6ddb3c40c50ee077a182a42fb10744aa",
+    "sourceFiles": 1038,
+    "sourceHashesMatchedAfterRun": true,
+    "check": "passed",
+    "lint": "passed",
+    "application": {
+      "passed": 874,
+      "skipped": 1
+    },
+    "focused": {
+      "passed": 18,
+      "failed": 1,
+      "failedTest": "fresh fitting continues an unfinished verified initializer within the remaining search allowance",
+      "seconds": 102.191584292
+    },
+    "build": "passed",
+    "fullInverseSuiteRerun": false,
+    "delayedComparisonIndependentErrors": [
+      {
+        "resolution": 400,
+        "mismatchFraction": 0.019175
+      },
+      {
+        "resolution": 800,
+        "mismatchFraction": 0.020678125
+      }
+    ],
+    "previewRefreshed": false
+  }
+}

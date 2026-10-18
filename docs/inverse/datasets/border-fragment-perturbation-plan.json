@@ -1,0 +1,168 @@
+{
+  "schema": 1,
+  "status": "planned",
+  "baselineReport": "tmp/heart-learning/polish-native-v2/qa/native/photos/results.json",
+  "scope": "Classification and feature stability only. No solver reruns, source edits, benchmark exclusions, threshold changes or adoption. Follow each original feature through source-pixel coordinates. Freeze the original classifier as a second arm to distinguish sampling from re-estimation.",
+  "resolutions": [
+    200,
+    400,
+    600
+  ],
+  "variants": [
+    {
+      "name": "baseline"
+    },
+    {
+      "name": "x--0.25",
+      "dx": -0.25
+    },
+    {
+      "name": "y--0.25",
+      "dy": -0.25
+    },
+    {
+      "name": "radial--0.25",
+      "radial": -0.25
+    },
+    {
+      "name": "x-+0.25",
+      "dx": 0.25
+    },
+    {
+      "name": "y-+0.25",
+      "dy": 0.25
+    },
+    {
+      "name": "radial-+0.25",
+      "radial": 0.25
+    },
+    {
+      "name": "x--0.5",
+      "dx": -0.5
+    },
+    {
+      "name": "y--0.5",
+      "dy": -0.5
+    },
+    {
+      "name": "radial--0.5",
+      "radial": -0.5
+    },
+    {
+      "name": "x-+0.5",
+      "dx": 0.5
+    },
+    {
+      "name": "y-+0.5",
+      "dy": 0.5
+    },
+    {
+      "name": "radial-+0.5",
+      "radial": 0.5
+    },
+    {
+      "name": "x--1",
+      "dx": -1
+    },
+    {
+      "name": "y--1",
+      "dy": -1
+    },
+    {
+      "name": "radial--1",
+      "radial": -1
+    },
+    {
+      "name": "x-+1",
+      "dx": 1
+    },
+    {
+      "name": "y-+1",
+      "dy": 1
+    },
+    {
+      "name": "radial-+1",
+      "radial": 1
+    }
+  ],
+  "cases": [
+    {
+      "id": "outline-star",
+      "features": [
+        {
+          "name": "bottom-fragment",
+          "value": 0,
+          "centerMm": [
+            7.154411764705881,
+            98.7904411764706
+          ]
+        },
+        {
+          "name": "star-interior",
+          "value": 1,
+          "centerMm": [
+            46.24285714285714,
+            47.06449357520786
+          ]
+        }
+      ]
+    },
+    {
+      "id": "crossed-ribbons",
+      "features": [
+        {
+          "name": "bottom-fragment",
+          "value": 0,
+          "centerMm": [
+            48.64583333333334,
+            98.73263888888889
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bird",
+      "features": [
+        {
+          "name": "eye",
+          "value": 0,
+          "centerMm": [
+            23.56590909090909,
+            45.58863636363636
+          ]
+        },
+        {
+          "name": "body-opening",
+          "value": 0,
+          "centerMm": [
+            62.78570082893745,
+            50.15438960060286
+          ]
+        },
+        {
+          "name": "bottom-fragment",
+          "value": 0,
+          "centerMm": [
+            71.08376288659794,
+            97.48840206185567
+          ]
+        }
+      ]
+    },
+    {
+      "id": "flettede-viking",
+      "features": [
+        {
+          "name": "opening",
+          "value": 0,
+          "centerMm": [
+            47.41287878787879,
+            56.99560606060606
+          ]
+        }
+      ]
+    }
+  ],
+  "controller": "tmp/heart-learning/border-fragment-perturbation-v1/run.py",
+  "sourcePins": "tmp/heart-learning/border-fragment-perturbation-v1/source.json"
+}

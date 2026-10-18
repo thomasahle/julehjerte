@@ -1,0 +1,712 @@
+{
+  "schema": "fixed-crop-material-diagnosis-1",
+  "status": "fixed-crop-classification-and-fit-comparison-complete",
+  "scope": "Same source RGB and saved mixed-joint quad; two unmodified classified masks fitted independently from fresh grids. Motif observations were pinned before fitting and used only for evaluation.",
+  "source": {
+    "id": "real-8c875dd0f298b5a4-body-1",
+    "photoSha256": "d5279dae58f85dfeecc3984a8bbb0008759c1f26a226e57576856dddaaa0b1c4",
+    "decodedRGBSha256": "349457e27e34eb4e3bc34c0970acc10f30725cd82c57d79066112f007bb55996",
+    "quad": [
+      [
+        226.59531450456694,
+        140.99911505151235
+      ],
+      [
+        373.4961982719152,
+        280.70101733394137
+      ],
+      [
+        224.4445048266433,
+        432.7635640402018
+      ],
+      [
+        75.13388678528688,
+        282.2290207610812
+      ]
+    ],
+    "resolution": 400
+  },
+  "classification": {
+    "method": "lab",
+    "threshold": null,
+    "labCenters": [
+      [
+        47.90198220139519,
+        71.28243955624892,
+        25.714161848947903
+      ],
+      [
+        86.01776647985969,
+        4.576579573548226,
+        0.2844784258909703
+      ]
+    ],
+    "inverted": false,
+    "dither": false
+  },
+  "rows": [
+    {
+      "name": "neural-original",
+      "maskSha256": "9e52e7d9b61188cf5167b481f7e7dc28370f45f5279463164934b4b6cd5ffaa9",
+      "transitions": [
+        6,
+        0,
+        4,
+        6
+      ],
+      "differenceFromNeuralOriginal": 0,
+      "classOneFraction": 0.4789125
+    },
+    {
+      "name": "neural-resampled",
+      "maskSha256": "88a77851c564c157375f2c319f9a62b49799a7dfc710d7dde256afcb0d095ce7",
+      "transitions": [
+        6,
+        0,
+        4,
+        6
+      ],
+      "differenceFromNeuralOriginal": 0.000725,
+      "classOneFraction": 0.4782125
+    },
+    {
+      "name": "rgb-auto",
+      "maskSha256": "8a15961ca2b933c37b72496e5b6aba0172c1bc4eab0cff17affda1568bfad46c",
+      "transitions": [
+        0,
+        3,
+        9,
+        4
+      ],
+      "differenceFromNeuralOriginal": 0.1185375,
+      "classOneFraction": 0.59745
+    }
+  ],
+  "fixedCropComparison": {
+    "reference": "Two classifier outputs, neither original-artwork ground truth",
+    "strata": [
+      {
+        "minimumEdgeDistancePixels": [
+          0,
+          4
+        ],
+        "pixels": 6336,
+        "disagreementFraction": 0.375,
+        "neuralOneRgbZero": 0,
+        "neuralZeroRgbOne": 2376
+      },
+      {
+        "minimumEdgeDistancePixels": [
+          4,
+          12
+        ],
+        "pixels": 12288,
+        "disagreementFraction": 0.09049479166666667,
+        "neuralOneRgbZero": 0,
+        "neuralZeroRgbOne": 1112
+      },
+      {
+        "minimumEdgeDistancePixels": [
+          12,
+          200
+        ],
+        "pixels": 141376,
+        "disagreementFraction": 0.11027331371661385,
+        "neuralOneRgbZero": 0,
+        "neuralZeroRgbOne": 15590
+      }
+    ]
+  },
+  "partialLabelCheck": {
+    "scope": "Partial conservative material annotations only; heart apertures, dark outlines, seams and boundaries were deliberately unlabelled. No artwork or full-boundary accuracy claim. Four neighbouring source-label pixels must agree; output pixels oversample those labels and are not independent annotations.",
+    "phase": "Paper A is red (annotation 0 maps to mask 1); fixed from annotation descriptions, not optimized per prediction.",
+    "knownOutputPixels": 42001,
+    "knownOutputFraction": 0.26250625,
+    "contributingLabelPixels": 4494,
+    "rows": [
+      {
+        "name": "neural-original",
+        "knownPixels": 42001,
+        "wrongPixels": 24,
+        "error": 0.0005714149663103259,
+        "knownRed": 29732,
+        "knownWhite": 12269,
+        "falseRed": 0,
+        "missedRed": 24
+      },
+      {
+        "name": "neural-resampled",
+        "knownPixels": 42001,
+        "wrongPixels": 24,
+        "error": 0.0005714149663103259,
+        "knownRed": 29732,
+        "knownWhite": 12269,
+        "falseRed": 0,
+        "missedRed": 24
+      },
+      {
+        "name": "rgb-auto",
+        "knownPixels": 42001,
+        "wrongPixels": 0,
+        "error": 0,
+        "knownRed": 29732,
+        "knownWhite": 12269,
+        "falseRed": 0,
+        "missedRed": 0
+      }
+    ]
+  },
+  "visualReview": {
+    "inspected": true,
+    "finding": "On the same photographic crop, the learned mask narrows red checker cells and rounds their corners, introducing white gaps. RGB classification follows the photographed straight cell boundaries more closely. Both masks still have inconsistent exact edge transition counts; changing colour classification alone does not settle crop-edge correctness."
+  },
+  "interpretation": [
+    "Every one of the 19,078 differing pixels in the resampled-neural versus RGB comparison is red in RGB and white in the neural mask. This directional disagreement extends well inside the image; it is not explained by changing the crop, which is held identical.",
+    "RGB classification is not original-artwork ground truth. Dark outlines, seams and photographic blur remain potential classification errors.",
+    "Conservative annotations cover 26.25% of the rectified square and exclude motif apertures, rims, seams and boundaries. Neural error is only 24/42,001 sampled known pixels (0.057%), versus zero for RGB. Good partial-interior scores therefore do not establish correct boundary placement or faithful motifs.",
+    "The source-crop and label comparisons isolate an upstream material-mask defect in addition to the independently demonstrated fitter scheduling issue. Neither explains every remaining solver defect.",
+    "The RGB fit retains 98.87\u201399.39% of each observed heart in its largest component, yet two touch the border. Neural largest-component retention is 43.98\u201370.41%, including a split heart. Classification repair alone is insufficient; the fitter must preserve motif connectivity as well as pixel agreement."
+  ],
+  "nextExperiment": {
+    "status": "complete",
+    "methods": [
+      "neural-resampled",
+      "rgb-auto"
+    ],
+    "sameCrop": true,
+    "secondsPerFreshFit": 10,
+    "scoring": "Each fit is scored against its own unmodified classified mask; percentages across the two targets are not directly comparable as artwork accuracy. Inspect both against the photograph, check source-stable enclosure preservation and audit editable exports. No original cutting paths are supplied.",
+    "evaluation": {
+      "reference": "Same RGB-classified photograph, explicitly an estimated proxy rather than original artwork.",
+      "visibleMotifs": "Four heart interiors, located before fitting; evaluate their connected-component retention, border contact and separation.",
+      "anchorsPixels": [
+        [
+          50,
+          60
+        ],
+        [
+          150,
+          160
+        ],
+        [
+          250,
+          260
+        ],
+        [
+          350,
+          360
+        ]
+      ],
+      "partialMaterialLabels": "Also score known conservative interiors; report their limited coverage.",
+      "editable": "Convert and audit every exported result, including rejected candidates."
+    }
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/prepare.mjs",
+      "sha256": "003cffd2a181eb66694f74730542f90874877dfcecb14e72a2fb6cda9397157e",
+      "bytes": 5052
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/prepare.log",
+      "sha256": "2634d6d87e6ae71310a78f2025025e3a06a678110dec2b6f5fb53e22da4a4c69",
+      "bytes": 819
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/report.json",
+      "sha256": "2506ed44e0c9033915069ca281a3478aeead8c937ae4868dce6a7df5126e5c91",
+      "bytes": 73069
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/labels.mjs",
+      "sha256": "c054ffc8388afdad3c7bbe8f97053f3c11b2d7f0f078e16c3817a01d476128f5",
+      "bytes": 3615
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/labels.log",
+      "sha256": "8ec3503d1a7db8523c0f277e978887451285fffdc9c1e8000e2527e79b531e31",
+      "bytes": 1342
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/label-check.json",
+      "sha256": "b2bce48e4ee6e724863d3476d8c7a1d280fe69097160a22bfdd06472ca41e617",
+      "bytes": 1652
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/comparison.png",
+      "sha256": "88b24032295a490c61ebd22157847ee7684f616862320464ee75e02c96bf66ff",
+      "bytes": 235920
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/known-materials.png",
+      "sha256": "ff95f5b4443797da2c3f26a1d5bb3a2ad1b03c936d13cd7fa4e9ded08f82ee5b",
+      "bytes": 5507
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/neural-original.u8",
+      "sha256": "9e52e7d9b61188cf5167b481f7e7dc28370f45f5279463164934b4b6cd5ffaa9",
+      "bytes": 160000
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/neural-resampled.u8",
+      "sha256": "88a77851c564c157375f2c319f9a62b49799a7dfc710d7dde256afcb0d095ce7",
+      "bytes": 160000
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/rgb-auto.u8",
+      "sha256": "8a15961ca2b933c37b72496e5b6aba0172c1bc4eab0cff17affda1568bfad46c",
+      "bytes": 160000
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/motifs.mjs",
+      "sha256": "c91a4d9f5b38341f1658f1b4495d6a874c8206a698edc6cb25c5f2fdcbcc3615",
+      "bytes": 1752
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/motifs.log",
+      "sha256": "b05ca0bbbe9f381793ef2634d315523b6d804e4d0bb0161692c177628cee40f2",
+      "bytes": 1358
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/motif-observations.json",
+      "sha256": "eba19885aa13190a2e3d52ffc7ca49320f35268e66ecf2a96ada84d02d10ab0f",
+      "bytes": 1884
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/fit-plan.json",
+      "sha256": "df2d4dca66359bca43f170626279c287117412ca562a67bf392cb0448a852811",
+      "bytes": 1123
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/fit-qa-gated.py",
+      "sha256": "4310308f05ad19d6a840520f88a41aac904f114aaf07da1e0c51bc6fb51255dd",
+      "bytes": 1831
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/audit.mjs",
+      "sha256": "cae2888ce51780b1def947cc0a7c9481998413e8354cd2467f9a196b3825de4d",
+      "bytes": 6073
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/fit.py",
+      "sha256": "24c4a6017d12b831a58ee3b2fa7a7a757bb0f387a4ace1351dffbc51cedea206",
+      "bytes": 1844
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/fit-v1/runs.json",
+      "sha256": "d190851b46ff78feb5d6aacfa7f332ebba6279ff80ca1466c503a050a9711b8e",
+      "bytes": 333
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/fit-v1/audit.json",
+      "sha256": "52fb9d1836e76e81d43cb765783040909168bd13f2a13451dfd2bdf3b1c7ac5a",
+      "bytes": 11436
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/fit-v1/report.json",
+      "sha256": "db107ece050e4c4a805cf76d7c388d1660206c8dc9c1ccb74bc27a306279723b",
+      "bytes": 269064
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/fit-v1/audit-stage-0.log",
+      "sha256": "a5eccd814afe2b524ec321bd0a746e2990a0dc2117a8cdef979fbbd7b26974c2",
+      "bytes": 557
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/fit-v1/audit-stage-0-v2.log",
+      "sha256": "1865802cd6bf4581c251eb93bd2f8db057d9e134515a68109ce05c5b6e0f210f",
+      "bytes": 2338
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/fit-v1/editable/results.json",
+      "sha256": "7ec107dce546ad9c63c0621cd0c38e1f9579cc9569aea17889084af887ba10b5",
+      "bytes": 46262
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/fit-v1/neural-resampled/report.json",
+      "sha256": "2fc5bfea5d608984b95df71b9f3f5fee49dc5aa28184cf24dccc1ee83f48ff2d",
+      "bytes": 133030
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/fit-v1/rgb-auto/report.json",
+      "sha256": "812ff3be0504b5c7ac8e3c4429586c5f7cac282a0172085eec3bcb70898a9252",
+      "bytes": 129591
+    }
+  ],
+  "executionPrerequisite": "The full QA process has terminated with one separately recorded routing failure. Diagnostic fitting may follow terminal QA without implying it passed; the coordinator verifies old process exit and unchanged runtime hashes, and runs all expensive stages serially.",
+  "fitComparison": {
+    "rows": [
+      {
+        "method": "neural-resampled",
+        "status": "complete",
+        "sourceReportSha256": "2fc5bfea5d608984b95df71b9f3f5fee49dc5aa28184cf24dccc1ee83f48ff2d",
+        "checkedPair": true,
+        "ownMaskError": 0.013475,
+        "commonRgbProxyError": 0.122,
+        "partialKnownMaterialError": 0.0005952239232399229,
+        "partialKnownMaterialPixels": 42001,
+        "motifMetrics": [
+          {
+            "centerMm": [
+              13.377094804883887,
+              15.307607134306918
+            ],
+            "sourceAreaMm2": 261.0625,
+            "intersectionPixels": 2941,
+            "retention": 0.7040938472587982,
+            "predictedComponentAreaMm2": 183.8125,
+            "touchesBorder": false,
+            "componentIoU": 0.7040938472587982,
+            "dominantComponentId": 1,
+            "totalRetention": 0.7040938472587982,
+            "intersections": [
+              {
+                "id": 1,
+                "intersectionPixels": 2941,
+                "sourceFraction": 0.7040938472587982,
+                "touchesBorder": false,
+                "predictedPixels": 2941
+              }
+            ]
+          },
+          {
+            "centerMm": [
+              39.42662974280621,
+              40.429621848739494
+            ],
+            "sourceAreaMm2": 245.4375,
+            "intersectionPixels": 1727,
+            "retention": 0.43977591036414565,
+            "predictedComponentAreaMm2": 107.9375,
+            "touchesBorder": false,
+            "componentIoU": 0.43977591036414565,
+            "dominantComponentId": 3,
+            "totalRetention": 0.5459638400814871,
+            "intersections": [
+              {
+                "id": 3,
+                "intersectionPixels": 1727,
+                "sourceFraction": 0.43977591036414565,
+                "touchesBorder": false,
+                "predictedPixels": 1727
+              },
+              {
+                "id": 2,
+                "intersectionPixels": 417,
+                "sourceFraction": 0.10618792971734148,
+                "touchesBorder": false,
+                "predictedPixels": 417
+              }
+            ]
+          },
+          {
+            "centerMm": [
+              64.1442926045016,
+              65.15326902465166
+            ],
+            "sourceAreaMm2": 233.25,
+            "intersectionPixels": 2553,
+            "retention": 0.6840836012861736,
+            "predictedComponentAreaMm2": 659.1875,
+            "touchesBorder": true,
+            "componentIoU": 0.21772130308715676,
+            "dominantComponentId": 4,
+            "totalRetention": 0.6840836012861736,
+            "intersections": [
+              {
+                "id": 4,
+                "intersectionPixels": 2553,
+                "sourceFraction": 0.6840836012861736,
+                "touchesBorder": true,
+                "predictedPixels": 10547
+              }
+            ]
+          },
+          {
+            "centerMm": [
+              87.94961266648546,
+              88.75601386246262
+            ],
+            "sourceAreaMm2": 229.9375,
+            "intersectionPixels": 2459,
+            "retention": 0.66838814895352,
+            "predictedComponentAreaMm2": 153.6875,
+            "touchesBorder": false,
+            "componentIoU": 0.66838814895352,
+            "dominantComponentId": 5,
+            "totalRetention": 0.6694754009241642,
+            "intersections": [
+              {
+                "id": 5,
+                "intersectionPixels": 2459,
+                "sourceFraction": 0.66838814895352,
+                "touchesBorder": false,
+                "predictedPixels": 2459
+              },
+              {
+                "id": 7,
+                "intersectionPixels": 3,
+                "sourceFraction": 0.0008154389779831476,
+                "touchesBorder": false,
+                "predictedPixels": 11
+              },
+              {
+                "id": 6,
+                "intersectionPixels": 1,
+                "sourceFraction": 0.0002718129926610492,
+                "touchesBorder": false,
+                "predictedPixels": 1
+              }
+            ]
+          }
+        ],
+        "distinctDominantMotifComponents": 4,
+        "ownStableComponents": [
+          {
+            "centerMm": [
+              13.153552005438478,
+              15.455897348742353
+            ],
+            "sourceAreaMm2": 183.875,
+            "intersectionPixels": 2915,
+            "retention": 0.9908225696804894,
+            "predictedComponentAreaMm2": 183.8125,
+            "touchesBorder": false,
+            "componentIoU": 0.9821428571428571
+          },
+          {
+            "centerMm": [
+              63.5496413015629,
+              39.358986676915194
+            ],
+            "sourceAreaMm2": 487.875,
+            "intersectionPixels": 7778,
+            "retention": 0.9964130156290033,
+            "predictedComponentAreaMm2": 488.1875,
+            "touchesBorder": false,
+            "componentIoU": 0.9922183952034699
+          },
+          {
+            "centerMm": [
+              39.28689167974882,
+              40.34242543171115
+            ],
+            "sourceAreaMm2": 159.25,
+            "intersectionPixels": 1719,
+            "retention": 0.6746467817896389,
+            "predictedComponentAreaMm2": 107.9375,
+            "touchesBorder": false,
+            "componentIoU": 0.6725352112676056
+          },
+          {
+            "centerMm": [
+              37.954389665172684,
+              63.853051674136566
+            ],
+            "sourceAreaMm2": 474.125,
+            "intersectionPixels": 7565,
+            "retention": 0.9972317426838914,
+            "predictedComponentAreaMm2": 473.9375,
+            "touchesBorder": false,
+            "componentIoU": 0.9948711204629143
+          },
+          {
+            "centerMm": [
+              64.1374698310539,
+              65.02041432019308
+            ],
+            "sourceAreaMm2": 155.375,
+            "intersectionPixels": 2459,
+            "retention": 0.9891391794046661,
+            "predictedComponentAreaMm2": 659.1875,
+            "touchesBorder": true,
+            "componentIoU": 0.2325515415169283
+          },
+          {
+            "centerMm": [
+              87.72424366312347,
+              88.87765739983647
+            ],
+            "sourceAreaMm2": 152.875,
+            "intersectionPixels": 2418,
+            "retention": 0.9885527391659853,
+            "predictedComponentAreaMm2": 153.6875,
+            "touchesBorder": false,
+            "componentIoU": 0.9722557297949337
+          }
+        ]
+      },
+      {
+        "method": "rgb-auto",
+        "status": "complete",
+        "sourceReportSha256": "812ff3be0504b5c7ac8e3c4429586c5f7cac282a0172085eec3bcb70898a9252",
+        "checkedPair": true,
+        "ownMaskError": 0.01724375,
+        "commonRgbProxyError": 0.01724375,
+        "partialKnownMaterialError": 0.0011428299326206519,
+        "partialKnownMaterialPixels": 42001,
+        "motifMetrics": [
+          {
+            "centerMm": [
+              13.377094804883887,
+              15.307607134306918
+            ],
+            "sourceAreaMm2": 261.0625,
+            "intersectionPixels": 4130,
+            "retention": 0.9887479051951161,
+            "predictedComponentAreaMm2": 291,
+            "touchesBorder": true,
+            "componentIoU": 0.878162874760791,
+            "dominantComponentId": 1,
+            "totalRetention": 0.9887479051951161,
+            "intersections": [
+              {
+                "id": 1,
+                "intersectionPixels": 4130,
+                "sourceFraction": 0.9887479051951161,
+                "touchesBorder": true,
+                "predictedPixels": 4656
+              }
+            ]
+          },
+          {
+            "centerMm": [
+              39.42662974280621,
+              40.429621848739494
+            ],
+            "sourceAreaMm2": 245.4375,
+            "intersectionPixels": 3903,
+            "retention": 0.9938884644766998,
+            "predictedComponentAreaMm2": 247.875,
+            "touchesBorder": false,
+            "componentIoU": 0.9781954887218045,
+            "dominantComponentId": 2,
+            "totalRetention": 0.9938884644766998,
+            "intersections": [
+              {
+                "id": 2,
+                "intersectionPixels": 3903,
+                "sourceFraction": 0.9938884644766998,
+                "touchesBorder": false,
+                "predictedPixels": 3966
+              }
+            ]
+          },
+          {
+            "centerMm": [
+              64.1442926045016,
+              65.15326902465166
+            ],
+            "sourceAreaMm2": 233.25,
+            "intersectionPixels": 3693,
+            "retention": 0.9895498392282959,
+            "predictedComponentAreaMm2": 236.25,
+            "touchesBorder": false,
+            "componentIoU": 0.96700706991359,
+            "dominantComponentId": 3,
+            "totalRetention": 0.9895498392282959,
+            "intersections": [
+              {
+                "id": 3,
+                "intersectionPixels": 3693,
+                "sourceFraction": 0.9895498392282959,
+                "touchesBorder": false,
+                "predictedPixels": 3780
+              }
+            ]
+          },
+          {
+            "centerMm": [
+              87.94961266648546,
+              88.75601386246262
+            ],
+            "sourceAreaMm2": 229.9375,
+            "intersectionPixels": 3646,
+            "retention": 0.9910301712421854,
+            "predictedComponentAreaMm2": 857.875,
+            "touchesBorder": true,
+            "componentIoU": 0.2649901882404245,
+            "dominantComponentId": 4,
+            "totalRetention": 0.9910301712421854,
+            "intersections": [
+              {
+                "id": 4,
+                "intersectionPixels": 3646,
+                "sourceFraction": 0.9910301712421854,
+                "touchesBorder": true,
+                "predictedPixels": 13726
+              }
+            ]
+          }
+        ],
+        "distinctDominantMotifComponents": 4,
+        "ownStableComponents": [
+          {
+            "centerMm": [
+              13.377094804883887,
+              15.307607134306918
+            ],
+            "sourceAreaMm2": 261.0625,
+            "intersectionPixels": 4130,
+            "retention": 0.9887479051951161,
+            "predictedComponentAreaMm2": 291,
+            "touchesBorder": true,
+            "componentIoU": 0.878162874760791
+          },
+          {
+            "centerMm": [
+              39.42662974280621,
+              40.429621848739494
+            ],
+            "sourceAreaMm2": 245.4375,
+            "intersectionPixels": 3903,
+            "retention": 0.9938884644766998,
+            "predictedComponentAreaMm2": 247.875,
+            "touchesBorder": false,
+            "componentIoU": 0.9781954887218045
+          },
+          {
+            "centerMm": [
+              64.1442926045016,
+              65.15326902465166
+            ],
+            "sourceAreaMm2": 233.25,
+            "intersectionPixels": 3693,
+            "retention": 0.9895498392282959,
+            "predictedComponentAreaMm2": 236.25,
+            "touchesBorder": false,
+            "componentIoU": 0.96700706991359
+          },
+          {
+            "centerMm": [
+              87.94961266648546,
+              88.75601386246262
+            ],
+            "sourceAreaMm2": 229.9375,
+            "intersectionPixels": 3646,
+            "retention": 0.9910301712421854,
+            "predictedComponentAreaMm2": 857.875,
+            "touchesBorder": true,
+            "componentIoU": 0.2649901882404245
+          }
+        ]
+      }
+    ],
+    "editablePassed": 2,
+    "editableTotal": 2,
+    "visualReview": {
+      "inspected": true,
+      "image": {
+        "path": "tmp/heart-learning/fixed-crop-material-v1/fit-v1/comparison.png",
+        "sha256": "de75076f1c7d1ce8161d334164389e555a3049489ea81b28a9c6643ab0fa3492",
+        "bytes": 551630
+      },
+      "notes": "RGB retains much straighter checker cells and almost all four photographed heart interiors. Its final fit joins the first and fourth hearts to the border through narrow necks; neural fitting splits the second heart and joins the third to a checker/border region. Both pass existing checks, so neither is a faithful-motif success. Common RGB disagreement is a shared proxy, not artwork ground truth."
+    },
+    "auditCorrection": "The first audit passed a Buffer to the independent renderer, which accepts JSON text or an object. Converting that Buffer to UTF-8 fixes the audit without rerunning either fit or changing its outputs. The failed log is preserved."
+  },
+  "sourceCorrection": {
+    "report": "docs/inverse/datasets/printed-heart-source-correction.json",
+    "finding": "The four little hearts are printed decoration on white paper. The RGB mask is an appearance proxy, not paper-identity ground truth. Preserve numerical results, but do not interpret their motif-enclosure errors as recovery failures against this source\u2019s published cuts."
+  }
+}

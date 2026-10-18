@@ -38,15 +38,21 @@ function quantile(sorted, fraction) {
 /** Estimate the two palettes from high-confidence interior samples, as in the
  * supplied experiment. Chroma chooses samples only; NNLS classifies all pixels.
  */
-export function redWhiteMixture(rgb) {
+export function redWhiteMixture(rgb, {validMask=null}={}) {
   const n = rgb.length / 3, side = Math.sqrt(n);
   if (!Number.isInteger(side) || side < 8) throw new Error('A square photograph is required for paper-colour estimation.');
+  if (validMask && (validMask.length !== n || Array.from(validMask).some(v => v !== 0 && v !== 1))) throw new Error('Observation mask must contain one binary value per image pixel.');
+  const observedCount = validMask ? validMask.reduce((sum, v) => sum + v, 0) : n;
+  if (!observedCount) throw new Error('Paper-colour estimation needs observed image pixels.');
+  // Keep original coordinates: compacting observed pixels changes the inset
+  // and usually destroys the square shape this palette estimator requires.
   const inset = Math.max(1, Math.floor(side * 12 / 256)), core = [], chroma = new Float64Array(n);
   for (let i = 0; i < n; i++) {
     chroma[i] = (rgb[3 * i] - rgb[3 * i + 1]) / (rgb[3 * i] + rgb[3 * i + 1] + .03 * 255);
     const x = i % side, y = Math.floor(i / side);
-    if (x >= inset && y >= inset && x < side - inset && y < side - inset) core.push(i);
+    if ((!validMask || validMask[i]) && x >= inset && y >= inset && x < side - inset && y < side - inset) core.push(i);
   }
+  if (core.length < 8) throw new Error('Too few observed interior pixels for paper-colour estimation.');
   const sorted = core.map(i => chroma[i]).sort((a, b) => a - b);
   let centers = [.2, .8].map(q => quantile(sorted, q));
   for (let round = 0; round < 15; round++) {
@@ -63,11 +69,11 @@ export function redWhiteMixture(rgb) {
   const palettes = samples.map(indices => [0, 1, 2].map(k => quantile(indices.map(i => rgb[3 * i + k]).sort((a, b) => a - b), .5) / 255));
   const result = unmixRGB(Float64Array.from(rgb, v => v / 255), ...palettes);
   // Match the experiment's stored float32 probabilities and strict > 0.5 cut.
-  const probability = Float32Array.from(result.probability), mask = Uint8Array.from(probability, p => Number(p > .5));
+  const probability = Float32Array.from(result.probability, (p, i) => validMask && !validMask[i] ? .5 : p), mask = Uint8Array.from(probability, p => Number(p > .5));
   return { mask, probability, metadata: {
     model: 'Nonnegative sRGB paper mixture with scalar illumination', paperPalettesSRGB: palettes,
     sampleCounts: samples.map(s => s.length), sampleInsetFraction: inset / side,
-    rmsColorResidual: Math.sqrt(result.residual.reduce((s, v) => s + v * v, 0) / n),
-    redFraction: mask.reduce((s, v) => s + v, 0) / n,
+    rmsColorResidual: Math.sqrt(result.residual.reduce((s, v, i) => s + (!validMask || validMask[i] ? v * v : 0), 0) / observedCount),
+    redFraction: mask.reduce((s, v) => s + v, 0) / observedCount,
   } };
 }

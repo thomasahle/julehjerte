@@ -17,6 +17,10 @@ export function stabilizeBorder(mask, n, width, radius = 1, minimumStripWidth = 
   if (!Number.isFinite(width) || width <= 0 || !Number.isFinite(radius) || radius < 0 || radius > 3) {
     throw new Error('Border stabilization needs a positive width and a radius between 0 and 3 mm.');
   }
+  return extendBorder(mask, n, width, radius, minimumStripWidth);
+}
+
+function extendBorder(mask, n, width, radius, minimumStripWidth) {
   // Round down: never edit a wider band than the requested physical distance.
   const depth = Math.min(Math.floor(n / 4), Math.floor(radius * n / width));
   const out = mask.slice();
@@ -70,4 +74,37 @@ export function stabilizeBorder(mask, n, width, radius = 1, minimumStripWidth = 
       method: 'Majority across and along inward edge profiles; suppress sub-strip noise before bounded border extension.',
     },
   };
+}
+
+/** Additional routing seeds when one pair of opposite edges disagrees.
+ * Change one edge at a time, read no deeper than 16% of the square and edit
+ * no wider than 8%. These are initialization masks, never image references.
+ * The other three sides retain the ordinary 3 mm border interpretation.
+ */
+export function oppositeBorderSeeds(mask, n, width, minimumStripWidth = 2.5) {
+  const radius = 3, baseline = stabilizeBorder(mask, n, width, radius, minimumStripWidth);
+  const before = baseline.metadata.transitionsAfter, sides = [];
+  for (const [a, b] of [[0, 2], [1, 3]]) if (before[a] !== before[b]) sides.push(a, b);
+  // With both pairs inconsistent, a single-edge extension cannot repair the
+  // endpoint model. Leave that case to the independent-grid fitter.
+  if (sides.length !== 2) return [];
+  const candidates = [];
+  for (let percent = Math.floor(100 * radius / width) + 1; percent <= 8; percent++) {
+    const inset = percent * width / 100, extended = extendBorder(mask, n, width, inset, minimumStripWidth).mask;
+    for (const changedSide of sides) {
+      const radii = [radius, radius, radius, radius]; radii[changedSide] = inset;
+      const out = mask.slice();
+      for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
+        const distances = [y, n - 1 - x, n - 1 - y, x], relative = distances.map((d, side) => d * width / (radii[side] * n));
+        const nearest = Math.min(...relative), side = relative.indexOf(nearest);
+        if (nearest < 1) out[y * n + x] = (side === changedSide ? extended : baseline.mask)[y * n + x];
+      }
+      const after = borderTransitions(out, n);
+      if (!after[0] || !after[1] || after[0] !== after[2] || after[1] !== after[3]) continue;
+      let changes = 0; for (let i = 0; i < out.length; i++) changes += out[i] !== mask[i];
+      candidates.push({ mask: out, metadata: { radiiMm: radii, changedSide, transitionsBefore: before, transitionsAfter: after,
+        changedPixels: changes, changeFraction: changes / out.length, initializationOnly: true } });
+    }
+  }
+  return candidates;
 }

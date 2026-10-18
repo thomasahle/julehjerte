@@ -1,0 +1,16 @@
+{
+  "name": "clipper2-wasm",
+  "version": "0.4.0",
+  "repository": "git+https://github.com/ErikSom/Clipper2-WASM.git",
+  "gitHead": "3c244f3edd0adae6c851460fc409c15f3d235395",
+  "tarball": "https://registry.npmjs.org/clipper2-wasm/-/clipper2-wasm-0.4.0.tgz",
+  "integrity": "sha512-oYM/F8m7ogBmBXGxARJt9SEcjWPQg6+8zdfYw4Cmb5Ii5AOUjRgdQwQ9i5UW3BCJ4CFWG2CQWwm5HvekyvIdUA==",
+  "license": "BSL-1.0",
+  "scope": "Final unfolded-paper validation and offline diagnostics. Loaded with the inverse engine, not at editor entry.",
+  "modifications": "clipper2z.js renamed to .mjs; all distributed bytes unchanged. LICENSE copied from the package gitHead.",
+  "files": {
+    "clipper2z.mjs": "4870702444f07f2d325df8331aa40ed0f9f75295c644cfb18f8688635730a085",
+    "clipper2z.wasm": "429e866b4d7813cabfa7d31e6650825343109fb7d7a1702c533e8597573449ec",
+    "LICENSE.txt": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566"
+  }
+}

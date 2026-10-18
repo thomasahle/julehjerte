@@ -1,0 +1,74 @@
+{
+  "scope": "Complete repository checks for the committed whole-cut editor experiment at 3e87607. No app integration or new browser workflows. Later typed and endpoint-scale work is not covered.",
+  "sourceCommit": "3e8760732469aceabd73d45e3f721c1927b16dd2",
+  "checks": [
+    {
+      "stage": "check",
+      "command": [
+        "npm",
+        "run",
+        "check"
+      ],
+      "exitCode": 0,
+      "seconds": 8.637079959
+    },
+    {
+      "stage": "lint",
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "exitCode": 0,
+      "seconds": 5.867107209
+    },
+    {
+      "stage": "app",
+      "command": [
+        "npx",
+        "vitest",
+        "run",
+        "--maxWorkers=2"
+      ],
+      "exitCode": 0,
+      "seconds": 30.592135375
+    },
+    {
+      "stage": "inverse",
+      "command": [
+        "npm",
+        "run",
+        "test:inverse"
+      ],
+      "exitCode": 0,
+      "seconds": 804.6455743749999
+    },
+    {
+      "stage": "build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exitCode": 0,
+      "seconds": 13.683261166999955
+    }
+  ],
+  "applicationPassed": 855,
+  "applicationSkipped": 1,
+  "inversePassed": 835,
+  "inverseFailed": 0,
+  "sourceFilesVerified": 831,
+  "artifacts": {
+    "tmp/heart-learning/editor-whole-return-portable-v1/qa/app.log": "491c674ec2ea3556c94d7a9b4e2cbe7ef685fb33afb0fcb04ac197968927981e",
+    "tmp/heart-learning/editor-whole-return-portable-v1/qa/build.log": "4a52cddc71650bcdb8d37184c3122f21b5c32dee3944890c20c3323a74639c0c",
+    "tmp/heart-learning/editor-whole-return-portable-v1/qa/check.log": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+    "tmp/heart-learning/editor-whole-return-portable-v1/qa/checks.json": "e0ab3ee7d21c70acc7ac1dea1a6ef42d81347a7a1edfbe77cf44e9abb456a110",
+    "tmp/heart-learning/editor-whole-return-portable-v1/qa/inverse.log": "dcdc15dff2bf4b0dab39b15a250fa15822e906aea949df01657f6ee15dda6df3",
+    "tmp/heart-learning/editor-whole-return-portable-v1/qa/lint.log": "f1a4b272f2f106d9cc645be00a12d8ac4dea14308d11091a0ea8c493d6036f90",
+    "tmp/heart-learning/editor-whole-return-portable-v1/qa/run.py": "3886dec771de750bc7716a32b28bb16d8f532a4574371bece23405f94b93fcd6",
+    "tmp/heart-learning/editor-whole-return-portable-v1/qa/runner.json": "9c2ae6ffd4941f7c6a7b8880978ab373b367dbf981ee3fc8e9d1da6b8ee9c63a",
+    "tmp/heart-learning/editor-whole-return-portable-v1/qa/running.json": "c0c359bd44f6f8aacd20700abf844c9c05ee1c7140b17d270ef93d8bde6764df",
+    "tmp/heart-learning/editor-whole-return-portable-v1/qa/source.json": "aded4a02d0a7c086d8a1374298ff777de927320da2e2b1ec93b076f8128481fd"
+  }
+}

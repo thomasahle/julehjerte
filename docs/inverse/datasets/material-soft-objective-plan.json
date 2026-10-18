@@ -1,0 +1,187 @@
+{
+  "schema": "material-soft-objective-plan-1",
+  "status": "complete",
+  "root": "tmp/heart-learning/material-soft-objective-v1",
+  "dependency": "tmp/heart-learning/refinement-completion-v1/qa/state.json must be complete, with its pinned source files unchanged. A separate live dependency controller waits without running fits concurrently.",
+  "hypothesis": "Thresholding a coarse photographic material field may lose useful subpixel evidence. Compare the current binary fitting objective with the saved soft field while preserving the binary target used for final checks. Learned cross-entropy probabilities are not assumed to be calibrated photographic coverage.",
+  "method": "Sixteen fresh fits on eight fixed inputs: two previously inspected learned checker predictions, plus native, point-sampled and 8x8 coverage-sampled ideal checker controls in each of the same two camera geometries. Alternating binary/soft arm order. The only arm change is sourceImage.probability; crops, original binary mask, complete observed region, fitting settings and validation gates stay fixed. No model inference, training, crop search or supplied cutting paths.",
+  "configuration": {
+    "algorithm": "auto",
+    "polygonal": false,
+    "identicalSheets": false,
+    "resolution": 400,
+    "fitTolerance": 0.5,
+    "maxSpan": 15,
+    "smoothRadius": 0,
+    "snapRadius": 1.5,
+    "borderRadius": 3,
+    "gridPortals": false,
+    "neighbors": 16,
+    "connectorVariants": 2,
+    "junctionBalancePenalty": 0,
+    "gridPreference": 0,
+    "sharpPenalty": 50,
+    "acutePenalty": 30,
+    "turnPenalty": 3,
+    "maxTurn": 175,
+    "localNeighborhoodFactor": 8,
+    "roundHidden": false,
+    "timeLimit": 10,
+    "trials": 0
+  },
+  "preflight": {
+    "status": "passed",
+    "rows": [
+      {
+        "id": "real-cf2d0fcff65d7386-body-1-learned",
+        "maskPreparedExactly": true,
+        "maximumDifferenceFromOriginalJSSampler": 0
+      },
+      {
+        "id": "real-cf2d0fcff65d7386-body-1-native",
+        "maskPreparedExactly": true
+      },
+      {
+        "id": "real-cf2d0fcff65d7386-body-1-coverage-1",
+        "maskPreparedExactly": true
+      },
+      {
+        "id": "real-cf2d0fcff65d7386-body-1-coverage-8",
+        "maskPreparedExactly": true
+      },
+      {
+        "id": "real-d5b0aa8d4d2465ee-body-1-learned",
+        "maskPreparedExactly": true,
+        "maximumDifferenceFromOriginalJSSampler": 0
+      },
+      {
+        "id": "real-d5b0aa8d4d2465ee-body-1-native",
+        "maskPreparedExactly": true
+      },
+      {
+        "id": "real-d5b0aa8d4d2465ee-body-1-coverage-1",
+        "maskPreparedExactly": true
+      },
+      {
+        "id": "real-d5b0aa8d4d2465ee-body-1-coverage-8",
+        "maskPreparedExactly": true
+      }
+    ]
+  },
+  "cases": [
+    {
+      "id": "real-cf2d0fcff65d7386-body-1-learned",
+      "sourceId": "real-cf2d0fcff65d7386-body-1",
+      "kind": "held-out-learned-field",
+      "resolution": 400,
+      "exactSyntheticGeometry": false,
+      "targetErrorAgainstSyntheticTruth": null
+    },
+    {
+      "id": "real-cf2d0fcff65d7386-body-1-native",
+      "sourceId": "real-cf2d0fcff65d7386-body-1",
+      "kind": "native-400-exact-checker",
+      "resolution": 400,
+      "exactSyntheticGeometry": true,
+      "targetErrorAgainstSyntheticTruth": 0.0
+    },
+    {
+      "id": "real-cf2d0fcff65d7386-body-1-coverage-1",
+      "sourceId": "real-cf2d0fcff65d7386-body-1",
+      "kind": "projected-256-1x1-coverage-bilinear-400",
+      "resolution": 400,
+      "exactSyntheticGeometry": true,
+      "targetErrorAgainstSyntheticTruth": 0.0067375
+    },
+    {
+      "id": "real-cf2d0fcff65d7386-body-1-coverage-8",
+      "sourceId": "real-cf2d0fcff65d7386-body-1",
+      "kind": "projected-256-8x8-coverage-bilinear-400",
+      "resolution": 400,
+      "exactSyntheticGeometry": true,
+      "targetErrorAgainstSyntheticTruth": 0.00013125
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1-learned",
+      "sourceId": "real-d5b0aa8d4d2465ee-body-1",
+      "kind": "held-out-learned-field",
+      "resolution": 400,
+      "exactSyntheticGeometry": false,
+      "targetErrorAgainstSyntheticTruth": null
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1-native",
+      "sourceId": "real-d5b0aa8d4d2465ee-body-1",
+      "kind": "native-400-exact-checker",
+      "resolution": 400,
+      "exactSyntheticGeometry": true,
+      "targetErrorAgainstSyntheticTruth": 0.0
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1-coverage-1",
+      "sourceId": "real-d5b0aa8d4d2465ee-body-1",
+      "kind": "projected-256-1x1-coverage-bilinear-400",
+      "resolution": 400,
+      "exactSyntheticGeometry": true,
+      "targetErrorAgainstSyntheticTruth": 0.0143625
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1-coverage-8",
+      "sourceId": "real-d5b0aa8d4d2465ee-body-1",
+      "kind": "projected-256-8x8-coverage-bilinear-400",
+      "resolution": 400,
+      "exactSyntheticGeometry": true,
+      "targetErrorAgainstSyntheticTruth": 0.0008
+    }
+  ],
+  "evaluation": [
+    "Independently rendered SVG error against the unchanged binary target, source-feature checks, complete geometry and paper checks. Failures retained.",
+    "For synthetic controls only, compare exported renders with the known continuous straight checker at 400 and 1600 samples per axis. Fine-grid error is still finite sampling, not certification of exact point contacts.",
+    "Inspect the two real-photo outputs and synthetic contact neighborhoods. No exact source-photo cutting paths or true junction labels are available.",
+    "Runtime retained descriptively; this is one solve per arm per input, not a repeated latency benchmark.",
+    "The current fitter uses the soft field in initialization/refinement but explicitly returns to the binary mask for final polishing. This experiment tests that existing pipeline rather than changing its later objective."
+  ],
+  "limitations": [
+    "Only two development photos, with predictions already inspected. No new unseen-photo generalization result.",
+    "The six synthetic controls describe two known checker geometries, not six independent motif families.",
+    "Native controls have exactly identical probability arrays in both arms; any output differences there expose wall-clock variability.",
+    "No global calibration threshold is selected and no raster four-neighbor contact metric is used as physical ground truth."
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/material-soft-objective-v1/prepare.py": "aa744c76ef6dd279d333d610bf17cf54e2f99273135954b2c24e43261ed41a7c",
+    "tmp/heart-learning/material-soft-objective-v1/replay.mjs": "fdc359e44f29c999b512446464a9ced6d7f4605399c982a124521771ab78ebe5",
+    "tmp/heart-learning/material-soft-objective-v1/run.py": "33ea67b9e0ab0c12d645214f2b1f08e3070979574d3803c2d6afeea0b7325d96",
+    "tmp/heart-learning/material-soft-objective-v1/after-qa.py": "62eb8a95b2241c1731963f013b6e21fdd531a528ae0821450d25cf279059a6ac",
+    "tmp/heart-learning/material-soft-objective-v1/preflight.mjs": "7bc8332241722af3e0f1d266b95049b5d6ef6d25691e9fcdd01b542b151ab4de",
+    "tmp/heart-learning/material-soft-objective-v1/preflight.json": "a334d9a0f8185309553c1942fb90c03e617a0217dd3675a71c7cbfb5c0dada89",
+    "tmp/heart-learning/material-soft-objective-v1/inputs.json": "1ceec1a8af8ad2b3e4d12ea3c55b1f6d07f0be2dca45bdb49c206e05da5c63a0"
+  },
+  "sourceSnapshots": [
+    {
+      "path": "tmp/heart-learning/material-soft-objective-v1/prepare.py",
+      "sha256": "aa744c76ef6dd279d333d610bf17cf54e2f99273135954b2c24e43261ed41a7c",
+      "text": "\"\"\"Freeze real saved fields and ideal checker controls; never initialize cuts.\"\"\"\nfrom pathlib import Path\nimport hashlib,json\nimport numpy as np\nfrom PIL import Image\n\nroot=Path(__file__).resolve().parent\nstudy=Path('tmp/heart-learning/material-corrected-scenes-v1')\nread=lambda p:json.loads(Path(p).read_text())\nsha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()\naudit=read('docs/inverse/datasets/material-junction-diagnostic.json')\nprobe=read(study/'probe/manifest.json');pipeline=read(study/'pipeline/report.json')\nassert not (root/'inputs.json').exists()\ndef homography(to):\n    rows=[];values=[]\n    for (x,y),(u,v) in zip([[0,0],[400,0],[400,400],[0,400]],to):\n        rows.extend([[x,y,1,0,0,0,-u*x,-u*y],[0,0,0,x,y,1,-v*x,-v*y]])\n        values.extend([u,v])\n    return np.r_[np.linalg.solve(rows,values),1].reshape(3,3)\ndef project(h,pts):\n    p=np.c_[pts.reshape(-1,2),np.ones(pts.size//2)]@h.T\n    return (p[:,:2]/p[:,2:]).reshape(pts.shape)\ndef sample(a,points):\n    x,y=points[...,0]-.5,points[...,1]-.5\n    x0=np.floor(x).astype(int);y0=np.floor(y).astype(int);dx=x-x0;dy=y-y0\n    out=np.zeros(x.shape)\n    for j in [0,1]:\n        for i in [0,1]:\n            xi=x0+i;yi=y0+j;good=(xi>=0)&(xi<256)&(yi>=0)&(yi<256)\n            z=np.full(x.shape,.5);z[good]=a[yi[good],xi[good]]\n            out+=(dx if i else 1-dx)*(dy if j else 1-dy)*z\n    return out.astype('<f4')\ndef store(name,probability,truth,source,kind):\n    folder=root/'inputs'/name;folder.mkdir(parents=True)\n    mask=(probability>=.5).astype('u1')\n    probability.astype('<f4').tofile(folder/'probability.f32');mask.tofile(folder/'mask.bin')\n    Image.fromarray(mask*255).save(folder/'mask.png')\n    Image.fromarray(np.uint8(np.clip(probability,0,1)*255)).save(folder/'probability.png')\n    files=['probability.f32','mask.bin','mask.png','probability.png']\n    if truth is not None:\n        truth.astype('u1').tofile(folder/'truth.bin');Image.fromarray(truth.astype('u1')*255).save(folder/'truth.png');files+=['truth.bin','truth.png']\n    return dict(id=name,sourceId=source,kind=kind,resolution=400,\n        assets={f:dict(path=str(folder/f),sha256=sha(folder/f))for f in files},\n        exactSyntheticGeometry=truth is not None,\n        targetErrorAgainstSyntheticTruth=float(np.mean(mask!=truth)) if truth is not None else None)\n\nyc,xc=np.mgrid[:400,:400];crop=np.stack([xc+.5,yc+.5],axis=-1)\nyf,xf=np.mgrid[:256,:256];fieldPixels=np.stack([xf,yf],axis=-1)\nrows=[];sources={};geometry=[]\nfor case in audit['cases']:\n    identity=case['id'];source=next(x for x in probe['rows']if x['id']==identity)\n    run=next(x for x in pipeline['rows']if x['id']==identity and x['method']=='candidate-joint')\n    asset=source['assets']['candidate']['material'];file=study/'probe'/asset['path'];assert sha(file)==asset['sha256'];sources[str(file)]=sha(file)\n    h=homography(case['cropQuad']);inverse=np.linalg.inv(h);window=np.asarray(source['window'])\n    photo=project(h,crop);assert (photo[...,0]>=0).all() and (photo[...,0]<source['dimensions'][0]).all() and (photo[...,1]>=0).all() and (photo[...,1]<source['dimensions'][1]).all(),'Use full observed crops only.'\n    points=(photo-window[:2])*256/(window[2:]-window[:2])\n    learned=sample(np.fromfile(file,dtype='<f4').reshape(256,256),points)\n    assert hashlib.sha256((learned>=.5).astype('u1').tobytes()).hexdigest()==run['targetMaskSha256']\n    rows.append(store(identity+'-learned',learned,None,identity,'held-out-learned-field'))\n    centers=[j['cropCenter']for j in case['junctions']];xs=sorted(set(p[0]for p in centers));ys=sorted(set(p[1]for p in centers))\n    truth=(np.searchsorted(xs,crop[...,0],side='right')+np.searchsorted(ys,crop[...,1],side='right'))%2\n    geometry.append(dict(sourceId=identity,verticalCutsCropPixels=xs,horizontalCutsCropPixels=ys,scope='Exact straight synthetic boundaries, defined using approximate photo-junction centers. No claim of photographed ground truth; not read by fitting.'))\n    rows.append(store(identity+'-native',truth.astype('<f4'),truth,identity,'native-400-exact-checker'))\n    for supersampling in [1,8]:\n        field=np.zeros((256,256))\n        for sy in range(supersampling):\n            for sx in range(supersampling):\n                sourcePixels=window[:2]+(fieldPixels+[(sx+.5)/supersampling,(sy+.5)/supersampling])*(window[2:]-window[:2])/256\n                rect=project(inverse,sourcePixels)\n                field+=((np.searchsorted(xs,rect[...,0],side='right')+np.searchsorted(ys,rect[...,1],side='right'))%2)/supersampling**2\n        rows.append(store(identity+f'-coverage-{supersampling}',sample(field.astype('<f4'),points),truth,identity,f'projected-256-{supersampling}x{supersampling}-coverage-bilinear-400'))\nfor p in [Path(__file__),Path('docs/inverse/datasets/material-junction-diagnostic.json'),study/'probe/manifest.json',study/'pipeline/report.json']:sources[str(p)]=sha(p)\nmanifest=dict(schema='material-soft-objective-inputs-1',status='prepared',configuration=pipeline['configuration'],rows=rows,sourceHashes=sources,syntheticGeometry=geometry,\n    scope='Two previously inspected development photos and six synthetic controls. Fixed crops, probabilities and binary masks. No model inference/training, new annotation, threshold tuning or fitting. Synthetic truth is evaluation-only; no source-photo ground-truth curves are available.')\n(root/'inputs.json').write_text(json.dumps(manifest,indent=2)+'\\n')\nprint(json.dumps([(r['id'],r['targetErrorAgainstSyntheticTruth'])for r in rows],indent=2))\n"
+    },
+    {
+      "path": "tmp/heart-learning/material-soft-objective-v1/replay.mjs",
+      "sha256": "fdc359e44f29c999b512446464a9ced6d7f4605399c982a124521771ab78ebe5",
+      "text": "/** Fixed target ablation: only sourceImage.probability differs between arms. */\nimport fs from 'node:fs/promises';\nimport assert from 'node:assert/strict';\nimport {createHash} from 'node:crypto';\nimport {prepare,design} from '../../../static/inverse/core/engine.js';\nimport {referenceError} from '../../../static/inverse/core/image-reference.js';\nimport {auditFeatureFidelity} from '../../../static/inverse/core/feature-shapes.js';\nimport {renderExportedWeave} from '../../../scripts/inverse/export-renderer.mjs';\n\nconst root=new URL('.',import.meta.url),read=async p=>JSON.parse(await fs.readFile(p));\nconst hash=b=>createHash('sha256').update(b).digest('hex');\nconst [id,method]=process.argv.slice(2);assert.ok(['binary','soft'].includes(method));\nconst inputs=await read(new URL('inputs.json',root)),entry=inputs.rows.find(r=>r.id===id);assert.ok(entry);\nconst pins=await read(new URL('source.json',root));\nconst verify=async()=>{for(const [p,h]of Object.entries(pins))assert.equal(hash(await fs.readFile(p)),h,p);};\nawait verify();\nasync function asset(name){const a=entry.assets[name],bytes=await fs.readFile(a.path);assert.equal(hash(bytes),a.sha256);return bytes;}\nconst mask=Uint8Array.from(await asset('mask.bin')),bytes=await asset('probability.f32'),n=entry.resolution;\nassert.equal(bytes.length,n*n*4);assert.equal(mask.length,n*n);\nconst probability=Float32Array.from({length:n*n},(_,i)=>bytes.readFloatLE(4*i));\nassert.ok(probability.every((p,i)=>Number.isFinite(p)&&p>=0&&p<=1&&Number(p>=.5)===mask[i]));\nconst folder=new URL(id+'/'+method+'/',root);await fs.mkdir(folder,{recursive:true});\nconst sourceMask=mask.slice(),started=performance.now();\nconst prepared=prepare({type:'mask',mask,resolution:n},{...inputs.configuration,invert:false,removeSpecks:0,fillHoles:0});\nif(method==='soft')prepared.target.sourceImage.probability=probability.slice();\nassert.deepEqual(prepared.target.sourceImage.mask,sourceMask);\nconst row={id,method,kind:entry.kind,sourceId:entry.sourceId,maskSha256:hash(sourceMask),\n  probabilitySha256:hash(new Uint8Array(prepared.target.sourceImage.probability.buffer)),assets:{}};\nconst store=async(name,data)=>{await fs.writeFile(new URL(name,folder),data);row.assets[name]={sha256:hash(data)};};\ntry{\n  const ready=performance.now();\n  const result=await design(prepared.target,inputs.configuration,()=>{}),finished=performance.now();\n  row.prepareSeconds=(ready-started)/1000;row.solveSeconds=(finished-ready)/1000;row.totalSeconds=(finished-started)/1000;\n  assert.deepEqual(prepared.target.sourceImage.mask,sourceMask,'Fitting may not change the target.');\n  for(const name of ['cut_geometry.json','template_left.svg','template_right.svg','weave_preview.svg'])await store(name,result.files[name]);\n  await store('engine-report.json',JSON.stringify(result.report,null,2)+'\\n');\n  const woven=await renderExportedWeave(result.files['cut_geometry.json'],n);await store('woven.png',woven.png);\n  row.targetError=referenceError(prepared.target.sourceImage,woven.mask);\n  row.features=auditFeatureFidelity(prepared.target.sourceImage,woven.mask,result.report.settings);\n  row.templateChecksPassed=result.report.templateChecksPassed;row.geometryPassed=result.report.validation.passed;row.paperStatus=result.report.manufacturing.status;\n  row.checkedDerivedMask=row.templateChecksPassed&&row.features.passed&&row.targetError.mismatchFraction<=result.report.settings.maxImageError;\n  row.selectedCounts=result.report.solver.selectedCounts;row.status=row.checkedDerivedMask?'checked-derived-mask':'review-required';\n  // Exact synthetic truth enters only after design and independent rendering.\n  if(entry.assets['truth.bin']){\n    const truth=Uint8Array.from(await asset('truth.bin'));\n    row.syntheticTruthError=referenceError({mask:truth,resolution:n},woven.mask);\n    row.syntheticTruthFeatures=auditFeatureFidelity({mask:truth,resolution:n},woven.mask,result.report.settings);\n    const geometry=inputs.syntheticGeometry.find(g=>g.sourceId===entry.sourceId);assert.ok(geometry);\n    const fineN=1600,ideal=Uint8Array.from({length:fineN*fineN},(_,i)=>{\n      const x=(i%fineN+.5)*400/fineN,y=(Math.floor(i/fineN)+.5)*400/fineN;\n      return (geometry.verticalCutsCropPixels.filter(v=>v<=x).length+geometry.horizontalCutsCropPixels.filter(v=>v<=y).length)%2;\n    });\n    const fine=await renderExportedWeave(result.files['cut_geometry.json'],fineN);\n    row.syntheticFineGridError={resolution:fineN,...referenceError({mask:ideal,resolution:fineN},fine.mask),\n      scope:'Independent SVG samples against the known continuous straight checker at finer resolution; a finite image-error estimate, not a certificate of exact point contacts.'};\n  }\n}catch(error){row.status='failed';row.error=error.message;row.totalSeconds=(performance.now()-started)/1000;if(error.report)await store('engine-report.json',JSON.stringify(error.report,null,2)+'\\n');}\nawait verify();await fs.writeFile(new URL('result.json',folder),JSON.stringify(row,null,2)+'\\n');\nconsole.log(JSON.stringify({id,method,status:row.status,seconds:row.totalSeconds,targetError:row.targetError?.mismatchFraction,truthError:row.syntheticTruthError?.mismatchFraction,error:row.error}));\n"
+    },
+    {
+      "path": "tmp/heart-learning/material-soft-objective-v1/run.py",
+      "sha256": "33ea67b9e0ab0c12d645214f2b1f08e3070979574d3803c2d6afeea0b7325d96",
+      "text": "from pathlib import Path\nimport hashlib,json,os,subprocess,time\nroot=Path(__file__).resolve().parent\nread=lambda p:json.loads(Path(p).read_text())\nsha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()\nwrite=lambda name,value:(root/name).write_text(json.dumps(value,indent=2)+'\\n')\ndependency=root.parent/'refinement-completion-v1/qa'\nassert read(dependency/'state.json')['status']=='complete','Wait for the full release QA.'\nassert not (root/'state.json').exists()\ninputs=read(root/'inputs.json');pins=read(dependency/'source.json');pins.update(inputs['sourceHashes'])\nfor row in inputs['rows']:\n    for asset in row['assets'].values():pins[asset['path']]=asset['sha256']\npins.update({str(root/name):sha(root/name)for name in ['prepare.py','replay.mjs','run.py','after-qa.py','preflight.mjs','preflight.json','inputs.json']})\nwrite('source.json',pins)\ndef verify():\n    for p,h in pins.items():assert sha(p)==h,p\nverify();started=time.monotonic();results=[]\nfor index,row in enumerate(inputs['rows']):\n    for method in ['binary','soft']if index%2==0 else ['soft','binary']:\n        with (root/f'{row[\"id\"]}-{method}.log').open('w') as log:\n            p=subprocess.Popen(['node',str(root/'replay.mjs'),row['id'],method],stdout=log,stderr=subprocess.STDOUT)\n            write('state.json',dict(status='running',controllerPid=os.getpid(),pid=p.pid,id=row['id'],method=method,completed=len(results),total=2*len(inputs['rows'])));code=p.wait()\n        verify()\n        if code:\n            write('state.json',dict(status='failed',id=row['id'],method=method,exitCode=code));raise SystemExit(code)\n        result=read(root/row['id']/method/'result.json');results.append(result);write('results.json',dict(status='running',results=results))\n        print(row['id'],method,result['status'],round(result['totalSeconds'],3),flush=True)\nwrite('results.json',dict(status='complete',results=results));write('state.json',dict(status='complete',seconds=time.monotonic()-started,sourceFilesVerified=len(pins)))\n"
+    },
+    {
+      "path": "tmp/heart-learning/material-soft-objective-v1/after-qa.py",
+      "sha256": "62eb8a95b2241c1731963f013b6e21fdd531a528ae0821450d25cf279059a6ac",
+      "text": "from pathlib import Path\nimport json,os,subprocess,time\nroot=Path(__file__).resolve().parent\nqa=root.parent/'refinement-completion-v1/qa/state.json'\nread=lambda p:json.loads(Path(p).read_text())\nwrite=lambda value:(root/'dependency-state.json').write_text(json.dumps(value,indent=2)+'\\n')\nassert not (root/'dependency-state.json').exists()\nprevious=None\nwhile True:\n    state=read(qa)\n    if state['status']=='complete':break\n    if state['status']=='failed':\n        write(dict(status='dependency-failed',dependency=state));raise SystemExit(1)\n    pid=state['controllerPid']\n    try:os.kill(pid,0)\n    except ProcessLookupError:\n        # Read once more in case the controller just wrote terminal state.\n        state=read(qa)\n        if state['status']=='complete':break\n        write(dict(status='dependency-handle-missing',dependency=state));raise SystemExit(1)\n    write(dict(status='waiting',controllerPid=os.getpid(),dependencyPid=pid,dependencyStage=state.get('stage')))\n    if state.get('stage')!=previous:\n        print('waiting for release QA:',state.get('stage'),flush=True);previous=state.get('stage')\n    time.sleep(5)\nwith (root/'controller.log').open('w') as log:\n    p=subprocess.Popen(['python3',str(root/'run.py')],stdout=log,stderr=subprocess.STDOUT)\n    write(dict(status='running',controllerPid=os.getpid(),pid=p.pid));code=p.wait()\nwrite(dict(status='complete' if code==0 else 'failed',exitCode=code))\nprint('diagnostic finished',code,flush=True)\nraise SystemExit(code)\n"
+    },
+    {
+      "path": "tmp/heart-learning/material-soft-objective-v1/preflight.mjs",
+      "sha256": "7bc8332241722af3e0f1d266b95049b5d6ef6d25691e9fcdd01b542b151ab4de",
+      "text": "import fs from 'node:fs/promises';\nimport assert from 'node:assert/strict';\nimport {materialMask} from '../material-corrected-scenes-v1/material-fields.mjs';\nimport {prepare} from '../../../static/inverse/core/engine.js';\nconst root=new URL('.',import.meta.url),read=async p=>JSON.parse(await fs.readFile(p));\nconst inputs=await read(new URL('inputs.json',root)),study=new URL('../material-corrected-scenes-v1/',root);\nconst probe=await read(new URL('probe/manifest.json',study)),pipeline=await read(new URL('pipeline/report.json',study));\nconst rows=[];\nfor(const entry of inputs.rows){\n  const mask=Uint8Array.from(await fs.readFile(entry.assets['mask.bin'].path));\n  const bytes=await fs.readFile(entry.assets['probability.f32'].path),p=Float32Array.from({length:400**2},(_,i)=>bytes.readFloatLE(4*i));\n  const prepared=prepare({type:'mask',mask,resolution:400},inputs.configuration);\n  assert.deepEqual(prepared.target.sourceImage.mask,mask);\n  assert.ok(p.every((v,i)=>Number.isFinite(v)&&v>=0&&v<=1&&Number(v>=.5)===mask[i]));\n  const row={id:entry.id,maskPreparedExactly:true};\n  if(entry.kind==='held-out-learned-field'){\n    const source=probe.rows.find(s=>s.id===entry.sourceId),run=pipeline.rows.find(s=>s.id===entry.sourceId&&s.method==='candidate-joint');\n    const b=await fs.readFile(new URL('probe/'+source.assets.candidate.material.path,study));\n    const f=Float32Array.from({length:256**2},(_,i)=>b.readFloatLE(4*i));\n    const actual=materialMask(f,256,source.window,run.selectedCrop.quad,400);assert.deepEqual(actual.mask,mask);\n    let max=0;for(let i=0;i<p.length;i++)max=Math.max(max,Math.abs(actual.probability[i]-p[i]));\n    assert.equal(max,0);row.maximumDifferenceFromOriginalJSSampler=max;\n  }\n  if(entry.kind==='native-400-exact-checker')assert.deepEqual(p,Float32Array.from(mask));\n  rows.push(row);\n}\nawait fs.writeFile(new URL('preflight.json',root),JSON.stringify({status:'passed',rows},null,2)+'\\n');\nconsole.log('Eight inputs verified; real probabilities exactly match the original JS sampler.');\n"
+    }
+  ],
+  "results": "docs/inverse/datasets/material-soft-objective-results.json"
+}

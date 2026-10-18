@@ -1,0 +1,630 @@
+{
+  "schema": "binary-versus-soft-material-field-results-1",
+  "status": "complete",
+  "state": {
+    "status": "complete",
+    "seconds": 79.77533433400001,
+    "sourceFilesVerified": 1074
+  },
+  "method": "Sixteen fresh fits on eight frozen inputs, alternating binary/soft order. Only sourceImage.probability changes; source binary target, crop and settings remain fixed. Real fields exactly reproduce the earlier JavaScript sampling. Full production pipeline, including its binary final polish, is retained. No training, inference, threshold selection or crop search.",
+  "overall": {
+    "inputs": 8,
+    "fits": 16,
+    "checkedDerivedMasks": 16,
+    "identicalNativeControlGeometryPairs": 2,
+    "realSoftTargetErrorImproved": 0,
+    "realSoftTargetErrorWorsened": 2,
+    "sampledSyntheticFineTruthImproved": 1,
+    "sampledSyntheticFineTruthWorsened": 3
+  },
+  "decision": "No evidence to integrate the soft-field handoff as an improvement. Keep the existing production input path. The two real photographed designs still lack exact contact/cutting ground truth.",
+  "visualReview": {
+    "real-cf2d0fcff65d7386-body-1-learned": "Probability, binary target and both independent renders inspected. Both form an uneven checker with rounded corners and distorted outer cells. Soft input does not visibly resolve the junction/contour problems and increases target error from 0.8% to 1.1575%.",
+    "real-d5b0aa8d4d2465ee-body-1-learned": "Probability, binary target and both independent renders inspected. Both retain the irregular checker and distorted upper-left cell; soft target error rises from 0.445625% to 0.49%. No clear visual reconstruction gain.",
+    "synthetic": "All six paired outputs and their probabilities/targets inspected. Native controls are exact in both arms. Point-sampled projected controls retain wavy boundary artifacts; coverage-sampled inputs are substantially straighter. Soft fitting introduces small geometric offsets, even when the binary target disagreement is lower."
+  },
+  "interpretation": [
+    "Binary target agreement and known geometric truth can disagree: for the red/white-camera coverage-8 control, soft target error falls from 0.0675% to 0.06% while 1600px truth error rises from 0.096328125% to 0.221875%.",
+    "The two native controls return identical cutting geometry and zero sampled truth error in both arms.",
+    "Observed learned probabilities are model outputs, not calibrated physical area coverage; this experiment does not establish a correct photographic forward model.",
+    "One pair per input with wall-clock-bounded search; small changes are not repeated-run statistical results. Earlier real photos are development cases, not new generalization data.",
+    "The high-resolution truth comparison is finite raster sampling, not an exact contact certificate. Geometry/paper checks are nominal and do not establish physical assembly.",
+    "No editable conversion/browser study was needed to adopt a change: no runtime change is adopted. Existing release QA remains a separate result."
+  ],
+  "results": [
+    {
+      "id": "real-cf2d0fcff65d7386-body-1-learned",
+      "kind": "held-out-learned-field",
+      "geometryExact": false,
+      "binary": {
+        "status": "checked-derived-mask",
+        "checkedDerivedMask": true,
+        "totalSeconds": 8.00513625,
+        "targetError": {
+          "mismatchPixels": 1280,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.008
+        },
+        "syntheticTruthError": null,
+        "syntheticFineGridError": null,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskSha256": "3b990d8aef3b681f058d99e8bb4584bf2c371950ff7cbdb413308956a9946c3d",
+        "probabilitySha256": "bb01259330ce1fc2c47fc325f63c21f55a5eab187a058c9a63d7903c4cf901d8",
+        "featuresPassed": true,
+        "geometrySha256": "716547f30516cc524ccbacbadf327dfb0c4d860ff2a0e3ddd14a8b51bbd33895"
+      },
+      "soft": {
+        "status": "checked-derived-mask",
+        "checkedDerivedMask": true,
+        "totalSeconds": 9.525082833,
+        "targetError": {
+          "mismatchPixels": 1852,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.011575
+        },
+        "syntheticTruthError": null,
+        "syntheticFineGridError": null,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskSha256": "3b990d8aef3b681f058d99e8bb4584bf2c371950ff7cbdb413308956a9946c3d",
+        "probabilitySha256": "31c094980bcd3f064b725b0105f9c9bad3ef0efd5a805efc343de6d1a668f60a",
+        "featuresPassed": true,
+        "geometrySha256": "49a3fdaf9c5cb546fe28a8b3921e736cffb0472840fb329c855cf8899bb40ccf"
+      },
+      "targetErrorChangePercentagePoints": 0.3575
+    },
+    {
+      "id": "real-cf2d0fcff65d7386-body-1-native",
+      "kind": "native-400-exact-checker",
+      "geometryExact": true,
+      "binary": {
+        "status": "checked-derived-mask",
+        "checkedDerivedMask": true,
+        "totalSeconds": 0.829553959,
+        "targetError": {
+          "mismatchPixels": 0,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0
+        },
+        "syntheticTruthError": {
+          "mismatchPixels": 0,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0
+        },
+        "syntheticFineGridError": {
+          "resolution": 1600,
+          "mismatchPixels": 0,
+          "observedPixels": 2560000,
+          "observedFraction": 1,
+          "mismatchFraction": 0,
+          "scope": "Independent SVG samples against the known continuous straight checker at finer resolution; a finite image-error estimate, not a certificate of exact point contacts."
+        },
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskSha256": "c16e784fb200fc78011212386eb66b2413c1d6358422935ed44c81456915fcca",
+        "probabilitySha256": "4cd404693bf5aa5967cfd952e5a73f7260fbd0ddde3817d4c077e3716c40ad93",
+        "featuresPassed": true,
+        "geometrySha256": "ff8778a52f13303dcd13a88a4c23a7e3e3ea73bfd4ae30f36326c15502d1c15f"
+      },
+      "soft": {
+        "status": "checked-derived-mask",
+        "checkedDerivedMask": true,
+        "totalSeconds": 0.8215577079999999,
+        "targetError": {
+          "mismatchPixels": 0,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0
+        },
+        "syntheticTruthError": {
+          "mismatchPixels": 0,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0
+        },
+        "syntheticFineGridError": {
+          "resolution": 1600,
+          "mismatchPixels": 0,
+          "observedPixels": 2560000,
+          "observedFraction": 1,
+          "mismatchFraction": 0,
+          "scope": "Independent SVG samples against the known continuous straight checker at finer resolution; a finite image-error estimate, not a certificate of exact point contacts."
+        },
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskSha256": "c16e784fb200fc78011212386eb66b2413c1d6358422935ed44c81456915fcca",
+        "probabilitySha256": "4cd404693bf5aa5967cfd952e5a73f7260fbd0ddde3817d4c077e3716c40ad93",
+        "featuresPassed": true,
+        "geometrySha256": "ff8778a52f13303dcd13a88a4c23a7e3e3ea73bfd4ae30f36326c15502d1c15f"
+      },
+      "targetErrorChangePercentagePoints": 0,
+      "fineTruthErrorChangePercentagePoints": 0
+    },
+    {
+      "id": "real-cf2d0fcff65d7386-body-1-coverage-1",
+      "kind": "projected-256-1x1-coverage-bilinear-400",
+      "geometryExact": false,
+      "binary": {
+        "status": "checked-derived-mask",
+        "checkedDerivedMask": true,
+        "totalSeconds": 4.184254666,
+        "targetError": {
+          "mismatchPixels": 1001,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00625625
+        },
+        "syntheticTruthError": {
+          "mismatchPixels": 233,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00145625
+        },
+        "syntheticFineGridError": {
+          "resolution": 1600,
+          "mismatchPixels": 7767,
+          "observedPixels": 2560000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.003033984375,
+          "scope": "Independent SVG samples against the known continuous straight checker at finer resolution; a finite image-error estimate, not a certificate of exact point contacts."
+        },
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskSha256": "3436b1ae136f530194533b69437486e242f2bf91bf797bb5607f9f5cf09a8167",
+        "probabilitySha256": "de4ef3b753b3f6280701b31fd78ae3f14006401c0b9737dad64654d605cd27ae",
+        "featuresPassed": true,
+        "geometrySha256": "689c85f61892ea62f97865c807a12072635770c0b806186f2419c13253ce8cfa"
+      },
+      "soft": {
+        "status": "checked-derived-mask",
+        "checkedDerivedMask": true,
+        "totalSeconds": 4.261453334,
+        "targetError": {
+          "mismatchPixels": 885,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00553125
+        },
+        "syntheticTruthError": {
+          "mismatchPixels": 327,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00204375
+        },
+        "syntheticFineGridError": {
+          "resolution": 1600,
+          "mismatchPixels": 8970,
+          "observedPixels": 2560000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00350390625,
+          "scope": "Independent SVG samples against the known continuous straight checker at finer resolution; a finite image-error estimate, not a certificate of exact point contacts."
+        },
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskSha256": "3436b1ae136f530194533b69437486e242f2bf91bf797bb5607f9f5cf09a8167",
+        "probabilitySha256": "c9497681eed45da4b8e6364018620a99ae74487f0e02c910bf4ac60bb16caf2a",
+        "featuresPassed": true,
+        "geometrySha256": "095ba7a4bd3f01f779eefec614ee4ec8a4f6bbd24c804821cb40dd50b41ecfe1"
+      },
+      "targetErrorChangePercentagePoints": -0.0725,
+      "fineTruthErrorChangePercentagePoints": 0.04699218750000003
+    },
+    {
+      "id": "real-cf2d0fcff65d7386-body-1-coverage-8",
+      "kind": "projected-256-8x8-coverage-bilinear-400",
+      "geometryExact": false,
+      "binary": {
+        "status": "checked-derived-mask",
+        "checkedDerivedMask": true,
+        "totalSeconds": 3.87069925,
+        "targetError": {
+          "mismatchPixels": 21,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00013125
+        },
+        "syntheticTruthError": {
+          "mismatchPixels": 0,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0
+        },
+        "syntheticFineGridError": {
+          "resolution": 1600,
+          "mismatchPixels": 0,
+          "observedPixels": 2560000,
+          "observedFraction": 1,
+          "mismatchFraction": 0,
+          "scope": "Independent SVG samples against the known continuous straight checker at finer resolution; a finite image-error estimate, not a certificate of exact point contacts."
+        },
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskSha256": "64f1535b47cd3e53064f4274b257fe44510d44111d0eca97fba3ce8de126d6fc",
+        "probabilitySha256": "e1bae97c5a0066d36a1ae0271e42b869336be295a0f28331ef3c26bb46b61d6f",
+        "featuresPassed": true,
+        "geometrySha256": "f9e0bcda3e1361e3e2cd4a8a9c621550c7b096a1884f98e17485ad978c3641aa"
+      },
+      "soft": {
+        "status": "checked-derived-mask",
+        "checkedDerivedMask": true,
+        "totalSeconds": 1.133487083,
+        "targetError": {
+          "mismatchPixels": 55,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00034375
+        },
+        "syntheticTruthError": {
+          "mismatchPixels": 44,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.000275
+        },
+        "syntheticFineGridError": {
+          "resolution": 1600,
+          "mismatchPixels": 1863,
+          "observedPixels": 2560000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.000727734375,
+          "scope": "Independent SVG samples against the known continuous straight checker at finer resolution; a finite image-error estimate, not a certificate of exact point contacts."
+        },
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskSha256": "64f1535b47cd3e53064f4274b257fe44510d44111d0eca97fba3ce8de126d6fc",
+        "probabilitySha256": "6da3d767dd2b5576a132f317c24834ba039af3ba1dd9beae8e4f90fc3dce8af3",
+        "featuresPassed": true,
+        "geometrySha256": "d0c06c2e36e64558c8de0b3b6300e13debde1d87f1b05148d8dfc917d4861743"
+      },
+      "targetErrorChangePercentagePoints": 0.021249999999999998,
+      "fineTruthErrorChangePercentagePoints": 0.0727734375
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1-learned",
+      "kind": "held-out-learned-field",
+      "geometryExact": false,
+      "binary": {
+        "status": "checked-derived-mask",
+        "checkedDerivedMask": true,
+        "totalSeconds": 7.526440541,
+        "targetError": {
+          "mismatchPixels": 713,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00445625
+        },
+        "syntheticTruthError": null,
+        "syntheticFineGridError": null,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskSha256": "e0ec3f16946c593492bf8570d4075e3da26970a3a6bf83fadce2a74d9eb73988",
+        "probabilitySha256": "50b85954cd50c12d4710131f6e6e9805ae062b111e012f43b2484aae34edbafd",
+        "featuresPassed": true,
+        "geometrySha256": "3e61153de6efabba7abbe28d649eff5f3f40e6a7bb0558d7d2d95d5da7d78d34"
+      },
+      "soft": {
+        "status": "checked-derived-mask",
+        "checkedDerivedMask": true,
+        "totalSeconds": 7.840051792000001,
+        "targetError": {
+          "mismatchPixels": 784,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0049
+        },
+        "syntheticTruthError": null,
+        "syntheticFineGridError": null,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskSha256": "e0ec3f16946c593492bf8570d4075e3da26970a3a6bf83fadce2a74d9eb73988",
+        "probabilitySha256": "ed8e83e9c50ee62feec0d68f8028dcc1ece2b2be3cbf7ca4c9c850b6723e43e8",
+        "featuresPassed": true,
+        "geometrySha256": "b233edcf100c10f43cc832afae6551eb7a63ac30cdc5509689ec441444199231"
+      },
+      "targetErrorChangePercentagePoints": 0.04437499999999997
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1-native",
+      "kind": "native-400-exact-checker",
+      "geometryExact": true,
+      "binary": {
+        "status": "checked-derived-mask",
+        "checkedDerivedMask": true,
+        "totalSeconds": 0.881564708,
+        "targetError": {
+          "mismatchPixels": 0,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0
+        },
+        "syntheticTruthError": {
+          "mismatchPixels": 0,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0
+        },
+        "syntheticFineGridError": {
+          "resolution": 1600,
+          "mismatchPixels": 0,
+          "observedPixels": 2560000,
+          "observedFraction": 1,
+          "mismatchFraction": 0,
+          "scope": "Independent SVG samples against the known continuous straight checker at finer resolution; a finite image-error estimate, not a certificate of exact point contacts."
+        },
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskSha256": "305fad05e8a9870e635451032be9dbb288813e193a7ea1e0c91f26626d2b25ad",
+        "probabilitySha256": "2799c9e9aa41946df0058c9ed192e57b9ec91d39949b7e0e076a63af0cf034a3",
+        "featuresPassed": true,
+        "geometrySha256": "42b77d3eb45137178bc7952a665e14917552df68ba2411f2b7597b27f988451a"
+      },
+      "soft": {
+        "status": "checked-derived-mask",
+        "checkedDerivedMask": true,
+        "totalSeconds": 0.8593765409999999,
+        "targetError": {
+          "mismatchPixels": 0,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0
+        },
+        "syntheticTruthError": {
+          "mismatchPixels": 0,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0
+        },
+        "syntheticFineGridError": {
+          "resolution": 1600,
+          "mismatchPixels": 0,
+          "observedPixels": 2560000,
+          "observedFraction": 1,
+          "mismatchFraction": 0,
+          "scope": "Independent SVG samples against the known continuous straight checker at finer resolution; a finite image-error estimate, not a certificate of exact point contacts."
+        },
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskSha256": "305fad05e8a9870e635451032be9dbb288813e193a7ea1e0c91f26626d2b25ad",
+        "probabilitySha256": "2799c9e9aa41946df0058c9ed192e57b9ec91d39949b7e0e076a63af0cf034a3",
+        "featuresPassed": true,
+        "geometrySha256": "42b77d3eb45137178bc7952a665e14917552df68ba2411f2b7597b27f988451a"
+      },
+      "targetErrorChangePercentagePoints": 0,
+      "fineTruthErrorChangePercentagePoints": 0
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1-coverage-1",
+      "kind": "projected-256-1x1-coverage-bilinear-400",
+      "geometryExact": false,
+      "binary": {
+        "status": "checked-derived-mask",
+        "checkedDerivedMask": true,
+        "totalSeconds": 5.161158792,
+        "targetError": {
+          "mismatchPixels": 1551,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00969375
+        },
+        "syntheticTruthError": {
+          "mismatchPixels": 1495,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00934375
+        },
+        "syntheticFineGridError": {
+          "resolution": 1600,
+          "mismatchPixels": 26319,
+          "observedPixels": 2560000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.010280859375,
+          "scope": "Independent SVG samples against the known continuous straight checker at finer resolution; a finite image-error estimate, not a certificate of exact point contacts."
+        },
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskSha256": "3cf217bedc53a45b64545f2beaa00bacfa63f7b74ffc240abe46783b00b5287a",
+        "probabilitySha256": "f9ac0726c19bb9b1bb9e47cf658518d69299e5e035f169cf48f49a7f4cdab8f1",
+        "featuresPassed": true,
+        "geometrySha256": "b2f0e7f91f902496b8fe39cde3192a270e42188aaa5c8f45a162878ea9b55363"
+      },
+      "soft": {
+        "status": "checked-derived-mask",
+        "checkedDerivedMask": true,
+        "totalSeconds": 5.325164042,
+        "targetError": {
+          "mismatchPixels": 1625,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01015625
+        },
+        "syntheticTruthError": {
+          "mismatchPixels": 1433,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00895625
+        },
+        "syntheticFineGridError": {
+          "resolution": 1600,
+          "mismatchPixels": 25858,
+          "observedPixels": 2560000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01010078125,
+          "scope": "Independent SVG samples against the known continuous straight checker at finer resolution; a finite image-error estimate, not a certificate of exact point contacts."
+        },
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskSha256": "3cf217bedc53a45b64545f2beaa00bacfa63f7b74ffc240abe46783b00b5287a",
+        "probabilitySha256": "03541a1941e77b66a8b33ed90c444236498813e1b9d212473346008ae36fffbe",
+        "featuresPassed": true,
+        "geometrySha256": "15f694d36cc3955aa96f8d298d57fc192dbcc6cbfbe2d196c6634f3a62a87d75"
+      },
+      "targetErrorChangePercentagePoints": 0.04625000000000011,
+      "fineTruthErrorChangePercentagePoints": -0.01800781250000001
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1-coverage-8",
+      "kind": "projected-256-8x8-coverage-bilinear-400",
+      "geometryExact": false,
+      "binary": {
+        "status": "checked-derived-mask",
+        "checkedDerivedMask": true,
+        "totalSeconds": 4.659182917,
+        "targetError": {
+          "mismatchPixels": 108,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.000675
+        },
+        "syntheticTruthError": {
+          "mismatchPixels": 96,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0006
+        },
+        "syntheticFineGridError": {
+          "resolution": 1600,
+          "mismatchPixels": 2466,
+          "observedPixels": 2560000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00096328125,
+          "scope": "Independent SVG samples against the known continuous straight checker at finer resolution; a finite image-error estimate, not a certificate of exact point contacts."
+        },
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskSha256": "d680fd37f4a6a34da52abf56a02655cb0711509c0b23d66817475befc8022585",
+        "probabilitySha256": "7eecfd413769e61794e96a48f8af13146788e4ff5c29006f4d1e05d0db900434",
+        "featuresPassed": true,
+        "geometrySha256": "d571e277671cae93e29b03be190f0180e1c9ea037689e3b73a8eba2def44d0c4"
+      },
+      "soft": {
+        "status": "checked-derived-mask",
+        "checkedDerivedMask": true,
+        "totalSeconds": 3.015533541,
+        "targetError": {
+          "mismatchPixels": 96,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0006
+        },
+        "syntheticTruthError": {
+          "mismatchPixels": 126,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0007875
+        },
+        "syntheticFineGridError": {
+          "resolution": 1600,
+          "mismatchPixels": 5680,
+          "observedPixels": 2560000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00221875,
+          "scope": "Independent SVG samples against the known continuous straight checker at finer resolution; a finite image-error estimate, not a certificate of exact point contacts."
+        },
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskSha256": "d680fd37f4a6a34da52abf56a02655cb0711509c0b23d66817475befc8022585",
+        "probabilitySha256": "5f91501b7e4424b9dab7792505855a725c3ab2fcbfb415ff3ae430099af09799",
+        "featuresPassed": true,
+        "geometrySha256": "a39bce2dd4d9ce043b434af6d90a8924bef7a573239fa511fb417ece6540abab"
+      },
+      "targetErrorChangePercentagePoints": -0.007500000000000008,
+      "fineTruthErrorChangePercentagePoints": 0.12554687499999997
+    }
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/material-soft-objective-v1/results.json": "9b88b934e66a49a2ee9ae2b9bd3ef8d14a22d71b39f7c4e2f14650975d01bbcc",
+    "tmp/heart-learning/material-soft-objective-v1/state.json": "b0e08aaa6c1f05ed139c2b20771fa6aa823b753342d1502d5664edd0f17351df",
+    "tmp/heart-learning/material-soft-objective-v1/source.json": "b52ca569e46c90b3711a1914c8024d463a77b0c12263e5a401a6d4f1337ef964",
+    "tmp/heart-learning/material-soft-objective-v1/preflight.json": "a334d9a0f8185309553c1942fb90c03e617a0217dd3675a71c7cbfb5c0dada89",
+    "tmp/heart-learning/material-soft-objective-v1/inputs.json": "1ceec1a8af8ad2b3e4d12ea3c55b1f6d07f0be2dca45bdb49c206e05da5c63a0",
+    "tmp/heart-learning/material-soft-objective-v1/replay.mjs": "fdc359e44f29c999b512446464a9ced6d7f4605399c982a124521771ab78ebe5",
+    "tmp/heart-learning/material-soft-objective-v1/run.py": "33ea67b9e0ab0c12d645214f2b1f08e3070979574d3803c2d6afeea0b7325d96",
+    "tmp/heart-learning/material-soft-objective-v1/prepare.py": "aa744c76ef6dd279d333d610bf17cf54e2f99273135954b2c24e43261ed41a7c",
+    "tmp/heart-learning/material-soft-objective-v1/visual-review/page-1.png": "a3048cf865a639aa7a6c10603f533ce1557234a6535104bb5aa0c70351a27f4d",
+    "tmp/heart-learning/material-soft-objective-v1/visual-review/page-2.png": "f368af35b26f7a4426a4951973d3d39ccf4860645726c318307b28d22ae61f22"
+  }
+}

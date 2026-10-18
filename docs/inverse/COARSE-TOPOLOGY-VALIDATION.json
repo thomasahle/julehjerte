@@ -1,0 +1,2122 @@
+{
+  "baselineCommit": "0120742",
+  "methodology": "Original source photograph pixels, automatic crops frozen before fitting. No reference template geometry enters the fitter. Every accepted candidate is measured against the unchanged classified photo mask and independently rendered from its export. The central 60% square isolates branch detail; it is not digitized artwork ground truth.",
+  "engineSha256": {
+    "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+    "static/inverse/core/chord-distance.js": "cb79dd6d90d22b6bea6bb4bd0593cc8e32a18a09116084e53f5d942bcbef3c04",
+    "static/inverse/core/crop.js": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88",
+    "static/inverse/core/engine.js": "f4c7f3f11b4543b9270ef849d3924fd67ea722574abdef8a861b118cdf3731c1",
+    "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+    "static/inverse/core/feature-recovery.js": "8bdb94171ff20e7bdd9e192b567a9721c6f6b6e7319e98fdeb75289a0dcb80bd",
+    "static/inverse/core/geometry.js": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+    "static/inverse/core/graph.js": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
+    "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+    "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+    "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+    "static/inverse/core/junctions.js": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
+    "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+    "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+    "static/inverse/core/material.js": "1d7d4e33811d46aa4e815bf9e4a410a8844c9bba7e50fdb6e0fa850181801898",
+    "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+    "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+    "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+    "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+    "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+    "static/inverse/core/progress.js": "5034d4c14b1abdf9c656208a13f0d24cf7254a1ce6323f452bb45f39d67e5370",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+    "static/inverse/core/solver.js": "de7d3b887d0b2faf28af21ba9b29de331b4566ff5374523db15fbbb0487dd8ea",
+    "static/inverse/core/stopped.js": "f2c50e6dca6ac2a1ea8d7b2fa1c5984109a5502dca728601f4e9e885ebf406a8",
+    "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+    "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+    "static/inverse/core/validate.js": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+    "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+    "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+    "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+    "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+    "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+    "static/inverse/core/direct/finalize.js": "56c03f0dcbf9121e42765fe9c0524ca94bd5c2008e1066cf4d3ed762d5f72c1f",
+    "static/inverse/core/direct/fit.js": "6e5cb67b2e64a88bab5338d77122886845f518ba5780654b8f239234129696e9",
+    "static/inverse/core/direct/grid.js": "57ada8e2f1c794b0012ddedbb8b508f29971186c313e517a8f40ca3788e1dfbd",
+    "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+    "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+    "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+    "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+    "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+    "static/inverse/core/direct/prefer-matching.js": "2e07c19f7e09a296bf93677c53ff78de489e85fc3064d295c4149c8cc567cf00",
+    "static/inverse/core/direct/primitive-selection.js": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904",
+    "static/inverse/core/direct/primitives.js": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b",
+    "static/inverse/core/direct/refine.js": "b5ee17d9c021b724011054544a33dfbdab798ed91adca9c32c6cbb8d2a5fc1ad",
+    "static/inverse/core/direct/share.js": "af031c51dace35702cfbde9ccf8c48989858ef405b631652521a8f538f01e352",
+    "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+    "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+    "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+    "static/inverse/core/direct/short-returns.js": "289b4bb963ae4f5b9fd068d2eb742fc5b025566c43409bf9c0ac3a14f909c3a9",
+    "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+    "static/inverse/core/direct/topology.js": "eafb18dc05980a06e4844f31e0ede16d0f1aee594590f282214d0793cda7b6a3",
+    "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+    "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58"
+  },
+  "webSourceHashes": {
+    "scripts/inverse/export-renderer.mjs": "cfcac6060a81429ad5e87bd5a028dbc2044ccdd0e1a07eb744e68018afbcc5bd",
+    "scripts/inverse/web-photo-benchmark.mjs": "d4ca6b61aa1e482a16f9ece2aa6a6c190f2bca6b78f205285e7cf7842439a923",
+    "scripts/inverse/web-photo-data.mjs": "52f805dc9f18f54e0a393a86892876bb8728d2efff4c386525834ad25e8150a0",
+    "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+    "static/inverse/core/chord-distance.js": "cb79dd6d90d22b6bea6bb4bd0593cc8e32a18a09116084e53f5d942bcbef3c04",
+    "static/inverse/core/crop.js": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88",
+    "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+    "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+    "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+    "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+    "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+    "static/inverse/core/direct/finalize.js": "56c03f0dcbf9121e42765fe9c0524ca94bd5c2008e1066cf4d3ed762d5f72c1f",
+    "static/inverse/core/direct/fit.js": "6e5cb67b2e64a88bab5338d77122886845f518ba5780654b8f239234129696e9",
+    "static/inverse/core/direct/grid.js": "57ada8e2f1c794b0012ddedbb8b508f29971186c313e517a8f40ca3788e1dfbd",
+    "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+    "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+    "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+    "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+    "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+    "static/inverse/core/direct/native/PROVENANCE.json": "e9fbaef090fc05bdc9450210f527b1fb3fa6bc77ee86c1902eb97bb6ed0acd2a",
+    "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+    "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58",
+    "static/inverse/core/direct/prefer-matching.js": "2e07c19f7e09a296bf93677c53ff78de489e85fc3064d295c4149c8cc567cf00",
+    "static/inverse/core/direct/primitive-selection.js": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904",
+    "static/inverse/core/direct/primitives.js": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b",
+    "static/inverse/core/direct/refine.js": "b5ee17d9c021b724011054544a33dfbdab798ed91adca9c32c6cbb8d2a5fc1ad",
+    "static/inverse/core/direct/share.js": "af031c51dace35702cfbde9ccf8c48989858ef405b631652521a8f538f01e352",
+    "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+    "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+    "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+    "static/inverse/core/direct/short-returns.js": "289b4bb963ae4f5b9fd068d2eb742fc5b025566c43409bf9c0ac3a14f909c3a9",
+    "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+    "static/inverse/core/direct/topology.js": "eafb18dc05980a06e4844f31e0ede16d0f1aee594590f282214d0793cda7b6a3",
+    "static/inverse/core/engine.js": "f4c7f3f11b4543b9270ef849d3924fd67ea722574abdef8a861b118cdf3731c1",
+    "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+    "static/inverse/core/feature-recovery.js": "8bdb94171ff20e7bdd9e192b567a9721c6f6b6e7319e98fdeb75289a0dcb80bd",
+    "static/inverse/core/geometry.js": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+    "static/inverse/core/graph.js": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
+    "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+    "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+    "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+    "static/inverse/core/junctions.js": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
+    "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+    "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+    "static/inverse/core/material.js": "1d7d4e33811d46aa4e815bf9e4a410a8844c9bba7e50fdb6e0fa850181801898",
+    "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+    "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+    "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+    "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+    "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+    "static/inverse/core/progress.js": "5034d4c14b1abdf9c656208a13f0d24cf7254a1ce6323f452bb45f39d67e5370",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+    "static/inverse/core/solver.js": "de7d3b887d0b2faf28af21ba9b29de331b4566ff5374523db15fbbb0487dd8ea",
+    "static/inverse/core/stopped.js": "f2c50e6dca6ac2a1ea8d7b2fa1c5984109a5502dca728601f4e9e885ebf406a8",
+    "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+    "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+    "static/inverse/core/validate.js": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+    "static/inverse/locator/NOTICE.md": "4a9cc65be6ca309d2b57609d760e584ab78c345dae95c789e351bb69180d5b05",
+    "static/inverse/locator/anchored.js": "c4f5276af229a7b9bbc1f686ea308697200cdd787bcdee2692d87a60bcdad991",
+    "static/inverse/locator/fields.js": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
+    "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+    "static/inverse/locator/locator.js": "160a3b6bb3dc46e14b05a35ace56f70b32e1c0e39ea39c42877786c569381ea5",
+    "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+    "static/inverse/locator/palette.js": "502affe56bd94f932f115d637085979ae466da0da951a1a7258f33d8810394e1"
+  },
+  "tree": {
+    "quad": [
+      [
+        613.4629495846865,
+        709.8754165460504
+      ],
+      [
+        991.3479406135674,
+        1101.880332092388
+      ],
+      [
+        589.7733778087984,
+        1526.3403443658829
+      ],
+      [
+        201.96444906745154,
+        1085.6004246480518
+      ]
+    ],
+    "beforeIndependentImageError": 0.0265375,
+    "afterIndependentImageError": 0.011375,
+    "beforeCentralImageError": 0.04123263888888889,
+    "afterCentralImageError": 0.0035416666666666665,
+    "centralBoundsFraction": [
+      0.2,
+      0.2,
+      0.8,
+      0.8
+    ],
+    "matching": {
+      "enabled": true,
+      "identical": false,
+      "rmsTemplateDifferenceMm": 0.9689632651218212,
+      "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+      "minimumIdenticalImageError": 0.02635,
+      "method": "Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.",
+      "baselineImageError": 0.011,
+      "maximumAdditionalImageError": 0.01,
+      "maximumMatchingImageError": 0.020999999999999998,
+      "attempts": [],
+      "status": "image_bound_exceeds_allowance",
+      "seconds": 0.0050210830000032725,
+      "selectedImageError": 0.01095625,
+      "additionalImageError": -4.374999999999865e-05
+    },
+    "coarseTopology": {
+      "method": "coarse-boundary-topology",
+      "maximumError": 0.025,
+      "accepted": true,
+      "attempts": [
+        {
+          "preprocessing": {
+            "fitTolerance": 1,
+            "smoothRadius": 0.3,
+            "snapRadius": 0.75,
+            "borderRadius": 1,
+            "maxSpan": 40,
+            "polygonal": false,
+            "mixedBoundaries": true
+          },
+          "segments": 56,
+          "imageError": 0.02061875,
+          "endpointIssue": "Sheet A has 3 start transitions but 5 end transitions. Opposite borders must agree.",
+          "featuresPassed": true
+        },
+        {
+          "preprocessing": {
+            "fitTolerance": 1.5,
+            "smoothRadius": 0.3,
+            "snapRadius": 0.75,
+            "borderRadius": 1,
+            "maxSpan": 40,
+            "polygonal": false,
+            "mixedBoundaries": true
+          },
+          "segments": 53,
+          "imageError": 0.01848125,
+          "endpointIssue": "Sheet A has 3 start transitions but 5 end transitions. Opposite borders must agree.",
+          "featuresPassed": true
+        },
+        {
+          "preprocessing": {
+            "fitTolerance": 1,
+            "smoothRadius": 0.3,
+            "snapRadius": 0.75,
+            "borderRadius": 2,
+            "maxSpan": 40,
+            "polygonal": false,
+            "mixedBoundaries": true
+          },
+          "segments": 49,
+          "imageError": 0.021625,
+          "endpointIssue": null,
+          "featuresPassed": true
+        },
+        {
+          "preprocessing": {
+            "fitTolerance": 1.5,
+            "smoothRadius": 0.3,
+            "snapRadius": 0.75,
+            "borderRadius": 2,
+            "maxSpan": 40,
+            "polygonal": false,
+            "mixedBoundaries": true
+          },
+          "segments": 48,
+          "imageError": 0.01930625,
+          "endpointIssue": null,
+          "featuresPassed": true,
+          "routing": {
+            "method": "mixed-boundary-topology",
+            "accepted": true,
+            "boundarySegments": 48,
+            "traceError": 0.01930625,
+            "solver": {
+              "validation": {
+                "passed": true,
+                "issues": [],
+                "nominalWidthRequired": 2.50501002004008,
+                "minimumInterSlitDistanceLower": 5.2529545006934235,
+                "minimumOuterSideClearance": 7.865487278812155,
+                "boundaryParityMatches": true,
+                "forwardSampleMismatchPixels": 0,
+                "forwardBoundaryAmbiguousPixels": 0,
+                "forwardSampleResolution": 101,
+                "geometryTolerance": 0.01,
+                "sharedCurvesStoredOnce": true,
+                "physicalAssemblyTested": false,
+                "limitations": [
+                  "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                  "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                  "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                  "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+                ],
+                "materialCore": {
+                  "status": "pass",
+                  "requiredRemainingWidth": 2,
+                  "nominalDiameter": 2.50501002004008,
+                  "gridSpacing": 0.2777777777777778,
+                  "clearanceGuard": 0.20641855032959658,
+                  "families": [
+                    {
+                      "family": 0,
+                      "status": "pass",
+                      "detachedCertainCoreIslands": 0,
+                      "detachedPossibleCoreIslands": 0,
+                      "detachedPossibleArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            9.25
+                          ],
+                          "certainCoreLength": 6.3888888888888875,
+                          "possibleCoreLength": 7.2222222222222205
+                        },
+                        {
+                          "interval": [
+                            9.25,
+                            74.75
+                          ],
+                          "certainCoreLength": 62.50000000000015,
+                          "possibleCoreLength": 63.333333333333485
+                        },
+                        {
+                          "interval": [
+                            74.75,
+                            88.5
+                          ],
+                          "certainCoreLength": 10.83333333333334,
+                          "possibleCoreLength": 11.666666666666675
+                        },
+                        {
+                          "interval": [
+                            88.5,
+                            100
+                          ],
+                          "certainCoreLength": 8.61111111111111,
+                          "possibleCoreLength": 9.444444444444446
+                        }
+                      ]
+                    },
+                    {
+                      "family": 1,
+                      "status": "pass",
+                      "detachedCertainCoreIslands": 0,
+                      "detachedPossibleCoreIslands": 0,
+                      "detachedPossibleArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            9.75
+                          ],
+                          "certainCoreLength": 6.944444444444443,
+                          "possibleCoreLength": 7.499999999999998
+                        },
+                        {
+                          "interval": [
+                            9.75,
+                            74
+                          ],
+                          "certainCoreLength": 61.388888888889035,
+                          "possibleCoreLength": 62.22222222222237
+                        },
+                        {
+                          "interval": [
+                            74,
+                            90
+                          ],
+                          "certainCoreLength": 13.055555555555568,
+                          "possibleCoreLength": 13.888888888888903
+                        },
+                        {
+                          "interval": [
+                            90,
+                            100
+                          ],
+                          "certainCoreLength": 7.2222222222222205,
+                          "possibleCoreLength": 7.777777777777776
+                        }
+                      ]
+                    }
+                  ],
+                  "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+                  "seconds": 0.05719445799999994,
+                  "limitations": [
+                    "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+                    "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+                    "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+                    "Small tips and features below the explicitly stated area threshold are not certified."
+                  ]
+                }
+              },
+              "binaryVariables": 2310,
+              "continuousVariables": 1892,
+              "linearConstraints": 19767,
+              "turnAuxiliaries": 164,
+              "crossingConflicts": 1096,
+              "widthPairs": 3085,
+              "coefficientQuantum": 1e-07,
+              "stopAfterValidated": true,
+              "graph": {
+                "visibleEdges": 94,
+                "hiddenCandidates": 291,
+                "vertices": 94,
+                "buildSeconds": 0.007432875000000422,
+                "guidePortals": 46,
+                "guideCount": 13,
+                "guideSkip": null,
+                "candidateMethod": "border-inferred guide portals, nearest portal neighbours and tangent-shaped cubic variants; adaptive noding",
+                "delaunayCandidates": false
+              },
+              "history": [
+                {
+                  "round": 1,
+                  "status": 16,
+                  "objective": 1335.0830337,
+                  "selfNeckChains": 0,
+                  "materialCore": {
+                    "status": "pass",
+                    "requiredRemainingWidth": 2,
+                    "nominalDiameter": 2.50501002004008,
+                    "gridSpacing": 0.2777777777777778,
+                    "clearanceGuard": 0.20641855032959658,
+                    "families": [
+                      {
+                        "family": 0,
+                        "status": "pass",
+                        "detachedCertainCoreIslands": 0,
+                        "detachedPossibleCoreIslands": 0,
+                        "detachedPossibleArea": 0,
+                        "foldIntervals": [
+                          {
+                            "interval": [
+                              0,
+                              9.25
+                            ],
+                            "certainCoreLength": 6.3888888888888875,
+                            "possibleCoreLength": 7.2222222222222205
+                          },
+                          {
+                            "interval": [
+                              9.25,
+                              74.75
+                            ],
+                            "certainCoreLength": 62.50000000000015,
+                            "possibleCoreLength": 63.333333333333485
+                          },
+                          {
+                            "interval": [
+                              74.75,
+                              88.5
+                            ],
+                            "certainCoreLength": 10.83333333333334,
+                            "possibleCoreLength": 11.666666666666675
+                          },
+                          {
+                            "interval": [
+                              88.5,
+                              100
+                            ],
+                            "certainCoreLength": 8.61111111111111,
+                            "possibleCoreLength": 9.444444444444446
+                          }
+                        ]
+                      },
+                      {
+                        "family": 1,
+                        "status": "pass",
+                        "detachedCertainCoreIslands": 0,
+                        "detachedPossibleCoreIslands": 0,
+                        "detachedPossibleArea": 0,
+                        "foldIntervals": [
+                          {
+                            "interval": [
+                              0,
+                              9.75
+                            ],
+                            "certainCoreLength": 6.944444444444443,
+                            "possibleCoreLength": 7.499999999999998
+                          },
+                          {
+                            "interval": [
+                              9.75,
+                              74
+                            ],
+                            "certainCoreLength": 61.388888888889035,
+                            "possibleCoreLength": 62.22222222222237
+                          },
+                          {
+                            "interval": [
+                              74,
+                              90
+                            ],
+                            "certainCoreLength": 13.055555555555568,
+                            "possibleCoreLength": 13.888888888888903
+                          },
+                          {
+                            "interval": [
+                              90,
+                              100
+                            ],
+                            "certainCoreLength": 7.2222222222222205,
+                            "possibleCoreLength": 7.777777777777776
+                          }
+                        ]
+                      }
+                    ],
+                    "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+                    "seconds": 0.05719445799999994,
+                    "limitations": [
+                      "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+                      "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+                      "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+                      "Small tips and features below the explicitly stated area threshold are not certified."
+                    ]
+                  },
+                  "validationPassed": true
+                }
+              ],
+              "elapsedSeconds": 1.1474560829999991,
+              "solverVersion": {
+                "major": 1,
+                "minor": 15,
+                "patch": 1,
+                "string": "1.15.1",
+                "gitHash": "04024d7"
+              },
+              "solverRuntime": "locally hosted HiGHS WebAssembly",
+              "physicalAssemblyTested": false,
+              "status": "solved",
+              "objective": 1335.0830337,
+              "lowerBound": 1335.0830337,
+              "mipGap": 0,
+              "optimality": "Only the finite candidate graph is optimized. Gap concerns cut complexity, not artwork fidelity."
+            },
+            "imageError": 0.01930625,
+            "seconds": 1.1899310000000005
+          }
+        },
+        {
+          "preprocessing": {
+            "fitTolerance": 1,
+            "smoothRadius": 0.3,
+            "snapRadius": 0.75,
+            "borderRadius": 3,
+            "maxSpan": 40,
+            "polygonal": false,
+            "mixedBoundaries": true
+          },
+          "segments": 49,
+          "imageError": 0.0218,
+          "endpointIssue": null,
+          "featuresPassed": true
+        },
+        {
+          "preprocessing": {
+            "fitTolerance": 1.5,
+            "smoothRadius": 0.3,
+            "snapRadius": 0.75,
+            "borderRadius": 3,
+            "maxSpan": 40,
+            "polygonal": false,
+            "mixedBoundaries": true
+          },
+          "segments": 48,
+          "imageError": 0.01948125,
+          "endpointIssue": null,
+          "featuresPassed": true
+        }
+      ],
+      "seconds": 1.4690492909999993
+    },
+    "seconds": 8.133461083000002,
+    "counts": [
+      3,
+      3
+    ],
+    "passed": true,
+    "shortReturnRepair": {
+      "segmentsBefore": 98,
+      "segmentsAfter": 97,
+      "removedOccurrences": 1,
+      "conflictingJunctions": 0,
+      "sourceErrorBefore": 0.01883125,
+      "applied": true,
+      "refinementSteps": 160,
+      "sourceErrorAfter": 0.011,
+      "rejection": null,
+      "seconds": 0.5422861249999987
+    }
+  },
+  "simpleThresholdProbes": [
+    {
+      "maximumError": 0.01,
+      "accepted": false,
+      "error": "Sheet A has 4 start transitions but 12 end transitions. Opposite borders must agree."
+    },
+    {
+      "maximumError": 0.02,
+      "accepted": false,
+      "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+      "graph": {
+        "visibleEdges": 146,
+        "hiddenCandidates": 580,
+        "vertices": 152,
+        "buildSeconds": 0.01592100000000005,
+        "guidePortals": 43,
+        "guideCount": 13,
+        "guideSkip": null,
+        "candidateMethod": "border-inferred guide portals, nearest portal neighbours and tangent-shaped cubic variants; adaptive noding",
+        "delaunayCandidates": false
+      },
+      "history": [
+        {
+          "round": 1,
+          "status": 16,
+          "objective": 2148.1832611,
+          "selfNeckChains": 4
+        },
+        {
+          "round": 2,
+          "status": 7,
+          "objective": 2275.6977943,
+          "selfNeckChains": 4
+        },
+        {
+          "round": 3,
+          "status": 13
+        }
+      ]
+    },
+    {
+      "maximumError": 0.03,
+      "accepted": false,
+      "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+      "graph": {
+        "visibleEdges": 146,
+        "hiddenCandidates": 580,
+        "vertices": 152,
+        "buildSeconds": 0.01964825000000019,
+        "guidePortals": 43,
+        "guideCount": 13,
+        "guideSkip": null,
+        "candidateMethod": "border-inferred guide portals, nearest portal neighbours and tangent-shaped cubic variants; adaptive noding",
+        "delaunayCandidates": false
+      },
+      "history": [
+        {
+          "round": 1,
+          "status": 16,
+          "objective": 2148.1832611,
+          "selfNeckChains": 4
+        },
+        {
+          "round": 2,
+          "status": 7,
+          "objective": 2275.6977943,
+          "selfNeckChains": 4
+        },
+        {
+          "round": 3,
+          "status": 13
+        }
+      ]
+    }
+  ],
+  "hunodan": {
+    "count": 22,
+    "passed": 22,
+    "unchanged": 22,
+    "medianSeconds": 5.089890978999998,
+    "maximumSeconds": 8.292104582999993,
+    "results": [
+      {
+        "id": "hjfig-01",
+        "seconds": 4.3989362089999995,
+        "error": 0.009799111111111111,
+        "passed": true
+      },
+      {
+        "id": "hjfig-02",
+        "seconds": 4.289046207999999,
+        "error": 0.013952,
+        "passed": true
+      },
+      {
+        "id": "hjfig-03",
+        "seconds": 3.6746787909999985,
+        "error": 0.006634666666666666,
+        "passed": true
+      },
+      {
+        "id": "hjfig-04",
+        "seconds": 3.92730025,
+        "error": 0.013824,
+        "passed": true
+      },
+      {
+        "id": "hjfig-05",
+        "seconds": 3.0500167079999994,
+        "error": 0.009060571106551963,
+        "passed": true
+      },
+      {
+        "id": "hjfla-01",
+        "seconds": 5.191657666999999,
+        "error": 0.013414171006944444,
+        "passed": true
+      },
+      {
+        "id": "hjcur-01",
+        "seconds": 5.084492792000001,
+        "error": 0.00512,
+        "passed": true
+      },
+      {
+        "id": "hjcur-02",
+        "seconds": 5.171459458000001,
+        "error": 0.005397333333333333,
+        "passed": true
+      },
+      {
+        "id": "hjcur-03",
+        "seconds": 5.095289165999995,
+        "error": 0.004522666666666667,
+        "passed": true
+      },
+      {
+        "id": "hjcur-04",
+        "seconds": 6.963316500000001,
+        "error": 0.0056248888888888885,
+        "passed": true
+      },
+      {
+        "id": "hjcur-05",
+        "seconds": 3.3855341250000057,
+        "error": 0.009436444444444445,
+        "passed": true
+      },
+      {
+        "id": "hjhih-01",
+        "seconds": 6.2056227920000016,
+        "error": 0.0060202958468683725,
+        "passed": true
+      },
+      {
+        "id": "hjhih-02",
+        "seconds": 4.780907625,
+        "error": 0.003899406226779104,
+        "passed": true
+      },
+      {
+        "id": "hjhih-04",
+        "seconds": 7.425970832999999,
+        "error": 0.007678910190418844,
+        "passed": true
+      },
+      {
+        "id": "hjstr-01",
+        "seconds": 4.144742624999999,
+        "error": 0.007543348420030173,
+        "passed": true
+      },
+      {
+        "id": "hjstr-02",
+        "seconds": 6.203881708000001,
+        "error": 0.004339250493096647,
+        "passed": true
+      },
+      {
+        "id": "hjstr-03",
+        "seconds": 8.292104582999993,
+        "error": 0.005519980869380381,
+        "passed": true
+      },
+      {
+        "id": "hjsta-01",
+        "seconds": 4.47813345899999,
+        "error": 0.007936288088642659,
+        "passed": true
+      },
+      {
+        "id": "hjsta-02",
+        "seconds": 4.224273042000001,
+        "error": 0.0036485460069444445,
+        "passed": true
+      },
+      {
+        "id": "hjsta-03",
+        "seconds": 6.082157625000007,
+        "error": 0.012339030193129683,
+        "passed": true
+      },
+      {
+        "id": "hjsta-04",
+        "seconds": 6.623448250000001,
+        "error": 0.005053050026595,
+        "passed": true
+      },
+      {
+        "id": "hjsta-05",
+        "seconds": 5.928798958,
+        "error": 0.010624446293860237,
+        "passed": true
+      }
+    ]
+  },
+  "web": [
+    {
+      "id": "danish-tree-red",
+      "status": "candidate_needs_review",
+      "seconds": 9.804968417,
+      "independentImageError": 0.07024375,
+      "previousIndependentImageError": 0.07024375
+    },
+    {
+      "id": "danish-tree-green",
+      "status": "candidate_checks_passed",
+      "seconds": 8.133461083000002,
+      "independentImageError": 0.011375,
+      "previousIndependentImageError": 0.0265375
+    },
+    {
+      "id": "bibel-checker-2",
+      "status": "candidate_checks_passed",
+      "seconds": 3.692117167,
+      "independentImageError": 0.01745625,
+      "previousIndependentImageError": 0.01745625
+    },
+    {
+      "id": "bibel-checker-3",
+      "status": "candidate_checks_passed",
+      "seconds": 5.489723957999999,
+      "independentImageError": 0.01486875,
+      "previousIndependentImageError": 0.01486875
+    },
+    {
+      "id": "bibel-checker-4",
+      "status": "candidate_checks_passed",
+      "seconds": 5.173833583000003,
+      "independentImageError": 0.0035125,
+      "previousIndependentImageError": 0.0035125
+    },
+    {
+      "id": "bibel-narrow-wide",
+      "status": "candidate_checks_passed",
+      "seconds": 10.105482667,
+      "independentImageError": 0.02026875,
+      "previousIndependentImageError": 0.02026875
+    },
+    {
+      "id": "bibel-nested-heart-red",
+      "status": "candidate_checks_passed",
+      "seconds": 11.247511375000002,
+      "independentImageError": 0.02806875,
+      "previousIndependentImageError": 0.0284375
+    },
+    {
+      "id": "bibel-angel",
+      "status": "no_crop",
+      "seconds": 0.9309541660000031
+    }
+  ],
+  "artifacts": {
+    "thresholdProbe": "tmp/hybrid-topology-probe",
+    "coarseProbe": "tmp/hybrid-coarse-probe",
+    "firstIntegration": "tmp/hybrid-integrated-tree",
+    "hunodan": "tmp/hybrid-order-hunodan",
+    "web": "tmp/hybrid-order-web",
+    "browser": "tmp/hybrid-order-browser"
+  },
+  "implementationCommits": [
+    "b24a758",
+    "8405577"
+  ],
+  "initialMatchingOrderResult": {
+    "independentImageError": 0.02885,
+    "matching": {
+      "enabled": true,
+      "identical": true,
+      "rmsTemplateDifferenceMm": 0,
+      "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+      "minimumIdenticalImageError": 0.02635,
+      "method": "Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.",
+      "baselineImageError": 0.01883125,
+      "maximumAdditionalImageError": 0.01,
+      "maximumMatchingImageError": 0.028831250000000003,
+      "attempts": [
+        {
+          "proposal": "copy-second-sheet",
+          "refined": false,
+          "imageError": 0.03118125,
+          "withinAllowance": false
+        },
+        {
+          "proposal": "copy-first-sheet",
+          "refined": false,
+          "imageError": 0.03306875,
+          "withinAllowance": false
+        },
+        {
+          "proposal": "copy-second-sheet",
+          "refined": true,
+          "steps": 200,
+          "imageError": 0.02835625,
+          "withinAllowance": true,
+          "featuresPassed": true,
+          "geometryPassed": true,
+          "paperPassed": true
+        }
+      ],
+      "status": "matched",
+      "seconds": 0.6210563750000001,
+      "selectedImageError": 0.02835625,
+      "additionalImageError": 0.009524999999999999
+    },
+    "artifact": "tmp/hybrid-integrated-tree"
+  },
+  "matchingCounterfactuals": [
+    {
+      "cfg": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "timeLimit": 10,
+        "preferMatchingSheets": false,
+        "trials": 0
+      },
+      "seconds": 7.000697416,
+      "independentImageError": 0.011375,
+      "passed": true,
+      "matching": {
+        "enabled": false,
+        "identical": false,
+        "rmsTemplateDifferenceMm": 0.9689632651218212,
+        "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+        "minimumIdenticalImageError": 0.02635,
+        "method": "Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.",
+        "baselineImageError": 0.01883125,
+        "maximumAdditionalImageError": 0.01,
+        "maximumMatchingImageError": 0.028831250000000003,
+        "attempts": [],
+        "status": "disabled",
+        "seconds": 0.009359124999999949,
+        "selectedImageError": 0.01095625,
+        "additionalImageError": -0.007875
+      },
+      "shortReturnRepair": {
+        "segmentsBefore": 98,
+        "segmentsAfter": 97,
+        "removedOccurrences": 1,
+        "conflictingJunctions": 0,
+        "sourceErrorBefore": 0.01883125,
+        "applied": true,
+        "refinementSteps": 160,
+        "sourceErrorAfter": 0.011,
+        "rejection": null,
+        "seconds": 0.5526298340000003
+      }
+    },
+    {
+      "cfg": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "timeLimit": 60,
+        "preferMatchingSheets": true,
+        "trials": 0
+      },
+      "seconds": 6.4070230420000005,
+      "independentImageError": 0.02885,
+      "passed": true,
+      "matching": {
+        "enabled": true,
+        "identical": true,
+        "rmsTemplateDifferenceMm": 0,
+        "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+        "minimumIdenticalImageError": 0.02635,
+        "method": "Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.",
+        "baselineImageError": 0.01883125,
+        "maximumAdditionalImageError": 0.01,
+        "maximumMatchingImageError": 0.028831250000000003,
+        "attempts": [
+          {
+            "proposal": "copy-second-sheet",
+            "refined": false,
+            "imageError": 0.03118125,
+            "withinAllowance": false
+          },
+          {
+            "proposal": "copy-first-sheet",
+            "refined": false,
+            "imageError": 0.03306875,
+            "withinAllowance": false
+          },
+          {
+            "proposal": "copy-second-sheet",
+            "refined": true,
+            "steps": 200,
+            "imageError": 0.02835625,
+            "withinAllowance": true,
+            "featuresPassed": true,
+            "geometryPassed": true,
+            "paperPassed": true
+          }
+        ],
+        "status": "matched",
+        "seconds": 0.6277277089999989,
+        "selectedImageError": 0.02835625,
+        "additionalImageError": 0.009524999999999999
+      }
+    }
+  ],
+  "qaBeforeMatchingOrderFix": {
+    "applicationTests": {
+      "passed": 842,
+      "skipped": 1
+    },
+    "inverseTests": {
+      "passed": 520
+    },
+    "check": {
+      "errors": 0,
+      "existingWarnings": 7
+    },
+    "lint": true,
+    "build": true,
+    "logs": [
+      "tmp/hybrid-topology-tests.log",
+      "tmp/hybrid-topology-check.log",
+      "tmp/hybrid-topology-lint.log",
+      "tmp/hybrid-topology-build.log"
+    ]
+  },
+  "browserBeforeMatchingOrderFix": {
+    "timingMethod": "Page-clock timestamps from the Find click, worker requests/replies and the first visible, enabled Open in Draw button. DOM readiness is not a paint timestamp. Result capture and artifact writes happen afterward and have separate Node-clock durations. Version 1 solveAndConversionSeconds included harness capture and artifact writes and is not directly comparable.",
+    "harnessSourceHashes": {
+      "scripts/inverse/paint-browser-test.mjs": "0608571de0af660726bcab075bb46e5df8a99b1a9be7ecc07377cf5865f9d750",
+      "scripts/inverse/paint-observer.mjs": "1e295aacf3b488ff4d1bfe73b67f0976b88d6e2d3ea03dbca9f5b69e222568b7",
+      "scripts/inverse/motif-fixture.mjs": "4c735dc7b27f39ce30362830ef911b79347a8b7f43d01b4eaeaf5750460355f1",
+      "scripts/inverse/tree-fixture.mjs": "771d6383cf90e840c911543258e26cd82c5d287336e65f53898045f429a1d84a",
+      "scripts/inverse/web-photo-data.mjs": "52f805dc9f18f54e0a393a86892876bb8728d2efff4c386525834ad25e8150a0",
+      "scripts/inverse/stop-browser-hooks.mjs": "61774cef8a958c5ef62784142c52e8abecf51755b29d9c1a5494ccacba2bb220"
+    },
+    "workspaceSourceHashes": {
+      "static/inverse/worker.js": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70",
+      "static/inverse/worker-bootstrap.js": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+      "static/inverse/worker-controller.js": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+      "static/inverse/compute-worker.js": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+      "static/inverse/core/engine.js": "f4c7f3f11b4543b9270ef849d3924fd67ea722574abdef8a861b118cdf3731c1",
+      "static/inverse/core/stopped.js": "f2c50e6dca6ac2a1ea8d7b2fa1c5984109a5502dca728601f4e9e885ebf406a8",
+      "static/inverse/core/progress.js": "5034d4c14b1abdf9c656208a13f0d24cf7254a1ce6323f452bb45f39d67e5370",
+      "static/inverse/core/feature-recovery.js": "8bdb94171ff20e7bdd9e192b567a9721c6f6b6e7319e98fdeb75289a0dcb80bd",
+      "static/inverse/core/solver.js": "de7d3b887d0b2faf28af21ba9b29de331b4566ff5374523db15fbbb0487dd8ea",
+      "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+      "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+      "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+      "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+      "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+      "static/inverse/core/direct/prefer-matching.js": "2e07c19f7e09a296bf93677c53ff78de489e85fc3064d295c4149c8cc567cf00",
+      "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+      "src/lib/inverse/engine.ts": "227682f8f1640f5b82bac0d34ced733350bbf6aa030cee4fc20f4204e44a99e6",
+      "static/inverse/core/direct/finalize.js": "fb76ad1ba8aa6caed2b8643a6b2795049ed4a850f996a1707e3698cc6042f0da",
+      "static/inverse/core/direct/topology.js": "eafb18dc05980a06e4844f31e0ede16d0f1aee594590f282214d0793cda7b6a3",
+      "static/inverse/core/direct/fit.js": "6e5cb67b2e64a88bab5338d77122886845f518ba5780654b8f239234129696e9",
+      "static/inverse/core/direct/share.js": "af031c51dace35702cfbde9ccf8c48989858ef405b631652521a8f538f01e352",
+      "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+      "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+      "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+      "src/lib/inverse/toHeartDesign.ts": "41edadce4a5be5b8c7dd977a3761e5c7992bb462633f8651e0d9f0293370e931",
+      "src/lib/inverse/simplifyCurves.ts": "c693b9eb86084926d941d7e60a1a38178156d081657feabce41ff03261714173",
+      "src/lib/editor/curveIssues.ts": "293535d5f73d3dd4c9a7bbfc1c83b25ba81558d593644743496cf9e8afa5358e",
+      "src/lib/components/paint/PaintPage.svelte": "dc0b6df3cbd9ea561930722be4cca05d96066ecfabc06962907de2443e648193",
+      "src/lib/inverse/conversionFidelity.ts": "45db43e0919b98cfe03c115bda7473896de0da1aeec89e94ee74bbaeffdbb589",
+      "static/inverse/core/direct/refine.js": "b5ee17d9c021b724011054544a33dfbdab798ed91adca9c32c6cbb8d2a5fc1ad",
+      "static/inverse/core/direct/primitive-selection.js": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904",
+      "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+      "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+      "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+      "static/inverse/core/direct/short-returns.js": "289b4bb963ae4f5b9fd068d2eb742fc5b025566c43409bf9c0ac3a14f909c3a9",
+      "src/lib/components/editor/SymmetryRows.svelte": "1bf99195778a11baf02bff2bf0ab9983a9ab6ae3d5d52b7f29f17eb0efb57884",
+      "src/lib/components/ui/toggle-group/toggle-group.svelte": "ef3ac7b6559268d4e5b8f34870b91939fc39a92718a5d90b650c383f0ca178d4",
+      "src/lib/components/paint/FramePanel.svelte": "9d048e201f9c83b3343d487f716dc835cfe9e61067fa228c8b4c043f7624bc1f",
+      "src/lib/components/paint/MaskToolPanel.svelte": "b37ff23378e86b8411f911a2c2106d8d3f410ab395b0c08915d4329b4ec143cb"
+    },
+    "results": [
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "name": "web-danish-tree-green",
+        "passed": true,
+        "seconds": 7.717599999904633,
+        "sourceEditableError": 0.01104375,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.01104375,
+          "sourceError": 0.01104375
+        }
+      },
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "name": "star",
+        "passed": true,
+        "seconds": 1.8882999999523162,
+        "sourceEditableError": 0.0016,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 6.25e-05
+            }
+          ],
+          "originalSourceError": 0.0016,
+          "sourceError": 0.0016
+        }
+      },
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "name": "top-hat",
+        "passed": true,
+        "seconds": 9.422399999976157,
+        "sourceEditableError": 0.0032064909297052154,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0032064909297052154,
+          "sourceError": 0.0032064909297052154
+        }
+      },
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "name": "top-hat-independent",
+        "passed": true,
+        "seconds": 5.872199999928474,
+        "sourceEditableError": 0.0029584750566893424,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00036875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000325
+            }
+          ],
+          "originalSourceError": 0.0029584750566893424,
+          "sourceError": 0.0029584750566893424
+        }
+      },
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "name": "top-hat-anti",
+        "passed": true,
+        "seconds": 7.612100000023842,
+        "sourceEditableError": 0.0031887755102040817,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "anti"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0031887755102040817,
+          "sourceError": 0.0031887755102040817
+        }
+      },
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "name": "hunodan",
+        "passed": true,
+        "seconds": 4.657899999976158,
+        "sourceEditableError": 0.00944375,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00944375,
+          "sourceError": 0.00944375
+        }
+      },
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "name": "noisy-checker",
+        "passed": true,
+        "seconds": 4.0035,
+        "sourceEditableError": 0.000125,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.000125,
+          "sourceError": 0.000125
+        }
+      },
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "name": "noisy-tree",
+        "passed": true,
+        "seconds": 1.7448000000715256,
+        "sourceEditableError": 0.0012,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0012,
+          "sourceError": 0.0012
+        }
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "name": "web-danish-tree-green",
+        "passed": true,
+        "seconds": 8.474,
+        "sourceEditableError": 0.01104375,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.01104375,
+          "sourceError": 0.01104375
+        }
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "name": "star",
+        "passed": true,
+        "seconds": 2.006,
+        "sourceEditableError": 0.0016,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 6.25e-05
+            }
+          ],
+          "originalSourceError": 0.0016,
+          "sourceError": 0.0016
+        }
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "name": "top-hat",
+        "passed": true,
+        "seconds": 9.893,
+        "sourceEditableError": 0.0032064909297052154,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0032064909297052154,
+          "sourceError": 0.0032064909297052154
+        }
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "name": "top-hat-independent",
+        "passed": true,
+        "seconds": 5.939,
+        "sourceEditableError": 0.0029584750566893424,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00036875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000325
+            }
+          ],
+          "originalSourceError": 0.0029584750566893424,
+          "sourceError": 0.0029584750566893424
+        }
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "name": "top-hat-anti",
+        "passed": true,
+        "seconds": 7.605,
+        "sourceEditableError": 0.0031887755102040817,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "anti"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0031887755102040817,
+          "sourceError": 0.0031887755102040817
+        }
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "name": "hunodan",
+        "passed": true,
+        "seconds": 5.304000000000001,
+        "sourceEditableError": 0.00944375,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00944375,
+          "sourceError": 0.00944375
+        }
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "name": "noisy-checker",
+        "passed": true,
+        "seconds": 4.227,
+        "sourceEditableError": 0.000125,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.000125,
+          "sourceError": 0.000125
+        }
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "name": "noisy-tree",
+        "passed": true,
+        "seconds": 1.781,
+        "sourceEditableError": 0.0012,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0012,
+          "sourceError": 0.0012
+        }
+      }
+    ],
+    "greenTreeSettings": "The import flow selects between-lobes symmetry Off and disables the matching-sheet preference. Browser export error is therefore not the matching-enabled command-line benchmark error.",
+    "firefox": "Not repeated: the previous full-pipeline run recorded a native launch failure before page creation."
+  },
+  "qa": {
+    "applicationTests": {
+      "passed": 842,
+      "skipped": 1
+    },
+    "inverseTests": {
+      "passed": 520
+    },
+    "focusedOrderTests": {
+      "passed": 25
+    },
+    "check": {
+      "errors": 0,
+      "existingWarnings": 7
+    },
+    "lint": true,
+    "build": true,
+    "logs": [
+      "tmp/hybrid-order-tests.log",
+      "tmp/hybrid-matching-order-tests.log",
+      "tmp/hybrid-order-check.log",
+      "tmp/hybrid-order-lint.log",
+      "tmp/hybrid-order-build.log"
+    ]
+  },
+  "browser": {
+    "timingMethod": "Page-clock timestamps from the Find click, worker requests/replies and the first visible, enabled Open in Draw button. DOM readiness is not a paint timestamp. Result capture and artifact writes happen afterward and have separate Node-clock durations. Version 1 solveAndConversionSeconds included harness capture and artifact writes and is not directly comparable.",
+    "harnessSourceHashes": {
+      "scripts/inverse/paint-browser-test.mjs": "80705d7e56ab1af994a4150380c4e1395f977cc5f71e09f778dd438bfbec1c07",
+      "scripts/inverse/paint-observer.mjs": "1e295aacf3b488ff4d1bfe73b67f0976b88d6e2d3ea03dbca9f5b69e222568b7",
+      "scripts/inverse/motif-fixture.mjs": "4c735dc7b27f39ce30362830ef911b79347a8b7f43d01b4eaeaf5750460355f1",
+      "scripts/inverse/tree-fixture.mjs": "771d6383cf90e840c911543258e26cd82c5d287336e65f53898045f429a1d84a",
+      "scripts/inverse/web-photo-data.mjs": "52f805dc9f18f54e0a393a86892876bb8728d2efff4c386525834ad25e8150a0",
+      "scripts/inverse/stop-browser-hooks.mjs": "61774cef8a958c5ef62784142c52e8abecf51755b29d9c1a5494ccacba2bb220"
+    },
+    "workspaceSourceHashes": {
+      "static/inverse/worker.js": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70",
+      "static/inverse/worker-bootstrap.js": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+      "static/inverse/worker-controller.js": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+      "static/inverse/compute-worker.js": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+      "static/inverse/core/engine.js": "f4c7f3f11b4543b9270ef849d3924fd67ea722574abdef8a861b118cdf3731c1",
+      "static/inverse/core/stopped.js": "f2c50e6dca6ac2a1ea8d7b2fa1c5984109a5502dca728601f4e9e885ebf406a8",
+      "static/inverse/core/progress.js": "5034d4c14b1abdf9c656208a13f0d24cf7254a1ce6323f452bb45f39d67e5370",
+      "static/inverse/core/feature-recovery.js": "8bdb94171ff20e7bdd9e192b567a9721c6f6b6e7319e98fdeb75289a0dcb80bd",
+      "static/inverse/core/solver.js": "de7d3b887d0b2faf28af21ba9b29de331b4566ff5374523db15fbbb0487dd8ea",
+      "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+      "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+      "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+      "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+      "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+      "static/inverse/core/direct/prefer-matching.js": "2e07c19f7e09a296bf93677c53ff78de489e85fc3064d295c4149c8cc567cf00",
+      "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+      "src/lib/inverse/engine.ts": "227682f8f1640f5b82bac0d34ced733350bbf6aa030cee4fc20f4204e44a99e6",
+      "static/inverse/core/direct/finalize.js": "56c03f0dcbf9121e42765fe9c0524ca94bd5c2008e1066cf4d3ed762d5f72c1f",
+      "static/inverse/core/direct/topology.js": "eafb18dc05980a06e4844f31e0ede16d0f1aee594590f282214d0793cda7b6a3",
+      "static/inverse/core/direct/fit.js": "6e5cb67b2e64a88bab5338d77122886845f518ba5780654b8f239234129696e9",
+      "static/inverse/core/direct/share.js": "af031c51dace35702cfbde9ccf8c48989858ef405b631652521a8f538f01e352",
+      "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+      "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+      "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+      "src/lib/inverse/toHeartDesign.ts": "41edadce4a5be5b8c7dd977a3761e5c7992bb462633f8651e0d9f0293370e931",
+      "src/lib/inverse/simplifyCurves.ts": "c693b9eb86084926d941d7e60a1a38178156d081657feabce41ff03261714173",
+      "src/lib/editor/curveIssues.ts": "293535d5f73d3dd4c9a7bbfc1c83b25ba81558d593644743496cf9e8afa5358e",
+      "src/lib/components/paint/PaintPage.svelte": "dc0b6df3cbd9ea561930722be4cca05d96066ecfabc06962907de2443e648193",
+      "src/lib/inverse/conversionFidelity.ts": "45db43e0919b98cfe03c115bda7473896de0da1aeec89e94ee74bbaeffdbb589",
+      "static/inverse/core/direct/refine.js": "b5ee17d9c021b724011054544a33dfbdab798ed91adca9c32c6cbb8d2a5fc1ad",
+      "static/inverse/core/direct/primitive-selection.js": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904",
+      "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+      "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+      "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+      "static/inverse/core/direct/short-returns.js": "289b4bb963ae4f5b9fd068d2eb742fc5b025566c43409bf9c0ac3a14f909c3a9",
+      "src/lib/components/editor/SymmetryRows.svelte": "1bf99195778a11baf02bff2bf0ab9983a9ab6ae3d5d52b7f29f17eb0efb57884",
+      "src/lib/components/ui/toggle-group/toggle-group.svelte": "ef3ac7b6559268d4e5b8f34870b91939fc39a92718a5d90b650c383f0ca178d4",
+      "src/lib/components/paint/FramePanel.svelte": "9d048e201f9c83b3343d487f716dc835cfe9e61067fa228c8b4c043f7624bc1f",
+      "src/lib/components/paint/MaskToolPanel.svelte": "b37ff23378e86b8411f911a2c2106d8d3f410ab395b0c08915d4329b4ec143cb"
+    },
+    "results": [
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "name": "web-danish-tree-green",
+        "passed": true,
+        "seconds": 7.778199999928474,
+        "sourceEditableError": 0.01104375,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.01104375,
+          "sourceError": 0.01104375
+        }
+      },
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "name": "star",
+        "passed": true,
+        "seconds": 1.8993999999761582,
+        "sourceEditableError": 0.0016,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 6.25e-05
+            }
+          ],
+          "originalSourceError": 0.0016,
+          "sourceError": 0.0016
+        }
+      },
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "name": "top-hat",
+        "passed": true,
+        "seconds": 9.381799999952316,
+        "sourceEditableError": 0.0032064909297052154,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0032064909297052154,
+          "sourceError": 0.0032064909297052154
+        }
+      },
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "name": "top-hat-independent",
+        "passed": true,
+        "seconds": 5.782699999928474,
+        "sourceEditableError": 0.0029584750566893424,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00036875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000325
+            }
+          ],
+          "originalSourceError": 0.0029584750566893424,
+          "sourceError": 0.0029584750566893424
+        }
+      },
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "name": "top-hat-anti",
+        "passed": true,
+        "seconds": 7.5925,
+        "sourceEditableError": 0.0031887755102040817,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "anti"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0031887755102040817,
+          "sourceError": 0.0031887755102040817
+        }
+      },
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "name": "hunodan",
+        "passed": true,
+        "seconds": 4.7345,
+        "sourceEditableError": 0.00944375,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00944375,
+          "sourceError": 0.00944375
+        }
+      },
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "name": "noisy-checker",
+        "passed": true,
+        "seconds": 4.004299999952316,
+        "sourceEditableError": 0.000125,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.000125,
+          "sourceError": 0.000125
+        }
+      },
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "name": "noisy-tree",
+        "passed": true,
+        "seconds": 1.747100000023842,
+        "sourceEditableError": 0.0012,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0012,
+          "sourceError": 0.0012
+        }
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "name": "web-danish-tree-green",
+        "passed": true,
+        "seconds": 9.01,
+        "sourceEditableError": 0.01104375,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.01104375,
+          "sourceError": 0.01104375
+        }
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "name": "star",
+        "passed": true,
+        "seconds": 2.103,
+        "sourceEditableError": 0.0016,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 6.25e-05
+            }
+          ],
+          "originalSourceError": 0.0016,
+          "sourceError": 0.0016
+        }
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "name": "top-hat",
+        "passed": true,
+        "seconds": 9.884,
+        "sourceEditableError": 0.0032064909297052154,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0032064909297052154,
+          "sourceError": 0.0032064909297052154
+        }
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "name": "top-hat-independent",
+        "passed": true,
+        "seconds": 5.95,
+        "sourceEditableError": 0.0029584750566893424,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00036875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000325
+            }
+          ],
+          "originalSourceError": 0.0029584750566893424,
+          "sourceError": 0.0029584750566893424
+        }
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "name": "top-hat-anti",
+        "passed": true,
+        "seconds": 7.773,
+        "sourceEditableError": 0.0031887755102040817,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "anti"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0031887755102040817,
+          "sourceError": 0.0031887755102040817
+        }
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "name": "hunodan",
+        "passed": true,
+        "seconds": 5.029,
+        "sourceEditableError": 0.00944375,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00944375,
+          "sourceError": 0.00944375
+        }
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "name": "noisy-checker",
+        "passed": true,
+        "seconds": 4.246,
+        "sourceEditableError": 0.000125,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.000125,
+          "sourceError": 0.000125
+        }
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "name": "noisy-tree",
+        "passed": true,
+        "seconds": 1.789,
+        "sourceEditableError": 0.0012,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0012,
+          "sourceError": 0.0012
+        }
+      }
+    ],
+    "greenTreeSettings": "The import flow selects between-lobes symmetry Off and disables the matching-sheet preference. The command-line benchmark keeps that preference enabled. The editable-export rasterizer and standalone resvg replay are recorded separately.",
+    "firefox": "Not repeated: the previous full-pipeline run recorded a native launch failure before page creation."
+  },
+  "servedSourceCheck": {
+    "origin": "http://127.0.0.1:5232",
+    "files": [
+      "static/inverse/core/direct/topology.js",
+      "static/inverse/core/direct/fit.js",
+      "static/inverse/core/direct/finalize.js"
+    ],
+    "allHashesMatch": true
+  },
+  "browserHarnessCommit": "6b86f04"
+}

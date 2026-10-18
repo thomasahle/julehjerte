@@ -1,0 +1,84 @@
+{
+  "sourceCatalogue": "scripts/inverse/photo-cases.json",
+  "provenance": "Frozen production automatic crops from e94ad51, before fitting. These two masks exhausted speculative routing at a ten-second search allowance and returned essentially unrefined grids. No saved cutting geometry or template-derived corners enter the tests. The crown guards against replacing a colour-retaining coarse layout merely because an opening is not yet enclosed; ordinary curve refinement can close it.",
+  "cases": [
+    {
+      "sourceCase": "flettede-stonehenge",
+      "quad": [
+        [
+          305.48693240482805,
+          109.0576350724948
+        ],
+        [
+          534.9079847214851,
+          345.59656586265584
+        ],
+        [
+          294.8283777095588,
+          574.0026159082922
+        ],
+        [
+          70.52108483639987,
+          330.1175509473197
+        ]
+      ],
+      "sourceFileSha256": "b9a1c5a2059b3781aef01b48d21b90110791cd6befc232999113c732c0a6aa24",
+      "decodedPixelsSha256": "867fdac5181320b2e898b95abb5ee778f6fc8aacab71a78a85be0ed6fa622248",
+      "maskSha256": "ff0bfa945a6368140b08b2f1f9709b1363b2e6fd8e9d19da4d824ffc97ba55c2",
+      "fittingProbabilitySha256": "044d38b55e81d7e039601e9499f024957a34cc9c350779dcd35db746c70a98bf"
+    },
+    {
+      "sourceCase": "flettede-viking",
+      "quad": [
+        [
+          733.2658572231079,
+          322.0368237881053
+        ],
+        [
+          1276.801358416138,
+          850.182047490194
+        ],
+        [
+          736.4623615949041,
+          1401.620534091447
+        ],
+        [
+          194.59577965184442,
+          857.422504620424
+        ]
+      ],
+      "sourceFileSha256": "c45ccc34f7db2462485c138435c4b258665a450dd51e8c9ff59d12ef41b0dd96",
+      "decodedPixelsSha256": "ba21ae598da5a5ca06cddf86c716e8cbafef42e1e326af58d35e6bc1435ee075",
+      "maskSha256": "7791de154fdbc94b618ece0bf018522573d57c231c46bc0385d24a9e2b9a9bb8",
+      "fittingProbabilitySha256": "4bd68b4bff7a4d619d10ee73c5422ba57df090b931b64037dbba253d90dfe576",
+      "functionalTimeLimit": 60,
+      "timingNote": "The ten-second full-corpus replay remains timing-sensitive and records failures. This functional test uses a longer allowance to verify source fidelity and exported geometry; speed is measured by the unchanged hard-photo benchmark."
+    },
+    {
+      "sourceCatalogue": "scripts/inverse/hard-photo-cases.json",
+      "sourceCase": "crown",
+      "quad": [
+        [
+          1369.931186294376,
+          614.6600876380234
+        ],
+        [
+          1456.5456261395748,
+          725.6051141586194
+        ],
+        [
+          1393.858186598476,
+          815.1919723477054
+        ],
+        [
+          1278.8035113333242,
+          716.3092947707551
+        ]
+      ],
+      "sourceFileSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+      "decodedPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+      "maskSha256": "28f4380aaf5bb197acbaf7750b4560e317c442740098abaf4c91eb88ac7866aa",
+      "fittingProbabilitySha256": "13775ee0f9768ebc7f9e6c8c0423470a8b8baf5106fe5c5cd9e0857b196107a0"
+    }
+  ]
+}

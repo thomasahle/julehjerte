@@ -1,0 +1,240 @@
+{
+  "schema": "finalist-paper-resolution-study-1",
+  "status": "implemented; full_QA_complete; quality_regressions_remain",
+  "problem": "The same accurate 4+4 candidate was discarded when certified diagonal labelling made its unresolved floating fragments exceed the unchanged area threshold at resolution 700.",
+  "fixedGeometry": {
+    "controlsIdenticalBeforeAfter": true,
+    "resolution700FloatingAreasMm2": [
+      0.2653061224489796,
+      0.2653061224489796
+    ],
+    "minimumFeatureAreaMm2": 0.25,
+    "current700": "uncertain",
+    "current1000": "pass",
+    "independentOffset": "pass"
+  },
+  "implementation": {
+    "resolutions": [
+      700,
+      1000
+    ],
+    "eligibility": "Geometry and original image/feature gates must pass first. A failed paper state is reconsidered only for an explicitly retained alternative.",
+    "budget": "Recheck only while more than 500 ms remain in the existing search allowance. Skip already checked resolutions.",
+    "export": "Carry the actually verified resolution through Stop, polishing and final export; every changed geometry is audited again. Physical tolerances and image thresholds are unchanged."
+  },
+  "freshRuns": [
+    {
+      "arm": "before",
+      "seconds": 9.658775417000001,
+      "error": 0.01215,
+      "geometryPassed": true,
+      "paperStatus": "uncertain",
+      "latticeStatus": "uncertain",
+      "offsetStatus": "pass",
+      "reportedTemplateChecksPassed": true
+    },
+    {
+      "arm": "current",
+      "seconds": 9.778745416,
+      "error": 0.0267875,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "latticeStatus": "pass",
+      "offsetStatus": "pass",
+      "reportedTemplateChecksPassed": true
+    },
+    {
+      "arm": "finer",
+      "seconds": 9.729570333000002,
+      "error": 0.0120875,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "latticeStatus": "pass",
+      "offsetStatus": "pass",
+      "reportedTemplateChecksPassed": true
+    }
+  ],
+  "visualReview": "Compared classified input and all three independent exported renders. Fine verification restores the coherent checker bands; the regressed candidate adds thin top stripes. Small existing contour/contact defects remain.",
+  "tests": {
+    "focusedPassed": 17,
+    "focusedTotal": 17,
+    "log": "tmp/heart-learning/round-paper-capture-v1/focused.log",
+    "coverage": [
+      "Identical captured controls remain uncertain at 700, pass at 1000 in JS and Wasm, and pass independent polygon offsets.",
+      "Fresh original-photo fit, without supplied geometry/counts, retains previous error quality and produces verified Stop and export geometry at 1000.",
+      "Existing finer-resolution export, edited-geometry rejection, crown polishing/reserve, native complete-map and MILP early-stop checks pass."
+    ],
+    "removedDuplicate": "The three historical full-map hashes in numerical-speed.test.mjs already run with both native and JavaScript audits in material-kernel.test.mjs, which explicitly handles the method-description change. Numerical and map checks were retained there.",
+    "interruptedAttempt": "An initial focused run overlapped a live diagnostic briefly and was terminated. Only the subsequent serial 17-test run is used."
+  },
+  "fullQA": {
+    "status": "complete",
+    "root": "tmp/heart-learning/round-paper-capture-v1/qa",
+    "runtimeCommit": "0d40b97",
+    "controllerPid": 26752,
+    "completedChecks": [
+      "check",
+      "lint",
+      "build",
+      "served asset verification",
+      "private Chromium star/hat"
+    ],
+    "browserReview": {
+      "status": "reviewed",
+      "results": [
+        {
+          "case": "chromium-star",
+          "templateChecksPassed": true,
+          "reportedImageError": 0.0016,
+          "reportedFitSeconds": 1.5977000000476838,
+          "geometryIdenticalToPreviousQA": true,
+          "visualReview": "Main star and frame remain crisp and aligned."
+        },
+        {
+          "case": "chromium-top-hat-preferred",
+          "templateChecksPassed": true,
+          "reportedImageError": 0.003941680839002267,
+          "reportedFitSeconds": 6.566599999904633,
+          "geometryIdenticalToPreviousQA": true,
+          "visualReview": "Hat shape retained; small bumps along crown/brim and curved free-border ornaments remain."
+        }
+      ]
+    },
+    "applicationPassed": 857,
+    "applicationSkipped": 1,
+    "inversePassed": 947,
+    "inverseTotal": 954,
+    "inverseSeconds": 1148.898101959,
+    "remainingFailures": [
+      "horizontal puppy route/checkpoint assertion",
+      "shifted bird short allowance",
+      "shifted bird long allowance",
+      "gift uncertain checkpoint",
+      "floral uncertain alternative",
+      "blue-star finer-verification route",
+      "Viking retained failed alternative"
+    ],
+    "sourceFilesVerified": 789,
+    "allCommandsPassed": false,
+    "nativeGates": {
+      "hunodanPassed": 22,
+      "hunodanTotal": 22,
+      "hunodanErrorRegressions": [
+        {
+          "id": "hjfla-01",
+          "passed": true,
+          "qualityPassed": true,
+          "seconds": 5.646928541000001,
+          "previousSeconds": 9.515122125000001,
+          "error": 0.007181803385416667,
+          "previousError": 0.007107204861111111,
+          "errorDelta": 7.459852430555594e-05
+        }
+      ],
+      "photoPassed": 26,
+      "photoPassRegressions": [],
+      "photoErrorRegressions": [
+        {
+          "id": "fine-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.01800625,
+          "error": 0.01941875,
+          "errorDelta": 0.001412499999999997
+        },
+        {
+          "id": "jigsaw",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.00974375,
+          "error": 0.0101125,
+          "errorDelta": 0.0003687499999999993
+        },
+        {
+          "id": "maple-leaf",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.00869375,
+          "error": 0.0087625,
+          "errorDelta": 6.874999999999937e-05
+        },
+        {
+          "id": "flettede-viking",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.02091875,
+          "error": 0.02525,
+          "errorDelta": 0.004331250000000002
+        }
+      ],
+      "editablePassed": 48,
+      "editableTotal": 48,
+      "passed": false
+    },
+    "maximumHunodanSeconds": 8.796859957999997,
+    "visualReview": {
+      "path": "tmp/heart-learning/round-paper-capture-v1/qa/native/visual-review.json",
+      "sha256": "3c9c964804ff8d0ba2f480a58c71783df70c78f4bfde4f13d54bd95461bd8441",
+      "changedOutputsReviewed": 15,
+      "conclusion": "Round-checker restored; four accepted photo errors and one Hunodan error remain above the pre-diagonal baseline. No source/crop/mask changes."
+    }
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/round-paper-capture-v1/source.json",
+      "sha256": "db28805c05802e8bf733cd49d6539a4a5ecdc0998c4bcef05028360cb81d2cd9"
+    },
+    {
+      "path": "tmp/heart-learning/round-paper-capture-v1/audit.json",
+      "sha256": "6bb7bd88dd1de060e3d3e681a2c72c9ee0a66181c7ec04d29589801665a28e79"
+    },
+    {
+      "path": "tmp/heart-learning/round-paper-capture-v1/capture.mjs",
+      "sha256": "44dd375a6055bd2496441f94e59cff6d91bf5267c4e1a0e207e2cd785a30603a"
+    },
+    {
+      "path": "tmp/heart-learning/round-paper-capture-v1/audit.mjs",
+      "sha256": "0e5f015f930be98a8ff633adbf7362836babf4f37f4b05c26a11158645461a6e"
+    },
+    {
+      "path": "tmp/heart-learning/round-paper-capture-v1/verify.mjs",
+      "sha256": "0e2257724a158ee72e506912b268b5741c62a889c0f405c796b3a79189f0adef"
+    },
+    {
+      "path": "tmp/heart-learning/round-paper-capture-v1/verification.json",
+      "sha256": "09705e5f2645348bc559bde8242934c3d1f2debaf00e683e21a0b5b2caabd6b7"
+    },
+    {
+      "path": "tmp/heart-learning/round-paper-capture-v1/comparison.png",
+      "sha256": "a4290c36e545dde842136accf00f5e34a5c280b1acc8722ba8ec58ac8acae422"
+    },
+    {
+      "path": "tmp/heart-learning/round-paper-capture-v1/production-test.log",
+      "sha256": "3a842f2680f7ebb692880c79512084ea6593931a7eb55db9761f29dc041c903d"
+    },
+    {
+      "path": "tmp/heart-learning/round-paper-capture-v1/focused.log",
+      "sha256": "a113c137ad8efa7f9906d2f3d9d14ac3d0e495f4722f3187dd17c19eff973df3"
+    },
+    {
+      "path": "tmp/heart-learning/round-paper-capture-v1/before/capture.json",
+      "sha256": "42679c4644f54837f82707f3d3837435759dc23c76237a368383937ea7b683aa"
+    },
+    {
+      "path": "tmp/heart-learning/round-paper-capture-v1/current/capture.json",
+      "sha256": "a25d7f699b2babaf4c64ee6afd3bcde996369b5058dea179f7121b9184159ec3"
+    },
+    {
+      "path": "tmp/heart-learning/round-paper-capture-v1/finer/capture.json",
+      "sha256": "5a7d16394c421b445e4ce663edd7acfbd38f834c032a2d2a15e3433a43381899"
+    }
+  ]
+}

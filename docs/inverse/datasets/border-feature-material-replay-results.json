@@ -1,0 +1,252 @@
+{
+  "schema": "border-feature-material-replay-results-1",
+  "status": "complete-analysis-with-one-rejected-conversion",
+  "runtimeCommit": "97f5c49f63a19fd421410494f05735de8b82c738",
+  "plan": "docs/inverse/datasets/border-feature-material-replay-plan.json",
+  "scope": "44 fresh fitting attempts on the original 22-photo material-resolution inputs, with only the guarded fitter retry changed. All crop coordinates, mask bytes, observation coverage, palettes and fitting settings match the prior study.",
+  "summary": {
+    "coarse": {
+      "statuses": {
+        "checked-derived-mask": 13,
+        "review-required": 3,
+        "crop-unresolved": 6
+      },
+      "exports": 16,
+      "converted": 16,
+      "completeEditable": 13
+    },
+    "crop-rgb": {
+      "statuses": {
+        "checked-derived-mask": 12,
+        "review-required": 4,
+        "crop-unresolved": 6
+      },
+      "exports": 16,
+      "converted": 15,
+      "completeEditable": 12
+    }
+  },
+  "comparison": {
+    "status": "complete",
+    "sourceFilesVerified": 878,
+    "rows": 44,
+    "exports": 32,
+    "allFrozenInputsIdentical": true,
+    "changes": [
+      {
+        "id": "real-3f7b76e1a98e808f-body-1",
+        "method": "coarse",
+        "before": 0.007488691887563266,
+        "after": 0.0074949481046790245,
+        "statusBefore": "review-required",
+        "statusAfter": "review-required",
+        "geometryBefore": true,
+        "geometryAfter": true,
+        "newRetry": false
+      },
+      {
+        "id": "real-45744a03afddccb1-body-1",
+        "method": "crop-rgb",
+        "before": 0.0635625,
+        "after": 0.0133875,
+        "statusBefore": "review-required",
+        "statusAfter": "review-required",
+        "geometryBefore": false,
+        "geometryAfter": true,
+        "newRetry": true
+      },
+      {
+        "id": "real-80794af7903e5d29-body-1",
+        "method": "crop-rgb",
+        "before": 0.01066875,
+        "after": 0.01045,
+        "statusBefore": "checked-derived-mask",
+        "statusAfter": "checked-derived-mask",
+        "geometryBefore": true,
+        "geometryAfter": true,
+        "newRetry": false
+      },
+      {
+        "id": "real-abf590088db891f9-body-1",
+        "method": "crop-rgb",
+        "before": 0.0075625,
+        "after": 0.0072375,
+        "statusBefore": "checked-derived-mask",
+        "statusAfter": "checked-derived-mask",
+        "geometryBefore": true,
+        "geometryAfter": true,
+        "newRetry": false
+      },
+      {
+        "id": "real-c4a9ee6e2d0a4185-body-1",
+        "method": "crop-rgb",
+        "before": 0.01669375,
+        "after": 0.0167,
+        "statusBefore": "review-required",
+        "statusAfter": "review-required",
+        "geometryBefore": true,
+        "geometryAfter": true,
+        "newRetry": true
+      }
+    ]
+  },
+  "interiorRetries": [
+    {
+      "id": "real-45744a03afddccb1-body-1",
+      "method": "crop-rgb",
+      "stage": "before-recovery",
+      "scheduled": 1,
+      "previousError": 0.0457000732421875,
+      "proposal": {
+        "error": 0.03472900390625,
+        "featuresPassed": false,
+        "routingFeaturesPassed": true,
+        "featureChange": {
+          "passed": true,
+          "missingBefore": 1,
+          "missingAfter": 1,
+          "regressed": []
+        },
+        "preferred": true
+      }
+    },
+    {
+      "id": "real-c4a9ee6e2d0a4185-body-1",
+      "method": "crop-rgb",
+      "stage": "before-recovery",
+      "scheduled": 1,
+      "previousError": 0.05126953125,
+      "proposal": {
+        "error": 0.04193115234375,
+        "featuresPassed": false,
+        "routingFeaturesPassed": true,
+        "featureChange": {
+          "passed": true,
+          "missingBefore": 2,
+          "missingAfter": 2,
+          "regressed": []
+        },
+        "preferred": true
+      }
+    },
+    {
+      "id": "real-c4a9ee6e2d0a4185-body-1",
+      "method": "coarse",
+      "stage": "before-recovery",
+      "scheduled": 0,
+      "previousError": 0.0387420654296875,
+      "proposal": {
+        "error": 0.039215087890625,
+        "featuresPassed": false,
+        "routingFeaturesPassed": true,
+        "featureChange": {
+          "passed": false,
+          "missingBefore": 1,
+          "missingAfter": 1,
+          "regressed": [
+            {
+              "value": 0,
+              "areaMm2": 21.625,
+              "centerMm": [
+                55.664739884393065,
+                98.76950867052022
+              ],
+              "retainedFraction": 0,
+              "retainedBefore": 0.17630057803468208,
+              "requiredRetention": 0.17630057803468208
+            }
+          ]
+        },
+        "preferred": false
+      }
+    }
+  ],
+  "editable": {
+    "outputs": 32,
+    "converted": 31,
+    "complete": 25,
+    "previouslyConverted": 30,
+    "acceptedOutputRegressions": 0,
+    "rejected": [
+      {
+        "id": "real-5330aa8b62176216-body-1-crop-rgb",
+        "engineChecksPassed": false,
+        "error": "The converted cuts fail the editor\u2019s crossing or minimum-spacing checks, including without simplification."
+      }
+    ],
+    "controllerFailurePreserved": {
+      "status": "failed",
+      "stage": "editable",
+      "exitCode": 1
+    }
+  },
+  "sourcePaperDiagnostic": {
+    "photos": 6,
+    "rows": 12,
+    "allClassificationAndExportedScoresUnchanged": true,
+    "limitation": "Partial observations and approximate reference corners; these six photos do not establish ground truth for the recovered rabbit or the full corpus."
+  },
+  "visualReview": {
+    "changedOutputs": 5,
+    "allChangedOutputsInspected": true,
+    "unchangedWovenPngs": 27,
+    "panels": [
+      {
+        "path": "tmp/heart-learning/border-feature-routing-v1/material-replay/changed-1.png",
+        "cases": [
+          {
+            "id": "real-3f7b76e1a98e808f-body-1",
+            "method": "coarse"
+          },
+          {
+            "id": "real-45744a03afddccb1-body-1",
+            "method": "crop-rgb"
+          },
+          {
+            "id": "real-80794af7903e5d29-body-1",
+            "method": "crop-rgb"
+          }
+        ],
+        "sha256": "d9e4372bceac07a1243ef67d8cd146d7676f398ce69308de21cb353e6e0d18cc"
+      },
+      {
+        "path": "tmp/heart-learning/border-feature-routing-v1/material-replay/changed-2.png",
+        "cases": [
+          {
+            "id": "real-abf590088db891f9-body-1",
+            "method": "crop-rgb"
+          },
+          {
+            "id": "real-c4a9ee6e2d0a4185-body-1",
+            "method": "crop-rgb"
+          }
+        ],
+        "sha256": "9277aa10db3d1d11518bca86ee5fe398916e01980591b8ca8f6ff289eb9d4a37"
+      }
+    ],
+    "notes": [
+      "The rabbit ears and main body are recovered; small seams near the ears and protrusions at the supporting border remain.",
+      "Star, fish, bagpipe and candle changes are small at the displayed scale.",
+      "The candle retains its source border-feature failures and visible seams."
+    ]
+  },
+  "findings": [
+    "Fresh rabbit fitting falls from 6.35625% to 1.33875% original-mask disagreement. Geometry, nominal paper and editable conversion now pass; the omitted original border feature still prevents complete acceptance.",
+    "The same retry runs on the sharper candle but does not solve its border features; its error worsens by one of 160000 pixels.",
+    "A coarse candle proposal is rejected because it both worsens image error and further erodes a missing feature. Its exported weave remains byte-identical.",
+    "All previous checked outputs remain checked. Counts remain 13/22 coarse and 12/22 crop-RGB: this fix recovers a useful legal candidate, not an additional fully checked photograph.",
+    "The new global full-resolution classifier is still not adopted. Printed-paper ambiguity, border uncertainty and six unresolved crops remain separate problems."
+  ],
+  "sourceFilesVerified": 878,
+  "artifactsSha256": {
+    "tmp/heart-learning/border-feature-routing-v1/material-replay/plan.json": "589eb6e3f682f5dc66cc1dac307dd90c2e494a3511bf9283a2e9311154a957a4",
+    "tmp/heart-learning/border-feature-routing-v1/material-replay/source.json": "9c5c4977896e0429c228125859cd23d5853378b616fd9385f60da11470e71c9e",
+    "tmp/heart-learning/border-feature-routing-v1/material-replay/state.json": "78aee66b39122a45136f06e391473cb1a8ddfdb634892a164d91385b12cbfc85",
+    "tmp/heart-learning/border-feature-routing-v1/material-replay/checks.json": "9344e01f0c97d24e202f73ab7c0a307de81280886b9c4084b7adb4e24691613d",
+    "tmp/heart-learning/border-feature-routing-v1/material-replay/pipeline/report.json": "b51759201044b825400e5608177165abd17f7e3aab9bbe40ad7847a3be3afb6a",
+    "tmp/heart-learning/border-feature-routing-v1/material-replay/editable/results.json": "612913a1ec9e37ccb8ab87485e11a16237a99edf9c64ebb7b92b9a83c5b54b1a",
+    "tmp/heart-learning/border-feature-routing-v1/material-replay/comparison.json": "ac5f9c5d44208e0a971e9983469eaf3b389c396587793befddbd2e517471c0c1",
+    "tmp/heart-learning/border-feature-routing-v1/material-replay/source-paper-scores.json": "cdeb4e20c5e155ee43c1caa9d6ec2929993e1b62488afa60d6a72a54a0b3cf5f",
+    "tmp/heart-learning/border-feature-routing-v1/material-replay/changed-panels.json": "7329cd1794e6ddce72c6929b64ff069ec94170835083dc54b4227975eab09f54"
+  }
+}

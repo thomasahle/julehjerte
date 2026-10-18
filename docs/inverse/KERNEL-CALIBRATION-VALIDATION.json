@@ -1,0 +1,3695 @@
+{
+  "commit": "d7e45482e3aeda8f65e04733dcbde68e40270e4f",
+  "change": "Exact numeric kernel-output comparisons use a dense typed-array loop; Object.is semantics remain. Paper calibration still uses two single-call timing orders. Selective longer calibration is tested but not enabled in production.",
+  "checks": {
+    "applicationTests": 722,
+    "engineTests": 258,
+    "totalTests": 980,
+    "svelteErrors": 0,
+    "existingSvelteWarnings": 7,
+    "lintPassed": true,
+    "buildPassed": true
+  },
+  "policies": {
+    "method": "Fresh selector instances for each policy, geometry and round. Four rotating policy orders. First complete audit includes calibration and all equality checks performed by the selector. The following 16 complete audits are timed together. Fixture/module/kernel loading and the independent JavaScript/native oracle and map comparisons are outside timers. Common kernel code and scratch memory are warmed before each group. Both audit maps and all fields except elapsed time must equal the JavaScript oracle; first-call returned arrays are rechecked after subsequent calls. Only timing decisions may be retained. No optimizer runs or saved-template seeds.",
+    "sourceHashes": {
+      "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+      "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+      "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+      "static/inverse/core/chord-distance.js": "cb79dd6d90d22b6bea6bb4bd0593cc8e32a18a09116084e53f5d942bcbef3c04",
+      "static/inverse/core/crop.js": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88",
+      "static/inverse/core/engine.js": "59e4354b5c7ec6190b140066b24b3f8959e58f5e2f0f0166298522fb485d4740",
+      "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+      "static/inverse/core/feature-recovery.js": "37831af78afffd94b19a4145091d199f9771d12e505514e88cf1943e6023279e",
+      "static/inverse/core/geometry.js": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+      "static/inverse/core/graph.js": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
+      "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+      "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+      "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+      "static/inverse/core/junctions.js": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
+      "static/inverse/core/kernel-choice.js": "46ab62448cca7b0e1a6b2d4a388498fb517e43e56298de94dde934ad4092f998",
+      "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+      "static/inverse/core/material.js": "e691efc792c66cdc91a5c0ad8258ac380a29442bc68c73bd9a7a2a44cbb02fe3",
+      "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+      "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+      "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+      "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+      "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+      "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+      "static/inverse/core/settings.js": "2fcdd67395cf3ebfcfcf4c885ea8fa5ae58b43dd52000660d0a52706b3b3665e",
+      "static/inverse/core/solver.js": "15bb96737f85ca0d290b6a06d792a3b18570f83a39b9801a498c91e3f466e412",
+      "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+      "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+      "static/inverse/core/validate.js": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+      "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+      "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+      "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+      "static/inverse/core/direct/curves.js": "a3cad0cb2c96d62c0e1d99474777157eae8fb3fd6b7631f3af203243f4909ad3",
+      "static/inverse/core/direct/finalize.js": "dd2097b415c274ceec20a485d4a62fab28ffc4ea40f323396a8acb84e5b8c4a7",
+      "static/inverse/core/direct/fit.js": "4df61135bc86b6ddb3b0b9f1922f9614c3852d02552c232846ea94d89f31a933",
+      "static/inverse/core/direct/grid.js": "57ada8e2f1c794b0012ddedbb8b508f29971186c313e517a8f40ca3788e1dfbd",
+      "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+      "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+      "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+      "static/inverse/core/direct/matching.js": "db113f3e5c6ed3be820f7c863a113e9181a02c7efa5ea66a46e56df7f2428414",
+      "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+      "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+      "static/inverse/core/direct/prefer-matching.js": "1ff682f298014f8c29387ad3bbe330c52e4ee619defd5a2d116cb3703e0f5d48",
+      "static/inverse/core/direct/primitive-selection.js": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904",
+      "static/inverse/core/direct/primitives.js": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b",
+      "static/inverse/core/direct/refine.js": "9c126408c3f7da97faf100504d57ca884315017a6665ee10259148455716fc9c",
+      "static/inverse/core/direct/share.js": "247241745ec8b1ac03c41b7e619bda30e821bbddbad2c60d4ec2d51c8aea1e6d",
+      "static/inverse/core/direct/symmetry.js": "ed9f633ea42af93b46293d0d753e21dd7a5921485d5d55847e5a02665c14cf13",
+      "static/inverse/core/direct/topology.js": "bbe79bf0dca7c4786c7728413026fee9f77bb9bca5bb788be7d6674267ad9292",
+      "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+      "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58",
+      "scripts/inverse/paper-calibration-benchmark.mjs": "5bbfa530d761e2d339d823ddfb2c42fbd19051f1c544ce2f2966b1a8c8bb808e"
+    },
+    "geometries": [
+      {
+        "id": "straight-80",
+        "cfg": {
+          "width": 60,
+          "minWidth": 3,
+          "cutError": 0,
+          "printShrinkPercent": 0,
+          "materialResolution": 80
+        },
+        "geometrySha256": "b3b2cd5312a2350ea4795d59230011c52273f2ba121c6184d56795220a6d4e0e"
+      },
+      {
+        "id": "neck-180",
+        "cfg": {
+          "width": 60,
+          "minWidth": 3,
+          "cutError": 0,
+          "printShrinkPercent": 0,
+          "materialResolution": 180
+        },
+        "geometrySha256": "8a91b343b32c47006d07c889cd452a437e90a2d317f5df19d2540253d45ec4a0"
+      },
+      {
+        "id": "matching-hat-360",
+        "source": "scripts/inverse/fixtures/free-border-hat.json",
+        "sourceSha256": "5bd3e6c839b3b7508da3df791da88ee6c6567e81e166e8c8b21473baad1cc824",
+        "cfg": {
+          "width": 100,
+          "materialResolution": 360
+        },
+        "geometrySha256": "5e0be3cb4943ba3b7e3f8d7bf6bfd916a744673c2f3913ae57be6e75807546df"
+      },
+      {
+        "id": "hjhih-04",
+        "source": "tmp/paper-tiles-hunodan/hjhih-04/cut_geometry.json",
+        "sourceSha256": "78693d967702f585f8259f30b248fd8e2e4c1dcd56ecedd7772ff12918cd9f24",
+        "cfg": {
+          "width": 100,
+          "materialResolution": 360
+        },
+        "geometrySha256": "a87d471e5248621b7f4530a826cd71a04175a9b904a9e5b0575f09975d167d01"
+      },
+      {
+        "id": "circle",
+        "source": "tmp/paper-tiles-weighted/circle-0.84-weighted/cut_geometry.json",
+        "sourceSha256": "b1169827c0a3043abcb2497fc82553c39fabba1fc57e0272f5b20dc0f407d360",
+        "cfg": {
+          "width": 100,
+          "materialResolution": 360
+        },
+        "geometrySha256": "b30b5d155d99239efad0f1075b20d87910f9a08d6635befe10104f9316567c71"
+      }
+    ],
+    "rows": 80,
+    "observations": 320,
+    "allCompleteMapsAndFieldsIdentical": true,
+    "summary": {
+      "node": {
+        "batch4": {
+          "medianFirstAuditDifferenceMilliseconds": 25.921583500003635,
+          "medianFirstAuditRatio": 1.1496912552155083,
+          "medianTotalRatio": 1.1226073863017616,
+          "medianFollowupRatio": 1.02187853591615,
+          "slowerFirstAudits": 17
+        },
+        "batch8": {
+          "medianFirstAuditDifferenceMilliseconds": 83.14347900000394,
+          "medianFirstAuditRatio": 1.5780277712269464,
+          "medianTotalRatio": 1.3086935827482176,
+          "medianFollowupRatio": 1.0134966262574352,
+          "slowerFirstAudits": 19
+        },
+        "selective8": {
+          "medianFirstAuditDifferenceMilliseconds": -0.5103135000000094,
+          "medianFirstAuditRatio": 0.9847016321528564,
+          "medianTotalRatio": 0.9886416648278424,
+          "medianFollowupRatio": 0.9945683449801392,
+          "slowerFirstAudits": 9
+        }
+      },
+      "chromium": {
+        "batch4": {
+          "medianFirstAuditDifferenceMilliseconds": 26.399999976158142,
+          "medianFirstAuditRatio": 1.2228698295316947,
+          "medianTotalRatio": 1.0525857814142983,
+          "medianFollowupRatio": 0.994704713612858,
+          "slowerFirstAudits": 19
+        },
+        "batch8": {
+          "medianFirstAuditDifferenceMilliseconds": 77.75,
+          "medianFirstAuditRatio": 1.4910316048367585,
+          "medianTotalRatio": 1.227121932600137,
+          "medianFollowupRatio": 0.9957662294835329,
+          "slowerFirstAudits": 19
+        },
+        "selective8": {
+          "medianFirstAuditDifferenceMilliseconds": 0.5,
+          "medianFirstAuditRatio": 1.0207017993905778,
+          "medianTotalRatio": 0.99196681016656,
+          "medianFollowupRatio": 0.9814237386063605,
+          "slowerFirstAudits": 13
+        }
+      },
+      "firefox": {
+        "batch4": {
+          "medianFirstAuditDifferenceMilliseconds": 10,
+          "medianFirstAuditRatio": 1.0260528866867729,
+          "medianTotalRatio": 1.0211775393175495,
+          "medianFollowupRatio": 0.9830391843301447,
+          "slowerFirstAudits": 13
+        },
+        "batch8": {
+          "medianFirstAuditDifferenceMilliseconds": 25,
+          "medianFirstAuditRatio": 1.0664158476658478,
+          "medianTotalRatio": 1.0380217681114363,
+          "medianFollowupRatio": 0.9915965768841177,
+          "slowerFirstAudits": 16
+        },
+        "selective8": {
+          "medianFirstAuditDifferenceMilliseconds": 7,
+          "medianFirstAuditRatio": 1.0174798174798174,
+          "medianTotalRatio": 1.0300881823425565,
+          "medianFollowupRatio": 0.998595340462279,
+          "slowerFirstAudits": 14
+        }
+      },
+      "webkit": {
+        "batch4": {
+          "medianFirstAuditDifferenceMilliseconds": 20.5,
+          "medianFirstAuditRatio": 1.1123851824993896,
+          "medianTotalRatio": 1.0278443610425696,
+          "medianFollowupRatio": 0.9864360718883249,
+          "slowerFirstAudits": 18
+        },
+        "batch8": {
+          "medianFirstAuditDifferenceMilliseconds": 65.00000000000003,
+          "medianFirstAuditRatio": 1.3915662650602183,
+          "medianTotalRatio": 1.0587413901169973,
+          "medianFollowupRatio": 0.9803808446236574,
+          "slowerFirstAudits": 19
+        },
+        "selective8": {
+          "medianFirstAuditDifferenceMilliseconds": 0.9999999999990905,
+          "medianFirstAuditRatio": 1.0060240963855256,
+          "medianTotalRatio": 1.0403665754418325,
+          "medianFollowupRatio": 0.9943256629231818,
+          "slowerFirstAudits": 12
+        }
+      }
+    }
+  },
+  "comparison": {
+    "method": "Fresh selector instances for each policy, geometry and round. Four rounds with rotating policy order. The reference policy, when requested, loads both selector and equality code from the named commit with an identical paper-audit source. First complete audit includes calibration and all equality checks performed by the selector. The following 16 complete audits are timed together. Fixture/module/kernel loading and the independent JavaScript/native oracle and map comparisons are outside timers. Common kernel code and scratch memory are warmed before each group. Both audit maps and all fields except elapsed time must equal the JavaScript oracle; first-call returned arrays are rechecked after subsequent calls. Only timing decisions may be retained. No optimizer runs or saved-template seeds.",
+    "sourceHashes": {
+      "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+      "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+      "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+      "static/inverse/core/chord-distance.js": "cb79dd6d90d22b6bea6bb4bd0593cc8e32a18a09116084e53f5d942bcbef3c04",
+      "static/inverse/core/crop.js": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88",
+      "static/inverse/core/engine.js": "59e4354b5c7ec6190b140066b24b3f8959e58f5e2f0f0166298522fb485d4740",
+      "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+      "static/inverse/core/feature-recovery.js": "37831af78afffd94b19a4145091d199f9771d12e505514e88cf1943e6023279e",
+      "static/inverse/core/geometry.js": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+      "static/inverse/core/graph.js": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
+      "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+      "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+      "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+      "static/inverse/core/junctions.js": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
+      "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+      "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+      "static/inverse/core/material.js": "e691efc792c66cdc91a5c0ad8258ac380a29442bc68c73bd9a7a2a44cbb02fe3",
+      "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+      "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+      "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+      "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+      "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+      "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+      "static/inverse/core/settings.js": "2fcdd67395cf3ebfcfcf4c885ea8fa5ae58b43dd52000660d0a52706b3b3665e",
+      "static/inverse/core/solver.js": "15bb96737f85ca0d290b6a06d792a3b18570f83a39b9801a498c91e3f466e412",
+      "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+      "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+      "static/inverse/core/validate.js": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+      "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+      "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+      "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+      "static/inverse/core/direct/curves.js": "a3cad0cb2c96d62c0e1d99474777157eae8fb3fd6b7631f3af203243f4909ad3",
+      "static/inverse/core/direct/finalize.js": "dd2097b415c274ceec20a485d4a62fab28ffc4ea40f323396a8acb84e5b8c4a7",
+      "static/inverse/core/direct/fit.js": "4df61135bc86b6ddb3b0b9f1922f9614c3852d02552c232846ea94d89f31a933",
+      "static/inverse/core/direct/grid.js": "57ada8e2f1c794b0012ddedbb8b508f29971186c313e517a8f40ca3788e1dfbd",
+      "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+      "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+      "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+      "static/inverse/core/direct/matching.js": "db113f3e5c6ed3be820f7c863a113e9181a02c7efa5ea66a46e56df7f2428414",
+      "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+      "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+      "static/inverse/core/direct/prefer-matching.js": "1ff682f298014f8c29387ad3bbe330c52e4ee619defd5a2d116cb3703e0f5d48",
+      "static/inverse/core/direct/primitive-selection.js": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904",
+      "static/inverse/core/direct/primitives.js": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b",
+      "static/inverse/core/direct/refine.js": "9c126408c3f7da97faf100504d57ca884315017a6665ee10259148455716fc9c",
+      "static/inverse/core/direct/share.js": "247241745ec8b1ac03c41b7e619bda30e821bbddbad2c60d4ec2d51c8aea1e6d",
+      "static/inverse/core/direct/symmetry.js": "ed9f633ea42af93b46293d0d753e21dd7a5921485d5d55847e5a02665c14cf13",
+      "static/inverse/core/direct/topology.js": "bbe79bf0dca7c4786c7728413026fee9f77bb9bca5bb788be7d6674267ad9292",
+      "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+      "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58",
+      "scripts/inverse/paper-calibration-benchmark.mjs": "15e950dd98a444dbfa6ae728bd95d7e9c7923e90b0ea67ad3e8c8f9fb5371a05"
+    },
+    "reference": "98903f6",
+    "referenceSourceHashes": {
+      "material.js": "e691efc792c66cdc91a5c0ad8258ac380a29442bc68c73bd9a7a2a44cbb02fe3",
+      "paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+      "kernel-choice.js": "46ab62448cca7b0e1a6b2d4a388498fb517e43e56298de94dde934ad4092f998"
+    },
+    "geometries": [
+      {
+        "id": "straight-80",
+        "cfg": {
+          "width": 60,
+          "minWidth": 3,
+          "cutError": 0,
+          "printShrinkPercent": 0,
+          "materialResolution": 80
+        },
+        "geometrySha256": "b3b2cd5312a2350ea4795d59230011c52273f2ba121c6184d56795220a6d4e0e"
+      },
+      {
+        "id": "neck-180",
+        "cfg": {
+          "width": 60,
+          "minWidth": 3,
+          "cutError": 0,
+          "printShrinkPercent": 0,
+          "materialResolution": 180
+        },
+        "geometrySha256": "8a91b343b32c47006d07c889cd452a437e90a2d317f5df19d2540253d45ec4a0"
+      },
+      {
+        "id": "matching-hat-360",
+        "source": "scripts/inverse/fixtures/free-border-hat.json",
+        "sourceSha256": "5bd3e6c839b3b7508da3df791da88ee6c6567e81e166e8c8b21473baad1cc824",
+        "cfg": {
+          "width": 100,
+          "materialResolution": 360
+        },
+        "geometrySha256": "5e0be3cb4943ba3b7e3f8d7bf6bfd916a744673c2f3913ae57be6e75807546df"
+      },
+      {
+        "id": "hjhih-04",
+        "source": "tmp/paper-tiles-hunodan/hjhih-04/cut_geometry.json",
+        "sourceSha256": "78693d967702f585f8259f30b248fd8e2e4c1dcd56ecedd7772ff12918cd9f24",
+        "cfg": {
+          "width": 100,
+          "materialResolution": 360
+        },
+        "geometrySha256": "a87d471e5248621b7f4530a826cd71a04175a9b904a9e5b0575f09975d167d01"
+      },
+      {
+        "id": "circle",
+        "source": "tmp/paper-tiles-weighted/circle-0.84-weighted/cut_geometry.json",
+        "sourceSha256": "b1169827c0a3043abcb2497fc82553c39fabba1fc57e0272f5b20dc0f407d360",
+        "cfg": {
+          "width": 100,
+          "materialResolution": 360
+        },
+        "geometrySha256": "b30b5d155d99239efad0f1075b20d87910f9a08d6635befe10104f9316567c71"
+      }
+    ],
+    "rows": 80,
+    "observations": 160,
+    "allCompleteMapsAndFieldsIdentical": true,
+    "summary": {
+      "node": {
+        "legacy": {
+          "medianFirstAuditDifferenceMilliseconds": -10.571042000000148,
+          "medianFirstAuditRatio": 0.8925618536504277,
+          "medianTotalRatio": 0.9716217416605556,
+          "medianFollowupRatio": 0.9917194982487862,
+          "slowerFirstAudits": 3
+        }
+      },
+      "chromium": {
+        "legacy": {
+          "medianFirstAuditDifferenceMilliseconds": -19.450000017881393,
+          "medianFirstAuditRatio": 0.8680537716431935,
+          "medianTotalRatio": 0.9746779179881158,
+          "medianFollowupRatio": 1.0073049705982804,
+          "slowerFirstAudits": 1
+        }
+      },
+      "firefox": {
+        "legacy": {
+          "medianFirstAuditDifferenceMilliseconds": 3.5,
+          "medianFirstAuditRatio": 1.01724633515378,
+          "medianTotalRatio": 1.0078884202752079,
+          "medianFollowupRatio": 1.0008741258741258,
+          "slowerFirstAudits": 15
+        }
+      },
+      "webkit": {
+        "legacy": {
+          "medianFirstAuditDifferenceMilliseconds": -10.000000000002728,
+          "medianFirstAuditRatio": 0.9384609558433636,
+          "medianTotalRatio": 0.9868758194762696,
+          "medianFollowupRatio": 0.9944577269299273,
+          "slowerFirstAudits": 2
+        }
+      }
+    },
+    "measurements": [
+      {
+        "runtime": "node",
+        "id": "straight-80",
+        "round": 0,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 19.593208000000004,
+            "followupMilliseconds": 24.590667000000025,
+            "choices": {
+              "distanceTransform": "19200:wasm",
+              "components": "19200:wasm"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 19.681207999999998,
+            "followupMilliseconds": 23.657415999999984,
+            "choices": {
+              "distanceTransform": "19200:wasm",
+              "components": "19200:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "node",
+        "id": "straight-80",
+        "round": 1,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 19.039165999999966,
+            "followupMilliseconds": 21.918000000000006,
+            "choices": {
+              "distanceTransform": "19200:wasm",
+              "components": "19200:wasm"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 19.731540999999993,
+            "followupMilliseconds": 24.236874999999998,
+            "choices": {
+              "distanceTransform": "19200:wasm",
+              "components": "19200:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "node",
+        "id": "straight-80",
+        "round": 2,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 19.573125000000005,
+            "followupMilliseconds": 23.536999999999978,
+            "choices": {
+              "distanceTransform": "19200:wasm",
+              "components": "19200:wasm"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 17.793791999999996,
+            "followupMilliseconds": 18.430416999999977,
+            "choices": {
+              "distanceTransform": "19200:wasm",
+              "components": "19200:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "node",
+        "id": "straight-80",
+        "round": 3,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 18.303583000000003,
+            "followupMilliseconds": 20.771791999999948,
+            "choices": {
+              "distanceTransform": "19200:wasm",
+              "components": "19200:wasm"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 21.096000000000004,
+            "followupMilliseconds": 22.812209000000053,
+            "choices": {
+              "distanceTransform": "19200:wasm",
+              "components": "19200:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "node",
+        "id": "neck-180",
+        "round": 0,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 55.93029200000001,
+            "followupMilliseconds": 157.36687499999994,
+            "choices": {
+              "distanceTransform": "97200:wasm",
+              "components": "97200:wasm"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 59.82766600000002,
+            "followupMilliseconds": 151.69066700000008,
+            "choices": {
+              "distanceTransform": "97200:wasm",
+              "components": "97200:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "node",
+        "id": "neck-180",
+        "round": 1,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 63.14737500000001,
+            "followupMilliseconds": 155.2074580000001,
+            "choices": {
+              "distanceTransform": "97200:wasm",
+              "components": "97200:wasm"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 53.94125000000008,
+            "followupMilliseconds": 153.84412500000008,
+            "choices": {
+              "distanceTransform": "97200:wasm",
+              "components": "97200:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "node",
+        "id": "neck-180",
+        "round": 2,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 54.811292000000094,
+            "followupMilliseconds": 151.202084,
+            "choices": {
+              "distanceTransform": "97200:wasm",
+              "components": "97200:wasm"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 60.96570900000006,
+            "followupMilliseconds": 152.3872090000002,
+            "choices": {
+              "distanceTransform": "97200:wasm",
+              "components": "97200:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "node",
+        "id": "neck-180",
+        "round": 3,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 78.56554199999982,
+            "followupMilliseconds": 148.27795800000013,
+            "choices": {
+              "distanceTransform": "97200:wasm",
+              "components": "97200:wasm"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 53.496790999999575,
+            "followupMilliseconds": 152.59079199999996,
+            "choices": {
+              "distanceTransform": "97200:wasm",
+              "components": "97200:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "node",
+        "id": "matching-hat-360",
+        "round": 0,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 156.0591669999999,
+            "followupMilliseconds": 490.8737079999996,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 128.0045,
+            "followupMilliseconds": 396.5678750000002,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "node",
+        "id": "matching-hat-360",
+        "round": 1,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 143.12283300000036,
+            "followupMilliseconds": 487.45799999999963,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 155.05879200000072,
+            "followupMilliseconds": 399.69487500000014,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "node",
+        "id": "matching-hat-360",
+        "round": 2,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 168.59387500000048,
+            "followupMilliseconds": 391.599792,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 132.6572500000002,
+            "followupMilliseconds": 471.59058300000015,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "node",
+        "id": "matching-hat-360",
+        "round": 3,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 132.2249579999998,
+            "followupMilliseconds": 378.9896669999998,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 151.6836659999999,
+            "followupMilliseconds": 394.3975419999997,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "node",
+        "id": "hjhih-04",
+        "round": 0,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 179.45041700000002,
+            "followupMilliseconds": 898.5901250000006,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 202.25375000000167,
+            "followupMilliseconds": 957.4209580000006,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "node",
+        "id": "hjhih-04",
+        "round": 1,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 208.48583299999882,
+            "followupMilliseconds": 959.4683749999986,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 166.55954100000054,
+            "followupMilliseconds": 1069.5413340000014,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "node",
+        "id": "hjhih-04",
+        "round": 2,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 180.10195799999929,
+            "followupMilliseconds": 960.2663749999992,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 200.5880419999994,
+            "followupMilliseconds": 965.8568329999998,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "node",
+        "id": "hjhih-04",
+        "round": 3,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 201.11666699999842,
+            "followupMilliseconds": 1071.1307080000006,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 169.29716700000063,
+            "followupMilliseconds": 985.7813339999993,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "node",
+        "id": "circle",
+        "round": 0,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 188.69483299999774,
+            "followupMilliseconds": 700.007708000001,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 206.7380000000012,
+            "followupMilliseconds": 683.5815000000002,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "node",
+        "id": "circle",
+        "round": 1,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 178.56333300000188,
+            "followupMilliseconds": 599.864375000001,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 176.99279200000092,
+            "followupMilliseconds": 604.1523750000015,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "node",
+        "id": "circle",
+        "round": 2,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 172.40566699999908,
+            "followupMilliseconds": 583.1984579999989,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 152.34633399999802,
+            "followupMilliseconds": 598.3792910000011,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "node",
+        "id": "circle",
+        "round": 3,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 169.1664579999997,
+            "followupMilliseconds": 608.8600839999999,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 176.01783400000204,
+            "followupMilliseconds": 613.3979169999984,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "chromium",
+        "id": "straight-80",
+        "round": 0,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 15.700000047683716,
+            "followupMilliseconds": 19.600000023841858,
+            "choices": {
+              "distanceTransform": "19200:wasm",
+              "components": "19200:wasm"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 13.5,
+            "followupMilliseconds": 20.30000001192093,
+            "choices": {
+              "distanceTransform": "19200:wasm",
+              "components": "19200:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "chromium",
+        "id": "straight-80",
+        "round": 1,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 13.599999964237213,
+            "followupMilliseconds": 19.69999998807907,
+            "choices": {
+              "distanceTransform": "19200:wasm",
+              "components": "19200:wasm"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 14.700000047683716,
+            "followupMilliseconds": 19.100000023841858,
+            "choices": {
+              "distanceTransform": "19200:wasm",
+              "components": "19200:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "chromium",
+        "id": "straight-80",
+        "round": 2,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 14.100000023841858,
+            "followupMilliseconds": 18.5,
+            "choices": {
+              "distanceTransform": "19200:wasm",
+              "components": "19200:wasm"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 13.599999964237213,
+            "followupMilliseconds": 18.600000023841858,
+            "choices": {
+              "distanceTransform": "19200:wasm",
+              "components": "19200:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "chromium",
+        "id": "straight-80",
+        "round": 3,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 13.899999976158142,
+            "followupMilliseconds": 19.5,
+            "choices": {
+              "distanceTransform": "19200:wasm",
+              "components": "19200:wasm"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 14.699999988079071,
+            "followupMilliseconds": 18.900000035762787,
+            "choices": {
+              "distanceTransform": "19200:wasm",
+              "components": "19200:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "chromium",
+        "id": "neck-180",
+        "round": 0,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 51.90000003576279,
+            "followupMilliseconds": 163.39999997615814,
+            "choices": {
+              "distanceTransform": "97200:wasm",
+              "components": "97200:wasm"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 58.30000001192093,
+            "followupMilliseconds": 132.10000002384186,
+            "choices": {
+              "distanceTransform": "97200:wasm",
+              "components": "97200:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "chromium",
+        "id": "neck-180",
+        "round": 1,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 56.40000003576279,
+            "followupMilliseconds": 131.69999998807907,
+            "choices": {
+              "distanceTransform": "97200:wasm",
+              "components": "97200:wasm"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 50.80000001192093,
+            "followupMilliseconds": 130.80000001192093,
+            "choices": {
+              "distanceTransform": "97200:wasm",
+              "components": "97200:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "chromium",
+        "id": "neck-180",
+        "round": 2,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 48.39999997615814,
+            "followupMilliseconds": 131.5,
+            "choices": {
+              "distanceTransform": "97200:wasm",
+              "components": "97200:wasm"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 52.89999997615814,
+            "followupMilliseconds": 137.80000001192093,
+            "choices": {
+              "distanceTransform": "97200:wasm",
+              "components": "97200:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "chromium",
+        "id": "neck-180",
+        "round": 3,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 54.60000002384186,
+            "followupMilliseconds": 129.0999999642372,
+            "choices": {
+              "distanceTransform": "97200:wasm",
+              "components": "97200:wasm"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 49.80000001192093,
+            "followupMilliseconds": 140.30000001192093,
+            "choices": {
+              "distanceTransform": "97200:wasm",
+              "components": "97200:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "chromium",
+        "id": "matching-hat-360",
+        "round": 0,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 146.5999999642372,
+            "followupMilliseconds": 398.10000002384186,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 125.10000002384186,
+            "followupMilliseconds": 389.10000002384186,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "chromium",
+        "id": "matching-hat-360",
+        "round": 1,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 124.29999995231628,
+            "followupMilliseconds": 395.39999997615814,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 144.4000000357628,
+            "followupMilliseconds": 390.9000000357628,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "chromium",
+        "id": "matching-hat-360",
+        "round": 2,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 147.89999997615814,
+            "followupMilliseconds": 443.5999999642372,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 127.59999996423721,
+            "followupMilliseconds": 395.80000001192093,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "chromium",
+        "id": "matching-hat-360",
+        "round": 3,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 121.19999998807907,
+            "followupMilliseconds": 429.69999998807907,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 146.60000002384186,
+            "followupMilliseconds": 437.5999999642372,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "chromium",
+        "id": "hjhih-04",
+        "round": 0,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 159.30000001192093,
+            "followupMilliseconds": 1041.6000000238419,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 188,
+            "followupMilliseconds": 1032.0999999642372,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "chromium",
+        "id": "hjhih-04",
+        "round": 1,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 189.30000001192093,
+            "followupMilliseconds": 993.5999999642372,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 189.5999999642372,
+            "followupMilliseconds": 1041.6000000238419,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "chromium",
+        "id": "hjhih-04",
+        "round": 2,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 162.80000001192093,
+            "followupMilliseconds": 987.6000000238419,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 189.9000000357628,
+            "followupMilliseconds": 985.3000000119209,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "chromium",
+        "id": "hjhih-04",
+        "round": 3,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 184.60000002384186,
+            "followupMilliseconds": 981.1000000238419,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 156.9000000357628,
+            "followupMilliseconds": 966.7999999523163,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "chromium",
+        "id": "circle",
+        "round": 0,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 160.30000001192093,
+            "followupMilliseconds": 604.8000000119209,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 140,
+            "followupMilliseconds": 603.6999999880791,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "chromium",
+        "id": "circle",
+        "round": 1,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 143.10000002384186,
+            "followupMilliseconds": 606.8999999761581,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 161.89999997615814,
+            "followupMilliseconds": 605.5,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "chromium",
+        "id": "circle",
+        "round": 2,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 162.5,
+            "followupMilliseconds": 607.8000000119209,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 132.89999997615814,
+            "followupMilliseconds": 614.2000000476837,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "chromium",
+        "id": "circle",
+        "round": 3,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 136.5,
+            "followupMilliseconds": 618,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 162.19999998807907,
+            "followupMilliseconds": 607.3000000119209,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "firefox",
+        "id": "straight-80",
+        "round": 0,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 26,
+            "followupMilliseconds": 32,
+            "choices": {
+              "distanceTransform": "19200:javascript",
+              "components": "19200:javascript"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 23,
+            "followupMilliseconds": 35,
+            "choices": {
+              "distanceTransform": "19200:javascript",
+              "components": "19200:javascript"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "firefox",
+        "id": "straight-80",
+        "round": 1,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 53,
+            "followupMilliseconds": 35,
+            "choices": {
+              "distanceTransform": "19200:javascript",
+              "components": "19200:javascript"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 22,
+            "followupMilliseconds": 34,
+            "choices": {
+              "distanceTransform": "19200:javascript",
+              "components": "19200:javascript"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "firefox",
+        "id": "straight-80",
+        "round": 2,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 22,
+            "followupMilliseconds": 35,
+            "choices": {
+              "distanceTransform": "19200:javascript",
+              "components": "19200:javascript"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 22,
+            "followupMilliseconds": 36,
+            "choices": {
+              "distanceTransform": "19200:javascript",
+              "components": "19200:javascript"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "firefox",
+        "id": "straight-80",
+        "round": 3,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 23,
+            "followupMilliseconds": 29,
+            "choices": {
+              "distanceTransform": "19200:javascript",
+              "components": "19200:javascript"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 23,
+            "followupMilliseconds": 34,
+            "choices": {
+              "distanceTransform": "19200:javascript",
+              "components": "19200:javascript"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "firefox",
+        "id": "neck-180",
+        "round": 0,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 100,
+            "followupMilliseconds": 209,
+            "choices": {
+              "distanceTransform": "97200:javascript",
+              "components": "97200:javascript"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 99,
+            "followupMilliseconds": 225,
+            "choices": {
+              "distanceTransform": "97200:javascript",
+              "components": "97200:javascript"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "firefox",
+        "id": "neck-180",
+        "round": 1,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 98,
+            "followupMilliseconds": 212,
+            "choices": {
+              "distanceTransform": "97200:javascript",
+              "components": "97200:javascript"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 100,
+            "followupMilliseconds": 215,
+            "choices": {
+              "distanceTransform": "97200:javascript",
+              "components": "97200:javascript"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "firefox",
+        "id": "neck-180",
+        "round": 2,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 100,
+            "followupMilliseconds": 207,
+            "choices": {
+              "distanceTransform": "97200:javascript",
+              "components": "97200:javascript"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 97,
+            "followupMilliseconds": 207,
+            "choices": {
+              "distanceTransform": "97200:javascript",
+              "components": "97200:javascript"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "firefox",
+        "id": "neck-180",
+        "round": 3,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 98,
+            "followupMilliseconds": 207,
+            "choices": {
+              "distanceTransform": "97200:javascript",
+              "components": "97200:javascript"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 101,
+            "followupMilliseconds": 208,
+            "choices": {
+              "distanceTransform": "97200:javascript",
+              "components": "97200:javascript"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "firefox",
+        "id": "matching-hat-360",
+        "round": 0,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 355,
+            "followupMilliseconds": 601,
+            "choices": {
+              "distanceTransform": "388800:javascript",
+              "components": "388800:javascript"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 360,
+            "followupMilliseconds": 575,
+            "choices": {
+              "distanceTransform": "388800:javascript",
+              "components": "388800:javascript"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "firefox",
+        "id": "matching-hat-360",
+        "round": 1,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 407,
+            "followupMilliseconds": 568,
+            "choices": {
+              "distanceTransform": "388800:javascript",
+              "components": "388800:javascript"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 357,
+            "followupMilliseconds": 585,
+            "choices": {
+              "distanceTransform": "388800:javascript",
+              "components": "388800:javascript"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "firefox",
+        "id": "matching-hat-360",
+        "round": 2,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 352,
+            "followupMilliseconds": 572,
+            "choices": {
+              "distanceTransform": "388800:javascript",
+              "components": "388800:javascript"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 355,
+            "followupMilliseconds": 573,
+            "choices": {
+              "distanceTransform": "388800:javascript",
+              "components": "388800:javascript"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "firefox",
+        "id": "matching-hat-360",
+        "round": 3,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 365,
+            "followupMilliseconds": 586,
+            "choices": {
+              "distanceTransform": "388800:javascript",
+              "components": "388800:javascript"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 419,
+            "followupMilliseconds": 737,
+            "choices": {
+              "distanceTransform": "388800:javascript",
+              "components": "388800:javascript"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "firefox",
+        "id": "hjhih-04",
+        "round": 0,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 425,
+            "followupMilliseconds": 1399,
+            "choices": {
+              "distanceTransform": "388800:javascript",
+              "components": "388800:javascript"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 411,
+            "followupMilliseconds": 1364,
+            "choices": {
+              "distanceTransform": "388800:javascript",
+              "components": "388800:javascript"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "firefox",
+        "id": "hjhih-04",
+        "round": 1,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 412,
+            "followupMilliseconds": 1364,
+            "choices": {
+              "distanceTransform": "388800:javascript",
+              "components": "388800:javascript"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 416,
+            "followupMilliseconds": 1359,
+            "choices": {
+              "distanceTransform": "388800:javascript",
+              "components": "388800:javascript"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "firefox",
+        "id": "hjhih-04",
+        "round": 2,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 416,
+            "followupMilliseconds": 1455,
+            "choices": {
+              "distanceTransform": "388800:javascript",
+              "components": "388800:javascript"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 401,
+            "followupMilliseconds": 1359,
+            "choices": {
+              "distanceTransform": "388800:javascript",
+              "components": "388800:javascript"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "firefox",
+        "id": "hjhih-04",
+        "round": 3,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 414,
+            "followupMilliseconds": 1408,
+            "choices": {
+              "distanceTransform": "388800:javascript",
+              "components": "388800:javascript"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 411,
+            "followupMilliseconds": 1393,
+            "choices": {
+              "distanceTransform": "388800:javascript",
+              "components": "388800:javascript"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "firefox",
+        "id": "circle",
+        "round": 0,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 380,
+            "followupMilliseconds": 957,
+            "choices": {
+              "distanceTransform": "388800:javascript",
+              "components": "388800:javascript"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 390,
+            "followupMilliseconds": 1084,
+            "choices": {
+              "distanceTransform": "388800:javascript",
+              "components": "388800:javascript"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "firefox",
+        "id": "circle",
+        "round": 1,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 390,
+            "followupMilliseconds": 974,
+            "choices": {
+              "distanceTransform": "388800:javascript",
+              "components": "388800:javascript"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 385,
+            "followupMilliseconds": 974,
+            "choices": {
+              "distanceTransform": "388800:javascript",
+              "components": "388800:javascript"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "firefox",
+        "id": "circle",
+        "round": 2,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 384,
+            "followupMilliseconds": 970,
+            "choices": {
+              "distanceTransform": "388800:javascript",
+              "components": "388800:javascript"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 393,
+            "followupMilliseconds": 969,
+            "choices": {
+              "distanceTransform": "388800:javascript",
+              "components": "388800:javascript"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "firefox",
+        "id": "circle",
+        "round": 3,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 397,
+            "followupMilliseconds": 966,
+            "choices": {
+              "distanceTransform": "388800:javascript",
+              "components": "388800:javascript"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 387,
+            "followupMilliseconds": 955,
+            "choices": {
+              "distanceTransform": "388800:javascript",
+              "components": "388800:javascript"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "webkit",
+        "id": "straight-80",
+        "round": 0,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 16,
+            "followupMilliseconds": 49.000000000000455,
+            "choices": {
+              "distanceTransform": "19200:wasm",
+              "components": "19200:javascript"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 16,
+            "followupMilliseconds": 44,
+            "choices": {
+              "distanceTransform": "19200:javascript",
+              "components": "19200:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "webkit",
+        "id": "straight-80",
+        "round": 1,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 15.000000000000455,
+            "followupMilliseconds": 38.999999999999545,
+            "choices": {
+              "distanceTransform": "19200:wasm",
+              "components": "19200:wasm"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 15.000000000000455,
+            "followupMilliseconds": 41.999999999999545,
+            "choices": {
+              "distanceTransform": "19200:javascript",
+              "components": "19200:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "webkit",
+        "id": "straight-80",
+        "round": 2,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 15,
+            "followupMilliseconds": 52,
+            "choices": {
+              "distanceTransform": "19200:javascript",
+              "components": "19200:javascript"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 16,
+            "followupMilliseconds": 38,
+            "choices": {
+              "distanceTransform": "19200:wasm",
+              "components": "19200:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "webkit",
+        "id": "straight-80",
+        "round": 3,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 15,
+            "followupMilliseconds": 50,
+            "choices": {
+              "distanceTransform": "19200:javascript",
+              "components": "19200:javascript"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 14,
+            "followupMilliseconds": 48,
+            "choices": {
+              "distanceTransform": "19200:wasm",
+              "components": "19200:javascript"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "webkit",
+        "id": "neck-180",
+        "round": 0,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 59.000000000000455,
+            "followupMilliseconds": 244.0000000000009,
+            "choices": {
+              "distanceTransform": "97200:wasm",
+              "components": "97200:javascript"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 62,
+            "followupMilliseconds": 228,
+            "choices": {
+              "distanceTransform": "97200:wasm",
+              "components": "97200:javascript"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "webkit",
+        "id": "neck-180",
+        "round": 1,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 60,
+            "followupMilliseconds": 236,
+            "choices": {
+              "distanceTransform": "97200:wasm",
+              "components": "97200:javascript"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 53,
+            "followupMilliseconds": 205,
+            "choices": {
+              "distanceTransform": "97200:wasm",
+              "components": "97200:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "webkit",
+        "id": "neck-180",
+        "round": 2,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 54,
+            "followupMilliseconds": 206,
+            "choices": {
+              "distanceTransform": "97200:wasm",
+              "components": "97200:wasm"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 61,
+            "followupMilliseconds": 242,
+            "choices": {
+              "distanceTransform": "97200:wasm",
+              "components": "97200:javascript"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "webkit",
+        "id": "neck-180",
+        "round": 3,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 61,
+            "followupMilliseconds": 240,
+            "choices": {
+              "distanceTransform": "97200:wasm",
+              "components": "97200:javascript"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 58,
+            "followupMilliseconds": 238,
+            "choices": {
+              "distanceTransform": "97200:wasm",
+              "components": "97200:javascript"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "webkit",
+        "id": "matching-hat-360",
+        "round": 0,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 164.0000000000009,
+            "followupMilliseconds": 880,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 150.9999999999991,
+            "followupMilliseconds": 873,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "webkit",
+        "id": "matching-hat-360",
+        "round": 1,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 152,
+            "followupMilliseconds": 873,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 162,
+            "followupMilliseconds": 855,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "webkit",
+        "id": "matching-hat-360",
+        "round": 2,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 163.00000000000182,
+            "followupMilliseconds": 870,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 153,
+            "followupMilliseconds": 864,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "webkit",
+        "id": "matching-hat-360",
+        "round": 3,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 148,
+            "followupMilliseconds": 871,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 163,
+            "followupMilliseconds": 864.0000000000018,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "webkit",
+        "id": "hjhih-04",
+        "round": 0,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 224,
+            "followupMilliseconds": 2146,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 234.00000000000364,
+            "followupMilliseconds": 2180,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "webkit",
+        "id": "hjhih-04",
+        "round": 1,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 242,
+            "followupMilliseconds": 2149,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 227.99999999999636,
+            "followupMilliseconds": 2140,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "webkit",
+        "id": "hjhih-04",
+        "round": 2,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 224,
+            "followupMilliseconds": 2136,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 243.00000000000364,
+            "followupMilliseconds": 2141,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "webkit",
+        "id": "hjhih-04",
+        "round": 3,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 239.00000000000364,
+            "followupMilliseconds": 2142,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 229,
+            "followupMilliseconds": 2143,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "webkit",
+        "id": "circle",
+        "round": 0,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 192,
+            "followupMilliseconds": 1381,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 177,
+            "followupMilliseconds": 1397,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "webkit",
+        "id": "circle",
+        "round": 1,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 175.99999999999272,
+            "followupMilliseconds": 1390.0000000000073,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 193,
+            "followupMilliseconds": 1405,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "webkit",
+        "id": "circle",
+        "round": 2,
+        "results": [
+          {
+            "policy": "reference",
+            "firstMilliseconds": 191,
+            "followupMilliseconds": 1389,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 177,
+            "followupMilliseconds": 1386,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      },
+      {
+        "runtime": "webkit",
+        "id": "circle",
+        "round": 3,
+        "results": [
+          {
+            "policy": "legacy",
+            "firstMilliseconds": 177,
+            "followupMilliseconds": 1405,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          },
+          {
+            "policy": "reference",
+            "firstMilliseconds": 189,
+            "followupMilliseconds": 1385,
+            "choices": {
+              "distanceTransform": "388800:wasm",
+              "components": "388800:wasm"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "fresh": {
+    "hunodan": {
+      "sourceHashes": {
+        "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+        "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+        "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+        "static/inverse/core/chord-distance.js": "cb79dd6d90d22b6bea6bb4bd0593cc8e32a18a09116084e53f5d942bcbef3c04",
+        "static/inverse/core/crop.js": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88",
+        "static/inverse/core/engine.js": "59e4354b5c7ec6190b140066b24b3f8959e58f5e2f0f0166298522fb485d4740",
+        "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+        "static/inverse/core/feature-recovery.js": "37831af78afffd94b19a4145091d199f9771d12e505514e88cf1943e6023279e",
+        "static/inverse/core/geometry.js": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+        "static/inverse/core/graph.js": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
+        "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+        "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+        "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+        "static/inverse/core/junctions.js": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
+        "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+        "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+        "static/inverse/core/material.js": "e691efc792c66cdc91a5c0ad8258ac380a29442bc68c73bd9a7a2a44cbb02fe3",
+        "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+        "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+        "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+        "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+        "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+        "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+        "static/inverse/core/settings.js": "2fcdd67395cf3ebfcfcf4c885ea8fa5ae58b43dd52000660d0a52706b3b3665e",
+        "static/inverse/core/solver.js": "15bb96737f85ca0d290b6a06d792a3b18570f83a39b9801a498c91e3f466e412",
+        "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+        "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+        "static/inverse/core/validate.js": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+        "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+        "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+        "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+        "static/inverse/core/direct/curves.js": "a3cad0cb2c96d62c0e1d99474777157eae8fb3fd6b7631f3af203243f4909ad3",
+        "static/inverse/core/direct/finalize.js": "dd2097b415c274ceec20a485d4a62fab28ffc4ea40f323396a8acb84e5b8c4a7",
+        "static/inverse/core/direct/fit.js": "4df61135bc86b6ddb3b0b9f1922f9614c3852d02552c232846ea94d89f31a933",
+        "static/inverse/core/direct/grid.js": "57ada8e2f1c794b0012ddedbb8b508f29971186c313e517a8f40ca3788e1dfbd",
+        "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+        "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+        "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+        "static/inverse/core/direct/matching.js": "db113f3e5c6ed3be820f7c863a113e9181a02c7efa5ea66a46e56df7f2428414",
+        "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+        "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+        "static/inverse/core/direct/prefer-matching.js": "1ff682f298014f8c29387ad3bbe330c52e4ee619defd5a2d116cb3703e0f5d48",
+        "static/inverse/core/direct/primitive-selection.js": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904",
+        "static/inverse/core/direct/primitives.js": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b",
+        "static/inverse/core/direct/refine.js": "9c126408c3f7da97faf100504d57ca884315017a6665ee10259148455716fc9c",
+        "static/inverse/core/direct/share.js": "247241745ec8b1ac03c41b7e619bda30e821bbddbad2c60d4ec2d51c8aea1e6d",
+        "static/inverse/core/direct/symmetry.js": "ed9f633ea42af93b46293d0d753e21dd7a5921485d5d55847e5a02665c14cf13",
+        "static/inverse/core/direct/topology.js": "bbe79bf0dca7c4786c7728413026fee9f77bb9bca5bb788be7d6674267ad9292",
+        "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+        "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58"
+      },
+      "cases": 22,
+      "passed": 22,
+      "medianSeconds": 5.297811061999999,
+      "maximumSeconds": 9.025028042000006,
+      "unchangedErrors": 22,
+      "results": [
+        {
+          "id": "hjfig-01",
+          "seconds": 5.2630729160000005,
+          "error": 0.009799111111111111,
+          "previousError": 0.009799111111111111,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hjfig-02",
+          "seconds": 4.741513875000001,
+          "error": 0.013952,
+          "previousError": 0.013952,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hjfig-03",
+          "seconds": 3.7894417919999994,
+          "error": 0.006634666666666666,
+          "previousError": 0.006634666666666666,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hjfig-04",
+          "seconds": 4.086325708000002,
+          "error": 0.013824,
+          "previousError": 0.013824,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hjfig-05",
+          "seconds": 2.524278333000002,
+          "error": 0.010231665331208341,
+          "previousError": 0.010231665331208341,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hjfla-01",
+          "seconds": 5.553353291,
+          "error": 0.013414171006944444,
+          "previousError": 0.013414171006944444,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hjcur-01",
+          "seconds": 5.7467992919999995,
+          "error": 0.00512,
+          "previousError": 0.00512,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hjcur-02",
+          "seconds": 5.332549207999997,
+          "error": 0.005397333333333333,
+          "previousError": 0.005397333333333333,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hjcur-03",
+          "seconds": 5.239802624999997,
+          "error": 0.004522666666666667,
+          "previousError": 0.004522666666666667,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hjcur-04",
+          "seconds": 7.4902712089999985,
+          "error": 0.0056248888888888885,
+          "previousError": 0.0056248888888888885,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hjcur-05",
+          "seconds": 3.924942332999999,
+          "error": 0.009436444444444445,
+          "previousError": 0.009436444444444445,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hjhih-01",
+          "seconds": 6.869639583999997,
+          "error": 0.0060202958468683725,
+          "previousError": 0.0060202958468683725,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hjhih-02",
+          "seconds": 5.0385462919999995,
+          "error": 0.003899406226779104,
+          "previousError": 0.003899406226779104,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hjhih-04",
+          "seconds": 7.703474916999999,
+          "error": 0.007678910190418844,
+          "previousError": 0.007678910190418844,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hjstr-01",
+          "seconds": 4.236080583000002,
+          "error": 0.007543348420030173,
+          "previousError": 0.007543348420030173,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hjstr-02",
+          "seconds": 6.198690708000009,
+          "error": 0.004339250493096647,
+          "previousError": 0.004339250493096647,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hjstr-03",
+          "seconds": 9.025028042000006,
+          "error": 0.005519980869380381,
+          "previousError": 0.005519980869380381,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hjsta-01",
+          "seconds": 4.635611833000002,
+          "error": 0.007936288088642659,
+          "previousError": 0.007936288088642659,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hjsta-02",
+          "seconds": 4.548779333999992,
+          "error": 0.0036485460069444445,
+          "previousError": 0.0036485460069444445,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hjsta-03",
+          "seconds": 6.3867862500000046,
+          "error": 0.012339030193129683,
+          "previousError": 0.012339030193129683,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hjsta-04",
+          "seconds": 6.864579084000011,
+          "error": 0.005053050026595,
+          "previousError": 0.005053050026595,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hjsta-05",
+          "seconds": 6.347866582999996,
+          "error": 0.010624446293860237,
+          "previousError": 0.010624446293860237,
+          "errorChange": 0,
+          "passed": true
+        }
+      ]
+    },
+    "weighted": {
+      "sourceHashes": {
+        "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+        "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+        "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+        "static/inverse/core/chord-distance.js": "cb79dd6d90d22b6bea6bb4bd0593cc8e32a18a09116084e53f5d942bcbef3c04",
+        "static/inverse/core/crop.js": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88",
+        "static/inverse/core/engine.js": "59e4354b5c7ec6190b140066b24b3f8959e58f5e2f0f0166298522fb485d4740",
+        "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+        "static/inverse/core/feature-recovery.js": "37831af78afffd94b19a4145091d199f9771d12e505514e88cf1943e6023279e",
+        "static/inverse/core/geometry.js": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+        "static/inverse/core/graph.js": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
+        "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+        "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+        "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+        "static/inverse/core/junctions.js": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
+        "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+        "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+        "static/inverse/core/material.js": "e691efc792c66cdc91a5c0ad8258ac380a29442bc68c73bd9a7a2a44cbb02fe3",
+        "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+        "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+        "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+        "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+        "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+        "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+        "static/inverse/core/settings.js": "2fcdd67395cf3ebfcfcf4c885ea8fa5ae58b43dd52000660d0a52706b3b3665e",
+        "static/inverse/core/solver.js": "15bb96737f85ca0d290b6a06d792a3b18570f83a39b9801a498c91e3f466e412",
+        "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+        "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+        "static/inverse/core/validate.js": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+        "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+        "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+        "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+        "static/inverse/core/direct/curves.js": "a3cad0cb2c96d62c0e1d99474777157eae8fb3fd6b7631f3af203243f4909ad3",
+        "static/inverse/core/direct/finalize.js": "dd2097b415c274ceec20a485d4a62fab28ffc4ea40f323396a8acb84e5b8c4a7",
+        "static/inverse/core/direct/fit.js": "4df61135bc86b6ddb3b0b9f1922f9614c3852d02552c232846ea94d89f31a933",
+        "static/inverse/core/direct/grid.js": "57ada8e2f1c794b0012ddedbb8b508f29971186c313e517a8f40ca3788e1dfbd",
+        "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+        "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+        "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+        "static/inverse/core/direct/matching.js": "db113f3e5c6ed3be820f7c863a113e9181a02c7efa5ea66a46e56df7f2428414",
+        "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+        "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+        "static/inverse/core/direct/prefer-matching.js": "1ff682f298014f8c29387ad3bbe330c52e4ee619defd5a2d116cb3703e0f5d48",
+        "static/inverse/core/direct/primitive-selection.js": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904",
+        "static/inverse/core/direct/primitives.js": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b",
+        "static/inverse/core/direct/refine.js": "9c126408c3f7da97faf100504d57ca884315017a6665ee10259148455716fc9c",
+        "static/inverse/core/direct/share.js": "247241745ec8b1ac03c41b7e619bda30e821bbddbad2c60d4ec2d51c8aea1e6d",
+        "static/inverse/core/direct/symmetry.js": "ed9f633ea42af93b46293d0d753e21dd7a5921485d5d55847e5a02665c14cf13",
+        "static/inverse/core/direct/topology.js": "bbe79bf0dca7c4786c7728413026fee9f77bb9bca5bb788be7d6674267ad9292",
+        "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+        "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58"
+      },
+      "cases": 32,
+      "passed": 32,
+      "medianSeconds": 4.5095972915,
+      "maximumSeconds": 7.787041332999998,
+      "unchangedErrors": 32,
+      "results": [
+        {
+          "id": "top-hat-0.64-original",
+          "seconds": 3.1521909580000003,
+          "error": 0.00360107421875,
+          "previousError": 0.00360107421875,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "top-hat-0.64-inverted",
+          "seconds": 2.4789795000000003,
+          "error": 0.003662109375,
+          "previousError": 0.003662109375,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "top-hat-0.64-shifted",
+          "seconds": 2.3603360419999997,
+          "error": 0.00360107421875,
+          "previousError": 0.00360107421875,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "top-hat-0.64-free-noise",
+          "seconds": 2.343454625,
+          "error": 0.00360107421875,
+          "previousError": 0.00360107421875,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "top-hat-0.84-original",
+          "seconds": 6.262973541000001,
+          "error": 0.0002834467120181406,
+          "previousError": 0.0002834467120181406,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "top-hat-0.84-inverted",
+          "seconds": 7.787041332999998,
+          "error": 0.00021258503401360543,
+          "previousError": 0.00021258503401360543,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "top-hat-0.84-shifted",
+          "seconds": 5.8670036250000015,
+          "error": 0.00031887755102040814,
+          "previousError": 0.00031887755102040814,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "top-hat-0.84-free-noise",
+          "seconds": 5.889692833999994,
+          "error": 0.0002834467120181406,
+          "previousError": 0.0002834467120181406,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hat-0.64-original",
+          "seconds": 2.0284736660000053,
+          "error": 0.00054931640625,
+          "previousError": 0.00054931640625,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hat-0.64-inverted",
+          "seconds": 1.8879317079999964,
+          "error": 0.00054931640625,
+          "previousError": 0.00054931640625,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hat-0.64-shifted",
+          "seconds": 1.9112905420000024,
+          "error": 0.00054931640625,
+          "previousError": 0.00054931640625,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hat-0.64-free-noise",
+          "seconds": 2.0462354170000037,
+          "error": 0.00054931640625,
+          "previousError": 0.00054931640625,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hat-0.84-original",
+          "seconds": 7.116250667,
+          "error": 0.00007086167800453515,
+          "previousError": 0.00007086167800453515,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hat-0.84-inverted",
+          "seconds": 6.604539792000003,
+          "error": 0.0002834467120181406,
+          "previousError": 0.0002834467120181406,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hat-0.84-shifted",
+          "seconds": 6.620568207999997,
+          "error": 0.0002834467120181406,
+          "previousError": 0.0002834467120181406,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "hat-0.84-free-noise",
+          "seconds": 6.637096082999997,
+          "error": 0.00007086167800453515,
+          "previousError": 0.00007086167800453515,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "house-0.64-original",
+          "seconds": 2.991813915999999,
+          "error": 0,
+          "previousError": 0,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "house-0.64-inverted",
+          "seconds": 1.9306766249999927,
+          "error": 0,
+          "previousError": 0,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "house-0.64-shifted",
+          "seconds": 3.0929252080000005,
+          "error": 0,
+          "previousError": 0,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "house-0.64-free-noise",
+          "seconds": 3.0318527919999907,
+          "error": 0,
+          "previousError": 0,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "house-0.84-original",
+          "seconds": 6.373883375000005,
+          "error": 0,
+          "previousError": 0,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "house-0.84-inverted",
+          "seconds": 6.785404916000014,
+          "error": 0.003932823129251701,
+          "previousError": 0.003932823129251701,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "house-0.84-shifted",
+          "seconds": 6.640506292000006,
+          "error": 0,
+          "previousError": 0,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "house-0.84-free-noise",
+          "seconds": 6.252327208999995,
+          "error": 0,
+          "previousError": 0,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "circle-0.64-original",
+          "seconds": 1.9123698339999973,
+          "error": 0.0003662109375,
+          "previousError": 0.0003662109375,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "circle-0.64-inverted",
+          "seconds": 1.8195309169999965,
+          "error": 0.0003662109375,
+          "previousError": 0.0003662109375,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "circle-0.64-shifted",
+          "seconds": 1.9606230420000066,
+          "error": 0.0003662109375,
+          "previousError": 0.0003662109375,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "circle-0.64-free-noise",
+          "seconds": 1.8242857080000103,
+          "error": 0.0003662109375,
+          "previousError": 0.0003662109375,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "circle-0.84-original",
+          "seconds": 6.803371791999991,
+          "error": 0.0002834467120181406,
+          "previousError": 0.0002834467120181406,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "circle-0.84-inverted",
+          "seconds": 6.899206458000001,
+          "error": 0.0002834467120181406,
+          "previousError": 0.0002834467120181406,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "circle-0.84-shifted",
+          "seconds": 6.389573000000004,
+          "error": 0.00031887755102040814,
+          "previousError": 0.00031887755102040814,
+          "errorChange": 0,
+          "passed": true
+        },
+        {
+          "id": "circle-0.84-free-noise",
+          "seconds": 6.691004667000001,
+          "error": 0.0002834467120181406,
+          "previousError": 0.0002834467120181406,
+          "errorChange": 0,
+          "passed": true
+        }
+      ]
+    }
+  },
+  "browser": {
+    "passed": 18,
+    "results": [
+      {
+        "runtime": "chromium",
+        "version": "145.0.7632.6",
+        "name": "top-hat-anti",
+        "passed": true,
+        "clickToReadySeconds": 7.961800000011921,
+        "sourceError": 0.0031887755102040817,
+        "previousSourceError": 0.0031887755102040817,
+        "errorChange": 0,
+        "sharedSpans": 107,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0031887755102040817,
+          "sourceError": 0.0031887755102040817
+        }
+      },
+      {
+        "runtime": "chromium",
+        "version": "145.0.7632.6",
+        "name": "top-hat",
+        "passed": true,
+        "clickToReadySeconds": 10.855100000023842,
+        "sourceError": 0.0032064909297052154,
+        "previousSourceError": 0.0032064909297052154,
+        "errorChange": 0,
+        "sharedSpans": 114,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0032064909297052154,
+          "sourceError": 0.0032064909297052154
+        }
+      },
+      {
+        "runtime": "chromium",
+        "version": "145.0.7632.6",
+        "name": "top-hat-independent",
+        "passed": true,
+        "clickToReadySeconds": 6.607200000047683,
+        "sourceError": 0.0029584750566893424,
+        "previousSourceError": 0.0029584750566893424,
+        "errorChange": 0,
+        "sharedSpans": 40,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00036875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000325
+            }
+          ],
+          "originalSourceError": 0.0029584750566893424,
+          "sourceError": 0.0029584750566893424
+        }
+      },
+      {
+        "runtime": "chromium",
+        "version": "145.0.7632.6",
+        "name": "star",
+        "passed": true,
+        "clickToReadySeconds": 1.9632999999523162,
+        "sourceError": 0.0016,
+        "previousSourceError": 0.0016,
+        "errorChange": 0,
+        "sharedSpans": 12,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0000625
+            }
+          ],
+          "originalSourceError": 0.0016,
+          "sourceError": 0.0016
+        }
+      },
+      {
+        "runtime": "chromium",
+        "version": "145.0.7632.6",
+        "name": "hunodan",
+        "passed": true,
+        "clickToReadySeconds": 4.721199999988079,
+        "sourceError": 0.00944375,
+        "previousSourceError": 0.00944375,
+        "errorChange": 0,
+        "sharedSpans": 8,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00944375,
+          "sourceError": 0.00944375
+        }
+      },
+      {
+        "runtime": "chromium",
+        "version": "145.0.7632.6",
+        "name": "circle",
+        "passed": true,
+        "clickToReadySeconds": 2.465099999964237,
+        "sourceError": 0.00095,
+        "previousSourceError": 0.00095,
+        "errorChange": 0,
+        "sharedSpans": 9,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00005
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000053125
+            }
+          ],
+          "originalSourceError": 0.00095,
+          "sourceError": 0.00095
+        }
+      },
+      {
+        "runtime": "firefox",
+        "version": "146.0.1",
+        "name": "top-hat-anti",
+        "passed": true,
+        "clickToReadySeconds": 13.603,
+        "sourceError": 0.0031887755102040817,
+        "previousSourceError": 0.0031887755102040817,
+        "errorChange": 0,
+        "sharedSpans": 107,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0031887755102040817,
+          "sourceError": 0.0031887755102040817
+        }
+      },
+      {
+        "runtime": "firefox",
+        "version": "146.0.1",
+        "name": "top-hat",
+        "passed": true,
+        "clickToReadySeconds": 17.094,
+        "sourceError": 0.0032064909297052154,
+        "previousSourceError": 0.0032064909297052154,
+        "errorChange": 0,
+        "sharedSpans": 114,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0032064909297052154,
+          "sourceError": 0.0032064909297052154
+        }
+      },
+      {
+        "runtime": "firefox",
+        "version": "146.0.1",
+        "name": "top-hat-independent",
+        "passed": true,
+        "clickToReadySeconds": 9.568,
+        "sourceError": 0.00456172052154195,
+        "previousSourceError": 0.00456172052154195,
+        "errorChange": 0,
+        "sharedSpans": 32,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00005
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0000515625
+            }
+          ],
+          "originalSourceError": 0.00456172052154195,
+          "sourceError": 0.00456172052154195
+        }
+      },
+      {
+        "runtime": "firefox",
+        "version": "146.0.1",
+        "name": "star",
+        "passed": true,
+        "clickToReadySeconds": 4.508,
+        "sourceError": 0.0016,
+        "previousSourceError": 0.0016,
+        "errorChange": 0,
+        "sharedSpans": 12,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0000625
+            }
+          ],
+          "originalSourceError": 0.0016,
+          "sourceError": 0.0016
+        }
+      },
+      {
+        "runtime": "firefox",
+        "version": "146.0.1",
+        "name": "hunodan",
+        "passed": true,
+        "clickToReadySeconds": 6.823,
+        "sourceError": 0.00944375,
+        "previousSourceError": 0.00944375,
+        "errorChange": 0,
+        "sharedSpans": 8,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00944375,
+          "sourceError": 0.00944375
+        }
+      },
+      {
+        "runtime": "firefox",
+        "version": "146.0.1",
+        "name": "circle",
+        "passed": true,
+        "clickToReadySeconds": 3.909,
+        "sourceError": 0.0009375,
+        "previousSourceError": 0.0009375,
+        "errorChange": 0,
+        "sharedSpans": 9,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00005
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000053125
+            }
+          ],
+          "originalSourceError": 0.0009375,
+          "sourceError": 0.0009375
+        }
+      },
+      {
+        "runtime": "webkit",
+        "version": "26.0",
+        "name": "top-hat-anti",
+        "passed": true,
+        "clickToReadySeconds": 11.277000000000001,
+        "sourceError": 0.0031887755102040817,
+        "previousSourceError": 0.0031887755102040817,
+        "errorChange": 0,
+        "sharedSpans": 107,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0031887755102040817,
+          "sourceError": 0.0031887755102040817
+        }
+      },
+      {
+        "runtime": "webkit",
+        "version": "26.0",
+        "name": "top-hat",
+        "passed": true,
+        "clickToReadySeconds": 13.193,
+        "sourceError": 0.0032064909297052154,
+        "previousSourceError": 0.0032064909297052154,
+        "errorChange": 0,
+        "sharedSpans": 114,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0032064909297052154,
+          "sourceError": 0.0032064909297052154
+        }
+      },
+      {
+        "runtime": "webkit",
+        "version": "26.0",
+        "name": "top-hat-independent",
+        "passed": true,
+        "clickToReadySeconds": 8.489,
+        "sourceError": 0.0029584750566893424,
+        "previousSourceError": 0.0029584750566893424,
+        "errorChange": 0,
+        "sharedSpans": 40,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00036875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000325
+            }
+          ],
+          "originalSourceError": 0.0029584750566893424,
+          "sourceError": 0.0029584750566893424
+        }
+      },
+      {
+        "runtime": "webkit",
+        "version": "26.0",
+        "name": "star",
+        "passed": true,
+        "clickToReadySeconds": 2.477,
+        "sourceError": 0.0016,
+        "previousSourceError": 0.0016,
+        "errorChange": 0,
+        "sharedSpans": 12,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0000625
+            }
+          ],
+          "originalSourceError": 0.0016,
+          "sourceError": 0.0016
+        }
+      },
+      {
+        "runtime": "webkit",
+        "version": "26.0",
+        "name": "hunodan",
+        "passed": true,
+        "clickToReadySeconds": 6.427,
+        "sourceError": 0.00944375,
+        "previousSourceError": 0.00944375,
+        "errorChange": 0,
+        "sharedSpans": 8,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00944375,
+          "sourceError": 0.00944375
+        }
+      },
+      {
+        "runtime": "webkit",
+        "version": "26.0",
+        "name": "circle",
+        "passed": true,
+        "clickToReadySeconds": 2.2750000000000004,
+        "sourceError": 0.0009375,
+        "previousSourceError": 0.0009375,
+        "errorChange": 0,
+        "sharedSpans": 9,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00005
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000053125
+            }
+          ],
+          "originalSourceError": 0.0009375,
+          "sourceError": 0.0009375
+        }
+      }
+    ]
+  },
+  "fallback": {
+    "passed": 1,
+    "results": [
+      {
+        "runtime": "chromium",
+        "name": "top-hat-anti",
+        "passed": true,
+        "blockedKernelRequests": 1,
+        "backend": "javascript",
+        "sharedSpans": 107,
+        "sourceError": 0.0031887755102040817,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0031887755102040817,
+          "sourceError": 0.0031887755102040817
+        }
+      }
+    ]
+  },
+  "servedSourceHashes": {
+    "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+    "static/inverse/core/chord-distance.js": "cb79dd6d90d22b6bea6bb4bd0593cc8e32a18a09116084e53f5d942bcbef3c04",
+    "static/inverse/core/crop.js": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88",
+    "static/inverse/core/engine.js": "59e4354b5c7ec6190b140066b24b3f8959e58f5e2f0f0166298522fb485d4740",
+    "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+    "static/inverse/core/feature-recovery.js": "37831af78afffd94b19a4145091d199f9771d12e505514e88cf1943e6023279e",
+    "static/inverse/core/geometry.js": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+    "static/inverse/core/graph.js": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
+    "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+    "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+    "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+    "static/inverse/core/junctions.js": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
+    "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+    "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+    "static/inverse/core/material.js": "e691efc792c66cdc91a5c0ad8258ac380a29442bc68c73bd9a7a2a44cbb02fe3",
+    "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+    "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+    "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+    "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+    "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/settings.js": "2fcdd67395cf3ebfcfcf4c885ea8fa5ae58b43dd52000660d0a52706b3b3665e",
+    "static/inverse/core/solver.js": "15bb96737f85ca0d290b6a06d792a3b18570f83a39b9801a498c91e3f466e412",
+    "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+    "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+    "static/inverse/core/validate.js": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+    "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+    "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+    "static/inverse/core/direct/curves.js": "a3cad0cb2c96d62c0e1d99474777157eae8fb3fd6b7631f3af203243f4909ad3",
+    "static/inverse/core/direct/finalize.js": "dd2097b415c274ceec20a485d4a62fab28ffc4ea40f323396a8acb84e5b8c4a7",
+    "static/inverse/core/direct/fit.js": "4df61135bc86b6ddb3b0b9f1922f9614c3852d02552c232846ea94d89f31a933",
+    "static/inverse/core/direct/grid.js": "57ada8e2f1c794b0012ddedbb8b508f29971186c313e517a8f40ca3788e1dfbd",
+    "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+    "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+    "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+    "static/inverse/core/direct/matching.js": "db113f3e5c6ed3be820f7c863a113e9181a02c7efa5ea66a46e56df7f2428414",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+    "static/inverse/core/direct/prefer-matching.js": "1ff682f298014f8c29387ad3bbe330c52e4ee619defd5a2d116cb3703e0f5d48",
+    "static/inverse/core/direct/primitive-selection.js": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904",
+    "static/inverse/core/direct/primitives.js": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b",
+    "static/inverse/core/direct/refine.js": "9c126408c3f7da97faf100504d57ca884315017a6665ee10259148455716fc9c",
+    "static/inverse/core/direct/share.js": "247241745ec8b1ac03c41b7e619bda30e821bbddbad2c60d4ec2d51c8aea1e6d",
+    "static/inverse/core/direct/symmetry.js": "ed9f633ea42af93b46293d0d753e21dd7a5921485d5d55847e5a02665c14cf13",
+    "static/inverse/core/direct/topology.js": "bbe79bf0dca7c4786c7728413026fee9f77bb9bca5bb788be7d6674267ad9292",
+    "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+    "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58"
+  },
+  "stages": [
+    {
+      "id": "calibration",
+      "command": [
+        "node",
+        "scripts/inverse/paper-calibration-benchmark.mjs"
+      ],
+      "env": {
+        "PLAYWRIGHT_MODULE": "/Users/ahle/.npm/_npx/e41f203b7505f1fb/node_modules/playwright/index.mjs",
+        "INVERSE_TEST_BROWSERS": "node,chromium,firefox,webkit",
+        "INVERSE_CALIBRATION_REFERENCE": "98903f6",
+        "INVERSE_CALIBRATION_POLICIES": "reference,legacy",
+        "INVERSE_CALIBRATION_OUT": "tmp/kernel-equality-calibration"
+      },
+      "log": "tmp/kernel-equality-calibration.log",
+      "exit": 0,
+      "seconds": 152.96365683300002
+    },
+    {
+      "id": "test",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "env": {
+        "VITEST_MAX_WORKERS": "2"
+      },
+      "log": "tmp/kernel-equality-test.log",
+      "exit": 0,
+      "seconds": 135.203732667
+    },
+    {
+      "id": "check",
+      "command": [
+        "npm",
+        "run",
+        "check"
+      ],
+      "log": "tmp/kernel-equality-check.log",
+      "exit": 0,
+      "seconds": 6.126003540999955
+    },
+    {
+      "id": "lint",
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "log": "tmp/kernel-equality-lint.log",
+      "exit": 0,
+      "seconds": 5.187222791999999
+    },
+    {
+      "id": "hunodan",
+      "command": [
+        "node",
+        "scripts/inverse/hunodan-speed-benchmark.mjs"
+      ],
+      "env": {
+        "INVERSE_SPEED_OUT": "tmp/kernel-equality-hunodan"
+      },
+      "log": "tmp/kernel-equality-hunodan.log",
+      "exit": 0,
+      "seconds": 136.17078816699998
+    },
+    {
+      "id": "weighted",
+      "command": [
+        "node",
+        "scripts/inverse/weighted-solve-benchmark.mjs",
+        "--strategies=weighted",
+        "--variants=original,inverted,shifted,free-noise",
+        "--output=tmp/kernel-equality-weighted"
+      ],
+      "log": "tmp/kernel-equality-weighted.log",
+      "exit": 0,
+      "seconds": 161.755220208
+    },
+    {
+      "id": "browser",
+      "command": [
+        "node",
+        "scripts/inverse/paint-browser-test.mjs"
+      ],
+      "env": {
+        "PLAYWRIGHT_MODULE": "/Users/ahle/.npm/_npx/e41f203b7505f1fb/node_modules/playwright/index.mjs",
+        "INVERSE_TEST_URL": "http://127.0.0.1:5232",
+        "INVERSE_TEST_BROWSERS": "chromium,firefox,webkit",
+        "INVERSE_TEST_CASES": "top-hat-anti,top-hat,top-hat-independent,star,hunodan,circle",
+        "INVERSE_TEST_OUTPUT": "tmp/kernel-equality-browser"
+      },
+      "log": "tmp/kernel-equality-browser.log",
+      "exit": 0,
+      "seconds": 194.85624333299998
+    },
+    {
+      "id": "fallback",
+      "command": [
+        "node",
+        "scripts/inverse/paint-browser-test.mjs"
+      ],
+      "env": {
+        "PLAYWRIGHT_MODULE": "/Users/ahle/.npm/_npx/e41f203b7505f1fb/node_modules/playwright/index.mjs",
+        "INVERSE_TEST_URL": "http://127.0.0.1:5232",
+        "INVERSE_TEST_BROWSERS": "chromium",
+        "INVERSE_TEST_CASES": "top-hat-anti",
+        "INVERSE_TEST_OUTPUT": "tmp/kernel-equality-fallback",
+        "INVERSE_TEST_DISABLE_NUMERICAL_KERNEL": "1"
+      },
+      "log": "tmp/kernel-equality-fallback.log",
+      "exit": 0,
+      "seconds": 15.436874083000003
+    }
+  ],
+  "artifacts": {
+    "calibrationPolicies": {
+      "path": "tmp/paper-calibration-selective/results.json",
+      "sha256": "05d92561de755fc0d42dfa0a78ef1d99ce68f36e977a4b9a05b9acec18a2c2b3"
+    },
+    "equalityComparison": {
+      "path": "tmp/kernel-equality-calibration/results.json",
+      "sha256": "3969be352d5a02a30d0aca68cd3e10f3ef54f7475d0657fa6371900a2ee2555b"
+    },
+    "checks": {
+      "path": "tmp/kernel-equality-stages.json",
+      "sha256": "25efc00dba733d475015b37ed1cce17d6cf1b51fe5923d6f42fe585c779d81d5"
+    },
+    "hunodan": {
+      "path": "tmp/kernel-equality-hunodan/results.json",
+      "sha256": "d47cf9902269491b4ca76c8850c2eb2c188d689f3768d1ebf527f3dd3f05f706"
+    },
+    "hunodanBaseline": {
+      "path": "tmp/paper-tiles-hunodan/results.json",
+      "sha256": "8a23936462c30ad825007cba64741ecfb81fd69bdf525ebd736d14ec68a13bdd"
+    },
+    "weighted": {
+      "path": "tmp/kernel-equality-weighted/results.json",
+      "sha256": "78a1d9cc77529e8f433446825248db8a7dba176d9e576f130abbb372d3265c1c"
+    },
+    "weightedBaseline": {
+      "path": "tmp/paper-tiles-weighted/results.json",
+      "sha256": "d5552bea940e030ecc375e8e88b0bd4dba8c0fa62ffa0f607a1ce6f39413e0ec"
+    },
+    "browser": {
+      "path": "tmp/kernel-equality-browser/results.json",
+      "sha256": "d3df431d9bf6b58bcc0c0bb13cf3d6371b6204a14271ef5702d0a8ba1c2ffcf5"
+    },
+    "fallback": {
+      "path": "tmp/kernel-equality-fallback/results.json",
+      "sha256": "f70a48cc2fdb073a7c3dea49f97b7780becbead2f346260eab1f2630a5f8d6e7"
+    },
+    "browserBaseline": {
+      "path": "tmp/paper-tiles-release-browser/results.json",
+      "sha256": "55bff28e6934ad2fb08c6d0c329f65bd4b6c52c05eaeb8a67076165387c600d7"
+    },
+    "testLog": {
+      "path": "tmp/kernel-equality-test.log",
+      "sha256": "ea3f7fa6c7e696200be923783e2e02c4bdbdd15bc886254805f957320724c72b"
+    },
+    "checkLog": {
+      "path": "tmp/kernel-equality-check.log",
+      "sha256": "1be3902fa1acaae6b0990406476a41369d095dc32dda58ba4b2a1df01155978b"
+    },
+    "lintLog": {
+      "path": "tmp/kernel-equality-lint.log",
+      "sha256": "a552732ebea6b64b49ac0a1299170db75e8c45dbbc66c284f28e99be5613e5c7"
+    },
+    "buildLog": {
+      "path": "tmp/kernel-equality-build.log",
+      "sha256": "2a2a3139ddd38eaa0ab7733365fad2822ee5ad2ef2142ef6c5871c2e5425bf4d"
+    }
+  },
+  "visualInspections": [
+    {
+      "path": "tmp/kernel-equality-browser/chromium-top-hat/result.png",
+      "sha256": "3a52f0240383bb6fe6a6674130964f578148f2eb7cb7062c9a1520b9eab44af6"
+    },
+    {
+      "path": "tmp/kernel-equality-browser/chromium-top-hat/draw.png",
+      "sha256": "291ff3b5654d1291a32baaa30a7af370afdd06ead3ff11b89cc62df472f8053a"
+    },
+    {
+      "path": "tmp/kernel-equality-browser/webkit-circle/result.png",
+      "sha256": "f1d7d00607cbbd43a45cf4749ac2504f0dbf77b507f208238b144aef242711e6"
+    }
+  ]
+}

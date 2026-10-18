@@ -1,0 +1,4507 @@
+{
+  "schema": "late-polishing-photo-comparison-1",
+  "runtimeCommit": "b7daccc12eb56887cd1006e0c75f1edd2053391c",
+  "status": "complete",
+  "completeCases": 31,
+  "excludedInventory": 16,
+  "passedBefore": 25,
+  "passedAfter": 27,
+  "editablePassed": 27,
+  "gained": [
+    "jigsaw",
+    "crossed-ribbons"
+  ],
+  "lost": [],
+  "changedCrops": [],
+  "changedComparableMasks": [
+    "crossed-ribbons",
+    "bauble",
+    "bottom-flower"
+  ],
+  "changedObservationCoverage": [
+    "crossed-ribbons",
+    "bauble",
+    "bottom-flower"
+  ],
+  "failureCategories": {
+    "crop_unresolved": 2,
+    "source_feature": 2,
+    "image_disagreement": 1
+  },
+  "rows": [
+    {
+      "id": "nested-squares",
+      "beforeStatus": "no_crop",
+      "afterStatus": "no_crop",
+      "beforePassed": false,
+      "afterPassed": false,
+      "editablePassed": false,
+      "sameCrop": true,
+      "sameClassifiedMask": false,
+      "sameFittingMask": false,
+      "sameFittingProbability": false,
+      "beforeError": null,
+      "afterError": null,
+      "errorDelta": null,
+      "sameObservationCoverage": false,
+      "beforeObservation": null,
+      "afterObservation": null,
+      "errorComparable": false,
+      "failures": [
+        "crop_unresolved"
+      ],
+      "missingFeatures": 0,
+      "selectedCounts": null,
+      "termination": null,
+      "cropReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+      "materialReview": null,
+      "detectionSeconds": 2.3922933340000005,
+      "solveAndValidationSeconds": null
+    },
+    {
+      "id": "outline-star",
+      "beforeStatus": "failed",
+      "afterStatus": "failed",
+      "beforePassed": false,
+      "afterPassed": false,
+      "editablePassed": false,
+      "sameCrop": true,
+      "sameClassifiedMask": true,
+      "sameFittingMask": true,
+      "sameFittingProbability": true,
+      "beforeError": 0.00815625,
+      "afterError": 0.00743125,
+      "errorDelta": -0.000725,
+      "sameObservationCoverage": true,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "errorComparable": true,
+      "failures": [
+        "source_feature"
+      ],
+      "missingFeatures": 1,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "termination": "candidate_found",
+      "cropReason": null,
+      "materialReview": null,
+      "detectionSeconds": 3.4569305000000004,
+      "solveAndValidationSeconds": 8.970980040999999
+    },
+    {
+      "id": "floral-checker",
+      "beforeStatus": "validated",
+      "afterStatus": "validated",
+      "beforePassed": true,
+      "afterPassed": true,
+      "editablePassed": true,
+      "sameCrop": true,
+      "sameClassifiedMask": true,
+      "sameFittingMask": true,
+      "sameFittingProbability": true,
+      "beforeError": 0.020125,
+      "afterError": 0.01316875,
+      "errorDelta": -0.006956250000000001,
+      "sameObservationCoverage": true,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "errorComparable": true,
+      "failures": [],
+      "missingFeatures": 0,
+      "selectedCounts": [
+        7,
+        7
+      ],
+      "termination": "candidate_found",
+      "cropReason": null,
+      "materialReview": null,
+      "detectionSeconds": 2.7903820830000003,
+      "solveAndValidationSeconds": 9.961701333
+    },
+    {
+      "id": "dense-checker",
+      "beforeStatus": "validated",
+      "afterStatus": "validated",
+      "beforePassed": true,
+      "afterPassed": true,
+      "editablePassed": true,
+      "sameCrop": true,
+      "sameClassifiedMask": true,
+      "sameFittingMask": true,
+      "sameFittingProbability": true,
+      "beforeError": 0.00699375,
+      "afterError": 0.00699375,
+      "errorDelta": 0.0,
+      "sameObservationCoverage": true,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "errorComparable": true,
+      "failures": [],
+      "missingFeatures": 0,
+      "selectedCounts": [
+        7,
+        7
+      ],
+      "termination": "candidate_found",
+      "cropReason": null,
+      "materialReview": {
+        "classified": {
+          "total": 24,
+          "covered": 24,
+          "correct": 24,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1,
+          "phase": 1,
+          "phaseInferred": true,
+          "phaseAmbiguous": false,
+          "allReviewedSamplesMatch": true,
+          "groups": [
+            {
+              "id": "upper-red-cells",
+              "paper": 0,
+              "total": 6,
+              "covered": 6,
+              "correct": 6,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "lower-red-cells",
+              "paper": 0,
+              "total": 6,
+              "covered": 6,
+              "correct": 6,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "upper-white-cells",
+              "paper": 1,
+              "total": 6,
+              "covered": 6,
+              "correct": 6,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "lower-white-cells",
+              "paper": 1,
+              "total": 6,
+              "covered": 6,
+              "correct": 6,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            }
+          ],
+          "rows": [
+            {
+              "group": "upper-red-cells",
+              "point": [
+                803,
+                217
+              ],
+              "paper": 0,
+              "cropPoint": [
+                68.39725132854733,
+                172.11546682829152
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "upper-red-cells",
+              "point": [
+                829,
+                217
+              ],
+              "paper": 0,
+              "cropPoint": [
+                123.39917181312366,
+                117.49633350652792
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "upper-red-cells",
+              "point": [
+                855,
+                217
+              ],
+              "paper": 0,
+              "cropPoint": [
+                178.74187974921256,
+                62.538784451558584
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "upper-red-cells",
+              "point": [
+                881,
+                215
+              ],
+              "paper": 0,
+              "cropPoint": [
+                229.96554532479863,
+                1.8859522539092657
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "upper-red-cells",
+              "point": [
+                805,
+                237
+              ],
+              "paper": 0,
+              "cropPoint": [
+                117.96844489464354,
+                218.80415415340448
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "upper-red-cells",
+              "point": [
+                858,
+                237
+              ],
+              "paper": 0,
+              "cropPoint": [
+                229.6604475843938,
+                108.48934230994132
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "lower-red-cells",
+              "point": [
+                783,
+                258
+              ],
+              "paper": 0,
+              "cropPoint": [
+                119.02687023715818,
+                315.93792223917814
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "lower-red-cells",
+              "point": [
+                834,
+                258
+              ],
+              "paper": 0,
+              "cropPoint": [
+                225.09650771959951,
+                211.75923553954433
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "lower-red-cells",
+              "point": [
+                885,
+                257
+              ],
+              "paper": 0,
+              "cropPoint": [
+                330.29621576481713,
+                103.76264076487331
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "lower-red-cells",
+              "point": [
+                812,
+                281
+              ],
+              "paper": 0,
+              "cropPoint": [
+                229.07468351720271,
+                313.1596071656354
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "lower-red-cells",
+              "point": [
+                840,
+                302
+              ],
+              "paper": 0,
+              "cropPoint": [
+                331.18902717728366,
+                307.61531672738386
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "lower-red-cells",
+              "point": [
+                844,
+                325
+              ],
+              "paper": 0,
+              "cropPoint": [
+                386.6939927162716,
+                354.46296320053705
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "upper-white-cells",
+              "point": [
+                793,
+                207
+              ],
+              "paper": 1,
+              "cropPoint": [
+                24.2190140333497,
+                167.37266043261047
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "upper-white-cells",
+              "point": [
+                817,
+                207
+              ],
+              "paper": 1,
+              "cropPoint": [
+                75.04740342015766,
+                116.7589220066089
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "upper-white-cells",
+              "point": [
+                843,
+                207
+              ],
+              "paper": 1,
+              "cropPoint": [
+                130.44073374112972,
+                61.59952063202043
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "upper-white-cells",
+              "point": [
+                793,
+                226
+              ],
+              "paper": 1,
+              "cropPoint": [
+                67.9379383394513,
+                215.90913258564936
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "upper-white-cells",
+              "point": [
+                844,
+                226
+              ],
+              "paper": 1,
+              "cropPoint": [
+                175.52795969187378,
+                109.32970608410986
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "upper-white-cells",
+              "point": [
+                870,
+                226
+              ],
+              "paper": 1,
+              "cropPoint": [
+                230.87962355840384,
+                54.49796131219604
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "lower-white-cells",
+              "point": [
+                793,
+                247
+              ],
+              "paper": 1,
+              "cropPoint": [
+                115.30468645391973,
+                268.49539556735397
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "lower-white-cells",
+              "point": [
+                820,
+                248
+              ],
+              "paper": 1,
+              "cropPoint": [
+                173.87166953658453,
+                215.49426977822577
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "lower-white-cells",
+              "point": [
+                846,
+                248
+              ],
+              "paper": 1,
+              "cropPoint": [
+                228.45801730644354,
+                161.73913778161563
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "lower-white-cells",
+              "point": [
+                872,
+                248
+              ],
+              "paper": 1,
+              "cropPoint": [
+                283.37803221222924,
+                107.65541957861022
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "lower-white-cells",
+              "point": [
+                825,
+                291
+              ],
+              "paper": 1,
+              "cropPoint": [
+                277.19079963091394,
+                311.1793331883513
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "lower-white-cells",
+              "point": [
+                851,
+                291
+              ],
+              "paper": 1,
+              "cropPoint": [
+                330.97524539680524,
+                258.8032300827797
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            }
+          ],
+          "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+        },
+        "exported": {
+          "total": 24,
+          "covered": 24,
+          "correct": 24,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1,
+          "phase": 1,
+          "phaseInferred": false,
+          "phaseAmbiguous": false,
+          "allReviewedSamplesMatch": true,
+          "groups": [
+            {
+              "id": "upper-red-cells",
+              "paper": 0,
+              "total": 6,
+              "covered": 6,
+              "correct": 6,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "lower-red-cells",
+              "paper": 0,
+              "total": 6,
+              "covered": 6,
+              "correct": 6,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "upper-white-cells",
+              "paper": 1,
+              "total": 6,
+              "covered": 6,
+              "correct": 6,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "lower-white-cells",
+              "paper": 1,
+              "total": 6,
+              "covered": 6,
+              "correct": 6,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            }
+          ],
+          "rows": [
+            {
+              "group": "upper-red-cells",
+              "point": [
+                803,
+                217
+              ],
+              "paper": 0,
+              "cropPoint": [
+                68.39725132854733,
+                172.11546682829152
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "upper-red-cells",
+              "point": [
+                829,
+                217
+              ],
+              "paper": 0,
+              "cropPoint": [
+                123.39917181312366,
+                117.49633350652792
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "upper-red-cells",
+              "point": [
+                855,
+                217
+              ],
+              "paper": 0,
+              "cropPoint": [
+                178.74187974921256,
+                62.538784451558584
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "upper-red-cells",
+              "point": [
+                881,
+                215
+              ],
+              "paper": 0,
+              "cropPoint": [
+                229.96554532479863,
+                1.8859522539092657
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "upper-red-cells",
+              "point": [
+                805,
+                237
+              ],
+              "paper": 0,
+              "cropPoint": [
+                117.96844489464354,
+                218.80415415340448
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "upper-red-cells",
+              "point": [
+                858,
+                237
+              ],
+              "paper": 0,
+              "cropPoint": [
+                229.6604475843938,
+                108.48934230994132
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "lower-red-cells",
+              "point": [
+                783,
+                258
+              ],
+              "paper": 0,
+              "cropPoint": [
+                119.02687023715818,
+                315.93792223917814
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "lower-red-cells",
+              "point": [
+                834,
+                258
+              ],
+              "paper": 0,
+              "cropPoint": [
+                225.09650771959951,
+                211.75923553954433
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "lower-red-cells",
+              "point": [
+                885,
+                257
+              ],
+              "paper": 0,
+              "cropPoint": [
+                330.29621576481713,
+                103.76264076487331
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "lower-red-cells",
+              "point": [
+                812,
+                281
+              ],
+              "paper": 0,
+              "cropPoint": [
+                229.07468351720271,
+                313.1596071656354
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "lower-red-cells",
+              "point": [
+                840,
+                302
+              ],
+              "paper": 0,
+              "cropPoint": [
+                331.18902717728366,
+                307.61531672738386
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "lower-red-cells",
+              "point": [
+                844,
+                325
+              ],
+              "paper": 0,
+              "cropPoint": [
+                386.6939927162716,
+                354.46296320053705
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "upper-white-cells",
+              "point": [
+                793,
+                207
+              ],
+              "paper": 1,
+              "cropPoint": [
+                24.2190140333497,
+                167.37266043261047
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "upper-white-cells",
+              "point": [
+                817,
+                207
+              ],
+              "paper": 1,
+              "cropPoint": [
+                75.04740342015766,
+                116.7589220066089
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "upper-white-cells",
+              "point": [
+                843,
+                207
+              ],
+              "paper": 1,
+              "cropPoint": [
+                130.44073374112972,
+                61.59952063202043
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "upper-white-cells",
+              "point": [
+                793,
+                226
+              ],
+              "paper": 1,
+              "cropPoint": [
+                67.9379383394513,
+                215.90913258564936
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "upper-white-cells",
+              "point": [
+                844,
+                226
+              ],
+              "paper": 1,
+              "cropPoint": [
+                175.52795969187378,
+                109.32970608410986
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "upper-white-cells",
+              "point": [
+                870,
+                226
+              ],
+              "paper": 1,
+              "cropPoint": [
+                230.87962355840384,
+                54.49796131219604
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "lower-white-cells",
+              "point": [
+                793,
+                247
+              ],
+              "paper": 1,
+              "cropPoint": [
+                115.30468645391973,
+                268.49539556735397
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "lower-white-cells",
+              "point": [
+                820,
+                248
+              ],
+              "paper": 1,
+              "cropPoint": [
+                173.87166953658453,
+                215.49426977822577
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "lower-white-cells",
+              "point": [
+                846,
+                248
+              ],
+              "paper": 1,
+              "cropPoint": [
+                228.45801730644354,
+                161.73913778161563
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "lower-white-cells",
+              "point": [
+                872,
+                248
+              ],
+              "paper": 1,
+              "cropPoint": [
+                283.37803221222924,
+                107.65541957861022
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "lower-white-cells",
+              "point": [
+                825,
+                291
+              ],
+              "paper": 1,
+              "cropPoint": [
+                277.19079963091394,
+                311.1793331883513
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "lower-white-cells",
+              "point": [
+                851,
+                291
+              ],
+              "paper": 1,
+              "cropPoint": [
+                330.97524539680524,
+                258.8032300827797
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            }
+          ],
+          "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+        }
+      },
+      "detectionSeconds": 3.2045292919999993,
+      "solveAndValidationSeconds": 8.564729791999998
+    },
+    {
+      "id": "bird",
+      "beforeStatus": "validated",
+      "afterStatus": "validated",
+      "beforePassed": true,
+      "afterPassed": true,
+      "editablePassed": true,
+      "sameCrop": true,
+      "sameClassifiedMask": true,
+      "sameFittingMask": true,
+      "sameFittingProbability": true,
+      "beforeError": 0.02470625,
+      "afterError": 0.01963125,
+      "errorDelta": -0.005075,
+      "sameObservationCoverage": true,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "errorComparable": true,
+      "failures": [],
+      "missingFeatures": 0,
+      "selectedCounts": [
+        5,
+        5
+      ],
+      "termination": "candidate_found",
+      "cropReason": null,
+      "materialReview": null,
+      "detectionSeconds": 2.795751084000003,
+      "solveAndValidationSeconds": 9.479588499999998
+    },
+    {
+      "id": "leaf",
+      "beforeStatus": "validated",
+      "afterStatus": "validated",
+      "beforePassed": true,
+      "afterPassed": true,
+      "editablePassed": true,
+      "sameCrop": true,
+      "sameClassifiedMask": true,
+      "sameFittingMask": true,
+      "sameFittingProbability": true,
+      "beforeError": 0.0131625,
+      "afterError": 0.00950625,
+      "errorDelta": -0.0036562499999999998,
+      "sameObservationCoverage": true,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "errorComparable": true,
+      "failures": [],
+      "missingFeatures": 0,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "termination": "candidate_found",
+      "cropReason": null,
+      "materialReview": null,
+      "detectionSeconds": 2.8538382920000003,
+      "solveAndValidationSeconds": 9.374093124999993
+    },
+    {
+      "id": "gift",
+      "beforeStatus": "validated",
+      "afterStatus": "validated",
+      "beforePassed": true,
+      "afterPassed": true,
+      "editablePassed": true,
+      "sameCrop": true,
+      "sameClassifiedMask": true,
+      "sameFittingMask": true,
+      "sameFittingProbability": true,
+      "beforeError": 0.02303125,
+      "afterError": 0.016575,
+      "errorDelta": -0.00645625,
+      "sameObservationCoverage": true,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "errorComparable": true,
+      "failures": [],
+      "missingFeatures": 0,
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "termination": "candidate_found",
+      "cropReason": null,
+      "materialReview": null,
+      "detectionSeconds": 3.4735030830000033,
+      "solveAndValidationSeconds": 9.479740458
+    },
+    {
+      "id": "gingerbread",
+      "beforeStatus": "validated",
+      "afterStatus": "validated",
+      "beforePassed": true,
+      "afterPassed": true,
+      "editablePassed": true,
+      "sameCrop": true,
+      "sameClassifiedMask": true,
+      "sameFittingMask": true,
+      "sameFittingProbability": true,
+      "beforeError": 0.01468125,
+      "afterError": 0.010925,
+      "errorDelta": -0.003756249999999999,
+      "sameObservationCoverage": true,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "errorComparable": true,
+      "failures": [],
+      "missingFeatures": 0,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "termination": "candidate_found",
+      "cropReason": null,
+      "materialReview": null,
+      "detectionSeconds": 2.8948656250000058,
+      "solveAndValidationSeconds": 5.706735375000004
+    },
+    {
+      "id": "white-birds",
+      "beforeStatus": "validated",
+      "afterStatus": "validated",
+      "beforePassed": true,
+      "afterPassed": true,
+      "editablePassed": true,
+      "sameCrop": true,
+      "sameClassifiedMask": true,
+      "sameFittingMask": true,
+      "sameFittingProbability": true,
+      "beforeError": 0.00379375,
+      "afterError": 0.00379375,
+      "errorDelta": 0.0,
+      "sameObservationCoverage": true,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "errorComparable": true,
+      "failures": [],
+      "missingFeatures": 0,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "termination": "candidate_found",
+      "cropReason": null,
+      "materialReview": null,
+      "detectionSeconds": 2.7354574580000044,
+      "solveAndValidationSeconds": 4.631332750000001
+    },
+    {
+      "id": "flower",
+      "beforeStatus": "validated",
+      "afterStatus": "validated",
+      "beforePassed": true,
+      "afterPassed": true,
+      "editablePassed": true,
+      "sameCrop": true,
+      "sameClassifiedMask": true,
+      "sameFittingMask": true,
+      "sameFittingProbability": true,
+      "beforeError": 0.0050625,
+      "afterError": 0.0035875,
+      "errorDelta": -0.0014750000000000002,
+      "sameObservationCoverage": true,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "errorComparable": true,
+      "failures": [],
+      "missingFeatures": 0,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "termination": "candidate_found",
+      "cropReason": null,
+      "materialReview": null,
+      "detectionSeconds": 2.9131878750000033,
+      "solveAndValidationSeconds": 5.133706999999995
+    },
+    {
+      "id": "warped-checker",
+      "beforeStatus": "validated",
+      "afterStatus": "validated",
+      "beforePassed": true,
+      "afterPassed": true,
+      "editablePassed": true,
+      "sameCrop": true,
+      "sameClassifiedMask": true,
+      "sameFittingMask": true,
+      "sameFittingProbability": true,
+      "beforeError": 0.0174125,
+      "afterError": 0.0134,
+      "errorDelta": -0.0040125000000000004,
+      "sameObservationCoverage": true,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "errorComparable": true,
+      "failures": [],
+      "missingFeatures": 0,
+      "selectedCounts": [
+        9,
+        9
+      ],
+      "termination": "candidate_found",
+      "cropReason": null,
+      "materialReview": null,
+      "detectionSeconds": 2.803700540999998,
+      "solveAndValidationSeconds": 10.300949791000006
+    },
+    {
+      "id": "round-checker",
+      "beforeStatus": "validated",
+      "afterStatus": "validated",
+      "beforePassed": true,
+      "afterPassed": true,
+      "editablePassed": true,
+      "sameCrop": true,
+      "sameClassifiedMask": true,
+      "sameFittingMask": true,
+      "sameFittingProbability": true,
+      "beforeError": 0.0121375,
+      "afterError": 0.01206875,
+      "errorDelta": -6.87500000000011e-05,
+      "sameObservationCoverage": true,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "errorComparable": true,
+      "failures": [],
+      "missingFeatures": 0,
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "termination": "candidate_found",
+      "cropReason": null,
+      "materialReview": null,
+      "detectionSeconds": 2.763869916999989,
+      "solveAndValidationSeconds": 9.736653124999997
+    },
+    {
+      "id": "santa",
+      "beforeStatus": "no_crop",
+      "afterStatus": "no_crop",
+      "beforePassed": false,
+      "afterPassed": false,
+      "editablePassed": false,
+      "sameCrop": true,
+      "sameClassifiedMask": false,
+      "sameFittingMask": false,
+      "sameFittingProbability": false,
+      "beforeError": null,
+      "afterError": null,
+      "errorDelta": null,
+      "sameObservationCoverage": false,
+      "beforeObservation": null,
+      "afterObservation": null,
+      "errorComparable": false,
+      "failures": [
+        "crop_unresolved"
+      ],
+      "missingFeatures": 0,
+      "selectedCounts": null,
+      "termination": null,
+      "cropReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+      "materialReview": null,
+      "detectionSeconds": 2.578409417000017,
+      "solveAndValidationSeconds": null
+    },
+    {
+      "id": "fine-checker",
+      "beforeStatus": "validated",
+      "afterStatus": "validated",
+      "beforePassed": true,
+      "afterPassed": true,
+      "editablePassed": true,
+      "sameCrop": true,
+      "sameClassifiedMask": true,
+      "sameFittingMask": true,
+      "sameFittingProbability": true,
+      "beforeError": 0.0215875,
+      "afterError": 0.01700625,
+      "errorDelta": -0.0045812499999999985,
+      "sameObservationCoverage": true,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "errorComparable": true,
+      "failures": [],
+      "missingFeatures": 0,
+      "selectedCounts": [
+        9,
+        10
+      ],
+      "termination": "candidate_found",
+      "cropReason": null,
+      "materialReview": null,
+      "detectionSeconds": 2.8110417920000037,
+      "solveAndValidationSeconds": 10.399413874999999
+    },
+    {
+      "id": "orb",
+      "beforeStatus": "validated",
+      "afterStatus": "validated",
+      "beforePassed": true,
+      "afterPassed": true,
+      "editablePassed": true,
+      "sameCrop": true,
+      "sameClassifiedMask": true,
+      "sameFittingMask": true,
+      "sameFittingProbability": true,
+      "beforeError": 0.01438125,
+      "afterError": 0.01190625,
+      "errorDelta": -0.0024749999999999998,
+      "sameObservationCoverage": true,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "errorComparable": true,
+      "failures": [],
+      "missingFeatures": 0,
+      "selectedCounts": [
+        5,
+        5
+      ],
+      "termination": "candidate_found",
+      "cropReason": null,
+      "materialReview": null,
+      "detectionSeconds": 3.8933571660000017,
+      "solveAndValidationSeconds": 9.615997959
+    },
+    {
+      "id": "stacked-hearts",
+      "beforeStatus": "validated",
+      "afterStatus": "validated",
+      "beforePassed": true,
+      "afterPassed": true,
+      "editablePassed": true,
+      "sameCrop": true,
+      "sameClassifiedMask": true,
+      "sameFittingMask": true,
+      "sameFittingProbability": true,
+      "beforeError": 0.007425,
+      "afterError": 0.00578125,
+      "errorDelta": -0.0016437500000000002,
+      "sameObservationCoverage": true,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "errorComparable": true,
+      "failures": [],
+      "missingFeatures": 0,
+      "selectedCounts": [
+        4,
+        3
+      ],
+      "termination": "candidate_found",
+      "cropReason": null,
+      "materialReview": null,
+      "detectionSeconds": 3.687453833000007,
+      "solveAndValidationSeconds": 7.892185832999996
+    },
+    {
+      "id": "jigsaw",
+      "beforeStatus": "failed",
+      "afterStatus": "validated",
+      "beforePassed": false,
+      "afterPassed": true,
+      "editablePassed": true,
+      "sameCrop": true,
+      "sameClassifiedMask": true,
+      "sameFittingMask": true,
+      "sameFittingProbability": true,
+      "beforeError": 0.0564375,
+      "afterError": 0.010025,
+      "errorDelta": -0.0464125,
+      "sameObservationCoverage": true,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "errorComparable": true,
+      "failures": [],
+      "missingFeatures": 0,
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "termination": "candidate_found",
+      "cropReason": null,
+      "materialReview": null,
+      "detectionSeconds": 2.8999957920000017,
+      "solveAndValidationSeconds": 9.472942167000001
+    },
+    {
+      "id": "candle",
+      "beforeStatus": "validated",
+      "afterStatus": "validated",
+      "beforePassed": true,
+      "afterPassed": true,
+      "editablePassed": true,
+      "sameCrop": true,
+      "sameClassifiedMask": true,
+      "sameFittingMask": true,
+      "sameFittingProbability": true,
+      "beforeError": 0.0048375,
+      "afterError": 0.0048375,
+      "errorDelta": 0.0,
+      "sameObservationCoverage": true,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "errorComparable": true,
+      "failures": [],
+      "missingFeatures": 0,
+      "selectedCounts": [
+        1,
+        1
+      ],
+      "termination": "candidate_found",
+      "cropReason": null,
+      "materialReview": null,
+      "detectionSeconds": 0.14253329099999973,
+      "solveAndValidationSeconds": 2.6871496669999906
+    },
+    {
+      "id": "maple-leaf",
+      "beforeStatus": "validated",
+      "afterStatus": "validated",
+      "beforePassed": true,
+      "afterPassed": true,
+      "editablePassed": true,
+      "sameCrop": true,
+      "sameClassifiedMask": true,
+      "sameFittingMask": true,
+      "sameFittingProbability": true,
+      "beforeError": 0.01135,
+      "afterError": 0.0081625,
+      "errorDelta": -0.003187500000000001,
+      "sameObservationCoverage": true,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "errorComparable": true,
+      "failures": [],
+      "missingFeatures": 0,
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "termination": "candidate_found",
+      "cropReason": null,
+      "materialReview": null,
+      "detectionSeconds": 3.593446583000012,
+      "solveAndValidationSeconds": 9.640399040999997
+    },
+    {
+      "id": "crown",
+      "beforeStatus": "validated",
+      "afterStatus": "validated",
+      "beforePassed": true,
+      "afterPassed": true,
+      "editablePassed": true,
+      "sameCrop": true,
+      "sameClassifiedMask": true,
+      "sameFittingMask": true,
+      "sameFittingProbability": true,
+      "beforeError": 0.02411875,
+      "afterError": 0.0224125,
+      "errorDelta": -0.001706250000000003,
+      "sameObservationCoverage": true,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "errorComparable": true,
+      "failures": [],
+      "missingFeatures": 0,
+      "selectedCounts": [
+        5,
+        5
+      ],
+      "termination": "candidate_found",
+      "cropReason": null,
+      "materialReview": null,
+      "detectionSeconds": 4.25015850000002,
+      "solveAndValidationSeconds": 10.072250875000027
+    },
+    {
+      "id": "crossed-ribbons",
+      "beforeStatus": "failed",
+      "afterStatus": "validated",
+      "beforePassed": false,
+      "afterPassed": true,
+      "editablePassed": true,
+      "sameCrop": true,
+      "sameClassifiedMask": false,
+      "sameFittingMask": false,
+      "sameFittingProbability": false,
+      "beforeError": 0.02153125,
+      "afterError": 0.005445604392108963,
+      "errorDelta": -0.016085645607891035,
+      "sameObservationCoverage": false,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 157191,
+        "sha256": "729a0e7819d25c0399f2720e75a37ca2d7e6afb7aba713b24fc4217b4ccb552a"
+      },
+      "errorComparable": false,
+      "failures": [],
+      "missingFeatures": 0,
+      "selectedCounts": [
+        2,
+        2
+      ],
+      "termination": "candidate_found",
+      "cropReason": null,
+      "materialReview": null,
+      "detectionSeconds": 3.841644958000019,
+      "solveAndValidationSeconds": 6.571652708000009
+    },
+    {
+      "id": "bauble",
+      "beforeStatus": "failed",
+      "afterStatus": "failed",
+      "beforePassed": false,
+      "afterPassed": false,
+      "editablePassed": false,
+      "sameCrop": true,
+      "sameClassifiedMask": false,
+      "sameFittingMask": false,
+      "sameFittingProbability": false,
+      "beforeError": 0.0664375,
+      "afterError": 0.04349057028691294,
+      "errorDelta": -0.02294692971308706,
+      "sameObservationCoverage": false,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 155413,
+        "sha256": "20a1ac9fc487002dfba870e2613857cbc550363e6f46f5cde3a9645607d36dca"
+      },
+      "errorComparable": false,
+      "failures": [
+        "source_feature",
+        "image_disagreement"
+      ],
+      "missingFeatures": 3,
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "termination": "image_mismatch",
+      "cropReason": null,
+      "materialReview": {
+        "classified": {
+          "total": 26,
+          "covered": 26,
+          "correct": 21,
+          "mismatched": 5,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 0.8076923076923077,
+          "agreementCovered": 0.8076923076923077,
+          "phase": 1,
+          "phaseInferred": true,
+          "phaseAmbiguous": false,
+          "allReviewedSamplesMatch": false,
+          "groups": [
+            {
+              "id": "bauble-body",
+              "paper": 0,
+              "total": 4,
+              "covered": 4,
+              "correct": 4,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "upper-frame",
+              "paper": 0,
+              "total": 4,
+              "covered": 4,
+              "correct": 2,
+              "mismatched": 2,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 0.5,
+              "agreementCovered": 0.5
+            },
+            {
+              "id": "lower-frame",
+              "paper": 0,
+              "total": 4,
+              "covered": 4,
+              "correct": 1,
+              "mismatched": 3,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 0.25,
+              "agreementCovered": 0.25
+            },
+            {
+              "id": "corner-blocks",
+              "paper": 0,
+              "total": 4,
+              "covered": 4,
+              "correct": 4,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "white-gaps",
+              "paper": 1,
+              "total": 10,
+              "covered": 10,
+              "correct": 10,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            }
+          ],
+          "rows": [
+            {
+              "group": "bauble-body",
+              "point": [
+                570,
+                1015
+              ],
+              "paper": 0,
+              "cropPoint": [
+                133.16063313334618,
+                247.62309674767235
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "bauble-body",
+              "point": [
+                565,
+                993
+              ],
+              "paper": 0,
+              "cropPoint": [
+                95.39995902349995,
+                216.09432810505282
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "bauble-body",
+              "point": [
+                553,
+                1027
+              ],
+              "paper": 0,
+              "cropPoint": [
+                120.67190360606723,
+                296.45345746077345
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "bauble-body",
+              "point": [
+                593,
+                1038
+              ],
+              "paper": 0,
+              "cropPoint": [
+                206.60926042146926,
+                250.24961035147692
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "upper-frame",
+              "point": [
+                609,
+                955
+              ],
+              "paper": 0,
+              "cropPoint": [
+                118.04110336918438,
+                46.002726104451604
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "upper-frame",
+              "point": [
+                620,
+                968
+              ],
+              "paper": 0,
+              "cropPoint": [
+                159.93258543033366,
+                46.56279715680603
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "upper-frame",
+              "point": [
+                632,
+                982
+              ],
+              "paper": 0,
+              "cropPoint": [
+                207.84221334363724,
+                46.78793926917375
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": false
+            },
+            {
+              "group": "upper-frame",
+              "point": [
+                640,
+                992
+              ],
+              "paper": 0,
+              "cropPoint": [
+                242.3830408938218,
+                48.51173070896324
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": false
+            },
+            {
+              "group": "lower-frame",
+              "point": [
+                640,
+                1040
+              ],
+              "paper": 0,
+              "cropPoint": [
+                316.08198799250147,
+                158.40848197738487
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "lower-frame",
+              "point": [
+                632,
+                1053
+              ],
+              "paper": 0,
+              "cropPoint": [
+                314.86287178714036,
+                204.5701974246831
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": false
+            },
+            {
+              "group": "lower-frame",
+              "point": [
+                617,
+                1068
+              ],
+              "paper": 0,
+              "cropPoint": [
+                299.79389840058593,
+                265.36843414058114
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": false
+            },
+            {
+              "group": "lower-frame",
+              "point": [
+                604,
+                1080
+              ],
+              "paper": 0,
+              "cropPoint": [
+                286.5296115944407,
+                311.57439356772113
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": false
+            },
+            {
+              "group": "corner-blocks",
+              "point": [
+                575,
+                945
+              ],
+              "paper": 0,
+              "cropPoint": [
+                44.60856025021297,
+                104.91195416814351
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "corner-blocks",
+              "point": [
+                499,
+                1014
+              ],
+              "paper": 0,
+              "cropPoint": [
+                28.817123887634704,
+                349.81041979758487
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "corner-blocks",
+              "point": [
+                580,
+                1088
+              ],
+              "paper": 0,
+              "cropPoint": [
+                246.71925573693238,
+                363.0337653202516
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "corner-blocks",
+              "point": [
+                643,
+                1011
+              ],
+              "paper": 0,
+              "cropPoint": [
+                279.56332951990703,
+                84.94994281116485
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "white-gaps",
+              "point": [
+                587,
+                967
+              ],
+              "paper": 1,
+              "cropPoint": [
+                95.91052162046141,
+                122.7403833672544
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-gaps",
+              "point": [
+                528,
+                983
+              ],
+              "paper": 1,
+              "cropPoint": [
+                28.19975626239588,
+                260.1926216272228
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-gaps",
+              "point": [
+                519,
+                999
+              ],
+              "paper": 1,
+              "cropPoint": [
+                36.25319103475485,
+                299.78519805538264
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-gaps",
+              "point": [
+                516,
+                1030
+              ],
+              "paper": 1,
+              "cropPoint": [
+                69.74743297917347,
+                352.99283143523905
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-gaps",
+              "point": [
+                540,
+                1055
+              ],
+              "paper": 1,
+              "cropPoint": [
+                134.98554803120103,
+                361.7649756573002
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-gaps",
+              "point": [
+                568,
+                1070
+              ],
+              "paper": 1,
+              "cropPoint": [
+                201.0472601766166,
+                348.6435595052149
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-gaps",
+              "point": [
+                600,
+                1064
+              ],
+              "paper": 1,
+              "cropPoint": [
+                256.3114373824753,
+                287.75050282005265
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-gaps",
+              "point": [
+                623,
+                1028
+              ],
+              "paper": 1,
+              "cropPoint": [
+                256.7373756542473,
+                170.53869728043955
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-gaps",
+              "point": [
+                629,
+                1000
+              ],
+              "paper": 1,
+              "cropPoint": [
+                228.76028122803191,
+                95.40374201250027
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-gaps",
+              "point": [
+                610,
+                984
+              ],
+              "paper": 1,
+              "cropPoint": [
+                163.72457861739753,
+                106.17589370064039
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            }
+          ],
+          "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+        },
+        "exported": {
+          "total": 26,
+          "covered": 26,
+          "correct": 21,
+          "mismatched": 5,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 0.8076923076923077,
+          "agreementCovered": 0.8076923076923077,
+          "phase": 1,
+          "phaseInferred": false,
+          "phaseAmbiguous": false,
+          "allReviewedSamplesMatch": false,
+          "groups": [
+            {
+              "id": "bauble-body",
+              "paper": 0,
+              "total": 4,
+              "covered": 4,
+              "correct": 4,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "upper-frame",
+              "paper": 0,
+              "total": 4,
+              "covered": 4,
+              "correct": 2,
+              "mismatched": 2,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 0.5,
+              "agreementCovered": 0.5
+            },
+            {
+              "id": "lower-frame",
+              "paper": 0,
+              "total": 4,
+              "covered": 4,
+              "correct": 1,
+              "mismatched": 3,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 0.25,
+              "agreementCovered": 0.25
+            },
+            {
+              "id": "corner-blocks",
+              "paper": 0,
+              "total": 4,
+              "covered": 4,
+              "correct": 4,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "white-gaps",
+              "paper": 1,
+              "total": 10,
+              "covered": 10,
+              "correct": 10,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            }
+          ],
+          "rows": [
+            {
+              "group": "bauble-body",
+              "point": [
+                570,
+                1015
+              ],
+              "paper": 0,
+              "cropPoint": [
+                133.16063313334618,
+                247.62309674767235
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "bauble-body",
+              "point": [
+                565,
+                993
+              ],
+              "paper": 0,
+              "cropPoint": [
+                95.39995902349995,
+                216.09432810505282
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "bauble-body",
+              "point": [
+                553,
+                1027
+              ],
+              "paper": 0,
+              "cropPoint": [
+                120.67190360606723,
+                296.45345746077345
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "bauble-body",
+              "point": [
+                593,
+                1038
+              ],
+              "paper": 0,
+              "cropPoint": [
+                206.60926042146926,
+                250.24961035147692
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "upper-frame",
+              "point": [
+                609,
+                955
+              ],
+              "paper": 0,
+              "cropPoint": [
+                118.04110336918438,
+                46.002726104451604
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "upper-frame",
+              "point": [
+                620,
+                968
+              ],
+              "paper": 0,
+              "cropPoint": [
+                159.93258543033366,
+                46.56279715680603
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "upper-frame",
+              "point": [
+                632,
+                982
+              ],
+              "paper": 0,
+              "cropPoint": [
+                207.84221334363724,
+                46.78793926917375
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": false
+            },
+            {
+              "group": "upper-frame",
+              "point": [
+                640,
+                992
+              ],
+              "paper": 0,
+              "cropPoint": [
+                242.3830408938218,
+                48.51173070896324
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": false
+            },
+            {
+              "group": "lower-frame",
+              "point": [
+                640,
+                1040
+              ],
+              "paper": 0,
+              "cropPoint": [
+                316.08198799250147,
+                158.40848197738487
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "lower-frame",
+              "point": [
+                632,
+                1053
+              ],
+              "paper": 0,
+              "cropPoint": [
+                314.86287178714036,
+                204.5701974246831
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": false
+            },
+            {
+              "group": "lower-frame",
+              "point": [
+                617,
+                1068
+              ],
+              "paper": 0,
+              "cropPoint": [
+                299.79389840058593,
+                265.36843414058114
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": false
+            },
+            {
+              "group": "lower-frame",
+              "point": [
+                604,
+                1080
+              ],
+              "paper": 0,
+              "cropPoint": [
+                286.5296115944407,
+                311.57439356772113
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": false
+            },
+            {
+              "group": "corner-blocks",
+              "point": [
+                575,
+                945
+              ],
+              "paper": 0,
+              "cropPoint": [
+                44.60856025021297,
+                104.91195416814351
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "corner-blocks",
+              "point": [
+                499,
+                1014
+              ],
+              "paper": 0,
+              "cropPoint": [
+                28.817123887634704,
+                349.81041979758487
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "corner-blocks",
+              "point": [
+                580,
+                1088
+              ],
+              "paper": 0,
+              "cropPoint": [
+                246.71925573693238,
+                363.0337653202516
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "corner-blocks",
+              "point": [
+                643,
+                1011
+              ],
+              "paper": 0,
+              "cropPoint": [
+                279.56332951990703,
+                84.94994281116485
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "white-gaps",
+              "point": [
+                587,
+                967
+              ],
+              "paper": 1,
+              "cropPoint": [
+                95.91052162046141,
+                122.7403833672544
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-gaps",
+              "point": [
+                528,
+                983
+              ],
+              "paper": 1,
+              "cropPoint": [
+                28.19975626239588,
+                260.1926216272228
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-gaps",
+              "point": [
+                519,
+                999
+              ],
+              "paper": 1,
+              "cropPoint": [
+                36.25319103475485,
+                299.78519805538264
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-gaps",
+              "point": [
+                516,
+                1030
+              ],
+              "paper": 1,
+              "cropPoint": [
+                69.74743297917347,
+                352.99283143523905
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-gaps",
+              "point": [
+                540,
+                1055
+              ],
+              "paper": 1,
+              "cropPoint": [
+                134.98554803120103,
+                361.7649756573002
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-gaps",
+              "point": [
+                568,
+                1070
+              ],
+              "paper": 1,
+              "cropPoint": [
+                201.0472601766166,
+                348.6435595052149
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-gaps",
+              "point": [
+                600,
+                1064
+              ],
+              "paper": 1,
+              "cropPoint": [
+                256.3114373824753,
+                287.75050282005265
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-gaps",
+              "point": [
+                623,
+                1028
+              ],
+              "paper": 1,
+              "cropPoint": [
+                256.7373756542473,
+                170.53869728043955
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-gaps",
+              "point": [
+                629,
+                1000
+              ],
+              "paper": 1,
+              "cropPoint": [
+                228.76028122803191,
+                95.40374201250027
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-gaps",
+              "point": [
+                610,
+                984
+              ],
+              "paper": 1,
+              "cropPoint": [
+                163.72457861739753,
+                106.17589370064039
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            }
+          ],
+          "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+        }
+      },
+      "detectionSeconds": 2.5258004159999836,
+      "solveAndValidationSeconds": 9.752892208000004
+    },
+    {
+      "id": "bottom-flower",
+      "beforeStatus": "validated",
+      "afterStatus": "validated",
+      "beforePassed": true,
+      "afterPassed": true,
+      "editablePassed": true,
+      "sameCrop": true,
+      "sameClassifiedMask": false,
+      "sameFittingMask": false,
+      "sameFittingProbability": false,
+      "beforeError": 0.0093875,
+      "afterError": 0.007308458272272949,
+      "errorDelta": -0.0020790417277270507,
+      "sameObservationCoverage": false,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 159678,
+        "sha256": "2b5b10fa180a6fb4fd3a9a7b4d0c19697fc4ed31f4015796d9857bb862ff8447"
+      },
+      "errorComparable": false,
+      "failures": [],
+      "missingFeatures": 0,
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "termination": "candidate_found",
+      "cropReason": null,
+      "materialReview": null,
+      "detectionSeconds": 3.107441292000003,
+      "solveAndValidationSeconds": 9.565334999999992
+    },
+    {
+      "id": "faceted-star",
+      "beforeStatus": "validated",
+      "afterStatus": "validated",
+      "beforePassed": true,
+      "afterPassed": true,
+      "editablePassed": true,
+      "sameCrop": true,
+      "sameClassifiedMask": true,
+      "sameFittingMask": true,
+      "sameFittingProbability": true,
+      "beforeError": 0.0065,
+      "afterError": 0.0064125,
+      "errorDelta": -8.74999999999999e-05,
+      "sameObservationCoverage": true,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "errorComparable": true,
+      "failures": [],
+      "missingFeatures": 0,
+      "selectedCounts": [
+        5,
+        5
+      ],
+      "termination": "candidate_found",
+      "cropReason": null,
+      "materialReview": null,
+      "detectionSeconds": 2.9385373749999855,
+      "solveAndValidationSeconds": 7.729362166999955
+    },
+    {
+      "id": "bibel-star-8",
+      "beforeStatus": "validated",
+      "afterStatus": "validated",
+      "beforePassed": true,
+      "afterPassed": true,
+      "editablePassed": true,
+      "sameCrop": true,
+      "sameClassifiedMask": true,
+      "sameFittingMask": true,
+      "sameFittingProbability": true,
+      "beforeError": 0.003675,
+      "afterError": 0.003675,
+      "errorDelta": 0.0,
+      "sameObservationCoverage": true,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "errorComparable": true,
+      "failures": [],
+      "missingFeatures": 0,
+      "selectedCounts": [
+        2,
+        2
+      ],
+      "termination": "candidate_found",
+      "cropReason": null,
+      "materialReview": null,
+      "detectionSeconds": 0.6422315420000232,
+      "solveAndValidationSeconds": 3.4088033339999964
+    },
+    {
+      "id": "bibel-star-curved",
+      "beforeStatus": "validated",
+      "afterStatus": "validated",
+      "beforePassed": true,
+      "afterPassed": true,
+      "editablePassed": true,
+      "sameCrop": true,
+      "sameClassifiedMask": true,
+      "sameFittingMask": true,
+      "sameFittingProbability": true,
+      "beforeError": 0.00663125,
+      "afterError": 0.0064625,
+      "errorDelta": -0.00016874999999999963,
+      "sameObservationCoverage": true,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "errorComparable": true,
+      "failures": [],
+      "missingFeatures": 0,
+      "selectedCounts": [
+        5,
+        5
+      ],
+      "termination": "candidate_found",
+      "cropReason": null,
+      "materialReview": null,
+      "detectionSeconds": 0.7356647499999963,
+      "solveAndValidationSeconds": 8.941183625000004
+    },
+    {
+      "id": "bibel-star-outline",
+      "beforeStatus": "validated",
+      "afterStatus": "validated",
+      "beforePassed": true,
+      "afterPassed": true,
+      "editablePassed": true,
+      "sameCrop": true,
+      "sameClassifiedMask": true,
+      "sameFittingMask": true,
+      "sameFittingProbability": true,
+      "beforeError": 0.0116,
+      "afterError": 0.0116,
+      "errorDelta": 0.0,
+      "sameObservationCoverage": true,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "errorComparable": true,
+      "failures": [],
+      "missingFeatures": 0,
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "termination": "candidate_found",
+      "cropReason": null,
+      "materialReview": {
+        "classified": {
+          "total": 28,
+          "covered": 28,
+          "correct": 28,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1,
+          "phase": 1,
+          "phaseInferred": true,
+          "phaseAmbiguous": false,
+          "allReviewedSamplesMatch": true,
+          "groups": [
+            {
+              "id": "upper-star-arms",
+              "paper": 0,
+              "total": 2,
+              "covered": 2,
+              "correct": 2,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "left-star-arms",
+              "paper": 0,
+              "total": 2,
+              "covered": 2,
+              "correct": 2,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "right-star-arms",
+              "paper": 0,
+              "total": 2,
+              "covered": 2,
+              "correct": 2,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "lower-star-arms",
+              "paper": 0,
+              "total": 2,
+              "covered": 2,
+              "correct": 2,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "upper-border-diamonds",
+              "paper": 0,
+              "total": 2,
+              "covered": 2,
+              "correct": 2,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "left-border-diamonds",
+              "paper": 0,
+              "total": 2,
+              "covered": 2,
+              "correct": 2,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "right-border-diamonds",
+              "paper": 0,
+              "total": 2,
+              "covered": 2,
+              "correct": 2,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "lower-border-diamonds",
+              "paper": 0,
+              "total": 2,
+              "covered": 2,
+              "correct": 2,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "white-star-centre",
+              "paper": 1,
+              "total": 5,
+              "covered": 5,
+              "correct": 5,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "white-surround-and-gaps",
+              "paper": 1,
+              "total": 7,
+              "covered": 7,
+              "correct": 7,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            }
+          ],
+          "rows": [
+            {
+              "group": "upper-star-arms",
+              "point": [
+                480,
+                298
+              ],
+              "paper": 0,
+              "cropPoint": [
+                113.2828570886524,
+                159.0506587959122
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "upper-star-arms",
+              "point": [
+                524,
+                296
+              ],
+              "paper": 0,
+              "cropPoint": [
+                148.16093173093356,
+                118.02340923793128
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "left-star-arms",
+              "point": [
+                412,
+                350
+              ],
+              "paper": 0,
+              "cropPoint": [
+                101.56279167829744,
+                262.2736103015396
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "left-star-arms",
+              "point": [
+                416,
+                397
+              ],
+              "paper": 0,
+              "cropPoint": [
+                144.78067734547955,
+                297.6246971136384
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "right-star-arms",
+              "point": [
+                587,
+                359
+              ],
+              "paper": 0,
+              "cropPoint": [
+                255.3939152575281,
+                114.2929061073096
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "right-star-arms",
+              "point": [
+                586,
+                397
+              ],
+              "paper": 0,
+              "cropPoint": [
+                287.2394033849396,
+                147.21398845938626
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "lower-star-arms",
+              "point": [
+                481,
+                450
+              ],
+              "paper": 0,
+              "cropPoint": [
+                243.88022555293344,
+                284.72851204851247
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "lower-star-arms",
+              "point": [
+                520,
+                450
+              ],
+              "paper": 0,
+              "cropPoint": [
+                276.68904746780976,
+                250.42318220927154
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "upper-border-diamonds",
+              "point": [
+                490,
+                183
+              ],
+              "paper": 0,
+              "cropPoint": [
+                22.829924849682232,
+                53.794385916176516
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "upper-border-diamonds",
+              "point": [
+                521,
+                199
+              ],
+              "paper": 0,
+              "cropPoint": [
+                62.195163301856056,
+                39.18851290709622
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "left-border-diamonds",
+              "point": [
+                310,
+                359
+              ],
+              "paper": 0,
+              "cropPoint": [
+                26.179734986534296,
+                357.99660570825955
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "left-border-diamonds",
+              "point": [
+                315,
+                390
+              ],
+              "paper": 0,
+              "cropPoint": [
+                56.35354618423137,
+                379.0432549295794
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "right-border-diamonds",
+              "point": [
+                687,
+                367
+              ],
+              "paper": 0,
+              "cropPoint": [
+                348.05413303600767,
+                29.97749258891198
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "right-border-diamonds",
+              "point": [
+                688,
+                397
+              ],
+              "paper": 0,
+              "cropPoint": [
+                374.92776354640813,
+                54.63090310340439
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "lower-border-diamonds",
+              "point": [
+                481,
+                567
+              ],
+              "paper": 0,
+              "cropPoint": [
+                343.2632319980462,
+                381.66047873197385
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "lower-border-diamonds",
+              "point": [
+                512,
+                573
+              ],
+              "paper": 0,
+              "cropPoint": [
+                374.6490985113074,
+                359.72982167068005
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "white-star-centre",
+              "point": [
+                500,
+                377
+              ],
+              "paper": 1,
+              "cropPoint": [
+                197.5151314316515,
+                207.22034998084357
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-star-centre",
+              "point": [
+                504,
+                336
+              ],
+              "paper": 1,
+              "cropPoint": [
+                165.7753041437938,
+                169.42118663337882
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-star-centre",
+              "point": [
+                503,
+                415
+              ],
+              "paper": 1,
+              "cropPoint": [
+                232.494113778971,
+                236.25512578457815
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-star-centre",
+              "point": [
+                464,
+                370
+              ],
+              "paper": 1,
+              "cropPoint": [
+                161.53349899273906,
+                233.20746288853869
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-star-centre",
+              "point": [
+                546,
+                373
+              ],
+              "paper": 1,
+              "cropPoint": [
+                232.72890622964266,
+                162.91241947003985
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-surround-and-gaps",
+              "point": [
+                455,
+                295
+              ],
+              "paper": 1,
+              "cropPoint": [
+                90.05977381806825,
+                178.76602442521337
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-surround-and-gaps",
+              "point": [
+                552,
+                303
+              ],
+              "paper": 1,
+              "cropPoint": [
+                177.62878280899184,
+                98.70088217241236
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-surround-and-gaps",
+              "point": [
+                451,
+                439
+              ],
+              "paper": 1,
+              "cropPoint": [
+                209.4593399835034,
+                301.8435675779383
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-surround-and-gaps",
+              "point": [
+                552,
+                437
+              ],
+              "paper": 1,
+              "cropPoint": [
+                292.6599089521813,
+                211.20357819980174
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-surround-and-gaps",
+              "point": [
+                428,
+                374
+              ],
+              "paper": 1,
+              "cropPoint": [
+                135.13912422725363,
+                268.134178988884
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-surround-and-gaps",
+              "point": [
+                581,
+                382
+              ],
+              "paper": 1,
+              "cropPoint": [
+                270.08907967573697,
+                139.0805557721704
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-surround-and-gaps",
+              "point": [
+                501,
+                577
+              ],
+              "paper": 1,
+              "cropPoint": [
+                368.6933190202341,
+                372.60233696901804
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            }
+          ],
+          "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+        },
+        "exported": {
+          "total": 28,
+          "covered": 28,
+          "correct": 28,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1,
+          "phase": 1,
+          "phaseInferred": false,
+          "phaseAmbiguous": false,
+          "allReviewedSamplesMatch": true,
+          "groups": [
+            {
+              "id": "upper-star-arms",
+              "paper": 0,
+              "total": 2,
+              "covered": 2,
+              "correct": 2,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "left-star-arms",
+              "paper": 0,
+              "total": 2,
+              "covered": 2,
+              "correct": 2,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "right-star-arms",
+              "paper": 0,
+              "total": 2,
+              "covered": 2,
+              "correct": 2,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "lower-star-arms",
+              "paper": 0,
+              "total": 2,
+              "covered": 2,
+              "correct": 2,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "upper-border-diamonds",
+              "paper": 0,
+              "total": 2,
+              "covered": 2,
+              "correct": 2,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "left-border-diamonds",
+              "paper": 0,
+              "total": 2,
+              "covered": 2,
+              "correct": 2,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "right-border-diamonds",
+              "paper": 0,
+              "total": 2,
+              "covered": 2,
+              "correct": 2,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "lower-border-diamonds",
+              "paper": 0,
+              "total": 2,
+              "covered": 2,
+              "correct": 2,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "white-star-centre",
+              "paper": 1,
+              "total": 5,
+              "covered": 5,
+              "correct": 5,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "white-surround-and-gaps",
+              "paper": 1,
+              "total": 7,
+              "covered": 7,
+              "correct": 7,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            }
+          ],
+          "rows": [
+            {
+              "group": "upper-star-arms",
+              "point": [
+                480,
+                298
+              ],
+              "paper": 0,
+              "cropPoint": [
+                113.2828570886524,
+                159.0506587959122
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "upper-star-arms",
+              "point": [
+                524,
+                296
+              ],
+              "paper": 0,
+              "cropPoint": [
+                148.16093173093356,
+                118.02340923793128
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "left-star-arms",
+              "point": [
+                412,
+                350
+              ],
+              "paper": 0,
+              "cropPoint": [
+                101.56279167829744,
+                262.2736103015396
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "left-star-arms",
+              "point": [
+                416,
+                397
+              ],
+              "paper": 0,
+              "cropPoint": [
+                144.78067734547955,
+                297.6246971136384
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "right-star-arms",
+              "point": [
+                587,
+                359
+              ],
+              "paper": 0,
+              "cropPoint": [
+                255.3939152575281,
+                114.2929061073096
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "right-star-arms",
+              "point": [
+                586,
+                397
+              ],
+              "paper": 0,
+              "cropPoint": [
+                287.2394033849396,
+                147.21398845938626
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "lower-star-arms",
+              "point": [
+                481,
+                450
+              ],
+              "paper": 0,
+              "cropPoint": [
+                243.88022555293344,
+                284.72851204851247
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "lower-star-arms",
+              "point": [
+                520,
+                450
+              ],
+              "paper": 0,
+              "cropPoint": [
+                276.68904746780976,
+                250.42318220927154
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "upper-border-diamonds",
+              "point": [
+                490,
+                183
+              ],
+              "paper": 0,
+              "cropPoint": [
+                22.829924849682232,
+                53.794385916176516
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "upper-border-diamonds",
+              "point": [
+                521,
+                199
+              ],
+              "paper": 0,
+              "cropPoint": [
+                62.195163301856056,
+                39.18851290709622
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "left-border-diamonds",
+              "point": [
+                310,
+                359
+              ],
+              "paper": 0,
+              "cropPoint": [
+                26.179734986534296,
+                357.99660570825955
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "left-border-diamonds",
+              "point": [
+                315,
+                390
+              ],
+              "paper": 0,
+              "cropPoint": [
+                56.35354618423137,
+                379.0432549295794
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "right-border-diamonds",
+              "point": [
+                687,
+                367
+              ],
+              "paper": 0,
+              "cropPoint": [
+                348.05413303600767,
+                29.97749258891198
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "right-border-diamonds",
+              "point": [
+                688,
+                397
+              ],
+              "paper": 0,
+              "cropPoint": [
+                374.92776354640813,
+                54.63090310340439
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "lower-border-diamonds",
+              "point": [
+                481,
+                567
+              ],
+              "paper": 0,
+              "cropPoint": [
+                343.2632319980462,
+                381.66047873197385
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "lower-border-diamonds",
+              "point": [
+                512,
+                573
+              ],
+              "paper": 0,
+              "cropPoint": [
+                374.6490985113074,
+                359.72982167068005
+              ],
+              "covered": true,
+              "maskValue": 1,
+              "predictedPaper": 0,
+              "correct": true
+            },
+            {
+              "group": "white-star-centre",
+              "point": [
+                500,
+                377
+              ],
+              "paper": 1,
+              "cropPoint": [
+                197.5151314316515,
+                207.22034998084357
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-star-centre",
+              "point": [
+                504,
+                336
+              ],
+              "paper": 1,
+              "cropPoint": [
+                165.7753041437938,
+                169.42118663337882
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-star-centre",
+              "point": [
+                503,
+                415
+              ],
+              "paper": 1,
+              "cropPoint": [
+                232.494113778971,
+                236.25512578457815
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-star-centre",
+              "point": [
+                464,
+                370
+              ],
+              "paper": 1,
+              "cropPoint": [
+                161.53349899273906,
+                233.20746288853869
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-star-centre",
+              "point": [
+                546,
+                373
+              ],
+              "paper": 1,
+              "cropPoint": [
+                232.72890622964266,
+                162.91241947003985
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-surround-and-gaps",
+              "point": [
+                455,
+                295
+              ],
+              "paper": 1,
+              "cropPoint": [
+                90.05977381806825,
+                178.76602442521337
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-surround-and-gaps",
+              "point": [
+                552,
+                303
+              ],
+              "paper": 1,
+              "cropPoint": [
+                177.62878280899184,
+                98.70088217241236
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-surround-and-gaps",
+              "point": [
+                451,
+                439
+              ],
+              "paper": 1,
+              "cropPoint": [
+                209.4593399835034,
+                301.8435675779383
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-surround-and-gaps",
+              "point": [
+                552,
+                437
+              ],
+              "paper": 1,
+              "cropPoint": [
+                292.6599089521813,
+                211.20357819980174
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-surround-and-gaps",
+              "point": [
+                428,
+                374
+              ],
+              "paper": 1,
+              "cropPoint": [
+                135.13912422725363,
+                268.134178988884
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-surround-and-gaps",
+              "point": [
+                581,
+                382
+              ],
+              "paper": 1,
+              "cropPoint": [
+                270.08907967573697,
+                139.0805557721704
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            },
+            {
+              "group": "white-surround-and-gaps",
+              "point": [
+                501,
+                577
+              ],
+              "paper": 1,
+              "cropPoint": [
+                368.6933190202341,
+                372.60233696901804
+              ],
+              "covered": true,
+              "maskValue": 0,
+              "predictedPaper": 1,
+              "correct": true
+            }
+          ],
+          "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+        }
+      },
+      "detectionSeconds": 1.6566062920000404,
+      "solveAndValidationSeconds": 6.579342292000016
+    },
+    {
+      "id": "bibel-cross",
+      "beforeStatus": "validated",
+      "afterStatus": "validated",
+      "beforePassed": true,
+      "afterPassed": true,
+      "editablePassed": true,
+      "sameCrop": true,
+      "sameClassifiedMask": true,
+      "sameFittingMask": true,
+      "sameFittingProbability": true,
+      "beforeError": 0.00243125,
+      "afterError": 0.00243125,
+      "errorDelta": 0.0,
+      "sameObservationCoverage": true,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "errorComparable": true,
+      "failures": [],
+      "missingFeatures": 0,
+      "selectedCounts": [
+        2,
+        2
+      ],
+      "termination": "candidate_found",
+      "cropReason": null,
+      "materialReview": null,
+      "detectionSeconds": 0.7456274579999735,
+      "solveAndValidationSeconds": 2.909378625000012
+    },
+    {
+      "id": "flettede-puppy",
+      "beforeStatus": "validated",
+      "afterStatus": "validated",
+      "beforePassed": true,
+      "afterPassed": true,
+      "editablePassed": true,
+      "sameCrop": true,
+      "sameClassifiedMask": true,
+      "sameFittingMask": true,
+      "sameFittingProbability": true,
+      "beforeError": 0.0103125,
+      "afterError": 0.01049375,
+      "errorDelta": 0.00018124999999999912,
+      "sameObservationCoverage": true,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "errorComparable": true,
+      "failures": [],
+      "missingFeatures": 0,
+      "selectedCounts": [
+        5,
+        3
+      ],
+      "termination": "candidate_found",
+      "cropReason": null,
+      "materialReview": null,
+      "detectionSeconds": 0.8712112080000225,
+      "solveAndValidationSeconds": 9.48755441599997
+    },
+    {
+      "id": "flettede-stonehenge",
+      "beforeStatus": "validated",
+      "afterStatus": "validated",
+      "beforePassed": true,
+      "afterPassed": true,
+      "editablePassed": true,
+      "sameCrop": true,
+      "sameClassifiedMask": true,
+      "sameFittingMask": true,
+      "sameFittingProbability": true,
+      "beforeError": 0.01905,
+      "afterError": 0.0143875,
+      "errorDelta": -0.004662500000000002,
+      "sameObservationCoverage": true,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "errorComparable": true,
+      "failures": [],
+      "missingFeatures": 0,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "termination": "candidate_found",
+      "cropReason": null,
+      "materialReview": null,
+      "detectionSeconds": 0.9120324160000309,
+      "solveAndValidationSeconds": 8.007523791000015
+    },
+    {
+      "id": "flettede-viking",
+      "beforeStatus": "validated",
+      "afterStatus": "validated",
+      "beforePassed": true,
+      "afterPassed": true,
+      "editablePassed": true,
+      "sameCrop": true,
+      "sameClassifiedMask": true,
+      "sameFittingMask": true,
+      "sameFittingProbability": true,
+      "beforeError": 0.02040625,
+      "afterError": 0.02123125,
+      "errorDelta": 0.0008249999999999993,
+      "sameObservationCoverage": true,
+      "beforeObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "afterObservation": {
+        "total": 160000,
+        "observed": 160000,
+        "allObserved": true
+      },
+      "errorComparable": true,
+      "failures": [],
+      "missingFeatures": 0,
+      "selectedCounts": [
+        6,
+        6
+      ],
+      "termination": "candidate_found",
+      "cropReason": null,
+      "materialReview": null,
+      "detectionSeconds": 0.9861867920000222,
+      "solveAndValidationSeconds": 9.817208332999959
+    }
+  ],
+  "qualification": "Previously inspected development heart cases, including multiple crops from one collage. All original photo records are identical. Error deltas are comparable only with unchanged crops, target masks and observation coverage. Earlier records without observation coverage scored the complete square, including outside-photo padding. Derived-mask checks and sparse material samples do not certify original cutting paths or physical assembly. Search allowance is ten seconds; timings are not browser latency. Failure categories describe measured gates, not established root causes.",
+  "artifacts": {
+    "tmp/heart-learning/clearance-repair-release-v2/production-release/photos/results.json": {
+      "sha256": "fa532c99220d75b93feb847b3b70b860b90744d7f3299dfa3b0184409eabb283",
+      "bytes": 4698661
+    },
+    "tmp/heart-learning/late-polishing-release-v1/photos/results.json": {
+      "sha256": "541145565f6605950f889f31b346c2764a7d03d73d63794b6cf62a50143816bf",
+      "bytes": 5672020
+    },
+    "tmp/heart-learning/late-polishing-release-v1/photo-editable/results.json": {
+      "sha256": "ac29c7e81eb847563d22b674bf6ec67173b10f296b71f7517c311311788382f8",
+      "bytes": 633094
+    },
+    "tmp/heart-learning/late-polishing-release-v1/photo-state.json": {
+      "sha256": "7030246d6a677d9aeba548bbafea21c53557a0307e331a9d98f93db96f73ac22",
+      "bytes": 1499
+    },
+    "tmp/heart-learning/late-polishing-release-v1/photo-run.py": {
+      "sha256": "e66b6f7c482ed7dc9d81a00577c1f4898d4bd660c5829df80dc29d0ae4fb24e1",
+      "bytes": 4532
+    },
+    "tmp/heart-learning/late-polishing-release-v1/compare-photos.py": {
+      "sha256": "ef5909e0e243eb9a98986ea4da0414039afc4499c699aff50f3967cab8d75fb7",
+      "bytes": 5816
+    },
+    "tmp/heart-learning/late-polishing-release-v1/photos.log": {
+      "sha256": "404dba797d1fc8e13f9c05ef6a15af2e7eaabec7e6ff4919d7a6b6fe3fc1d38b",
+      "bytes": 1667
+    },
+    "tmp/heart-learning/late-polishing-release-v1/photo-editable.log": {
+      "sha256": "a91a183ff5c5e9cf3a827d343a2ebc2e8e0b6c7acd19d668ab8a7ba660a48b9b",
+      "bytes": 2069
+    },
+    "tmp/heart-learning/late-polishing-release-v1/ribbon-audit.json": {
+      "sha256": "e5ff34b07d133901c56af39d07abdfb8c9821908379dc81b3f50ec9d223b3057",
+      "bytes": 2776
+    },
+    "tmp/heart-learning/late-polishing-release-v1/audit-ribbon.py": {
+      "sha256": "e21b575bfc0de4f53199de7b7946724b83cd1a02ac738e4547e6c6ca62716d28",
+      "bytes": 3984
+    },
+    "tmp/heart-learning/late-polishing-release-v1/photo-comparison.json": {
+      "sha256": "839f4b38638f3d207b8f2f648de7fc6e1ae21fa5eadddf010697fa1cdcecc012",
+      "bytes": 118755
+    },
+    "tmp/heart-learning/late-polishing-release-v1/photo-review/page-1.png": {
+      "sha256": "e7bd588de45e53136c0fc69548756e11c5c45a1750d4cdc116497cc5643cf082",
+      "bytes": 740812
+    },
+    "tmp/heart-learning/late-polishing-release-v1/photo-review/page-2.png": {
+      "sha256": "70aa6041aa143ebb16ad5e095e92f87f0008b2f017722c940b201c5a0b22dd91",
+      "bytes": 756072
+    },
+    "tmp/heart-learning/late-polishing-release-v1/photo-review/page-3.png": {
+      "sha256": "e3a1cc6d84319827cf4d3fa48d98d3658e661a6234e5b9687e33c35748111ba5",
+      "bytes": 753081
+    },
+    "tmp/heart-learning/late-polishing-release-v1/photo-review/page-4.png": {
+      "sha256": "ddeb8c5508cf506fcc5bf7647ec76a4f8d40ff93c3cf6bcbee9465e6670e93f3",
+      "bytes": 550312
+    }
+  },
+  "runState": {
+    "status": "complete",
+    "pid": 96591,
+    "waitingForPid": 83838,
+    "stages": [
+      {
+        "name": "photos",
+        "status": "passed",
+        "command": [
+          "node",
+          "scripts/inverse/hard-photo-benchmark.mjs",
+          "--crop=automatic",
+          "--target=mask",
+          "--seconds=10",
+          "--presets=automatic",
+          "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/late-polishing-release-v1/photos"
+        ],
+        "pid": 18370,
+        "exitCode": 0,
+        "seconds": 330.5625090839999
+      },
+      {
+        "name": "photo-editable",
+        "status": "passed",
+        "command": [
+          "node",
+          "scripts/inverse/hard-photo-editor-replay.mjs",
+          "--run=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/late-polishing-release-v1/photos",
+          "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/late-polishing-release-v1/photo-editable"
+        ],
+        "pid": 28342,
+        "exitCode": 0,
+        "seconds": 27.679685167000116
+      }
+    ],
+    "runtimeCommit": "b7daccc12eb56887cd1006e0c75f1edd2053391c",
+    "sourceFiles": 1018,
+    "priority": 15,
+    "baseline": "tmp/heart-learning/clearance-repair-release-v2/production-release/photos/results.json",
+    "scope": "31 complete original-photo cases; retain 15 incomplete and one obscured inventory rows. Fresh automatic crop and binary Mal mask, ten-second search allowance. Editable SVG replay follows; browser timing was measured separately."
+  },
+  "ribbonFeatureAudit": {
+    "schema": "ribbon-observed-domain-audit-1",
+    "case": "crossed-ribbons",
+    "originalPhotoUnchanged": true,
+    "cropUnchanged": true,
+    "observedPixels": 157191,
+    "totalPixels": 160000,
+    "changedObservedMaskPixels": 946,
+    "changedUnobservedMaskPixels": 0,
+    "oldFeaturePixels": 72,
+    "oldFeaturePixelsStillObservedAndWhite": 72,
+    "currentConnectedWhiteRegionPixels": 114,
+    "currentRegionTouchesBorder": true,
+    "retainedOldFeatureBefore": 0,
+    "retainedOldFeatureAfter": 0,
+    "commonObservedErrors": {
+      "oldMask": {
+        "oldWeave": 0.021750609131566057,
+        "newWeave": 0.008842745449803105
+      },
+      "newMask": {
+        "oldWeave": 0.022386777868961965,
+        "newWeave": 0.005445604392108963
+      }
+    },
+    "qualification": "All old feature pixels remain observed and white in the new classified mask; none is recovered by either exported weave. A new connection to the square border changes the source-feature admission. The improved derived-mask pass is not recovery of that old feature, and its physical paper/artwork identity remains unverified.",
+    "artifacts": {
+      "tmp/heart-learning/clearance-repair-release-v2/production-release/photos/results.json": {
+        "sha256": "fa532c99220d75b93feb847b3b70b860b90744d7f3299dfa3b0184409eabb283",
+        "bytes": 4698661
+      },
+      "tmp/heart-learning/late-polishing-release-v1/photos/results.json": {
+        "sha256": "541145565f6605950f889f31b346c2764a7d03d73d63794b6cf62a50143816bf",
+        "bytes": 5672020
+      },
+      "tmp/heart-learning/late-polishing-release-v1/photos/crossed-ribbons/automatic/observed.bin": {
+        "sha256": "729a0e7819d25c0399f2720e75a37ca2d7e6afb7aba713b24fc4217b4ccb552a",
+        "bytes": 160000
+      },
+      "tmp/heart-learning/late-polishing-release-v1/audit-ribbon.py": {
+        "sha256": "e21b575bfc0de4f53199de7b7946724b83cd1a02ac738e4547e6c6ca62716d28",
+        "bytes": 3984
+      },
+      "tmp/heart-learning/clearance-repair-release-v2/production-release/photos/crossed-ribbons/automatic/mask.png": {
+        "sha256": "25d5c8a37f2215d74d1beea8efa57d5229aa011ed725efcefe3e0ab00f7c187b",
+        "bytes": 4137
+      },
+      "tmp/heart-learning/clearance-repair-release-v2/production-release/photos/crossed-ribbons/automatic/independent-weave.png": {
+        "sha256": "346207f690a75e5e37be5fc3bca6b1954a073deec61a221fed30bd5de9f778a5",
+        "bytes": 10268
+      },
+      "tmp/heart-learning/late-polishing-release-v1/photos/crossed-ribbons/automatic/mask.png": {
+        "sha256": "ff5bee4bad8eab66e4808b8f2a412730f90f2cb0bda3d0cb88e9612a88341a44",
+        "bytes": 4129
+      },
+      "tmp/heart-learning/late-polishing-release-v1/photos/crossed-ribbons/automatic/independent-weave.png": {
+        "sha256": "12d54febb05d38505c593efdcee720c4c78549c53a78266eac90b6fe0b501a87",
+        "bytes": 9401
+      }
+    }
+  },
+  "visualReview": {
+    "sheets": [
+      "tmp/heart-learning/late-polishing-release-v1/photo-review/page-1.png",
+      "tmp/heart-learning/late-polishing-release-v1/photo-review/page-2.png",
+      "tmp/heart-learning/late-polishing-release-v1/photo-review/page-3.png",
+      "tmp/heart-learning/late-polishing-release-v1/photo-review/page-4.png"
+    ],
+    "scope": "All 31 current source/crop, classified-mask and editable-weave rows visually inspected across four sheets; jigsaw compared with its previous native weave, and bird native/editable renders inspected individually.",
+    "findings": [
+      "Jigsaw resembles the unchanged target substantially better, but small protrusions and distorted corners remain; the crop is not verified ground truth.",
+      "Crossed ribbons has a cleaner broad shape but still loses the old 72-pixel border component; changed classification now joins that component to the border.",
+      "Bird, crown, puppy and Viking remain visibly imperfect despite passing the quantitative checks. Bird neck and border gaps already appear in the native export, before editable conversion.",
+      "Dense and warped checkers retain wavy boundaries; several outlined motifs retain uneven joins. Bauble loses frame details before fitting and remains rejected.",
+      "Nested squares and Santa still have no supported automatic crop; outlined star still loses its near-border component."
+    ],
+    "notClaimed": "27 checks passing does not mean 27 faithful original cutting templates or physical assembly validation."
+  },
+  "comparisonLimits": {
+    "sameDomainErrorIncreases": [
+      {
+        "id": "flettede-puppy",
+        "increase": 0.00018124999999999912
+      },
+      {
+        "id": "flettede-viking",
+        "increase": 0.0008249999999999993
+      }
+    ],
+    "jigsawAttribution": "The successful current fit uses finer paper verification at resolution 700; the old report discards coarse-uncertain checkpoints. Many solver changes separate the runs, so the full improvement is not attributed to the latest deadline fix alone.",
+    "timeBudget": "Ten-second search allowance, with detection, preparation, finalization and independent export checks recorded separately; not an end-to-end ten-second photo latency claim."
+  }
+}

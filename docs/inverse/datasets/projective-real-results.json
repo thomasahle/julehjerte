@@ -1,0 +1,355 @@
+{
+  "schema": "projective-real-results-1",
+  "status": "full-photo-and-editor-comparison-complete",
+  "plan": "docs/inverse/datasets/projective-real-plan.json",
+  "deployed": false,
+  "trainingPerformed": false,
+  "baseline": {
+    "previousDevelopment": {
+      "checked": 15,
+      "total": 22
+    },
+    "newSource": {
+      "checked": 4,
+      "total": 20
+    }
+  },
+  "current": {
+    "status": "pipeline-and-editor-complete",
+    "cohorts": {
+      "previous-development": {
+        "checked-derived-mask": 15,
+        "review-required": 4,
+        "crop-unresolved": 3
+      },
+      "new-source": {
+        "checked-derived-mask": 9,
+        "review-required": 4,
+        "crop-unresolved": 7
+      }
+    },
+    "retained": 22,
+    "newProposals": 10,
+    "exports": 32,
+    "editableConverted": 32,
+    "editableComplete": 24,
+    "editorIssues": 0
+  },
+  "newCheckedDerivedMasks": [
+    {
+      "id": "real-962159dea653810f",
+      "independentDerivedMaskError": 0.01086875,
+      "solveSeconds": 9.626412041000004
+    },
+    {
+      "id": "real-9b47cfbdf0004f4d",
+      "independentDerivedMaskError": 0.00589375,
+      "solveSeconds": 4.347798750000016
+    },
+    {
+      "id": "real-c7bc99827b382da7",
+      "independentDerivedMaskError": 0.005772754848676269,
+      "solveSeconds": 9.633853124999995
+    },
+    {
+      "id": "real-e4baad0c914577c8",
+      "independentDerivedMaskError": 0.0111375,
+      "solveSeconds": 8.964038666000008
+    },
+    {
+      "id": "real-e9131a2d52b78220",
+      "independentDerivedMaskError": 0.00721875,
+      "solveSeconds": 9.326859041999997
+    }
+  ],
+  "retainedInputs": {
+    "cropsMasksCoverageUnchanged": true,
+    "statusesUnchanged": true,
+    "changedWovenIds": [
+      "real-5330aa8b62176216-body-1",
+      "real-31ed1172998ab1c5"
+    ]
+  },
+  "floralCornerDiagnostic": {
+    "id": "real-995899fe049540ed-body-1",
+    "reference": {
+      "points": [
+        [
+          787.5,
+          212.3426
+        ],
+        [
+          1370.0,
+          699.4815
+        ],
+        [
+          812.5,
+          1304.0333
+        ],
+        [
+          247.5,
+          699.4815
+        ]
+      ],
+      "uncertaintyRadiusPixels": 15.0,
+      "status": "approximate-visible-reference",
+      "order": "notch,right,tip,left"
+    },
+    "earlierAffineDiagnostic": {
+      "cornerErrorPixels": [
+        9.616952301512688,
+        117.80769525894938,
+        17.855105072091252,
+        69.84540994584822
+      ],
+      "referenceMeanSidePixels": 784.1114051273668,
+      "maximumCornerErrorSideFraction": 0.15024356805499256,
+      "maximumExcessBeyondReferenceUncertaintySideFraction": 0.13111363332644022
+    },
+    "current": {
+      "cornerErrorPixels": [
+        50.31606181505961,
+        30.198196753007576,
+        18.58777171696638,
+        109.88346852233799
+      ],
+      "maximumCornerErrorSideFraction": 0.14013757203861754,
+      "maximumExcessBeyondReferenceUncertaintySideFraction": 0.1210076373100652
+    }
+  },
+  "floralPartialSourcePaperDiagnostic": {
+    "id": "real-995899fe049540ed-body-1",
+    "method": "fallback",
+    "status": "review-required",
+    "observedSourcePixels": 5706,
+    "knownFractionOfReferenceInterior": 0.5710568454763811,
+    "referenceCornerUncertaintyPixels": 15.0,
+    "coveredSourcePixels": 5581,
+    "coverage": 0.978093235191027,
+    "phaseExchanged": false,
+    "classification": {
+      "observedCoveredError": 0.150510661171833,
+      "errorIncludingMissingCoverage": 0.16912022432527166,
+      "missingSourcePixels": 125
+    },
+    "exported": {
+      "observedCoveredError": 0.155706862569432,
+      "errorIncludingMissingCoverage": 0.17420259376095337,
+      "missingSourcePixels": 125
+    }
+  },
+  "fitterDiagnosis": {
+    "id": "real-1fa372c6288da69f",
+    "selectedCounts": [
+      1,
+      2
+    ],
+    "finalists": {
+      "before": [
+        {
+          "counts": [
+            1,
+            2
+          ],
+          "phase": 1,
+          "error": 0.0970001220703125,
+          "featuresRetained": false
+        },
+        {
+          "counts": [
+            2,
+            2
+          ],
+          "phase": 1,
+          "error": 0.1026763916015625,
+          "featuresRetained": false
+        },
+        {
+          "counts": [
+            5,
+            5
+          ],
+          "phase": 1,
+          "error": 0.0762939453125,
+          "featuresRetained": false
+        }
+      ],
+      "reservesRefinement": false,
+      "after": [
+        {
+          "counts": [
+            1,
+            2
+          ],
+          "phase": 1,
+          "error": 0.0970001220703125,
+          "featuresRetained": false
+        },
+        {
+          "counts": [
+            2,
+            2
+          ],
+          "phase": 1,
+          "error": 0.1026763916015625,
+          "featuresRetained": false
+        },
+        {
+          "counts": [
+            5,
+            5
+          ],
+          "phase": 1,
+          "error": 0.0762939453125,
+          "featuresRetained": false
+        }
+      ]
+    },
+    "featureInitializationBase": [
+      1,
+      2
+    ],
+    "featureInitializationHypotheses": 22,
+    "featureInitializationRetained": 0,
+    "recoverySeconds": 6.037650207999977,
+    "recoveryAccepted": false,
+    "observation": "A (5,5) finalist has lower image error than the selected (1,2), but neither retains all regions. Count-penalized ranking leaves (1,2) first; feature seeding tries only its local count neighbourhood, and unsuccessful MILP recovery consumes the remaining search. This motivates testing existing alternate finalists as feature-initialization bases without altering the target or accepting missing features."
+  },
+  "verification": {
+    "focusedTestsPassed": 20,
+    "checkLintBuildPassed": true,
+    "repositoryTestSuite": {
+      "status": "passed",
+      "applicationPassed": 865,
+      "applicationSkipped": 1,
+      "inversePassed": 998,
+      "sourceFilesVerified": 896,
+      "checkLintBuildPassed": true,
+      "sourceSha256": "2f04b0ca24c027dc534cada08b86f27b4511cb5222ceffb48fa733ce9bdfdc06",
+      "logsSha256": {
+        "tmp/heart-learning/projective-real-v1/check.log": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+        "tmp/heart-learning/projective-real-v1/lint.log": "2b7add329ca80a0f26dcb26c7eb139cd28b3768793c6b0797002f91a54119a34",
+        "tmp/heart-learning/projective-real-v1/build.log": "ea702ee9004a845805ea6aabd8af2f81097d98901dab096cc3441be1083d8a5e",
+        "tmp/heart-learning/projective-real-v1/test.log": "51b67c49dadd91855e33e7cbdff77b39e9475364d6cf22a747676638177879ef"
+      },
+      "checks": [
+        {
+          "stage": "focused",
+          "exitCode": 0,
+          "seconds": 0.9075770000000001
+        },
+        {
+          "stage": "crop",
+          "exitCode": 0,
+          "seconds": 51.930364875
+        },
+        {
+          "stage": "pipeline",
+          "exitCode": 0,
+          "seconds": 269.446428166
+        },
+        {
+          "stage": "editor-input",
+          "exitCode": 0,
+          "seconds": 0.6696583749999832
+        },
+        {
+          "stage": "editable",
+          "exitCode": 0,
+          "seconds": 32.25074466700005
+        },
+        {
+          "stage": "check",
+          "exitCode": 0,
+          "seconds": 16.931025458000022
+        },
+        {
+          "stage": "lint",
+          "exitCode": 0,
+          "seconds": 8.338743583000053
+        },
+        {
+          "stage": "build",
+          "exitCode": 0,
+          "seconds": 22.16112049999998
+        },
+        {
+          "stage": "test",
+          "exitCode": 0,
+          "seconds": 1113.410027292
+        }
+      ]
+    },
+    "visualReview": {
+      "status": "complete",
+      "fallbackPhotoPanelsInspected": 20,
+      "newExportsInspected": 10,
+      "changedRetainedExportsInspected": 2,
+      "maskDisplay": "Target-mask previews are visually inverted only to use the same black/white phase as the exported weave. Original saved masks and scores are unchanged.",
+      "newCandidateNotes": {
+        "real-995899fe049540ed-body-1": "Floral/striped paper: left corner remains displaced; printed flowers split the material mask into false regions. Fixed partial source-paper labels show about 15% classification error before template fitting.",
+        "real-1fa372c6288da69f": "Brown/white checker: proposed notch lies above the visible notch and crop includes decoration. Downstream fit selects (1,2) rather than the earlier affine replay\u2019s (5,5), loses the center grid and spends roughly six seconds in unsuccessful MILP recovery.",
+        "real-202b8421f50252f2": "Flower caps: overlap is oversized toward the decorated caps, adding petal fragments to the rectangular target; 3.40% derived-mask disagreement remains.",
+        "real-931ac5ea86dbe082": "Santa: approximate overlap recovered, but small facial/stripe regions disappear. 2.08% image error correctly remains a feature-check failure.",
+        "real-962159dea653810f": "Birds: derived mask and exported weave agree, but the overlap clips parts of the birds shown on the caps; no full-motif or ground-truth corner claim.",
+        "real-9b47cfbdf0004f4d": "Cat: center motif and checker structure recognizable; rounded cells and visible shared-seam artifacts remain.",
+        "real-c7bc99827b382da7": "Child-held checker: useful crop and checker recovered; physical paper is visibly bent and result follows uneven cells, not a measured flat template.",
+        "real-d6d0462384722949": "Printed text: crop found, but text and folds are classified as material changes. Export cannot represent the actual weave reliably.",
+        "real-e4baad0c914577c8": "Reflective foil: main silhouette recovered; reflections still create false mask details and small protrusions in export.",
+        "real-e9131a2d52b78220": "Small teal/orange checker: notch and overlap much closer than affine crop. Handle remains a false motif fragment near the corner; good mask fit does not mean exact template recovery."
+      },
+      "unresolvedPatterns": {
+        "wrongObjectOrMissingPaper": [
+          "real-cf2d0fcff65d7386-body-1",
+          "real-642c4cb2ef3e92dc",
+          "real-df27aec172744811",
+          "real-e4f8acc92d491b5a"
+        ],
+        "foregroundDecorationOrHandle": [
+          "real-68d8f25d8891df62-body-1",
+          "real-990ac34431be87fe-body-1",
+          "real-27c86e56296f2df5"
+        ],
+        "nonstandardOutlineOrWeakLowerEdges": [
+          "real-26c948c0aa94f483",
+          "real-7076a4d811c096db",
+          "real-f882e57ac79e63d3"
+        ]
+      },
+      "causalQualification": "These categories are visually supported failure patterns; they do not isolate the sole cause for every case. No reference corners or template scores selected the crop.",
+      "panelSha256": {
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/projective-real-v1/crop-review-2.png": "a880ed1868d6b2b8cbb57662b99e608d678f4c6bd83bb615b8629021419bc0cb",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/projective-real-v1/crop-review-3.png": "f23769dceca1e4e5a6615f82f04652ed2cb232b70d36bac5a3fbe30892072721",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/projective-real-v1/crop-review-1.png": "00734f06f89c5bacfaed61adecce8aee91aff72059cee8282df66e21df4d23b4",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/projective-real-v1/crop-review-4.png": "d025ff5975866a429ba7117fff89a6fb55c00e6fc98cfad87c28a8c4917bc432",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/projective-real-v1/crop-review-5.png": "1df2e438627b0903fd06f22f3efa18516c1f5cf85ca116fa3c311abababb360a",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/projective-real-v1/export-review-3.png": "dbf8ecdb978de47c62482eb04ea0d7bcb5e07a843ff0b5a8eef772610c3d05d2",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/projective-real-v1/export-review-2.png": "8592d7bd531166c16cf3e0eee74666dc889f67a935a225f817df86c88f5a9e0c",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/projective-real-v1/export-review-1.png": "aa73fa5b015063f123739bf7a0d5d45f9d588ab28bb9eb5fc53247f7cb74c180",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/projective-real-v1/projective-vs-affine.png": "a513577570e24bbc80f803012fdc0c759229fd7f27581ab2d87afa4f7dacba0c"
+      }
+    },
+    "sourceFilesVerified": 896
+  },
+  "limitations": [
+    "Counts refer to agreement with classified masks plus independent geometry/paper/editor checks, not unknown original cutting templates.",
+    "Real crop errors and material errors remain, including printed flowers/text, occlusion and reflections.",
+    "Existing 22 crops are retained by policy; this comparison measures additional recovery only.",
+    "All cases are development examples. Frozen neural inference is reused and excluded from crop runtime.",
+    "No learned model or prototype is in the browser application."
+  ],
+  "artifactsSha256": {
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/projective-real-v1/plan.json": "9bdb91e2a3cbfa4979f85e431b0f5a7b5d61c16ab75b5b5d7a4bcf99a42e72c5",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/projective-real-v1/source.json": "2f04b0ca24c027dc534cada08b86f27b4511cb5222ceffb48fa733ce9bdfdc06",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/projective-real-v1/results/report.json": "571801e29e2be8837d756fbabc04f4c644f19a2c3c2af9c3b784bc5ab23014f0",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/projective-real-v1/pipeline/report.json": "68bb42139f34201f48c1523b2ec38ce06cf60741cc64c2387c2853d1eede7cbc",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/projective-real-v1/editable/results.json": "c62f84f00c0e048a0fdd9bef6dbfc12f52b6b24078236b928ffe31632ad99340",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/projective-real-v1/selection-audit.json": "8c390144a8bd3e49470636dca58a8cc3776929c39e943be1de7999bd6fa21c0e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/projective-real-v1/corner-audit.json": "8bf85e4ddf84595b5e7f72a0bcc536cbd8037f01309f366845028ba66713aa1c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/projective-real-v1/source-paper-scores.json": "391b6764d24294d499b5aa643c53d673069375e80732c7b60678e4fa4f2c7b9b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/projective-real-v1/visual-review.json": "788734b1047f3bcc9d93f183b91faad431b3d543cab3f77a618bb58686537727",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/projective-real-v1/fitter-diagnosis.json": "0a60aedb5c84740058a8c2565ca232fc4efeb0a9d5df7f1ca8cceb1f16da2c5d",
+    "tmp/heart-learning/projective-real-v1/qa.json": "d078b797962c2c115d41b91e0fe62ec27722b6bb72fda98c1093d3fc8a5a9374"
+  },
+  "nextStep": "Audit feature initialization using existing alternate cut-count finalists on the fixed failed masks. Separately evaluate crop corner evidence without restoring unreliable hard coarse-mask gates. Keep the projective prototype offline pending stronger real-photo corner and material validation."
+}

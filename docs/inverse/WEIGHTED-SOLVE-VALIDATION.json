@@ -1,0 +1,5133 @@
+{
+  "date": "2026-09-09T00:23:26.908Z",
+  "sourceCommit": "7b87c16f77270a65ee029a109454c220518f8624",
+  "status": "Full weighted mask pipeline and Paint free-border integration, with post-initialization refinement budget correction.",
+  "sourceHashes": {
+    "scripts/inverse/weighted-solve-benchmark.mjs": "7d58e2cbf5e48ac5617c39bdb43f6e068ca01b95459201984e40727d67104994",
+    "scripts/inverse/paint-browser-test.mjs": "90870c28fd2da2328065d041c6c9113d176a91ad2f906be1ee47b6ac0f1af4c0",
+    "scripts/inverse/refinement-budget.test.mjs": "f45a884a85811fec55fdfc82f427fd8410a9ebacb3389f1935bcca92bef67669",
+    "scripts/inverse/weighted-pipeline.test.mjs": "19f2dde29da39ee6132ca7dfc95e5198104a7196b021e6a0ffeb55f7c15b5cb1",
+    "scripts/inverse/motif-fixture.mjs": "0e8cbbe3e94466baf83d3ac96099a75c543834adf653dc6be7f339d8f076678c",
+    "src/lib/paint/frame.ts": "56f23f653dc43588039d98951e1d45c8682a47892d5feccc4eb43c90b6326af5",
+    "src/lib/inverse/engine.ts": "3801ce556deb99d9338d9790867cfe7c9a9b10293b03300f6aae5537f7ed7b96"
+  },
+  "checks": {
+    "applicationTests": 718,
+    "engineTests": 196,
+    "failures": 0,
+    "svelteErrors": 0,
+    "svelteWarnings": 7,
+    "commands": [
+      "npm test",
+      "npm run check",
+      "npm run lint",
+      "npm run build"
+    ],
+    "logSha256": {
+      "weighted-final-tests": "b5c90e0de67fd18f428ae93dc4c3c97c5030ea120af3f044eb7fda576b75618d",
+      "weighted-final-build": "11fa1b6ad6911e114f25e0f06dd56d9709406108645730e65ed3c9ab808439ce",
+      "weighted-final-lint": "a552732ebea6b64b49ac0a1299170db75e8c45dbbc66c284f28e99be5613e5c7",
+      "weighted-integration-check": "1be3902fa1acaae6b0990406476a41369d095dc32dda58ba4b2a1df01155978b",
+      "refinement-budget-before": "255cdff7fa5b04f97d678ca2aafc847673ec4d356649aa2568a8eda398ffbb5d"
+    }
+  },
+  "fullSolve": {
+    "runtime": "v25.6.1",
+    "cpu": "Apple M2 Pro",
+    "engineSha256": {
+      "static/inverse/core/automatic.js": "22dcb7030180e2b090780a4f8dc658b98e2fdf69a0efa045b1455bf5cf263f2e",
+      "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+      "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+      "static/inverse/core/crop.js": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88",
+      "static/inverse/core/engine.js": "59e4354b5c7ec6190b140066b24b3f8959e58f5e2f0f0166298522fb485d4740",
+      "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+      "static/inverse/core/feature-recovery.js": "37831af78afffd94b19a4145091d199f9771d12e505514e88cf1943e6023279e",
+      "static/inverse/core/geometry.js": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+      "static/inverse/core/graph.js": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
+      "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+      "static/inverse/core/image-reference.js": "c55d23e226f157febec1879425cb7a38bb701fe096f0a2163aea27076e2d2549",
+      "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+      "static/inverse/core/junctions.js": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
+      "static/inverse/core/material.js": "945fed7196f52c3b54e140d9ac47a6ce8ef111376c2c73d7288c2401bad197fb",
+      "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+      "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+      "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+      "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+      "static/inverse/core/settings.js": "2fcdd67395cf3ebfcfcf4c885ea8fa5ae58b43dd52000660d0a52706b3b3665e",
+      "static/inverse/core/solver.js": "1021b7b30bc82ff02f99849c6c84535ee6128f6dea23e7366f2aa028ffaec041",
+      "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+      "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+      "static/inverse/core/validate.js": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+      "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+      "static/inverse/core/direct/boundary.js": "81352f745b660ed8ca11f0b0aed384cafffc8c87874707af775d9806d6b5251d",
+      "static/inverse/core/direct/counts.js": "adbdbbb8ec350e5e6a5ebe2c9b281475cf47d6bf94cb4eae04a8208e6cc49c34",
+      "static/inverse/core/direct/curves.js": "18fe358d46448eb844b69fe5f35bee1cc8adb87cd5c5462382a59dbbd92fe08a",
+      "static/inverse/core/direct/finalize.js": "83e635848f6e11019d85a937d172f852140c3d8dc43beec6e61daaf4a7c9dccc",
+      "static/inverse/core/direct/fit.js": "af0de3afd069f188ecd1edba063288e4f3a603a5fc8dcb8cb4d215534f9488fb",
+      "static/inverse/core/direct/grid.js": "4136f590b11af62de8135c9e23b1f3a48ad2e0dcb9e419e7c2a5f906595caa47",
+      "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+      "static/inverse/core/direct/initialize.js": "6a0aca938b4f4c28ae592125246173191399213a943c3ad137666a53a5501724",
+      "static/inverse/core/direct/matching.js": "db113f3e5c6ed3be820f7c863a113e9181a02c7efa5ea66a46e56df7f2428414",
+      "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+      "static/inverse/core/direct/native.js": "48435ecb5bea2b58d0b89ae48a358da064031c7d801bcbb477b749625a6719a2",
+      "static/inverse/core/direct/prefer-matching.js": "1ff682f298014f8c29387ad3bbe330c52e4ee619defd5a2d116cb3703e0f5d48",
+      "static/inverse/core/direct/primitives.js": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b",
+      "static/inverse/core/direct/refine.js": "f2bc0b7bb92155553909e1a55dd791587ee0979b9acd594d1323b9ced0f7e7ab",
+      "static/inverse/core/direct/share.js": "9a3723c2aea8dfe1bcf24f29e184aa4a90e953098f70ed7d76c038a305e140a7",
+      "static/inverse/core/direct/symmetry.js": "ed9f633ea42af93b46293d0d753e21dd7a5921485d5d55847e5a02665c14cf13",
+      "static/inverse/core/direct/topology.js": "2395b84473431b3e5354cc419d8cecb1355e6805845cd3906d656c49b6f46cb9",
+      "static/inverse/core/direct/native/boundary.c": "7798b37aa8ff54104fedd8506d2b46b1a4968f0ca4d3fa440717ac63557eedfc",
+      "static/inverse/core/direct/native/boundary.wasm": "0b8f321550f82dbac9bff6a5cc58d63f540099b80f0ca1c7f9305738370e0207"
+    },
+    "resolution": 200,
+    "seconds": 10,
+    "method": "Fresh automatic mask solves. Frames fixed before fitting. Checker strategy replaces the band; weighted strategy retains the original mask with zero band weights. Exported controls are independently rendered with resvg. Geometric and paper checks remain enabled.",
+    "results": [
+      {
+        "shape": "top-hat",
+        "size": 0.64,
+        "strategy": "checker",
+        "seconds": 2.378510667,
+        "prepareSeconds": 0.035613,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 200,
+          "mismatchPixels": 59,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.001475,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 11543,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00360107421875,
+          "weightMass": 16384,
+          "mismatchWeight": 59,
+          "wholeMismatchFraction": 0.288575,
+          "protectedPixels": 16384,
+          "protectedMismatchFraction": 0.00360107421875,
+          "editablePixels": 23616,
+          "editableChangeFraction": 0.48628048780487804
+        },
+        "passed": true,
+        "search": {
+          "termination": "validated_topology_seed",
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 0.758893041
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.6016714160000002
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.17851216599999997
+            }
+          ],
+          "topology": {
+            "accepted": true,
+            "seconds": 0.51661275,
+            "error": null
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.001475,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0.001475,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 40,
+              "error": 0.0001,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 79,
+              "error": 0.000125,
+              "geometry": true,
+              "paper": "pass"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "top-hat",
+        "size": 0.64,
+        "strategy": "weighted",
+        "seconds": 3.0388398329999995,
+        "prepareSeconds": 0.02917570799999976,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Original artwork with image-importance weights; whole-image and permitted changes reported separately",
+          "resolution": 200,
+          "mismatchPixels": 12029,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00360107421875,
+          "weightMass": 16384,
+          "mismatchWeight": 59,
+          "wholeMismatchFraction": 0.300725,
+          "protectedPixels": 16384,
+          "protectedMismatchFraction": 0.00360107421875,
+          "editablePixels": 23616,
+          "editableChangeFraction": 0.506859756097561,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 12149,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00360107421875,
+          "weightMass": 16384,
+          "mismatchWeight": 59,
+          "wholeMismatchFraction": 0.303725,
+          "protectedPixels": 16384,
+          "protectedMismatchFraction": 0.00360107421875,
+          "editablePixels": 23616,
+          "editableChangeFraction": 0.5119410569105691
+        },
+        "passed": true,
+        "search": {
+          "termination": "validated_topology_seed",
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 1.9713691250000003
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.4828091249999998
+            }
+          ],
+          "topology": {
+            "accepted": true,
+            "seconds": 0.2713592090000002,
+            "error": null
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.00360107421875,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0.00360107421875,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 40,
+              "error": 0.00018310546875,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 79,
+              "error": 0.0001220703125,
+              "geometry": true,
+              "paper": "pass"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "top-hat",
+        "size": 0.84,
+        "strategy": "weighted",
+        "seconds": 8.642644333,
+        "prepareSeconds": 0.02105712500000027,
+        "counts": {
+          "left": 2,
+          "right": 2
+        },
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Original artwork with image-importance weights; whole-image and permitted changes reported separately",
+          "resolution": 200,
+          "mismatchPixels": 2169,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.000248015873015873,
+          "weightMass": 28224,
+          "mismatchWeight": 7,
+          "wholeMismatchFraction": 0.054225,
+          "protectedPixels": 28224,
+          "protectedMismatchFraction": 0.000248015873015873,
+          "editablePixels": 11776,
+          "editableChangeFraction": 0.18359375,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 2151,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0002834467120181406,
+          "weightMass": 28224,
+          "mismatchWeight": 8,
+          "wholeMismatchFraction": 0.053775,
+          "protectedPixels": 28224,
+          "protectedMismatchFraction": 0.0002834467120181406,
+          "editablePixels": 11776,
+          "editableChangeFraction": 0.1819802989130435
+        },
+        "passed": true,
+        "search": {
+          "termination": "candidate_found",
+          "selectedCounts": [
+            2,
+            2
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 1.794078458
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.5439450830000006
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.21160279099999935
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 2.453713291
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.558253084
+            },
+            {
+              "stage": "directPolishing",
+              "seconds": 0.6986004589999993
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.15048112500000024
+            }
+          ],
+          "topology": {
+            "accepted": false,
+            "seconds": 0.23097745800000122,
+            "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.00042517006802721087,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0.00035430839002267573,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 40,
+              "error": 0.0002834467120181406,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 80,
+              "error": 0.0002834467120181406,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 120,
+              "error": 0.000248015873015873,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 159,
+              "error": 0.000248015873015873,
+              "geometry": true,
+              "paper": "uncertain"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "top-hat",
+        "size": 0.84,
+        "strategy": "checker",
+        "seconds": 9.808741583,
+        "prepareSeconds": 0.012831457999998748,
+        "counts": {
+          "left": 3,
+          "right": 3
+        },
+        "templateChecksPassed": false,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 200,
+          "mismatchPixels": 2262,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.05655,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 4578,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.022144274376417233,
+          "weightMass": 28224,
+          "mismatchWeight": 625,
+          "wholeMismatchFraction": 0.11445,
+          "protectedPixels": 28224,
+          "protectedMismatchFraction": 0.022144274376417233,
+          "editablePixels": 11776,
+          "editableChangeFraction": 0.3356827445652174
+        },
+        "passed": true,
+        "search": {
+          "termination": "image_mismatch",
+          "selectedCounts": [
+            3,
+            3
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 0.6650655830000014
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.5270141669999976
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.31880583299999854
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 5.013466
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.3092844160000022
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.03182779099999971
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.23964874999999666
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.1398889999999992
+            },
+            {
+              "stage": "directPolishing",
+              "seconds": 1.015125833000002
+            }
+          ],
+          "topology": {
+            "accepted": false,
+            "seconds": 0.16817312499999754,
+            "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.0566,
+              "geometry": true,
+              "paper": "pass"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "hat",
+        "size": 0.64,
+        "strategy": "checker",
+        "seconds": 1.8205663749999985,
+        "prepareSeconds": 0.016216832999998588,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 200,
+          "mismatchPixels": 41,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.001025,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 11462,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0028076171875,
+          "weightMass": 16384,
+          "mismatchWeight": 46,
+          "wholeMismatchFraction": 0.28655,
+          "protectedPixels": 16384,
+          "protectedMismatchFraction": 0.0028076171875,
+          "editablePixels": 23616,
+          "editableChangeFraction": 0.4834010840108401
+        },
+        "passed": true,
+        "search": {
+          "termination": "validated_topology_seed",
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 0.7122179590000014
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.6010319999999992
+            }
+          ],
+          "topology": {
+            "accepted": true,
+            "seconds": 0.3300971250000002,
+            "error": null
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.001025,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0.000975,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 40,
+              "error": 0.00015,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 79,
+              "error": 2.5e-05,
+              "geometry": true,
+              "paper": "pass"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "hat",
+        "size": 0.64,
+        "strategy": "weighted",
+        "seconds": 8.996823042,
+        "prepareSeconds": 0.018451875000002473,
+        "counts": {
+          "left": 2,
+          "right": 2
+        },
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Original artwork with image-importance weights; whole-image and permitted changes reported separately",
+          "resolution": 200,
+          "mismatchPixels": 2232,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0081787109375,
+          "weightMass": 16384,
+          "mismatchWeight": 134,
+          "wholeMismatchFraction": 0.0558,
+          "protectedPixels": 16384,
+          "protectedMismatchFraction": 0.0081787109375,
+          "editablePixels": 23616,
+          "editableChangeFraction": 0.0888380758807588,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 2221,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.008544921875,
+          "weightMass": 16384,
+          "mismatchWeight": 140,
+          "wholeMismatchFraction": 0.055525,
+          "protectedPixels": 16384,
+          "protectedMismatchFraction": 0.008544921875,
+          "editablePixels": 23616,
+          "editableChangeFraction": 0.08811822493224933
+        },
+        "passed": true,
+        "search": {
+          "termination": "candidate_found",
+          "selectedCounts": [
+            2,
+            2
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 2.0545653749999984
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.5213325409999962
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.1701895829999994
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.11261774999999762
+            },
+            {
+              "stage": "directPolishing",
+              "seconds": 0.6475981249999968
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.2766837499999965
+            }
+          ],
+          "topology": {
+            "accepted": false,
+            "seconds": 5.017863625000002,
+            "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.01947021484375,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0.0191650390625,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 40,
+              "error": 0.01226806640625,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 80,
+              "error": 0.0089111328125,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 84,
+              "error": 0.00830078125,
+              "geometry": true,
+              "paper": "pass"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "hat",
+        "size": 0.84,
+        "strategy": "weighted",
+        "seconds": 9.218634457999993,
+        "prepareSeconds": 0.01673824999999488,
+        "counts": {
+          "left": 2,
+          "right": 2
+        },
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Original artwork with image-importance weights; whole-image and permitted changes reported separately",
+          "resolution": 200,
+          "mismatchPixels": 659,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0018424036281179139,
+          "weightMass": 28224,
+          "mismatchWeight": 52,
+          "wholeMismatchFraction": 0.016475,
+          "protectedPixels": 28224,
+          "protectedMismatchFraction": 0.0018424036281179139,
+          "editablePixels": 11776,
+          "editableChangeFraction": 0.051545516304347824,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 651,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0018424036281179139,
+          "weightMass": 28224,
+          "mismatchWeight": 52,
+          "wholeMismatchFraction": 0.016275,
+          "protectedPixels": 28224,
+          "protectedMismatchFraction": 0.0018424036281179139,
+          "editablePixels": 11776,
+          "editableChangeFraction": 0.05086616847826087
+        },
+        "passed": true,
+        "search": {
+          "termination": "candidate_found",
+          "selectedCounts": [
+            2,
+            2
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 2.0286417500000025
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.4791889999999985
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.18658445900000514
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.09620491700000275
+            },
+            {
+              "stage": "directPolishing",
+              "seconds": 0.7163969169999982
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.5028675000000002
+            }
+          ],
+          "topology": {
+            "accepted": false,
+            "seconds": 5.007380999999994,
+            "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.011196145124716554,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0.010912698412698412,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 40,
+              "error": 0.005385487528344671,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 80,
+              "error": 0.00350765306122449,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 120,
+              "error": 0.002409297052154195,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 159,
+              "error": 0.0020195578231292518,
+              "geometry": true,
+              "paper": "pass"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "hat",
+        "size": 0.84,
+        "strategy": "checker",
+        "seconds": 9.230064707999999,
+        "prepareSeconds": 0.009398957999997947,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "templateChecksPassed": false,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 200,
+          "mismatchPixels": 1366,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.03415,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 6265,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.036210317460317464,
+          "weightMass": 28224,
+          "mismatchWeight": 1022,
+          "wholeMismatchFraction": 0.156625,
+          "protectedPixels": 28224,
+          "protectedMismatchFraction": 0.036210317460317464,
+          "editablePixels": 11776,
+          "editableChangeFraction": 0.44522758152173914
+        },
+        "passed": false,
+        "search": {
+          "termination": "image_mismatch",
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 0.7053231670000023
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.651711166000001
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.3565617910000001
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 1.5859455830000007
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.23062937500000408
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.208848917000003
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.1652252920000028
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.14015591700000368
+            },
+            {
+              "stage": "directPolishing",
+              "seconds": 0.7635324590000019
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.2259411670000045
+            }
+          ],
+          "topology": {
+            "accepted": false,
+            "seconds": 3.9203408750000017,
+            "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.034625,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0.0325,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 0,
+              "error": 0.0327,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 40,
+              "error": 0.011675,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 80,
+              "error": 0.0149,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 120,
+              "error": 0.018275,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 160,
+              "error": 0.0219,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 164,
+              "error": 0.03345,
+              "geometry": true,
+              "paper": "uncertain"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "house",
+        "size": 0.64,
+        "strategy": "checker",
+        "seconds": 1.5141715840000034,
+        "prepareSeconds": 0.010254249999998138,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 200,
+          "mismatchPixels": 0,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 11416,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0,
+          "weightMass": 16384,
+          "mismatchWeight": 0,
+          "wholeMismatchFraction": 0.2854,
+          "protectedPixels": 16384,
+          "protectedMismatchFraction": 0,
+          "editablePixels": 23616,
+          "editableChangeFraction": 0.4834010840108401
+        },
+        "passed": true,
+        "search": {
+          "termination": "validated_topology_seed",
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 0.704547166999997
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.4334232499999998
+            }
+          ],
+          "topology": {
+            "accepted": true,
+            "seconds": 0.212864459000004,
+            "error": null
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 40,
+              "error": 0,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 79,
+              "error": 0,
+              "geometry": true,
+              "paper": "pass"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "house",
+        "size": 0.64,
+        "strategy": "weighted",
+        "seconds": 9.121650625000003,
+        "prepareSeconds": 0.017691791999997805,
+        "counts": {
+          "left": 2,
+          "right": 2
+        },
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Original artwork with image-importance weights; whole-image and permitted changes reported separately",
+          "resolution": 200,
+          "mismatchPixels": 1852,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00537109375,
+          "weightMass": 16384,
+          "mismatchWeight": 88,
+          "wholeMismatchFraction": 0.0463,
+          "protectedPixels": 16384,
+          "protectedMismatchFraction": 0.00537109375,
+          "editablePixels": 23616,
+          "editableChangeFraction": 0.07469512195121951,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 1840,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00518798828125,
+          "weightMass": 16384,
+          "mismatchWeight": 85,
+          "wholeMismatchFraction": 0.046,
+          "protectedPixels": 16384,
+          "protectedMismatchFraction": 0.00518798828125,
+          "editablePixels": 23616,
+          "editableChangeFraction": 0.0743140243902439
+        },
+        "passed": true,
+        "search": {
+          "termination": "candidate_found",
+          "selectedCounts": [
+            2,
+            2
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 2.0392407079999977
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.4653792919999978
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.18234841700000107
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.0975245419999992
+            },
+            {
+              "stage": "directPolishing",
+              "seconds": 0.6882488340000055
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.4456154999999999
+            }
+          ],
+          "topology": {
+            "accepted": false,
+            "seconds": 5.018512999999999,
+            "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.01458740234375,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0.01434326171875,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 40,
+              "error": 0.00885009765625,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 80,
+              "error": 0.00750732421875,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 120,
+              "error": 0.0059814453125,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 159,
+              "error": 0.0054931640625,
+              "geometry": true,
+              "paper": "pass"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "house",
+        "size": 0.84,
+        "strategy": "weighted",
+        "seconds": 9.134382834000004,
+        "prepareSeconds": 0.017291125000003377,
+        "counts": {
+          "left": 2,
+          "right": 2
+        },
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Original artwork with image-importance weights; whole-image and permitted changes reported separately",
+          "resolution": 200,
+          "mismatchPixels": 1217,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0018069727891156463,
+          "weightMass": 28224,
+          "mismatchWeight": 51,
+          "wholeMismatchFraction": 0.030425,
+          "protectedPixels": 28224,
+          "protectedMismatchFraction": 0.0018069727891156463,
+          "editablePixels": 11776,
+          "editableChangeFraction": 0.09901494565217392,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 1207,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0018069727891156463,
+          "weightMass": 28224,
+          "mismatchWeight": 51,
+          "wholeMismatchFraction": 0.030175,
+          "protectedPixels": 28224,
+          "protectedMismatchFraction": 0.0018069727891156463,
+          "editablePixels": 11776,
+          "editableChangeFraction": 0.09816576086956522
+        },
+        "passed": true,
+        "search": {
+          "termination": "candidate_found",
+          "selectedCounts": [
+            2,
+            2
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 1.9601065839999938
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.5243937920000026
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.18315333400000236
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.09721420800000487
+            },
+            {
+              "stage": "directPolishing",
+              "seconds": 0.6993427500000107
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.4711790420000034
+            }
+          ],
+          "topology": {
+            "accepted": false,
+            "seconds": 5.004550124999994,
+            "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.00875141723356009,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0.00875141723356009,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 40,
+              "error": 0.003932823129251701,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 80,
+              "error": 0.0025155895691609978,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 120,
+              "error": 0.002232142857142857,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 159,
+              "error": 0.0018778344671201814,
+              "geometry": true,
+              "paper": "pass"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "house",
+        "size": 0.84,
+        "strategy": "checker",
+        "seconds": 9.263343458000003,
+        "prepareSeconds": 0.008612666999993962,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "templateChecksPassed": false,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 200,
+          "mismatchPixels": 1709,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.042725,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 6418,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.042800453514739226,
+          "weightMass": 28224,
+          "mismatchWeight": 1208,
+          "wholeMismatchFraction": 0.16045,
+          "protectedPixels": 28224,
+          "protectedMismatchFraction": 0.042800453514739226,
+          "editablePixels": 11776,
+          "editableChangeFraction": 0.44242527173913043
+        },
+        "passed": false,
+        "search": {
+          "termination": "image_mismatch",
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 0.719957500000004
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.6846485410000023
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.34713862500000686
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 4.650765291999996
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.21254562499999882
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.04686045800001011
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.15694112499999754
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.05186079199999222
+            },
+            {
+              "stage": "directPolishing",
+              "seconds": 0.852155375000002
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.26349854200000117
+            }
+          ],
+          "topology": {
+            "accepted": false,
+            "seconds": 0.9817559579999943,
+            "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.043875,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": -1,
+              "error": 0.04395,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0.040675,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 40,
+              "error": 0.018775,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 80,
+              "error": 0.0229,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 120,
+              "error": 0.02685,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 160,
+              "error": 0.03035,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 200,
+              "error": 0.0337,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 200,
+              "error": 0.03385,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 240,
+              "error": 0.036225,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 280,
+              "error": 0.036225,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 320,
+              "error": 0.036225,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 360,
+              "error": 0.036225,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 400,
+              "error": 0.036225,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 440,
+              "error": 0.036225,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 480,
+              "error": 0.036225,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 520,
+              "error": 0.036225,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 560,
+              "error": 0.036225,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 600,
+              "error": 0.036225,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 604,
+              "error": 0.04305,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 604,
+              "error": 0.043125,
+              "geometry": true,
+              "paper": "pass"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "circle",
+        "size": 0.64,
+        "strategy": "checker",
+        "seconds": 1.662455209000007,
+        "prepareSeconds": 0.014979999999995925,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 200,
+          "mismatchPixels": 50,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00125,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 11466,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0030517578125,
+          "weightMass": 16384,
+          "mismatchWeight": 50,
+          "wholeMismatchFraction": 0.28665,
+          "protectedPixels": 16384,
+          "protectedMismatchFraction": 0.0030517578125,
+          "editablePixels": 23616,
+          "editableChangeFraction": 0.4834010840108401
+        },
+        "passed": true,
+        "search": {
+          "termination": "validated_topology_seed",
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 0.7382673749999958
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.481360124999992
+            }
+          ],
+          "topology": {
+            "accepted": true,
+            "seconds": 0.2786243749999994,
+            "error": null
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.001275,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0.00125,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 40,
+              "error": 0.000175,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 79,
+              "error": 0.0001,
+              "geometry": true,
+              "paper": "pass"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "circle",
+        "size": 0.64,
+        "strategy": "weighted",
+        "seconds": 3.6874115830000083,
+        "prepareSeconds": 0.02001966600000742,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Original artwork with image-importance weights; whole-image and permitted changes reported separately",
+          "resolution": 200,
+          "mismatchPixels": 12003,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00018310546875,
+          "weightMass": 16384,
+          "mismatchWeight": 3,
+          "wholeMismatchFraction": 0.300075,
+          "protectedPixels": 16384,
+          "protectedMismatchFraction": 0.00018310546875,
+          "editablePixels": 23616,
+          "editableChangeFraction": 0.508130081300813,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 12150,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00030517578125,
+          "weightMass": 16384,
+          "mismatchWeight": 5,
+          "wholeMismatchFraction": 0.30375,
+          "protectedPixels": 16384,
+          "protectedMismatchFraction": 0.00030517578125,
+          "editablePixels": 23616,
+          "editableChangeFraction": 0.5142699864498645
+        },
+        "passed": true,
+        "search": {
+          "termination": "validated_topology_seed",
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 2.0412284999999972
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.5337883330000041
+            }
+          ],
+          "topology": {
+            "accepted": true,
+            "seconds": 0.8888299589999952,
+            "error": null
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.00311279296875,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0.0030517578125,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 40,
+              "error": 0.00030517578125,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 79,
+              "error": 0.0001220703125,
+              "geometry": true,
+              "paper": "pass"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "circle",
+        "size": 0.84,
+        "strategy": "weighted",
+        "seconds": 9.236508291999998,
+        "prepareSeconds": 0.02061495799999102,
+        "counts": {
+          "left": 2,
+          "right": 2
+        },
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Original artwork with image-importance weights; whole-image and permitted changes reported separately",
+          "resolution": 200,
+          "mismatchPixels": 1667,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0017006802721088435,
+          "weightMass": 28224,
+          "mismatchWeight": 48,
+          "wholeMismatchFraction": 0.041675,
+          "protectedPixels": 28224,
+          "protectedMismatchFraction": 0.0017006802721088435,
+          "editablePixels": 11776,
+          "editableChangeFraction": 0.13748301630434784,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 1661,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0017006802721088435,
+          "weightMass": 28224,
+          "mismatchWeight": 48,
+          "wholeMismatchFraction": 0.041525,
+          "protectedPixels": 28224,
+          "protectedMismatchFraction": 0.0017006802721088435,
+          "editablePixels": 11776,
+          "editableChangeFraction": 0.13697350543478262
+        },
+        "passed": true,
+        "search": {
+          "termination": "candidate_found",
+          "selectedCounts": [
+            2,
+            2
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 2.107899749999997
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.518765207999997
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.16063533400000596
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.10761095899999781
+            },
+            {
+              "stage": "directPolishing",
+              "seconds": 0.624101834000001
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.5024579999999987
+            }
+          ],
+          "topology": {
+            "accepted": false,
+            "seconds": 5.007217875000002,
+            "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.008822278911564625,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0.00860969387755102,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 40,
+              "error": 0.003720238095238095,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 80,
+              "error": 0.0024447278911564627,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 114,
+              "error": 0.0019486961451247165,
+              "geometry": true,
+              "paper": "pass"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "circle",
+        "size": 0.84,
+        "strategy": "checker",
+        "seconds": 9.256719167000004,
+        "prepareSeconds": 0.010021833999999216,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "templateChecksPassed": false,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 200,
+          "mismatchPixels": 1318,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.03295,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 6007,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.030257936507936508,
+          "weightMass": 28224,
+          "mismatchWeight": 854,
+          "wholeMismatchFraction": 0.150175,
+          "protectedPixels": 28224,
+          "protectedMismatchFraction": 0.030257936507936508,
+          "editablePixels": 11776,
+          "editableChangeFraction": 0.43758491847826086
+        },
+        "passed": false,
+        "search": {
+          "termination": "image_mismatch",
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 0.7114844580000063
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.7577752920000057
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.34648958399999535
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 2.912621125000005
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.21089833299999008
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.20591558300000906
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.15807358399999794
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.05528995800000848
+            },
+            {
+              "stage": "directPolishing",
+              "seconds": 0.7845090409999975
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.23714795800000138
+            }
+          ],
+          "topology": {
+            "accepted": false,
+            "seconds": 2.5905917920000063,
+            "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.0343,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0.031325,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 40,
+              "error": 0.013425,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 80,
+              "error": 0.01585,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 120,
+              "error": 0.018275,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 160,
+              "error": 0.02135,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 200,
+              "error": 0.02405,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 240,
+              "error": 0.02605,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 280,
+              "error": 0.02605,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 320,
+              "error": 0.02605,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 360,
+              "error": 0.02605,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 364,
+              "error": 0.033325,
+              "geometry": true,
+              "paper": "pass"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "priorFullSolve": {
+    "runtime": "v25.6.1",
+    "cpu": "Apple M2 Pro",
+    "engineSha256": {
+      "static/inverse/core/automatic.js": "22dcb7030180e2b090780a4f8dc658b98e2fdf69a0efa045b1455bf5cf263f2e",
+      "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+      "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+      "static/inverse/core/crop.js": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88",
+      "static/inverse/core/engine.js": "59e4354b5c7ec6190b140066b24b3f8959e58f5e2f0f0166298522fb485d4740",
+      "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+      "static/inverse/core/feature-recovery.js": "37831af78afffd94b19a4145091d199f9771d12e505514e88cf1943e6023279e",
+      "static/inverse/core/geometry.js": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+      "static/inverse/core/graph.js": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
+      "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+      "static/inverse/core/image-reference.js": "c55d23e226f157febec1879425cb7a38bb701fe096f0a2163aea27076e2d2549",
+      "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+      "static/inverse/core/junctions.js": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
+      "static/inverse/core/material.js": "945fed7196f52c3b54e140d9ac47a6ce8ef111376c2c73d7288c2401bad197fb",
+      "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+      "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+      "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+      "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+      "static/inverse/core/settings.js": "2fcdd67395cf3ebfcfcf4c885ea8fa5ae58b43dd52000660d0a52706b3b3665e",
+      "static/inverse/core/solver.js": "1021b7b30bc82ff02f99849c6c84535ee6128f6dea23e7366f2aa028ffaec041",
+      "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+      "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+      "static/inverse/core/validate.js": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+      "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+      "static/inverse/core/direct/boundary.js": "81352f745b660ed8ca11f0b0aed384cafffc8c87874707af775d9806d6b5251d",
+      "static/inverse/core/direct/counts.js": "adbdbbb8ec350e5e6a5ebe2c9b281475cf47d6bf94cb4eae04a8208e6cc49c34",
+      "static/inverse/core/direct/curves.js": "18fe358d46448eb844b69fe5f35bee1cc8adb87cd5c5462382a59dbbd92fe08a",
+      "static/inverse/core/direct/finalize.js": "83e635848f6e11019d85a937d172f852140c3d8dc43beec6e61daaf4a7c9dccc",
+      "static/inverse/core/direct/fit.js": "6800e4c77b3ff8194cfbee634d16a9c0cf7449c92b80004292d3988f12df33d9",
+      "static/inverse/core/direct/grid.js": "4136f590b11af62de8135c9e23b1f3a48ad2e0dcb9e419e7c2a5f906595caa47",
+      "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+      "static/inverse/core/direct/initialize.js": "6a0aca938b4f4c28ae592125246173191399213a943c3ad137666a53a5501724",
+      "static/inverse/core/direct/matching.js": "db113f3e5c6ed3be820f7c863a113e9181a02c7efa5ea66a46e56df7f2428414",
+      "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+      "static/inverse/core/direct/native.js": "48435ecb5bea2b58d0b89ae48a358da064031c7d801bcbb477b749625a6719a2",
+      "static/inverse/core/direct/prefer-matching.js": "1ff682f298014f8c29387ad3bbe330c52e4ee619defd5a2d116cb3703e0f5d48",
+      "static/inverse/core/direct/primitives.js": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b",
+      "static/inverse/core/direct/refine.js": "f2bc0b7bb92155553909e1a55dd791587ee0979b9acd594d1323b9ced0f7e7ab",
+      "static/inverse/core/direct/share.js": "9a3723c2aea8dfe1bcf24f29e184aa4a90e953098f70ed7d76c038a305e140a7",
+      "static/inverse/core/direct/symmetry.js": "ed9f633ea42af93b46293d0d753e21dd7a5921485d5d55847e5a02665c14cf13",
+      "static/inverse/core/direct/topology.js": "2395b84473431b3e5354cc419d8cecb1355e6805845cd3906d656c49b6f46cb9",
+      "static/inverse/core/direct/native/boundary.c": "7798b37aa8ff54104fedd8506d2b46b1a4968f0ca4d3fa440717ac63557eedfc",
+      "static/inverse/core/direct/native/boundary.wasm": "0b8f321550f82dbac9bff6a5cc58d63f540099b80f0ca1c7f9305738370e0207"
+    },
+    "resolution": 200,
+    "seconds": 10,
+    "method": "Fresh automatic mask solves. Frames fixed before fitting. Checker strategy replaces the band; weighted strategy retains the original mask with zero band weights. Exported controls are independently rendered with resvg. Geometric and paper checks remain enabled.",
+    "results": [
+      {
+        "shape": "top-hat",
+        "size": 0.64,
+        "strategy": "checker",
+        "seconds": 2.402703959,
+        "prepareSeconds": 0.03524624999999997,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 200,
+          "mismatchPixels": 59,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.001475,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 11543,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00360107421875,
+          "weightMass": 16384,
+          "mismatchWeight": 59,
+          "wholeMismatchFraction": 0.288575,
+          "protectedPixels": 16384,
+          "protectedMismatchFraction": 0.00360107421875,
+          "editablePixels": 23616,
+          "editableChangeFraction": 0.48628048780487804
+        },
+        "passed": true,
+        "search": {
+          "termination": "validated_topology_seed",
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 0.7886985
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.5721502090000001
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.19272616700000025
+            }
+          ],
+          "topology": {
+            "accepted": true,
+            "seconds": 0.5317227500000001,
+            "error": null
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.001475,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0.001475,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 40,
+              "error": 0.0001,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 79,
+              "error": 0.000125,
+              "geometry": true,
+              "paper": "pass"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "top-hat",
+        "size": 0.64,
+        "strategy": "weighted",
+        "seconds": 3.3106397910000003,
+        "prepareSeconds": 0.03151020800000015,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Original artwork with image-importance weights; whole-image and permitted changes reported separately",
+          "resolution": 200,
+          "mismatchPixels": 12029,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00360107421875,
+          "weightMass": 16384,
+          "mismatchWeight": 59,
+          "wholeMismatchFraction": 0.300725,
+          "protectedPixels": 16384,
+          "protectedMismatchFraction": 0.00360107421875,
+          "editablePixels": 23616,
+          "editableChangeFraction": 0.506859756097561,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 12149,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00360107421875,
+          "weightMass": 16384,
+          "mismatchWeight": 59,
+          "wholeMismatchFraction": 0.303725,
+          "protectedPixels": 16384,
+          "protectedMismatchFraction": 0.00360107421875,
+          "editablePixels": 23616,
+          "editableChangeFraction": 0.5119410569105691
+        },
+        "passed": true,
+        "search": {
+          "termination": "validated_topology_seed",
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 2.1418208329999997
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.5776215000000002
+            }
+          ],
+          "topology": {
+            "accepted": true,
+            "seconds": 0.26195975,
+            "error": null
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.00360107421875,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0.00360107421875,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 40,
+              "error": 0.00018310546875,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 79,
+              "error": 0.0001220703125,
+              "geometry": true,
+              "paper": "pass"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "top-hat",
+        "size": 0.84,
+        "strategy": "weighted",
+        "seconds": 8.734691916,
+        "prepareSeconds": 0.019480750000000626,
+        "counts": {
+          "left": 2,
+          "right": 2
+        },
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Original artwork with image-importance weights; whole-image and permitted changes reported separately",
+          "resolution": 200,
+          "mismatchPixels": 2169,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.000248015873015873,
+          "weightMass": 28224,
+          "mismatchWeight": 7,
+          "wholeMismatchFraction": 0.054225,
+          "protectedPixels": 28224,
+          "protectedMismatchFraction": 0.000248015873015873,
+          "editablePixels": 11776,
+          "editableChangeFraction": 0.18359375,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 2151,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0002834467120181406,
+          "weightMass": 28224,
+          "mismatchWeight": 8,
+          "wholeMismatchFraction": 0.053775,
+          "protectedPixels": 28224,
+          "protectedMismatchFraction": 0.0002834467120181406,
+          "editablePixels": 11776,
+          "editableChangeFraction": 0.1819802989130435
+        },
+        "passed": true,
+        "search": {
+          "termination": "candidate_found",
+          "selectedCounts": [
+            2,
+            2
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 1.8483217910000003
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.5520628749999996
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.23600354200000037
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 2.449820833
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.5740514999999996
+            },
+            {
+              "stage": "directPolishing",
+              "seconds": 0.6889889999999996
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.14736420899999939
+            }
+          ],
+          "topology": {
+            "accepted": false,
+            "seconds": 0.22950312499999928,
+            "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.00042517006802721087,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0.00035430839002267573,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 40,
+              "error": 0.0002834467120181406,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 80,
+              "error": 0.0002834467120181406,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 120,
+              "error": 0.000248015873015873,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 159,
+              "error": 0.000248015873015873,
+              "geometry": true,
+              "paper": "uncertain"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "top-hat",
+        "size": 0.84,
+        "strategy": "checker",
+        "seconds": 9.749197166999998,
+        "prepareSeconds": 0.014066249999999855,
+        "counts": {
+          "left": 3,
+          "right": 3
+        },
+        "templateChecksPassed": false,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 200,
+          "mismatchPixels": 2285,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.057125,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 4594,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.02239229024943311,
+          "weightMass": 28224,
+          "mismatchWeight": 632,
+          "wholeMismatchFraction": 0.11485,
+          "protectedPixels": 28224,
+          "protectedMismatchFraction": 0.02239229024943311,
+          "editablePixels": 11776,
+          "editableChangeFraction": 0.33644701086956524
+        },
+        "passed": true,
+        "search": {
+          "termination": "image_mismatch",
+          "selectedCounts": [
+            3,
+            3
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 0.662875084000003
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.5346246659999997
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.36333779100000174
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 5.316366708999998
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.24778945899999963
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.03421191700000054
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.20757158300000084
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.13556354099999954
+            },
+            {
+              "stage": "directPolishing",
+              "seconds": 0.919731749999999
+            }
+          ],
+          "topology": {
+            "accepted": false,
+            "seconds": 0.16555741699999998,
+            "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.0572,
+              "geometry": true,
+              "paper": "pass"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "hat",
+        "size": 0.64,
+        "strategy": "checker",
+        "seconds": 1.5991027920000016,
+        "prepareSeconds": 0.013377416999999696,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 200,
+          "mismatchPixels": 41,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.001025,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 11462,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0028076171875,
+          "weightMass": 16384,
+          "mismatchWeight": 46,
+          "wholeMismatchFraction": 0.28655,
+          "protectedPixels": 16384,
+          "protectedMismatchFraction": 0.0028076171875,
+          "editablePixels": 23616,
+          "editableChangeFraction": 0.4834010840108401
+        },
+        "passed": true,
+        "search": {
+          "termination": "validated_topology_seed",
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 0.6615402919999979
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.4691375000000007
+            }
+          ],
+          "topology": {
+            "accepted": true,
+            "seconds": 0.3118319589999992,
+            "error": null
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.001025,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0.000975,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 40,
+              "error": 0.00015,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 79,
+              "error": 2.5e-05,
+              "geometry": true,
+              "paper": "pass"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "hat",
+        "size": 0.64,
+        "strategy": "weighted",
+        "seconds": 7.509357290999997,
+        "prepareSeconds": 0.017108290999996827,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Original artwork with image-importance weights; whole-image and permitted changes reported separately",
+          "resolution": 200,
+          "mismatchPixels": 12006,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0001220703125,
+          "weightMass": 16384,
+          "mismatchWeight": 2,
+          "wholeMismatchFraction": 0.30015,
+          "protectedPixels": 16384,
+          "protectedMismatchFraction": 0.0001220703125,
+          "editablePixels": 23616,
+          "editableChangeFraction": 0.50829945799458,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 12151,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00054931640625,
+          "weightMass": 16384,
+          "mismatchWeight": 9,
+          "wholeMismatchFraction": 0.303775,
+          "protectedPixels": 16384,
+          "protectedMismatchFraction": 0.00054931640625,
+          "editablePixels": 23616,
+          "editableChangeFraction": 0.5141429539295393
+        },
+        "passed": true,
+        "search": {
+          "termination": "validated_topology_seed",
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 1.8033905410000006
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.5058677499999976
+            }
+          ],
+          "topology": {
+            "accepted": true,
+            "seconds": 4.996302875000005,
+            "error": null
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.00250244140625,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0.0023193359375,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 40,
+              "error": 0.00018310546875,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 79,
+              "error": 6.103515625e-05,
+              "geometry": true,
+              "paper": "pass"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "hat",
+        "size": 0.84,
+        "strategy": "weighted",
+        "seconds": 8.9513715,
+        "prepareSeconds": 0.016105625000003784,
+        "counts": {
+          "left": 2,
+          "right": 2
+        },
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Original artwork with image-importance weights; whole-image and permitted changes reported separately",
+          "resolution": 200,
+          "mismatchPixels": 659,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0018424036281179139,
+          "weightMass": 28224,
+          "mismatchWeight": 52,
+          "wholeMismatchFraction": 0.016475,
+          "protectedPixels": 28224,
+          "protectedMismatchFraction": 0.0018424036281179139,
+          "editablePixels": 11776,
+          "editableChangeFraction": 0.051545516304347824,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 651,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0018424036281179139,
+          "weightMass": 28224,
+          "mismatchWeight": 52,
+          "wholeMismatchFraction": 0.016275,
+          "protectedPixels": 28224,
+          "protectedMismatchFraction": 0.0018424036281179139,
+          "editablePixels": 11776,
+          "editableChangeFraction": 0.05086616847826087
+        },
+        "passed": true,
+        "search": {
+          "termination": "candidate_found",
+          "selectedCounts": [
+            2,
+            2
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 1.807045291000002
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.4695469590000066
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.20331274999999732
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.09605820799999493
+            },
+            {
+              "stage": "directPolishing",
+              "seconds": 0.6827988750000004
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.49768641700000443
+            }
+          ],
+          "topology": {
+            "accepted": false,
+            "seconds": 5.007811833,
+            "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.011196145124716554,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0.010912698412698412,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 40,
+              "error": 0.005385487528344671,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 80,
+              "error": 0.00350765306122449,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 120,
+              "error": 0.002409297052154195,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 159,
+              "error": 0.0020195578231292518,
+              "geometry": true,
+              "paper": "pass"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "hat",
+        "size": 0.84,
+        "strategy": "checker",
+        "seconds": 9.297262583000004,
+        "prepareSeconds": 0.008760666000001947,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "templateChecksPassed": false,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 200,
+          "mismatchPixels": 1320,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.033,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 6226,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.03458049886621315,
+          "weightMass": 28224,
+          "mismatchWeight": 976,
+          "wholeMismatchFraction": 0.15565,
+          "protectedPixels": 28224,
+          "protectedMismatchFraction": 0.03458049886621315,
+          "editablePixels": 11776,
+          "editableChangeFraction": 0.44582201086956524
+        },
+        "passed": false,
+        "search": {
+          "termination": "image_mismatch",
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 0.6691894159999938
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.5739487919999956
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.3233706250000032
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 2.505216583000001
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.23620724999999948
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.18879620799999974
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.1543179170000003
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.12387404199999583
+            },
+            {
+              "stage": "directPolishing",
+              "seconds": 0.6856855829999986
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.37314395800000055
+            }
+          ],
+          "topology": {
+            "accepted": false,
+            "seconds": 3.2084355829999986,
+            "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.034625,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0.0325,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 0,
+              "error": 0.0327,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 40,
+              "error": 0.011675,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 80,
+              "error": 0.0149,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 120,
+              "error": 0.018275,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 160,
+              "error": 0.0219,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 200,
+              "error": 0.024925,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 240,
+              "error": 0.02735,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 280,
+              "error": 0.02735,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 320,
+              "error": 0.02735,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 324,
+              "error": 0.0338,
+              "geometry": true,
+              "paper": "pass"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "house",
+        "size": 0.64,
+        "strategy": "checker",
+        "seconds": 1.506899040999997,
+        "prepareSeconds": 0.009182165999998687,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 200,
+          "mismatchPixels": 0,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 11416,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0,
+          "weightMass": 16384,
+          "mismatchWeight": 0,
+          "wholeMismatchFraction": 0.2854,
+          "protectedPixels": 16384,
+          "protectedMismatchFraction": 0,
+          "editablePixels": 23616,
+          "editableChangeFraction": 0.4834010840108401
+        },
+        "passed": true,
+        "search": {
+          "termination": "validated_topology_seed",
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 0.6580673749999987
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.5017690419999999
+            }
+          ],
+          "topology": {
+            "accepted": true,
+            "seconds": 0.20219295799999965,
+            "error": null
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 40,
+              "error": 0,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 79,
+              "error": 0,
+              "geometry": true,
+              "paper": "pass"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "house",
+        "size": 0.64,
+        "strategy": "weighted",
+        "seconds": 8.810634250000003,
+        "prepareSeconds": 0.01689454100000148,
+        "counts": {
+          "left": 2,
+          "right": 2
+        },
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Original artwork with image-importance weights; whole-image and permitted changes reported separately",
+          "resolution": 200,
+          "mismatchPixels": 1934,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00537109375,
+          "weightMass": 16384,
+          "mismatchWeight": 88,
+          "wholeMismatchFraction": 0.04835,
+          "protectedPixels": 16384,
+          "protectedMismatchFraction": 0.00537109375,
+          "editablePixels": 23616,
+          "editableChangeFraction": 0.07816734417344173,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 1923,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00518798828125,
+          "weightMass": 16384,
+          "mismatchWeight": 85,
+          "wholeMismatchFraction": 0.048075,
+          "protectedPixels": 16384,
+          "protectedMismatchFraction": 0.00518798828125,
+          "editablePixels": 23616,
+          "editableChangeFraction": 0.07782859078590786
+        },
+        "passed": true,
+        "search": {
+          "termination": "candidate_found",
+          "selectedCounts": [
+            2,
+            2
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 1.815826374999997
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.4578161249999976
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.20937724999999047
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.09005224999999337
+            },
+            {
+              "stage": "directPolishing",
+              "seconds": 0.621979124999998
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.4350978330000071
+            }
+          ],
+          "topology": {
+            "accepted": false,
+            "seconds": 5.003792540999995,
+            "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.013671875,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0.01348876953125,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 40,
+              "error": 0.0091552734375,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 80,
+              "error": 0.0078125,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 120,
+              "error": 0.00616455078125,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 159,
+              "error": 0.0054931640625,
+              "geometry": true,
+              "paper": "pass"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "house",
+        "size": 0.84,
+        "strategy": "weighted",
+        "seconds": 9.074710708,
+        "prepareSeconds": 0.015744958000010228,
+        "counts": {
+          "left": 2,
+          "right": 2
+        },
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Original artwork with image-importance weights; whole-image and permitted changes reported separately",
+          "resolution": 200,
+          "mismatchPixels": 1217,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0018069727891156463,
+          "weightMass": 28224,
+          "mismatchWeight": 51,
+          "wholeMismatchFraction": 0.030425,
+          "protectedPixels": 28224,
+          "protectedMismatchFraction": 0.0018069727891156463,
+          "editablePixels": 11776,
+          "editableChangeFraction": 0.09901494565217392,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 1207,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0018069727891156463,
+          "weightMass": 28224,
+          "mismatchWeight": 51,
+          "wholeMismatchFraction": 0.030175,
+          "protectedPixels": 28224,
+          "protectedMismatchFraction": 0.0018069727891156463,
+          "editablePixels": 11776,
+          "editableChangeFraction": 0.09816576086956522
+        },
+        "passed": true,
+        "search": {
+          "termination": "candidate_found",
+          "selectedCounts": [
+            2,
+            2
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 1.825914499999999
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.5248864999999933
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.21089633299999697
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.09503724999999395
+            },
+            {
+              "stage": "directPolishing",
+              "seconds": 0.669870624999996
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.48091820799998825
+            }
+          ],
+          "topology": {
+            "accepted": false,
+            "seconds": 5.004641000000003,
+            "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.00875141723356009,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0.00875141723356009,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 40,
+              "error": 0.003932823129251701,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 80,
+              "error": 0.0025155895691609978,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 120,
+              "error": 0.002232142857142857,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 159,
+              "error": 0.0018778344671201814,
+              "geometry": true,
+              "paper": "pass"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "house",
+        "size": 0.84,
+        "strategy": "checker",
+        "seconds": 9.401815833,
+        "prepareSeconds": 0.02074233299998741,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "templateChecksPassed": false,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 200,
+          "mismatchPixels": 1745,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.043625,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 6456,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0441468253968254,
+          "weightMass": 28224,
+          "mismatchWeight": 1246,
+          "wholeMismatchFraction": 0.1614,
+          "protectedPixels": 28224,
+          "protectedMismatchFraction": 0.0441468253968254,
+          "editablePixels": 11776,
+          "editableChangeFraction": 0.44242527173913043
+        },
+        "passed": false,
+        "search": {
+          "termination": "image_mismatch",
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 0.7755936669999938
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.6700182090000016
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.34366062500000405
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 4.406397708000004
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.24118624999999883
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.044902415999997176
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.1985529169999936
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.04507754199999908
+            },
+            {
+              "stage": "directPolishing",
+              "seconds": 0.9948865409999998
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.31495258300000567
+            }
+          ],
+          "topology": {
+            "accepted": false,
+            "seconds": 0.949773291999998,
+            "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.043875,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": -1,
+              "error": 0.04395,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0.040675,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 40,
+              "error": 0.018775,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 80,
+              "error": 0.0229,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 120,
+              "error": 0.02685,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 160,
+              "error": 0.03035,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 200,
+              "error": 0.0337,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 200,
+              "error": 0.03385,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 240,
+              "error": 0.036225,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 280,
+              "error": 0.036225,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 320,
+              "error": 0.036225,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 360,
+              "error": 0.036225,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 400,
+              "error": 0.036225,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 440,
+              "error": 0.036225,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 480,
+              "error": 0.036225,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 520,
+              "error": 0.036225,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 560,
+              "error": 0.036225,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 600,
+              "error": 0.036225,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 640,
+              "error": 0.036225,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 654,
+              "error": 0.040525,
+              "geometry": true,
+              "paper": "uncertain"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "circle",
+        "size": 0.64,
+        "strategy": "checker",
+        "seconds": 1.5306527920000081,
+        "prepareSeconds": 0.012819709000003059,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 200,
+          "mismatchPixels": 50,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00125,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 11466,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0030517578125,
+          "weightMass": 16384,
+          "mismatchWeight": 50,
+          "wholeMismatchFraction": 0.28665,
+          "protectedPixels": 16384,
+          "protectedMismatchFraction": 0.0030517578125,
+          "editablePixels": 23616,
+          "editableChangeFraction": 0.4834010840108401
+        },
+        "passed": true,
+        "search": {
+          "termination": "validated_topology_seed",
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 0.6865193330000038
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.42255995800001256
+            }
+          ],
+          "topology": {
+            "accepted": true,
+            "seconds": 0.2693546249999927,
+            "error": null
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.001275,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0.00125,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 40,
+              "error": 0.000175,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 79,
+              "error": 0.0001,
+              "geometry": true,
+              "paper": "pass"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "circle",
+        "size": 0.64,
+        "strategy": "weighted",
+        "seconds": 3.166280375000002,
+        "prepareSeconds": 0.018895583999998054,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Original artwork with image-importance weights; whole-image and permitted changes reported separately",
+          "resolution": 200,
+          "mismatchPixels": 12003,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00018310546875,
+          "weightMass": 16384,
+          "mismatchWeight": 3,
+          "wholeMismatchFraction": 0.300075,
+          "protectedPixels": 16384,
+          "protectedMismatchFraction": 0.00018310546875,
+          "editablePixels": 23616,
+          "editableChangeFraction": 0.508130081300813,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 12150,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00030517578125,
+          "weightMass": 16384,
+          "mismatchWeight": 5,
+          "wholeMismatchFraction": 0.30375,
+          "protectedPixels": 16384,
+          "protectedMismatchFraction": 0.00030517578125,
+          "editablePixels": 23616,
+          "editableChangeFraction": 0.5142699864498645
+        },
+        "passed": true,
+        "search": {
+          "termination": "validated_topology_seed",
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 1.8128871660000003
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.4363192089999939
+            }
+          ],
+          "topology": {
+            "accepted": true,
+            "seconds": 0.73188291700001,
+            "error": null
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.00311279296875,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0.0030517578125,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 40,
+              "error": 0.00030517578125,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 79,
+              "error": 0.0001220703125,
+              "geometry": true,
+              "paper": "pass"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "circle",
+        "size": 0.84,
+        "strategy": "weighted",
+        "seconds": 9.173622707999995,
+        "prepareSeconds": 0.01628254200000083,
+        "counts": {
+          "left": 2,
+          "right": 2
+        },
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Original artwork with image-importance weights; whole-image and permitted changes reported separately",
+          "resolution": 200,
+          "mismatchPixels": 1665,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0016298185941043084,
+          "weightMass": 28224,
+          "mismatchWeight": 46,
+          "wholeMismatchFraction": 0.041625,
+          "protectedPixels": 28224,
+          "protectedMismatchFraction": 0.0016298185941043084,
+          "editablePixels": 11776,
+          "editableChangeFraction": 0.13748301630434784,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 1658,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.001665249433106576,
+          "weightMass": 28224,
+          "mismatchWeight": 47,
+          "wholeMismatchFraction": 0.04145,
+          "protectedPixels": 28224,
+          "protectedMismatchFraction": 0.001665249433106576,
+          "editablePixels": 11776,
+          "editableChangeFraction": 0.13680366847826086
+        },
+        "passed": true,
+        "search": {
+          "termination": "candidate_found",
+          "selectedCounts": [
+            2,
+            2
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 1.9739642079999904
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.5402349169999943
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.15873004100000254
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.101046875
+            },
+            {
+              "stage": "directPolishing",
+              "seconds": 0.5949670409999962
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.46663195800001267
+            }
+          ],
+          "topology": {
+            "accepted": false,
+            "seconds": 5.149713749999996,
+            "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.008822278911564625,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0.00860969387755102,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 40,
+              "error": 0.003720238095238095,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 80,
+              "error": 0.0024447278911564627,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 119,
+              "error": 0.0019486961451247165,
+              "geometry": true,
+              "paper": "pass"
+            }
+          ]
+        }
+      },
+      {
+        "shape": "circle",
+        "size": 0.84,
+        "strategy": "checker",
+        "seconds": 9.308423750000001,
+        "prepareSeconds": 0.009660707999995794,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "templateChecksPassed": false,
+        "geometryPassed": true,
+        "paper": "pass",
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 200,
+          "mismatchPixels": 1299,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.032475,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "independent": {
+          "mismatchPixels": 5998,
+          "observedPixels": 40000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0299390589569161,
+          "weightMass": 28224,
+          "mismatchWeight": 845,
+          "wholeMismatchFraction": 0.14995,
+          "protectedPixels": 28224,
+          "protectedMismatchFraction": 0.0299390589569161,
+          "editablePixels": 11776,
+          "editableChangeFraction": 0.43758491847826086
+        },
+        "passed": true,
+        "search": {
+          "termination": "image_mismatch",
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "countSearch": {
+            "strategy": "shared-work",
+            "hypotheses": 16,
+            "fullyInitialized": 16
+          },
+          "stages": [
+            {
+              "stage": "directInitializing",
+              "seconds": 0.6795027919999993
+            },
+            {
+              "stage": "directFitting",
+              "seconds": 0.7467356250000011
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.3349314999999915
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 3.0923929170000046
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.2306975839999941
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.20285625000001165
+            },
+            {
+              "stage": "directClearance",
+              "seconds": 0.1484366250000021
+            },
+            {
+              "stage": "directRefining",
+              "seconds": 0.05361529099999461
+            },
+            {
+              "stage": "directPolishing",
+              "seconds": 0.7465263750000013
+            },
+            {
+              "stage": "directSharing",
+              "seconds": 0.3946727499999979
+            }
+          ],
+          "topology": {
+            "accepted": false,
+            "seconds": 2.4101882919999915,
+            "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+          },
+          "refinementCheckpoints": [
+            {
+              "step": -1,
+              "error": 0.0343,
+              "geometry": true,
+              "paper": "pass"
+            },
+            {
+              "step": 0,
+              "error": 0.031325,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 40,
+              "error": 0.013425,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 80,
+              "error": 0.01585,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 120,
+              "error": 0.018275,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 160,
+              "error": 0.02135,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 200,
+              "error": 0.02405,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 240,
+              "error": 0.02605,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 280,
+              "error": 0.02605,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 320,
+              "error": 0.02605,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 360,
+              "error": 0.02605,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 400,
+              "error": 0.02605,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 440,
+              "error": 0.02605,
+              "geometry": true,
+              "paper": "uncertain"
+            },
+            {
+              "step": 444,
+              "error": 0.033325,
+              "geometry": true,
+              "paper": "pass"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "browserBeforeCorrection": {
+    "sourceCommit": "cc83100",
+    "status": "Superseded browser replay, retained including the failed Firefox independent hat.",
+    "passed": 17,
+    "total": 18,
+    "results": [
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "top-hat",
+        "pageErrors": [],
+        "engineError": 0.0031887755102040817,
+        "solveAndConversionSeconds": 19.429961875,
+        "sharedSpans": 114,
+        "wholeOriginalError": 0.0348,
+        "editableError": 0.003472222222222222,
+        "borderChange": 0.10988451086956522,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "top-hat-independent",
+        "pageErrors": [],
+        "engineError": 0.004641439909297052,
+        "solveAndConversionSeconds": 10.228146666999997,
+        "sharedSpans": 38,
+        "wholeOriginalError": 0.054175,
+        "editableError": 0.004251700680272109,
+        "borderChange": 0.173828125,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "hat-free",
+        "pageErrors": [],
+        "engineError": 0.01368516156462585,
+        "solveAndConversionSeconds": 15.808364499999996,
+        "sharedSpans": 54,
+        "wholeOriginalError": 0.04605,
+        "editableError": 0.014420351473922902,
+        "borderChange": 0.12185801630434782,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "house-free",
+        "pageErrors": [],
+        "engineError": 0.00855654761904762,
+        "solveAndConversionSeconds": 15.380064750000004,
+        "sharedSpans": 57,
+        "wholeOriginalError": 0.04985,
+        "editableError": 0.009743480725623583,
+        "borderChange": 0.14597486413043478,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "star",
+        "pageErrors": [],
+        "engineError": 0.0016,
+        "solveAndConversionSeconds": 2.7570678750000077,
+        "sharedSpans": 12,
+        "wholeOriginalError": 0.0046,
+        "editableError": 0.0046,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "hunodan",
+        "pageErrors": [],
+        "engineError": 0.0094375,
+        "solveAndConversionSeconds": 6.544434624999995,
+        "sharedSpans": 8,
+        "wholeOriginalError": 0.01345,
+        "editableError": 0.01345,
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "top-hat",
+        "pageErrors": [],
+        "engineError": 0.0031887755102040817,
+        "solveAndConversionSeconds": 31.279540708,
+        "sharedSpans": 114,
+        "wholeOriginalError": 0.0348,
+        "editableError": 0.003472222222222222,
+        "borderChange": 0.10988451086956522,
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "top-hat-independent",
+        "pageErrors": [],
+        "engineError": 0.016404478458049886,
+        "solveAndConversionSeconds": 15.820825666999998,
+        "sharedSpans": 27,
+        "wholeOriginalError": 0.070325,
+        "editableError": 0.01668792517006803,
+        "borderChange": 0.1988790760869565,
+        "failure": "AssertionError [ERR_ASSERTION]: Editable mismatch 0.01668792517006803\n    at file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/paint-browser-test.mjs:114:12"
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "hat-free",
+        "pageErrors": [],
+        "engineError": 0.01368516156462585,
+        "solveAndConversionSeconds": 15.861679875000002,
+        "sharedSpans": 54,
+        "wholeOriginalError": 0.04605,
+        "editableError": 0.014420351473922902,
+        "borderChange": 0.12185801630434782,
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "house-free",
+        "pageErrors": [],
+        "engineError": 0.00855654761904762,
+        "solveAndConversionSeconds": 16.052462125000005,
+        "sharedSpans": 57,
+        "wholeOriginalError": 0.04985,
+        "editableError": 0.009743480725623583,
+        "borderChange": 0.14597486413043478,
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "star",
+        "pageErrors": [],
+        "engineError": 0.0016,
+        "solveAndConversionSeconds": 6.6807537909999954,
+        "sharedSpans": 12,
+        "wholeOriginalError": 0.0046,
+        "editableError": 0.0046,
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "hunodan",
+        "pageErrors": [],
+        "engineError": 0.00953125,
+        "solveAndConversionSeconds": 9.66322333400001,
+        "sharedSpans": 8,
+        "wholeOriginalError": 0.0133,
+        "editableError": 0.0133,
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "top-hat",
+        "pageErrors": [],
+        "engineError": 0.003224206349206349,
+        "solveAndConversionSeconds": 27.450913125000007,
+        "sharedSpans": 116,
+        "wholeOriginalError": 0.03335,
+        "editableError": 0.002551020408163265,
+        "borderChange": 0.10716711956521739,
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "top-hat-independent",
+        "pageErrors": [],
+        "engineError": 0.0060055272108843535,
+        "solveAndConversionSeconds": 11.193398083999986,
+        "sharedSpans": 32,
+        "wholeOriginalError": 0.055975,
+        "editableError": 0.005810657596371882,
+        "borderChange": 0.17620584239130435,
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "hat-free",
+        "pageErrors": [],
+        "engineError": 0.01368516156462585,
+        "solveAndConversionSeconds": 17.248660917000002,
+        "sharedSpans": 54,
+        "wholeOriginalError": 0.04605,
+        "editableError": 0.014420351473922902,
+        "borderChange": 0.12185801630434782,
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "house-free",
+        "pageErrors": [],
+        "engineError": 0.00855654761904762,
+        "solveAndConversionSeconds": 16.444052666999983,
+        "sharedSpans": 57,
+        "wholeOriginalError": 0.04985,
+        "editableError": 0.009743480725623583,
+        "borderChange": 0.14597486413043478,
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "star",
+        "pageErrors": [],
+        "engineError": 0.0016,
+        "solveAndConversionSeconds": 3.6625447080000013,
+        "sharedSpans": 12,
+        "wholeOriginalError": 0.0046,
+        "editableError": 0.0046,
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "hunodan",
+        "pageErrors": [],
+        "engineError": 0.0097,
+        "solveAndConversionSeconds": 10.69063266599999,
+        "sharedSpans": 8,
+        "wholeOriginalError": 0.01405,
+        "editableError": 0.01405,
+        "passed": true
+      }
+    ]
+  },
+  "browser": {
+    "origin": "http://127.0.0.1:5232",
+    "gitCommit": "7b87c16f77270a65ee029a109454c220518f8624",
+    "runtime": "v25.6.1",
+    "workspaceSourceHashes": {
+      "static/inverse/core/automatic.js": "22dcb7030180e2b090780a4f8dc658b98e2fdf69a0efa045b1455bf5cf263f2e",
+      "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+      "static/inverse/core/image-reference.js": "c55d23e226f157febec1879425cb7a38bb701fe096f0a2163aea27076e2d2549",
+      "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+      "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+      "static/inverse/core/direct/prefer-matching.js": "1ff682f298014f8c29387ad3bbe330c52e4ee619defd5a2d116cb3703e0f5d48",
+      "static/inverse/core/direct/symmetry.js": "ed9f633ea42af93b46293d0d753e21dd7a5921485d5d55847e5a02665c14cf13",
+      "src/lib/inverse/engine.ts": "3801ce556deb99d9338d9790867cfe7c9a9b10293b03300f6aae5537f7ed7b96",
+      "static/inverse/core/direct/finalize.js": "83e635848f6e11019d85a937d172f852140c3d8dc43beec6e61daaf4a7c9dccc",
+      "static/inverse/core/direct/topology.js": "2395b84473431b3e5354cc419d8cecb1355e6805845cd3906d656c49b6f46cb9",
+      "static/inverse/core/direct/fit.js": "af0de3afd069f188ecd1edba063288e4f3a603a5fc8dcb8cb4d215534f9488fb",
+      "static/inverse/core/direct/share.js": "9a3723c2aea8dfe1bcf24f29e184aa4a90e953098f70ed7d76c038a305e140a7",
+      "static/inverse/core/direct/initialize.js": "6a0aca938b4f4c28ae592125246173191399213a943c3ad137666a53a5501724",
+      "static/inverse/core/direct/counts.js": "adbdbbb8ec350e5e6a5ebe2c9b281475cf47d6bf94cb4eae04a8208e6cc49c34",
+      "src/lib/inverse/toHeartDesign.ts": "6517b294d1a96a445586859c4ad05cb21bba2b884f6cda69ac65e49fb599af85",
+      "src/lib/inverse/simplifyCurves.ts": "c693b9eb86084926d941d7e60a1a38178156d081657feabce41ff03261714173",
+      "src/lib/editor/curveIssues.ts": "293535d5f73d3dd4c9a7bbfc1c83b25ba81558d593644743496cf9e8afa5358e",
+      "src/lib/components/paint/PaintPage.svelte": "8a2253c54e687a90b1fcaed9bd3a7fe1a2885f2d8ec771c330b7a72e94eb9d70"
+    },
+    "results": [
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "top-hat-independent",
+        "pageErrors": [],
+        "engineError": 0.0029584750566893424,
+        "solveAndConversionSeconds": 22.294607584,
+        "sharedSpans": 40,
+        "wholeOriginalError": 0.0521,
+        "editableError": 0.002834467120181406,
+        "borderChange": 0.17017663043478262,
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "top-hat",
+        "pageErrors": [],
+        "engineError": 0.0031887755102040817,
+        "solveAndConversionSeconds": 35.276814625,
+        "sharedSpans": 114,
+        "wholeOriginalError": 0.0348,
+        "editableError": 0.003472222222222222,
+        "borderChange": 0.10988451086956522,
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "hat-free",
+        "pageErrors": [],
+        "engineError": 0.00208156179138322,
+        "solveAndConversionSeconds": 16.038249417,
+        "sharedSpans": 67,
+        "wholeOriginalError": 0.015,
+        "editableError": 0.003826530612244898,
+        "borderChange": 0.041779891304347824,
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "house-free",
+        "pageErrors": [],
+        "engineError": 0.0006997590702947846,
+        "solveAndConversionSeconds": 24.55578233399999,
+        "sharedSpans": 65,
+        "wholeOriginalError": 0.025375,
+        "editableError": 0.0033659297052154196,
+        "borderChange": 0.078125,
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "star",
+        "pageErrors": [],
+        "engineError": 0.0016,
+        "solveAndConversionSeconds": 7.683422041999991,
+        "sharedSpans": 12,
+        "wholeOriginalError": 0.0046,
+        "editableError": 0.0046,
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "hunodan",
+        "pageErrors": [],
+        "engineError": 0.00953125,
+        "solveAndConversionSeconds": 9.788221707999996,
+        "sharedSpans": 8,
+        "wholeOriginalError": 0.0133,
+        "editableError": 0.0133,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "top-hat-independent",
+        "pageErrors": [],
+        "engineError": 0.0029584750566893424,
+        "solveAndConversionSeconds": 13.783763999999996,
+        "sharedSpans": 40,
+        "wholeOriginalError": 0.0521,
+        "editableError": 0.002834467120181406,
+        "borderChange": 0.17017663043478262,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "top-hat",
+        "pageErrors": [],
+        "engineError": 0.0031887755102040817,
+        "solveAndConversionSeconds": 21.71036516699998,
+        "sharedSpans": 114,
+        "wholeOriginalError": 0.0348,
+        "editableError": 0.003472222222222222,
+        "borderChange": 0.10988451086956522,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "hat-free",
+        "pageErrors": [],
+        "engineError": 0.002063846371882086,
+        "solveAndConversionSeconds": 20.24199512499999,
+        "sharedSpans": 67,
+        "wholeOriginalError": 0.01495,
+        "editableError": 0.0037910997732426305,
+        "borderChange": 0.04169497282608696,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "house-free",
+        "pageErrors": [],
+        "engineError": 0.0006997590702947846,
+        "solveAndConversionSeconds": 19.714680166000004,
+        "sharedSpans": 65,
+        "wholeOriginalError": 0.025375,
+        "editableError": 0.0033659297052154196,
+        "borderChange": 0.078125,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "star",
+        "pageErrors": [],
+        "engineError": 0.0016,
+        "solveAndConversionSeconds": 3.328636415999994,
+        "sharedSpans": 12,
+        "wholeOriginalError": 0.0046,
+        "editableError": 0.0046,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "hunodan",
+        "pageErrors": [],
+        "engineError": 0.0094375,
+        "solveAndConversionSeconds": 7.179412000000011,
+        "sharedSpans": 8,
+        "wholeOriginalError": 0.01345,
+        "editableError": 0.01345,
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "top-hat-independent",
+        "pageErrors": [],
+        "engineError": 0.004030257936507937,
+        "solveAndConversionSeconds": 22.07424220799998,
+        "sharedSpans": 40,
+        "wholeOriginalError": 0.0534,
+        "editableError": 0.003224206349206349,
+        "borderChange": 0.17365828804347827,
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "top-hat",
+        "pageErrors": [],
+        "engineError": 0.003224206349206349,
+        "solveAndConversionSeconds": 32.47503095799999,
+        "sharedSpans": 116,
+        "wholeOriginalError": 0.03335,
+        "editableError": 0.002551020408163265,
+        "borderChange": 0.10716711956521739,
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "hat-free",
+        "pageErrors": [],
+        "engineError": 0.002311862244897959,
+        "solveAndConversionSeconds": 26.026459415999998,
+        "sharedSpans": 66,
+        "wholeOriginalError": 0.01625,
+        "editableError": 0.003472222222222222,
+        "borderChange": 0.046875,
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "house-free",
+        "pageErrors": [],
+        "engineError": 0.0006997590702947846,
+        "solveAndConversionSeconds": 24.68398683300003,
+        "sharedSpans": 65,
+        "wholeOriginalError": 0.025375,
+        "editableError": 0.0033659297052154196,
+        "borderChange": 0.078125,
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "star",
+        "pageErrors": [],
+        "engineError": 0.0016,
+        "solveAndConversionSeconds": 3.936471749999968,
+        "sharedSpans": 12,
+        "wholeOriginalError": 0.0046,
+        "editableError": 0.0046,
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "hunodan",
+        "pageErrors": [],
+        "engineError": 0.00981875,
+        "solveAndConversionSeconds": 10.590816959000017,
+        "sharedSpans": 8,
+        "wholeOriginalError": 0.013875,
+        "editableError": 0.013875,
+        "passed": true
+      }
+    ],
+    "criteria": "Fresh real image import and Paint free-border controls; actual worker geometry and paper checks; every shared span preserved on both editable SVG sheets; editor crossing checks; protected error <=1% for top hats, <=3% for other free motifs and Hunodan, <=1.5% for star. Star PDF signature checked.",
+    "passed": 18,
+    "total": 18
+  },
+  "timingRegression": {
+    "referenceCommit": "735f086",
+    "before": "Fails: only untouched candidate checkpoint remains after slow initialization.",
+    "after": "Passes: curve iterations and polishing run within the longer requested budget.",
+    "test": "scripts/inverse/refinement-budget.test.mjs",
+    "beforeEvidence": {
+      "requestedSeconds": 180,
+      "solverSeconds": 14.341,
+      "stages": [
+        {
+          "stage": "directInitializing",
+          "seconds": 5.85
+        },
+        {
+          "stage": "directFitting",
+          "seconds": 0.592
+        },
+        {
+          "stage": "directClearance",
+          "seconds": 0.009
+        },
+        {
+          "stage": "directRefining",
+          "seconds": 0.123
+        },
+        {
+          "stage": "directSharing",
+          "seconds": 0.571
+        }
+      ],
+      "topologySeconds": 7.083,
+      "checkpoints": [
+        {
+          "step": -1,
+          "error": 0.017247448702788767,
+          "geometry": true,
+          "paper": "pass"
+        }
+      ],
+      "imageError": {
+        "reference": "Original artwork with image-importance weights; whole-image and permitted changes reported separately",
+        "resolution": 400,
+        "mismatchPixels": 11433,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.016404478458049886,
+        "weightMass": 112896,
+        "mismatchWeight": 1852,
+        "wholeMismatchFraction": 0.07145625,
+        "protectedPixels": 112896,
+        "protectedMismatchFraction": 0.016404478458049886,
+        "editablePixels": 47104,
+        "editableChangeFraction": 0.20340098505434784,
+        "method": "Forward sampling of both slit families at input resolution",
+        "independentExportRenderer": false
+      }
+    },
+    "afterEvidence": {
+      "requestedSeconds": 180,
+      "solverSeconds": 20.692,
+      "stages": [
+        {
+          "stage": "directInitializing",
+          "seconds": 5.833
+        },
+        {
+          "stage": "directFitting",
+          "seconds": 0.597
+        },
+        {
+          "stage": "directClearance",
+          "seconds": 0.21
+        },
+        {
+          "stage": "directRefining",
+          "seconds": 4.525
+        },
+        {
+          "stage": "directSharing",
+          "seconds": 0.794
+        },
+        {
+          "stage": "directPolishing",
+          "seconds": 1.495
+        }
+      ],
+      "topologySeconds": 7.102,
+      "checkpoints": [
+        {
+          "step": -1,
+          "error": 0.004030257936507937,
+          "geometry": true,
+          "paper": "pass"
+        },
+        {
+          "step": 0,
+          "error": 0.00404797335600907,
+          "geometry": true,
+          "paper": "pass"
+        },
+        {
+          "step": 40,
+          "error": 0.0037822420634920635,
+          "geometry": true,
+          "paper": "pass"
+        },
+        {
+          "step": 80,
+          "error": 0.003472222222222222,
+          "geometry": true,
+          "paper": "pass"
+        },
+        {
+          "step": 120,
+          "error": 0.003224206349206349,
+          "geometry": true,
+          "paper": "pass"
+        },
+        {
+          "step": 159,
+          "error": 0.0029673327664399094,
+          "geometry": true,
+          "paper": "pass"
+        }
+      ],
+      "imageError": {
+        "reference": "Original artwork with image-importance weights; whole-image and permitted changes reported separately",
+        "resolution": 400,
+        "mismatchPixels": 8571,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.0029584750566893424,
+        "weightMass": 112896,
+        "mismatchWeight": 334,
+        "wholeMismatchFraction": 0.05356875,
+        "protectedPixels": 112896,
+        "protectedMismatchFraction": 0.0029584750566893424,
+        "editablePixels": 47104,
+        "editableChangeFraction": 0.17486837635869565,
+        "method": "Forward sampling of both slit families at input resolution",
+        "independentExportRenderer": false
+      }
+    }
+  },
+  "hunodan": {
+    "experiment": "production",
+    "cfg": {
+      "algorithm": "auto",
+      "polygonal": false,
+      "identicalSheets": false,
+      "resolution": 400,
+      "fitTolerance": 0.5,
+      "maxSpan": 15,
+      "smoothRadius": 0,
+      "snapRadius": 1.5,
+      "borderRadius": 3,
+      "gridPortals": false,
+      "neighbors": 16,
+      "connectorVariants": 2,
+      "junctionBalancePenalty": 0,
+      "gridPreference": 0,
+      "sharpPenalty": 50,
+      "acutePenalty": 30,
+      "turnPenalty": 3,
+      "maxTurn": 175,
+      "localNeighborhoodFactor": 8,
+      "roundHidden": false,
+      "timeLimit": 10,
+      "trials": 0,
+      "earlyStop": false
+    },
+    "engineSha256": {
+      "static/inverse/core/automatic.js": "22dcb7030180e2b090780a4f8dc658b98e2fdf69a0efa045b1455bf5cf263f2e",
+      "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+      "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+      "static/inverse/core/crop.js": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88",
+      "static/inverse/core/engine.js": "59e4354b5c7ec6190b140066b24b3f8959e58f5e2f0f0166298522fb485d4740",
+      "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+      "static/inverse/core/feature-recovery.js": "37831af78afffd94b19a4145091d199f9771d12e505514e88cf1943e6023279e",
+      "static/inverse/core/geometry.js": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+      "static/inverse/core/graph.js": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
+      "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+      "static/inverse/core/image-reference.js": "c55d23e226f157febec1879425cb7a38bb701fe096f0a2163aea27076e2d2549",
+      "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+      "static/inverse/core/junctions.js": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
+      "static/inverse/core/material.js": "945fed7196f52c3b54e140d9ac47a6ce8ef111376c2c73d7288c2401bad197fb",
+      "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+      "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+      "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+      "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+      "static/inverse/core/settings.js": "2fcdd67395cf3ebfcfcf4c885ea8fa5ae58b43dd52000660d0a52706b3b3665e",
+      "static/inverse/core/solver.js": "1021b7b30bc82ff02f99849c6c84535ee6128f6dea23e7366f2aa028ffaec041",
+      "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+      "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+      "static/inverse/core/validate.js": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+      "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+      "static/inverse/core/direct/boundary.js": "81352f745b660ed8ca11f0b0aed384cafffc8c87874707af775d9806d6b5251d",
+      "static/inverse/core/direct/counts.js": "adbdbbb8ec350e5e6a5ebe2c9b281475cf47d6bf94cb4eae04a8208e6cc49c34",
+      "static/inverse/core/direct/curves.js": "18fe358d46448eb844b69fe5f35bee1cc8adb87cd5c5462382a59dbbd92fe08a",
+      "static/inverse/core/direct/finalize.js": "83e635848f6e11019d85a937d172f852140c3d8dc43beec6e61daaf4a7c9dccc",
+      "static/inverse/core/direct/fit.js": "af0de3afd069f188ecd1edba063288e4f3a603a5fc8dcb8cb4d215534f9488fb",
+      "static/inverse/core/direct/grid.js": "4136f590b11af62de8135c9e23b1f3a48ad2e0dcb9e419e7c2a5f906595caa47",
+      "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+      "static/inverse/core/direct/initialize.js": "6a0aca938b4f4c28ae592125246173191399213a943c3ad137666a53a5501724",
+      "static/inverse/core/direct/matching.js": "db113f3e5c6ed3be820f7c863a113e9181a02c7efa5ea66a46e56df7f2428414",
+      "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+      "static/inverse/core/direct/native.js": "48435ecb5bea2b58d0b89ae48a358da064031c7d801bcbb477b749625a6719a2",
+      "static/inverse/core/direct/prefer-matching.js": "1ff682f298014f8c29387ad3bbe330c52e4ee619defd5a2d116cb3703e0f5d48",
+      "static/inverse/core/direct/primitives.js": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b",
+      "static/inverse/core/direct/refine.js": "f2bc0b7bb92155553909e1a55dd791587ee0979b9acd594d1323b9ced0f7e7ab",
+      "static/inverse/core/direct/share.js": "9a3723c2aea8dfe1bcf24f29e184aa4a90e953098f70ed7d76c038a305e140a7",
+      "static/inverse/core/direct/symmetry.js": "ed9f633ea42af93b46293d0d753e21dd7a5921485d5d55847e5a02665c14cf13",
+      "static/inverse/core/direct/topology.js": "2395b84473431b3e5354cc419d8cecb1355e6805845cd3906d656c49b6f46cb9",
+      "static/inverse/core/direct/native/boundary.c": "7798b37aa8ff54104fedd8506d2b46b1a4968f0ca4d3fa440717ac63557eedfc",
+      "static/inverse/core/direct/native/boundary.wasm": "0b8f321550f82dbac9bff6a5cc58d63f540099b80f0ca1c7f9305738370e0207"
+    },
+    "baselineSha256": "4ef7307beb4f436d6bc2ee760bc870cf41ca070b4581da58a7dd71497c3281af",
+    "criteria": "Each prepare + solve + validate + export <=10 seconds; independent error <= that case\u2019s validated release error, plus at most 1 percentage point for an identical pair; unchanged geometry, strict paper and substantial feature checks. Decode and independent external replay are timed separately.",
+    "runtime": "v25.6.1",
+    "platform": "darwin",
+    "cpu": "Apple M2 Pro",
+    "results": [
+      {
+        "id": "hjfig-01",
+        "seconds": 5.884350666,
+        "prepareSeconds": 0.26116287499999996,
+        "decodeSeconds": 0.03737649999999999,
+        "externalReplaySeconds": 0.15290804200000002,
+        "error": 0.009799111111111111,
+        "baselineError": 0.009841777777777777,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjfig-02",
+        "seconds": 7.414364958999999,
+        "prepareSeconds": 0.2854036669999996,
+        "decodeSeconds": 0.0013999999999996361,
+        "externalReplaySeconds": 0.17108983400000033,
+        "error": 0.013952,
+        "baselineError": 0.0072106666666666664,
+        "matchingAllowance": 0.01,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjfig-03",
+        "seconds": 5.539061790999998,
+        "prepareSeconds": 0.2565032909999991,
+        "decodeSeconds": 0.0014676250000011351,
+        "externalReplaySeconds": 0.15077037500000007,
+        "error": 0.006634666666666666,
+        "baselineError": 0.007089777777777778,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjfig-04",
+        "seconds": 6.466432124999999,
+        "prepareSeconds": 0.22423662500000136,
+        "decodeSeconds": 0.001403375000001688,
+        "externalReplaySeconds": 0.15006254099999933,
+        "error": 0.013788444444444445,
+        "baselineError": 0.004771555555555556,
+        "matchingAllowance": 0.01,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjfig-05",
+        "seconds": 3.0081519579999987,
+        "prepareSeconds": 0.2316298749999987,
+        "decodeSeconds": 0.0013015410000007251,
+        "externalReplaySeconds": 0.1419376250000023,
+        "error": 0.010055560936523171,
+        "baselineError": 0.01776012820399933,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjfla-01",
+        "seconds": 7.653972083999998,
+        "prepareSeconds": 0.32298054200000115,
+        "decodeSeconds": 0.0025067089999974996,
+        "externalReplaySeconds": 1.1503087079999967,
+        "error": 0.013434516059027778,
+        "baselineError": 0.013509114583333334,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjcur-01",
+        "seconds": 7.607631665999994,
+        "prepareSeconds": 0.3722260829999941,
+        "decodeSeconds": 0.003249916000000667,
+        "externalReplaySeconds": 1.125578582999995,
+        "error": 0.00512,
+        "baselineError": 0.005831111111111111,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjcur-02",
+        "seconds": 7.370348416000001,
+        "prepareSeconds": 0.20679445800000396,
+        "decodeSeconds": 0.0014771660000042176,
+        "externalReplaySeconds": 1.327768541999998,
+        "error": 0.005368888888888889,
+        "baselineError": 0.005745777777777778,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjcur-03",
+        "seconds": 7.087209999999999,
+        "prepareSeconds": 0.21922512499999722,
+        "decodeSeconds": 0.0022023750000007567,
+        "externalReplaySeconds": 1.1055302920000032,
+        "error": 0.004515555555555556,
+        "baselineError": 0.005688888888888889,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjcur-04",
+        "seconds": 9.237830374999998,
+        "prepareSeconds": 0.22269045900000492,
+        "decodeSeconds": 0.001721917000002577,
+        "externalReplaySeconds": 1.125788750000007,
+        "error": 0.0055253333333333335,
+        "baselineError": 0.006492444444444445,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjcur-05",
+        "seconds": 5.348266875000001,
+        "prepareSeconds": 0.1989570839999942,
+        "decodeSeconds": 0.0015059170000022277,
+        "externalReplaySeconds": 1.7495646250000136,
+        "error": 0.009429333333333333,
+        "baselineError": 0.009820444444444444,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjhih-01",
+        "seconds": 9.306941457999987,
+        "prepareSeconds": 0.22659662499999103,
+        "decodeSeconds": 0.0035652499999996507,
+        "externalReplaySeconds": 0.26137679100000244,
+        "error": 0.006060565384305619,
+        "baselineError": 0.007107573357674032,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjhih-02",
+        "seconds": 8.567334375000005,
+        "prepareSeconds": 0.23239487499999814,
+        "decodeSeconds": 0.003250291999996989,
+        "externalReplaySeconds": 1.2418221670000058,
+        "error": 0.0038857719392728835,
+        "baselineError": 0.004369789145743716,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjhih-04",
+        "seconds": 9.576082416999999,
+        "prepareSeconds": 0.24976924999999756,
+        "decodeSeconds": 0.00266470800001116,
+        "externalReplaySeconds": 1.1570255829999951,
+        "error": 0.008099761086183788,
+        "baselineError": 0.009679570602593737,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjstr-01",
+        "seconds": 6.220951249999998,
+        "prepareSeconds": 0.20368312500001048,
+        "decodeSeconds": 0.0018542500000039582,
+        "externalReplaySeconds": 0.7142391250000073,
+        "error": 0.007529570614696785,
+        "baselineError": 0.008177127465366042,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjstr-02",
+        "seconds": 8.647798874999992,
+        "prepareSeconds": 0.21410683400000563,
+        "decodeSeconds": 0.0014897079999936977,
+        "externalReplaySeconds": 0.7299449590000003,
+        "error": 0.0041617357001972385,
+        "baselineError": 0.004464168310322156,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjstr-03",
+        "seconds": 9.608487499999988,
+        "prepareSeconds": 0.24442220799998904,
+        "decodeSeconds": 0.0014567909999896073,
+        "externalReplaySeconds": 1.4675396659999969,
+        "error": 0.005513338293123605,
+        "baselineError": 0.007439685407588479,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjsta-01",
+        "seconds": 8.225290458000003,
+        "prepareSeconds": 0.2645128329999861,
+        "decodeSeconds": 0.004781957999977749,
+        "externalReplaySeconds": 1.7803836249999876,
+        "error": 0.007929362880886427,
+        "baselineError": 0.008206371191135734,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjsta-02",
+        "seconds": 7.452199832999992,
+        "prepareSeconds": 0.29583937500001045,
+        "decodeSeconds": 0.005889290999999503,
+        "externalReplaySeconds": 1.2790089169999992,
+        "error": 0.003573947482638889,
+        "baselineError": 0.003851996527777778,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjsta-03",
+        "seconds": 9.653297083999991,
+        "prepareSeconds": 0.23930195900000398,
+        "decodeSeconds": 0.0013671670000185258,
+        "externalReplaySeconds": 0.8020741249999847,
+        "error": 0.012461738780685669,
+        "baselineError": 0.0126798873807852,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjsta-04",
+        "seconds": 9.285041916999996,
+        "prepareSeconds": 0.2148959170000162,
+        "decodeSeconds": 0.0015645840000070167,
+        "externalReplaySeconds": 0.7681408749999827,
+        "error": 0.005067047395089723,
+        "baselineError": 0.006172839506172839,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjsta-05",
+        "seconds": 9.815952916999988,
+        "prepareSeconds": 0.24141995800001315,
+        "decodeSeconds": 0.0014270830000168643,
+        "externalReplaySeconds": 1.5201427919999988,
+        "error": 0.010933179414212462,
+        "baselineError": 0.012731885419742812,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "passed": true
+      }
+    ],
+    "passed": 22,
+    "total": 22,
+    "minimumSeconds": 3.0081519579999987,
+    "medianSeconds": 7.630801874999996,
+    "maximumSeconds": 9.815952916999988
+  },
+  "servedBundleVerification": {
+    "origin": "http://127.0.0.1:5232",
+    "matchedFiles": 43,
+    "engineMatchesFreshSolveAndHunBenchmark": true
+  },
+  "limits": [
+    "No global optimum or exact silhouette guarantee.",
+    "The protected shape is chosen by the user.",
+    "Some easy cases are slower or slightly less accurate; see the small-house paired result.",
+    "Soft-border UI and photo-coordinate/crop-uncertainty weights are not included.",
+    "No physical cutting or assembly test."
+  ]
+}

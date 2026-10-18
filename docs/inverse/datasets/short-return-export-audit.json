@@ -1,0 +1,1225 @@
+{
+  "scope": "Offline geometry/optimizer experiments. No application runtime change; the full-corpus gate precedes discovery of missed short returns. No additional photo recovery or physical assembly claim.",
+  "baseCommit": "ed509812d578d94c7b09220fc82bd9fe93e81edc",
+  "baseline": "tmp/heart-learning/row-kernel-v1/release-v2",
+  "fullCorpus": {
+    "checks": [
+      {
+        "stage": "hunodan",
+        "command": [
+          "node",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/self-return-projection-v1/corpus/hunodan-speed-benchmark.mjs"
+        ],
+        "environment": {
+          "INVERSE_SPEED_OUT": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/self-return-projection-v1/corpus/hunodan",
+          "INVERSE_SPEED_MODULE": "",
+          "INVERSE_SPEED_SECONDS": "10",
+          "INVERSE_SPEED_SETTINGS": "{}",
+          "INVERSE_SPEED_RETAIN_CANDIDATES": "0",
+          "INVERSE_HUNODAN_IDS": ""
+        },
+        "exitCode": 0,
+        "seconds": 112.677758292
+      },
+      {
+        "stage": "photos",
+        "command": [
+          "node",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/self-return-projection-v1/corpus/hard-photo-benchmark.mjs",
+          "--crop=automatic",
+          "--target=mask",
+          "--seconds=10",
+          "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/self-return-projection-v1/corpus/photos"
+        ],
+        "environment": {},
+        "exitCode": 0,
+        "seconds": 307.912092459
+      }
+    ],
+    "hunodan": {
+      "passedUnderFirstPredicate": 22,
+      "maximumSeconds": 7.882352291000003,
+      "pairedErrors": {
+        "same": 21,
+        "better": 1
+      },
+      "rows": [
+        {
+          "id": "hjfig-01",
+          "before": 0.009799111111111111,
+          "after": 0.009799111111111111,
+          "delta": 0.0,
+          "seconds": 4.279283292,
+          "passedUnderFirstPredicate": true
+        },
+        {
+          "id": "hjfig-02",
+          "before": 0.013340444444444445,
+          "after": 0.013340444444444445,
+          "delta": 0.0,
+          "seconds": 5.11831175,
+          "passedUnderFirstPredicate": true
+        },
+        {
+          "id": "hjfig-03",
+          "before": 0.006634666666666666,
+          "after": 0.006634666666666666,
+          "delta": 0.0,
+          "seconds": 3.4195529170000007,
+          "passedUnderFirstPredicate": true
+        },
+        {
+          "id": "hjfig-04",
+          "before": 0.013824,
+          "after": 0.013824,
+          "delta": 0.0,
+          "seconds": 3.8526487499999984,
+          "passedUnderFirstPredicate": true
+        },
+        {
+          "id": "hjfig-05",
+          "before": 0.009042960667083447,
+          "after": 0.008611504900104781,
+          "delta": -0.00043145576697866533,
+          "seconds": 3.313112165999999,
+          "passedUnderFirstPredicate": true
+        },
+        {
+          "id": "hjfla-01",
+          "before": 0.012166341145833334,
+          "after": 0.012166341145833334,
+          "delta": 0.0,
+          "seconds": 5.444047000000002,
+          "passedUnderFirstPredicate": true
+        },
+        {
+          "id": "hjcur-01",
+          "before": 0.005148444444444444,
+          "after": 0.005148444444444444,
+          "delta": 0.0,
+          "seconds": 4.954309417,
+          "passedUnderFirstPredicate": true
+        },
+        {
+          "id": "hjcur-02",
+          "before": 0.005219555555555555,
+          "after": 0.005219555555555555,
+          "delta": 0.0,
+          "seconds": 5.043120332999996,
+          "passedUnderFirstPredicate": true
+        },
+        {
+          "id": "hjcur-03",
+          "before": 0.004522666666666667,
+          "after": 0.004522666666666667,
+          "delta": 0.0,
+          "seconds": 4.689097917000006,
+          "passedUnderFirstPredicate": true
+        },
+        {
+          "id": "hjcur-04",
+          "before": 0.005639111111111111,
+          "after": 0.005639111111111111,
+          "delta": 0.0,
+          "seconds": 6.604001416999999,
+          "passedUnderFirstPredicate": true
+        },
+        {
+          "id": "hjcur-05",
+          "before": 0.009436444444444445,
+          "after": 0.009436444444444445,
+          "delta": 0.0,
+          "seconds": 3.150720957999998,
+          "passedUnderFirstPredicate": true
+        },
+        {
+          "id": "hjhih-01",
+          "before": 0.006040430615586996,
+          "after": 0.006040430615586996,
+          "delta": 0.0,
+          "seconds": 5.871553208000005,
+          "passedUnderFirstPredicate": true
+        },
+        {
+          "id": "hjhih-02",
+          "before": 0.003899406226779104,
+          "after": 0.003899406226779104,
+          "delta": 0.0,
+          "seconds": 4.445770416999999,
+          "passedUnderFirstPredicate": true
+        },
+        {
+          "id": "hjhih-04",
+          "before": 0.007776029627903062,
+          "after": 0.007776029627903062,
+          "delta": 0.0,
+          "seconds": 6.9887741250000035,
+          "passedUnderFirstPredicate": true
+        },
+        {
+          "id": "hjstr-01",
+          "before": 0.007550237322696868,
+          "after": 0.007550237322696868,
+          "delta": 0.0,
+          "seconds": 3.8980905829999974,
+          "passedUnderFirstPredicate": true
+        },
+        {
+          "id": "hjstr-02",
+          "before": 0.004365548980933596,
+          "after": 0.004365548980933596,
+          "delta": 0.0,
+          "seconds": 5.967566583000007,
+          "passedUnderFirstPredicate": true
+        },
+        {
+          "id": "hjstr-03",
+          "before": 0.0056129769369752365,
+          "after": 0.0056129769369752365,
+          "delta": 0.0,
+          "seconds": 7.882352291000003,
+          "passedUnderFirstPredicate": true
+        },
+        {
+          "id": "hjsta-01",
+          "before": 0.007929362880886427,
+          "after": 0.007929362880886427,
+          "delta": 0.0,
+          "seconds": 4.627826209000006,
+          "passedUnderFirstPredicate": true
+        },
+        {
+          "id": "hjsta-02",
+          "before": 0.0038045247395833335,
+          "after": 0.0038045247395833335,
+          "delta": 0.0,
+          "seconds": 4.067297292000003,
+          "passedUnderFirstPredicate": true
+        },
+        {
+          "id": "hjsta-03",
+          "before": 0.012332213049376572,
+          "after": 0.012332213049376572,
+          "delta": 0.0,
+          "seconds": 5.799876041999989,
+          "passedUnderFirstPredicate": true
+        },
+        {
+          "id": "hjsta-04",
+          "before": 0.0050250552896055544,
+          "after": 0.0050250552896055544,
+          "delta": 0.0,
+          "seconds": 6.236718207999991,
+          "passedUnderFirstPredicate": true
+        },
+        {
+          "id": "hjsta-05",
+          "before": 0.010624446293860237,
+          "after": 0.010624446293860237,
+          "delta": 0.0,
+          "seconds": 5.553447917000012,
+          "passedUnderFirstPredicate": true
+        }
+      ]
+    },
+    "photos": {
+      "statusCounts": {
+        "incomplete": 15,
+        "no_crop": 2,
+        "failed": 4,
+        "validated": 25,
+        "obscured": 1
+      },
+      "sourceCropAndTargetChanges": [],
+      "pairedAcceptedErrors": {
+        "better": 4,
+        "same": 18,
+        "worse": 3
+      },
+      "rows": [
+        {
+          "id": "floral-checker",
+          "before": 0.01941875,
+          "after": 0.019225,
+          "delta": -0.00019374999999999948
+        },
+        {
+          "id": "dense-checker",
+          "before": 0.00699375,
+          "after": 0.00699375,
+          "delta": 0.0
+        },
+        {
+          "id": "bird",
+          "before": 0.02470625,
+          "after": 0.02470625,
+          "delta": 0.0
+        },
+        {
+          "id": "leaf",
+          "before": 0.0265125,
+          "after": 0.0265125,
+          "delta": 0.0
+        },
+        {
+          "id": "gift",
+          "before": 0.02309375,
+          "after": 0.0230375,
+          "delta": -5.6250000000000744e-05
+        },
+        {
+          "id": "gingerbread",
+          "before": 0.01468125,
+          "after": 0.014825,
+          "delta": 0.00014374999999999978
+        },
+        {
+          "id": "white-birds",
+          "before": 0.00379375,
+          "after": 0.00379375,
+          "delta": 0.0
+        },
+        {
+          "id": "flower",
+          "before": 0.0050625,
+          "after": 0.0050625,
+          "delta": 0.0
+        },
+        {
+          "id": "warped-checker",
+          "before": 0.0174125,
+          "after": 0.01761875,
+          "delta": 0.0002062499999999981
+        },
+        {
+          "id": "round-checker",
+          "before": 0.0121375,
+          "after": 0.0121375,
+          "delta": 0.0
+        },
+        {
+          "id": "fine-checker",
+          "before": 0.0216875,
+          "after": 0.0215875,
+          "delta": -9.99999999999994e-05
+        },
+        {
+          "id": "orb",
+          "before": 0.01443125,
+          "after": 0.01443125,
+          "delta": 0.0
+        },
+        {
+          "id": "stacked-hearts",
+          "before": 0.007425,
+          "after": 0.007425,
+          "delta": 0.0
+        },
+        {
+          "id": "candle",
+          "before": 0.0048375,
+          "after": 0.0048375,
+          "delta": 0.0
+        },
+        {
+          "id": "maple-leaf",
+          "before": 0.0134125,
+          "after": 0.013325,
+          "delta": -8.750000000000077e-05
+        },
+        {
+          "id": "crown",
+          "before": 0.02411875,
+          "after": 0.02411875,
+          "delta": 0.0
+        },
+        {
+          "id": "bottom-flower",
+          "before": 0.0093875,
+          "after": 0.0093875,
+          "delta": 0.0
+        },
+        {
+          "id": "faceted-star",
+          "before": 0.0065,
+          "after": 0.0065,
+          "delta": 0.0
+        },
+        {
+          "id": "bibel-star-8",
+          "before": 0.003675,
+          "after": 0.003675,
+          "delta": 0.0
+        },
+        {
+          "id": "bibel-star-curved",
+          "before": 0.00663125,
+          "after": 0.00663125,
+          "delta": 0.0
+        },
+        {
+          "id": "bibel-star-outline",
+          "before": 0.01159375,
+          "after": 0.01159375,
+          "delta": 0.0
+        },
+        {
+          "id": "bibel-cross",
+          "before": 0.00243125,
+          "after": 0.00243125,
+          "delta": 0.0
+        },
+        {
+          "id": "flettede-puppy",
+          "before": 0.0103125,
+          "after": 0.0103125,
+          "delta": 0.0
+        },
+        {
+          "id": "flettede-stonehenge",
+          "before": 0.01905,
+          "after": 0.01905,
+          "delta": 0.0
+        },
+        {
+          "id": "flettede-viking",
+          "before": 0.02055,
+          "after": 0.0206,
+          "delta": 5.000000000000143e-05
+        }
+      ]
+    }
+  },
+  "audits": {
+    "originalSvgPhoto": {
+      "file": "tmp/heart-learning/self-return-projection-v1/corpus/photo-svg-audit/results.json",
+      "representations": 232,
+      "cases": 29,
+      "unstable": [],
+      "flagged": [],
+      "maximumSampledGeometryDifference": 4.099037227506403e-13
+    },
+    "originalSvgHunodan": {
+      "file": "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-svg-audit/results.json",
+      "representations": 176,
+      "cases": 22,
+      "unstable": [
+        "hjfig-05"
+      ],
+      "flagged": [
+        "hjfig-05"
+      ],
+      "maximumSampledGeometryDifference": 3.8131724593878115e-13
+    },
+    "nineProbeSvgPhoto": {
+      "file": "tmp/heart-learning/self-return-projection-v1/corpus/photo-interval-svg-audit/results.json",
+      "representations": 232,
+      "cases": 29,
+      "unstable": [
+        "gift"
+      ],
+      "flagged": [
+        "gift"
+      ],
+      "maximumSampledGeometryDifference": 4.099037227506403e-13
+    },
+    "nineProbeSvgHunodan": {
+      "file": "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-interval-svg-audit/results.json",
+      "representations": 176,
+      "cases": 22,
+      "unstable": [],
+      "flagged": [
+        "hjfig-05"
+      ],
+      "maximumSampledGeometryDifference": 3.8131724593878115e-13
+    },
+    "oneAxisFreshSvg": {
+      "file": "tmp/heart-learning/self-return-projection-v1/turning-refit/svg-audit/results.json",
+      "representations": 32,
+      "cases": 4,
+      "unstable": [
+        "hjfig-05-control",
+        "hjfig-05-candidate",
+        "gift-control"
+      ],
+      "flagged": [
+        "hjfig-05-control",
+        "hjfig-05-candidate",
+        "gift-control"
+      ],
+      "maximumSampledGeometryDifference": 3.595093471822542e-13
+    },
+    "finalSvgPhoto": {
+      "file": "tmp/heart-learning/self-return-projection-v1/corpus/photo-two-axis-svg-audit/results.json",
+      "representations": 232,
+      "cases": 29,
+      "unstable": [],
+      "flagged": [
+        "gift"
+      ],
+      "maximumSampledGeometryDifference": 4.099037227506403e-13
+    },
+    "finalSvgHunodan": {
+      "file": "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-two-axis-svg-audit/results.json",
+      "representations": 176,
+      "cases": 22,
+      "unstable": [],
+      "flagged": [
+        "hjfig-05"
+      ],
+      "maximumSampledGeometryDifference": 3.8131724593878115e-13
+    },
+    "finalFreshSvg": {
+      "file": "tmp/heart-learning/self-return-projection-v1/turning-refit/two-axis-svg-audit/results.json",
+      "representations": 32,
+      "cases": 4,
+      "unstable": [],
+      "flagged": [
+        "hjfig-05-control",
+        "hjfig-05-candidate",
+        "gift-control"
+      ],
+      "maximumSampledGeometryDifference": 3.595093471822542e-13
+    },
+    "finalEngine": {
+      "file": "tmp/heart-learning/self-return-projection-v1/two-axis-engine-audit/results.json",
+      "representations": 504,
+      "cases": 63,
+      "unstable": [],
+      "flagged": [
+        "gift",
+        "anchor",
+        "editable-bird-return",
+        "editable-gift-return",
+        "editable-turning-bird-return",
+        "curved-return-1",
+        "hunodan/hjfig-05",
+        "photos/gift"
+      ],
+      "maximumSampledGeometryDifference": 8.038873388460929e-14
+    }
+  },
+  "randomSubdivisionTests": {
+    "fixtures": 3,
+    "trialsPerFixture": 100,
+    "seedPerFixture": 1729,
+    "test": "scripts/inverse/self-return-subdivision.test.mjs"
+  },
+  "fittingTrials": {
+    "interval-refit": [
+      {
+        "id": "hjfig-05",
+        "engine": "control",
+        "sourceHash": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+        "seconds": 3.5971144589999997,
+        "error": 0.008611504900104781,
+        "templateChecksPassed": true
+      },
+      {
+        "id": "hjfig-05",
+        "engine": "candidate",
+        "sourceHash": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+        "seconds": 3.4983792920000005,
+        "error": 0.009263091160439909,
+        "templateChecksPassed": true
+      },
+      {
+        "id": "gift",
+        "engine": "control",
+        "sourceHash": "27d7f1538cbba31b9e4b13270a70e7ffc36acc23f69a49d4646d5ee3f49b7738",
+        "seconds": 9.397776083,
+        "error": 0.0230375,
+        "templateChecksPassed": true
+      },
+      {
+        "id": "gift",
+        "engine": "candidate",
+        "sourceHash": "27d7f1538cbba31b9e4b13270a70e7ffc36acc23f69a49d4646d5ee3f49b7738",
+        "seconds": 9.425337584000001,
+        "error": 0.0230375,
+        "templateChecksPassed": true
+      }
+    ],
+    "interval-extra-refit": [
+      {
+        "id": "hjfig-05",
+        "engine": "control",
+        "sourceHash": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+        "seconds": 3.5624396660000004,
+        "error": 0.009263091160439909,
+        "templateChecksPassed": true
+      },
+      {
+        "id": "hjfig-05",
+        "engine": "candidate",
+        "sourceHash": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+        "seconds": 3.9703657920000004,
+        "error": 0.009263091160439909,
+        "templateChecksPassed": true
+      },
+      {
+        "id": "gift",
+        "engine": "control",
+        "sourceHash": "27d7f1538cbba31b9e4b13270a70e7ffc36acc23f69a49d4646d5ee3f49b7738",
+        "seconds": 9.437234875000001,
+        "error": 0.0230375,
+        "templateChecksPassed": true
+      },
+      {
+        "id": "gift",
+        "engine": "candidate",
+        "sourceHash": "27d7f1538cbba31b9e4b13270a70e7ffc36acc23f69a49d4646d5ee3f49b7738",
+        "seconds": 9.327299000000004,
+        "error": 0.0239375,
+        "templateChecksPassed": true
+      }
+    ],
+    "interval-weight-refit": [
+      {
+        "id": "hjfig-05",
+        "engine": "weight2",
+        "sourceHash": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+        "seconds": 3.7241635000000004,
+        "error": 0.01017002879306853,
+        "templateChecksPassed": true
+      },
+      {
+        "id": "hjfig-05",
+        "engine": "weight10",
+        "sourceHash": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+        "seconds": 3.3811970000000002,
+        "error": 0.009641715609013023,
+        "templateChecksPassed": true
+      },
+      {
+        "id": "hjfig-05",
+        "engine": "weight100",
+        "sourceHash": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+        "seconds": 3.381515125,
+        "error": 0.009580079070873214,
+        "templateChecksPassed": true
+      }
+    ],
+    "interval-damped-refit": [
+      {
+        "id": "hjfig-05",
+        "engine": "control",
+        "sourceHash": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+        "seconds": 3.740980667,
+        "error": 0.009263091160439909,
+        "templateChecksPassed": true
+      },
+      {
+        "id": "hjfig-05",
+        "engine": "candidate",
+        "sourceHash": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+        "seconds": 3.549749332999999,
+        "error": 0.009245480720971392,
+        "templateChecksPassed": true
+      },
+      {
+        "id": "gift",
+        "engine": "control",
+        "sourceHash": "27d7f1538cbba31b9e4b13270a70e7ffc36acc23f69a49d4646d5ee3f49b7738",
+        "seconds": 9.402039417000001,
+        "error": 0.0237,
+        "templateChecksPassed": true
+      },
+      {
+        "id": "gift",
+        "engine": "candidate",
+        "sourceHash": "27d7f1538cbba31b9e4b13270a70e7ffc36acc23f69a49d4646d5ee3f49b7738",
+        "seconds": 9.427229833999998,
+        "error": 0.0230375,
+        "templateChecksPassed": true
+      }
+    ],
+    "turning-refit": [
+      {
+        "id": "hjfig-05",
+        "engine": "control",
+        "sourceHash": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+        "seconds": 3.830367125000001,
+        "error": 0.01109457686516567,
+        "templateChecksPassed": true
+      },
+      {
+        "id": "hjfig-05",
+        "engine": "candidate",
+        "sourceHash": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+        "seconds": 3.660348667,
+        "error": 0.012679516417332195,
+        "templateChecksPassed": true
+      },
+      {
+        "id": "gift",
+        "engine": "control",
+        "sourceHash": "27d7f1538cbba31b9e4b13270a70e7ffc36acc23f69a49d4646d5ee3f49b7738",
+        "seconds": 9.324778374999998,
+        "error": 0.02301875,
+        "templateChecksPassed": true
+      },
+      {
+        "id": "gift",
+        "engine": "candidate",
+        "sourceHash": "27d7f1538cbba31b9e4b13270a70e7ffc36acc23f69a49d4646d5ee3f49b7738",
+        "seconds": 9.461949249999998,
+        "error": 0.02371875,
+        "templateChecksPassed": true
+      }
+    ]
+  },
+  "focusedChecks": [
+    {
+      "stage": "photo-two-axis-svg",
+      "command": [
+        "node",
+        "scripts/inverse/diagnostics/editable-return-study.mjs",
+        "--run=tmp/heart-learning/self-return-projection-v1/corpus/photos",
+        "--editable=tmp/heart-learning/self-return-projection-v1/corpus/photo-editor",
+        "--runtime=tmp/heart-learning/self-return-projection-v1/two-axis-runtime",
+        "--output=tmp/heart-learning/self-return-projection-v1/corpus/photo-two-axis-svg-audit"
+      ],
+      "exitCode": 0,
+      "seconds": 8.013087042
+    },
+    {
+      "stage": "hunodan-two-axis-svg",
+      "command": [
+        "node",
+        "scripts/inverse/diagnostics/editable-return-study.mjs",
+        "--run=tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input",
+        "--editable=tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor",
+        "--runtime=tmp/heart-learning/self-return-projection-v1/two-axis-runtime",
+        "--output=tmp/heart-learning/self-return-projection-v1/corpus/hunodan-two-axis-svg-audit"
+      ],
+      "exitCode": 0,
+      "seconds": 4.301879791999999
+    },
+    {
+      "stage": "final-svg-audit",
+      "command": [
+        "node",
+        "scripts/inverse/diagnostics/editable-return-study.mjs",
+        "--run=tmp/heart-learning/self-return-projection-v1/turning-refit/editor-input",
+        "--editable=tmp/heart-learning/self-return-projection-v1/turning-refit/editor",
+        "--runtime=tmp/heart-learning/self-return-projection-v1/two-axis-runtime",
+        "--output=tmp/heart-learning/self-return-projection-v1/turning-refit/two-axis-svg-audit"
+      ],
+      "exitCode": 0,
+      "seconds": 2.2393982909999988
+    },
+    {
+      "stage": "native-subdivisions",
+      "command": [
+        "node",
+        "scripts/inverse/self-return-subdivision-study.mjs",
+        "--corpus=tmp/heart-learning/self-return-projection-v1/corpus",
+        "--output=tmp/heart-learning/self-return-projection-v1/two-axis-engine-audit"
+      ],
+      "exitCode": 0,
+      "seconds": 7.922801291000001
+    },
+    {
+      "stage": "focused-tests",
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "scripts/inverse/editable-paper-audit.test.mjs",
+        "scripts/inverse/self-return-subdivision.test.mjs",
+        "scripts/inverse/self-return-projection.test.mjs",
+        "scripts/inverse/self-returns.test.mjs"
+      ],
+      "exitCode": 0,
+      "seconds": 7.584720791999999
+    },
+    {
+      "stage": "focused-lint",
+      "command": [
+        "./node_modules/.bin/eslint",
+        "scripts/inverse/diagnostics/self-return-candidate.mjs",
+        "scripts/inverse/diagnostics/editable-return-study.mjs",
+        "scripts/inverse/diagnostics/hunodan-editor-input.mjs",
+        "scripts/inverse/editable-paper-audit.mjs",
+        "scripts/inverse/self-return-subdivision-study.mjs",
+        "scripts/inverse/self-return-subdivision.test.mjs"
+      ],
+      "exitCode": 0,
+      "seconds": 1.223572917000002
+    }
+  ],
+  "sourceHashes": {
+    "scripts/inverse/diagnostics/self-return-candidate.mjs": "6dccc20f455be2b1f7eb36486e086b9552da722d6beef98e9b552834add65d6f",
+    "scripts/inverse/diagnostics/editable-return-study.mjs": "92fc87949b8ecfdbff358b5d685b424367534c62b03cca5f8590e13b690eb3a6",
+    "scripts/inverse/diagnostics/hunodan-editor-input.mjs": "ec98a179429ab2eb6ae47802a536558402b7d2633563a5fbda0f1c334d475214",
+    "scripts/inverse/diagnostics/build-short-return-runtime.mjs": "ecd0cf717456027c703e1fc2b5aa25e25b6ffb5d7eb188ae8f7268c628fe170c",
+    "scripts/inverse/diagnostics/short-return-projection.patch": "cde788719a288945d3d9867f511a8f47d862df4813fc1d5e77b0b0a4f4145580",
+    "scripts/inverse/editable-paper-audit.mjs": "546e56e42e74c14852759d204ad57b88a2f529e0a7f40861f1c29b0564716e0d",
+    "scripts/inverse/self-return-subdivision-study.mjs": "ae4d7e0214cfb7f0b87c49fb86ab63d1d9c2e83db195bc698412d499c9b893f2",
+    "scripts/inverse/self-return-subdivision.test.mjs": "40a330a165843ac51e9a167f4d5a6bf360158ea956f2a95058cae238e4896fd4",
+    "scripts/inverse/fixtures/editable-subdivision-return.json": "eb822d70f903c3f53a756538cb2c2f89eb00954690320696cbc790c4a52c0dbb",
+    "scripts/inverse/fixtures/editable-gift-subdivision-return.json": "efd616e22d1a9c6883891956cedbb0866fdc7e6d10bc72f1616ed7154a2314af",
+    "scripts/inverse/fixtures/editable-turning-bird-return.json": "a9ad7432c49225d75b5b1b26621d28376625ad14bba5a1c3c563fa7d85ba26c5"
+  },
+  "artifactHashes": {
+    "tmp/heart-learning/self-return-projection-v1/corpus/auditor-before-editor-override.mjs": "6b6372fd5233b1d45d99f63a14426d31052b3373b5ad312f7ca8795aaf8abddd",
+    "tmp/heart-learning/self-return-projection-v1/corpus/checks.json": "02443f89c8b343ff09c1838092df13ac3249641802d31a413658cede44d857fa",
+    "tmp/heart-learning/self-return-projection-v1/corpus/focused-tests.log": "42c87080016f013708784711bb4feeb7fa93cd37e01b088f2567f2d957335ded",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hard-photo-benchmark.mjs": "e9c61f5efab0a10a992876bb7689c12f0055a1d02020dae42842f5ac47c7a3e1",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjcur-01/cut_geometry.json": "049b9ebeddc1110704836a415214288788c8494bd69914e99140e1c6a00e499a",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjcur-01/independent.png": "e4ecbb14e341dcb48718b6041b9e2c93ac01b0fc06b5ed4c941b36a6a456f38b",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjcur-01/report.json": "98206010612cc4366d1ff272763ae9d5c3d5009758699554ce27d8b31ef5a14e",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjcur-02/cut_geometry.json": "b6dec1adec3bcf53ef9122c6d6095f9c30ff233e7ef358b73502f7b739327cc8",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjcur-02/independent.png": "8e6a81f849f396e1cd396105daab665f363a0e90b43aa90a2331c5aee28e9416",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjcur-02/report.json": "837ea5b1aaede9b91f96bbfb75fd9c3b7b5675096f89591e3af935cf3daff0ae",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjcur-03/cut_geometry.json": "ad97a002943d8e2647c3b8d9f4b9c7d0f6f1ee10dd5db85238f2366dd6ca91c3",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjcur-03/independent.png": "4f4264139cbfba0b66f795196c5457333aa00f0bc666636a6ff89dd148012756",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjcur-03/report.json": "e5acb3683444cb97892dde1000c79afee3465fda765cf13e5661790642aac3c1",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjcur-04/cut_geometry.json": "a525041d65f090550c374aa1d58e5b9a22afbeaaa8d21f397e32ed8cd26ae022",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjcur-04/independent.png": "3442cc6d073d8a134ea483fadbad855abc538b982025312a1aeed911a29e8e59",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjcur-04/report.json": "c54a63532a37176331836b91f8aee4cce473d5ac4348284d7b4140f82e680ed1",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjcur-05/cut_geometry.json": "1b3822492ae13f4b6f73bc67284ce4eb568f292cb87b092b80be053e914817f7",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjcur-05/independent.png": "7db466e91c1607b861a53198900b4dc47df4746edfcb1e0ba78a940016597781",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjcur-05/report.json": "fa9432bac0a53a8eab241cb414484694d85b9964f7b48a3f27ff9bd28b6871a4",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjfig-01/cut_geometry.json": "d7ad5e34490ec434df08448000f24ff0cba34e62923d67eef6ddf2a13a640983",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjfig-01/independent.png": "90b333bc8b073a75052adcfab1673ab418b58e3010c8e577e6fb3913dbc0f4bb",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjfig-01/report.json": "7e88c2cbea63bc55703943fc4b07771bf37868987f63bff65b058c3750cfdef5",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjfig-02/cut_geometry.json": "bc90373c69a2bcc1236d56643df72e3c3e205aea3d3a4b8f2b93c88ec187be88",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjfig-02/independent.png": "fbb58d97c2808f40405bacc5dac7b2c3bbccc5d3c1ed7db496036ed4e512789e",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjfig-02/report.json": "8a161c75eebc348203e36bb6f59ac6af9ce756f30fd3427879b332f9dbe56924",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjfig-03/cut_geometry.json": "ce50b811ccfc67a307097b3d058c6d6ab6e47fbd1da7bf87584b6cda6cdaf8f6",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjfig-03/independent.png": "dd1cc125318fe895ecaf6755ab81f8cd2364be8d19537cbea148a5857ca748f0",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjfig-03/report.json": "c3b2bdf1ca4a6f12c986636a2a3ed26b567bd52fd7f857978f76cdee7d616680",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjfig-04/cut_geometry.json": "16695deef171fd7b1f248ef452407bbbcc4a0c65aeabdfbb6038ef5c56117db7",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjfig-04/independent.png": "7da54e786207f5798379327247c97f90d15ee69f024ec5927a046dc3ad5eec62",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjfig-04/report.json": "2364f2b426a938e806a30eaae091407c6e67360dfdec4fd8e5c2d7f6b6b4f08e",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjfig-05/cut_geometry.json": "cc9190dfd0eafff11536bbde8561dde72e62f1d7defc6b9e2c53a64df6f413f4",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjfig-05/independent.png": "fdac400110f7dae31e1495c1dd33e53f2933b52936558ec2b7a4f92dd3afb7a0",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjfig-05/report.json": "0b527d48f1ca4023c5f236c3ae0552d093f4f1b2e46bc65e9d6695ae69b4392d",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjfla-01/cut_geometry.json": "2adb545bc28461e7756f84b13f7b7470b9ae477659d6c862afc5b1c0b47a4073",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjfla-01/independent.png": "eb1cd5b7af7248c7c807c8f8a9896cea86bcdb65cc50c94836be2c6b506f3321",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjfla-01/report.json": "1109dd60e91ba3c3a84a564905b78d22f2e72f3f5837a7d14db98f7ca769d1c8",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjhih-01/cut_geometry.json": "df9facec711075be91afcf6f2ddf537842a1724fcd44ef1f68cdb0703d5f2c68",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjhih-01/independent.png": "5cde47544e1e0147fc9115a89252da3006a69c1951769ee579de383ade93fff2",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjhih-01/report.json": "6d71d93b018509c1ec725e4fa9190576baba110c771fe878eb69db539d930393",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjhih-02/cut_geometry.json": "25db88ee2ae032dd7f5aaa85fe1a897b585797aa10fbdf37af94d73e24a81f2a",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjhih-02/independent.png": "f36eca01b1c27b198571686891f73c05d2e61b41e446ee6b901c1dc4a43ce054",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjhih-02/report.json": "633b3d29fdef731ef97f8ebc5c9467aaa69fafca300e0c5a83acb358af8f464f",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjhih-04/cut_geometry.json": "8c34f52f04b01a4ba97e7e20eae725dfe423f2ef7eb1b1b8154c749e63d220d6",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjhih-04/independent.png": "61da8da37b1a97a8aaad6bc0e8fbfaeb0cec2244512bfc2921816cbbe145d9fb",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjhih-04/report.json": "d683dff5373a2ca5180af762fb992e2992e6b06feefb9d97ce8bb2d12240fb77",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjsta-01/cut_geometry.json": "ec714b590351efd48a2ca01d3c2a1ec25791b52fe9286389b1c6aa0b96eea005",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjsta-01/independent.png": "e4d066e073330265c4dea2118439e84bca83fc5da9c04af97534b494a19599a3",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjsta-01/report.json": "41c86b768fd213d672811c620d2b3eb8676eb6d2b1a3c08fbf955d21c1121fd4",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjsta-02/cut_geometry.json": "ba755c3c9ca90e290630af6e8984e9167b4f865dfd5055a578378a6d2fba1cd7",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjsta-02/independent.png": "4be533947679d19e18b3d09e895114190a26eeb87a233d076aecb9eb77e9d679",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjsta-02/report.json": "cf8a07b0ba1f42078f110e494a2dbbddbcbbd5e1120455e26d63d2c348d53234",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjsta-03/cut_geometry.json": "94a7e2fae6933095c873744551ba72caf03ad1119701a8f6e162f1f6687266f5",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjsta-03/independent.png": "9941518d33cb094aec9c9cfcaeffc19ad7064a99c882a894c5bf5887e79cf192",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjsta-03/report.json": "21338a4186e31893753319c7fa81cab2ec0ed9a8292de11a0116a9cd4177d7c0",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjsta-04/cut_geometry.json": "0ec351fd7566f5570145c107913d323e6761f018527258f6def41cd4dcc67a1e",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjsta-04/independent.png": "16ed70b6b7e3f569a4d5c9e93be7d93f005305bae182fe364e79b30e2931850e",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjsta-04/report.json": "ebe377fa0ca0c574ca83e4e521f3cf8f5317c3b318ad170ea7c1c580fbd24c61",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjsta-05/cut_geometry.json": "e5c679f439952dc25a281d54f49977ec76113eab8e1eead9473f77b881a9f5f2",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjsta-05/independent.png": "7f3d00241b585b3e679884fd7e03a99a16cb355d1f1f3674846e8c151f0f6acd",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjsta-05/report.json": "00b934017036b451d73b8bd3b430edc7e72e27b1e451a13faceb217b94857181",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjstr-01/cut_geometry.json": "a7f33780db85389adc0d24217c4e7febf717857000a2b4ad93f677fcfd0860f2",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjstr-01/independent.png": "3c350eb16799c0593bdf3badfdcb948ecc0778d04080cddd3c2f3af840a99873",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjstr-01/report.json": "2b831f928e1e67df7abda8603411b458e19d37763b218b03c00b26926fc26daf",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjstr-02/cut_geometry.json": "febe020fdc59877ef5cf71c22eff1fbc4607a1eaae93baf40ec9611d46bdb270",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjstr-02/independent.png": "7ba0236c5fb9fd15ce5237187442095e2c50d60d72a104b3435403a0f4db78f0",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjstr-02/report.json": "5da0350b056a6d196242bebaf975d07a1fb315d8154f18cbb23da7f94092d823",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjstr-03/cut_geometry.json": "5ffc98f412dcae8e143a786b0f2dea156757837c0d08dbd8d0e9c123664e9cb5",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjstr-03/independent.png": "3494f3b925bfe14bab1f5d670de233993639a50664c421fdcb3bf5a65e22e5cc",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/hjstr-03/report.json": "1620b2cf5c5a9b4fae8317369b1e078442941d1b1b0dc5202ef6bbe692529c0f",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan/results.json": "9b47e70d68f6e06534056869bc9ee2b50c0b236b37762bee44d7e287a3d63ba1",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjcur-01-automatic-weave.png": "8b26a073fed07e0b07c863cc8a87189808af7fbf536250ff29626b455d1b19d1",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjcur-01-automatic.svg": "40acd9a84c79838183adffb76382b5b92722090bd99ea4776a110986a102d81e",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjcur-02-automatic-weave.png": "dfb5f67bb8563854b6e6c776d50624e8dca8737ab05a187f5daf32d4a59a9d3b",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjcur-02-automatic.svg": "c680f0b80f6ae186cf443a4f304ae349d4e42d6a6e9a2bc3b282461c6cd8e579",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjcur-03-automatic-weave.png": "5f6160136db8e1c19740c69132d1cfde0c400f06914cab8fa83a32226d37e485",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjcur-03-automatic.svg": "7db6ce7155a3519ba0ac78a86c255d73f133c13dae68be4e754e5c7034ad35bc",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjcur-04-automatic-weave.png": "a668a0f8102bb7b17721a35dad266d8e672f034fed53085203a6f748e0725b0f",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjcur-04-automatic.svg": "d2191b18c9ebd7d472a27d76e5257a1d28942a460d498111f5f84376db8b44af",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjcur-05-automatic-weave.png": "c89956ad3ab9af6d4252afb3d58851e1ec1abbe85eae460ffa7ab305055fb2af",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjcur-05-automatic.svg": "93d051e82b3d860995c0330ad1fcad67e7045812a9181966ca58e2b9d8a2296b",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjfig-01-automatic-weave.png": "514819d0ee58a0e1e318a1168069a531c099a042acddc18299384d541d8ae4b7",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjfig-01-automatic.svg": "b43d4c9422ff66a2a4485f6ff3623d6397020e848e5e71410cbbdc14aa8430bd",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjfig-02-automatic-weave.png": "1c7506e9de9f560e5cdff955bb6d948078d7d101d180df0dd62e893d765ae91f",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjfig-02-automatic.svg": "a855e76bf8583ddbae319d1eed5f6dedfed76a182e510dbae42d8e8bd1446f0f",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjfig-03-automatic-weave.png": "48a590d7d92b3c53d436ca5e38ee03c0078fd7689fd3bec94f37ef911379e946",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjfig-03-automatic.svg": "9a4c02bbb030e8ce0c9a8a07950ba6939460b3b6a1233c06f5ead9cfafd2f3e9",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjfig-04-automatic-weave.png": "a83930600cf987e0df67f3a140d6f9aefef91aebf9ee3ceb939d630faaf0f8d3",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjfig-04-automatic.svg": "302bd3b42da4e1cb4682aff6a17fba600b2868654f60faaf9a899556f70ae5cc",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjfig-05-automatic-weave.png": "7e0e252013fadc001981d2cc6bbe5c19298177e30bc6ac8ada7f029e12cd7768",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjfig-05-automatic.svg": "ced52c238989f08a55706ae5fe9d587aacaf6e7bc2f24fa594bfaa335a947982",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjfla-01-automatic-weave.png": "c7f9ab35dbf0e8964e995eb97f1536a0445a8bc49eeb425214d32776367f3acb",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjfla-01-automatic.svg": "046391e41de74e0bd041d33b47b71c1472123422fd58b4d08278a638df28c452",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjhih-01-automatic-weave.png": "4546eadc43712082a695dfaa6f572d1be490e07507361d9a8709f4283ef4e91d",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjhih-01-automatic.svg": "a88dc8b487189c44ecb8dd2626514d37b2287627269c226eacd93025164c7f76",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjhih-02-automatic-weave.png": "384a2a657a9e2c568b9c4cc39920da094e328993da3e7011eb39456dce1f4bb1",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjhih-02-automatic.svg": "d7b39d3a76232f9142aae786ee4224ff869f4c13a3f6b0912240b97057e72269",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjhih-04-automatic-weave.png": "177188766c4c58278fa3b1a141e44032e60d319d8f7aae9f65034e2b45319578",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjhih-04-automatic.svg": "5b2cac89a860d81d73cb880a5b3496f5d04b5c80af4586ea595b4d37d014f039",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjsta-01-automatic-weave.png": "7491371ca6c317151b271213fc2f62e63faaf270f772c9d22efa1171e7e7e6f2",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjsta-01-automatic.svg": "e22112caeeaec2d2f84c063d28a2f371ca387a5ba4e0ae7e512e39132603bcda",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjsta-02-automatic-weave.png": "2de29c564bbbcaa298d58acd3eabea9fc4e6ea30f88c92fcf985118695cc8db7",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjsta-02-automatic.svg": "5ce279297864eb72576584ca08ab40206fd2422a7ec6637acd30fcfe0ce05f6b",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjsta-03-automatic-weave.png": "8717f185db736e8825e64b27dbfe03fcf7f01c3a4aa72e58825d051b198bf506",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjsta-03-automatic.svg": "a61308d990e47d19a910f540c488b13023e3a7e99bbac9e59a310360f8845366",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjsta-04-automatic-weave.png": "fba5ed8c5ba187bc90d8b0e9555712ae1849f0f8bb97e300fec4b34526f06e3f",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjsta-04-automatic.svg": "88c5af9626d5009dc0179dea841e6549c5ecc8a20723d0ec330f85927a91a24b",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjsta-05-automatic-weave.png": "f5e9657a169cdcc23503275ff8e3d581322bad9835ace29f75a39d0acdf5dbf5",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjsta-05-automatic.svg": "761bca2f88f51c233560054850d9ecd4c7f0b27f777070dab1eb2a7699d34d3c",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjstr-01-automatic-weave.png": "02cdf86e6a9335ccf6cc3b96624a678f1fa2c8ef5d99a0c045b14ac4540c2997",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjstr-01-automatic.svg": "4742e9f710b910c99b82b1be9cbf07bb200da208276ff38f952e462fe45d9d91",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjstr-02-automatic-weave.png": "9adbe16cac3b46fd881df9c0aa86b165e6f27ba1330c37c668d23e9fc4c5ffda",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjstr-02-automatic.svg": "85db49783533580055d019813dbeca98fc6d2d900fdbf8d8628cf7f97bcaca2c",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjstr-03-automatic-weave.png": "230bf7f20470fae4e7281377f3b7449d31bbe639bd4ab04a415b44f23aca735a",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/hjstr-03-automatic.svg": "30c262b7a9b80fc8295485080c37eab233b3222a5ed4dd29af4b94c2cbbfff9c",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor/results.json": "b1cff0779d716eea243d28654039bd236254191e1d64470e2a1ac16d83243c07",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjcur-01/automatic/cut_geometry.json": "049b9ebeddc1110704836a415214288788c8494bd69914e99140e1c6a00e499a",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjcur-01/automatic/mask.png": "0c353c2947b1c0c208329e0f02516f0d862a24568cc4a256c7ee197f9f2e3652",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjcur-02/automatic/cut_geometry.json": "b6dec1adec3bcf53ef9122c6d6095f9c30ff233e7ef358b73502f7b739327cc8",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjcur-02/automatic/mask.png": "b60053193f087f4941ce271733f461545ad288b4e6035a082e115e5a6e2ea5ee",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjcur-03/automatic/cut_geometry.json": "ad97a002943d8e2647c3b8d9f4b9c7d0f6f1ee10dd5db85238f2366dd6ca91c3",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjcur-03/automatic/mask.png": "4bd5c786bc18bce8e63dfb32477b6102a70772df54e7ab044d73d408c6e12491",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjcur-04/automatic/cut_geometry.json": "a525041d65f090550c374aa1d58e5b9a22afbeaaa8d21f397e32ed8cd26ae022",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjcur-04/automatic/mask.png": "b4b1860ee97b85952db95f12d7564c4fcc15e0fc6b087f055647b1a0beaad8d0",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjcur-05/automatic/cut_geometry.json": "1b3822492ae13f4b6f73bc67284ce4eb568f292cb87b092b80be053e914817f7",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjcur-05/automatic/mask.png": "0abad3d8448af96175b8bdbf5262704c3ec473972fd5692b890fb9a1d8348fcd",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjfig-01/automatic/cut_geometry.json": "d7ad5e34490ec434df08448000f24ff0cba34e62923d67eef6ddf2a13a640983",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjfig-01/automatic/mask.png": "23c72e2e81092030ab011d44ebb0a16fd817c4f3c18752309107b3cb39fa16f1",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjfig-02/automatic/cut_geometry.json": "bc90373c69a2bcc1236d56643df72e3c3e205aea3d3a4b8f2b93c88ec187be88",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjfig-02/automatic/mask.png": "98ca65ea6036e431465e6b0f06b657404bcab1ae50121ca6f99f775b6aa16a72",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjfig-03/automatic/cut_geometry.json": "ce50b811ccfc67a307097b3d058c6d6ab6e47fbd1da7bf87584b6cda6cdaf8f6",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjfig-03/automatic/mask.png": "b4fe6ade0ea499a152ef0405fed274e29eba30414f2072b8cbc8009d5ff6d4a2",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjfig-04/automatic/cut_geometry.json": "16695deef171fd7b1f248ef452407bbbcc4a0c65aeabdfbb6038ef5c56117db7",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjfig-04/automatic/mask.png": "50c4281fb3b6455a51366c3c9c334a352a6bcb3fc22ab37a65cfc02fccabe01e",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjfig-05/automatic/cut_geometry.json": "cc9190dfd0eafff11536bbde8561dde72e62f1d7defc6b9e2c53a64df6f413f4",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjfig-05/automatic/mask.png": "399c96a211658a3f5661cb2606dddb44be18663c65299026512a1c0d0322f8d0",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjfla-01/automatic/cut_geometry.json": "2adb545bc28461e7756f84b13f7b7470b9ae477659d6c862afc5b1c0b47a4073",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjfla-01/automatic/mask.png": "6e9b8ca749f1bada0bd7f7598a33bc632ddc6ccabd3932dde3126ff6a69f5b5a",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjhih-01/automatic/cut_geometry.json": "df9facec711075be91afcf6f2ddf537842a1724fcd44ef1f68cdb0703d5f2c68",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjhih-01/automatic/mask.png": "3cc18836292c583b8703b23f8dff17d8a151b3faf5b90bc2da9dcc021a687571",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjhih-02/automatic/cut_geometry.json": "25db88ee2ae032dd7f5aaa85fe1a897b585797aa10fbdf37af94d73e24a81f2a",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjhih-02/automatic/mask.png": "2df61062535cc40df05c655e9f42565c712e9f2c76514c73edf464c304020c75",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjhih-04/automatic/cut_geometry.json": "8c34f52f04b01a4ba97e7e20eae725dfe423f2ef7eb1b1b8154c749e63d220d6",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjhih-04/automatic/mask.png": "82125695ba5cb9289002827798b69a51a689bcd0343ea41f5e28b3afea27b9f6",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjsta-01/automatic/cut_geometry.json": "ec714b590351efd48a2ca01d3c2a1ec25791b52fe9286389b1c6aa0b96eea005",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjsta-01/automatic/mask.png": "53c9af8a5adf12f04082bfea4fd22ec47f59891f968b639970dd782096c8ecd7",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjsta-02/automatic/cut_geometry.json": "ba755c3c9ca90e290630af6e8984e9167b4f865dfd5055a578378a6d2fba1cd7",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjsta-02/automatic/mask.png": "b141ae88df405adb0885e38a885b8883f4ae74153f189ec958d21d0196dea212",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjsta-03/automatic/cut_geometry.json": "94a7e2fae6933095c873744551ba72caf03ad1119701a8f6e162f1f6687266f5",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjsta-03/automatic/mask.png": "53a43dfa83fd0531f21b06ff5523a1107051f2da1122eeb6fec21da0124f74da",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjsta-04/automatic/cut_geometry.json": "0ec351fd7566f5570145c107913d323e6761f018527258f6def41cd4dcc67a1e",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjsta-04/automatic/mask.png": "d5ce568047e6eb27cf27d373840cf1e65229721ed9e15af90abdffe4f349ee41",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjsta-05/automatic/cut_geometry.json": "e5c679f439952dc25a281d54f49977ec76113eab8e1eead9473f77b881a9f5f2",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjsta-05/automatic/mask.png": "0b669fdab2036d19935c59310517dda13ef13c9f92fc33cac1c8e5a2ec01ccf8",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjstr-01/automatic/cut_geometry.json": "a7f33780db85389adc0d24217c4e7febf717857000a2b4ad93f677fcfd0860f2",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjstr-01/automatic/mask.png": "cdad8c3c706fd74bd2b3f9789d8a54da69fc2e8e9f06e071924afa13635c9296",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjstr-02/automatic/cut_geometry.json": "febe020fdc59877ef5cf71c22eff1fbc4607a1eaae93baf40ec9611d46bdb270",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjstr-02/automatic/mask.png": "bcb5beb9f193459a01d227f980c8801ebf46831971701d2cd6ada06748851d67",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjstr-03/automatic/cut_geometry.json": "5ffc98f412dcae8e143a786b0f2dea156757837c0d08dbd8d0e9c123664e9cb5",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/hjstr-03/automatic/mask.png": "fde5099f0782c8f889266af40f02b3cb948ee69ece3b05d22fed097ae836dbb8",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input/results.json": "c9f3383927317a282eea53e0acb46453114acca12db7259ea1141a05536c7662",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor-input.log": "684d83bbe159f15039e76f02daa2e17c447bddddf3a10efee9a7aaa26af6ecac",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-editor.log": "69597f3eae51a44462cd4747bac947c2c9a1309f507a55a8394ab687a0ef42a8",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-interval-svg-audit/results.json": "94a0c405b47d85b97d5f6924788806bf0e9dc8faa972f5d242f259e612f4a63a",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-interval-svg-audit.log": "31fa412d7d984fa7402b7af39ca92d68f65c974da530fcee29951ff8d9f0d50e",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-speed-benchmark.mjs": "e503d9a4ce1b272d780917ee890f8ac572f036cfaf3d8eed71192bb15acf3336",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-svg-audit/results.json": "52694c65491f34b051a46759948b6d32409badc3ea5380fb5a9e3bef7eb0ef2d",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-svg-audit.log": "7e49162cad94902c46f78d009c82ecb146ea2a23d3819ad641ab8c97ea6fd141",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-turning-svg-audit/results.json": "b4f28bf47c9c48aaa06f8435ebf04f997458004e573d4eb015f9d84fc1022711",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-turning-svg-audit.log": "31fa412d7d984fa7402b7af39ca92d68f65c974da530fcee29951ff8d9f0d50e",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan-two-axis-svg-audit/results.json": "01bc4dac3f1989099a996321b259ec028c0d6c09f06c3d82bec1233f1291576b",
+    "tmp/heart-learning/self-return-projection-v1/corpus/hunodan.log": "7b1c41044c57f1ea9819832c16f94695372ef9487ebd3c7d594bf1f055cf4995",
+    "tmp/heart-learning/self-return-projection-v1/corpus/interval-audit-checks.json": "a92164b123a668b28e0da7e26f462ef7c1fa00fdbc3c48196da0fe7666265611",
+    "tmp/heart-learning/self-return-projection-v1/corpus/interval-audit-driver.py": "e4e95c4f346781009eef26684c2bcf3c5bb9b72dba9fd6ba980dc65ce9cd825c",
+    "tmp/heart-learning/self-return-projection-v1/corpus/interval-nine-probe.mjs": "c52fb794f29f49bdf64e1588d2698a85aea4d782b7319f762c3b8bef36c40184",
+    "tmp/heart-learning/self-return-projection-v1/corpus/one-axis-turning-probe.mjs": "54cdc3b67d4097afe75dd7e719abeb1080370b5a1835a9cec83e385b189484f6",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/bauble-automatic-weave.png": "c0696dd5ecbfa248d138d2ffb373b7fb6a45d4ea85017154e467a12c71b135fa",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/bauble-automatic.svg": "00b92c3a1231eacd9f8d38154df6c71f108cbe4afc0d8bc5af308881cfd09fa6",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/bibel-cross-automatic-weave.png": "c0b7c57d5ce8300b47b79f83ba7c5176ac6259f3d52d680f13b05189c06a2add",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/bibel-cross-automatic.svg": "67679ccbf964a7fb02206b9c88003028ff45d8bb18a0c5e7f1920df295941a71",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/bibel-star-8-automatic-weave.png": "27d276f3c0a795ab4443272f0f394614c156bde198534a309d238fa4c73ade06",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/bibel-star-8-automatic.svg": "c7f275bad163cc35677d81527b14cd0f87b1f11b44be572658a0b41deb5dda01",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/bibel-star-curved-automatic-weave.png": "924a187a571911730cacd0416ab1de86f3aa791c1e26c40e13cc2f96adc7ffc7",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/bibel-star-curved-automatic.svg": "d6f2b6556888c5f7f216f2ec2871a41b1935c62b4f169092d2fb99ec9f4c3d1e",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/bibel-star-outline-automatic-weave.png": "0e1ecf02affb330fb887463d5c605b0da983dff2e152c1f0490d898870c63cfb",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/bibel-star-outline-automatic.svg": "be9fe5fd187adeb8eaabce909059d5a6389bd911964167a326de6a6bf737f484",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/bird-automatic-weave.png": "68b58d668c0b60c66bfb858e85528bddab413fb3571216e2edd8bb8df9a789a1",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/bird-automatic.svg": "a005ae5d7fd50f854e780b5ba3c5906953c3a46c96c167ac1bea4129f130b0e5",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/bottom-flower-automatic-weave.png": "45eec6187fcb61ae780ab7a819ed638959a92e02aac019746e690d3ab979516b",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/bottom-flower-automatic.svg": "4048e108af23cdd2d31718dce6b6a3fc42b4beb552ddd49d10aa0035f622fb6f",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/candle-automatic-weave.png": "776ff35abe0c208a2877b971fca002a3c021c730780ce466cb9d6177de26a500",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/candle-automatic.svg": "5d4c6cc63010f2f7a64fe1f934daed5345e1e431f4abe04233bbe4e1eae804cb",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/crossed-ribbons-automatic-weave.png": "ad2c7b8cc8c44c4e4c1f3831748fa7cb1a980aac1e703af16c1c0380ed84d625",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/crossed-ribbons-automatic.svg": "987c44b39202a7caa840c5e2b85b0d14d64c1cadbccc25395ad32fc81022ce52",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/crown-automatic-weave.png": "523e8ee77e253251e38d11f5cf0b9ea0fdca6be766a3eb121b694defbbe720cd",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/crown-automatic.svg": "b2091f9071301fecf30c91d18299caf21e7d45bbc62f04af489aa1dee824e3c2",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/dense-checker-automatic-weave.png": "cecd5e02f9f8f0ba592fe7e5c447ae200aaae158d1bb9fd9f894b5461e0c0c36",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/dense-checker-automatic.svg": "97ea13a0d9a3c397a5b3f64fb7933204f1d0f73b7993e071bb528d1068420236",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/faceted-star-automatic-weave.png": "0a2095bcd041e8b2de8dbe86a1b39db882fcc72ebec72d4a3a1e1255c4178bb6",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/faceted-star-automatic.svg": "76ddd045e7fdf8c19449315c891ea0eb43133b0521913bb055cc23190189885f",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/fine-checker-automatic-weave.png": "e148e186ea068f8968c32104a80a6387c554f61bccd351e45286e1fca29eb248",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/fine-checker-automatic.svg": "7652c00226c015693e6a1f5839138ba1c2d78c79441a6621da97990bbd573b87",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/flettede-puppy-automatic-weave.png": "a9e87b73bef12acbdf2f81492d87e81bfab17279a830defa21aaa6108d790005",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/flettede-puppy-automatic.svg": "ccb74c5830e56be506e2315b5155bd831cb5a94cc38c4906061262530661bcd2",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/flettede-stonehenge-automatic-weave.png": "1e660514815d1149afe33e7cd48005ecef3a53d976a9ff5f687dbf34c1de3a32",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/flettede-stonehenge-automatic.svg": "5f2470fd85e280ff3c4758e9d1301136e65b1872e4ad5f724ff07d5480d58f45",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/flettede-viking-automatic-weave.png": "7116205bb005785e1dc7c093d2010da667cd3a743cc1d59d97fda76fd2b1fa5c",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/flettede-viking-automatic.svg": "e20805cc0e755050c5f993a3d7a116e78ce6a42a76d5c56251a2c3765ea0d04c",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/floral-checker-automatic-weave.png": "0040170f78ef9f017315a6f827ccce561731c1cc23865be218727ee5a1709e8f",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/floral-checker-automatic.svg": "d115091bf2999e16825dfd982ba58266ad0e0b4964776550ea3ea3578aaa266e",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/flower-automatic-weave.png": "b5af0baba8733dd5563631f96c94367d1382a20478ec687e0187b0ebfabe5d4a",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/flower-automatic.svg": "d02d47669ec71c7923da9ee45e6fd1ba656756ce6c1de70ff8b6c759936a702e",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/gift-automatic-weave.png": "c9eecbdc00d485788c10d1ff1771a4d59fee7eef7f2aff013eee4a8fd6cf6e2c",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/gift-automatic.svg": "0041104191520e5c7049e08977ff558c8575310dcf3680609c433bb5521ac58f",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/gingerbread-automatic-weave.png": "d416e76482f78026b53756bdf13bd960858a3f43af9d4037971b9962b858254a",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/gingerbread-automatic.svg": "90a714ae10ef9dc8e6e113e4191e5a3b6289719aea22f19e1a60ebee5b42725d",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/jigsaw-automatic-weave.png": "ba24fac6b969240c8ba666a2a651550eac32b70db632536092a872df8376c5dd",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/jigsaw-automatic.svg": "37f59648c1ce7bb2b974315671152aa07401006147c2bb84e98836cd503c86cd",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/leaf-automatic-weave.png": "a5368c9e7752ec58815ba3feaec62977ec60fcf4fbf5a6e6d49c0c616a83a99c",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/leaf-automatic.svg": "2dd240ddef3cc97cf068578cb9583ee7ca1201fde4a992c7f89694b5bac6960b",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/maple-leaf-automatic-weave.png": "58a325780ebd7d68fe161fbe0a560bf3b07540e335827dfd8804fef73c4df60c",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/maple-leaf-automatic.svg": "88d7bad1ef38d9f0dfe0e3b08cef12b86ffdf218560ab0a0a8180c66c53464a6",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/orb-automatic-weave.png": "1652c42d3f119af50726be31a646803763275a211bbbe6fa61097a6a0299f545",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/orb-automatic.svg": "d7e6b38fa793f0591a91b3163936e5a10af1da428aba9401fa24ea6a847f1d0f",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/outline-star-automatic-weave.png": "c74b02ca842ab0fcf7caeb9c92a23b1c5589e1a3603ff7ec639fb9779095bf10",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/outline-star-automatic.svg": "c5c7fb52ab579e221fa56e2d09a74a71b006e3dcc77263fafd51d2689dc247af",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/results.json": "f1cf34bb7246e6bb7c29ca42550a9609283680c3bb1bbd2a259f1305b7a89393",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/round-checker-automatic-weave.png": "264e695172caa013d53ccc6369fd5a7d02481efcc78ebb2dff7ec5f9798e24a9",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/round-checker-automatic.svg": "da0c317849bb553e34080515acd5c891452aa91f01f08cef314327f584309d8e",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/stacked-hearts-automatic-weave.png": "51c06f4a57e9981c64f6ed93c80ca437d3b69ff26ce279602601bd6dc2ef0ddc",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/stacked-hearts-automatic.svg": "b3cd59a9bfc3b45fb6ce18cd77c78e783bc5e3642cd7f841a9e2f8a91f5cfca9",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/warped-checker-automatic-weave.png": "d241f5361f1b1a8f32a14e40c67fff73b532fb6ed3ae66183c49a41df19e139a",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/warped-checker-automatic.svg": "bd07c313f2989d8ec33ddff8bec7c724bdf007bbaa7b92427aae877c86e45c63",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/white-birds-automatic-weave.png": "1ec871ae86e0c4e7bddab3ec14e6a2e5b37836af852076ed965ab93253ef9dad",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor/white-birds-automatic.svg": "f1db88e3fe259b4356b042508bbfd4dc5bf738d20719bbbe82679baa9f2b9082",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-editor.log": "35cbedbcbfb9e7ea7382975153c0478fb32fa91e463338ec9a70a434dedba555",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-interval-svg-audit/results.json": "4cfe2ab3948508f3e8bff66cc1ec984a8d81d3689642170526b78ef244514d09",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-interval-svg-audit.log": "31b7f55c23dcfb45e6a2c0075b667a7e22ee3687387405f2612c4d6b65b8c08b",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-svg-audit/results.json": "f2c7f6246302c2fa7be7997b91aba1780d9c80753fe60c56b40feb1c0689ee1b",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-svg-audit.log": "f8e67d15d915ea6f914af46ec8c319c7abdfef904f36deae72537f3d114eb215",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-turning-svg-audit/results.json": "53a356a0a0f8b2b7061ac7099b6de4f7dafa96ffb4aa793849d1b3963d72e273",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-turning-svg-audit.log": "de79e6b120b5bbab5b500572a3a57dd515ae27362be0679252e0f2e0f34d39ef",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photo-two-axis-svg-audit/results.json": "7e76d086d5158c40482ba11c445e8e8a60c6d201ec6452f1a5a50e9fc43682ba",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/bauble/automatic/cut_geometry.json": "ae10e0c878e1b780e5a6844f0ac90f19832bb52622949402d48017f03f0edbe4",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/bauble/automatic/mask.png": "c17fe4647f0c58e5e303b206e1f022d02a2bd42041c919733b4ecbd79336f190",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/bauble/automatic/report.json": "1e572925f7cdbf4d1107644c0c938eee2817222d5fdf785d3409c57283e6577d",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/bibel-cross/automatic/cut_geometry.json": "9668da65c3b88ef077b3054d27e022b021851263785e9868f692bb7cc9fa0a05",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/bibel-cross/automatic/mask.png": "18cdad89f6f67d314257eeef0e57c561847435241efa11a51df5c82b9ebc8f99",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/bibel-cross/automatic/report.json": "f775add4a20a027fa7db2a2ea136baf41c96f325885f42fa651f8f6a4d263ecc",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/bibel-star-8/automatic/cut_geometry.json": "86835af75f4222c274fdd1757ba65e6494909876bac46bb31a18561628d53e97",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/bibel-star-8/automatic/mask.png": "368d6f5e006c99a93f432d169ced85cd7b5dc78f129e9bee76ef10bcd01b8801",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/bibel-star-8/automatic/report.json": "5e96422945abf2d4fe9c2e325373345ea0199741ce31c9a80caafff522333114",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/bibel-star-curved/automatic/cut_geometry.json": "d4e520bac64dbd55e0f2ca8c1dbe9adbfc7d4f29d15714783362199a9abc1e30",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/bibel-star-curved/automatic/mask.png": "37ba10450d2b1064ed27911736a5a5405134546a6a8f487a7a6d96f3639f8a3e",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/bibel-star-curved/automatic/report.json": "b216e6d08d2975c1271e77211dcddebe5e7c5c01773bb9769c369f058075c6b4",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/bibel-star-outline/automatic/cut_geometry.json": "dc92088ca228d5666d2b415335bde72c397e26ab88171f2e9609acc9db9dbd43",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/bibel-star-outline/automatic/mask.png": "3d193006a6dfd33df8adffbbbca60d3c0a3a47c7325a407ab4ea20be63c636f0",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/bibel-star-outline/automatic/report.json": "bd2cf77e5efe99190fbef754d9547d684fbfff5b348b5c47c8951b13d5e7b3ff",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/bird/automatic/cut_geometry.json": "f8b6dc9f52641fbd373b3382985120a0b564c1e434a179728bd5da9dab938303",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/bird/automatic/mask.png": "e2524f8dd95ff18e008d6d27a37062462adacb879ab609978da3035bbc277664",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/bird/automatic/report.json": "0c3ef683bb496de8dcf220f441cbc215022f5efb27c4d75d7f3b9e7ac2e92ca8",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/bottom-flower/automatic/cut_geometry.json": "a580fc671d38d5315d1594fe7ee3993b2bd428d98b617a2ef9a7c34744b88dc6",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/bottom-flower/automatic/mask.png": "fbb1c92887012ea8e34991cfa5f0a16f5473da3ef8e166595750056859a4605b",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/bottom-flower/automatic/report.json": "c5cbae131eb1360177e7412d613fc2406ef0274578af582b03a511feefb799a5",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/candle/automatic/cut_geometry.json": "1bc0dd1dba943690ef6f316b404c1a855be582f7ca0fd9b98fd70ef814ec26f7",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/candle/automatic/mask.png": "8b853d5e3f7b1e6b9a0b695d93692823eb63c2b004f6ddaee3bde2ab49df6ab0",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/candle/automatic/report.json": "22ae9090afa34201c716e7eb1c5ad7b0593a1d932a03cbf09875f988e4625f9a",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/crossed-ribbons/automatic/cut_geometry.json": "6eb1839135e42a75bbb7e98541662479085f9692660c1a0f32d97a0016ed27f1",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/crossed-ribbons/automatic/mask.png": "25d5c8a37f2215d74d1beea8efa57d5229aa011ed725efcefe3e0ab00f7c187b",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/crossed-ribbons/automatic/report.json": "68b620f04e866152537de998678aaff3d51772620b62e5b7fe09c5083f7f4bee",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/crown/automatic/cut_geometry.json": "7c02af78469c84f4dad34d81e2c85c561f2c73d90acef981373f4681053561bd",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/crown/automatic/mask.png": "39e14ff51b6dfa30887029aff7dedc7ee2cad5fa6ae4466afd2bba0f6a621100",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/crown/automatic/report.json": "426e8bd726a53a28eae140cb1222ea86744d037664c4a2d5ae6d40f42ae4fd47",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/dense-checker/automatic/cut_geometry.json": "0ba6a61f0e66805d5d5db934f2ce9f574330700451e6a692794da8a14944c5af",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/dense-checker/automatic/mask.png": "c850f1b447f40e1c999203c5b343d9cb58722d26bd1a011cd502e446f06f5cf4",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/dense-checker/automatic/report.json": "261b816c09234e0fc29981fd026823e95124982fdeb17f0c4d77c44f6ccfaced",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/faceted-star/automatic/cut_geometry.json": "229d2de8e9616388bc4ff178759a57fa3fbde8277a10d8ee6f06db8c97c5dcaa",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/faceted-star/automatic/mask.png": "86b08a16d992bf1c4e5a4e432095cf8aac60b332de5637ae5592e45950719347",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/faceted-star/automatic/report.json": "924a0939516c679337b594b4494bc048d5935294935758a2c9c32aff6a9c34ed",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/fine-checker/automatic/cut_geometry.json": "f3f49bba06206774a710b6fb567314e29fe0c5a2ebe2641478a4af14a5089d8b",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/fine-checker/automatic/mask.png": "6ab55d12e30257ae2f347e981009bc90d7ac4efb61617408c68d5da89a94e949",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/fine-checker/automatic/report.json": "a7a71704f7e1a0677d35113229d4bc49969d52588b4b1a30bdd4e25568c191e9",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/flettede-puppy/automatic/cut_geometry.json": "7cdda85aa95f3bb6bb8a05acd4f2dcf8de9168f8338972387c11fe7385929303",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/flettede-puppy/automatic/mask.png": "c6ee6456c3dcce3e857e1d4ac26dbd6b9e42a2589818ba2eac6983fa1828869a",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/flettede-puppy/automatic/report.json": "95e933a0a33f1675aeb197741235c1a68ef86ea36d95803b95d090586863e85e",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/flettede-stonehenge/automatic/cut_geometry.json": "d6fdb7b80050ee3070ac9a08e51d0d6c690480180df245daf5af0527bc6bffb5",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/flettede-stonehenge/automatic/mask.png": "4ed238a1a78572719909ee847cbe0fe4f1e2f0679adfeec93662636fa55de46e",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/flettede-stonehenge/automatic/report.json": "d79f450fb0a284bba8d6d989df7d40d94208bf1657eff38b7a387646efe5dfb9",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/flettede-viking/automatic/cut_geometry.json": "70bc5592eaa40a7c51d74bb5562fa700fb95a2c92c9d61b5dced632f2424263f",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/flettede-viking/automatic/mask.png": "a34f7fa7e6120c27dd41a8e441c163679036b2717ba4f3c19801d408a7f46986",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/flettede-viking/automatic/report.json": "86acb4a7077868d7d3984995fe1aa9ec43f79c6360e02f004e4cff7c4d267177",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/floral-checker/automatic/cut_geometry.json": "b3ee2be69ff1b80ef7ec8193e53ad393fa9230d46beb4dc0d7c055a3c663103c",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/floral-checker/automatic/mask.png": "a3bd4395960468cb45eb1e927e79f1427defb088ad65188e6175e4ae55a61372",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/floral-checker/automatic/report.json": "7012b0c933c6fcc1526387cce23618636c9b419cb1ac4470cad2cf9a660dd582",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/flower/automatic/cut_geometry.json": "8166aedab48b2bb9b365f503f6ac46592840520e5f26c9681480c1a32ddd942f",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/flower/automatic/mask.png": "a7731b3f08fedf7b34ebac173b27fc02f3d65525a2fcbc2a6896c9260bfd7721",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/flower/automatic/report.json": "79fdf16387fda830780a3601d562111898e9175fa9e6747921e3c78d2f75f42d",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/gift/automatic/cut_geometry.json": "ec1fcebb21c0deff62b95787c2f87b04c776d99802582c0e8429f3c09f973577",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/gift/automatic/mask.png": "072708f51d848a7754e3ff4c07b80e8674c1eee6677f87ef526389a626694d6a",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/gift/automatic/report.json": "9667a1c66441ed95643815bc56e7bdd678944b7b40f1ac5dd239c3f47358ff3e",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/gingerbread/automatic/cut_geometry.json": "5bbe8c0816b13bcb313ef9515119d4424cbb36612de249c87d550085ae6be1ef",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/gingerbread/automatic/mask.png": "7141bc2be816939ff9c775105fa20ab1994bebea2dadb2839dfe948fbca07046",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/gingerbread/automatic/report.json": "a621d296aa18c28545e34d4d4b081746d7a0df7606da7b3e32d01b1ebc734ae8",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/jigsaw/automatic/cut_geometry.json": "7dda8ac65eabe72eef97dace02becc40801a0e23ed1bcea3fa3dc03563b921f2",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/jigsaw/automatic/mask.png": "5836657bb7a8f44a02d71936a316ed50a6b4ac22d899bdb535fc3e6bd0cc8292",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/jigsaw/automatic/report.json": "26eaa4a63461623f40e62ec52474bec1f300f07c5704714168923abe0c9e5b39",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/leaf/automatic/cut_geometry.json": "edc2ede44816c17bbeb6c39367e1423b936ffb35be786733adb460a2bae0bc06",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/leaf/automatic/mask.png": "716048eeef8b3a1beee3778f2085b3eaaeff02e5c12acfbad4cb69d416327a31",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/leaf/automatic/report.json": "10e050086c0b729d0372ad368e4b9cff8dd4babb74e13c7a7545070a32193983",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/maple-leaf/automatic/cut_geometry.json": "be0d60e823f72b34a5fe94b2beb033fbfe4b1ee89c6305048159fc388e85923e",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/maple-leaf/automatic/mask.png": "9fea2f9125fb7524dfa5eadaaec9095c78f3fcf96b7eca2e6745c5b5517ec684",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/maple-leaf/automatic/report.json": "4ba114536a383d6eb5c358ef3104ea622890714895a19bb611c32c1ab8f7d68d",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/orb/automatic/cut_geometry.json": "20966b021c20238f6307f168e55b229a2f8f9cab062926acf733e5a1efbc6fb4",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/orb/automatic/mask.png": "7d9cfa9ca97567f82fe9d49ac68ee83b97d7d4af5f9db609eda68c6fccf59eff",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/orb/automatic/report.json": "a1d8c4a9a534b498cc4dab2a059f71e282ebde479d667d11f5dcc8ec31645e2e",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/outline-star/automatic/cut_geometry.json": "906d2a80229665d3291e6ed9133a4c7f999686014d3f938eeda806933799444c",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/outline-star/automatic/mask.png": "b6aa425563bc9119f335dc8092c9a1ad496ce96c7739ec15e9bed6e1e74041b9",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/outline-star/automatic/report.json": "fea5d2f0c09b2779d561ed546d45bbdea4001ee9643f9955915f61f7387278fd",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/results.json": "76137430973f768762babf6229ed848c5c770420e510e631d4b8747315bd0485",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/round-checker/automatic/cut_geometry.json": "869d72e1e5d88ad1b0ba87d6c4bca3d5a1f0427224a4b3e6c8d0c29471cb6864",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/round-checker/automatic/mask.png": "436e34e4e93c065806c13f6f145217f3c12c3fd6cb7e13279222e327c9b64136",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/round-checker/automatic/report.json": "f5eda8c02c0e43dada60312dadb68ce2760213e8e0942850b2e38222810263eb",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/stacked-hearts/automatic/cut_geometry.json": "64ec24b836d5dd71dca23d35c5814a2e337c3445f79d9c649806d65c4a3104a2",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/stacked-hearts/automatic/mask.png": "5e70aa3b8a8a502fd1f592628d82db7c8f9876a1d074d0f9be0fb9b29a7734bf",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/stacked-hearts/automatic/report.json": "37c2751cdae268be5b69386358c934fc15e446c7db89523396ed55eed3e552b3",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/warped-checker/automatic/cut_geometry.json": "137dd2f0261ef9049d059262bb7759b52af6f41be618e08f7cda62dca669d773",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/warped-checker/automatic/mask.png": "34d1200c3ccb16b6a54f582456d4ab17d246921ecb35df53c88031447ae524cd",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/warped-checker/automatic/report.json": "136274d74a41b8bd0bbb6b668be65bc288d9049901e2444f269058be9918d897",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/white-birds/automatic/cut_geometry.json": "6c8c0ef9ecf16ffde3f8b46b9424f2c8f7d169e8b2e0de6f278547cd700fb1ce",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/white-birds/automatic/mask.png": "722d69312e347ea00608408f4961229541bf1414b42735dbb1becfaec72d939c",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos/white-birds/automatic/report.json": "0a5e7cf97748a9192e2dfe91a683919634265d08f9f97bf4703a146af3c85060",
+    "tmp/heart-learning/self-return-projection-v1/corpus/photos.log": "9ff801bbd63d10ad872874153421043b30915ced62d259924724c358bd284d16",
+    "tmp/heart-learning/self-return-projection-v1/corpus/pre-svg-self-return-candidate.mjs": "806071ec5c4c463130a69379d7038f86c152058d15e97a3277258dd2a7134887",
+    "tmp/heart-learning/self-return-projection-v1/corpus/run.py": "e7f677bd586571a7998243599edc40e117b79cb5b95784b93cd0b61306725791",
+    "tmp/heart-learning/self-return-projection-v1/corpus/runtime/source.json": "2978aab210d0c8db162aa92f07ed8693f7fa5fac9b90a25fdc915410aa9048fa",
+    "tmp/heart-learning/self-return-projection-v1/corpus/turning-audit-checks.json": "4a57ce4c0ccfda2592b33e327e56d5fe847b34b1bbe4c3d9436b5bf6365a0eb1",
+    "tmp/heart-learning/self-return-projection-v1/corpus/turning-audit-driver.py": "e33212282ed9a4bfa991a6935d72c3e8a9b298318ed526a8d1d206f8c325b819",
+    "tmp/heart-learning/self-return-projection-v1/corpus/turning-boundary-tests.log": "e1b164f3be07f4a3f5abdf3775e42b20a20a9a39b8ae3ddc5e2b3514199f328c",
+    "tmp/heart-learning/self-return-projection-v1/efficient-replay.mjs": "e17aa7a00279dd8f5783150fb1fd07a38f2be1caacc06a5d65a90eaf2ede0c37",
+    "tmp/heart-learning/self-return-projection-v1/efficient-source.json": "3eea26ea6844b69ca6f3b7a38819e258361a16cb498df9500f984f52115fe966",
+    "tmp/heart-learning/self-return-projection-v1/export-audit-checks-input.json": "670c18e50e8ff49a280e6a81d3de88dec3fc0737be413b973d421f5aecb13919",
+    "tmp/heart-learning/self-return-projection-v1/export-audit-checks.json": "e661248d33fcf04447efac600ceb83199d0d978ef079a892b7c4813628ecb1e0",
+    "tmp/heart-learning/self-return-projection-v1/fit-replay.mjs": "f590cfece35fdd734dda1672fd88d67ee259917238a048efa650c78adc813d50",
+    "tmp/heart-learning/self-return-projection-v1/hidden-source.json": "560b7a5f93392ab476437f53bf74aff95b1f238e7da5c87dfeec672dbc680493",
+    "tmp/heart-learning/self-return-projection-v1/interval-damped-refit/fit-results.json": "ba5b080ee5d0c9e6fbc2c18648f2661c119e5a034bf34392caf4a09410be74e9",
+    "tmp/heart-learning/self-return-projection-v1/interval-damped-refit/gift-candidate/cut_geometry.json": "585ad163d9b550895e1622797e7e1e47e32d4c88c787f8a57e9c0bc5dd596005",
+    "tmp/heart-learning/self-return-projection-v1/interval-damped-refit/gift-candidate/independent.png": "6bc25766f6a6b3f6cac45378b515fd7c7fda5add04a98bf089acf006cf7b0f53",
+    "tmp/heart-learning/self-return-projection-v1/interval-damped-refit/gift-candidate/report.json": "d59e7f0ea44c9b9cf597233359124ffcb274de4b32f837f9eeec4aac8d1fece1",
+    "tmp/heart-learning/self-return-projection-v1/interval-damped-refit/gift-control/cut_geometry.json": "e43b10bc39fd20745a41dd77999bffa8b0bf1f165202c3803b8af070b0d5309e",
+    "tmp/heart-learning/self-return-projection-v1/interval-damped-refit/gift-control/independent.png": "3bb600302e964b13fb8aab0d0d9abbb311c5e9a5453f570079043f8ed7307447",
+    "tmp/heart-learning/self-return-projection-v1/interval-damped-refit/gift-control/report.json": "6834b39ccb19b0e603456d735786183c5af30839e0b575315923469d3ef0ce16",
+    "tmp/heart-learning/self-return-projection-v1/interval-damped-refit/hjfig-05-candidate/cut_geometry.json": "31d45425d52333b5976691fd47f74f084c0d48760020cd36bf2edf5f40b9ada4",
+    "tmp/heart-learning/self-return-projection-v1/interval-damped-refit/hjfig-05-candidate/independent.png": "5d26df99d70839c340eea874f9d650af4c3b363379faded00d92d42889cbb04f",
+    "tmp/heart-learning/self-return-projection-v1/interval-damped-refit/hjfig-05-candidate/report.json": "c50179d522c5a62e8d1c0d09c59ba2a53b5816c9cafc810855cbe7666f6c0e33",
+    "tmp/heart-learning/self-return-projection-v1/interval-damped-refit/hjfig-05-control/cut_geometry.json": "9d5348b10885b8289aa710faa74cbfde31028752502ec28b420bd04d51750cb5",
+    "tmp/heart-learning/self-return-projection-v1/interval-damped-refit/hjfig-05-control/independent.png": "5529b88aaffc67d22f0123e88bc166270c0c6759f5835e6fc5480318ae3243ef",
+    "tmp/heart-learning/self-return-projection-v1/interval-damped-refit/hjfig-05-control/report.json": "a4293dbc7b189513d4f7c6e1badc764b00b1d5816e0774197c2e2e62df68b6c8",
+    "tmp/heart-learning/self-return-projection-v1/interval-damped-refit.mjs": "1b0e630a3fec9c51d5e31a7980062c207d28dde6f85287e724368ff7aff431de",
+    "tmp/heart-learning/self-return-projection-v1/interval-engine-audit/results.json": "be60a25ab4fee999f0f288025cb499bdc3bb2656914fb1cf0215bcfb91ff6dd1",
+    "tmp/heart-learning/self-return-projection-v1/interval-extra-refit/fit-results.json": "e643856cac12eb669a5c2eaf5f8330c7f382e9b7bffed869ebe5571dee861f06",
+    "tmp/heart-learning/self-return-projection-v1/interval-extra-refit/gift-candidate/cut_geometry.json": "56189af5a1221e6f923e6ab8b45000c2c778427ee63feecac6bc2506f8263f15",
+    "tmp/heart-learning/self-return-projection-v1/interval-extra-refit/gift-candidate/independent.png": "8e860d8bf45dc5a5630bffc4dc5c130cb6db86ab0aedbbc84105a9ba2bff33ef",
+    "tmp/heart-learning/self-return-projection-v1/interval-extra-refit/gift-candidate/report.json": "bf7e9bbb8503841404fed02e2020feefc2e2a952c28c85683e0c29bf5fddbced",
+    "tmp/heart-learning/self-return-projection-v1/interval-extra-refit/gift-control/cut_geometry.json": "585ad163d9b550895e1622797e7e1e47e32d4c88c787f8a57e9c0bc5dd596005",
+    "tmp/heart-learning/self-return-projection-v1/interval-extra-refit/gift-control/independent.png": "6bc25766f6a6b3f6cac45378b515fd7c7fda5add04a98bf089acf006cf7b0f53",
+    "tmp/heart-learning/self-return-projection-v1/interval-extra-refit/gift-control/report.json": "6c369e26cb8f68138ae8397014175165a9867fe745baa7c5957bda0774d17a97",
+    "tmp/heart-learning/self-return-projection-v1/interval-extra-refit/hjfig-05-candidate/cut_geometry.json": "6d9fa216a309ca83bbc18febf738ce72b80dd28f2668a0a0497a1e96df166b52",
+    "tmp/heart-learning/self-return-projection-v1/interval-extra-refit/hjfig-05-candidate/independent.png": "a0451a7459689a4f95e67987f3383a5ccb3b75f7eb27c3003bda4e549eb981f6",
+    "tmp/heart-learning/self-return-projection-v1/interval-extra-refit/hjfig-05-candidate/report.json": "fdd88bf67b7313c17037460e24c951fbaed554c0063dcc737519dc6063392f15",
+    "tmp/heart-learning/self-return-projection-v1/interval-extra-refit/hjfig-05-control/cut_geometry.json": "9d5348b10885b8289aa710faa74cbfde31028752502ec28b420bd04d51750cb5",
+    "tmp/heart-learning/self-return-projection-v1/interval-extra-refit/hjfig-05-control/independent.png": "5529b88aaffc67d22f0123e88bc166270c0c6759f5835e6fc5480318ae3243ef",
+    "tmp/heart-learning/self-return-projection-v1/interval-extra-refit/hjfig-05-control/report.json": "955f2a6369ec02900a935dc43cbbd4d348f8ba140c79d5542bf8821363e0e067",
+    "tmp/heart-learning/self-return-projection-v1/interval-extra-refit.mjs": "5a78db92d5f82086df04cd081f91abeb75467d12b379199e7e9da69f59a83ffd",
+    "tmp/heart-learning/self-return-projection-v1/interval-refit/fit-results.json": "6f66d153666a1eaf0ac7b7f0c9445537b3625f248e2b8d6389d2d1f6b5aca44f",
+    "tmp/heart-learning/self-return-projection-v1/interval-refit/gift-candidate/cut_geometry.json": "585ad163d9b550895e1622797e7e1e47e32d4c88c787f8a57e9c0bc5dd596005",
+    "tmp/heart-learning/self-return-projection-v1/interval-refit/gift-candidate/independent.png": "6bc25766f6a6b3f6cac45378b515fd7c7fda5add04a98bf089acf006cf7b0f53",
+    "tmp/heart-learning/self-return-projection-v1/interval-refit/gift-candidate/report.json": "0f79ea1db5ad66459c851ae6c1c98a3acfbd758ad8d91c51dd601f6e761011d7",
+    "tmp/heart-learning/self-return-projection-v1/interval-refit/gift-control/cut_geometry.json": "ec1fcebb21c0deff62b95787c2f87b04c776d99802582c0e8429f3c09f973577",
+    "tmp/heart-learning/self-return-projection-v1/interval-refit/gift-control/independent.png": "b91230edc1a003932cf7a1e41aa47ec695beba9a3e90560548b3fdbaeaad4b73",
+    "tmp/heart-learning/self-return-projection-v1/interval-refit/gift-control/report.json": "2a9d4d24ad0fb45f4fdbc581044b717d4b854f14b2674a01f088f863624a56b7",
+    "tmp/heart-learning/self-return-projection-v1/interval-refit/hjfig-05-candidate/cut_geometry.json": "9d5348b10885b8289aa710faa74cbfde31028752502ec28b420bd04d51750cb5",
+    "tmp/heart-learning/self-return-projection-v1/interval-refit/hjfig-05-candidate/independent.png": "5529b88aaffc67d22f0123e88bc166270c0c6759f5835e6fc5480318ae3243ef",
+    "tmp/heart-learning/self-return-projection-v1/interval-refit/hjfig-05-candidate/report.json": "e4a31e824fd65f38531c5088ed00ac9cb8c76c9e857232611f73ff3e88c6cab6",
+    "tmp/heart-learning/self-return-projection-v1/interval-refit/hjfig-05-control/cut_geometry.json": "cc9190dfd0eafff11536bbde8561dde72e62f1d7defc6b9e2c53a64df6f413f4",
+    "tmp/heart-learning/self-return-projection-v1/interval-refit/hjfig-05-control/independent.png": "fdac400110f7dae31e1495c1dd33e53f2933b52936558ec2b7a4f92dd3afb7a0",
+    "tmp/heart-learning/self-return-projection-v1/interval-refit/hjfig-05-control/report.json": "b1a7696fcdc102e09288dbf3355f66f5f049de2fd250eccce6e4a8236fe38802",
+    "tmp/heart-learning/self-return-projection-v1/interval-refit.mjs": "5e31e6bf1375e0e2edbd093f38c884c01fafea81d6bccef8e547f15258afb7a6",
+    "tmp/heart-learning/self-return-projection-v1/interval-weight-refit/fit-results.json": "297e71966886774693d73eb29df31fa07ee8685db65cbc4e00e8982fd63a20ac",
+    "tmp/heart-learning/self-return-projection-v1/interval-weight-refit/hjfig-05-weight10/cut_geometry.json": "f7e9f35f03da1375446e41d0a1b86b3770877bedb783ab69745344f34d99ca61",
+    "tmp/heart-learning/self-return-projection-v1/interval-weight-refit/hjfig-05-weight10/independent.png": "d7332b2ba675f8b671a2c0dd45ef05017f6ad12e93b8f133987f2568a26bdb4f",
+    "tmp/heart-learning/self-return-projection-v1/interval-weight-refit/hjfig-05-weight10/report.json": "0520bfc3396b99ccba6ee5d8a4fc29abc91d10bf9ba7ea6ed51798a8e56f084b",
+    "tmp/heart-learning/self-return-projection-v1/interval-weight-refit/hjfig-05-weight100/cut_geometry.json": "1d048443a38cb3eaf4a11e16389760113eb820a281b2523735fc172c3b9c896f",
+    "tmp/heart-learning/self-return-projection-v1/interval-weight-refit/hjfig-05-weight100/independent.png": "1898ef40fcc5a3908484c0a0915e22188eade14277df772cf1d8d36457f1bd8f",
+    "tmp/heart-learning/self-return-projection-v1/interval-weight-refit/hjfig-05-weight100/report.json": "9c0c433127d0bc4a1a2c38119afcf71e70381136f0e59dbec0e8b5c310ad707c",
+    "tmp/heart-learning/self-return-projection-v1/interval-weight-refit/hjfig-05-weight2/cut_geometry.json": "c06b4a68b98ccadf94b48deb8cff501a226161162b70cc96bf8559cadf4e6a02",
+    "tmp/heart-learning/self-return-projection-v1/interval-weight-refit/hjfig-05-weight2/independent.png": "13ef3257ffd56290737a684e6a014f2ded62a5221ea4936b24e2ad335c593141",
+    "tmp/heart-learning/self-return-projection-v1/interval-weight-refit/hjfig-05-weight2/report.json": "e822e7800e80880611966c50f983585755472aeb3c8e87ce54c43681d24f6705",
+    "tmp/heart-learning/self-return-projection-v1/interval-weight-refit.mjs": "a4b5df330872c15d9208417298eb1eb503b610eb0cf426d11ae47f55195eeb93",
+    "tmp/heart-learning/self-return-projection-v1/prepare-editor-efficient.mjs": "b257ac09f22cfc3929dd49b763671e331b430952a485bc23a026b450cc0b83ca",
+    "tmp/heart-learning/self-return-projection-v1/prepare-editor-turning.mjs": "64d41294d7621a724c3fd6787f6ef86075c116af7eb0ab0a35e6e7b53a75068e",
+    "tmp/heart-learning/self-return-projection-v1/project-probe.mjs": "9632f2e5502939e60107d63c2cff5673a12b9ef044c486938b112f4f91708add",
+    "tmp/heart-learning/self-return-projection-v1/projection-source.json": "29a0574cb4318dae9701cb436ec0fcdab24f4baa8e19d05a2b4703aae3f543c7",
+    "tmp/heart-learning/self-return-projection-v1/record-export-audit.py": "206be5955b02da6b57c3719d22e64c960ae014bae1290578a196efa2ea6a45ad",
+    "tmp/heart-learning/self-return-projection-v1/source.json": "2b508274e04fe8c4d7d106f9e72da26e6c1414f25a788df346af622766261003",
+    "tmp/heart-learning/self-return-projection-v1/svg-interval-damped-runtime/source.json": "cea23e5c624d2de4a85104d79deecdec08d6fb1a1f525f52ed628cf70e21294d",
+    "tmp/heart-learning/self-return-projection-v1/svg-interval-extra-runtime/source.json": "591dafcae92fec437b47bb11c644fa7c08b9b65a8b31fe3cf277d4b855cca42c",
+    "tmp/heart-learning/self-return-projection-v1/svg-interval-runtime/source.json": "f74fc36a76adf924e3acc1b7ae719c8576e7a35db4162e050ef8a49b28061609",
+    "tmp/heart-learning/self-return-projection-v1/svg-interval-weight-10/source.json": "045eabdd0f749753bc2db1a5f69175a4eacdbb3ed437694bc12c6a104b3f3ea4",
+    "tmp/heart-learning/self-return-projection-v1/svg-interval-weight-100/source.json": "a781fc8eca6c582a12e7e59ce2694b4e030a1c2fa592b670aa224deab2434752",
+    "tmp/heart-learning/self-return-projection-v1/svg-interval-weight-2/source.json": "9efddfe4bc832823a814ca4e9cbed09b38841057b344a7b969450615b5276465",
+    "tmp/heart-learning/self-return-projection-v1/turning-boundary-runtime/source.json": "324edbf781c5996377167eaf01d24c6aba76769bf4b3524775f4acc109cdcb79",
+    "tmp/heart-learning/self-return-projection-v1/turning-engine-audit/results.json": "ac9efb506adeda9a91158a0e52457a496475be67d969e20ed9a6759b03bf2a0d",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/editor/gift-candidate-automatic-weave.png": "21443aa011368e581aa2508e8c8af5c6373d194569de7b2f141ec4fe6e8c98ba",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/editor/gift-candidate-automatic.svg": "0319fce10bde57155ad27b4e50180b0958d9d91561f1e57075e51aa1e02e92ff",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/editor/gift-control-automatic-weave.png": "3d6255da291b5dfbe5638360eb860fdbaca24ccd375b564cfef559b3fe01d735",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/editor/gift-control-automatic.svg": "151e5d18cada32ec4af2e440e1f0d00f847f6703682fe97e4655446b9b19a965",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/editor/hjfig-05-candidate-automatic-weave.png": "27b937f18e1871f2c4f8762c28b1a6e8f3da6b0195f71b084125ad0468a9c8be",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/editor/hjfig-05-candidate-automatic.svg": "9cefdc72a09a8a8e91bd6ae695062c5fe7af718982bd319df499cabbfc41ca04",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/editor/hjfig-05-control-automatic-weave.png": "c0c69ffa301d64ad13e45929ba6a43bdde423efddccdf7cb64692dce704ca2b3",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/editor/hjfig-05-control-automatic.svg": "a002384d7a4a368f5f495728dab428e87b69e9098414714117be18381dc1ffb4",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/editor/results.json": "9f0baa6b7018e8b433d9d43539bef70552b75e032302f61660f695a8bc26513a",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/editor-input/gift-candidate/automatic/cut_geometry.json": "65231746148e4b2052f88d9ad88f113105223dce1d21f9e50654f850dae9474a",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/editor-input/gift-candidate/automatic/mask.png": "072708f51d848a7754e3ff4c07b80e8674c1eee6677f87ef526389a626694d6a",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/editor-input/gift-control/automatic/cut_geometry.json": "072f0f76adc01de0af9652983db4c3a481d254a4741f4ad29ba5c9ea7115576f",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/editor-input/gift-control/automatic/mask.png": "072708f51d848a7754e3ff4c07b80e8674c1eee6677f87ef526389a626694d6a",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/editor-input/hjfig-05-candidate/automatic/cut_geometry.json": "3c2950f232ab9dd70846a4c496d1cc0037cf3240ab659da10c6f5a68f05e5b72",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/editor-input/hjfig-05-candidate/automatic/mask.png": "399c96a211658a3f5661cb2606dddb44be18663c65299026512a1c0d0322f8d0",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/editor-input/hjfig-05-control/automatic/cut_geometry.json": "0f455707221dcd7dfe1d7cf10ad7bb820fc8605efdb332ba21375eec0c9208ed",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/editor-input/hjfig-05-control/automatic/mask.png": "399c96a211658a3f5661cb2606dddb44be18663c65299026512a1c0d0322f8d0",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/editor-input/results.json": "8120d98e707afdf8f29abaf54631c52a2aeb5cbf471e449aaa8cf3c5a8210566",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/fit-results.json": "10b4aa3cf6290942e5632f657103ed1dac9115a56e4a9ce1af2a6c9b884ecfa9",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/gift-candidate/cut_geometry.json": "65231746148e4b2052f88d9ad88f113105223dce1d21f9e50654f850dae9474a",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/gift-candidate/independent.png": "958b8dd4ff3b2bc41e3db15f95ecddd18b3c9c287e8eb5c0f19dfb0920d8efdc",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/gift-candidate/report.json": "a15e8b1161139dad85d7561565cc50de8f1ed8db4240abeb2e752459362935f0",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/gift-control/cut_geometry.json": "072f0f76adc01de0af9652983db4c3a481d254a4741f4ad29ba5c9ea7115576f",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/gift-control/independent.png": "c86ad28531eb98681dff9f87c9b88f02d3446bd3e9fe346f33268fd176ce04d6",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/gift-control/report.json": "80d7736a6045216a9b77004d54a3bcd6effbf27524ceafd4702ec3dcabdc6ae7",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/hjfig-05-candidate/cut_geometry.json": "3c2950f232ab9dd70846a4c496d1cc0037cf3240ab659da10c6f5a68f05e5b72",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/hjfig-05-candidate/independent.png": "596d5db8a2014e26851d6b163d786998f0ff1ec0d618aa046a9b419457c1dd3d",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/hjfig-05-candidate/report.json": "cca9ee37ba0feee4411686023f85cebdb4e514dd32431cc02ce8ae60b1e4ceb3",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/hjfig-05-control/cut_geometry.json": "0f455707221dcd7dfe1d7cf10ad7bb820fc8605efdb332ba21375eec0c9208ed",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/hjfig-05-control/independent.png": "2fc233b8d8c49d5bb73b6c8a7fa7ea5b1835942c992f1116964d659f82520bf4",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/hjfig-05-control/report.json": "38349bb356fd0331212aa3af10a30ffadab5a2efa2ceaae768cc7a77d8cc8261",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/svg-audit/results.json": "c6cbd9ce7e95affa5920946f03154320f0a18fec718871d183a4bb54d115ae46",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit/two-axis-svg-audit/results.json": "14e4795c0b6f1fd4e8d7ff117340aec0aac03f3a329ab08e2c9f9aba5a4039d3",
+    "tmp/heart-learning/self-return-projection-v1/turning-refit.mjs": "9488962f40e1e7766daa50a74f08ca01ecd0463ca252ffe7dd66c5a4a1cdb094",
+    "tmp/heart-learning/self-return-projection-v1/two-axis-checks-input.json": "44de0056133c59c36e11dc76a50969dbdb4aa0ed5f7f8a23c0ea0ccdafaaed3f",
+    "tmp/heart-learning/self-return-projection-v1/two-axis-checks.json": "f547e950072890256d4d327259e81fc705beb9d3e2ec9163ad78def61cc63518",
+    "tmp/heart-learning/self-return-projection-v1/two-axis-engine-audit/results.json": "b663633726b086a30de5d4f2c171ec23db93bc6a6fb372ea404d64a04e0e03ba",
+    "tmp/heart-learning/self-return-projection-v1/two-axis-final-svg-audit.log": "49a7fcee2c927169ea7dada78f26369070f2b75e661cdf73142ab4373d824b29",
+    "tmp/heart-learning/self-return-projection-v1/two-axis-focused-lint.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tmp/heart-learning/self-return-projection-v1/two-axis-focused-tests.log": "48f75d52d5ff577beeeb4efdc4ca3f00b625a085ac844edbbdb74e53114f1cce",
+    "tmp/heart-learning/self-return-projection-v1/two-axis-hunodan-two-axis-svg.log": "31fa412d7d984fa7402b7af39ca92d68f65c974da530fcee29951ff8d9f0d50e",
+    "tmp/heart-learning/self-return-projection-v1/two-axis-native-subdivisions.log": "438a26026c90950e8546ae438fcc6660317690f946bdd875771511bcddb08e22",
+    "tmp/heart-learning/self-return-projection-v1/two-axis-photo-two-axis-svg.log": "de79e6b120b5bbab5b500572a3a57dd515ae27362be0679252e0f2e0f34d39ef",
+    "tmp/heart-learning/self-return-projection-v1/two-axis-runtime/source.json": "f33b81ef00ff9cced31eabd21939146a8ea4e0f9defd19fa8f19534a2eac16dc",
+    "tmp/heart-learning/self-return-projection-v1/verify-export-audit.py": "bd44016c5817e00626343df3ea25a39ab989c321f08136e8adb305ab72e48ab3",
+    "tmp/heart-learning/self-return-projection-v1/verify-two-axis.py": "dd9e4ba719b9d65cb4f391bdfac62abae91b3eba292421151eb7671ccd927693"
+  }
+}

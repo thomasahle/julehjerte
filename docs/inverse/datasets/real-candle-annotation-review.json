@@ -1,0 +1,182 @@
+{
+  "status": "reviewed, compiled, verified and admitted; not trained",
+  "source": {
+    "assetId": "real-c4a9ee6e2d0a4185",
+    "file": "tmp/heart-training-real/assets/c4a9ee6e2d0a418519f0ea2d1ce4a63be83c3883b2bc75bc54e0e69375435edf.jpg",
+    "sha256": "c4a9ee6e2d0a418519f0ea2d1ce4a63be83c3883b2bc75bc54e0e69375435edf",
+    "size": [
+      1000,
+      1334
+    ],
+    "splitGroupId": "real-split-a47f6e30728781b2",
+    "splitStatus": "unassigned",
+    "sourcePages": [
+      "https://dk.pinterest.com/pin/72057662775817668/"
+    ],
+    "existingBodyInstance": "real-c4a9ee6e2d0a4185-body-1"
+  },
+  "body": "body-reviewed.json",
+  "materials": "materials-reviewed.json",
+  "contacts": "contacts-reviewed.json",
+  "review": {
+    "nativeImage": true,
+    "nativeBodyOutline": true,
+    "nativeMaterialRegions": true,
+    "rightEdgeAndTip": true,
+    "flameAndNeck": true,
+    "contactPatches": 10,
+    "recenteredOrdinaryEdgeControls": [
+      "edge-01",
+      "edge-02"
+    ],
+    "positiveFourSectorObservations": 6,
+    "ordinaryEdgeControls": 3,
+    "separateNarrowNeckObservations": 1,
+    "exactJunctionOrCutTruth": false,
+    "compiledRasters": {
+      "resolutions": [
+        256,
+        768
+      ],
+      "nativePhotoRechecked": true,
+      "findings": [
+        "Both paper identities match the muted teal and pale grey-green regions visible in the source.",
+        "Handle/cleft overlap, narrow flame-tip connection, and flame/body neck remain unknown rather than asserted as exact joins.",
+        "The body outline follows the paper, with the right-hand cast shadow outside the labelled paper core.",
+        "At 256 pixels the flame and narrow framed contacts retain only small known interiors; the larger unknown band is deliberate, not exact junction supervision."
+      ],
+      "admission": "Ready for the planned combined printed-paper/candle admission after the running solver source freeze. Final parent-path metadata must still be compiled/verified before the corpus counts change."
+    }
+  },
+  "verification": {
+    "sourceFileHash": true,
+    "sourceDimensionsAndManifestIdentity": true,
+    "polygonGeometry": true,
+    "materialParentHash": true,
+    "allocation": "unassigned",
+    "rasterCompilation": "Complete at 256 and 768 pixels; both manifests verified by the compiler replay before the coverage QA started.",
+    "modelTraining": "none"
+  },
+  "integration": "Admitted with the reviewed printed-paper instance in real-annotations-contacts.json and real-materials-contacts.json. Source groups remain unassigned; prior study inputs and denominators unchanged.",
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/candle-annotation-review-v1/body-reviewed.json",
+      "sha256": "d3da2be48b9672b255b0bc3d3c36733dd35e271ee752eac1ae52b6a074b97e2c"
+    },
+    {
+      "path": "tmp/heart-learning/candle-annotation-review-v1/materials-reviewed.json",
+      "sha256": "4de418732680c65d588aebfb14bf3e34beae5fe9ac4ab4f31aa15ac53121dde4"
+    },
+    {
+      "path": "tmp/heart-learning/candle-annotation-review-v1/contacts-reviewed.json",
+      "sha256": "6ceccf5bffd6d879ea58d8fe1278798b361b4fff9ed65ae58f75f0a8970b2a13"
+    },
+    {
+      "path": "tmp/heart-learning/candle-annotation-review-v1/polygons-reviewed.jpg",
+      "sha256": "7b9df42eb1844af983417b08d0039b48e21bab5c1b4ff5bddbb273c8f29341cf"
+    },
+    {
+      "path": "tmp/heart-learning/candle-annotation-review-v1/contacts-reviewed.jpg",
+      "sha256": "06e281f35c0ac687d23571d567901fbc7f53378ab8ed0478ea95c7d09a78fd30"
+    },
+    {
+      "path": "tmp/heart-learning/candle-annotation-review-v1/right-edge.png",
+      "sha256": "66e2eb67685586c78287ce944dc2ac4c399948e381deb422c8c3a99c39ab29eb"
+    },
+    {
+      "path": "tmp/heart-learning/candle-annotation-review-v1/tip.png",
+      "sha256": "5a76f3b70bdaa63525473d4aad53b83c0d87e278f162a8f8741232aab107ed0d"
+    },
+    {
+      "path": "tmp/heart-learning/candle-annotation-review-v1/flame-contact.png",
+      "sha256": "8f37dd0335574df2770d02ec6d8fd562c4d86dc58403164c8b9bf498b4c58fc8"
+    },
+    {
+      "path": "tmp/heart-learning/candle-annotation-review-v1/edge-controls-reviewed.png",
+      "sha256": "6344be86b29627cb3b77faad804eae35f2b7054d40944fe0693307be4684bc8d"
+    }
+  ],
+  "crossCorpusQualification": "The photograph is outside reserved near-duplicate groups, but a framed candle may share its motif with existing public-photo benchmarks. No independent-family or holdout claim; cross-corpus motif review is required before allocation.",
+  "root": "tmp/heart-learning/candle-annotation-review-v1",
+  "repositoryCountsChanged": true,
+  "next": [
+    "Review related candle motif families before allocating a future grouped training/evaluation study."
+  ],
+  "compiledArtifacts": [
+    {
+      "resolution": 256,
+      "manifest": "tmp/heart-learning/contact-annotation-admission-v1/labels-256/manifest.json",
+      "manifestSha256": "8acb7cf8a5efc8cbd558de53a9861d63f7951c83d52ad49281b66cb6813dc8a0",
+      "bodyPixelCounts": {
+        "0": 28565,
+        "1": 18544,
+        "255": 18427
+      },
+      "materialPixelCounts": {
+        "0": 5653,
+        "1": 7606,
+        "255": 52277
+      },
+      "assets": [
+        {
+          "kind": "rgb",
+          "path": "tmp/heart-learning/contact-annotation-admission-v1/labels-256/real-c4a9ee6e2d0a4185-body-1-rgb.png",
+          "sha256": "1f7e88f1f3d0ebb4b1758accd76a6e046c35fe4a4d5f87e7439c91f66dd86631"
+        },
+        {
+          "kind": "body",
+          "path": "tmp/heart-learning/contact-annotation-admission-v1/labels-256/real-c4a9ee6e2d0a4185-body-1-body.png",
+          "sha256": "7127e0bf47c35852c4cd11a59abbcbd7decfc51452fafb29973fd7016bc4af1a"
+        },
+        {
+          "kind": "materials",
+          "path": "tmp/heart-learning/contact-annotation-admission-v1/labels-256/real-c4a9ee6e2d0a4185-body-1-materials.png",
+          "sha256": "18d3206c7ce4f4902ee1c50fe2ab22bf45fcff944a1d587d81fb4b13386caa41"
+        },
+        {
+          "kind": "overlay",
+          "path": "tmp/heart-learning/contact-annotation-admission-v1/labels-256/real-c4a9ee6e2d0a4185-body-1-overlay.png",
+          "sha256": "673ddc303c9fa6fcd2e694f42900b26776ee6c0b00c979998b5bc49f7779198a"
+        }
+      ]
+    },
+    {
+      "resolution": 768,
+      "manifest": "tmp/heart-learning/contact-annotation-admission-v1/labels-768/manifest.json",
+      "manifestSha256": "42e33999f623f0e48f70dfbf540226f3b1d5f2423f42165c409536b34f88294b",
+      "bodyPixelCounts": {
+        "0": 257114,
+        "1": 166955,
+        "255": 165755
+      },
+      "materialPixelCounts": {
+        "0": 50925,
+        "1": 68258,
+        "255": 470641
+      },
+      "assets": [
+        {
+          "kind": "rgb",
+          "path": "tmp/heart-learning/contact-annotation-admission-v1/labels-768/real-c4a9ee6e2d0a4185-body-1-rgb.png",
+          "sha256": "9fd507d0b4ade992741d6d817c3e63aab99594119de076c8397d3dc306a9e2cf"
+        },
+        {
+          "kind": "body",
+          "path": "tmp/heart-learning/contact-annotation-admission-v1/labels-768/real-c4a9ee6e2d0a4185-body-1-body.png",
+          "sha256": "355a36cfa79ed5e69c2b25a7d1ed5e4fc39a42748d54a33b0e2caa6bd5d75c59"
+        },
+        {
+          "kind": "materials",
+          "path": "tmp/heart-learning/contact-annotation-admission-v1/labels-768/real-c4a9ee6e2d0a4185-body-1-materials.png",
+          "sha256": "cc9472fad89fcda19de6eecd5abc0d35ad11c547e4c7db87b97873079360444f"
+        },
+        {
+          "kind": "overlay",
+          "path": "tmp/heart-learning/contact-annotation-admission-v1/labels-768/real-c4a9ee6e2d0a4185-body-1-overlay.png",
+          "sha256": "e3eef1d9b3b439754135fcd3dec94468c05bbbaca3521193dd55a9ede5465340"
+        }
+      ]
+    }
+  ],
+  "admission": "contact-annotation-admission.json"
+}

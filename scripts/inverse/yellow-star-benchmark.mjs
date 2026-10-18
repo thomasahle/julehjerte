@@ -1,3 +1,4 @@
+import { benchmarkArtifactEntries } from './benchmark-artifacts.mjs';
 /** Photo → default preparation → solve → independent export rendering, with crop perturbations. */
 import fs from 'node:fs/promises';
 import {yellowStarInput} from './yellow-star-fixture.mjs';
@@ -15,7 +16,7 @@ for(const[name,dx,dy,light] of variants){
     const r=await design(p.target,cfg),independent=await renderExportedWeave(r.files['cut_geometry.json'],p.preview.resolution);
     row.independentImageError=independent.mask.reduce((s,v,i)=>s+Number(v!==p.preview.mask[i]),0)/independent.mask.length;
     row.passed=r.report.templateChecksPassed&&row.independentImageError<=.03;row.slits=r.report.slits;row.geometryPassed=r.report.validation.passed;row.paperStatus=r.report.manufacturing.status;
-    await fs.mkdir(`${output}/${name}`);for(const[file,data]of Object.entries(r.files))await fs.writeFile(`${output}/${name}/${file}`,data);await fs.writeFile(`${output}/${name}/independent-weave.png`,independent.png);
+    await fs.mkdir(`${output}/${name}`);for(const[file,data]of benchmarkArtifactEntries(r.files))await fs.writeFile(`${output}/${name}/${file}`,data);await fs.writeFile(`${output}/${name}/independent-weave.png`,independent.png);
   }catch(e){row.passed=false;row.error=e.message;row.report=e.report;}
   row.seconds=(performance.now()-start)/1000;console.log(JSON.stringify(row));await fs.writeFile(`${output}/results.json`,JSON.stringify({settings:cfg,source:'User yellow/olive photo; manually reviewed crop. Original cutting paths unknown.',results},null,2));
 }

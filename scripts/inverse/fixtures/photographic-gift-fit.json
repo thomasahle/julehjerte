@@ -1,0 +1,10 @@
+{
+  "sourceCase": "gift",
+  "sourceCatalogue": "scripts/inverse/hard-photo-cases.json",
+  "sourceFileSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+  "decodedPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+  "quad": [[264.8878818271703,374.174952703159],[299.4463822705883,491.4192336918708],[228.13534804554146,580.6628780659917],[154.01969081220352,477.003346191405]],
+  "maskSha256": "27d7f1538cbba31b9e4b13270a70e7ffc36acc23f69a49d4646d5ee3f49b7738",
+  "probabilitySha256": "330913ab24a5b990995a02bcae6940a9298a295b42cfff6ccaabb051382630c8",
+  "provenance": "Frozen production automatic crop from the collage, with its original rough selection rectangle. A timed fit on this mask exposed a short same-cut return accepted by the engine but rejected by editable conversion. No solver-adjusted corners or template-derived coordinates."
+}

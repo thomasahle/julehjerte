@@ -1,0 +1,3129 @@
+{
+  "schema": "interior-count-evidence-development-1",
+  "status": "profiles-and-perturbations-complete-no-new-fits",
+  "question": "Can stable transitions inside the image propose more cuts when noisy opposing edges leave the count ceiling at eight?",
+  "cohort": {
+    "existingFixedMaskCorpus": 55,
+    "selectedDevelopmentProbabilityFields": 2,
+    "photoCroppingRerun": false,
+    "newIndependentSources": 0
+  },
+  "measurement": {
+    "bandsPerAxis": 33,
+    "bandCentersFraction": [
+      0.06,
+      0.94
+    ],
+    "bandWidthFraction": 0.015,
+    "smoothRadiusFraction": 0.006,
+    "endpointTrimFraction": 0.015,
+    "threshold": 0.5,
+    "hysteresis": [
+      0.4,
+      0.6
+    ],
+    "minimumPerPositionObservedWeight": 0.9,
+    "minimumObservedBandFraction": 0.9,
+    "profilingSeconds": 0.210161792
+  },
+  "exploratoryProposal": {
+    "minimumUsableBands": 25,
+    "minimumFractionOfBandsWithMoreThanEightTransitions": 0.75,
+    "expandedLimit": "max(current edge-supported limit, median supported interior count + 1), capped at 16",
+    "axes": "Either axis may propose expansion; lower counts and both phases remain eligible.",
+    "selection": "The 75% rule was chosen after inspecting these 57 profiles. This is development analysis, not held-out validation or a production policy."
+  },
+  "results": {
+    "unchangedExistingCorpusLimits": 55,
+    "unchangedStarControlLimit": 8,
+    "denseCheckerLimitBefore": 8,
+    "denseCheckerLimitProposed": 12,
+    "denseCheckerInteriorFractionsAboveEight": [
+      0.9696969696969697,
+      0.8787878787878788
+    ],
+    "denseCheckerInteriorMedianCounts": [
+      11,
+      10
+    ],
+    "perturbationChecks": 14,
+    "perturbationLimitChanges": 0
+  },
+  "qualifications": [
+    "Interior transitions are not a mathematical lower bound on slit count: one curve can cross a scanline more than once. These measurements propose search, never constrain geometry or acceptance.",
+    "The earlier hand-chosen maximum-12 diagnostic reduced dense-checker native disagreement from 5.61% to 2.71% in about 10.15 seconds. No fitter ran in this evidence study, and editable validation of that earlier expanded-count output remains outstanding.",
+    "The two inspected development photos are reused for transpose, horizontal/vertical flips, colour inversion, seeded 2%-border noise and one ignored corner. Stable proposed limits do not establish stable fitted geometry.",
+    "The original 55 masks are supplied as their saved binary fields; the two selected photos use saved float probability fields. This is not an end-to-end photo benchmark."
+  ],
+  "artifacts": {
+    "run.mjs": {
+      "path": "tmp/heart-learning/interior-count-evidence-v1/run.mjs",
+      "sha256": "2955fe3c23c08a2a8d1b96b837c2a299dfb96875e72968daaffd3c3657ccbab5"
+    },
+    "profile.mjs": {
+      "path": "tmp/heart-learning/interior-count-evidence-v1/profile.mjs",
+      "sha256": "c4eb37db75fd3c00cfec6c0b04fb0c0123a238fc63f0fb266acd8848adc8441a"
+    },
+    "perturb.mjs": {
+      "path": "tmp/heart-learning/interior-count-evidence-v1/perturb.mjs",
+      "sha256": "e6ad079601fc01e119bacad2598dcd3fddb18de29647a596305e88de8773fa15"
+    },
+    "source.json": {
+      "path": "tmp/heart-learning/interior-count-evidence-v1/source.json",
+      "sha256": "d99ebd2b2626e04ccc866c704a0168957b6cf6d08d9145086b3d5e8dda74e8e6"
+    },
+    "report.json": {
+      "path": "tmp/heart-learning/interior-count-evidence-v1/report.json",
+      "sha256": "f122605ee3ce20df0d09b513f011137415fa97fc2168067481008174d907756d"
+    },
+    "perturbations.json": {
+      "path": "tmp/heart-learning/interior-count-evidence-v1/perturbations.json",
+      "sha256": "0e2c4e46f4e74c63b5d5ef9cb3dba929ee63119a7db81b5ae30ff41f16af796d"
+    }
+  },
+  "rows": [
+    {
+      "id": "hunodan-hjfig-01",
+      "cohort": "browser-hunodan",
+      "n": 375,
+      "sourceProbabilityBytesSha256": "0f602686e418c6e266fa6fc82f0a899b24920770cc69f3c1ce0c4004c8407fb6",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        2,
+        2
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 2,
+          "q25": 2,
+          "median": 2,
+          "q75": 3,
+          "q90": 4,
+          "maximum": 5,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 18,
+            "3": 8,
+            "4": 5,
+            "5": 2
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 2,
+          "q25": 2,
+          "median": 2,
+          "q75": 3,
+          "q90": 4,
+          "maximum": 5,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 20,
+            "3": 7,
+            "4": 4,
+            "5": 2
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "hunodan-hjfig-02",
+      "cohort": "browser-hunodan",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "23786d3968549698971a48060c5b9fdab3a4a021375d20db6a01304e6a138e47",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        2,
+        2
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 2,
+          "q25": 2,
+          "median": 3,
+          "q75": 4,
+          "q90": 4,
+          "maximum": 6,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 11,
+            "3": 13,
+            "4": 6,
+            "5": 2,
+            "6": 1
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 2,
+          "q25": 2,
+          "median": 3,
+          "q75": 4,
+          "q90": 4,
+          "maximum": 6,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 11,
+            "3": 13,
+            "4": 6,
+            "5": 2,
+            "6": 1
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "hunodan-hjfig-03",
+      "cohort": "browser-hunodan",
+      "n": 375,
+      "sourceProbabilityBytesSha256": "745c42b5e196f2b0fe973d982cf03c11b175a09274e672f451d838e48d9e6af9",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        2,
+        2
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 2,
+          "q25": 2,
+          "median": 2,
+          "q75": 4,
+          "q90": 5,
+          "maximum": 6,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 18,
+            "4": 10,
+            "5": 2,
+            "6": 3
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 2,
+          "q25": 2,
+          "median": 4,
+          "q75": 4,
+          "q90": 5,
+          "maximum": 7,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 16,
+            "4": 12,
+            "5": 2,
+            "6": 1,
+            "7": 2
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "hunodan-hjfig-04",
+      "cohort": "browser-hunodan",
+      "n": 375,
+      "sourceProbabilityBytesSha256": "668167ba630a222f2601c6ace30f79ba1c9d0d88f99b0214904ffbc545c339fb",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        2,
+        2
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 1,
+          "q10": 2,
+          "q25": 2,
+          "median": 2,
+          "q75": 3,
+          "q90": 3,
+          "maximum": 4,
+          "fractionAbove8": 0,
+          "histogram": {
+            "1": 2,
+            "2": 18,
+            "3": 11,
+            "4": 2
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 1,
+          "q10": 2,
+          "q25": 2,
+          "median": 2,
+          "q75": 3,
+          "q90": 3,
+          "maximum": 4,
+          "fractionAbove8": 0,
+          "histogram": {
+            "1": 3,
+            "2": 17,
+            "3": 10,
+            "4": 3
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "hunodan-hjfig-05",
+      "cohort": "browser-hunodan",
+      "n": 337,
+      "sourceProbabilityBytesSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        4,
+        4
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 3,
+          "q25": 4,
+          "median": 4,
+          "q75": 6,
+          "q90": 7,
+          "maximum": 9,
+          "fractionAbove8": 0.030303030303030304,
+          "histogram": {
+            "3": 4,
+            "4": 17,
+            "6": 7,
+            "7": 1,
+            "8": 3,
+            "9": 1
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 4,
+          "q25": 4,
+          "median": 4,
+          "q75": 6,
+          "q90": 6,
+          "maximum": 7,
+          "fractionAbove8": 0,
+          "histogram": {
+            "3": 3,
+            "4": 18,
+            "5": 1,
+            "6": 9,
+            "7": 2
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "hunodan-hjfla-01",
+      "cohort": "browser-hunodan",
+      "n": 384,
+      "sourceProbabilityBytesSha256": "f5f772caadf20161dd72c25a4e06acf56e3122ddbd9b530c471121095a344f5d",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        4,
+        4
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 4,
+          "q25": 4,
+          "median": 5,
+          "q75": 5,
+          "q90": 6,
+          "maximum": 7,
+          "fractionAbove8": 0,
+          "histogram": {
+            "3": 3,
+            "4": 13,
+            "5": 12,
+            "6": 2,
+            "7": 3
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 4,
+          "q10": 4,
+          "q25": 4,
+          "median": 5,
+          "q75": 6,
+          "q90": 7,
+          "maximum": 7,
+          "fractionAbove8": 0,
+          "histogram": {
+            "4": 12,
+            "5": 10,
+            "6": 6,
+            "7": 5
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "hunodan-hjcur-01",
+      "cohort": "browser-hunodan",
+      "n": 375,
+      "sourceProbabilityBytesSha256": "31fdc1c6e540f367bbfe0030eba717b477959af8b240863b3f45181ede25cc80",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        4,
+        4
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 4,
+          "q25": 4,
+          "median": 5,
+          "q75": 5,
+          "q90": 6,
+          "maximum": 7,
+          "fractionAbove8": 0,
+          "histogram": {
+            "3": 1,
+            "4": 13,
+            "5": 12,
+            "6": 6,
+            "7": 1
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 4,
+          "q25": 4,
+          "median": 4,
+          "q75": 5,
+          "q90": 6,
+          "maximum": 7,
+          "fractionAbove8": 0,
+          "histogram": {
+            "3": 3,
+            "4": 14,
+            "5": 8,
+            "6": 7,
+            "7": 1
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "hunodan-hjcur-02",
+      "cohort": "browser-hunodan",
+      "n": 375,
+      "sourceProbabilityBytesSha256": "ee27e7b1a962204080c43d064b331286e929ae897f20ff8f5ac082e961caf4de",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        4,
+        4
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 3,
+          "q25": 4,
+          "median": 5,
+          "q75": 5,
+          "q90": 6,
+          "maximum": 6,
+          "fractionAbove8": 0,
+          "histogram": {
+            "3": 4,
+            "4": 10,
+            "5": 14,
+            "6": 5
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 4,
+          "q25": 4,
+          "median": 5,
+          "q75": 5,
+          "q90": 6,
+          "maximum": 7,
+          "fractionAbove8": 0,
+          "histogram": {
+            "3": 3,
+            "4": 8,
+            "5": 16,
+            "6": 5,
+            "7": 1
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "hunodan-hjcur-03",
+      "cohort": "browser-hunodan",
+      "n": 375,
+      "sourceProbabilityBytesSha256": "b8f60a17331591b6f27bf7ba9684c6e25383aafef960915a64af88582b00f4cf",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        4,
+        4
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 4,
+          "q10": 4,
+          "q25": 4,
+          "median": 4,
+          "q75": 6,
+          "q90": 6,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "4": 19,
+            "6": 12,
+            "8": 2
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 4,
+          "q10": 4,
+          "q25": 4,
+          "median": 4,
+          "q75": 6,
+          "q90": 6,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "4": 19,
+            "5": 1,
+            "6": 11,
+            "7": 1,
+            "8": 1
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "hunodan-hjcur-04",
+      "cohort": "browser-hunodan",
+      "n": 375,
+      "sourceProbabilityBytesSha256": "52ded25560667c41851d3d6a56932079e74d1d448bfa12a3e71172ad3aed5536",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        6,
+        6
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 4,
+          "q10": 6,
+          "q25": 6,
+          "median": 7,
+          "q75": 8,
+          "q90": 8,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "4": 2,
+            "6": 12,
+            "7": 3,
+            "8": 16
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 4,
+          "q10": 4,
+          "q25": 6,
+          "median": 6,
+          "q75": 8,
+          "q90": 8,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "4": 5,
+            "6": 13,
+            "7": 2,
+            "8": 13
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "hunodan-hjcur-05",
+      "cohort": "browser-hunodan",
+      "n": 375,
+      "sourceProbabilityBytesSha256": "c49156ccfdf43c4a11a0947e0b6dc16ca514f534199fc865db2224443ed3be76",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        2,
+        2
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 2,
+          "q25": 2,
+          "median": 2,
+          "q75": 2,
+          "q90": 2,
+          "maximum": 6,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 29,
+            "6": 4
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 2,
+          "q25": 2,
+          "median": 2,
+          "q75": 2,
+          "q90": 2,
+          "maximum": 4,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 30,
+            "4": 3
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "hunodan-hjhih-01",
+      "cohort": "browser-hunodan",
+      "n": 386,
+      "sourceProbabilityBytesSha256": "a02bbceadda3acbc3ae67298e79ecc8e8f0dce4f0c8d61162c58e6e993804346",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        4,
+        4
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 0,
+          "q10": 4,
+          "q25": 4,
+          "median": 4,
+          "q75": 4,
+          "q90": 4,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "0": 1,
+            "2": 1,
+            "4": 27,
+            "6": 2,
+            "8": 2
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 4,
+          "q25": 4,
+          "median": 4,
+          "q75": 4,
+          "q90": 4,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 2,
+            "3": 1,
+            "4": 26,
+            "5": 1,
+            "6": 1,
+            "8": 2
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "hunodan-hjhih-02",
+      "cohort": "browser-hunodan",
+      "n": 383,
+      "sourceProbabilityBytesSha256": "430f17aa29b1ee5b3018bc5a76c51d02693d43c0136c8b53b4f56543eb8c116a",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        3,
+        3
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 1,
+          "q10": 2,
+          "q25": 3,
+          "median": 3,
+          "q75": 3,
+          "q90": 7,
+          "maximum": 7,
+          "fractionAbove8": 0,
+          "histogram": {
+            "1": 2,
+            "2": 3,
+            "3": 22,
+            "7": 6
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 1,
+          "q10": 3,
+          "q25": 3,
+          "median": 3,
+          "q75": 3,
+          "q90": 7,
+          "maximum": 7,
+          "fractionAbove8": 0,
+          "histogram": {
+            "1": 1,
+            "2": 2,
+            "3": 24,
+            "7": 6
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "hunodan-hjhih-04",
+      "cohort": "browser-hunodan",
+      "n": 393,
+      "sourceProbabilityBytesSha256": "8c86ff1087e3248e8450d6cca93b879ead9373a20e7fd9baddb540f93cad3e11",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        5,
+        5
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 3,
+          "q25": 5,
+          "median": 5,
+          "q75": 7,
+          "q90": 7,
+          "maximum": 7,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 1,
+            "3": 4,
+            "5": 15,
+            "6": 3,
+            "7": 10
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 4,
+          "q25": 5,
+          "median": 5,
+          "q75": 7,
+          "q90": 7,
+          "maximum": 7,
+          "fractionAbove8": 0,
+          "histogram": {
+            "3": 3,
+            "4": 1,
+            "5": 16,
+            "6": 2,
+            "7": 11
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "hunodan-hjstr-01",
+      "cohort": "browser-hunodan",
+      "n": 381,
+      "sourceProbabilityBytesSha256": "900ba653d4e9765749e3077f96826591e8ba8619daea61146e4b05ae48c9b5e9",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        3,
+        3
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 3,
+          "q25": 3,
+          "median": 4,
+          "q75": 4,
+          "q90": 4,
+          "maximum": 5,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 2,
+            "3": 13,
+            "4": 16,
+            "5": 2
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 2,
+          "q25": 3,
+          "median": 3,
+          "q75": 4,
+          "q90": 4,
+          "maximum": 5,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 4,
+            "3": 14,
+            "4": 13,
+            "5": 2
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "hunodan-hjstr-02",
+      "cohort": "browser-hunodan",
+      "n": 390,
+      "sourceProbabilityBytesSha256": "2ca1f380ea3e9403ff612efaf9d0f44d7e9eca41b4f35b78347dcc8d3f5d66d5",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        5,
+        5
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 4,
+          "q10": 5,
+          "q25": 5,
+          "median": 5,
+          "q75": 5,
+          "q90": 5,
+          "maximum": 6,
+          "fractionAbove8": 0,
+          "histogram": {
+            "4": 3,
+            "5": 29,
+            "6": 1
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 5,
+          "q25": 5,
+          "median": 5,
+          "q75": 5,
+          "q90": 5,
+          "maximum": 6,
+          "fractionAbove8": 0,
+          "histogram": {
+            "3": 1,
+            "4": 1,
+            "5": 30,
+            "6": 1
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "hunodan-hjstr-03",
+      "cohort": "browser-hunodan",
+      "n": 388,
+      "sourceProbabilityBytesSha256": "d9ba414af2b114d628d5a1ee4df9b7c6cc875d31452495e8159a06d1e3021f11",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        7,
+        7
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 4,
+          "q10": 7,
+          "q25": 7,
+          "median": 7,
+          "q75": 7,
+          "q90": 7,
+          "maximum": 7,
+          "fractionAbove8": 0,
+          "histogram": {
+            "4": 1,
+            "7": 32
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 4,
+          "q10": 7,
+          "q25": 7,
+          "median": 7,
+          "q75": 7,
+          "q90": 7,
+          "maximum": 7,
+          "fractionAbove8": 0,
+          "histogram": {
+            "4": 1,
+            "7": 32
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "hunodan-hjsta-01",
+      "cohort": "browser-hunodan",
+      "n": 380,
+      "sourceProbabilityBytesSha256": "1e64a4a98de31d02ca46a0cea403c50172ba6b472c4167059c699a05acf7bbc2",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        2,
+        2
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 0,
+          "q10": 2,
+          "q25": 2,
+          "median": 2,
+          "q75": 4,
+          "q90": 4,
+          "maximum": 4,
+          "fractionAbove8": 0,
+          "histogram": {
+            "0": 2,
+            "2": 15,
+            "4": 16
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 0,
+          "q10": 2,
+          "q25": 2,
+          "median": 2,
+          "q75": 4,
+          "q90": 4,
+          "maximum": 4,
+          "fractionAbove8": 0,
+          "histogram": {
+            "0": 3,
+            "2": 16,
+            "3": 1,
+            "4": 13
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "hunodan-hjsta-02",
+      "cohort": "browser-hunodan",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "a3e70f11997f0a60ed275ddeb4160e133d889027cf630d1b16b44ff323a0203e",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        3,
+        3
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 1,
+          "q10": 3,
+          "q25": 3,
+          "median": 3,
+          "q75": 3,
+          "q90": 5,
+          "maximum": 5,
+          "fractionAbove8": 0,
+          "histogram": {
+            "1": 1,
+            "3": 24,
+            "5": 8
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 3,
+          "q25": 3,
+          "median": 3,
+          "q75": 3,
+          "q90": 5,
+          "maximum": 5,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 1,
+            "3": 24,
+            "5": 8
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "hunodan-hjsta-03",
+      "cohort": "browser-hunodan",
+      "n": 383,
+      "sourceProbabilityBytesSha256": "71928f2d6a8f59fd498bf144aa69020efad39b25bfdb4ed8f4887d2344845cad",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        4,
+        4
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 0,
+          "q10": 4,
+          "q25": 4,
+          "median": 4,
+          "q75": 4,
+          "q90": 8,
+          "maximum": 9,
+          "fractionAbove8": 0.030303030303030304,
+          "histogram": {
+            "0": 1,
+            "2": 1,
+            "4": 24,
+            "5": 1,
+            "6": 1,
+            "8": 4,
+            "9": 1
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 1,
+          "q10": 4,
+          "q25": 4,
+          "median": 4,
+          "q75": 4,
+          "q90": 6,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "1": 1,
+            "2": 1,
+            "4": 25,
+            "6": 2,
+            "8": 4
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "hunodan-hjsta-04",
+      "cohort": "browser-hunodan",
+      "n": 378,
+      "sourceProbabilityBytesSha256": "40ef212bea0c4de0e21632a931e72ccb9c6d3a24c32384555d1d606341e7334d",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        5,
+        5
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 5,
+          "q25": 5,
+          "median": 5,
+          "q75": 7,
+          "q90": 7,
+          "maximum": 7,
+          "fractionAbove8": 0,
+          "histogram": {
+            "3": 2,
+            "4": 1,
+            "5": 19,
+            "7": 11
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 5,
+          "q25": 5,
+          "median": 5,
+          "q75": 7,
+          "q90": 7,
+          "maximum": 7,
+          "fractionAbove8": 0,
+          "histogram": {
+            "3": 2,
+            "5": 21,
+            "7": 10
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "hunodan-hjsta-05",
+      "cohort": "browser-hunodan",
+      "n": 386,
+      "sourceProbabilityBytesSha256": "f6909fa97b2ec2b706ef6f0dd1ae779a6ef7b7aec276a1c1569dc016ce5e98f2",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        4,
+        4
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 4,
+          "q10": 4,
+          "q25": 4,
+          "median": 4,
+          "q75": 8,
+          "q90": 8,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "4": 18,
+            "6": 5,
+            "7": 1,
+            "8": 9
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 4,
+          "q25": 4,
+          "median": 4,
+          "q75": 7,
+          "q90": 8,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 3,
+            "4": 18,
+            "6": 3,
+            "7": 1,
+            "8": 8
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "hard-bibel-star-outline",
+      "cohort": "browser-photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "069c4d534547341c69dc2233d6e210d5607f284d2d81b0d18623b06c148d4fe4",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        4,
+        4
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 4,
+          "q10": 4,
+          "q25": 4,
+          "median": 6,
+          "q75": 6,
+          "q90": 8,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "4": 11,
+            "5": 2,
+            "6": 14,
+            "8": 6
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 4,
+          "q25": 4,
+          "median": 6,
+          "q75": 6,
+          "q90": 8,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 1,
+            "3": 1,
+            "4": 10,
+            "5": 2,
+            "6": 13,
+            "7": 1,
+            "8": 5
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "hard-bibel-star-outline-half",
+      "cohort": "browser-photos",
+      "n": 331,
+      "sourceProbabilityBytesSha256": "fcb4b3c6c49608d68cc4bdbdfc507efe36c6fe80ecef002d5c31d924b773a606",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        4,
+        4
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 4,
+          "q10": 4,
+          "q25": 4,
+          "median": 6,
+          "q75": 6,
+          "q90": 8,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "4": 11,
+            "5": 2,
+            "6": 15,
+            "8": 5
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 4,
+          "q25": 4,
+          "median": 6,
+          "q75": 6,
+          "q90": 8,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "3": 2,
+            "4": 11,
+            "5": 1,
+            "6": 13,
+            "7": 1,
+            "8": 5
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "hard-bibel-star-outline-jpeg75",
+      "cohort": "browser-photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "8a80f192fca54bd8205a22c335572b8acfd4a5a2f4c4042a804cbf85f08a196e",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        4,
+        4
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 4,
+          "q10": 4,
+          "q25": 4,
+          "median": 6,
+          "q75": 6,
+          "q90": 8,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "4": 11,
+            "5": 1,
+            "6": 16,
+            "8": 5
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 4,
+          "q25": 4,
+          "median": 6,
+          "q75": 6,
+          "q90": 8,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "3": 1,
+            "4": 9,
+            "5": 4,
+            "6": 13,
+            "7": 1,
+            "8": 5
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "hard-flettede-puppy-half",
+      "cohort": "browser-photos",
+      "n": 390,
+      "sourceProbabilityBytesSha256": "2abddb3cba34978548c5a575c6a01d05afcbfc85631e95bdf21b863ab6c22971",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        3,
+        5
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 3,
+          "q25": 3,
+          "median": 3,
+          "q75": 4,
+          "q90": 4,
+          "maximum": 5,
+          "fractionAbove8": 0,
+          "histogram": {
+            "3": 20,
+            "4": 9,
+            "5": 4
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 3,
+          "q25": 3,
+          "median": 3,
+          "q75": 4,
+          "q90": 5,
+          "maximum": 6,
+          "fractionAbove8": 0,
+          "histogram": {
+            "3": 18,
+            "4": 8,
+            "5": 5,
+            "6": 2
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "photo-outline-star",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "311d3c3542ec6605918892cfcecae25749f176d32dcf563b65e2ffdc1336ce3e",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        3,
+        3
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 2,
+          "q25": 3,
+          "median": 4,
+          "q75": 4,
+          "q90": 4,
+          "maximum": 6,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 7,
+            "3": 3,
+            "4": 21,
+            "5": 1,
+            "6": 1
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 2,
+          "q25": 3,
+          "median": 4,
+          "q75": 4,
+          "q90": 4,
+          "maximum": 5,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 4,
+            "3": 11,
+            "4": 16,
+            "5": 2
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "photo-floral-checker",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "351a7a00b7aba431e393477f0ae7747c3b2dda9ad8a40fd086e625d3d6ccb6f7",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        7,
+        7
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 4,
+          "q10": 5,
+          "q25": 6,
+          "median": 7,
+          "q75": 7,
+          "q90": 7,
+          "maximum": 9,
+          "fractionAbove8": 0.06060606060606061,
+          "histogram": {
+            "4": 2,
+            "5": 4,
+            "6": 3,
+            "7": 20,
+            "8": 2,
+            "9": 2
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 4,
+          "q10": 6,
+          "q25": 7,
+          "median": 7,
+          "q75": 8,
+          "q90": 9,
+          "maximum": 12,
+          "fractionAbove8": 0.15151515151515152,
+          "histogram": {
+            "4": 1,
+            "5": 2,
+            "6": 5,
+            "7": 11,
+            "8": 9,
+            "9": 2,
+            "10": 2,
+            "12": 1
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "photo-dense-checker",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "ff1cc0d30dbc0e6c908d2a731a5b5f0012c20224fd64713648cea42f258db664",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        7,
+        7
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 4,
+          "q10": 7,
+          "q25": 7,
+          "median": 7,
+          "q75": 7,
+          "q90": 7,
+          "maximum": 10,
+          "fractionAbove8": 0.030303030303030304,
+          "histogram": {
+            "4": 1,
+            "6": 1,
+            "7": 29,
+            "8": 1,
+            "10": 1
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 7,
+          "q25": 7,
+          "median": 7,
+          "q75": 7,
+          "q90": 7,
+          "maximum": 7,
+          "fractionAbove8": 0,
+          "histogram": {
+            "3": 1,
+            "5": 1,
+            "6": 1,
+            "7": 30
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "photo-bird",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "7137173fa17abe3f8f7788ddb7d321fe48258a4a3f4c2f8b3171b9ff9f15a16f",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        5,
+        5
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 1,
+          "q10": 3,
+          "q25": 3,
+          "median": 4,
+          "q75": 5,
+          "q90": 6,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "1": 2,
+            "2": 1,
+            "3": 7,
+            "4": 9,
+            "5": 7,
+            "6": 5,
+            "8": 2
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 4,
+          "q25": 5,
+          "median": 5,
+          "q75": 5,
+          "q90": 6,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "3": 3,
+            "4": 3,
+            "5": 19,
+            "6": 5,
+            "7": 1,
+            "8": 2
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "photo-leaf",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "0e1fefda40bbe92da956dd2467d117af6a732d0223e695901cc0255a166651f4",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        3,
+        3
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 3,
+          "q25": 3,
+          "median": 4,
+          "q75": 5,
+          "q90": 6,
+          "maximum": 7,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 2,
+            "3": 7,
+            "4": 12,
+            "5": 4,
+            "6": 7,
+            "7": 1
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 3,
+          "q25": 5,
+          "median": 5,
+          "q75": 6,
+          "q90": 7,
+          "maximum": 9,
+          "fractionAbove8": 0.030303030303030304,
+          "histogram": {
+            "2": 1,
+            "3": 3,
+            "4": 3,
+            "5": 17,
+            "6": 3,
+            "7": 5,
+            "9": 1
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "photo-gift",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "27d7f1538cbba31b9e4b13270a70e7ffc36acc23f69a49d4646d5ee3f49b7738",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        4,
+        4
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 4,
+          "q25": 5,
+          "median": 5,
+          "q75": 6,
+          "q90": 6,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "3": 3,
+            "4": 4,
+            "5": 13,
+            "6": 9,
+            "7": 3,
+            "8": 1
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 0,
+          "q10": 3,
+          "q25": 3,
+          "median": 5,
+          "q75": 6,
+          "q90": 6,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "0": 1,
+            "1": 2,
+            "3": 10,
+            "4": 3,
+            "5": 7,
+            "6": 6,
+            "7": 2,
+            "8": 2
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "photo-gingerbread",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "58e23488bf3ab6809c751f87de2cb7b7316aab8fc591b0c1c107ecbc2e64823e",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        3,
+        3
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 3,
+          "q25": 3,
+          "median": 4,
+          "q75": 4,
+          "q90": 5,
+          "maximum": 6,
+          "fractionAbove8": 0,
+          "histogram": {
+            "3": 16,
+            "4": 10,
+            "5": 5,
+            "6": 2
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 3,
+          "q25": 4,
+          "median": 4,
+          "q75": 5,
+          "q90": 6,
+          "maximum": 6,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 1,
+            "3": 4,
+            "4": 19,
+            "5": 4,
+            "6": 5
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "photo-white-birds",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "4c2f7e027c7efd6daad57573ee636a271679fa82f4170304628322ce87112c90",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        3,
+        3
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 2,
+          "q25": 3,
+          "median": 3,
+          "q75": 3,
+          "q90": 5,
+          "maximum": 5,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 8,
+            "3": 19,
+            "4": 1,
+            "5": 5
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 1,
+          "q10": 3,
+          "q25": 3,
+          "median": 4,
+          "q75": 5,
+          "q90": 5,
+          "maximum": 5,
+          "fractionAbove8": 0,
+          "histogram": {
+            "1": 2,
+            "3": 12,
+            "4": 10,
+            "5": 9
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "photo-flower",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "a6329990af013948c3ba32058af40424949d57280ca3b5ab18ecaaca0f1787a0",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        3,
+        3
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 1,
+          "q10": 2,
+          "q25": 3,
+          "median": 3,
+          "q75": 4,
+          "q90": 4,
+          "maximum": 4,
+          "fractionAbove8": 0,
+          "histogram": {
+            "1": 1,
+            "2": 7,
+            "3": 10,
+            "4": 15
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 1,
+          "q10": 2,
+          "q25": 3,
+          "median": 3,
+          "q75": 4,
+          "q90": 4,
+          "maximum": 4,
+          "fractionAbove8": 0,
+          "histogram": {
+            "1": 3,
+            "2": 4,
+            "3": 10,
+            "4": 16
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "photo-warped-checker",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "3508f08f46f539554f7fdab38f01f018bc7ec8d86db2309427b28e18b049c2de",
+      "currentMaximum": 11,
+      "historicalSelectedCounts": [
+        9,
+        9
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 6,
+          "q10": 7,
+          "q25": 8,
+          "median": 9,
+          "q75": 9,
+          "q90": 9,
+          "maximum": 11,
+          "fractionAbove8": 0.6666666666666666,
+          "histogram": {
+            "6": 1,
+            "7": 5,
+            "8": 5,
+            "9": 18,
+            "10": 2,
+            "11": 2
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 4,
+          "q10": 7,
+          "q25": 9,
+          "median": 9,
+          "q75": 9,
+          "q90": 11,
+          "maximum": 12,
+          "fractionAbove8": 0.7878787878787878,
+          "histogram": {
+            "4": 1,
+            "6": 1,
+            "7": 3,
+            "8": 2,
+            "9": 20,
+            "11": 5,
+            "12": 1
+          }
+        }
+      ],
+      "proposedMaximum": 11
+    },
+    {
+      "id": "photo-round-checker",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "215c0cab5c8f635f9fbfad239d09f3fb2bc6dd2469764906d062fdfbac0e5e68",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        4,
+        4
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 3,
+          "q25": 3,
+          "median": 4,
+          "q75": 4,
+          "q90": 5,
+          "maximum": 6,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 1,
+            "3": 10,
+            "4": 17,
+            "5": 4,
+            "6": 1
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 5,
+          "q25": 5,
+          "median": 5,
+          "q75": 8,
+          "q90": 8,
+          "maximum": 10,
+          "fractionAbove8": 0.06060606060606061,
+          "histogram": {
+            "3": 1,
+            "4": 2,
+            "5": 16,
+            "6": 4,
+            "7": 1,
+            "8": 7,
+            "9": 1,
+            "10": 1
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "photo-fine-checker",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "184fe9c3aaf1a4e8a3732e1180a17770ebb3ef60566861c89859bb5a1e36ad4a",
+      "currentMaximum": 11,
+      "historicalSelectedCounts": [
+        9,
+        10
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 6,
+          "q10": 7,
+          "q25": 8,
+          "median": 8,
+          "q75": 9,
+          "q90": 9,
+          "maximum": 11,
+          "fractionAbove8": 0.45454545454545453,
+          "histogram": {
+            "6": 3,
+            "7": 5,
+            "8": 10,
+            "9": 12,
+            "10": 1,
+            "11": 2
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 7,
+          "q10": 7,
+          "q25": 8,
+          "median": 9,
+          "q75": 9,
+          "q90": 11,
+          "maximum": 14,
+          "fractionAbove8": 0.7272727272727273,
+          "histogram": {
+            "7": 5,
+            "8": 4,
+            "9": 16,
+            "10": 2,
+            "11": 3,
+            "12": 2,
+            "14": 1
+          }
+        }
+      ],
+      "proposedMaximum": 11
+    },
+    {
+      "id": "photo-orb",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "4a9574d7d5bc6d22ff176926863814a6f9c298abd433f9e0fa432886a9929830",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        5,
+        5
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 3,
+          "q25": 4,
+          "median": 4,
+          "q75": 5,
+          "q90": 6,
+          "maximum": 7,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 2,
+            "3": 4,
+            "4": 17,
+            "5": 4,
+            "6": 5,
+            "7": 1
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 3,
+          "q25": 4,
+          "median": 4,
+          "q75": 5,
+          "q90": 6,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 3,
+            "3": 4,
+            "4": 11,
+            "5": 9,
+            "6": 2,
+            "7": 1,
+            "8": 3
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "photo-stacked-hearts",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "9a7ed32b892c60e0889f4ef7df0a70073e15e1353225bf5736925f4a6f7f9c24",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        4,
+        3
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 1,
+          "q10": 1,
+          "q25": 3,
+          "median": 3,
+          "q75": 4,
+          "q90": 4,
+          "maximum": 5,
+          "fractionAbove8": 0,
+          "histogram": {
+            "1": 7,
+            "2": 1,
+            "3": 16,
+            "4": 5,
+            "5": 4
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 1,
+          "q10": 1,
+          "q25": 2,
+          "median": 3,
+          "q75": 3,
+          "q90": 4,
+          "maximum": 5,
+          "fractionAbove8": 0,
+          "histogram": {
+            "1": 6,
+            "2": 3,
+            "3": 18,
+            "4": 3,
+            "5": 3
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "photo-jigsaw",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "5c3d1ae064e795a787a92a91d5403bc7bdb0f4780dfeb75606ce1f9531b58788",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        4,
+        4
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 1,
+          "q10": 1,
+          "q25": 3,
+          "median": 4,
+          "q75": 5,
+          "q90": 6,
+          "maximum": 10,
+          "fractionAbove8": 0.030303030303030304,
+          "histogram": {
+            "1": 4,
+            "2": 2,
+            "3": 7,
+            "4": 9,
+            "5": 3,
+            "6": 4,
+            "7": 1,
+            "8": 2,
+            "10": 1
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 3,
+          "q25": 4,
+          "median": 5,
+          "q75": 6,
+          "q90": 6,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "3": 4,
+            "4": 11,
+            "5": 7,
+            "6": 7,
+            "7": 3,
+            "8": 1
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "photo-candle",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "263a91fc0a1b6db6db4da860f4145bd52aa0973927285068f8cbe267c9bc175d",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        1,
+        1
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 1,
+          "q10": 1,
+          "q25": 1,
+          "median": 2,
+          "q75": 2,
+          "q90": 4,
+          "maximum": 4,
+          "fractionAbove8": 0,
+          "histogram": {
+            "1": 10,
+            "2": 18,
+            "4": 5
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 1,
+          "q10": 1,
+          "q25": 3,
+          "median": 3,
+          "q75": 3,
+          "q90": 5,
+          "maximum": 5,
+          "fractionAbove8": 0,
+          "histogram": {
+            "1": 4,
+            "2": 3,
+            "3": 19,
+            "4": 1,
+            "5": 6
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "photo-maple-leaf",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "9b0908abdb6ceb0957b6344cfa5fbaeab4a46866c640ea8d1898b3dc31a8c101",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        4,
+        4
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 0,
+          "q10": 2,
+          "q25": 3,
+          "median": 4,
+          "q75": 5,
+          "q90": 5,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "0": 1,
+            "2": 3,
+            "3": 6,
+            "4": 13,
+            "5": 7,
+            "6": 2,
+            "8": 1
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 3,
+          "q25": 4,
+          "median": 5,
+          "q75": 5,
+          "q90": 7,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "3": 4,
+            "4": 5,
+            "5": 16,
+            "6": 2,
+            "7": 5,
+            "8": 1
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "photo-crown",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "28f4380aaf5bb197acbaf7750b4560e317c442740098abaf4c91eb88ac7866aa",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        5,
+        5
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 5,
+          "q25": 5,
+          "median": 6,
+          "q75": 7,
+          "q90": 7,
+          "maximum": 9,
+          "fractionAbove8": 0.06060606060606061,
+          "histogram": {
+            "3": 1,
+            "4": 2,
+            "5": 9,
+            "6": 6,
+            "7": 11,
+            "8": 2,
+            "9": 2
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 4,
+          "q25": 4,
+          "median": 6,
+          "q75": 7,
+          "q90": 8,
+          "maximum": 10,
+          "fractionAbove8": 0.06060606060606061,
+          "histogram": {
+            "2": 1,
+            "4": 8,
+            "5": 3,
+            "6": 11,
+            "7": 4,
+            "8": 4,
+            "10": 2
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "photo-crossed-ribbons",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "de1ca381e74eb5c932ab5c6f4fd506588cbc077d7a5fa9e0433d4d4fe50897db",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        2,
+        2
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 31,
+          "minimum": 1,
+          "q10": 1,
+          "q25": 2,
+          "median": 2,
+          "q75": 3,
+          "q90": 4,
+          "maximum": 5,
+          "fractionAbove8": 0,
+          "histogram": {
+            "1": 4,
+            "2": 15,
+            "3": 6,
+            "4": 5,
+            "5": 1
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 31,
+          "minimum": 1,
+          "q10": 1,
+          "q25": 2,
+          "median": 3,
+          "q75": 3,
+          "q90": 4,
+          "maximum": 5,
+          "fractionAbove8": 0,
+          "histogram": {
+            "1": 6,
+            "2": 4,
+            "3": 17,
+            "4": 1,
+            "5": 3
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "photo-bauble",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "00b9ea58bb82c87c687e9ea7595f89ec9baadf597ca2663f9845f58093876ce2",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        4,
+        4
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 30,
+          "minimum": 0,
+          "q10": 2,
+          "q25": 3,
+          "median": 4,
+          "q75": 5,
+          "q90": 5,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "0": 2,
+            "2": 3,
+            "3": 8,
+            "4": 3,
+            "5": 12,
+            "7": 1,
+            "8": 1
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 29,
+          "minimum": 1,
+          "q10": 2,
+          "q25": 3,
+          "median": 4,
+          "q75": 5,
+          "q90": 5,
+          "maximum": 6,
+          "fractionAbove8": 0,
+          "histogram": {
+            "1": 1,
+            "2": 4,
+            "3": 4,
+            "4": 7,
+            "5": 12,
+            "6": 1
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "photo-bottom-flower",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "e61dc4faa0bcd1f4528a9b99a0ddffd0ae7057bbc508b915c7adb054503089a4",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        4,
+        4
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 4,
+          "q10": 4,
+          "q25": 4,
+          "median": 4,
+          "q75": 4,
+          "q90": 6,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "4": 25,
+            "5": 1,
+            "6": 4,
+            "8": 3
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 4,
+          "q25": 4,
+          "median": 4,
+          "q75": 4,
+          "q90": 5,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "3": 1,
+            "4": 24,
+            "5": 6,
+            "6": 1,
+            "8": 1
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "photo-faceted-star",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "bce82438deb37467102b2a1155902d668bcabb46cc8419aa561d68f4f69c9f86",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        5,
+        5
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 1,
+          "q10": 2,
+          "q25": 5,
+          "median": 5,
+          "q75": 7,
+          "q90": 7,
+          "maximum": 9,
+          "fractionAbove8": 0.12121212121212122,
+          "histogram": {
+            "1": 2,
+            "2": 2,
+            "3": 2,
+            "4": 1,
+            "5": 15,
+            "6": 2,
+            "7": 5,
+            "9": 4
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 3,
+          "q25": 4,
+          "median": 5,
+          "q75": 6,
+          "q90": 7,
+          "maximum": 9,
+          "fractionAbove8": 0.09090909090909091,
+          "histogram": {
+            "2": 2,
+            "3": 2,
+            "4": 5,
+            "5": 14,
+            "6": 3,
+            "7": 4,
+            "9": 3
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "photo-bibel-star-8",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "d679deeeed128c62414a104b457a76afd1f7a60ae90d7014579f5aa7fd8d0760",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        2,
+        2
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 2,
+          "q25": 2,
+          "median": 2,
+          "q75": 6,
+          "q90": 6,
+          "maximum": 6,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 21,
+            "3": 1,
+            "4": 2,
+            "6": 9
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 2,
+          "q25": 2,
+          "median": 2,
+          "q75": 4,
+          "q90": 6,
+          "maximum": 6,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 23,
+            "4": 3,
+            "6": 7
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "photo-bibel-star-curved",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "1f6c8ac1fbb7a2d13b56154c9c0c9dfe257990a6a057bce0f1a80fb0a98e52d2",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        5,
+        5
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 5,
+          "q10": 5,
+          "q25": 5,
+          "median": 5,
+          "q75": 7,
+          "q90": 7,
+          "maximum": 7,
+          "fractionAbove8": 0,
+          "histogram": {
+            "5": 21,
+            "6": 3,
+            "7": 9
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 5,
+          "q25": 5,
+          "median": 5,
+          "q75": 7,
+          "q90": 7,
+          "maximum": 7,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 1,
+            "5": 18,
+            "6": 2,
+            "7": 12
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "photo-bibel-star-outline",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "069c4d534547341c69dc2233d6e210d5607f284d2d81b0d18623b06c148d4fe4",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        4,
+        4
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 4,
+          "q10": 4,
+          "q25": 4,
+          "median": 6,
+          "q75": 6,
+          "q90": 8,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "4": 11,
+            "5": 2,
+            "6": 14,
+            "8": 6
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 4,
+          "q25": 4,
+          "median": 6,
+          "q75": 6,
+          "q90": 8,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 1,
+            "3": 1,
+            "4": 10,
+            "5": 2,
+            "6": 13,
+            "7": 1,
+            "8": 5
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "photo-bibel-cross",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "d191cd84d681ff1fa498ab6155bcf1b56dbf558168037d921edff536e801fdb3",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        2,
+        2
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 2,
+          "q25": 2,
+          "median": 2,
+          "q75": 4,
+          "q90": 4,
+          "maximum": 6,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 21,
+            "3": 1,
+            "4": 10,
+            "6": 1
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 2,
+          "q25": 2,
+          "median": 2,
+          "q75": 4,
+          "q90": 4,
+          "maximum": 6,
+          "fractionAbove8": 0,
+          "histogram": {
+            "2": 22,
+            "4": 10,
+            "6": 1
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "photo-flettede-puppy",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "45bb41ffbb961e933cb29f4effbe47239533035ab522c7e654b7d9c1de1a0dad",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        5,
+        3
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 3,
+          "q25": 3,
+          "median": 3,
+          "q75": 4,
+          "q90": 4,
+          "maximum": 5,
+          "fractionAbove8": 0,
+          "histogram": {
+            "3": 20,
+            "4": 9,
+            "5": 4
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 3,
+          "q25": 3,
+          "median": 3,
+          "q75": 4,
+          "q90": 5,
+          "maximum": 6,
+          "fractionAbove8": 0,
+          "histogram": {
+            "3": 18,
+            "4": 8,
+            "5": 5,
+            "6": 2
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "photo-flettede-stonehenge",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "ff0bfa945a6368140b08b2f1f9709b1363b2e6fd8e9d19da4d824ffc97ba55c2",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        3,
+        3
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 3,
+          "q25": 3,
+          "median": 5,
+          "q75": 7,
+          "q90": 7,
+          "maximum": 13,
+          "fractionAbove8": 0.09090909090909091,
+          "histogram": {
+            "3": 12,
+            "4": 3,
+            "5": 8,
+            "7": 6,
+            "8": 1,
+            "9": 1,
+            "10": 1,
+            "13": 1
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 3,
+          "q25": 3,
+          "median": 5,
+          "q75": 5,
+          "q90": 9,
+          "maximum": 13,
+          "fractionAbove8": 0.15151515151515152,
+          "histogram": {
+            "3": 12,
+            "4": 4,
+            "5": 9,
+            "7": 3,
+            "9": 2,
+            "11": 1,
+            "12": 1,
+            "13": 1
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "photo-flettede-viking",
+      "cohort": "photos",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "7791de154fdbc94b618ece0bf018522573d57c231c46bc0385d24a9e2b9a9bb8",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        6,
+        6
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 2,
+          "q10": 4,
+          "q25": 5,
+          "median": 6,
+          "q75": 6,
+          "q90": 8,
+          "maximum": 12,
+          "fractionAbove8": 0.09090909090909091,
+          "histogram": {
+            "2": 1,
+            "4": 7,
+            "5": 1,
+            "6": 16,
+            "8": 5,
+            "10": 2,
+            "12": 1
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 4,
+          "q10": 4,
+          "q25": 4,
+          "median": 6,
+          "q75": 8,
+          "q90": 8,
+          "maximum": 10,
+          "fractionAbove8": 0.06060606060606061,
+          "histogram": {
+            "4": 9,
+            "6": 11,
+            "8": 11,
+            "10": 2
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    },
+    {
+      "id": "real-f1af2fbb127278e4-roi",
+      "cohort": "selected-development",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "102c0a6b1fd0fca3a344598198aaf91b056c491533321dd42d8cea0e8558169f",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        8,
+        8
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 8,
+          "q10": 9,
+          "q25": 10,
+          "median": 11,
+          "q75": 12,
+          "q90": 12,
+          "maximum": 12,
+          "fractionAbove8": 0.9696969696969697,
+          "histogram": {
+            "8": 1,
+            "9": 3,
+            "10": 5,
+            "11": 13,
+            "12": 11
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 8,
+          "q10": 8,
+          "q25": 9,
+          "median": 10,
+          "q75": 11,
+          "q90": 11,
+          "maximum": 12,
+          "fractionAbove8": 0.8787878787878788,
+          "histogram": {
+            "8": 4,
+            "9": 5,
+            "10": 11,
+            "11": 9,
+            "12": 4
+          }
+        }
+      ],
+      "proposedMaximum": 12
+    },
+    {
+      "id": "real-ca2f9adc67ee4cea-roi",
+      "cohort": "selected-development",
+      "n": 400,
+      "sourceProbabilityBytesSha256": "4ad0e2ecc9c680142a6085ae8f89b9c358da1fcb5fb48301b7817ed659721663",
+      "currentMaximum": 8,
+      "historicalSelectedCounts": [
+        3,
+        3
+      ],
+      "summary": [
+        {
+          "axis": 0,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 3,
+          "q25": 4,
+          "median": 5,
+          "q75": 5,
+          "q90": 5,
+          "maximum": 7,
+          "fractionAbove8": 0,
+          "histogram": {
+            "3": 8,
+            "4": 3,
+            "5": 18,
+            "6": 3,
+            "7": 1
+          }
+        },
+        {
+          "axis": 1,
+          "rows": 33,
+          "minimum": 3,
+          "q10": 3,
+          "q25": 4,
+          "median": 4,
+          "q75": 5,
+          "q90": 6,
+          "maximum": 8,
+          "fractionAbove8": 0,
+          "histogram": {
+            "3": 6,
+            "4": 17,
+            "5": 4,
+            "6": 5,
+            "8": 1
+          }
+        }
+      ],
+      "proposedMaximum": 8
+    }
+  ],
+  "perturbations": [
+    {
+      "id": "real-f1af2fbb127278e4-roi",
+      "mode": "original",
+      "edge": 8,
+      "maximum": 12
+    },
+    {
+      "id": "real-f1af2fbb127278e4-roi",
+      "mode": "transpose",
+      "edge": 8,
+      "maximum": 12
+    },
+    {
+      "id": "real-f1af2fbb127278e4-roi",
+      "mode": "flip-x",
+      "edge": 8,
+      "maximum": 12
+    },
+    {
+      "id": "real-f1af2fbb127278e4-roi",
+      "mode": "flip-y",
+      "edge": 8,
+      "maximum": 12
+    },
+    {
+      "id": "real-f1af2fbb127278e4-roi",
+      "mode": "inverted",
+      "edge": 8,
+      "maximum": 12
+    },
+    {
+      "id": "real-f1af2fbb127278e4-roi",
+      "mode": "border-noise",
+      "edge": 8,
+      "maximum": 12
+    },
+    {
+      "id": "real-f1af2fbb127278e4-roi",
+      "mode": "ignored-corner",
+      "edge": 8,
+      "maximum": 12
+    },
+    {
+      "id": "real-ca2f9adc67ee4cea-roi",
+      "mode": "original",
+      "edge": 8,
+      "maximum": 8
+    },
+    {
+      "id": "real-ca2f9adc67ee4cea-roi",
+      "mode": "transpose",
+      "edge": 8,
+      "maximum": 8
+    },
+    {
+      "id": "real-ca2f9adc67ee4cea-roi",
+      "mode": "flip-x",
+      "edge": 8,
+      "maximum": 8
+    },
+    {
+      "id": "real-ca2f9adc67ee4cea-roi",
+      "mode": "flip-y",
+      "edge": 8,
+      "maximum": 8
+    },
+    {
+      "id": "real-ca2f9adc67ee4cea-roi",
+      "mode": "inverted",
+      "edge": 8,
+      "maximum": 8
+    },
+    {
+      "id": "real-ca2f9adc67ee4cea-roi",
+      "mode": "border-noise",
+      "edge": 8,
+      "maximum": 8
+    },
+    {
+      "id": "real-ca2f9adc67ee4cea-roi",
+      "mode": "ignored-corner",
+      "edge": 8,
+      "maximum": 8
+    }
+  ]
+}

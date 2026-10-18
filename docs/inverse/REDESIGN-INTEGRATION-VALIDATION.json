@@ -1,0 +1,961 @@
+{
+  "schema": 1,
+  "sourceCommit": "6b3cecb40463431ab49c5f5bf370beecea9318d2",
+  "branch": "codex/solver-initialization",
+  "redesignParent": "456e628e2f7678d96eee3fab8fb34fbe843ea0a2",
+  "solverParent": "d318e34a890baa0b6bef97b23e726b535a97d550",
+  "mergeCommit": "c10e0935b78e5514008053f6c6226332406d2a02",
+  "nodeVersion": "v25.6.1",
+  "origin": "http://127.0.0.1:5232",
+  "checks": {
+    "applicationPassed": 778,
+    "applicationSkipped": 1,
+    "enginePassed": 263,
+    "svelteErrors": 0,
+    "svelteExistingWarnings": 7,
+    "lint": true,
+    "build": true,
+    "browserPassed": 18,
+    "fallbackPassed": 1,
+    "controlsPassed": 2,
+    "engineUnchanged": true
+  },
+  "sourceHashes": {
+    "src/lib/inverse/client.ts": "571b719d24a178520b6a55f50677281d9e72b56fa7210deb6f99fb4e5a136475",
+    "src/lib/inverse/engine.ts": "7a6bc6b3735c78a6d50eae0aa191a006802f75cbbf699fca61dde48cae332124",
+    "src/lib/components/paint/PaintPage.svelte": "467d7167d2fdfdbb4dbe97322a6cfc00fe2513694077984949a5ed3cd7907384",
+    "src/lib/components/paint/FindCutsPanel.svelte": "c8945d93da5142f2656b521e9671d5dc59d0e00fd05d327a8f1973288a6759f6",
+    "src/lib/paint/searchProgress.ts": "efcbe6eac0df951054ce4351ed3cefb3bc141aecc1716836aebcc5b1d3a9fafe",
+    "scripts/paint/search-progress-browser-test.mjs": "38e8bcf7c1e0071be7d2836035dcf4f292352ada8544b0acd693ad55f803d3c5"
+  },
+  "servedEngineFiles": [
+    {
+      "file": "static/inverse/core/automatic.js",
+      "sha256": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047"
+    },
+    {
+      "file": "static/inverse/core/bezier.js",
+      "sha256": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d"
+    },
+    {
+      "file": "static/inverse/core/border.js",
+      "sha256": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46"
+    },
+    {
+      "file": "static/inverse/core/chord-distance.js",
+      "sha256": "cb79dd6d90d22b6bea6bb4bd0593cc8e32a18a09116084e53f5d942bcbef3c04"
+    },
+    {
+      "file": "static/inverse/core/crop.js",
+      "sha256": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88"
+    },
+    {
+      "file": "static/inverse/core/direct/boundary.js",
+      "sha256": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e"
+    },
+    {
+      "file": "static/inverse/core/direct/counts.js",
+      "sha256": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9"
+    },
+    {
+      "file": "static/inverse/core/direct/curves.js",
+      "sha256": "a3cad0cb2c96d62c0e1d99474777157eae8fb3fd6b7631f3af203243f4909ad3"
+    },
+    {
+      "file": "static/inverse/core/direct/finalize.js",
+      "sha256": "c7bc72b5c739811a60868bad6dc9a6db1ff38cb76a53e348ae2071ddb564eec9"
+    },
+    {
+      "file": "static/inverse/core/direct/fit.js",
+      "sha256": "4df61135bc86b6ddb3b0b9f1922f9614c3852d02552c232846ea94d89f31a933"
+    },
+    {
+      "file": "static/inverse/core/direct/grid.js",
+      "sha256": "57ada8e2f1c794b0012ddedbb8b508f29971186c313e517a8f40ca3788e1dfbd"
+    },
+    {
+      "file": "static/inverse/core/direct/image-objective.js",
+      "sha256": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f"
+    },
+    {
+      "file": "static/inverse/core/direct/initialization-image.js",
+      "sha256": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7"
+    },
+    {
+      "file": "static/inverse/core/direct/initialize.js",
+      "sha256": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46"
+    },
+    {
+      "file": "static/inverse/core/direct/matching.js",
+      "sha256": "db113f3e5c6ed3be820f7c863a113e9181a02c7efa5ea66a46e56df7f2428414"
+    },
+    {
+      "file": "static/inverse/core/direct/math.js",
+      "sha256": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a"
+    },
+    {
+      "file": "static/inverse/core/direct/native.js",
+      "sha256": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46"
+    },
+    {
+      "file": "static/inverse/core/direct/native/PROVENANCE.json",
+      "sha256": "e9fbaef090fc05bdc9450210f527b1fb3fa6bc77ee86c1902eb97bb6ed0acd2a"
+    },
+    {
+      "file": "static/inverse/core/direct/native/boundary.c",
+      "sha256": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4"
+    },
+    {
+      "file": "static/inverse/core/direct/native/boundary.wasm",
+      "sha256": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58"
+    },
+    {
+      "file": "static/inverse/core/direct/prefer-matching.js",
+      "sha256": "1ff682f298014f8c29387ad3bbe330c52e4ee619defd5a2d116cb3703e0f5d48"
+    },
+    {
+      "file": "static/inverse/core/direct/primitive-selection.js",
+      "sha256": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904"
+    },
+    {
+      "file": "static/inverse/core/direct/primitives.js",
+      "sha256": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b"
+    },
+    {
+      "file": "static/inverse/core/direct/refine.js",
+      "sha256": "075f261f4b3ff2a8962c4040ca81057188b7de7d92ea3500a8e105f65e00e807"
+    },
+    {
+      "file": "static/inverse/core/direct/share.js",
+      "sha256": "247241745ec8b1ac03c41b7e619bda30e821bbddbad2c60d4ec2d51c8aea1e6d"
+    },
+    {
+      "file": "static/inverse/core/direct/shared-simplification.js",
+      "sha256": "9617dbe47fc1ac6d6d99a7dc228a160e783cf5a325992d7cc5f5e15719420ed5"
+    },
+    {
+      "file": "static/inverse/core/direct/symmetry.js",
+      "sha256": "ed9f633ea42af93b46293d0d753e21dd7a5921485d5d55847e5a02665c14cf13"
+    },
+    {
+      "file": "static/inverse/core/direct/topology.js",
+      "sha256": "bbe79bf0dca7c4786c7728413026fee9f77bb9bca5bb788be7d6674267ad9292"
+    },
+    {
+      "file": "static/inverse/core/engine.js",
+      "sha256": "59e4354b5c7ec6190b140066b24b3f8959e58f5e2f0f0166298522fb485d4740"
+    },
+    {
+      "file": "static/inverse/core/export.js",
+      "sha256": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c"
+    },
+    {
+      "file": "static/inverse/core/feature-recovery.js",
+      "sha256": "37831af78afffd94b19a4145091d199f9771d12e505514e88cf1943e6023279e"
+    },
+    {
+      "file": "static/inverse/core/geometry.js",
+      "sha256": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a"
+    },
+    {
+      "file": "static/inverse/core/graph.js",
+      "sha256": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414"
+    },
+    {
+      "file": "static/inverse/core/image-features.js",
+      "sha256": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a"
+    },
+    {
+      "file": "static/inverse/core/image-reference.js",
+      "sha256": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b"
+    },
+    {
+      "file": "static/inverse/core/input.js",
+      "sha256": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87"
+    },
+    {
+      "file": "static/inverse/core/junctions.js",
+      "sha256": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250"
+    },
+    {
+      "file": "static/inverse/core/kernel-choice.js",
+      "sha256": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63"
+    },
+    {
+      "file": "static/inverse/core/mask-preview.js",
+      "sha256": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b"
+    },
+    {
+      "file": "static/inverse/core/material.js",
+      "sha256": "e691efc792c66cdc91a5c0ad8258ac380a29442bc68c73bd9a7a2a44cbb02fe3"
+    },
+    {
+      "file": "static/inverse/core/numerical-kernel.js",
+      "sha256": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e"
+    },
+    {
+      "file": "static/inverse/core/paper-backend.js",
+      "sha256": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81"
+    },
+    {
+      "file": "static/inverse/core/polygonal.js",
+      "sha256": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4"
+    },
+    {
+      "file": "static/inverse/core/portals.js",
+      "sha256": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40"
+    },
+    {
+      "file": "static/inverse/core/presets.js",
+      "sha256": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf"
+    },
+    {
+      "file": "static/inverse/core/rounding.js",
+      "sha256": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295"
+    },
+    {
+      "file": "static/inverse/core/settings.js",
+      "sha256": "2fcdd67395cf3ebfcfcf4c885ea8fa5ae58b43dd52000660d0a52706b3b3665e"
+    },
+    {
+      "file": "static/inverse/core/solver.js",
+      "sha256": "15bb96737f85ca0d290b6a06d792a3b18570f83a39b9801a498c91e3f466e412"
+    },
+    {
+      "file": "static/inverse/core/symmetry.js",
+      "sha256": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83"
+    },
+    {
+      "file": "static/inverse/core/unmix.js",
+      "sha256": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf"
+    },
+    {
+      "file": "static/inverse/core/validate.js",
+      "sha256": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273"
+    },
+    {
+      "file": "static/inverse/core/zip.js",
+      "sha256": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b"
+    }
+  ],
+  "browser": [
+    {
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "name": "top-hat",
+      "passed": true,
+      "sharedSpans": 41,
+      "engineSegments": 87,
+      "editableSegments": 132,
+      "sourceError": 0.0032064909297052154,
+      "sourceErrorChange": 0,
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.0032064909297052154,
+        "sourceError": 0.0032064909297052154
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.0245,
+        "prepareRoundTripSeconds": 0.24869999998807907,
+        "preparedToSolveRequestSeconds": 0.00030000001192092895,
+        "solveRoundTripSeconds": 9.146399999976158,
+        "resultToReadySeconds": 0.299,
+        "clickToReadySeconds": 9.718899999976157
+      },
+      "geometryHash": "8d280c1ce866e51710c559a375f56f0c770668b4658226c3cc47c9dd843428dc",
+      "geometryIdenticalToPrevious": true
+    },
+    {
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "name": "top-hat-independent",
+      "passed": true,
+      "sharedSpans": 30,
+      "engineSegments": 77,
+      "editableSegments": 98,
+      "sourceError": 0.0029584750566893424,
+      "sourceErrorChange": 0,
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0.00036875
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0.000325
+          }
+        ],
+        "originalSourceError": 0.0029584750566893424,
+        "sourceError": 0.0029584750566893424
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.019099999964237214,
+        "prepareRoundTripSeconds": 0.23519999998807908,
+        "preparedToSolveRequestSeconds": 0.00010000002384185791,
+        "solveRoundTripSeconds": 5.516600000023842,
+        "resultToReadySeconds": 0.14459999996423722,
+        "clickToReadySeconds": 5.915599999964237
+      },
+      "geometryHash": "327efa731a902821f9eb8e3800c0bf524d44b99bc376b9f3cb600fa693d38598",
+      "geometryIdenticalToPrevious": true
+    },
+    {
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "name": "top-hat-anti",
+      "passed": true,
+      "sharedSpans": 39,
+      "engineSegments": 89,
+      "editableSegments": 132,
+      "sourceError": 0.0031887755102040817,
+      "sourceErrorChange": 0,
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.0031887755102040817,
+        "sourceError": 0.0031887755102040817
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.023799999952316284,
+        "prepareRoundTripSeconds": 0.09160000002384186,
+        "preparedToSolveRequestSeconds": 0.00019999998807907106,
+        "solveRoundTripSeconds": 7.407800000011921,
+        "resultToReadySeconds": 0.3251000000238419,
+        "clickToReadySeconds": 7.8485
+      },
+      "geometryHash": "be23cff721afd97a306eebd8cab151e648d4411e2e51d2bde3bd62fc8920611b",
+      "geometryIdenticalToPrevious": true
+    },
+    {
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "name": "star",
+      "passed": true,
+      "sharedSpans": 12,
+      "engineSegments": 84,
+      "editableSegments": 78,
+      "sourceError": 0.0016,
+      "sourceErrorChange": 0,
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0.0000625
+          }
+        ],
+        "originalSourceError": 0.0016,
+        "sourceError": 0.0016
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.0135,
+        "prepareRoundTripSeconds": 0.041099999964237216,
+        "preparedToSolveRequestSeconds": 0.00020000004768371582,
+        "solveRoundTripSeconds": 1.9542999999523163,
+        "resultToReadySeconds": 0.13440000003576277,
+        "clickToReadySeconds": 2.1435
+      },
+      "geometryHash": "f3afeaf74cf3c71f0dff6952af4b27f849d818637d89079ea87b64b622593788",
+      "geometryIdenticalToPrevious": true
+    },
+    {
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "name": "hunodan",
+      "passed": true,
+      "sharedSpans": 5,
+      "engineSegments": 58,
+      "editableSegments": 67,
+      "sourceError": 0.00944375,
+      "sourceErrorChange": 0,
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.00944375,
+        "sourceError": 0.00944375
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.0055,
+        "prepareRoundTripSeconds": 0.15219999998807907,
+        "preparedToSolveRequestSeconds": 0.00019999998807907106,
+        "solveRoundTripSeconds": 4.088900000035763,
+        "resultToReadySeconds": 0.43139999997615813,
+        "clickToReadySeconds": 4.678199999988079
+      },
+      "geometryHash": "34774e21e848ea0f69828769a8e99998812cc32b213d2e361ac3b23d0e55cb44",
+      "geometryIdenticalToPrevious": true
+    },
+    {
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "name": "circle",
+      "passed": true,
+      "sharedSpans": 9,
+      "engineSegments": 43,
+      "editableSegments": 55,
+      "sourceError": 0.00095,
+      "sourceErrorChange": 0,
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0.00005
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0.000053125
+          }
+        ],
+        "originalSourceError": 0.00095,
+        "sourceError": 0.00095
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.005700000047683716,
+        "prepareRoundTripSeconds": 0.22709999996423721,
+        "preparedToSolveRequestSeconds": 0.00010000002384185791,
+        "solveRoundTripSeconds": 1.6798999999761581,
+        "resultToReadySeconds": 0.04819999998807907,
+        "clickToReadySeconds": 1.961
+      },
+      "geometryHash": "fb130cbd39e35156bf2ab78429d07904f10f9b214950f9563646b85b12b74ed0",
+      "geometryIdenticalToPrevious": true
+    },
+    {
+      "browser": "firefox",
+      "browserVersion": "146.0.1",
+      "name": "top-hat",
+      "passed": true,
+      "sharedSpans": 41,
+      "engineSegments": 87,
+      "editableSegments": 132,
+      "sourceError": 0.0032064909297052154,
+      "sourceErrorChange": 0,
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.0032064909297052154,
+        "sourceError": 0.0032064909297052154
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.021,
+        "prepareRoundTripSeconds": 0.209,
+        "preparedToSolveRequestSeconds": 0,
+        "solveRoundTripSeconds": 15.957,
+        "resultToReadySeconds": 0.232,
+        "clickToReadySeconds": 16.419
+      },
+      "geometryHash": "0d45809cd308298bf4bc058718d4508e4ad175a951e4fa1bd395ee362b53d3dc",
+      "geometryIdenticalToPrevious": true
+    },
+    {
+      "browser": "firefox",
+      "browserVersion": "146.0.1",
+      "name": "top-hat-independent",
+      "passed": true,
+      "sharedSpans": 30,
+      "engineSegments": 77,
+      "editableSegments": 98,
+      "sourceError": 0.0029584750566893424,
+      "sourceErrorChange": 0,
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0.00036875
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0.000325
+          }
+        ],
+        "originalSourceError": 0.0029584750566893424,
+        "sourceError": 0.0029584750566893424
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.017,
+        "prepareRoundTripSeconds": 0.226,
+        "preparedToSolveRequestSeconds": 0.001,
+        "solveRoundTripSeconds": 10.925,
+        "resultToReadySeconds": 0.123,
+        "clickToReadySeconds": 11.292
+      },
+      "geometryHash": "7ec6b1d71dca13741a74c4de721d9498e2258da852cedf6a84ad5fb6abb2356a",
+      "geometryIdenticalToPrevious": true
+    },
+    {
+      "browser": "firefox",
+      "browserVersion": "146.0.1",
+      "name": "top-hat-anti",
+      "passed": true,
+      "sharedSpans": 39,
+      "engineSegments": 89,
+      "editableSegments": 132,
+      "sourceError": 0.0031887755102040817,
+      "sourceErrorChange": 0,
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.0031887755102040817,
+        "sourceError": 0.0031887755102040817
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.023,
+        "prepareRoundTripSeconds": 0.086,
+        "preparedToSolveRequestSeconds": 0,
+        "solveRoundTripSeconds": 12.619,
+        "resultToReadySeconds": 0.334,
+        "clickToReadySeconds": 13.062
+      },
+      "geometryHash": "c19720926b0f39a64577976c2b81cd28c2aaad1d80d3fb592291ad08ec4bdc9f",
+      "geometryIdenticalToPrevious": true
+    },
+    {
+      "browser": "firefox",
+      "browserVersion": "146.0.1",
+      "name": "star",
+      "passed": true,
+      "sharedSpans": 12,
+      "engineSegments": 84,
+      "editableSegments": 78,
+      "sourceError": 0.0016,
+      "sourceErrorChange": 0,
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0.0000625
+          }
+        ],
+        "originalSourceError": 0.0016,
+        "sourceError": 0.0016
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.011,
+        "prepareRoundTripSeconds": 0.032,
+        "preparedToSolveRequestSeconds": 0.001,
+        "solveRoundTripSeconds": 4.601,
+        "resultToReadySeconds": 0.097,
+        "clickToReadySeconds": 4.742
+      },
+      "geometryHash": "f3afeaf74cf3c71f0dff6952af4b27f849d818637d89079ea87b64b622593788",
+      "geometryIdenticalToPrevious": true
+    },
+    {
+      "browser": "firefox",
+      "browserVersion": "146.0.1",
+      "name": "hunodan",
+      "passed": true,
+      "sharedSpans": 5,
+      "engineSegments": 58,
+      "editableSegments": 67,
+      "sourceError": 0.00944375,
+      "sourceErrorChange": 0,
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.00944375,
+        "sourceError": 0.00944375
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.007,
+        "prepareRoundTripSeconds": 0.142,
+        "preparedToSolveRequestSeconds": 0.001,
+        "solveRoundTripSeconds": 6.364,
+        "resultToReadySeconds": 0.278,
+        "clickToReadySeconds": 6.792
+      },
+      "geometryHash": "6f1ce0ef0778395445135ef2f4c27ca1b8ec58550256878412fee5eba4ce7f8c",
+      "geometryIdenticalToPrevious": true
+    },
+    {
+      "browser": "firefox",
+      "browserVersion": "146.0.1",
+      "name": "circle",
+      "passed": true,
+      "sharedSpans": 9,
+      "engineSegments": 43,
+      "editableSegments": 55,
+      "sourceError": 0.0009375,
+      "sourceErrorChange": 0,
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0.00005
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0.000053125
+          }
+        ],
+        "originalSourceError": 0.0009375,
+        "sourceError": 0.0009375
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.006,
+        "prepareRoundTripSeconds": 0.197,
+        "preparedToSolveRequestSeconds": 0,
+        "solveRoundTripSeconds": 3.838,
+        "resultToReadySeconds": 0.047,
+        "clickToReadySeconds": 4.088
+      },
+      "geometryHash": "05f4a9c3c3d3cdd3aa13f5bb7a77a271867d2329cf1d1e9c67d74b9c069a00c1",
+      "geometryIdenticalToPrevious": true
+    },
+    {
+      "browser": "webkit",
+      "browserVersion": "26.0",
+      "name": "top-hat",
+      "passed": true,
+      "sharedSpans": 41,
+      "engineSegments": 87,
+      "editableSegments": 132,
+      "sourceError": 0.0032064909297052154,
+      "sourceErrorChange": 0,
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.0032064909297052154,
+        "sourceError": 0.0032064909297052154
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.02,
+        "prepareRoundTripSeconds": 0.307,
+        "preparedToSolveRequestSeconds": 0,
+        "solveRoundTripSeconds": 11.911,
+        "resultToReadySeconds": 0.185,
+        "clickToReadySeconds": 12.423
+      },
+      "geometryHash": "789dc502db433aa6a05518fda08593211977b64caf12ed579e481dbd7b5ca1c5",
+      "geometryIdenticalToPrevious": true
+    },
+    {
+      "browser": "webkit",
+      "browserVersion": "26.0",
+      "name": "top-hat-independent",
+      "passed": true,
+      "sharedSpans": 30,
+      "engineSegments": 77,
+      "editableSegments": 98,
+      "sourceError": 0.0029584750566893424,
+      "sourceErrorChange": 0,
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0.00036875
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0.000325
+          }
+        ],
+        "originalSourceError": 0.0029584750566893424,
+        "sourceError": 0.0029584750566893424
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.014,
+        "prepareRoundTripSeconds": 0.289,
+        "preparedToSolveRequestSeconds": 0,
+        "solveRoundTripSeconds": 7.55,
+        "resultToReadySeconds": 0.128,
+        "clickToReadySeconds": 7.981
+      },
+      "geometryHash": "79b235d72c5259ad4c993b18547a4b255105c1cc2f197f6a003926dde8f9a319",
+      "geometryIdenticalToPrevious": true
+    },
+    {
+      "browser": "webkit",
+      "browserVersion": "26.0",
+      "name": "top-hat-anti",
+      "passed": true,
+      "sharedSpans": 39,
+      "engineSegments": 89,
+      "editableSegments": 132,
+      "sourceError": 0.0031887755102040817,
+      "sourceErrorChange": 0,
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.0031887755102040817,
+        "sourceError": 0.0031887755102040817
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.025000000000000227,
+        "prepareRoundTripSeconds": 0.12799999999999978,
+        "preparedToSolveRequestSeconds": 0,
+        "solveRoundTripSeconds": 12.011,
+        "resultToReadySeconds": 0.207,
+        "clickToReadySeconds": 12.371
+      },
+      "geometryHash": "a88af61f1d6f31cbd4cb93702d5a6ff951911bd4c5565e9c9d7af8cc47c66964",
+      "geometryIdenticalToPrevious": true
+    },
+    {
+      "browser": "webkit",
+      "browserVersion": "26.0",
+      "name": "star",
+      "passed": true,
+      "sharedSpans": 12,
+      "engineSegments": 84,
+      "editableSegments": 78,
+      "sourceError": 0.0016,
+      "sourceErrorChange": 0,
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0.0000625
+          }
+        ],
+        "originalSourceError": 0.0016,
+        "sourceError": 0.0016
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.014000000000000113,
+        "prepareRoundTripSeconds": 0.042999999999999886,
+        "preparedToSolveRequestSeconds": 0,
+        "solveRoundTripSeconds": 2.225,
+        "resultToReadySeconds": 0.14,
+        "clickToReadySeconds": 2.422
+      },
+      "geometryHash": "f3afeaf74cf3c71f0dff6952af4b27f849d818637d89079ea87b64b622593788",
+      "geometryIdenticalToPrevious": true
+    },
+    {
+      "browser": "webkit",
+      "browserVersion": "26.0",
+      "name": "hunodan",
+      "passed": true,
+      "sharedSpans": 5,
+      "engineSegments": 58,
+      "editableSegments": 67,
+      "sourceError": 0.00944375,
+      "sourceErrorChange": 0,
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.00944375,
+        "sourceError": 0.00944375
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.007,
+        "prepareRoundTripSeconds": 0.193,
+        "preparedToSolveRequestSeconds": 0,
+        "solveRoundTripSeconds": 6.167,
+        "resultToReadySeconds": 0.245,
+        "clickToReadySeconds": 6.612
+      },
+      "geometryHash": "84d6e09d41ee2b3acd5464e8ef3b8d156d275ff04a3a1b5c660988b006f1822d",
+      "geometryIdenticalToPrevious": true
+    },
+    {
+      "browser": "webkit",
+      "browserVersion": "26.0",
+      "name": "circle",
+      "passed": true,
+      "sharedSpans": 9,
+      "engineSegments": 43,
+      "editableSegments": 55,
+      "sourceError": 0.0009375,
+      "sourceErrorChange": 0,
+      "conversionFidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0.00005
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0.000053125
+          }
+        ],
+        "originalSourceError": 0.0009375,
+        "sourceError": 0.0009375
+      },
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.007,
+        "prepareRoundTripSeconds": 0.272,
+        "preparedToSolveRequestSeconds": 0,
+        "solveRoundTripSeconds": 2.566,
+        "resultToReadySeconds": 0.649,
+        "clickToReadySeconds": 3.494
+      },
+      "geometryHash": "564a64677df9f85dd4d3132ed314ac532bf792867a5d169834a8434c730ad0f6",
+      "geometryIdenticalToPrevious": true
+    }
+  ],
+  "fallback": {
+    "browser": "chromium",
+    "name": "top-hat-anti",
+    "numericalBackend": "javascript",
+    "blockedKernelRequests": 1,
+    "sourceError": 0.0031887755102040817,
+    "sharedSpans": 39,
+    "passed": true
+  },
+  "controls": [
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 950
+      },
+      "pageErrors": [],
+      "dragSize": 74,
+      "progressEvents": 121,
+      "progressDisplays": 61,
+      "error": 0.0031887755102040817,
+      "passed": true
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "pageErrors": [],
+      "dragSize": 74,
+      "progressEvents": 121,
+      "progressDisplays": 61,
+      "error": 0.0031887755102040817,
+      "passed": true
+    }
+  ],
+  "priorNodeRelease": {
+    "record": "CURVE-PENALTY-VALIDATION.json",
+    "hunodanPassed": 22,
+    "freeBorderPassed": 32,
+    "rerun": false,
+    "reason": "No engine source changed in this integration; browser replays cover the changed UI and worker bridge."
+  },
+  "artifacts": {
+    "tmp/redesign-integration-test.log": "320e0cba65992c36061c5008e3fdb060359c8b669806d6100ba04663d3a88b33",
+    "tmp/redesign-integration-check.log": "1be3902fa1acaae6b0990406476a41369d095dc32dda58ba4b2a1df01155978b",
+    "tmp/redesign-integration-lint-final.log": "a552732ebea6b64b49ac0a1299170db75e8c45dbbc66c284f28e99be5613e5c7",
+    "tmp/redesign-integration-build-final.log": "cbe64e8e3b4aeeca52e13e36eaf47a557a61ef54a9c71d575d380f70e97d4a82",
+    "tmp/redesign-integration-browser/results.json": "0b516450d21e048803b05364f2e3dd36992fb47bd1afe1955ef98f2251e22701",
+    "tmp/redesign-integration-fallback/results.json": "59a1faccc4cd71e416e1a75cdece63d2ac80249625d9f33254e52e4f482d2bab",
+    "tmp/redesign-integration-controls/results.json": "a078adfc0f8d805444640733b6cd1f80415d0c9f6e4a4c3fad64ab67920a8afe",
+    "tmp/redesign-integration-served.json": "c2394248de307494e3412d99551ea129c0d7614e0b82033e478df83d6dc12184"
+  }
+}

@@ -1,0 +1,1175 @@
+{
+  "schema": "woven-heart-short-return-projection-1",
+  "status": "two-case-offline-candidate-awaiting-corpus-and-editor-rule-work",
+  "runtimeChanged": false,
+  "scope": "Fresh grids on unchanged photographic inputs. Original runtime versus experimental rejection-only versus checkpoint projection are distinct comparisons; no larger requested budget or source-mask edits. Geometry and independent exported-image checks remain explicit.",
+  "originalRuntime": [
+    {
+      "id": "hjfig-05",
+      "engine": "control",
+      "maskSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+      "seconds": 3.253069625,
+      "independentError": 0.009042960667083447,
+      "templateChecksPassed": true,
+      "originalReturns": 0,
+      "subdividedOriginalReturns": 2,
+      "experimentalReturns": 3,
+      "subdividedExperimentalReturns": 4
+    },
+    {
+      "id": "gift",
+      "engine": "control",
+      "maskSha256": "27d7f1538cbba31b9e4b13270a70e7ffc36acc23f69a49d4646d5ee3f49b7738",
+      "seconds": 9.387629583000002,
+      "independentError": 0.02309375,
+      "templateChecksPassed": true,
+      "originalReturns": 0,
+      "subdividedOriginalReturns": 1,
+      "experimentalReturns": 1,
+      "subdividedExperimentalReturns": 1
+    }
+  ],
+  "initialProjectionVariants": [
+    {
+      "id": "hjfig-05",
+      "engine": "control",
+      "maskSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+      "seconds": 4.832551625,
+      "independentError": 0.01741672463436325,
+      "templateChecksPassed": true,
+      "originalReturns": 0,
+      "subdividedOriginalReturns": 0,
+      "experimentalReturns": 0,
+      "subdividedExperimentalReturns": 0
+    },
+    {
+      "id": "hjfig-05",
+      "engine": "candidate",
+      "maskSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+      "seconds": 3.600995541,
+      "independentError": 0.008611504900104781,
+      "templateChecksPassed": true,
+      "originalReturns": 0,
+      "subdividedOriginalReturns": 1,
+      "experimentalReturns": 0,
+      "subdividedExperimentalReturns": 0
+    },
+    {
+      "id": "hjfig-05",
+      "engine": "hidden",
+      "maskSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+      "seconds": 3.390220125,
+      "independentError": 0.009271896380174166,
+      "templateChecksPassed": true,
+      "originalReturns": 0,
+      "subdividedOriginalReturns": 0,
+      "experimentalReturns": 0,
+      "subdividedExperimentalReturns": 0
+    },
+    {
+      "id": "gift",
+      "engine": "control",
+      "maskSha256": "27d7f1538cbba31b9e4b13270a70e7ffc36acc23f69a49d4646d5ee3f49b7738",
+      "seconds": 9.434080292,
+      "independentError": 0.0236875,
+      "templateChecksPassed": true,
+      "originalReturns": 0,
+      "subdividedOriginalReturns": 0,
+      "experimentalReturns": 0,
+      "subdividedExperimentalReturns": 0
+    },
+    {
+      "id": "gift",
+      "engine": "candidate",
+      "maskSha256": "27d7f1538cbba31b9e4b13270a70e7ffc36acc23f69a49d4646d5ee3f49b7738",
+      "seconds": 9.311332917000003,
+      "independentError": 0.0239125,
+      "templateChecksPassed": true,
+      "originalReturns": 0,
+      "subdividedOriginalReturns": 0,
+      "experimentalReturns": 0,
+      "subdividedExperimentalReturns": 0
+    },
+    {
+      "id": "gift",
+      "engine": "hidden",
+      "maskSha256": "27d7f1538cbba31b9e4b13270a70e7ffc36acc23f69a49d4646d5ee3f49b7738",
+      "seconds": 9.351586334,
+      "independentError": 0.0234625,
+      "templateChecksPassed": true,
+      "originalReturns": 0,
+      "subdividedOriginalReturns": 0,
+      "experimentalReturns": 0,
+      "subdividedExperimentalReturns": 0
+    }
+  ],
+  "failedCheckpointOnly": [
+    {
+      "id": "hjfig-05",
+      "engine": "control",
+      "maskSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+      "seconds": 4.735272499999999,
+      "independentError": 0.01741672463436325,
+      "templateChecksPassed": true,
+      "originalReturns": 0,
+      "subdividedOriginalReturns": 0,
+      "experimentalReturns": 0,
+      "subdividedExperimentalReturns": 0
+    },
+    {
+      "id": "hjfig-05",
+      "engine": "candidate",
+      "maskSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+      "seconds": 3.660552291,
+      "independentError": 0.008611504900104781,
+      "templateChecksPassed": true,
+      "originalReturns": 0,
+      "subdividedOriginalReturns": 1,
+      "experimentalReturns": 0,
+      "subdividedExperimentalReturns": 0
+    },
+    {
+      "id": "gift",
+      "engine": "control",
+      "maskSha256": "27d7f1538cbba31b9e4b13270a70e7ffc36acc23f69a49d4646d5ee3f49b7738",
+      "seconds": 9.41496625,
+      "independentError": 0.02371875,
+      "templateChecksPassed": true,
+      "originalReturns": 0,
+      "subdividedOriginalReturns": 0,
+      "experimentalReturns": 0,
+      "subdividedExperimentalReturns": 0
+    },
+    {
+      "id": "gift",
+      "engine": "candidate",
+      "maskSha256": "27d7f1538cbba31b9e4b13270a70e7ffc36acc23f69a49d4646d5ee3f49b7738",
+      "seconds": 9.425139416999999,
+      "independentError": 0.0230375,
+      "templateChecksPassed": true,
+      "originalReturns": 0,
+      "subdividedOriginalReturns": 0,
+      "experimentalReturns": 0,
+      "subdividedExperimentalReturns": 0
+    }
+  ],
+  "editableReplay": [
+    {
+      "id": "hjfig-05-control",
+      "preset": "automatic",
+      "engineChecksPassed": true,
+      "independentEngineError": 0.01741672463436325,
+      "geometrySha256": "ac6f74c653a43ff12c73f744c2226de7256f1bbcd8f9b641d680c1baaf71199c",
+      "maskSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 337,
+            "mismatch": 0
+          },
+          {
+            "resolution": 674,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.01684438535163645,
+        "sourceError": 0.01684438535163645
+      },
+      "editableError": 0.01684438535163645,
+      "missingFeatures": 0,
+      "featureComponents": [
+        {
+          "centerMm": [
+            49.27363300609139,
+            25.667927238432654
+          ],
+          "sourceAreaMm2": 673.7754140654579,
+          "intersectionPixels": 7468,
+          "retention": 0.9759539989545217,
+          "predictedComponentAreaMm2": 669.6369607903564,
+          "touchesBorder": false,
+          "componentIoU": 0.9587880344074977
+        },
+        {
+          "centerMm": [
+            32.966478528471676,
+            59.554166567083826
+          ],
+          "sourceAreaMm2": 1038.5756676557862,
+          "intersectionPixels": 7627,
+          "retention": 0.646629927935566,
+          "predictedComponentAreaMm2": 682.5806337997163,
+          "touchesBorder": false,
+          "componentIoU": 0.6398489932885906
+        },
+        {
+          "centerMm": [
+            35.846890237537835,
+            36.380716639577706
+          ],
+          "sourceAreaMm2": 35.0447745423487,
+          "intersectionPixels": 368,
+          "retention": 0.9246231155778895,
+          "predictedComponentAreaMm2": 32.84346960878408,
+          "touchesBorder": false,
+          "componentIoU": 0.913151364764268
+        },
+        {
+          "centerMm": [
+            77.40787814085233,
+            47.865483199741334
+          ],
+          "sourceAreaMm2": 350.71190201551474,
+          "intersectionPixels": 3970,
+          "retention": 0.9967361285463219,
+          "predictedComponentAreaMm2": 363.39141843284693,
+          "touchesBorder": false,
+          "componentIoU": 0.9589371980676329
+        }
+      ],
+      "physical": {
+        "geometry": {
+          "passed": true,
+          "issues": [],
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 4.50768115126016,
+          "minimumOuterSideClearance": 13.342802941136398,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": 0,
+          "forwardBoundaryAmbiguousPixels": 0,
+          "forwardSampleResolution": 101,
+          "geometryTolerance": 0.01,
+          "sharedCurvesStoredOnce": true,
+          "physicalAssemblyTested": false,
+          "limitations": [
+            "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+            "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+            "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+            "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+          ]
+        },
+        "paper": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658,
+          "families": [
+            {
+              "family": 0,
+              "status": "pass",
+              "detachedCertainCoreIslands": 0,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    14.251316311456707
+                  ],
+                  "certainCoreLength": 11.388888888888896,
+                  "possibleCoreLength": 12.222222222222232
+                },
+                {
+                  "interval": [
+                    14.251316311456707,
+                    35.89704768415772
+                  ],
+                  "certainCoreLength": 18.61111111111114,
+                  "possibleCoreLength": 19.444444444444475
+                },
+                {
+                  "interval": [
+                    35.89704768415772,
+                    60.245386426328146
+                  ],
+                  "certainCoreLength": 21.666666666666703,
+                  "possibleCoreLength": 22.22222222222226
+                },
+                {
+                  "interval": [
+                    60.245386426328146,
+                    85.15521037055201
+                  ],
+                  "certainCoreLength": 21.944444444444482,
+                  "possibleCoreLength": 22.777777777777818
+                },
+                {
+                  "interval": [
+                    85.15521037055201,
+                    100
+                  ],
+                  "certainCoreLength": 11.944444444444454,
+                  "possibleCoreLength": 12.77777777777779
+                }
+              ]
+            },
+            {
+              "family": 1,
+              "status": "pass",
+              "detachedCertainCoreIslands": 0,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    13.954585151800012
+                  ],
+                  "certainCoreLength": 11.111111111111118,
+                  "possibleCoreLength": 11.666666666666675
+                },
+                {
+                  "interval": [
+                    13.954585151800012,
+                    35.60030995043134
+                  ],
+                  "certainCoreLength": 18.888888888888918,
+                  "possibleCoreLength": 19.444444444444475
+                },
+                {
+                  "interval": [
+                    35.60030995043134,
+                    60.229391092210186
+                  ],
+                  "certainCoreLength": 21.944444444444482,
+                  "possibleCoreLength": 22.50000000000004
+                },
+                {
+                  "interval": [
+                    60.229391092210186,
+                    84.85847077228767
+                  ],
+                  "certainCoreLength": 21.666666666666703,
+                  "possibleCoreLength": 22.50000000000004
+                },
+                {
+                  "interval": [
+                    84.85847077228767,
+                    100
+                  ],
+                  "certainCoreLength": 12.222222222222232,
+                  "possibleCoreLength": 13.055555555555568
+                }
+              ]
+            }
+          ],
+          "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+          "seconds": 0.07156854199999999,
+          "limitations": [
+            "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+            "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+            "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+            "Small tips and features below the explicitly stated area threshold are not certified."
+          ]
+        },
+        "materialResolution": 360
+      },
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "tolerance": 0,
+      "seconds": 0.49291937499999994
+    },
+    {
+      "id": "hjfig-05-candidate",
+      "preset": "automatic",
+      "engineChecksPassed": true,
+      "independentEngineError": 0.008611504900104781,
+      "geometrySha256": "cc9190dfd0eafff11536bbde8561dde72e62f1d7defc6b9e2c53a64df6f413f4",
+      "maskSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 337,
+            "mismatch": 0
+          },
+          {
+            "resolution": 674,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.00868194665797885,
+        "sourceError": 0.00868194665797885
+      },
+      "editableError": 0.00868194665797885,
+      "missingFeatures": 0,
+      "featureComponents": [
+        {
+          "centerMm": [
+            49.27363300609139,
+            25.667927238432654
+          ],
+          "sourceAreaMm2": 673.7754140654579,
+          "intersectionPixels": 7566,
+          "retention": 0.9887611082070047,
+          "predictedComponentAreaMm2": 671.9263179212636,
+          "touchesBorder": false,
+          "componentIoU": 0.9804328106777245
+        },
+        {
+          "centerMm": [
+            32.966478528471676,
+            59.554166567083826
+          ],
+          "sourceAreaMm2": 1038.5756676557862,
+          "intersectionPixels": 11703,
+          "retention": 0.9922000847816872,
+          "predictedComponentAreaMm2": 1036.022153932851,
+          "touchesBorder": false,
+          "componentIoU": 0.9869286557598246
+        },
+        {
+          "centerMm": [
+            35.846890237537835,
+            36.380716639577706
+          ],
+          "sourceAreaMm2": 35.0447745423487,
+          "intersectionPixels": 393,
+          "retention": 0.9874371859296482,
+          "predictedComponentAreaMm2": 35.396983331719035,
+          "touchesBorder": false,
+          "componentIoU": 0.9656019656019657
+        },
+        {
+          "centerMm": [
+            77.40787814085233,
+            47.865483199741334
+          ],
+          "sourceAreaMm2": 350.71190201551474,
+          "intersectionPixels": 3967,
+          "retention": 0.9959829274416269,
+          "predictedComponentAreaMm2": 352.9132069490793,
+          "touchesBorder": false,
+          "componentIoU": 0.9858349900596421
+        }
+      ],
+      "physical": {
+        "geometry": {
+          "passed": true,
+          "issues": [],
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 4.922282943201324,
+          "minimumOuterSideClearance": 12.939289007915841,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": 0,
+          "forwardBoundaryAmbiguousPixels": 0,
+          "forwardSampleResolution": 101,
+          "geometryTolerance": 0.01,
+          "sharedCurvesStoredOnce": true,
+          "physicalAssemblyTested": false,
+          "limitations": [
+            "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+            "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+            "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+            "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+          ]
+        },
+        "paper": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658,
+          "families": [
+            {
+              "family": 0,
+              "status": "pass",
+              "detachedCertainCoreIslands": 0,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    14.513119361325556
+                  ],
+                  "certainCoreLength": 11.666666666666675,
+                  "possibleCoreLength": 12.222222222222232
+                },
+                {
+                  "interval": [
+                    14.513119361325556,
+                    35.38987315278127
+                  ],
+                  "certainCoreLength": 18.055555555555582,
+                  "possibleCoreLength": 18.888888888888918
+                },
+                {
+                  "interval": [
+                    35.38987315278127,
+                    60.40580830664932
+                  ],
+                  "certainCoreLength": 21.944444444444482,
+                  "possibleCoreLength": 23.055555555555596
+                },
+                {
+                  "interval": [
+                    60.40580830664932,
+                    83.91821794042691
+                  ],
+                  "certainCoreLength": 20.55555555555559,
+                  "possibleCoreLength": 21.388888888888925
+                },
+                {
+                  "interval": [
+                    83.91821794042691,
+                    100
+                  ],
+                  "certainCoreLength": 13.055555555555568,
+                  "possibleCoreLength": 13.611111111111125
+                }
+              ]
+            },
+            {
+              "family": 1,
+              "status": "pass",
+              "detachedCertainCoreIslands": 0,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    14.193867813616922
+                  ],
+                  "certainCoreLength": 11.388888888888896,
+                  "possibleCoreLength": 11.944444444444454
+                },
+                {
+                  "interval": [
+                    14.193867813616922,
+                    34.693100575729275
+                  ],
+                  "certainCoreLength": 17.777777777777803,
+                  "possibleCoreLength": 18.33333333333336
+                },
+                {
+                  "interval": [
+                    34.693100575729275,
+                    60.433037942470285
+                  ],
+                  "certainCoreLength": 22.50000000000004,
+                  "possibleCoreLength": 23.611111111111153
+                },
+                {
+                  "interval": [
+                    60.433037942470285,
+                    84.4613846064681
+                  ],
+                  "certainCoreLength": 21.111111111111146,
+                  "possibleCoreLength": 21.944444444444482
+                },
+                {
+                  "interval": [
+                    84.4613846064681,
+                    100
+                  ],
+                  "certainCoreLength": 12.50000000000001,
+                  "possibleCoreLength": 13.333333333333346
+                }
+              ]
+            }
+          ],
+          "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+          "seconds": 0.047341875000000075,
+          "limitations": [
+            "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+            "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+            "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+            "Small tips and features below the explicitly stated area threshold are not certified."
+          ]
+        },
+        "materialResolution": 360
+      },
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "tolerance": 0.025,
+      "seconds": 0.4770461660000001
+    },
+    {
+      "id": "gift-control",
+      "preset": "automatic",
+      "engineChecksPassed": true,
+      "independentEngineError": 0.02371875,
+      "geometrySha256": "65231746148e4b2052f88d9ad88f113105223dce1d21f9e50654f850dae9474a",
+      "maskSha256": "27d7f1538cbba31b9e4b13270a70e7ffc36acc23f69a49d4646d5ee3f49b7738",
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.0240625,
+        "sourceError": 0.0240625
+      },
+      "editableError": 0.0240625,
+      "missingFeatures": 0,
+      "featureComponents": [
+        {
+          "centerMm": [
+            53.88213680643795,
+            45.44615628970775
+          ],
+          "sourceAreaMm2": 737.8125,
+          "intersectionPixels": 11770,
+          "retention": 0.9970351545955104,
+          "predictedComponentAreaMm2": 738.75,
+          "touchesBorder": false,
+          "componentIoU": 0.9928300295234078
+        }
+      ],
+      "physical": {
+        "geometry": {
+          "passed": true,
+          "issues": [],
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 2.9180286822692088,
+          "minimumOuterSideClearance": 3.238578041558611,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": 0,
+          "forwardBoundaryAmbiguousPixels": 0,
+          "forwardSampleResolution": 101,
+          "geometryTolerance": 0.01,
+          "sharedCurvesStoredOnce": true,
+          "physicalAssemblyTested": false,
+          "limitations": [
+            "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+            "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+            "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+            "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+          ]
+        },
+        "paper": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.14285714285714285,
+          "clearanceGuard": 0.11101525445522108,
+          "families": [
+            {
+              "family": 0,
+              "status": "pass",
+              "detachedCertainCoreIslands": 0,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    9.564306461699775
+                  ],
+                  "certainCoreLength": 6.5714285714285765,
+                  "possibleCoreLength": 7.000000000000006
+                },
+                {
+                  "interval": [
+                    9.564306461699775,
+                    12.827427568055006
+                  ],
+                  "certainCoreLength": 0.5714285714285714,
+                  "possibleCoreLength": 0.9999999999999998
+                },
+                {
+                  "interval": [
+                    12.827427568055006,
+                    37.47842370936343
+                  ],
+                  "certainCoreLength": 21.85714285714282,
+                  "possibleCoreLength": 22.142857142857103
+                },
+                {
+                  "interval": [
+                    37.47842370936343,
+                    92.0518166011118
+                  ],
+                  "certainCoreLength": 51.8571428571432,
+                  "possibleCoreLength": 52.28571428571464
+                },
+                {
+                  "interval": [
+                    92.0518166011118,
+                    95.50353870640048
+                  ],
+                  "certainCoreLength": 0.7142857142857142,
+                  "possibleCoreLength": 1.1428571428571426
+                },
+                {
+                  "interval": [
+                    95.50353870640048,
+                    100
+                  ],
+                  "certainCoreLength": 1.7142857142857137,
+                  "possibleCoreLength": 2.285714285714285
+                }
+              ]
+            },
+            {
+              "family": 1,
+              "status": "pass",
+              "detachedCertainCoreIslands": 0,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    3.267847120699274
+                  ],
+                  "certainCoreLength": 0.42857142857142855,
+                  "possibleCoreLength": 0.9999999999999998
+                },
+                {
+                  "interval": [
+                    3.267847120699274,
+                    48.43052900595665
+                  ],
+                  "certainCoreLength": 42.42857142857157,
+                  "possibleCoreLength": 42.85714285714301
+                },
+                {
+                  "interval": [
+                    48.43052900595665,
+                    51.94047817356962
+                  ],
+                  "certainCoreLength": 0.5714285714285714,
+                  "possibleCoreLength": 1.1428571428571426
+                },
+                {
+                  "interval": [
+                    51.94047817356962,
+                    81.74120279433724
+                  ],
+                  "certainCoreLength": 27.142857142857086,
+                  "possibleCoreLength": 27.42857142857137
+                },
+                {
+                  "interval": [
+                    81.74120279433724,
+                    85.09164597135064
+                  ],
+                  "certainCoreLength": 0.42857142857142855,
+                  "possibleCoreLength": 0.9999999999999998
+                },
+                {
+                  "interval": [
+                    85.09164597135064,
+                    100
+                  ],
+                  "certainCoreLength": 12.142857142857137,
+                  "possibleCoreLength": 12.571428571428564
+                }
+              ]
+            }
+          ],
+          "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+          "seconds": 0.20969858300000033,
+          "limitations": [
+            "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+            "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+            "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+            "Small tips and features below the explicitly stated area threshold are not certified."
+          ]
+        },
+        "materialResolution": 700
+      },
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "tolerance": 0.1,
+      "seconds": 0.8269584999999999
+    },
+    {
+      "id": "gift-candidate",
+      "preset": "automatic",
+      "engineChecksPassed": true,
+      "independentEngineError": 0.0230375,
+      "geometrySha256": "ec1fcebb21c0deff62b95787c2f87b04c776d99802582c0e8429f3c09f973577",
+      "maskSha256": "27d7f1538cbba31b9e4b13270a70e7ffc36acc23f69a49d4646d5ee3f49b7738",
+      "editorIssues": [],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.02331875,
+        "sourceError": 0.02331875
+      },
+      "editableError": 0.02331875,
+      "missingFeatures": 0,
+      "featureComponents": [
+        {
+          "centerMm": [
+            53.88213680643795,
+            45.44615628970775
+          ],
+          "sourceAreaMm2": 737.8125,
+          "intersectionPixels": 11769,
+          "retention": 0.9969504447268107,
+          "predictedComponentAreaMm2": 738.5,
+          "touchesBorder": false,
+          "componentIoU": 0.9929969625379683
+        }
+      ],
+      "physical": {
+        "geometry": {
+          "passed": true,
+          "issues": [],
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 2.9091669953665575,
+          "minimumOuterSideClearance": 3.2678471206992725,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": 0,
+          "forwardBoundaryAmbiguousPixels": 0,
+          "forwardSampleResolution": 101,
+          "geometryTolerance": 0.01,
+          "sharedCurvesStoredOnce": true,
+          "physicalAssemblyTested": false,
+          "limitations": [
+            "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+            "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+            "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+            "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+          ]
+        },
+        "paper": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.14285714285714285,
+          "clearanceGuard": 0.11101525445522108,
+          "families": [
+            {
+              "family": 0,
+              "status": "pass",
+              "detachedCertainCoreIslands": 0,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    9.562375818367652
+                  ],
+                  "certainCoreLength": 6.5714285714285765,
+                  "possibleCoreLength": 7.000000000000006
+                },
+                {
+                  "interval": [
+                    9.562375818367652,
+                    12.825525583140461
+                  ],
+                  "certainCoreLength": 0.5714285714285714,
+                  "possibleCoreLength": 0.9999999999999998
+                },
+                {
+                  "interval": [
+                    12.825525583140461,
+                    37.4632646791725
+                  ],
+                  "certainCoreLength": 21.85714285714282,
+                  "possibleCoreLength": 22.142857142857103
+                },
+                {
+                  "interval": [
+                    37.4632646791725,
+                    91.94944660329163
+                  ],
+                  "certainCoreLength": 51.714285714286056,
+                  "possibleCoreLength": 52.28571428571464
+                },
+                {
+                  "interval": [
+                    91.94944660329163,
+                    95.31066896374804
+                  ],
+                  "certainCoreLength": 0.5714285714285714,
+                  "possibleCoreLength": 0.9999999999999998
+                },
+                {
+                  "interval": [
+                    95.31066896374804,
+                    100
+                  ],
+                  "certainCoreLength": 1.8571428571428565,
+                  "possibleCoreLength": 2.428571428571428
+                }
+              ]
+            },
+            {
+              "family": 1,
+              "status": "pass",
+              "detachedCertainCoreIslands": 0,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    3.267847120699274
+                  ],
+                  "certainCoreLength": 0.42857142857142855,
+                  "possibleCoreLength": 0.9999999999999998
+                },
+                {
+                  "interval": [
+                    3.267847120699274,
+                    48.36825986293109
+                  ],
+                  "certainCoreLength": 42.42857142857157,
+                  "possibleCoreLength": 42.85714285714301
+                },
+                {
+                  "interval": [
+                    48.36825986293109,
+                    51.85268468774234
+                  ],
+                  "certainCoreLength": 0.5714285714285714,
+                  "possibleCoreLength": 1.1428571428571426
+                },
+                {
+                  "interval": [
+                    51.85268468774234,
+                    82.12159108801603
+                  ],
+                  "certainCoreLength": 27.42857142857137,
+                  "possibleCoreLength": 27.99999999999994
+                },
+                {
+                  "interval": [
+                    82.12159108801603,
+                    85.39447699542451
+                  ],
+                  "certainCoreLength": 0.42857142857142855,
+                  "possibleCoreLength": 0.9999999999999998
+                },
+                {
+                  "interval": [
+                    85.39447699542451,
+                    100
+                  ],
+                  "certainCoreLength": 11.857142857142852,
+                  "possibleCoreLength": 12.28571428571428
+                }
+              ]
+            }
+          ],
+          "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+          "seconds": 0.21016137500000012,
+          "limitations": [
+            "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+            "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+            "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+            "Small tips and features below the explicitly stated area threshold are not certified."
+          ]
+        },
+        "materialResolution": 700
+      },
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "tolerance": 0.1,
+      "seconds": 0.862080125
+    }
+  ],
+  "sourceManifests": {
+    "projection-source": {
+      "file": "tmp/heart-learning/self-return-projection-v1/projection-source.json",
+      "sha256": "29a0574cb4318dae9701cb436ec0fcdab24f4baa8e19d05a2b4703aae3f543c7"
+    },
+    "hidden-source": {
+      "file": "tmp/heart-learning/self-return-projection-v1/hidden-source.json",
+      "sha256": "560b7a5f93392ab476437f53bf74aff95b1f238e7da5c87dfeec672dbc680493"
+    },
+    "efficient-source": {
+      "file": "tmp/heart-learning/self-return-projection-v1/efficient-source.json",
+      "sha256": "3eea26ea6844b69ca6f3b7a38819e258361a16cb498df9500f984f52115fe966"
+    }
+  },
+  "visualReview": "Both selected independent weave PNGs were inspected. The Hunodan grid distortion from rejection-only refinement is reduced; the gift still has narrow seams and contour nicks. No physical cutting/assembly claim.",
+  "validation": {
+    "focusedTestsPassed": 8,
+    "focusedFiles": [
+      "scripts/inverse/self-return-projection.test.mjs",
+      "scripts/inverse/self-return-subdivision.test.mjs",
+      "scripts/inverse/self-returns.test.mjs"
+    ],
+    "fullRuntimeQA": "docs/inverse/datasets/self-return-subdivision-validation.json",
+    "qualification": "The 824-test repository run precedes the newly added projection test; the eight focused tests include it. No runtime change was promoted."
+  },
+  "artifacts": {
+    "tmp/heart-learning/self-return-projection-v1/efficient/editor/gift-candidate-automatic-weave.png": "c9eecbdc00d485788c10d1ff1771a4d59fee7eef7f2aff013eee4a8fd6cf6e2c",
+    "tmp/heart-learning/self-return-projection-v1/efficient/editor/gift-candidate-automatic.svg": "b4e87422a7bb7b140759c69c35918eb1e85573f8b7dcda51f46316cfde728e66",
+    "tmp/heart-learning/self-return-projection-v1/efficient/editor/gift-control-automatic-weave.png": "21443aa011368e581aa2508e8c8af5c6373d194569de7b2f141ec4fe6e8c98ba",
+    "tmp/heart-learning/self-return-projection-v1/efficient/editor/gift-control-automatic.svg": "929a9e16a47e98d77c4de1dfad2552d986954985396110ac1a381e058d90d473",
+    "tmp/heart-learning/self-return-projection-v1/efficient/editor/hjfig-05-candidate-automatic-weave.png": "7e0e252013fadc001981d2cc6bbe5c19298177e30bc6ac8ada7f029e12cd7768",
+    "tmp/heart-learning/self-return-projection-v1/efficient/editor/hjfig-05-candidate-automatic.svg": "76174cff5e9d3f5ec1cc392d4bb327986fc58652222d536bffbfe402875a20a1",
+    "tmp/heart-learning/self-return-projection-v1/efficient/editor/hjfig-05-control-automatic-weave.png": "f93c8e20633ff49edb2c21c197a5138b0263e3ae5a28497c92e6b4308c4d47f3",
+    "tmp/heart-learning/self-return-projection-v1/efficient/editor/hjfig-05-control-automatic.svg": "5f5cfcc7bb206bcb6ba24a3132fcde1f2be7fd72b0938245010e95014d0b0b1b",
+    "tmp/heart-learning/self-return-projection-v1/efficient/editor/results.json": "e7b244da1411437f9919016c6b10267df630f3079b8466d8bc94bd7fa910cc3c",
+    "tmp/heart-learning/self-return-projection-v1/efficient/editor-input/gift-candidate/automatic/cut_geometry.json": "ec1fcebb21c0deff62b95787c2f87b04c776d99802582c0e8429f3c09f973577",
+    "tmp/heart-learning/self-return-projection-v1/efficient/editor-input/gift-candidate/automatic/mask.png": "072708f51d848a7754e3ff4c07b80e8674c1eee6677f87ef526389a626694d6a",
+    "tmp/heart-learning/self-return-projection-v1/efficient/editor-input/gift-control/automatic/cut_geometry.json": "65231746148e4b2052f88d9ad88f113105223dce1d21f9e50654f850dae9474a",
+    "tmp/heart-learning/self-return-projection-v1/efficient/editor-input/gift-control/automatic/mask.png": "072708f51d848a7754e3ff4c07b80e8674c1eee6677f87ef526389a626694d6a",
+    "tmp/heart-learning/self-return-projection-v1/efficient/editor-input/hjfig-05-candidate/automatic/cut_geometry.json": "cc9190dfd0eafff11536bbde8561dde72e62f1d7defc6b9e2c53a64df6f413f4",
+    "tmp/heart-learning/self-return-projection-v1/efficient/editor-input/hjfig-05-candidate/automatic/mask.png": "399c96a211658a3f5661cb2606dddb44be18663c65299026512a1c0d0322f8d0",
+    "tmp/heart-learning/self-return-projection-v1/efficient/editor-input/hjfig-05-control/automatic/cut_geometry.json": "ac6f74c653a43ff12c73f744c2226de7256f1bbcd8f9b641d680c1baaf71199c",
+    "tmp/heart-learning/self-return-projection-v1/efficient/editor-input/hjfig-05-control/automatic/mask.png": "399c96a211658a3f5661cb2606dddb44be18663c65299026512a1c0d0322f8d0",
+    "tmp/heart-learning/self-return-projection-v1/efficient/editor-input/results.json": "5b780f8148bacfb3a3baaa8aea907a139f6f65a3c969e45ab3a14229b50a3707",
+    "tmp/heart-learning/self-return-projection-v1/efficient/fit-results.json": "dad1816ed400ac029f18e56f522707fe17c22c8ecfe95e72a631c81e57d3a224",
+    "tmp/heart-learning/self-return-projection-v1/efficient/gift-candidate/cut_geometry.json": "ec1fcebb21c0deff62b95787c2f87b04c776d99802582c0e8429f3c09f973577",
+    "tmp/heart-learning/self-return-projection-v1/efficient/gift-candidate/independent.png": "b91230edc1a003932cf7a1e41aa47ec695beba9a3e90560548b3fdbaeaad4b73",
+    "tmp/heart-learning/self-return-projection-v1/efficient/gift-candidate/manufacturability_left.svg": "60f45bf7350c859922d6412fe6f307fcfe9aeab4b4b0293c18949a45c5145c38",
+    "tmp/heart-learning/self-return-projection-v1/efficient/gift-candidate/manufacturability_right.svg": "e3f4da049dfb13993ce3f9cb30a337d3c8ba2e3af7481dc252ff85a51b8e4dba",
+    "tmp/heart-learning/self-return-projection-v1/efficient/gift-candidate/print_templates.html": "2475f30877bf84a11ad5f5c7e3529d7122d0cb948c1cab2ee63c132e256f7bcf",
+    "tmp/heart-learning/self-return-projection-v1/efficient/gift-candidate/processed_design.svg": "b00051be6f0fe17ddaf458685139960c930a26597be1177b51ab7ba1f76ec728",
+    "tmp/heart-learning/self-return-projection-v1/efficient/gift-candidate/report.html": "743418e4c573efad3b5325d2fa6807fd34faa8670ed87249f02fa62ffb4caa41",
+    "tmp/heart-learning/self-return-projection-v1/efficient/gift-candidate/report.json": "1bc0443e2a41f052f5c1c85c837c45954a8d8b01a1d212f1d1e3495765561cca",
+    "tmp/heart-learning/self-return-projection-v1/efficient/gift-candidate/template_left.svg": "d2315478c862e0145633743921d8d4d2691f61e315bfa1912c6cfe9075efb663",
+    "tmp/heart-learning/self-return-projection-v1/efficient/gift-candidate/template_right.svg": "93d4657aab768ee7b2281c2d6bfe4ef5eb38d94ba8ab58bc00d1c177f82271dd",
+    "tmp/heart-learning/self-return-projection-v1/efficient/gift-candidate/vector_target.svg": "32018957f7ab00950dee59f7e70091c8e1423ac42a11d233535477410f6c7421",
+    "tmp/heart-learning/self-return-projection-v1/efficient/gift-candidate/weave_preview.svg": "713ecb0f38df77f68a1c5a6806a5ce276fda450527fe82f60d37fbc7d0f7a308",
+    "tmp/heart-learning/self-return-projection-v1/efficient/gift-control/cut_geometry.json": "65231746148e4b2052f88d9ad88f113105223dce1d21f9e50654f850dae9474a",
+    "tmp/heart-learning/self-return-projection-v1/efficient/gift-control/independent.png": "958b8dd4ff3b2bc41e3db15f95ecddd18b3c9c287e8eb5c0f19dfb0920d8efdc",
+    "tmp/heart-learning/self-return-projection-v1/efficient/gift-control/manufacturability_left.svg": "136ea8adb42a2d4b2ac77542ea94a38592557a64294b4c0afb3709b20dc7090e",
+    "tmp/heart-learning/self-return-projection-v1/efficient/gift-control/manufacturability_right.svg": "efeceee62d86cd792fb12076006841e7b9d0c3ed8563ae5fd70a6a7e3ff2a902",
+    "tmp/heart-learning/self-return-projection-v1/efficient/gift-control/print_templates.html": "7065c60455abe4db329041b4b64810b8aa8b5ae699e7d09f4ceb4147f26c9ad8",
+    "tmp/heart-learning/self-return-projection-v1/efficient/gift-control/processed_design.svg": "fca83ae805fa1b4f97d1ecaab8ecc76d077bf1997f31f19ee6d0f82f22e61030",
+    "tmp/heart-learning/self-return-projection-v1/efficient/gift-control/report.html": "513aede98e0f4a942cf89fd3e92dd180100e16db77125a6f5eae601bfdf2c1ac",
+    "tmp/heart-learning/self-return-projection-v1/efficient/gift-control/report.json": "c4e65df4c6d4034e9888fbe0beeff55dad228dbffc207d3a8708bca58eecace8",
+    "tmp/heart-learning/self-return-projection-v1/efficient/gift-control/template_left.svg": "e8fc5088f8e250fc873afd174ed0b4c800291753e85af455d44d7e0caed65f2b",
+    "tmp/heart-learning/self-return-projection-v1/efficient/gift-control/template_right.svg": "787782cac1825e46ba3c0e971df0ae47597c0233f54ba8431cd186b726bc8ccf",
+    "tmp/heart-learning/self-return-projection-v1/efficient/gift-control/vector_target.svg": "7622274f4cbb3e7b65ecd940e2f3153df6756ac53cc821c92362e44e382553c3",
+    "tmp/heart-learning/self-return-projection-v1/efficient/gift-control/weave_preview.svg": "f00da5684ef456c164eac267fe5e630759137b70b154a9b471996e7e209d931e",
+    "tmp/heart-learning/self-return-projection-v1/efficient/hjfig-05-candidate/cut_geometry.json": "cc9190dfd0eafff11536bbde8561dde72e62f1d7defc6b9e2c53a64df6f413f4",
+    "tmp/heart-learning/self-return-projection-v1/efficient/hjfig-05-candidate/independent.png": "fdac400110f7dae31e1495c1dd33e53f2933b52936558ec2b7a4f92dd3afb7a0",
+    "tmp/heart-learning/self-return-projection-v1/efficient/hjfig-05-candidate/manufacturability_left.svg": "b6e554600c710fed7c7d1ffd7a8edb3b3fc490d422e8a14bc0468d9250b8291d",
+    "tmp/heart-learning/self-return-projection-v1/efficient/hjfig-05-candidate/manufacturability_right.svg": "531dfd036a9b786536e2c36cb94f4b98b116c34d2299ab6415d46c3eb0fa0d37",
+    "tmp/heart-learning/self-return-projection-v1/efficient/hjfig-05-candidate/print_templates.html": "d31f68fdcd16f40cdbe76b1eefbf45c788d019e606e5fc715268ab61fb20bb19",
+    "tmp/heart-learning/self-return-projection-v1/efficient/hjfig-05-candidate/processed_design.svg": "e77399160bf4b2f30a9d58007b43494283c85480a93c44174af3c480ecaf201b",
+    "tmp/heart-learning/self-return-projection-v1/efficient/hjfig-05-candidate/report.html": "71a14d616a9278b4d82a44df4ebaa1c152ebb797ebcd623519da76ad85bcdcf5",
+    "tmp/heart-learning/self-return-projection-v1/efficient/hjfig-05-candidate/report.json": "7f3b351f7827ae7146cf53b2cc54e70cbe607b8a38c2dbb15a4aa39a6bc5b88b",
+    "tmp/heart-learning/self-return-projection-v1/efficient/hjfig-05-candidate/template_left.svg": "e1d8c50149bb206eb8ac9db7a63c2e3a03f9af86b7294d303bc5de7cdd5fc897",
+    "tmp/heart-learning/self-return-projection-v1/efficient/hjfig-05-candidate/template_right.svg": "b8be2b997c8c0e0e5fdcaef426fb8107939085d1ac969d24e0f03580070cd860",
+    "tmp/heart-learning/self-return-projection-v1/efficient/hjfig-05-candidate/vector_target.svg": "37ff7d7710decae9f794b99634e24beabc7b16bbb0ae7647f0a4a8789ad02de2",
+    "tmp/heart-learning/self-return-projection-v1/efficient/hjfig-05-candidate/weave_preview.svg": "4f794b8cb1a9229a337476fc276f07ae9c13768e16255bdf1a240615a6f15876",
+    "tmp/heart-learning/self-return-projection-v1/efficient/hjfig-05-control/cut_geometry.json": "ac6f74c653a43ff12c73f744c2226de7256f1bbcd8f9b641d680c1baaf71199c",
+    "tmp/heart-learning/self-return-projection-v1/efficient/hjfig-05-control/independent.png": "3ed78b3fa682917204bbee397242dbffd540999ce1f1d67e304489ee1a14c444",
+    "tmp/heart-learning/self-return-projection-v1/efficient/hjfig-05-control/manufacturability_left.svg": "66d46b472819664a232aee8cfe8f9cf9bd56e925aa7ecb60e021287a069488e7",
+    "tmp/heart-learning/self-return-projection-v1/efficient/hjfig-05-control/manufacturability_right.svg": "b8951519b7b31ff60193dba8755f8734483ea48a33c0e931d7a89b22636ff532",
+    "tmp/heart-learning/self-return-projection-v1/efficient/hjfig-05-control/print_templates.html": "9c8b8f356a535ce8f619d60ebc1ab1ff8034e3c9e0bd380a5f1ea3d9293705a6",
+    "tmp/heart-learning/self-return-projection-v1/efficient/hjfig-05-control/processed_design.svg": "160162966d43dbfbfdf8992c07da4ff6f085da19edeec33a03108a829212c25d",
+    "tmp/heart-learning/self-return-projection-v1/efficient/hjfig-05-control/report.html": "8ce99ee3d3ec802e2df24465823d8cbe2e91968c55146258706a4f8e2453657d",
+    "tmp/heart-learning/self-return-projection-v1/efficient/hjfig-05-control/report.json": "fbaf32725e3794168a7ecadc4ffe5f02aab3e6b8656e7f993471f7dda8d62fd9",
+    "tmp/heart-learning/self-return-projection-v1/efficient/hjfig-05-control/template_left.svg": "e673e21bc27e37b8abe586792cdea708b957f8115677194b90391a7f49923a58",
+    "tmp/heart-learning/self-return-projection-v1/efficient/hjfig-05-control/template_right.svg": "6fb982ae62c17a7e89b7af26309fae34444aa10790f0e6a811d0ecb12ded2283",
+    "tmp/heart-learning/self-return-projection-v1/efficient/hjfig-05-control/vector_target.svg": "7ad558dffcd3a76991d2307bcde289ad619b284c58b755a81c1df38e523d2de5",
+    "tmp/heart-learning/self-return-projection-v1/efficient/hjfig-05-control/weave_preview.svg": "4ebbe4ca3c8ac119279527ab432c58c3228b45abdb729eee6ca42820a422ed6a",
+    "tmp/heart-learning/self-return-projection-v1/efficient-replay.log": "fd8e5c30cffb0c5c5edc9c0879b4f093532d82ae31411594a062c575ea4e9799",
+    "tmp/heart-learning/self-return-projection-v1/efficient-replay.mjs": "e17aa7a00279dd8f5783150fb1fd07a38f2be1caacc06a5d65a90eaf2ede0c37",
+    "tmp/heart-learning/self-return-projection-v1/efficient-source.json": "3eea26ea6844b69ca6f3b7a38819e258361a16cb498df9500f984f52115fe966",
+    "tmp/heart-learning/self-return-projection-v1/fit-replay.log": "227aa85469fda59fd874934da13046759df3038a68573cdbda58a47879ca0445",
+    "tmp/heart-learning/self-return-projection-v1/fit-replay.mjs": "f590cfece35fdd734dda1672fd88d67ee259917238a048efa650c78adc813d50",
+    "tmp/heart-learning/self-return-projection-v1/fit-results.json": "99404d128a4a8d090cb3888ff0cf980a17a5c2ace283439cc3d007f1f4546f51",
+    "tmp/heart-learning/self-return-projection-v1/gift-candidate/cut_geometry.json": "9b846f5878c7304a5ee0fdda1aa2f52c22338223e5b10ad525d3b2f65e11bd7e",
+    "tmp/heart-learning/self-return-projection-v1/gift-candidate/independent.png": "267a39e26bb2724d552c6ad7912128da12bc19f7c90dbf2b4ad729ff187b28a6",
+    "tmp/heart-learning/self-return-projection-v1/gift-candidate/manufacturability_left.svg": "6552c2886cb19d582cc12fbcf2142914676649842139438f87452f011ad1ac0c",
+    "tmp/heart-learning/self-return-projection-v1/gift-candidate/manufacturability_right.svg": "12a961e12ca66c3c3c0977b9016ad06212e9cee4c11edd7445443d8454f9f83a",
+    "tmp/heart-learning/self-return-projection-v1/gift-candidate/print_templates.html": "6e798f5e989fbe395471b2a7d168e34f05af4452bd74184d62f56c7b04eceb1a",
+    "tmp/heart-learning/self-return-projection-v1/gift-candidate/processed_design.svg": "9a25bbc25df08b97c273dd9da156d1ca6c9f23b4f280d52edb8ca689e3c84982",
+    "tmp/heart-learning/self-return-projection-v1/gift-candidate/report.html": "e3887bd25269fcb69f29072c9ce510aec59ffb3252bcf9befa005aae3fd5f3f4",
+    "tmp/heart-learning/self-return-projection-v1/gift-candidate/report.json": "a0b1f3dea0fc7b9f3a2b3220a5c0a9cd25426bef9b3d701fee2f00ebf0fd05b6",
+    "tmp/heart-learning/self-return-projection-v1/gift-candidate/template_left.svg": "e833876126c6bed52971038be2fca650c69c57d8172530816ed55815659983c3",
+    "tmp/heart-learning/self-return-projection-v1/gift-candidate/template_right.svg": "12bfd4fb53d42ad64ca8719b1e80224f2d309b281f6babb57b198d5ea7920a2e",
+    "tmp/heart-learning/self-return-projection-v1/gift-candidate/vector_target.svg": "f15015059a4a6a63f40818be9230fd531feead7c3b5edffab2e06479153815f9",
+    "tmp/heart-learning/self-return-projection-v1/gift-candidate/weave_preview.svg": "7ab7d9135cc2b3d689cf18fc11e522448429ea1513dcd6dced57b6b88f25ccc2",
+    "tmp/heart-learning/self-return-projection-v1/gift-control/cut_geometry.json": "456c08e648e01ca77de678f9394fbe1833d5b60415f8d06725719e5d0a36d0ba",
+    "tmp/heart-learning/self-return-projection-v1/gift-control/independent.png": "f91d950a9fe77a5b5c8765e89a9f9afba3cefcddfa8f378e4fb0b9a4d462eef4",
+    "tmp/heart-learning/self-return-projection-v1/gift-control/manufacturability_left.svg": "c31a7a6b7defe0e16f970ab4c7614b373be9dbc560e20f90cb6bdd6e4027e0a0",
+    "tmp/heart-learning/self-return-projection-v1/gift-control/manufacturability_right.svg": "1efe541e47c387945f5be0e52669f6f56c60f5c521b04719982894ff03f02d24",
+    "tmp/heart-learning/self-return-projection-v1/gift-control/print_templates.html": "e6c17c8255097ec86d21f5f8817fd448ff48d004fb9e143b7b666c7abf04c087",
+    "tmp/heart-learning/self-return-projection-v1/gift-control/processed_design.svg": "713664566dec853be63a60c8ff2dc051bd46c2f6da53dc1f8a17d33c396d5330",
+    "tmp/heart-learning/self-return-projection-v1/gift-control/report.html": "d2dd86c9745e2f95b8b843d5b31453d0724e5bbe18a925c9ea337f57f7956de6",
+    "tmp/heart-learning/self-return-projection-v1/gift-control/report.json": "a48263667ece4c325dde431b3324e56df36fac1cec0af41fb1061ce73994395b",
+    "tmp/heart-learning/self-return-projection-v1/gift-control/template_left.svg": "a808480f878783025a4027c8eba8afdd0f3a04bb7219c65ed00d5a1eda358885",
+    "tmp/heart-learning/self-return-projection-v1/gift-control/template_right.svg": "770dd8a1edb4326f3cf3646f2bb8f0905b5fd380dca297c3f8cc6e496e639c1a",
+    "tmp/heart-learning/self-return-projection-v1/gift-control/vector_target.svg": "77b40569c334a65772cb21f7c140068b1375b870946c9b584877dcf2f8686cab",
+    "tmp/heart-learning/self-return-projection-v1/gift-control/weave_preview.svg": "2290523083a7f6341c8486d4437ba9f99c9377529ecec16e074efff109e96353",
+    "tmp/heart-learning/self-return-projection-v1/gift-control-all-projected.json": "d0b2cdbc73ba1f0b66d31bc58ae958b2ab2e10208b3bab2abbe770e1544812dd",
+    "tmp/heart-learning/self-return-projection-v1/gift-control-all-projected.png": "c328a203cbe1d2d10c34c179383fdfaaefc1d9974c9e62cc4be68984781d9018",
+    "tmp/heart-learning/self-return-projection-v1/gift-hidden/cut_geometry.json": "0146abf990306f7c4b4318ffda0c269ed9d9363d9d33ac5e8abba2762cb20994",
+    "tmp/heart-learning/self-return-projection-v1/gift-hidden/independent.png": "1c7a9e7a280901e6df490f07851a935c742f6ba680abfb2929dc82c180f61fdb",
+    "tmp/heart-learning/self-return-projection-v1/gift-hidden/manufacturability_left.svg": "a2415602a1290330360c9c243a1eb24dd0ba96357d4a209bee29ad30f4bd14bb",
+    "tmp/heart-learning/self-return-projection-v1/gift-hidden/manufacturability_right.svg": "fda32a907c6925ffd5a232e55961e67612f0d97d601a4b3495da025b8f17f3eb",
+    "tmp/heart-learning/self-return-projection-v1/gift-hidden/print_templates.html": "acfde8b65a37a3af7d2e165b29c1f2d5e10c656f340ff6c04e8098233de16e77",
+    "tmp/heart-learning/self-return-projection-v1/gift-hidden/processed_design.svg": "8ee4997bd5f0cd4e752608c30c54181cc388b2c5e67fbe974b91d43e6c554ba1",
+    "tmp/heart-learning/self-return-projection-v1/gift-hidden/report.html": "83cd4c137ab8f9364ffbe4363bfce0f05d077a33f050b7cac216098403c4220b",
+    "tmp/heart-learning/self-return-projection-v1/gift-hidden/report.json": "6b8a5f578e6accfbacf360e5841455d825384837f667642bc4d6ba9444d3e194",
+    "tmp/heart-learning/self-return-projection-v1/gift-hidden/template_left.svg": "38956fe4fbfb61806a9281f8070ce06487e84d1ecb9c044d3ad1af7ca9198f60",
+    "tmp/heart-learning/self-return-projection-v1/gift-hidden/template_right.svg": "d1fde57597124d8e60c44524803692fe7334597a020237f4d88f308329c0b947",
+    "tmp/heart-learning/self-return-projection-v1/gift-hidden/vector_target.svg": "c6a01263407008c90fc6a3714fcfb41ad989f2603fa34093b729253cc9b62f3a",
+    "tmp/heart-learning/self-return-projection-v1/gift-hidden/weave_preview.svg": "e2415845191b82acc0fce4cea7fd9ca9a542bc275508e5aa7059f0b6d136f22a",
+    "tmp/heart-learning/self-return-projection-v1/hidden-source.json": "560b7a5f93392ab476437f53bf74aff95b1f238e7da5c87dfeec672dbc680493",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-candidate/cut_geometry.json": "cc9190dfd0eafff11536bbde8561dde72e62f1d7defc6b9e2c53a64df6f413f4",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-candidate/independent.png": "fdac400110f7dae31e1495c1dd33e53f2933b52936558ec2b7a4f92dd3afb7a0",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-candidate/manufacturability_left.svg": "b6e554600c710fed7c7d1ffd7a8edb3b3fc490d422e8a14bc0468d9250b8291d",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-candidate/manufacturability_right.svg": "531dfd036a9b786536e2c36cb94f4b98b116c34d2299ab6415d46c3eb0fa0d37",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-candidate/print_templates.html": "d31f68fdcd16f40cdbe76b1eefbf45c788d019e606e5fc715268ab61fb20bb19",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-candidate/processed_design.svg": "e77399160bf4b2f30a9d58007b43494283c85480a93c44174af3c480ecaf201b",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-candidate/report.html": "ba63a34d9d36dfdbfe4ecdb6f07b9aca0bd8297dcc76373063fbec36caa83069",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-candidate/report.json": "01acbd7ffeee500678612092c7eb3460b847b1d89bb95d876bee9f22fa058279",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-candidate/template_left.svg": "e1d8c50149bb206eb8ac9db7a63c2e3a03f9af86b7294d303bc5de7cdd5fc897",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-candidate/template_right.svg": "b8be2b997c8c0e0e5fdcaef426fb8107939085d1ac969d24e0f03580070cd860",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-candidate/vector_target.svg": "37ff7d7710decae9f794b99634e24beabc7b16bbb0ae7647f0a4a8789ad02de2",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-candidate/weave_preview.svg": "4f794b8cb1a9229a337476fc276f07ae9c13768e16255bdf1a240615a6f15876",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-control/cut_geometry.json": "ac6f74c653a43ff12c73f744c2226de7256f1bbcd8f9b641d680c1baaf71199c",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-control/independent.png": "3ed78b3fa682917204bbee397242dbffd540999ce1f1d67e304489ee1a14c444",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-control/manufacturability_left.svg": "66d46b472819664a232aee8cfe8f9cf9bd56e925aa7ecb60e021287a069488e7",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-control/manufacturability_right.svg": "b8951519b7b31ff60193dba8755f8734483ea48a33c0e931d7a89b22636ff532",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-control/print_templates.html": "9c8b8f356a535ce8f619d60ebc1ab1ff8034e3c9e0bd380a5f1ea3d9293705a6",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-control/processed_design.svg": "160162966d43dbfbfdf8992c07da4ff6f085da19edeec33a03108a829212c25d",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-control/report.html": "7f86aa91463c252e6490611ce4bd09a027f470aaa2224b863fbc4e8e7e4e42ac",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-control/report.json": "85c996e40d3c8f1490418eee8aa91174bba964dd96693d5e04bb1ccc0fecbe9d",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-control/template_left.svg": "e673e21bc27e37b8abe586792cdea708b957f8115677194b90391a7f49923a58",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-control/template_right.svg": "6fb982ae62c17a7e89b7af26309fae34444aa10790f0e6a811d0ecb12ded2283",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-control/vector_target.svg": "7ad558dffcd3a76991d2307bcde289ad619b284c58b755a81c1df38e523d2de5",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-control/weave_preview.svg": "4ebbe4ca3c8ac119279527ab432c58c3228b45abdb729eee6ca42820a422ed6a",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-hidden/cut_geometry.json": "f6c42fe8850039e772c304f6df142adf460a452f27ce4fe9a2bbe82f4cebddeb",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-hidden/independent.png": "63a4c8f0c24ec2fbf398eb085fe2a3c925f6ea25171ea10494bdbbac08809910",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-hidden/manufacturability_left.svg": "3d37f659f37592f6292a1272d8242b84c7b3227c5afe8879a81d8e7927a26f9e",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-hidden/manufacturability_right.svg": "618e3e47a26c962004fb23e46b951d55588dac9ef7224f5ef6eae8941380a2ba",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-hidden/print_templates.html": "e63e5ec2a900d002da99cc64cbec5f974e24c609632776cbadfae9e0c0691878",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-hidden/processed_design.svg": "ecb834a756842eea46798c9bf98eb9eb5d988963085c741b5352158509e3d060",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-hidden/report.html": "161fa7461d4facd87d0d4479827a073cd557abf5d2b282857ab152a7ab6f12e3",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-hidden/report.json": "bc36e0ac2b466da636f4267483cf271e7b1344fe4106de52fd8127acd9079770",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-hidden/template_left.svg": "a463ef218f649b53177951114ef27f8aafa9502b852ec497feef5f3fb408ba17",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-hidden/template_right.svg": "a231ee66494bbbe970b7eb03baa0f723f6997288cc3f3e8b0333d9cf6d7b81b8",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-hidden/vector_target.svg": "f9bf9810c9c6730ae559f0baa368e82d313f9e001d037f6e21cc4c540d021180",
+    "tmp/heart-learning/self-return-projection-v1/hjfig-05-hidden/weave_preview.svg": "66037a543a0c1609f8120603cc7ee7d0e2e93d38e7a82f84d4a49d40c26ba881",
+    "tmp/heart-learning/self-return-projection-v1/prepare-editor-efficient.mjs": "b257ac09f22cfc3929dd49b763671e331b430952a485bc23a026b450cc0b83ca",
+    "tmp/heart-learning/self-return-projection-v1/project-probe.json": "885669dcbfda7c75a1bfa5f88f24c63a287314ded0790fcfd28f1612df74f21c",
+    "tmp/heart-learning/self-return-projection-v1/project-probe.log": "a66122f2fed28d7ef4ae98d60a61eaf210a5519991aba311a4a4c9a95f5f97ba",
+    "tmp/heart-learning/self-return-projection-v1/project-probe.mjs": "9632f2e5502939e60107d63c2cff5673a12b9ef044c486938b112f4f91708add",
+    "tmp/heart-learning/self-return-projection-v1/projection-source.json": "29a0574cb4318dae9701cb436ec0fcdab24f4baa8e19d05a2b4703aae3f543c7",
+    "tmp/heart-learning/self-return-projection-v1/source.json": "2b508274e04fe8c4d7d106f9e72da26e6c1414f25a788df346af622766261003"
+  }
+}

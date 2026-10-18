@@ -1,0 +1,79 @@
+{
+  "schema": "folded-cut-separation-probe-1",
+  "status": "offline continuation experiment; not integrated",
+  "method": "Add a separation cost for each sample and its reflection across the fold. Exempt the final 1.5 nominal widths of path length. Keep all existing geometry and image objectives; geometric core checks supplement the lattice at checkpoints. A separate arm also reduces the same-cut arc exclusion from eight to three nominal widths.",
+  "sourcePolicy": "Frozen image-fitted cuts are continuation starts. Photograph bytes, crop coordinates, masks, colors and settings stay unchanged. No published templates and no fresh-fit speed claim.",
+  "runs": {
+    "initialHunodan": 3,
+    "rateComparison": 4,
+    "photoContinuations": 15,
+    "total": 22
+  },
+  "selected": [
+    {
+      "id": "hjcur-05",
+      "policy": "mirror, rate .002",
+      "error": 0.009457777777777778,
+      "geometryPassed": true,
+      "latticeStatus": "pass",
+      "geometricPassed": true,
+      "independentGeosRadiusProbesPassed": 12,
+      "seconds": 0.7301371669999999
+    },
+    {
+      "id": "normal-vertical",
+      "policy": "mirror",
+      "error": 0.0115,
+      "geometryPassed": true,
+      "latticeStatus": "pass",
+      "geometricPassed": true,
+      "independentGeosRadiusProbesPassed": 12,
+      "seconds": 1.2451610839999994
+    },
+    {
+      "id": "accelerated-vertical",
+      "policy": "mirror",
+      "error": 0.01453125,
+      "geometryPassed": true,
+      "latticeStatus": "pass",
+      "geometricPassed": true,
+      "independentGeosRadiusProbesPassed": 12,
+      "seconds": 0.9813494160000009
+    },
+    {
+      "id": "normal-original",
+      "policy": "mirror plus local same-cut exclusion",
+      "error": 0.0138375,
+      "geometryPassed": true,
+      "latticeStatus": "uncertain",
+      "geometricPassed": true,
+      "independentGeosRadiusProbesPassed": 12,
+      "seconds": 1.226074041
+    }
+  ],
+  "hunodan": {
+    "originalImageError": 0.009258666666666667,
+    "baselineContinuationError": 0.009152,
+    "baselineContinuationGeometricPassed": false,
+    "selectedError": 0.009457777777777778,
+    "additionalErrorPercentagePoints": 0.01991111111111117,
+    "visualReview": "Original and repaired independent weaves retain the same visible motif; the measured difference is small but nonzero."
+  },
+  "limits": [
+    "All four selected outputs pass independent nominal and radius-bracket polygon checks; normal-original remains uncertain under the current coarse raster gate.",
+    "This does not yet preserve every historical pixel-error score: the Hunodan repair adds about 0.020 percentage points.",
+    "Always applying the mirror force slightly worsens the two already-valid cold controls, so a blanket change is not selected.",
+    "The mirror force alone does not repair the non-fold hook; reducing the existing same-cut exclusion is also needed in that case.",
+    "Finite-difference testing, fresh solver runs, browser integration and release benchmarking remain before production adoption."
+  ],
+  "artifacts": {
+    "tmp/heart-learning/fold-core-repair-v1/run.mjs": "fe44609c790d075a0509b5055bf0057695876031363d91140bb4427d54933ed0",
+    "tmp/heart-learning/fold-core-repair-v1/rates.mjs": "67821bd2782f3f33fbb747c778c0f269428e668f8b4ed3b6cb7ca2fcbf2e3b0a",
+    "tmp/heart-learning/fold-core-repair-v1/photos.mjs": "50c4ab1c9643494abefa42712f874a5996eb9c7ada467669cacdf7ee15b4c32d",
+    "tmp/heart-learning/fold-core-repair-v1/results.json": "74ea8238483ab6eea1cca412a257dd7dd1092c7b8fee130c5043402e59ddaffe",
+    "tmp/heart-learning/fold-core-repair-v1/rates/results.json": "f821560d0d57bd1362593177932003ed065350ba6fb867c64406950823e2c347",
+    "tmp/heart-learning/fold-core-repair-v1/photos/results.json": "3a917a5e563c3fff2d7ed8aecc0a5fd6600852f71a31c57b0f477ad5e06a5444",
+    "tmp/heart-learning/fold-core-repair-v1/reference-plan.json": "d5dc022587a385f28f44e8389b0447319d5c8e7cd46f63b9f7ee371800722814",
+    "tmp/heart-learning/fold-core-repair-v1/geos/results.json": "32bdcadec627edff9e125674aac2c38fd6782ae7ce6de3b873bb7cf21a1b268f"
+  }
+}

@@ -1,0 +1,853 @@
+{
+  "schema": "remaining-photo-crop-ablation-results-1",
+  "status": "complete",
+  "state": {
+    "status": "complete",
+    "seconds": 43.654965667,
+    "sourceFilesVerified": 1082
+  },
+  "method": "Four fresh fits, two development photos and two pre-existing frozen crop variants each. Identical photo/decoded pixels and fitting settings. Saved automatic masks and observation coverage reproduce the earlier corpus exactly. Previously disputed historical visual coordinates are a diagnostic intervention, not true corners.",
+  "outcome": {
+    "fits": 4,
+    "fullCandidatePasses": 0,
+    "geometryAndPaperPasses": 4,
+    "automaticBenchmarkChange": 0
+  },
+  "findings": [
+    "Neither crop intervention produces an accepted candidate. Cropping alone is insufficient on these two inputs under the unchanged classifier and ten-second fitter.",
+    "Both outline-star crops fail on a small classified lower-edge region (4.25 and 4.5625 mm\u00b2); the main star is retained at 0.743125% and 0.850625% target error. The region appears along a noisy/glossy edge, but its physical identity is not established.",
+    "The bauble saved automatic crop includes background and has one corner outside the image. Its classified frame is fragmented and the fit loses three regions; error is 4.3805859%. The historical crop produces a different 3+3 routing and 2.236875% error but still loses a small near-edge region.",
+    "The historical bauble crop also discards three reviewed upper-frame material samples. Of the twenty-six original source samples, automatic classification gets 21 correct; historical classification gets 19 correct, 4 wrong and 3 outside crop. Thus lower target error is not evidence of a better full-motif reconstruction.",
+    "The bauble classifier errors affect the red frame before solving. The existing red-white-mixture classifier is the next isolated comparison, with the fitter still consuming binary masks."
+  ],
+  "visualReview": "All four rectified photos, classified masks, independent exported renders and source-coordinate overlays inspected. Star contours remain rounded with imperfect contacts. Bauble masks lose most faint frame sections; corresponding reconstructions contain narrow seams and distorted surrounding regions. Missing features are marked in the review images.",
+  "limits": [
+    "No new automatic cropper run or improved automatic benchmark claimed.",
+    "Scores across crops refer to different targets and coverage; sparse source-material observations help expose discarded/misclassified regions but are not dense ground truth.",
+    "All returned geometry passes the nominal geometry/paper checks; none of the four passes the unchanged image/feature acceptance. No physical assembly or original cutting paths available."
+  ],
+  "results": [
+    {
+      "id": "outline-star",
+      "variant": "saved-automatic",
+      "status": "failed",
+      "passed": false,
+      "maskSha256": "311d3c3542ec6605918892cfcecae25749f176d32dcf563b65e2ffdc1336ce3e",
+      "observedFraction": 1.0,
+      "seconds": 9.010204332999999,
+      "independentError": {
+        "mismatchPixels": 1189,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.00743125
+      },
+      "features": {
+        "passed": false,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "borderClearancePixels": 1,
+        "regions": [
+          {
+            "value": 0,
+            "areaMm2": 4.25,
+            "centerMm": [
+              7.154411764705881,
+              98.7904411764706
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 826.875,
+            "centerMm": [
+              46.24285714285714,
+              47.06449357520786
+            ],
+            "retainedFraction": 0.9894179894179894
+          }
+        ],
+        "missing": [
+          {
+            "value": 0,
+            "areaMm2": 4.25,
+            "centerMm": [
+              7.154411764705881,
+              98.7904411764706
+            ],
+            "retainedFraction": 0
+          }
+        ],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+      },
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "report": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/remaining-crop-ablation-v1/outline-star-saved-automatic/results.json",
+      "quad": [
+        [
+          430.32931226516513,
+          171.9092353088924
+        ],
+        [
+          525.2431230765773,
+          267.80938630026435
+        ],
+        [
+          403.3299806510149,
+          349.9830567410715
+        ],
+        [
+          320.83807769917655,
+          259.9176512630082
+        ]
+      ],
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "maskFidelityPassed": false
+    },
+    {
+      "id": "outline-star",
+      "variant": "historical-visual",
+      "status": "failed",
+      "passed": false,
+      "maskSha256": "e133bf54d9115fe862723891806eb1671254e1a0179708afdf0f8992de719a70",
+      "observedFraction": 1.0,
+      "seconds": 9.261509334,
+      "independentError": {
+        "mismatchPixels": 1361,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.00850625
+      },
+      "features": {
+        "passed": false,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "borderClearancePixels": 1,
+        "regions": [
+          {
+            "value": 0,
+            "areaMm2": 4.5625,
+            "centerMm": [
+              4.720890410958904,
+              95.64897260273975
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 935.5,
+            "centerMm": [
+              45.209463522180656,
+              45.20789350614645
+            ],
+            "retainedFraction": 0.9923837520042758
+          }
+        ],
+        "missing": [
+          {
+            "value": 0,
+            "areaMm2": 4.5625,
+            "centerMm": [
+              4.720890410958904,
+              95.64897260273975
+            ],
+            "retainedFraction": 0
+          }
+        ],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement. Small interior regions must also remain separate from the square boundary.",
+        "enclosures": {
+          "components": [
+            {
+              "centerMm": [
+                4.720890410958904,
+                95.64897260273975
+              ],
+              "sourceAreaMm2": 4.5625,
+              "intersectionPixels": 0,
+              "retention": 0,
+              "predictedComponentAreaMm2": 0,
+              "touchesBorder": null,
+              "componentIoU": 0
+            }
+          ],
+          "opened": 0
+        }
+      },
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "report": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/remaining-crop-ablation-v1/outline-star-historical-visual/results.json",
+      "quad": [
+        [
+          429.8125,
+          181.2525
+        ],
+        [
+          518.4625,
+          265.9625
+        ],
+        [
+          402.2325,
+          341.8075
+        ],
+        [
+          319.4925,
+          264.9775
+        ]
+      ],
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "maskFidelityPassed": false
+    },
+    {
+      "id": "bauble",
+      "variant": "historical-visual",
+      "status": "failed",
+      "passed": false,
+      "maskSha256": "6ae7825a20f0988e542ac2fb667eab971392c47a516dc17589b863949cc20b56",
+      "observedFraction": 1.0,
+      "seconds": 9.423449916000001,
+      "independentError": {
+        "mismatchPixels": 3579,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.02236875
+      },
+      "features": {
+        "passed": false,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "borderClearancePixels": 1,
+        "regions": [
+          {
+            "value": 1,
+            "areaMm2": 74.5,
+            "centerMm": [
+              77.78921979865771,
+              15.21413590604027
+            ],
+            "retainedFraction": 0.9832214765100671
+          },
+          {
+            "value": 1,
+            "areaMm2": 2983.3125,
+            "centerMm": [
+              48.70241499591478,
+              47.94891113066432
+            ],
+            "retainedFraction": 0.9985125594452475
+          },
+          {
+            "value": 1,
+            "areaMm2": 4.8125,
+            "centerMm": [
+              97.69642857142857,
+              68.0211038961039
+            ],
+            "retainedFraction": 0
+          }
+        ],
+        "missing": [
+          {
+            "value": 1,
+            "areaMm2": 4.8125,
+            "centerMm": [
+              97.69642857142857,
+              68.0211038961039
+            ],
+            "retainedFraction": 0
+          }
+        ],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+      },
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "report": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/remaining-crop-ablation-v1/bauble-historical-visual/results.json",
+      "quad": [
+        [
+          570.09,
+          941.20375
+        ],
+        [
+          681.395,
+          1019.01875
+        ],
+        [
+          579.94,
+          1102.74375
+        ],
+        [
+          472.575,
+          1018.03375
+        ]
+      ],
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "maskFidelityPassed": false,
+      "reviewedSourceMaterials": {
+        "classified": {
+          "total": 26,
+          "covered": 23,
+          "correct": 19,
+          "mismatched": 4,
+          "outsideCrop": 3,
+          "unavailable": 0,
+          "coverage": 0.8846153846153846,
+          "agreementAllSamples": 0.7307692307692307,
+          "agreementCovered": 0.8260869565217391,
+          "phase": 1,
+          "phaseInferred": true,
+          "phaseAmbiguous": false,
+          "allReviewedSamplesMatch": false,
+          "groups": [
+            {
+              "id": "bauble-body",
+              "paper": 0,
+              "total": 4,
+              "covered": 4,
+              "correct": 4,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "upper-frame",
+              "paper": 0,
+              "total": 4,
+              "covered": 1,
+              "correct": 0,
+              "mismatched": 1,
+              "outsideCrop": 3,
+              "unavailable": 0,
+              "coverage": 0.25,
+              "agreementAllSamples": 0,
+              "agreementCovered": 0
+            },
+            {
+              "id": "lower-frame",
+              "paper": 0,
+              "total": 4,
+              "covered": 4,
+              "correct": 1,
+              "mismatched": 3,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 0.25,
+              "agreementCovered": 0.25
+            },
+            {
+              "id": "corner-blocks",
+              "paper": 0,
+              "total": 4,
+              "covered": 4,
+              "correct": 4,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "white-gaps",
+              "paper": 1,
+              "total": 10,
+              "covered": 10,
+              "correct": 10,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            }
+          ],
+          "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+        },
+        "exported": {
+          "total": 26,
+          "covered": 23,
+          "correct": 20,
+          "mismatched": 3,
+          "outsideCrop": 3,
+          "unavailable": 0,
+          "coverage": 0.8846153846153846,
+          "agreementAllSamples": 0.7692307692307693,
+          "agreementCovered": 0.8695652173913043,
+          "phase": 1,
+          "phaseInferred": false,
+          "phaseAmbiguous": false,
+          "allReviewedSamplesMatch": false,
+          "groups": [
+            {
+              "id": "bauble-body",
+              "paper": 0,
+              "total": 4,
+              "covered": 4,
+              "correct": 4,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "upper-frame",
+              "paper": 0,
+              "total": 4,
+              "covered": 1,
+              "correct": 0,
+              "mismatched": 1,
+              "outsideCrop": 3,
+              "unavailable": 0,
+              "coverage": 0.25,
+              "agreementAllSamples": 0,
+              "agreementCovered": 0
+            },
+            {
+              "id": "lower-frame",
+              "paper": 0,
+              "total": 4,
+              "covered": 4,
+              "correct": 2,
+              "mismatched": 2,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 0.5,
+              "agreementCovered": 0.5
+            },
+            {
+              "id": "corner-blocks",
+              "paper": 0,
+              "total": 4,
+              "covered": 4,
+              "correct": 4,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "white-gaps",
+              "paper": 1,
+              "total": 10,
+              "covered": 10,
+              "correct": 10,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            }
+          ],
+          "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+        }
+      }
+    },
+    {
+      "id": "bauble",
+      "variant": "saved-automatic",
+      "status": "failed",
+      "passed": false,
+      "maskSha256": "00b9ea58bb82c87c687e9ea7595f89ec9baadf597ca2663f9845f58093876ce2",
+      "observedFraction": 0.97133125,
+      "seconds": 9.584924584,
+      "independentError": {
+        "mismatchPixels": 6808,
+        "observedPixels": 155413,
+        "observedFraction": 0.97133125,
+        "mismatchFraction": 0.043805859226705615,
+        "weightMass": 155413,
+        "mismatchWeight": 6808,
+        "wholeMismatchFraction": 0.043805859226705615,
+        "protectedPixels": 155413,
+        "protectedMismatchFraction": 0.043805859226705615,
+        "editablePixels": 0,
+        "editableChangeFraction": null
+      },
+      "features": {
+        "passed": false,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "borderClearancePixels": 1,
+        "regions": [
+          {
+            "value": 1,
+            "areaMm2": 98.6875,
+            "centerMm": [
+              34.23535465484484,
+              13.191339455351489
+            ],
+            "weightMass": 1579,
+            "retainedFraction": 0.9468017732742242
+          },
+          {
+            "value": 1,
+            "areaMm2": 72.8125,
+            "centerMm": [
+              68.6406652360515,
+              24.0818669527897
+            ],
+            "weightMass": 1165,
+            "retainedFraction": 0.9562231759656652
+          },
+          {
+            "value": 1,
+            "areaMm2": 102.625,
+            "centerMm": [
+              10.175548112058465,
+              26.016138855054816
+            ],
+            "weightMass": 1642,
+            "retainedFraction": 0.9579780755176613
+          },
+          {
+            "value": 1,
+            "areaMm2": 1776.4375,
+            "centerMm": [
+              37.45343999577807,
+              58.05657829926467
+            ],
+            "weightMass": 28423,
+            "retainedFraction": 0.9953558737642051
+          },
+          {
+            "value": 1,
+            "areaMm2": 35.875,
+            "centerMm": [
+              82.38371080139373,
+              38.16202090592334
+            ],
+            "weightMass": 574,
+            "retainedFraction": 0.7212543554006968
+          },
+          {
+            "value": 1,
+            "areaMm2": 8.4375,
+            "centerMm": [
+              83.9675925925926,
+              44.995370370370374
+            ],
+            "weightMass": 135,
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 44.75,
+            "centerMm": [
+              79.14629888268156,
+              56.90398044692738
+            ],
+            "weightMass": 716,
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 14.875,
+            "centerMm": [
+              75.87289915966386,
+              77.88235294117646
+            ],
+            "weightMass": 238,
+            "retainedFraction": 0
+          }
+        ],
+        "missing": [
+          {
+            "value": 1,
+            "areaMm2": 8.4375,
+            "centerMm": [
+              83.9675925925926,
+              44.995370370370374
+            ],
+            "weightMass": 135,
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 44.75,
+            "centerMm": [
+              79.14629888268156,
+              56.90398044692738
+            ],
+            "weightMass": 716,
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 14.875,
+            "centerMm": [
+              75.87289915966386,
+              77.88235294117646
+            ],
+            "weightMass": 238,
+            "retainedFraction": 0
+          }
+        ],
+        "method": "Both colours in the observed region; free pixels split components and do not enter their area or retention. At least 60% of each substantial weighted region with a solid core must remain its original colour. Regions touching the square border or its one-pixel neighbourhood are excluded. Small interior regions must also remain separate from the square boundary.",
+        "enclosures": {
+          "components": [
+            {
+              "centerMm": [
+                83.9675925925926,
+                44.995370370370374
+              ],
+              "sourceAreaMm2": 8.4375,
+              "intersectionPixels": 0,
+              "retention": 0,
+              "predictedComponentAreaMm2": 0,
+              "touchesBorder": null,
+              "componentIoU": 0
+            },
+            {
+              "centerMm": [
+                75.87289915966386,
+                77.88235294117646
+              ],
+              "sourceAreaMm2": 14.875,
+              "intersectionPixels": 0,
+              "retention": 0,
+              "predictedComponentAreaMm2": 0,
+              "touchesBorder": null,
+              "componentIoU": 0
+            }
+          ],
+          "opened": 0
+        }
+      },
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "report": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/remaining-crop-ablation-v1/bauble-saved-automatic/results.json",
+      "quad": [
+        [
+          585.124945734859,
+          905.2805093237887
+        ],
+        [
+          680.4272015903496,
+          1020.2331968915895
+        ],
+        [
+          619.5033182277817,
+          1139.311696191154
+        ],
+        [
+          466.440010833398,
+          1022.8877039896092
+        ]
+      ],
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "maskFidelityPassed": false,
+      "reviewedSourceMaterials": {
+        "classified": {
+          "total": 26,
+          "covered": 26,
+          "correct": 21,
+          "mismatched": 5,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 0.8076923076923077,
+          "agreementCovered": 0.8076923076923077,
+          "phase": 1,
+          "phaseInferred": true,
+          "phaseAmbiguous": false,
+          "allReviewedSamplesMatch": false,
+          "groups": [
+            {
+              "id": "bauble-body",
+              "paper": 0,
+              "total": 4,
+              "covered": 4,
+              "correct": 4,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "upper-frame",
+              "paper": 0,
+              "total": 4,
+              "covered": 4,
+              "correct": 2,
+              "mismatched": 2,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 0.5,
+              "agreementCovered": 0.5
+            },
+            {
+              "id": "lower-frame",
+              "paper": 0,
+              "total": 4,
+              "covered": 4,
+              "correct": 1,
+              "mismatched": 3,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 0.25,
+              "agreementCovered": 0.25
+            },
+            {
+              "id": "corner-blocks",
+              "paper": 0,
+              "total": 4,
+              "covered": 4,
+              "correct": 4,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "white-gaps",
+              "paper": 1,
+              "total": 10,
+              "covered": 10,
+              "correct": 10,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            }
+          ],
+          "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+        },
+        "exported": {
+          "total": 26,
+          "covered": 26,
+          "correct": 21,
+          "mismatched": 5,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 0.8076923076923077,
+          "agreementCovered": 0.8076923076923077,
+          "phase": 1,
+          "phaseInferred": false,
+          "phaseAmbiguous": false,
+          "allReviewedSamplesMatch": false,
+          "groups": [
+            {
+              "id": "bauble-body",
+              "paper": 0,
+              "total": 4,
+              "covered": 4,
+              "correct": 4,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "upper-frame",
+              "paper": 0,
+              "total": 4,
+              "covered": 4,
+              "correct": 2,
+              "mismatched": 2,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 0.5,
+              "agreementCovered": 0.5
+            },
+            {
+              "id": "lower-frame",
+              "paper": 0,
+              "total": 4,
+              "covered": 4,
+              "correct": 1,
+              "mismatched": 3,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 0.25,
+              "agreementCovered": 0.25
+            },
+            {
+              "id": "corner-blocks",
+              "paper": 0,
+              "total": 4,
+              "covered": 4,
+              "correct": 4,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            },
+            {
+              "id": "white-gaps",
+              "paper": 1,
+              "total": 10,
+              "covered": 10,
+              "correct": 10,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 0,
+              "coverage": 1,
+              "agreementAllSamples": 1,
+              "agreementCovered": 1
+            }
+          ],
+          "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+        }
+      }
+    }
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/remaining-crop-ablation-v1/inputs.json": "2c548b2ca2c42d41d7e0efe0f8464f77a21a68a76a4bb92dd4a6b27e3f659fcb",
+    "tmp/heart-learning/remaining-crop-ablation-v1/state.json": "bf12ca212bc3d868b1597ffc38746e0a1cb19d9991f388aecb54c893d1725ca1",
+    "tmp/heart-learning/remaining-crop-ablation-v1/results.json": "c6261043f096ed5ba2bf60833bf720159d8d5fcedfc9eaa7689026f640fe3b68",
+    "tmp/heart-learning/remaining-crop-ablation-v1/source.json": "ab63457c909792e897f900837847f07ea9b09a70351c102c460b8cd2358aaa5a",
+    "tmp/heart-learning/remaining-crop-ablation-v1/preflight.json": "027dd311bb2cf37456e432c43d35265f2129c093686c02fff7688df94508ca38",
+    "tmp/heart-learning/remaining-crop-ablation-v1/run.py": "44e640bbcf1a117844c6f305aa4252bd2a6615d27e4afa05b2447836f1ba8ca8",
+    "tmp/heart-learning/remaining-crop-ablation-v1/preflight.mjs": "0c594d20de36af1fb354af9e4386e490879cf0dd4bcf91927ff445c2d5eb4673",
+    "tmp/heart-learning/remaining-crop-ablation-v1/bauble-fit-comparison.png": "6bb50c8b8939d30a5a2fff9c8da83c3a9db9ce2f3088d34e24ef49f9f6d51750",
+    "tmp/heart-learning/remaining-crop-ablation-v1/outline-star-fit-comparison.png": "00db47aa9cd85d1799c39e825a2089df9c2b561dd0b5c913887deb45927cc41f",
+    "tmp/heart-learning/remaining-crop-ablation-v1/bauble-crop-selection.png": "70c8c2a59aee37654c8b2e70911d35f07af458859b81fa2e4ee416daba5d22d7",
+    "tmp/heart-learning/remaining-crop-ablation-v1/outline-star-crop-selection.png": "503ff720d1e16f8c41ac044c18d9f06cb4bb25eea5207b81ab1a40b0a70fd010",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/remaining-crop-ablation-v1/outline-star-saved-automatic/results.json": "57e181a439c654cd09984a3c2a7cc8f9a444dd0f1bfcdabd9ab6c16fbba7619c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/remaining-crop-ablation-v1/outline-star-historical-visual/results.json": "7d2594f9c5e4be033875271594960df6c868e903ad5a32c5032ae3bb5f0381bb",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/remaining-crop-ablation-v1/bauble-historical-visual/results.json": "ad1e249888656e323e70c4bc1720738d21eecedfe2ad73e7219785b2c5b989aa",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/remaining-crop-ablation-v1/bauble-saved-automatic/results.json": "992ab59df08d19404f59c5b00e01be88aa433f1af78eaf2edf1ba23d5a94481b"
+  }
+}

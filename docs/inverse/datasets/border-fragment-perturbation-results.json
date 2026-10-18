@@ -1,0 +1,1710 @@
+{
+  "schema": 1,
+  "status": "completed_diagnosis; no_runtime_or_acceptance_changes",
+  "plan": "docs/inverse/datasets/border-fragment-perturbation-plan.json",
+  "observations": 228,
+  "classifierEvaluations": 456,
+  "classification": {
+    "baselineMasks": "Every original 400-pixel mask SHA-256 reproduced exactly.",
+    "sourceTracking": "Track original feature pixels through the crop homography into source coordinates, then through each perturbed inverse.",
+    "variants": "Original plus translations and radial corner displacements of +/-0.25, +/-0.5 and +/-1 source pixels; 200, 400 and 600 output pixels.",
+    "arms": "Re-estimate production Lab clusters, and separately freeze the original cluster centers."
+  },
+  "findings": [
+    "Both failed bottom patches are excluded at 200px because their nearest pixel is one cell from the boundary. The same fixed crop has a two-cell gap at 400px and a three-cell gap at 600px, making both mandatory. All three masks otherwise satisfy the area/core cutoffs. This isolates the fixed rectified-pixel boundary rule as one cause of resolution-dependent requirements.",
+    "For the outline star at 400px, +0.25px horizontal or -0.25px vertical source-corner translation changes the patch from mandatory to excluded. Its classified pixels mostly remain; a gate changes, not the underlying photographed motif.",
+    "The star interior, bird eye, bird body opening and Viking opening are mandatory in all 57 variants per classifier arm. These are controls, not proof that every legitimate near-boundary motif can be distinguished.",
+    "Re-estimating versus freezing the color clusters has identical mandatory counts for the two failed fragments. Sampling and the boundary criterion explain these switches without a color-cluster change.",
+    "The bird also has an unstable bottom fragment. Its real eye has relatively low classifier margin, so a simple low-confidence threshold would risk deleting genuine details."
+  ],
+  "interpretation": "The two saved reconstruction failures include photo-border evidence instability. This does not establish exact paper identity in the blurred band or prove that either exported template is correct. It also does not explain the timed Viking solver failure, whose opening is stable across all variants.",
+  "next": "Evaluate source-resolution-aware photographic uncertainty with preserved import provenance, including true near-boundary controls. Keep all original image-error pixels and drawn-mask features. Do not silently drop the existing checks or reclassify benchmark failures.",
+  "rows": [
+    {
+      "id": "outline-star",
+      "feature": "bottom-fragment",
+      "baseline": {
+        "index": 8,
+        "value": 0,
+        "areaMm2": 4.25,
+        "border": false,
+        "minBorderPixels": 2,
+        "coreRadiusPixels": 3,
+        "bbox": [
+          21,
+          392,
+          37,
+          398
+        ],
+        "mandatory": true,
+        "pixelCount": 68
+      },
+      "sourceCenter": [
+        327.7772304374321,
+        265.19867625868557
+      ],
+      "classificationMargins": {
+        "min": 0.008213655320397174,
+        "p10": 0.0274591077374959,
+        "median": 0.11701605298179155,
+        "max": 0.29855345630102886
+      },
+      "groups": [
+        {
+          "resolution": 200,
+          "classifier": "reestimated",
+          "total": 19,
+          "mandatory": 3,
+          "borderConnected": 6,
+          "colourRetentionRange": [
+            0.7647058823529411,
+            0.9705882352941176
+          ],
+          "baseline": {
+            "name": "bottom-fragment",
+            "insideFraction": 1,
+            "colourRetention": 0.8970588235294118,
+            "largestComponentRetention": 0.8970588235294118,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 5,
+              "value": 0,
+              "areaMm2": 4.5,
+              "border": false,
+              "minBorderPixels": 1,
+              "coreRadiusPixels": 2,
+              "bbox": [
+                11,
+                196,
+                19,
+                199
+              ],
+              "mandatory": false,
+              "pixelCount": 18
+            }
+          }
+        },
+        {
+          "resolution": 200,
+          "classifier": "frozen",
+          "total": 19,
+          "mandatory": 3,
+          "borderConnected": 6,
+          "colourRetentionRange": [
+            0.7647058823529411,
+            0.9852941176470589
+          ],
+          "baseline": {
+            "name": "bottom-fragment",
+            "insideFraction": 1,
+            "colourRetention": 0.8970588235294118,
+            "largestComponentRetention": 0.8970588235294118,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 5,
+              "value": 0,
+              "areaMm2": 4.5,
+              "border": false,
+              "minBorderPixels": 1,
+              "coreRadiusPixels": 2,
+              "bbox": [
+                11,
+                196,
+                19,
+                199
+              ],
+              "mandatory": false,
+              "pixelCount": 18
+            }
+          }
+        },
+        {
+          "resolution": 400,
+          "classifier": "reestimated",
+          "total": 19,
+          "mandatory": 10,
+          "borderConnected": 3,
+          "colourRetentionRange": [
+            0.8676470588235294,
+            1
+          ],
+          "baseline": {
+            "name": "bottom-fragment",
+            "insideFraction": 1,
+            "colourRetention": 1,
+            "largestComponentRetention": 1,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 8,
+              "value": 0,
+              "areaMm2": 4.25,
+              "border": false,
+              "minBorderPixels": 2,
+              "coreRadiusPixels": 3,
+              "bbox": [
+                21,
+                392,
+                37,
+                398
+              ],
+              "mandatory": true,
+              "pixelCount": 68
+            }
+          }
+        },
+        {
+          "resolution": 400,
+          "classifier": "frozen",
+          "total": 19,
+          "mandatory": 10,
+          "borderConnected": 3,
+          "colourRetentionRange": [
+            0.8676470588235294,
+            1
+          ],
+          "baseline": {
+            "name": "bottom-fragment",
+            "insideFraction": 1,
+            "colourRetention": 1,
+            "largestComponentRetention": 1,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 8,
+              "value": 0,
+              "areaMm2": 4.25,
+              "border": false,
+              "minBorderPixels": 2,
+              "coreRadiusPixels": 3,
+              "bbox": [
+                21,
+                392,
+                37,
+                398
+              ],
+              "mandatory": true,
+              "pixelCount": 68
+            }
+          }
+        },
+        {
+          "resolution": 600,
+          "classifier": "reestimated",
+          "total": 19,
+          "mandatory": 13,
+          "borderConnected": 3,
+          "colourRetentionRange": [
+            0.9117647058823529,
+            1
+          ],
+          "baseline": {
+            "name": "bottom-fragment",
+            "insideFraction": 1,
+            "colourRetention": 0.9411764705882353,
+            "largestComponentRetention": 0.9411764705882353,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 6,
+              "value": 0,
+              "areaMm2": 4.416666666666666,
+              "border": false,
+              "minBorderPixels": 3,
+              "coreRadiusPixels": 4.47213595499958,
+              "bbox": [
+                32,
+                588,
+                56,
+                597
+              ],
+              "mandatory": true,
+              "pixelCount": 159
+            }
+          }
+        },
+        {
+          "resolution": 600,
+          "classifier": "frozen",
+          "total": 19,
+          "mandatory": 13,
+          "borderConnected": 3,
+          "colourRetentionRange": [
+            0.8970588235294118,
+            1
+          ],
+          "baseline": {
+            "name": "bottom-fragment",
+            "insideFraction": 1,
+            "colourRetention": 0.9411764705882353,
+            "largestComponentRetention": 0.9411764705882353,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 6,
+              "value": 0,
+              "areaMm2": 4.416666666666666,
+              "border": false,
+              "minBorderPixels": 3,
+              "coreRadiusPixels": 4.47213595499958,
+              "bbox": [
+                32,
+                588,
+                56,
+                597
+              ],
+              "mandatory": true,
+              "pixelCount": 159
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "outline-star",
+      "feature": "star-interior",
+      "baseline": {
+        "index": 17,
+        "value": 1,
+        "areaMm2": 826.875,
+        "border": false,
+        "minBorderPixels": 104,
+        "coreRadiusPixels": 52.20153254455275,
+        "bbox": [
+          104,
+          108,
+          271,
+          272
+        ],
+        "mandatory": true,
+        "pixelCount": 13230
+      },
+      "sourceCenter": [
+        416.4925976911035,
+        257.6134478170943
+      ],
+      "classificationMargins": {
+        "min": 0.0003776273808645623,
+        "p10": 0.4372983980126123,
+        "median": 0.9387952929246858,
+        "max": 0.9998995358670097
+      },
+      "groups": [
+        {
+          "resolution": 200,
+          "classifier": "reestimated",
+          "total": 19,
+          "mandatory": 19,
+          "borderConnected": 0,
+          "colourRetentionRange": [
+            0.9842025699168556,
+            0.9944822373393802
+          ],
+          "baseline": {
+            "name": "star-interior",
+            "insideFraction": 1,
+            "colourRetention": 0.9912320483749055,
+            "largestComponentRetention": 0.9912320483749055,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 14,
+              "value": 1,
+              "areaMm2": 828.25,
+              "border": false,
+              "minBorderPixels": 52,
+              "coreRadiusPixels": 25.96150997149434,
+              "bbox": [
+                52,
+                54,
+                136,
+                136
+              ],
+              "mandatory": true,
+              "pixelCount": 3313
+            }
+          }
+        },
+        {
+          "resolution": 200,
+          "classifier": "frozen",
+          "total": 19,
+          "mandatory": 19,
+          "borderConnected": 0,
+          "colourRetentionRange": [
+            0.9839002267573697,
+            0.9947845804988662
+          ],
+          "baseline": {
+            "name": "star-interior",
+            "insideFraction": 1,
+            "colourRetention": 0.991005291005291,
+            "largestComponentRetention": 0.991005291005291,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 14,
+              "value": 1,
+              "areaMm2": 827.75,
+              "border": false,
+              "minBorderPixels": 52,
+              "coreRadiusPixels": 25.96150997149434,
+              "bbox": [
+                52,
+                54,
+                136,
+                136
+              ],
+              "mandatory": true,
+              "pixelCount": 3311
+            }
+          }
+        },
+        {
+          "resolution": 400,
+          "classifier": "reestimated",
+          "total": 19,
+          "mandatory": 19,
+          "borderConnected": 0,
+          "colourRetentionRange": [
+            0.9848072562358277,
+            1
+          ],
+          "baseline": {
+            "name": "star-interior",
+            "insideFraction": 1,
+            "colourRetention": 1,
+            "largestComponentRetention": 1,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 17,
+              "value": 1,
+              "areaMm2": 826.875,
+              "border": false,
+              "minBorderPixels": 104,
+              "coreRadiusPixels": 52.20153254455275,
+              "bbox": [
+                104,
+                108,
+                271,
+                272
+              ],
+              "mandatory": true,
+              "pixelCount": 13230
+            }
+          }
+        },
+        {
+          "resolution": 400,
+          "classifier": "frozen",
+          "total": 19,
+          "mandatory": 19,
+          "borderConnected": 0,
+          "colourRetentionRange": [
+            0.9850340136054422,
+            1
+          ],
+          "baseline": {
+            "name": "star-interior",
+            "insideFraction": 1,
+            "colourRetention": 1,
+            "largestComponentRetention": 1,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 17,
+              "value": 1,
+              "areaMm2": 826.875,
+              "border": false,
+              "minBorderPixels": 104,
+              "coreRadiusPixels": 52.20153254455275,
+              "bbox": [
+                104,
+                108,
+                271,
+                272
+              ],
+              "mandatory": true,
+              "pixelCount": 13230
+            }
+          }
+        },
+        {
+          "resolution": 600,
+          "classifier": "reestimated",
+          "total": 19,
+          "mandatory": 19,
+          "borderConnected": 0,
+          "colourRetentionRange": [
+            0.9942554799697657,
+            0.9977324263038548
+          ],
+          "baseline": {
+            "name": "star-interior",
+            "insideFraction": 1,
+            "colourRetention": 0.9965230536659108,
+            "largestComponentRetention": 0.9965230536659108,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 16,
+              "value": 1,
+              "areaMm2": 826.5833333333333,
+              "border": false,
+              "minBorderPixels": 155,
+              "coreRadiusPixels": 78.10249675906654,
+              "bbox": [
+                155,
+                163,
+                407,
+                407
+              ],
+              "mandatory": true,
+              "pixelCount": 29757
+            }
+          }
+        },
+        {
+          "resolution": 600,
+          "classifier": "frozen",
+          "total": 19,
+          "mandatory": 19,
+          "borderConnected": 0,
+          "colourRetentionRange": [
+            0.9942554799697657,
+            0.9980347694633409
+          ],
+          "baseline": {
+            "name": "star-interior",
+            "insideFraction": 1,
+            "colourRetention": 0.9965230536659108,
+            "largestComponentRetention": 0.9965230536659108,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 16,
+              "value": 1,
+              "areaMm2": 826.5833333333333,
+              "border": false,
+              "minBorderPixels": 155,
+              "coreRadiusPixels": 78.10249675906654,
+              "bbox": [
+                155,
+                163,
+                407,
+                407
+              ],
+              "mandatory": true,
+              "pixelCount": 29757
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "crossed-ribbons",
+      "feature": "bottom-fragment",
+      "baseline": {
+        "index": 2,
+        "value": 0,
+        "areaMm2": 4.5,
+        "border": false,
+        "minBorderPixels": 2,
+        "coreRadiusPixels": 3.1622776601683795,
+        "bbox": [
+          184,
+          391,
+          202,
+          398
+        ],
+        "mandatory": true,
+        "pixelCount": 72
+      },
+      "sourceCenter": [
+        335.3054687830686,
+        1066.8660843404825
+      ],
+      "classificationMargins": {
+        "min": 0.0011536634351703267,
+        "p10": 0.0097078696928282,
+        "median": 0.08227332110954805,
+        "max": 0.2719203761209936
+      },
+      "groups": [
+        {
+          "resolution": 200,
+          "classifier": "reestimated",
+          "total": 19,
+          "mandatory": 4,
+          "borderConnected": 5,
+          "colourRetentionRange": [
+            0.7222222222222222,
+            0.9305555555555556
+          ],
+          "baseline": {
+            "name": "bottom-fragment",
+            "insideFraction": 1,
+            "colourRetention": 0.9305555555555556,
+            "largestComponentRetention": 0.9305555555555556,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 2,
+              "value": 0,
+              "areaMm2": 4.75,
+              "border": false,
+              "minBorderPixels": 1,
+              "coreRadiusPixels": 2,
+              "bbox": [
+                92,
+                196,
+                101,
+                199
+              ],
+              "mandatory": false,
+              "pixelCount": 19
+            }
+          }
+        },
+        {
+          "resolution": 200,
+          "classifier": "frozen",
+          "total": 19,
+          "mandatory": 4,
+          "borderConnected": 5,
+          "colourRetentionRange": [
+            0.7222222222222222,
+            0.9305555555555556
+          ],
+          "baseline": {
+            "name": "bottom-fragment",
+            "insideFraction": 1,
+            "colourRetention": 0.9305555555555556,
+            "largestComponentRetention": 0.9305555555555556,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 2,
+              "value": 0,
+              "areaMm2": 4.75,
+              "border": false,
+              "minBorderPixels": 1,
+              "coreRadiusPixels": 2,
+              "bbox": [
+                92,
+                196,
+                101,
+                199
+              ],
+              "mandatory": false,
+              "pixelCount": 19
+            }
+          }
+        },
+        {
+          "resolution": 400,
+          "classifier": "reestimated",
+          "total": 19,
+          "mandatory": 12,
+          "borderConnected": 2,
+          "colourRetentionRange": [
+            0.8055555555555556,
+            1
+          ],
+          "baseline": {
+            "name": "bottom-fragment",
+            "insideFraction": 1,
+            "colourRetention": 1,
+            "largestComponentRetention": 1,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 2,
+              "value": 0,
+              "areaMm2": 4.5,
+              "border": false,
+              "minBorderPixels": 2,
+              "coreRadiusPixels": 3.1622776601683795,
+              "bbox": [
+                184,
+                391,
+                202,
+                398
+              ],
+              "mandatory": true,
+              "pixelCount": 72
+            }
+          }
+        },
+        {
+          "resolution": 400,
+          "classifier": "frozen",
+          "total": 19,
+          "mandatory": 12,
+          "borderConnected": 2,
+          "colourRetentionRange": [
+            0.8194444444444444,
+            1
+          ],
+          "baseline": {
+            "name": "bottom-fragment",
+            "insideFraction": 1,
+            "colourRetention": 1,
+            "largestComponentRetention": 1,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 2,
+              "value": 0,
+              "areaMm2": 4.5,
+              "border": false,
+              "minBorderPixels": 2,
+              "coreRadiusPixels": 3.1622776601683795,
+              "bbox": [
+                184,
+                391,
+                202,
+                398
+              ],
+              "mandatory": true,
+              "pixelCount": 72
+            }
+          }
+        },
+        {
+          "resolution": 600,
+          "classifier": "reestimated",
+          "total": 19,
+          "mandatory": 14,
+          "borderConnected": 2,
+          "colourRetentionRange": [
+            0.875,
+            0.9583333333333334
+          ],
+          "baseline": {
+            "name": "bottom-fragment",
+            "insideFraction": 1,
+            "colourRetention": 0.9444444444444444,
+            "largestComponentRetention": 0.9444444444444444,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 2,
+              "value": 0,
+              "areaMm2": 4.555555555555555,
+              "border": false,
+              "minBorderPixels": 3,
+              "coreRadiusPixels": 5,
+              "bbox": [
+                277,
+                587,
+                303,
+                597
+              ],
+              "mandatory": true,
+              "pixelCount": 164
+            }
+          }
+        },
+        {
+          "resolution": 600,
+          "classifier": "frozen",
+          "total": 19,
+          "mandatory": 14,
+          "borderConnected": 2,
+          "colourRetentionRange": [
+            0.9027777777777778,
+            0.9444444444444444
+          ],
+          "baseline": {
+            "name": "bottom-fragment",
+            "insideFraction": 1,
+            "colourRetention": 0.9444444444444444,
+            "largestComponentRetention": 0.9444444444444444,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 2,
+              "value": 0,
+              "areaMm2": 4.555555555555555,
+              "border": false,
+              "minBorderPixels": 3,
+              "coreRadiusPixels": 5,
+              "bbox": [
+                277,
+                587,
+                303,
+                597
+              ],
+              "mandatory": true,
+              "pixelCount": 164
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "bird",
+      "feature": "eye",
+      "baseline": {
+        "index": 2,
+        "value": 0,
+        "areaMm2": 3.4375,
+        "border": false,
+        "minBorderPixels": 90,
+        "coreRadiusPixels": 4,
+        "bbox": [
+          90,
+          178,
+          98,
+          187
+        ],
+        "mandatory": true,
+        "pixelCount": 55
+      },
+      "sourceCenter": [
+        1007.5729514954554,
+        203.61151853497216
+      ],
+      "classificationMargins": {
+        "min": 0.001193663596428931,
+        "p10": 0.04812557812525389,
+        "median": 0.203250795464748,
+        "max": 0.3832549529317885
+      },
+      "groups": [
+        {
+          "resolution": 200,
+          "classifier": "reestimated",
+          "total": 19,
+          "mandatory": 19,
+          "borderConnected": 0,
+          "colourRetentionRange": [
+            0.8181818181818182,
+            0.9818181818181818
+          ],
+          "baseline": {
+            "name": "eye",
+            "insideFraction": 1,
+            "colourRetention": 0.9454545454545454,
+            "largestComponentRetention": 0.9454545454545454,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 3,
+              "value": 0,
+              "areaMm2": 3.75,
+              "border": false,
+              "minBorderPixels": 45,
+              "coreRadiusPixels": 2,
+              "bbox": [
+                45,
+                89,
+                49,
+                94
+              ],
+              "mandatory": true,
+              "pixelCount": 15
+            }
+          }
+        },
+        {
+          "resolution": 200,
+          "classifier": "frozen",
+          "total": 19,
+          "mandatory": 19,
+          "borderConnected": 0,
+          "colourRetentionRange": [
+            0.8181818181818182,
+            0.9818181818181818
+          ],
+          "baseline": {
+            "name": "eye",
+            "insideFraction": 1,
+            "colourRetention": 0.9454545454545454,
+            "largestComponentRetention": 0.9454545454545454,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 3,
+              "value": 0,
+              "areaMm2": 3.75,
+              "border": false,
+              "minBorderPixels": 45,
+              "coreRadiusPixels": 2,
+              "bbox": [
+                45,
+                89,
+                49,
+                94
+              ],
+              "mandatory": true,
+              "pixelCount": 15
+            }
+          }
+        },
+        {
+          "resolution": 400,
+          "classifier": "reestimated",
+          "total": 19,
+          "mandatory": 19,
+          "borderConnected": 0,
+          "colourRetentionRange": [
+            0.9090909090909091,
+            1
+          ],
+          "baseline": {
+            "name": "eye",
+            "insideFraction": 1,
+            "colourRetention": 1,
+            "largestComponentRetention": 1,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 2,
+              "value": 0,
+              "areaMm2": 3.4375,
+              "border": false,
+              "minBorderPixels": 90,
+              "coreRadiusPixels": 4,
+              "bbox": [
+                90,
+                178,
+                98,
+                187
+              ],
+              "mandatory": true,
+              "pixelCount": 55
+            }
+          }
+        },
+        {
+          "resolution": 400,
+          "classifier": "frozen",
+          "total": 19,
+          "mandatory": 19,
+          "borderConnected": 0,
+          "colourRetentionRange": [
+            0.9090909090909091,
+            1
+          ],
+          "baseline": {
+            "name": "eye",
+            "insideFraction": 1,
+            "colourRetention": 1,
+            "largestComponentRetention": 1,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 2,
+              "value": 0,
+              "areaMm2": 3.4375,
+              "border": false,
+              "minBorderPixels": 90,
+              "coreRadiusPixels": 4,
+              "bbox": [
+                90,
+                178,
+                98,
+                187
+              ],
+              "mandatory": true,
+              "pixelCount": 55
+            }
+          }
+        },
+        {
+          "resolution": 600,
+          "classifier": "reestimated",
+          "total": 19,
+          "mandatory": 19,
+          "borderConnected": 0,
+          "colourRetentionRange": [
+            0.9272727272727272,
+            1
+          ],
+          "baseline": {
+            "name": "eye",
+            "insideFraction": 1,
+            "colourRetention": 0.9272727272727272,
+            "largestComponentRetention": 0.9272727272727272,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 2,
+              "value": 0,
+              "areaMm2": 3.5277777777777777,
+              "border": false,
+              "minBorderPixels": 136,
+              "coreRadiusPixels": 5.830951894845301,
+              "bbox": [
+                136,
+                266,
+                148,
+                281
+              ],
+              "mandatory": true,
+              "pixelCount": 127
+            }
+          }
+        },
+        {
+          "resolution": 600,
+          "classifier": "frozen",
+          "total": 19,
+          "mandatory": 19,
+          "borderConnected": 0,
+          "colourRetentionRange": [
+            0.9272727272727272,
+            1
+          ],
+          "baseline": {
+            "name": "eye",
+            "insideFraction": 1,
+            "colourRetention": 0.9272727272727272,
+            "largestComponentRetention": 0.9272727272727272,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 2,
+              "value": 0,
+              "areaMm2": 3.5277777777777777,
+              "border": false,
+              "minBorderPixels": 136,
+              "coreRadiusPixels": 5.830951894845301,
+              "bbox": [
+                136,
+                266,
+                148,
+                281
+              ],
+              "mandatory": true,
+              "pixelCount": 127
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "bird",
+      "feature": "body-opening",
+      "baseline": {
+        "index": 1,
+        "value": 0,
+        "areaMm2": 82.9375,
+        "border": false,
+        "minBorderPixels": 128,
+        "coreRadiusPixels": 14.866068747318506,
+        "bbox": [
+          229,
+          174,
+          272,
+          226
+        ],
+        "mandatory": true,
+        "pixelCount": 1327
+      },
+      "sourceCenter": [
+        1045.9680860311762,
+        244.16821593437263
+      ],
+      "classificationMargins": {
+        "min": 0.006674465175357408,
+        "p10": 0.28016861115434055,
+        "median": 0.7391730543569608,
+        "max": 0.8964760066171028
+      },
+      "groups": [
+        {
+          "resolution": 200,
+          "classifier": "reestimated",
+          "total": 19,
+          "mandatory": 19,
+          "borderConnected": 0,
+          "colourRetentionRange": [
+            0.9608138658628486,
+            0.9849284099472494
+          ],
+          "baseline": {
+            "name": "body-opening",
+            "insideFraction": 1,
+            "colourRetention": 0.9773926149208741,
+            "largestComponentRetention": 0.9773926149208741,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 2,
+              "value": 0,
+              "areaMm2": 83,
+              "border": false,
+              "minBorderPixels": 64,
+              "coreRadiusPixels": 7.615773105863909,
+              "bbox": [
+                114,
+                87,
+                136,
+                113
+              ],
+              "mandatory": true,
+              "pixelCount": 332
+            }
+          }
+        },
+        {
+          "resolution": 200,
+          "classifier": "frozen",
+          "total": 19,
+          "mandatory": 19,
+          "borderConnected": 0,
+          "colourRetentionRange": [
+            0.9608138658628486,
+            0.9849284099472494
+          ],
+          "baseline": {
+            "name": "body-opening",
+            "insideFraction": 1,
+            "colourRetention": 0.9788997739261492,
+            "largestComponentRetention": 0.9788997739261492,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 2,
+              "value": 0,
+              "areaMm2": 83.25,
+              "border": false,
+              "minBorderPixels": 64,
+              "coreRadiusPixels": 7.615773105863909,
+              "bbox": [
+                114,
+                87,
+                136,
+                113
+              ],
+              "mandatory": true,
+              "pixelCount": 333
+            }
+          }
+        },
+        {
+          "resolution": 400,
+          "classifier": "reestimated",
+          "total": 19,
+          "mandatory": 19,
+          "borderConnected": 0,
+          "colourRetentionRange": [
+            0.972871137905049,
+            1
+          ],
+          "baseline": {
+            "name": "body-opening",
+            "insideFraction": 1,
+            "colourRetention": 1,
+            "largestComponentRetention": 1,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 1,
+              "value": 0,
+              "areaMm2": 82.9375,
+              "border": false,
+              "minBorderPixels": 128,
+              "coreRadiusPixels": 14.866068747318506,
+              "bbox": [
+                229,
+                174,
+                272,
+                226
+              ],
+              "mandatory": true,
+              "pixelCount": 1327
+            }
+          }
+        },
+        {
+          "resolution": 400,
+          "classifier": "frozen",
+          "total": 19,
+          "mandatory": 19,
+          "borderConnected": 0,
+          "colourRetentionRange": [
+            0.972871137905049,
+            1
+          ],
+          "baseline": {
+            "name": "body-opening",
+            "insideFraction": 1,
+            "colourRetention": 1,
+            "largestComponentRetention": 1,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 1,
+              "value": 0,
+              "areaMm2": 82.9375,
+              "border": false,
+              "minBorderPixels": 128,
+              "coreRadiusPixels": 14.866068747318506,
+              "bbox": [
+                229,
+                174,
+                272,
+                226
+              ],
+              "mandatory": true,
+              "pixelCount": 1327
+            }
+          }
+        },
+        {
+          "resolution": 600,
+          "classifier": "reestimated",
+          "total": 19,
+          "mandatory": 19,
+          "borderConnected": 0,
+          "colourRetentionRange": [
+            0.9856819894498869,
+            0.9977392614920875
+          ],
+          "baseline": {
+            "name": "body-opening",
+            "insideFraction": 1,
+            "colourRetention": 0.9917106254709872,
+            "largestComponentRetention": 0.9917106254709872,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 1,
+              "value": 0,
+              "areaMm2": 83.25,
+              "border": false,
+              "minBorderPixels": 192,
+              "coreRadiusPixels": 22.627416997969522,
+              "bbox": [
+                343,
+                261,
+                408,
+                339
+              ],
+              "mandatory": true,
+              "pixelCount": 2997
+            }
+          }
+        },
+        {
+          "resolution": 600,
+          "classifier": "frozen",
+          "total": 19,
+          "mandatory": 19,
+          "borderConnected": 0,
+          "colourRetentionRange": [
+            0.9856819894498869,
+            0.9977392614920875
+          ],
+          "baseline": {
+            "name": "body-opening",
+            "insideFraction": 1,
+            "colourRetention": 0.9917106254709872,
+            "largestComponentRetention": 0.9917106254709872,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 1,
+              "value": 0,
+              "areaMm2": 83.25,
+              "border": false,
+              "minBorderPixels": 192,
+              "coreRadiusPixels": 22.627416997969522,
+              "bbox": [
+                343,
+                261,
+                408,
+                339
+              ],
+              "mandatory": true,
+              "pixelCount": 2997
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "bird",
+      "feature": "bottom-fragment",
+      "baseline": {
+        "index": 4,
+        "value": 0,
+        "areaMm2": 6.0625,
+        "border": false,
+        "minBorderPixels": 6,
+        "coreRadiusPixels": 3.605551275463989,
+        "bbox": [
+          271,
+          386,
+          293,
+          394
+        ],
+        "mandatory": true,
+        "pixelCount": 97
+      },
+      "sourceCenter": [
+        1008.1417529328303,
+        298.00391765015377
+      ],
+      "classificationMargins": {
+        "min": 0.0009551384879279941,
+        "p10": 0.016298000350418063,
+        "median": 0.13621269581644496,
+        "max": 0.44453346822632384
+      },
+      "groups": [
+        {
+          "resolution": 200,
+          "classifier": "reestimated",
+          "total": 19,
+          "mandatory": 12,
+          "borderConnected": 7,
+          "colourRetentionRange": [
+            0.7938144329896907,
+            0.8865979381443299
+          ],
+          "baseline": {
+            "name": "bottom-fragment",
+            "insideFraction": 1,
+            "colourRetention": 0.8350515463917526,
+            "largestComponentRetention": 0.8350515463917526,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 5,
+              "value": 0,
+              "areaMm2": 5.75,
+              "border": false,
+              "minBorderPixels": 3,
+              "coreRadiusPixels": 2,
+              "bbox": [
+                136,
+                193,
+                146,
+                197
+              ],
+              "mandatory": true,
+              "pixelCount": 23
+            }
+          }
+        },
+        {
+          "resolution": 200,
+          "classifier": "frozen",
+          "total": 19,
+          "mandatory": 12,
+          "borderConnected": 7,
+          "colourRetentionRange": [
+            0.7938144329896907,
+            0.8865979381443299
+          ],
+          "baseline": {
+            "name": "bottom-fragment",
+            "insideFraction": 1,
+            "colourRetention": 0.8350515463917526,
+            "largestComponentRetention": 0.8350515463917526,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 5,
+              "value": 0,
+              "areaMm2": 5.75,
+              "border": false,
+              "minBorderPixels": 3,
+              "coreRadiusPixels": 2,
+              "bbox": [
+                136,
+                193,
+                146,
+                197
+              ],
+              "mandatory": true,
+              "pixelCount": 23
+            }
+          }
+        },
+        {
+          "resolution": 400,
+          "classifier": "reestimated",
+          "total": 19,
+          "mandatory": 14,
+          "borderConnected": 5,
+          "colourRetentionRange": [
+            0.8350515463917526,
+            1
+          ],
+          "baseline": {
+            "name": "bottom-fragment",
+            "insideFraction": 1,
+            "colourRetention": 1,
+            "largestComponentRetention": 1,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 4,
+              "value": 0,
+              "areaMm2": 6.0625,
+              "border": false,
+              "minBorderPixels": 6,
+              "coreRadiusPixels": 3.605551275463989,
+              "bbox": [
+                271,
+                386,
+                293,
+                394
+              ],
+              "mandatory": true,
+              "pixelCount": 97
+            }
+          }
+        },
+        {
+          "resolution": 400,
+          "classifier": "frozen",
+          "total": 19,
+          "mandatory": 13,
+          "borderConnected": 6,
+          "colourRetentionRange": [
+            0.8350515463917526,
+            1
+          ],
+          "baseline": {
+            "name": "bottom-fragment",
+            "insideFraction": 1,
+            "colourRetention": 1,
+            "largestComponentRetention": 1,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 4,
+              "value": 0,
+              "areaMm2": 6.0625,
+              "border": false,
+              "minBorderPixels": 6,
+              "coreRadiusPixels": 3.605551275463989,
+              "bbox": [
+                271,
+                386,
+                293,
+                394
+              ],
+              "mandatory": true,
+              "pixelCount": 97
+            }
+          }
+        },
+        {
+          "resolution": 600,
+          "classifier": "reestimated",
+          "total": 19,
+          "mandatory": 10,
+          "borderConnected": 9,
+          "colourRetentionRange": [
+            0.865979381443299,
+            0.9587628865979382
+          ],
+          "baseline": {
+            "name": "bottom-fragment",
+            "insideFraction": 1,
+            "colourRetention": 0.9381443298969072,
+            "largestComponentRetention": 0.9381443298969072,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 4,
+              "value": 0,
+              "areaMm2": 5.888888888888888,
+              "border": false,
+              "minBorderPixels": 9,
+              "coreRadiusPixels": 5.385164807134504,
+              "bbox": [
+                408,
+                580,
+                439,
+                591
+              ],
+              "mandatory": true,
+              "pixelCount": 212
+            }
+          }
+        },
+        {
+          "resolution": 600,
+          "classifier": "frozen",
+          "total": 19,
+          "mandatory": 6,
+          "borderConnected": 13,
+          "colourRetentionRange": [
+            0.8969072164948454,
+            0.9690721649484536
+          ],
+          "baseline": {
+            "name": "bottom-fragment",
+            "insideFraction": 1,
+            "colourRetention": 0.9381443298969072,
+            "largestComponentRetention": 0.9381443298969072,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 4,
+              "value": 0,
+              "areaMm2": 5.888888888888888,
+              "border": false,
+              "minBorderPixels": 9,
+              "coreRadiusPixels": 5.385164807134504,
+              "bbox": [
+                408,
+                580,
+                439,
+                591
+              ],
+              "mandatory": true,
+              "pixelCount": 212
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "flettede-viking",
+      "feature": "opening",
+      "baseline": {
+        "index": 6,
+        "value": 0,
+        "areaMm2": 51.5625,
+        "border": false,
+        "minBorderPixels": 146,
+        "coreRadiusPixels": 9.486832980505138,
+        "bbox": [
+          171,
+          206,
+          211,
+          254
+        ],
+        "mandatory": true,
+        "pixelCount": 825
+      },
+      "sourceCenter": [
+        683.032467686264,
+        877.9584710422289
+      ],
+      "classificationMargins": {
+        "min": 0.00028315981552128717,
+        "p10": 0.7947813001787807,
+        "median": 0.9969745165689546,
+        "max": 0.9999912980113044
+      },
+      "groups": [
+        {
+          "resolution": 200,
+          "classifier": "reestimated",
+          "total": 19,
+          "mandatory": 19,
+          "borderConnected": 0,
+          "colourRetentionRange": [
+            0.9503030303030303,
+            0.9672727272727273
+          ],
+          "baseline": {
+            "name": "opening",
+            "insideFraction": 1,
+            "colourRetention": 0.9636363636363636,
+            "largestComponentRetention": 0.9636363636363636,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 3,
+              "value": 0,
+              "areaMm2": 51.5,
+              "border": false,
+              "minBorderPixels": 73,
+              "coreRadiusPixels": 5,
+              "bbox": [
+                85,
+                103,
+                106,
+                127
+              ],
+              "mandatory": true,
+              "pixelCount": 206
+            }
+          }
+        },
+        {
+          "resolution": 200,
+          "classifier": "frozen",
+          "total": 19,
+          "mandatory": 19,
+          "borderConnected": 0,
+          "colourRetentionRange": [
+            0.9515151515151515,
+            0.9672727272727273
+          ],
+          "baseline": {
+            "name": "opening",
+            "insideFraction": 1,
+            "colourRetention": 0.9636363636363636,
+            "largestComponentRetention": 0.9636363636363636,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 3,
+              "value": 0,
+              "areaMm2": 51.5,
+              "border": false,
+              "minBorderPixels": 73,
+              "coreRadiusPixels": 5,
+              "bbox": [
+                85,
+                103,
+                106,
+                127
+              ],
+              "mandatory": true,
+              "pixelCount": 206
+            }
+          }
+        },
+        {
+          "resolution": 400,
+          "classifier": "reestimated",
+          "total": 19,
+          "mandatory": 19,
+          "borderConnected": 0,
+          "colourRetentionRange": [
+            0.9612121212121212,
+            1
+          ],
+          "baseline": {
+            "name": "opening",
+            "insideFraction": 1,
+            "colourRetention": 1,
+            "largestComponentRetention": 1,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 6,
+              "value": 0,
+              "areaMm2": 51.5625,
+              "border": false,
+              "minBorderPixels": 146,
+              "coreRadiusPixels": 9.486832980505138,
+              "bbox": [
+                171,
+                206,
+                211,
+                254
+              ],
+              "mandatory": true,
+              "pixelCount": 825
+            }
+          }
+        },
+        {
+          "resolution": 400,
+          "classifier": "frozen",
+          "total": 19,
+          "mandatory": 19,
+          "borderConnected": 0,
+          "colourRetentionRange": [
+            0.9612121212121212,
+            1
+          ],
+          "baseline": {
+            "name": "opening",
+            "insideFraction": 1,
+            "colourRetention": 1,
+            "largestComponentRetention": 1,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 6,
+              "value": 0,
+              "areaMm2": 51.5625,
+              "border": false,
+              "minBorderPixels": 146,
+              "coreRadiusPixels": 9.486832980505138,
+              "bbox": [
+                171,
+                206,
+                211,
+                254
+              ],
+              "mandatory": true,
+              "pixelCount": 825
+            }
+          }
+        },
+        {
+          "resolution": 600,
+          "classifier": "reestimated",
+          "total": 19,
+          "mandatory": 19,
+          "borderConnected": 0,
+          "colourRetentionRange": [
+            0.9745454545454545,
+            0.9915151515151515
+          ],
+          "baseline": {
+            "name": "opening",
+            "insideFraction": 1,
+            "colourRetention": 0.9890909090909091,
+            "largestComponentRetention": 0.9890909090909091,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 24,
+              "value": 0,
+              "areaMm2": 51.30555555555555,
+              "border": false,
+              "minBorderPixels": 219,
+              "coreRadiusPixels": 14.142135623730951,
+              "bbox": [
+                256,
+                308,
+                317,
+                381
+              ],
+              "mandatory": true,
+              "pixelCount": 1847
+            }
+          }
+        },
+        {
+          "resolution": 600,
+          "classifier": "frozen",
+          "total": 19,
+          "mandatory": 19,
+          "borderConnected": 0,
+          "colourRetentionRange": [
+            0.9745454545454545,
+            0.9915151515151515
+          ],
+          "baseline": {
+            "name": "opening",
+            "insideFraction": 1,
+            "colourRetention": 0.9890909090909091,
+            "largestComponentRetention": 0.9890909090909091,
+            "overlappingComponents": 1,
+            "component": {
+              "index": 24,
+              "value": 0,
+              "areaMm2": 51.30555555555555,
+              "border": false,
+              "minBorderPixels": 219,
+              "coreRadiusPixels": 14.142135623730951,
+              "bbox": [
+                256,
+                308,
+                317,
+                381
+              ],
+              "mandatory": true,
+              "pixelCount": 1847
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/border-fragment-perturbation-v1/results.json",
+      "sha256": "5c59f24e204841b15d2b5ac14cfbfb44ed147259389ee3e2bedc9559f7e88344"
+    },
+    {
+      "path": "tmp/heart-learning/border-fragment-perturbation-v1/plan.json",
+      "sha256": "d3b79a8920be7b611f101ab2a010defd6d9841d56ee4b2afece4f21273dca159"
+    },
+    {
+      "path": "tmp/heart-learning/border-fragment-perturbation-v1/source.json",
+      "sha256": "f6d6c20143c08efd94a81ffe2f0574b896f1af3aae65f9296327057915a6300a"
+    },
+    {
+      "path": "tmp/heart-learning/border-fragment-perturbation-v1/diagnose.mjs",
+      "sha256": "170cfee8b3a72754dc42566841445ef3410419c7b7f569f8b6b0236816c551f6"
+    },
+    {
+      "path": "tmp/heart-learning/border-fragment-perturbation-v1/state.json",
+      "sha256": "fc70148fc6d355a649bd583738ff6564da3cf174c15c51a5f0be7b3ca53fb05b"
+    },
+    {
+      "path": "tmp/heart-learning/border-fragment-perturbation-v1/border-stability.png",
+      "sha256": "8616efe6cf05b81abab370cb183fedf1c6fff97655a564b8a1af3128410ba43a"
+    },
+    {
+      "path": "tmp/heart-learning/border-fragment-perturbation-v1/contact.py",
+      "sha256": "2270986bf073c1f31ffd21dea052fb5a41147fd14a291c230156c55aa9f5bae3"
+    },
+    {
+      "path": "tmp/heart-learning/border-fragment-perturbation-v1/summarize.py",
+      "sha256": "a8328cde6f8919188804a129b0a4dde85d5ed5ffe19c88cdd4b5aa8d2183bae4"
+    }
+  ]
+}

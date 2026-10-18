@@ -1,0 +1,16 @@
+{
+  "schema": "feature-finalist-fit-plan-1",
+  "status": "declared-before-implementation-and-replay",
+  "inputManifest": "tmp/heart-learning/feature-finalist-probe-v1/input.json",
+  "inputManifestSha256": "199452b5c6339596e1cbbf552ef8788c8b38402d7549e61bb4a7c77eb983314b",
+  "cases": "Same thirteen fixed masks: eight failed exports and five newly checked controls. Preserve masks, coverage, current automatic settings and ten-second budget.",
+  "change": "Only after ordinary feature seeding retains no candidates on a poor grid, try distinct existing finalists whose original image error is LOWER than the incumbent. Rank them by original error, at most two, and require the current feature-time reserve before each attempt. Stop at the first retained proposal. No global count search or relaxed feature/image/geometry gate.",
+  "reporting": "Preserve primary and alternate reports, selected base and total hypotheses; subsequent sampling recovery uses the selected base. Count initialization success separately from final accepted exports.",
+  "validation": "Replay all thirteen masks and check independently rendered image error, features, final geometry, paper core and editable conversion. Inspect every changed output. Run focused affected solver tests, then Hunodan and the 31-photo suite before adoption if any gain is observed.",
+  "stoppingRule": "Reject or revise if no useful final improvement or new material regression. Do not ship solely because the seed diagnostic looked better.",
+  "baselineSourceHashes": {
+    "static/inverse/core/direct/fit.js": "3df91dd597ba37163cb0bc9ca9cd04a6f3e9454ec791cf410777e2e9c67e0ac1",
+    "static/inverse/core/direct/feature-seeds.js": "759fbba9c6858369949be81d7d3c25e126da769913f089fdd100b3fa650c4b6d"
+  },
+  "deployed": false
+}

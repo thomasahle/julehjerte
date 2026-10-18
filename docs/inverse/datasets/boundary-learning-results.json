@@ -1,0 +1,921 @@
+{
+  "schema": "heart-boundary-comparison-1",
+  "date": "2026-10-12",
+  "scope": "Synthetic component benchmark, not an end-to-end solver or real-photo benchmark",
+  "datasetManifestSha256": "6649301431add7c3a7b7ba2ccb374723bc165fd3a64c9adede0ad11b3a54133d",
+  "preparedManifestSha256": "4be61d42373722e3ead15fc27e2a5baffb485cc5e2e6c8468df5e8347c02a0a8",
+  "parameters": 880466,
+  "splits": {
+    "development": {
+      "views": 52,
+      "designs": [
+        "lattice-1826062",
+        "lattice-757447",
+        "lattice-769555",
+        "lattice-773591",
+        "lattice-781663",
+        "lattice-801843",
+        "lattice-805879",
+        "lattice-809915",
+        "lattice-834131",
+        "shared-lattice-718096",
+        "shared-lattice-754420",
+        "shared-lattice-794780",
+        "shared-lattice-827068"
+      ]
+    },
+    "recipe-test": {
+      "views": 128,
+      "designs": [
+        "frame-1716081",
+        "frame-1736261",
+        "frame-1744333",
+        "frame-1784693",
+        "frame-1821017",
+        "frame-2772588",
+        "frame-720114",
+        "frame-724150",
+        "frame-728186",
+        "frame-732222",
+        "frame-740294",
+        "frame-748366",
+        "frame-752402",
+        "frame-756438",
+        "frame-760474",
+        "frame-764510",
+        "frame-768546",
+        "frame-776618",
+        "frame-780654",
+        "frame-788726",
+        "frame-792762",
+        "frame-796798",
+        "frame-800834",
+        "frame-804870",
+        "frame-808906",
+        "frame-812942",
+        "frame-816978",
+        "frame-825050",
+        "frame-829086",
+        "frame-833122",
+        "frame-837158",
+        "frame-841194"
+      ]
+    },
+    "recipe-validation": {
+      "views": 128,
+      "designs": [
+        "channel-715069",
+        "channel-719105",
+        "channel-723141",
+        "channel-727177",
+        "channel-731213",
+        "channel-735249",
+        "channel-739285",
+        "channel-743321",
+        "channel-747357",
+        "channel-751393",
+        "channel-755429",
+        "channel-759465",
+        "channel-763501",
+        "channel-767537",
+        "channel-771573",
+        "channel-775609",
+        "channel-779645",
+        "channel-783681",
+        "channel-787717",
+        "channel-791753",
+        "channel-795789",
+        "channel-799825",
+        "channel-803861",
+        "channel-807897",
+        "channel-811933",
+        "channel-815969",
+        "channel-820005",
+        "channel-824041",
+        "channel-828077",
+        "channel-832113",
+        "channel-836149",
+        "channel-840185"
+      ]
+    },
+    "train": {
+      "views": 204,
+      "designs": [
+        "lattice-713051",
+        "lattice-717087",
+        "lattice-721123",
+        "lattice-725159",
+        "lattice-729195",
+        "lattice-733231",
+        "lattice-737267",
+        "lattice-741303",
+        "lattice-745339",
+        "lattice-749375",
+        "lattice-753411",
+        "lattice-761483",
+        "lattice-765519",
+        "lattice-777627",
+        "lattice-785699",
+        "lattice-789735",
+        "lattice-793771",
+        "lattice-797807",
+        "lattice-813951",
+        "lattice-817987",
+        "lattice-822023",
+        "lattice-830095",
+        "lattice-838167",
+        "shared-lattice-714060",
+        "shared-lattice-722132",
+        "shared-lattice-726168",
+        "shared-lattice-730204",
+        "shared-lattice-734240",
+        "shared-lattice-738276",
+        "shared-lattice-742312",
+        "shared-lattice-746348",
+        "shared-lattice-750384",
+        "shared-lattice-758456",
+        "shared-lattice-762492",
+        "shared-lattice-766528",
+        "shared-lattice-770564",
+        "shared-lattice-774600",
+        "shared-lattice-778636",
+        "shared-lattice-782672",
+        "shared-lattice-786708",
+        "shared-lattice-790744",
+        "shared-lattice-798816",
+        "shared-lattice-802852",
+        "shared-lattice-806888",
+        "shared-lattice-810924",
+        "shared-lattice-814960",
+        "shared-lattice-818996",
+        "shared-lattice-823032",
+        "shared-lattice-831104",
+        "shared-lattice-835140",
+        "shared-lattice-839176"
+      ]
+    }
+  },
+  "baseline": {
+    "development": {
+      "boundary": {
+        "precision": 0.9941586597329262,
+        "recall": 0.9445143724945616,
+        "f1": 0.9687008866872145,
+        "matchedPredictionPixels": 138027,
+        "predictionPixels": 138838,
+        "matchedTargetPixels": 138071,
+        "targetPixels": 146182
+      },
+      "junctions": {
+        "precision": 0.7512953367875648,
+        "recall": 0.5735759493670886,
+        "f1": 0.6505159264244056,
+        "matched": 725,
+        "predicted": 965,
+        "target": 1264
+      },
+      "macroBoundaryF1": 0.9159585280224941,
+      "macroJunctionF1": 0.6327670460709448
+    },
+    "recipe-test": {
+      "boundary": {
+        "precision": 0.992469867630692,
+        "recall": 0.9804538134526,
+        "f1": 0.9864252487668613,
+        "matchedPredictionPixels": 125737,
+        "predictionPixels": 126691,
+        "matchedTargetPixels": 128462,
+        "targetPixels": 131023
+      },
+      "junctions": {
+        "precision": 0.38402061855670105,
+        "recall": 0.1455078125,
+        "f1": 0.21104815864022666,
+        "matched": 149,
+        "predicted": 388,
+        "target": 1024
+      },
+      "macroBoundaryF1": 0.9773925246541459,
+      "macroJunctionF1": 0.19847801937645687
+    },
+    "recipe-validation": {
+      "boundary": {
+        "precision": 0.9672887898444029,
+        "recall": 0.9298901347831011,
+        "f1": 0.9482208467387426,
+        "matchedPredictionPixels": 48614,
+        "predictionPixels": 50258,
+        "matchedTargetPixels": 49260,
+        "targetPixels": 52974
+      },
+      "junctions": {
+        "precision": 0.25547445255474455,
+        "recall": 0.13671875,
+        "f1": 0.178117048346056,
+        "matched": 35,
+        "predicted": 137,
+        "target": 256
+      },
+      "macroBoundaryF1": 0.9247389698223512,
+      "macroJunctionF1": 0.15752728174603176
+    },
+    "train": {
+      "boundary": {
+        "precision": 0.9920318421168065,
+        "recall": 0.9735372362863265,
+        "f1": 0.9826975286638594,
+        "matchedPredictionPixels": 520159,
+        "predictionPixels": 524337,
+        "matchedTargetPixels": 519276,
+        "targetPixels": 533391
+      },
+      "junctions": {
+        "precision": 0.660941475826972,
+        "recall": 0.287175234936429,
+        "f1": 0.4003853564547207,
+        "matched": 2078,
+        "predicted": 3144,
+        "target": 7236
+      },
+      "macroBoundaryF1": 0.9760769573198207,
+      "macroJunctionF1": 0.4966422015829027
+    }
+  },
+  "runs": {
+    "random": {
+      "initialization": {
+        "name": "random",
+        "torchvision": "0.23.0"
+      },
+      "arguments": {
+        "prepared": "tmp/heart-learning/prepared-v1",
+        "output": "tmp/heart-learning/random-final",
+        "initialization": "random",
+        "epochs": 20,
+        "batch_size": 8,
+        "seed": 1729,
+        "device": "mps",
+        "evaluate_run": "tmp/heart-learning/random-v1"
+      },
+      "sourceCommit": "59ba4f7a498df92dcdccbcce33acf380ad84a098",
+      "sourceHashes": {
+        "model.py": "d23659db131eb826ce713d67bdaa870f032c9ef295715b210d83d02abedd382b",
+        "train.py": "77b939f3bff64f9fcc0c4e447309151c72c50f730eae0bdd0bdd270431e75fa0",
+        "data.test.py": "f452add2d6c27bcf2994eaf9d32bb8dee703143bd37ee765cdb0eb7332147764",
+        "model.test.py": "92590682b56a328eb7e1a9ea1e733068adb78dfce05ed29563c778e35f92be7f",
+        "data.py": "f75e7818fc89abfa99970f0cd86b01ca912d29ad54f85537ef923d5a470e0b26"
+      },
+      "runtime": {
+        "python": "3.9.6",
+        "torch": "2.8.0",
+        "device": "mps",
+        "threads": 2
+      },
+      "optimizer": {
+        "name": "AdamW",
+        "learningRate": 0.0003,
+        "weightDecay": 0.0001
+      },
+      "selectedEpoch": 20,
+      "selectedThresholds": [
+        0.6,
+        0.3
+      ],
+      "thresholdSearch": [
+        {
+          "threshold": 0.1,
+          "boundaryF1": 0.7990600202175641,
+          "junctionF1": 0.10224618149146453
+        },
+        {
+          "threshold": 0.2,
+          "boundaryF1": 0.9267320243266589,
+          "junctionF1": 0.12367688022284123
+        },
+        {
+          "threshold": 0.3,
+          "boundaryF1": 0.9572780979115642,
+          "junctionF1": 0.27292481529769663
+        },
+        {
+          "threshold": 0.4,
+          "boundaryF1": 0.9629877164775723,
+          "junctionF1": 0.024786986831913247
+        },
+        {
+          "threshold": 0.5,
+          "boundaryF1": 0.9650115579317627,
+          "junctionF1": 0.00315955766192733
+        },
+        {
+          "threshold": 0.6,
+          "boundaryF1": 0.9660888511243754,
+          "junctionF1": 0
+        },
+        {
+          "threshold": 0.7,
+          "boundaryF1": 0.9629344494917442,
+          "junctionF1": 0
+        }
+      ],
+      "nativeInferenceSeconds": {
+        "median": 0.015217936999999182,
+        "samples": [
+          0.01256562500000058,
+          0.015280415999995967,
+          0.015097625000002779,
+          0.014696374999999762,
+          0.015303208999995377,
+          0.015155458000002398,
+          0.016669082999996476,
+          0.017014000000003193,
+          0.01797304200000127,
+          0.014886874999994859
+        ],
+        "scope": "Warm native batch-one forward plus CPU output transfer, excluding input preprocessing"
+      },
+      "checkpointSha256": "7326d53429276ba21e9dcd8cab3a88c9c40ae53904eeb3a90308b22369287219",
+      "evaluationRecovery": {
+        "directory": "tmp/heart-learning/random-v1",
+        "reportSha256": "66c90396a50cb8026bf763271eaf1e0fbc98eea4781c72e79311d323ce634d86",
+        "checkpointSha256": "7326d53429276ba21e9dcd8cab3a88c9c40ae53904eeb3a90308b22369287219",
+        "originalSourceHashes": {
+          "model.py": "d23659db131eb826ce713d67bdaa870f032c9ef295715b210d83d02abedd382b",
+          "train.py": "77b939f3bff64f9fcc0c4e447309151c72c50f730eae0bdd0bdd270431e75fa0",
+          "data.test.py": "79442199114ddd21ab883155473e5a4117de4a63057a30c739a13cfa31cb15e4",
+          "model.test.py": "92590682b56a328eb7e1a9ea1e733068adb78dfce05ed29563c778e35f92be7f",
+          "data.py": "84a3e82f414c8f6bca6148f9efd84602ab5768979210853f19e0621ccf3dbb75"
+        }
+      },
+      "limitations": [
+        "Synthetic-only component experiment, not an end-to-end solver benchmark.",
+        "Recipe holdouts share simplified routing topologies with training; real-photo generalization is untested.",
+        "Known overlap validity masks define supervision/scoring regions, but are not network inputs.",
+        "Only visible corners/branches are junction targets. Smooth degree-two knots, boundary endpoints and unobservable shared-cut anchors are not targets.",
+        "Native PyTorch timings do not establish ONNX/browser speed.",
+        "Fixed seeds are recorded; exact MPS training determinism is not claimed."
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "trainLoss": 0.21222327561939464,
+          "developmentLoss": 0.19877699246773353,
+          "seconds": 6.674913749999998
+        },
+        {
+          "epoch": 2,
+          "trainLoss": 0.15582476424820282,
+          "developmentLoss": 0.18609780073165894,
+          "seconds": 3.9642590419999983
+        },
+        {
+          "epoch": 3,
+          "trainLoss": 0.12279776498383167,
+          "developmentLoss": 0.15530818356917456,
+          "seconds": 3.962624916000003
+        },
+        {
+          "epoch": 4,
+          "trainLoss": 0.09963250832230437,
+          "developmentLoss": 0.12850524828984186,
+          "seconds": 3.895606041999997
+        },
+        {
+          "epoch": 5,
+          "trainLoss": 0.08635593256821819,
+          "developmentLoss": 0.10213834391190456,
+          "seconds": 3.998303374999999
+        },
+        {
+          "epoch": 6,
+          "trainLoss": 0.07600134742610595,
+          "developmentLoss": 0.09593184406940754,
+          "seconds": 3.973099750000003
+        },
+        {
+          "epoch": 7,
+          "trainLoss": 0.06534974445022788,
+          "developmentLoss": 0.099601883154649,
+          "seconds": 3.939328333000006
+        },
+        {
+          "epoch": 8,
+          "trainLoss": 0.055948490094320444,
+          "developmentLoss": 0.09574262110086587,
+          "seconds": 3.864853624999995
+        },
+        {
+          "epoch": 9,
+          "trainLoss": 0.05145922288590787,
+          "developmentLoss": 0.0991290223139983,
+          "seconds": 3.9141341670000003
+        },
+        {
+          "epoch": 10,
+          "trainLoss": 0.049176605673981647,
+          "developmentLoss": 0.09094638778613164,
+          "seconds": 3.914213041999993
+        },
+        {
+          "epoch": 11,
+          "trainLoss": 0.04727194626249519,
+          "developmentLoss": 0.09223863826348232,
+          "seconds": 3.8934381669999993
+        },
+        {
+          "epoch": 12,
+          "trainLoss": 0.04598407717604263,
+          "developmentLoss": 0.09264935896946834,
+          "seconds": 3.892477624999998
+        },
+        {
+          "epoch": 13,
+          "trainLoss": 0.045098710586042964,
+          "developmentLoss": 0.08411246595474389,
+          "seconds": 3.8552317910000085
+        },
+        {
+          "epoch": 14,
+          "trainLoss": 0.04446945211612711,
+          "developmentLoss": 0.09483071359304282,
+          "seconds": 3.928529791999992
+        },
+        {
+          "epoch": 15,
+          "trainLoss": 0.04404410756393975,
+          "developmentLoss": 0.08342247513624337,
+          "seconds": 3.8696832499999942
+        },
+        {
+          "epoch": 16,
+          "trainLoss": 0.042597861704873105,
+          "developmentLoss": 0.08572726352856709,
+          "seconds": 3.9875242499999928
+        },
+        {
+          "epoch": 17,
+          "trainLoss": 0.04315093634467499,
+          "developmentLoss": 0.07007006211922719,
+          "seconds": 3.9391544999999866
+        },
+        {
+          "epoch": 18,
+          "trainLoss": 0.04208466542117736,
+          "developmentLoss": 0.07322095621090668,
+          "seconds": 3.938125124999999
+        },
+        {
+          "epoch": 19,
+          "trainLoss": 0.04121412965012532,
+          "developmentLoss": 0.06573774379033309,
+          "seconds": 4.034262208000001
+        },
+        {
+          "epoch": 20,
+          "trainLoss": 0.04054176690531712,
+          "developmentLoss": 0.0601265556537188,
+          "seconds": 4.000618083000006
+        }
+      ],
+      "reportPath": "tmp/heart-learning/random-final/report.json",
+      "reportSha256": "055e4a77cfa33843d069c1c6c3fc1f3b8fb5cec586a579213c275fe788071515",
+      "trainingSeconds": 81.44038083299996,
+      "checkpointBytes": 3630203,
+      "metrics": {
+        "development": {
+          "boundary": {
+            "precision": 0.9871922309546114,
+            "recall": 0.9458688484218303,
+            "f1": 0.9660888511243754,
+            "matchedPredictionPixels": 414138,
+            "predictionPixels": 419511,
+            "matchedTargetPixels": 138269,
+            "targetPixels": 146182
+          },
+          "junctions": {
+            "precision": 0.30279652844744454,
+            "recall": 0.24841772151898733,
+            "f1": 0.27292481529769663,
+            "matched": 314,
+            "predicted": 1037,
+            "target": 1264
+          },
+          "macroBoundaryF1": 0.9133986896496803,
+          "macroJunctionF1": 0.2429020549022846
+        },
+        "recipe-test": {
+          "boundary": {
+            "precision": 0.9825332312961047,
+            "recall": 0.9845523305068575,
+            "f1": 0.9835417446573791,
+            "matchedPredictionPixels": 437806,
+            "predictionPixels": 445589,
+            "matchedTargetPixels": 128999,
+            "targetPixels": 131023
+          },
+          "junctions": {
+            "precision": 0.070446735395189,
+            "recall": 0.1201171875,
+            "f1": 0.0888086642599278,
+            "matched": 123,
+            "predicted": 1746,
+            "target": 1024
+          },
+          "macroBoundaryF1": 0.973660687267481,
+          "macroJunctionF1": 0.08916208147150781
+        },
+        "recipe-validation": {
+          "boundary": {
+            "precision": 0.9292057383894874,
+            "recall": 0.9358930796239665,
+            "f1": 0.9325374202229814,
+            "matchedPredictionPixels": 175789,
+            "predictionPixels": 189182,
+            "matchedTargetPixels": 49578,
+            "targetPixels": 52974
+          },
+          "junctions": {
+            "precision": 0.020364415862808145,
+            "recall": 0.07421875,
+            "f1": 0.031959629941127,
+            "matched": 19,
+            "predicted": 933,
+            "target": 256
+          },
+          "macroBoundaryF1": 0.9129468243571734,
+          "macroJunctionF1": 0.035448795995671
+        },
+        "train": {
+          "boundary": {
+            "precision": 0.9861489851417743,
+            "recall": 0.9744408885789224,
+            "f1": 0.9802599781147783,
+            "matchedPredictionPixels": 1586124,
+            "predictionPixels": 1608402,
+            "matchedTargetPixels": 519758,
+            "targetPixels": 533391
+          },
+          "junctions": {
+            "precision": 0.2635693544784454,
+            "recall": 0.1630735212824765,
+            "f1": 0.20148552889951338,
+            "matched": 1180,
+            "predicted": 4477,
+            "target": 7236
+          },
+          "macroBoundaryF1": 0.9721768219368216,
+          "macroJunctionF1": 0.21533027576682795
+        }
+      },
+      "boundaryPixelRatioToTrace": {
+        "development": 3.0215863092236996,
+        "recipe-test": 3.5171322351232526,
+        "recipe-validation": 3.7642166421266268,
+        "train": 3.067496667219746
+      }
+    },
+    "imagenet": {
+      "initialization": {
+        "name": "imagenet",
+        "torchvision": "0.23.0",
+        "url": "https://download.pytorch.org/models/mobilenet_v3_small-047dcff4.pth",
+        "sha256": "047dcff4addef86ea5bc2eff13c9614dc11f47ab1160d0a71a25e7db994f4e1f",
+        "bytes": 10306551,
+        "weights": "TorchVision MobileNet_V3_Small_Weights.IMAGENET1K_V1",
+        "note": "Different checkpoint from the researched timm LAMB weights; TorchVision is already installed."
+      },
+      "arguments": {
+        "prepared": "tmp/heart-learning/prepared-v1",
+        "output": "tmp/heart-learning/imagenet-final",
+        "initialization": "imagenet",
+        "epochs": 20,
+        "batch_size": 8,
+        "seed": 1729,
+        "device": "mps",
+        "evaluate_run": "tmp/heart-learning/imagenet-v2"
+      },
+      "sourceCommit": "59ba4f7a498df92dcdccbcce33acf380ad84a098",
+      "sourceHashes": {
+        "model.py": "d23659db131eb826ce713d67bdaa870f032c9ef295715b210d83d02abedd382b",
+        "train.py": "77b939f3bff64f9fcc0c4e447309151c72c50f730eae0bdd0bdd270431e75fa0",
+        "data.test.py": "f452add2d6c27bcf2994eaf9d32bb8dee703143bd37ee765cdb0eb7332147764",
+        "model.test.py": "92590682b56a328eb7e1a9ea1e733068adb78dfce05ed29563c778e35f92be7f",
+        "data.py": "f75e7818fc89abfa99970f0cd86b01ca912d29ad54f85537ef923d5a470e0b26"
+      },
+      "runtime": {
+        "python": "3.9.6",
+        "torch": "2.8.0",
+        "device": "mps",
+        "threads": 2
+      },
+      "optimizer": {
+        "name": "AdamW",
+        "learningRate": 0.0003,
+        "weightDecay": 0.0001
+      },
+      "selectedEpoch": 19,
+      "selectedThresholds": [
+        0.5,
+        0.4
+      ],
+      "thresholdSearch": [
+        {
+          "threshold": 0.1,
+          "boundaryF1": 0.7616810261498792,
+          "junctionF1": 0.2457081545064378
+        },
+        {
+          "threshold": 0.2,
+          "boundaryF1": 0.8954014629564768,
+          "junctionF1": 0.48058761804826866
+        },
+        {
+          "threshold": 0.3,
+          "boundaryF1": 0.9547296782108088,
+          "junctionF1": 0.5456711675933281
+        },
+        {
+          "threshold": 0.4,
+          "boundaryF1": 0.9793995200858215,
+          "junctionF1": 0.5596741344195519
+        },
+        {
+          "threshold": 0.5,
+          "boundaryF1": 0.9891478713350621,
+          "junctionF1": 0.5504899872177247
+        },
+        {
+          "threshold": 0.6,
+          "boundaryF1": 0.9890867360453598,
+          "junctionF1": 0.3526881720430108
+        },
+        {
+          "threshold": 0.7,
+          "boundaryF1": 0.9777991550181034,
+          "junctionF1": 0.08996539792387545
+        }
+      ],
+      "nativeInferenceSeconds": {
+        "median": 0.011072750500002115,
+        "samples": [
+          0.011578708999998355,
+          0.011005834000002324,
+          0.011139667000001907,
+          0.011150084000000504,
+          0.011268208000004165,
+          0.011375291000000232,
+          0.010947457999996857,
+          0.010878165999997691,
+          0.01057537500000194,
+          0.010958042000005719
+        ],
+        "scope": "Warm native batch-one forward plus CPU output transfer, excluding input preprocessing"
+      },
+      "checkpointSha256": "78fba55f0db89010161849e7f43390c0982fd19f745a08fc8a8ec5b3c9627c73",
+      "evaluationRecovery": {
+        "directory": "tmp/heart-learning/imagenet-v2",
+        "reportSha256": "1b56f4dae45c5633fdffaada46dcf0fe2fe474da066e2073c3aa7ffbb7d9bbef",
+        "checkpointSha256": "78fba55f0db89010161849e7f43390c0982fd19f745a08fc8a8ec5b3c9627c73",
+        "originalSourceHashes": {
+          "model.py": "d23659db131eb826ce713d67bdaa870f032c9ef295715b210d83d02abedd382b",
+          "train.py": "8bbcc4604900ee3c44736710c880f0de97a56473de4810c2e6b246f3f3115d21",
+          "data.test.py": "8c617d17c1f1b8b8037f4d8c1fa2f8cd7b400dbc084368527981eac5d8c3b72a",
+          "model.test.py": "92590682b56a328eb7e1a9ea1e733068adb78dfce05ed29563c778e35f92be7f",
+          "data.py": "ff845afca0fdbd6e16ff98ae936b308b038f8b1f34ccf4bc4882f51b2ca4f873"
+        }
+      },
+      "limitations": [
+        "Synthetic-only component experiment, not an end-to-end solver benchmark.",
+        "Recipe holdouts share simplified routing topologies with training; real-photo generalization is untested.",
+        "Known overlap validity masks define supervision/scoring regions, but are not network inputs.",
+        "Only visible corners/branches are junction targets. Smooth degree-two knots, boundary endpoints and unobservable shared-cut anchors are not targets.",
+        "Native PyTorch timings do not establish ONNX/browser speed.",
+        "Fixed seeds are recorded; exact MPS training determinism is not claimed."
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "trainLoss": 0.1694089045711592,
+          "developmentLoss": 0.1399088788491029,
+          "seconds": 10.849279999999997
+        },
+        {
+          "epoch": 2,
+          "trainLoss": 0.1213409954718515,
+          "developmentLoss": 0.11405516931643853,
+          "seconds": 4.358304833000005
+        },
+        {
+          "epoch": 3,
+          "trainLoss": 0.10200179499738357,
+          "developmentLoss": 0.1030271637898225,
+          "seconds": 4.388354542000002
+        },
+        {
+          "epoch": 4,
+          "trainLoss": 0.08620280012780544,
+          "developmentLoss": 0.08864401739377242,
+          "seconds": 4.352584292000003
+        },
+        {
+          "epoch": 5,
+          "trainLoss": 0.06930951708379914,
+          "developmentLoss": 0.06621978145379287,
+          "seconds": 4.4820041669999995
+        },
+        {
+          "epoch": 6,
+          "trainLoss": 0.05477423315831259,
+          "developmentLoss": 0.05879291146993637,
+          "seconds": 4.3580072920000035
+        },
+        {
+          "epoch": 7,
+          "trainLoss": 0.04840217581858822,
+          "developmentLoss": 0.05041510382523903,
+          "seconds": 4.382296208999996
+        },
+        {
+          "epoch": 8,
+          "trainLoss": 0.044304762546922644,
+          "developmentLoss": 0.046228197331611924,
+          "seconds": 4.374588959
+        },
+        {
+          "epoch": 9,
+          "trainLoss": 0.041475246861284856,
+          "developmentLoss": 0.04301179200410843,
+          "seconds": 4.294619041999994
+        },
+        {
+          "epoch": 10,
+          "trainLoss": 0.04003440807847416,
+          "developmentLoss": 0.040428984050567336,
+          "seconds": 4.417405375000001
+        },
+        {
+          "epoch": 11,
+          "trainLoss": 0.03868402734252752,
+          "developmentLoss": 0.03835400938987732,
+          "seconds": 4.433331540999987
+        },
+        {
+          "epoch": 12,
+          "trainLoss": 0.037855680995419916,
+          "developmentLoss": 0.03677016496658325,
+          "seconds": 4.412948749999998
+        },
+        {
+          "epoch": 13,
+          "trainLoss": 0.03666652592958188,
+          "developmentLoss": 0.035628057443178617,
+          "seconds": 4.270185499999997
+        },
+        {
+          "epoch": 14,
+          "trainLoss": 0.0367893335939038,
+          "developmentLoss": 0.037977661650914415,
+          "seconds": 4.360767791000001
+        },
+        {
+          "epoch": 15,
+          "trainLoss": 0.03620733306104062,
+          "developmentLoss": 0.03562287069283999,
+          "seconds": 4.311937374999999
+        },
+        {
+          "epoch": 16,
+          "trainLoss": 0.034659374286146724,
+          "developmentLoss": 0.035116212299236886,
+          "seconds": 4.240737666000001
+        },
+        {
+          "epoch": 17,
+          "trainLoss": 0.03438411207467902,
+          "developmentLoss": 0.0345719290467409,
+          "seconds": 4.3085721659999905
+        },
+        {
+          "epoch": 18,
+          "trainLoss": 0.03372524401136473,
+          "developmentLoss": 0.03399899716560657,
+          "seconds": 4.2332611249999985
+        },
+        {
+          "epoch": 19,
+          "trainLoss": 0.03290475678502345,
+          "developmentLoss": 0.031390621398503966,
+          "seconds": 4.278752292000007
+        },
+        {
+          "epoch": 20,
+          "trainLoss": 0.0329131280601609,
+          "developmentLoss": 0.03265582254299751,
+          "seconds": 4.359382833999987
+        }
+      ],
+      "reportPath": "tmp/heart-learning/imagenet-final/report.json",
+      "reportSha256": "666ee492ce7b4f83723a51cc129499f2734453c53f341b344af30618eee81ddc",
+      "trainingSeconds": 93.46732175099997,
+      "checkpointBytes": 3630203,
+      "metrics": {
+        "development": {
+          "boundary": {
+            "precision": 0.9816005097307147,
+            "recall": 0.9968121930196604,
+            "f1": 0.9891478713350621,
+            "matchedPredictionPixels": 614691,
+            "predictionPixels": 626213,
+            "matchedTargetPixels": 145716,
+            "targetPixels": 146182
+          },
+          "junctions": {
+            "precision": 0.5768261964735516,
+            "recall": 0.5435126582278481,
+            "f1": 0.5596741344195519,
+            "matched": 687,
+            "predicted": 1191,
+            "target": 1264
+          },
+          "macroBoundaryF1": 0.9849737997314741,
+          "macroJunctionF1": 0.5815547591511329
+        },
+        "recipe-test": {
+          "boundary": {
+            "precision": 0.9758992290720401,
+            "recall": 0.9934286346671959,
+            "f1": 0.9845859153884171,
+            "matchedPredictionPixels": 565720,
+            "predictionPixels": 579691,
+            "matchedTargetPixels": 130162,
+            "targetPixels": 131023
+          },
+          "junctions": {
+            "precision": 0.624031007751938,
+            "recall": 0.314453125,
+            "f1": 0.41818181818181815,
+            "matched": 322,
+            "predicted": 516,
+            "target": 1024
+          },
+          "macroBoundaryF1": 0.9803169508353102,
+          "macroJunctionF1": 0.39046072136605225
+        },
+        "recipe-validation": {
+          "boundary": {
+            "precision": 0.9418260812424867,
+            "recall": 0.9794049911277231,
+            "f1": 0.960248018063919,
+            "matchedPredictionPixels": 243657,
+            "predictionPixels": 258707,
+            "matchedTargetPixels": 51883,
+            "targetPixels": 52974
+          },
+          "junctions": {
+            "precision": 0.5732484076433121,
+            "recall": 0.3515625,
+            "f1": 0.4358353510895884,
+            "matched": 90,
+            "predicted": 157,
+            "target": 256
+          },
+          "macroBoundaryF1": 0.9562764841161742,
+          "macroJunctionF1": 0.37526041666666665
+        },
+        "train": {
+          "boundary": {
+            "precision": 0.9788134383432815,
+            "recall": 0.9995444242591269,
+            "f1": 0.9890703124852742,
+            "matchedPredictionPixels": 2262678,
+            "predictionPixels": 2311654,
+            "matchedTargetPixels": 533148,
+            "targetPixels": 533391
+          },
+          "junctions": {
+            "precision": 0.5568636161705909,
+            "recall": 0.3464621337755666,
+            "f1": 0.42715965241097287,
+            "matched": 2507,
+            "predicted": 4502,
+            "target": 7236
+          },
+          "macroBoundaryF1": 0.990342931201521,
+          "macroJunctionF1": 0.48852525077685455
+        }
+      },
+      "boundaryPixelRatioToTrace": {
+        "development": 4.510386205505697,
+        "recipe-test": 4.5756288923443655,
+        "recipe-validation": 5.147578494965976,
+        "train": 4.408718057279955
+      }
+    }
+  },
+  "interpretation": [
+    "ImageNet pretraining improves over random initialization at this fixed 20-epoch budget and seed; no statistical or convergence claim.",
+    "Junction recall remains too low to discard geometric proposals. Development junction F1 is worse than the production trace baseline.",
+    "Tolerance boundary F1 can reward thick ribbons. Learned boundary pixel ratios are reported; shared thinning or one-to-one localization is needed before claiming boundary accuracy gains.",
+    "Three recipe groups are not verified disjoint topologies. Real-photo and full solver evaluation remain outstanding."
+  ]
+}

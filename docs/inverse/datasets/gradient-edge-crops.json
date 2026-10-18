@@ -1,0 +1,281 @@
+{
+  "schema": 1,
+  "scope": "Two isolated gradient-line proposal experiments on eight unchanged photographic ROIs; no template fitting or production change.",
+  "selection": "Generate lower-line pairs from RGB gradients, fit the existing heart/lobe model, then choose minimum outline loss among candidates with both lobe supports >= 0.65 and cap colour losses <= 0.30. Review labels never enter proposal or selection. This is not the complete production crop gate.",
+  "variants": [
+    {
+      "name": "gradient-edge-crops-v1",
+      "configuration": {
+        "minimumSlope": 0.3,
+        "maximumSlope": 2.5,
+        "slopeStep": 0.05,
+        "positionStep": 2,
+        "samples": 40,
+        "yStart": 0.6,
+        "yEnd": 0.95,
+        "normalOffset": 1.5,
+        "lineCandidates": 8,
+        "pairCandidates": 24,
+        "iterations": 180
+      },
+      "rows": [
+        {
+          "id": "nested-squares",
+          "evaluatedPairs": 24,
+          "qualified": 0,
+          "selectedQuad": null,
+          "sourceCoverage": null,
+          "baselineSourceCoverage": null,
+          "backgroundIncluded": null
+        },
+        {
+          "id": "outline-star",
+          "evaluatedPairs": 24,
+          "qualified": 0,
+          "selectedQuad": null,
+          "sourceCoverage": null,
+          "baselineSourceCoverage": null,
+          "backgroundIncluded": null
+        },
+        {
+          "id": "dense-checker",
+          "evaluatedPairs": 24,
+          "qualified": 0,
+          "selectedQuad": null,
+          "sourceCoverage": null,
+          "baselineSourceCoverage": 1,
+          "backgroundIncluded": null
+        },
+        {
+          "id": "flower",
+          "evaluatedPairs": 24,
+          "qualified": 0,
+          "selectedQuad": null,
+          "sourceCoverage": null,
+          "baselineSourceCoverage": null,
+          "backgroundIncluded": null
+        },
+        {
+          "id": "santa",
+          "evaluatedPairs": 24,
+          "qualified": 0,
+          "selectedQuad": null,
+          "sourceCoverage": null,
+          "baselineSourceCoverage": null,
+          "backgroundIncluded": null
+        },
+        {
+          "id": "jigsaw",
+          "evaluatedPairs": 24,
+          "qualified": 0,
+          "selectedQuad": null,
+          "sourceCoverage": null,
+          "baselineSourceCoverage": 0.84,
+          "backgroundIncluded": null
+        },
+        {
+          "id": "crossed-ribbons",
+          "evaluatedPairs": 13,
+          "qualified": 0,
+          "selectedQuad": null,
+          "sourceCoverage": null,
+          "baselineSourceCoverage": null,
+          "backgroundIncluded": null
+        },
+        {
+          "id": "bauble",
+          "evaluatedPairs": 23,
+          "qualified": 4,
+          "selectedQuad": [
+            [
+              574.3312728210751,
+              919.3078049787987
+            ],
+            [
+              673.9657144300248,
+              1017.2369046416461
+            ],
+            [
+              572.9337209302325,
+              1101.4302325581396
+            ],
+            [
+              485.2071631035059,
+              1009.0864874773746
+            ]
+          ],
+          "sourceCoverage": 0.8846153846153846,
+          "baselineSourceCoverage": 1,
+          "backgroundIncluded": null
+        }
+      ]
+    },
+    {
+      "name": "gradient-edge-crops-v2",
+      "configuration": {
+        "score": "rgb-only",
+        "minimumSlope": 0.3,
+        "maximumSlope": 2.5,
+        "slopeStep": 0.05,
+        "positionStep": 2,
+        "samples": 40,
+        "yStart": 0.6,
+        "yEnd": 0.95,
+        "normalOffset": 1.5,
+        "lineCandidates": 8,
+        "pairCandidates": 24,
+        "iterations": 180
+      },
+      "rows": [
+        {
+          "id": "nested-squares",
+          "evaluatedPairs": 24,
+          "qualified": 0,
+          "selectedQuad": null,
+          "sourceCoverage": null,
+          "baselineSourceCoverage": null,
+          "backgroundIncluded": null
+        },
+        {
+          "id": "outline-star",
+          "evaluatedPairs": 24,
+          "qualified": 0,
+          "selectedQuad": null,
+          "sourceCoverage": null,
+          "baselineSourceCoverage": null,
+          "backgroundIncluded": null
+        },
+        {
+          "id": "dense-checker",
+          "evaluatedPairs": 24,
+          "qualified": 0,
+          "selectedQuad": null,
+          "sourceCoverage": null,
+          "baselineSourceCoverage": 1,
+          "backgroundIncluded": null
+        },
+        {
+          "id": "flower",
+          "evaluatedPairs": 24,
+          "qualified": 0,
+          "selectedQuad": null,
+          "sourceCoverage": null,
+          "baselineSourceCoverage": null,
+          "backgroundIncluded": null
+        },
+        {
+          "id": "santa",
+          "evaluatedPairs": 24,
+          "qualified": 0,
+          "selectedQuad": null,
+          "sourceCoverage": null,
+          "baselineSourceCoverage": null,
+          "backgroundIncluded": null
+        },
+        {
+          "id": "jigsaw",
+          "evaluatedPairs": 24,
+          "qualified": 0,
+          "selectedQuad": null,
+          "sourceCoverage": null,
+          "baselineSourceCoverage": 0.84,
+          "backgroundIncluded": null
+        },
+        {
+          "id": "crossed-ribbons",
+          "evaluatedPairs": 24,
+          "qualified": 0,
+          "selectedQuad": null,
+          "sourceCoverage": null,
+          "baselineSourceCoverage": null,
+          "backgroundIncluded": null
+        },
+        {
+          "id": "bauble",
+          "evaluatedPairs": 24,
+          "qualified": 4,
+          "selectedQuad": [
+            [
+              574.3312728210751,
+              919.3078049787987
+            ],
+            [
+              673.9657144300248,
+              1017.2369046416461
+            ],
+            [
+              572.9337209302325,
+              1101.4302325581396
+            ],
+            [
+              485.2071631035059,
+              1009.0864874773746
+            ]
+          ],
+          "sourceCoverage": 0.8846153846153846,
+          "baselineSourceCoverage": 1,
+          "backgroundIncluded": null
+        }
+      ]
+    }
+  ],
+  "visualReview": "Both methods fail lobe qualification on jigsaw and seven of eight cases overall, including the flower and dense-checker controls. Their selected bauble crop excludes 3 of 26 existing artwork observations; the prior crop includes all 26. The overlays retain wrong corner positions even when lower-edge intersections improve. Neither variant is integrated or counted as a new accepted photograph.",
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/gradient-edge-crops-v1/source.json",
+      "sha256": "f414325ea6f8a6c6b4762a118b0503e30cebf0fdb75817ebf1b3676b1da623ee"
+    },
+    {
+      "path": "tmp/heart-learning/gradient-edge-crops-v1/probe.mjs",
+      "sha256": "46c279eeb52d1a350767bf12029021fb8d00cd66049f09956ab451edae457190"
+    },
+    {
+      "path": "tmp/heart-learning/gradient-edge-crops-v1/results.json",
+      "sha256": "384a2073dbbbb51a0148050e7ba1acb81ab242719674e18909b1dc2afeed6c0f"
+    },
+    {
+      "path": "tmp/heart-learning/gradient-edge-crops-v1/probe.log",
+      "sha256": "26de3ec3694ac046ac223e55ee812164f942b5d0ed852387de7db7534ff4645a"
+    },
+    {
+      "path": "tmp/heart-learning/gradient-edge-crops-v1/state.json",
+      "sha256": "b9def77539140ca67620ce4ff2cbd093e7a123735a416b1affcf466d0ac5e37d"
+    },
+    {
+      "path": "tmp/heart-learning/gradient-edge-crops-v1/jigsaw-candidates.png",
+      "sha256": "4cb43c01f0a644ec2b71a6dedddc0145f589a010f938a43d4638a5b9464a230c"
+    },
+    {
+      "path": "tmp/heart-learning/gradient-edge-crops-v1/bauble-candidates.png",
+      "sha256": "fff4c7490f7bd3680180f33d7a95fabad5ae03434c531db53a3e668c0dc3b6c0"
+    },
+    {
+      "path": "tmp/heart-learning/gradient-edge-crops-v2/source.json",
+      "sha256": "30ba398ec07223b7d899f25a50858c819ff7287b2307b114faf5483a5b4817ed"
+    },
+    {
+      "path": "tmp/heart-learning/gradient-edge-crops-v2/probe.mjs",
+      "sha256": "b96594be311ad442e0c94288c9c66815122bc3630745830c8de3bb602f469f3b"
+    },
+    {
+      "path": "tmp/heart-learning/gradient-edge-crops-v2/results.json",
+      "sha256": "0fdf0dc5836bdad853fa4efc5e164ab6282dc70c54df4153dbde1775280c9a8f"
+    },
+    {
+      "path": "tmp/heart-learning/gradient-edge-crops-v2/probe.log",
+      "sha256": "c7dd13ed2160f61c8aca405a1e3737b350dfc5895e95451541dde80df84e495f"
+    },
+    {
+      "path": "tmp/heart-learning/gradient-edge-crops-v2/state.json",
+      "sha256": "e3530fb778e63ca239306c783d7890f4e1e465f96aa0d3a8a8e5d95028aa3916"
+    },
+    {
+      "path": "tmp/heart-learning/gradient-edge-crops-v2/jigsaw-candidates.png",
+      "sha256": "23901a29d3094c4bb4bec1ca2de2d27f15b7a27a47750dc86663b43166e9d6ae"
+    },
+    {
+      "path": "tmp/heart-learning/gradient-edge-crops-v2/bauble-candidates.png",
+      "sha256": "79f38be7a4709a4e1f8f64ae2faf6bcb9f7c7784fce453b2c219c3f5e2b67f79"
+    }
+  ]
+}

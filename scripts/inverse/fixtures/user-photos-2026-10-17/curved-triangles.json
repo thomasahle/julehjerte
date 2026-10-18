@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "description": "User screenshot of an existing Paint mask. The displayed overlap square is selected independently of solving; its clipped tip remains unobserved. Original source mask requested.",
+  "splitStatus": "qa-reserved",
+  "source": {
+    "file": "scripts/inverse/fixtures/user-photos-2026-10-17/curved-triangles.png",
+    "sha256": "3238e9930dc45e7697a55ed72494f05fba2647fb700bfd222cd371c7dd2b5037",
+    "width": 2016,
+    "height": 1790,
+    "receivedAt": "2026-10-17",
+    "originalFilename": "Screenshot 2026-10-17 at 8.58.14 PM.png"
+  },
+  "cases": [
+    {
+      "id": "curved-triangles",
+      "roi": [
+        0,
+        0,
+        2016,
+        1790
+      ],
+      "tags": [
+        "screenshot-of-paint-mask",
+        "tangent-circular-joins",
+        "partly-unobserved-square",
+        "not-a-photographic-crop-benchmark"
+      ]
+    }
+  ],
+  "trainingEligibility": "excluded-existing-development-qa",
+  "familyReviewStatus": "pending; related motifs/reposts must remain together",
+  "rights": "Source creator rights retained; local regression fixture, not a public website asset or approved training data."
+}

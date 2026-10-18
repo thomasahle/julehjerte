@@ -1,0 +1,2547 @@
+{
+  "schema": "woven-heart-synthetic-batch-evidence-1",
+  "dataset": "tmp/heart-training-synthetic/batch-v1",
+  "command": "node scripts/inverse/datasets/synthetic-generate.mjs --designs=128 --views=4 --resolution=384 --canonicalResolution=512 --output=tmp/heart-training-synthetic/batch-v1",
+  "sourceCommit": "f6add8871f0aa2274070a1acd7ec577e117f31f1",
+  "sourceHashes": {
+    "scripts/inverse/datasets/synthetic-generate.mjs": "26f2723303e523eb21fbbafd88768985e4e496b15b42ed1bb818ec11446a4902",
+    "scripts/inverse/datasets/synthetic-geometry.mjs": "dfa17ea7bdf1a576ea8b61b16e5ab2c80773ba1144c9c504f82d77a23c1424d6",
+    "scripts/inverse/datasets/synthetic-photo.mjs": "fdbeff0ed4f51387bc5c843b49ddbb091d92d258bcab2e3717c23293bdcd9a61",
+    "scripts/inverse/export-renderer.mjs": "fb393f73b9c39780795c3951eb82d864fef7ab40ec63a90a4365aae6041afbbe",
+    "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+    "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+    "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/validate.js": "1625909f0db6745596ab64bc44b99c306dec0377d1322e7eb31e2f860e5b8224",
+    "static/inverse/core/material.js": "b38677af5801e894eb869d38df247ea02c06ba2bd773d606da97494e2297ce29",
+    "static/inverse/core/geometry.js": "e9ada76afbaa0ef4bd957cbc4c8c20f09f471cf6ba0c33b84a774aba10a9da84",
+    "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+    "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+    "package-lock.json": "c2f54196ad3330233440428238539cc2cb12119454ac4da0f35693832bb7e6c6"
+  },
+  "summary": {
+    "baseDesigns": 128,
+    "distinctGeometry": 128,
+    "distinctTopologies": 56,
+    "broadFamilies": 3,
+    "photographicViews": 512,
+    "bySplit": {
+      "train": {
+        "designs": 64,
+        "views": 256
+      },
+      "validation": {
+        "designs": 32,
+        "views": 128
+      },
+      "test": {
+        "designs": 32,
+        "views": 128
+      }
+    },
+    "rejectedCandidates": 8,
+    "maximumRendererDisagreement": 0.003265380859375
+  },
+  "timing": {
+    "seconds": 81.12714125,
+    "scope": "All generation and per-design validation, including saved files; excludes verification/contact sheet",
+    "summary": {
+      "baseDesigns": 128,
+      "distinctGeometry": 128,
+      "distinctTopologies": 56,
+      "broadFamilies": 3,
+      "photographicViews": 512,
+      "bySplit": {
+        "train": {
+          "designs": 64,
+          "views": 256
+        },
+        "validation": {
+          "designs": 32,
+          "views": 128
+        },
+        "test": {
+          "designs": 32,
+          "views": 128
+        }
+      },
+      "rejectedCandidates": 8,
+      "maximumRendererDisagreement": 0.003265380859375
+    }
+  },
+  "verification": {
+    "passed": true,
+    "designs": 128,
+    "views": 512,
+    "familyGroups": 3,
+    "checkedAssets": 3968,
+    "manifestSha256": "6649301431add7c3a7b7ba2ccb374723bc165fd3a64c9adede0ad11b3a54133d",
+    "scope": "Asset integrity, recorded admission checks, recipe-group isolation (not topology disjointness) and projective label consistency; does not rerun physical or image simulation."
+  },
+  "verifierSha256": "3726c8c6b0354d0f32b6b425f12788bc9323e7023b3000a384fbead72c5baf99",
+  "splitPolicy": {
+    "unit": "procedural-recipe holdout, not topology-disjoint evaluation",
+    "familySplits": {
+      "procedural-lattice": "train",
+      "procedural-channel": "validation",
+      "procedural-frame": "test"
+    },
+    "existingGalleryIncluded": false,
+    "existingPhotoQAIncluded": false,
+    "existingHunodanQAIncluded": false,
+    "explanation": "Lattice recipe variants stay in train and channel/frame recipe groups are held out. Simplified routing topologies and motifs can nevertheless cross these groups. Existing evaluation photographs/templates were not read.",
+    "topologyDisjoint": false,
+    "realMotifFamilyDisjointness": "not established"
+  },
+  "sourceProvenance": {
+    "sourceType": "procedural",
+    "externalAssets": [],
+    "labelSource": "Generated template pair, independently rendered and validated before image synthesis",
+    "physicalAssemblyTested": false
+  },
+  "designs": [
+    {
+      "id": "lattice-713051",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        1,
+        6
+      ],
+      "geometrySha256": "da17d25d08adac321c532e55f8f75d95c2eaba1a87f4ed4f1e9738fa313eb13f",
+      "topologySha256": "36341b1781f30f7421ee040c3a60f5e01bd76209aa25a1dc9d9f74281a095965",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.001651763916015625,
+      "serializedDesignSha256": "ea3c92c8e8f94fa7051b09c357e0feabe93aa36d19fe3e2685d2afcc41d14aeb"
+    },
+    {
+      "id": "shared-lattice-714060",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        7,
+        3
+      ],
+      "geometrySha256": "f0d705abcf5d4211576e00690372841dae2def075d22b07762eb9179dd8b42be",
+      "topologySha256": "a030d3ab33252147208007dac108eb5fec673fdf8e7ea74d633c8382dea261db",
+      "sharedEdges": 11,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.002742767333984375,
+      "serializedDesignSha256": "cf54d48e9e63588739a6d0d0b35d0c04455a90130c12f22e20aa32152535821c"
+    },
+    {
+      "id": "channel-715069",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "0fb139d134b8a78a185076d4e9f88317a098d0382395855605e16360b54edd5b",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "db0e19e98ca5beaa2694aec6412394ae4d354302e82fe6cc6f3927a21ecd83af"
+    },
+    {
+      "id": "frame-1716081",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "ea7633234473c714354e21d71b9bf2dced5bd4637feea660b25be8f3b2586b7f",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "094a54050dfd133ff4cda088f6a253bb6bd60afbc78efb2d652cf9ca843b0b62"
+    },
+    {
+      "id": "lattice-717087",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        5,
+        5
+      ],
+      "geometrySha256": "2a3dc8602bef30d054d3a3e636e6fac50afd96895ff1e2fd6ba041023710b1a0",
+      "topologySha256": "0161976170526a0cad9c7df782e86c4c5a4dbd6471f8f5e5477e8b9d90183f48",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "b62d202abfdd2c5dcb3c07abdeaab2e01ceef7a5498b0d5d35a2d44bcfe362e6"
+    },
+    {
+      "id": "shared-lattice-718096",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        4,
+        2
+      ],
+      "geometrySha256": "5c5dd66690eed579ced659f6d35b552eda374bc1c0c179a7056499e0b75db8b2",
+      "topologySha256": "87b2100af5628db554c96ee079ac09de50209dbf2a1fc2edff6ee77fe81d896c",
+      "sharedEdges": 6,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.001171112060546875,
+      "serializedDesignSha256": "2101f8264b819ec56beff781727f059ce556cee04c42497d0357ecb1c2c9792c"
+    },
+    {
+      "id": "channel-719105",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "4f167dc7069d25a610fc3a9faf8b9cae8bbc9a2b989f7391c8a8d1acb9c937b9",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.00045013427734375,
+      "serializedDesignSha256": "11e4a24331c1e986f9b311d56e60ff21f27156a456c005c8ae2448c468943ecc"
+    },
+    {
+      "id": "frame-720114",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "6e8f76cd353356d7347e5f4702944c8ab64ae49b9b2b2576b6bef22cd5088988",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "fc9085ebabee41b37e018c9c9a4febe11a93412ad8d0c51e55452147e88730d5"
+    },
+    {
+      "id": "lattice-721123",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        2,
+        1
+      ],
+      "geometrySha256": "beadf77122c897521f3787ad32cd9871ae93d7ade9d4a226b2286e11d238b152",
+      "topologySha256": "af24e8b1b597e0a40f8a6a0b808997a7329dda08c11bc94b579df5fc34e0cfbb",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "a2c5dd95f17d05002342d56b2a9687ddc8cd36694446f7baac657337633a6abe"
+    },
+    {
+      "id": "shared-lattice-722132",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        2,
+        6
+      ],
+      "geometrySha256": "5ee9535f8368ce0106ae81e2b4992d52f99d13a4a5f1a8ca5e089053037dd77a",
+      "topologySha256": "5f6cfd7aa96511640346d88fee7433697bbb45f5790270a42c5f67b4d69d7613",
+      "sharedEdges": 6,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.001705169677734375,
+      "serializedDesignSha256": "3c8203b6229b59cb1183ca95a47220e3a03c961fb293d15a4400f7b87c124173"
+    },
+    {
+      "id": "channel-723141",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "6f23fdb2a025cd6dd03213a1574a58e8680ccd127aa85419fca65b48e7fd5c87",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.00058746337890625,
+      "serializedDesignSha256": "91e1e2b986de9b4278c844c137d1213e8648d322b0576909cb1f30bfea3c308a"
+    },
+    {
+      "id": "frame-724150",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "0dd9389a9fc83bf8614f9b1fedca4eb72e12faa6ecb4b9fe501424a203689ff3",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "5d1db0f7abbc114a1ed413682408ef799e988d8c8575f0acd68446c86d0b66c2"
+    },
+    {
+      "id": "lattice-725159",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        2,
+        6
+      ],
+      "geometrySha256": "9eacb39c893c0f846b892bf7e0d15b295246180848b4efab31c4d214c8abfd0d",
+      "topologySha256": "d49a488f885070395d4913ba1e2766567e91aa0a6a9cf17831733c4ab698c91b",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.00194549560546875,
+      "serializedDesignSha256": "e8f85d5cdd997f0a0baffcc067bd207eaf466b045de47dad9c2faed445e2db49"
+    },
+    {
+      "id": "shared-lattice-726168",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        6,
+        4
+      ],
+      "geometrySha256": "d13980c753e132dd2df476746f6e657192b64273d469743d24c1d9ad427a44fe",
+      "topologySha256": "91546e48d6480746d1c7925ba912ef68cbd2126c1e256c2fcf9b625e8b35379a",
+      "sharedEdges": 16,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.00188446044921875,
+      "serializedDesignSha256": "77dcf6d3a690b8a22b04c74cb278a3614ae540c1ba77adfcb983228f7eed8665"
+    },
+    {
+      "id": "channel-727177",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "7856161647afeb38563aa6dacec59736d5a8ae42db2d11f8345634173b98f7d6",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.000995635986328125,
+      "serializedDesignSha256": "53eb1b8482c23698d1c4f36f08354e8ed58e5bbc78fc7fcbbe90dfb4f5b7be6c"
+    },
+    {
+      "id": "frame-728186",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "f97b0e90f3e70965f46ddeef8b74411f6ee2aa3a952d5970e9a98081030919f9",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "444ca7283c3dbf94a639b276602176359c6309948aa4cbd4948e3aafd8beb73c"
+    },
+    {
+      "id": "lattice-729195",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        3,
+        6
+      ],
+      "geometrySha256": "a5438142ee53e2eefdfb7dda88f4fa920f3555532811cfcd62320eea3b4adc4c",
+      "topologySha256": "79625c0caad42f90d38f97eb6dfb7c74c00505282f8679ed6e0bebf258366ae6",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.001895904541015625,
+      "serializedDesignSha256": "1d5b5f832b7c484c329ebe754d14274b002917692007ff3fc3e7aae522ee2c55"
+    },
+    {
+      "id": "shared-lattice-730204",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        3,
+        3
+      ],
+      "geometrySha256": "233a0ba906adf5696c40e3985610bb57c3376eb05ee24202fe7db974cfa7a465",
+      "topologySha256": "ae477b3f517a47bd3d13b764ef3f7cf55789ab21a5fd45c5bd3ab598144eef88",
+      "sharedEdges": 5,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.001110076904296875,
+      "serializedDesignSha256": "5149f85261422352b237808c5c422535ed6b59ef242cfd840f94dc2a55fe2012"
+    },
+    {
+      "id": "channel-731213",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "e0e5f296257072a709e25c7dd71a6813bdaaabfc81e9e77f39679b74536f574a",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "47cad511bcf5874f9291a8dddf45ae7eda6e1576bdf8ce2c472a686c96b4ddc4"
+    },
+    {
+      "id": "frame-732222",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "dc7dc00b68223c063fab6eab106527d7f2fec5f69d10ac37995643eca419e0d0",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "984f4d38412dc720d4cc7ee5f495eff9ae0af4fb2cc6e6a9563d1b8cae3ffd11"
+    },
+    {
+      "id": "lattice-733231",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        1,
+        5
+      ],
+      "geometrySha256": "7d72eed29b206fe28fac1fa652a5f2fe45905479b6382559c78f0a73ada18beb",
+      "topologySha256": "7a78b8c058d233858b04608deafa211dcbc3fd3f955b80b6255216de0c85698b",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.00199127197265625,
+      "serializedDesignSha256": "ff1580dda403d2496a0130d168e05dc240f4a1e4820f93dbb818bbc49c3fe9c9"
+    },
+    {
+      "id": "shared-lattice-734240",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        6,
+        5
+      ],
+      "geometrySha256": "afded8ee36f95dd191dd6bea91c55d266ee40fd05177ee47414f4c44dfde02a0",
+      "topologySha256": "f551539050b86db82c1edc03d08289b9c06c9549bed4eb71160549b25322ebef",
+      "sharedEdges": 19,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.001529693603515625,
+      "serializedDesignSha256": "c8dc26348b42e029f1a616b91ecf64c013780b50137c6292cee2ba60fd773352"
+    },
+    {
+      "id": "channel-735249",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "e9658c87d44cbe171fd548717f631fc4bb37d95c3462ccdf103278a10b094af0",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "7fe25187dcb96f916a2c9e42c0d87a61c81667351c54c4fadc046c4ee21a5ab3"
+    },
+    {
+      "id": "frame-1736261",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "e75836f29e44040e53bdf3d3f64939d12e60e3df05a2122a3b6c647ef8edfa38",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "a28927d2f5c7f3529c7a77078c9a384564fef404dbd82baad45f970dd54d8359"
+    },
+    {
+      "id": "lattice-737267",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        2,
+        6
+      ],
+      "geometrySha256": "29348d4ac6460a6b8e75a80ac53d453a32236fce335174aa730b548bc0ffbb10",
+      "topologySha256": "d49a488f885070395d4913ba1e2766567e91aa0a6a9cf17831733c4ab698c91b",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.001972198486328125,
+      "serializedDesignSha256": "f8aee968aec7ae7d5c062311cde37820836cacd41323accb0ddb5b997932f13d"
+    },
+    {
+      "id": "shared-lattice-738276",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        3,
+        7
+      ],
+      "geometrySha256": "ec53fd5c569baab6219e41664c13e101d4baef8e1cb742bddbb49cd7ccd1efd8",
+      "topologySha256": "5de0a7b9a0bf51dcf681796312e57396b359669d90cee14a6efefbf1566c6cac",
+      "sharedEdges": 11,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.001964569091796875,
+      "serializedDesignSha256": "6a314f980c4d6af6e9699b25e21205ff91d3a2484f75a14cf313fd5853d6f907"
+    },
+    {
+      "id": "channel-739285",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "3b9ec9f639c5c52702cb63c11308ba7c4736032aff320a4fd356f305c04646eb",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "7a025eda1609695d26a59e84fb64fed623314537b902b3d074b3ce1960102d03"
+    },
+    {
+      "id": "frame-740294",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "bfe1f45408b637ee7a6accfbd3f4720e6eed98472639fa4f50eb87282bfb3e0b",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "a962f9b4326e08d27586eb1ffebc85477f2824191dfd77c7ee251036f880efce"
+    },
+    {
+      "id": "lattice-741303",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        7,
+        4
+      ],
+      "geometrySha256": "9b1765a767f8a41a5cf9ed44c2ac7126ab737bf45a470e1dd1b44a981d15aedf",
+      "topologySha256": "0cc06ceeb1f7c40b14daed27380d8b6dc30e2faeadcc0b27ac35b593020a1325",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.002285003662109375,
+      "serializedDesignSha256": "93e5acb9d50317e155fe9a064d8c80cf1ca8b464ce6f05195297db162baa1806"
+    },
+    {
+      "id": "shared-lattice-742312",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        1,
+        7
+      ],
+      "geometrySha256": "be30310d50cd7c1fb0fdf93377f86d4c74914d3eb089555af5e98fe07dd6eb56",
+      "topologySha256": "18b2349975fa6b7a04dc35d61123ffe68d9bc92cd116ea25472dbf69a31f691e",
+      "sharedEdges": 5,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.001651763916015625,
+      "serializedDesignSha256": "0e1bb510e2fd71249503b03b88b6017ef99710035e6f8f90bae76c46b6a96eb2"
+    },
+    {
+      "id": "channel-743321",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "8ee59681bf8a28fc3bb1721383498974eff94aefeeec300afc4ea579ae9d1ae6",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.000438690185546875,
+      "serializedDesignSha256": "f01a900334ec87bbc91015a29918da87e460b670a5b04d821ddebfbd51305739"
+    },
+    {
+      "id": "frame-1744333",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "62279a8797f472877edf295c6f4d3496d32619affd27124d840b47d258125a32",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "02f9918ffe68a736246ba9e07d3f6c3d0c25a72283b5492f952f51f99dd8ba27"
+    },
+    {
+      "id": "lattice-745339",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        6,
+        1
+      ],
+      "geometrySha256": "50cdb9830b2ba31862cc1ed404370abf444657eadd93921630a294ae19f9b1bc",
+      "topologySha256": "532bf20f8d4350d9f207dabb0bd940e63685b8b579446c6cbe4a85c2d53e7146",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.001918792724609375,
+      "serializedDesignSha256": "020277b1d462ef3ef3153ccc48f78a7d944fa864e066d648c7f9fc82407363d6"
+    },
+    {
+      "id": "shared-lattice-746348",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "46e6d0b4627bca6f617ad2e80b666c65c3b01bbc084eae838118d420c09fb62f",
+      "topologySha256": "79b67f4b04565e594e6acdc418dcaedda4492f77379692262df7c9716d306703",
+      "sharedEdges": 2,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "50b5e6857d4425ac52d19c3d1e699a204f3f455365d4a9428c366e069f7c784c"
+    },
+    {
+      "id": "channel-747357",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "5d3aa973f8f332052e27173f45c8a4465ede39ef6535e41ec69cd4caeb8505a2",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "4edc7eeb8f06b7fd3c29b0d7d45cb8d481dc62c75f948833d8b3ebadeb515d94"
+    },
+    {
+      "id": "frame-748366",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "c30b7917e21e18eafc9e0e8232e05b9ee192ebc9af54f8f58ec18a35aec7b820",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.000762939453125,
+      "serializedDesignSha256": "5483f152c29c5f0b5d3fbcede5e8d0f9efbc7a0a157a92366320bdf0930be01f"
+    },
+    {
+      "id": "lattice-749375",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        3,
+        2
+      ],
+      "geometrySha256": "3db59af3a98dd2942f69faca089eb59181b003df3f7eec02abddf389763a6039",
+      "topologySha256": "aed34b006de49671e3bae807bb5f53e0c0125900625474a7c5e3fa0836792e30",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "69976655a8d61f527ef57d2e3618152b3dd74dca2db4eb392adcbf20a34386a9"
+    },
+    {
+      "id": "shared-lattice-750384",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        7,
+        4
+      ],
+      "geometrySha256": "672324da59da3ef42774947ff604b6157837cd7f30831e93dde560088e24fb5f",
+      "topologySha256": "1636c33ace32c0ca87c6d90aa23d02a92069e911c91dd1a56bb83bd0260e15d2",
+      "sharedEdges": 16,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.001827239990234375,
+      "serializedDesignSha256": "ce3cd2962d670fbfc730e71bfa0fb2f1ea9fd45064f524dd8a2d7ef4f07d6711"
+    },
+    {
+      "id": "channel-751393",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "7a5a070f1dd5d95d64b7879dfdedf79fdd8ff7582a76cd6d44332100fd8228b5",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "d318b4e7565c4fd563195c985e7b7c894662308c921e7f034a8bbd777c5348a3"
+    },
+    {
+      "id": "frame-752402",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "8ca90dc31524b3ea09b89da15848c828c83e7165a7929aa4b0587ec7fefafb70",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "1991e0d198a809a75b99a8de94347e56c8f758f369bf28ab0ec0e46793226963"
+    },
+    {
+      "id": "lattice-753411",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        7,
+        2
+      ],
+      "geometrySha256": "e20734d69e88521ee7f2dc3e736846c6bcfdf82a8c581b65756094606a73fd47",
+      "topologySha256": "f3de4de3fc99904fddb01c05c34407b844654a41fc74b38890963f2c9290bdad",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.002323150634765625,
+      "serializedDesignSha256": "b6b4600dd688e43724d6ebf200ef2d01821efa81521235ead371798ce70e811f"
+    },
+    {
+      "id": "shared-lattice-754420",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        5,
+        4
+      ],
+      "geometrySha256": "c5fc2a897d7ad35cc44d5532b6f6d46807f04b7ed2d8d406beb55c4e77518e5f",
+      "topologySha256": "4f51a280ec85307b71706fbe054d6737abee047aac3b137a4d0dbc5f7a4aa92b",
+      "sharedEdges": 10,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.001720428466796875,
+      "serializedDesignSha256": "7f823fdf90f523ba67dcce9a4b6b2b1d4c608b5c52580605d40c50a7f9d0af9f"
+    },
+    {
+      "id": "channel-755429",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "a5c64bb7bb25b75c980a92c381eb0a32dffa1259d84fad088d9cbf664f278ca2",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.000896453857421875,
+      "serializedDesignSha256": "19f98de952dcd502cf0fc74d1ceeb4bcdd0d8f9fc1c1498ea151e26497c11adc"
+    },
+    {
+      "id": "frame-756438",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "23cb8681bcdebc1d45b8fcd4e2053b51c917f41ec7dbcba3377b7b86934004c4",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.001708984375,
+      "serializedDesignSha256": "124b3e4f41cca883eeef14e9cd6f0e9800eed8977702c516b32fe1b6b69a9c7f"
+    },
+    {
+      "id": "lattice-757447",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        7,
+        5
+      ],
+      "geometrySha256": "1f37ec791e77cad394fbc1ae6a137986d4e0b89cd5ae40aaf36aeff7939f5022",
+      "topologySha256": "dae6e801621f9300eefdb581e07439febc7ca20b17095cb4547ef620a79aeb29",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "6389f46ce51cb1dcf8bc5f418d0c714df239ffd62d064013f2462058ac128c59"
+    },
+    {
+      "id": "shared-lattice-758456",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        3,
+        2
+      ],
+      "geometrySha256": "9989c7c101ee52ae2b25a40bc727eb8c580ecc00cf16cc5ee39424a45c000e33",
+      "topologySha256": "a32e8db3c17f67628d95c4c7d0bd0a6d325d85b373fc0ef0267d3e1a24e400ae",
+      "sharedEdges": 3,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.000091552734375,
+      "serializedDesignSha256": "be1022561bf70aed766f7999bf04f23b09d81a68e63a6552696e3199cad79062"
+    },
+    {
+      "id": "channel-759465",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "38ada426b22eae0fb5000f41e78e3e83f5087f9f16f7cd3c019139a3d4a82477",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "3fb5313767735e915b11df990208619a3fd4723f1690a30ab33205f30c9877fd"
+    },
+    {
+      "id": "frame-760474",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "90d257a6637096f62b509786a02b3b08f8fa73b29b2b4cf84d1d1bd69ce4aba8",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "d9d6217401deb689f0c442260d6206c069139f6b0632749a718cb0fda3f7cbff"
+    },
+    {
+      "id": "lattice-761483",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "bed26f02eba813ba9803c61a425e27661ee4c5c10c116dce67f9462b75aa6292",
+      "topologySha256": "fa0972f3b87ff1884017c879c5f3046a4a833ccfcf4b245130150c179d8a1922",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "5c364b1645ab287013067d07f56a33f64714e35fc075494c64034d52088fb9af"
+    },
+    {
+      "id": "shared-lattice-762492",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        2,
+        4
+      ],
+      "geometrySha256": "33515d93e8564f79f8c92971fb201a625b0a0305b659b9ac848843450250cc04",
+      "topologySha256": "54b9263a463634b44b21cf8b9fa6de8974e9bb510b82d538bf66745d5bdbc602",
+      "sharedEdges": 5,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.001781463623046875,
+      "serializedDesignSha256": "b04d7e1de7dc509c0246ae33a61573d28d41fff000037ac7f90e4baeb020062c"
+    },
+    {
+      "id": "channel-763501",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "4e771f295d1616a6148c0a8685814a63cf2ea4886a5e8c56fe3390813c36e4fc",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "d78f454f3c309decb271b2f4f8de22769137e29a64f4ac63327d0d672818922d"
+    },
+    {
+      "id": "frame-764510",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "0609fbb3f61fbaae599f694267171ef3f42c1fbf428fc78acaf54d0f6f11dab3",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.0006561279296875,
+      "serializedDesignSha256": "3c5b1c6c94c3e33c69135e31cce835b557eed1a76c9a98ae9c199471a9d81931"
+    },
+    {
+      "id": "lattice-765519",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        3,
+        1
+      ],
+      "geometrySha256": "2592a9a1f73bac5398a5d1111b705fa0180244716ea5046838db9eb55ac1305e",
+      "topologySha256": "0d1dc4f376ff9a31f0c775b48f127ebdff3b8efd1978568003d83e35fee4f5a4",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "3b380258edbff24297d47f7d4ea61395cab3e5e8c230811e34db9fbf28f097bd"
+    },
+    {
+      "id": "shared-lattice-766528",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        3,
+        2
+      ],
+      "geometrySha256": "14f9ff2ea0e335008d224e8d0e04ec8827a18c2adfccd54f9f507ee6abd372a2",
+      "topologySha256": "c0dfa8291ba1ad12b069aae968e88ca6b4df917e1bbb7d1baa1023734c6be9b1",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.001079559326171875,
+      "serializedDesignSha256": "bf843518e711e157f61e92440a3c6e9f4ada0ec211fed34d587e31b051ceb495"
+    },
+    {
+      "id": "channel-767537",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "72d99571d49d784888198b21dea34ba39a3ca8e10cb6c487e7a71e6477d6e248",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "4562dc7c9bf3ed2d589f26df4151ba66961552c60098508eed606b8dc60d7886"
+    },
+    {
+      "id": "frame-768546",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "a58569232b9cf13f5522eb8bd33d35d193a0f86a941e048329ebe8a3caf5c50e",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "64fb1deb14a86a2371b21254f766616f0f9c30d28c10108e862f9cd0f46d1e39"
+    },
+    {
+      "id": "lattice-769555",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        1,
+        4
+      ],
+      "geometrySha256": "78585e7d4fda1c1f7bfa110a88899c018df3ae0936293256d01d28d376fca3c7",
+      "topologySha256": "414720215208f7ef21074b47b2b485e9a7a0011d409f7e552626aa5a94f2ff22",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.001953125,
+      "serializedDesignSha256": "92cf5016d7a30cea9ff8f737d3588578bbf7ee64f8e902e4e021011d6ed52485"
+    },
+    {
+      "id": "shared-lattice-770564",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        1,
+        4
+      ],
+      "geometrySha256": "9601a581470e4d546f2745782e0e15cdd813f7d18ae5b68b8ee475291a045bd3",
+      "topologySha256": "35e4898cec52eed06976e92604a89f8f28cc10b8ee2d83003192cceda4c4924b",
+      "sharedEdges": 3,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.0019683837890625,
+      "serializedDesignSha256": "fa29bf6e20a4197baf9731d389b8b590c7ad614eda4281f11eab9e99d5ca048b"
+    },
+    {
+      "id": "channel-771573",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "42417cf7d601035c0f2dd52c4a1c2b26c64590b03a68175ae402f6302a9ea941",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.001010894775390625,
+      "serializedDesignSha256": "ca346ea40d2d1420a9d989cda0d197b666d7a0910af13211207ce0a0439831f5"
+    },
+    {
+      "id": "frame-2772588",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "e850f5bef388e97ac78b34ee0869bea465c90449adeb26f0cc33cab3ef060cef",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.0013885498046875,
+      "serializedDesignSha256": "84204c0f86d455fbb41fe2ce45e01e2f51b7f5a58fa1264e682f6a1ff5dd838c"
+    },
+    {
+      "id": "lattice-773591",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        3,
+        7
+      ],
+      "geometrySha256": "eaa74223278e9f2ee980a6595ae864f0214aa0e93fef573cb759afc9890529c3",
+      "topologySha256": "74666ec4b216d7c0bbcf7354e4ef29afa226572ce18de64b0b49eeae47c9165c",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "2e5cf78d4e65ddea764cb1f9c7d5a5d0c56d924bfe1324034c2c61c620993fbd"
+    },
+    {
+      "id": "shared-lattice-774600",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        3,
+        1
+      ],
+      "geometrySha256": "52ce2f531f893dc9ab0466f9b62776c146c1294433b73e169f27e25e8e9f636b",
+      "topologySha256": "107df2d2c1eab7e94845fa6b1f57f8323d7cc4f330dbf18f0f9dd70f6f774a49",
+      "sharedEdges": 2,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.0005340576171875,
+      "serializedDesignSha256": "c985b09b2f83ee2aadc6e45684d7623702f85c1edc82f1149e124a66df6c426d"
+    },
+    {
+      "id": "channel-775609",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "0065e643fb56ef1ca3215fe9f3a14434d4f4ff1bf9687ac92a76f6dee898d416",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "de5d57feef7ad077a8651c759e4ad341a019c95cffa57c1245ca139e65d13d48"
+    },
+    {
+      "id": "frame-776618",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "4aa54d73e72ef577c27240e3faa5e9acb9b54bc4aca855ad18244c2eea718eee",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.00255584716796875,
+      "serializedDesignSha256": "8e0338ee079873c550829f6e90dc53446f972c6807f03b187446834514d9a5bc"
+    },
+    {
+      "id": "lattice-777627",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        7,
+        1
+      ],
+      "geometrySha256": "b53d764df4401700e4003d7abf8672526a78586169584da7892997035886acdc",
+      "topologySha256": "71c5e306eb0191358c703bbe1b92c375971ce9927b97bcc69ed5acdf2eae445c",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "25e445359ca76550ce462e257a0c2b8f58d5de14ee8ca3a0a0202ba8f5b27786"
+    },
+    {
+      "id": "shared-lattice-778636",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        5,
+        3
+      ],
+      "geometrySha256": "2364e628872f7a3586d730c215abafaf9d6feae7e925d32bc12d5369c47e55a9",
+      "topologySha256": "fa0587a809d2040f0d1f9c14ad5cff068f4c8996c329f763aba6fbae7433a494",
+      "sharedEdges": 7,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.00167083740234375,
+      "serializedDesignSha256": "60ec7328a454b8bee6806bcf7a3e73b31bca753d5d75c19bdd7a7067e7f91ab9"
+    },
+    {
+      "id": "channel-779645",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "aa6aac123e2c3775f5576e81badb2cd5190123c1c7eb66081f015f919c9de2b0",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "dd9aebea98c5e257d85d05c21bf69b26beab744c57f0844e4b7437b28bc91233"
+    },
+    {
+      "id": "frame-780654",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "67003a5b0634b99ae080342162862e33e0d5908b3f46914675724f242e03b4a6",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "95dddcbead273daf131166ff5f3f2b1fd3ec74df0811f8d124494ee0d5ec89b9"
+    },
+    {
+      "id": "lattice-781663",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        2,
+        3
+      ],
+      "geometrySha256": "4a1039301c349ef7b93329ee7a52ff70e6de44f7180f8f6d1b3215bfb8b07f39",
+      "topologySha256": "f07faa55f093759bbb5154be28cc3878ada2005353aa9ea7df30302ac18b5531",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "acbc281fd0254da3d2c8a9ac6e3e959c89fee6486363f3cd09bb421f3ec03a2a"
+    },
+    {
+      "id": "shared-lattice-782672",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        4,
+        3
+      ],
+      "geometrySha256": "bdf013421f34e58397e6cefa0fd276fbbec44d61de602cc6be6ee7a9dea90f52",
+      "topologySha256": "d8f37e03c62627884abe5f52463cd4c057c65070d12f52981bb1ac998df2ec73",
+      "sharedEdges": 10,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.00135040283203125,
+      "serializedDesignSha256": "a9221d212b99a04c8b2f2217d9c19fad18ee74b8fa4a5b1486ba0914271b22bc"
+    },
+    {
+      "id": "channel-783681",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "a97c7ed001327418a68715cf0f1c8414a36ec2cc753f40b403cfa8e779ade8c4",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "19261035d0bed00c95102023d7a754b7d18602344d235590a5f185f98608febc"
+    },
+    {
+      "id": "frame-1784693",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "8e67f7b8014b6c5b24b0665f5f73510ace4a0b38a0c7a071141c64dee1eb1681",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "b94b58ad69bd1c20e9ffd5bcd4d404fbb67b1b685d31529678f26869795dd12d"
+    },
+    {
+      "id": "lattice-785699",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        1,
+        7
+      ],
+      "geometrySha256": "0ed4aa3936315b569b81e1bf09fa0634155417e19a63af20d5a353d114fb65f2",
+      "topologySha256": "914fbb2bcf4dbedfe2abadcede08b2cfb9b827e0ce2715596d08b6d5456bd7a6",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "04ec9956df92b828a839cd3f210b172125ae1cc923f020ced276fdad25542394"
+    },
+    {
+      "id": "shared-lattice-786708",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        6,
+        6
+      ],
+      "geometrySha256": "87f2f7604b3c139cea9132e2ed2ad317de3566a6fd993e96ca7babc4d891004a",
+      "topologySha256": "fc5937dd78dff912fa780f54b0925e8a216130a489d57400d3acd866706bd565",
+      "sharedEdges": 17,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.003265380859375,
+      "serializedDesignSha256": "daa033d5a1b4a2b25f0fe72f4ad9b3e8bfafe79ba1565f76e067f1883b36472e"
+    },
+    {
+      "id": "channel-787717",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "b003c8fc6485b342146368ba34183ac0f9304fa9a14ad0a256c207bd2db2120c",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "2205ba820b1d3a5e4b8bb217fabe189e3f98d69f789d0a89684f022b3c13141b"
+    },
+    {
+      "id": "frame-788726",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "d4093fe0527ef12a4163b3b572f1f313a88221d342cbdfe8873475ce46baeffd",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.00141143798828125,
+      "serializedDesignSha256": "54723419b32145c16cf4b0813aa8e4052a8c5e1863f154ebb1b88c3afa3e2d41"
+    },
+    {
+      "id": "lattice-789735",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        4,
+        2
+      ],
+      "geometrySha256": "7dcaaaa720b714eabcc50bd407a7a19bac4f244cb2427c460bbb7647e606ecd2",
+      "topologySha256": "66ca491b9b0f47916097aaa9ab3b5ed280d04c3326110bdaa614c71f3728fc71",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.0012969970703125,
+      "serializedDesignSha256": "ee0855f6c91fd1b437ff59f193ee7bd5212c978281f4d77ac53746a391d35764"
+    },
+    {
+      "id": "shared-lattice-790744",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        3,
+        1
+      ],
+      "geometrySha256": "f61a78c77edaa89e13e0c3fd3a03d130715ea56a571811d89acabf362b171b4a",
+      "topologySha256": "9055707e8c4cfeda4285479e4b8ddd753f30a70c651ef7e85c3e1e9847bba42f",
+      "sharedEdges": 3,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.000522613525390625,
+      "serializedDesignSha256": "ba6337a51561f235edb4565123cdfda9168f4f29cb45c2aee06eea8e733594e2"
+    },
+    {
+      "id": "channel-791753",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "91c185b986f829698b84659b9a7cc4c995497bd18a82398aaa69bd6a2da98ccb",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "d60f074a32e4abad36996147425121ed001900e606e8f6775200d04a39e638bf"
+    },
+    {
+      "id": "frame-792762",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "c704a959cb5afafc8392f1b8061f1e5b934b98dcccd138838f5ec53533f9ba13",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "fdf328bcaabe2406981c7a221b640d317a2ae15d2742cc7774b3702bfbe3a945"
+    },
+    {
+      "id": "lattice-793771",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        1,
+        2
+      ],
+      "geometrySha256": "3e4e63c9b2bc735bb330a169fb38d6646e59564acecba82c4ef939f00bf41b3b",
+      "topologySha256": "34a54497a45cb1c86580f45e26f4d767d9f1d7c35606e9dcddb1c65b5f64dae2",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.00055694580078125,
+      "serializedDesignSha256": "0c774eed272e6cc0da587dc08d6bb9c2fe4290898a49c6d769e3dfe2639163c7"
+    },
+    {
+      "id": "shared-lattice-794780",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        2,
+        3
+      ],
+      "geometrySha256": "9e3783b1d18526f6ad258fba7cad47e3dfe07599e471b316a3d8f16e4251e1ee",
+      "topologySha256": "8c33574a8c9e3b64152704d2324d5454323f62110aea29f48c838c5469ff7942",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.00003814697265625,
+      "serializedDesignSha256": "980f04e82284779c093948fcdf9c8ac207c3eedc9690d59fe5f6eb05dd2b1a10"
+    },
+    {
+      "id": "channel-795789",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "5e32396cfef3b502e938439fef8b30612c272af92733fe8575f3ae61b6e3a16f",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "d118a1a58110b327f7a7ba2349853dac3c75efadc725b4901a6a08caf23a09f6"
+    },
+    {
+      "id": "frame-796798",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "f3c347bf6203daa841166d62c55ff9e474a4ec1769dec21a0b466db9d34dc91c",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "633d699101c822e36f4604d2f5baa81a6811f1def71389fd7a2bda07c4d9b82f"
+    },
+    {
+      "id": "lattice-797807",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        7,
+        2
+      ],
+      "geometrySha256": "5905343d1dc78025caaea44ae1378abcf2fcc913ca386e82665eb7917b63376a",
+      "topologySha256": "f3de4de3fc99904fddb01c05c34407b844654a41fc74b38890963f2c9290bdad",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.002025604248046875,
+      "serializedDesignSha256": "abbe84bfa3692538d96cd95e86fa8f655db1e5194c0e3181c1c3ba9606b19b49"
+    },
+    {
+      "id": "shared-lattice-798816",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        7,
+        6
+      ],
+      "geometrySha256": "6cb4b6f7eb6efc1f52c5fbc8a51f8821a97e66d9475fc8a917ad30bfe5f46a8e",
+      "topologySha256": "434ba7cc57ad7cc2b6a1d978d439c479de4ce9e77ea5cf60a6699203afc27257",
+      "sharedEdges": 28,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.00206756591796875,
+      "serializedDesignSha256": "7f84337855167de925dd507ad0925eb1f1c0f443611edb193a318e98dd8f4430"
+    },
+    {
+      "id": "channel-799825",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "fd64d1bc68f161f9b057765f8af1add2ea20886d013233760142e7a94b1502c3",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.000904083251953125,
+      "serializedDesignSha256": "5fb661ed0366ab87432d6c974f09db3f0408de0ca534b00541c95adafb0cb5b3"
+    },
+    {
+      "id": "frame-800834",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "0c223ec4b7a92844ae0a84342476f252089c2ca5b4d5bae863bbcd788885b815",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "9b99affa4d3506771b0aebee6a7bad0e8cc9e7c48726dfba6b232262425f8ec9"
+    },
+    {
+      "id": "lattice-801843",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        2,
+        6
+      ],
+      "geometrySha256": "281036f9af7ad38f1dddf6b902a566e2b81cc10cd7bbfb1b6feecbd63fdd30bf",
+      "topologySha256": "d49a488f885070395d4913ba1e2766567e91aa0a6a9cf17831733c4ab698c91b",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.00234222412109375,
+      "serializedDesignSha256": "79545c69a97a01cfce5f2f1b8f8dc24f56f1b885076d1cbf71c76a3346087387"
+    },
+    {
+      "id": "shared-lattice-802852",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        6,
+        3
+      ],
+      "geometrySha256": "5ebc17dba28c032868bf2e57420061fc7fabc2350a6235b4859858d1be7f5ff3",
+      "topologySha256": "b194a6d21105be096c0f9344a5037029e07080e420812afaad21de56ab737078",
+      "sharedEdges": 6,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.002178192138671875,
+      "serializedDesignSha256": "2c8f8e59582ed0cd45bacd4cb7c0a713360fea1bdecd1683cf9b5199ef7f31a3"
+    },
+    {
+      "id": "channel-803861",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "158b5ff122a0e53b6d40d1c6858a818bce0f41c2e8f334841761711bfbc37f0f",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.000579833984375,
+      "serializedDesignSha256": "5f0325dd50b5465ed65ad9a8ca1fe1f1a00ca3879e7f301f16fbb1301e1bf676"
+    },
+    {
+      "id": "frame-804870",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "57e4cb2df112d1b44879ed865fde374d6ef63f2be41379a99f57cdcb4431994e",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "2cc409810fecd0dca2fb32c1473a805a0ee82c4309164d8737815fd47bfa211f"
+    },
+    {
+      "id": "lattice-805879",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        1,
+        4
+      ],
+      "geometrySha256": "0b18a66dee97419bd1353e6cf7b03bfc1bcbdd5050c7d145a9624efe3d795457",
+      "topologySha256": "414720215208f7ef21074b47b2b485e9a7a0011d409f7e552626aa5a94f2ff22",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.00154876708984375,
+      "serializedDesignSha256": "9c07d4fe3a48502d0c334b24d2e3283f2a6e13e754c8b875cfcab32fef679334"
+    },
+    {
+      "id": "shared-lattice-806888",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        7,
+        6
+      ],
+      "geometrySha256": "792106916999b03b7e16cc7af45fd4e4c91e889b6a0298dcaadd833c1f71a490",
+      "topologySha256": "e6eb9222a25518cdb7df9dc9152f94bc19e785da5c988a6a0936eab0a4e624b6",
+      "sharedEdges": 21,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.001369476318359375,
+      "serializedDesignSha256": "8aa698026840af37ad6ecf5fd30861cd829732d8adec62cd23cef2c2d1d16722"
+    },
+    {
+      "id": "channel-807897",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "30773f1e9c233e84dc4e7fa188bfdab793bb9ea531ce08936497d328b5e75d42",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "4603df3d95e9ea4d2429375ae536a03ad17ce64c87cb4b732cd2d10089acf8ce"
+    },
+    {
+      "id": "frame-808906",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "133b1f2783f203c679a9eb34049d82fc8016c971421d81195e93a14b1b3d0dd8",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "4701dbdc50a91995c3343034cbd944f779f25f56dc6e0e0619d82ec718daf80c"
+    },
+    {
+      "id": "lattice-809915",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        5,
+        7
+      ],
+      "geometrySha256": "3a70cc73d2ad1e4130a8cf0c6e674495ae2d299e9327aa05ee9c748f0a629545",
+      "topologySha256": "148c0f2e6010a39452f039fe512bb799dfe1f3014b36d01707f62ac812858809",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.002872467041015625,
+      "serializedDesignSha256": "ec93b9b003146201e22385a63faedf9828a9e88ddb30b6c20ef2893ac91eb625"
+    },
+    {
+      "id": "shared-lattice-810924",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        2,
+        1
+      ],
+      "geometrySha256": "1b9b1abe46e63a547ada2d18c3d0f7489de2d9fc3f13c75d0818cdd565c4a2da",
+      "topologySha256": "049ab895d875d1353430c165121c21b8385dca75624b10f1fcbe5e8dfc5af80b",
+      "sharedEdges": 2,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.00012969970703125,
+      "serializedDesignSha256": "0b618dcf007bc4ea3c5020b94c2a8566ca27d02bda6c408e36e7ccad9172d403"
+    },
+    {
+      "id": "channel-811933",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "430b1ce552103276ec1a6998f0d34d3b065c946dd911ca28ae4310d6eefdd17c",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "6464c3a3150dc35fbdd60dc8bfcc7dcaa62df3934ef8ba52bcf36ce731a7bd6f"
+    },
+    {
+      "id": "frame-812942",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "53d71878bebac3d3240a5cc21c81af7d3c2f2174dccd5d0c4068325481a03d06",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "fb2b578323f77af1d167d5051f301d33d9743324cc2cecfc1fd0a551513a396e"
+    },
+    {
+      "id": "lattice-813951",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        1,
+        7
+      ],
+      "geometrySha256": "92efc17e2306add781e5cabff74c4f80940d452023bdb0bb515d9a6f54d56925",
+      "topologySha256": "914fbb2bcf4dbedfe2abadcede08b2cfb9b827e0ce2715596d08b6d5456bd7a6",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.002685546875,
+      "serializedDesignSha256": "79eb626033e8546ce2e70d5415785e39573f27851af4e624ef5ecc756325b707"
+    },
+    {
+      "id": "shared-lattice-814960",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        1,
+        7
+      ],
+      "geometrySha256": "d7610be4c6f39d99e1f1fab52865476c57c8cb1b0a13e49f6fb13adfc9c78fb4",
+      "topologySha256": "ace02a49cc5f3df6d53efc858b4ef8f9f7584adf6895acf905aea6c05d388487",
+      "sharedEdges": 2,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "69e174946633c44939d4a9b25c989157617a3057d0d9fdb21963160e9c8bf48e"
+    },
+    {
+      "id": "channel-815969",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "1629a5f4b4feb4ec625ee9a5dd50cb6e967cc20b3ac1bf2c3f3e2ebf99922a89",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "91e29a3e55a28dfd832a3495a504505ccc292248ac61923779ee681ec7bd53ba"
+    },
+    {
+      "id": "frame-816978",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "3281af0f0ac3b2ab13770c5be0110e9bad67b8fe51a4a0172f88222c33c00a74",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.00234222412109375,
+      "serializedDesignSha256": "febe9c8aca285386abcb0f798fcc07e792c678f135e98b544fca08f3e783293b"
+    },
+    {
+      "id": "lattice-817987",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        4,
+        6
+      ],
+      "geometrySha256": "8c76fc568c6c81e5bf56ce96b97168eabe5b448ca7f97293f21ff16820f853c8",
+      "topologySha256": "3823d0c9b80f7a7ae3ee64346195f4ef6aea170a66ffd322aadfa16da343fc1c",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.00225067138671875,
+      "serializedDesignSha256": "b9108de2f138dd02100f4ce56b2a4fea9b8ad9fa287aff2219ab34087b34e75f"
+    },
+    {
+      "id": "shared-lattice-818996",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        5,
+        3
+      ],
+      "geometrySha256": "9a8491b762eef1ef3fa25621332e62aabd54eb6c141938cebd09d4d2571e6f3b",
+      "topologySha256": "eeec9ef8ee897423a764b02378bdc7bbfb7985b89ab29c215b6701d1d980032c",
+      "sharedEdges": 7,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.001705169677734375,
+      "serializedDesignSha256": "5afc424cbceafe42c3553e3f54c86ee1b6a41540532a90c441254afc2b55db11"
+    },
+    {
+      "id": "channel-820005",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "d627c6d3aea74d581c63b65dda664cd61b183b9fd7ae371065742c6878d39dc1",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "dbb54b4f3fbde38b9331910a9508599256062513e5825c5b50c7607d202d0c8e"
+    },
+    {
+      "id": "frame-1821017",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "a024373ca4e5a6093b881086789874699f45f8309d057cf19f9a9458ee78818f",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "7630463caa09b0c9364b6c26a77601f93d98f7e34639af3454ed51ab9faf7838"
+    },
+    {
+      "id": "lattice-822023",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        3,
+        5
+      ],
+      "geometrySha256": "8c33b7909765db1daa89b6b5f62575377126a7312570cc5b792bc65cf4c26c3c",
+      "topologySha256": "7a06e3f695ba0ad168d97bdc9e4321247e9e5253d3920fc93820d519808e50db",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "ab35f793b80facaa9fa1d59d328f2499c7892548248747a2b84f0e198715f489"
+    },
+    {
+      "id": "shared-lattice-823032",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        2,
+        1
+      ],
+      "geometrySha256": "1c38f62acbe536e11070a36deca9b2893cd608f63bbfe4a91d67bbcba1822fb8",
+      "topologySha256": "049ab895d875d1353430c165121c21b8385dca75624b10f1fcbe5e8dfc5af80b",
+      "sharedEdges": 2,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.00051116943359375,
+      "serializedDesignSha256": "bd397a56548485da6b1457e66c6f4f9cd28777d371cc9c36e618b0f7ef61be9e"
+    },
+    {
+      "id": "channel-824041",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "9f990d50e37771565c06b38906523691f8cbc9d46e8bb0ce278998786d4a27ea",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "cba6bfa47f1f19fc0ea39c8ffa6a06d17ae63c8a1fb29cd5af7f30e0b0baf73d"
+    },
+    {
+      "id": "frame-825050",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "3e699370593ecfdba8eb7c9f1ab40ef70beecab1229ae7df62e58f71b5da9bf8",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.00086212158203125,
+      "serializedDesignSha256": "9029d338e91d32c5f66240221177c5d7774dfff303322734fcad790141da5d48"
+    },
+    {
+      "id": "lattice-1826062",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        3,
+        6
+      ],
+      "geometrySha256": "b8c72023dc6d5c93f37907903810efdc3c344b2b98d9c82010c7f472a88226d3",
+      "topologySha256": "79625c0caad42f90d38f97eb6dfb7c74c00505282f8679ed6e0bebf258366ae6",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.00202178955078125,
+      "serializedDesignSha256": "168ba2596a1abd6785019e074a338c865771176ba658be474912fd662266df16"
+    },
+    {
+      "id": "shared-lattice-827068",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        2,
+        1
+      ],
+      "geometrySha256": "94df9f5afd30a123a353e51f613453521c5a642e76d59b8fc1a90c568bd94d09",
+      "topologySha256": "049ab895d875d1353430c165121c21b8385dca75624b10f1fcbe5e8dfc5af80b",
+      "sharedEdges": 2,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.00057220458984375,
+      "serializedDesignSha256": "71730ef7610fdc53c2f006ffef27403e4845d91f1fdc782a67b2d0f5af09d46b"
+    },
+    {
+      "id": "channel-828077",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "2a45cd342029c271730848f3790e68c45433575d4f5925012e13dcf919e238ad",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "c69819d354eed59220deaffd7f69f8139caa67b15b2d8b7e402a58258d347a82"
+    },
+    {
+      "id": "frame-829086",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "e163cc5f691724728db0464e77dda8824881537488167d6bedb78f0e92add6cf",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "051398cd185a6f403aaeebe1aebdec50b2b3fca44c0685fd7b74f90169f80dd6"
+    },
+    {
+      "id": "lattice-830095",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        1,
+        2
+      ],
+      "geometrySha256": "3b4a4e817cfdd314701d6b27a3af4e08d844c5eb439c487cf5476e0bcac15e29",
+      "topologySha256": "34a54497a45cb1c86580f45e26f4d767d9f1d7c35606e9dcddb1c65b5f64dae2",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.000518798828125,
+      "serializedDesignSha256": "378b469363175442112ff9518fce70248be4b5bebb70df045a5e934af7e951a2"
+    },
+    {
+      "id": "shared-lattice-831104",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        3,
+        5
+      ],
+      "geometrySha256": "833111f9500b1c1938e4f9fe24eb7bdd33b45e5af404103c27fb5bd91d0bdcb0",
+      "topologySha256": "6e6bb25f9d64f54dc8a1946e5f13bcf37a99fdd14efafedbbd88bb7bbcf41eb8",
+      "sharedEdges": 9,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "4b1b9b3c75846ec9bd2e94a0c609df1a8c3d33ea77bbd21fb230df08753b98c9"
+    },
+    {
+      "id": "channel-832113",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "12193e0a52eeee069d77e0ea6488e203006fb78a330831ba0cfd467f25004b12",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "c11b66cce6d3f91477522c69b4ea0a81c8c3deff6699060357bac6eaa760359c"
+    },
+    {
+      "id": "frame-833122",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "f0ab38f1c4aa6d073a7d28e8498b5b56bd8bbaa5312447f185d834c50c90ef08",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.00084686279296875,
+      "serializedDesignSha256": "802e994d92a1a125305504e7fba207bbfeec35bdd70652979d620248974e0df0"
+    },
+    {
+      "id": "lattice-834131",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        5,
+        7
+      ],
+      "geometrySha256": "838b0c9c1f52771d24ffe1cc4cba682d344a57b6c236cd66f9027705babe65cf",
+      "topologySha256": "148c0f2e6010a39452f039fe512bb799dfe1f3014b36d01707f62ac812858809",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "4256eae50ba38199696c3f6e8d97f61351e157134056b07744678957264dba38"
+    },
+    {
+      "id": "shared-lattice-835140",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "245ca50ba96d78dc0e47c7855883b1138e784fcdf910e73e797acda5a0667a66",
+      "topologySha256": "11be365fd94de98ade84f36f1669d9d90a2fa682752239e9356a7dafa17f971c",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.00023651123046875,
+      "serializedDesignSha256": "ab83016b282dc6d1fb7bfafc8107261762000b02a0d4b53c230de1a83ce7f05e"
+    },
+    {
+      "id": "channel-836149",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "247a2bdb8047df48321c2a8cea1cd2f5f7eddec980307f149ecbee7540b22a9e",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.000507354736328125,
+      "serializedDesignSha256": "8bd179e9ca21bddf12bd25fdf2386a597e1531d531126e4e7e9ce5dc5974e846"
+    },
+    {
+      "id": "frame-837158",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "2c6aed76b16ffdcca84f9f847a46f2b5c8f52147d4a5fd4fee8560779c0f93da",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0,
+      "serializedDesignSha256": "6a075481621e91ae85f30dad7f0f3b955ee7ec528442ec9e433e7272ed4c92c9"
+    },
+    {
+      "id": "lattice-838167",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        5,
+        6
+      ],
+      "geometrySha256": "2ef82a415753eaff61f501954373bfdb8430324303209d88ffeeda22f28bd040",
+      "topologySha256": "6e927b30ac7b7a003bc3aa631ac6b040500f65a43d2a3f61ee65cc66f1f8b919",
+      "sharedEdges": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.001953125,
+      "serializedDesignSha256": "02b2514ec3a6ff5fafb00a0efc0e94094a4fcfa731762a135e754a220fb60126"
+    },
+    {
+      "id": "shared-lattice-839176",
+      "familyId": "procedural-lattice",
+      "split": "train",
+      "counts": [
+        6,
+        2
+      ],
+      "geometrySha256": "4e89d17eb87068cb5567a4894a4f7db0569d0e16c885b435ee7d87ecd60cd85d",
+      "topologySha256": "fc513fba063a28840a5e2af5b3c4c13d8d9d3ddefb8554c1b3da6a090ef92707",
+      "sharedEdges": 7,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.00176239013671875,
+      "serializedDesignSha256": "3d4070186eaff982f4a0d60c6eaa3a2f6113933e9130721b542dc0ccda65b5ed"
+    },
+    {
+      "id": "channel-840185",
+      "familyId": "procedural-channel",
+      "split": "validation",
+      "counts": [
+        1,
+        1
+      ],
+      "geometrySha256": "1bfdeae1d7803398fef57f690411a9de5a23d63edfc95ad012ff49def7f97d96",
+      "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
+      "sharedEdges": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.000881195068359375,
+      "serializedDesignSha256": "9147a8bb0f8c64ccf2e1153dfe1c4f19dec5e2568888d12a4b67ec7705e75e8f"
+    },
+    {
+      "id": "frame-841194",
+      "familyId": "procedural-frame",
+      "split": "test",
+      "counts": [
+        2,
+        2
+      ],
+      "geometrySha256": "fbf86fce5ffc14950eb2bb6b9c33568056ed2f3820bf1b970f4a87b053b3ef87",
+      "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
+      "sharedEdges": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "independentRenderError": 0.00269317626953125,
+      "serializedDesignSha256": "42f6c4b07b7336ed2581444952e3b4ea0610f47fd140b23fb66e6e541cebca65"
+    }
+  ],
+  "rejections": [
+    {
+      "id": "frame-716078",
+      "recipe": "frame",
+      "passedValidation": false,
+      "duplicateGeometry": false,
+      "geometry": {
+        "passed": false,
+        "issues": [
+          {
+            "type": "forward_sample_mismatch",
+            "pixels": 1
+          }
+        ],
+        "nominalWidthRequired": 2.50501002004008,
+        "minimumInterSlitDistanceLower": 32.521305401362476,
+        "minimumOuterSideClearance": 15.911597441881895,
+        "boundaryParityMatches": true,
+        "forwardSampleMismatchPixels": 1,
+        "forwardBoundaryAmbiguousPixels": 0,
+        "forwardSampleResolution": 101,
+        "geometryTolerance": 0.01,
+        "sharedCurvesStoredOnce": true,
+        "physicalAssemblyTested": false,
+        "limitations": [
+          "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+          "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+          "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+          "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+        ]
+      },
+      "paper": null
+    },
+    {
+      "id": "frame-736258",
+      "recipe": "frame",
+      "passedValidation": false,
+      "duplicateGeometry": false,
+      "geometry": {
+        "passed": false,
+        "issues": [
+          {
+            "type": "forward_sample_mismatch",
+            "pixels": 1
+          }
+        ],
+        "nominalWidthRequired": 2.50501002004008,
+        "minimumInterSlitDistanceLower": 22.287659834623337,
+        "minimumOuterSideClearance": 20.205469662323594,
+        "boundaryParityMatches": true,
+        "forwardSampleMismatchPixels": 1,
+        "forwardBoundaryAmbiguousPixels": 0,
+        "forwardSampleResolution": 101,
+        "geometryTolerance": 0.01,
+        "sharedCurvesStoredOnce": true,
+        "physicalAssemblyTested": false,
+        "limitations": [
+          "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+          "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+          "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+          "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+        ]
+      },
+      "paper": null
+    },
+    {
+      "id": "frame-744330",
+      "recipe": "frame",
+      "passedValidation": false,
+      "duplicateGeometry": false,
+      "geometry": {
+        "passed": false,
+        "issues": [
+          {
+            "type": "forward_sample_mismatch",
+            "pixels": 1
+          }
+        ],
+        "nominalWidthRequired": 2.50501002004008,
+        "minimumInterSlitDistanceLower": 33.90727187881246,
+        "minimumOuterSideClearance": 15.628956576809287,
+        "boundaryParityMatches": true,
+        "forwardSampleMismatchPixels": 1,
+        "forwardBoundaryAmbiguousPixels": 0,
+        "forwardSampleResolution": 101,
+        "geometryTolerance": 0.01,
+        "sharedCurvesStoredOnce": true,
+        "physicalAssemblyTested": false,
+        "limitations": [
+          "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+          "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+          "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+          "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+        ]
+      },
+      "paper": null
+    },
+    {
+      "id": "frame-772582",
+      "recipe": "frame",
+      "passedValidation": false,
+      "duplicateGeometry": false,
+      "geometry": {
+        "passed": false,
+        "issues": [
+          {
+            "type": "forward_sample_mismatch",
+            "pixels": 1
+          }
+        ],
+        "nominalWidthRequired": 2.50501002004008,
+        "minimumInterSlitDistanceLower": 23.209240071959794,
+        "minimumOuterSideClearance": 15.399492554366589,
+        "boundaryParityMatches": true,
+        "forwardSampleMismatchPixels": 1,
+        "forwardBoundaryAmbiguousPixels": 0,
+        "forwardSampleResolution": 101,
+        "geometryTolerance": 0.01,
+        "sharedCurvesStoredOnce": true,
+        "physicalAssemblyTested": false,
+        "limitations": [
+          "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+          "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+          "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+          "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+        ]
+      },
+      "paper": null
+    },
+    {
+      "id": "frame-1772585",
+      "recipe": "frame",
+      "passedValidation": false,
+      "duplicateGeometry": false,
+      "geometry": {
+        "passed": false,
+        "issues": [
+          {
+            "type": "forward_sample_mismatch",
+            "pixels": 1
+          }
+        ],
+        "nominalWidthRequired": 2.50501002004008,
+        "minimumInterSlitDistanceLower": 36.969067880436775,
+        "minimumOuterSideClearance": 16.750518130138516,
+        "boundaryParityMatches": true,
+        "forwardSampleMismatchPixels": 1,
+        "forwardBoundaryAmbiguousPixels": 0,
+        "forwardSampleResolution": 101,
+        "geometryTolerance": 0.01,
+        "sharedCurvesStoredOnce": true,
+        "physicalAssemblyTested": false,
+        "limitations": [
+          "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+          "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+          "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+          "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+        ]
+      },
+      "paper": null
+    },
+    {
+      "id": "frame-784690",
+      "recipe": "frame",
+      "passedValidation": false,
+      "duplicateGeometry": false,
+      "geometry": {
+        "passed": false,
+        "issues": [
+          {
+            "type": "forward_sample_mismatch",
+            "pixels": 1
+          }
+        ],
+        "nominalWidthRequired": 2.50501002004008,
+        "minimumInterSlitDistanceLower": 32.31445905381813,
+        "minimumOuterSideClearance": 15.489421159029007,
+        "boundaryParityMatches": true,
+        "forwardSampleMismatchPixels": 1,
+        "forwardBoundaryAmbiguousPixels": 0,
+        "forwardSampleResolution": 101,
+        "geometryTolerance": 0.01,
+        "sharedCurvesStoredOnce": true,
+        "physicalAssemblyTested": false,
+        "limitations": [
+          "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+          "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+          "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+          "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+        ]
+      },
+      "paper": null
+    },
+    {
+      "id": "frame-821014",
+      "recipe": "frame",
+      "passedValidation": false,
+      "duplicateGeometry": false,
+      "geometry": {
+        "passed": false,
+        "issues": [
+          {
+            "type": "forward_sample_mismatch",
+            "pixels": 1
+          }
+        ],
+        "nominalWidthRequired": 2.50501002004008,
+        "minimumInterSlitDistanceLower": 35.273060441501435,
+        "minimumOuterSideClearance": 20.400221588090062,
+        "boundaryParityMatches": true,
+        "forwardSampleMismatchPixels": 1,
+        "forwardBoundaryAmbiguousPixels": 0,
+        "forwardSampleResolution": 101,
+        "geometryTolerance": 0.01,
+        "sharedCurvesStoredOnce": true,
+        "physicalAssemblyTested": false,
+        "limitations": [
+          "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+          "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+          "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+          "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+        ]
+      },
+      "paper": null
+    },
+    {
+      "id": "lattice-826059",
+      "recipe": "lattice",
+      "passedValidation": true,
+      "duplicateGeometry": true,
+      "geometry": {
+        "passed": true,
+        "issues": [],
+        "nominalWidthRequired": 2.50501002004008,
+        "minimumInterSlitDistanceLower": 14.265714285714278,
+        "minimumOuterSideClearance": 14.285714285714278,
+        "boundaryParityMatches": true,
+        "forwardSampleMismatchPixels": 0,
+        "forwardBoundaryAmbiguousPixels": 0,
+        "forwardSampleResolution": 101,
+        "geometryTolerance": 0.01,
+        "sharedCurvesStoredOnce": true,
+        "physicalAssemblyTested": false,
+        "limitations": [
+          "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+          "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+          "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+          "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+        ]
+      },
+      "paper": {
+        "status": "pass",
+        "requiredRemainingWidth": 2,
+        "nominalDiameter": 2.50501002004008,
+        "gridSpacing": 0.2777777777777778,
+        "clearanceGuard": 0.20641855032959658,
+        "families": [
+          {
+            "family": 0,
+            "status": "pass",
+            "detachedCertainCoreIslands": 0,
+            "detachedPossibleCoreIslands": 0,
+            "detachedPossibleArea": 0,
+            "foldIntervals": [
+              {
+                "interval": [
+                  0,
+                  33.333333333333336
+                ],
+                "certainCoreLength": 30.555555555555618,
+                "possibleCoreLength": 31.111111111111175
+              },
+              {
+                "interval": [
+                  33.333333333333336,
+                  66.66666666666667
+                ],
+                "certainCoreLength": 30.555555555555618,
+                "possibleCoreLength": 31.111111111111175
+              },
+              {
+                "interval": [
+                  66.66666666666667,
+                  100
+                ],
+                "certainCoreLength": 30.555555555555618,
+                "possibleCoreLength": 31.111111111111175
+              }
+            ]
+          },
+          {
+            "family": 1,
+            "status": "pass",
+            "detachedCertainCoreIslands": 0,
+            "detachedPossibleCoreIslands": 0,
+            "detachedPossibleArea": 0,
+            "foldIntervals": [
+              {
+                "interval": [
+                  0,
+                  14.285714285714286
+                ],
+                "certainCoreLength": 11.388888888888896,
+                "possibleCoreLength": 12.222222222222232
+              },
+              {
+                "interval": [
+                  14.285714285714286,
+                  28.571428571428573
+                ],
+                "certainCoreLength": 11.388888888888896,
+                "possibleCoreLength": 12.222222222222232
+              },
+              {
+                "interval": [
+                  28.571428571428573,
+                  42.857142857142854
+                ],
+                "certainCoreLength": 11.388888888888896,
+                "possibleCoreLength": 12.222222222222232
+              },
+              {
+                "interval": [
+                  42.857142857142854,
+                  57.142857142857146
+                ],
+                "certainCoreLength": 11.111111111111118,
+                "possibleCoreLength": 12.222222222222232
+              },
+              {
+                "interval": [
+                  57.142857142857146,
+                  71.42857142857143
+                ],
+                "certainCoreLength": 11.388888888888896,
+                "possibleCoreLength": 12.222222222222232
+              },
+              {
+                "interval": [
+                  71.42857142857143,
+                  85.71428571428571
+                ],
+                "certainCoreLength": 11.388888888888896,
+                "possibleCoreLength": 12.222222222222232
+              },
+              {
+                "interval": [
+                  85.71428571428571,
+                  100
+                ],
+                "certainCoreLength": 11.388888888888896,
+                "possibleCoreLength": 12.222222222222232
+              }
+            ]
+          }
+        ],
+        "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+        "seconds": 0.03649554099999659,
+        "limitations": [
+          "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+          "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+          "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+          "Small tips and features below the explicitly stated area threshold are not certified."
+        ]
+      },
+      "rendererDisagreement": 0.00194549560546875
+    }
+  ],
+  "visualInspection": {
+    "allDesignsContactSheetSha256": "92f3f264f10993a6fddd44b273dc2d5c93a697718529020a445d0f28fbd6722b",
+    "selectedViewsContactSheetSha256": "3a90a76545160e159cdedf4b62ddebfee250ea16dab752b127d2a0bdbd40cc6d",
+    "scope": "First photo of all 128 designs plus canonical/photo/crop/coverage panels for indices 0,1,24,49,72,113,122,123.",
+    "result": "No broken silhouettes or label alignment defects observed at contact-sheet scale. Difficult pale palettes and crop offsets are represented. Flat paper and procedural backgrounds still look synthetic; no real-photo accuracy claim."
+  },
+  "limitations": [
+    "Synthetic 2D images supplement real photographs; they do not establish real-world accuracy.",
+    "Procedural recipe groups are limited and share simplified routing topologies; this is not topology-disjoint evaluation. View count is not motif/topology diversity.",
+    "Graph labels are valid witnesses, not unique ground truth; unlisted connections must not automatically become negative examples.",
+    "Geometry and nominal paper-core checks are numerical and do not certify physical assembly.",
+    "Independent renderer comparison is raster evidence, not a proof of exact equality."
+  ],
+  "metadataCorrections": [
+    {
+      "script": "scripts/inverse/datasets/synthetic-correct-metadata.mjs",
+      "scriptSha256": "c23d2794fb3c181aa06f6744a4e281395247228e4f54ef4cfa8c752bd4304a64",
+      "originalManifest": "manifest-before-recipe-clarification.json",
+      "originalManifestSha256": "2334df2c4477942514cde40f6e9f4edd55dd5db341117e9bbb7432f26345b4c5",
+      "changes": [
+        "Describe recipe holdout accurately; simplified routing topologies cross recipe groups.",
+        "Recompute geometry hashes/count excluding color phase and paper palette; retain original full-design identity separately."
+      ],
+      "unchanged": "All cut, graph, photo, crop, coverage, per-view label and validation assets; original generation source hashes."
+    }
+  ],
+  "reproductionNote": "Generation command describes original frozen producer source hashes. Later metadata correction is recorded separately; current generator also excludes color phase from geometry deduplication and describes recipe holdout accurately."
+}

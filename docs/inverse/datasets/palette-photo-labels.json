@@ -1,0 +1,106 @@
+{
+  "schema": "woven-heart-palette-photo-labels-1",
+  "status": "reviewed-and-admitted",
+  "scope": "One previously unlabelled orange/yellow Pinterest photograph. Body silhouette and conservative paper interiors; no new cutting paths, exact corners or train/test allocation.",
+  "bodyInstances": 19,
+  "materialInstances": 17,
+  "newInstances": 1,
+  "sourceGroups": 1,
+  "noModelTraining": true,
+  "admission": {
+    "status": "complete",
+    "admittedInstances": [
+      "real-e936e08ac62db19b-body-1"
+    ],
+    "reviewedBytesReproduced": true,
+    "checks": [
+      {
+        "passed": true,
+        "instances": 1,
+        "sourceGroups": 1,
+        "approximateOverlapReferences": 0,
+        "manifestSha256": "2644750cfef7125c85247e05548e9cacd5526c8e9409800d45e730c293eeedf2",
+        "annotationsSha256": "2b8c2f11b6390608cee50c5adfb42280a2f72ca3d6309f4aad6ffc7ae081fd4f",
+        "scope": "All source hashes, inherited groups, transforms, known/unknown labels and RGB pixels; not an independent human annotation audit."
+      },
+      {
+        "passed": true,
+        "instances": 1,
+        "sourceGroups": 1,
+        "approximateOverlapReferences": 0,
+        "manifestSha256": "2644750cfef7125c85247e05548e9cacd5526c8e9409800d45e730c293eeedf2",
+        "annotationsSha256": "2b8c2f11b6390608cee50c5adfb42280a2f72ca3d6309f4aad6ffc7ae081fd4f",
+        "scope": "All source hashes, inherited groups, transforms, known/unknown labels and RGB pixels; not an independent human annotation audit."
+      },
+      {
+        "passed": true,
+        "instances": 1,
+        "sourceGroups": 1,
+        "manifestSha256": "2ce7a2590575acb0a9123742e6bd520f280557787c1ce47b4eb7d41af23fdb1c",
+        "annotationsSha256": "0269eaf9a4ef159b41b4b7e2717afe5254e8fac3b9eeeb5e434cbc81745accba",
+        "scope": "Source bytes, body references, grouping, transforms and every output pixel; annotation correctness still requires visual review."
+      },
+      {
+        "passed": true,
+        "instances": 1,
+        "sourceGroups": 1,
+        "manifestSha256": "2ce7a2590575acb0a9123742e6bd520f280557787c1ce47b4eb7d41af23fdb1c",
+        "annotationsSha256": "0269eaf9a4ef159b41b4b7e2717afe5254e8fac3b9eeeb5e434cbc81745accba",
+        "scope": "Source bytes, body references, grouping, transforms and every output pixel; annotation correctness still requires visual review."
+      },
+      {
+        "passed": true,
+        "instances": 1,
+        "sourceGroups": 1,
+        "approximateOverlapReferences": 0,
+        "manifestSha256": "387f89d515ef8da881cb9c789d9fd0e30f4c2ebc26afaa456d60069c7708166a",
+        "annotationsSha256": "2b8c2f11b6390608cee50c5adfb42280a2f72ca3d6309f4aad6ffc7ae081fd4f",
+        "scope": "All source hashes, inherited groups, transforms, known/unknown labels and RGB pixels; not an independent human annotation audit."
+      },
+      {
+        "passed": true,
+        "instances": 1,
+        "sourceGroups": 1,
+        "approximateOverlapReferences": 0,
+        "manifestSha256": "387f89d515ef8da881cb9c789d9fd0e30f4c2ebc26afaa456d60069c7708166a",
+        "annotationsSha256": "2b8c2f11b6390608cee50c5adfb42280a2f72ca3d6309f4aad6ffc7ae081fd4f",
+        "scope": "All source hashes, inherited groups, transforms, known/unknown labels and RGB pixels; not an independent human annotation audit."
+      },
+      {
+        "passed": true,
+        "instances": 1,
+        "sourceGroups": 1,
+        "manifestSha256": "3b91db5b804e0c920309ed7ec39cb06444a0759f691c360ce4767edbeb3842ae",
+        "annotationsSha256": "0269eaf9a4ef159b41b4b7e2717afe5254e8fac3b9eeeb5e434cbc81745accba",
+        "scope": "Source bytes, body references, grouping, transforms and every output pixel; annotation correctness still requires visual review."
+      },
+      {
+        "passed": true,
+        "instances": 1,
+        "sourceGroups": 1,
+        "manifestSha256": "3b91db5b804e0c920309ed7ec39cb06444a0759f691c360ce4767edbeb3842ae",
+        "annotationsSha256": "0269eaf9a4ef159b41b4b7e2717afe5254e8fac3b9eeeb5e434cbc81745accba",
+        "scope": "Source bytes, body references, grouping, transforms and every output pixel; annotation correctness still requires visual review."
+      }
+    ],
+    "sources": {
+      "scripts/inverse/datasets/real-annotations-palettes.json": "2b8c2f11b6390608cee50c5adfb42280a2f72ca3d6309f4aad6ffc7ae081fd4f",
+      "scripts/inverse/datasets/real-materials-palettes.json": "0269eaf9a4ef159b41b4b7e2717afe5254e8fac3b9eeeb5e434cbc81745accba"
+    },
+    "previousStarLabelsUnchanged": true,
+    "qaTreeExcluded": true,
+    "noModelTraining": true
+  },
+  "uncertainty": "Body boundary band and feather occlusion are unknown. Material labels exclude seam pixels, boundaries, shaded uncertainties and the handle.",
+  "duplicateReview": "An independently drafted green/cream star was already in the nine-photo pilot; original labels and evaluation remain unchanged.",
+  "qaProtection": "Green-tree candidate belongs to a reserved QA source group and was not admitted.",
+  "evidence": {
+    "tmp/heart-learning/new-pinterest-labels-v1/review.json": "ebd34390067676a0dd122e2d0ef2f2609a14130ae606e1bc512dbfcc67d82f71",
+    "tmp/heart-learning/new-pinterest-labels-v1/admit.py": "8cf58beb89ff3414799e68efab0d68fba0050ca6e2cce3567ae7eb677b847ab9",
+    "tmp/heart-learning/new-pinterest-labels-v1/admission.json": "266cd075bf34c7934b1f890bf0ef9d698056b44d941e68fa8d511fd69ba9aaca",
+    "tmp/heart-learning/new-pinterest-labels-v1/admitted-material-256/manifest.json": "2ce7a2590575acb0a9123742e6bd520f280557787c1ce47b4eb7d41af23fdb1c",
+    "tmp/heart-learning/new-pinterest-labels-v1/admitted-body-256/manifest.json": "2644750cfef7125c85247e05548e9cacd5526c8e9409800d45e730c293eeedf2",
+    "tmp/heart-learning/new-pinterest-labels-v1/admitted-body-768/manifest.json": "387f89d515ef8da881cb9c789d9fd0e30f4c2ebc26afaa456d60069c7708166a",
+    "tmp/heart-learning/new-pinterest-labels-v1/admitted-material-768/manifest.json": "3b91db5b804e0c920309ed7ec39cb06444a0759f691c360ce4767edbeb3842ae"
+  }
+}

@@ -1,0 +1,1960 @@
+{
+  "schema": 1,
+  "baseRuntimeCommit": "3997441",
+  "scope": "Diagnose finer paper-lattice uncertainty during final polishing; isolated experiments only. Physical tolerances remain unchanged.",
+  "capturedCheckpoints": [
+    {
+      "index": 0,
+      "checkpoint": {
+        "step": -1,
+        "error": 0.02478125,
+        "score": 0.030720628226398677,
+        "primitives": {
+          "curved": 142,
+          "straight": 1
+        },
+        "straightened": false,
+        "geometry": true,
+        "paper": "pass",
+        "issues": []
+      },
+      "initialMaterialResolution": 700,
+      "independentMaskError": 0.02474375,
+      "paper": [
+        {
+          "resolution": 700,
+          "status": "pass",
+          "seconds": 0.12032437500000015
+        },
+        {
+          "resolution": 1000,
+          "status": "pass",
+          "seconds": 0.875889459
+        },
+        {
+          "resolution": 1400,
+          "status": "pass",
+          "seconds": 1.5944537920000001
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "checkpoint": {
+        "step": 0,
+        "error": 0.02458125,
+        "score": 0.03058131032591674,
+        "primitives": {
+          "curved": 142,
+          "straight": 1
+        },
+        "straightened": false,
+        "geometry": true,
+        "paper": "pass",
+        "issues": []
+      },
+      "initialMaterialResolution": 700,
+      "independentMaskError": 0.02454375,
+      "paper": [
+        {
+          "resolution": 700,
+          "status": "pass",
+          "seconds": 0.12032637500000055
+        },
+        {
+          "resolution": 1000,
+          "status": "pass",
+          "seconds": 0.2236200829999998
+        },
+        {
+          "resolution": 1400,
+          "status": "pass",
+          "seconds": 0.44886625000000097
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "checkpoint": {
+        "step": 40,
+        "error": 0.0222625,
+        "score": 0.029041765571963085,
+        "primitives": {
+          "curved": 141,
+          "straight": 2
+        },
+        "straightened": false,
+        "geometry": true,
+        "paper": "uncertain",
+        "issues": []
+      },
+      "initialMaterialResolution": 700,
+      "independentMaskError": 0.02241875,
+      "paper": [
+        {
+          "resolution": 700,
+          "status": "uncertain",
+          "seconds": 0.12010916700000053
+        },
+        {
+          "resolution": 1000,
+          "status": "pass",
+          "seconds": 0.23036404200000107
+        },
+        {
+          "resolution": 1400,
+          "status": "pass",
+          "seconds": 0.4541824580000011
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "checkpoint": {
+        "step": 80,
+        "error": 0.02254375,
+        "score": 0.029256879733619512,
+        "primitives": {
+          "curved": 141,
+          "straight": 2
+        },
+        "straightened": false,
+        "geometry": true,
+        "paper": "uncertain",
+        "issues": []
+      },
+      "initialMaterialResolution": 700,
+      "independentMaskError": 0.02253125,
+      "paper": [
+        {
+          "resolution": 700,
+          "status": "uncertain",
+          "seconds": 0.12293954099999974
+        },
+        {
+          "resolution": 1000,
+          "status": "pass",
+          "seconds": 0.22311475000000064
+        },
+        {
+          "resolution": 1400,
+          "status": "pass",
+          "seconds": 0.43782049999999983
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "checkpoint": {
+        "step": 84,
+        "error": 0.02430625,
+        "score": 0.03037167744231623,
+        "primitives": {
+          "curved": 143,
+          "straight": 0
+        },
+        "straightened": false,
+        "geometry": true,
+        "paper": "pass",
+        "issues": []
+      },
+      "initialMaterialResolution": 700,
+      "independentMaskError": 0.02413125,
+      "paper": [
+        {
+          "resolution": 700,
+          "status": "pass",
+          "seconds": 0.11369874999999956
+        },
+        {
+          "resolution": 1000,
+          "status": "pass",
+          "seconds": 0.21684699999999976
+        },
+        {
+          "resolution": 1400,
+          "status": "pass",
+          "seconds": 0.4357019999999993
+        }
+      ]
+    }
+  ],
+  "captureSource": {
+    "maskFile": "tmp/heart-learning/feature-reuse-release-v1/native/photos/crown/automatic/mask.png",
+    "maskSha256": "28f4380aaf5bb197acbaf7750b4560e317c442740098abaf4c91eb88ac7866aa",
+    "sourceFilesVerified": 110
+  },
+  "interpretation": "A 2.241875% captured crown checkpoint is uncertain at 700 but passes both 1000 and 1400. It is discarded by the current 700-cell polishing audit. Finer audits were performed only after the solve, on unchanged exported coordinates.",
+  "variants": [
+    {
+      "run": "tmp/heart-learning/polish-fine-audit-v1",
+      "reserveMilliseconds": 500,
+      "rows": [
+        {
+          "id": "crown",
+          "variant": "before",
+          "seconds": 9.400143958,
+          "checked": true,
+          "error": 0.0241375,
+          "materialResolution": 700,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "pass"
+          }
+        },
+        {
+          "id": "crown",
+          "variant": "after",
+          "seconds": 9.414991875,
+          "checked": true,
+          "error": 0.02454375,
+          "materialResolution": 700,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "pass"
+          }
+        },
+        {
+          "id": "flettede-viking",
+          "variant": "before",
+          "seconds": 9.485882791,
+          "checked": true,
+          "error": 0.02115625,
+          "materialResolution": 700,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "pass"
+          }
+        },
+        {
+          "id": "flettede-viking",
+          "variant": "after",
+          "seconds": 9.386311833,
+          "checked": true,
+          "error": 0.0215125,
+          "materialResolution": 700,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "pass"
+          }
+        },
+        {
+          "id": "stacked-hearts",
+          "variant": "before",
+          "seconds": 8.925320334,
+          "checked": true,
+          "error": 0.00635625,
+          "materialResolution": 360,
+          "paperVerification": null
+        },
+        {
+          "id": "stacked-hearts",
+          "variant": "after",
+          "seconds": 9.100534917000001,
+          "checked": true,
+          "error": 0.00635625,
+          "materialResolution": 360,
+          "paperVerification": null
+        },
+        {
+          "id": "warped-checker",
+          "variant": "before",
+          "seconds": 9.544098583,
+          "checked": true,
+          "error": 0.01573125,
+          "materialResolution": 700,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "pass",
+            "source": "rollback-checkpoint"
+          }
+        },
+        {
+          "id": "warped-checker",
+          "variant": "after",
+          "seconds": 9.542299375,
+          "checked": true,
+          "error": 0.01555625,
+          "materialResolution": 700,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "pass",
+            "source": "rollback-checkpoint"
+          }
+        }
+      ],
+      "notes": "Each solve runs in a fresh process, including cold higher-resolution kernel calibration. One repetition per condition; timed searches can choose different geometries."
+    },
+    {
+      "run": "tmp/heart-learning/polish-fine-audit-v2",
+      "reserveMilliseconds": 250,
+      "rows": [
+        {
+          "id": "crown",
+          "variant": "before",
+          "seconds": 9.459069833,
+          "checked": true,
+          "error": 0.02333125,
+          "materialResolution": 700,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "pass"
+          }
+        },
+        {
+          "id": "crown",
+          "variant": "after",
+          "seconds": 9.600533167,
+          "checked": true,
+          "error": 0.02273125,
+          "materialResolution": 1000,
+          "paperVerification": {
+            "requestedResolution": 700,
+            "initialStatus": "uncertain",
+            "resolution": 1000,
+            "status": "pass",
+            "source": "rollback-checkpoint"
+          }
+        }
+      ],
+      "notes": "Each solve runs in a fresh process, including cold higher-resolution kernel calibration. One repetition per condition; timed searches can choose different geometries."
+    }
+  ],
+  "productionIntegration": "Committed as dfcd6e5. All 891 inverse tests are covered after the controlled-clock test correction (full run 890/891 plus six passing tests in the corrected file). Type checking, lint, 857 application tests and build pass. All twelve actual browser upload/example-to-editable-export workflows and initial-loading checks pass. No push or deployment.",
+  "result": "Final polishing now retains useful finer-verified checkpoints: the fixed 41-step crown improves from 2.454375% to 2.241875%, and the actual ten-second-budget browser upload exports a checked pair at 2.284375%. Fixed-work fine-checker also improves; four other controlled polishing starts have identical output coordinates. Repository and all twelve browser workflows pass after correcting one pre-existing clock-sensitive test. The isolated native corpus remains 22/22 Hunodan under ten seconds and 26/31 accepted photographs with 48/48 checked editable exports, but its strict historical photo-error gate still fails on three timed cases. The clearance helper\u2019s finer-audit opportunity and earlier-stage timing variation remain follow-up work.",
+  "fixedWorkFixture": {
+    "path": "tmp/heart-learning/polish-fine-audit-v2/crown-refinement-checkpoint.json",
+    "status": "Completed: identical initial controls, source mask, 41 steps and no wall-clock deadline.",
+    "results": [
+      {
+        "variant": "before",
+        "steps": 41,
+        "initialError": 0.02474375,
+        "error": 0.02454375,
+        "paperVerification": null,
+        "paper": [
+          {
+            "resolution": 700,
+            "status": "pass"
+          },
+          {
+            "resolution": 1000,
+            "status": "pass"
+          },
+          {
+            "resolution": 1400,
+            "status": "pass"
+          }
+        ]
+      },
+      {
+        "variant": "after",
+        "steps": 41,
+        "initialError": 0.02474375,
+        "error": 0.02241875,
+        "paperVerification": {
+          "requestedResolution": 700,
+          "initialStatus": "uncertain",
+          "resolution": 1000,
+          "status": "pass",
+          "source": "rollback-checkpoint"
+        },
+        "paper": [
+          {
+            "resolution": 700,
+            "status": "uncertain"
+          },
+          {
+            "resolution": 1000,
+            "status": "pass"
+          },
+          {
+            "resolution": 1400,
+            "status": "pass"
+          }
+        ]
+      }
+    ],
+    "geometryPassed": [
+      true,
+      true
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/crown-polish-audit-v1/source.json",
+      "sha256": "1eb9ad58f83ba712c61b7e107bc85c6ba7cf621a2d707c3377c47852b808d77d"
+    },
+    {
+      "path": "tmp/heart-learning/crown-polish-audit-v1/audit.json",
+      "sha256": "8fbf5291c83550bd8b28d15bab190c57cd6576b55da6670a2f1f68215853af15"
+    },
+    {
+      "path": "tmp/heart-learning/crown-polish-audit-v1/probe.mjs",
+      "sha256": "f521e24a8c29c38dba68e382e323e5defadd9fdc0d78d948a377c08a3a22a7f7"
+    },
+    {
+      "path": "tmp/heart-learning/crown-polish-audit-v1/report.json",
+      "sha256": "132980484ef781b8df35a2256b9e70a28db868857401bb1f74cd95f9034d6602"
+    },
+    {
+      "path": "tmp/heart-learning/crown-polish-audit-v1/state.json",
+      "sha256": "a70b9e0b67a1cd77558fd655503795d366d9912189754130e845ebc868d613e6"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v1/crown/before/report.json",
+      "sha256": "c60a138607279d90e8e9dc353a5aa4041e03b5d9718478382eec5fad00541e3f"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v1/crown/after/report.json",
+      "sha256": "4f5a0dcbb3f667314d23c6ea5900967c9c91719c3f6d834724a1e7fbeec18744"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v1/flettede-viking/before/report.json",
+      "sha256": "99f42b6dfd5bd8d8bb6d22a8f5ac79f1b82a0c0f6824debbd03a8a111c29416a"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v1/flettede-viking/after/report.json",
+      "sha256": "9c776f6c4de55784eead59ab4fa10a769beb2259a81564b33fe8faa4a5c628d6"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v1/stacked-hearts/before/report.json",
+      "sha256": "b6b4856a8495949e01197450a07e45e8001c034b3714fe825376e940cc84be4e"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v1/stacked-hearts/after/report.json",
+      "sha256": "997dbd631e7e657958495ada26f56755ca5fe0a97bbed95ad6f521c1f8a4fe64"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v1/warped-checker/before/report.json",
+      "sha256": "339683a9bbb8543aa2068866c85fade27b120bfe6e0cb27000e284e797fc869b"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v1/warped-checker/after/report.json",
+      "sha256": "0ada90f266e56b445fcfed5aa36183fb8bf55fff5807356aef30968a5308e68f"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v1/source.json",
+      "sha256": "27234150f78429e64ebb32f17200dd415f7b6925dddc4bddc990ad5e1ef9e909"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v1/checks.json",
+      "sha256": "f7f948f36c813dc0a4965492ff6f30bf3762debad38a7cf61e5b75ded9a164df"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v1/state.json",
+      "sha256": "d02d23f4d23f19a6e5f6109056787e61a14e288ee5b398161eed37034f1dc844"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v1/case.mjs",
+      "sha256": "49259716ddcebccdad4aeeb2ef753dc1a11411f14cbbd60cac3e2883523f94d5"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v2/crown/before/report.json",
+      "sha256": "91d21e4526e0ada0a25b6a268997a2ee1ea8235a0a0f4010b55b369ed2107523"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v2/crown/after/report.json",
+      "sha256": "313b3a8f33e0ed8c89df92d94a8ecb93c9944976b52f4a1b3a88f15e0e537ab3"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v2/source.json",
+      "sha256": "fce47f2d29632a948366ca8347c070182d1671e61e63a7f66feb995d1fc69a40"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v2/checks.json",
+      "sha256": "10b5967d6c7a9d754396cc5896f3d556e4677baf4a4d8896a5748c637947b42e"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v2/state.json",
+      "sha256": "b2edc9dbcf0167edfd6bc395d20dce053a9b5572a53595d3b2e4dea2616f2061"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v2/case.mjs",
+      "sha256": "ae5bb8a04764a08dcd0e3539b9f738b195cb9e9cb799b804cc3d9009b95d7a9f"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v2/crown-refinement-checkpoint.json",
+      "sha256": "fb371facc1c735b6e598be4c76b0d4074e3f6b4a4e07ada3c6989536efb20e87"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v2/fixed-work.json",
+      "sha256": "660d42ce902ac323af98ccb767832ef5490635ea4a0867302929ba7c7f897fec"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v2/fixed-work-source.json",
+      "sha256": "96b0e29a09b448fa078db70475573c3d28f340c7b2884bf0820aeaecf3e2748e"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v2/fixed-work-state.json",
+      "sha256": "417a85951a237456ad142731cc4a7fe497cebde75adf82cfb180de70828e6708"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v2/fixed-work.mjs",
+      "sha256": "422ed4b3c8117566c4cd64cd28b7d49ec4db00a09ab64e1c769c03474f53685c"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-release-v1/source.json",
+      "sha256": "292a32cc875e6808c3d284ae244a7c2dc2c6e3e0689bdfacb1672afe917dd4c3"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-release-v1/running.json",
+      "sha256": "31df93d232ed5a5d979974e219a1f14cd2440945bb368dfe832c1b0a20919cde"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-release-v1/checks.json",
+      "sha256": "28e76265fd3ac35c75afa3eda3a31bf5cfd6e72bb378ddd08e5c595f792e608e"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-release-v1/native-gates.json",
+      "sha256": "b947ff90ac96a483fba4aa8eff9566940af8fdd136b7140b73a68babf2fb2fb7"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-release-v1/hunodan-comparison.json",
+      "sha256": "5ed62443e3a929e7d8ed7139371ac081a1d411f94f537ee1dcac23a24877040c"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-release-v1/photo-comparison.json",
+      "sha256": "5480ee920a8074b6d686da37d5bddce1037197c12986d84742a317e4d6f0e7d8"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-release-v1/parent-photo-comparison.json",
+      "sha256": "b51ecdd9dda701584586d463226ffe029c5cd4227012220243fce0444e9e090b"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-fixed-corpus-v1/results.json",
+      "sha256": "c7171f9ef89671150f7a8d7322e9e3884f5dcfc10170cdbf781a969d13cd5342"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-fixed-corpus-v1/source.json",
+      "sha256": "c426f37d5fe29e89094ef36a20e0e3db99067550d39707c702f94c4d4d0ddd2f"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-fixed-corpus-v1/state.json",
+      "sha256": "da00a7d7ad2714c092d245ea2169d6dd08f3164bda456359b9a920903cf6989c"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-fixed-corpus-v1/probe.mjs",
+      "sha256": "f15bf3512ff85879d8cb0a66f0a464b00cc6a36e903b8d72b1ba2e0e5d498251"
+    },
+    {
+      "path": "tmp/heart-learning/finer-polishing-browser-v1/timed-stage-diagnosis.json",
+      "sha256": "2e7afc915623fcd2af26e7af3518872752bbf7955068a27b5feff12120b046cf"
+    },
+    {
+      "path": "tmp/heart-learning/clearance-fixed-work-v1/probe.mjs",
+      "sha256": "a81a8715e679822575fed6041f83cde7e6d61ed38175f791dc4c1107a0871b8f"
+    },
+    {
+      "path": "tmp/heart-learning/clearance-fixed-work-v1/source.json",
+      "sha256": "4f542f6f6b570b75ea3e4528c41c91664101252d6a016da354d72821dfe00774"
+    },
+    {
+      "path": "tmp/heart-learning/clearance-fixed-work-v1/state.json",
+      "sha256": "44cefe2d325d436b9058b3443569121ee44bdd9f98a79f2f6558cd31f07a26de"
+    },
+    {
+      "path": "tmp/heart-learning/clearance-fixed-work-v1/results.json",
+      "sha256": "36fa3c3517dcbfc24727dbabe0504188e1dbe80e7fb36772c38f733aabd3e7da"
+    },
+    {
+      "path": "tmp/heart-learning/clearance-fixed-work-v1/fixed-100.json",
+      "sha256": "4c11033bf105a2be26d3c3d5477cca6a52dbf3aa9724b22e343056b87cabcad7"
+    },
+    {
+      "path": "tmp/heart-learning/finer-polishing-qa-v1/inverse.log",
+      "sha256": "2aecf04620c2ed0f9021ebf7de37951d29692706f6237ca9c58bfcd74be0af76"
+    },
+    {
+      "path": "tmp/heart-learning/finer-polishing-qa-v1/checks.json",
+      "sha256": "f75427effb24517e8e5132cbf3ce676dc5a986e37783958776aed49fb6b86572"
+    },
+    {
+      "path": "tmp/heart-learning/finer-polishing-qa-v1/source.json",
+      "sha256": "dda206bd375a2b7d2e9e50f26354e90ac8318519333feda1b1cfa71967fcc5b0"
+    },
+    {
+      "path": "tmp/heart-learning/finer-polishing-qa-v2/verification.json",
+      "sha256": "e208e1dad2e5119fb66166307f0d24346159f8acbfeaaf8ccb96840f04c93322"
+    },
+    {
+      "path": "tmp/heart-learning/finer-polishing-qa-v2/source.json",
+      "sha256": "8716a0daf73915f00dbc9260f2ad777820eb85fe1e62b29f5228128af34b615a"
+    },
+    {
+      "path": "tmp/heart-learning/finer-polishing-qa-v2/checks.json",
+      "sha256": "d6e6e508172db8627425abb253d23bd3e6d1e8014c047959bc151bcd4b5a9f42"
+    },
+    {
+      "path": "tmp/heart-learning/finer-polishing-qa-v2/running.json",
+      "sha256": "2cb7e1f06c25a8c0a162b15e04e4ed108ac5ee7480fdec7ae6db72e768759831"
+    },
+    {
+      "path": "tmp/heart-learning/finer-polishing-qa-v2/changed-test.log",
+      "sha256": "cc72e7b06a18e7bc92a2ccf76d7d765f10442535cc5170fc81fe7d05f47b48b7"
+    },
+    {
+      "path": "tmp/heart-learning/finer-polishing-browser-v2/running.json",
+      "sha256": "2cb7e1f06c25a8c0a162b15e04e4ed108ac5ee7480fdec7ae6db72e768759831"
+    },
+    {
+      "path": "tmp/heart-learning/finer-polishing-browser-v2/source.json",
+      "sha256": "8716a0daf73915f00dbc9260f2ad777820eb85fe1e62b29f5228128af34b615a"
+    },
+    {
+      "path": "tmp/heart-learning/finer-polishing-browser-v2/checks.json",
+      "sha256": "2cafaad09309ffcac0e8f34bed3fc3f04eb489d1e9fbc17c4f6d6474b0aadf42"
+    },
+    {
+      "path": "tmp/heart-learning/finer-polishing-browser-v2/served-assets.json",
+      "sha256": "899bc53c816121388874f87a9f5ed27bf5f356a40b67b36b740388572a5ee19f"
+    },
+    {
+      "path": "tmp/heart-learning/finer-polishing-browser-v2/preview.json",
+      "sha256": "22006f429a9d3d1344f7d6c4c12822275de24b81ec0fa0471104d3050494d467"
+    },
+    {
+      "path": "tmp/heart-learning/finer-polishing-browser-v2/visual-review.png",
+      "sha256": "00003e0bdd959e055e30d8322acc613b050f1b9f0725aedb6df79f9aeb1eb268"
+    },
+    {
+      "path": "tmp/heart-learning/finer-polishing-browser-v2/ordinary/results.json",
+      "sha256": "84de14583528ddd156a8f0984ea62499af01a6b4e32f238f120e35705e35f6db"
+    },
+    {
+      "path": "tmp/heart-learning/finer-polishing-browser-v2/ten-second/results.json",
+      "sha256": "34979dad47d1f031372edff5f5f2da0c67ab54d6f2401e66f83c39d54c536b0c"
+    },
+    {
+      "path": "tmp/heart-learning/finer-polishing-browser-v2/entry-loading/results.json",
+      "sha256": "fe181782d030503d9c7b0ee70ea3e630e7543a1eb5fd157903bd18396e4a3e32"
+    },
+    {
+      "path": "tmp/heart-learning/finer-polishing-browser-v1/prototype-equivalence.json",
+      "sha256": "764b15a70bf418c9d39fc8c569f0f05a65d20a924800bfcdc6088684e238251e"
+    }
+  ],
+  "fixedWorkInterpretation": "The same 41-step crown trajectory yields 2.454375% exported mask error under the 700-resolution policy and 2.241875% when the uncertain checkpoint is rechecked at 1000. Both geometries pass the nominal validator; the latter is uncertain at 700 and passes 1000 and 1400. This isolates a useful verification change from timed-search variation. The paper rechecks use the same auditor at different resolutions, not independent implementations.",
+  "isolatedCorpus": {
+    "run": "tmp/heart-learning/polish-fine-release-v1",
+    "sourceFilesVerified": 844,
+    "gates": {
+      "hunodanPassed": 22,
+      "hunodanTotal": 22,
+      "hunodanErrorRegressions": [],
+      "photoPassed": 26,
+      "photoPassRegressions": [],
+      "photoErrorRegressions": [
+        {
+          "id": "dense-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.00699375,
+          "error": 0.00700625,
+          "errorDelta": 1.2500000000000358e-05
+        },
+        {
+          "id": "round-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.0121375,
+          "error": 0.01214375,
+          "errorDelta": 6.249999999999312e-06
+        },
+        {
+          "id": "flettede-viking",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.02024375,
+          "error": 0.02088125,
+          "errorDelta": 0.0006374999999999992
+        }
+      ],
+      "editablePassed": 48,
+      "editableTotal": 48,
+      "passed": false
+    },
+    "hunodanMaximumSeconds": 9.282888875000001,
+    "crown": {
+      "id": "crown",
+      "before": 0.02454375,
+      "after": 0.022725,
+      "beforePassed": true,
+      "afterPassed": true,
+      "delta": -0.001818750000000001
+    },
+    "comparisonScope": "Same photographs, crop coordinates and target hashes; errors compare independent exported rendering. Strict historical reference c000d30 and immediate runtime 3997441 comparisons both retained. Runtime difference alone is not a causal explanation for timed-optimizer variation."
+  },
+  "fixedCorpusReplay": {
+    "sourceFilesVerified": 323,
+    "scope": "Captured baseline polishing inputs, identical 160 refinement steps and no overall wall-clock deadline. Frozen binary source masks. Final short-return projection may retain its internal time bound.",
+    "cases": [
+      {
+        "id": "dense-checker",
+        "materialResolution": 360,
+        "identicalCoordinates": true,
+        "beforeError": 0.00699375,
+        "afterError": 0.00699375,
+        "afterResolution": 360,
+        "geometryPassed": [
+          true,
+          true
+        ],
+        "paperStatus": [
+          "pass",
+          "pass"
+        ],
+        "projectionAttempts": 0
+      },
+      {
+        "id": "round-checker",
+        "materialResolution": 700,
+        "identicalCoordinates": true,
+        "beforeError": 0.01216875,
+        "afterError": 0.01216875,
+        "afterResolution": 700,
+        "geometryPassed": [
+          true,
+          true
+        ],
+        "paperStatus": [
+          "pass",
+          "pass"
+        ],
+        "projectionAttempts": 0
+      },
+      {
+        "id": "fine-checker",
+        "materialResolution": 700,
+        "identicalCoordinates": false,
+        "beforeError": 0.015775,
+        "afterError": 0.01553125,
+        "afterResolution": 1000,
+        "geometryPassed": [
+          true,
+          true
+        ],
+        "paperStatus": [
+          "pass",
+          "pass"
+        ],
+        "projectionAttempts": 0
+      },
+      {
+        "id": "warped-checker",
+        "materialResolution": 700,
+        "identicalCoordinates": true,
+        "beforeError": 0.0135,
+        "afterError": 0.0135,
+        "afterResolution": 700,
+        "geometryPassed": [
+          true,
+          true
+        ],
+        "paperStatus": [
+          "pass",
+          "pass"
+        ],
+        "projectionAttempts": 0
+      },
+      {
+        "id": "flettede-viking",
+        "materialResolution": 700,
+        "identicalCoordinates": true,
+        "beforeError": 0.02176875,
+        "afterError": 0.02176875,
+        "afterResolution": 700,
+        "geometryPassed": [
+          true,
+          true
+        ],
+        "paperStatus": [
+          "pass",
+          "pass"
+        ],
+        "projectionAttempts": 0
+      }
+    ],
+    "interpretation": "Identical 160-step inputs produce byte-identical selected controls for dense-checker, round-checker, warped-checker and Viking. No finer verification is selected for them; fine-checker improves from 1.5775% to 1.553125% and verifies at 1000. No timed short-return projection occurs in any replay. This isolates the polishing policy on these captured starts; it does not make fresh timed searches deterministic or erase the earlier strict-gate failures."
+  },
+  "timedStageDiagnosis": {
+    "scope": "Read-only comparison of already completed full-pipeline reports; no fresh fitting or timing. Candidate metrics alone do not prove equal coordinates.",
+    "interpretation": {
+      "dense-checker": "Pre-polishing candidate metrics and checkpoints through step 120 agree. The deadline ends polishing at step 159 versus 154, before the new finer policy can apply (material resolution 360).",
+      "round-checker": "Selected pre-polishing candidate metrics and complete polishing checkpoint records agree. The final one-pixel exported difference needs final sharing/cleanup scrutiny; it is not shown to be caused by the finer validity decision.",
+      "fine-checker": "The pre-polishing candidate differs before the finer verification option is used: source error 1.995% versus 2.209375%. Both stop polishing at step 64 without selecting a 1000-resolution audit.",
+      "warped-checker": "The pre-polishing candidate already differs: source error 1.551875% versus 1.63125%; final work also differs, ending at step 44 versus 79.",
+      "flettede-viking": "The pre-polishing candidate already differs: source error 2.43125% versus 2.5475%. Both end polishing at step 84 and retain resolution 700. These records and identical fixed-work controls separate the finer decision from earlier timed-search variation.",
+      "crown": "The selected coarse candidate metrics agree. An uncertain polishing checkpoint is now verified at 1000 and retained. Fixed-work regression separately demonstrates this benefit from identical starting controls."
+    }
+  },
+  "clearanceTestDiagnosis": {
+    "initialFullRun": {
+      "tests": 891,
+      "passed": 890,
+      "failed": 1,
+      "seconds": 1010.797520541,
+      "sourceFilesVerified": 735
+    },
+    "failure": "clearance-initializer.test.mjs expected a checked repair within a cold-process 500 ms refinement allowance. The run reached 100 steps; its 700-resolution paper audit remained uncertain.",
+    "fixed100": [
+      {
+        "variant": "before",
+        "steps": 100,
+        "error": 0.01519375,
+        "geometry": true,
+        "coordinatesSha256": "3d67269d69e694f5d451f5f72676ddc9ab39db6f1a4917d160398698db5acd98",
+        "paper": [
+          {
+            "resolution": 360,
+            "status": "uncertain"
+          },
+          {
+            "resolution": 700,
+            "status": "uncertain"
+          },
+          {
+            "resolution": 1000,
+            "status": "pass"
+          },
+          {
+            "resolution": 1400,
+            "status": "pass"
+          }
+        ]
+      },
+      {
+        "variant": "after",
+        "steps": 100,
+        "error": 0.01519375,
+        "geometry": true,
+        "coordinatesSha256": "3d67269d69e694f5d451f5f72676ddc9ab39db6f1a4917d160398698db5acd98",
+        "paper": [
+          {
+            "resolution": 360,
+            "status": "uncertain"
+          },
+          {
+            "resolution": 700,
+            "status": "uncertain"
+          },
+          {
+            "resolution": 1000,
+            "status": "pass"
+          },
+          {
+            "resolution": 1400,
+            "status": "pass"
+          }
+        ]
+      }
+    ],
+    "controlledReplays": [
+      {
+        "variant": "before",
+        "last": 80,
+        "steps": 85,
+        "accepted": false,
+        "reason": "paper_rejected",
+        "paper": "uncertain",
+        "verification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "uncertain",
+          "source": "clearance-initializer-refinement"
+        },
+        "error": 0.01676875,
+        "coordinatesSha256": null
+      },
+      {
+        "variant": "before",
+        "last": 120,
+        "steps": 125,
+        "accepted": true,
+        "paper": "pass",
+        "verification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass",
+          "source": "clearance-initializer-refinement"
+        },
+        "error": 0.0135625,
+        "coordinatesSha256": "85c56f375edde70108c454811cd22b04c43dd865a943cc39a4ed7ac13c08f220"
+      },
+      {
+        "variant": "before",
+        "last": 160,
+        "steps": 165,
+        "accepted": true,
+        "paper": "pass",
+        "verification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass",
+          "source": "clearance-initializer-refinement"
+        },
+        "error": 0.01253125,
+        "coordinatesSha256": "9bce337b1aa0b04a361106548bca19d6083d9f7e95760d87ea33d1caf4623d43"
+      },
+      {
+        "variant": "after",
+        "last": 80,
+        "steps": 85,
+        "accepted": false,
+        "reason": "paper_rejected",
+        "paper": "uncertain",
+        "verification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "uncertain",
+          "source": "clearance-initializer-refinement"
+        },
+        "error": 0.01676875,
+        "coordinatesSha256": null
+      },
+      {
+        "variant": "after",
+        "last": 120,
+        "steps": 125,
+        "accepted": true,
+        "paper": "pass",
+        "verification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass",
+          "source": "clearance-initializer-refinement"
+        },
+        "error": 0.0135625,
+        "coordinatesSha256": "85c56f375edde70108c454811cd22b04c43dd865a943cc39a4ed7ac13c08f220"
+      },
+      {
+        "variant": "after",
+        "last": 160,
+        "steps": 165,
+        "accepted": true,
+        "paper": "pass",
+        "verification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass",
+          "source": "clearance-initializer-refinement"
+        },
+        "error": 0.01253125,
+        "coordinatesSha256": "9bce337b1aa0b04a361106548bca19d6083d9f7e95760d87ea33d1caf4623d43"
+      }
+    ],
+    "sourceFilesVerified": 216,
+    "interpretation": "Before and after polishing runtimes produce identical 100-step coordinates and identical controlled-clock repair decisions. At 100 steps, the nominal geometry passes and the unchanged curves pass paper audits at 1000 and 1400, while 360 and 700 remain uncertain. At 125 and 165 steps, both runtimes produce identical accepted 700-resolution repairs.",
+    "testCorrection": "The geometry/provenance unit test now advances a controlled clock after checkpoint 120, resulting in exactly 125 refinement steps. Real deadlines remain in both fresh full-fitting tests and the exhausted-allowance regression. The stronger polishing assertion reaudits the actual returned controls at their reported resolution.",
+    "remainingLimitation": "The production clearance helper still rejects the 100-step geometry at its 700-resolution ceiling. This test correction does not fix that real scheduling/verification limitation or make timed search deterministic."
+  },
+  "repositoryQA": {
+    "passed": true,
+    "inverseTestsCovered": 891,
+    "fullRunPassed": 890,
+    "fullRunFailed": 1,
+    "rerunPassed": 6,
+    "uniqueAdditionalPasses": 1,
+    "changedSource": [
+      "scripts/inverse/clearance-initializer.test.mjs"
+    ],
+    "reusedChecks": [
+      {
+        "stage": "core-lint",
+        "command": [
+          "npx",
+          "eslint",
+          "--no-ignore",
+          "static/inverse/core/direct/polish.js",
+          "static/inverse/core/direct/refine.js",
+          "static/inverse/core/material.js",
+          "static/inverse/core/settings.js",
+          "scripts/inverse/polishing-paper.test.mjs",
+          "scripts/inverse/paper-verification.test.mjs",
+          "scripts/inverse/paint-browser-test.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 2.005973375
+      },
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 12.623492708999999
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 6.961732709
+      },
+      {
+        "stage": "app",
+        "command": [
+          "npx",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 24.940287959
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 15.665390125000002
+      }
+    ],
+    "sourceFilesVerified": 735,
+    "scope": "Full 891-test run had one pre-existing clock-dependent unit assertion. Only that test file changed; all six tests in it pass on rerun. The other 885 passing tests and unchanged application/runtime checks are reused. No claim of a second full run."
+  },
+  "browserVerification": {
+    "run": "tmp/heart-learning/finer-polishing-browser-v2",
+    "sourceFilesVerified": 735,
+    "rows": [
+      {
+        "mode": "ordinary",
+        "name": "stacked-hearts-mask",
+        "passed": true,
+        "sourceEditableError": 0.0173,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "materialResolution": 700,
+        "fitSeconds": 16.079200000047685,
+        "clickToReadySeconds": 17.20109999990463
+      },
+      {
+        "mode": "ordinary",
+        "name": "star",
+        "passed": true,
+        "sourceEditableError": 0.0016,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "materialResolution": 360,
+        "fitSeconds": 1.5064000000953675,
+        "clickToReadySeconds": 2.0443999998569486
+      },
+      {
+        "mode": "ordinary",
+        "name": "top-hat-preferred",
+        "passed": true,
+        "sourceEditableError": 0.004118835034013606,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "materialResolution": 700,
+        "fitSeconds": 8.125199999809265,
+        "clickToReadySeconds": 8.9585
+      },
+      {
+        "mode": "ordinary",
+        "name": "flower-native-mask",
+        "passed": true,
+        "sourceEditableError": 0.00401875,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "materialResolution": 360,
+        "fitSeconds": 6.35,
+        "clickToReadySeconds": 7.392900000095367
+      },
+      {
+        "mode": "ordinary",
+        "name": "hard-flettede-viking",
+        "passed": true,
+        "sourceEditableError": 0.0168625,
+        "selectedCounts": [
+          6,
+          4
+        ],
+        "materialResolution": 700,
+        "fitSeconds": 28.312900000095368,
+        "clickToReadySeconds": 30.142100000143053
+      },
+      {
+        "mode": "ordinary",
+        "name": "maple-leaf-mask",
+        "passed": true,
+        "sourceEditableError": 0.007975,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "materialResolution": 1000,
+        "fitSeconds": 14.449599999904633,
+        "clickToReadySeconds": 16.238899999856947
+      },
+      {
+        "mode": "ordinary",
+        "name": "web-danish-tree-green",
+        "passed": true,
+        "sourceEditableError": 0.0087625,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "materialResolution": 700,
+        "fitSeconds": 22.216299999952316,
+        "clickToReadySeconds": 23.196200000047682
+      },
+      {
+        "mode": "ten-second",
+        "name": "floral-checker-mask",
+        "passed": true,
+        "sourceEditableError": 0.01364375,
+        "selectedCounts": [
+          7,
+          7
+        ],
+        "materialResolution": 700,
+        "fitSeconds": 9.183699999809265,
+        "clickToReadySeconds": 10.403099999904633
+      },
+      {
+        "mode": "ten-second",
+        "name": "warped-checker-mask",
+        "passed": true,
+        "sourceEditableError": 0.01590625,
+        "selectedCounts": [
+          9,
+          9
+        ],
+        "materialResolution": 700,
+        "fitSeconds": 9.222,
+        "clickToReadySeconds": 11.284900000095368
+      },
+      {
+        "mode": "ten-second",
+        "name": "fine-checker-mask",
+        "passed": true,
+        "sourceEditableError": 0.0175125,
+        "selectedCounts": [
+          9,
+          10
+        ],
+        "materialResolution": 700,
+        "fitSeconds": 9.012899999856948,
+        "clickToReadySeconds": 11.441399999856948
+      },
+      {
+        "mode": "ten-second",
+        "name": "blue-star-polishing-mask",
+        "passed": true,
+        "sourceEditableError": 0.0042625,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "materialResolution": 700,
+        "fitSeconds": 9.071299999952316,
+        "clickToReadySeconds": 10.107799999952316
+      },
+      {
+        "mode": "ten-second",
+        "name": "crown-mask",
+        "passed": true,
+        "sourceEditableError": 0.02284375,
+        "selectedCounts": [
+          5,
+          5
+        ],
+        "materialResolution": 1000,
+        "fitSeconds": 9.081100000143051,
+        "clickToReadySeconds": 10.686700000047683
+      }
+    ],
+    "entryLoading": {
+      "origin": "http://127.0.0.1:5232",
+      "scope": "Fresh Draw/Paint contexts before a solver action. Verify served application bytes, deferred solver/WASM loading, and optional bundle-size comparison. Hash/filename equality across separate builds is not required.",
+      "rows": [
+        {
+          "route": "/en/editor/",
+          "errors": [],
+          "failedRequests": [],
+          "engine": [],
+          "scripts": [
+            {
+              "file": "_app/immutable/entry/start.B-V-JMTU.js",
+              "bytes": 82,
+              "sha256": "b493a6bbc6091ef9e6d59caaf502549c0736f2fb13e249664b03f24cf66d2c48",
+              "url": "http://127.0.0.1:5232/_app/immutable/entry/start.B-V-JMTU.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/COejBDN2.js",
+              "bytes": 28622,
+              "sha256": "a45264c82865999c2f2afe124d1523d142e21ba215ddf664f352e3f4ba591cc8",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/COejBDN2.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/xihTtKlq.js",
+              "bytes": 65,
+              "sha256": "0214edcff77242079f540507a53803aa22d857b6ad673e60e39748b6c7aa08c1",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/xihTtKlq.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/HclGiUj8.js",
+              "bytes": 1211,
+              "sha256": "bba5840eec0028b00854bcd58fba80694d02d41e98417656424c05b26db7120c",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/HclGiUj8.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/entry/app.DOFtZXtL.js",
+              "bytes": 5498,
+              "sha256": "226aa20f627c3559ffce551ce14e3e46899bcafbe386e42e2f9506f650ff3103",
+              "url": "http://127.0.0.1:5232/_app/immutable/entry/app.DOFtZXtL.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/nodes/0.DPGqQcar.js",
+              "bytes": 7062,
+              "sha256": "9acd3be39eb52994030e0c11e42bd471092ef54e792414ef69ab9dc0ddfbc578",
+              "url": "http://127.0.0.1:5232/_app/immutable/nodes/0.DPGqQcar.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/QTfKXu6s.js",
+              "bytes": 366,
+              "sha256": "c488fd8f89bddec2663b7baf64d2a8cacbff8749ed5cb354fbd652a3e813bd65",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/QTfKXu6s.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/DCIvvpOw.js",
+              "bytes": 1376,
+              "sha256": "765dca688f4de4a647b80efd1873e9cba3531afe1c25f8aed33907dbb73b424e",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/DCIvvpOw.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/BC1VEszk.js",
+              "bytes": 71,
+              "sha256": "df846cee18ef0b7739f9ebad6b2e3512149919cf5d1395572a008b924ea579d0",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/BC1VEszk.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/DfNd-_eO.js",
+              "bytes": 58361,
+              "sha256": "0de881371d3d7690c74cfc07273b667726064f331d0c093966225e95ce88ab9c",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/DfNd-_eO.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/BkL8ehCN.js",
+              "bytes": 39,
+              "sha256": "4541b6d1bd4e7f8b699c3aab7e28681d112527365052ae81221fb86159ecec1d",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/BkL8ehCN.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/smMHF_PD.js",
+              "bytes": 53051,
+              "sha256": "6d8129df02aac1ecb05cea74e8ccc6298f5251908fca545b9e5fcb234b0899f1",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/smMHF_PD.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/uDHzx3_j.js",
+              "bytes": 24834,
+              "sha256": "86a7d32deecd488666b4de98bfec2bd657e2a76df284c61b5ec5727460930f2b",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/uDHzx3_j.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/DE_jZQMh.js",
+              "bytes": 450,
+              "sha256": "63ac8c30d96b0763ffed040e904fae7bc8738f7bd03536088151d703c29697e5",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/DE_jZQMh.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/DvKclp1y.js",
+              "bytes": 5783,
+              "sha256": "aaa5dcc83577ce5b66b5c2856edd718c2be643420e7981e6aab363499b24f80a",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/DvKclp1y.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/CVsqkyi2.js",
+              "bytes": 142401,
+              "sha256": "eee1356f82127c8d2ae389716a03a3155fdb9f60a46fb038aef367704a3be131",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/CVsqkyi2.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/nodes/3.B85lylD1.js",
+              "bytes": 79166,
+              "sha256": "fdf3059a02efdd3356453022fd0b86260d15403f916cb390e2638a745a6859be",
+              "url": "http://127.0.0.1:5232/_app/immutable/nodes/3.B85lylD1.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/CN4fRrx7.js",
+              "bytes": 2332,
+              "sha256": "a55ddbc9c24882da6c70df3e50f3308a396846e6d544ea3f93e2aa89587b6e4d",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/CN4fRrx7.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/D9i4yxYK.js",
+              "bytes": 228,
+              "sha256": "500f86872f77db8a1f6bcb06e5a01764e65ac17d872a8db805460136fe155e2a",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/D9i4yxYK.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/0TDzuACl.js",
+              "bytes": 3482,
+              "sha256": "aac09a30e0e183cf625e8f1469c4d216ab2b2a60a7d8c8c63995928c4b7d7f62",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/0TDzuACl.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/Betzj9q6.js",
+              "bytes": 2733,
+              "sha256": "3fa90c4fde1a808829469f6acc0962f8b0fa655a0811135090982441b17a4640",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/Betzj9q6.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/DtlMWXkJ.js",
+              "bytes": 54957,
+              "sha256": "b4728ad73367ef86d027002534f475d37f8ba04cfa0f492c1e874ee34afd1449",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/DtlMWXkJ.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/nodes/1.nChfleRR.js",
+              "bytes": 1317,
+              "sha256": "d8dfa68d1f7db25b79f07fa6ad98a1ccc652c3bf3ef9151e8166709f8ce9d057",
+              "url": "http://127.0.0.1:5232/_app/immutable/nodes/1.nChfleRR.js",
+              "type": "script"
+            }
+          ],
+          "passed": true
+        },
+        {
+          "route": "/en/editor/paint/",
+          "errors": [],
+          "failedRequests": [],
+          "engine": [],
+          "scripts": [
+            {
+              "file": "_app/immutable/entry/start.B-V-JMTU.js",
+              "bytes": 82,
+              "sha256": "b493a6bbc6091ef9e6d59caaf502549c0736f2fb13e249664b03f24cf66d2c48",
+              "url": "http://127.0.0.1:5232/_app/immutable/entry/start.B-V-JMTU.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/entry/app.DOFtZXtL.js",
+              "bytes": 5498,
+              "sha256": "226aa20f627c3559ffce551ce14e3e46899bcafbe386e42e2f9506f650ff3103",
+              "url": "http://127.0.0.1:5232/_app/immutable/entry/app.DOFtZXtL.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/COejBDN2.js",
+              "bytes": 28622,
+              "sha256": "a45264c82865999c2f2afe124d1523d142e21ba215ddf664f352e3f4ba591cc8",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/COejBDN2.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/HclGiUj8.js",
+              "bytes": 1211,
+              "sha256": "bba5840eec0028b00854bcd58fba80694d02d41e98417656424c05b26db7120c",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/HclGiUj8.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/xihTtKlq.js",
+              "bytes": 65,
+              "sha256": "0214edcff77242079f540507a53803aa22d857b6ad673e60e39748b6c7aa08c1",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/xihTtKlq.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/nodes/0.DPGqQcar.js",
+              "bytes": 7062,
+              "sha256": "9acd3be39eb52994030e0c11e42bd471092ef54e792414ef69ab9dc0ddfbc578",
+              "url": "http://127.0.0.1:5232/_app/immutable/nodes/0.DPGqQcar.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/DCIvvpOw.js",
+              "bytes": 1376,
+              "sha256": "765dca688f4de4a647b80efd1873e9cba3531afe1c25f8aed33907dbb73b424e",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/DCIvvpOw.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/DfNd-_eO.js",
+              "bytes": 58361,
+              "sha256": "0de881371d3d7690c74cfc07273b667726064f331d0c093966225e95ce88ab9c",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/DfNd-_eO.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/QTfKXu6s.js",
+              "bytes": 366,
+              "sha256": "c488fd8f89bddec2663b7baf64d2a8cacbff8749ed5cb354fbd652a3e813bd65",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/QTfKXu6s.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/BC1VEszk.js",
+              "bytes": 71,
+              "sha256": "df846cee18ef0b7739f9ebad6b2e3512149919cf5d1395572a008b924ea579d0",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/BC1VEszk.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/smMHF_PD.js",
+              "bytes": 53051,
+              "sha256": "6d8129df02aac1ecb05cea74e8ccc6298f5251908fca545b9e5fcb234b0899f1",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/smMHF_PD.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/BkL8ehCN.js",
+              "bytes": 39,
+              "sha256": "4541b6d1bd4e7f8b699c3aab7e28681d112527365052ae81221fb86159ecec1d",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/BkL8ehCN.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/nodes/7.CiJtRYPJ.js",
+              "bytes": 186,
+              "sha256": "34f59c5e7eb7ded5d36e5c9caa466258220a233352abd12c7c5eabb582bba530",
+              "url": "http://127.0.0.1:5232/_app/immutable/nodes/7.CiJtRYPJ.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/uDHzx3_j.js",
+              "bytes": 24834,
+              "sha256": "86a7d32deecd488666b4de98bfec2bd657e2a76df284c61b5ec5727460930f2b",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/uDHzx3_j.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/f9KAG0En.js",
+              "bytes": 382,
+              "sha256": "02e4292c8f45631e02618c044b431d2570ffb9714e0a927c1f8eae3870fa8de2",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/f9KAG0En.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/DvKclp1y.js",
+              "bytes": 5783,
+              "sha256": "aaa5dcc83577ce5b66b5c2856edd718c2be643420e7981e6aab363499b24f80a",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/DvKclp1y.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/CN4fRrx7.js",
+              "bytes": 2332,
+              "sha256": "a55ddbc9c24882da6c70df3e50f3308a396846e6d544ea3f93e2aa89587b6e4d",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/CN4fRrx7.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/CVsqkyi2.js",
+              "bytes": 142401,
+              "sha256": "eee1356f82127c8d2ae389716a03a3155fdb9f60a46fb038aef367704a3be131",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/CVsqkyi2.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/CSmaE8wu.js",
+              "bytes": 416,
+              "sha256": "b80611566f97814f156407ed22ed0d0d62a2a6deb5ed0fb7bf138de3aca87bd1",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/CSmaE8wu.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/DtlMWXkJ.js",
+              "bytes": 54957,
+              "sha256": "b4728ad73367ef86d027002534f475d37f8ba04cfa0f492c1e874ee34afd1449",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/DtlMWXkJ.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/D-Yy215k.js",
+              "bytes": 2116,
+              "sha256": "0a1e4a953412a13d3fd06f981a3da4450e6cc4d15e8e8cd1ef1f9dbc7f17badf",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/D-Yy215k.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/0TDzuACl.js",
+              "bytes": 3482,
+              "sha256": "aac09a30e0e183cf625e8f1469c4d216ab2b2a60a7d8c8c63995928c4b7d7f62",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/0TDzuACl.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/CGS4Vl17.js",
+              "bytes": 99300,
+              "sha256": "7c685970d79d1e11e35066b13e3f0daafb926a63941817c31a856d675d92f752",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/CGS4Vl17.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/DpRTkGiL.js",
+              "bytes": 4703,
+              "sha256": "4695fe5bdc667564063a171dc97b50050a82ae96c38f621e2b931a4f364a892e",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/DpRTkGiL.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/CYnxEHdd.js",
+              "bytes": 1452,
+              "sha256": "686732eb62b421f453540e89a8832132bc501c0db3024237881a79e7e34b88a2",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/CYnxEHdd.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/BHGEE5Tn.js",
+              "bytes": 2254,
+              "sha256": "168f8f3ab17b1fcb918ff6395e18156999a07cc48a8566f303037fa58fc3d881",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/BHGEE5Tn.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/chunks/Cc1DsFEd.js",
+              "bytes": 1669,
+              "sha256": "41caa3ba72a4e682fa9adc91ae79445558dfe4fc7621b8157296cb1f9d13557a",
+              "url": "http://127.0.0.1:5232/_app/immutable/chunks/Cc1DsFEd.js",
+              "type": "script"
+            },
+            {
+              "file": "_app/immutable/nodes/1.nChfleRR.js",
+              "bytes": 1317,
+              "sha256": "d8dfa68d1f7db25b79f07fa6ad98a1ccc652c3bf3ef9151e8166709f8ce9d057",
+              "url": "http://127.0.0.1:5232/_app/immutable/nodes/1.nChfleRR.js",
+              "type": "script"
+            }
+          ],
+          "passed": true
+        }
+      ],
+      "applicationAssets": [
+        {
+          "file": "_app/immutable/nodes/0.DPGqQcar.js",
+          "bytes": 7062,
+          "sha256": "9acd3be39eb52994030e0c11e42bd471092ef54e792414ef69ab9dc0ddfbc578"
+        },
+        {
+          "file": "_app/immutable/nodes/1.nChfleRR.js",
+          "bytes": 1317,
+          "sha256": "d8dfa68d1f7db25b79f07fa6ad98a1ccc652c3bf3ef9151e8166709f8ce9d057"
+        },
+        {
+          "file": "_app/immutable/nodes/10.CLh_gpQ6.js",
+          "bytes": 186,
+          "sha256": "c5f89a298325bfd4fabcc5cace9f33721ca0d68b069ca7201486bf9cf6d04975"
+        },
+        {
+          "file": "_app/immutable/nodes/2.BxktRd3m.js",
+          "bytes": 36896,
+          "sha256": "75b826733f7a910f29d63b3538e06a09b132fcef0c10f84e709edb512abacfd9"
+        },
+        {
+          "file": "_app/immutable/nodes/3.B85lylD1.js",
+          "bytes": 79166,
+          "sha256": "fdf3059a02efdd3356453022fd0b86260d15403f916cb390e2638a745a6859be"
+        },
+        {
+          "file": "_app/immutable/nodes/4.fAWbysLD.js",
+          "bytes": 33604,
+          "sha256": "7642f74fce766fc4907c67bc3b2cd4cd93e9c80eeee74b854203b07a01c333a4"
+        },
+        {
+          "file": "_app/immutable/nodes/5.CN3c2l_c.js",
+          "bytes": 186,
+          "sha256": "b80f3fc79cfdaf22fd5bb0d67038f44e5371e66426c706fcb34151b5a3f31023"
+        },
+        {
+          "file": "_app/immutable/nodes/6.BoIB2-24.js",
+          "bytes": 186,
+          "sha256": "cd4091fd16cad1a938b1e73c0ce1cfae60483bc37a6da5f53081444306a7825e"
+        },
+        {
+          "file": "_app/immutable/nodes/7.CiJtRYPJ.js",
+          "bytes": 186,
+          "sha256": "34f59c5e7eb7ded5d36e5c9caa466258220a233352abd12c7c5eabb582bba530"
+        },
+        {
+          "file": "_app/immutable/nodes/8.BbsVZMlN.js",
+          "bytes": 186,
+          "sha256": "6768913fc210d5bd1c514e95f0ea2c8b775bd175d46972fdadb93914059bf9b4"
+        },
+        {
+          "file": "_app/immutable/nodes/9.ClPJovIh.js",
+          "bytes": 186,
+          "sha256": "631340a159deb097b48ee1fea36179b20d4942c17cbc07df86119d55e5f32105"
+        },
+        {
+          "file": "_app/immutable/entry/app.DOFtZXtL.js",
+          "bytes": 5498,
+          "sha256": "226aa20f627c3559ffce551ce14e3e46899bcafbe386e42e2f9506f650ff3103"
+        },
+        {
+          "file": "_app/immutable/entry/start.B-V-JMTU.js",
+          "bytes": 82,
+          "sha256": "b493a6bbc6091ef9e6d59caaf502549c0736f2fb13e249664b03f24cf66d2c48"
+        },
+        {
+          "file": "_app/immutable/chunks/0TDzuACl.js",
+          "bytes": 3482,
+          "sha256": "aac09a30e0e183cf625e8f1469c4d216ab2b2a60a7d8c8c63995928c4b7d7f62"
+        },
+        {
+          "file": "_app/immutable/chunks/2dN8-X0z.js",
+          "bytes": 404654,
+          "sha256": "c20290ec22f98f9bdf8023e4a42f7c1b88b8e627c13bddff6efb68fe2fd940bd"
+        },
+        {
+          "file": "_app/immutable/chunks/BC1VEszk.js",
+          "bytes": 71,
+          "sha256": "df846cee18ef0b7739f9ebad6b2e3512149919cf5d1395572a008b924ea579d0"
+        },
+        {
+          "file": "_app/immutable/chunks/BHGEE5Tn.js",
+          "bytes": 2254,
+          "sha256": "168f8f3ab17b1fcb918ff6395e18156999a07cc48a8566f303037fa58fc3d881"
+        },
+        {
+          "file": "_app/immutable/chunks/BVTOaE3x.js",
+          "bytes": 151040,
+          "sha256": "de1911b5717d17296f6890f2dd8abce288b84723469cef49ad1fe0fbd74d85be"
+        },
+        {
+          "file": "_app/immutable/chunks/Bai5skrs.js",
+          "bytes": 302191,
+          "sha256": "7106c06c0dbcd9ff3f4da22d5eb1ae0f237f99c1938aae583053cd69c0c90e93"
+        },
+        {
+          "file": "_app/immutable/chunks/Betzj9q6.js",
+          "bytes": 2733,
+          "sha256": "3fa90c4fde1a808829469f6acc0962f8b0fa655a0811135090982441b17a4640"
+        },
+        {
+          "file": "_app/immutable/chunks/Bjy-W4x2.js",
+          "bytes": 1365,
+          "sha256": "f07424758318dd6b5f32b0fe8de9d2ffb8d97a17c841758626d18ba0faa0456a"
+        },
+        {
+          "file": "_app/immutable/chunks/BkL8ehCN.js",
+          "bytes": 39,
+          "sha256": "4541b6d1bd4e7f8b699c3aab7e28681d112527365052ae81221fb86159ecec1d"
+        },
+        {
+          "file": "_app/immutable/chunks/CGS4Vl17.js",
+          "bytes": 99300,
+          "sha256": "7c685970d79d1e11e35066b13e3f0daafb926a63941817c31a856d675d92f752"
+        },
+        {
+          "file": "_app/immutable/chunks/CK5UDnuv.js",
+          "bytes": 8610,
+          "sha256": "bad70f38bd5f1a45bdb61a04e5c9c0e16875d73f0df8bb7ba3fbc7d5cab90716"
+        },
+        {
+          "file": "_app/immutable/chunks/CN4fRrx7.js",
+          "bytes": 2332,
+          "sha256": "a55ddbc9c24882da6c70df3e50f3308a396846e6d544ea3f93e2aa89587b6e4d"
+        },
+        {
+          "file": "_app/immutable/chunks/COMNDecs.js",
+          "bytes": 4346,
+          "sha256": "a589847c5e3080189865eeace48febf78161bc000a27d0afafdc96cdf1ec5158"
+        },
+        {
+          "file": "_app/immutable/chunks/COejBDN2.js",
+          "bytes": 28622,
+          "sha256": "a45264c82865999c2f2afe124d1523d142e21ba215ddf664f352e3f4ba591cc8"
+        },
+        {
+          "file": "_app/immutable/chunks/CSmaE8wu.js",
+          "bytes": 416,
+          "sha256": "b80611566f97814f156407ed22ed0d0d62a2a6deb5ed0fb7bf138de3aca87bd1"
+        },
+        {
+          "file": "_app/immutable/chunks/CVsqkyi2.js",
+          "bytes": 142401,
+          "sha256": "eee1356f82127c8d2ae389716a03a3155fdb9f60a46fb038aef367704a3be131"
+        },
+        {
+          "file": "_app/immutable/chunks/CYnxEHdd.js",
+          "bytes": 1452,
+          "sha256": "686732eb62b421f453540e89a8832132bc501c0db3024237881a79e7e34b88a2"
+        },
+        {
+          "file": "_app/immutable/chunks/Cc1DsFEd.js",
+          "bytes": 1669,
+          "sha256": "41caa3ba72a4e682fa9adc91ae79445558dfe4fc7621b8157296cb1f9d13557a"
+        },
+        {
+          "file": "_app/immutable/chunks/ChwZkWde.js",
+          "bytes": 26812,
+          "sha256": "f6935c363d84a53b19c60e4f6801a653b5734c1e02f45c44547ef4804505e95a"
+        },
+        {
+          "file": "_app/immutable/chunks/D-Yy215k.js",
+          "bytes": 2116,
+          "sha256": "0a1e4a953412a13d3fd06f981a3da4450e6cc4d15e8e8cd1ef1f9dbc7f17badf"
+        },
+        {
+          "file": "_app/immutable/chunks/D1b-YelL.js",
+          "bytes": 19784,
+          "sha256": "567fe11f2d0b33df27feb54875ef2380b73acc16136e52388bed19c440389b3f"
+        },
+        {
+          "file": "_app/immutable/chunks/D9cIaqWw.js",
+          "bytes": 87,
+          "sha256": "0957f26869242cc40df7fe6ce946532166efa7d8bfd9d1f2bd9f4eb85e64cc52"
+        },
+        {
+          "file": "_app/immutable/chunks/D9i4yxYK.js",
+          "bytes": 228,
+          "sha256": "500f86872f77db8a1f6bcb06e5a01764e65ac17d872a8db805460136fe155e2a"
+        },
+        {
+          "file": "_app/immutable/chunks/DCIvvpOw.js",
+          "bytes": 1376,
+          "sha256": "765dca688f4de4a647b80efd1873e9cba3531afe1c25f8aed33907dbb73b424e"
+        },
+        {
+          "file": "_app/immutable/chunks/DE_jZQMh.js",
+          "bytes": 450,
+          "sha256": "63ac8c30d96b0763ffed040e904fae7bc8738f7bd03536088151d703c29697e5"
+        },
+        {
+          "file": "_app/immutable/chunks/DfNd-_eO.js",
+          "bytes": 58361,
+          "sha256": "0de881371d3d7690c74cfc07273b667726064f331d0c093966225e95ce88ab9c"
+        },
+        {
+          "file": "_app/immutable/chunks/Dm2Q9f1E.js",
+          "bytes": 309,
+          "sha256": "da1debf4ed469439b74fbcc1e1e802486983a93e5756078206f929f22b8a83f1"
+        },
+        {
+          "file": "_app/immutable/chunks/Dp-4MHyU.js",
+          "bytes": 4962,
+          "sha256": "0ab117656d843fecd0dd0fe4350f6ce1faaaf127d2cac7b6a82e7bd0c7655123"
+        },
+        {
+          "file": "_app/immutable/chunks/DpRTkGiL.js",
+          "bytes": 4703,
+          "sha256": "4695fe5bdc667564063a171dc97b50050a82ae96c38f621e2b931a4f364a892e"
+        },
+        {
+          "file": "_app/immutable/chunks/DtlMWXkJ.js",
+          "bytes": 54957,
+          "sha256": "b4728ad73367ef86d027002534f475d37f8ba04cfa0f492c1e874ee34afd1449"
+        },
+        {
+          "file": "_app/immutable/chunks/DvKclp1y.js",
+          "bytes": 5783,
+          "sha256": "aaa5dcc83577ce5b66b5c2856edd718c2be643420e7981e6aab363499b24f80a"
+        },
+        {
+          "file": "_app/immutable/chunks/FiOJVa9B.js",
+          "bytes": 27379,
+          "sha256": "aefadd52c8afe13bfb864c60ca050ce5c25c452dedc80dafd3b084ed1eca6079"
+        },
+        {
+          "file": "_app/immutable/chunks/HclGiUj8.js",
+          "bytes": 1211,
+          "sha256": "bba5840eec0028b00854bcd58fba80694d02d41e98417656424c05b26db7120c"
+        },
+        {
+          "file": "_app/immutable/chunks/QTfKXu6s.js",
+          "bytes": 366,
+          "sha256": "c488fd8f89bddec2663b7baf64d2a8cacbff8749ed5cb354fbd652a3e813bd65"
+        },
+        {
+          "file": "_app/immutable/chunks/Wa-RoAZm.js",
+          "bytes": 199480,
+          "sha256": "6f17631fd19512f7f864488e0ddfdb79df4febe1bf31b6ae21c170204e779b00"
+        },
+        {
+          "file": "_app/immutable/chunks/f9KAG0En.js",
+          "bytes": 382,
+          "sha256": "02e4292c8f45631e02618c044b431d2570ffb9714e0a927c1f8eae3870fa8de2"
+        },
+        {
+          "file": "_app/immutable/chunks/km8tce-M.js",
+          "bytes": 1490,
+          "sha256": "982ac6cbec6ea5f4d4f3b4d3867916e6a1f68dac55416b3a941d32aa48384e63"
+        },
+        {
+          "file": "_app/immutable/chunks/smMHF_PD.js",
+          "bytes": 53051,
+          "sha256": "6d8129df02aac1ecb05cea74e8ccc6298f5251908fca545b9e5fcb234b0899f1"
+        },
+        {
+          "file": "_app/immutable/chunks/uDHzx3_j.js",
+          "bytes": 24834,
+          "sha256": "86a7d32deecd488666b4de98bfec2bd657e2a76df284c61b5ec5727460930f2b"
+        },
+        {
+          "file": "_app/immutable/chunks/xihTtKlq.js",
+          "bytes": 65,
+          "sha256": "0214edcff77242079f540507a53803aa22d857b6ad673e60e39748b6c7aa08c1"
+        },
+        {
+          "file": "_app/immutable/assets/0.nHsbbFSc.css",
+          "bytes": 30121,
+          "sha256": "e541fd7fab86964db9b17aa256e69ce20197d5949a3dce84c62cf9787e383873"
+        },
+        {
+          "file": "_app/immutable/assets/1.BUbmKXx_.css",
+          "bytes": 447,
+          "sha256": "136210d4a38e38c57dcd56f2d71daae08a37a0c93633d8daa9dd1847379cf9aa"
+        },
+        {
+          "file": "_app/immutable/assets/2.d9ShgP3s.css",
+          "bytes": 9980,
+          "sha256": "43f71595036e7df71f7c5f9d5490e2d8f794be0a18d244e47ef1f6d1b4e0bab9"
+        },
+        {
+          "file": "_app/immutable/assets/3.CjbkjCuD.css",
+          "bytes": 15471,
+          "sha256": "782b5b510d812516128742628d4ad79fd3eeb5bfa3f81e9f64b5b35566de5732"
+        },
+        {
+          "file": "_app/immutable/assets/4.CnJztbdV.css",
+          "bytes": 7495,
+          "sha256": "039429bc569e2add4f13e27fc7807208322849ba2d248680a1ad13e76fec7586"
+        },
+        {
+          "file": "_app/immutable/assets/AboutPage.AQ1Pc2KC.css",
+          "bytes": 2783,
+          "sha256": "d701e981fc2f6a634e07ae2eb76b8ac221e639abbc7e2ad44fe86d6cc5a99167"
+        },
+        {
+          "file": "_app/immutable/assets/DifficultyDots.D-1e8mig.css",
+          "bytes": 1044,
+          "sha256": "0885b86004619831eaa9acd1c0711539be7dbb6bfae81bb1f2a55fce83224f37"
+        },
+        {
+          "file": "_app/immutable/assets/GitHubLink.C-iAatmA.css",
+          "bytes": 280,
+          "sha256": "4355bbfb97d40f34102a09d76d64b5f01f8104fc22e35bb9c0686cec93449ee6"
+        },
+        {
+          "file": "_app/immutable/assets/HowToPage.CmMVLSLg.css",
+          "bytes": 3702,
+          "sha256": "7a24826f300c8b59e6df8a9ace43560129c0b61f87f80123caf83025b85930da"
+        },
+        {
+          "file": "_app/immutable/assets/PageHeader.DaBtHtJM.css",
+          "bytes": 3727,
+          "sha256": "e357dafdc1c222105f3ee8af7f44e4f4aa438aef3437cfe8dc3542f15385eb10"
+        },
+        {
+          "file": "_app/immutable/assets/PaintPage.BEARhQhm.css",
+          "bytes": 19633,
+          "sha256": "37efaaed5aab1772fef9264d9119f8baf7b0e85836d2e43b8a8f2fd840f62acd"
+        },
+        {
+          "file": "_app/immutable/assets/PaperHeartSVG.hZ8lefQT.css",
+          "bytes": 135,
+          "sha256": "0ad62b349207be5e5e8441ece79c22c8207fd28e9fd4a5fe81297cc63fb3b3cd"
+        },
+        {
+          "file": "_app/immutable/assets/breakpoints.CtX3rbWW.css",
+          "bytes": 454,
+          "sha256": "0b981f7233b61d1d7730690ea4ed8d693aeb1e6597822d74344213025232d037"
+        },
+        {
+          "file": "_app/immutable/assets/collection.Df5QhW2Q.css",
+          "bytes": 716,
+          "sha256": "17e6f258b6a51b864f57890ae5d675d61323a41cd288bdbec8f0582cb7f28b91"
+        },
+        {
+          "file": "_app/immutable/assets/handoff.BBbSkW4-.css",
+          "bytes": 1845,
+          "sha256": "6d0da6edb9112dd02d4aecab1f57d4ad8ad7573e3b7aa5df4cef18e51f01a5e8"
+        }
+      ],
+      "buildVersion": {
+        "version": "1792050549292"
+      },
+      "passed": true,
+      "harnessSha256": "7a49f5ec378443a49d025c6fed43403e2004fb94a6d291128ce7192f7acd7780"
+    },
+    "servedBuild": {
+      "record": "tmp/heart-learning/finer-polishing-browser-v2/served-assets.json",
+      "preview": {
+        "pid": 88147,
+        "cwd": "/Users/ahle/repos/julehjerte-solver-initialization",
+        "origin": "http://127.0.0.1:5232",
+        "commit": "ee60678912253dd3d3e64ae08eac5e36679521ae"
+      }
+    },
+    "visualReview": {
+      "image": "tmp/heart-learning/finer-polishing-browser-v2/visual-review.png",
+      "inspected": 12,
+      "findings": "Crown, maple, star, hat, flower, tree, ship and stacked-heart motifs remain recognizable. Uneven checker edges, small photographic contour defects and some thin border features remain. The crown was also inspected at full screenshot resolution. Nominal paper checks are not physical assembly testing."
+    },
+    "timingScope": "Ten-second rows use a ten-second solver request. Click-to-ready includes preparation, export and editor conversion and exceeds ten seconds for several rows. No ten-second UI guarantee is claimed."
+  },
+  "prototypeEquivalence": {
+    "record": "tmp/heart-learning/finer-polishing-browser-v1/prototype-equivalence.json",
+    "runtimeFiles": 107,
+    "scope": "All deployed-worktree runtime assets equal the already corpus-tested isolated prototype, except one explicitly checked explanatory comment. The earlier native corpus and its strict historical gate failure are reused as prototype evidence; no second native corpus run is claimed."
+  }
+}

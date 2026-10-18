@@ -1,0 +1,888 @@
+{
+  "scope": "Development experiment on 24 selected synthetic views with four controlled appearances (96 images), 26 fixed real photo crops, and a production routing fix. Neither real masks nor near-duplicate photographs are ground truth cutting geometry.",
+  "colorModelEnabledByDefault": false,
+  "routingCommit": "df762d9",
+  "paintRegressionCommit": "9c4ce11",
+  "controlledColorSummary": {
+    "baseline": {
+      "inset-rgb": {
+        "meanError": 0.004386630639424621,
+        "worstError": 0.016623586542280064,
+        "improved": 5,
+        "regressed": 0
+      },
+      "local-32": {
+        "meanError": 0.0037928415252863022,
+        "worstError": 0.014558257479968424,
+        "improved": 8,
+        "regressed": 0
+      },
+      "local-64": {
+        "meanError": 0.003829621951327527,
+        "worstError": 0.014229928256571824,
+        "improved": 7,
+        "regressed": 0
+      },
+      "multiscale": {
+        "meanError": 0.003794870447218603,
+        "worstError": 0.014614143305227421,
+        "improved": 8,
+        "regressed": 0
+      },
+      "production": {
+        "meanError": 0.005130378416745638
+      }
+    },
+    "glare-mild": {
+      "inset-rgb": {
+        "meanError": 0.0495225493455859,
+        "worstError": 0.2730595689696869,
+        "improved": 7,
+        "regressed": 13
+      },
+      "local-32": {
+        "meanError": 0.01701225244623916,
+        "worstError": 0.10517588534880966,
+        "improved": 23,
+        "regressed": 1
+      },
+      "local-64": {
+        "meanError": 0.012021640502770435,
+        "worstError": 0.10636726560812647,
+        "improved": 22,
+        "regressed": 1
+      },
+      "multiscale": {
+        "meanError": 0.013950357002922456,
+        "worstError": 0.10517588534880966,
+        "improved": 23,
+        "regressed": 1
+      },
+      "production": {
+        "meanError": 0.05103260767505756
+      }
+    },
+    "glare-offset": {
+      "inset-rgb": {
+        "meanError": 0.18668220228868768,
+        "worstError": 0.48930153177804736,
+        "improved": 7,
+        "regressed": 16
+      },
+      "local-32": {
+        "meanError": 0.11189674991530492,
+        "worstError": 0.42064564564564566,
+        "improved": 20,
+        "regressed": 2
+      },
+      "local-64": {
+        "meanError": 0.1207091402613486,
+        "worstError": 0.47001092001092004,
+        "improved": 18,
+        "regressed": 3
+      },
+      "multiscale": {
+        "meanError": 0.11057592638161858,
+        "worstError": 0.47710090552624895,
+        "improved": 20,
+        "regressed": 2
+      },
+      "production": {
+        "meanError": 0.17014547469672409
+      }
+    },
+    "glare-strong": {
+      "inset-rgb": {
+        "meanError": 0.22403119726988482,
+        "worstError": 0.47148931772209834,
+        "improved": 12,
+        "regressed": 9
+      },
+      "local-32": {
+        "meanError": 0.1247014103444349,
+        "worstError": 0.3829648226450552,
+        "improved": 16,
+        "regressed": 6
+      },
+      "local-64": {
+        "meanError": 0.13483263503963658,
+        "worstError": 0.37455217354509296,
+        "improved": 15,
+        "regressed": 7
+      },
+      "multiscale": {
+        "meanError": 0.12381909207663633,
+        "worstError": 0.44390532878219413,
+        "improved": 15,
+        "regressed": 7
+      },
+      "production": {
+        "meanError": 0.18777578194265063
+      }
+    }
+  },
+  "javascriptReplay": {
+    "views": 96,
+    "pythonDifferentPixels": 0,
+    "meanSeconds": 0.16647604816666658,
+    "worstSeconds": 0.3257375829999999
+  },
+  "realFitBaseline": {
+    "commit": "fee6ff4",
+    "rows": [
+      {
+        "id": "hjfig-01",
+        "method": "spatial",
+        "seconds": 4.4281489590000005,
+        "checked": true,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "maskError": 0.010759111111111112,
+        "originalMaskDisagreement": 0.010759111111111112
+      },
+      {
+        "id": "hjfig-02",
+        "method": "spatial",
+        "seconds": 4.315340916999999,
+        "checked": true,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "maskError": 0.016305777777777777,
+        "originalMaskDisagreement": 0.03245511111111111
+      },
+      {
+        "id": "hjfig-03",
+        "method": "spatial",
+        "seconds": 3.8944474169999994,
+        "checked": true,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "maskError": 0.006940444444444444,
+        "originalMaskDisagreement": 0.013404444444444445
+      },
+      {
+        "id": "hjfig-04",
+        "method": "spatial",
+        "seconds": 3.619782083000002,
+        "checked": true,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "maskError": 0.004977777777777778,
+        "originalMaskDisagreement": 0.010944
+      },
+      {
+        "id": "hjfig-05",
+        "method": "spatial",
+        "seconds": 9.913332624999999,
+        "checked": false,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "maskError": 0.040812193468288,
+        "originalMaskDisagreement": 0.04099710308270743
+      },
+      {
+        "id": "hjfla-01",
+        "method": "spatial",
+        "seconds": 9.515335249999996,
+        "checked": true,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "maskError": 0.012376573350694444,
+        "originalMaskDisagreement": 0.015224880642361112
+      },
+      {
+        "id": "hjcur-01",
+        "method": "spatial",
+        "seconds": 5.335837583000001,
+        "checked": true,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "maskError": 0.016384,
+        "originalMaskDisagreement": 0.03569777777777778
+      },
+      {
+        "id": "hjcur-02",
+        "method": "spatial",
+        "seconds": 5.082702917000002,
+        "checked": true,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "maskError": 0.005809777777777777,
+        "originalMaskDisagreement": 0.006001777777777778
+      },
+      {
+        "id": "hjcur-03",
+        "method": "spatial",
+        "seconds": 5.312580333999998,
+        "checked": true,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "maskError": 0.005027555555555556,
+        "originalMaskDisagreement": 0.007488
+      },
+      {
+        "id": "hjcur-04",
+        "method": "spatial",
+        "seconds": 7.133846125000003,
+        "checked": true,
+        "slits": {
+          "left": 6,
+          "right": 6
+        },
+        "maskError": 0.006044444444444444,
+        "originalMaskDisagreement": 0.007971555555555556
+      },
+      {
+        "id": "hjcur-05",
+        "method": "spatial",
+        "seconds": 5.267845084,
+        "checked": true,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "maskError": 0.013980444444444445,
+        "originalMaskDisagreement": 0.013162666666666666
+      },
+      {
+        "id": "hjhih-01",
+        "method": "spatial",
+        "seconds": 6.882229291999996,
+        "checked": true,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "maskError": 0.006174662407044484,
+        "originalMaskDisagreement": 0.016906494134070714
+      },
+      {
+        "id": "hjhih-02",
+        "method": "spatial",
+        "seconds": 5.0578865000000075,
+        "checked": true,
+        "slits": {
+          "left": 3,
+          "right": 3
+        },
+        "maskError": 0.0053514578461916025,
+        "originalMaskDisagreement": 0.01188228156167129
+      },
+      {
+        "id": "hjhih-04",
+        "method": "spatial",
+        "seconds": 7.850012833000001,
+        "checked": true,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "maskError": 0.0074263996529598765,
+        "originalMaskDisagreement": 0.009595400423440748
+      },
+      {
+        "id": "hjstr-01",
+        "method": "spatial",
+        "seconds": 4.135272833999989,
+        "checked": true,
+        "slits": {
+          "left": 3,
+          "right": 3
+        },
+        "maskError": 0.007977349288031909,
+        "originalMaskDisagreement": 0.009313796405370589
+      },
+      {
+        "id": "hjstr-02",
+        "method": "spatial",
+        "seconds": 6.8005553749999965,
+        "checked": true,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "maskError": 0.004819197896120973,
+        "originalMaskDisagreement": 0.009500328731097962
+      },
+      {
+        "id": "hjstr-03",
+        "method": "spatial",
+        "seconds": 8.67359775,
+        "checked": true,
+        "slits": {
+          "left": 7,
+          "right": 7
+        },
+        "maskError": 0.004855723243702838,
+        "originalMaskDisagreement": 0.008808056116484218
+      },
+      {
+        "id": "hjsta-01",
+        "method": "spatial",
+        "seconds": 3.8902500829999918,
+        "checked": true,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "maskError": 0.007008310249307479,
+        "originalMaskDisagreement": 0.017548476454293627
+      },
+      {
+        "id": "hjsta-02",
+        "method": "spatial",
+        "seconds": 4.370171542000011,
+        "checked": true,
+        "slits": {
+          "left": 3,
+          "right": 3
+        },
+        "maskError": 0.0035875108506944445,
+        "originalMaskDisagreement": 0.0048828125
+      },
+      {
+        "id": "hjsta-03",
+        "method": "spatial",
+        "seconds": 6.908377874999991,
+        "checked": true,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "maskError": 0.01799725950821125,
+        "originalMaskDisagreement": 0.04641111467117507
+      },
+      {
+        "id": "hjsta-04",
+        "method": "spatial",
+        "seconds": 6.928513708999992,
+        "checked": true,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "maskError": 0.004843089499174155,
+        "originalMaskDisagreement": 0.007103664511071918
+      },
+      {
+        "id": "hjsta-05",
+        "method": "spatial",
+        "seconds": 9.209638749999998,
+        "checked": false,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "maskError": 0.04251791994415958,
+        "originalMaskDisagreement": 0.061464737308384115
+      },
+      {
+        "id": "outline-star",
+        "method": "auto",
+        "seconds": 6.378569583000004,
+        "checked": true,
+        "slits": {
+          "left": 3,
+          "right": 3
+        },
+        "maskError": 0.02303125,
+        "originalMaskDisagreement": 0.02303125
+      },
+      {
+        "id": "outline-star",
+        "method": "spatial",
+        "seconds": 6.011019249999983,
+        "checked": true,
+        "slits": {
+          "left": 3,
+          "right": 3
+        },
+        "maskError": 0.01846875,
+        "originalMaskDisagreement": 0.01915625
+      },
+      {
+        "id": "flower",
+        "method": "auto",
+        "seconds": 6.312460707999999,
+        "checked": true,
+        "slits": {
+          "left": 3,
+          "right": 3
+        },
+        "maskError": 0.0045,
+        "originalMaskDisagreement": 0.0045
+      },
+      {
+        "id": "flower",
+        "method": "spatial",
+        "seconds": 5.846102707999991,
+        "checked": true,
+        "slits": {
+          "left": 3,
+          "right": 3
+        },
+        "maskError": 0.011525,
+        "originalMaskDisagreement": 0.0132375
+      },
+      {
+        "id": "jigsaw",
+        "method": "auto",
+        "seconds": 9.296833542000007,
+        "checked": true,
+        "slits": {
+          "left": 3,
+          "right": 4
+        },
+        "maskError": 0.0292,
+        "originalMaskDisagreement": 0.0292
+      },
+      {
+        "id": "jigsaw",
+        "method": "spatial",
+        "seconds": 8.600153417000023,
+        "checked": false,
+        "slits": {
+          "left": 3,
+          "right": 3
+        },
+        "maskError": 0.0239875,
+        "originalMaskDisagreement": 0.0318375
+      },
+      {
+        "id": "bauble",
+        "method": "auto",
+        "seconds": 9.320728665999981,
+        "checked": false,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "maskError": 0.03855625,
+        "originalMaskDisagreement": 0.03855625
+      },
+      {
+        "id": "bauble",
+        "method": "spatial",
+        "seconds": 9.450695875000005,
+        "checked": true,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "maskError": 0.02516875,
+        "originalMaskDisagreement": 0.0387625
+      }
+    ],
+    "hunodanChecked": 20,
+    "hunodanTotal": 22
+  },
+  "anchorFinal": {
+    "commit": "9c4ce110a779642da72d0c013eff6ff0cac76519",
+    "maskSha256": "50f97910d446ba265f4cb15babc1bee197517947e6b03c737e443fef15ec0cb2",
+    "configuration": {
+      "algorithm": "auto",
+      "polygonal": false,
+      "identicalSheets": false,
+      "resolution": 400,
+      "fitTolerance": 0.5,
+      "maxSpan": 15,
+      "smoothRadius": 0,
+      "snapRadius": 1.5,
+      "borderRadius": 3,
+      "gridPortals": false,
+      "neighbors": 16,
+      "connectorVariants": 2,
+      "junctionBalancePenalty": 0,
+      "gridPreference": 0,
+      "sharpPenalty": 50,
+      "acutePenalty": 30,
+      "turnPenalty": 3,
+      "maxTurn": 175,
+      "localNeighborhoodFactor": 8,
+      "roundHidden": false,
+      "timeLimit": 10,
+      "trials": 0,
+      "earlyStop": false
+    },
+    "seconds": 5.801337209,
+    "checked": true,
+    "slits": {
+      "left": 4,
+      "right": 4
+    },
+    "independentError": 0.020903591649129603,
+    "seedIntersectionRetry": true
+  },
+  "hunodanFinal": {
+    "cases": 22,
+    "qualityPassed": 22,
+    "speedPassed": 22,
+    "maximumSeconds": 9.230460957999997,
+    "maximumErrorChangeFromPreviousRun": 0.0,
+    "criteria": "Each prepare + solve + validate + export <=10 seconds; independent error <= that case\u2019s validated release error, plus at most 1 percentage point for an identical pair; unchanged geometry, strict paper and substantial feature checks. Decode and independent external replay are timed separately. Optional retained snapshots reproduce the compute-worker observer; thread startup and message transfer are excluded.",
+    "rows": [
+      {
+        "id": "hjfig-01",
+        "seconds": 4.642986625000001,
+        "error": 0.009799111111111111,
+        "previousError": 0.009799111111111111,
+        "passed": true
+      },
+      {
+        "id": "hjfig-02",
+        "seconds": 4.8378945,
+        "error": 0.013923555555555555,
+        "previousError": 0.013923555555555555,
+        "passed": true
+      },
+      {
+        "id": "hjfig-03",
+        "seconds": 3.9562192910000014,
+        "error": 0.006634666666666666,
+        "previousError": 0.006634666666666666,
+        "passed": true
+      },
+      {
+        "id": "hjfig-04",
+        "seconds": 4.448917959,
+        "error": 0.013824,
+        "previousError": 0.013824,
+        "passed": true
+      },
+      {
+        "id": "hjfig-05",
+        "seconds": 3.3271655409999985,
+        "error": 0.009042960667083447,
+        "previousError": 0.009042960667083447,
+        "passed": true
+      },
+      {
+        "id": "hjfla-01",
+        "seconds": 6.414171125000001,
+        "error": 0.013468424479166666,
+        "previousError": 0.013468424479166666,
+        "passed": true
+      },
+      {
+        "id": "hjcur-01",
+        "seconds": 6.298858749999999,
+        "error": 0.005148444444444444,
+        "previousError": 0.005148444444444444,
+        "passed": true
+      },
+      {
+        "id": "hjcur-02",
+        "seconds": 5.826417041000001,
+        "error": 0.005397333333333333,
+        "previousError": 0.005397333333333333,
+        "passed": true
+      },
+      {
+        "id": "hjcur-03",
+        "seconds": 5.915204250000002,
+        "error": 0.004522666666666667,
+        "previousError": 0.004522666666666667,
+        "passed": true
+      },
+      {
+        "id": "hjcur-04",
+        "seconds": 7.729481625,
+        "error": 0.005639111111111111,
+        "previousError": 0.005639111111111111,
+        "passed": true
+      },
+      {
+        "id": "hjcur-05",
+        "seconds": 3.6399004159999966,
+        "error": 0.009436444444444445,
+        "previousError": 0.009436444444444445,
+        "passed": true
+      },
+      {
+        "id": "hjhih-01",
+        "seconds": 7.759199375000004,
+        "error": 0.006040430615586996,
+        "previousError": 0.006040430615586996,
+        "passed": true
+      },
+      {
+        "id": "hjhih-02",
+        "seconds": 5.561670250000003,
+        "error": 0.003899406226779104,
+        "previousError": 0.003899406226779104,
+        "passed": true
+      },
+      {
+        "id": "hjhih-04",
+        "seconds": 8.343588334,
+        "error": 0.007776029627903062,
+        "previousError": 0.007776029627903062,
+        "passed": true
+      },
+      {
+        "id": "hjstr-01",
+        "seconds": 4.75121033300001,
+        "error": 0.007550237322696868,
+        "previousError": 0.007550237322696868,
+        "passed": true
+      },
+      {
+        "id": "hjstr-02",
+        "seconds": 7.068501583000005,
+        "error": 0.004365548980933596,
+        "previousError": 0.004365548980933596,
+        "passed": true
+      },
+      {
+        "id": "hjstr-03",
+        "seconds": 9.230460957999997,
+        "error": 0.0056129769369752365,
+        "previousError": 0.0056129769369752365,
+        "passed": true
+      },
+      {
+        "id": "hjsta-01",
+        "seconds": 5.402226750000001,
+        "error": 0.007929362880886427,
+        "previousError": 0.007929362880886427,
+        "passed": true
+      },
+      {
+        "id": "hjsta-02",
+        "seconds": 5.146505499999999,
+        "error": 0.0038045247395833335,
+        "previousError": 0.0038045247395833335,
+        "passed": true
+      },
+      {
+        "id": "hjsta-03",
+        "seconds": 7.578589292000005,
+        "error": 0.012332213049376572,
+        "previousError": 0.012332213049376572,
+        "passed": true
+      },
+      {
+        "id": "hjsta-04",
+        "seconds": 7.347780958999996,
+        "error": 0.0050250552896055544,
+        "previousError": 0.0050250552896055544,
+        "passed": true
+      },
+      {
+        "id": "hjsta-05",
+        "seconds": 7.074580791999994,
+        "error": 0.010624446293860237,
+        "previousError": 0.010624446293860237,
+        "passed": true
+      }
+    ]
+  },
+  "browser": [
+    {
+      "name": "anchor-spatial-mask",
+      "artifact": "tmp/heart-learning/spatial-colors-v1/browser/results.json",
+      "passed": false,
+      "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'bea3d463bfda33cc8361cb8196bea7154a1464a154f906da48cfa25d34975c6f'\n- '50f97910d446ba265f4cb15babc1bee197517947e6b03c737e443fef15ec0cb2'\n\n    at file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/paint-browser-test.mjs:324:13",
+      "independentEditableError": null,
+      "secondsToReady": 4.413700000047684,
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "sourcePhoto": {
+        "id": "hjfig-05",
+        "sha256": "fbe7dec61239342c470a8d8d227fc47f0c55d52a5c07488f26485a07bf84a10d",
+        "quad": null,
+        "fixedMaskSha256": "50f97910d446ba265f4cb15babc1bee197517947e6b03c737e443fef15ec0cb2"
+      }
+    },
+    {
+      "name": "flower-native-mask",
+      "artifact": "tmp/heart-learning/spatial-colors-v1/browser/results.json",
+      "passed": true,
+      "failure": null,
+      "independentEditableError": 0.00561875,
+      "secondsToReady": 7.831,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "sourcePhoto": {
+        "id": "flower-native",
+        "sha256": "ff26866081f60d3f0636acffb408cde199c177aac7e97b907979b06ad5b6f35b",
+        "quad": null,
+        "fixedMaskSha256": "d3606045ae05979ef0b06135c902c0f4733b190b29674e8677659b160f536a07"
+      }
+    },
+    {
+      "name": "star",
+      "artifact": "tmp/heart-learning/spatial-colors-v1/browser/results.json",
+      "passed": true,
+      "failure": null,
+      "independentEditableError": 0.0016,
+      "secondsToReady": 2.022100000023842,
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "sourcePhoto": null
+    },
+    {
+      "name": "top-hat-preferred",
+      "artifact": "tmp/heart-learning/spatial-colors-v1/browser/results.json",
+      "passed": true,
+      "failure": null,
+      "independentEditableError": 0.004118835034013606,
+      "secondsToReady": 7.9241000000238415,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "sourcePhoto": null
+    },
+    {
+      "name": "hard-flettede-puppy-half",
+      "artifact": "tmp/heart-learning/spatial-colors-v1/browser/results.json",
+      "passed": true,
+      "failure": null,
+      "independentEditableError": 0.00915,
+      "secondsToReady": 22.088899999976157,
+      "selectedCounts": [
+        5,
+        3
+      ],
+      "sourcePhoto": {
+        "id": "flettede-puppy",
+        "sha256": "2a26b6c1531efa407da71dba64fe5db6a6f2e4a6c25226c84b6e62213784fad0",
+        "decodedPixelsSha256": "11e4028fec88a190b4c55bbc5d4023654c8044d5be7dd8d6ebab0da72d93460c"
+      }
+    },
+    {
+      "name": "anchor-spatial-mask",
+      "artifact": "tmp/heart-learning/spatial-colors-v1/browser-anchor-final/results.json",
+      "passed": true,
+      "failure": null,
+      "independentEditableError": 0.01011875,
+      "secondsToReady": 4.340899999976158,
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "sourcePhoto": {
+        "id": "hjfig-05",
+        "sha256": "fbe7dec61239342c470a8d8d227fc47f0c55d52a5c07488f26485a07bf84a10d",
+        "quad": null,
+        "fixedMaskSha256": "50f97910d446ba265f4cb15babc1bee197517947e6b03c737e443fef15ec0cb2",
+        "paintImport": {
+          "resolution": 400,
+          "method": "Nearest-neighbor resampling at destination cell centers by maskFromPrepared; the 337-pixel upload itself remains unchanged.",
+          "maskSha256": "bea3d463bfda33cc8361cb8196bea7154a1464a154f906da48cfa25d34975c6f"
+        }
+      }
+    }
+  ],
+  "qa": {
+    "status": "complete",
+    "commit": "9c4ce110a779642da72d0c013eff6ff0cac76519",
+    "commands": [
+      {
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 7.236699084,
+        "log": "tmp/heart-learning/spatial-colors-v1/qa/0.log",
+        "sha256": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092"
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 5.857988875,
+        "log": "tmp/heart-learning/spatial-colors-v1/qa/1.log",
+        "sha256": "a552732ebea6b64b49ac0a1299170db75e8c45dbbc66c284f28e99be5613e5c7"
+      },
+      {
+        "command": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 34.125478042,
+        "log": "tmp/heart-learning/spatial-colors-v1/qa/2.log",
+        "sha256": "72589e62d4e24e9fdcc302be0c18e7237c26aefe14ab66bd018c1ce11d6592a8"
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "test:inverse"
+        ],
+        "exitCode": 0,
+        "seconds": 520.1891976669999,
+        "log": "tmp/heart-learning/spatial-colors-v1/qa/3.log",
+        "sha256": "215eb61fa134aa7d48deb43bca5bf0e382bc05d0aef5e6d808c27e5d2ad53a5b"
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 9.839878125000041,
+        "log": "tmp/heart-learning/spatial-colors-v1/qa/4.log",
+        "sha256": "81bc4d2c656c62aebb463877f2a71bdf48ad013188637bd37fc695c7b213afbd"
+      }
+    ]
+  },
+  "archive": {
+    "file": "tmp/heart-learning/spatial-colors-v1/archive/experiments.tar.gz",
+    "sha256": "cd26ef1572a516ee5373e91ebcaa0d419c76b22ac94bfa0cd8e751fe410d97d7",
+    "bytes": 46100038,
+    "files": 2367,
+    "verification": "All archived members re-read and SHA-256 verified; archive integrity, not a fresh execution of all experiments.",
+    "replayRequirements": "Repository checkout at the recorded commit with existing dependencies; restore repository-relative paths from the archive. Source snapshots preserve baseline and final engines, not complete browser app checkouts. Prior broad-probe routing-probe.json was overwritten during development; routing-local-cuts.json is only the later probe, not a before/after baseline."
+  },
+  "artifacts": {
+    "tmp/heart-learning/spatial-colors-v1/scores.json": "4363634ba7be8c8a6ed1a257d050a94f942acf685c2220f0894f40527879a579",
+    "tmp/heart-learning/spatial-colors-v1/javascript/report.json": "11aea4465db073492254cc7ad5ec0c7dd99f160ed957ead6c1ccd6b7135bf88c",
+    "tmp/heart-learning/spatial-colors-v1/javascript-final/report.json": "95870d6b6f94eb294feae6a9260cbb5744bace9fbe03a2bb0ebaf5e098945c59",
+    "tmp/heart-learning/spatial-colors-v1/real/manifest.json": "815d8d88fe48bdcceaf9ee0689106f091853eabf0e89774f4e29f91b009d10c3",
+    "tmp/heart-learning/spatial-colors-v1/real/fit-report.json": "15e63feec46c7d0b14a9f5fb02685aa30c8209cbfdf8ebf04c03a3fec441d2ef",
+    "tmp/heart-learning/spatial-colors-v1/real/fit-sources.json": "b203e71637a97462ac124828ad381668ef55f7b3adce18aa6aed6f033a695bc0",
+    "tmp/heart-learning/spatial-colors-v1/anchor-final/measurement.json": "e85b529b28dd8031af765376d02c34f3d352ed6a5d7bd78274e732d1ca3e9ea0",
+    "tmp/heart-learning/spatial-colors-v1/anchor-visible-preflight/report.json": "611bc63806d5806dadd4ae4e3ca4fd0c3ddd2786bea8e709eced75687c0bde70",
+    "tmp/heart-learning/spatial-colors-v1/hunodan-final/results.json": "d61409fc9b3d0a9e522cb6aeeb20758298c3ed8d8e182870ca49c979c595c2bc",
+    "tmp/heart-learning/spatial-colors-v1/browser/results.json": "5c092cdbdbe75b2b57bd7e9cdcabb53d7bb07f83cc0cdcd562d73920d247645b",
+    "tmp/heart-learning/spatial-colors-v1/browser-anchor-final/results.json": "8aca84b9ba11797bb31f48811ff4aa2d099b106f366f0d83790938e1fbcda36d",
+    "tmp/heart-learning/spatial-colors-v1/qa/report.json": "b7d471e7608b1c1146260a7cce7a335d1bf5e6968e374b9057179cb1e54a6aa4",
+    "tmp/heart-learning/spatial-colors-v1/targeted-tests.log": "996bf28db87e74a3c50f2cb031f4a96677a781fea2343603cdc99b83b13b4a28",
+    "tmp/heart-learning/spatial-colors-v1/verification.json": "e4601e49ebcba4609c59815d9117f21ffc66966b7e95ac632cb7c34743864e50"
+  }
+}

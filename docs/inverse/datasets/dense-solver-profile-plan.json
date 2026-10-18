@@ -1,0 +1,28 @@
+{
+  "schema": "dense-solver-profile-plan-1",
+  "status": "complete",
+  "reason": {
+    "case": "hunodan-hjstr-03",
+    "previousClickToReadySeconds": 9.851599999904632,
+    "currentClickToReadySeconds": 10.244800000190734,
+    "previousSolveSeconds": 9.0515,
+    "currentSolveSeconds": 9.3515,
+    "previousResultToReadySeconds": 0.6365999999046326,
+    "currentResultToReadySeconds": 0.7018000001907349,
+    "conclusion": "Most of this paired slowdown is in the unchanged solver, not the newly extended conversion check. A single pair does not establish a stable speed regression; more margin is needed for the 10s target."
+  },
+  "source": "Fresh fits from the captured 388px mask and actual browser request settings; exported templates are only comparison artifacts, never initializers.",
+  "method": "Run a fresh unprofiled control and fresh Node CPU profile serially after full QA. Retain progress stages, kernel backend, all geometry, independent mask error, source hashes and whether browser geometry is reproduced. Profiling overhead is diagnostic, not a latency claim.",
+  "profileRoot": "tmp/heart-learning/dense-solver-profile-v1",
+  "secondaryFinding": {
+    "case": "hard-bibel-star-outline-half",
+    "evidence": "Both runs reach the same step-200 candidate with 1.558036% native error and a short self-clearance issue. The earlier run repairs and validates it; the new run records no repair there and retains the step-160 candidate. The refinement repair gate requires more than 50ms remaining.",
+    "qualification": "The saved report contains no wall-clock timestamp for that checkpoint, so the exact remaining allowance needs instrumentation before attributing the missed repair conclusively.",
+    "next": "Test whether reserving an explicit final repair opportunity for an improved short-return candidate avoids deadline-sensitive quality loss without extending the total budget or relaxing legality."
+  },
+  "artifactsSha256": {
+    "tmp/heart-learning/dense-solver-profile-v1/profile.mjs": "1e9ec8af10c80329672842096749f9624fa8171b72432e29e692471dcf1070be",
+    "tmp/heart-learning/dense-solver-profile-v1/run.py": "1704e8dcbf4e8158ec480c30a35dac2baacaac5e0e982cb60e802b213675562e"
+  },
+  "results": "dense-solver-profile-results.json"
+}

@@ -1,0 +1,112 @@
+{
+  "scope": "Fresh fixed-crop paired fits of two previously inspected photos, twice per runtime. No saved cutting geometry supplied. Not a full-corpus or browser result.",
+  "status": "paired-study-and-focused-tests-passed; full-release-qa-pending",
+  "baselineRuntime": "9ee6f49",
+  "change": "Enable the existing exact repeated-rollback skip for ordinary grid refinement as well as feature-guided starts.",
+  "comparison": [
+    {
+      "case": "floral-checker",
+      "repeat": "1",
+      "baselineSeconds": 9.436012458999999,
+      "candidateSeconds": 9.403597833,
+      "baselineErrors": [
+        0.01941875,
+        0.02185
+      ],
+      "candidateErrors": [
+        0.01890625,
+        0.0211890625
+      ],
+      "noHigherError": true,
+      "candidatePassed": true
+    },
+    {
+      "case": "flettede-viking",
+      "repeat": "1",
+      "baselineSeconds": 9.418605583,
+      "candidateSeconds": 9.543335083,
+      "baselineErrors": [
+        0.0219375,
+        0.0238984375
+      ],
+      "candidateErrors": [
+        0.02145,
+        0.0234453125
+      ],
+      "noHigherError": true,
+      "candidatePassed": true
+    },
+    {
+      "case": "floral-checker",
+      "repeat": "2",
+      "baselineSeconds": 9.442692875,
+      "candidateSeconds": 9.427903542,
+      "baselineErrors": [
+        0.019325,
+        0.0217015625
+      ],
+      "candidateErrors": [
+        0.01890625,
+        0.0211890625
+      ],
+      "noHigherError": true,
+      "candidatePassed": true
+    },
+    {
+      "case": "flettede-viking",
+      "repeat": "2",
+      "baselineSeconds": 9.40663325,
+      "candidateSeconds": 9.551369917,
+      "baselineErrors": [
+        0.0216625,
+        0.0237515625
+      ],
+      "candidateErrors": [
+        0.021525,
+        0.02354375
+      ],
+      "noHigherError": true,
+      "candidatePassed": true
+    }
+  ],
+  "sourceHashes": {
+    "static/inverse/core/direct/fit.js": "d3868ae8460c1386e368967b4aaefd309463378bd56b46b322c5333fb999c2ea",
+    "static/inverse/core/direct/refine.js": "39105b04e208a53d16d3990a57584d73b33536b27885d2e0048ddb0a717f9502",
+    "scripts/inverse/sampling-rollback.test.mjs": "78686c2a1da5785b9eb9e82041d0318bc99975771ff171633f2ba266cf356601"
+  },
+  "focusedTests": {
+    "passed": 10,
+    "failed": 0,
+    "seconds": 51.685540625
+  },
+  "artifactsSha256": {
+    "tmp/heart-learning/ordinary-rollback-v1/source.json": "88962c7107c7c8c6313cb74ebef745859278596e0a30fa3f968ecc9c7df12e41",
+    "tmp/heart-learning/ordinary-rollback-v1/protocol.json": "3a42eafcd103b78df7a6023404091d19b30dc7bf8e1aea235f711d4531be23c8",
+    "tmp/heart-learning/ordinary-rollback-v1/checks.json": "b5af6e622070289b78f4f810ce8a004b1b13e62f9d187dc1527d357671d220a0",
+    "tmp/heart-learning/ordinary-rollback-v1/comparison.json": "71acea962bb5826bd788527ddcc1af2926f97740a793b1c988ab4a93f3eb9116",
+    "tmp/heart-learning/ordinary-rollback-v1/running.json": "9d4985f21d9ffd8cf9b0b95d7d79aef2a91e8451a047e9853160519ec74f4bfa",
+    "tmp/heart-learning/ordinary-rollback-v1/integration/focused.log": "6f35c6081ede5710bb387f6e5f68f0bed77b506182ced908306a873a8e44270d",
+    "tmp/heart-learning/floral-deadline-profile-v2/source.json": "0e3b99973049d4b7ba2e99c23204fd993ccc7c8cb4d54783eff166853fb5ce1c",
+    "tmp/heart-learning/floral-deadline-profile-v2/checks.json": "28ae854a2581f979075bf2c2f3cab6b9b13457efc6c53b4c1d69ea00035856c7",
+    "tmp/heart-learning/floral-deadline-profile-v2/profile-1/design.cpuprofile": "99ea90599c02cfe94fabae4b810768bd04d4bf90f4f0b993dcbb494757482af1",
+    "tmp/heart-learning/ordinary-rollback-v1/flettede-viking-baseline-1/measurement.json": "3b03726326506083f46b459b1f2de300dfe4584714f9ee8a51b4b9de3156b303",
+    "tmp/heart-learning/ordinary-rollback-v1/flettede-viking-baseline-2/measurement.json": "714c88ebbcbaf120ada816e19eade8271050b091c7693ce9dc7a5517e0737040",
+    "tmp/heart-learning/ordinary-rollback-v1/flettede-viking-candidate-1/measurement.json": "536271baea7e2c427fcb02c7aa9bfd107dcb546caaa52fedeca3b2fafc34d4ec",
+    "tmp/heart-learning/ordinary-rollback-v1/flettede-viking-candidate-2/measurement.json": "335033c2e877c1db413f8090e7b96bef45fd21d6ddac19f2c236ac9482d0ac1f",
+    "tmp/heart-learning/ordinary-rollback-v1/floral-checker-baseline-1/measurement.json": "cb14cd6c38920c151e5d714d8705c2fabe0e16c0d41fa14e1f0ec0db49e22ce7",
+    "tmp/heart-learning/ordinary-rollback-v1/floral-checker-baseline-2/measurement.json": "4e626c4d6e68c197566d9203f0b06669164bcaa0078658e437a9250646fe3a89",
+    "tmp/heart-learning/ordinary-rollback-v1/floral-checker-candidate-1/measurement.json": "79704a8af001a38cbe48a5f6e81ebd14b0c8b17f1bc8d8ae804986fa52b543d9",
+    "tmp/heart-learning/ordinary-rollback-v1/floral-checker-candidate-2/measurement.json": "b8a0a865eed1e85d0cf94b40701f930c9ca7270aaab1828e42bc01c378a13847",
+    "tmp/heart-learning/floral-deadline-profile-v2/baseline-1/measurement.json": "a269097ee718be495d63d78b82ef3b6c13b87b48bc5c07bca34c0301b1bf6ec7",
+    "tmp/heart-learning/floral-deadline-profile-v2/baseline-2/measurement.json": "7c8cb20e6c4bf3d4be9f7fea1d101022642160d2584b857ab046c539d61d502b",
+    "tmp/heart-learning/floral-deadline-profile-v2/candidate-1/measurement.json": "54ed4756d5dc10f5da1806250f347a45e77b77a547e08d538927d2088b38d14f",
+    "tmp/heart-learning/floral-deadline-profile-v2/candidate-2/measurement.json": "971813e1f855907b00f023a0c7fa2950b892f4701546b63c967146aaa5cfd946",
+    "tmp/heart-learning/floral-deadline-profile-v2/profile-1/measurement.json": "f89a9429872d83010c0a223ed1efa88a23516c252da24e45f4023160696eeb59"
+  },
+  "limitations": [
+    "Wall-clock budgets introduce variation even with unchanged input and source.",
+    "Both independent scales improve in these pairs; native solve time does not uniformly decrease.",
+    "The profile was collected separately and is not an uninstrumented timing comparison.",
+    "Known ordinary-budget leaf early-return behavior remains unresolved by rollback skipping."
+  ]
+}

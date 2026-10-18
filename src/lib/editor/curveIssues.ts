@@ -1,3 +1,5 @@
+import { hasSelfReturn } from '$lib/geometry/curveReturns';
+import { HEART_CLEARANCE_UNITS } from '$lib/geometry/returnSearch';
 import type { Finger, Vec } from '$lib/types/heart';
 import type { BezierSegment } from '$lib/geometry/bezierSegments';
 import { fingerToSegments } from '$lib/geometry/bezierSegments';
@@ -11,7 +13,7 @@ import { vecDist, vecLerp } from '$lib/geometry/vec';
  */
 
 /** Two cuts closer than this many heart units leave a sliver of paper that falls apart. */
-export const INTERSECTION_MARGIN_UNITS = 1.5;
+export const INTERSECTION_MARGIN_UNITS = HEART_CLEARANCE_UNITS;
 
 const INTERSECTION_EPS = 0.5;
 const MAX_INTERSECTION_DEPTH = 18;
@@ -259,33 +261,6 @@ function curveLoopSizeBetween(
 	return Math.min(forward, other);
 }
 
-/** A minimum on a segment is not necessarily a minimum on the whole cut:
- * moving through a subdivision point may keep reducing the distance. Only
- * a local minimum on both sides can represent two nearby returning parts of
- * one cut. Ordinary bends have a descent direction towards their own join.
- * At a corner test both one-sided tangents, rather than averaging them away. */
-function isLocalDistanceMinimum(segs: BezierSegment[], index: number, t: number, delta: Vec): boolean {
-	const directions: Array<{ tangent: Vec; sign: number }> = [];
-	const add = (seg: BezierSegment, at: number, sign: number) => {
-		let tangent = cubicDerivativeAt(seg, at);
-		if (Math.hypot(tangent.x, tangent.y) < 1e-9) {
-			const a = bezierPointAt(seg, Math.max(0, at - 1e-4));
-			const b = bezierPointAt(seg, Math.min(1, at + 1e-4));
-			tangent = { x: b.x - a.x, y: b.y - a.y };
-		}
-		directions.push({ tangent, sign });
-	};
-	if (t > 1e-5) add(segs[index]!, t, -1);
-	else if (index > 0) add(segs[index - 1]!, 1, -1);
-	if (t < 1 - 1e-5) add(segs[index]!, t, 1);
-	else if (index + 1 < segs.length) add(segs[index + 1]!, 0, 1);
-	return directions.every(({ tangent, sign }) => {
-		const derivative = sign * (delta.x * tangent.x + delta.y * tangent.y);
-		const scale = Math.hypot(delta.x, delta.y) * Math.hypot(tangent.x, tangent.y);
-		return derivative >= -1e-3 * scale;
-	});
-}
-
 function segmentsHaveIssues(
 	segsA: BezierSegment[],
 	bboxesA: BBox[],
@@ -296,7 +271,6 @@ function segmentsHaveIssues(
 	opts: {
 		minDistance: number;
 		endpointTolerance: number;
-		proximityEndpointTolerance: number;
 		skipAdjacent?: boolean;
 		intersectionLoopThreshold?: number;
 	}
@@ -350,35 +324,11 @@ function segmentsHaveIssues(
 				}
 			}
 
+			// Same-cut returns are checked over the complete path below.
+			if (same) continue;
 			if (bboxDistanceSq(ba, bb) >= minDist2) continue;
 			const hit = closestPointsBetweenBeziers(sa, sb, { samplesPerCurve: 5, maxSeeds: 8, newtonIterations: 10 });
-			if (vecDist(hit.pointA, endpointsA.start) < opts.proximityEndpointTolerance) continue;
-			if (vecDist(hit.pointA, endpointsA.end) < opts.proximityEndpointTolerance) continue;
-			if (vecDist(hit.pointB, endpointsB.start) < opts.proximityEndpointTolerance) continue;
-			if (vecDist(hit.pointB, endpointsB.end) < opts.proximityEndpointTolerance) continue;
-			if (hit.distance < opts.minDistance) {
-				// Two points of one curve that are also close *along* it are not a
-				// sliver of paper: they are the same cut, seen from either side of a
-				// short segment between them. Only a curve that comes back on itself
-				// after travelling further than the margin leaves a neck of paper
-				// that can tear. Skipping the neighbouring segment is not enough —
-				// converted engine cuts carry the odd two-pixel segment at a corner,
-				// and the segments either side of one are a couple of pixels apart
-				// without the cut having doubled back at all. The crossing check
-				// above already measures the same way (`intersectionLoopThreshold`).
-				if (same && prefixLengths) {
-					const along = curveArcSeparation(segsA, prefixLengths, i, hit.u, j, hit.v);
-					if (along != null && along < opts.minDistance) continue;
-					const delta = { x: hit.pointA.x - hit.pointB.x, y: hit.pointA.y - hit.pointB.y };
-					// Limit the subdivision exemption to a nearby bend. A remote
-					// return still uses the full proximity check, even if its
-					// approximate closest point has not converged to a stationary pair.
-					if (along != null && along < 2 * opts.minDistance &&
-						(!isLocalDistanceMinimum(segsA, i, hit.u, delta) ||
-						 !isLocalDistanceMinimum(segsA, j, hit.v, { x: -delta.x, y: -delta.y }))) continue;
-				}
-				return true;
-			}
+			if (hit.distance < opts.minDistance) return true;
 		}
 	}
 	return false;
@@ -409,11 +359,12 @@ export function fingerHasIntersectionIssues(finger: Finger, fingers: Finger[], m
 		if (hasAdjacentIntersection(segs[i]!, segs[i + 1]!, join, minDistance)) return true;
 	}
 
+	if (hasSelfReturn(segs, minDistance)) return true;
+
 	if (
 		segmentsHaveIssues(segs, segBBoxes, endpoints, segs, segBBoxes, endpoints, {
 			minDistance,
 			endpointTolerance: SELF_ENDPOINT_TOLERANCE,
-			proximityEndpointTolerance: SELF_ENDPOINT_TOLERANCE * 2,
 			skipAdjacent: true,
 			intersectionLoopThreshold: minDistance
 		})
@@ -434,8 +385,7 @@ export function fingerHasIntersectionIssues(finger: Finger, fingers: Finger[], m
 		if (
 			segmentsHaveIssues(segs, segBBoxes, endpoints, otherSegs, otherBBoxes, otherEndpoints, {
 				minDistance,
-				endpointTolerance: 0,
-				proximityEndpointTolerance: 0
+				endpointTolerance: 0
 			})
 		) {
 			return true;

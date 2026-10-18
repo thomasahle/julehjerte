@@ -1,0 +1,1585 @@
+{
+  "schema": "routing-timeout-browser-probe-1",
+  "scope": "Controlled prototype browser comparison, followed by a source-identical production-expression change. Full production release replay is pending; this record does not claim a new corpus-wide pass count.",
+  "baselineRuntimeCommit": "0ff2baf",
+  "productionChangeCommit": "0bb8ace",
+  "onlyChangedFile": "static/inverse/core/feature-recovery.js",
+  "substitution": {
+    "before": "budget=i||onlyChoice?left:left*.8",
+    "after": "budget=left"
+  },
+  "initialComparison": {
+    "scope": "Same real browser-upload mask and requested settings, with independent fresh workers. Historical run and discovery run preserved. Controlled prototype changes only the 80% sparse-graph allocation to 100% of remaining recovery time; does not extend the caller deadline. No final acceptance limit changes. Failed traced recovery falls back to a 6+6 grid requiring the existing finer 700 paper audit; successful 2+2 trace uses the requested 360 lattice.",
+    "inputs": [
+      {
+        "directory": "tmp/heart-learning/routing-perturbations-v1/browser/chromium-sloth-x-shift-mask",
+        "maskSha256": "3e296fe2d3c49167d74ce59a20654efc12ef37e12fbc2f6cff21ee3cce036ff4",
+        "resolution": 400,
+        "requestedSettings": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "width": 100,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "timeLimit": 180,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "progressGeometry": true,
+          "earlyStop": false,
+          "removeSpecks": 0,
+          "fillHoles": 0,
+          "minRadius": 0.8,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "materialResolution": 360,
+          "trials": 12,
+          "requireMaterialCore": true,
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "symmetry": {}
+        },
+        "exportSettings": {
+          "algorithm": "auto",
+          "progressGeometry": true,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "earlyStop": false,
+          "width": 100,
+          "maxImageError": 0.03,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "geometryTolerance": 0.01,
+          "sharpTurn": 60,
+          "sharpPenalty": 50,
+          "turnPenalty": 3,
+          "bendingPenalty": 0.15,
+          "acutePenalty": 30,
+          "maxTurn": 175,
+          "connectorPenalty": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "minRadius": 0.8,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "timeLimit": 180,
+          "relativeGap": 0.02,
+          "maxRounds": 12,
+          "localNeighborhoodFactor": 8,
+          "requireMaterialCore": true,
+          "materialResolution": 360,
+          "minFeatureArea": 0.25,
+          "roundHidden": false,
+          "trials": 12,
+          "registration": 0.4,
+          "rotation": 0.3,
+          "relativeScalePercent": 0.2,
+          "seed": 1729,
+          "symmetry": {
+            "mirrorX": false,
+            "mirrorY": false,
+            "transpose": false,
+            "antiTranspose": false,
+            "rotate180": false,
+            "withinCurve": "off"
+          },
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "nominalWidth": 2.50501002004008
+        },
+        "counts": {
+          "left": 2,
+          "right": 2
+        },
+        "fitSeconds": 8.144,
+        "clickToReadySeconds": 8.707,
+        "sourceEditableError": 0.0148125,
+        "accepted": true,
+        "routingBudgetSeconds": 5.61608999991417,
+        "routingSeconds": 4.755699999928474,
+        "routingAccepted": true,
+        "attempts": [
+          {
+            "budgetSeconds": 4.455671999931336,
+            "seconds": 4.62,
+            "neighbors": 8,
+            "connectorVariants": 1,
+            "status": "solved",
+            "termination": null,
+            "vertices": 64,
+            "visibleEdges": 63,
+            "hiddenCandidates": 126
+          }
+        ]
+      },
+      {
+        "directory": "tmp/heart-learning/routing-scheduling-v1/browser/chromium-sloth-x-shift-mask",
+        "maskSha256": "3e296fe2d3c49167d74ce59a20654efc12ef37e12fbc2f6cff21ee3cce036ff4",
+        "resolution": 400,
+        "requestedSettings": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "width": 100,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "timeLimit": 180,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "progressGeometry": true,
+          "earlyStop": false,
+          "removeSpecks": 0,
+          "fillHoles": 0,
+          "minRadius": 0.8,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "materialResolution": 360,
+          "trials": 12,
+          "requireMaterialCore": true,
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "symmetry": {}
+        },
+        "exportSettings": {
+          "algorithm": "auto",
+          "progressGeometry": true,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "earlyStop": false,
+          "width": 100,
+          "maxImageError": 0.03,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "geometryTolerance": 0.01,
+          "sharpTurn": 60,
+          "sharpPenalty": 50,
+          "turnPenalty": 3,
+          "bendingPenalty": 0.15,
+          "acutePenalty": 30,
+          "maxTurn": 175,
+          "connectorPenalty": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "minRadius": 0.8,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "timeLimit": 180,
+          "relativeGap": 0.02,
+          "maxRounds": 12,
+          "localNeighborhoodFactor": 8,
+          "requireMaterialCore": true,
+          "materialResolution": 700,
+          "minFeatureArea": 0.25,
+          "roundHidden": false,
+          "trials": 12,
+          "registration": 0.4,
+          "rotation": 0.3,
+          "relativeScalePercent": 0.2,
+          "seed": 1729,
+          "symmetry": {
+            "mirrorX": false,
+            "mirrorY": false,
+            "transpose": false,
+            "antiTranspose": false,
+            "rotate180": false,
+            "withinCurve": "off"
+          },
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "nominalWidth": 2.50501002004008
+        },
+        "counts": {
+          "left": 6,
+          "right": 6
+        },
+        "fitSeconds": 51.91189999997616,
+        "clickToReadySeconds": 53.74179999995231,
+        "sourceEditableError": 0.0241625,
+        "accepted": true,
+        "routingBudgetSeconds": 5.531129999935628,
+        "routingSeconds": 5.544199999928474,
+        "routingAccepted": false,
+        "attempts": [
+          {
+            "budgetSeconds": 4.3821039999485025,
+            "seconds": 4.385,
+            "neighbors": 8,
+            "connectorVariants": 1,
+            "status": "no_validated_solution",
+            "termination": "time_limit",
+            "vertices": 64,
+            "visibleEdges": 63,
+            "hiddenCandidates": 126
+          },
+          {
+            "budgetSeconds": 1.0926299999356273,
+            "seconds": 1.105600000023842,
+            "neighbors": 16,
+            "connectorVariants": 2,
+            "status": "no_validated_solution",
+            "termination": "time_limit",
+            "vertices": 64,
+            "visibleEdges": 63,
+            "hiddenCandidates": 393
+          }
+        ]
+      },
+      {
+        "directory": "tmp/heart-learning/routing-timeout-v1/browser/reserve-dense-1/chromium-sloth-x-shift-mask",
+        "maskSha256": "3e296fe2d3c49167d74ce59a20654efc12ef37e12fbc2f6cff21ee3cce036ff4",
+        "resolution": 400,
+        "requestedSettings": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "width": 100,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "timeLimit": 180,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "progressGeometry": true,
+          "earlyStop": false,
+          "removeSpecks": 0,
+          "fillHoles": 0,
+          "minRadius": 0.8,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "materialResolution": 360,
+          "trials": 12,
+          "requireMaterialCore": true,
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "symmetry": {}
+        },
+        "exportSettings": {
+          "algorithm": "auto",
+          "progressGeometry": true,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "earlyStop": false,
+          "width": 100,
+          "maxImageError": 0.03,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "geometryTolerance": 0.01,
+          "sharpTurn": 60,
+          "sharpPenalty": 50,
+          "turnPenalty": 3,
+          "bendingPenalty": 0.15,
+          "acutePenalty": 30,
+          "maxTurn": 175,
+          "connectorPenalty": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "minRadius": 0.8,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "timeLimit": 180,
+          "relativeGap": 0.02,
+          "maxRounds": 12,
+          "localNeighborhoodFactor": 8,
+          "requireMaterialCore": true,
+          "materialResolution": 700,
+          "minFeatureArea": 0.25,
+          "roundHidden": false,
+          "trials": 12,
+          "registration": 0.4,
+          "rotation": 0.3,
+          "relativeScalePercent": 0.2,
+          "seed": 1729,
+          "symmetry": {
+            "mirrorX": false,
+            "mirrorY": false,
+            "transpose": false,
+            "antiTranspose": false,
+            "rotate180": false,
+            "withinCurve": "off"
+          },
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "nominalWidth": 2.50501002004008
+        },
+        "counts": {
+          "left": 6,
+          "right": 6
+        },
+        "fitSeconds": 54.049899999976155,
+        "clickToReadySeconds": 56.00329999995232,
+        "sourceEditableError": 0.024225,
+        "accepted": true,
+        "routingBudgetSeconds": 5.6046599999785425,
+        "routingSeconds": 5.610600000023842,
+        "routingAccepted": false,
+        "attempts": [
+          {
+            "budgetSeconds": 4.446127999982834,
+            "seconds": 4.449300000071526,
+            "neighbors": 8,
+            "connectorVariants": 1,
+            "status": "no_validated_solution",
+            "termination": "time_limit",
+            "vertices": 64,
+            "visibleEdges": 63,
+            "hiddenCandidates": 126
+          },
+          {
+            "budgetSeconds": 1.1083599999070168,
+            "seconds": 1.1142999999523162,
+            "neighbors": 16,
+            "connectorVariants": 2,
+            "status": "no_validated_solution",
+            "termination": "time_limit",
+            "vertices": 64,
+            "visibleEdges": 63,
+            "hiddenCandidates": 393
+          }
+        ]
+      },
+      {
+        "directory": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-1/chromium-sloth-x-shift-mask",
+        "maskSha256": "3e296fe2d3c49167d74ce59a20654efc12ef37e12fbc2f6cff21ee3cce036ff4",
+        "resolution": 400,
+        "requestedSettings": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "width": 100,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "timeLimit": 180,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "progressGeometry": true,
+          "earlyStop": false,
+          "removeSpecks": 0,
+          "fillHoles": 0,
+          "minRadius": 0.8,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "materialResolution": 360,
+          "trials": 12,
+          "requireMaterialCore": true,
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "symmetry": {}
+        },
+        "exportSettings": {
+          "algorithm": "auto",
+          "progressGeometry": true,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "earlyStop": false,
+          "width": 100,
+          "maxImageError": 0.03,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "geometryTolerance": 0.01,
+          "sharpTurn": 60,
+          "sharpPenalty": 50,
+          "turnPenalty": 3,
+          "bendingPenalty": 0.15,
+          "acutePenalty": 30,
+          "maxTurn": 175,
+          "connectorPenalty": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "minRadius": 0.8,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "timeLimit": 180,
+          "relativeGap": 0.02,
+          "maxRounds": 12,
+          "localNeighborhoodFactor": 8,
+          "requireMaterialCore": true,
+          "materialResolution": 360,
+          "minFeatureArea": 0.25,
+          "roundHidden": false,
+          "trials": 12,
+          "registration": 0.4,
+          "rotation": 0.3,
+          "relativeScalePercent": 0.2,
+          "seed": 1729,
+          "symmetry": {
+            "mirrorX": false,
+            "mirrorY": false,
+            "transpose": false,
+            "antiTranspose": false,
+            "rotate180": false,
+            "withinCurve": "off"
+          },
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "nominalWidth": 2.50501002004008
+        },
+        "counts": {
+          "left": 2,
+          "right": 2
+        },
+        "fitSeconds": 8.092899999976158,
+        "clickToReadySeconds": 8.636,
+        "sourceEditableError": 0.0148125,
+        "accepted": true,
+        "routingBudgetSeconds": 5.658030000042915,
+        "routingSeconds": 4.731100000023842,
+        "routingAccepted": true,
+        "attempts": [
+          {
+            "budgetSeconds": 5.606530000042915,
+            "seconds": 4.592100000023842,
+            "neighbors": 8,
+            "connectorVariants": 1,
+            "status": "solved",
+            "termination": null,
+            "vertices": 64,
+            "visibleEdges": 63,
+            "hiddenCandidates": 126
+          }
+        ]
+      }
+    ]
+  },
+  "snapshots": {
+    "reserve-dense": {
+      "runtimeCommit": "0ff2baf",
+      "policy": "reserve-dense",
+      "change": null,
+      "sourceHashes": {
+        "static/inverse/worker.js": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70",
+        "static/inverse/worker-bootstrap.js": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+        "static/inverse/THIRD_PARTY_NOTICES.txt": "dbfafe9f695b27fbcb1d5d213a4a8db7e7d216febadbd34f85e204329c26cb6e",
+        "static/inverse/LICENSE.txt": "681b46f147610336a243b3c72cd08cd5904b2dee747e74c959ae57ade9e6b9df",
+        "static/inverse/worker-controller.js": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+        "static/inverse/compute-worker.js": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+        "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+        "static/inverse/locator/palette.js": "e6163193c14d753c2b93168c2e2e25602fb240117e1846a1c92a92308bc9084b",
+        "static/inverse/locator/locator.js": "f4c769870e13481a30d149dbdad5a743b52d55d949bc9d898c2c7db0af434773",
+        "static/inverse/locator/background.js": "03d1c9b8f8237a97a7e8ed53d1dfa5117d1db079ba4162cac7117a8761f3441f",
+        "static/inverse/locator/fields.js": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
+        "static/inverse/locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+        "static/inverse/locator/anchored.js": "c4f5276af229a7b9bbc1f686ea308697200cdd787bcdee2692d87a60bcdad991",
+        "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+        "static/inverse/locator/NOTICE.md": "4a9cc65be6ca309d2b57609d760e584ab78c345dae95c789e351bb69180d5b05",
+        "static/inverse/core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+        "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+        "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+        "static/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+        "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+        "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+        "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+        "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+        "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+        "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+        "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+        "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+        "static/inverse/core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+        "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+        "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+        "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+        "static/inverse/core/solver.js": "29eeca095cfe123f378a424f099954e5ae082866b8ad437f1a6dbb064eddbbf1",
+        "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+        "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+        "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+        "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+        "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+        "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+        "static/inverse/core/chord-distance.js": "6be52281e3056d29ad7093f902b0f768410f3c414f049f164f94e969bd89dd48",
+        "static/inverse/core/feature-recovery.js": "95648737c7db263e58cf0443c1e7b3c53954b1d6d6e2af627e11d9a8f13608f5",
+        "static/inverse/core/engine.js": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+        "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+        "static/inverse/core/validate.js": "31cc29c6873896f53a2f999782dcd2292f0924611166932114b45534f5cbebd7",
+        "static/inverse/core/crop.js": "e44d3179ca229cb645779af3550ab2736547104c46684e0ccee402a1d1875ea6",
+        "static/inverse/core/spatial-color.js": "f170ff447ef905fc21121d286ac427a079b184ca077fd178065b0a3e247fb132",
+        "static/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+        "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+        "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+        "static/inverse/core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+        "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+        "static/inverse/core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+        "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+        "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+        "static/inverse/core/direct/short-returns.js": "d89c3a75df735ca5d519b354b0e47327f58ce56e55f86693de44ded98e857269",
+        "static/inverse/core/direct/feature-seeds.js": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+        "static/inverse/core/direct/finalize.js": "40c9d60e5bd327876da0465ab8d371a05430d43412520a32a0f3ab90f07284e4",
+        "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+        "static/inverse/core/direct/refine.js": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+        "static/inverse/core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+        "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+        "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+        "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+        "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+        "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+        "static/inverse/core/direct/rejected-routing.js": "26be56dd3367eeb0648833ca347f008af73c8717d58358664ff1d15bbd240540",
+        "static/inverse/core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+        "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+        "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+        "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+        "static/inverse/core/direct/outline-details.js": "ff9d4df5f27fd9ca97d15b115cc95c5692bd17e302f0dcd11c62e7295b85d8aa",
+        "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+        "static/inverse/core/direct/fit.js": "d06384779456e59b9df1176d9b903d5bc22c7a15ed12d70004643776472548d3",
+        "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+        "static/inverse/core/direct/counts.js": "efdfa3fc371dc9d9cfbbc9ce763df8b8cdca6f8f6324b55fde9d23ed05f31d8e",
+        "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+        "static/inverse/core/direct/polish.js": "3f9df26508076465860a62ce72c2de3aeb67413a1d67ab1927dc37b89b7b622e",
+        "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+        "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+        "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+        "static/inverse/core/direct/topology.js": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097",
+        "static/inverse/core/direct/reroute.js": "84a8cf2cfb6bcb1101a63004f638d0f3dc398baf3fe15ec1068b20336535d9ed",
+        "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+        "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+        "static/inverse/core/direct/share.js": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+        "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58",
+        "static/inverse/core/direct/native/PROVENANCE.json": "e9fbaef090fc05bdc9450210f527b1fb3fa6bc77ee86c1902eb97bb6ed0acd2a",
+        "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+        "static/inverse/examples/star.saved.json": "7b3a3164d830c59adfcb7d6b51207d6423971a850e360ac00a21fbb71ee5fa50",
+        "static/inverse/examples/waves.svg": "20ee4d65378489d0cc0d3b9e41cdebf2fc81ff3b096443c76105cf3430e6a7e3",
+        "static/inverse/examples/star.png": "54ee86896412da50ccc8630593977cc6ce386fcfcc29007f311d80f6c463fa1b",
+        "static/inverse/examples/jul.saved.json": "07c223ab98b8bb576df5775682941ad688ffd097d3b7b304861db3f26fa0d454",
+        "static/inverse/vendor/HIGHS-LICENSE.txt": "9f8d8dcf27789ac59c0d7c732d6682f148804a5e99d83e9f207d6c1882b98bfa",
+        "static/inverse/vendor/PROVENANCE.json": "f90544e4eeec519b0aa3b7069b601591d4bc0e6fcafed7227d9dc1dc045a8ba5",
+        "static/inverse/vendor/highs.wasm": "528be4365bea1d4188988646b244263f50320df55782e14d6af5bce7cd45c840",
+        "static/inverse/vendor/highs.mjs": "f2bdfd071d19c3745756a087026589e9240f329e38315a86f626823ae78a4036"
+      }
+    },
+    "finish-sparse": {
+      "runtimeCommit": "0ff2baf",
+      "policy": "finish-sparse",
+      "change": "Give each existing graph all remaining recovery time, rather than reserving 20% for the dense graph. Exhausted graphs still return immediately.",
+      "sourceHashes": {
+        "static/inverse/worker.js": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70",
+        "static/inverse/worker-bootstrap.js": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+        "static/inverse/THIRD_PARTY_NOTICES.txt": "dbfafe9f695b27fbcb1d5d213a4a8db7e7d216febadbd34f85e204329c26cb6e",
+        "static/inverse/LICENSE.txt": "681b46f147610336a243b3c72cd08cd5904b2dee747e74c959ae57ade9e6b9df",
+        "static/inverse/worker-controller.js": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+        "static/inverse/compute-worker.js": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+        "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+        "static/inverse/locator/palette.js": "e6163193c14d753c2b93168c2e2e25602fb240117e1846a1c92a92308bc9084b",
+        "static/inverse/locator/locator.js": "f4c769870e13481a30d149dbdad5a743b52d55d949bc9d898c2c7db0af434773",
+        "static/inverse/locator/background.js": "03d1c9b8f8237a97a7e8ed53d1dfa5117d1db079ba4162cac7117a8761f3441f",
+        "static/inverse/locator/fields.js": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
+        "static/inverse/locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+        "static/inverse/locator/anchored.js": "c4f5276af229a7b9bbc1f686ea308697200cdd787bcdee2692d87a60bcdad991",
+        "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+        "static/inverse/locator/NOTICE.md": "4a9cc65be6ca309d2b57609d760e584ab78c345dae95c789e351bb69180d5b05",
+        "static/inverse/core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+        "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+        "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+        "static/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+        "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+        "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+        "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+        "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+        "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+        "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+        "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+        "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+        "static/inverse/core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+        "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+        "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+        "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+        "static/inverse/core/solver.js": "29eeca095cfe123f378a424f099954e5ae082866b8ad437f1a6dbb064eddbbf1",
+        "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+        "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+        "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+        "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+        "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+        "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+        "static/inverse/core/chord-distance.js": "6be52281e3056d29ad7093f902b0f768410f3c414f049f164f94e969bd89dd48",
+        "static/inverse/core/feature-recovery.js": "9c24899f3df63aa27736ce4caf9e0c58ba9be2e1d798b8e2ba225f3d9383f709",
+        "static/inverse/core/engine.js": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+        "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+        "static/inverse/core/validate.js": "31cc29c6873896f53a2f999782dcd2292f0924611166932114b45534f5cbebd7",
+        "static/inverse/core/crop.js": "e44d3179ca229cb645779af3550ab2736547104c46684e0ccee402a1d1875ea6",
+        "static/inverse/core/spatial-color.js": "f170ff447ef905fc21121d286ac427a079b184ca077fd178065b0a3e247fb132",
+        "static/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+        "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+        "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+        "static/inverse/core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+        "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+        "static/inverse/core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+        "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+        "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+        "static/inverse/core/direct/short-returns.js": "d89c3a75df735ca5d519b354b0e47327f58ce56e55f86693de44ded98e857269",
+        "static/inverse/core/direct/feature-seeds.js": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+        "static/inverse/core/direct/finalize.js": "40c9d60e5bd327876da0465ab8d371a05430d43412520a32a0f3ab90f07284e4",
+        "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+        "static/inverse/core/direct/refine.js": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+        "static/inverse/core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+        "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+        "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+        "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+        "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+        "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+        "static/inverse/core/direct/rejected-routing.js": "26be56dd3367eeb0648833ca347f008af73c8717d58358664ff1d15bbd240540",
+        "static/inverse/core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+        "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+        "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+        "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+        "static/inverse/core/direct/outline-details.js": "ff9d4df5f27fd9ca97d15b115cc95c5692bd17e302f0dcd11c62e7295b85d8aa",
+        "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+        "static/inverse/core/direct/fit.js": "d06384779456e59b9df1176d9b903d5bc22c7a15ed12d70004643776472548d3",
+        "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+        "static/inverse/core/direct/counts.js": "efdfa3fc371dc9d9cfbbc9ce763df8b8cdca6f8f6324b55fde9d23ed05f31d8e",
+        "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+        "static/inverse/core/direct/polish.js": "3f9df26508076465860a62ce72c2de3aeb67413a1d67ab1927dc37b89b7b622e",
+        "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+        "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+        "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+        "static/inverse/core/direct/topology.js": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097",
+        "static/inverse/core/direct/reroute.js": "84a8cf2cfb6bcb1101a63004f638d0f3dc398baf3fe15ec1068b20336535d9ed",
+        "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+        "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+        "static/inverse/core/direct/share.js": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+        "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58",
+        "static/inverse/core/direct/native/PROVENANCE.json": "e9fbaef090fc05bdc9450210f527b1fb3fa6bc77ee86c1902eb97bb6ed0acd2a",
+        "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+        "static/inverse/examples/star.saved.json": "7b3a3164d830c59adfcb7d6b51207d6423971a850e360ac00a21fbb71ee5fa50",
+        "static/inverse/examples/waves.svg": "20ee4d65378489d0cc0d3b9e41cdebf2fc81ff3b096443c76105cf3430e6a7e3",
+        "static/inverse/examples/star.png": "54ee86896412da50ccc8630593977cc6ce386fcfcc29007f311d80f6c463fa1b",
+        "static/inverse/examples/jul.saved.json": "07c223ab98b8bb576df5775682941ad688ffd097d3b7b304861db3f26fa0d454",
+        "static/inverse/vendor/HIGHS-LICENSE.txt": "9f8d8dcf27789ac59c0d7c732d6682f148804a5e99d83e9f207d6c1882b98bfa",
+        "static/inverse/vendor/PROVENANCE.json": "f90544e4eeec519b0aa3b7069b601591d4bc0e6fcafed7227d9dc1dc045a8ba5",
+        "static/inverse/vendor/highs.wasm": "528be4365bea1d4188988646b244263f50320df55782e14d6af5bce7cd45c840",
+        "static/inverse/vendor/highs.mjs": "f2bdfd071d19c3745756a087026589e9240f329e38315a86f626823ae78a4036"
+      }
+    }
+  },
+  "results": [
+    {
+      "run": "reserve-dense-1",
+      "name": "sloth-x-shift-mask",
+      "seconds": 56.00329999995232,
+      "reportedFitSeconds": 54.049899999976155,
+      "counts": [
+        6,
+        6
+      ],
+      "sourceEditableError": 0.024225,
+      "thumbnailEditableError": 0.027475,
+      "passed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "sharedSpans": 100,
+      "preparedMaskSha256": "3e296fe2d3c49167d74ce59a20654efc12ef37e12fbc2f6cff21ee3cce036ff4",
+      "sourceResolution": 400,
+      "samePreparedInput": true,
+      "sameRequestedSettings": true
+    },
+    {
+      "run": "finish-sparse-1",
+      "name": "sloth-x-shift-mask",
+      "seconds": 8.636,
+      "reportedFitSeconds": 8.092899999976158,
+      "counts": [
+        2,
+        2
+      ],
+      "sourceEditableError": 0.0148125,
+      "thumbnailEditableError": 0.01535,
+      "passed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "sharedSpans": 6,
+      "preparedMaskSha256": "3e296fe2d3c49167d74ce59a20654efc12ef37e12fbc2f6cff21ee3cce036ff4",
+      "sourceResolution": 400,
+      "samePreparedInput": true,
+      "sameRequestedSettings": true
+    },
+    {
+      "run": "finish-sparse-controls",
+      "name": "sloth-routing-mask",
+      "seconds": 7.589699999928475,
+      "reportedFitSeconds": 7.024300000071525,
+      "counts": [
+        2,
+        2
+      ],
+      "sourceEditableError": 0.01318125,
+      "thumbnailEditableError": 0.01495,
+      "passed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "sharedSpans": 5,
+      "preparedMaskSha256": "f76e4c8a4a16d227f13d36d1feeee4fb84681b35d128c6ab4b14bb3f775a47b7",
+      "sourceResolution": 400,
+      "samePreparedInput": true,
+      "sameRequestedSettings": true
+    },
+    {
+      "run": "finish-sparse-controls",
+      "name": "sloth-x-shift-mask",
+      "seconds": 8.496200000047684,
+      "reportedFitSeconds": 7.983200000047684,
+      "counts": [
+        2,
+        2
+      ],
+      "sourceEditableError": 0.0148125,
+      "thumbnailEditableError": 0.01535,
+      "passed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "sharedSpans": 6,
+      "preparedMaskSha256": "3e296fe2d3c49167d74ce59a20654efc12ef37e12fbc2f6cff21ee3cce036ff4",
+      "sourceResolution": 400,
+      "samePreparedInput": true,
+      "sameRequestedSettings": true
+    },
+    {
+      "run": "finish-sparse-controls",
+      "name": "sloth-y-shift-mask",
+      "seconds": 9.890299999952317,
+      "reportedFitSeconds": 9.005700000047684,
+      "counts": [
+        2,
+        2
+      ],
+      "sourceEditableError": 0.01335,
+      "thumbnailEditableError": 0.01395,
+      "passed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "sharedSpans": 5,
+      "preparedMaskSha256": "2904b2fd0ca28a4ba23f0bf1cd24424f67965f059a22e0f48306615eb46df047",
+      "sourceResolution": 400,
+      "samePreparedInput": true,
+      "sameRequestedSettings": true
+    },
+    {
+      "run": "finish-sparse-controls",
+      "name": "sloth-frozen-mask",
+      "seconds": 8.163700000047683,
+      "reportedFitSeconds": 7.616699999928475,
+      "counts": [
+        2,
+        2
+      ],
+      "sourceEditableError": 0.02120625,
+      "thumbnailEditableError": 0.0229,
+      "passed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "sharedSpans": 6,
+      "preparedMaskSha256": "d6e5570fdb6c9de2c1c2e738ac0204bb963cab0acc694c3fba3a587dcdb10c09",
+      "sourceResolution": 400,
+      "samePreparedInput": true,
+      "sameRequestedSettings": true
+    },
+    {
+      "run": "finish-sparse-controls",
+      "name": "sloth-synthetic-mask",
+      "seconds": 8.5365,
+      "reportedFitSeconds": 8.014100000023841,
+      "counts": [
+        2,
+        2
+      ],
+      "sourceEditableError": 0.00875625,
+      "thumbnailEditableError": 0.010025,
+      "passed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "sharedSpans": 6,
+      "preparedMaskSha256": "381e0cb708afb03dc18532b4efabba93b58ba889168f0b51a6d6706dcc6df3f8",
+      "sourceResolution": 400,
+      "samePreparedInput": true,
+      "sameRequestedSettings": true
+    },
+    {
+      "run": "finish-sparse-controls",
+      "name": "sloth-y-plus-mask",
+      "seconds": 9.235199999928474,
+      "reportedFitSeconds": 8.688799999952316,
+      "counts": [
+        2,
+        2
+      ],
+      "sourceEditableError": 0.0099625,
+      "thumbnailEditableError": 0.011725,
+      "passed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "sharedSpans": 5,
+      "preparedMaskSha256": "6e7557c0cf8b50ad6c9545a34210dfdbc4e2c184981b60ae7cdeb4f6cc64a5dc",
+      "sourceResolution": 400,
+      "samePreparedInput": true,
+      "sameRequestedSettings": true
+    },
+    {
+      "run": "finish-sparse-controls",
+      "name": "star",
+      "seconds": 1.9841000000238418,
+      "reportedFitSeconds": 1.672399999976158,
+      "counts": [
+        4,
+        4
+      ],
+      "sourceEditableError": 0.0016,
+      "thumbnailEditableError": 0.00465,
+      "passed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": null,
+      "sharedSpans": 12,
+      "preparedMaskSha256": "97df0f541b855a1da927bb26268c9172d6bcb920a77cbf6f2c658b4a85e9eb16",
+      "sourceResolution": 400,
+      "samePreparedInput": true,
+      "sameRequestedSettings": true
+    },
+    {
+      "run": "finish-sparse-controls",
+      "name": "top-hat-preferred",
+      "seconds": 7.6966000000238415,
+      "reportedFitSeconds": 7.033400000095368,
+      "counts": [
+        3,
+        3
+      ],
+      "sourceEditableError": 0.004118835034013606,
+      "thumbnailEditableError": 0.0021258503401360546,
+      "passed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": null,
+      "sharedSpans": 43,
+      "preparedMaskSha256": "c41bc699904f56cc07cd003be29111caeec37e585023705b3bc0f57d6c23f00f",
+      "sourceResolution": 400,
+      "samePreparedInput": true,
+      "sameRequestedSettings": true
+    },
+    {
+      "run": "finish-sparse-controls",
+      "name": "leaf-mask",
+      "seconds": 8.660899999976158,
+      "reportedFitSeconds": 8.110399999976158,
+      "counts": [
+        3,
+        3
+      ],
+      "sourceEditableError": 0.0263,
+      "thumbnailEditableError": 0.029425,
+      "passed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "sharedSpans": 6,
+      "preparedMaskSha256": "0e1fefda40bbe92da956dd2467d117af6a732d0223e695901cc0255a166651f4",
+      "sourceResolution": 400,
+      "samePreparedInput": true,
+      "sameRequestedSettings": true
+    },
+    {
+      "run": "finish-sparse-controls",
+      "name": "web-danish-tree-green",
+      "seconds": 8.1755,
+      "reportedFitSeconds": 7.425899999976158,
+      "counts": [
+        3,
+        3
+      ],
+      "sourceEditableError": 0.010575,
+      "thumbnailEditableError": 0.017925,
+      "passed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": null,
+      "sharedSpans": 3,
+      "preparedMaskSha256": "99fa80c07d5bccbb8354d2301e844e0231a84101b5f8d9351da0baf0747b5bb9",
+      "sourceResolution": 400,
+      "samePreparedInput": true,
+      "sameRequestedSettings": true
+    }
+  ],
+  "artifactLedger": [
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-1/chromium-sloth-x-shift-mask/cut_geometry.json",
+      "sha256": "67a873622971047563798bcf477a72d0ff8c651f49c19e80135b1b85489f3afc",
+      "bytes": 32551
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-1/chromium-sloth-x-shift-mask/draw.png",
+      "sha256": "f1ec64c7a29c8a729ea3350eff5bedb217717b0a2de2bbd61b5af4cfd4b08402",
+      "bytes": 264687
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-1/chromium-sloth-x-shift-mask/editable.svg",
+      "sha256": "e6516a27a77cf84c0a755d44847fc52b00a19cdac9d564fec3f460f6521a8984",
+      "bytes": 9113
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-1/chromium-sloth-x-shift-mask/engine-report.json",
+      "sha256": "aa1a6d443c0fd6f2789f56b46f97bc3c37fdbe459ecbd2c6fd76954daedf2806",
+      "bytes": 57774
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-1/chromium-sloth-x-shift-mask/import.png",
+      "sha256": "ea4feeedd4e36a9fa5f60aaf75ce4e67a84bd411285e229ae1a5fd33df5f4872",
+      "bytes": 188949
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-1/chromium-sloth-x-shift-mask/input.png",
+      "sha256": "5979e904e501e1a59a6dafd69d72848a628bbf7fdb3175bafa287855a85468c9",
+      "bytes": 3068
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-1/chromium-sloth-x-shift-mask/prepared.json",
+      "sha256": "4ec07957b7e05f37fc5027f79ce81aa11af38588420697d35112bd8e04c84770",
+      "bytes": 320042
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-1/chromium-sloth-x-shift-mask/result.png",
+      "sha256": "de84870b45c197f2593ec4fc1714384d1ac61d2c26cf950cc207c445ffaa18b4",
+      "bytes": 171852
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-1/chromium-sloth-x-shift-mask/template.pdf",
+      "sha256": "be694eb65b38aac2f9ed8a80bb1ce34abb63c2e96320103cc62e356b6fe87787",
+      "bytes": 401310
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-1/proxy.json",
+      "sha256": "18a3a7838e28d6cc578d6146efa1e7e82560f83431ffbeb259f1aef1472f80e7",
+      "bytes": 14694
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-1/results.json",
+      "sha256": "296f8eaf314a796b6d0b88f1cf11708a3c7225047be76d1594f8c5388d4926fb",
+      "bytes": 51690
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-1/run.log",
+      "sha256": "ea556c0e936f730ec3fb254b43c48a3e76e30d22d158caae9be5cd8a46db3f31",
+      "bytes": 22462
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-leaf-mask/cut_geometry.json",
+      "sha256": "f8aa31b9871b35cb4483eec22677b7833d9a25348ab8d919e315fe1c8757f899",
+      "bytes": 29701
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-leaf-mask/draw.png",
+      "sha256": "3fdca2f2e57fc0daf84d552eab0630256c024c7b96d42effc3bcb2de8ddc9916",
+      "bytes": 261899
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-leaf-mask/editable.svg",
+      "sha256": "8c2d3f6eac737d41a6f59c8f52094b37c1d810e253554f7f70d197a0daf48ba4",
+      "bytes": 8522
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-leaf-mask/engine-report.json",
+      "sha256": "4465f56183565fc6d155929a3a3f2e5574d32568e7615ee85a2073d09e0e0208",
+      "bytes": 75857
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-leaf-mask/import.png",
+      "sha256": "2cf361631d2b012aaffcf18863bcc049872b16d58d1c399c1ea7e8cdb7866957",
+      "bytes": 198970
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-leaf-mask/input.png",
+      "sha256": "716048eeef8b3a1beee3778f2085b3eaaeff02e5c12acfbad4cb69d416327a31",
+      "bytes": 5012
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-leaf-mask/prepared.json",
+      "sha256": "a7e1647e84453c97918a04f29b39c97d15bcb24019b8b2edd7ee3744eaa1f430",
+      "bytes": 320042
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-leaf-mask/result.png",
+      "sha256": "0ae95419a599369d1380c589f7347e9809a89670c8a6da0f508624cf43c5bd92",
+      "bytes": 173404
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-leaf-mask/template.pdf",
+      "sha256": "982e75af5cd7e27e842b2395aca6ab24adcee70eafcdf36931ee3b320d011d78",
+      "bytes": 390714
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-frozen-mask/cut_geometry.json",
+      "sha256": "a64b3339d30d61a782350ab316b5b00cd45ab8f3e35159f82c4de4b190631bce",
+      "bytes": 33514
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-frozen-mask/draw.png",
+      "sha256": "3b8d059c52e683feb633dff789c534ce3a01f38d4c2dd39fc63477548c02d71f",
+      "bytes": 265978
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-frozen-mask/editable.svg",
+      "sha256": "636a057b9ae16b99cd89948b6fec3d8cd1c5980d12169873e5dc945d026656f2",
+      "bytes": 9352
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-frozen-mask/engine-report.json",
+      "sha256": "406918c71b28236a96b32ff2207951e6cc55470db43264049a62c9e73e3ebbbb",
+      "bytes": 56473
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-frozen-mask/import.png",
+      "sha256": "fbaa8d8ac85e0c93900e960ea0b75d77007c624ee4b22ebb703bb09131d1f4cf",
+      "bytes": 188742
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-frozen-mask/input.png",
+      "sha256": "c3134c4c7b350e0a1e838702b64d3172b1460887fef3ad8feb3abaa98b332f17",
+      "bytes": 3054
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-frozen-mask/prepared.json",
+      "sha256": "aa5f8c9cb0acde477d45ec9750afe70eb0c785ade3b4be3f06d293e573d1a3a1",
+      "bytes": 320042
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-frozen-mask/result.png",
+      "sha256": "baead434f9c4b74f5ea93c4b9b3c12a5e741a9e1c159a9feb2515476e6ed0f42",
+      "bytes": 171399
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-frozen-mask/template.pdf",
+      "sha256": "c2393fac36119968eca62bdaf498f9ef6b425e2368e7290c8a83ced81321aa82",
+      "bytes": 404975
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-routing-mask/cut_geometry.json",
+      "sha256": "05555203428766639ecabd8a72d7dd75bb36e0309e15268e56180f02bcb07c12",
+      "bytes": 32019
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-routing-mask/draw.png",
+      "sha256": "d726feba2d914756d2b0d1ea1cbc85466d9877bf78e9df3c2ab654dd164b20b3",
+      "bytes": 264277
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-routing-mask/editable.svg",
+      "sha256": "082a16cae5c6fd98253d9b104d52ae76ed6b5b27a901596fadc1be7994ff31ac",
+      "bytes": 8902
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-routing-mask/engine-report.json",
+      "sha256": "125d3547804e769091a879aabe6d2a9047b7c545890ccf981ffb4e30329ff2d9",
+      "bytes": 56217
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-routing-mask/import.png",
+      "sha256": "9e8924f6a3133c873648aeabf306998a4433b228956698014f819ae7a3855b3e",
+      "bytes": 188838
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-routing-mask/input.png",
+      "sha256": "12847ce70b390db00b3034164c4ce9d1dfb90f3729de1c439105f8d447a70471",
+      "bytes": 3100
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-routing-mask/prepared.json",
+      "sha256": "63c3e86a6dd18d726dcb326ebb7d559e5c91e536a986449ee6fa120f3c31b9b0",
+      "bytes": 320042
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-routing-mask/result.png",
+      "sha256": "dfd682be7ad7222c745e60ea85d6ded86abc5aec7350bc71d33cc61b00584362",
+      "bytes": 171405
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-routing-mask/template.pdf",
+      "sha256": "15b31575486bf17f21ce3f81df44ad84864dda0d6506072213bccdbecbeb482d",
+      "bytes": 397924
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-synthetic-mask/cut_geometry.json",
+      "sha256": "97bd1141e2fd6ecfeb008c7bd7727e75b79571047c3138f284f6a9c4df872361",
+      "bytes": 33036
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-synthetic-mask/draw.png",
+      "sha256": "8a4b1b3ee84719a0ccc0157c4dc62d5106d2c4885fbb846f737e39d14348646c",
+      "bytes": 265675
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-synthetic-mask/editable.svg",
+      "sha256": "25fe17173b7a3f167f7c6412010c7b6176441c12051ca9adf472aa1619453067",
+      "bytes": 9235
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-synthetic-mask/engine-report.json",
+      "sha256": "6ec499cb4021d148b1b59b85a81ffd67bfad749c41421e478edabac2fc16d753",
+      "bytes": 80768
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-synthetic-mask/import.png",
+      "sha256": "7a717c1d23e2aa2e1a25ed6a85bdd032a828cdf980ea7d33038d215ce653c809",
+      "bytes": 188791
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-synthetic-mask/input.png",
+      "sha256": "b4ff7f13897ab9b26455bf609237f7a8055459e06c44a21284f630025eba75bd",
+      "bytes": 3058
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-synthetic-mask/prepared.json",
+      "sha256": "4418678b009d6d72b8472f79e3a612f2cb8944e5d5c0781643010f2e8fddd31a",
+      "bytes": 320042
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-synthetic-mask/result.png",
+      "sha256": "5bbfd430bbeab99dd6fd5dd8c5ffc422e18ad465dd8f6f2e4c2405aa934841ea",
+      "bytes": 159688
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-synthetic-mask/template.pdf",
+      "sha256": "5b2d3fb8281b7006c09a6a713be9f5462acebed1f349887ad6f98dbc428f3220",
+      "bytes": 403352
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-x-shift-mask/cut_geometry.json",
+      "sha256": "67a873622971047563798bcf477a72d0ff8c651f49c19e80135b1b85489f3afc",
+      "bytes": 32551
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-x-shift-mask/draw.png",
+      "sha256": "e69da744d1a03e5aa8ef706cd31647125b7e954098255fb87020394ed8257c83",
+      "bytes": 264611
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-x-shift-mask/editable.svg",
+      "sha256": "e6516a27a77cf84c0a755d44847fc52b00a19cdac9d564fec3f460f6521a8984",
+      "bytes": 9113
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-x-shift-mask/engine-report.json",
+      "sha256": "d3372e201a8c39dd4bf42c2850045bb32c266bc4c24f1515fe5da6f88c8e9828",
+      "bytes": 57746
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-x-shift-mask/import.png",
+      "sha256": "ea4feeedd4e36a9fa5f60aaf75ce4e67a84bd411285e229ae1a5fd33df5f4872",
+      "bytes": 188949
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-x-shift-mask/input.png",
+      "sha256": "5979e904e501e1a59a6dafd69d72848a628bbf7fdb3175bafa287855a85468c9",
+      "bytes": 3068
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-x-shift-mask/prepared.json",
+      "sha256": "4ec07957b7e05f37fc5027f79ce81aa11af38588420697d35112bd8e04c84770",
+      "bytes": 320042
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-x-shift-mask/result.png",
+      "sha256": "de84870b45c197f2593ec4fc1714384d1ac61d2c26cf950cc207c445ffaa18b4",
+      "bytes": 171852
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-x-shift-mask/template.pdf",
+      "sha256": "76a77ab355624056759e84e0047506ed3c91dab6588ea90285d9312568ab7cd7",
+      "bytes": 401310
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-y-plus-mask/cut_geometry.json",
+      "sha256": "acb06e9f081db1e55e7a4b84470a6dc9a0440966a4731bc125e918230c73bf04",
+      "bytes": 35749
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-y-plus-mask/draw.png",
+      "sha256": "0cb99aa9dd63d888f10c71740ef46b9e1ce890a311612d50aa7c5b0ef7e1beeb",
+      "bytes": 263592
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-y-plus-mask/editable.svg",
+      "sha256": "3dbc61a5623fa2d5e31cacf45b2446872dc51383318675101a5147250b2aacf0",
+      "bytes": 9690
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-y-plus-mask/engine-report.json",
+      "sha256": "6f94e141a3a7ab4aaa298f8a64b656a68fc3cf1d4c66ef75d0671688b29d3fe3",
+      "bytes": 64316
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-y-plus-mask/import.png",
+      "sha256": "0cec0aba74fd1a239490723578df0cf08f49cd66d1ee2e36ddbf84d073916f04",
+      "bytes": 188808
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-y-plus-mask/input.png",
+      "sha256": "8a65e336a0d3102fe423aa54ca5f18a1ee09adee64a7510643ccb677575bacd7",
+      "bytes": 3050
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-y-plus-mask/prepared.json",
+      "sha256": "1ab858df0ed8c77795ba44f975805dd9d9d2ba8fef7240f599076134023ebce9",
+      "bytes": 320042
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-y-plus-mask/result.png",
+      "sha256": "76d707e5d9706a27f41922ea6b01645b71143a9e98aa87831670b75b6c9a46d4",
+      "bytes": 160038
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-y-plus-mask/template.pdf",
+      "sha256": "dd174baf6c83e9a9fa709ab049e6ec04e89498199d9a83bed5e4cec3d27a4fde",
+      "bytes": 410158
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-y-shift-mask/cut_geometry.json",
+      "sha256": "95dcbb8f24a79d16f6bfaacef84a48e1501617fc1ccee08673f213be0b25fc0c",
+      "bytes": 32502
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-y-shift-mask/draw.png",
+      "sha256": "ebac6c6e9a8b4f44109d3e6eafb65dcaaac7bb737d08c06ec436038b9c64e214",
+      "bytes": 263705
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-y-shift-mask/editable.svg",
+      "sha256": "4f7519ec1dffbdd067f7e83e07fa6e05be54bfabd155abe8a765afc74e954168",
+      "bytes": 9035
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-y-shift-mask/engine-report.json",
+      "sha256": "1f7b31b8fae48d453a7433747c7c3b7b3ddc180c7f9b6258a534ccb12cdae295",
+      "bytes": 71677
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-y-shift-mask/import.png",
+      "sha256": "dc5d82ef71c72a52ddbd08137d06ed782def164ebfc2991f73f16480fad3da62",
+      "bytes": 189090
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-y-shift-mask/input.png",
+      "sha256": "f575fb51961dacb9296f6fb09a0f0fa2e65aa3c548c2f8cea5aef60f9a0e242b",
+      "bytes": 3059
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-y-shift-mask/prepared.json",
+      "sha256": "3bcf47bc7bfd67178028e26836922077c849c9bc11f51a1a902fe46bd5ec8c5c",
+      "bytes": 320042
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-y-shift-mask/result.png",
+      "sha256": "e06c131d6382fabee7354051c28439e0d140e23138f6fc12c4a73c5fab743891",
+      "bytes": 171017
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-sloth-y-shift-mask/template.pdf",
+      "sha256": "68dd956850f7b38b7b8811a6b9e215b2b7b23528183b360a96fb8234cefaa6c6",
+      "bytes": 399512
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-star/cut_geometry.json",
+      "sha256": "7e040bc9715127cdbf3d111dd6acb85beebb267bcfab69c198a9b3966de87601",
+      "bytes": 36275
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-star/draw.png",
+      "sha256": "48618a4b8d4efbc432f424fc0a8aa33bac5d7a456bda791e872d4bc2211aca1c",
+      "bytes": 246422
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-star/editable.svg",
+      "sha256": "9724587ad2a86e36eaa6dba585e87d8ae67f5b958269b4c20c76cc9dfafec698",
+      "bytes": 7113
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-star/engine-report.json",
+      "sha256": "dabf2201f81971cf6e311b7367323c855e88fe42f134aec6e01f0555591744d2",
+      "bytes": 44483
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-star/prepared.json",
+      "sha256": "16846094e460d9c934f80d1e922cde35c0528a8eaec7696399d23910dc89576b",
+      "bytes": 320042
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-star/result.png",
+      "sha256": "958edcaedd6edee695a3a100dc1ba1602ee7d9909f79d7fa5b0f6c0a7d4521ac",
+      "bytes": 165792
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-star/template.pdf",
+      "sha256": "9f652ccf56ccf3fc73e3ed2a83fcd1decddff2448711fa2b2d4d9f12aa5901e1",
+      "bytes": 326180
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-top-hat-preferred/cut_geometry.json",
+      "sha256": "39f1f4067a585a1848603766697b8e86c5bcc1d98b49b022fc4121cacfa29667",
+      "bytes": 46870
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-top-hat-preferred/draw.png",
+      "sha256": "2ac5403e8b2f70731653af515f2b2d18e39702eeaf1cd2b9b715659501a7f74e",
+      "bytes": 247502
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-top-hat-preferred/editable.svg",
+      "sha256": "8c89882c2259134d470b4bfc8f6c9720095a4dd992986caaef69cd5cd56ae140",
+      "bytes": 16194
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-top-hat-preferred/engine-report.json",
+      "sha256": "9245f61feea86000fd632296b7f838ca21c7f5145b634bd7d8f2b0924dd00c9e",
+      "bytes": 66943
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-top-hat-preferred/import.png",
+      "sha256": "a3afa944882f28e7f8e3299eaa1ecb189d262813243f3c077f4046f93ac7738c",
+      "bytes": 187694
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-top-hat-preferred/input.png",
+      "sha256": "0b9f120849b863c65f2f806828b20702be2dfd90bd70426b1d7eb0ee7ca10fba",
+      "bytes": 1484
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-top-hat-preferred/prepared.json",
+      "sha256": "e5c0a7c46136bec133f19ca5e67cf3260989136898a7cf0a80eda690593d4a4a",
+      "bytes": 640039
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-top-hat-preferred/result.png",
+      "sha256": "494327c688ff971ae61ca91b697335eb4b8e9b05082d223d34a17b7b880a5fbf",
+      "bytes": 182807
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-web-danish-tree-green/cut_geometry.json",
+      "sha256": "0588e9f68a218a2f5a42199a216a73c519b594845882be4495ffb576d3e0753b",
+      "bytes": 45226
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-web-danish-tree-green/draw.png",
+      "sha256": "b4ac61ca91bce809123af4e5f17c031755215a8c83438255ee8644b3ca742fd0",
+      "bytes": 265318
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-web-danish-tree-green/editable.svg",
+      "sha256": "a9bc99d1e0dfcdcf3e2f69c64a2b5854892308f84fdeb6af354708735186172c",
+      "bytes": 11943
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-web-danish-tree-green/engine-report.json",
+      "sha256": "94c82a76ac51a85e1ee8ca22d1272b34541c6ac28b57e8c939c0ed0f606b8821",
+      "bytes": 57338
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-web-danish-tree-green/import.png",
+      "sha256": "5536fd692da80e2a249e82f35f7c432c5e43d32dde61cbd93322f92767266a2e",
+      "bytes": 234482
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-web-danish-tree-green/input.png",
+      "sha256": "a5c107cef6f56971ac610e4a27f58e7ed604828741a9de476fd98fd260cfe947",
+      "bytes": 539034
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-web-danish-tree-green/prepared.json",
+      "sha256": "b48a35d497b13034879be91fd42d2657bd5cfb3591ef6b679fec1a43a25e1b8a",
+      "bytes": 320042
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/chromium-web-danish-tree-green/result.png",
+      "sha256": "d05d478e16fd4c050b8adddeff62962d4692b077ddc4079a2b81acf7eda88845",
+      "bytes": 173210
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/proxy.json",
+      "sha256": "632be996469d7cae75b9646f5f93d0ba489565aed8cdc480e0a121ef92a0ab08",
+      "bytes": 14823
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/results.json",
+      "sha256": "2c1794e77502464f545b83ae2f0dcfe65f27408703dc5abf61bcc6fa4918fa5d",
+      "bytes": 396621
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/finish-sparse-controls/run.log",
+      "sha256": "0f9cd6f745d3acab1669bf75e1b4ac5e2714d3c93a07cb8ebf40b93dd3bfa6b6",
+      "bytes": 205535
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/reserve-dense-1/chromium-sloth-x-shift-mask/cut_geometry.json",
+      "sha256": "7da4042a28a82357496f65e2a9181f02f8b9559b7d8e024b4837b904a69ab816",
+      "bytes": 149482
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/reserve-dense-1/chromium-sloth-x-shift-mask/draw.png",
+      "sha256": "1dcee3cfb5e44535d0b0150e63843a58d1ff2afd525f43370dfe3f54cf6e6f22",
+      "bytes": 256298
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/reserve-dense-1/chromium-sloth-x-shift-mask/editable.svg",
+      "sha256": "8c67cc305b89b9430fd2f21e78e87d69bb9616ce56eb7cf2aef893fcaa3f0be8",
+      "bytes": 46446
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/reserve-dense-1/chromium-sloth-x-shift-mask/engine-report.json",
+      "sha256": "81f0395f4bbca46e35772cff555b479a4831e2fabd1d9cf60b97baf5b280eb77",
+      "bytes": 81977
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/reserve-dense-1/chromium-sloth-x-shift-mask/import.png",
+      "sha256": "ea4feeedd4e36a9fa5f60aaf75ce4e67a84bd411285e229ae1a5fd33df5f4872",
+      "bytes": 188949
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/reserve-dense-1/chromium-sloth-x-shift-mask/input.png",
+      "sha256": "5979e904e501e1a59a6dafd69d72848a628bbf7fdb3175bafa287855a85468c9",
+      "bytes": 3068
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/reserve-dense-1/chromium-sloth-x-shift-mask/prepared.json",
+      "sha256": "4ec07957b7e05f37fc5027f79ce81aa11af38588420697d35112bd8e04c84770",
+      "bytes": 320042
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/reserve-dense-1/chromium-sloth-x-shift-mask/result.png",
+      "sha256": "2236bd7a291de7b2bb807ddcf8cd76a7bb8d6052b0b1e80b89883d87f7df72c6",
+      "bytes": 173715
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/reserve-dense-1/chromium-sloth-x-shift-mask/template.pdf",
+      "sha256": "4e0d2f62fde5fdf9d78a49a244eab258f014144051a8bb3286216330cc57c9d1",
+      "bytes": 995757
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/reserve-dense-1/proxy.json",
+      "sha256": "ed1237aa9f822db12f13a9cbbd175981957ec7eaf861c261f17626030d67cb1e",
+      "bytes": 14554
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/reserve-dense-1/results.json",
+      "sha256": "dd8b1dea76b4a6272d15585dc74850a11057086ba922154d5f3d815892c95fd2",
+      "bytes": 48286
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser/reserve-dense-1/run.log",
+      "sha256": "43445945d4d722c69ff4585a5037df01e821be812dc8c7ff9d05a9c0132034c9",
+      "bytes": 20379
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/browser-probe.mjs",
+      "sha256": "c013ce0dc376130e1665f37f8d2d61575aa83b612c9e1e6ea0da90745110d6e4",
+      "bytes": 3290
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/engines/finish-sparse/snapshot.json",
+      "sha256": "3f5042884de6d801cd9f2f428f998aac7b17818d3682f5fde9f8ebf37d5763da",
+      "bytes": 10891
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/engines/reserve-dense/snapshot.json",
+      "sha256": "69b1c10280e2df0dfdcf332c362c0ec0bcff3ce54a62232507ff6b1f4c73f923",
+      "bytes": 10750
+    },
+    {
+      "path": "tmp/heart-learning/routing-timeout-v1/initial-comparison.json",
+      "sha256": "87700f2766b13ef65031ef29f251a84c1ac7380cefb05bbe38421941dee7778f",
+      "bytes": 15486
+    }
+  ]
+}

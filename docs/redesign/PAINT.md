@@ -60,9 +60,19 @@ of an overlay scrollbar until a gesture starts):
 - Panel "Værktøj": tools Pen, Viskelæder, Fyld, Linje, Rektangel, Markér as 40px icon buttons (lucide: pencil,
   eraser, paint-bucket, minus (rotated 45°) or a simple line glyph, square, square-dashed); brush size segmented
   control Fin / Mellem / Grov (radius 2 / 6 / 14 cells); "Maler med" two swatches (the current paper colours, the
-  chosen one ringed). Viskelæder always paints 0. Undo / redo buttons (lucide undo-2 / redo-2) and Cmd/Ctrl+Z,
-  Shift+Cmd/Ctrl+Z. Markér adds a line of help under the grid while it is the tool in hand, because its gestures
-  cannot be read off its glyph.
+  chosen one ringed). Viskelæder always paints 0. Undo / redo (lucide undo-2 / redo-2) are two 40px icon buttons —
+  the tools' own square (`.tool-btn`, not the site's `.btn-icon`: the two differ by a glyph size, a ground and a
+  disabled opacity, and two nearly-identical squares in one panel is worse than one local name), with the words in
+  the same `Tooltip` the tools wear and in `aria-label` — set at the right-hand end of the swatches' row rather than
+  in a labelled row of their own, which the column has no line to spare for. They are a sibling of the "Maler med"
+  field inside that row, not inside it: a label reading "Maler med" must not appear to head them. The keys are
+  Cmd/Ctrl+Z and Shift+Cmd/Ctrl+Z as before. Markér adds **one** line of help under the grid while it is the tool in
+  hand ("Træk en ramme; Enter lægger den fast, Esc fortryder."), because its gestures cannot be read off its
+  glyph; the five lines it used to be — the handles, the turner, and the whole keyboard route — are in the Hjælp
+  dialog, which is where there is room to read them. That one line describes a drag, which is the single route a
+  keyboard visitor has not got, so the keyboard route rides on the drawing's own `aria-label` while Markér is in
+  hand (`paintSelectionKeyboard`): the drawing is a tab stop for exactly that visitor, and the sentence costs the
+  column no line at all.
 - **Markér** (owner, 2026-09-08): drag a frame on the mask to lift a rectangle of cells; a dashed marquee with four
   corner handles and a turner above it. Dragging inside moves the cells (what they leave becomes paper 0), a corner
   scales — uniform, and free with Shift — and the turner turns about the centre by any angle. Enter or a click
@@ -78,10 +88,13 @@ of an overlay scrollbar until a gesture starts):
   arrow keys move the patch, Shift and an arrow size it, and `,` / `.` turn it 15° at a time; a live region reports
   the patch as it is lifted, sized, put down and cleared. The geometry is `src/lib/paint/selection.ts`, pure and
   tested; the interaction is in `MaskCanvas`.
-- Panel "Symmetri" (owner, 2026-09-08 — moved out of Find snit): the one-line explanation "Fundet i masken og slået
-  til; alt du maler, spejles med." and the three symmetry rows (the shared component, §6), with the "fundet" tags.
-  They live here rather than with the search because they are live while painting: a row switched on mirrors every
-  stroke from that moment, so they belong beside the brush they change. Find snit still reads them from the session.
+- Panel "Symmetri" (owner, 2026-09-08 — moved out of Find snit): the three symmetry rows (the shared component, §6)
+  with the "fundet" tags, and nothing else. The explanation "Fundet i masken og slået til; alt du maler, spejles
+  med." is the panel heading's `title` and a bullet in Hjælp: it is worth reading once and never again, and at 300px
+  it cost the column two lines on every visit. The rows keep their label above their control, and the segments keep
+  their words beside their icons (owner, 2026-09-08). They live here rather than with the search because they are
+  live while painting: a row switched on mirrors every stroke from that moment, so they belong beside the brush they
+  change. Find snit still reads them from the session.
   All three panels in the column stand down — every control inside really disabled, which is what a screen reader
   reads — while the found heart is on screen, because there is no mask under the pointer then; "Tilbage til masken"
   brings them back.
@@ -91,28 +104,148 @@ of an overlay scrollbar until a gesture starts):
 
 Below 900px the columns stack under the heart in the order they read: Værktøj, Symmetri, Kanten, Find snit.
 
-Three panels are taller than a desktop viewport, so above 900px the left column scrolls inside itself as a rule
-rather than as an exception. It is centred while it fits and starts at the top when it does not, and a fade over
-whichever edge it runs past says there is more that way — macOS draws nothing of an overlay scrollbar until a
-gesture starts, so a panel out of sight would otherwise not be there as far as anyone can tell.
+**The default column fits a desktop window** (owner, 2026-09-08). Three panels at their first-drawn heights did
+not: 1006px against the 880 a 1440 × 950 window leaves, so Kanten hung below the edge on a screen nobody would call
+small. It is 726px now — Kanten collapsed to its one row (§11), Fortryd and Gentag folded into the swatches' row
+(and out of the "Maler med" field, which took another 6px off), and the Markér, Symmetri and Kanten explanations
+moved to `title` and Hjælp — which leaves Kanten's bottom at 865px, 85px clear of a 950px viewport. Nothing was
+removed to get there, and nothing was moved to a `title` alone: a `title` on a
+heading is mouse-only, so every sentence that left the column has a bullet in the Hjælp dialog to be found on
+purpose, on a phone and from the keyboard.
+
+The column still scrolls inside itself where it has to: a short window (1440 × 700 leaves 630, so the same 726px
+overflows by about 95), and Kanten expanded under Fri, which adds 213px. It is centred while it fits and starts at
+the top when it does not, and a fade over whichever edge it runs past says there is more that way — macOS draws
+nothing of an overlay scrollbar until a gesture starts, so a panel out of sight would otherwise not be there as far
+as anyone can tell. The fade is measured by a `ResizeObserver` over the column **and every panel in it**: the column
+itself is pinned top and bottom, so its own box never changes height and it can only report the viewport; the panels
+are what grow and shrink. It used to name each content change by hand (`void tool; void toolsStandby; void
+session.frame.mode`), and that list went stale the first time a panel learned a new height.
+
+Choosing Fri scrolls Kanten's own bottom into view (`scrollIntoView({ block: 'nearest' })` in `FramePanel`).
+Measured at 1440 × 950 without it, the revealed Størrelse slider landed under the bottom fade and the Fri hint
+wholly outside the column's box, with nothing scrolled: the visitor asks for exactly those three controls and two of
+them arrive where they cannot be read. `nearest` scrolls the least that puts the panel on screen and does nothing
+when it is already there, so a tall window is untouched and the narrow layout — where the page scrolls rather than
+the column — is served by the same line.
 
 Right floating panel (340px, collapsible with the same "Skjul panel" control as Tegn):
 
 - Panel "Find snit": one sentence about the search ("Computeren leder efter de snit, der væver netop dit mønster."),
   the primary button `Find snit`, a disclosure "Avanceret" with the engine settings that matter to a hobbyist: Papirets bredde (mm, default 100), Mindste strimmelbredde (mm, 2),
-  Samme skabelon til begge sider (checkbox, follows Mellem lapper: Sym), and a "Nulstil" link. Nothing else.
-- While searching: the panel shows a progress row (heart glyph, "Søger efter snit … 12 s", the current stage in
-  plain words, a bar) and `Afbryd`. The mask stays editable-looking but pointer input is ignored until done.
+  Foretræk samme skabelon til begge sider (checkbox, on by default independently of the symmetry rows), and a "Nulstil" link. Nothing else.
+  The checkbox is a preference with an absolute one-percentage-point mask-error allowance, not a command to fold
+  the mask. Import, symmetry changes and undo/redo preserve an explicit choice; Reset restores it to on.
+  The explanatory text states the allowance in both languages. Requested symmetry still takes precedence in
+  the solver: transpose requires matching templates, while other enforced transforms retain their existing route.
+- **While searching, the panel says what the search is trying** (owner, 2026-09-09; built, §12 for the rest). It was
+  a scissors glyph, a counter and one phrase for up to three minutes, while the engine underneath was announcing
+  every strip-count pair it had scored and reporting a fresh error every forty refinement steps. The face is now:
+  - the **stage in plain words** (scissors glyph, `role="status"`), with the numbers under it as one line —
+    "12 s · 4 + 4 strimler · buddets afvigelse ca. 1,3 % og faldende". Each part is left out when there is nothing
+    true to say: a search that has not chosen its counts prints no counts. The trend is read off the last two
+    checkpoints of the *same* attempt and is "stabil" under `TREND_EPSILON` (1e-3), which is one unit of the last
+    digit the panel prints; a jump between two attempts is not a trend and is reported as none. The threshold was
+    1e-4 for one round and measured wrong on Uret v2: the word alternated between faldende, stigende and stabil
+    once a second under a number that stayed at 0,8 % throughout — three claims a second, none of which the
+    visitor could check.
+  - **the live percentage is not the answer's percentage, and does not pretend to be** (2026-09-09). It is
+    `refineCurves`'s own `mismatch(renderCurves(…), prob)`: the candidate under the gradient against the
+    symmetry-averaged target at the fitting resolution (256 cells at most), over every cell, before simplification
+    and before our symmetry correction. The answer's "forskel fra masken" is measured on the converted heart about
+    to be drawn. Measured on Uret v2 the panel held 0,8 % for the last six seconds and the answer then said 1,6 %.
+    So the line says "buddets afvigelse ca." / "the candidate about … % off" rather than "afvigelse", and the
+    number **goes** the moment the fitter leaves refinement: `directSharing` and `directPolishing` improve the
+    answer and report no error at all, so the last checkpoint's number would otherwise stand — under a stage line
+    saying something else was happening — until the answer contradicted it. The counts stay, because those really
+    are the winner's, and the running mark in the attempts list is cleared at the same moment: `fit.js` breaks out
+    of its loop on a candidate that passes, so nothing ever announces the winner as finished.
+  - the **attempts**: every counts pair the fitter announced, one row each — the pair, the last error the
+    *refiner* measured for it, and a dot for done / running / waiting with the running row in `--cream2`. A pair
+    that has not been reached says "ikke prøvet" / "not tried", not "venter": the count search announces every pair
+    it scored and `gridFinalists` hands the refiner three of them, so most of a long list is never queued for
+    anything — the star announces eight and leaves five of them there. The word says what is known and promises
+    nothing about what the fitter will do next. Its seed error is not printed either: that one measures an
+    unrefined uniform grid at 64 cells a side, a third quantity again, so the row carries no number until the
+    refiner has measured one. A pair is one row however many times the engine scored it (the count search scores
+    each at both phases). Nothing is invented: a pair the engine has not mentioned is not in the list.
+  - the **MILP route's own three numbers** instead of a list, because it counts rounds rather than attempts:
+    "Løser … runde 2 · afstand til bedst mulige 3 % · 1 gyldig kandidat". The route is decided by the stages seen:
+    'model'/'solving' before any `direct*` means the MILP, and once the fitter has spoken the route stays the
+    fitter's — feature recovery builds a graph and solves a model *inside* the direct fit, and reading that as a
+    change of route would put the wrong face on the panel mid-search.
+  - the elapsed-time bar and `Afbryd`, as before. `role="status"` is on the stage line and nowhere else: it changes
+    a handful of times a search and is news, while the seconds, the error and the attempts change several times a
+    second and would be read over each other for the whole wait.
+  - **the candidate's cuts over the mask**, fed by §12 (a) and (c): cyan left, orange right, black halo, the
+    editor's own `LOBE_OUTLINE_COLORS`, as an additive pass in `MaskCanvas` after everything else it draws.
+  - **"Brug det bedste nu"**, dormant until §12 (b) lands. The panel draws it only when
+    `ENGINE_GRACEFUL_STOP` is true **and** it has been given an `onUseBest`, so flipping the flag on its own
+    cannot put a primary button beside Afbryd that does nothing.
+
+  The plumbing: `client.ts` passes the whole progress event, `EngineProgress` in `engine.ts` types the shapes
+  `core/` sends, and `$lib/paint/searchProgress.reduceProgress` folds the stream into one `SearchProgress` the panel
+  reads. The reducer is checked against `src/lib/paint/fixtures/starProgress.json` — every progress event of one
+  real search for the star's cuts, re-recordable with `CAPTURE_PROGRESS=1 npx vitest run
+  src/lib/paint/searchProgress.test.ts`, which runs the engine's own `design()`. Every stage on that recorded path
+  has a sentence, and the test asserts that replaying it never falls back to "Arbejder …", which is what makes a
+  stage added in `core/` fail here rather than go quiet on screen. The fixture cannot cover the whole set on its
+  own: it was captured with no symmetry, and `directMatching` — `preferMatchingSolution`, which runs whenever
+  "Foretræk samme skabelon til begge sider" is on, the default preference — takes the disabled early return
+  there. It has its own sentence and its own test.
+
+  **What "Prøv stjernen" actually shows** (measured on the built site, 2026-09-09). With the settings the mask
+  arrives with — the symmetries found in it, one template for both sides — the star is answered in about two and a
+  half seconds by the traced route, so the face is ten stage sentences, the seconds, and eight "ikke prøvet" rows
+  that stay that way: the count search announces its seeds and `gridFinalists` never gets to refine one. The
+  fixture is the other half of the picture, captured with no symmetry, where the fitter did the work and three of
+  the eight seeds were refined under a falling deviation. So the deviation line and the running row are real but
+  are not what the star shows on a default visit, and neither are the MILP's three numbers: `automatic.js`
+  announces the count search *before* it chooses a route, so `directInitializing` has already settled `route` on
+  the fitter by the time 'model' and 'solving' arrive. Both are worth a look the next time the route heuristic is.
+
+  The mask stays editable-looking but pointer input is ignored until done.
 - After success: "Skabelonen er fundet" with the numbers (n + m snit, minimum clearance in mm, difference from the
   mask in %), and the buttons `Åbn i Tegn` (primary) and `Tilbage til masken` (outline). The difference is measured
-  on the heart we are about to show — `maskMismatch` of `rasterizeDesign(design, 200)` against the session mask
-  resampled to 200 — not taken from the engine's `report.imageError.mismatchFraction`, which describes the solution
+  on the heart we are about to show — `maskMismatch` of `rasterizeDesign(design, mask.size)` against the original
+  session mask at its own resolution. Downsampling binary edges can exaggerate this error. It is not taken from
+  the engine's `report.imageError.mismatchFraction`, which describes the solution
   before simplifying and before `enforce` (§4) moved it. The canvas shows the found
   heart rendered by our own `PaperHeartSVG` (not the engine's preview), and a small card with the mask. That card is
   one button, labelled "Tilbage til masken" like the panel's — it used to carry a "Ret masken" link of its own beside
   it, which read as two different steps and is one — and the mask in it is drawn on `--sky`, as the detail page's
   heart thumbnails are, because on white a white lobe disappears. Hent PDF and Gem in the top bar now work on
   this heart.
+- **A mediocre result says so** (owner, 2026-09-08). A percentage is a number, not a verdict: 0,4 % and 1,7 % read
+  alike to anyone who has not woven one of these. Above `MEDIOCRE_MISMATCH` (1 %, one named constant in
+  `FindCutsPanel.svelte`) the panel adds one plain line under the numbers — "Mønsteret er tæt på, men ikke helt:
+  ret masken, slå en symmetri fra, eller prøv Find snit igen." — and a third, ghost button `Find snit igen` on its
+  own line under the other two, which runs the same search from the mask again. Under 1 % nothing changes. The
+  threshold is judged on the motif where there is one and on the whole square where there is not, exactly as the
+  summary line is: a large, accurately woven band dilutes an error in the middle (MOTIF-BORDER.md's three-cell house
+  is 1,89 % over the square and 4,60 % in its centre). 1 % is where the difference stops being arithmetic: one cell
+  in a hundred of a 400-cell square is a seam you can see in the woven paper, and that is the moment to be told
+  rather than to find out on the table. There is no engine number behind it — `ENFORCE_COST_LIMIT` (0.03) bounds how
+  far our own symmetry correction may move a design (§11), not how far the found heart may sit from the mask, and
+  says nothing about this. The verdict is read off the number the panel prints and not off the raw fraction: the
+  summary rounds to one decimal, so 0,996 % and 1,004 % are both "1,0%" on screen and must be given the same
+  verdict.
+- **"Find snit igen" is the last of the three remedies, not the first** (2026-09-09). The two before it change what
+  the search is looking for; the button hands the engine the same question over. It does not hand back a
+  bit-identical answer — measured in round 6 on Uret v2's photograph imported whole (`static/hearts/photos/
+  circle.jpg`, 400 × 400, all symmetry rows Fra, Kanten Fast), two searches in one page from the one mask asked the
+  worker the same `solve` message apart from its serial `id` and came back with different `cut_geometry.json`
+  (48 253 against 48 241 bytes). But the difference is the last decimal of a number nobody can weave: both runs
+  printed "4 + 4 snit · mindst 3,1 mm mellem snittene", and the difference from the mask moved between 2,6 % and
+  2,7 % over three runs. There is no seed to vary — the search is a time-budgeted solve, so what moves is which
+  incumbent the clock stops it on, and that is not something a visitor pressing the button is choosing. So the line
+  names the mask and the symmetry first and the button last: it spends the whole search to hand back the same heart
+  to two decimal places, unless something under it has moved. The button stays because the owner asked for it, and
+  it goes back to the mask before it starts, so nobody watches a progress bar under the heart they were just told
+  was not good enough. Two things are **open** — the owner's call: giving the re-run something real to vary (a
+  seed, a nudged starting point, a longer budget) is an engine question, and a mask whose difference sits within a
+  decimal of 1 % can be told "close, but not right" on one run and nothing on the next, since the threshold is read
+  off a printed number that itself moves.
 - After failure: a notice in the panel: what happened (timed out / no weavable pattern / engine could not load) and
   what to try (paint with fewer thin details, switch off a symmetry, try again), plus `Prøv igen`.
 
@@ -284,8 +417,8 @@ folds the mask with `symmetrize` first**, and `setMask` folds an arriving mask t
 - Settings we pass (from the old page, minus what the owner removed): `{...AUTOMATIC_PRESET, width: 100, minWidth: 2,
   cutError: 0.25, timeLimit: 600, preferMatchingSheets, matchingErrorAllowance: 0.01, earlyStop: false,
   removeSpecks: 0, fillHoles: 0, minRadius: 0.8, kerf: 0, printShrinkPercent: 0.2, materialResolution: 360,
-  trials: 12, requireMaterialCore: true, paperColors: [right, left], resolution: 400}`. "Samme skabelon til begge
-  sider" goes over as `preferMatchingSheets`, defaulting to Mellem lapper Sym. **Not `identicalSheets`**: that key is
+  trials: 12, requireMaterialCore: true, paperColors: [right, left], resolution: 400}`. "Foretræk samme skabelon til begge
+  sider" goes over as `preferMatchingSheets`, defaulting to true. **Not `identicalSheets`**: that key is
   not in `core/settings.js`'s `DEFAULTS`, so `settings(raw)` drops it before a solve ever sees it — it is read off
   the raw object by `prepare` alone. `settings()` is the list of keys the engine accepts, and a key that is not on
   it disappears in silence; `engine.test.ts` puts the whole settings object through it for exactly that reason.
@@ -408,8 +541,8 @@ i lap Anti. Everything else off. Run it after import and after "Mal på hjertet"
 `session.symmetry` and `session.found`.
 
 Solving with symmetry on: `symmetrize` the mask under the active transforms first (so the target itself is
-symmetric), pass `preferMatchingSheets` for Mellem lapper Sym (the only symmetry the engine enforces itself, and see
-§4 for why it is not `identicalSheets`), and give the converter `enforce: session.symmetry` so the resulting fingers
+symmetric), pass the independent `preferMatchingSheets` preference (see §4 for why it is not
+`identicalSheets`), and give the converter `enforce: session.symmetry` so the resulting fingers
 are exact. Inden i
 kurve Anti cannot be expressed on the mask; it is passed to the converter only, so it is the one row that always
 reaches a solve that was never asked to hold it — see the note on what enforcing costs in §4. The rows the panel
@@ -488,16 +621,25 @@ weaves the colour-swapped picture), so a failure under symmetry should suggest s
 it, and the notice when it differs from the request, exactly as with the converter's `honoured`. `symmetrize` on
 the mask and `enforce` in the converter stay as the safety net for the MILP route and for `withinCurve` Anti.
 
-**Free cells shipped without the engine's weights; soft cells wait for them.** Codex's motif-border experiment
-(docs/inverse/MOTIF-BORDER.md) shows that an isolated painted motif needs a band of cells the engine may fill with
-a supporting weave, and that a photo crop whose corners sat a little outside the heart needs a band where the
-engine may *change a few cells* while keeping the rest. The second of those needs explicit per-cell loss weights in
-the engine (a 0.5 probability is not ignored) and is Codex's lane; the first works with today's engine the way
-their benchmark did, by preparing a different target, and is built (`$lib/paint/frame`, `FramePanel.svelte`).
+**Free borders use explicit image weights.** The protected motif retains its painted colours with weight 1;
+the surrounding band retains its original colours for comparison but has weight 0 during fitting. The same
+objective now controls initialization, candidate selection, symmetry, refinement, matching and final checks
+(docs/inverse/WEIGHTED-IMAGE.md). Intermediate weights are supported in the engine, but a soft-border UI is not
+exposed yet. Geometry and paper constraints still apply everywhere, including the free border.
 
 - The band outside a protected shape has a segmented control "Kanten: Fast / Fri" in a panel of its own in Mal's
   left column, under Værktøj and Symmetri. *Fast* = as painted, which is what a heart made without thinking about
-  the frame still is. *Fri* = the search fills the band itself; the band's colours are ignored. The third state
+  the frame still is. **Under Fast the panel is that row and nothing else** (owner, 2026-09-08): the shape buttons,
+  the Størrelse slider and the hint say what would happen to a motif nobody has asked to protect, and they appear
+  when Fri is chosen. Only the panel's height changes — the frame keeps the shape and the size it had, so Fri brings
+  them back exactly as they were — and the sentence a Fast panel used to carry ("Hele firkanten væves, som du har
+  malet den.") is the heading's `title` **and** a bullet in Hjælp, because a `title` never fires on touch or on
+  keyboard focus and Kanten is otherwise two words with nothing to explain them. Choosing Fri scrolls the panel's
+  bottom into view, since the three controls it reveals otherwise land below the column's bottom edge (§2).
+  *Fri* = the search fills the band itself; the band's colours are ignored.
+  The three shape buttons darken to `--green-hover` under the pointer while chosen, like every other chosen control
+  in the column; they were exempt from hover with `:not(.active)` until 2026-09-08, which left the one button the
+  visitor was pointing at as the only one that answered to nothing. The third state
   *Må rettes* — the engine keeps the cells but may change the ones it must, at a cost (loss weight about 0.25 plus
   a penalty on changed cells; Codex's "repair the border") — is **not shown at all** rather than shown disabled:
   an option nobody can pick is a promise, and this one has no date on it.
@@ -510,54 +652,36 @@ their benchmark did, by preparing a different target, and is built (`$lib/paint/
 - Drawing: free cells are hatched on a light ground that covers the mask's own colours there, and the protected
   shape has a dashed outline with the four handles on it. Painting in the band still works — the cells exist, they
   are simply not part of what the search is asked for. Fast draws nothing. Soft cells (colours kept under a
-  lighter hatch) and the third, hatched "Maler med" swatch for painting free cells by hand arrive with weights.
+  lighter hatch) and the third, hatched "Maler med" swatch for painting free cells by hand need a per-cell weight
+  editor; the engine already accepts those weights.
 - Model: the frame is a setting beside the mask, `session.frame = { mode, shape, size }`, not a layer inside it —
   the band's cells are ordinary cells and the frame only says how the search should read them. The weight layer
   the soft state needs (fixed 1, soft, free 0; a third colour value would lose the soft state's colours) replaces
   `frameWeights`, not this. `symmetrize` and `detectSymmetry` take an optional region, so the rows are judged and
   folded on the protected motif alone while the band is free; painting still mirrors everything.
-- Until the engine takes weights, a free band reaches it as a **checker weave**: `substituteCheckerBand` keeps every
-  cell inside the shape and replaces the band with a checker of `cells × cells` blocks over the square, `cells`
-  being an "Avanceret" number "Rammens felter" (3–5, default 4, the range and the winner of Codex's benchmark),
-  offered only while the band is free. The phase is the one that agrees with the visitor's own band cells more
-  often; where the band is thinner than one checker block — above 50 % of the square at four blocks a side, 60 % at
-  five, a third at three — those cells *are* the collar along the protected outline, so that is the same thing as
-  continuing the colour the motif has at its edge, and below that it is simply a vote over the whole band. A tie
-  keeps phase 0. The whole substitution is one function, to be deleted when weights arrive.
-- **The blocks are counted from the centre of the square, and the target is not folded afterwards.** The mask
-  arrives at the substitution already folded under the rows (the motif alone while the band is free) and the
-  checker is invariant under all eight symmetries of the square by construction, so the target is symmetric as it
-  comes. Folding it again — which the first build did — was wrong twice over. A checker counted from a *corner* is
-  its own negative under a mirror whenever the block count is even, so at the default of four the fold replaced the
-  band with blocks of twice the size: an effective count of two, outside `ADVANCED_LIMITS.frameCells` and outside
-  anything Codex's benchmark measured. And the same fold averaged the motif's own edge cells together with the band
-  the checker had just overwritten, against MOTIF-BORDER.md's premise that no cell of the centre is changed.
-  Counted from the centre, a mirror sends block `j` to `−j`, whose parity is `j`'s, and the pattern survives every
-  symmetry whatever the count and whether or not the block width divides the mask. Where the shape is one the
-  mirrors do not map onto itself — the hexagon, which they turn a quarter turn — the cells along its edge are left
-  unfolded and keep exactly what the visitor painted; the target is then symmetric everywhere but on that thin
-  edge, and the engine's own symmetrisation absorbs it.
+- Paint sends the binary mask directly, with `frameWeights(mask, frame)` beside it in the same pixel coordinates.
+  It does not classify the drawing's colours again or substitute another target. The mask arrives already folded
+  under the selected rows inside the protected region; weights and weighted colour are averaged together when
+  fitting requested symmetries, so ignored border colours cannot contaminate protected edge cells.
+- The engine can use a centred checker as an initialization proposal, along with uniform and image-informed
+  grids. Every proposal is ranked against the original weighted drawing, so neither checker colour nor checker
+  count is a required part of the answer. The former advanced "Rammens felter" control has been removed.
+  `substituteCheckerBand` and `solveTargetMask` remain only to reproduce the historical checker benchmarks.
 - Changing "Kanten" **is an edit**, not only a setting: the region the rows fold over moves with the shape, so a
   change folds band paint away or stops folding motif paint. Mal records one undo step per gesture
   (`recordFrameFold`; the Størrelse slider and the canvas handle both say when a gesture begins, so a drag is one
   step and not sixty) and, like a change of rows, does not mark the mask dirty — the fold is the visitor's own
   instruction, not an edit they have yet to notice.
-- The result panel reports the difference **inside the protected motif first** and the whole square second, both
-  measured against the target the engine was given (the number MOTIF-BORDER.md asks for: its three-cell house
-  passes the whole-image bar at 1.89 % with a centre that is 4.60 % wrong). A checkbox "Vis det beskyttede motiv"
-  lays the outline over the found heart. The third number — the share of band cells the engine changed — belongs
-  to the soft state and arrives with it.
+- The result panel reports disagreement **inside the protected motif first**, followed by the share of free-border
+  cells changed. Both compare the actual editable heart with the original drawing. The whole-original difference
+  is also retained in the session report and worker report, but permitted border changes are not presented as a
+  fitting failure. "Vis det beskyttede motiv" lays the protected outline over the found heart.
 - The "Kanten" panel lives in Mal only, not in the import dialog: it applies to painted and imported masks
   alike. After a photo import the panel may default to Må rettes, once that state exists. The dialog does not
   detect symmetry itself, though: it is handed the page's `detectOn`, so an imported mask's rows are judged on the
   protected motif exactly as a painted one's are — a crop's corners are the untrustworthy part, and the reason the
   band exists, so they must not decide the rows that are about to fold the picture.
 
-`frameWeights(mask, frame)` in `$lib/inverse/engine` returns the per-cell weights (1 inside, 0 in a free band) and
-is **sent nowhere**: the fitter's loss has no per-cell weight to take. It is written and tested now so that the day
-Codex's lane lands the change is one settings key there and one deleted function in `$lib/paint/frame`. The
-pattern is the norm, not the exception: flettedehjerter.dk's archive of a hundred-odd hearts is central motifs
-inside a woven frame, and several of Codex's photo benchmarks (puppy, Stonehenge, viking ship) come from it.
 
 **Session store as landed.** `session` is a class instance: `mask` and `result` are `$state.raw` (replace, never
 mutate for reactivity; the canvas repaints by box), the small fields plain `$state`. Callers use `setMask(mask,
@@ -568,17 +692,137 @@ mutate for reactivity; the canvas repaints by box), the small fields plain `$sta
 parallel full run (11.8 s) and passes alone (3.4 s): give it an explicit timeout or make its sweep cheaper.
 
 **Live search is the stage after the engine symmetry lands** (owner, 2026-09-08, mockup board "mens der søges").
-The engine's progress events already carry the stage, the strip counts being tried with their errors, the
+The engine's progress events already carry the stage, the cut counts being tried with their errors, the
 refinement step, the current mismatch and the validity checks; the UI shows them: a plain-words stage line
 ("Tilpasser kurverne … 12 s · 4 + 4 strimler · afvigelse 1,3 % og faldende"), a list of the attempts with their
-errors (done / running / waiting), and the elapsed-time bar. Two things need a small engine change, done as a
-follow-up lane after `paint-engine-symmetry` (it touches the same fit/refine/worker files): (1) each refinement
-checkpoint attaches the current candidate's cut geometry (the same `heartcurves-2` JSON as the result, throttled
-to a few per second) so the canvas draws the candidate's cuts over the mask in the editor's outline colours
-(cyan left, orange right, black halo) and they settle as the search runs; the conversion uses
-`cutGeometryToDesign` with a coarse tolerance and no enforcement; (2) a graceful stop message ("Brug det bedste
-nu") that makes the fitter return the best validated candidate so far instead of terminating the worker, and a
-list of the valid alternatives (counts, error, geometry) in the result so the panel can offer "Prøv 3 + 3 i
-stedet" without searching again. The MILP route shows its rounds and gap and attaches an incumbent when one is
+errors (done / running / waiting), and the elapsed-time bar. Displayed strip counts add one to each cut count.
+Refinement checkpoints now attach the candidate's `heartcurves-2` geometry at most four times a second, so the
+canvas draws its cuts over the mask in cyan and orange with a black halo. Conversion uses `cutGeometryToDesign`
+with a coarse tolerance and no enforcement. The graceful stop message ("Brug det bedste nu") now returns the
+best retained validated candidate through normal validation and export. The result includes valid alternatives
+(counts, error, geometry); a UI for choosing those alternatives remains future work. The MILP route shows its
+rounds and gap and attaches an incumbent when one is
 validated.
 
+
+## 12. Engine hooks for the live search
+
+The geometry hooks in (a) and (c) are implemented. Paint requests them through `progressGeometry: true`;
+other engine callers retain the default false. The graceful stop in (b) is implemented and enabled during a solve.
+
+The paint bridge already carries whatever the engine sends. `client.ts` hands the whole progress event to its
+listener, `EngineProgress` in `src/lib/inverse/engine.ts` types every shape `core/` is known to send with every
+field optional, and unknown fields are tolerated — so an engine that starts attaching a field needs no change here
+to be *received*. What follows is what has to be attached.
+
+### (a) The current candidate's geometry on a refinement checkpoint
+
+**Implemented.** Under the solve setting `progressGeometry: true` (default false, validated by `core/settings.js`
+like every other setting, silently dropped by an engine that does not know it), each refinement checkpoint's
+progress event carries
+
+```js
+{ stage: 'directRefining', counts: [a, b], step, error, score, paper, issues,
+  geometry: { /* the heartcurves-2 solution of the candidate at this checkpoint */ } }
+```
+
+— the same JSON as `files['cut_geometry.json']` in the result, either as the object or as its serialised string.
+The engine throttles it to **at most four a second** across the whole solve, dropping the intermediate ones rather
+than queueing them: a checkpoint is every forty gradient steps, which on a fast machine is far more often than
+that, and the serialisation is the expensive part. Nothing else about the event changes.
+
+**`geometry` is also a validity flag.** `refineCurves` keeps `check.passed` — a boolean — in its stored checkpoint
+history. Published snapshots replace that field in a copy of the event, keeping geometry out of saved histories.
+The two are told apart **by type and by nothing else**: a boolean is the validity flag, an
+object or a string is a solution. `candidateGeometry(event)` in `src/lib/paint/searchProgress.ts` is the one place
+that decides, and it is tested both ways. So the engine may keep sending the boolean when `progressGeometry` is off
+and start sending the solution when it is on, under the same name, without a version negotiation.
+
+**What the UI does with it.** `PaintPage` lifts it out of the event, converts it with `cutGeometryToDesign` at
+`tolerance: 1.0` and no `enforce` — a picture redrawn four times a second, not the heart anyone will cut — and hands
+the result to `MaskCanvas` as `candidate`. The canvas draws its cuts over the mask in the editor's own colours
+(cyan left, orange right, black halo, `LOBE_OUTLINE_COLORS`) as one additive pass after everything else, so the
+visitor watches the cuts settle onto their drawing. The conversion is throttled again on our side to four a second
+with the latest winning (`createGeometryThrottle`), because worker messages can arrive together after the main
+thread has been busy. A candidate mid-refinement need not be a *legal* heart — cuts
+may cross, a family may be short — so the conversion is wrapped: a throw leaves the last good candidate on screen
+and says nothing. The candidate is dropped the moment the search ends, however it ends.
+
+**Not wanted.** Geometry on `directInitializing` (a grid seed is not a heart anyone would recognise), on
+`directClearance`, or on the bare `{stage}` events. Only the checkpoints, only under the setting.
+
+### (b) A graceful stop
+
+**Contract.** A new worker message
+
+```js
+worker.postMessage({ id, action: 'stop' })
+```
+
+for the request in flight. The controller answers on the **normal result channel** —
+`{ id, type: 'result', result }`, with files, comparison and report built from the best **validated** checkpoint
+it has retained. The public worker stays alive with its prepared artwork. CPU-bound work runs in a private
+compute worker: Stop terminates that worker immediately, discarding any incomplete checkpoint. This avoids
+waiting for a synchronous Bézier iteration or native HiGHS call to read the message. Retained checkpoints are
+independently rechecked against the original source, geometry, paper and requested symmetry. The selected pair
+receives the usual shared-cut and primitive cleanup, with the original checkpoint available if cleanup fails.
+The report carries two additions:
+
+- `report.stoppedEarly = true`, so the answer can be labelled as one the visitor cut short. (The field already
+  exists on some paths with this meaning; this makes it true here too.)
+- `report.alternatives = [{ counts: [a, b], error, checkpointError?, geometry }]` — retained, independently
+  validated snapshots with duplicates removed, selected candidate first. If cleanup changes it, both the final
+  pair and its original checkpoint remain available. Counts are slits, before the UI adds one for strips.
+  `geometry` is the candidate's own `heartcurves-2` solution. `error` is forward-sampled disagreement against
+  the original prepared source, including validity and free-border weights. `checkpointError` preserves the
+  checkpoint's possibly lower-resolution score separately; it need not equal the original-source score.
+
+Private checkpoint packets are retained independently of the four-per-second UI geometry throttle, including
+validated initializers and polishing checkpoints which are not drawn as live previews. No candidate is accepted
+merely because it appeared on the canvas. Matching sheets are preferred within the configured one percentage
+point allowance; image disagreement still appears as a warning when high. Geometry, paper and requested
+symmetry remain mandatory.
+
+If there is **no** validated candidate yet, `stop` answers with the engine's ordinary "no weavable pattern" error
+rather than inventing one; the page already tells that story.
+
+**What the UI does with it.** `ENGINE_GRACEFUL_STOP` in `src/lib/inverse/engine.ts` is `true` and the panel's
+"Brug det bedste nu" button is drawn only when it is true **and** the panel has an `onUseBest` — both halves, so
+that flipping the flag alone cannot produce a button that does nothing. Paint supplies the handler only after
+preparation, while a solve is in flight. Pressing it disables the button and shows "Gør det bedste resultat klar …";
+`Afbryd` remains available. Afbryd (Cancel in English) rejects immediately, asks the controller to shut down its
+private worker, then terminates the controller after acknowledgment or a one-second fallback. Late responses
+cannot replace the mask or a subsequent search. The kept result goes through the same `convertValidatedCutGeometry`
+and the same success face as a completed search, labelled as stopped early and retaining any fidelity warnings.
+The UI does not yet offer an alternative-candidate chooser.
+
+### (c) An incumbent from the MILP route
+
+**Implemented.** When the MILP route has a validated incumbent, its `solving` events carry it:
+
+```js
+{ stage: 'solving', round, remaining|nodes, gap, validatedIncumbent: true,
+  geometry: { /* heartcurves-2 of the incumbent */ } }
+```
+
+Same rule as (a): only under `progressGeometry`, only when the incumbent is validated, at most four a second, and
+told from a boolean by its type. The incumbent changes rarely, so no extra throttle is needed beyond that cap.
+
+**What the UI does with it.** The same as (a) — the incumbent's cuts are drawn over the mask — with no new code:
+`candidateGeometry` reads the field off any event, whatever its stage. Today the MILP face shows the round, the
+gap and whether an incumbent exists (`validatedIncumbent`), which is already sent; this makes the incumbent
+visible rather than only counted. The engine emits a solving event immediately after validation too, so a first
+valid incumbent can be shown even when it ends that MILP search without another round.
+
+### What the UI must not be asked to do
+
+- **No new request/response round trip per candidate.** One request is in flight at a time by the engine's own
+  rule (`InverseWorker.request` rejects a second), and Find snit is queued behind the import dialog's prepares. A
+  candidate has to ride on the progress channel.
+- **No unthrottled stream.** The conversion is a full `cutGeometryToDesign`; four a second is what the canvas can
+  redraw over a 400 × 400 mask without the page dropping frames, and the ceiling belongs in the engine as well as
+  here so that the message channel is not the bottleneck either.
+- **No change to the existing event fields.** `counts`, `error`, `step`, `round`, `gap` and `validatedIncumbent`
+  are what the panel's numbers are made of and what `starProgress.json` records; renaming one silently empties a
+  line of the panel. If one has to change, the fixture is re-recorded (`CAPTURE_PROGRESS=1`) and the reducer's
+  tests will say what moved.

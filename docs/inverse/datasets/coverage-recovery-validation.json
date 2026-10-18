@@ -1,0 +1,1119 @@
+{
+  "schema": "coverage-recovery-validation-1",
+  "status": "completed-isolated-candidate-not-integrated",
+  "runtime": "tmp/heart-learning/coverage-routing-v1/runtime/inverse",
+  "sourceRuntimeCommit": "1561381",
+  "method": "Fixed original masks/crops and budgets. Fresh serial processes, two counterbalanced repeats. Independent export rendering at native resolution, unchanged image/feature/geometry/paper gates. Full-image disagreement is separate from observed/protected error. Timed refinement can produce different geometries.",
+  "routing": {
+    "runs": 16,
+    "passed": 16,
+    "ignoredColourPairs": [
+      {
+        "id": "photo-white-birds",
+        "repeat": 0,
+        "sameGeometry": true,
+        "sameFeatures": true
+      },
+      {
+        "id": "photo-white-birds",
+        "repeat": 1,
+        "sameGeometry": true,
+        "sameFeatures": true
+      },
+      {
+        "id": "hard-flettede-puppy-half",
+        "repeat": 0,
+        "sameGeometry": true,
+        "sameFeatures": true
+      },
+      {
+        "id": "hard-flettede-puppy-half",
+        "repeat": 1,
+        "sameGeometry": false,
+        "sameFeatures": true
+      },
+      {
+        "id": "hunodan-hjfig-05",
+        "repeat": 0,
+        "sameGeometry": true,
+        "sameFeatures": true
+      },
+      {
+        "id": "hunodan-hjfig-05",
+        "repeat": 1,
+        "sameGeometry": true,
+        "sameFeatures": true
+      },
+      {
+        "id": "photo-bird",
+        "repeat": 0,
+        "sameGeometry": true,
+        "sameFeatures": true
+      },
+      {
+        "id": "photo-bird",
+        "repeat": 1,
+        "sameGeometry": true,
+        "sameFeatures": true
+      }
+    ],
+    "results": [
+      {
+        "id": "photo-white-birds",
+        "repeat": 0,
+        "variant": "routing",
+        "solveSeconds": 6.7566282090000005,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "geometrySha256": "f9293812ec7340b112e10a031aa81955d5319acb7bfd09e9c428655ef63a6761",
+        "passed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "fullError": {
+          "mismatchPixels": 603,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00376875
+        },
+        "observedError": {
+          "mismatchPixels": 603,
+          "observedPixels": 159999,
+          "observedFraction": 0.99999375,
+          "mismatchFraction": 0.0037687735548347177,
+          "weightMass": 159999,
+          "mismatchWeight": 603,
+          "wholeMismatchFraction": 0.0037687735548347177,
+          "protectedPixels": 159999,
+          "protectedMismatchFraction": 0.0037687735548347177,
+          "editablePixels": 0,
+          "editableChangeFraction": null
+        }
+      },
+      {
+        "id": "photo-white-birds",
+        "repeat": 0,
+        "variant": "routing-flipped",
+        "solveSeconds": 6.7796618330000005,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "geometrySha256": "f9293812ec7340b112e10a031aa81955d5319acb7bfd09e9c428655ef63a6761",
+        "passed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "fullError": {
+          "mismatchPixels": 603,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00376875
+        },
+        "observedError": {
+          "mismatchPixels": 603,
+          "observedPixels": 159999,
+          "observedFraction": 0.99999375,
+          "mismatchFraction": 0.0037687735548347177,
+          "weightMass": 159999,
+          "mismatchWeight": 603,
+          "wholeMismatchFraction": 0.0037687735548347177,
+          "protectedPixels": 159999,
+          "protectedMismatchFraction": 0.0037687735548347177,
+          "editablePixels": 0,
+          "editableChangeFraction": null
+        }
+      },
+      {
+        "id": "hard-flettede-puppy-half",
+        "repeat": 0,
+        "variant": "routing",
+        "solveSeconds": 11.943504124999999,
+        "selectedCounts": [
+          3,
+          5
+        ],
+        "geometrySha256": "602b7d76237ca180fa4f6cc804213440dc9f338140decd12c58d83fecdccc719",
+        "passed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "fullError": {
+          "mismatchPixels": 1791,
+          "observedPixels": 152100,
+          "observedFraction": 1,
+          "mismatchFraction": 0.011775147928994083
+        },
+        "observedError": {
+          "mismatchPixels": 1790,
+          "observedPixels": 152099,
+          "observedFraction": 0.9999934253780408,
+          "mismatchFraction": 0.011768650681464047,
+          "weightMass": 152099,
+          "mismatchWeight": 1790,
+          "wholeMismatchFraction": 0.011768650681464047,
+          "protectedPixels": 152099,
+          "protectedMismatchFraction": 0.011768650681464047,
+          "editablePixels": 0,
+          "editableChangeFraction": null
+        }
+      },
+      {
+        "id": "hard-flettede-puppy-half",
+        "repeat": 0,
+        "variant": "routing-flipped",
+        "solveSeconds": 12.098376209,
+        "selectedCounts": [
+          3,
+          5
+        ],
+        "geometrySha256": "602b7d76237ca180fa4f6cc804213440dc9f338140decd12c58d83fecdccc719",
+        "passed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "fullError": {
+          "mismatchPixels": 1791,
+          "observedPixels": 152100,
+          "observedFraction": 1,
+          "mismatchFraction": 0.011775147928994083
+        },
+        "observedError": {
+          "mismatchPixels": 1790,
+          "observedPixels": 152099,
+          "observedFraction": 0.9999934253780408,
+          "mismatchFraction": 0.011768650681464047,
+          "weightMass": 152099,
+          "mismatchWeight": 1790,
+          "wholeMismatchFraction": 0.011768650681464047,
+          "protectedPixels": 152099,
+          "protectedMismatchFraction": 0.011768650681464047,
+          "editablePixels": 0,
+          "editableChangeFraction": null
+        }
+      },
+      {
+        "id": "hunodan-hjfig-05",
+        "repeat": 0,
+        "variant": "routing",
+        "solveSeconds": 5.272024666,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "geometrySha256": "4098abd0c4adbfa9cc65182565ab7ad71ea2022a308652f437cee6572adaec82",
+        "passed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "fullError": {
+          "mismatchPixels": 920,
+          "observedPixels": 113569,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00810080215551779
+        },
+        "observedError": {
+          "mismatchPixels": 920,
+          "observedPixels": 113568,
+          "observedFraction": 0.9999911947802658,
+          "mismatchFraction": 0.00810087348548887,
+          "weightMass": 113568,
+          "mismatchWeight": 920,
+          "wholeMismatchFraction": 0.00810087348548887,
+          "protectedPixels": 113568,
+          "protectedMismatchFraction": 0.00810087348548887,
+          "editablePixels": 0,
+          "editableChangeFraction": null
+        }
+      },
+      {
+        "id": "hunodan-hjfig-05",
+        "repeat": 0,
+        "variant": "routing-flipped",
+        "solveSeconds": 5.353006457999999,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "geometrySha256": "4098abd0c4adbfa9cc65182565ab7ad71ea2022a308652f437cee6572adaec82",
+        "passed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "fullError": {
+          "mismatchPixels": 920,
+          "observedPixels": 113569,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00810080215551779
+        },
+        "observedError": {
+          "mismatchPixels": 920,
+          "observedPixels": 113568,
+          "observedFraction": 0.9999911947802658,
+          "mismatchFraction": 0.00810087348548887,
+          "weightMass": 113568,
+          "mismatchWeight": 920,
+          "wholeMismatchFraction": 0.00810087348548887,
+          "protectedPixels": 113568,
+          "protectedMismatchFraction": 0.00810087348548887,
+          "editablePixels": 0,
+          "editableChangeFraction": null
+        }
+      },
+      {
+        "id": "photo-bird",
+        "repeat": 0,
+        "variant": "routing",
+        "solveSeconds": 10.111256707999999,
+        "selectedCounts": [
+          5,
+          5
+        ],
+        "geometrySha256": "699f4aaf5fd5171389b4d542952d4b302fa07e5945471af9cfda68f8965af522",
+        "passed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "fullError": {
+          "mismatchPixels": 3355,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.02096875
+        },
+        "observedError": {
+          "mismatchPixels": 3354,
+          "observedPixels": 159999,
+          "observedFraction": 0.99999375,
+          "mismatchFraction": 0.020962631016443852,
+          "weightMass": 159999,
+          "mismatchWeight": 3354,
+          "wholeMismatchFraction": 0.020962631016443852,
+          "protectedPixels": 159999,
+          "protectedMismatchFraction": 0.020962631016443852,
+          "editablePixels": 0,
+          "editableChangeFraction": null
+        }
+      },
+      {
+        "id": "photo-bird",
+        "repeat": 0,
+        "variant": "routing-flipped",
+        "solveSeconds": 10.29898825,
+        "selectedCounts": [
+          5,
+          5
+        ],
+        "geometrySha256": "699f4aaf5fd5171389b4d542952d4b302fa07e5945471af9cfda68f8965af522",
+        "passed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "fullError": {
+          "mismatchPixels": 3355,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.02096875
+        },
+        "observedError": {
+          "mismatchPixels": 3354,
+          "observedPixels": 159999,
+          "observedFraction": 0.99999375,
+          "mismatchFraction": 0.020962631016443852,
+          "weightMass": 159999,
+          "mismatchWeight": 3354,
+          "wholeMismatchFraction": 0.020962631016443852,
+          "protectedPixels": 159999,
+          "protectedMismatchFraction": 0.020962631016443852,
+          "editablePixels": 0,
+          "editableChangeFraction": null
+        }
+      },
+      {
+        "id": "photo-white-birds",
+        "repeat": 1,
+        "variant": "routing-flipped",
+        "solveSeconds": 7.051726458,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "geometrySha256": "f9293812ec7340b112e10a031aa81955d5319acb7bfd09e9c428655ef63a6761",
+        "passed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "fullError": {
+          "mismatchPixels": 603,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00376875
+        },
+        "observedError": {
+          "mismatchPixels": 603,
+          "observedPixels": 159999,
+          "observedFraction": 0.99999375,
+          "mismatchFraction": 0.0037687735548347177,
+          "weightMass": 159999,
+          "mismatchWeight": 603,
+          "wholeMismatchFraction": 0.0037687735548347177,
+          "protectedPixels": 159999,
+          "protectedMismatchFraction": 0.0037687735548347177,
+          "editablePixels": 0,
+          "editableChangeFraction": null
+        }
+      },
+      {
+        "id": "photo-white-birds",
+        "repeat": 1,
+        "variant": "routing",
+        "solveSeconds": 6.809789041999999,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "geometrySha256": "f9293812ec7340b112e10a031aa81955d5319acb7bfd09e9c428655ef63a6761",
+        "passed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "fullError": {
+          "mismatchPixels": 603,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00376875
+        },
+        "observedError": {
+          "mismatchPixels": 603,
+          "observedPixels": 159999,
+          "observedFraction": 0.99999375,
+          "mismatchFraction": 0.0037687735548347177,
+          "weightMass": 159999,
+          "mismatchWeight": 603,
+          "wholeMismatchFraction": 0.0037687735548347177,
+          "protectedPixels": 159999,
+          "protectedMismatchFraction": 0.0037687735548347177,
+          "editablePixels": 0,
+          "editableChangeFraction": null
+        }
+      },
+      {
+        "id": "hard-flettede-puppy-half",
+        "repeat": 1,
+        "variant": "routing-flipped",
+        "solveSeconds": 11.983181708999998,
+        "selectedCounts": [
+          3,
+          5
+        ],
+        "geometrySha256": "602b7d76237ca180fa4f6cc804213440dc9f338140decd12c58d83fecdccc719",
+        "passed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "fullError": {
+          "mismatchPixels": 1791,
+          "observedPixels": 152100,
+          "observedFraction": 1,
+          "mismatchFraction": 0.011775147928994083
+        },
+        "observedError": {
+          "mismatchPixels": 1790,
+          "observedPixels": 152099,
+          "observedFraction": 0.9999934253780408,
+          "mismatchFraction": 0.011768650681464047,
+          "weightMass": 152099,
+          "mismatchWeight": 1790,
+          "wholeMismatchFraction": 0.011768650681464047,
+          "protectedPixels": 152099,
+          "protectedMismatchFraction": 0.011768650681464047,
+          "editablePixels": 0,
+          "editableChangeFraction": null
+        }
+      },
+      {
+        "id": "hard-flettede-puppy-half",
+        "repeat": 1,
+        "variant": "routing",
+        "solveSeconds": 12.461816792,
+        "selectedCounts": [
+          3,
+          5
+        ],
+        "geometrySha256": "e118a158f61e982119ad9b07412e329d78215f5be732091d3db0252acf761eed",
+        "passed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "fullError": {
+          "mismatchPixels": 1753,
+          "observedPixels": 152100,
+          "observedFraction": 1,
+          "mismatchFraction": 0.011525312294543063
+        },
+        "observedError": {
+          "mismatchPixels": 1752,
+          "observedPixels": 152099,
+          "observedFraction": 0.9999934253780408,
+          "mismatchFraction": 0.01151881340442738,
+          "weightMass": 152099,
+          "mismatchWeight": 1752,
+          "wholeMismatchFraction": 0.01151881340442738,
+          "protectedPixels": 152099,
+          "protectedMismatchFraction": 0.01151881340442738,
+          "editablePixels": 0,
+          "editableChangeFraction": null
+        }
+      },
+      {
+        "id": "hunodan-hjfig-05",
+        "repeat": 1,
+        "variant": "routing-flipped",
+        "solveSeconds": 5.291218,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "geometrySha256": "4098abd0c4adbfa9cc65182565ab7ad71ea2022a308652f437cee6572adaec82",
+        "passed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "fullError": {
+          "mismatchPixels": 920,
+          "observedPixels": 113569,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00810080215551779
+        },
+        "observedError": {
+          "mismatchPixels": 920,
+          "observedPixels": 113568,
+          "observedFraction": 0.9999911947802658,
+          "mismatchFraction": 0.00810087348548887,
+          "weightMass": 113568,
+          "mismatchWeight": 920,
+          "wholeMismatchFraction": 0.00810087348548887,
+          "protectedPixels": 113568,
+          "protectedMismatchFraction": 0.00810087348548887,
+          "editablePixels": 0,
+          "editableChangeFraction": null
+        }
+      },
+      {
+        "id": "hunodan-hjfig-05",
+        "repeat": 1,
+        "variant": "routing",
+        "solveSeconds": 5.312392375,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "geometrySha256": "4098abd0c4adbfa9cc65182565ab7ad71ea2022a308652f437cee6572adaec82",
+        "passed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "fullError": {
+          "mismatchPixels": 920,
+          "observedPixels": 113569,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00810080215551779
+        },
+        "observedError": {
+          "mismatchPixels": 920,
+          "observedPixels": 113568,
+          "observedFraction": 0.9999911947802658,
+          "mismatchFraction": 0.00810087348548887,
+          "weightMass": 113568,
+          "mismatchWeight": 920,
+          "wholeMismatchFraction": 0.00810087348548887,
+          "protectedPixels": 113568,
+          "protectedMismatchFraction": 0.00810087348548887,
+          "editablePixels": 0,
+          "editableChangeFraction": null
+        }
+      },
+      {
+        "id": "photo-bird",
+        "repeat": 1,
+        "variant": "routing-flipped",
+        "solveSeconds": 10.126339125000001,
+        "selectedCounts": [
+          5,
+          5
+        ],
+        "geometrySha256": "de528a5d683d38e45ec4d33b8cef1d53edf53f9fa57045120b32b5253e599978",
+        "passed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "fullError": {
+          "mismatchPixels": 3355,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.02096875
+        },
+        "observedError": {
+          "mismatchPixels": 3354,
+          "observedPixels": 159999,
+          "observedFraction": 0.99999375,
+          "mismatchFraction": 0.020962631016443852,
+          "weightMass": 159999,
+          "mismatchWeight": 3354,
+          "wholeMismatchFraction": 0.020962631016443852,
+          "protectedPixels": 159999,
+          "protectedMismatchFraction": 0.020962631016443852,
+          "editablePixels": 0,
+          "editableChangeFraction": null
+        }
+      },
+      {
+        "id": "photo-bird",
+        "repeat": 1,
+        "variant": "routing",
+        "solveSeconds": 10.10914525,
+        "selectedCounts": [
+          5,
+          5
+        ],
+        "geometrySha256": "de528a5d683d38e45ec4d33b8cef1d53edf53f9fa57045120b32b5253e599978",
+        "passed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "fullError": {
+          "mismatchPixels": 3355,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.02096875
+        },
+        "observedError": {
+          "mismatchPixels": 3354,
+          "observedPixels": 159999,
+          "observedFraction": 0.99999375,
+          "mismatchFraction": 0.020962631016443852,
+          "weightMass": 159999,
+          "mismatchWeight": 3354,
+          "wholeMismatchFraction": 0.020962631016443852,
+          "protectedPixels": 159999,
+          "protectedMismatchFraction": 0.020962631016443852,
+          "editablePixels": 0,
+          "editableChangeFraction": null
+        }
+      }
+    ]
+  },
+  "extended": {
+    "runs": 12,
+    "description": "Uploaded 240px house and hat classified then resized to Paint 400px with fixed free diamond .64; photographic bauble retains original actual missing coverage. Baseline versus candidate, two repeats.",
+    "results": [
+      {
+        "id": "free-house",
+        "repeat": 0,
+        "variant": "baseline",
+        "solveSeconds": 2.321174125,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "geometrySha256": "b55fb52976447315268be293d6161ed5dc0fd1b3bccd624259900786225cfb8d",
+        "passed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "fullError": {
+          "mismatchPixels": 45076,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.281725
+        },
+        "observedError": {
+          "mismatchPixels": 45076,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0010833740234375,
+          "weightMass": 65536,
+          "mismatchWeight": 71,
+          "wholeMismatchFraction": 0.281725,
+          "protectedPixels": 65536,
+          "protectedMismatchFraction": 0.0010833740234375,
+          "editablePixels": 94464,
+          "editableChangeFraction": 0.47642488143631434
+        }
+      },
+      {
+        "id": "free-house",
+        "repeat": 0,
+        "variant": "candidate",
+        "solveSeconds": 2.308673167,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "geometrySha256": "b55fb52976447315268be293d6161ed5dc0fd1b3bccd624259900786225cfb8d",
+        "passed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "fullError": {
+          "mismatchPixels": 45076,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.281725
+        },
+        "observedError": {
+          "mismatchPixels": 45076,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0010833740234375,
+          "weightMass": 65536,
+          "mismatchWeight": 71,
+          "wholeMismatchFraction": 0.281725,
+          "protectedPixels": 65536,
+          "protectedMismatchFraction": 0.0010833740234375,
+          "editablePixels": 94464,
+          "editableChangeFraction": 0.47642488143631434
+        }
+      },
+      {
+        "id": "free-hat",
+        "repeat": 0,
+        "variant": "baseline",
+        "solveSeconds": 2.533981083,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "geometrySha256": "9ece843900e21536dc8c2315ec02c927eff26750d9d7b48165fb0b4106814f30",
+        "passed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "fullError": {
+          "mismatchPixels": 45232,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.2827
+        },
+        "observedError": {
+          "mismatchPixels": 45232,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00341796875,
+          "weightMass": 65536,
+          "mismatchWeight": 224,
+          "wholeMismatchFraction": 0.2827,
+          "protectedPixels": 65536,
+          "protectedMismatchFraction": 0.00341796875,
+          "editablePixels": 94464,
+          "editableChangeFraction": 0.47645663956639567
+        }
+      },
+      {
+        "id": "free-hat",
+        "repeat": 0,
+        "variant": "candidate",
+        "solveSeconds": 2.464296375,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "geometrySha256": "9ece843900e21536dc8c2315ec02c927eff26750d9d7b48165fb0b4106814f30",
+        "passed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "fullError": {
+          "mismatchPixels": 45232,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.2827
+        },
+        "observedError": {
+          "mismatchPixels": 45232,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00341796875,
+          "weightMass": 65536,
+          "mismatchWeight": 224,
+          "wholeMismatchFraction": 0.2827,
+          "protectedPixels": 65536,
+          "protectedMismatchFraction": 0.00341796875,
+          "editablePixels": 94464,
+          "editableChangeFraction": 0.47645663956639567
+        }
+      },
+      {
+        "id": "photo-bauble",
+        "repeat": 0,
+        "variant": "baseline",
+        "solveSeconds": 9.712713583000001,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "geometrySha256": "19f840fab50adf4b50a0c9a6e7f5b1087d7498b17aa2a46180026fbac71d4f42",
+        "passed": false,
+        "templateChecksPassed": false,
+        "geometryPassed": true,
+        "paper": "pass",
+        "fullError": {
+          "mismatchPixels": 9565,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.05978125
+        },
+        "observedError": {
+          "mismatchPixels": 6808,
+          "observedPixels": 155413,
+          "observedFraction": 0.97133125,
+          "mismatchFraction": 0.043805859226705615,
+          "weightMass": 155413,
+          "mismatchWeight": 6808,
+          "wholeMismatchFraction": 0.043805859226705615,
+          "protectedPixels": 155413,
+          "protectedMismatchFraction": 0.043805859226705615,
+          "editablePixels": 0,
+          "editableChangeFraction": null
+        }
+      },
+      {
+        "id": "photo-bauble",
+        "repeat": 0,
+        "variant": "candidate",
+        "solveSeconds": 10.640605958,
+        "selectedCounts": [
+          4,
+          6
+        ],
+        "geometrySha256": "3470b94abb57f8c8267518c5509461211627118d7d7b167e0309440dd1813324",
+        "passed": false,
+        "templateChecksPassed": false,
+        "geometryPassed": false,
+        "paper": "uncertain",
+        "fullError": {
+          "mismatchPixels": 7698,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0481125
+        },
+        "observedError": {
+          "mismatchPixels": 3111,
+          "observedPixels": 155413,
+          "observedFraction": 0.97133125,
+          "mismatchFraction": 0.020017630442755754,
+          "weightMass": 155413,
+          "mismatchWeight": 3111,
+          "wholeMismatchFraction": 0.020017630442755754,
+          "protectedPixels": 155413,
+          "protectedMismatchFraction": 0.020017630442755754,
+          "editablePixels": 0,
+          "editableChangeFraction": null
+        }
+      },
+      {
+        "id": "free-house",
+        "repeat": 1,
+        "variant": "candidate",
+        "solveSeconds": 2.179790667,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "geometrySha256": "b55fb52976447315268be293d6161ed5dc0fd1b3bccd624259900786225cfb8d",
+        "passed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "fullError": {
+          "mismatchPixels": 45076,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.281725
+        },
+        "observedError": {
+          "mismatchPixels": 45076,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0010833740234375,
+          "weightMass": 65536,
+          "mismatchWeight": 71,
+          "wholeMismatchFraction": 0.281725,
+          "protectedPixels": 65536,
+          "protectedMismatchFraction": 0.0010833740234375,
+          "editablePixels": 94464,
+          "editableChangeFraction": 0.47642488143631434
+        }
+      },
+      {
+        "id": "free-house",
+        "repeat": 1,
+        "variant": "baseline",
+        "solveSeconds": 2.2412997499999996,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "geometrySha256": "b55fb52976447315268be293d6161ed5dc0fd1b3bccd624259900786225cfb8d",
+        "passed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "fullError": {
+          "mismatchPixels": 45076,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.281725
+        },
+        "observedError": {
+          "mismatchPixels": 45076,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0010833740234375,
+          "weightMass": 65536,
+          "mismatchWeight": 71,
+          "wholeMismatchFraction": 0.281725,
+          "protectedPixels": 65536,
+          "protectedMismatchFraction": 0.0010833740234375,
+          "editablePixels": 94464,
+          "editableChangeFraction": 0.47642488143631434
+        }
+      },
+      {
+        "id": "free-hat",
+        "repeat": 1,
+        "variant": "candidate",
+        "solveSeconds": 2.569255417,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "geometrySha256": "9ece843900e21536dc8c2315ec02c927eff26750d9d7b48165fb0b4106814f30",
+        "passed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "fullError": {
+          "mismatchPixels": 45232,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.2827
+        },
+        "observedError": {
+          "mismatchPixels": 45232,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00341796875,
+          "weightMass": 65536,
+          "mismatchWeight": 224,
+          "wholeMismatchFraction": 0.2827,
+          "protectedPixels": 65536,
+          "protectedMismatchFraction": 0.00341796875,
+          "editablePixels": 94464,
+          "editableChangeFraction": 0.47645663956639567
+        }
+      },
+      {
+        "id": "free-hat",
+        "repeat": 1,
+        "variant": "baseline",
+        "solveSeconds": 2.593857708,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "geometrySha256": "9ece843900e21536dc8c2315ec02c927eff26750d9d7b48165fb0b4106814f30",
+        "passed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "fullError": {
+          "mismatchPixels": 45232,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.2827
+        },
+        "observedError": {
+          "mismatchPixels": 45232,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00341796875,
+          "weightMass": 65536,
+          "mismatchWeight": 224,
+          "wholeMismatchFraction": 0.2827,
+          "protectedPixels": 65536,
+          "protectedMismatchFraction": 0.00341796875,
+          "editablePixels": 94464,
+          "editableChangeFraction": 0.47645663956639567
+        }
+      },
+      {
+        "id": "photo-bauble",
+        "repeat": 1,
+        "variant": "candidate",
+        "solveSeconds": 10.69394175,
+        "selectedCounts": [
+          4,
+          6
+        ],
+        "geometrySha256": "4c31107b265c989647c0ea7230f3b91238577872c63226478e6cb35e4c9a18c1",
+        "passed": false,
+        "templateChecksPassed": false,
+        "geometryPassed": false,
+        "paper": "uncertain",
+        "fullError": {
+          "mismatchPixels": 7931,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.04956875
+        },
+        "observedError": {
+          "mismatchPixels": 3344,
+          "observedPixels": 155413,
+          "observedFraction": 0.97133125,
+          "mismatchFraction": 0.02151686152381075,
+          "weightMass": 155413,
+          "mismatchWeight": 3344,
+          "wholeMismatchFraction": 0.02151686152381075,
+          "protectedPixels": 155413,
+          "protectedMismatchFraction": 0.02151686152381075,
+          "editablePixels": 0,
+          "editableChangeFraction": null
+        }
+      },
+      {
+        "id": "photo-bauble",
+        "repeat": 1,
+        "variant": "baseline",
+        "solveSeconds": 9.888469375000001,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "geometrySha256": "412f26329f04786eb3dce7c5fb80e5bef7033e4aede759c32222abf24649be16",
+        "passed": false,
+        "templateChecksPassed": false,
+        "geometryPassed": true,
+        "paper": "pass",
+        "fullError": {
+          "mismatchPixels": 9505,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.05940625
+        },
+        "observedError": {
+          "mismatchPixels": 6748,
+          "observedPixels": 155413,
+          "observedFraction": 0.97133125,
+          "mismatchFraction": 0.04341979113716356,
+          "weightMass": 155413,
+          "mismatchWeight": 6748,
+          "wholeMismatchFraction": 0.04341979113716356,
+          "protectedPixels": 155413,
+          "protectedMismatchFraction": 0.04341979113716356,
+          "editablePixels": 0,
+          "editableChangeFraction": null
+        }
+      }
+    ]
+  },
+  "focusedTests": {
+    "passed": 47,
+    "failed": 0,
+    "state": {
+      "status": "complete",
+      "exitCode": 0,
+      "seconds": 96.28211204099999,
+      "sourceFilesVerified": 1154
+    }
+  },
+  "findings": [
+    "Weighted traced recovery restores Hunodan hjfig-05 to 4+4 cuts and 5.27\u20135.35 seconds; the coverage-only grid/feature candidate had retained the slower 6+4 routing.",
+    "The bird eye is retained, but total disagreement remains 2.096875%, above the unperturbed baseline 1.963125%; frame and connection defects remain.",
+    "Seven of eight ignored-colour pairs have identical geometry. Puppy repeat 1 differs; initial count/fine-grid scores are identical, while timed refinement and detail histories diverge (32 versus 33 added curves, 125 versus 160 detail steps). This does not establish exact whole-solver colour invariance.",
+    "All eight free-border control fits pass; both cases retain byte-identical geometry between runtimes and repeats. Protected errors are 0.1083374% house and 0.3417969% hat. Large whole-image differences are intentional border edits.",
+    "The bauble remains a failure in both arms. Candidate observed error improves to 2.00\u20132.15% from 4.34\u20134.38%, but candidate geometry fails short-self-clearance and its paper result is uncertain. The earlier baseline is geometry/paper valid but fails image fidelity.",
+    "Bauble initialization promotes a feature-weighted 4+6 spline with 32 control locations. Its initial geometry already has multiple clearance failures. It consumes the short refinement budget, and the ordinary 4+4 finalists remain queued without ever becoming retained legal candidates. The legal/image candidate sorter cannot help when no legal candidate was retained."
+  ],
+  "visualReview": {
+    "artifacts": [
+      "tmp/heart-learning/coverage-routing-comparison-v1/contact.png",
+      "tmp/heart-learning/coverage-extended-v1/contact.png"
+    ],
+    "observations": "Hunodan border and main motif improve. Bird eye is visible again but small frame/gap defects remain. Puppy still has visible border deviations, including the left join. Free-border controls are unchanged. Bauble resemblance alone does not establish valid cutting templates."
+  },
+  "next": "Test retaining and refining an ordinary fallback before an initially illegal feature proposal consumes the remaining budget. Do not integrate this candidate until the wider legality regression is resolved.",
+  "references": [
+    {
+      "study": "routing",
+      "path": "tmp/heart-learning/coverage-routing-comparison-v1/plan.json",
+      "sha256": "4a95be3b79e215c13b041b33614088acecf2945611c1f6a841f53207c57e1315"
+    },
+    {
+      "study": "routing",
+      "path": "tmp/heart-learning/coverage-routing-comparison-v1/source.json",
+      "sha256": "12ad68d1662c4a5151d9200dbaed0bae9827bbae737d1968ae4ae37040bc5218"
+    },
+    {
+      "study": "routing",
+      "path": "tmp/heart-learning/coverage-routing-comparison-v1/results.json",
+      "sha256": "fc86580afd5c2fb8daacecdf251f527fbe37d62445ce19b00665cdd4fbef0d11"
+    },
+    {
+      "study": "routing",
+      "path": "tmp/heart-learning/coverage-routing-comparison-v1/state.json",
+      "sha256": "6ec3ccd4a285c75101119346c0aee6ed7e96ec3ecac2b43d5d26c3ca1a517566"
+    },
+    {
+      "study": "routing",
+      "path": "tmp/heart-learning/coverage-routing-comparison-v1/contact.png",
+      "sha256": "805ac591e92ad9a4b6cc0ed63d1dcb914af139b7e95c31f7645bb72ba83ae825"
+    },
+    {
+      "study": "extended",
+      "path": "tmp/heart-learning/coverage-extended-v1/plan.json",
+      "sha256": "f546c67a41db06639b80b382ddd45c6a924cb7575bc727f2d52c26ea3fa219a3"
+    },
+    {
+      "study": "extended",
+      "path": "tmp/heart-learning/coverage-extended-v1/source.json",
+      "sha256": "dafb3fba87d79376421606bb01bb01f4d9ef2d03dac31f7b91826beaaa9eacaf"
+    },
+    {
+      "study": "extended",
+      "path": "tmp/heart-learning/coverage-extended-v1/results.json",
+      "sha256": "df6b8f9546710e779c10f9a632f4052ae70692b07dc446346497ddf215424565"
+    },
+    {
+      "study": "extended",
+      "path": "tmp/heart-learning/coverage-extended-v1/state.json",
+      "sha256": "6362ef90d0c2a917198acd27b88770d20486b3e2acf39ccd9e51e2e92a0f404e"
+    },
+    {
+      "study": "extended",
+      "path": "tmp/heart-learning/coverage-extended-v1/contact.png",
+      "sha256": "02f843872ad48cae23c49fc51e56343316b07f3e624f9e9d3a887b63677bfd9c"
+    },
+    {
+      "study": "focused",
+      "path": "tmp/heart-learning/coverage-routing-checks-v1/source.json",
+      "sha256": "5050339a85647efa635ce4c95641b40da3a0c8da5b46173ccd352ef9d8611674"
+    },
+    {
+      "study": "focused",
+      "path": "tmp/heart-learning/coverage-routing-checks-v1/state.json",
+      "sha256": "0eb39cb66e678ee323d1f4c92477b85283995bd528cfc8d6d058819051882a00"
+    },
+    {
+      "study": "focused",
+      "path": "tmp/heart-learning/coverage-routing-checks-v1/tests.json",
+      "sha256": "c9f57bdab918dda69b0e569c88048b8f471a66190ceeef6aa31fc4aedacfbedf"
+    },
+    {
+      "study": "focused",
+      "path": "tmp/heart-learning/coverage-routing-checks-v1/tests.log",
+      "sha256": "5e4b87a7551c9bc30d4e22d38a710ed8d31eaccc40a5ce0b75a3a222b5a03d5b"
+    }
+  ]
+}

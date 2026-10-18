@@ -1,0 +1,2592 @@
+{
+  "sourceCommit": "79bbdb9",
+  "scope": "Diagnostic classification, fresh fixed-crop fitting, and actual editable SVG replay. No production changes, relaxed feature gates, or newly recovered original benchmark cases. Full experimental corpus replay is pending.",
+  "classification": {
+    "scope": "Photo classification only. Fixed production corners, translated by at most one original source pixel; JPEG and half-resolution variants keep the same physical quadrilateral. Reference region pixels are mapped through the photograph into each new crop. No solver, target editing, changed feature thresholds or newly accepted templates.",
+    "run": "tmp/heart-learning/eye-routing-v1/release/photos",
+    "rows": [
+      {
+        "id": "outline-star",
+        "photoSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "decodedPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+        "quad": [
+          [
+            430.32931226516513,
+            171.9092353088924
+          ],
+          [
+            525.2431230765773,
+            267.80938630026435
+          ],
+          [
+            403.3299806510149,
+            349.9830567410715
+          ],
+          [
+            320.83807769917655,
+            259.9176512630082
+          ]
+        ],
+        "maskSha256": "311d3c3542ec6605918892cfcecae25749f176d32dcf563b65e2ffdc1336ce3e",
+        "features": [
+          {
+            "value": 0,
+            "areaMm2": 4.25,
+            "centerMm": [
+              7.154411764705881,
+              98.7904411764706
+            ],
+            "pixels": 68
+          },
+          {
+            "value": 1,
+            "areaMm2": 826.875,
+            "centerMm": [
+              46.24285714285714,
+              47.06449357520786
+            ],
+            "pixels": 13230
+          }
+        ],
+        "variants": [
+          {
+            "name": "translate--1--1",
+            "quad": [
+              [
+                429.32931226516513,
+                170.9092353088924
+              ],
+              [
+                524.2431230765773,
+                266.80938630026435
+              ],
+              [
+                402.3299806510149,
+                348.9830567410715
+              ],
+              [
+                319.83807769917655,
+                258.9176512630082
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "ba7d7b521a228b83bc58470cec46a1e9749d42cc1bfb4c7e71af87412c7a1413",
+            "featureCount": 3,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 1,
+                "dominantComponentRetention": 1,
+                "touchesBorder": false,
+                "componentAreaMm2": 4.75,
+                "protected": true
+              },
+              {
+                "reference": 1,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9921390778533635,
+                "dominantComponentRetention": 0.9921390778533635,
+                "touchesBorder": false,
+                "componentAreaMm2": 824.125,
+                "protected": true
+              }
+            ]
+          },
+          {
+            "name": "translate-0--1",
+            "quad": [
+              [
+                430.32931226516513,
+                170.9092353088924
+              ],
+              [
+                525.2431230765773,
+                266.80938630026435
+              ],
+              [
+                403.3299806510149,
+                348.9830567410715
+              ],
+              [
+                320.83807769917655,
+                258.9176512630082
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "72be2f0ad4a07d0d16ec0d95fa9aa8c10e6facf6d21a8905d1f98c3513f39fa2",
+            "featureCount": 1,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9852941176470589,
+                "dominantComponentRetention": 0.9852941176470589,
+                "touchesBorder": true,
+                "componentAreaMm2": 4.6875,
+                "protected": false
+              },
+              {
+                "reference": 1,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9920634920634921,
+                "dominantComponentRetention": 0.9920634920634921,
+                "touchesBorder": false,
+                "componentAreaMm2": 823.875,
+                "protected": true
+              }
+            ]
+          },
+          {
+            "name": "translate-1--1",
+            "quad": [
+              [
+                431.32931226516513,
+                170.9092353088924
+              ],
+              [
+                526.2431230765773,
+                266.80938630026435
+              ],
+              [
+                404.3299806510149,
+                348.9830567410715
+              ],
+              [
+                321.83807769917655,
+                258.9176512630082
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "a43dbcdce0908e6320cc94ff36165dc05498667eb48722fd352c1a455b14975d",
+            "featureCount": 1,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0.3088235294117647,
+                "colorRetention": 0.6323529411764706,
+                "dominantComponentRetention": 0.6323529411764706,
+                "touchesBorder": true,
+                "componentAreaMm2": 2.875,
+                "protected": false
+              },
+              {
+                "reference": 1,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9943310657596371,
+                "dominantComponentRetention": 0.9943310657596371,
+                "touchesBorder": false,
+                "componentAreaMm2": 824.375,
+                "protected": true
+              }
+            ]
+          },
+          {
+            "name": "translate--1-0",
+            "quad": [
+              [
+                429.32931226516513,
+                171.9092353088924
+              ],
+              [
+                524.2431230765773,
+                267.80938630026435
+              ],
+              [
+                402.3299806510149,
+                349.9830567410715
+              ],
+              [
+                319.83807769917655,
+                259.9176512630082
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "af4379f00132813f0d21f78fa83dc24ca05f86eeca4837271e5a5fdf956427a8",
+            "featureCount": 3,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9117647058823529,
+                "dominantComponentRetention": 0.9117647058823529,
+                "touchesBorder": false,
+                "componentAreaMm2": 4.3125,
+                "protected": true
+              },
+              {
+                "reference": 1,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9968253968253968,
+                "dominantComponentRetention": 0.9968253968253968,
+                "touchesBorder": false,
+                "componentAreaMm2": 824.9375,
+                "protected": true
+              }
+            ]
+          },
+          {
+            "name": "original",
+            "quad": [
+              [
+                430.32931226516513,
+                171.9092353088924
+              ],
+              [
+                525.2431230765773,
+                267.80938630026435
+              ],
+              [
+                403.3299806510149,
+                349.9830567410715
+              ],
+              [
+                320.83807769917655,
+                259.9176512630082
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "311d3c3542ec6605918892cfcecae25749f176d32dcf563b65e2ffdc1336ce3e",
+            "featureCount": 2,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 1,
+                "dominantComponentRetention": 1,
+                "touchesBorder": false,
+                "componentAreaMm2": 4.25,
+                "protected": true
+              },
+              {
+                "reference": 1,
+                "outsideCropFraction": 0,
+                "colorRetention": 1,
+                "dominantComponentRetention": 1,
+                "touchesBorder": false,
+                "componentAreaMm2": 826.875,
+                "protected": true
+              }
+            ]
+          },
+          {
+            "name": "translate-1-0",
+            "quad": [
+              [
+                431.32931226516513,
+                171.9092353088924
+              ],
+              [
+                526.2431230765773,
+                267.80938630026435
+              ],
+              [
+                404.3299806510149,
+                349.9830567410715
+              ],
+              [
+                321.83807769917655,
+                259.9176512630082
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "3338849d32ecafd54d2365fc664ec97ee5fbca5b54534290d873f6919437f5f4",
+            "featureCount": 1,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9558823529411765,
+                "dominantComponentRetention": 0.9558823529411765,
+                "touchesBorder": true,
+                "componentAreaMm2": 4.375,
+                "protected": false
+              },
+              {
+                "reference": 1,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9984126984126984,
+                "dominantComponentRetention": 0.9984126984126984,
+                "touchesBorder": false,
+                "componentAreaMm2": 827.5625,
+                "protected": true
+              }
+            ]
+          },
+          {
+            "name": "translate--1-1",
+            "quad": [
+              [
+                429.32931226516513,
+                172.9092353088924
+              ],
+              [
+                524.2431230765773,
+                268.80938630026435
+              ],
+              [
+                402.3299806510149,
+                350.9830567410715
+              ],
+              [
+                319.83807769917655,
+                260.9176512630082
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "8f8e0a50b0bcb1ed59a5a078a29895e6122eb276f49cc15d6bcccb31354f64f4",
+            "featureCount": 3,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.8529411764705882,
+                "dominantComponentRetention": 0.8529411764705882,
+                "touchesBorder": false,
+                "componentAreaMm2": 4.125,
+                "protected": true
+              },
+              {
+                "reference": 1,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9934996220710507,
+                "dominantComponentRetention": 0.9934996220710507,
+                "touchesBorder": false,
+                "componentAreaMm2": 825.25,
+                "protected": true
+              }
+            ]
+          },
+          {
+            "name": "translate-0-1",
+            "quad": [
+              [
+                430.32931226516513,
+                172.9092353088924
+              ],
+              [
+                525.2431230765773,
+                268.80938630026435
+              ],
+              [
+                403.3299806510149,
+                350.9830567410715
+              ],
+              [
+                320.83807769917655,
+                260.9176512630082
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "a76e9e48c1c08cd517a53d1845da89b72a25954e483c85f60f3087c1cb14b40a",
+            "featureCount": 2,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9264705882352942,
+                "dominantComponentRetention": 0.9264705882352942,
+                "touchesBorder": false,
+                "componentAreaMm2": 4.0625,
+                "protected": true
+              },
+              {
+                "reference": 1,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9930461073318216,
+                "dominantComponentRetention": 0.9930461073318216,
+                "touchesBorder": false,
+                "componentAreaMm2": 827.0625,
+                "protected": true
+              }
+            ]
+          },
+          {
+            "name": "translate-1-1",
+            "quad": [
+              [
+                431.32931226516513,
+                172.9092353088924
+              ],
+              [
+                526.2431230765773,
+                268.80938630026435
+              ],
+              [
+                404.3299806510149,
+                350.9830567410715
+              ],
+              [
+                321.83807769917655,
+                260.9176512630082
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "57309ae8484239ae23ebc600638d0e19a931afa01d5f7321668ba08610275b77",
+            "featureCount": 2,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9117647058823529,
+                "dominantComponentRetention": 0.9117647058823529,
+                "touchesBorder": false,
+                "componentAreaMm2": 4,
+                "protected": true
+              },
+              {
+                "reference": 1,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9957671957671957,
+                "dominantComponentRetention": 0.9957671957671957,
+                "touchesBorder": false,
+                "componentAreaMm2": 829.3125,
+                "protected": true
+              }
+            ]
+          },
+          {
+            "name": "jpeg-75",
+            "quad": [
+              [
+                430.32931226516513,
+                171.9092353088924
+              ],
+              [
+                525.2431230765773,
+                267.80938630026435
+              ],
+              [
+                403.3299806510149,
+                349.9830567410715
+              ],
+              [
+                320.83807769917655,
+                259.9176512630082
+              ]
+            ],
+            "inputPixelsSha256": "c2fccb6a2958e1ba13e16772bae2e96c2daf6295c8ede68109c2075b33951fa1",
+            "maskSha256": "83a11a2f3c6f62acc1b27ce520adc01ccc502040bba55877b360c2d94ea4b975",
+            "featureCount": 2,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.75,
+                "dominantComponentRetention": 0.75,
+                "touchesBorder": false,
+                "componentAreaMm2": 7.5625,
+                "protected": true
+              },
+              {
+                "reference": 1,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9940287226001512,
+                "dominantComponentRetention": 0.9940287226001512,
+                "touchesBorder": false,
+                "componentAreaMm2": 826.125,
+                "protected": true
+              }
+            ]
+          },
+          {
+            "name": "half-resolution",
+            "quad": [
+              [
+                215.16465613258256,
+                85.9546176544462
+              ],
+              [
+                262.62156153828863,
+                133.90469315013218
+              ],
+              [
+                201.66499032550746,
+                174.99152837053575
+              ],
+              [
+                160.41903884958828,
+                129.9588256315041
+              ]
+            ],
+            "inputPixelsSha256": "5c69973caa661239ce2f1c31cf16760048d0fa697650a19985c35ff6eed8fe76",
+            "maskSha256": "11c16c0b20b4eb5d4a4c3571551ed24af1970ee2b8abc5c1d62c9fa297545eb6",
+            "featureCount": 1,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.1323529411764706,
+                "dominantComponentRetention": 0.1323529411764706,
+                "touchesBorder": false,
+                "componentAreaMm2": 0.5625,
+                "protected": false
+              },
+              {
+                "reference": 1,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9873015873015873,
+                "dominantComponentRetention": 0.9873015873015873,
+                "touchesBorder": false,
+                "componentAreaMm2": 819,
+                "protected": true
+              }
+            ]
+          },
+          {
+            "name": "mixture-classification",
+            "quad": [
+              [
+                430.32931226516513,
+                171.9092353088924
+              ],
+              [
+                525.2431230765773,
+                267.80938630026435
+              ],
+              [
+                403.3299806510149,
+                349.9830567410715
+              ],
+              [
+                320.83807769917655,
+                259.9176512630082
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "2a991c5fbc6d0e99c98600d5562274e2e1c6fb6194d08054b607038ce1b70e27",
+            "featureCount": 1,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 1,
+                "dominantComponentRetention": 1,
+                "touchesBorder": true,
+                "componentAreaMm2": 4198.75,
+                "protected": false
+              },
+              {
+                "reference": 1,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9417233560090703,
+                "dominantComponentRetention": 0.9417233560090703,
+                "touchesBorder": false,
+                "componentAreaMm2": 779.4375,
+                "protected": true
+              }
+            ]
+          }
+        ],
+        "cropShiftProtection": [
+          {
+            "reference": 0,
+            "protected": 6,
+            "total": 9
+          },
+          {
+            "reference": 1,
+            "protected": 9,
+            "total": 9
+          }
+        ]
+      },
+      {
+        "id": "crossed-ribbons",
+        "photoSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "decodedPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+        "quad": [
+          [
+            402.13745403852283,
+            920.2819656234791
+          ],
+          [
+            482.00372354384695,
+            1030.9815069791907
+          ],
+          [
+            379.5099406019051,
+            1134.274064383248
+          ],
+          [
+            291.35871775582666,
+            1006.9599203709363
+          ]
+        ],
+        "maskSha256": "1cbf915a65da247a233be22e9040531719c238a2ae9a546d9e6d0ab8b98f07ce",
+        "features": [
+          {
+            "value": 0,
+            "areaMm2": 4.5,
+            "centerMm": [
+              48.64583333333334,
+              98.73263888888889
+            ],
+            "pixels": 72
+          }
+        ],
+        "variants": [
+          {
+            "name": "translate--1--1",
+            "quad": [
+              [
+                401.13745403852283,
+                919.2819656234791
+              ],
+              [
+                481.00372354384695,
+                1029.9815069791907
+              ],
+              [
+                378.5099406019051,
+                1133.274064383248
+              ],
+              [
+                290.35871775582666,
+                1005.9599203709363
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "4ed08648afc655837d7cd838436c8b3ab1dec70d90e8c18d4db3f3060a5dbd26",
+            "featureCount": 1,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9027777777777778,
+                "dominantComponentRetention": 0.9027777777777778,
+                "touchesBorder": false,
+                "componentAreaMm2": 4.5625,
+                "protected": true
+              }
+            ]
+          },
+          {
+            "name": "translate-0--1",
+            "quad": [
+              [
+                402.13745403852283,
+                919.2819656234791
+              ],
+              [
+                482.00372354384695,
+                1029.9815069791907
+              ],
+              [
+                379.5099406019051,
+                1133.274064383248
+              ],
+              [
+                291.35871775582666,
+                1005.9599203709363
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "daf3e13ce034d17230c4f1939616c5198d04a4c9e5da783b123112e4d0674be3",
+            "featureCount": 0,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9027777777777778,
+                "dominantComponentRetention": 0.9027777777777778,
+                "touchesBorder": false,
+                "componentAreaMm2": 4.4375,
+                "protected": false
+              }
+            ]
+          },
+          {
+            "name": "translate-1--1",
+            "quad": [
+              [
+                403.13745403852283,
+                919.2819656234791
+              ],
+              [
+                483.00372354384695,
+                1029.9815069791907
+              ],
+              [
+                380.5099406019051,
+                1133.274064383248
+              ],
+              [
+                292.35871775582666,
+                1005.9599203709363
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "7d45397524dcbc2676fd1accee866f90ea47caf7dc4affcea1b78ae49340d706",
+            "featureCount": 0,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0.09722222222222222,
+                "colorRetention": 0.7638888888888888,
+                "dominantComponentRetention": 0.7638888888888888,
+                "touchesBorder": true,
+                "componentAreaMm2": 3.625,
+                "protected": false
+              }
+            ]
+          },
+          {
+            "name": "translate--1-0",
+            "quad": [
+              [
+                401.13745403852283,
+                920.2819656234791
+              ],
+              [
+                481.00372354384695,
+                1030.9815069791907
+              ],
+              [
+                378.5099406019051,
+                1134.274064383248
+              ],
+              [
+                290.35871775582666,
+                1006.9599203709363
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "b8150a16d0092bfb05cba6df5f8c8fbb182a845ec4bc945c261d8e66174081f6",
+            "featureCount": 1,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9166666666666666,
+                "dominantComponentRetention": 0.9166666666666666,
+                "touchesBorder": false,
+                "componentAreaMm2": 4.375,
+                "protected": true
+              }
+            ]
+          },
+          {
+            "name": "original",
+            "quad": [
+              [
+                402.13745403852283,
+                920.2819656234791
+              ],
+              [
+                482.00372354384695,
+                1030.9815069791907
+              ],
+              [
+                379.5099406019051,
+                1134.274064383248
+              ],
+              [
+                291.35871775582666,
+                1006.9599203709363
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "1cbf915a65da247a233be22e9040531719c238a2ae9a546d9e6d0ab8b98f07ce",
+            "featureCount": 1,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 1,
+                "dominantComponentRetention": 1,
+                "touchesBorder": false,
+                "componentAreaMm2": 4.5,
+                "protected": true
+              }
+            ]
+          },
+          {
+            "name": "translate-1-0",
+            "quad": [
+              [
+                403.13745403852283,
+                920.2819656234791
+              ],
+              [
+                483.00372354384695,
+                1030.9815069791907
+              ],
+              [
+                380.5099406019051,
+                1134.274064383248
+              ],
+              [
+                292.35871775582666,
+                1006.9599203709363
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "2a910c21c17b51ce25d806764ec0b92e62379e3b7bb104b1f4cf453e89c08388",
+            "featureCount": 0,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9305555555555556,
+                "dominantComponentRetention": 0.9305555555555556,
+                "touchesBorder": true,
+                "componentAreaMm2": 4.1875,
+                "protected": false
+              }
+            ]
+          },
+          {
+            "name": "translate--1-1",
+            "quad": [
+              [
+                401.13745403852283,
+                921.2819656234791
+              ],
+              [
+                481.00372354384695,
+                1031.9815069791907
+              ],
+              [
+                378.5099406019051,
+                1135.274064383248
+              ],
+              [
+                290.35871775582666,
+                1007.9599203709363
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "fb6f3c589e5b1f82ef81e778fcb94b85ca3e861f123af7f6bd92edf711f20cba",
+            "featureCount": 1,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.8055555555555556,
+                "dominantComponentRetention": 0.7083333333333334,
+                "touchesBorder": false,
+                "componentAreaMm2": 3.625,
+                "protected": true
+              }
+            ]
+          },
+          {
+            "name": "translate-0-1",
+            "quad": [
+              [
+                402.13745403852283,
+                921.2819656234791
+              ],
+              [
+                482.00372354384695,
+                1031.9815069791907
+              ],
+              [
+                379.5099406019051,
+                1135.274064383248
+              ],
+              [
+                291.35871775582666,
+                1007.9599203709363
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "3a86d1a96b06feeea8a1df80ac5dcfcab38e43b5f9924dd9abe677a86db54e91",
+            "featureCount": 1,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.8194444444444444,
+                "dominantComponentRetention": 0.8194444444444444,
+                "touchesBorder": false,
+                "componentAreaMm2": 4.1875,
+                "protected": true
+              }
+            ]
+          },
+          {
+            "name": "translate-1-1",
+            "quad": [
+              [
+                403.13745403852283,
+                921.2819656234791
+              ],
+              [
+                483.00372354384695,
+                1031.9815069791907
+              ],
+              [
+                380.5099406019051,
+                1135.274064383248
+              ],
+              [
+                292.35871775582666,
+                1007.9599203709363
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "e02996837672f7303dc08650c6ddc172f59b5e1b0922d61ea7a8852d53d09a82",
+            "featureCount": 1,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.7916666666666666,
+                "dominantComponentRetention": 0.7222222222222222,
+                "touchesBorder": false,
+                "componentAreaMm2": 3.5625,
+                "protected": true
+              }
+            ]
+          },
+          {
+            "name": "jpeg-75",
+            "quad": [
+              [
+                402.13745403852283,
+                920.2819656234791
+              ],
+              [
+                482.00372354384695,
+                1030.9815069791907
+              ],
+              [
+                379.5099406019051,
+                1134.274064383248
+              ],
+              [
+                291.35871775582666,
+                1006.9599203709363
+              ]
+            ],
+            "inputPixelsSha256": "c2fccb6a2958e1ba13e16772bae2e96c2daf6295c8ede68109c2075b33951fa1",
+            "maskSha256": "0d35cd830521cb0d6787f35eb120c50d44a35e5a270420751889e949c5df5cf0",
+            "featureCount": 0,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.4166666666666667,
+                "dominantComponentRetention": 0.4166666666666667,
+                "touchesBorder": false,
+                "componentAreaMm2": 1.875,
+                "protected": false
+              }
+            ]
+          },
+          {
+            "name": "half-resolution",
+            "quad": [
+              [
+                201.06872701926142,
+                460.14098281173955
+              ],
+              [
+                241.00186177192347,
+                515.4907534895954
+              ],
+              [
+                189.75497030095255,
+                567.137032191624
+              ],
+              [
+                145.67935887791333,
+                503.47996018546814
+              ]
+            ],
+            "inputPixelsSha256": "5c69973caa661239ce2f1c31cf16760048d0fa697650a19985c35ff6eed8fe76",
+            "maskSha256": "fa4983bd588a80c29a29883af86b04fce5b97f2bbda6374c82395cec6e0eed86",
+            "featureCount": 0,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.5277777777777778,
+                "dominantComponentRetention": 0.5138888888888888,
+                "touchesBorder": false,
+                "componentAreaMm2": 2.3125,
+                "protected": false
+              }
+            ]
+          },
+          {
+            "name": "mixture-classification",
+            "quad": [
+              [
+                402.13745403852283,
+                920.2819656234791
+              ],
+              [
+                482.00372354384695,
+                1030.9815069791907
+              ],
+              [
+                379.5099406019051,
+                1134.274064383248
+              ],
+              [
+                291.35871775582666,
+                1006.9599203709363
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "07f1945bc02f19c13cdd787ea46c34702e3d23252d1d750aa8326844697f86df",
+            "featureCount": 1,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.7777777777777778,
+                "dominantComponentRetention": 0.7083333333333334,
+                "touchesBorder": false,
+                "componentAreaMm2": 3.1875,
+                "protected": true
+              }
+            ]
+          }
+        ],
+        "cropShiftProtection": [
+          {
+            "reference": 0,
+            "protected": 6,
+            "total": 9
+          }
+        ]
+      },
+      {
+        "id": "bird",
+        "photoSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "decodedPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+        "quad": [
+          [
+            1025.6523483686494,
+            145.10074462846222
+          ],
+          [
+            1134.7393673965066,
+            233.36789914703917
+          ],
+          [
+            1039.100544685888,
+            330.8554844326094
+          ],
+          [
+            928.0282102167661,
+            230.46109103450203
+          ]
+        ],
+        "maskSha256": "7137173fa17abe3f8f7788ddb7d321fe48258a4a3f4c2f8b3171b9ff9f15a16f",
+        "features": [
+          {
+            "value": 0,
+            "areaMm2": 82.9375,
+            "centerMm": [
+              62.78570082893745,
+              50.15438960060286
+            ],
+            "pixels": 1327
+          },
+          {
+            "value": 0,
+            "areaMm2": 3.4375,
+            "centerMm": [
+              23.56590909090909,
+              45.58863636363636
+            ],
+            "pixels": 55
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.0625,
+            "centerMm": [
+              71.08376288659794,
+              97.48840206185567
+            ],
+            "pixels": 97
+          }
+        ],
+        "variants": [
+          {
+            "name": "translate--1--1",
+            "quad": [
+              [
+                1024.6523483686494,
+                144.10074462846222
+              ],
+              [
+                1133.7393673965066,
+                232.36789914703917
+              ],
+              [
+                1038.100544685888,
+                329.8554844326094
+              ],
+              [
+                927.0282102167661,
+                229.46109103450203
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "3cb8aa3a39e31e44526d0131c79d85a0f3e7a2260ea8afc387ce458981e38a5a",
+            "featureCount": 3,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9886963074604371,
+                "dominantComponentRetention": 0.9886963074604371,
+                "touchesBorder": false,
+                "componentAreaMm2": 83,
+                "protected": true
+              },
+              {
+                "reference": 1,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9454545454545454,
+                "dominantComponentRetention": 0.9454545454545454,
+                "touchesBorder": false,
+                "componentAreaMm2": 3.3125,
+                "protected": true
+              },
+              {
+                "reference": 2,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9278350515463918,
+                "dominantComponentRetention": 0.9278350515463918,
+                "touchesBorder": false,
+                "componentAreaMm2": 5.875,
+                "protected": true
+              }
+            ]
+          },
+          {
+            "name": "translate-0--1",
+            "quad": [
+              [
+                1025.6523483686494,
+                144.10074462846222
+              ],
+              [
+                1134.7393673965066,
+                232.36789914703917
+              ],
+              [
+                1039.100544685888,
+                329.8554844326094
+              ],
+              [
+                928.0282102167661,
+                229.46109103450203
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "a31a4780b3ad6a1bd890d5c23fb530838f792822feea59b9348a8bb7238ed4e8",
+            "featureCount": 3,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9917106254709872,
+                "dominantComponentRetention": 0.9917106254709872,
+                "touchesBorder": false,
+                "componentAreaMm2": 83.25,
+                "protected": true
+              },
+              {
+                "reference": 1,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9454545454545454,
+                "dominantComponentRetention": 0.9454545454545454,
+                "touchesBorder": false,
+                "componentAreaMm2": 3.4375,
+                "protected": true
+              },
+              {
+                "reference": 2,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9484536082474226,
+                "dominantComponentRetention": 0.9484536082474226,
+                "touchesBorder": false,
+                "componentAreaMm2": 5.8125,
+                "protected": true
+              }
+            ]
+          },
+          {
+            "name": "translate-1--1",
+            "quad": [
+              [
+                1026.6523483686494,
+                144.10074462846222
+              ],
+              [
+                1135.7393673965066,
+                232.36789914703917
+              ],
+              [
+                1040.100544685888,
+                329.8554844326094
+              ],
+              [
+                929.0282102167661,
+                229.46109103450203
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "5bab357053361b515b8fe606fc13bf53b178df4c87547a72924b2d2975ea9659",
+            "featureCount": 3,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9962321024868124,
+                "dominantComponentRetention": 0.9962321024868124,
+                "touchesBorder": false,
+                "componentAreaMm2": 83.3125,
+                "protected": true
+              },
+              {
+                "reference": 1,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9454545454545454,
+                "dominantComponentRetention": 0.9454545454545454,
+                "touchesBorder": false,
+                "componentAreaMm2": 3.4375,
+                "protected": true
+              },
+              {
+                "reference": 2,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9690721649484536,
+                "dominantComponentRetention": 0.9690721649484536,
+                "touchesBorder": false,
+                "componentAreaMm2": 6,
+                "protected": true
+              }
+            ]
+          },
+          {
+            "name": "translate--1-0",
+            "quad": [
+              [
+                1024.6523483686494,
+                145.10074462846222
+              ],
+              [
+                1133.7393673965066,
+                233.36789914703917
+              ],
+              [
+                1038.100544685888,
+                330.8554844326094
+              ],
+              [
+                927.0282102167661,
+                230.46109103450203
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "928be9317be4bb2b82e8412152bad24a926fb7667cb2c4aa8f7ce97c9a06d62e",
+            "featureCount": 2,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9969856819894499,
+                "dominantComponentRetention": 0.9969856819894499,
+                "touchesBorder": false,
+                "componentAreaMm2": 83.125,
+                "protected": true
+              },
+              {
+                "reference": 1,
+                "outsideCropFraction": 0,
+                "colorRetention": 1,
+                "dominantComponentRetention": 1,
+                "touchesBorder": false,
+                "componentAreaMm2": 3.4375,
+                "protected": true
+              },
+              {
+                "reference": 2,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9381443298969072,
+                "dominantComponentRetention": 0.9381443298969072,
+                "touchesBorder": true,
+                "componentAreaMm2": 5651.0625,
+                "protected": false
+              }
+            ]
+          },
+          {
+            "name": "original",
+            "quad": [
+              [
+                1025.6523483686494,
+                145.10074462846222
+              ],
+              [
+                1134.7393673965066,
+                233.36789914703917
+              ],
+              [
+                1039.100544685888,
+                330.8554844326094
+              ],
+              [
+                928.0282102167661,
+                230.46109103450203
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "7137173fa17abe3f8f7788ddb7d321fe48258a4a3f4c2f8b3171b9ff9f15a16f",
+            "featureCount": 3,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 1,
+                "dominantComponentRetention": 1,
+                "touchesBorder": false,
+                "componentAreaMm2": 82.9375,
+                "protected": true
+              },
+              {
+                "reference": 1,
+                "outsideCropFraction": 0,
+                "colorRetention": 1,
+                "dominantComponentRetention": 1,
+                "touchesBorder": false,
+                "componentAreaMm2": 3.4375,
+                "protected": true
+              },
+              {
+                "reference": 2,
+                "outsideCropFraction": 0,
+                "colorRetention": 1,
+                "dominantComponentRetention": 1,
+                "touchesBorder": false,
+                "componentAreaMm2": 6.0625,
+                "protected": true
+              }
+            ]
+          },
+          {
+            "name": "translate-1-0",
+            "quad": [
+              [
+                1026.6523483686494,
+                145.10074462846222
+              ],
+              [
+                1135.7393673965066,
+                233.36789914703917
+              ],
+              [
+                1040.100544685888,
+                330.8554844326094
+              ],
+              [
+                929.0282102167661,
+                230.46109103450203
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "bc122e4659773ece5abab69eae4934c528c8eba8feda8c0aa92d5e6ba86afe91",
+            "featureCount": 3,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9947249434815373,
+                "dominantComponentRetention": 0.9947249434815373,
+                "touchesBorder": false,
+                "componentAreaMm2": 82.9375,
+                "protected": true
+              },
+              {
+                "reference": 1,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9636363636363636,
+                "dominantComponentRetention": 0.9636363636363636,
+                "touchesBorder": false,
+                "componentAreaMm2": 3.3125,
+                "protected": true
+              },
+              {
+                "reference": 2,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9278350515463918,
+                "dominantComponentRetention": 0.9278350515463918,
+                "touchesBorder": false,
+                "componentAreaMm2": 5.75,
+                "protected": true
+              }
+            ]
+          },
+          {
+            "name": "translate--1-1",
+            "quad": [
+              [
+                1024.6523483686494,
+                146.10074462846222
+              ],
+              [
+                1133.7393673965066,
+                234.36789914703917
+              ],
+              [
+                1038.100544685888,
+                331.8554844326094
+              ],
+              [
+                927.0282102167661,
+                231.46109103450203
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "d390723832acf055837d3e6964380819a5f5a7853a50bb3244ff39ce768e85c0",
+            "featureCount": 2,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9947249434815373,
+                "dominantComponentRetention": 0.9947249434815373,
+                "touchesBorder": false,
+                "componentAreaMm2": 83.5625,
+                "protected": true
+              },
+              {
+                "reference": 1,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9636363636363636,
+                "dominantComponentRetention": 0.9636363636363636,
+                "touchesBorder": false,
+                "componentAreaMm2": 3.625,
+                "protected": true
+              },
+              {
+                "reference": 2,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.979381443298969,
+                "dominantComponentRetention": 0.979381443298969,
+                "touchesBorder": true,
+                "componentAreaMm2": 5665.4375,
+                "protected": false
+              }
+            ]
+          },
+          {
+            "name": "translate-0-1",
+            "quad": [
+              [
+                1025.6523483686494,
+                146.10074462846222
+              ],
+              [
+                1134.7393673965066,
+                234.36789914703917
+              ],
+              [
+                1039.100544685888,
+                331.8554844326094
+              ],
+              [
+                928.0282102167661,
+                231.46109103450203
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "877e2d912dc8bc574c99154dc5a3de16a8d675c899f022c4a517f9216618dd72",
+            "featureCount": 3,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9902034664657121,
+                "dominantComponentRetention": 0.9902034664657121,
+                "touchesBorder": false,
+                "componentAreaMm2": 83.1875,
+                "protected": true
+              },
+              {
+                "reference": 1,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9636363636363636,
+                "dominantComponentRetention": 0.9636363636363636,
+                "touchesBorder": false,
+                "componentAreaMm2": 3.625,
+                "protected": true
+              },
+              {
+                "reference": 2,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9587628865979382,
+                "dominantComponentRetention": 0.9587628865979382,
+                "touchesBorder": false,
+                "componentAreaMm2": 5.9375,
+                "protected": true
+              }
+            ]
+          },
+          {
+            "name": "translate-1-1",
+            "quad": [
+              [
+                1026.6523483686494,
+                146.10074462846222
+              ],
+              [
+                1135.7393673965066,
+                234.36789914703917
+              ],
+              [
+                1040.100544685888,
+                331.8554844326094
+              ],
+              [
+                929.0282102167661,
+                231.46109103450203
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "ba662bbcd7f59712c53f354b2b1d290235a6a0be6c6b125df6a76205b97489ad",
+            "featureCount": 3,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.987189148455162,
+                "dominantComponentRetention": 0.987189148455162,
+                "touchesBorder": false,
+                "componentAreaMm2": 83,
+                "protected": true
+              },
+              {
+                "reference": 1,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9636363636363636,
+                "dominantComponentRetention": 0.9636363636363636,
+                "touchesBorder": false,
+                "componentAreaMm2": 3.5,
+                "protected": true
+              },
+              {
+                "reference": 2,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9278350515463918,
+                "dominantComponentRetention": 0.9278350515463918,
+                "touchesBorder": false,
+                "componentAreaMm2": 5.9375,
+                "protected": true
+              }
+            ]
+          },
+          {
+            "name": "jpeg-75",
+            "quad": [
+              [
+                1025.6523483686494,
+                145.10074462846222
+              ],
+              [
+                1134.7393673965066,
+                233.36789914703917
+              ],
+              [
+                1039.100544685888,
+                330.8554844326094
+              ],
+              [
+                928.0282102167661,
+                230.46109103450203
+              ]
+            ],
+            "inputPixelsSha256": "c2fccb6a2958e1ba13e16772bae2e96c2daf6295c8ede68109c2075b33951fa1",
+            "maskSha256": "5dbc2cb755b937e1bb97855ed17806a87df167b5cfcf989381161594dcf55868",
+            "featureCount": 3,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9932177844762623,
+                "dominantComponentRetention": 0.9932177844762623,
+                "touchesBorder": false,
+                "componentAreaMm2": 83.0625,
+                "protected": true
+              },
+              {
+                "reference": 1,
+                "outsideCropFraction": 0,
+                "colorRetention": 1,
+                "dominantComponentRetention": 1,
+                "touchesBorder": false,
+                "componentAreaMm2": 4.0625,
+                "protected": true
+              },
+              {
+                "reference": 2,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9175257731958762,
+                "dominantComponentRetention": 0.9175257731958762,
+                "touchesBorder": false,
+                "componentAreaMm2": 6.0625,
+                "protected": true
+              }
+            ]
+          },
+          {
+            "name": "half-resolution",
+            "quad": [
+              [
+                512.8261741843247,
+                72.55037231423111
+              ],
+              [
+                567.3696836982533,
+                116.68394957351958
+              ],
+              [
+                519.550272342944,
+                165.4277422163047
+              ],
+              [
+                464.01410510838303,
+                115.23054551725102
+              ]
+            ],
+            "inputPixelsSha256": "5c69973caa661239ce2f1c31cf16760048d0fa697650a19985c35ff6eed8fe76",
+            "maskSha256": "74e577037a89dc93a5e7c839d850c90029e3999fc3ed0692c0af486c4c72086e",
+            "featureCount": 1,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.9608138658628486,
+                "dominantComponentRetention": 0.9608138658628486,
+                "touchesBorder": false,
+                "componentAreaMm2": 79.8125,
+                "protected": true
+              },
+              {
+                "reference": 1,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.21818181818181817,
+                "dominantComponentRetention": 0.21818181818181817,
+                "touchesBorder": false,
+                "componentAreaMm2": 0.75,
+                "protected": false
+              },
+              {
+                "reference": 2,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.20618556701030927,
+                "dominantComponentRetention": 0.20618556701030927,
+                "touchesBorder": false,
+                "componentAreaMm2": 1.25,
+                "protected": false
+              }
+            ]
+          },
+          {
+            "name": "mixture-classification",
+            "quad": [
+              [
+                1025.6523483686494,
+                145.10074462846222
+              ],
+              [
+                1134.7393673965066,
+                233.36789914703917
+              ],
+              [
+                1039.100544685888,
+                330.8554844326094
+              ],
+              [
+                928.0282102167661,
+                230.46109103450203
+              ]
+            ],
+            "inputPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "maskSha256": "d0609c77d8c03235c4e24c240feb37aa8d244542317971432e8ab89394c8b0f4",
+            "featureCount": 1,
+            "observations": [
+              {
+                "reference": 0,
+                "outsideCropFraction": 0,
+                "colorRetention": 0.8100979653353428,
+                "dominantComponentRetention": 0.8100979653353428,
+                "touchesBorder": false,
+                "componentAreaMm2": 67.1875,
+                "protected": true
+              },
+              {
+                "reference": 1,
+                "outsideCropFraction": 0,
+                "colorRetention": 0,
+                "dominantComponentRetention": 0,
+                "touchesBorder": null,
+                "componentAreaMm2": 0,
+                "protected": false
+              },
+              {
+                "reference": 2,
+                "outsideCropFraction": 0,
+                "colorRetention": 0,
+                "dominantComponentRetention": 0,
+                "touchesBorder": null,
+                "componentAreaMm2": 0,
+                "protected": false
+              }
+            ]
+          }
+        ],
+        "cropShiftProtection": [
+          {
+            "reference": 0,
+            "protected": 9,
+            "total": 9
+          },
+          {
+            "reference": 1,
+            "protected": 9,
+            "total": 9
+          },
+          {
+            "reference": 2,
+            "protected": 7,
+            "total": 9
+          }
+        ]
+      }
+    ],
+    "sourceHashes": {
+      "scripts/inverse/diagnostics/photo-feature-stability.mjs": "6d233f1545a8a23558a4658cb06338013b799366fde32839d6403bfa4fae01b2",
+      "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+      "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+      "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948"
+    }
+  },
+  "prototype": [
+    {
+      "id": "outline-star",
+      "maskSha256": "311d3c3542ec6605918892cfcecae25749f176d32dcf563b65e2ffdc1336ce3e",
+      "baselineError": 0.00815625,
+      "seconds": 8.892506167,
+      "scores": {
+        "400": {
+          "error": 0.00815625,
+          "features": {
+            "passed": false,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 0,
+                "areaMm2": 4.25,
+                "centerMm": [
+                  7.154411764705881,
+                  98.7904411764706
+                ],
+                "retainedFraction": 0
+              },
+              {
+                "value": 1,
+                "areaMm2": 826.875,
+                "centerMm": [
+                  46.24285714285714,
+                  47.06449357520786
+                ],
+                "retainedFraction": 0.9892668178382464
+              }
+            ],
+            "missing": [
+              {
+                "value": 0,
+                "areaMm2": 4.25,
+                "centerMm": [
+                  7.154411764705881,
+                  98.7904411764706
+                ],
+                "retainedFraction": 0
+              }
+            ],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          }
+        },
+        "800": {
+          "error": 0.009503125,
+          "features": {
+            "passed": false,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 0,
+                "areaMm2": 4.25,
+                "centerMm": [
+                  7.154411764705881,
+                  98.7904411764706
+                ],
+                "retainedFraction": 0
+              },
+              {
+                "value": 1,
+                "areaMm2": 826.875,
+                "centerMm": [
+                  46.24285714285714,
+                  47.06449357520786
+                ],
+                "retainedFraction": 0.987660619803477
+              }
+            ],
+            "missing": [
+              {
+                "value": 0,
+                "areaMm2": 4.25,
+                "centerMm": [
+                  7.154411764705881,
+                  98.7904411764706
+                ],
+                "retainedFraction": 0
+              }
+            ],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          }
+        }
+      },
+      "passed": false,
+      "paper": "pass",
+      "stages": [
+        {
+          "stage": "directInitializing",
+          "seconds": 0.47859683300000005
+        },
+        {
+          "stage": "directFitting",
+          "seconds": 0.49822679200000014
+        },
+        {
+          "stage": "directInitializing",
+          "seconds": 0.00022495800000024246
+        },
+        {
+          "stage": "directClearance",
+          "seconds": 0.2882469579999997
+        },
+        {
+          "stage": "directRefining",
+          "seconds": 2.0399570000000002
+        },
+        {
+          "stage": "directPolishing",
+          "seconds": 0.030808624999999666
+        },
+        {
+          "stage": "directClearance",
+          "seconds": 0.21886954100000003
+        },
+        {
+          "stage": "directRefining",
+          "seconds": 0.21886679099999948
+        },
+        {
+          "stage": "directSharing",
+          "seconds": 0.3764356659999994
+        },
+        {
+          "stage": "directPolishing",
+          "seconds": 0.47818624999999976
+        },
+        {
+          "stage": "directPolishing",
+          "seconds": 0.028289040999999997
+        },
+        {
+          "stage": "directSharing",
+          "seconds": 0.49248675000000003
+        },
+        {
+          "stage": "directPolishing",
+          "detail": "selective-degree-reduction",
+          "seconds": 0.09826837499999964
+        },
+        {
+          "stage": "directSharing",
+          "seconds": 0.07044229200000154
+        },
+        {
+          "stage": "directPolishing",
+          "detail": "shared-run-simplification",
+          "seconds": 0.06959729100000005
+        }
+      ],
+      "geometryPassed": true,
+      "recovery": {
+        "seconds": 2.830151583,
+        "budgetSeconds": 2.8164172909999996,
+        "gridRoutingWeight": 0,
+        "budgetPolicy": "reserve_grid_refinement",
+        "accepted": false,
+        "trigger": {
+          "passed": false,
+          "referenceAvailable": true,
+          "minimumRetention": 0.6,
+          "minimumAreaFraction": 0.0003,
+          "minimumCoreRadiusFraction": 0.005,
+          "borderClearancePixels": 1,
+          "regions": [
+            {
+              "value": 0,
+              "areaMm2": 4.25,
+              "centerMm": [
+                7.154411764705881,
+                98.7904411764706
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 826.875,
+              "centerMm": [
+                46.24285714285714,
+                47.06449357520786
+              ],
+              "retainedFraction": 0.8840513983371127
+            }
+          ],
+          "missing": [
+            {
+              "value": 0,
+              "areaMm2": 4.25,
+              "centerMm": [
+                7.154411764705881,
+                98.7904411764706
+              ],
+              "retainedFraction": 0
+            }
+          ],
+          "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+        }
+      }
+    },
+    {
+      "id": "outline-star--crop-x-plus-1",
+      "maskSha256": "3338849d32ecafd54d2365fc664ec97ee5fbca5b54534290d873f6919437f5f4",
+      "baselineError": 0.02986875,
+      "seconds": 8.207602290999999,
+      "scores": {
+        "400": {
+          "error": 0.00756875,
+          "features": {
+            "passed": true,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 1,
+                "areaMm2": 827.5625,
+                "centerMm": [
+                  45.77659353523148,
+                  47.56316554640888
+                ],
+                "retainedFraction": 0.9929763613020165
+              }
+            ],
+            "missing": [],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          }
+        },
+        "800": {
+          "error": 0.0091421875,
+          "features": {
+            "passed": true,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 1,
+                "areaMm2": 827.5625,
+                "centerMm": [
+                  45.77659353523148,
+                  47.56316554640888
+                ],
+                "retainedFraction": 0.9912959746242731
+              }
+            ],
+            "missing": [],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          }
+        }
+      },
+      "passed": true,
+      "paper": "pass",
+      "stages": [
+        {
+          "stage": "directInitializing",
+          "seconds": 0.38606658400000016
+        },
+        {
+          "stage": "directFitting",
+          "seconds": 0.47986854100000165
+        },
+        {
+          "stage": "directClearance",
+          "seconds": 0.2566074169999993
+        },
+        {
+          "stage": "directRefining",
+          "seconds": 1.9212420409999995
+        },
+        {
+          "stage": "directSharing",
+          "seconds": 0.4353029999999999
+        },
+        {
+          "stage": "directPolishing",
+          "seconds": 0.5735485410000001
+        },
+        {
+          "stage": "directSharing",
+          "seconds": 0.22695250000000305
+        },
+        {
+          "stage": "directPolishing",
+          "detail": "selective-degree-reduction",
+          "seconds": 0.09948562500000116
+        },
+        {
+          "stage": "directPolishing",
+          "detail": "shared-run-simplification",
+          "seconds": 0.08450149999999848
+        }
+      ],
+      "geometryPassed": true,
+      "recovery": {
+        "seconds": 0.9189032079999997,
+        "budgetSeconds": 0.9169367310541798,
+        "gridRoutingWeight": 0.04777018229166674,
+        "budgetPolicy": "prioritize_routing",
+        "accepted": false,
+        "trigger": {
+          "passed": true,
+          "referenceAvailable": true,
+          "minimumRetention": 0.6,
+          "minimumAreaFraction": 0.0003,
+          "minimumCoreRadiusFraction": 0.005,
+          "borderClearancePixels": 1,
+          "regions": [
+            {
+              "value": 1,
+              "areaMm2": 827.5625,
+              "centerMm": [
+                45.77659353523148,
+                47.56316554640888
+              ],
+              "retainedFraction": 0.9114115248093044
+            }
+          ],
+          "missing": [],
+          "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+        }
+      }
+    },
+    {
+      "id": "crossed-ribbons--crop-x-plus-1",
+      "maskSha256": "2a910c21c17b51ce25d806764ec0b92e62379e3b7bb104b1f4cf453e89c08388",
+      "baselineError": 0.00888125,
+      "seconds": 6.2726222080000005,
+      "scores": {
+        "400": {
+          "error": 0.00735625,
+          "features": {
+            "passed": true,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [],
+            "missing": [],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          }
+        },
+        "800": {
+          "error": 0.00861875,
+          "features": {
+            "passed": true,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [],
+            "missing": [],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          }
+        }
+      },
+      "passed": true,
+      "paper": "pass",
+      "stages": [
+        {
+          "stage": "directInitializing",
+          "seconds": 0.46092275000000155
+        },
+        {
+          "stage": "directFitting",
+          "seconds": 0.46614091700000065
+        },
+        {
+          "stage": "directClearance",
+          "seconds": 0.21227424999999858
+        },
+        {
+          "stage": "directRefining",
+          "seconds": 2.828680042
+        },
+        {
+          "stage": "directSharing",
+          "seconds": 0.5662460419999988
+        },
+        {
+          "stage": "directPolishing",
+          "seconds": 0.8361504170000007
+        },
+        {
+          "stage": "directPolishing",
+          "detail": "selective-degree-reduction",
+          "seconds": 0.13570262499999808
+        },
+        {
+          "stage": "directPolishing",
+          "detail": "curve-degree-reduction",
+          "seconds": 0.13475274999999964
+        },
+        {
+          "stage": "directPolishing",
+          "detail": "shared-run-simplification",
+          "seconds": 0.11755837500000052
+        }
+      ],
+      "geometryPassed": true,
+      "recovery": null
+    }
+  ],
+  "baselineEditable": [
+    {
+      "id": "outline-star--crop-x-plus-1",
+      "editableError": 0.03004375,
+      "completeCandidatePassed": false,
+      "conversionPassed": true,
+      "editorIssues": []
+    },
+    {
+      "id": "crossed-ribbons--crop-x-plus-1",
+      "editableError": 0.00889375,
+      "completeCandidatePassed": true,
+      "conversionPassed": true,
+      "editorIssues": []
+    }
+  ],
+  "prototypeEditable": [
+    {
+      "id": "outline-star",
+      "editableError": 0.0083,
+      "completeCandidatePassed": false,
+      "conversionPassed": true,
+      "editorIssues": []
+    },
+    {
+      "id": "outline-star--crop-x-plus-1",
+      "editableError": 0.0075875,
+      "completeCandidatePassed": true,
+      "conversionPassed": true,
+      "editorIssues": []
+    },
+    {
+      "id": "crossed-ribbons--crop-x-plus-1",
+      "editableError": 0.00734375,
+      "completeCandidatePassed": true,
+      "conversionPassed": true,
+      "editorIssues": []
+    }
+  ],
+  "limitations": [
+    "A shifted crop is a different target; the original benchmark remains 25/31.",
+    "An unstable classified component is not proved to be photographic noise.",
+    "Downsampling removes the real bird eye too; scale instability cannot safely decide which details to discard.",
+    "The crossed-ribbon prototype does not invoke the changed budget path; its error variation is not credited to the change.",
+    "Prototype has not passed full corpus and regression checks."
+  ],
+  "artifacts": {
+    "tmp/heart-learning/photo-feature-stability-v2/results.json": {
+      "sha256": "03c93d419b3fb59f635068a5549e53e723d6a934e3168d4d6701462aa60fd1e8",
+      "bytes": 53514
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/frozen-crops.json": {
+      "sha256": "2b1c8d8c0abdcc3f14dbf1c31cc77a8d75883ef2f1a12edd162f08d1c337335d",
+      "bytes": 960
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/shift-fits/results.json": {
+      "sha256": "1f17ec5f184b2bdcbd0634c68ecb360784f5a681cda73a7d417d5275d951eb61",
+      "bytes": 145327
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/shift-editor/results.json": {
+      "sha256": "f02f59ac4a2c579e6c2af79d6725a1927072ff51738628fc3fcb0523b6f5e46d",
+      "bytes": 13556
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/probe.mjs": {
+      "sha256": "a41d32dbe4638a8e85cd39eb694b6c7cb4aadb0d5e04c04b281000ffdafd25a9",
+      "bytes": 3274
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/source.json": {
+      "sha256": "73dee82d6380a58e452b3b597029d75c051f692d7d08e0591c5d5f09f109dbb6",
+      "bytes": 15172
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/inverse/core/direct/fit.js": {
+      "sha256": "8f9a79df811067b56d32c0fb55d7faa907b9bb7135c02a3accead9b97b5cdd04",
+      "bytes": 62439
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/results.json": {
+      "sha256": "f2cdb077cf2ab94f7e4a556f45dcde17e0bf9a9793c36b4fb5976e23b3bb4f4d",
+      "bytes": 32669
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/editor/results.json": {
+      "sha256": "44e78fd0bb0243def50047f6e3787d3b8160c0faeae99f614976aa69401b957b",
+      "bytes": 20111
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/corpus.py": {
+      "sha256": "81f3566320e7476e93f9b1d7578a1baf42905b2859277995addbce535809b82a",
+      "bytes": 3291
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/photo-benchmark.mjs": {
+      "sha256": "d8b68b3812980ed5500a515a44f648335b50e327d5bb8da162bddb5b96dc4320",
+      "bytes": 18428
+    },
+    "scripts/inverse/diagnostics/photo-feature-stability.mjs": {
+      "sha256": "6d233f1545a8a23558a4658cb06338013b799366fde32839d6403bfa4fae01b2",
+      "bytes": 5962
+    },
+    "tmp/heart-learning/photo-feature-stability-v1.log": {
+      "sha256": "ca60eb75f8efad46a9aec44347c96936508c8988f37f2d725682ec6ed246ced2",
+      "bytes": 481
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/crossed-ribbons-jpeg-75.png": {
+      "sha256": "3f8a4709fa6c0256f39f23aa7b8c0ca0a2b4a4b8d4e0ee153504c4dca4af6eb5",
+      "bytes": 4178
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/crossed-ribbons-translate-0--1.png": {
+      "sha256": "4da785b33bb43fd32f9bbb0e330849e33ce2893e45fc6d4859ddd504dc93916a",
+      "bytes": 4113
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/outline-star-translate-0-1.png": {
+      "sha256": "f7c9b639d9f0300d30e59e5ee69990dfe30ae247810b26f4b157d6f49a03155b",
+      "bytes": 4663
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/outline-star-original.png": {
+      "sha256": "b6aa425563bc9119f335dc8092c9a1ad496ce96c7739ec15e9bed6e1e74041b9",
+      "bytes": 4769
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/crossed-ribbons-original.png": {
+      "sha256": "25d5c8a37f2215d74d1beea8efa57d5229aa011ed725efcefe3e0ab00f7c187b",
+      "bytes": 4137
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/outline-star-translate-1-1.png": {
+      "sha256": "9ac1531720c363cfbdbc52456eda1596b26b1fb22dd6a1a945d3c68f161a401b",
+      "bytes": 4676
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/bird-translate-1--1.png": {
+      "sha256": "a23ddb02b9f46a151bed9a183efe260105f72e94a5793b50c6f1e612864eb8fd",
+      "bytes": 4801
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/outline-star-translate-0--1.png": {
+      "sha256": "001fd99501ffd03f9a37c78a243d74b294d5082ac0927d31360c2d1bcdb6ed9a",
+      "bytes": 4767
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/outline-star-translate-1-0.png": {
+      "sha256": "4c865b86517e19a9f5745fc84cd11cb8de6267beb04059e691470559cf7c4e20",
+      "bytes": 4744
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/bird-translate--1-1.png": {
+      "sha256": "258870cd7fbd5214a65d39d6a5d8fb5f01210b16c91c43427eee23fa510f3283",
+      "bytes": 4716
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/bird-translate--1-0.png": {
+      "sha256": "5b5dd1d150c1dbca25d082210633acbfd1beddaaa0a43cafebd1bd96ce28d77c",
+      "bytes": 4785
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/crossed-ribbons-translate-1-1.png": {
+      "sha256": "b91f7c9b533c11620e28d497d83e51c8fea215367c72c79cb36582caba8260dd",
+      "bytes": 4142
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/outline-star-translate--1--1.png": {
+      "sha256": "cf85f686f78ade03fc6515c60b0bd17aa9689f69e04f6b53f4557e11b9e976fa",
+      "bytes": 4720
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/bird-translate-1-1.png": {
+      "sha256": "7ac4896fc2faa4c509ffdaf294749df6a8f12b1084c65253e7c6bb0df7cc3db8",
+      "bytes": 4768
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/bird-translate--1--1.png": {
+      "sha256": "510c8a0d50395713a71c77152b0e689161dec396acc22fac6537358ef9a7347a",
+      "bytes": 4716
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/bird-translate-1-0.png": {
+      "sha256": "dbe80839206669c87fc332e0900b0855fbe521844fb704dc7e053481a863708d",
+      "bytes": 4734
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/crossed-ribbons-translate-1-0.png": {
+      "sha256": "1a30836cd7c7cdb7879883d4984d68b0602d343a4e52a1856df91f89b2ec5514",
+      "bytes": 4130
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/crossed-ribbons-translate-1--1.png": {
+      "sha256": "e0965bd1de4f7c40cd7f481d5950c55783efa07272b34754d93892c1344fb088",
+      "bytes": 4104
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/crossed-ribbons-translate--1-0.png": {
+      "sha256": "f3a659c862ae34c443caa0d1b4b8ec956cede4ca2ed18d204af2a7d4bedf57f6",
+      "bytes": 4112
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/bird-mixture-classification.png": {
+      "sha256": "a9a9890b3cfc7b94d013fdd3fbf07d6d4f62d5842147c8a248c4ec3c2035769e",
+      "bytes": 4562
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/bird-jpeg-75.png": {
+      "sha256": "5cd8f17885679001e8e36251bc55ef94b6a86ac9edbe1d44fd23bb2d0b3269af",
+      "bytes": 4759
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/crossed-ribbons-translate--1--1.png": {
+      "sha256": "758cc239a0661f323d80d129af93c8d7612994c403698a80ab1ab0b334b6614b",
+      "bytes": 4064
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/crossed-ribbons-translate--1-1.png": {
+      "sha256": "b098cba741f4b3cf771b260ff446579e6443fda27e46bdb57a59744a28efc7eb",
+      "bytes": 4109
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/bird-original.png": {
+      "sha256": "e2524f8dd95ff18e008d6d27a37062462adacb879ab609978da3035bbc277664",
+      "bytes": 4792
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/crossed-ribbons-mixture-classification.png": {
+      "sha256": "ce96e60702f03f761c1f88b9c1b86dcedb1aa039da6e6affe2e042899c473bf1",
+      "bytes": 4098
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/outline-star-mixture-classification.png": {
+      "sha256": "0054e589102937132386c10477956e12d09ded46abfb17f4c8375e6a91d7e9b8",
+      "bytes": 4583
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/outline-star-jpeg-75.png": {
+      "sha256": "2a174600c1843700c0000ab2521d800c125f061b89a2d0eb53d9d02c04d188d8",
+      "bytes": 4755
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/outline-star-translate--1-1.png": {
+      "sha256": "b5beeacfca71262f77e0ece8ba249fc61b6a7a4d4c51cbe0b2ac91d94fd205b5",
+      "bytes": 4660
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/outline-star-translate--1-0.png": {
+      "sha256": "abb4fc44e4208cf90faf2b2e1a01451ee05cfa9ffa82a4ae8547de1bb7a4d6fe",
+      "bytes": 4706
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/outline-star-translate-1--1.png": {
+      "sha256": "e006d7c2450417b39dc04b4785338eda344636bb1816ca1f1724bfe69179ca32",
+      "bytes": 4659
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/bird-translate-0-1.png": {
+      "sha256": "78bbfa90edb1c3deb62dcf7c8c39643fe013ea75ac0f8d2ed1f5a622cdd48f9d",
+      "bytes": 4819
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/crossed-ribbons-translate-0-1.png": {
+      "sha256": "6b5da80fc5b0c712698a31f49b922beb22bbef31812a08baf0b8848b808ef6b4",
+      "bytes": 4129
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/bird-translate-0--1.png": {
+      "sha256": "7658be264673ddb4777268dad8cec41e00ea7c8584b1b3ebd9bad12469ae4381",
+      "bytes": 4773
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/bird-half-resolution.png": {
+      "sha256": "87a7c26c68566d10a51faad7718a79a3c8386b622c68df1d3048c0bb47b48472",
+      "bytes": 4587
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/outline-star-half-resolution.png": {
+      "sha256": "3e36f949112c8531a56fd53886188df1b01fec4fce17f351efcd330aeff63972",
+      "bytes": 4568
+    },
+    "tmp/heart-learning/photo-feature-stability-v2/crossed-ribbons-half-resolution.png": {
+      "sha256": "75ab87e475b2a5788bccbefc7dd3907545eb0ddcd3cf2dd26b20dfa1b969c5c1",
+      "bytes": 4061
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/editor/crossed-ribbons--crop-x-plus-1-automatic.svg": {
+      "sha256": "45113c86d967ef92ce0724358978fa79b4528ffee7df2747aed9def6636806b6",
+      "bytes": 11083
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/editor/outline-star-automatic.svg": {
+      "sha256": "c5c7fb52ab579e221fa56e2d09a74a71b006e3dcc77263fafd51d2689dc247af",
+      "bytes": 14630
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/editor/outline-star--crop-x-plus-1-automatic.svg": {
+      "sha256": "14657751da0fefd87bf6d376329a366a928a93428c0e1d26db3e95f24f617658",
+      "bytes": 17036
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/hunodan/results.json": {
+      "sha256": "3224737e7425e0c7d9c4c23324ceec46fc9abf0d30f2b80890b3d43447a6b239",
+      "bytes": 907441
+    }
+  },
+  "experimentalHunodan": {
+    "passed": 22,
+    "total": 22,
+    "maximumSeconds": 7.934782457999987,
+    "errorsExactlyUnchanged": 22,
+    "rows": [
+      {
+        "id": "hjfig-01",
+        "passed": true,
+        "seconds": 4.270096875,
+        "error": 0.009799111111111111
+      },
+      {
+        "id": "hjfig-02",
+        "passed": true,
+        "seconds": 5.3591465,
+        "error": 0.013340444444444445
+      },
+      {
+        "id": "hjfig-03",
+        "passed": true,
+        "seconds": 3.828505874999999,
+        "error": 0.006634666666666666
+      },
+      {
+        "id": "hjfig-04",
+        "passed": true,
+        "seconds": 4.272500166000001,
+        "error": 0.013824
+      },
+      {
+        "id": "hjfig-05",
+        "passed": true,
+        "seconds": 5.773807874999998,
+        "error": 0.00844420572515387
+      },
+      {
+        "id": "hjfla-01",
+        "passed": true,
+        "seconds": 5.692769166999999,
+        "error": 0.012166341145833334
+      },
+      {
+        "id": "hjcur-01",
+        "passed": true,
+        "seconds": 5.068817999999996,
+        "error": 0.005148444444444444
+      },
+      {
+        "id": "hjcur-02",
+        "passed": true,
+        "seconds": 5.170580917,
+        "error": 0.005219555555555555
+      },
+      {
+        "id": "hjcur-03",
+        "passed": true,
+        "seconds": 4.768864499999996,
+        "error": 0.004522666666666667
+      },
+      {
+        "id": "hjcur-04",
+        "passed": true,
+        "seconds": 6.932739582999995,
+        "error": 0.005639111111111111
+      },
+      {
+        "id": "hjcur-05",
+        "passed": true,
+        "seconds": 3.235440500000004,
+        "error": 0.009436444444444445
+      },
+      {
+        "id": "hjhih-01",
+        "passed": true,
+        "seconds": 5.985210249999996,
+        "error": 0.006040430615586996
+      },
+      {
+        "id": "hjhih-02",
+        "passed": true,
+        "seconds": 4.488308665999997,
+        "error": 0.003899406226779104
+      },
+      {
+        "id": "hjhih-04",
+        "passed": true,
+        "seconds": 7.107493040999994,
+        "error": 0.007776029627903062
+      },
+      {
+        "id": "hjstr-01",
+        "passed": true,
+        "seconds": 4.001470458999989,
+        "error": 0.007550237322696868
+      },
+      {
+        "id": "hjstr-02",
+        "passed": true,
+        "seconds": 5.935226290999999,
+        "error": 0.004365548980933596
+      },
+      {
+        "id": "hjstr-03",
+        "passed": true,
+        "seconds": 7.934782457999987,
+        "error": 0.0056129769369752365
+      },
+      {
+        "id": "hjsta-01",
+        "passed": true,
+        "seconds": 4.865932415999996,
+        "error": 0.007929362880886427
+      },
+      {
+        "id": "hjsta-02",
+        "passed": true,
+        "seconds": 4.319338541000005,
+        "error": 0.0038045247395833335
+      },
+      {
+        "id": "hjsta-03",
+        "passed": true,
+        "seconds": 6.224582458999998,
+        "error": 0.012332213049376572
+      },
+      {
+        "id": "hjsta-04",
+        "passed": true,
+        "seconds": 6.349602832999997,
+        "error": 0.0050250552896055544
+      },
+      {
+        "id": "hjsta-05",
+        "passed": true,
+        "seconds": 5.807174291000003,
+        "error": 0.010624446293860237
+      }
+    ]
+  }
+}

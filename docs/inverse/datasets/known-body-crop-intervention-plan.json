@@ -1,0 +1,34 @@
+{
+  "schema": "known-body-crop-intervention-plan-1",
+  "status": "declared before outcomes; queued behind live full QA",
+  "question": "Are learned full-photo crop failures driven mainly by background leakage, missed paper, or remaining localization/outline assumptions?",
+  "scope": "Twenty-two previously inspected development photographs. Annotation-assisted diagnostic, not trained prediction or reconstruction accuracy.",
+  "training": false,
+  "deployment": false,
+  "arms": {
+    "unchanged": "Frozen RGB-calibrated material and original predicted body.",
+    "known-background": "Set body probability to zero only at independently annotated background pixels.",
+    "known-paper": "Set body probability to one only at independently annotated paper pixels.",
+    "known-body": "Apply both known-background and known-paper interventions."
+  },
+  "invariants": [
+    "Unknown body pixels retain their original probabilities.",
+    "Every material probability is byte-identical across arms.",
+    "Full photographs, source windows and locator geometry/support thresholds are fixed.",
+    "No rough ROI, supplied corner, template fitting or retraining.",
+    "Rotate arm order for every photograph."
+  ],
+  "evaluation": [
+    "Compare crop proposal availability against the unchanged arm, including gains and losses by source.",
+    "Inspect returned and rejected quadrilaterals against source photographs; proposal count alone does not establish correct cropping.",
+    "Inspect support diagnostics to distinguish missing lower edges, lobe failures, and cap-colour failures.",
+    "Do not interpret failure under partial annotations as failure with a perfect silhouette; unlabelled contour pixels remain predicted."
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/known-body-crop-intervention-v1/export.py": "3378119c9d045e24b54d3dc441d69b750ff61832ea27440c1118e1f42193c0f2",
+    "tmp/heart-learning/known-body-crop-intervention-v1/replay.mjs": "0348a67a721c3c589808d0282db5a703faaea1ccf82be36eb734cfac1efef687",
+    "tmp/heart-learning/known-body-crop-intervention-v1/after-qa.py": "8af4d5d5a77550d6f8d6d47ced4ba6e96306af808320833d370ef40f36bed006",
+    "tmp/heart-learning/neural-palette-pipeline-v1/probe/manifest.json": "4cd5b9dcd46c31fbe2b55515357ac0a1553534ef36647857e811937cb9302896",
+    "docs/inverse/datasets/neural-palette-calibration-plan.json": "48f39e9e7d738b2a2ee34648b1e2af331ff4342da8d7e655547c79b010b7a5da"
+  }
+}

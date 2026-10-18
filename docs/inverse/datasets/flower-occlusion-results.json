@@ -1,0 +1,4295 @@
+{
+  "schema": "flower-occlusion-results-1",
+  "status": "complete-offline-diagnostic",
+  "plan": "docs/inverse/datasets/flower-occlusion-plan.json",
+  "runtimeChanged": false,
+  "sourceFilesVerified": 926,
+  "rows": [
+    {
+      "id": "real-202b8421f50252f2",
+      "arm": "unchanged",
+      "coverage": 1.0,
+      "status": "review-required",
+      "geometry": true,
+      "paper": "pass",
+      "slits": {
+        "left": 4,
+        "right": 4
+      },
+      "observedError": 0.03515625,
+      "fullInputError": 0.03515625,
+      "originalFullChecks": false,
+      "knownCleanError": null,
+      "knownCleanFeatures": null
+    },
+    {
+      "id": "real-202b8421f50252f2",
+      "arm": "caps-unobserved",
+      "coverage": 0.68,
+      "status": "protected-target-checks-pass",
+      "geometry": true,
+      "paper": "pass",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "observedError": 0.005689338235294118,
+      "fullInputError": 0.147825,
+      "originalFullChecks": false,
+      "knownCleanError": null,
+      "knownCleanFeatures": null
+    },
+    {
+      "id": "real-202b8421f50252f2",
+      "arm": "ribbon-unobserved",
+      "coverage": 0.84940625,
+      "status": "review-required",
+      "geometry": true,
+      "paper": "pass",
+      "slits": {
+        "left": 4,
+        "right": 4
+      },
+      "observedError": 0.036142893933262206,
+      "fullInputError": 0.0519375,
+      "originalFullChecks": false,
+      "knownCleanError": null,
+      "knownCleanFeatures": null
+    },
+    {
+      "id": "real-202b8421f50252f2",
+      "arm": "caps-and-ribbon-unobserved",
+      "coverage": 0.54315625,
+      "status": "protected-target-checks-pass",
+      "geometry": true,
+      "paper": "pass",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "observedError": 0.0025084862781197858,
+      "fullInputError": 0.16613125,
+      "originalFullChecks": false,
+      "knownCleanError": null,
+      "knownCleanFeatures": null
+    },
+    {
+      "id": "known-two-cut-ribbon",
+      "arm": "unchanged",
+      "coverage": 1.0,
+      "status": "protected-target-checks-pass",
+      "geometry": true,
+      "paper": "pass",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "observedError": 0.003675,
+      "fullInputError": 0.003675,
+      "originalFullChecks": true,
+      "knownCleanError": 0.052525,
+      "knownCleanFeatures": false
+    },
+    {
+      "id": "known-two-cut-ribbon",
+      "arm": "caps-unobserved",
+      "coverage": 0.68,
+      "status": "review-required",
+      "geometry": true,
+      "paper": "pass",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "observedError": 0.001479779411764706,
+      "fullInputError": 0.01206875,
+      "originalFullChecks": false,
+      "knownCleanError": 0.06259375,
+      "knownCleanFeatures": false
+    },
+    {
+      "id": "known-two-cut-ribbon",
+      "arm": "ribbon-unobserved",
+      "coverage": 0.84940625,
+      "status": "protected-target-checks-pass",
+      "geometry": true,
+      "paper": "pass",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "observedError": 0,
+      "fullInputError": 0.0513875,
+      "originalFullChecks": false,
+      "knownCleanError": 0,
+      "knownCleanFeatures": true
+    },
+    {
+      "id": "known-two-cut-ribbon",
+      "arm": "caps-and-ribbon-unobserved",
+      "coverage": 0.54315625,
+      "status": "protected-target-checks-pass",
+      "geometry": true,
+      "paper": "pass",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "observedError": 0,
+      "fullInputError": 0.05141875,
+      "originalFullChecks": false,
+      "knownCleanError": 3.125e-05,
+      "knownCleanFeatures": true
+    }
+  ],
+  "editable": {
+    "converted": 8,
+    "editorIssues": 0,
+    "protectedChecksPassed": 5,
+    "qualification": "Protected checks use only the explicitly observed pixels; these are not additional complete photograph reconstructions.",
+    "rows": [
+      {
+        "id": "real-202b8421f50252f2",
+        "preset": "unchanged",
+        "engineChecksPassed": false,
+        "independentEngineError": 0.03515625,
+        "geometrySha256": "6065e17b15ea27a6936a3e5cb96f8f67efd448ae647c236d97b542cef8c037f0",
+        "maskSha256": "fa1f511165074bd08d8b8ed60fdfa10604dd59c2dce6adb123ddba8afb9ad420",
+        "editorIssues": [],
+        "fidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.03536875,
+          "sourceError": 0.03536875
+        },
+        "editableImageComparison": {
+          "mismatchPixels": 5659,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.03536875
+        },
+        "editableError": 0.03536875,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              15.14818763326226,
+              6.822228144989339
+            ],
+            "sourceAreaMm2": 58.625,
+            "intersectionPixels": 903,
+            "retention": 0.9626865671641791,
+            "predictedComponentAreaMm2": 58.375,
+            "touchesBorder": false,
+            "componentIoU": 0.9318885448916409
+          },
+          {
+            "centerMm": [
+              52.180930930930934,
+              50.77364864864865
+            ],
+            "sourceAreaMm2": 166.5,
+            "intersectionPixels": 2637,
+            "retention": 0.9898648648648649,
+            "predictedComponentAreaMm2": 364.4375,
+            "touchesBorder": false,
+            "componentIoU": 0.4501536360532605
+          },
+          {
+            "centerMm": [
+              69.40584714548802,
+              51.480893186003684
+            ],
+            "sourceAreaMm2": 67.875,
+            "intersectionPixels": 1045,
+            "retention": 0.9622467771639043,
+            "predictedComponentAreaMm2": 67.5625,
+            "touchesBorder": false,
+            "componentIoU": 0.9313725490196079
+          },
+          {
+            "centerMm": [
+              52.43257629524485,
+              67.6083215046132
+            ],
+            "sourceAreaMm2": 176.125,
+            "intersectionPixels": 2788,
+            "retention": 0.9893541518807665,
+            "predictedComponentAreaMm2": 364.4375,
+            "touchesBorder": false,
+            "componentIoU": 0.4756867428766422
+          },
+          {
+            "centerMm": [
+              69.82954545454545,
+              67.96532634032634
+            ],
+            "sourceAreaMm2": 53.625,
+            "intersectionPixels": 834,
+            "retention": 0.972027972027972,
+            "predictedComponentAreaMm2": 53.75,
+            "touchesBorder": false,
+            "componentIoU": 0.9434389140271493
+          }
+        ],
+        "physical": {
+          "geometry": {
+            "passed": true,
+            "issues": [],
+            "finalGeometry": true,
+            "editorClearanceRequired": 1.5,
+            "nominalWidthRequired": 2.50501002004008,
+            "minimumInterSlitDistanceLower": 2.8614505839207456,
+            "minimumOuterSideClearance": 3.003909248049956,
+            "boundaryParityMatches": true,
+            "forwardSampleMismatchPixels": 0,
+            "forwardBoundaryAmbiguousPixels": 0,
+            "forwardSampleResolution": 101,
+            "geometryTolerance": 0.01,
+            "sharedCurvesStoredOnce": true,
+            "physicalAssemblyTested": false,
+            "limitations": [
+              "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+              "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+              "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+              "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+            ]
+          },
+          "paper": {
+            "status": "pass",
+            "requiredRemainingWidth": 2,
+            "nominalDiameter": 2.50501002004008,
+            "gridSpacing": 0.14285714285714285,
+            "clearanceGuard": 0.11101525445522108,
+            "families": [
+              {
+                "family": 0,
+                "status": "pass",
+                "detachedCertainCoreIslands": 0,
+                "detachedPossibleCoreIslands": 0,
+                "detachedPossibleArea": 0,
+                "foldIntervals": [
+                  {
+                    "interval": [
+                      0,
+                      5.166344134197713
+                    ],
+                    "certainCoreLength": 2.428571428571428,
+                    "possibleCoreLength": 2.8571428571428563
+                  },
+                  {
+                    "interval": [
+                      5.166344134197713,
+                      15.030133023183318
+                    ],
+                    "certainCoreLength": 7.000000000000006,
+                    "possibleCoreLength": 7.428571428571436
+                  },
+                  {
+                    "interval": [
+                      15.030133023183318,
+                      18.29333166921648
+                    ],
+                    "certainCoreLength": 0.5714285714285714,
+                    "possibleCoreLength": 0.9999999999999998
+                  },
+                  {
+                    "interval": [
+                      18.29333166921648,
+                      96.73215287930074
+                    ],
+                    "certainCoreLength": 42.57142857142872,
+                    "possibleCoreLength": 54.00000000000039
+                  },
+                  {
+                    "interval": [
+                      96.73215287930074,
+                      100
+                    ],
+                    "certainCoreLength": 0.42857142857142855,
+                    "possibleCoreLength": 0.9999999999999998
+                  }
+                ]
+              },
+              {
+                "family": 1,
+                "status": "pass",
+                "detachedCertainCoreIslands": 0,
+                "detachedPossibleCoreIslands": 0,
+                "detachedPossibleArea": 0,
+                "foldIntervals": [
+                  {
+                    "interval": [
+                      0,
+                      3.267847120699275
+                    ],
+                    "certainCoreLength": 0.42857142857142855,
+                    "possibleCoreLength": 0.9999999999999998
+                  },
+                  {
+                    "interval": [
+                      3.267847120699275,
+                      11.968037704400315
+                    ],
+                    "certainCoreLength": 6.0000000000000036,
+                    "possibleCoreLength": 6.428571428571433
+                  },
+                  {
+                    "interval": [
+                      11.968037704400315,
+                      45.77758294852883
+                    ],
+                    "certainCoreLength": 30.99999999999993,
+                    "possibleCoreLength": 31.428571428571356
+                  },
+                  {
+                    "interval": [
+                      45.77758294852883,
+                      78.93598559468043
+                    ],
+                    "certainCoreLength": 26.8571428571428,
+                    "possibleCoreLength": 27.714285714285655
+                  },
+                  {
+                    "interval": [
+                      78.93598559468043,
+                      100
+                    ],
+                    "certainCoreLength": 18.28571428571426,
+                    "possibleCoreLength": 18.714285714285687
+                  }
+                ]
+              }
+            ],
+            "method": "Guarded lattice and independent unfolded polygon offsets",
+            "seconds": 0.6800391669999997,
+            "limitations": [
+              "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+              "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+              "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+              "Small tips and features below the explicitly stated area threshold are not certified."
+            ],
+            "latticeStatus": "pass",
+            "offset": {
+              "status": "pass",
+              "method": "Round polygon offsets of adaptively flattened unfolded cuts (Clipper2)",
+              "flatteningTolerance": 0.0005,
+              "arcTolerance": 0.0005,
+              "nominalDiameter": 2.50501002004008,
+              "requiredRemainingWidth": 2,
+              "minFeatureArea": 0.25,
+              "families": [
+                {
+                  "family": 0,
+                  "status": "pass",
+                  "significantFloatingCount": 0,
+                  "significantFloatingArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        5.166344134197713
+                      ],
+                      "anchoredCoreLength": 2.6617988004061037
+                    },
+                    {
+                      "interval": [
+                        5.166344134197713,
+                        15.030133023183318
+                      ],
+                      "anchoredCoreLength": 7.231880187988281
+                    },
+                    {
+                      "interval": [
+                        15.030133023183318,
+                        18.29333166921648
+                      ],
+                      "anchoredCoreLength": 0.7580473438523647
+                    },
+                    {
+                      "interval": [
+                        18.29333166921648,
+                        96.73215287930074
+                      ],
+                      "anchoredCoreLength": 52.6976842880249
+                    },
+                    {
+                      "interval": [
+                        96.73215287930074,
+                        100
+                      ],
+                      "anchoredCoreLength": 0.7630840982153302
+                    }
+                  ],
+                  "probes": [
+                    {
+                      "delta": 0,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            5.166344134197713
+                          ],
+                          "anchoredCoreLength": 2.6617988004061037
+                        },
+                        {
+                          "interval": [
+                            5.166344134197713,
+                            15.030133023183318
+                          ],
+                          "anchoredCoreLength": 7.231880187988281
+                        },
+                        {
+                          "interval": [
+                            15.030133023183318,
+                            18.29333166921648
+                          ],
+                          "anchoredCoreLength": 0.7580473438523647
+                        },
+                        {
+                          "interval": [
+                            18.29333166921648,
+                            96.73215287930074
+                          ],
+                          "anchoredCoreLength": 52.6976842880249
+                        },
+                        {
+                          "interval": [
+                            96.73215287930074,
+                            100
+                          ],
+                          "anchoredCoreLength": 0.7630840982153302
+                        }
+                      ]
+                    },
+                    {
+                      "delta": -0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            5.166344134197713
+                          ],
+                          "anchoredCoreLength": 2.662799809047962
+                        },
+                        {
+                          "interval": [
+                            5.166344134197713,
+                            15.030133023183318
+                          ],
+                          "anchoredCoreLength": 7.232931137084961
+                        },
+                        {
+                          "interval": [
+                            15.030133023183318,
+                            18.29333166921648
+                          ],
+                          "anchoredCoreLength": 0.759042560990757
+                        },
+                        {
+                          "interval": [
+                            18.29333166921648,
+                            96.73215287930074
+                          ],
+                          "anchoredCoreLength": 52.715699195861816
+                        },
+                        {
+                          "interval": [
+                            96.73215287930074,
+                            100
+                          ],
+                          "anchoredCoreLength": 0.7640924955107664
+                        }
+                      ]
+                    },
+                    {
+                      "delta": 0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            5.166344134197713
+                          ],
+                          "anchoredCoreLength": 2.660797781133936
+                        },
+                        {
+                          "interval": [
+                            5.166344134197713,
+                            15.030133023183318
+                          ],
+                          "anchoredCoreLength": 7.230829238891602
+                        },
+                        {
+                          "interval": [
+                            15.030133023183318,
+                            18.29333166921648
+                          ],
+                          "anchoredCoreLength": 0.7570538599197896
+                        },
+                        {
+                          "interval": [
+                            18.29333166921648,
+                            96.73215287930074
+                          ],
+                          "anchoredCoreLength": 52.67966938018799
+                        },
+                        {
+                          "interval": [
+                            96.73215287930074,
+                            100
+                          ],
+                          "anchoredCoreLength": 0.7620773644921002
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "significantFloatingCount": 0,
+                  "significantFloatingArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        3.267847120699275
+                      ],
+                      "anchoredCoreLength": 0.7628364562988281
+                    },
+                    {
+                      "interval": [
+                        3.267847120699275,
+                        11.968037704400315
+                      ],
+                      "anchoredCoreLength": 6.195191949708776
+                    },
+                    {
+                      "interval": [
+                        11.968037704400315,
+                        45.77758294852883
+                      ],
+                      "anchoredCoreLength": 31.286489293589042
+                    },
+                    {
+                      "interval": [
+                        45.77758294852883,
+                        78.93598559468043
+                      ],
+                      "anchoredCoreLength": 27.410741806030273
+                    },
+                    {
+                      "interval": [
+                        78.93598559468043,
+                        100
+                      ],
+                      "anchoredCoreLength": 18.55923568217206
+                    }
+                  ],
+                  "probes": [
+                    {
+                      "delta": 0,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            3.267847120699275
+                          ],
+                          "anchoredCoreLength": 0.7628364562988281
+                        },
+                        {
+                          "interval": [
+                            3.267847120699275,
+                            11.968037704400315
+                          ],
+                          "anchoredCoreLength": 6.195191949708776
+                        },
+                        {
+                          "interval": [
+                            11.968037704400315,
+                            45.77758294852883
+                          ],
+                          "anchoredCoreLength": 31.286489293589042
+                        },
+                        {
+                          "interval": [
+                            45.77758294852883,
+                            78.93598559468043
+                          ],
+                          "anchoredCoreLength": 27.410741806030273
+                        },
+                        {
+                          "interval": [
+                            78.93598559468043,
+                            100
+                          ],
+                          "anchoredCoreLength": 18.55923568217206
+                        }
+                      ]
+                    },
+                    {
+                      "delta": -0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            3.267847120699275
+                          ],
+                          "anchoredCoreLength": 0.7638378143310547
+                        },
+                        {
+                          "interval": [
+                            3.267847120699275,
+                            11.968037704400315
+                          ],
+                          "anchoredCoreLength": 6.196193497291137
+                        },
+                        {
+                          "interval": [
+                            11.968037704400315,
+                            45.77758294852883
+                          ],
+                          "anchoredCoreLength": 31.287499493753145
+                        },
+                        {
+                          "interval": [
+                            45.77758294852883,
+                            78.93598559468043
+                          ],
+                          "anchoredCoreLength": 27.41237163543701
+                        },
+                        {
+                          "interval": [
+                            78.93598559468043,
+                            100
+                          ],
+                          "anchoredCoreLength": 18.560229228714107
+                        }
+                      ]
+                    },
+                    {
+                      "delta": 0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            3.267847120699275
+                          ],
+                          "anchoredCoreLength": 0.7618370056152344
+                        },
+                        {
+                          "interval": [
+                            3.267847120699275,
+                            11.968037704400315
+                          ],
+                          "anchoredCoreLength": 6.194190378692537
+                        },
+                        {
+                          "interval": [
+                            11.968037704400315,
+                            45.77758294852883
+                          ],
+                          "anchoredCoreLength": 31.285480077565758
+                        },
+                        {
+                          "interval": [
+                            45.77758294852883,
+                            78.93598559468043
+                          ],
+                          "anchoredCoreLength": 27.409114837646484
+                        },
+                        {
+                          "interval": [
+                            78.93598559468043,
+                            100
+                          ],
+                          "anchoredCoreLength": 18.558241420130656
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "limitations": [
+                "Finite flattening and radius probes, not an exact topology or physical strength certificate.",
+                "Offset topology need not vary monotonically with radius; passing probes do not certify all intermediate radii.",
+                "Features below the stated core-area threshold are not certified."
+              ],
+              "seconds": 0.41064058399999975
+            }
+          },
+          "materialResolution": 700
+        },
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "tolerance": 0.1,
+        "seconds": 1.436896208
+      },
+      {
+        "id": "real-202b8421f50252f2",
+        "preset": "caps-unobserved",
+        "engineChecksPassed": true,
+        "independentEngineError": 0.005689338235294118,
+        "observation": {
+          "file": "observed.bin",
+          "sha256": "b912b37d50db9d28794814f710a3d4cf2029c9bf7dcdcccd063640f5d8fbd0c4",
+          "observedPixels": 108800,
+          "totalPixels": 160000
+        },
+        "geometrySha256": "2c836427cf1e74f97c95539ab218ff3af7e519aa75309888e785997de45bec5b",
+        "maskSha256": "fa1f511165074bd08d8b8ed60fdfa10604dd59c2dce6adb123ddba8afb9ad420",
+        "editorIssues": [],
+        "fidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0057444852941176475,
+          "sourceError": 0.0057444852941176475
+        },
+        "editableImageComparison": {
+          "mismatchPixels": 625,
+          "observedPixels": 108800,
+          "observedFraction": 0.68,
+          "mismatchFraction": 0.0057444852941176475,
+          "weightMass": 108800,
+          "mismatchWeight": 625,
+          "wholeMismatchFraction": 0.0057444852941176475,
+          "protectedPixels": 108800,
+          "protectedMismatchFraction": 0.0057444852941176475,
+          "editablePixels": 0,
+          "editableChangeFraction": null
+        },
+        "editableError": 0.0057444852941176475,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              29.66693095324393,
+              31.827949438202246
+            ],
+            "sourceAreaMm2": 689.75,
+            "intersectionPixels": 11018,
+            "retention": 0.9983689742660384,
+            "predictedComponentAreaMm2": 1896.125,
+            "touchesBorder": true,
+            "componentIoU": 0.3629595467123468
+          },
+          {
+            "centerMm": [
+              52.180930930930934,
+              50.77364864864865
+            ],
+            "sourceAreaMm2": 166.5,
+            "intersectionPixels": 2645,
+            "retention": 0.9928678678678678,
+            "predictedComponentAreaMm2": 363.625,
+            "touchesBorder": false,
+            "componentIoU": 0.45314373822168924
+          },
+          {
+            "centerMm": [
+              69.40584714548802,
+              51.480893186003684
+            ],
+            "sourceAreaMm2": 67.875,
+            "intersectionPixels": 1068,
+            "retention": 0.9834254143646409,
+            "predictedComponentAreaMm2": 68.75,
+            "touchesBorder": false,
+            "componentIoU": 0.9552772808586762
+          },
+          {
+            "centerMm": [
+              52.43257629524485,
+              67.6083215046132
+            ],
+            "sourceAreaMm2": 176.125,
+            "intersectionPixels": 2804,
+            "retention": 0.9950319375443577,
+            "predictedComponentAreaMm2": 363.625,
+            "touchesBorder": false,
+            "componentIoU": 0.48079561042524005
+          },
+          {
+            "centerMm": [
+              69.82954545454545,
+              67.96532634032634
+            ],
+            "sourceAreaMm2": 53.625,
+            "intersectionPixels": 843,
+            "retention": 0.9825174825174825,
+            "predictedComponentAreaMm2": 53.875,
+            "touchesBorder": false,
+            "componentIoU": 0.9612314709236032
+          }
+        ],
+        "physical": {
+          "geometry": {
+            "passed": true,
+            "issues": [],
+            "finalGeometry": true,
+            "editorClearanceRequired": 1.5,
+            "nominalWidthRequired": 2.50501002004008,
+            "minimumInterSlitDistanceLower": 2.9641761007619696,
+            "minimumOuterSideClearance": 3.077040528950519,
+            "boundaryParityMatches": true,
+            "forwardSampleMismatchPixels": 0,
+            "forwardBoundaryAmbiguousPixels": 0,
+            "forwardSampleResolution": 101,
+            "geometryTolerance": 0.01,
+            "sharedCurvesStoredOnce": true,
+            "physicalAssemblyTested": false,
+            "limitations": [
+              "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+              "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+              "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+              "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+            ]
+          },
+          "paper": {
+            "status": "pass",
+            "requiredRemainingWidth": 2,
+            "nominalDiameter": 2.50501002004008,
+            "gridSpacing": 0.14285714285714285,
+            "clearanceGuard": 0.11101525445522108,
+            "families": [
+              {
+                "family": 0,
+                "status": "pass",
+                "detachedCertainCoreIslands": 0,
+                "detachedPossibleCoreIslands": 0,
+                "detachedPossibleArea": 0,
+                "foldIntervals": [
+                  {
+                    "interval": [
+                      0,
+                      18.950884823908762
+                    ],
+                    "certainCoreLength": 16.142857142857125,
+                    "possibleCoreLength": 16.714285714285694
+                  },
+                  {
+                    "interval": [
+                      18.950884823908762,
+                      96.92295947104948
+                    ],
+                    "certainCoreLength": 44.71428571428591,
+                    "possibleCoreLength": 52.428571428571786
+                  },
+                  {
+                    "interval": [
+                      96.92295947104948,
+                      100
+                    ],
+                    "certainCoreLength": 0.2857142857142857,
+                    "possibleCoreLength": 0.857142857142857
+                  }
+                ]
+              },
+              {
+                "family": 1,
+                "status": "pass",
+                "detachedCertainCoreIslands": 0,
+                "detachedPossibleCoreIslands": 0,
+                "detachedPossibleArea": 0,
+                "foldIntervals": [
+                  {
+                    "interval": [
+                      0,
+                      45.76855176270887
+                    ],
+                    "certainCoreLength": 43.000000000000156,
+                    "possibleCoreLength": 43.428571428571594
+                  },
+                  {
+                    "interval": [
+                      45.76855176270887,
+                      78.89942387832365
+                    ],
+                    "certainCoreLength": 26.8571428571428,
+                    "possibleCoreLength": 27.571428571428513
+                  },
+                  {
+                    "interval": [
+                      78.89942387832365,
+                      100
+                    ],
+                    "certainCoreLength": 18.28571428571426,
+                    "possibleCoreLength": 18.85714285714283
+                  }
+                ]
+              }
+            ],
+            "method": "Guarded lattice and independent unfolded polygon offsets",
+            "seconds": 0.3157953749999997,
+            "limitations": [
+              "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+              "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+              "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+              "Small tips and features below the explicitly stated area threshold are not certified."
+            ],
+            "latticeStatus": "pass",
+            "offset": {
+              "status": "pass",
+              "method": "Round polygon offsets of adaptively flattened unfolded cuts (Clipper2)",
+              "flatteningTolerance": 0.0005,
+              "arcTolerance": 0.0005,
+              "nominalDiameter": 2.50501002004008,
+              "requiredRemainingWidth": 2,
+              "minFeatureArea": 0.25,
+              "families": [
+                {
+                  "family": 0,
+                  "status": "pass",
+                  "significantFloatingCount": 0,
+                  "significantFloatingArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        18.950884823908762
+                      ],
+                      "anchoredCoreLength": 16.44633113557693
+                    },
+                    {
+                      "interval": [
+                        18.950884823908762,
+                        96.92295947104948
+                      ],
+                      "anchoredCoreLength": 49.14697551727295
+                    },
+                    {
+                      "interval": [
+                        96.92295947104948,
+                        100
+                      ],
+                      "anchoredCoreLength": 0.5723318330499438
+                    }
+                  ],
+                  "probes": [
+                    {
+                      "delta": 0,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            18.950884823908762
+                          ],
+                          "anchoredCoreLength": 16.44633113557693
+                        },
+                        {
+                          "interval": [
+                            18.950884823908762,
+                            96.92295947104948
+                          ],
+                          "anchoredCoreLength": 49.14697551727295
+                        },
+                        {
+                          "interval": [
+                            96.92295947104948,
+                            100
+                          ],
+                          "anchoredCoreLength": 0.5723318330499438
+                        }
+                      ]
+                    },
+                    {
+                      "delta": -0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            18.950884823908762
+                          ],
+                          "anchoredCoreLength": 16.44733452952786
+                        },
+                        {
+                          "interval": [
+                            18.950884823908762,
+                            96.92295947104948
+                          ],
+                          "anchoredCoreLength": 49.164177894592285
+                        },
+                        {
+                          "interval": [
+                            96.92295947104948,
+                            100
+                          ],
+                          "anchoredCoreLength": 0.5733386676395185
+                        }
+                      ]
+                    },
+                    {
+                      "delta": 0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            18.950884823908762
+                          ],
+                          "anchoredCoreLength": 16.445328854157715
+                        },
+                        {
+                          "interval": [
+                            18.950884823908762,
+                            96.92295947104948
+                          ],
+                          "anchoredCoreLength": 49.12979793548584
+                        },
+                        {
+                          "interval": [
+                            96.92295947104948,
+                            100
+                          ],
+                          "anchoredCoreLength": 0.5713267088048894
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "significantFloatingCount": 0,
+                  "significantFloatingArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        45.76855176270887
+                      ],
+                      "anchoredCoreLength": 43.26400787272297
+                    },
+                    {
+                      "interval": [
+                        45.76855176270887,
+                        78.89942387832365
+                      ],
+                      "anchoredCoreLength": 27.328728675842285
+                    },
+                    {
+                      "interval": [
+                        78.89942387832365,
+                        100
+                      ],
+                      "anchoredCoreLength": 18.596065934395014
+                    }
+                  ],
+                  "probes": [
+                    {
+                      "delta": 0,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            45.76855176270887
+                          ],
+                          "anchoredCoreLength": 43.26400787272297
+                        },
+                        {
+                          "interval": [
+                            45.76855176270887,
+                            78.89942387832365
+                          ],
+                          "anchoredCoreLength": 27.328728675842285
+                        },
+                        {
+                          "interval": [
+                            78.89942387832365,
+                            100
+                          ],
+                          "anchoredCoreLength": 18.596065934395014
+                        }
+                      ]
+                    },
+                    {
+                      "delta": -0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            45.76855176270887
+                          ],
+                          "anchoredCoreLength": 43.26500910912905
+                        },
+                        {
+                          "interval": [
+                            45.76855176270887,
+                            78.89942387832365
+                          ],
+                          "anchoredCoreLength": 27.330252647399902
+                        },
+                        {
+                          "interval": [
+                            78.89942387832365,
+                            100
+                          ],
+                          "anchoredCoreLength": 18.597065925598145
+                        }
+                      ]
+                    },
+                    {
+                      "delta": 0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            45.76855176270887
+                          ],
+                          "anchoredCoreLength": 43.26300697667396
+                        },
+                        {
+                          "interval": [
+                            45.76855176270887,
+                            78.89942387832365
+                          ],
+                          "anchoredCoreLength": 27.3272066116333
+                        },
+                        {
+                          "interval": [
+                            78.89942387832365,
+                            100
+                          ],
+                          "anchoredCoreLength": 18.59506581064352
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "limitations": [
+                "Finite flattening and radius probes, not an exact topology or physical strength certificate.",
+                "Offset topology need not vary monotonically with radius; passing probes do not certify all intermediate radii.",
+                "Features below the stated core-area threshold are not certified."
+              ],
+              "seconds": 0.12486762499999986
+            }
+          },
+          "materialResolution": 700
+        },
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "tolerance": 0.1,
+        "seconds": 0.7926008750000001
+      },
+      {
+        "id": "real-202b8421f50252f2",
+        "preset": "ribbon-unobserved",
+        "engineChecksPassed": false,
+        "independentEngineError": 0.036142893933262206,
+        "observation": {
+          "file": "observed.bin",
+          "sha256": "20ea031a32648dec9367313429fa51f3b51bc93a1721ebb3b0a6c3f1b4820b49",
+          "observedPixels": 135905,
+          "totalPixels": 160000
+        },
+        "geometrySha256": "fa93d47d983ca8393da7af641a5eea602599d5fec2773f977401a1e9ed376b7a",
+        "maskSha256": "fa1f511165074bd08d8b8ed60fdfa10604dd59c2dce6adb123ddba8afb9ad420",
+        "editorIssues": [],
+        "fidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.03629005555351164,
+          "sourceError": 0.03629005555351164
+        },
+        "editableImageComparison": {
+          "mismatchPixels": 4932,
+          "observedPixels": 135905,
+          "observedFraction": 0.84940625,
+          "mismatchFraction": 0.03629005555351164,
+          "weightMass": 135905,
+          "mismatchWeight": 4932,
+          "wholeMismatchFraction": 0.03629005555351164,
+          "protectedPixels": 135905,
+          "protectedMismatchFraction": 0.03629005555351164,
+          "editablePixels": 0,
+          "editableChangeFraction": null
+        },
+        "editableError": 0.03629005555351164,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              15.14818763326226,
+              6.822228144989339
+            ],
+            "sourceAreaMm2": 58.625,
+            "intersectionPixels": 902,
+            "retention": 0.9616204690831557,
+            "predictedComponentAreaMm2": 58.625,
+            "touchesBorder": false,
+            "componentIoU": 0.9260780287474333
+          },
+          {
+            "centerMm": [
+              49.272981366459625,
+              50.4669254658385
+            ],
+            "sourceAreaMm2": 100.625,
+            "intersectionPixels": 1604,
+            "retention": 0.9962732919254659,
+            "predictedComponentAreaMm2": 612.5625,
+            "touchesBorder": false,
+            "componentIoU": 0.1635566432140308
+          },
+          {
+            "centerMm": [
+              69.39245329400197,
+              51.15130285152409
+            ],
+            "sourceAreaMm2": 63.5625,
+            "intersectionPixels": 1002,
+            "retention": 0.9852507374631269,
+            "predictedComponentAreaMm2": 612.5625,
+            "touchesBorder": false,
+            "componentIoU": 0.10207823960880195
+          },
+          {
+            "centerMm": [
+              49.39073103022825,
+              68.02860888340531
+            ],
+            "sourceAreaMm2": 101.3125,
+            "intersectionPixels": 1616,
+            "retention": 0.9969154842689698,
+            "predictedComponentAreaMm2": 612.5625,
+            "touchesBorder": false,
+            "componentIoU": 0.1647970630226392
+          },
+          {
+            "centerMm": [
+              69.82429846938776,
+              68.39732142857143
+            ],
+            "sourceAreaMm2": 49,
+            "intersectionPixels": 776,
+            "retention": 0.9897959183673469,
+            "predictedComponentAreaMm2": 612.5625,
+            "touchesBorder": false,
+            "componentIoU": 0.07911102049138546
+          },
+          {
+            "centerMm": [
+              28.4861798679868,
+              67.76299504950495
+            ],
+            "sourceAreaMm2": 303,
+            "intersectionPixels": 4837,
+            "retention": 0.9977310231023102,
+            "predictedComponentAreaMm2": 5033.1875,
+            "touchesBorder": true,
+            "componentIoU": 0.06005562315313749
+          }
+        ],
+        "physical": {
+          "geometry": {
+            "passed": true,
+            "issues": [],
+            "finalGeometry": true,
+            "editorClearanceRequired": 1.5,
+            "nominalWidthRequired": 2.50501002004008,
+            "minimumInterSlitDistanceLower": 3.0790157869222785,
+            "minimumOuterSideClearance": 3.154049589091729,
+            "boundaryParityMatches": true,
+            "forwardSampleMismatchPixels": 0,
+            "forwardBoundaryAmbiguousPixels": 0,
+            "forwardSampleResolution": 101,
+            "geometryTolerance": 0.01,
+            "sharedCurvesStoredOnce": true,
+            "physicalAssemblyTested": false,
+            "limitations": [
+              "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+              "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+              "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+              "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+            ]
+          },
+          "paper": {
+            "status": "pass",
+            "requiredRemainingWidth": 2,
+            "nominalDiameter": 2.50501002004008,
+            "gridSpacing": 0.14285714285714285,
+            "clearanceGuard": 0.11101525445522108,
+            "families": [
+              {
+                "family": 0,
+                "status": "pass",
+                "detachedCertainCoreIslands": 0,
+                "detachedPossibleCoreIslands": 0,
+                "detachedPossibleArea": 0,
+                "foldIntervals": [
+                  {
+                    "interval": [
+                      0,
+                      5.183056526624289
+                    ],
+                    "certainCoreLength": 2.428571428571428,
+                    "possibleCoreLength": 2.8571428571428563
+                  },
+                  {
+                    "interval": [
+                      5.183056526624289,
+                      15.250908092751313
+                    ],
+                    "certainCoreLength": 7.000000000000006,
+                    "possibleCoreLength": 7.571428571428579
+                  },
+                  {
+                    "interval": [
+                      15.250908092751313,
+                      18.775224388824896
+                    ],
+                    "certainCoreLength": 0.857142857142857,
+                    "possibleCoreLength": 1.1428571428571426
+                  },
+                  {
+                    "interval": [
+                      18.775224388824896,
+                      96.73215287930074
+                    ],
+                    "certainCoreLength": 44.14285714285732,
+                    "possibleCoreLength": 55.85714285714329
+                  },
+                  {
+                    "interval": [
+                      96.73215287930074,
+                      100
+                    ],
+                    "certainCoreLength": 0.42857142857142855,
+                    "possibleCoreLength": 0.9999999999999998
+                  }
+                ]
+              },
+              {
+                "family": 1,
+                "status": "pass",
+                "detachedCertainCoreIslands": 0,
+                "detachedPossibleCoreIslands": 0,
+                "detachedPossibleArea": 0,
+                "foldIntervals": [
+                  {
+                    "interval": [
+                      0,
+                      3.267847120699275
+                    ],
+                    "certainCoreLength": 0.42857142857142855,
+                    "possibleCoreLength": 0.9999999999999998
+                  },
+                  {
+                    "interval": [
+                      3.267847120699275,
+                      11.90578643802202
+                    ],
+                    "certainCoreLength": 6.0000000000000036,
+                    "possibleCoreLength": 6.28571428571429
+                  },
+                  {
+                    "interval": [
+                      11.90578643802202,
+                      45.78724187107784
+                    ],
+                    "certainCoreLength": 31.14285714285707,
+                    "possibleCoreLength": 31.5714285714285
+                  },
+                  {
+                    "interval": [
+                      45.78724187107784,
+                      78.7776250218522
+                    ],
+                    "certainCoreLength": 26.8571428571428,
+                    "possibleCoreLength": 27.571428571428513
+                  },
+                  {
+                    "interval": [
+                      78.7776250218522,
+                      100
+                    ],
+                    "certainCoreLength": 18.428571428571402,
+                    "possibleCoreLength": 18.99999999999997
+                  }
+                ]
+              }
+            ],
+            "method": "Guarded lattice and independent unfolded polygon offsets",
+            "seconds": 0.5004332509999995,
+            "limitations": [
+              "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+              "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+              "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+              "Small tips and features below the explicitly stated area threshold are not certified."
+            ],
+            "latticeStatus": "pass",
+            "offset": {
+              "status": "pass",
+              "method": "Round polygon offsets of adaptively flattened unfolded cuts (Clipper2)",
+              "flatteningTolerance": 0.0005,
+              "arcTolerance": 0.0005,
+              "nominalDiameter": 2.50501002004008,
+              "requiredRemainingWidth": 2,
+              "minFeatureArea": 0.25,
+              "families": [
+                {
+                  "family": 0,
+                  "status": "pass",
+                  "significantFloatingCount": 0,
+                  "significantFloatingArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        5.183056526624289
+                      ],
+                      "anchoredCoreLength": 2.678527606321989
+                    },
+                    {
+                      "interval": [
+                        5.183056526624289,
+                        15.250908092751313
+                      ],
+                      "anchoredCoreLength": 7.367914199829102
+                    },
+                    {
+                      "interval": [
+                        15.250908092751313,
+                        18.775224388824896
+                      ],
+                      "anchoredCoreLength": 1.0202130140299417
+                    },
+                    {
+                      "interval": [
+                        18.775224388824896,
+                        96.73215287930074
+                      ],
+                      "anchoredCoreLength": 48.170668601989746
+                    },
+                    {
+                      "interval": [
+                        96.73215287930074,
+                        100
+                      ],
+                      "anchoredCoreLength": 0.7630028179541029
+                    }
+                  ],
+                  "probes": [
+                    {
+                      "delta": 0,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            5.183056526624289
+                          ],
+                          "anchoredCoreLength": 2.678527606321989
+                        },
+                        {
+                          "interval": [
+                            5.183056526624289,
+                            15.250908092751313
+                          ],
+                          "anchoredCoreLength": 7.367914199829102
+                        },
+                        {
+                          "interval": [
+                            15.250908092751313,
+                            18.775224388824896
+                          ],
+                          "anchoredCoreLength": 1.0202130140299417
+                        },
+                        {
+                          "interval": [
+                            18.775224388824896,
+                            96.73215287930074
+                          ],
+                          "anchoredCoreLength": 48.170668601989746
+                        },
+                        {
+                          "interval": [
+                            96.73215287930074,
+                            100
+                          ],
+                          "anchoredCoreLength": 0.7630028179541029
+                        }
+                      ]
+                    },
+                    {
+                      "delta": -0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            5.183056526624289
+                          ],
+                          "anchoredCoreLength": 2.6795282123792457
+                        },
+                        {
+                          "interval": [
+                            5.183056526624289,
+                            15.250908092751313
+                          ],
+                          "anchoredCoreLength": 7.369010925292969
+                        },
+                        {
+                          "interval": [
+                            15.250908092751313,
+                            18.775224388824896
+                          ],
+                          "anchoredCoreLength": 1.0212097132976368
+                        },
+                        {
+                          "interval": [
+                            18.775224388824896,
+                            96.73215287930074
+                          ],
+                          "anchoredCoreLength": 48.18762969970703
+                        },
+                        {
+                          "interval": [
+                            96.73215287930074,
+                            100
+                          ],
+                          "anchoredCoreLength": 0.7640104634260467
+                        }
+                      ]
+                    },
+                    {
+                      "delta": 0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            5.183056526624289
+                          ],
+                          "anchoredCoreLength": 2.6775288845494267
+                        },
+                        {
+                          "interval": [
+                            5.183056526624289,
+                            15.250908092751313
+                          ],
+                          "anchoredCoreLength": 7.366816520690918
+                        },
+                        {
+                          "interval": [
+                            15.250908092751313,
+                            18.775224388824896
+                          ],
+                          "anchoredCoreLength": 1.0192173688787562
+                        },
+                        {
+                          "interval": [
+                            18.775224388824896,
+                            96.73215287930074
+                          ],
+                          "anchoredCoreLength": 48.15367317199707
+                        },
+                        {
+                          "interval": [
+                            96.73215287930074,
+                            100
+                          ],
+                          "anchoredCoreLength": 0.7619949475429166
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "significantFloatingCount": 0,
+                  "significantFloatingArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        3.267847120699275
+                      ],
+                      "anchoredCoreLength": 0.7628364562988281
+                    },
+                    {
+                      "interval": [
+                        3.267847120699275,
+                        11.90578643802202
+                      ],
+                      "anchoredCoreLength": 6.1334265628003735
+                    },
+                    {
+                      "interval": [
+                        11.90578643802202,
+                        45.78724187107784
+                      ],
+                      "anchoredCoreLength": 31.352484073710883
+                    },
+                    {
+                      "interval": [
+                        45.78724187107784,
+                        78.7776250218522
+                      ],
+                      "anchoredCoreLength": 27.36086082458496
+                    },
+                    {
+                      "interval": [
+                        78.7776250218522,
+                        100
+                      ],
+                      "anchoredCoreLength": 18.717729342982224
+                    }
+                  ],
+                  "probes": [
+                    {
+                      "delta": 0,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            3.267847120699275
+                          ],
+                          "anchoredCoreLength": 0.7628364562988281
+                        },
+                        {
+                          "interval": [
+                            3.267847120699275,
+                            11.90578643802202
+                          ],
+                          "anchoredCoreLength": 6.1334265628003735
+                        },
+                        {
+                          "interval": [
+                            11.90578643802202,
+                            45.78724187107784
+                          ],
+                          "anchoredCoreLength": 31.352484073710883
+                        },
+                        {
+                          "interval": [
+                            45.78724187107784,
+                            78.7776250218522
+                          ],
+                          "anchoredCoreLength": 27.36086082458496
+                        },
+                        {
+                          "interval": [
+                            78.7776250218522,
+                            100
+                          ],
+                          "anchoredCoreLength": 18.717729342982224
+                        }
+                      ]
+                    },
+                    {
+                      "delta": -0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            3.267847120699275
+                          ],
+                          "anchoredCoreLength": 0.7638378143310547
+                        },
+                        {
+                          "interval": [
+                            3.267847120699275,
+                            11.90578643802202
+                          ],
+                          "anchoredCoreLength": 6.134427255087854
+                        },
+                        {
+                          "interval": [
+                            11.90578643802202,
+                            45.78724187107784
+                          ],
+                          "anchoredCoreLength": 31.353492265885485
+                        },
+                        {
+                          "interval": [
+                            45.78724187107784,
+                            78.7776250218522
+                          ],
+                          "anchoredCoreLength": 27.3624210357666
+                        },
+                        {
+                          "interval": [
+                            78.7776250218522,
+                            100
+                          ],
+                          "anchoredCoreLength": 18.71872555819752
+                        }
+                      ]
+                    },
+                    {
+                      "delta": 0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            3.267847120699275
+                          ],
+                          "anchoredCoreLength": 0.7618370056152344
+                        },
+                        {
+                          "interval": [
+                            3.267847120699275,
+                            11.90578643802202
+                          ],
+                          "anchoredCoreLength": 6.132426820060926
+                        },
+                        {
+                          "interval": [
+                            11.90578643802202,
+                            45.78724187107784
+                          ],
+                          "anchoredCoreLength": 31.351473250422828
+                        },
+                        {
+                          "interval": [
+                            45.78724187107784,
+                            78.7776250218522
+                          ],
+                          "anchoredCoreLength": 27.359302520751953
+                        },
+                        {
+                          "interval": [
+                            78.7776250218522,
+                            100
+                          ],
+                          "anchoredCoreLength": 18.716733952283292
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "limitations": [
+                "Finite flattening and radius probes, not an exact topology or physical strength certificate.",
+                "Offset topology need not vary monotonically with radius; passing probes do not certify all intermediate radii.",
+                "Features below the stated core-area threshold are not certified."
+              ],
+              "seconds": 0.30578458399999997
+            }
+          },
+          "materialResolution": 700
+        },
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "tolerance": 0.1,
+        "seconds": 1.2523245
+      },
+      {
+        "id": "real-202b8421f50252f2",
+        "preset": "caps-and-ribbon-unobserved",
+        "engineChecksPassed": true,
+        "independentEngineError": 0.0025084862781197858,
+        "observation": {
+          "file": "observed.bin",
+          "sha256": "ca9650713000029359b7a1ef151e3d6b5858b5cd813aee764f82dcd0e60fe1cc",
+          "observedPixels": 86905,
+          "totalPixels": 160000
+        },
+        "geometrySha256": "fc344b48e1a58be2acff0c98cd2c818901407af06993f53cc247ce30512ed253",
+        "maskSha256": "fa1f511165074bd08d8b8ed60fdfa10604dd59c2dce6adb123ddba8afb9ad420",
+        "editorIssues": [],
+        "fidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0024624590069616246,
+          "sourceError": 0.0024624590069616246
+        },
+        "editableImageComparison": {
+          "mismatchPixels": 214,
+          "observedPixels": 86905,
+          "observedFraction": 0.54315625,
+          "mismatchFraction": 0.0024624590069616246,
+          "weightMass": 86905,
+          "mismatchWeight": 214,
+          "wholeMismatchFraction": 0.0024624590069616246,
+          "protectedPixels": 86905,
+          "protectedMismatchFraction": 0.0024624590069616246,
+          "editablePixels": 0,
+          "editableChangeFraction": null
+        },
+        "editableError": 0.0024624590069616246,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              29.66693095324393,
+              31.827949438202246
+            ],
+            "sourceAreaMm2": 689.75,
+            "intersectionPixels": 11019,
+            "retention": 0.998459586806814,
+            "predictedComponentAreaMm2": 1894.375,
+            "touchesBorder": true,
+            "componentIoU": 0.36333959837768326
+          },
+          {
+            "centerMm": [
+              49.272981366459625,
+              50.4669254658385
+            ],
+            "sourceAreaMm2": 100.625,
+            "intersectionPixels": 1605,
+            "retention": 0.9968944099378882,
+            "predictedComponentAreaMm2": 610.625,
+            "touchesBorder": false,
+            "componentIoU": 0.16419437340153453
+          },
+          {
+            "centerMm": [
+              69.39245329400197,
+              51.15130285152409
+            ],
+            "sourceAreaMm2": 63.5625,
+            "intersectionPixels": 1009,
+            "retention": 0.992133726647001,
+            "predictedComponentAreaMm2": 610.625,
+            "touchesBorder": false,
+            "componentIoU": 0.1031908365718961
+          },
+          {
+            "centerMm": [
+              49.39073103022825,
+              68.02860888340531
+            ],
+            "sourceAreaMm2": 101.3125,
+            "intersectionPixels": 1617,
+            "retention": 0.9975323874151758,
+            "predictedComponentAreaMm2": 610.625,
+            "touchesBorder": false,
+            "componentIoU": 0.16543891958256599
+          },
+          {
+            "centerMm": [
+              69.82429846938776,
+              68.39732142857143
+            ],
+            "sourceAreaMm2": 49,
+            "intersectionPixels": 778,
+            "retention": 0.9923469387755102,
+            "predictedComponentAreaMm2": 610.625,
+            "touchesBorder": false,
+            "componentIoU": 0.07958265139116202
+          },
+          {
+            "centerMm": [
+              38.06258861380739,
+              42.10433253353692
+            ],
+            "sourceAreaMm2": 573.0625,
+            "intersectionPixels": 9153,
+            "retention": 0.998254989639001,
+            "predictedComponentAreaMm2": 4444,
+            "touchesBorder": true,
+            "componentIoU": 0.12869797525309337
+          },
+          {
+            "centerMm": [
+              29.429328718962864,
+              67.79798395956932
+            ],
+            "sourceAreaMm2": 284.4375,
+            "intersectionPixels": 4546,
+            "retention": 0.998901340364755,
+            "predictedComponentAreaMm2": 4444,
+            "touchesBorder": true,
+            "componentIoU": 0.06393002292255551
+          }
+        ],
+        "physical": {
+          "geometry": {
+            "passed": true,
+            "issues": [],
+            "finalGeometry": true,
+            "editorClearanceRequired": 1.5,
+            "nominalWidthRequired": 2.50501002004008,
+            "minimumInterSlitDistanceLower": 2.849791238874842,
+            "minimumOuterSideClearance": 3.077040528950519,
+            "boundaryParityMatches": true,
+            "forwardSampleMismatchPixels": 0,
+            "forwardBoundaryAmbiguousPixels": 0,
+            "forwardSampleResolution": 101,
+            "geometryTolerance": 0.01,
+            "sharedCurvesStoredOnce": true,
+            "physicalAssemblyTested": false,
+            "limitations": [
+              "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+              "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+              "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+              "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+            ]
+          },
+          "paper": {
+            "status": "pass",
+            "requiredRemainingWidth": 2,
+            "nominalDiameter": 2.50501002004008,
+            "gridSpacing": 0.14285714285714285,
+            "clearanceGuard": 0.11101525445522108,
+            "families": [
+              {
+                "family": 0,
+                "status": "pass",
+                "detachedCertainCoreIslands": 0,
+                "detachedPossibleCoreIslands": 0,
+                "detachedPossibleArea": 0,
+                "foldIntervals": [
+                  {
+                    "interval": [
+                      0,
+                      18.842913727906915
+                    ],
+                    "certainCoreLength": 15.99999999999998,
+                    "possibleCoreLength": 16.57142857142855
+                  },
+                  {
+                    "interval": [
+                      18.842913727906915,
+                      96.92295947104948
+                    ],
+                    "certainCoreLength": 44.71428571428591,
+                    "possibleCoreLength": 52.142857142857494
+                  },
+                  {
+                    "interval": [
+                      96.92295947104948,
+                      100
+                    ],
+                    "certainCoreLength": 0.2857142857142857,
+                    "possibleCoreLength": 0.857142857142857
+                  }
+                ]
+              },
+              {
+                "family": 1,
+                "status": "pass",
+                "detachedCertainCoreIslands": 0,
+                "detachedPossibleCoreIslands": 0,
+                "detachedPossibleArea": 0,
+                "foldIntervals": [
+                  {
+                    "interval": [
+                      0,
+                      45.7696549823168
+                    ],
+                    "certainCoreLength": 43.000000000000156,
+                    "possibleCoreLength": 43.428571428571594
+                  },
+                  {
+                    "interval": [
+                      45.7696549823168,
+                      78.89879053843151
+                    ],
+                    "certainCoreLength": 26.8571428571428,
+                    "possibleCoreLength": 27.571428571428513
+                  },
+                  {
+                    "interval": [
+                      78.89879053843151,
+                      100
+                    ],
+                    "certainCoreLength": 18.28571428571426,
+                    "possibleCoreLength": 18.85714285714283
+                  }
+                ]
+              }
+            ],
+            "method": "Guarded lattice and independent unfolded polygon offsets",
+            "seconds": 0.24450575000000024,
+            "limitations": [
+              "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+              "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+              "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+              "Small tips and features below the explicitly stated area threshold are not certified."
+            ],
+            "latticeStatus": "pass",
+            "offset": {
+              "status": "pass",
+              "method": "Round polygon offsets of adaptively flattened unfolded cuts (Clipper2)",
+              "flatteningTolerance": 0.0005,
+              "arcTolerance": 0.0005,
+              "nominalDiameter": 2.50501002004008,
+              "requiredRemainingWidth": 2,
+              "minFeatureArea": 0.25,
+              "families": [
+                {
+                  "family": 0,
+                  "status": "pass",
+                  "significantFloatingCount": 0,
+                  "significantFloatingArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        18.842913727906915
+                      ],
+                      "anchoredCoreLength": 16.338277943492074
+                    },
+                    {
+                      "interval": [
+                        18.842913727906915,
+                        96.92295947104948
+                      ],
+                      "anchoredCoreLength": 49.15306091308594
+                    },
+                    {
+                      "interval": [
+                        96.92295947104948,
+                        100
+                      ],
+                      "anchoredCoreLength": 0.5723455794136925
+                    }
+                  ],
+                  "probes": [
+                    {
+                      "delta": 0,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            18.842913727906915
+                          ],
+                          "anchoredCoreLength": 16.338277943492074
+                        },
+                        {
+                          "interval": [
+                            18.842913727906915,
+                            96.92295947104948
+                          ],
+                          "anchoredCoreLength": 49.15306091308594
+                        },
+                        {
+                          "interval": [
+                            96.92295947104948,
+                            100
+                          ],
+                          "anchoredCoreLength": 0.5723455794136925
+                        }
+                      ]
+                    },
+                    {
+                      "delta": -0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            18.842913727906915
+                          ],
+                          "anchoredCoreLength": 16.339282335658524
+                        },
+                        {
+                          "interval": [
+                            18.842913727906915,
+                            96.92295947104948
+                          ],
+                          "anchoredCoreLength": 49.17036533355713
+                        },
+                        {
+                          "interval": [
+                            96.92295947104948,
+                            100
+                          ],
+                          "anchoredCoreLength": 0.573352746153887
+                        }
+                      ]
+                    },
+                    {
+                      "delta": 0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            18.842913727906915
+                          ],
+                          "anchoredCoreLength": 16.337272663831143
+                        },
+                        {
+                          "interval": [
+                            18.842913727906915,
+                            96.92295947104948
+                          ],
+                          "anchoredCoreLength": 49.13575839996338
+                        },
+                        {
+                          "interval": [
+                            96.92295947104948,
+                            100
+                          ],
+                          "anchoredCoreLength": 0.571340117325704
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "significantFloatingCount": 0,
+                  "significantFloatingArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        45.7696549823168
+                      ],
+                      "anchoredCoreLength": 43.265142081234
+                    },
+                    {
+                      "interval": [
+                        45.7696549823168,
+                        78.89879053843151
+                      ],
+                      "anchoredCoreLength": 27.329222679138184
+                    },
+                    {
+                      "interval": [
+                        78.89879053843151,
+                        100
+                      ],
+                      "anchoredCoreLength": 18.596698752659094
+                    }
+                  ],
+                  "probes": [
+                    {
+                      "delta": 0,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            45.7696549823168
+                          ],
+                          "anchoredCoreLength": 43.265142081234
+                        },
+                        {
+                          "interval": [
+                            45.7696549823168,
+                            78.89879053843151
+                          ],
+                          "anchoredCoreLength": 27.329222679138184
+                        },
+                        {
+                          "interval": [
+                            78.89879053843151,
+                            100
+                          ],
+                          "anchoredCoreLength": 18.596698752659094
+                        }
+                      ]
+                    },
+                    {
+                      "delta": -0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            45.7696549823168
+                          ],
+                          "anchoredCoreLength": 43.26614237573289
+                        },
+                        {
+                          "interval": [
+                            45.7696549823168,
+                            78.89879053843151
+                          ],
+                          "anchoredCoreLength": 27.33074951171875
+                        },
+                        {
+                          "interval": [
+                            78.89879053843151,
+                            100
+                          ],
+                          "anchoredCoreLength": 18.597699140280696
+                        }
+                      ]
+                    },
+                    {
+                      "delta": 0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            45.7696549823168
+                          ],
+                          "anchoredCoreLength": 43.264141774410746
+                        },
+                        {
+                          "interval": [
+                            45.7696549823168,
+                            78.89879053843151
+                          ],
+                          "anchoredCoreLength": 27.3276948928833
+                        },
+                        {
+                          "interval": [
+                            78.89879053843151,
+                            100
+                          ],
+                          "anchoredCoreLength": 18.595698711715542
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "limitations": [
+                "Finite flattening and radius probes, not an exact topology or physical strength certificate.",
+                "Offset topology need not vary monotonically with radius; passing probes do not certify all intermediate radii.",
+                "Features below the stated core-area threshold are not certified."
+              ],
+              "seconds": 0.07181775000000017
+            }
+          },
+          "materialResolution": 700
+        },
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "tolerance": 0.1,
+        "seconds": 0.7005274589999999
+      },
+      {
+        "id": "known-two-cut-ribbon",
+        "preset": "unchanged",
+        "engineChecksPassed": true,
+        "independentEngineError": 0.003675,
+        "geometrySha256": "f9c87ec964a21aebe9a8756710950fdb1dbe29fe9012232f6e59d285f5c46643",
+        "maskSha256": "e7fa63da013a6bf6adbab7a7fdd55fb9dc7f8c5c7628fa806b80a37404c89dc2",
+        "editorIssues": [],
+        "fidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0001125
+            }
+          ],
+          "originalSourceError": 0.00386875,
+          "sourceError": 0.00386875
+        },
+        "editableImageComparison": {
+          "mismatchPixels": 619,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00386875
+        },
+        "editableError": 0.00386875,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              43.78699239440446,
+              44.2738523699579
+            ],
+            "sourceAreaMm2": 460.1875,
+            "intersectionPixels": 7133,
+            "retention": 0.9687627325818281,
+            "predictedComponentAreaMm2": 452.5625,
+            "touchesBorder": false,
+            "componentIoU": 0.9547583991433543
+          },
+          {
+            "centerMm": [
+              65.29918426103647,
+              44.21689059500959
+            ],
+            "sourceAreaMm2": 65.125,
+            "intersectionPixels": 1031,
+            "retention": 0.989443378119002,
+            "predictedComponentAreaMm2": 69.1875,
+            "touchesBorder": false,
+            "componentIoU": 0.9221824686940966
+          },
+          {
+            "centerMm": [
+              43.70585194375517,
+              64.98811000827129
+            ],
+            "sourceAreaMm2": 75.5625,
+            "intersectionPixels": 1071,
+            "retention": 0.8858560794044665,
+            "predictedComponentAreaMm2": 69.1875,
+            "touchesBorder": false,
+            "componentIoU": 0.8602409638554217
+          },
+          {
+            "centerMm": [
+              65.5,
+              65.25
+            ],
+            "sourceAreaMm2": 7.5,
+            "intersectionPixels": 111,
+            "retention": 0.925,
+            "predictedComponentAreaMm2": 7.625,
+            "touchesBorder": false,
+            "componentIoU": 0.8473282442748091
+          }
+        ],
+        "physical": {
+          "geometry": {
+            "passed": true,
+            "issues": [],
+            "finalGeometry": true,
+            "editorClearanceRequired": 1.5,
+            "nominalWidthRequired": 2.50501002004008,
+            "minimumInterSlitDistanceLower": 20.961517263988654,
+            "minimumOuterSideClearance": 33.20105320027157,
+            "boundaryParityMatches": true,
+            "forwardSampleMismatchPixels": 0,
+            "forwardBoundaryAmbiguousPixels": 0,
+            "forwardSampleResolution": 101,
+            "geometryTolerance": 0.01,
+            "sharedCurvesStoredOnce": true,
+            "physicalAssemblyTested": false,
+            "limitations": [
+              "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+              "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+              "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+              "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+            ]
+          },
+          "paper": {
+            "status": "pass",
+            "requiredRemainingWidth": 2,
+            "nominalDiameter": 2.50501002004008,
+            "gridSpacing": 0.2777777777777778,
+            "clearanceGuard": 0.20641855032959658,
+            "families": [
+              {
+                "family": 0,
+                "status": "pass",
+                "detachedCertainCoreIslands": 0,
+                "detachedPossibleCoreIslands": 0,
+                "detachedPossibleArea": 0,
+                "foldIntervals": [
+                  {
+                    "interval": [
+                      0,
+                      33.24951524267302
+                    ],
+                    "certainCoreLength": 30.27777777777784,
+                    "possibleCoreLength": 31.111111111111175
+                  },
+                  {
+                    "interval": [
+                      33.24951524267302,
+                      66.74988853685925
+                    ],
+                    "certainCoreLength": 30.555555555555618,
+                    "possibleCoreLength": 31.666666666666732
+                  },
+                  {
+                    "interval": [
+                      66.74988853685925,
+                      100
+                    ],
+                    "certainCoreLength": 30.27777777777784,
+                    "possibleCoreLength": 31.111111111111175
+                  }
+                ]
+              },
+              {
+                "family": 1,
+                "status": "pass",
+                "detachedCertainCoreIslands": 0,
+                "detachedPossibleCoreIslands": 0,
+                "detachedPossibleArea": 0,
+                "foldIntervals": [
+                  {
+                    "interval": [
+                      0,
+                      33.24951524267302
+                    ],
+                    "certainCoreLength": 30.27777777777784,
+                    "possibleCoreLength": 31.111111111111175
+                  },
+                  {
+                    "interval": [
+                      33.24951524267302,
+                      66.74988853685925
+                    ],
+                    "certainCoreLength": 30.555555555555618,
+                    "possibleCoreLength": 31.666666666666732
+                  },
+                  {
+                    "interval": [
+                      66.74988853685925,
+                      100
+                    ],
+                    "certainCoreLength": 30.27777777777784,
+                    "possibleCoreLength": 31.111111111111175
+                  }
+                ]
+              }
+            ],
+            "method": "Guarded lattice and independent unfolded polygon offsets",
+            "seconds": 0.03039391699999942,
+            "limitations": [
+              "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+              "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+              "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+              "Small tips and features below the explicitly stated area threshold are not certified."
+            ],
+            "latticeStatus": "pass",
+            "offset": {
+              "status": "pass",
+              "method": "Round polygon offsets of adaptively flattened unfolded cuts (Clipper2)",
+              "flatteningTolerance": 0.0005,
+              "arcTolerance": 0.0005,
+              "nominalDiameter": 2.50501002004008,
+              "requiredRemainingWidth": 2,
+              "minFeatureArea": 0.25,
+              "families": [
+                {
+                  "family": 0,
+                  "status": "pass",
+                  "significantFloatingCount": 0,
+                  "significantFloatingArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        33.24951524267302
+                      ],
+                      "anchoredCoreLength": 30.744504884983453
+                    },
+                    {
+                      "interval": [
+                        33.24951524267302,
+                        66.74988853685925
+                      ],
+                      "anchoredCoreLength": 30.99536418914795
+                    },
+                    {
+                      "interval": [
+                        66.74988853685925,
+                        100
+                      ],
+                      "anchoredCoreLength": 30.74510097503361
+                    }
+                  ],
+                  "probes": [
+                    {
+                      "delta": 0,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            33.24951524267302
+                          ],
+                          "anchoredCoreLength": 30.744504884983453
+                        },
+                        {
+                          "interval": [
+                            33.24951524267302,
+                            66.74988853685925
+                          ],
+                          "anchoredCoreLength": 30.99536418914795
+                        },
+                        {
+                          "interval": [
+                            66.74988853685925,
+                            100
+                          ],
+                          "anchoredCoreLength": 30.74510097503361
+                        }
+                      ]
+                    },
+                    {
+                      "delta": -0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            33.24951524267302
+                          ],
+                          "anchoredCoreLength": 30.745505289519343
+                        },
+                        {
+                          "interval": [
+                            33.24951524267302,
+                            66.74988853685925
+                          ],
+                          "anchoredCoreLength": 30.996363639831543
+                        },
+                        {
+                          "interval": [
+                            66.74988853685925,
+                            100
+                          ],
+                          "anchoredCoreLength": 30.74610137939152
+                        }
+                      ]
+                    },
+                    {
+                      "delta": 0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            33.24951524267302
+                          ],
+                          "anchoredCoreLength": 30.743504480723093
+                        },
+                        {
+                          "interval": [
+                            33.24951524267302,
+                            66.74988853685925
+                          ],
+                          "anchoredCoreLength": 30.994364738464355
+                        },
+                        {
+                          "interval": [
+                            66.74988853685925,
+                            100
+                          ],
+                          "anchoredCoreLength": 30.744100570675755
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "significantFloatingCount": 0,
+                  "significantFloatingArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        33.24951524267302
+                      ],
+                      "anchoredCoreLength": 30.744504884983453
+                    },
+                    {
+                      "interval": [
+                        33.24951524267302,
+                        66.74988853685925
+                      ],
+                      "anchoredCoreLength": 30.99536418914795
+                    },
+                    {
+                      "interval": [
+                        66.74988853685925,
+                        100
+                      ],
+                      "anchoredCoreLength": 30.74510097503361
+                    }
+                  ],
+                  "probes": [
+                    {
+                      "delta": 0,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            33.24951524267302
+                          ],
+                          "anchoredCoreLength": 30.744504884983453
+                        },
+                        {
+                          "interval": [
+                            33.24951524267302,
+                            66.74988853685925
+                          ],
+                          "anchoredCoreLength": 30.99536418914795
+                        },
+                        {
+                          "interval": [
+                            66.74988853685925,
+                            100
+                          ],
+                          "anchoredCoreLength": 30.74510097503361
+                        }
+                      ]
+                    },
+                    {
+                      "delta": -0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            33.24951524267302
+                          ],
+                          "anchoredCoreLength": 30.745505289519343
+                        },
+                        {
+                          "interval": [
+                            33.24951524267302,
+                            66.74988853685925
+                          ],
+                          "anchoredCoreLength": 30.996363639831543
+                        },
+                        {
+                          "interval": [
+                            66.74988853685925,
+                            100
+                          ],
+                          "anchoredCoreLength": 30.74610137939152
+                        }
+                      ]
+                    },
+                    {
+                      "delta": 0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            33.24951524267302
+                          ],
+                          "anchoredCoreLength": 30.743504480723093
+                        },
+                        {
+                          "interval": [
+                            33.24951524267302,
+                            66.74988853685925
+                          ],
+                          "anchoredCoreLength": 30.994364738464355
+                        },
+                        {
+                          "interval": [
+                            66.74988853685925,
+                            100
+                          ],
+                          "anchoredCoreLength": 30.744100570675755
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "limitations": [
+                "Finite flattening and radius probes, not an exact topology or physical strength certificate.",
+                "Offset topology need not vary monotonically with radius; passing probes do not certify all intermediate radii.",
+                "Features below the stated core-area threshold are not certified."
+              ],
+              "seconds": 0.0030697089999994205
+            }
+          },
+          "materialResolution": 360
+        },
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "tolerance": 0.25,
+        "seconds": 0.12048350000000027
+      },
+      {
+        "id": "known-two-cut-ribbon",
+        "preset": "caps-unobserved",
+        "engineChecksPassed": false,
+        "independentEngineError": 0.001479779411764706,
+        "observation": {
+          "file": "observed.bin",
+          "sha256": "b912b37d50db9d28794814f710a3d4cf2029c9bf7dcdcccd063640f5d8fbd0c4",
+          "observedPixels": 108800,
+          "totalPixels": 160000
+        },
+        "geometrySha256": "cf9076e26c3cee2da6aff75ddfb164d4c1543143344f1ff96bf4b64697872620",
+        "maskSha256": "e7fa63da013a6bf6adbab7a7fdd55fb9dc7f8c5c7628fa806b80a37404c89dc2",
+        "editorIssues": [],
+        "fidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.001838235294117647,
+          "sourceError": 0.001838235294117647
+        },
+        "editableImageComparison": {
+          "mismatchPixels": 200,
+          "observedPixels": 108800,
+          "observedFraction": 0.68,
+          "mismatchFraction": 0.001838235294117647,
+          "weightMass": 108800,
+          "mismatchWeight": 200,
+          "wholeMismatchFraction": 0.001838235294117647,
+          "protectedPixels": 108800,
+          "protectedMismatchFraction": 0.001838235294117647,
+          "editablePixels": 0,
+          "editableChangeFraction": null
+        },
+        "editableError": 0.001838235294117647,
+        "missingFeatures": 1,
+        "featureComponents": [
+          {
+            "centerMm": [
+              24.125,
+              26.625
+            ],
+            "sourceAreaMm2": 241.8125,
+            "intersectionPixels": 3869,
+            "retention": 1,
+            "predictedComponentAreaMm2": 1114.3125,
+            "touchesBorder": true,
+            "componentIoU": 0.21700600145829826
+          },
+          {
+            "centerMm": [
+              43.78699239440446,
+              44.2738523699579
+            ],
+            "sourceAreaMm2": 460.1875,
+            "intersectionPixels": 7351,
+            "retention": 0.9983702295260084,
+            "predictedComponentAreaMm2": 460.5,
+            "touchesBorder": false,
+            "componentIoU": 0.996070460704607
+          },
+          {
+            "centerMm": [
+              65.29918426103647,
+              44.21689059500959
+            ],
+            "sourceAreaMm2": 65.125,
+            "intersectionPixels": 1027,
+            "retention": 0.9856046065259118,
+            "predictedComponentAreaMm2": 1091.1875,
+            "touchesBorder": true,
+            "componentIoU": 0.05877303422227309
+          },
+          {
+            "centerMm": [
+              43.70585194375517,
+              64.98811000827129
+            ],
+            "sourceAreaMm2": 75.5625,
+            "intersectionPixels": 1183,
+            "retention": 0.978494623655914,
+            "predictedComponentAreaMm2": 1200.0625,
+            "touchesBorder": true,
+            "componentIoU": 0.06152805949966193
+          },
+          {
+            "centerMm": [
+              65.5,
+              65.25
+            ],
+            "sourceAreaMm2": 7.5,
+            "intersectionPixels": 114,
+            "retention": 0.95,
+            "predictedComponentAreaMm2": 1113.25,
+            "touchesBorder": true,
+            "componentIoU": 0.006398024469637446
+          }
+        ],
+        "physical": {
+          "geometry": {
+            "passed": true,
+            "issues": [],
+            "finalGeometry": true,
+            "editorClearanceRequired": 1.5,
+            "nominalWidthRequired": 2.50501002004008,
+            "minimumInterSlitDistanceLower": 5.797053766426484,
+            "minimumOuterSideClearance": 24.308197675451865,
+            "boundaryParityMatches": true,
+            "forwardSampleMismatchPixels": 0,
+            "forwardBoundaryAmbiguousPixels": 0,
+            "forwardSampleResolution": 101,
+            "geometryTolerance": 0.01,
+            "sharedCurvesStoredOnce": true,
+            "physicalAssemblyTested": false,
+            "limitations": [
+              "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+              "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+              "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+              "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+            ]
+          },
+          "paper": {
+            "status": "pass",
+            "requiredRemainingWidth": 2,
+            "nominalDiameter": 2.50501002004008,
+            "gridSpacing": 0.2777777777777778,
+            "clearanceGuard": 0.20641855032959658,
+            "families": [
+              {
+                "family": 0,
+                "status": "pass",
+                "detachedCertainCoreIslands": 0,
+                "detachedPossibleCoreIslands": 0,
+                "detachedPossibleArea": 0,
+                "foldIntervals": [
+                  {
+                    "interval": [
+                      0,
+                      33.22973329288046
+                    ],
+                    "certainCoreLength": 30.27777777777784,
+                    "possibleCoreLength": 31.111111111111175
+                  },
+                  {
+                    "interval": [
+                      33.22973329288046,
+                      66.77039895163881
+                    ],
+                    "certainCoreLength": 30.555555555555618,
+                    "possibleCoreLength": 31.666666666666732
+                  },
+                  {
+                    "interval": [
+                      66.77039895163881,
+                      100
+                    ],
+                    "certainCoreLength": 30.27777777777784,
+                    "possibleCoreLength": 31.111111111111175
+                  }
+                ]
+              },
+              {
+                "family": 1,
+                "status": "pass",
+                "detachedCertainCoreIslands": 0,
+                "detachedPossibleCoreIslands": 0,
+                "detachedPossibleArea": 0,
+                "foldIntervals": [
+                  {
+                    "interval": [
+                      0,
+                      33.22973176747554
+                    ],
+                    "certainCoreLength": 30.27777777777784,
+                    "possibleCoreLength": 31.111111111111175
+                  },
+                  {
+                    "interval": [
+                      33.22973176747554,
+                      66.76996056302086
+                    ],
+                    "certainCoreLength": 30.555555555555618,
+                    "possibleCoreLength": 31.666666666666732
+                  },
+                  {
+                    "interval": [
+                      66.76996056302086,
+                      100
+                    ],
+                    "certainCoreLength": 30.27777777777784,
+                    "possibleCoreLength": 31.111111111111175
+                  }
+                ]
+              }
+            ],
+            "method": "Guarded lattice and independent unfolded polygon offsets",
+            "seconds": 0.12492037399999936,
+            "limitations": [
+              "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+              "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+              "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+              "Small tips and features below the explicitly stated area threshold are not certified."
+            ],
+            "latticeStatus": "pass",
+            "offset": {
+              "status": "pass",
+              "method": "Round polygon offsets of adaptively flattened unfolded cuts (Clipper2)",
+              "flatteningTolerance": 0.0005,
+              "arcTolerance": 0.0005,
+              "nominalDiameter": 2.50501002004008,
+              "requiredRemainingWidth": 2,
+              "minFeatureArea": 0.25,
+              "families": [
+                {
+                  "family": 0,
+                  "status": "pass",
+                  "significantFloatingCount": 0,
+                  "significantFloatingArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        33.22973329288046
+                      ],
+                      "anchoredCoreLength": 30.724722862243652
+                    },
+                    {
+                      "interval": [
+                        33.22973329288046,
+                        66.77039895163881
+                      ],
+                      "anchoredCoreLength": 31.035655974243433
+                    },
+                    {
+                      "interval": [
+                        66.77039895163881,
+                        100
+                      ],
+                      "anchoredCoreLength": 30.724590301513672
+                    }
+                  ],
+                  "probes": [
+                    {
+                      "delta": 0,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            33.22973329288046
+                          ],
+                          "anchoredCoreLength": 30.724722862243652
+                        },
+                        {
+                          "interval": [
+                            33.22973329288046,
+                            66.77039895163881
+                          ],
+                          "anchoredCoreLength": 31.035655974243433
+                        },
+                        {
+                          "interval": [
+                            66.77039895163881,
+                            100
+                          ],
+                          "anchoredCoreLength": 30.724590301513672
+                        }
+                      ]
+                    },
+                    {
+                      "delta": -0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            33.22973329288046
+                          ],
+                          "anchoredCoreLength": 30.725723266601562
+                        },
+                        {
+                          "interval": [
+                            33.22973329288046,
+                            66.77039895163881
+                          ],
+                          "anchoredCoreLength": 31.036656378596838
+                        },
+                        {
+                          "interval": [
+                            66.77039895163881,
+                            100
+                          ],
+                          "anchoredCoreLength": 30.7255916595459
+                        }
+                      ]
+                    },
+                    {
+                      "delta": 0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            33.22973329288046
+                          ],
+                          "anchoredCoreLength": 30.72372341156006
+                        },
+                        {
+                          "interval": [
+                            33.22973329288046,
+                            66.77039895163881
+                          ],
+                          "anchoredCoreLength": 31.03465652355984
+                        },
+                        {
+                          "interval": [
+                            66.77039895163881,
+                            100
+                          ],
+                          "anchoredCoreLength": 30.723590850830078
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "significantFloatingCount": 0,
+                  "significantFloatingArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        33.22973176747554
+                      ],
+                      "anchoredCoreLength": 30.724721908569336
+                    },
+                    {
+                      "interval": [
+                        33.22973176747554,
+                        66.76996056302086
+                      ],
+                      "anchoredCoreLength": 31.03521919249885
+                    },
+                    {
+                      "interval": [
+                        66.76996056302086,
+                        100
+                      ],
+                      "anchoredCoreLength": 30.725028987093566
+                    }
+                  ],
+                  "probes": [
+                    {
+                      "delta": 0,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            33.22973176747554
+                          ],
+                          "anchoredCoreLength": 30.724721908569336
+                        },
+                        {
+                          "interval": [
+                            33.22973176747554,
+                            66.76996056302086
+                          ],
+                          "anchoredCoreLength": 31.03521919249885
+                        },
+                        {
+                          "interval": [
+                            66.76996056302086,
+                            100
+                          ],
+                          "anchoredCoreLength": 30.725028987093566
+                        }
+                      ]
+                    },
+                    {
+                      "delta": -0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            33.22973176747554
+                          ],
+                          "anchoredCoreLength": 30.725722312927246
+                        },
+                        {
+                          "interval": [
+                            33.22973176747554,
+                            66.76996056302086
+                          ],
+                          "anchoredCoreLength": 31.036218643182444
+                        },
+                        {
+                          "interval": [
+                            66.76996056302086,
+                            100
+                          ],
+                          "anchoredCoreLength": 30.726029391451476
+                        }
+                      ]
+                    },
+                    {
+                      "delta": 0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            33.22973176747554
+                          ],
+                          "anchoredCoreLength": 30.723721504211426
+                        },
+                        {
+                          "interval": [
+                            33.22973176747554,
+                            66.76996056302086
+                          ],
+                          "anchoredCoreLength": 31.034219741815257
+                        },
+                        {
+                          "interval": [
+                            66.76996056302086,
+                            100
+                          ],
+                          "anchoredCoreLength": 30.72402858274512
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "limitations": [
+                "Finite flattening and radius probes, not an exact topology or physical strength certificate.",
+                "Offset topology need not vary monotonically with radius; passing probes do not certify all intermediate radii.",
+                "Features below the stated core-area threshold are not certified."
+              ],
+              "seconds": 0.08060241599999972
+            }
+          },
+          "materialResolution": 360
+        },
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "tolerance": 0.025,
+        "seconds": 0.6914301660000001
+      },
+      {
+        "id": "known-two-cut-ribbon",
+        "preset": "ribbon-unobserved",
+        "engineChecksPassed": true,
+        "independentEngineError": 0,
+        "observation": {
+          "file": "observed.bin",
+          "sha256": "20ea031a32648dec9367313429fa51f3b51bc93a1721ebb3b0a6c3f1b4820b49",
+          "observedPixels": 135905,
+          "totalPixels": 160000
+        },
+        "geometrySha256": "93206eeeb2059c9aec639faae5dfcb43959639bd8546df62f62a6a50a1031206",
+        "maskSha256": "e7fa63da013a6bf6adbab7a7fdd55fb9dc7f8c5c7628fa806b80a37404c89dc2",
+        "editorIssues": [],
+        "fidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0,
+          "sourceError": 0
+        },
+        "editableImageComparison": {
+          "mismatchPixels": 0,
+          "observedPixels": 135905,
+          "observedFraction": 0.84940625,
+          "mismatchFraction": 0,
+          "weightMass": 135905,
+          "mismatchWeight": 0,
+          "wholeMismatchFraction": 0,
+          "protectedPixels": 135905,
+          "protectedMismatchFraction": 0,
+          "editablePixels": 0,
+          "editableChangeFraction": null
+        },
+        "editableError": 0,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              43.78699239440446,
+              44.2738523699579
+            ],
+            "sourceAreaMm2": 460.1875,
+            "intersectionPixels": 7363,
+            "retention": 1,
+            "predictedComponentAreaMm2": 1122.25,
+            "touchesBorder": false,
+            "componentIoU": 0.4100579193584317
+          },
+          {
+            "centerMm": [
+              65.29918426103647,
+              44.21689059500959
+            ],
+            "sourceAreaMm2": 65.125,
+            "intersectionPixels": 1042,
+            "retention": 1,
+            "predictedComponentAreaMm2": 1122.25,
+            "touchesBorder": false,
+            "componentIoU": 0.058030741813321456
+          },
+          {
+            "centerMm": [
+              43.70585194375517,
+              64.98811000827129
+            ],
+            "sourceAreaMm2": 75.5625,
+            "intersectionPixels": 1209,
+            "retention": 1,
+            "predictedComponentAreaMm2": 1122.25,
+            "touchesBorder": false,
+            "componentIoU": 0.06733125417687681
+          },
+          {
+            "centerMm": [
+              65.5,
+              65.25
+            ],
+            "sourceAreaMm2": 7.5,
+            "intersectionPixels": 120,
+            "retention": 1,
+            "predictedComponentAreaMm2": 1122.25,
+            "touchesBorder": false,
+            "componentIoU": 0.006683002895967922
+          }
+        ],
+        "physical": {
+          "geometry": {
+            "passed": true,
+            "issues": [],
+            "finalGeometry": true,
+            "editorClearanceRequired": 1.5,
+            "nominalWidthRequired": 2.50501002004008,
+            "minimumInterSlitDistanceLower": 33.47707839047958,
+            "minimumOuterSideClearance": 33.25136081278116,
+            "boundaryParityMatches": true,
+            "forwardSampleMismatchPixels": 0,
+            "forwardBoundaryAmbiguousPixels": 0,
+            "forwardSampleResolution": 101,
+            "geometryTolerance": 0.01,
+            "sharedCurvesStoredOnce": true,
+            "physicalAssemblyTested": false,
+            "limitations": [
+              "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+              "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+              "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+              "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+            ]
+          },
+          "paper": {
+            "status": "pass",
+            "requiredRemainingWidth": 2,
+            "nominalDiameter": 2.50501002004008,
+            "gridSpacing": 0.2777777777777778,
+            "clearanceGuard": 0.20641855032959658,
+            "families": [
+              {
+                "family": 0,
+                "status": "pass",
+                "detachedCertainCoreIslands": 0,
+                "detachedPossibleCoreIslands": 0,
+                "detachedPossibleArea": 0,
+                "foldIntervals": [
+                  {
+                    "interval": [
+                      0,
+                      33.25145640835576
+                    ],
+                    "certainCoreLength": 30.27777777777784,
+                    "possibleCoreLength": 31.111111111111175
+                  },
+                  {
+                    "interval": [
+                      33.25145640835576,
+                      66.74853479883535
+                    ],
+                    "certainCoreLength": 30.555555555555618,
+                    "possibleCoreLength": 31.666666666666732
+                  },
+                  {
+                    "interval": [
+                      66.74853479883535,
+                      100
+                    ],
+                    "certainCoreLength": 30.27777777777784,
+                    "possibleCoreLength": 31.111111111111175
+                  }
+                ]
+              },
+              {
+                "family": 1,
+                "status": "pass",
+                "detachedCertainCoreIslands": 0,
+                "detachedPossibleCoreIslands": 0,
+                "detachedPossibleArea": 0,
+                "foldIntervals": [
+                  {
+                    "interval": [
+                      0,
+                      33.25145640835576
+                    ],
+                    "certainCoreLength": 30.27777777777784,
+                    "possibleCoreLength": 31.111111111111175
+                  },
+                  {
+                    "interval": [
+                      33.25145640835576,
+                      66.74853479883535
+                    ],
+                    "certainCoreLength": 30.555555555555618,
+                    "possibleCoreLength": 31.666666666666732
+                  },
+                  {
+                    "interval": [
+                      66.74853479883535,
+                      100
+                    ],
+                    "certainCoreLength": 30.27777777777784,
+                    "possibleCoreLength": 31.111111111111175
+                  }
+                ]
+              }
+            ],
+            "method": "Guarded lattice and independent unfolded polygon offsets",
+            "seconds": 0.020975374999999984,
+            "limitations": [
+              "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+              "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+              "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+              "Small tips and features below the explicitly stated area threshold are not certified."
+            ],
+            "latticeStatus": "pass",
+            "offset": {
+              "status": "pass",
+              "method": "Round polygon offsets of adaptively flattened unfolded cuts (Clipper2)",
+              "flatteningTolerance": 0.0005,
+              "arcTolerance": 0.0005,
+              "nominalDiameter": 2.50501002004008,
+              "requiredRemainingWidth": 2,
+              "minFeatureArea": 0.25,
+              "families": [
+                {
+                  "family": 0,
+                  "status": "pass",
+                  "significantFloatingCount": 0,
+                  "significantFloatingArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        33.25145640835576
+                      ],
+                      "anchoredCoreLength": 30.746445655822754
+                    },
+                    {
+                      "interval": [
+                        33.25145640835576,
+                        66.74853479883535
+                      ],
+                      "anchoredCoreLength": 30.992069244384766
+                    },
+                    {
+                      "interval": [
+                        66.74853479883535,
+                        100
+                      ],
+                      "anchoredCoreLength": 30.7464542388916
+                    }
+                  ],
+                  "probes": [
+                    {
+                      "delta": 0,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            33.25145640835576
+                          ],
+                          "anchoredCoreLength": 30.746445655822754
+                        },
+                        {
+                          "interval": [
+                            33.25145640835576,
+                            66.74853479883535
+                          ],
+                          "anchoredCoreLength": 30.992069244384766
+                        },
+                        {
+                          "interval": [
+                            66.74853479883535,
+                            100
+                          ],
+                          "anchoredCoreLength": 30.7464542388916
+                        }
+                      ]
+                    },
+                    {
+                      "delta": -0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            33.25145640835576
+                          ],
+                          "anchoredCoreLength": 30.747446060180664
+                        },
+                        {
+                          "interval": [
+                            33.25145640835576,
+                            66.74853479883535
+                          ],
+                          "anchoredCoreLength": 30.99306869506836
+                        },
+                        {
+                          "interval": [
+                            66.74853479883535,
+                            100
+                          ],
+                          "anchoredCoreLength": 30.747455596923828
+                        }
+                      ]
+                    },
+                    {
+                      "delta": 0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            33.25145640835576
+                          ],
+                          "anchoredCoreLength": 30.74544620513916
+                        },
+                        {
+                          "interval": [
+                            33.25145640835576,
+                            66.74853479883535
+                          ],
+                          "anchoredCoreLength": 30.991068840026855
+                        },
+                        {
+                          "interval": [
+                            66.74853479883535,
+                            100
+                          ],
+                          "anchoredCoreLength": 30.745454788208008
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "significantFloatingCount": 0,
+                  "significantFloatingArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        33.25145640835576
+                      ],
+                      "anchoredCoreLength": 30.746445655822754
+                    },
+                    {
+                      "interval": [
+                        33.25145640835576,
+                        66.74853479883535
+                      ],
+                      "anchoredCoreLength": 30.992069244384766
+                    },
+                    {
+                      "interval": [
+                        66.74853479883535,
+                        100
+                      ],
+                      "anchoredCoreLength": 30.7464542388916
+                    }
+                  ],
+                  "probes": [
+                    {
+                      "delta": 0,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            33.25145640835576
+                          ],
+                          "anchoredCoreLength": 30.746445655822754
+                        },
+                        {
+                          "interval": [
+                            33.25145640835576,
+                            66.74853479883535
+                          ],
+                          "anchoredCoreLength": 30.992069244384766
+                        },
+                        {
+                          "interval": [
+                            66.74853479883535,
+                            100
+                          ],
+                          "anchoredCoreLength": 30.7464542388916
+                        }
+                      ]
+                    },
+                    {
+                      "delta": -0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            33.25145640835576
+                          ],
+                          "anchoredCoreLength": 30.747446060180664
+                        },
+                        {
+                          "interval": [
+                            33.25145640835576,
+                            66.74853479883535
+                          ],
+                          "anchoredCoreLength": 30.99306869506836
+                        },
+                        {
+                          "interval": [
+                            66.74853479883535,
+                            100
+                          ],
+                          "anchoredCoreLength": 30.747455596923828
+                        }
+                      ]
+                    },
+                    {
+                      "delta": 0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            33.25145640835576
+                          ],
+                          "anchoredCoreLength": 30.74544620513916
+                        },
+                        {
+                          "interval": [
+                            33.25145640835576,
+                            66.74853479883535
+                          ],
+                          "anchoredCoreLength": 30.991068840026855
+                        },
+                        {
+                          "interval": [
+                            66.74853479883535,
+                            100
+                          ],
+                          "anchoredCoreLength": 30.745454788208008
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "limitations": [
+                "Finite flattening and radius probes, not an exact topology or physical strength certificate.",
+                "Offset topology need not vary monotonically with radius; passing probes do not certify all intermediate radii.",
+                "Features below the stated core-area threshold are not certified."
+              ],
+              "seconds": 0.0012235000000000583
+            }
+          },
+          "materialResolution": 360
+        },
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "tolerance": 0.25,
+        "seconds": 0.18523375000000034
+      },
+      {
+        "id": "known-two-cut-ribbon",
+        "preset": "caps-and-ribbon-unobserved",
+        "engineChecksPassed": true,
+        "independentEngineError": 0,
+        "observation": {
+          "file": "observed.bin",
+          "sha256": "ca9650713000029359b7a1ef151e3d6b5858b5cd813aee764f82dcd0e60fe1cc",
+          "observedPixels": 86905,
+          "totalPixels": 160000
+        },
+        "geometrySha256": "103019029ed4f328584cce98e5f7baf4ce906bd881e35a7a3b3376e42cd5b9f8",
+        "maskSha256": "e7fa63da013a6bf6adbab7a7fdd55fb9dc7f8c5c7628fa806b80a37404c89dc2",
+        "editorIssues": [],
+        "fidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.00060625
+            }
+          ],
+          "originalSourceError": 0,
+          "sourceError": 0
+        },
+        "editableImageComparison": {
+          "mismatchPixels": 0,
+          "observedPixels": 86905,
+          "observedFraction": 0.54315625,
+          "mismatchFraction": 0,
+          "weightMass": 86905,
+          "mismatchWeight": 0,
+          "wholeMismatchFraction": 0,
+          "protectedPixels": 86905,
+          "protectedMismatchFraction": 0,
+          "editablePixels": 0,
+          "editableChangeFraction": null
+        },
+        "editableError": 0,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              24.125,
+              26.625
+            ],
+            "sourceAreaMm2": 241.8125,
+            "intersectionPixels": 3869,
+            "retention": 1,
+            "predictedComponentAreaMm2": 1105.5625,
+            "touchesBorder": true,
+            "componentIoU": 0.2187235004805246
+          },
+          {
+            "centerMm": [
+              43.78699239440446,
+              44.2738523699579
+            ],
+            "sourceAreaMm2": 460.1875,
+            "intersectionPixels": 7363,
+            "retention": 1,
+            "predictedComponentAreaMm2": 1122.25,
+            "touchesBorder": false,
+            "componentIoU": 0.4100579193584317
+          },
+          {
+            "centerMm": [
+              65.29918426103647,
+              44.21689059500959
+            ],
+            "sourceAreaMm2": 65.125,
+            "intersectionPixels": 1042,
+            "retention": 1,
+            "predictedComponentAreaMm2": 1122.25,
+            "touchesBorder": false,
+            "componentIoU": 0.058030741813321456
+          },
+          {
+            "centerMm": [
+              43.70585194375517,
+              64.98811000827129
+            ],
+            "sourceAreaMm2": 75.5625,
+            "intersectionPixels": 1209,
+            "retention": 1,
+            "predictedComponentAreaMm2": 1122.25,
+            "touchesBorder": false,
+            "componentIoU": 0.06733125417687681
+          },
+          {
+            "centerMm": [
+              65.5,
+              65.25
+            ],
+            "sourceAreaMm2": 7.5,
+            "intersectionPixels": 120,
+            "retention": 1,
+            "predictedComponentAreaMm2": 1122.25,
+            "touchesBorder": false,
+            "componentIoU": 0.006683002895967922
+          },
+          {
+            "centerMm": [
+              43.51923518603583,
+              26.64257005052825
+            ],
+            "sourceAreaMm2": 272.125,
+            "intersectionPixels": 4354,
+            "retention": 1,
+            "predictedComponentAreaMm2": 1113.875,
+            "touchesBorder": true,
+            "componentIoU": 0.24430479183032208
+          },
+          {
+            "centerMm": [
+              65.0925925925926,
+              26.53240740740741
+            ],
+            "sourceAreaMm2": 43.875,
+            "intersectionPixels": 702,
+            "retention": 1,
+            "predictedComponentAreaMm2": 1113.875,
+            "touchesBorder": true,
+            "componentIoU": 0.03938951857255078
+          },
+          {
+            "centerMm": [
+              24.161763525445497,
+              43.91674024723069
+            ],
+            "sourceAreaMm2": 389.3125,
+            "intersectionPixels": 6229,
+            "retention": 1,
+            "predictedComponentAreaMm2": 1113.875,
+            "touchesBorder": true,
+            "componentIoU": 0.3495118392997419
+          },
+          {
+            "centerMm": [
+              23.93034188034188,
+              64.7431623931624
+            ],
+            "sourceAreaMm2": 73.125,
+            "intersectionPixels": 1170,
+            "retention": 1,
+            "predictedComponentAreaMm2": 1113.875,
+            "touchesBorder": true,
+            "componentIoU": 0.06564919762091796
+          }
+        ],
+        "physical": {
+          "geometry": {
+            "passed": true,
+            "issues": [],
+            "finalGeometry": true,
+            "editorClearanceRequired": 1.5,
+            "nominalWidthRequired": 2.50501002004008,
+            "minimumInterSlitDistanceLower": 33.28465622694259,
+            "minimumOuterSideClearance": 33.25127635198295,
+            "boundaryParityMatches": true,
+            "forwardSampleMismatchPixels": 0,
+            "forwardBoundaryAmbiguousPixels": 0,
+            "forwardSampleResolution": 101,
+            "geometryTolerance": 0.01,
+            "sharedCurvesStoredOnce": true,
+            "physicalAssemblyTested": false,
+            "limitations": [
+              "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+              "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+              "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+              "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+            ]
+          },
+          "paper": {
+            "status": "pass",
+            "requiredRemainingWidth": 2,
+            "nominalDiameter": 2.50501002004008,
+            "gridSpacing": 0.2777777777777778,
+            "clearanceGuard": 0.20641855032959658,
+            "families": [
+              {
+                "family": 0,
+                "status": "pass",
+                "detachedCertainCoreIslands": 0,
+                "detachedPossibleCoreIslands": 0,
+                "detachedPossibleArea": 0,
+                "foldIntervals": [
+                  {
+                    "interval": [
+                      0,
+                      33.25145642393141
+                    ],
+                    "certainCoreLength": 30.27777777777784,
+                    "possibleCoreLength": 31.111111111111175
+                  },
+                  {
+                    "interval": [
+                      33.25145642393141,
+                      66.74852978657509
+                    ],
+                    "certainCoreLength": 30.555555555555618,
+                    "possibleCoreLength": 31.666666666666732
+                  },
+                  {
+                    "interval": [
+                      66.74852978657509,
+                      100
+                    ],
+                    "certainCoreLength": 30.27777777777784,
+                    "possibleCoreLength": 31.111111111111175
+                  }
+                ]
+              },
+              {
+                "family": 1,
+                "status": "pass",
+                "detachedCertainCoreIslands": 0,
+                "detachedPossibleCoreIslands": 0,
+                "detachedPossibleArea": 0,
+                "foldIntervals": [
+                  {
+                    "interval": [
+                      0,
+                      33.25145642393141
+                    ],
+                    "certainCoreLength": 30.27777777777784,
+                    "possibleCoreLength": 31.111111111111175
+                  },
+                  {
+                    "interval": [
+                      33.25145642393141,
+                      66.74852978657509
+                    ],
+                    "certainCoreLength": 30.555555555555618,
+                    "possibleCoreLength": 31.666666666666732
+                  },
+                  {
+                    "interval": [
+                      66.74852978657509,
+                      100
+                    ],
+                    "certainCoreLength": 30.27777777777784,
+                    "possibleCoreLength": 31.111111111111175
+                  }
+                ]
+              }
+            ],
+            "method": "Guarded lattice and independent unfolded polygon offsets",
+            "seconds": 0.021156916999999338,
+            "limitations": [
+              "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+              "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+              "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+              "Small tips and features below the explicitly stated area threshold are not certified."
+            ],
+            "latticeStatus": "pass",
+            "offset": {
+              "status": "pass",
+              "method": "Round polygon offsets of adaptively flattened unfolded cuts (Clipper2)",
+              "flatteningTolerance": 0.0005,
+              "arcTolerance": 0.0005,
+              "nominalDiameter": 2.50501002004008,
+              "requiredRemainingWidth": 2,
+              "minFeatureArea": 0.25,
+              "families": [
+                {
+                  "family": 0,
+                  "status": "pass",
+                  "significantFloatingCount": 0,
+                  "significantFloatingArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        33.25145642393141
+                      ],
+                      "anchoredCoreLength": 30.746445655822754
+                    },
+                    {
+                      "interval": [
+                        33.25145642393141,
+                        66.74852978657509
+                      ],
+                      "anchoredCoreLength": 30.992064473501223
+                    },
+                    {
+                      "interval": [
+                        66.74852978657509,
+                        100
+                      ],
+                      "anchoredCoreLength": 30.7464599609375
+                    }
+                  ],
+                  "probes": [
+                    {
+                      "delta": 0,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            33.25145642393141
+                          ],
+                          "anchoredCoreLength": 30.746445655822754
+                        },
+                        {
+                          "interval": [
+                            33.25145642393141,
+                            66.74852978657509
+                          ],
+                          "anchoredCoreLength": 30.992064473501223
+                        },
+                        {
+                          "interval": [
+                            66.74852978657509,
+                            100
+                          ],
+                          "anchoredCoreLength": 30.7464599609375
+                        }
+                      ]
+                    },
+                    {
+                      "delta": -0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            33.25145642393141
+                          ],
+                          "anchoredCoreLength": 30.747446060180664
+                        },
+                        {
+                          "interval": [
+                            33.25145642393141,
+                            66.74852978657509
+                          ],
+                          "anchoredCoreLength": 30.993063924187588
+                        },
+                        {
+                          "interval": [
+                            66.74852978657509,
+                            100
+                          ],
+                          "anchoredCoreLength": 30.74746036529541
+                        }
+                      ]
+                    },
+                    {
+                      "delta": 0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            33.25145642393141
+                          ],
+                          "anchoredCoreLength": 30.74544620513916
+                        },
+                        {
+                          "interval": [
+                            33.25145642393141,
+                            66.74852978657509
+                          ],
+                          "anchoredCoreLength": 30.99106406914659
+                        },
+                        {
+                          "interval": [
+                            66.74852978657509,
+                            100
+                          ],
+                          "anchoredCoreLength": 30.74545955657959
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "significantFloatingCount": 0,
+                  "significantFloatingArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        33.25145642393141
+                      ],
+                      "anchoredCoreLength": 30.746445655822754
+                    },
+                    {
+                      "interval": [
+                        33.25145642393141,
+                        66.74852978657509
+                      ],
+                      "anchoredCoreLength": 30.992064473501223
+                    },
+                    {
+                      "interval": [
+                        66.74852978657509,
+                        100
+                      ],
+                      "anchoredCoreLength": 30.7464599609375
+                    }
+                  ],
+                  "probes": [
+                    {
+                      "delta": 0,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            33.25145642393141
+                          ],
+                          "anchoredCoreLength": 30.746445655822754
+                        },
+                        {
+                          "interval": [
+                            33.25145642393141,
+                            66.74852978657509
+                          ],
+                          "anchoredCoreLength": 30.992064473501223
+                        },
+                        {
+                          "interval": [
+                            66.74852978657509,
+                            100
+                          ],
+                          "anchoredCoreLength": 30.7464599609375
+                        }
+                      ]
+                    },
+                    {
+                      "delta": -0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            33.25145642393141
+                          ],
+                          "anchoredCoreLength": 30.747446060180664
+                        },
+                        {
+                          "interval": [
+                            33.25145642393141,
+                            66.74852978657509
+                          ],
+                          "anchoredCoreLength": 30.993063924187588
+                        },
+                        {
+                          "interval": [
+                            66.74852978657509,
+                            100
+                          ],
+                          "anchoredCoreLength": 30.74746036529541
+                        }
+                      ]
+                    },
+                    {
+                      "delta": 0.0005,
+                      "passed": true,
+                      "significantFloatingCount": 0,
+                      "significantFloatingArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            33.25145642393141
+                          ],
+                          "anchoredCoreLength": 30.74544620513916
+                        },
+                        {
+                          "interval": [
+                            33.25145642393141,
+                            66.74852978657509
+                          ],
+                          "anchoredCoreLength": 30.99106406914659
+                        },
+                        {
+                          "interval": [
+                            66.74852978657509,
+                            100
+                          ],
+                          "anchoredCoreLength": 30.74545955657959
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "limitations": [
+                "Finite flattening and radius probes, not an exact topology or physical strength certificate.",
+                "Offset topology need not vary monotonically with radius; passing probes do not certify all intermediate radii.",
+                "Features below the stated core-area threshold are not certified."
+              ],
+              "seconds": 0.0013410420000000158
+            }
+          },
+          "materialResolution": 360
+        },
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "tolerance": 0.25,
+        "seconds": 0.1834858750000003
+      }
+    ]
+  },
+  "findings": [
+    "The ribbon-corrupted known grid passes current input checks at 0.3675% disagreement while deviating 5.2525% from its latent clean weave. Input-mask agreement alone does not identify physical paper identity.",
+    "Correctly supplied ribbon uncertainty allows exact clean-mask recovery in this controlled grid. Hiding an unrelated border does not: its clean error rises to 6.259375%.",
+    "The real photograph retains distorted geometry in the unobserved ribbon region even when observed error falls to 0.250849%. There is no independently verified hidden template; no real-photo recovery claim.",
+    "The input crop, classified mask, and annotation regions stay fixed in all arms. Weighted inputs use the existing direct path while the unweighted arm can also try MILP.",
+    "All eight exports pass engine geometry and nominal-paper checks, convert to editable SVG, and pass editor intersection rules. None of the four real-photograph candidates passes all original full-mask checks."
+  ],
+  "visualReview": {
+    "allEightReviewed": true,
+    "realFinding": "Removing cap and ribbon observations reduces visible target disagreement but leaves pronounced central hooks and curved border extensions. This is not a clean recovered checker.",
+    "syntheticFinding": "The correctly masked ribbon control recovers the underlying checker; the unmasked and irrelevant-border variants retain ribbon-shaped distortions."
+  },
+  "nextDiagnosis": "The real both-unobserved candidate proposes 15 near-straight span reductions but rejects their batch on boundary_objective. Test continuous scoring per independent edit group without loosening final objective, source-feature, geometry or paper gates. This local cleanup cannot by itself establish the hidden design.",
+  "artifactsSha256": {
+    "tmp/heart-learning/flower-occlusion-v1/plan.json": "25526c55e21286714dda631cc9dbc983942181dba58c4c14b6ed6643dd85170c",
+    "tmp/heart-learning/flower-occlusion-v1/replay.mjs": "1dafd1c1215f74ab76395e4891947f69ea8ff4c353c644ad756562721604f69d",
+    "tmp/heart-learning/flower-occlusion-v1/report.json": "f91adb64448987e67789c1199eee311c229a4ee212780ad03b61821e42e26f93",
+    "tmp/heart-learning/flower-occlusion-v1/source.json": "f5ff63a1ead86442ea46e96cf7a25376802f6f63f6444e7681712e7b85cc01b7",
+    "tmp/heart-learning/flower-occlusion-v1/state.json": "90df4880dccf2030de490c9b381cbc786da53838b993730840a291d24336fc3b",
+    "tmp/heart-learning/flower-occlusion-v1/summary.json": "b29878084a1b5a1e6e0a258afa6612ef02b92e9358a426301a65fb8ccd4b3792",
+    "tmp/heart-learning/flower-occlusion-v1/real-202b8421f50252f2-comparison.png": "548d87847b3fd0423e1534d0e3385206049a9b6ce748b27944c945a6dd77e8da",
+    "tmp/heart-learning/flower-occlusion-v1/known-two-cut-ribbon-comparison.png": "a396920a51cb305bb9aabcc607d876f1cc8bad845c32c58e7103c09ef2a607e9",
+    "tmp/heart-learning/flower-occlusion-v1/editable/results.json": "92edd89d9c95defad8a762978b9b4156558e8b0a507da991e91b2a6dec87fe14"
+  },
+  "postFitAnnotationCorrection": {
+    "reference": "docs/inverse/datasets/ribbon-coverage-plan.json",
+    "finding": "Later enlarged RGB review shows that the original vertical uncertainty polygon clips the ribbon's right edge. The claim that it conservatively covers the ribbon fringe is withdrawn. Original experiment inputs and results remain unchanged; they do not isolate a fully hidden ribbon."
+  }
+}

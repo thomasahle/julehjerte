@@ -1,0 +1,108 @@
+{
+  "status": "controlled_regressions_focused_replays_and_application_checks_pass_browser_diagnostic_running",
+  "runtime": "6efe473",
+  "sourceCapture": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/scoped-qa/live-failure-captures/corner-regions.json",
+  "sourceSha256": "c589de4676b2a6d7a4a1fa8b4470058adf2fed3fc872e98494abbda83962edf2",
+  "test": "a fully observed mask refines or replaces corner routing without opening its enclosed regions",
+  "returnedEngineError": 0.01799375,
+  "returnedGeometryPassed": true,
+  "returnedPaperStatus": "pass",
+  "comparisonSelected": false,
+  "discardedRepair": {
+    "accepted": false,
+    "budgetSeconds": 2.611247833000001,
+    "imageError": 0.01413125,
+    "reason": "deadline",
+    "seconds": 2.6331586250000036,
+    "steps": 85,
+    "projectionSeconds": 0.710307458000003,
+    "refinementSeconds": 1.7688825829999988
+  },
+  "discardedGeometryPassed": true,
+  "discardedFeaturesPassed": true,
+  "discardedPaperStatus": "pass",
+  "overrunMilliseconds": 21.910792000002566,
+  "sourceCode": "static/inverse/core/direct/rejected-routing.js",
+  "finding": "A separately projected and refined routing passed all existing geometry, source-image, feature and paper checks, but the final deadline guard discarded it after the checks ended 21.91ms late. No independent export geometry of this discarded candidate was saved; its logged checks are evidence, not an independent export certification.",
+  "nextExperiment": "A guarded five-case ABBA browser diagnostic is starting on unchanged eaa358a sources, followed by full22Hunodan measurements. The previous full inverse failure record remains unresolved; no preview refresh or release claim.",
+  "browser": "Prepared browser comparison must not start while full suite fails.",
+  "evidenceSummarySha256": "305073764d40240dbcbced3e232274d59cd979d1a472994978e78447634345d4",
+  "verificationScope": "The original discarded candidate has logged geometry, image, feature and paper results but no saved cut coordinates. A separate controlled-clock regression now independently renders and validates the retained repair; fresh photograph replays remain pending.",
+  "previousFullSuite": {
+    "path": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/scoped-qa/summary.json",
+    "sha256": "3838a17926e6f245f1866702f35d2fcdacaba48f3e3f47e68a3d64e59c49eef5",
+    "runtime": "6efe473",
+    "passed": 1057,
+    "failed": 5,
+    "seconds": 1394.841350458,
+    "pinnedSourcesUnchanged": 1044
+  },
+  "controlledRegression": {
+    "test": "scripts/inverse/rejected-routing-deadline.test.mjs",
+    "delayMilliseconds": 25,
+    "engineImageError": 0.008192,
+    "before": {
+      "passed": 2,
+      "failed": 1,
+      "reason": "deadline",
+      "geometry": true,
+      "features": true,
+      "paper": "pass"
+    },
+    "after": {
+      "passed": 3,
+      "failed": 0,
+      "independentExportChecked": true
+    },
+    "logs": {
+      "before.log": {
+        "path": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/before.log",
+        "sha256": "90e8e3e54d78a72df2cae6d1ee3430d5e18742fd0b0264d640d4f3b843740697"
+      },
+      "after.log": {
+        "path": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/after.log",
+        "sha256": "271ab9d7af729267448c58213dc4927db105057a5ccf7e5beb3d0a8f6060ac66"
+      }
+    }
+  },
+  "freshQa": {
+    "path": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/qa/state.json",
+    "sha256": "9ed915682994cf1c214992384f44a6944278209657cb58a9bcf70731cb26e252",
+    "runtime": "eaa358a",
+    "relatedTests": 19,
+    "failureReplayTests": 19,
+    "applicationPassed": 874,
+    "applicationSkipped": 1,
+    "check": "passed",
+    "lint": "passed",
+    "build": "passed",
+    "sourceFilesUnchanged": 1045,
+    "scope": "Focused current tests and standard application checks; not a new complete inverse run."
+  },
+  "independentCurvedReplays": {
+    "path": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/curved-independent.json",
+    "sha256": "cda44efb141381d874832f27da2a36d70b518b2a19b4330acb28d415c621f8c6",
+    "partial": {
+      "previous": 0.015030166619775548,
+      "current": 0.006045828253462128
+    },
+    "fullyObserved": {
+      "previous": 0.01809375,
+      "current": 0.01335625
+    },
+    "geometryAndPaper": "all four saved outputs pass independent audits",
+    "qualification": "Different timed trajectories; new partial repair has zero recorded overrun, so these quality changes are not solely attributed to completed-audit retention."
+  },
+  "remainingQualityIssue": {
+    "case": "photo-bauble",
+    "capture": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/qa/captures/2162-3.json",
+    "sourceMaskSha256": "00b9ea58bb82c87c687e9ea7595f89ec9baadf597ca2663f9845f58093876ce2",
+    "engineError": 0.04397315539884051,
+    "acceptanceLimit": 0.03,
+    "missingRegions": 3,
+    "geometry": true,
+    "paper": "pass",
+    "templateChecksPassed": false,
+    "note": "The fallback regression permits under5%error, so its pass is not recovery of the motif."
+  }
+}

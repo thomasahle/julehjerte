@@ -1,0 +1,48 @@
+{
+  "schema": "woven-heart-real-pilot-folds-1",
+  "labelsManifestSha256": "45077772be82a9d46054a82f3e873b94a6dfa700dbe1d0a68bfb0910a3f58f06",
+  "annotationsSha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5",
+  "scope": "Temporary grouped cross-validation for this inspected ten-photo pilot. Global source allocations remain unassigned; cross-corpus motif review is incomplete. Not topology-disjoint or an unseen test. Existing QA photographs remain excluded.",
+  "groups": [
+    {
+      "id": "publisher-motif-hearts",
+      "members": [
+        "real-5330aa8b62176216-body-1",
+        "real-abf590088db891f9-body-1",
+        "real-340f5e5b0f447889-body-1"
+      ],
+      "reason": "These three different motifs share the same inherited publisher/source group."
+    },
+    {
+      "id": "straight-checker",
+      "members": [
+        "real-995899fe049540ed-body-1",
+        "real-b87b0b19f12724f3-body-1",
+        "real-12ce3c9180f7f317-body-1",
+        "real-f4b397c381357dfa-body-1",
+        "real-68d8f25d8891df62-body-1",
+        "real-d5b0aa8d4d2465ee-body-1"
+      ],
+      "reason": "Conservatively group straight checker weaving across counts, printed decoration, paper textures and photographs."
+    },
+    {
+      "id": "curved-checker",
+      "members": [
+        "real-39f3a1ba97852876-body-1"
+      ],
+      "reason": "Curved visible checker motif; separate visual family, not a claim of distinct cut topology."
+    }
+  ],
+  "protocol": {
+    "updates": 120,
+    "seed": 20261013,
+    "learningRate": 0.0001,
+    "weightDecay": 0.0001,
+    "batchSize": 4,
+    "realPerMixedBatch": 2,
+    "syntheticReplayGeometries": 32,
+    "initialization": "frozen scene-trained checkpoint from foreground-scene-v1",
+    "adaptation": "Freeze encoder parameters AND running statistics; train lateral/detail/head only. Fixed final update; no holdout checkpoint selection.",
+    "comparison": "One synthetic-only adaptation control and three real+synthetic runs with the same initialization, common replay pairs, augmentation draws and update budget."
+  }
+}

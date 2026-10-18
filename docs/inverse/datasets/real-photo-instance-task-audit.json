@@ -1,0 +1,2004 @@
+{
+  "schema": "heart-instance-task-audit-1",
+  "createdAt": "2026-10-16T18:04:51.048471+00:00",
+  "scope": "Read-only current annotation/input semantics audit. No corpus, labels, artifacts, model, source-group or split changes.",
+  "sourceManifest": {
+    "path": "docs/inverse/datasets/real-manifest.json",
+    "sha256": "0f3086fca422238235cbd8d9a46d154f42d1f00b8bd1e336892b3f69331a52d1"
+  },
+  "summary": {
+    "currentBodyInstances": 24,
+    "currentPartialMaterialInstances": 22,
+    "currentVisuallySingleIdentifiableHeartPhotos": 24,
+    "currentClearlyMultiHeartSelectedInstanceConflicts": 0,
+    "currentIndependentSelectionCuesRecorded": 0,
+    "currentApproximateOverlapCornerTargets": 6,
+    "bodyOnlyWithoutPartialMaterials": [
+      "real-4066fe9f9aafb3e4-body-1",
+      "real-f4b397c381357dfa-body-1"
+    ],
+    "currentQaReservedBodyInstances": 1,
+    "separateDrafts": 2,
+    "draftOtherHeartNegativeProbeCount": 6
+  },
+  "currentAnnotations": [
+    {
+      "id": "real-c0cc1ce97cf5e6a6-body-1",
+      "assetId": "real-c0cc1ce97cf5e6a6",
+      "annotationReference": {
+        "path": "scripts/inverse/datasets/real-annotations-contacts.json",
+        "fileSha256": "ba261af7ad7e24fbb0ce0c852a0fdcf387b73eae75a74431942d708d1b9a060b",
+        "jsonPointer": "/instances/0",
+        "rowSha256": "f3d676fdadaaa26948a7f3ed15262fc8ba5d749a53266b35075db8178b71d873"
+      },
+      "materialReferences": [
+        {
+          "path": "scripts/inverse/datasets/real-materials-contacts.json",
+          "fileSha256": "6aeacfcae467a130606c7ac68167a09b9bc24304ced813dd5d2163d59b43d13f",
+          "jsonPointer": "/instances/0",
+          "id": "real-c0cc1ce97cf5e6a6-body-1",
+          "rowSha256": "3f7d723b5f239e509ccf06ec2553298b40625417b500ad11fc669171f7ad1288",
+          "bodyReferences": [
+            {
+              "path": "scripts/inverse/datasets/real-annotations-contacts.json",
+              "sha256": "ba261af7ad7e24fbb0ce0c852a0fdcf387b73eae75a74431942d708d1b9a060b"
+            }
+          ]
+        }
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/c0cc1ce97cf5e6a61be8f92d9831881f5cf821a9c46d47a0e2d33565e23db138.jpg",
+      "sourceImageSha256": "c0cc1ce97cf5e6a61be8f92d9831881f5cf821a9c46d47a0e2d33565e23db138",
+      "sourceSize": [
+        3295,
+        2776
+      ],
+      "sourcePages": [
+        "https://sunsetpapercrafts.wordpress.com/2021/12/16/woven-hearts/"
+      ],
+      "nearDuplicateGroup": "real-c0cc1ce97cf5e6a6",
+      "splitGroupId": "real-split-018c84732bc5d243",
+      "sourceGroups": [
+        "publisher:sunsetpapercrafts.wordpress.com",
+        "sunset"
+      ],
+      "splitStatus": "unassigned",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "printed-checker",
+        "crossCorpusReview": "Keep with the existing checker motif family in any later grouped study; no split assignment."
+      },
+      "familyId": null,
+      "visibleAssembledHeartCount": 1,
+      "otherIdentifiableHeartCount": 0,
+      "selectsOneOfMultipleIdentifiableHearts": false,
+      "otherHeartBackgroundConflictObserved": false,
+      "visualReview": "All full-source thumbnails with the selected outline were inspected; clutter/ambiguous-object cases also inspected in larger/native source views.",
+      "visualNotes": "One plaid/pale basket plus wrappers, chocolates, ribbon and text; no second basket.",
+      "selectionCue": {
+        "independentRoughRoiRecorded": false,
+        "independentPointOrMaskPromptRecorded": false,
+        "consumedByCurrentModel": false,
+        "overlapCornerTargetPresent": false,
+        "bodyEnvelopeDerivedForAuditOnly": [
+          968.73,
+          988.5,
+          2741.44,
+          2599.755
+        ],
+        "derivedEnvelopeIsInputCue": false,
+        "note": "Foreground polygons and occasional approximate overlap corners are target annotations. SourceSize/viewSize are dimensions, not selection prompts. No separately recorded input ROI/point cue exists in these annotation records."
+      },
+      "taskCompatibility": "Current single-identifiable-heart photo is compatible with a single-heart full-photo body task; selected-instance versus all-heart semantics are not distinguishable on this sample. No claim of exhaustive hidden-instance absence."
+    },
+    {
+      "id": "real-c4a9ee6e2d0a4185-body-1",
+      "assetId": "real-c4a9ee6e2d0a4185",
+      "annotationReference": {
+        "path": "scripts/inverse/datasets/real-annotations-contacts.json",
+        "fileSha256": "ba261af7ad7e24fbb0ce0c852a0fdcf387b73eae75a74431942d708d1b9a060b",
+        "jsonPointer": "/instances/1",
+        "rowSha256": "3703927bd2343bf1a596948b65169e86dc8049a881d82f922df8cfae91f13f06"
+      },
+      "materialReferences": [
+        {
+          "path": "scripts/inverse/datasets/real-materials-contacts.json",
+          "fileSha256": "6aeacfcae467a130606c7ac68167a09b9bc24304ced813dd5d2163d59b43d13f",
+          "jsonPointer": "/instances/1",
+          "id": "real-c4a9ee6e2d0a4185-body-1",
+          "rowSha256": "060e14f118b074e0c092d25002d330dba2582baea9469eb90b833f0b6e425533",
+          "bodyReferences": [
+            {
+              "path": "scripts/inverse/datasets/real-annotations-contacts.json",
+              "sha256": "ba261af7ad7e24fbb0ce0c852a0fdcf387b73eae75a74431942d708d1b9a060b"
+            }
+          ]
+        }
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/c4a9ee6e2d0a418519f0ea2d1ce4a63be83c3883b2bc75bc54e0e69375435edf.jpg",
+      "sourceImageSha256": "c4a9ee6e2d0a418519f0ea2d1ce4a63be83c3883b2bc75bc54e0e69375435edf",
+      "sourceSize": [
+        1000,
+        1334
+      ],
+      "sourcePages": [
+        "https://dk.pinterest.com/pin/72057662775817668/"
+      ],
+      "nearDuplicateGroup": "real-c4a9ee6e2d0a4185",
+      "splitGroupId": "real-split-a47f6e30728781b2",
+      "sourceGroups": [
+        "pinterest-pin-72057662775817668"
+      ],
+      "splitStatus": "unassigned",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "framed-candle",
+        "crossCorpusReview": "Keep with related candle motifs in a later grouped study; exact design/source-family review and allocation remain pending."
+      },
+      "familyId": null,
+      "visibleAssembledHeartCount": 1,
+      "otherIdentifiableHeartCount": 0,
+      "selectsOneOfMultipleIdentifiableHearts": false,
+      "otherHeartBackgroundConflictObserved": false,
+      "visualReview": "All full-source thumbnails with the selected outline were inspected; clutter/ambiguous-object cases also inspected in larger/native source views.",
+      "visualNotes": "One identifiable assembled paper heart in the photograph; other visible elements are ordinary background, handle or decorations.",
+      "selectionCue": {
+        "independentRoughRoiRecorded": false,
+        "independentPointOrMaskPromptRecorded": false,
+        "consumedByCurrentModel": false,
+        "overlapCornerTargetPresent": false,
+        "bodyEnvelopeDerivedForAuditOnly": [
+          58,
+          440,
+          978,
+          1294
+        ],
+        "derivedEnvelopeIsInputCue": false,
+        "note": "Foreground polygons and occasional approximate overlap corners are target annotations. SourceSize/viewSize are dimensions, not selection prompts. No separately recorded input ROI/point cue exists in these annotation records."
+      },
+      "taskCompatibility": "Current single-identifiable-heart photo is compatible with a single-heart full-photo body task; selected-instance versus all-heart semantics are not distinguishable on this sample. No claim of exhaustive hidden-instance absence."
+    },
+    {
+      "id": "real-80794af7903e5d29-body-1",
+      "assetId": "real-80794af7903e5d29",
+      "annotationReference": {
+        "path": "scripts/inverse/datasets/real-annotations-fish.json",
+        "fileSha256": "bc6732a800d30de22dce18ff134612d92ebb6b2e6f2f28bd2d820e1f278df013",
+        "jsonPointer": "/instances/0",
+        "rowSha256": "7673e637cd7ea6727362280962f9bbb89b7564118be129711f6b06802bd59d59"
+      },
+      "materialReferences": [
+        {
+          "path": "scripts/inverse/datasets/real-materials-fish.json",
+          "fileSha256": "2847a706279d81edee4b64034ee73b81882c55cb9aa7b76ae963d48097555296",
+          "jsonPointer": "/instances/0",
+          "id": "real-80794af7903e5d29-body-1",
+          "rowSha256": "5e0c6ae732ba3fa8295438c7f0215f63e15bfd9beced6770a9df3be1a2b8dbc3",
+          "bodyReferences": [
+            {
+              "path": "scripts/inverse/datasets/real-annotations-fish.json",
+              "sha256": "bc6732a800d30de22dce18ff134612d92ebb6b2e6f2f28bd2d820e1f278df013"
+            }
+          ]
+        }
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/80794af7903e5d298726f58408590198ea7ea2ff21b24563de8ca2cd5b45545e.jpg",
+      "sourceImageSha256": "80794af7903e5d298726f58408590198ea7ea2ff21b24563de8ca2cd5b45545e",
+      "sourceSize": [
+        1700,
+        2851
+      ],
+      "sourcePages": [
+        "https://dk.pinterest.com/pin/454511787410322871/"
+      ],
+      "nearDuplicateGroup": "real-80794af7903e5d29",
+      "splitGroupId": "real-split-66587aa0e20b89c8",
+      "sourceGroups": [
+        "pinterest-pin-454511787410322871",
+        "publisher:krymmel.dk"
+      ],
+      "splitStatus": "unassigned",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "fish-outline",
+        "crossCorpusReview": "Check related fish motifs before allocation; public near-duplicate group remains unassigned."
+      },
+      "familyId": null,
+      "visibleAssembledHeartCount": 1,
+      "otherIdentifiableHeartCount": 0,
+      "selectsOneOfMultipleIdentifiableHearts": false,
+      "otherHeartBackgroundConflictObserved": false,
+      "visualReview": "All full-source thumbnails with the selected outline were inspected; clutter/ambiguous-object cases also inspected in larger/native source views.",
+      "visualNotes": "One identifiable assembled paper heart in the photograph; other visible elements are ordinary background, handle or decorations.",
+      "selectionCue": {
+        "independentRoughRoiRecorded": false,
+        "independentPointOrMaskPromptRecorded": false,
+        "consumedByCurrentModel": false,
+        "overlapCornerTargetPresent": false,
+        "bodyEnvelopeDerivedForAuditOnly": [
+          78.0,
+          1286.0,
+          1607.0,
+          2680.0
+        ],
+        "derivedEnvelopeIsInputCue": false,
+        "note": "Foreground polygons and occasional approximate overlap corners are target annotations. SourceSize/viewSize are dimensions, not selection prompts. No separately recorded input ROI/point cue exists in these annotation records."
+      },
+      "taskCompatibility": "Current single-identifiable-heart photo is compatible with a single-heart full-photo body task; selected-instance versus all-heart semantics are not distinguishable on this sample. No claim of exhaustive hidden-instance absence."
+    },
+    {
+      "id": "real-2044b1d98ed6f262-body-1",
+      "assetId": "real-2044b1d98ed6f262",
+      "annotationReference": {
+        "path": "scripts/inverse/datasets/real-annotations-motifs.json",
+        "fileSha256": "753cd9c44d1b24077024ba3f9a2f40408a5d13624416c1f8e9402a80b3b6580e",
+        "jsonPointer": "/instances/0",
+        "rowSha256": "a6514797427a58a91da1c07b88fec81baf4d3d326f78c73709c4da07c283d8ad"
+      },
+      "materialReferences": [
+        {
+          "path": "scripts/inverse/datasets/real-materials-motifs.json",
+          "fileSha256": "5e439770d03347a528746a325ce995fb8f917d096fb480113fb45e4af97ec100",
+          "jsonPointer": "/instances/0",
+          "id": "real-2044b1d98ed6f262-body-1",
+          "rowSha256": "368030ac5592f6ae17b9bae48c41157c31fbbdee6952f3c68e7449e49229dbd1",
+          "bodyReferences": [
+            {
+              "path": "scripts/inverse/datasets/real-annotations-motifs.json",
+              "sha256": "753cd9c44d1b24077024ba3f9a2f40408a5d13624416c1f8e9402a80b3b6580e"
+            }
+          ]
+        }
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/2044b1d98ed6f262c52cdc80544b8b22ea909a2d8923dbfc27e4c41f91da3047.jpg",
+      "sourceImageSha256": "2044b1d98ed6f262c52cdc80544b8b22ea909a2d8923dbfc27e4c41f91da3047",
+      "sourceSize": [
+        1000,
+        1334
+      ],
+      "sourcePages": [
+        "https://dk.pinterest.com/pin/13792342602247579/"
+      ],
+      "nearDuplicateGroup": "real-2044b1d98ed6f262",
+      "splitGroupId": "real-split-43d9db9ff4061e07",
+      "sourceGroups": [
+        "pinterest-pin-13792342602247579"
+      ],
+      "splitStatus": "unassigned",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "boar-framed-silhouette",
+        "crossCorpusReview": "pending"
+      },
+      "familyId": null,
+      "visibleAssembledHeartCount": 1,
+      "otherIdentifiableHeartCount": 0,
+      "selectsOneOfMultipleIdentifiableHearts": false,
+      "otherHeartBackgroundConflictObserved": false,
+      "visualReview": "All full-source thumbnails with the selected outline were inspected; clutter/ambiguous-object cases also inspected in larger/native source views.",
+      "visualNotes": "One identifiable assembled paper heart in the photograph; other visible elements are ordinary background, handle or decorations.",
+      "selectionCue": {
+        "independentRoughRoiRecorded": false,
+        "independentPointOrMaskPromptRecorded": false,
+        "consumedByCurrentModel": false,
+        "overlapCornerTargetPresent": false,
+        "bodyEnvelopeDerivedForAuditOnly": [
+          0,
+          424,
+          952,
+          1314
+        ],
+        "derivedEnvelopeIsInputCue": false,
+        "note": "Foreground polygons and occasional approximate overlap corners are target annotations. SourceSize/viewSize are dimensions, not selection prompts. No separately recorded input ROI/point cue exists in these annotation records."
+      },
+      "taskCompatibility": "Current single-identifiable-heart photo is compatible with a single-heart full-photo body task; selected-instance versus all-heart semantics are not distinguishable on this sample. No claim of exhaustive hidden-instance absence."
+    },
+    {
+      "id": "real-45744a03afddccb1-body-1",
+      "assetId": "real-45744a03afddccb1",
+      "annotationReference": {
+        "path": "scripts/inverse/datasets/real-annotations-motifs.json",
+        "fileSha256": "753cd9c44d1b24077024ba3f9a2f40408a5d13624416c1f8e9402a80b3b6580e",
+        "jsonPointer": "/instances/1",
+        "rowSha256": "eab2420e8b7bfbd0a072a0e6ad72f63dee3f6ea73ba6ad502cf4c2d2a64f97fd"
+      },
+      "materialReferences": [
+        {
+          "path": "scripts/inverse/datasets/real-materials-motifs.json",
+          "fileSha256": "5e439770d03347a528746a325ce995fb8f917d096fb480113fb45e4af97ec100",
+          "jsonPointer": "/instances/1",
+          "id": "real-45744a03afddccb1-body-1",
+          "rowSha256": "967db3ed826e5a7c43a1dc1216337a658bdc28f3f0761e349318928e50cbf476",
+          "bodyReferences": [
+            {
+              "path": "scripts/inverse/datasets/real-annotations-motifs.json",
+              "sha256": "753cd9c44d1b24077024ba3f9a2f40408a5d13624416c1f8e9402a80b3b6580e"
+            }
+          ]
+        }
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/45744a03afddccb18b4b01fb770d6cfdcfbd35d25dad796e99b62a6dd9cbad33.jpg",
+      "sourceImageSha256": "45744a03afddccb18b4b01fb770d6cfdcfbd35d25dad796e99b62a6dd9cbad33",
+      "sourceSize": [
+        2448,
+        3264
+      ],
+      "sourcePages": [
+        "https://dk.pinterest.com/pin/6966574404712744/"
+      ],
+      "nearDuplicateGroup": "real-45744a03afddccb1",
+      "splitGroupId": "real-split-8e4db6249b2748c6",
+      "sourceGroups": [
+        "pinterest-pin-6966574404712744"
+      ],
+      "splitStatus": "unassigned",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "rabbit-framed-silhouette",
+        "crossCorpusReview": "pending"
+      },
+      "familyId": null,
+      "visibleAssembledHeartCount": 1,
+      "otherIdentifiableHeartCount": 0,
+      "selectsOneOfMultipleIdentifiableHearts": false,
+      "otherHeartBackgroundConflictObserved": false,
+      "visualReview": "All full-source thumbnails with the selected outline were inspected; clutter/ambiguous-object cases also inspected in larger/native source views.",
+      "visualNotes": "One identifiable assembled paper heart in the photograph; other visible elements are ordinary background, handle or decorations.",
+      "selectionCue": {
+        "independentRoughRoiRecorded": false,
+        "independentPointOrMaskPromptRecorded": false,
+        "consumedByCurrentModel": false,
+        "overlapCornerTargetPresent": false,
+        "bodyEnvelopeDerivedForAuditOnly": [
+          24,
+          1004,
+          2296,
+          3124
+        ],
+        "derivedEnvelopeIsInputCue": false,
+        "note": "Foreground polygons and occasional approximate overlap corners are target annotations. SourceSize/viewSize are dimensions, not selection prompts. No separately recorded input ROI/point cue exists in these annotation records."
+      },
+      "taskCompatibility": "Current single-identifiable-heart photo is compatible with a single-heart full-photo body task; selected-instance versus all-heart semantics are not distinguishable on this sample. No claim of exhaustive hidden-instance absence."
+    },
+    {
+      "id": "real-e936e08ac62db19b-body-1",
+      "assetId": "real-e936e08ac62db19b",
+      "annotationReference": {
+        "path": "scripts/inverse/datasets/real-annotations-palettes.json",
+        "fileSha256": "2b8c2f11b6390608cee50c5adfb42280a2f72ca3d6309f4aad6ffc7ae081fd4f",
+        "jsonPointer": "/instances/0",
+        "rowSha256": "7fd9271e7c5caace8254d0cbe8f8579a75c5cdea01ce9cfa8df3d59791bb09a8"
+      },
+      "materialReferences": [
+        {
+          "path": "scripts/inverse/datasets/real-materials-palettes.json",
+          "fileSha256": "0269eaf9a4ef159b41b4b7e2717afe5254e8fac3b9eeeb5e434cbc81745accba",
+          "jsonPointer": "/instances/0",
+          "id": "real-e936e08ac62db19b-body-1",
+          "rowSha256": "43012a8c4e0e23c2b8e0dc0e138fbe52e8f1468d99461cacdbbd860c737ba997",
+          "bodyReferences": [
+            {
+              "path": "scripts/inverse/datasets/real-annotations-palettes.json",
+              "sha256": "2b8c2f11b6390608cee50c5adfb42280a2f72ca3d6309f4aad6ffc7ae081fd4f"
+            }
+          ]
+        }
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/e936e08ac62db19b9b12cf9ce4e1a0b10fbb50023316daaee6f36747beae5643.jpg",
+      "sourceImageSha256": "e936e08ac62db19b9b12cf9ce4e1a0b10fbb50023316daaee6f36747beae5643",
+      "sourceSize": [
+        1280,
+        720
+      ],
+      "sourcePages": [
+        "https://dk.pinterest.com/pin/581175526900721056/"
+      ],
+      "nearDuplicateGroup": "real-e936e08ac62db19b",
+      "splitGroupId": "real-split-0fe657e07ffc37c9",
+      "sourceGroups": [
+        "pinterest-pin-581175526900721056",
+        "publisher:youtu.be",
+        "publisher:youtube.com"
+      ],
+      "splitStatus": "unassigned",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "regular-checkerboard",
+        "crossCorpusReview": "pending"
+      },
+      "familyId": null,
+      "visibleAssembledHeartCount": 1,
+      "otherIdentifiableHeartCount": 0,
+      "selectsOneOfMultipleIdentifiableHearts": false,
+      "otherHeartBackgroundConflictObserved": false,
+      "visualReview": "All full-source thumbnails with the selected outline were inspected; clutter/ambiguous-object cases also inspected in larger/native source views.",
+      "visualNotes": "One identifiable assembled heart. Bottom colored paper/feather decorations and a small printed heart motif in the background are not a second identifiable woven basket; their hidden extent is not inferred.",
+      "selectionCue": {
+        "independentRoughRoiRecorded": false,
+        "independentPointOrMaskPromptRecorded": false,
+        "consumedByCurrentModel": false,
+        "overlapCornerTargetPresent": false,
+        "bodyEnvelopeDerivedForAuditOnly": [
+          330,
+          65,
+          979,
+          678
+        ],
+        "derivedEnvelopeIsInputCue": false,
+        "note": "Foreground polygons and occasional approximate overlap corners are target annotations. SourceSize/viewSize are dimensions, not selection prompts. No separately recorded input ROI/point cue exists in these annotation records."
+      },
+      "taskCompatibility": "Current single-identifiable-heart photo is compatible with a single-heart full-photo body task; selected-instance versus all-heart semantics are not distinguishable on this sample. No claim of exhaustive hidden-instance absence."
+    },
+    {
+      "id": "real-710703159f609111-body-1",
+      "assetId": "real-710703159f609111",
+      "annotationReference": {
+        "path": "scripts/inverse/datasets/real-annotations-paper-scenes.json",
+        "fileSha256": "2f153ec1b274adac461bf384c06f72303f3b50914e4a3faa9716962a13fb3ee0",
+        "jsonPointer": "/instances/0",
+        "rowSha256": "6f1c5a765a00af1d194cae28f3bd136f88bb31d9256385e059d7ba8d8b74c08f"
+      },
+      "materialReferences": [
+        {
+          "path": "scripts/inverse/datasets/real-materials-paper-scenes.json",
+          "fileSha256": "c4857fc3cceec4c2150353515dfb679ea8055bf65a30c10a4bd724d0bb118741",
+          "jsonPointer": "/instances/0",
+          "id": "real-710703159f609111-body-1",
+          "rowSha256": "67171ce0ba83e2b23445017ffcf05fb5f4d484ac4cc2ee1f4ac26e5194cd2232",
+          "bodyReferences": [
+            {
+              "path": "scripts/inverse/datasets/real-annotations-paper-scenes.json",
+              "sha256": "2f153ec1b274adac461bf384c06f72303f3b50914e4a3faa9716962a13fb3ee0"
+            }
+          ]
+        }
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/710703159f60911143f7ff114e8f33e0e59996aa86e22d1de98840d071c4e8c8.jpg",
+      "sourceImageSha256": "710703159f60911143f7ff114e8f33e0e59996aa86e22d1de98840d071c4e8c8",
+      "sourceSize": [
+        1000,
+        669
+      ],
+      "sourcePages": [
+        "https://dk.pinterest.com/pin/169518373445733009/"
+      ],
+      "nearDuplicateGroup": "real-710703159f609111",
+      "splitGroupId": "real-split-81569cae44356567",
+      "sourceGroups": [
+        "pinterest-pin-169518373445733009",
+        "publisher:fintogdejlig.blogspot.ca"
+      ],
+      "splitStatus": "unassigned",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "regular-checkerboard",
+        "crossCorpusReview": "pending"
+      },
+      "familyId": null,
+      "visibleAssembledHeartCount": 1,
+      "otherIdentifiableHeartCount": 0,
+      "selectsOneOfMultipleIdentifiableHearts": false,
+      "otherHeartBackgroundConflictObserved": false,
+      "visualReview": "All full-source thumbnails with the selected outline were inspected; clutter/ambiguous-object cases also inspected in larger/native source views.",
+      "visualNotes": "One held basket. The small white backing/rim is already uncertain; it does not show an identifiable second heart.",
+      "selectionCue": {
+        "independentRoughRoiRecorded": false,
+        "independentPointOrMaskPromptRecorded": false,
+        "consumedByCurrentModel": false,
+        "overlapCornerTargetPresent": false,
+        "bodyEnvelopeDerivedForAuditOnly": [
+          208,
+          123,
+          731,
+          591
+        ],
+        "derivedEnvelopeIsInputCue": false,
+        "note": "Foreground polygons and occasional approximate overlap corners are target annotations. SourceSize/viewSize are dimensions, not selection prompts. No separately recorded input ROI/point cue exists in these annotation records."
+      },
+      "taskCompatibility": "Current single-identifiable-heart photo is compatible with a single-heart full-photo body task; selected-instance versus all-heart semantics are not distinguishable on this sample. No claim of exhaustive hidden-instance absence."
+    },
+    {
+      "id": "real-a414dfffbd2362ae-body-1",
+      "assetId": "real-a414dfffbd2362ae",
+      "annotationReference": {
+        "path": "scripts/inverse/datasets/real-annotations-paper-scenes.json",
+        "fileSha256": "2f153ec1b274adac461bf384c06f72303f3b50914e4a3faa9716962a13fb3ee0",
+        "jsonPointer": "/instances/1",
+        "rowSha256": "f6b63efceda339a76118e34956d02edbb27abd951d62347ddf4d5c2263695375"
+      },
+      "materialReferences": [
+        {
+          "path": "scripts/inverse/datasets/real-materials-paper-scenes.json",
+          "fileSha256": "c4857fc3cceec4c2150353515dfb679ea8055bf65a30c10a4bd724d0bb118741",
+          "jsonPointer": "/instances/1",
+          "id": "real-a414dfffbd2362ae-body-1",
+          "rowSha256": "d44d38cb34615169ad5c6ec6e46d04013dbe7e0f578098dd78e91ab68850bbe0",
+          "bodyReferences": [
+            {
+              "path": "scripts/inverse/datasets/real-annotations-paper-scenes.json",
+              "sha256": "2f153ec1b274adac461bf384c06f72303f3b50914e4a3faa9716962a13fb3ee0"
+            }
+          ]
+        }
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/a414dfffbd2362aeefd731a1eff42092e47dcd3955acc72cb8aec426d1200d99.jpg",
+      "sourceImageSha256": "a414dfffbd2362aeefd731a1eff42092e47dcd3955acc72cb8aec426d1200d99",
+      "sourceSize": [
+        600,
+        400
+      ],
+      "sourcePages": [
+        "https://dk.pinterest.com/pin/476185360580329153/"
+      ],
+      "nearDuplicateGroup": "real-a414dfffbd2362ae",
+      "splitGroupId": "real-split-79137bb425b64798",
+      "sourceGroups": [
+        "pinterest-pin-476185360580329153",
+        "publisher:nurturestore.co.uk"
+      ],
+      "splitStatus": "unassigned",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "regular-checkerboard",
+        "crossCorpusReview": "pending"
+      },
+      "familyId": null,
+      "visibleAssembledHeartCount": 1,
+      "otherIdentifiableHeartCount": 0,
+      "selectsOneOfMultipleIdentifiableHearts": false,
+      "otherHeartBackgroundConflictObserved": false,
+      "visualReview": "All full-source thumbnails with the selected outline were inspected; clutter/ambiguous-object cases also inspected in larger/native source views.",
+      "visualNotes": "One painted-paper basket. A cropped rounded object at the top is not an identifiable second woven heart.",
+      "selectionCue": {
+        "independentRoughRoiRecorded": false,
+        "independentPointOrMaskPromptRecorded": false,
+        "consumedByCurrentModel": false,
+        "overlapCornerTargetPresent": false,
+        "bodyEnvelopeDerivedForAuditOnly": [
+          83,
+          38,
+          494,
+          379
+        ],
+        "derivedEnvelopeIsInputCue": false,
+        "note": "Foreground polygons and occasional approximate overlap corners are target annotations. SourceSize/viewSize are dimensions, not selection prompts. No separately recorded input ROI/point cue exists in these annotation records."
+      },
+      "taskCompatibility": "Current single-identifiable-heart photo is compatible with a single-heart full-photo body task; selected-instance versus all-heart semantics are not distinguishable on this sample. No claim of exhaustive hidden-instance absence."
+    },
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "assetId": "real-8c875dd0f298b5a4",
+      "annotationReference": {
+        "path": "scripts/inverse/datasets/real-annotations-pinterest.json",
+        "fileSha256": "a972cf961544f85565b2f8edc3df872dd27c2ca3333ea5c01d04e1867b19aaa9",
+        "jsonPointer": "/instances/0",
+        "rowSha256": "969551c3bc4d2f04b1d61ad70c3d5ab4e8c7e9d29dabfc0bd83300c46708471e"
+      },
+      "materialReferences": [
+        {
+          "path": "scripts/inverse/datasets/real-materials-pinterest.json",
+          "fileSha256": "1909f24e8868be1d74458944655009b4e4fdce15fa64e1703a3f2f44bab751ae",
+          "jsonPointer": "/instances/0",
+          "id": "real-8c875dd0f298b5a4-body-1",
+          "rowSha256": "ecfa345e9eca81060a770911683be5e683f3c0fddea762453fb88586a561fe92",
+          "bodyReferences": [
+            {
+              "path": "scripts/inverse/datasets/real-annotations-pinterest.json",
+              "sha256": "a972cf961544f85565b2f8edc3df872dd27c2ca3333ea5c01d04e1867b19aaa9"
+            }
+          ]
+        }
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/8c875dd0f298b5a406a9d6047b0ffc33746fe6f288bc8672b9a467a7c9df063f.jpg",
+      "sourceImageSha256": "8c875dd0f298b5a406a9d6047b0ffc33746fe6f288bc8672b9a467a7c9df063f",
+      "sourceSize": [
+        440,
+        440
+      ],
+      "sourcePages": [
+        "https://dk.pinterest.com/pin/52284045669157402/"
+      ],
+      "nearDuplicateGroup": "real-8c875dd0f298b5a4",
+      "splitGroupId": "real-split-79fb92ea84d04dc8",
+      "sourceGroups": [
+        "pinterest-pin-52284045669157402",
+        "publisher:auntannie.com"
+      ],
+      "splitStatus": "unassigned",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "small-hearts-in-checker-frame",
+        "crossCorpusReview": "pending",
+        "candidateFamilyBasis": "Appearance grouping retained for historical split consistency. Small hearts are printed decoration; the published cutting structure is an ordinary four-strip checker."
+      },
+      "familyId": null,
+      "visibleAssembledHeartCount": 1,
+      "otherIdentifiableHeartCount": 0,
+      "selectsOneOfMultipleIdentifiableHearts": false,
+      "otherHeartBackgroundConflictObserved": false,
+      "visualReview": "All full-source thumbnails with the selected outline were inspected; clutter/ambiguous-object cases also inspected in larger/native source views.",
+      "visualNotes": "One basket. Four small red heart designs are printed decoration on its paper, not extra basket instances.",
+      "selectionCue": {
+        "independentRoughRoiRecorded": false,
+        "independentPointOrMaskPromptRecorded": false,
+        "consumedByCurrentModel": false,
+        "overlapCornerTargetPresent": true,
+        "bodyEnvelopeDerivedForAuditOnly": [
+          38,
+          98,
+          407,
+          427
+        ],
+        "derivedEnvelopeIsInputCue": false,
+        "note": "Foreground polygons and occasional approximate overlap corners are target annotations. SourceSize/viewSize are dimensions, not selection prompts. No separately recorded input ROI/point cue exists in these annotation records."
+      },
+      "taskCompatibility": "Current single-identifiable-heart photo is compatible with a single-heart full-photo body task; selected-instance versus all-heart semantics are not distinguishable on this sample. No claim of exhaustive hidden-instance absence."
+    },
+    {
+      "id": "real-3f7b76e1a98e808f-body-1",
+      "assetId": "real-3f7b76e1a98e808f",
+      "annotationReference": {
+        "path": "scripts/inverse/datasets/real-annotations-pinterest.json",
+        "fileSha256": "a972cf961544f85565b2f8edc3df872dd27c2ca3333ea5c01d04e1867b19aaa9",
+        "jsonPointer": "/instances/1",
+        "rowSha256": "a2c489956b27d8838b05ebbc81105ce8b6935b4ec129158c6dfe6a48a6525401"
+      },
+      "materialReferences": [
+        {
+          "path": "scripts/inverse/datasets/real-materials-pinterest.json",
+          "fileSha256": "1909f24e8868be1d74458944655009b4e4fdce15fa64e1703a3f2f44bab751ae",
+          "jsonPointer": "/instances/1",
+          "id": "real-3f7b76e1a98e808f-body-1",
+          "rowSha256": "5fede69eb4180a8beaf84e078b8db4a24afbec2f30289382386e7183e8c2f7a9",
+          "bodyReferences": [
+            {
+              "path": "scripts/inverse/datasets/real-annotations-pinterest.json",
+              "sha256": "a972cf961544f85565b2f8edc3df872dd27c2ca3333ea5c01d04e1867b19aaa9"
+            }
+          ]
+        }
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/3f7b76e1a98e808f75597010c4dc1f5b591527aec6265f77810c96df80a794df.jpg",
+      "sourceImageSha256": "3f7b76e1a98e808f75597010c4dc1f5b591527aec6265f77810c96df80a794df",
+      "sourceSize": [
+        1334,
+        1000
+      ],
+      "sourcePages": [
+        "https://dk.pinterest.com/pin/195484440066787592/"
+      ],
+      "nearDuplicateGroup": "real-3f7b76e1a98e808f",
+      "splitGroupId": "real-split-fa81b0c40b1f06c4",
+      "sourceGroups": [
+        "pinterest-pin-195484440066787592"
+      ],
+      "splitStatus": "unassigned",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "four-point-star-frame",
+        "crossCorpusReview": "pending"
+      },
+      "familyId": null,
+      "visibleAssembledHeartCount": 1,
+      "otherIdentifiableHeartCount": 0,
+      "selectsOneOfMultipleIdentifiableHearts": false,
+      "otherHeartBackgroundConflictObserved": false,
+      "visualReview": "All full-source thumbnails with the selected outline were inspected; clutter/ambiguous-object cases also inspected in larger/native source views.",
+      "visualNotes": "One identifiable assembled paper heart in the photograph; other visible elements are ordinary background, handle or decorations.",
+      "selectionCue": {
+        "independentRoughRoiRecorded": false,
+        "independentPointOrMaskPromptRecorded": false,
+        "consumedByCurrentModel": false,
+        "overlapCornerTargetPresent": false,
+        "bodyEnvelopeDerivedForAuditOnly": [
+          0,
+          29,
+          957,
+          1000
+        ],
+        "derivedEnvelopeIsInputCue": false,
+        "note": "Foreground polygons and occasional approximate overlap corners are target annotations. SourceSize/viewSize are dimensions, not selection prompts. No separately recorded input ROI/point cue exists in these annotation records."
+      },
+      "taskCompatibility": "Current single-identifiable-heart photo is compatible with a single-heart full-photo body task; selected-instance versus all-heart semantics are not distinguishable on this sample. No claim of exhaustive hidden-instance absence."
+    },
+    {
+      "id": "real-4066fe9f9aafb3e4-body-1",
+      "assetId": "real-4066fe9f9aafb3e4",
+      "annotationReference": {
+        "path": "scripts/inverse/datasets/real-annotations-scenes.json",
+        "fileSha256": "7a6a64262ab878f25c928c1ad4d07620e4ede8b6cd0d2ea79c3bd100c9c8e536",
+        "jsonPointer": "/instances/0",
+        "rowSha256": "95be61330c37fb427f2e50b2ef6a513a3076cbe930c748f136658991c6d6fb90"
+      },
+      "materialReferences": [],
+      "sourceImagePath": "tmp/heart-training-real/assets/4066fe9f9aafb3e438164061c8d0c56d2b3db2e5ea5ad654aea46acf760ef49d.jpg",
+      "sourceImageSha256": "4066fe9f9aafb3e438164061c8d0c56d2b3db2e5ea5ad654aea46acf760ef49d",
+      "sourceSize": [
+        533,
+        800
+      ],
+      "sourcePages": [
+        "https://dk.pinterest.com/pin/4151824650327465/"
+      ],
+      "nearDuplicateGroup": "real-4066fe9f9aafb3e4",
+      "splitGroupId": "real-split-5c5fcfc680c78574",
+      "sourceGroups": [
+        "pinterest-pin-4151824650327465",
+        "publisher:charlotteboeg.dk"
+      ],
+      "splitStatus": "qa-reserved",
+      "allocation": "qa-reserved",
+      "motif": {
+        "candidateFamily": "angel-in-circular-frame",
+        "crossCorpusReview": "pending"
+      },
+      "familyId": null,
+      "visibleAssembledHeartCount": 1,
+      "otherIdentifiableHeartCount": 0,
+      "selectsOneOfMultipleIdentifiableHearts": false,
+      "otherHeartBackgroundConflictObserved": false,
+      "visualReview": "All full-source thumbnails with the selected outline were inspected; clutter/ambiguous-object cases also inspected in larger/native source views.",
+      "visualNotes": "One identifiable assembled paper heart in the photograph; other visible elements are ordinary background, handle or decorations.",
+      "selectionCue": {
+        "independentRoughRoiRecorded": false,
+        "independentPointOrMaskPromptRecorded": false,
+        "consumedByCurrentModel": false,
+        "overlapCornerTargetPresent": false,
+        "bodyEnvelopeDerivedForAuditOnly": [
+          26,
+          305,
+          511,
+          767
+        ],
+        "derivedEnvelopeIsInputCue": false,
+        "note": "Foreground polygons and occasional approximate overlap corners are target annotations. SourceSize/viewSize are dimensions, not selection prompts. No separately recorded input ROI/point cue exists in these annotation records."
+      },
+      "taskCompatibility": "Current single-identifiable-heart photo is compatible with a single-heart full-photo body task; selected-instance versus all-heart semantics are not distinguishable on this sample. No claim of exhaustive hidden-instance absence."
+    },
+    {
+      "id": "real-cdae5c890b6933cd-body-1",
+      "assetId": "real-cdae5c890b6933cd",
+      "annotationReference": {
+        "path": "scripts/inverse/datasets/real-annotations-scenes.json",
+        "fileSha256": "7a6a64262ab878f25c928c1ad4d07620e4ede8b6cd0d2ea79c3bd100c9c8e536",
+        "jsonPointer": "/instances/1",
+        "rowSha256": "126a06fae11f23ce774e2a0073464eae9626ceecfb90629adc4449a266ff54ed"
+      },
+      "materialReferences": [
+        {
+          "path": "scripts/inverse/datasets/real-materials.json",
+          "fileSha256": "fae5ef1cf8f1fbf4661776e05454da849be1dcada9f778d88e522d5d29773709",
+          "jsonPointer": "/instances/1",
+          "id": "real-cdae5c890b6933cd-body-1",
+          "rowSha256": "59db7eef3b7e88fff0cc2014ed65bb27fd5a82ab18266536a3795a65b1079dba",
+          "bodyReferences": [
+            {
+              "path": "scripts/inverse/datasets/real-annotations-supplement.json",
+              "sha256": "db3a35a1bb2b50477d8a203e137a123e996193c5e8bf922a929e5b0ebedf0e25"
+            },
+            {
+              "path": "scripts/inverse/datasets/real-annotations-scenes.json",
+              "sha256": "7a6a64262ab878f25c928c1ad4d07620e4ede8b6cd0d2ea79c3bd100c9c8e536"
+            },
+            {
+              "path": "scripts/inverse/datasets/real-annotations.json",
+              "sha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5"
+            }
+          ]
+        }
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/cdae5c890b6933cdbdf4182133239e0cfd3e965bf289617aea32a74266e59c51.jpg",
+      "sourceImageSha256": "cdae5c890b6933cdbdf4182133239e0cfd3e965bf289617aea32a74266e59c51",
+      "sourceSize": [
+        735,
+        465
+      ],
+      "sourcePages": [
+        "https://dk.pinterest.com/pin/557883472610157651/"
+      ],
+      "nearDuplicateGroup": "real-cdae5c890b6933cd",
+      "splitGroupId": "real-split-e15997e1ba929b7f",
+      "sourceGroups": [
+        "pinterest-pin-557883472610157651",
+        "publisher:kommerduihag.se"
+      ],
+      "splitStatus": "unassigned",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "decorative-two-paper-checkerboard",
+        "crossCorpusReview": "pending"
+      },
+      "familyId": null,
+      "visibleAssembledHeartCount": 1,
+      "otherIdentifiableHeartCount": 0,
+      "selectsOneOfMultipleIdentifiableHearts": false,
+      "otherHeartBackgroundConflictObserved": false,
+      "visualReview": "All full-source thumbnails with the selected outline were inspected; clutter/ambiguous-object cases also inspected in larger/native source views.",
+      "visualNotes": "One identifiable assembled paper heart in the photograph; other visible elements are ordinary background, handle or decorations.",
+      "selectionCue": {
+        "independentRoughRoiRecorded": false,
+        "independentPointOrMaskPromptRecorded": false,
+        "consumedByCurrentModel": false,
+        "overlapCornerTargetPresent": false,
+        "bodyEnvelopeDerivedForAuditOnly": [
+          153,
+          100,
+          532,
+          441
+        ],
+        "derivedEnvelopeIsInputCue": false,
+        "note": "Foreground polygons and occasional approximate overlap corners are target annotations. SourceSize/viewSize are dimensions, not selection prompts. No separately recorded input ROI/point cue exists in these annotation records."
+      },
+      "taskCompatibility": "Current single-identifiable-heart photo is compatible with a single-heart full-photo body task; selected-instance versus all-heart semantics are not distinguishable on this sample. No claim of exhaustive hidden-instance absence."
+    },
+    {
+      "id": "real-cf2d0fcff65d7386-body-1",
+      "assetId": "real-cf2d0fcff65d7386",
+      "annotationReference": {
+        "path": "scripts/inverse/datasets/real-annotations-supplement.json",
+        "fileSha256": "db3a35a1bb2b50477d8a203e137a123e996193c5e8bf922a929e5b0ebedf0e25",
+        "jsonPointer": "/instances/0",
+        "rowSha256": "4506f158831ba785471eb38dca40d008134e683d14efc45ce28e3d022c476156"
+      },
+      "materialReferences": [
+        {
+          "path": "scripts/inverse/datasets/real-materials.json",
+          "fileSha256": "fae5ef1cf8f1fbf4661776e05454da849be1dcada9f778d88e522d5d29773709",
+          "jsonPointer": "/instances/0",
+          "id": "real-cf2d0fcff65d7386-body-1",
+          "rowSha256": "bffd9d0699bc0b8cda11cb23de39c6d656508b0c2f2013b21f52a5c113c8939a",
+          "bodyReferences": [
+            {
+              "path": "scripts/inverse/datasets/real-annotations-supplement.json",
+              "sha256": "db3a35a1bb2b50477d8a203e137a123e996193c5e8bf922a929e5b0ebedf0e25"
+            },
+            {
+              "path": "scripts/inverse/datasets/real-annotations-scenes.json",
+              "sha256": "7a6a64262ab878f25c928c1ad4d07620e4ede8b6cd0d2ea79c3bd100c9c8e536"
+            },
+            {
+              "path": "scripts/inverse/datasets/real-annotations.json",
+              "sha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5"
+            }
+          ]
+        }
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/cf2d0fcff65d7386a7295376e03a6b3f027645b74c361e0035bcc46220a6a6d9.jpg",
+      "sourceImageSha256": "cf2d0fcff65d7386a7295376e03a6b3f027645b74c361e0035bcc46220a6a6d9",
+      "sourceSize": [
+        600,
+        514
+      ],
+      "sourcePages": [
+        "https://dk.pinterest.com/pin/300052393899641682/"
+      ],
+      "nearDuplicateGroup": "real-cf2d0fcff65d7386",
+      "splitGroupId": "real-split-561720ec89d3174d",
+      "sourceGroups": [
+        "pinterest-pin-300052393899641682",
+        "publisher:whoswhoandnew.blogspot.com.au"
+      ],
+      "splitStatus": "unassigned",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "regular-checkerboard",
+        "crossCorpusReview": "pending"
+      },
+      "familyId": null,
+      "visibleAssembledHeartCount": 1,
+      "otherIdentifiableHeartCount": 0,
+      "selectsOneOfMultipleIdentifiableHearts": false,
+      "otherHeartBackgroundConflictObserved": false,
+      "visualReview": "All full-source thumbnails with the selected outline were inspected; clutter/ambiguous-object cases also inspected in larger/native source views.",
+      "visualNotes": "One identifiable assembled paper heart in the photograph; other visible elements are ordinary background, handle or decorations.",
+      "selectionCue": {
+        "independentRoughRoiRecorded": false,
+        "independentPointOrMaskPromptRecorded": false,
+        "consumedByCurrentModel": false,
+        "overlapCornerTargetPresent": false,
+        "bodyEnvelopeDerivedForAuditOnly": [
+          28,
+          28,
+          537,
+          497
+        ],
+        "derivedEnvelopeIsInputCue": false,
+        "note": "Foreground polygons and occasional approximate overlap corners are target annotations. SourceSize/viewSize are dimensions, not selection prompts. No separately recorded input ROI/point cue exists in these annotation records."
+      },
+      "taskCompatibility": "Current single-identifiable-heart photo is compatible with a single-heart full-photo body task; selected-instance versus all-heart semantics are not distinguishable on this sample. No claim of exhaustive hidden-instance absence."
+    },
+    {
+      "id": "real-990ac34431be87fe-body-1",
+      "assetId": "real-990ac34431be87fe",
+      "annotationReference": {
+        "path": "scripts/inverse/datasets/real-annotations-supplement.json",
+        "fileSha256": "db3a35a1bb2b50477d8a203e137a123e996193c5e8bf922a929e5b0ebedf0e25",
+        "jsonPointer": "/instances/1",
+        "rowSha256": "d109dc3c774aff95d4fdd0962c83af6e98aee22a69e705e717d6a1b7473f06da"
+      },
+      "materialReferences": [
+        {
+          "path": "scripts/inverse/datasets/real-materials-colors.json",
+          "fileSha256": "a7567a3a9452d038bb8dcbacbab6117f376b60de268e39c7c636ee2e75c67fe9",
+          "jsonPointer": "/instances/2",
+          "id": "real-990ac34431be87fe-body-1",
+          "rowSha256": "710391cb742ae3698d62de5175bef91beecb02d382d22b2476af21017df9e88e",
+          "bodyReferences": [
+            {
+              "path": "scripts/inverse/datasets/real-annotations.json",
+              "sha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5"
+            },
+            {
+              "path": "scripts/inverse/datasets/real-annotations-supplement.json",
+              "sha256": "db3a35a1bb2b50477d8a203e137a123e996193c5e8bf922a929e5b0ebedf0e25"
+            }
+          ]
+        }
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/990ac34431be87fea4d2b41050c1f1ccc6b12ca7dcb4a54f50bde137d6dffbbc.jpg",
+      "sourceImageSha256": "990ac34431be87fea4d2b41050c1f1ccc6b12ca7dcb4a54f50bde137d6dffbbc",
+      "sourceSize": [
+        570,
+        441
+      ],
+      "sourcePages": [
+        "https://dk.pinterest.com/pin/45669383709241593/"
+      ],
+      "nearDuplicateGroup": "real-990ac34431be87fe",
+      "splitGroupId": "real-split-4cb27dd0236bd215",
+      "sourceGroups": [
+        "pinterest-pin-45669383709241593",
+        "publisher:etsy.com"
+      ],
+      "splitStatus": "unassigned",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "regular-checkerboard",
+        "crossCorpusReview": "pending"
+      },
+      "familyId": null,
+      "visibleAssembledHeartCount": 1,
+      "otherIdentifiableHeartCount": 0,
+      "selectsOneOfMultipleIdentifiableHearts": false,
+      "otherHeartBackgroundConflictObserved": false,
+      "visualReview": "All full-source thumbnails with the selected outline were inspected; clutter/ambiguous-object cases also inspected in larger/native source views.",
+      "visualNotes": "One identifiable assembled paper heart in the photograph; other visible elements are ordinary background, handle or decorations.",
+      "selectionCue": {
+        "independentRoughRoiRecorded": false,
+        "independentPointOrMaskPromptRecorded": false,
+        "consumedByCurrentModel": false,
+        "overlapCornerTargetPresent": false,
+        "bodyEnvelopeDerivedForAuditOnly": [
+          138,
+          137,
+          427,
+          414
+        ],
+        "derivedEnvelopeIsInputCue": false,
+        "note": "Foreground polygons and occasional approximate overlap corners are target annotations. SourceSize/viewSize are dimensions, not selection prompts. No separately recorded input ROI/point cue exists in these annotation records."
+      },
+      "taskCompatibility": "Current single-identifiable-heart photo is compatible with a single-heart full-photo body task; selected-instance versus all-heart semantics are not distinguishable on this sample. No claim of exhaustive hidden-instance absence."
+    },
+    {
+      "id": "real-5330aa8b62176216-body-1",
+      "assetId": "real-5330aa8b62176216",
+      "annotationReference": {
+        "path": "scripts/inverse/datasets/real-annotations.json",
+        "fileSha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5",
+        "jsonPointer": "/instances/0",
+        "rowSha256": "97736239cab865d4769398551cc92b949dbabfa330a6f966a8522841706517bd"
+      },
+      "materialReferences": [
+        {
+          "path": "scripts/inverse/datasets/real-materials-colors.json",
+          "fileSha256": "a7567a3a9452d038bb8dcbacbab6117f376b60de268e39c7c636ee2e75c67fe9",
+          "jsonPointer": "/instances/0",
+          "id": "real-5330aa8b62176216-body-1",
+          "rowSha256": "afe81cabe0897b8607b93f3f2ceeddc2ff65a1a51e6ab2068c8e933192d8c220",
+          "bodyReferences": [
+            {
+              "path": "scripts/inverse/datasets/real-annotations.json",
+              "sha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5"
+            },
+            {
+              "path": "scripts/inverse/datasets/real-annotations-supplement.json",
+              "sha256": "db3a35a1bb2b50477d8a203e137a123e996193c5e8bf922a929e5b0ebedf0e25"
+            }
+          ]
+        }
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/5330aa8b621762167ded8a0c2662e38947ee3422d7b06f669b18e6db43f0779d.jpg",
+      "sourceImageSha256": "5330aa8b621762167ded8a0c2662e38947ee3422d7b06f669b18e6db43f0779d",
+      "sourceSize": [
+        250,
+        250
+      ],
+      "sourcePages": [
+        "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php"
+      ],
+      "nearDuplicateGroup": "real-5330aa8b62176216",
+      "splitGroupId": "real-split-66587aa0e20b89c8",
+      "sourceGroups": [
+        "krymmel",
+        "publisher:krymmel.dk"
+      ],
+      "splitStatus": "unassigned",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "bicycle-medallion",
+        "crossCorpusReview": "pending"
+      },
+      "familyId": null,
+      "visibleAssembledHeartCount": 1,
+      "otherIdentifiableHeartCount": 0,
+      "selectsOneOfMultipleIdentifiableHearts": false,
+      "otherHeartBackgroundConflictObserved": false,
+      "visualReview": "All full-source thumbnails with the selected outline were inspected; clutter/ambiguous-object cases also inspected in larger/native source views.",
+      "visualNotes": "One identifiable assembled paper heart in the photograph; other visible elements are ordinary background, handle or decorations.",
+      "selectionCue": {
+        "independentRoughRoiRecorded": false,
+        "independentPointOrMaskPromptRecorded": false,
+        "consumedByCurrentModel": false,
+        "overlapCornerTargetPresent": true,
+        "bodyEnvelopeDerivedForAuditOnly": [
+          9.0,
+          26.0,
+          240.0,
+          239.0
+        ],
+        "derivedEnvelopeIsInputCue": false,
+        "note": "Foreground polygons and occasional approximate overlap corners are target annotations. SourceSize/viewSize are dimensions, not selection prompts. No separately recorded input ROI/point cue exists in these annotation records."
+      },
+      "taskCompatibility": "Current single-identifiable-heart photo is compatible with a single-heart full-photo body task; selected-instance versus all-heart semantics are not distinguishable on this sample. No claim of exhaustive hidden-instance absence."
+    },
+    {
+      "id": "real-abf590088db891f9-body-1",
+      "assetId": "real-abf590088db891f9",
+      "annotationReference": {
+        "path": "scripts/inverse/datasets/real-annotations.json",
+        "fileSha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5",
+        "jsonPointer": "/instances/1",
+        "rowSha256": "1278e2b52a0a02d5373fba3dad71e61bf410e8c02f18c9d6a9c2bb806224c7df"
+      },
+      "materialReferences": [
+        {
+          "path": "scripts/inverse/datasets/real-materials-colors.json",
+          "fileSha256": "a7567a3a9452d038bb8dcbacbab6117f376b60de268e39c7c636ee2e75c67fe9",
+          "jsonPointer": "/instances/1",
+          "id": "real-abf590088db891f9-body-1",
+          "rowSha256": "cd26920cb0406dc9e511ec3be1924ced394ad09102f0e7f38b16ee9243faeef9",
+          "bodyReferences": [
+            {
+              "path": "scripts/inverse/datasets/real-annotations.json",
+              "sha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5"
+            },
+            {
+              "path": "scripts/inverse/datasets/real-annotations-supplement.json",
+              "sha256": "db3a35a1bb2b50477d8a203e137a123e996193c5e8bf922a929e5b0ebedf0e25"
+            }
+          ]
+        }
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/abf590088db891f98c7e082a3fd9b60cf72dd969fb31ab0d18e963a5297a1971.jpg",
+      "sourceImageSha256": "abf590088db891f98c7e082a3fd9b60cf72dd969fb31ab0d18e963a5297a1971",
+      "sourceSize": [
+        250,
+        250
+      ],
+      "sourcePages": [
+        "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php"
+      ],
+      "nearDuplicateGroup": "real-abf590088db891f9",
+      "splitGroupId": "real-split-66587aa0e20b89c8",
+      "sourceGroups": [
+        "krymmel",
+        "publisher:krymmel.dk"
+      ],
+      "splitStatus": "unassigned",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "sloth-silhouette",
+        "crossCorpusReview": "pending"
+      },
+      "familyId": null,
+      "visibleAssembledHeartCount": 1,
+      "otherIdentifiableHeartCount": 0,
+      "selectsOneOfMultipleIdentifiableHearts": false,
+      "otherHeartBackgroundConflictObserved": false,
+      "visualReview": "All full-source thumbnails with the selected outline were inspected; clutter/ambiguous-object cases also inspected in larger/native source views.",
+      "visualNotes": "One identifiable assembled paper heart in the photograph; other visible elements are ordinary background, handle or decorations.",
+      "selectionCue": {
+        "independentRoughRoiRecorded": false,
+        "independentPointOrMaskPromptRecorded": false,
+        "consumedByCurrentModel": false,
+        "overlapCornerTargetPresent": true,
+        "bodyEnvelopeDerivedForAuditOnly": [
+          11.0,
+          28.0,
+          242.0,
+          240.0
+        ],
+        "derivedEnvelopeIsInputCue": false,
+        "note": "Foreground polygons and occasional approximate overlap corners are target annotations. SourceSize/viewSize are dimensions, not selection prompts. No separately recorded input ROI/point cue exists in these annotation records."
+      },
+      "taskCompatibility": "Current single-identifiable-heart photo is compatible with a single-heart full-photo body task; selected-instance versus all-heart semantics are not distinguishable on this sample. No claim of exhaustive hidden-instance absence."
+    },
+    {
+      "id": "real-995899fe049540ed-body-1",
+      "assetId": "real-995899fe049540ed",
+      "annotationReference": {
+        "path": "scripts/inverse/datasets/real-annotations.json",
+        "fileSha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5",
+        "jsonPointer": "/instances/2",
+        "rowSha256": "a80982aef1ade1d67613911ebd7c0b7f22e99d9161bf30a05cb124787afc4fdf"
+      },
+      "materialReferences": [
+        {
+          "path": "scripts/inverse/datasets/real-materials-printed.json",
+          "fileSha256": "96368a150b75fc0aa04aa03eda43293b094235cd2741abaa7a55bc4fab0feee2",
+          "jsonPointer": "/instances/0",
+          "id": "real-995899fe049540ed-body-1",
+          "rowSha256": "144fa27ec45e4621c22adf3429eb4a02245b58155076703a74d4e91e7162617c",
+          "bodyReferences": [
+            {
+              "path": "scripts/inverse/datasets/real-annotations.json",
+              "sha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5"
+            }
+          ]
+        }
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/995899fe049540eddee6f7bdd90e0a65f839059ac404346642c904617875ca8e.jpg",
+      "sourceImageSha256": "995899fe049540eddee6f7bdd90e0a65f839059ac404346642c904617875ca8e",
+      "sourceSize": [
+        1600,
+        1349
+      ],
+      "sourcePages": [
+        "https://www.carinascraftblog.com/2021/12/15/woven-paper-heart-tutorial.html"
+      ],
+      "nearDuplicateGroup": "real-995899fe049540ed",
+      "splitGroupId": "real-split-837aa89750c4379e",
+      "sourceGroups": [
+        "carina",
+        "publisher:carinascraftblog.com"
+      ],
+      "splitStatus": "unassigned",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "patterned-three-by-three",
+        "crossCorpusReview": "pending"
+      },
+      "familyId": null,
+      "visibleAssembledHeartCount": 1,
+      "otherIdentifiableHeartCount": 0,
+      "selectsOneOfMultipleIdentifiableHearts": false,
+      "otherHeartBackgroundConflictObserved": false,
+      "visualReview": "All full-source thumbnails with the selected outline were inspected; clutter/ambiguous-object cases also inspected in larger/native source views.",
+      "visualNotes": "One identifiable assembled paper heart in the photograph; other visible elements are ordinary background, handle or decorations.",
+      "selectionCue": {
+        "independentRoughRoiRecorded": false,
+        "independentPointOrMaskPromptRecorded": false,
+        "consumedByCurrentModel": false,
+        "overlapCornerTargetPresent": true,
+        "bodyEnvelopeDerivedForAuditOnly": [
+          170.0,
+          92.4315,
+          1445.0,
+          1304.0333
+        ],
+        "derivedEnvelopeIsInputCue": false,
+        "note": "Foreground polygons and occasional approximate overlap corners are target annotations. SourceSize/viewSize are dimensions, not selection prompts. No separately recorded input ROI/point cue exists in these annotation records."
+      },
+      "taskCompatibility": "Current single-identifiable-heart photo is compatible with a single-heart full-photo body task; selected-instance versus all-heart semantics are not distinguishable on this sample. No claim of exhaustive hidden-instance absence."
+    },
+    {
+      "id": "real-39f3a1ba97852876-body-1",
+      "assetId": "real-39f3a1ba97852876",
+      "annotationReference": {
+        "path": "scripts/inverse/datasets/real-annotations.json",
+        "fileSha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5",
+        "jsonPointer": "/instances/3",
+        "rowSha256": "58ea4e21d585128de0374d2ab14772bf20b00a73041ee5ab95b975683230ab1c"
+      },
+      "materialReferences": [
+        {
+          "path": "scripts/inverse/datasets/real-materials-hanging.json",
+          "fileSha256": "9376385a12d03d5e5e31356f61201912dc40bf037631273cd4a109189cea2727",
+          "jsonPointer": "/instances/0",
+          "id": "real-39f3a1ba97852876-body-1",
+          "rowSha256": "c7581445823311bb3789562e0b0362a632dd1c1c01c3cc9b20d83717bba28082",
+          "bodyReferences": [
+            {
+              "path": "scripts/inverse/datasets/real-annotations.json",
+              "sha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5"
+            }
+          ]
+        }
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/39f3a1ba97852876b9c62d3fbff392a8f23b84d3bd0b53010cd6378ebc29a079.jpg",
+      "sourceImageSha256": "39f3a1ba97852876b9c62d3fbff392a8f23b84d3bd0b53010cd6378ebc29a079",
+      "sourceSize": [
+        450,
+        300
+      ],
+      "sourcePages": [
+        "https://www.northpole.com/craftcottage/scandinavian-woven-hearts"
+      ],
+      "nearDuplicateGroup": "real-39f3a1ba97852876",
+      "splitGroupId": "real-split-0ce4ada523ddc171",
+      "sourceGroups": [
+        "northpole",
+        "publisher:northpole.com"
+      ],
+      "splitStatus": "unassigned",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "curved-checker",
+        "crossCorpusReview": "pending"
+      },
+      "familyId": null,
+      "visibleAssembledHeartCount": 1,
+      "otherIdentifiableHeartCount": 0,
+      "selectsOneOfMultipleIdentifiableHearts": false,
+      "otherHeartBackgroundConflictObserved": false,
+      "visualReview": "All full-source thumbnails with the selected outline were inspected; clutter/ambiguous-object cases also inspected in larger/native source views.",
+      "visualNotes": "One identifiable assembled paper heart in the photograph; other visible elements are ordinary background, handle or decorations.",
+      "selectionCue": {
+        "independentRoughRoiRecorded": false,
+        "independentPointOrMaskPromptRecorded": false,
+        "consumedByCurrentModel": false,
+        "overlapCornerTargetPresent": false,
+        "bodyEnvelopeDerivedForAuditOnly": [
+          164.0,
+          60.0,
+          389.0,
+          280.0
+        ],
+        "derivedEnvelopeIsInputCue": false,
+        "note": "Foreground polygons and occasional approximate overlap corners are target annotations. SourceSize/viewSize are dimensions, not selection prompts. No separately recorded input ROI/point cue exists in these annotation records."
+      },
+      "taskCompatibility": "Current single-identifiable-heart photo is compatible with a single-heart full-photo body task; selected-instance versus all-heart semantics are not distinguishable on this sample. No claim of exhaustive hidden-instance absence."
+    },
+    {
+      "id": "real-b87b0b19f12724f3-body-1",
+      "assetId": "real-b87b0b19f12724f3",
+      "annotationReference": {
+        "path": "scripts/inverse/datasets/real-annotations.json",
+        "fileSha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5",
+        "jsonPointer": "/instances/4",
+        "rowSha256": "2e0896997d02663beaa730dbf2bb6274a6df9e22826ff7b25cf6766c58f83783"
+      },
+      "materialReferences": [
+        {
+          "path": "scripts/inverse/datasets/real-materials-printed.json",
+          "fileSha256": "96368a150b75fc0aa04aa03eda43293b094235cd2741abaa7a55bc4fab0feee2",
+          "jsonPointer": "/instances/1",
+          "id": "real-b87b0b19f12724f3-body-1",
+          "rowSha256": "020e2744437d09c9b3f98aca2221e3377d4127263a52eb13ced5251acd2ddb74",
+          "bodyReferences": [
+            {
+              "path": "scripts/inverse/datasets/real-annotations.json",
+              "sha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5"
+            }
+          ]
+        }
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/b87b0b19f12724f37b816b22afe3dc5f59aa57531bdaf18d8c678f074d4eafd3.jpg",
+      "sourceImageSha256": "b87b0b19f12724f37b816b22afe3dc5f59aa57531bdaf18d8c678f074d4eafd3",
+      "sourceSize": [
+        600,
+        400
+      ],
+      "sourcePages": [
+        "https://www.doodlecraftblog.com/2021/02/how-to-make-woven-paper-heart-basket.html"
+      ],
+      "nearDuplicateGroup": "real-b87b0b19f12724f3",
+      "splitGroupId": "real-split-b0658dffd8a94416",
+      "sourceGroups": [
+        "doodlecraft",
+        "publisher:doodlecraftblog.com"
+      ],
+      "splitStatus": "unassigned",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "three-by-three-open-pink",
+        "crossCorpusReview": "pending"
+      },
+      "familyId": null,
+      "visibleAssembledHeartCount": 1,
+      "otherIdentifiableHeartCount": 0,
+      "selectsOneOfMultipleIdentifiableHearts": false,
+      "otherHeartBackgroundConflictObserved": false,
+      "visualReview": "All full-source thumbnails with the selected outline were inspected; clutter/ambiguous-object cases also inspected in larger/native source views.",
+      "visualNotes": "One bowed basket plus several heart-shaped wrapped chocolates. Those are other objects, correctly excluded from a woven-paper-body target.",
+      "selectionCue": {
+        "independentRoughRoiRecorded": false,
+        "independentPointOrMaskPromptRecorded": false,
+        "consumedByCurrentModel": false,
+        "overlapCornerTargetPresent": false,
+        "bodyEnvelopeDerivedForAuditOnly": [
+          134.0,
+          87.0,
+          409.0,
+          335.0
+        ],
+        "derivedEnvelopeIsInputCue": false,
+        "note": "Foreground polygons and occasional approximate overlap corners are target annotations. SourceSize/viewSize are dimensions, not selection prompts. No separately recorded input ROI/point cue exists in these annotation records."
+      },
+      "taskCompatibility": "Current single-identifiable-heart photo is compatible with a single-heart full-photo body task; selected-instance versus all-heart semantics are not distinguishable on this sample. No claim of exhaustive hidden-instance absence."
+    },
+    {
+      "id": "real-12ce3c9180f7f317-body-1",
+      "assetId": "real-12ce3c9180f7f317",
+      "annotationReference": {
+        "path": "scripts/inverse/datasets/real-annotations.json",
+        "fileSha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5",
+        "jsonPointer": "/instances/5",
+        "rowSha256": "8a86f4ef6b381385b39945b3b35e4440b7caa15d3e4fd81682eb24e709dfa86c"
+      },
+      "materialReferences": [
+        {
+          "path": "scripts/inverse/datasets/real-materials-colors.json",
+          "fileSha256": "a7567a3a9452d038bb8dcbacbab6117f376b60de268e39c7c636ee2e75c67fe9",
+          "jsonPointer": "/instances/3",
+          "id": "real-12ce3c9180f7f317-body-1",
+          "rowSha256": "4e3bd7896e7e987ebfa1c3cc3f012e08381401a7c453bb023cbad48793d59f48",
+          "bodyReferences": [
+            {
+              "path": "scripts/inverse/datasets/real-annotations.json",
+              "sha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5"
+            },
+            {
+              "path": "scripts/inverse/datasets/real-annotations-supplement.json",
+              "sha256": "db3a35a1bb2b50477d8a203e137a123e996193c5e8bf922a929e5b0ebedf0e25"
+            }
+          ]
+        }
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/12ce3c9180f7f31796ac378fc8cbdf3f2ebc7fee0eae9199d7266608df9e7966.jpg",
+      "sourceImageSha256": "12ce3c9180f7f31796ac378fc8cbdf3f2ebc7fee0eae9199d7266608df9e7966",
+      "sourceSize": [
+        3096,
+        3014
+      ],
+      "sourcePages": [
+        "https://commons.wikimedia.org/wiki/File:Kopi_af_HCA_julehjerte.jpg"
+      ],
+      "nearDuplicateGroup": "real-12ce3c9180f7f317",
+      "splitGroupId": "real-split-1c907ad4f70d8815",
+      "sourceGroups": [
+        "commons",
+        "publisher:commons.wikimedia.org"
+      ],
+      "splitStatus": "unassigned",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "five-by-five-checker",
+        "crossCorpusReview": "pending"
+      },
+      "familyId": null,
+      "visibleAssembledHeartCount": 1,
+      "otherIdentifiableHeartCount": 0,
+      "selectsOneOfMultipleIdentifiableHearts": false,
+      "otherHeartBackgroundConflictObserved": false,
+      "visualReview": "All full-source thumbnails with the selected outline were inspected; clutter/ambiguous-object cases also inspected in larger/native source views.",
+      "visualNotes": "One identifiable assembled paper heart in the photograph; other visible elements are ordinary background, handle or decorations.",
+      "selectionCue": {
+        "independentRoughRoiRecorded": false,
+        "independentPointOrMaskPromptRecorded": false,
+        "consumedByCurrentModel": false,
+        "overlapCornerTargetPresent": true,
+        "bodyEnvelopeDerivedForAuditOnly": [
+          183.825,
+          319.3002,
+          2858.9625,
+          2810.809
+        ],
+        "derivedEnvelopeIsInputCue": false,
+        "note": "Foreground polygons and occasional approximate overlap corners are target annotations. SourceSize/viewSize are dimensions, not selection prompts. No separately recorded input ROI/point cue exists in these annotation records."
+      },
+      "taskCompatibility": "Current single-identifiable-heart photo is compatible with a single-heart full-photo body task; selected-instance versus all-heart semantics are not distinguishable on this sample. No claim of exhaustive hidden-instance absence."
+    },
+    {
+      "id": "real-f4b397c381357dfa-body-1",
+      "assetId": "real-f4b397c381357dfa",
+      "annotationReference": {
+        "path": "scripts/inverse/datasets/real-annotations.json",
+        "fileSha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5",
+        "jsonPointer": "/instances/6",
+        "rowSha256": "3ac242bef3805bfd37f2aa21856b99d1b4cb4264260b015f39b6e1018af2ab2c"
+      },
+      "materialReferences": [],
+      "sourceImagePath": "tmp/heart-training-real/assets/f4b397c381357dfa7af00134ca0d33137a761bfa51ad4840545967d25a6cec97.jpg",
+      "sourceImageSha256": "f4b397c381357dfa7af00134ca0d33137a761bfa51ad4840545967d25a6cec97",
+      "sourceSize": [
+        405,
+        720
+      ],
+      "sourcePages": [
+        "https://dk.pinterest.com/pin/516014069823117264/"
+      ],
+      "nearDuplicateGroup": "real-f4b397c381357dfa",
+      "splitGroupId": "real-split-859cdbb36f7f6c77",
+      "sourceGroups": [
+        "pinterest-pin-516014069823117264"
+      ],
+      "splitStatus": "unassigned",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "printed-black-grid",
+        "crossCorpusReview": "pending"
+      },
+      "familyId": null,
+      "visibleAssembledHeartCount": 1,
+      "otherIdentifiableHeartCount": 0,
+      "selectsOneOfMultipleIdentifiableHearts": false,
+      "otherHeartBackgroundConflictObserved": false,
+      "visualReview": "All full-source thumbnails with the selected outline were inspected; clutter/ambiguous-object cases also inspected in larger/native source views.",
+      "visualNotes": "One identifiable assembled paper heart in the photograph; other visible elements are ordinary background, handle or decorations.",
+      "selectionCue": {
+        "independentRoughRoiRecorded": false,
+        "independentPointOrMaskPromptRecorded": false,
+        "consumedByCurrentModel": false,
+        "overlapCornerTargetPresent": false,
+        "bodyEnvelopeDerivedForAuditOnly": [
+          122.625,
+          271.125,
+          285.75,
+          419.625
+        ],
+        "derivedEnvelopeIsInputCue": false,
+        "note": "Foreground polygons and occasional approximate overlap corners are target annotations. SourceSize/viewSize are dimensions, not selection prompts. No separately recorded input ROI/point cue exists in these annotation records."
+      },
+      "taskCompatibility": "Current single-identifiable-heart photo is compatible with a single-heart full-photo body task; selected-instance versus all-heart semantics are not distinguishable on this sample. No claim of exhaustive hidden-instance absence."
+    },
+    {
+      "id": "real-68d8f25d8891df62-body-1",
+      "assetId": "real-68d8f25d8891df62",
+      "annotationReference": {
+        "path": "scripts/inverse/datasets/real-annotations.json",
+        "fileSha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5",
+        "jsonPointer": "/instances/7",
+        "rowSha256": "1323be385e968219c78ce10248b0d3217e03cfb510381676524ba71402d01915"
+      },
+      "materialReferences": [
+        {
+          "path": "scripts/inverse/datasets/real-materials.json",
+          "fileSha256": "fae5ef1cf8f1fbf4661776e05454da849be1dcada9f778d88e522d5d29773709",
+          "jsonPointer": "/instances/2",
+          "id": "real-68d8f25d8891df62-body-1",
+          "rowSha256": "3ea2e35eb15d668d8d7ee3a3ba5ef3f7e27b2cf507790aa2b66c2f6d86a502ff",
+          "bodyReferences": [
+            {
+              "path": "scripts/inverse/datasets/real-annotations-supplement.json",
+              "sha256": "db3a35a1bb2b50477d8a203e137a123e996193c5e8bf922a929e5b0ebedf0e25"
+            },
+            {
+              "path": "scripts/inverse/datasets/real-annotations-scenes.json",
+              "sha256": "7a6a64262ab878f25c928c1ad4d07620e4ede8b6cd0d2ea79c3bd100c9c8e536"
+            },
+            {
+              "path": "scripts/inverse/datasets/real-annotations.json",
+              "sha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5"
+            }
+          ]
+        }
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/68d8f25d8891df62c4ac48949b0552e95ce0a73a07c0be99b9dfc0a1dcdcbfd4.jpg",
+      "sourceImageSha256": "68d8f25d8891df62c4ac48949b0552e95ce0a73a07c0be99b9dfc0a1dcdcbfd4",
+      "sourceSize": [
+        360,
+        467
+      ],
+      "sourcePages": [
+        "https://dk.pinterest.com/pin/480196379013097231/"
+      ],
+      "nearDuplicateGroup": "real-68d8f25d8891df62",
+      "splitGroupId": "real-split-6459d28c6c10b90f",
+      "sourceGroups": [
+        "pinterest-pin-480196379013097231",
+        "publisher:isabellas.dk"
+      ],
+      "splitStatus": "unassigned",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "floral-blue-gold",
+        "crossCorpusReview": "pending"
+      },
+      "familyId": null,
+      "visibleAssembledHeartCount": 1,
+      "otherIdentifiableHeartCount": 0,
+      "selectsOneOfMultipleIdentifiableHearts": false,
+      "otherHeartBackgroundConflictObserved": false,
+      "visualReview": "All full-source thumbnails with the selected outline were inspected; clutter/ambiguous-object cases also inspected in larger/native source views.",
+      "visualNotes": "One clipped floral/gold basket with flowers and patterned ceramic/vase background. No second woven basket is visible; hidden continuation is not inferred.",
+      "selectionCue": {
+        "independentRoughRoiRecorded": false,
+        "independentPointOrMaskPromptRecorded": false,
+        "consumedByCurrentModel": false,
+        "overlapCornerTargetPresent": false,
+        "bodyEnvelopeDerivedForAuditOnly": [
+          11.0,
+          76.0,
+          360.0,
+          421.0
+        ],
+        "derivedEnvelopeIsInputCue": false,
+        "note": "Foreground polygons and occasional approximate overlap corners are target annotations. SourceSize/viewSize are dimensions, not selection prompts. No separately recorded input ROI/point cue exists in these annotation records."
+      },
+      "taskCompatibility": "Current single-identifiable-heart photo is compatible with a single-heart full-photo body task; selected-instance versus all-heart semantics are not distinguishable on this sample. No claim of exhaustive hidden-instance absence."
+    },
+    {
+      "id": "real-340f5e5b0f447889-body-1",
+      "assetId": "real-340f5e5b0f447889",
+      "annotationReference": {
+        "path": "scripts/inverse/datasets/real-annotations.json",
+        "fileSha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5",
+        "jsonPointer": "/instances/8",
+        "rowSha256": "48e9e3e7c4b6ba6882884a084e61973c088e96898b4ba16e12a3e1a1d615312b"
+      },
+      "materialReferences": [
+        {
+          "path": "scripts/inverse/datasets/real-materials-protruding.json",
+          "fileSha256": "beea1b34e342ee7152d1933e04182c81f1e0fd2d6c110ccdbae2e2c5eac71676",
+          "jsonPointer": "/instances/0",
+          "id": "real-340f5e5b0f447889-body-1",
+          "rowSha256": "e1bd3b43bb4edc834bc9cf52a937d219eca52291d70060083821d589ab57315d",
+          "bodyReferences": [
+            {
+              "path": "scripts/inverse/datasets/real-annotations.json",
+              "sha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5"
+            }
+          ]
+        }
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/340f5e5b0f447889be78bcba0be828f90452b19d1ba1370f8eeafc79ceda6f8e.jpg",
+      "sourceImageSha256": "340f5e5b0f447889be78bcba0be828f90452b19d1ba1370f8eeafc79ceda6f8e",
+      "sourceSize": [
+        736,
+        1053
+      ],
+      "sourcePages": [
+        "https://dk.pinterest.com/pin/302656037474215486/"
+      ],
+      "nearDuplicateGroup": "real-340f5e5b0f447889",
+      "splitGroupId": "real-split-66587aa0e20b89c8",
+      "sourceGroups": [
+        "pinterest-pin-302656037474215486",
+        "publisher:krymmel.dk"
+      ],
+      "splitStatus": "unassigned",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "dragonfly-protrusions",
+        "crossCorpusReview": "pending"
+      },
+      "familyId": null,
+      "visibleAssembledHeartCount": 1,
+      "otherIdentifiableHeartCount": 0,
+      "selectsOneOfMultipleIdentifiableHearts": false,
+      "otherHeartBackgroundConflictObserved": false,
+      "visualReview": "All full-source thumbnails with the selected outline were inspected; clutter/ambiguous-object cases also inspected in larger/native source views.",
+      "visualNotes": "One identifiable assembled paper heart in the photograph; other visible elements are ordinary background, handle or decorations.",
+      "selectionCue": {
+        "independentRoughRoiRecorded": false,
+        "independentPointOrMaskPromptRecorded": false,
+        "consumedByCurrentModel": false,
+        "overlapCornerTargetPresent": false,
+        "bodyEnvelopeDerivedForAuditOnly": [
+          46.1029,
+          468.9141,
+          681.6644,
+          1015.1578
+        ],
+        "derivedEnvelopeIsInputCue": false,
+        "note": "Foreground polygons and occasional approximate overlap corners are target annotations. SourceSize/viewSize are dimensions, not selection prompts. No separately recorded input ROI/point cue exists in these annotation records."
+      },
+      "taskCompatibility": "Current single-identifiable-heart photo is compatible with a single-heart full-photo body task; selected-instance versus all-heart semantics are not distinguishable on this sample. No claim of exhaustive hidden-instance absence."
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1",
+      "assetId": "real-d5b0aa8d4d2465ee",
+      "annotationReference": {
+        "path": "scripts/inverse/datasets/real-annotations.json",
+        "fileSha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5",
+        "jsonPointer": "/instances/9",
+        "rowSha256": "6fc4f54db6dd2cbd4a74aa52e5cc4bad797cb62608774b1b65185a57fbcc2754"
+      },
+      "materialReferences": [
+        {
+          "path": "scripts/inverse/datasets/real-materials-curved.json",
+          "fileSha256": "2b2dea584e023ac296d603aedb17efd802a7082e54e4fd7f936182461abfad12",
+          "jsonPointer": "/instances/0",
+          "id": "real-d5b0aa8d4d2465ee-body-1",
+          "rowSha256": "f798ff51bce8ccc117ca87a206b8689ee7d92bb3e30150d8ff334956333112c4",
+          "bodyReferences": [
+            {
+              "path": "scripts/inverse/datasets/real-annotations.json",
+              "sha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5"
+            }
+          ]
+        }
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/d5b0aa8d4d2465eeee9b25ff43d919d584705256523c711f545d04bae4bde3a6.jpg",
+      "sourceImageSha256": "d5b0aa8d4d2465eeee9b25ff43d919d584705256523c711f545d04bae4bde3a6",
+      "sourceSize": [
+        720,
+        480
+      ],
+      "sourcePages": [
+        "https://rosemarywashington.wordpress.com/2011/02/02/valentine-papercrafts/"
+      ],
+      "nearDuplicateGroup": "real-d5b0aa8d4d2465ee",
+      "splitGroupId": "real-split-4cd39a54715c7740",
+      "sourceGroups": [
+        "publisher:rosemarywashington.wordpress.com",
+        "rosemary"
+      ],
+      "splitStatus": "unassigned",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "four-by-four-tree",
+        "crossCorpusReview": "pending"
+      },
+      "familyId": null,
+      "visibleAssembledHeartCount": 1,
+      "otherIdentifiableHeartCount": 0,
+      "selectsOneOfMultipleIdentifiableHearts": false,
+      "otherHeartBackgroundConflictObserved": false,
+      "visualReview": "All full-source thumbnails with the selected outline were inspected; clutter/ambiguous-object cases also inspected in larger/native source views.",
+      "visualNotes": "One red/white basket against a strongly patterned green background. Background pattern does not form another identifiable basket.",
+      "selectionCue": {
+        "independentRoughRoiRecorded": false,
+        "independentPointOrMaskPromptRecorded": false,
+        "consumedByCurrentModel": false,
+        "overlapCornerTargetPresent": true,
+        "bodyEnvelopeDerivedForAuditOnly": [
+          209.25,
+          60.7026,
+          614.25,
+          448.5246
+        ],
+        "derivedEnvelopeIsInputCue": false,
+        "note": "Foreground polygons and occasional approximate overlap corners are target annotations. SourceSize/viewSize are dimensions, not selection prompts. No separately recorded input ROI/point cue exists in these annotation records."
+      },
+      "taskCompatibility": "Current single-identifiable-heart photo is compatible with a single-heart full-photo body task; selected-instance versus all-heart semantics are not distinguishable on this sample. No claim of exhaustive hidden-instance absence."
+    }
+  ],
+  "separateDrafts": [
+    {
+      "draftDirectory": "tmp/heart-learning/cross-annotation-draft-v1",
+      "handoffSha256": "a5b5cf69e1079cced2bf3961b43cff605a13725bd808184b2f19e83a19466edf",
+      "annotationReference": {
+        "path": "tmp/heart-learning/cross-annotation-draft-v1/body-annotations.json",
+        "fileSha256": "b0dcc3dbd218682f0bbe69c7e73ffa5ec43e7b4886ccc2b3bddf9a780e071d5f",
+        "jsonPointer": "/instances/0"
+      },
+      "materialReference": {
+        "path": "tmp/heart-learning/cross-annotation-draft-v1/material-annotations.json",
+        "fileSha256": "0419e6a7a867bdb4d8a01404d5a7db8e1f36bc7c3646126298a72cc898dab3c6",
+        "jsonPointer": "/instances/0"
+      },
+      "assetId": "real-7e2c5568d27c2860",
+      "sourceImagePath": "tmp/heart-training-real/assets/7e2c5568d27c286022311d0b1c0bfd3628eb301518c004a78fd129a32c6bdece.jpg",
+      "sourceImageSha256": "7e2c5568d27c286022311d0b1c0bfd3628eb301518c004a78fd129a32c6bdece",
+      "sourceSize": [
+        3648,
+        2736
+      ],
+      "nearDuplicateGroup": "real-592223f36bcf2c87",
+      "splitGroupId": "real-split-9026287107aa6a63",
+      "sourceGroups": [
+        "pinterest-pin-8655424277448034"
+      ],
+      "familyId": null,
+      "motif": {
+        "candidateFamily": "Nordic-cross-two-paper",
+        "crossCorpusReview": "Pending. Keep all flag-heart views/crops from this scene, its two recorded near-duplicate source assets and any established same-design relatives together; no allocation or independent-family claim."
+      },
+      "allocation": "unassigned",
+      "admissionStatus": "Not part of the 24 body / 22 material annotation inventory or training.",
+      "visibleAssembledHeartCount": 6,
+      "selectedHeartCount": 1,
+      "otherIdentifiableHeartCount": 5,
+      "selectsOneOfMultipleIdentifiableHearts": true,
+      "otherHeartBackgroundConflictObserved": true,
+      "pointEvidence": [
+        {
+          "description": "upper-left other heart",
+          "sourcePointXY": [
+            395,
+            1292
+          ],
+          "visibleObject": "unselected assembled paper heart",
+          "bodyLabel": 0,
+          "bodySupervisionWeight": 1,
+          "materialLabel": 255,
+          "materialSupervisionWeight": 0
+        },
+        {
+          "description": "upper-middle other heart",
+          "sourcePointXY": [
+            1520,
+            1307
+          ],
+          "visibleObject": "unselected assembled paper heart",
+          "bodyLabel": 0,
+          "bodySupervisionWeight": 1,
+          "materialLabel": 255,
+          "materialSupervisionWeight": 0
+        },
+        {
+          "description": "lower-left other heart",
+          "sourcePointXY": [
+            973,
+            2006
+          ],
+          "visibleObject": "unselected assembled paper heart",
+          "bodyLabel": 0,
+          "bodySupervisionWeight": 1,
+          "materialLabel": 255,
+          "materialSupervisionWeight": 0
+        },
+        {
+          "description": "lower-middle other heart",
+          "sourcePointXY": [
+            2037,
+            2067
+          ],
+          "visibleObject": "unselected assembled paper heart",
+          "bodyLabel": 0,
+          "bodySupervisionWeight": 1,
+          "materialLabel": 255,
+          "materialSupervisionWeight": 0
+        },
+        {
+          "description": "lower-right other heart",
+          "sourcePointXY": [
+            3131,
+            2098
+          ],
+          "visibleObject": "unselected assembled paper heart",
+          "bodyLabel": 0,
+          "bodySupervisionWeight": 1,
+          "materialLabel": 255,
+          "materialSupervisionWeight": 0
+        }
+      ],
+      "roughRoiRecorded": [
+        2090,
+        830,
+        3100,
+        1740
+      ],
+      "roughRoiReference": {
+        "path": "tmp/heart-learning/cross-annotation-draft-v1/candidate.json",
+        "fileSha256": "6899d487d54e225a63c18798090ce2c654d0013db14cea3692c8e119edc2bf9c",
+        "jsonPointer": "/sourceRoiXYXY"
+      },
+      "roughRoiRole": "Recorded source-pixel review ROI, not a consumed training/model cue. Could be reused only after a consistent, reviewed selected-instance input protocol.",
+      "currentInputMismatch": "Full-photo RGB has no selection prompt. Body labels train other woven hearts as negatives; their material labels are unknown, so the conflict is in body supervision (including joint material loss).",
+      "draftFilesUnchanged": true
+    },
+    {
+      "draftDirectory": "tmp/heart-learning/red-green-star-annotation-draft-v1",
+      "handoffSha256": "bd89a58a995546b94b1288337144369321967ed0fd1d484e54bbe69f64aa4be7",
+      "annotationReference": {
+        "path": "tmp/heart-learning/red-green-star-annotation-draft-v1/body-annotations.json",
+        "fileSha256": "87fc0c7d7028b1888371cf67048acd4f801a401e7e0372267cb199e2ee00cc25",
+        "jsonPointer": "/instances/0"
+      },
+      "materialReference": {
+        "path": "tmp/heart-learning/red-green-star-annotation-draft-v1/material-annotations.json",
+        "fileSha256": "63856d238a6aab811cc10569f3aa4fc64e351074a71ca1cac361271a477d7405",
+        "jsonPointer": "/instances/0"
+      },
+      "assetId": "real-ca2f9adc67ee4cea",
+      "sourceImagePath": "tmp/heart-training-real/assets/ca2f9adc67ee4ceaa2c4c8c9fa9dad183a536ebfd950d90ec17c1ab40e21dcf5.jpg",
+      "sourceImageSha256": "ca2f9adc67ee4ceaa2c4c8c9fa9dad183a536ebfd950d90ec17c1ab40e21dcf5",
+      "sourceSize": [
+        1024,
+        595
+      ],
+      "nearDuplicateGroup": "real-ca2f9adc67ee4cea",
+      "splitGroupId": "real-split-9000149a8629b681",
+      "sourceGroups": [
+        "pinterest-pin-569142471644374822"
+      ],
+      "familyId": null,
+      "motif": {
+        "candidateFamily": "six-point-star-in-rectangular-frame",
+        "crossCorpusReview": "Pending. Six-point-star designs occur in existing solver QA; do not infer motif-family independence from this different photograph. The right-hand heart and all crops of this scene share the source group."
+      },
+      "allocation": "unassigned",
+      "admissionStatus": "Not part of the 24 body / 22 material annotation inventory or training.",
+      "visibleAssembledHeartCount": 2,
+      "selectedHeartCount": 1,
+      "otherIdentifiableHeartCount": 1,
+      "selectsOneOfMultipleIdentifiableHearts": true,
+      "otherHeartBackgroundConflictObserved": true,
+      "pointEvidence": [
+        {
+          "description": "right-hand other heart",
+          "sourcePointXY": [
+            750,
+            280
+          ],
+          "visibleObject": "unselected assembled paper heart",
+          "bodyLabel": 0,
+          "bodySupervisionWeight": 1,
+          "materialLabel": 255,
+          "materialSupervisionWeight": 0
+        }
+      ],
+      "roughRoiRecorded": [
+        25,
+        75,
+        495,
+        515
+      ],
+      "roughRoiReference": {
+        "path": "tmp/heart-learning/red-green-star-annotation-draft-v1/candidate.json",
+        "fileSha256": "744257903889cd3ffa1cdf684d6500b328bd9656eeabc0107b3117042d2daa6c",
+        "jsonPointer": "/sourceRoiXYXY"
+      },
+      "roughRoiRole": "Recorded source-pixel review ROI, not a consumed training/model cue. Could be reused only after a consistent, reviewed selected-instance input protocol.",
+      "currentInputMismatch": "Full-photo RGB has no selection prompt. Body labels train other woven hearts as negatives; their material labels are unknown, so the conflict is in body supervision (including joint material loss).",
+      "draftFilesUnchanged": true
+    }
+  ],
+  "implementationEvidence": [
+    {
+      "path": "scripts/inverse/datasets/real_annotations.py",
+      "sha256": "b505fb723dc45b644cb95a058ddf45317f6afb700c61fb88cb3d93571fb9e33c",
+      "lineStart": 120,
+      "lineEnd": 158,
+      "finding": "The photo/labels are letterboxed from full source dimensions; outside the selected polygons and uncertainty is supervised background."
+    },
+    {
+      "path": "scripts/inverse/datasets/real_materials.py",
+      "sha256": "86ec6dd4d4d8af2289eda79925cd7c68d9df87719a49adf9fb2d0078858a175e",
+      "lineStart": 61,
+      "lineEnd": 80,
+      "finding": "Materials initialize to unknown 255 and are assigned only inside known selected body."
+    },
+    {
+      "path": "scripts/inverse/learning/foreground.py",
+      "sha256": "dfef778c09e376c9be851ba69e4e9831c4a921cc05aeaae7ef86b8e440ff1dc4",
+      "lineStart": 24,
+      "lineEnd": 27,
+      "finding": "ForegroundNet receives RGB only; fourth detail channel is forced to zero."
+    },
+    {
+      "path": "scripts/inverse/learning/real_materials_learning.py",
+      "sha256": "cc3fa5448f9804c5f4e2ae3c407dbb9281a1cfbf3c332ab7d7a9e3d753907a16",
+      "lineStart": 20,
+      "lineEnd": 45,
+      "finding": "MaterialNet inherits RGB-only foreground input; joint loss includes known-body background penalties."
+    },
+    {
+      "path": "scripts/inverse/learning/real_foreground.py",
+      "sha256": "aaf28c48c7728725bc681a8950c8b5f5a4e2dc9f1ad49f227fb5f02b3bc5d416",
+      "lineStart": 45,
+      "lineEnd": 73,
+      "finding": "Real-label loader carries RGB, target and weights; masked loss includes known negatives and excludes uncertainty."
+    },
+    {
+      "path": "scripts/inverse/learning/prompted_foreground.py",
+      "sha256": "8ab95d5a268b577a5d288d2674f36f3062149b81ef6fa30308df2843a5c4a5c9",
+      "lineStart": 23,
+      "lineEnd": 89,
+      "finding": "Separate offline automatic SAM prompting derives prompts from predictions. It does not supply a recorded user/instance cue to the current training model."
+    }
+  ],
+  "recommendedProtocol": {
+    "name": "Selected physical heart conditioned on an explicit rough selection box",
+    "input": "Full RGB photograph plus a separately recorded rough-box raster identifying the intended heart; preserve context or optionally crop with a saved invertible transform. A positive point is required when a box alone does not uniquely select one visible instance.",
+    "smallestGeneralImplementationDirection": "The foreground decoder already has a fourth detail channel, currently hard-zero. A separately versioned prompted experiment could feed a rough-box channel there while retaining the pretrained RGB stem. Existing checkpoints and studies stay RGB-only; this is a proposal, not an implementation or permission to reclassify results.",
+    "promptProvenance": "Record image hash, selected instance id, source-pixel rough ROI/point, origin (human/public ROI/automatic proposal), review status, transform and whether target labels were used. Do not silently use exact polygon envelopes or exact overlap corners as test-time prompts. Label-derived jittered training prompts need explicit provenance; held-out inference prompts must be obtained independently.",
+    "targets": "Selected visible body plus selected image-local paper A/B. Other hearts may be known background only because a usable selection cue is supplied. Preserve all unknown body bands/occlusions, unknown material gaps and unresolved contact centers.",
+    "groups": "Keep original source, near-duplicate and motif/family grouping. Crops, prompts and augmentations from one photograph never create independent split units. Preserve QA reservation, unassigned status, and unresolved family links.",
+    "minimalNoArchitectureAlternative": "Restrict inputs to independently chosen crops with exactly one identifiable intended heart. Record the crop transform and selection provenance; reject ambiguous multi-heart crops or request a cue. This restricted task is not full-photo selected-instance segmentation.",
+    "rgbOnlyAllHeartAlternative": "Annotate every visible basket body or explicitly ignore unreviewed basket regions. For paper identities across multiple hearts use per-instance material identity, not one shared global two-paper exchange. This requires more labels and a different task contract."
+  },
+  "limitations": [
+    "Visual counts describe identifiable photographed basket bodies, not proof that no hidden heart or unrecognizable fragment exists.",
+    "Single-heart current images cannot establish how RGB-only models choose among multiple hearts.",
+    "Metadata kind=photo alone is not proof of instance count; source images were visually inspected.",
+    "Point evidence establishes the recorded label at six verified other-heart interiors, not an exhaustive polygon annotation for those hearts."
+  ],
+  "parentReview": {
+    "status": "reviewed",
+    "images": [
+      "source-contact-00.jpg",
+      "source-contact-12.jpg",
+      "cross-annotation-draft-v1-other-heart-probes.jpg",
+      "red-green-star-annotation-draft-v1-other-heart-probes.jpg"
+    ],
+    "verifiedAuditAssets": 15,
+    "verifiedSourceAndAnnotationRecords": 24,
+    "finding": "No current clear multi-heart negative conflict observed. Two separate drafts need an explicit instance selection protocol before admission. This does not explain existing single-heart model failures.",
+    "runtimeChanges": false,
+    "trainingOrSplitChanges": false
+  },
+  "artifacts": {
+    "handoff": "tmp/heart-learning/instance-task-audit-v1/handoff.json",
+    "sha256": "835d9e4149d411f3d4d751c7d71914b7ba6d87b197fe4c837b34977fa510b0fc",
+    "files": [
+      {
+        "path": "tmp/heart-learning/instance-task-audit-v1/annotation-order.json",
+        "bytes": 25462,
+        "sha256": "0a39f118ef59c15df807bcca7141f53745bd98af8b488ee33013daf7c92042e2"
+      },
+      {
+        "path": "tmp/heart-learning/instance-task-audit-v1/audit.json",
+        "bytes": 92827,
+        "sha256": "a0c19431ec985934fe466f6c3bfdcfcb3a6b2b98f2107bb7e7fb720b3cb9b119"
+      },
+      {
+        "path": "tmp/heart-learning/instance-task-audit-v1/cross-annotation-draft-v1-other-heart-probes.jpg",
+        "bytes": 310035,
+        "sha256": "e003dd97e369a7f781ee74475eb6aeeb5498d7f33f64e60916f9032f454f5b2f"
+      },
+      {
+        "path": "tmp/heart-learning/instance-task-audit-v1/draft-cross-full-scene.jpg",
+        "bytes": 301739,
+        "sha256": "3b9fe3854331140d0e9d56bff83add356c255f516efd0bcd84dc9bf2864f75a6"
+      },
+      {
+        "path": "tmp/heart-learning/instance-task-audit-v1/example-05.jpg",
+        "bytes": 153722,
+        "sha256": "cbddc98c7fb9f96cc858d2d0ef432de88fcbd87aaea15fe9e53da96df65d0d95"
+      },
+      {
+        "path": "tmp/heart-learning/instance-task-audit-v1/example-06.jpg",
+        "bytes": 82332,
+        "sha256": "7506c97fef352b236c45d347464cc24cdf76a34d5b4b40909035ca69fc89d486"
+      },
+      {
+        "path": "tmp/heart-learning/instance-task-audit-v1/example-07.jpg",
+        "bytes": 80499,
+        "sha256": "a2c81b461af34f5dbccbaee5be9e92f3ddd247aad43210ebff93be13d1d88162"
+      },
+      {
+        "path": "tmp/heart-learning/instance-task-audit-v1/example-18.jpg",
+        "bytes": 44727,
+        "sha256": "8c58df3e80cd99626a43f2df5220862a28f44d47f72117934a90c72f6c219556"
+      },
+      {
+        "path": "tmp/heart-learning/instance-task-audit-v1/example-21.jpg",
+        "bytes": 61440,
+        "sha256": "1b9f177ba10180fe9737eea55eae0c0638d6b6c7103975028d6582d888cd46b9"
+      },
+      {
+        "path": "tmp/heart-learning/instance-task-audit-v1/example-23.jpg",
+        "bytes": 182807,
+        "sha256": "a99be95475ae4b6cfd66bd4f1570da0f128d807bfdbba17a40e03d27a73c728d"
+      },
+      {
+        "path": "tmp/heart-learning/instance-task-audit-v1/make_audit.py",
+        "bytes": 14166,
+        "sha256": "396e57f007dffa05d8a925c39f666901aefd690ab8f5e3556d672881ab83b263"
+      },
+      {
+        "path": "tmp/heart-learning/instance-task-audit-v1/red-green-star-annotation-draft-v1-other-heart-probes.jpg",
+        "bytes": 208336,
+        "sha256": "1f89e1a69313abe420312d3f58c6e923c97f9aba6382560a0c2ae4ec0b2f7206"
+      },
+      {
+        "path": "tmp/heart-learning/instance-task-audit-v1/report.md",
+        "bytes": 9602,
+        "sha256": "ca471feb4c5e54a4c185f4f0fcf3384d4b8c2d939e782acfb95641fff47c2666"
+      },
+      {
+        "path": "tmp/heart-learning/instance-task-audit-v1/source-contact-00.jpg",
+        "bytes": 385000,
+        "sha256": "676fc0fa679a63f919e4add1c864e3513d360914488ac16f36bfdb340a932d1d"
+      },
+      {
+        "path": "tmp/heart-learning/instance-task-audit-v1/source-contact-12.jpg",
+        "bytes": 408684,
+        "sha256": "db90724e1ed723bdec8714e55c3784e9ca8e3c6719b173a9754a6186659490f7"
+      }
+    ]
+  }
+}

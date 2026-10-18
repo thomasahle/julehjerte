@@ -1,0 +1,129 @@
+{
+  "schema": "neural-palette-pipeline-results-1",
+  "status": "complete",
+  "training": false,
+  "deployed": false,
+  "scope": "Fixed development photos, no ROI, supplied corners or label masks. Three arms: production; frozen held-out network body/material fields; the same body plus RGB-palette illumination correction. All use the same twenty-two full photographs. No additional training. This follows the palette development experiment; it is not an untouched test set. Crop support/geometry checks unchanged. Derived-mask template agreement is NOT source-artwork accuracy.",
+  "methodOrder": "Rotate the declared order by source index; same ten-second fitting allowance, no per-image candidate selection across arms.",
+  "summary": {
+    "production": {
+      "instances": 22,
+      "statuses": {
+        "crop-unresolved": 13,
+        "checked-derived-mask": 7,
+        "review-required": 2
+      },
+      "cropFailureReasons": {
+        "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 3,
+        "Crowded frame: select one heart with a rough rectangle": 6,
+        "Multiple substantial foreground components": 4
+      },
+      "checkedIds": [
+        "real-39f3a1ba97852876-body-1",
+        "real-80794af7903e5d29-body-1",
+        "real-8c875dd0f298b5a4-body-1",
+        "real-abf590088db891f9-body-1",
+        "real-b87b0b19f12724f3-body-1",
+        "real-cf2d0fcff65d7386-body-1",
+        "real-d5b0aa8d4d2465ee-body-1"
+      ]
+    },
+    "network-joint": {
+      "instances": 22,
+      "statuses": {
+        "crop-unresolved": 19,
+        "checked-derived-mask": 3
+      },
+      "cropFailureReasons": {
+        "The two-colour foreground does not clearly support both heart lobes and lower edges.": 12,
+        "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 7
+      },
+      "checkedIds": [
+        "real-45744a03afddccb1-body-1",
+        "real-cf2d0fcff65d7386-body-1",
+        "real-d5b0aa8d4d2465ee-body-1"
+      ]
+    },
+    "rgb-joint": {
+      "instances": 22,
+      "statuses": {
+        "crop-unresolved": 19,
+        "checked-derived-mask": 3
+      },
+      "cropFailureReasons": {
+        "The two-colour foreground does not clearly support both heart lobes and lower edges.": 12,
+        "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 7
+      },
+      "checkedIds": [
+        "real-c4a9ee6e2d0a4185-body-1",
+        "real-cf2d0fcff65d7386-body-1",
+        "real-d5b0aa8d4d2465ee-body-1"
+      ]
+    }
+  },
+  "comparison": {
+    "rgbGainsOverNetwork": [
+      "real-c4a9ee6e2d0a4185-body-1"
+    ],
+    "rgbLossesAgainstNetwork": [
+      "real-45744a03afddccb1-body-1"
+    ]
+  },
+  "editable": {
+    "exportedCandidates": 15,
+    "conversionPassed": 15,
+    "completeCandidatePassed": 13,
+    "editorIssueCount": 0
+  },
+  "verification": {
+    "sourceFilesVerified": 802,
+    "allStagesPassed": true,
+    "sourcePhotoAndFieldHashesVerified": true,
+    "renderedReconstructionsVisuallyReviewed": 15,
+    "panelsReviewed": 4
+  },
+  "conclusions": [
+    "Color calibration improves known paper-region classification but does not increase checked reconstruction count: RGB and uncorrected network each produce 3/22 versus production 7/22.",
+    "Both learned-field arms fail 19/22 times before fitting. The updated colors cannot compensate for incomplete or contaminated body fields and unsupported crop hypotheses.",
+    "RGB gains the candle at 0.36625% disagreement with its own derived mask, while losing the rabbit crop that the uncorrected field supports. These are different outputs, not a uniform improvement.",
+    "The RGB checker masks retain much sharper cell corners than the network, but small gaps and border distortions remain. The candle silhouette and frame are visibly recognizable.",
+    "Production reconstructs the newly annotated fish at 1.116875% derived-mask disagreement; the neural arms fail its crop despite the RGB field recovering its interior colors.",
+    "The bicycle remains a solver/representation failure after a usable production crop: the returned weave loses the bicycle despite a clear classified target. More accurate body fields alone will not solve this case."
+  ],
+  "limitations": [
+    "All are repeatedly inspected development photographs; none is a newly untouched generalization test.",
+    "Derived masks and crops differ by arm. Their percentages cannot be compared as errors against one shared original artwork.",
+    "No original cutting paths, dense boundary topology labels or physical assembly checks.",
+    "The RGB correction uses 256-pixel letterboxed predictions; native-photo boundary reconstruction remains untested.",
+    "This evaluates single selected candidates from each arm, not a deployed combined fallback policy."
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/neural-palette-pipeline-v1/source.json": "c082fddd644febbfcebcf5b235e40a5e65e1ae5bdd4fab635759c91f3402d344",
+    "tmp/heart-learning/neural-palette-pipeline-v1/checks.json": "8c5643ffade37a58713c5049a1c06359e0eea7360acd97554b511f0a1798054a",
+    "tmp/heart-learning/neural-palette-pipeline-v1/probe/manifest.json": "4cd5b9dcd46c31fbe2b55515357ac0a1553534ef36647857e811937cb9302896",
+    "tmp/heart-learning/neural-palette-pipeline-v1/pipeline/report.json": "2a989adb71c240594f8c2673c8c5b767e1a685ee95960b20dcb44f1dae42d7e1",
+    "tmp/heart-learning/neural-palette-pipeline-v1/editable/results.json": "df85d55fcce727054f670b23aa46be7a440d450b1d30df3af677ea1548e8452e",
+    "tmp/heart-learning/neural-palette-pipeline-v1/export-probe.py": "46eaedf50853d3e08e1789e46aec7e1c9b2f63b9b9702c4fc2bd155ec3e46751",
+    "tmp/heart-learning/neural-palette-pipeline-v1/replay.mjs": "11fc6776f82dd17fe7286924306d2915328afc084008e5537bcfa39f6304e085",
+    "tmp/heart-learning/neural-palette-pipeline-v1/foreground-crop.mjs": "1d8ff0130f798d34b3eec33d15e55466a5ec6577d30ed42e91e56415da7a6d0a",
+    "tmp/heart-learning/neural-palette-pipeline-v1/material-fields.mjs": "a4528b8668b7e44fed80f0ed96eaf8f4058cfec57525319cf92e66cb4fefc8f6",
+    "tmp/heart-learning/neural-palette-pipeline-v1/editor-input.mjs": "7ed41e6b1d7602521aa68307c1bfe3544e91e71bd4490c92b3ff1636ba834fae",
+    "tmp/heart-learning/neural-palette-pipeline-v1/run.py": "054b389b718808228f3b722f1517006d71215cba1b2b47cf6c56c21e6bbf4d42",
+    "tmp/heart-learning/neural-palette-pipeline-v1/reconstruction-figures.json": "d4468ae45179815d16e21a1ef61eb043d8a58dddb8a13de93cf660396d775926",
+    "tmp/heart-learning/neural-palette-pipeline-v1/reconstructions-4.png": "6a6bce1dd978907791a5b65d4ac500ae0a25f3b2d3004058e04dba4cf7e6b99d",
+    "tmp/heart-learning/neural-palette-pipeline-v1/reconstructions-1.png": "10a149ae8337fb85f1ce427e41fb2bd3f3abb988bf4980b98c80124621375149",
+    "tmp/heart-learning/neural-palette-pipeline-v1/reconstructions-2.png": "fce0ae464df49c5110ab1de024be3f3f003e99d10618b92fd43a2a7e34d69c29",
+    "tmp/heart-learning/neural-palette-pipeline-v1/reconstructions-3.png": "355318f63cfa38e2c12ee84f5e69a10aa192fd3102bde349c06b961f7311be9d"
+  },
+  "publishedTemplateFollowup": {
+    "review": "docs/inverse/datasets/bicycle-template-review.json",
+    "finding": "The designer\u2019s two-page bicycle PDF requires additional enclosed cutouts on the green sheet. That published construction is outside the regular slit-chain model. This qualifies the earlier solver/representation diagnosis; no proof of impossibility for an alternative regular construction.",
+    "historicalResultsAndDenominatorsUnchanged": true
+  },
+  "independentPaperFollowup": {
+    "review": "docs/inverse/datasets/neural-palette-source-paper-results.json",
+    "referencePhotos": 6,
+    "unscoredPhotos": 16,
+    "findings": "The printed-heart checker has 23.87% disagreement on fixed known paper-identity samples despite passing derived-mask checks. The bicycle\u2019s 296 sampled reference-interior pixels miss its fine strokes entirely; zero sampled error cannot certify motif retention."
+  }
+}

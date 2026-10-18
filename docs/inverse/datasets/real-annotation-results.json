@@ -1,0 +1,611 @@
+{
+  "schema": "woven-heart-real-annotation-evidence-1",
+  "annotationAudit": {
+    "passed": true,
+    "instances": 10,
+    "sourceGroups": 8,
+    "approximateOverlapReferences": 5,
+    "manifestSha256": "45077772be82a9d46054a82f3e873b94a6dfa700dbe1d0a68bfb0910a3f58f06",
+    "annotationsSha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5",
+    "scope": "All source hashes, inherited groups, transforms, known/unknown labels and RGB pixels; not an independent human annotation audit."
+  },
+  "frozenModelDiagnostic": {
+    "schema": "woven-heart-real-foreground-diagnostic-1",
+    "status": "complete",
+    "labelsAudit": {
+      "passed": true,
+      "instances": 10,
+      "sourceGroups": 8,
+      "approximateOverlapReferences": 5,
+      "manifestSha256": "45077772be82a9d46054a82f3e873b94a6dfa700dbe1d0a68bfb0910a3f58f06",
+      "annotationsSha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5",
+      "scope": "All source hashes, inherited groups, transforms, known/unknown labels and RGB pixels; not an independent human annotation audit."
+    },
+    "sourceHashes": {
+      "real_foreground.py": "025708879503a153bdb46c1d3226d1eb30d44d2e65aa7477f30a15b9e64112a8",
+      "real-foreground-evaluate.py": "8f2b3198146439ccd47554fb5e3ac542d41c93e2b375615839f9146b74974a24",
+      "foreground.py": "dfef778c09e376c9be851ba69e4e9831c4a921cc05aeaae7ef86b8e440ff1dc4",
+      "model.py": "d23659db131eb826ce713d67bdaa870f032c9ef295715b210d83d02abedd382b"
+    },
+    "runtime": {
+      "python": "3.9.6",
+      "torch": "2.8.0",
+      "device": "cpu",
+      "threads": 2
+    },
+    "scope": "Frozen synthetic-trained checkpoints; ten newly annotated real development examples. No fitting, fine-tuning, new checkpoint selection or unseen-test claim.",
+    "inputs": [
+      {
+        "id": "real-5330aa8b62176216-body-1",
+        "rgbSha256": "ee0a5d69f2e39e5aaf912e785c41dc838480813d82f01d5b3e92d2e624301a47",
+        "targetSha256": "a06780c5340f3860b490b4120089f622d44ed994424e68c2423b0bf70440a069",
+        "weightSha256": "914b94e59c65ebb3862e67b839c76ef45c4c3376ea38327ae22e31b08d602415",
+        "splitGroupId": "real-split-66587aa0e20b89c8",
+        "motif": {
+          "candidateFamily": "bicycle-medallion",
+          "crossCorpusReview": "pending"
+        }
+      },
+      {
+        "id": "real-abf590088db891f9-body-1",
+        "rgbSha256": "e8d5f9d7ef001bb730a4d75e5cdab71fb8d84f7e73dcf40c2d7f13886397112a",
+        "targetSha256": "8ebb3b92e5b6d792a73d3249004d8b51c890de17cf964595d41c2e61bc093709",
+        "weightSha256": "c8cb9c1d45d21adc06ba0b1e5489a6cb195dd03326e35f51cc8a0ffac7b9242e",
+        "splitGroupId": "real-split-66587aa0e20b89c8",
+        "motif": {
+          "candidateFamily": "sloth-silhouette",
+          "crossCorpusReview": "pending"
+        }
+      },
+      {
+        "id": "real-995899fe049540ed-body-1",
+        "rgbSha256": "b6947b77d16d52ff077d599c2dfbdca824e29db9822acdb4dd113f6364d79001",
+        "targetSha256": "474e7bdf0f01f102680fd95698a3afd18210e2b5fb302e414574406084f4ccfb",
+        "weightSha256": "d627cfd9a445608149fe24bddadc85639830f9aa39e01fc3865eb779dd3bb9a7",
+        "splitGroupId": "real-split-837aa89750c4379e",
+        "motif": {
+          "candidateFamily": "patterned-three-by-three",
+          "crossCorpusReview": "pending"
+        }
+      },
+      {
+        "id": "real-39f3a1ba97852876-body-1",
+        "rgbSha256": "24c27123808fe6322466e39322d9a6e179dfc4b1d9ce5caf079690ddda4acbe7",
+        "targetSha256": "cc68b6f204f3033d376c851e92bf30d65af67afab3ce06cfb1c20f5274a4676d",
+        "weightSha256": "43324e6c0d460f1a80eed46d9dcb4fcfbc770e466392fa7d43a876173ac5ff7d",
+        "splitGroupId": "real-split-0ce4ada523ddc171",
+        "motif": {
+          "candidateFamily": "curved-checker",
+          "crossCorpusReview": "pending"
+        }
+      },
+      {
+        "id": "real-b87b0b19f12724f3-body-1",
+        "rgbSha256": "0d85b238a686811161f82b724ac71d8a44cb151d5ff8f34d1b89a84719cf81a8",
+        "targetSha256": "8270aba5e275adbb250bbd38ab0214a79333386e2c61a18b12cc1ce1d17792d7",
+        "weightSha256": "b5381f701e2c0afd15c33d22009d752e4e7593cd42606252570f0aace9562002",
+        "splitGroupId": "real-split-b0658dffd8a94416",
+        "motif": {
+          "candidateFamily": "three-by-three-open-pink",
+          "crossCorpusReview": "pending"
+        }
+      },
+      {
+        "id": "real-12ce3c9180f7f317-body-1",
+        "rgbSha256": "96acda487cc72dafc6e7f1c3b65bb3bb3d82d2ff9efb9d1a8db9420286049da4",
+        "targetSha256": "9f8c8a6981d116ac8a3c0c622df1aadd308afc79f40397d07567d8a31d37901b",
+        "weightSha256": "1266db2a7ddcb1ab1be8219db1cbebe59e151e6140ccf81db2e57b69aa1e3df4",
+        "splitGroupId": "real-split-1c907ad4f70d8815",
+        "motif": {
+          "candidateFamily": "five-by-five-checker",
+          "crossCorpusReview": "pending"
+        }
+      },
+      {
+        "id": "real-f4b397c381357dfa-body-1",
+        "rgbSha256": "92cf7aafd4c965c3442aa7666e3ecfccbf5db811be352301a0ab02a5a6069c48",
+        "targetSha256": "8e07ff4d0cfa76c8106c568facc20364c828be39136c4d53bf897e57194fcaa0",
+        "weightSha256": "752138ed990fc5926802ac99fef783a150a68bfc91b70057316eb1540a6ac2af",
+        "splitGroupId": "real-split-859cdbb36f7f6c77",
+        "motif": {
+          "candidateFamily": "printed-black-grid",
+          "crossCorpusReview": "pending"
+        }
+      },
+      {
+        "id": "real-68d8f25d8891df62-body-1",
+        "rgbSha256": "eb9b83cad72d2c7faa77c58f361a474a19050b9f517ec4a31ba5a3a0f470610b",
+        "targetSha256": "5fb80d4d2318c1f90ce3c1d30c1f2197b6deeedfaee52ffb398671ad0aae1ffc",
+        "weightSha256": "e55a6dc0518a6ff35a67a04f2dacbadd65f1a79741aedcdfd648ad72246b3412",
+        "splitGroupId": "real-split-6459d28c6c10b90f",
+        "motif": {
+          "candidateFamily": "floral-blue-gold",
+          "crossCorpusReview": "pending"
+        }
+      },
+      {
+        "id": "real-340f5e5b0f447889-body-1",
+        "rgbSha256": "ea04fed8ffe0095f5dc84b8ab1e9aa2c7ce0bbd5fad4c4e25e434fdcfa65aba7",
+        "targetSha256": "8bef409b4755f107bfa729114ee652cad8651b24a932b917ab1f885f3de27588",
+        "weightSha256": "366b5380b36d667263da7778897f7c160c2ded47e4016625da29a997b0d2f215",
+        "splitGroupId": "real-split-66587aa0e20b89c8",
+        "motif": {
+          "candidateFamily": "dragonfly-protrusions",
+          "crossCorpusReview": "pending"
+        }
+      },
+      {
+        "id": "real-d5b0aa8d4d2465ee-body-1",
+        "rgbSha256": "19574a158a7a9003611190c48ca6d6db6cd26e146a112a92d081f34e012c78ed",
+        "targetSha256": "62e290ef1036841129476f3cdbfc232fcdba34f668c8da103273b8a776deaf08",
+        "weightSha256": "4d9e937b8979f38e0ad46e73307cab36fcdb679227510776fe104aed053185e3",
+        "splitGroupId": "real-split-4cd39a54715c7740",
+        "motif": {
+          "candidateFamily": "four-by-four-tree",
+          "crossCorpusReview": "pending"
+        }
+      }
+    ],
+    "runs": {
+      "control-trained": {
+        "checkpointSha256": "fe037f1f0ab8cbd93b359b6bf047b0e3a5f253b5f57df3a32427701f86eae39b",
+        "sourceReportSha256": "67046150a27bad92a038fc2adfb915642eb35f29138032343457fb384803c20c",
+        "predictions": {
+          "path": "control-trained-predictions.npz",
+          "sha256": "42dce4c6c426f00fabee938cdb26875376e269b7a146288f1e3d42a3179dcf4b"
+        },
+        "metrics": {
+          "instances": 10,
+          "threshold": 0.5,
+          "scope": "Known pixels only; excludes uncertain outline bands, occlusions and letterbox padding. No boundary-localization or complete-crop accuracy claim.",
+          "macroMean": {
+            "knownRegionIoU": 0.5756204819253885,
+            "knownRegionPixelError": 0.305557937140163,
+            "knownPaperFalseNegative": 0.004669784612055585,
+            "knownBackgroundFalsePositive": 0.41151112290528546
+          },
+          "rows": [
+            {
+              "id": "real-5330aa8b62176216-body-1",
+              "knownPixels": 61149,
+              "unknownPixels": 4387,
+              "knownPaperPixels": 32502,
+              "knownBackgroundPixels": 28647,
+              "knownRegionIoU": 0.9688572977531474,
+              "knownRegionPixelError": 0.01690951610001799,
+              "knownPaperFalseNegative": 0.010276290689803704,
+              "knownBackgroundFalsePositive": 0.024435368450448563
+            },
+            {
+              "id": "real-abf590088db891f9-body-1",
+              "knownPixels": 61162,
+              "unknownPixels": 4374,
+              "knownPaperPixels": 32091,
+              "knownBackgroundPixels": 29071,
+              "knownRegionIoU": 0.9712195270044628,
+              "knownRegionPixelError": 0.015499820149766195,
+              "knownPaperFalseNegative": 0.003116138481194104,
+              "knownBackgroundFalsePositive": 0.02916996319356059
+            },
+            {
+              "id": "real-995899fe049540ed-body-1",
+              "knownPixels": 53791,
+              "unknownPixels": 11745,
+              "knownPaperPixels": 25207,
+              "knownBackgroundPixels": 28584,
+              "knownRegionIoU": 0.9266859989590304,
+              "knownRegionPixelError": 0.03666040787492331,
+              "knownPaperFalseNegative": 0.011147697068274686,
+              "knownBackgroundFalsePositive": 0.0591589700531766
+            },
+            {
+              "id": "real-39f3a1ba97852876-body-1",
+              "knownPixels": 41367,
+              "unknownPixels": 24169,
+              "knownPaperPixels": 9342,
+              "knownBackgroundPixels": 32025,
+              "knownRegionIoU": 0.39669596976260246,
+              "knownRegionPixelError": 0.34341383228177047,
+              "knownPaperFalseNegative": 0.00010704345964461572,
+              "knownBackgroundFalsePositive": 0.44355971896955504
+            },
+            {
+              "id": "real-b87b0b19f12724f3-body-1",
+              "knownPixels": 42635,
+              "unknownPixels": 22901,
+              "knownPaperPixels": 7330,
+              "knownBackgroundPixels": 35305,
+              "knownRegionIoU": 0.20420671402702326,
+              "knownRegionPixelError": 0.6699894452914272,
+              "knownPaperFalseNegative": 0.0,
+              "knownBackgroundFalsePositive": 0.8090921965727235
+            },
+            {
+              "id": "real-12ce3c9180f7f317-body-1",
+              "knownPixels": 62394,
+              "unknownPixels": 3142,
+              "knownPaperPixels": 28661,
+              "knownBackgroundPixels": 33733,
+              "knownRegionIoU": 0.8649814668530109,
+              "knownRegionPixelError": 0.07122479725614643,
+              "knownPaperFalseNegative": 0.006664108021353058,
+              "knownBackgroundFalsePositive": 0.126078320932025
+            },
+            {
+              "id": "real-f4b397c381357dfa-body-1",
+              "knownPixels": 35775,
+              "unknownPixels": 29761,
+              "knownPaperPixels": 1640,
+              "knownBackgroundPixels": 34135,
+              "knownRegionIoU": 0.07468065693430657,
+              "knownRegionPixelError": 0.5669601677148847,
+              "knownPaperFalseNegative": 0.001829268292682927,
+              "knownBackgroundFalsePositive": 0.5941116156437674
+            },
+            {
+              "id": "real-68d8f25d8891df62-body-1",
+              "knownPixels": 46548,
+              "unknownPixels": 18988,
+              "knownPaperPixels": 22211,
+              "knownBackgroundPixels": 24337,
+              "knownRegionIoU": 0.5886444820454972,
+              "knownRegionPixelError": 0.32903669330583485,
+              "knownPaperFalseNegative": 0.013236684525685471,
+              "knownBackgroundFalsePositive": 0.6172494555614907
+            },
+            {
+              "id": "real-340f5e5b0f447889-body-1",
+              "knownPixels": 44003,
+              "unknownPixels": 21533,
+              "knownPaperPixels": 12476,
+              "knownBackgroundPixels": 31527,
+              "knownRegionIoU": 0.30133610379569453,
+              "knownRegionPixelError": 0.6571597391086972,
+              "knownPaperFalseNegative": 0.0003206155819172812,
+              "knownBackgroundFalsePositive": 0.9170869413518571
+            },
+            {
+              "id": "real-d5b0aa8d4d2465ee-body-1",
+              "knownPixels": 42469,
+              "unknownPixels": 23067,
+              "knownPaperPixels": 12560,
+              "knownBackgroundPixels": 29909,
+              "knownRegionIoU": 0.4588966021191085,
+              "knownRegionPixelError": 0.3487249523181615,
+              "knownPaperFalseNegative": 0.0,
+              "knownBackgroundFalsePositive": 0.4951686783242502
+            }
+          ],
+          "maskedLoss": 1.1773979187011718
+        }
+      },
+      "scene-trained": {
+        "checkpointSha256": "3e94244975ee6641626b5b93c3948974bfa33609f461aae828e40bdf0a889fe6",
+        "sourceReportSha256": "f3a71ff6de0cb0a00fe8db15051631d131b6cbd71bf607bd607acae5d101929c",
+        "predictions": {
+          "path": "scene-trained-predictions.npz",
+          "sha256": "2c55e173fff1d67a26aa47baeb183ef7cee0def1dea424672816d86a0bcb0d1f"
+        },
+        "metrics": {
+          "instances": 10,
+          "threshold": 0.5,
+          "scope": "Known pixels only; excludes uncertain outline bands, occlusions and letterbox padding. No boundary-localization or complete-crop accuracy claim.",
+          "macroMean": {
+            "knownRegionIoU": 0.7695463114849285,
+            "knownRegionPixelError": 0.08018436845417648,
+            "knownPaperFalseNegative": 0.061411602522872547,
+            "knownBackgroundFalsePositive": 0.06703538790022281
+          },
+          "rows": [
+            {
+              "id": "real-5330aa8b62176216-body-1",
+              "knownPixels": 61149,
+              "unknownPixels": 4387,
+              "knownPaperPixels": 32502,
+              "knownBackgroundPixels": 28647,
+              "knownRegionIoU": 0.9285494870062051,
+              "knownRegionPixelError": 0.038038234476442785,
+              "knownPaperFalseNegative": 0.06996492523537014,
+              "knownBackgroundFalsePositive": 0.001815198799176179
+            },
+            {
+              "id": "real-abf590088db891f9-body-1",
+              "knownPixels": 61162,
+              "unknownPixels": 4374,
+              "knownPaperPixels": 32091,
+              "knownBackgroundPixels": 29071,
+              "knownRegionIoU": 0.9778754167835219,
+              "knownRegionPixelError": 0.011608515091069619,
+              "knownPaperFalseNegative": 0.02212458321647814,
+              "knownBackgroundFalsePositive": 0.0
+            },
+            {
+              "id": "real-995899fe049540ed-body-1",
+              "knownPixels": 53791,
+              "unknownPixels": 11745,
+              "knownPaperPixels": 25207,
+              "knownBackgroundPixels": 28584,
+              "knownRegionIoU": 0.9008410627259865,
+              "knownRegionPixelError": 0.04690375713409307,
+              "knownPaperFalseNegative": 0.0906890942992026,
+              "knownBackgroundFalsePositive": 0.00829135180520571
+            },
+            {
+              "id": "real-39f3a1ba97852876-body-1",
+              "knownPixels": 41367,
+              "unknownPixels": 24169,
+              "knownPaperPixels": 9342,
+              "knownBackgroundPixels": 32025,
+              "knownRegionIoU": 0.9212770176482252,
+              "knownRegionPixelError": 0.01919404356129282,
+              "knownPaperFalseNegative": 0.005352172982230786,
+              "knownBackgroundFalsePositive": 0.02323185011709602
+            },
+            {
+              "id": "real-b87b0b19f12724f3-body-1",
+              "knownPixels": 42635,
+              "unknownPixels": 22901,
+              "knownPaperPixels": 7330,
+              "knownBackgroundPixels": 35305,
+              "knownRegionIoU": 0.5334788937409025,
+              "knownRegionPixelError": 0.15034595989210742,
+              "knownPaperFalseNegative": 0.0,
+              "knownBackgroundFalsePositive": 0.18156068545531795
+            },
+            {
+              "id": "real-12ce3c9180f7f317-body-1",
+              "knownPixels": 62394,
+              "unknownPixels": 3142,
+              "knownPaperPixels": 28661,
+              "knownBackgroundPixels": 33733,
+              "knownRegionIoU": 0.9795301552411045,
+              "knownRegionPixelError": 0.009552200532102446,
+              "knownPaperFalseNegative": 0.004919577125710896,
+              "knownBackgroundFalsePositive": 0.013488275575845612
+            },
+            {
+              "id": "real-f4b397c381357dfa-body-1",
+              "knownPixels": 35775,
+              "unknownPixels": 29761,
+              "knownPaperPixels": 1640,
+              "knownBackgroundPixels": 34135,
+              "knownRegionIoU": 0.15628660679422102,
+              "knownRegionPixelError": 0.24159329140461216,
+              "knownPaperFalseNegative": 0.02378048780487805,
+              "knownBackgroundFalsePositive": 0.25205800498022557
+            },
+            {
+              "id": "real-68d8f25d8891df62-body-1",
+              "knownPixels": 46548,
+              "unknownPixels": 18988,
+              "knownPaperPixels": 22211,
+              "knownBackgroundPixels": 24337,
+              "knownRegionIoU": 0.8032250839865621,
+              "knownRegionPixelError": 0.09437569820400447,
+              "knownPaperFalseNegative": 0.19265228940615012,
+              "knownBackgroundFalsePositive": 0.004684225664625878
+            },
+            {
+              "id": "real-340f5e5b0f447889-body-1",
+              "knownPixels": 44003,
+              "unknownPixels": 21533,
+              "knownPaperPixels": 12476,
+              "knownBackgroundPixels": 31527,
+              "knownRegionIoU": 0.582404038032633,
+              "knownRegionPixelError": 0.1616935208963025,
+              "knownPaperFalseNegative": 0.20463289515870473,
+              "knownBackgroundFalsePositive": 0.14470136708218354
+            },
+            {
+              "id": "real-d5b0aa8d4d2465ee-body-1",
+              "knownPixels": 42469,
+              "unknownPixels": 23067,
+              "knownPaperPixels": 12560,
+              "knownBackgroundPixels": 29909,
+              "knownRegionIoU": 0.9119953528899216,
+              "knownRegionPixelError": 0.028538463349737454,
+              "knownPaperFalseNegative": 0.0,
+              "knownBackgroundFalsePositive": 0.04052291952255174
+            }
+          ],
+          "maskedLoss": 0.45266408324241636
+        }
+      }
+    },
+    "artifacts": {
+      "control-trained-predictions.npz": "42dce4c6c426f00fabee938cdb26875376e269b7a146288f1e3d42a3179dcf4b",
+      "index.html": "7f5777788472021f34642676c69a24c67e3c5e3d19d2085d0ddf0cb092874113",
+      "real-12ce3c9180f7f317-body-1-control-trained-error.png": "83eb437fbcc7f7f6406ec252a68e5db8483788ff3e127e3749c8e73badd42d6f",
+      "real-12ce3c9180f7f317-body-1-control-trained-probability.png": "20ba18ba307af4effa17ed39a1ed80d5d9a24d1edde6825617d3bc8a6795ed36",
+      "real-12ce3c9180f7f317-body-1-scene-trained-error.png": "7c29ae77463f8b1fa07a2b0a999466151a31cbe50e265da0ab51f1e9ac4990cd",
+      "real-12ce3c9180f7f317-body-1-scene-trained-probability.png": "9362f9188abeb82ba4930c2ced4e48f671c4ac539a17322a008cfa38d7769f05",
+      "real-12ce3c9180f7f317-body-1-source.png": "6115dfff4cb2f66a65706aec02e85f0c405070623380f4ccb2d9c31200c81675",
+      "real-340f5e5b0f447889-body-1-control-trained-error.png": "8588626638bd4993f94ff23b30aaa3d67b040179fb7ca7caab331553f67a8005",
+      "real-340f5e5b0f447889-body-1-control-trained-probability.png": "206bedb82d34f482acc0449fc29001f10d2cf767f4ef0bec3f91899c21311038",
+      "real-340f5e5b0f447889-body-1-scene-trained-error.png": "b12d0360e3e692c2784dd929aedee6e7bf6f84919b0ac6af582015e1bc1d8cad",
+      "real-340f5e5b0f447889-body-1-scene-trained-probability.png": "93345dfe7cf6cb63fbd3a933963dc5dde9fdc72c82a5f3705909ffb90b013858",
+      "real-340f5e5b0f447889-body-1-source.png": "1e1b1f0a5b7de04dd73fcd29bf18649ba8842d919d3e4d6a417e8e77e0e7db3d",
+      "real-39f3a1ba97852876-body-1-control-trained-error.png": "2881898551e0ef5f219cc26a2d7db45938ab5184281886f709cc47151d2b71c8",
+      "real-39f3a1ba97852876-body-1-control-trained-probability.png": "2c902d65d451bd40b9901e1bbcf007fc7af270d7f4980a369dfd28d96851fc54",
+      "real-39f3a1ba97852876-body-1-scene-trained-error.png": "e8272db085c4365da9f78f82dc04d8d0298aeae2f7fd745c3145e8c0c3e225bd",
+      "real-39f3a1ba97852876-body-1-scene-trained-probability.png": "9591e1f8aed8d18913b4df2a7a1740291e3b9ce740e1d22b70e801cdd2fd4a9c",
+      "real-39f3a1ba97852876-body-1-source.png": "ddc1797c91569308f6e3653d4b2fd482cd46a139feecf3eececd44446255b380",
+      "real-5330aa8b62176216-body-1-control-trained-error.png": "da1f7a99335e7a937ba273f4727ddd6cfb94d8f68bfb3a4bc4ee369c9c2c7d3d",
+      "real-5330aa8b62176216-body-1-control-trained-probability.png": "691079007336084a9419545c242ae02ea61f3048c41affcf53c2ddebb9077489",
+      "real-5330aa8b62176216-body-1-scene-trained-error.png": "166a74b43070694eb9b002101cfc8ac949e1a66675d101ee4b4745d3b4664e13",
+      "real-5330aa8b62176216-body-1-scene-trained-probability.png": "66fdca9b3993f883ffb92b70bb49e9659f239badb40a076e08c1efaff974de5b",
+      "real-5330aa8b62176216-body-1-source.png": "41d3c41c7dcf1fc421d6e5f000f4a7aceac9a953871edfd40e8426f08af1cdd8",
+      "real-68d8f25d8891df62-body-1-control-trained-error.png": "ffe13a19b852b50f0efca05850eaeafb783460f1a683d7d3fc80c61daa815014",
+      "real-68d8f25d8891df62-body-1-control-trained-probability.png": "d5928270b554755f5312cf4b565df2ff23f471dc907f888bee21b04ec6c24dca",
+      "real-68d8f25d8891df62-body-1-scene-trained-error.png": "672a49a456b4ca63d70b17daf691bfe6e5e214bb59dcc71b19f255837597b39a",
+      "real-68d8f25d8891df62-body-1-scene-trained-probability.png": "b838e11c3811f22db3285ee54187a81740a64a0a03dc6d9e8ad8b37e8fbf6c41",
+      "real-68d8f25d8891df62-body-1-source.png": "63d73c019f9ceaeed49204f3b1fb2934020e02ee4b945cbd0600bccad44e1551",
+      "real-995899fe049540ed-body-1-control-trained-error.png": "d8ec1706a7003509e34e5bdf50e0d5464660f39743abf3168ae102950e07bd0b",
+      "real-995899fe049540ed-body-1-control-trained-probability.png": "9f656ea8f3c95acdc6033ff9bc907269d08e8bdebbfad122de3e2ecff5198d3f",
+      "real-995899fe049540ed-body-1-scene-trained-error.png": "20e9cd4b396f11f329f288ff4c8a63299e58e866fdbba86b08cbadd4c4263c4e",
+      "real-995899fe049540ed-body-1-scene-trained-probability.png": "e226722d656cc21526e75365ea9379aea0ba741760a8f1cb2f20063d8a6e2719",
+      "real-995899fe049540ed-body-1-source.png": "25728729c9c7fc02de66658520e217490af619b64acab34423c19dc977098f3c",
+      "real-abf590088db891f9-body-1-control-trained-error.png": "283c176af3231fc483c238433f5fa2c2fd924837c8f81e52b926392d428330dc",
+      "real-abf590088db891f9-body-1-control-trained-probability.png": "d3abf7b2efebaf94e0eaa76006137cbd17236a8aa9528c654abe5f34b5be00f1",
+      "real-abf590088db891f9-body-1-scene-trained-error.png": "7d206e79a1f66935b9ebb351173807c6cc7d93edc12ad64d2e3f0116b6b482f2",
+      "real-abf590088db891f9-body-1-scene-trained-probability.png": "c7a51ad7b0b95ec09146f89d7c984391ee6b55ff1234a71047f3ca4c602de454",
+      "real-abf590088db891f9-body-1-source.png": "91b6d770a55dfca41c65b03dabcb91d9013883c733faacf640cd05d3cb6d6cf4",
+      "real-b87b0b19f12724f3-body-1-control-trained-error.png": "85c60213a8df72843b942ec78228f598cbba3a8f7aae808d5286a743ef759721",
+      "real-b87b0b19f12724f3-body-1-control-trained-probability.png": "74ce9d217ccc9c0d7bb9cc41ea2ed74edfc3a92a1998b7489ae6638d4d9d184a",
+      "real-b87b0b19f12724f3-body-1-scene-trained-error.png": "22c17f5b6d0591b2ff62e55c3cd0fa285438f3ada657a0564c3c00bce4779681",
+      "real-b87b0b19f12724f3-body-1-scene-trained-probability.png": "586dc8e2dd20f0c8356d13d925bdd40dd39cc42ff531d208583c15187c2c1e65",
+      "real-b87b0b19f12724f3-body-1-source.png": "5d03251b6b0db320dc05b52dfca0dc51c8a9ca05fcc826a58ec556b3702c1eb1",
+      "real-d5b0aa8d4d2465ee-body-1-control-trained-error.png": "26296207a62cf5c26e3f603384d471884245c48d95a5601e2d0291d4540e5b06",
+      "real-d5b0aa8d4d2465ee-body-1-control-trained-probability.png": "d2b0f4465b1088669e8e1684558feda87af12e3855dd53855aa97165d3967043",
+      "real-d5b0aa8d4d2465ee-body-1-scene-trained-error.png": "986f5a300fff7e1c6d76cbf3f6db316e3ef70177a1618544b469eec0b59471ee",
+      "real-d5b0aa8d4d2465ee-body-1-scene-trained-probability.png": "0d1a1d064ac3498697303213962254dec07f6c2ccb354904a2a426265f6f58ae",
+      "real-d5b0aa8d4d2465ee-body-1-source.png": "9b81cac3f570253cd9953725e6e6bcd640d21e9dadfed17178382299b330f3f7",
+      "real-f4b397c381357dfa-body-1-control-trained-error.png": "db858ceae8ad1b4dccf6462b0f1edcb7eec36cdbd6d3184094ca1d4c48c5835b",
+      "real-f4b397c381357dfa-body-1-control-trained-probability.png": "37fdf2539b7d83d82743f40a0c5b419534a474e95502d37fe7f80b041b313209",
+      "real-f4b397c381357dfa-body-1-scene-trained-error.png": "4969069b0ef7fc685f891391b40cdf1990c1abb44955f1ba8276e3bebe4a3061",
+      "real-f4b397c381357dfa-body-1-scene-trained-probability.png": "5df560c83b8888c0e6250eac356a00e82f52717a89c5f2bcdbc9b83f841ae7b7",
+      "real-f4b397c381357dfa-body-1-source.png": "46f2b8ad1847071c79c272437bea9712839e53631b689e67bf4e782dc4d65568",
+      "scene-trained-predictions.npz": "2c55e173fff1d67a26aa47baeb183ef7cee0def1dea424672816d86a0bcb0d1f"
+    }
+  },
+  "replayAudit": {
+    "passed": true,
+    "artifactsChecked": 53,
+    "knownRegionMetricsRecomputedFromArchivedProbabilities": true,
+    "modelInputIdentityAndObservationWeightsMatched": true
+  },
+  "resizeCorrection": {
+    "labelsAndObservationWeightsUnchanged": true,
+    "checkpointsUnchanged": true,
+    "priorReportSha256": "8cc966af97711e4cd85b15b84fb0f3b8fcf70a09aaa44e79719db333236ab28a",
+    "priorCommittedEvidence": "ad47f32:docs/inverse/datasets/real-annotation-results.json",
+    "priorMacroMean": {
+      "control-trained": {
+        "knownRegionIoU": 0.5572294486755169,
+        "knownRegionPixelError": 0.3324666245345353,
+        "knownPaperFalseNegative": 0.006240990784443293,
+        "knownBackgroundFalsePositive": 0.4465632826521668
+      },
+      "scene-trained": {
+        "knownRegionIoU": 0.7504213715844182,
+        "knownRegionPixelError": 0.09061384639078382,
+        "knownPaperFalseNegative": 0.04948448259486296,
+        "knownBackgroundFalsePositive": 0.08674191197752854
+      }
+    },
+    "scope": "Fix the new pilot loader, not a change to the application or previous crop-to-fit replay."
+  },
+  "validation": {
+    "commands": [
+      {
+        "command": [
+          "python3",
+          "scripts/inverse/learning/test.py"
+        ],
+        "exitCode": 0,
+        "seconds": 16.162775459000002,
+        "log": "tmp/heart-learning/real-annotation-v1/validation-0.log",
+        "logSha256": "303b5f9e2142c6d8e9251a41cfb5dfac3cbc961e0cb65c891fb1a3a152656e15"
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 8.951029167000002,
+        "log": "tmp/heart-learning/real-annotation-v1/validation-1.log",
+        "logSha256": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092"
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 6.911282125,
+        "log": "tmp/heart-learning/real-annotation-v1/validation-2.log",
+        "logSha256": "f1a4b272f2f106d9cc645be00a12d8ac4dea14308d11091a0ea8c493d6036f90"
+      },
+      {
+        "command": [
+          "./node_modules/.bin/vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 42.398963040999995,
+        "log": "tmp/heart-learning/real-annotation-v1/validation-3.log",
+        "logSha256": "462013cd5476d100e9f90badd5d1fef407a4b1ab569049834fe3f54945144216"
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "test:inverse"
+        ],
+        "exitCode": 0,
+        "seconds": 668.9780789160001,
+        "log": "tmp/heart-learning/real-annotation-v1/validation-4.log",
+        "logSha256": "7c40fd45f63ef9955a2e5019b1605a090c6499fd836259c46720d3c3efe241f1"
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 13.716670208999972,
+        "log": "tmp/heart-learning/real-annotation-v1/validation-5.log",
+        "logSha256": "da457f8af8ac421ca31dc14a30f4c6091ed927072992c084ef3c7b0ad73741f0"
+      },
+      {
+        "command": [
+          "python3",
+          "scripts/inverse/learning/test.py"
+        ],
+        "exitCode": 0,
+        "seconds": 17.23553625,
+        "log": "tmp/heart-learning/real-annotation-v1/learning-final.log",
+        "reason": "Final antialiasing regression and unchanged unknown-region contracts",
+        "logSha256": "a7a77f9db6b593ce1cc9381dddc4f9b523170e16a9cfd1c2bb47c42e9814ad02"
+      }
+    ],
+    "pythonTests": 52,
+    "inverseTests": 758,
+    "applicationTests": 855,
+    "applicationSkipped": 1,
+    "gallery": {
+      "passed": true,
+      "pages": [
+        {
+          "folder": "labels-filtered",
+          "images": 20,
+          "errors": []
+        },
+        {
+          "folder": "filtered-models",
+          "images": 50,
+          "errors": []
+        }
+      ]
+    },
+    "servedCoreHashes": {
+      "geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+      "direct/counts.js": "efdfa3fc371dc9d9cfbbc9ce763df8b8cdca6f8f6324b55fde9d23ed05f31d8e",
+      "direct/fit.js": "4d96e0131b1a79d117569d1fb1ddcad4cb1dd02871266fc6164b1eb57ecdce8a"
+    },
+    "preview": "http://127.0.0.1:5232/editor/mal/"
+  },
+  "sourceHashes": {
+    "scripts/inverse/datasets/real_annotations.py": "566138d81e9fddc12e09483f2ab66c490add2f33a5e7d51130385b212be0d0fa",
+    "scripts/inverse/datasets/real-annotations.json": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5",
+    "scripts/inverse/learning/real_foreground.py": "025708879503a153bdb46c1d3226d1eb30d44d2e65aa7477f30a15b9e64112a8",
+    "scripts/inverse/learning/real_foreground.test.py": "736630f5fbbf3aaf01724d9ea977031067addbfda131776e9fe80dfd2de9a8bf",
+    "scripts/inverse/learning/real-foreground-evaluate.py": "8f2b3198146439ccd47554fb5e3ac542d41c93e2b375615839f9146b74974a24"
+  },
+  "scope": "Development annotation pilot and fixed-checkpoint segmentation diagnosis. No model trained and no production solver change."
+}

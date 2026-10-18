@@ -1,0 +1,244 @@
+{
+  "schema": "gradient-row-bins-quality-review-1",
+  "status": "saved-artifact-analysis-complete",
+  "scope": "The five fixed-mask pairs with higher independent SVG threshold error. No fits, crops, model inference or code changes were run for this analysis.",
+  "method": "The engine report uses pixel-center sampling of flattened cutting geometry. The independent exported SVG is rasterized by resvg with antialiasing, then thresholded at 0.5. Fractional SVG coverage error is mean absolute disagreement of grayscale coverage with the unchanged binary source mask; it is diagnostic and does not replace existing acceptance metrics.",
+  "conclusion": "Time allocation changes which refinement and cleanup stages finish. Four cases worsen under both source-point and independent-image measurements. The puppy improves the source-point score but worsens independent threshold and coverage scores. Do not classify every increase as the same failure or claim the speed optimization preserves all photo outputs.",
+  "records": [
+    {
+      "id": "photo-gift",
+      "observedPixels": 160000,
+      "commonPolishHistoryEntries": 4,
+      "polishHistoriesExact": false,
+      "variants": {
+        "baseline": {
+          "sourcePointMismatchPixels": 2644,
+          "svgThresholdMismatchPixels": 2655,
+          "svgCoverageAbsoluteError": 0.019043088235293923,
+          "preFinalizationError": 0.01653125,
+          "finalPolishSteps": [
+            -1,
+            0,
+            40,
+            80,
+            120,
+            124
+          ],
+          "sharedRunsAccepted": 1,
+          "primitivePasses": []
+        },
+        "candidate": {
+          "sourcePointMismatchPixels": 2720,
+          "svgThresholdMismatchPixels": 2735,
+          "svgCoverageAbsoluteError": 0.01939794117647038,
+          "preFinalizationError": 0.01705,
+          "finalPolishSteps": [
+            -1,
+            0,
+            40,
+            80,
+            89
+          ],
+          "sharedRunsAccepted": 2,
+          "primitivePasses": []
+        }
+      },
+      "finding": "Both arms enter polishing with identical checkpoints through step 80 and select 4+4 cuts. The losing 5+5 refinement consumes more time in the denser-index arm; polishing ends at step 89 rather than 124. The source-point, independent threshold and independent coverage errors all increase."
+    },
+    {
+      "id": "photo-warped-checker",
+      "observedPixels": 160000,
+      "commonPolishHistoryEntries": 0,
+      "polishHistoriesExact": false,
+      "variants": {
+        "baseline": {
+          "sourcePointMismatchPixels": 2288,
+          "svgThresholdMismatchPixels": 2290,
+          "svgCoverageAbsoluteError": 0.018317573529411702,
+          "preFinalizationError": 0.01431875,
+          "finalPolishSteps": [
+            -1,
+            0,
+            40,
+            80,
+            84
+          ],
+          "sharedRunsAccepted": 1,
+          "primitivePasses": []
+        },
+        "candidate": {
+          "sourcePointMismatchPixels": 2358,
+          "svgThresholdMismatchPixels": 2330,
+          "svgCoverageAbsoluteError": 0.018619289215686213,
+          "preFinalizationError": 0.01475625,
+          "finalPolishSteps": [
+            -1,
+            0,
+            40,
+            80,
+            84
+          ],
+          "sharedRunsAccepted": 1,
+          "primitivePasses": []
+        }
+      },
+      "finding": "Both arms select 9+9 cuts and finish final polishing at step 84, but enter it with different errors. The source-point, independent threshold and independent coverage errors all increase. The prepared clock diagnostic must locate the earlier divergence."
+    },
+    {
+      "id": "photo-maple-leaf",
+      "observedPixels": 160000,
+      "commonPolishHistoryEntries": 4,
+      "polishHistoriesExact": true,
+      "variants": {
+        "baseline": {
+          "sourcePointMismatchPixels": 1363,
+          "svgThresholdMismatchPixels": 1386,
+          "svgCoverageAbsoluteError": 0.01091941176470596,
+          "preFinalizationError": 0.00854375,
+          "finalPolishSteps": [
+            -1,
+            0,
+            40,
+            44
+          ],
+          "sharedRunsAccepted": 1,
+          "primitivePasses": []
+        },
+        "candidate": {
+          "sourcePointMismatchPixels": 1367,
+          "svgThresholdMismatchPixels": 1388,
+          "svgCoverageAbsoluteError": 0.010947769607843213,
+          "preFinalizationError": 0.00854375,
+          "finalPolishSteps": [
+            -1,
+            0,
+            40,
+            44
+          ],
+          "sharedRunsAccepted": 0,
+          "primitivePasses": []
+        }
+      },
+      "finding": "Final polishing histories and pre-finalization source errors match exactly. The baseline then accepts one shared-run cleanup while the candidate accepts none. The small difference occurs after polishing, not during the gradient trajectory."
+    },
+    {
+      "id": "photo-crown",
+      "observedPixels": 160000,
+      "commonPolishHistoryEntries": 0,
+      "polishHistoriesExact": false,
+      "variants": {
+        "baseline": {
+          "sourcePointMismatchPixels": 3563,
+          "svgThresholdMismatchPixels": 3587,
+          "svgCoverageAbsoluteError": 0.024845220588235097,
+          "preFinalizationError": 0.02226875,
+          "finalPolishSteps": [
+            -1,
+            0,
+            40,
+            44
+          ],
+          "sharedRunsAccepted": 0,
+          "primitivePasses": []
+        },
+        "candidate": {
+          "sourcePointMismatchPixels": 3614,
+          "svgThresholdMismatchPixels": 3637,
+          "svgCoverageAbsoluteError": 0.025155171568627243,
+          "preFinalizationError": 0.0225875,
+          "finalPolishSteps": [
+            -1,
+            0,
+            40,
+            44
+          ],
+          "sharedRunsAccepted": 0,
+          "primitivePasses": []
+        }
+      },
+      "finding": "Both arms initially retain the same 5+5 source error, while the losing 5+6 alternative receives more time in the denser-index arm. Sharing and final-polish inputs then differ. This is a scheduling/cleanup path difference; one pair alone cannot establish a stable latency or accuracy regression."
+    },
+    {
+      "id": "photo-flettede-puppy",
+      "observedPixels": 160000,
+      "commonPolishHistoryEntries": 6,
+      "polishHistoriesExact": true,
+      "variants": {
+        "baseline": {
+          "sourcePointMismatchPixels": 1644,
+          "svgThresholdMismatchPixels": 1645,
+          "svgCoverageAbsoluteError": 0.011886446078431437,
+          "preFinalizationError": 0.0104375,
+          "finalPolishSteps": [
+            -1,
+            0,
+            40,
+            80,
+            120,
+            159
+          ],
+          "sharedRunsAccepted": 7,
+          "primitivePasses": []
+        },
+        "candidate": {
+          "sourcePointMismatchPixels": 1639,
+          "svgThresholdMismatchPixels": 1659,
+          "svgCoverageAbsoluteError": 0.012166642156862811,
+          "preFinalizationError": 0.0104375,
+          "finalPolishSteps": [
+            -1,
+            0,
+            40,
+            80,
+            120,
+            159
+          ],
+          "sharedRunsAccepted": 8,
+          "primitivePasses": [
+            "finalPrimitiveSelection",
+            "finalCurvePrimitiveSelection"
+          ]
+        }
+      },
+      "finding": "Polishing histories and pre-finalization source errors match exactly. The baseline accepts seven shared runs; the candidate accepts eight and additionally performs straight/curve primitive selection. The candidate improves the engine pixel-center error by five pixels, but worsens independent SVG threshold error by fourteen pixels and also increases fractional-coverage error. These measurements use different rendering conventions, so unchanged gradients do not imply unchanged exported-image scores."
+    }
+  ],
+  "artifactsSha256": {
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/review-quality-changes.py": "162501dede004b286cd1c7c0d9eddf2c9d863680b22563d401c1edcc0eb96f02",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-gift/baseline/engine-report.json": "0a694974e50b103cbbb1b8ba3bb8cca4a7974548296cff8f653f9fcf508a8111",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-gift/baseline/woven.png": "c3636cef3dca140e0cddd0ceecdf912eed4b3feb8158a5d007aa906626479150",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-gift/baseline/result.json": "82bcc1b28b2e3da7ff5ed2dbdb1ec426ec6e337f71e4114b02c4ed600319ff83",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-gift/candidate/engine-report.json": "91e6bf0edbaf62a5df1641238331551e7649764c45d7d7c738129b5b2336223d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-gift/candidate/woven.png": "4a383edcb6fa327f704cb9c4f5884b02b3a9b188ba88eb09ea821e14473a928d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-gift/candidate/result.json": "fcfc66ed351fc0cb0973fff2d819fd6032101ab2b5509e81c96dff4c4aa25192",
+    "tmp/heart-learning/supported-count-bound-corpus-v1/inputs/photo-gift/mask.bin": "27d7f1538cbba31b9e4b13270a70e7ffc36acc23f69a49d4646d5ee3f49b7738",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-warped-checker/baseline/engine-report.json": "bb4fac91bb00113ef9f3d809d6841734a8aa594bf3d72aba098ccc8ab6c57fc2",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-warped-checker/baseline/woven.png": "2e3142acf0c716ebe09a852a8ba51123861d13b83ae8cfd012030d55d9451ad8",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-warped-checker/baseline/result.json": "734573c512efc03e34d57f4794f9fb074be990b165830fec818e6b49d8ef5df2",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-warped-checker/candidate/engine-report.json": "d97d588077de26a31effb89a84791067256b6522ab8c2c594ccddeaba37f0a9b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-warped-checker/candidate/woven.png": "19cb179648dcbb21e1991030721e2f0c36d44dbca62675a21bfe717eca1857e1",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-warped-checker/candidate/result.json": "cf3665da4cc19a028c582f7cca381068851fbe8bcee69bc1d4734031419e3a0f",
+    "tmp/heart-learning/supported-count-bound-corpus-v1/inputs/photo-warped-checker/mask.bin": "3508f08f46f539554f7fdab38f01f018bc7ec8d86db2309427b28e18b049c2de",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-maple-leaf/baseline/engine-report.json": "13f9c290c50e76c3cad48c4468c6b0eaf9afbbd3dac99a73c49c19cdacb1f7f3",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-maple-leaf/baseline/woven.png": "89e0a09f7502edaa4143004bcfe3752db43e38f78d8739d78b9a163f41df5a09",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-maple-leaf/baseline/result.json": "a2101eb65c5ce60f1f7081367b290da948c591f09d3e40a213810b41e00f56d2",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-maple-leaf/candidate/engine-report.json": "a302cdf71ddb9c1e119d4ac03dbc6d4bc4fc7190c6ec19bb03acd9c99f6e4558",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-maple-leaf/candidate/woven.png": "3715995a21c96aa015febb513002366896e1354a03018beccbd0b4f6a40fd264",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-maple-leaf/candidate/result.json": "724aeaeabc5addd7d2cdbe8a8d7351a3749b5b03f441864fc309e0007d49228c",
+    "tmp/heart-learning/supported-count-bound-corpus-v1/inputs/photo-maple-leaf/mask.bin": "9b0908abdb6ceb0957b6344cfa5fbaeab4a46866c640ea8d1898b3dc31a8c101",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-crown/baseline/engine-report.json": "5435bcde89d91b1dcc0f5fbe82fb2c4f9430744ded8642f3f91fe22946baac7b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-crown/baseline/woven.png": "92bda1eb137d9b9321f15bba31795f42a53581273398e04371eebe991357bcca",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-crown/baseline/result.json": "56badc9681cf166b2b7544136e0141d55b42fa7eefd416443e105f41faca894f",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-crown/candidate/engine-report.json": "65465680e139a32d4190eb8bfcd20321f4bba6e67b871d09440f158273a02e77",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-crown/candidate/woven.png": "d6ab211d015496ff6b63a049bdced4965deee3f776f09232f73cac2b53b68dad",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-crown/candidate/result.json": "56d6951d81d2d50838c0ca7a5174004ada45c9c8b6097fe6572ec5d52314d440",
+    "tmp/heart-learning/supported-count-bound-corpus-v1/inputs/photo-crown/mask.bin": "28f4380aaf5bb197acbaf7750b4560e317c442740098abaf4c91eb88ac7866aa",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-flettede-puppy/baseline/engine-report.json": "4bd9bdda211e60bcd1a2683a845ba7b0777e325114c5a272dfe2c141015e2b64",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-flettede-puppy/baseline/woven.png": "1756f62953db14730a637498b9253c03209cdd7570496c0bca388a1641eb3da7",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-flettede-puppy/baseline/result.json": "cc5406c9326f3f885d234a893c5da140833e46f9c5152871fe8274f2b90d667b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-flettede-puppy/candidate/engine-report.json": "5fd60d7f87b75aa863ad2eed0a3ee1cd15c7979b70960111b100c057715fcf60",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-flettede-puppy/candidate/woven.png": "28dc6a177df784f97aaf3e7aa3596165e0b87cad5c6c0723e35594e3b1a7e8f4",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-flettede-puppy/candidate/result.json": "0f3c173648a20a958582ca7c589d74bff417225c406ff3872af1e6e0004a116f",
+    "tmp/heart-learning/supported-count-bound-corpus-v1/inputs/photo-flettede-puppy/mask.bin": "45bb41ffbb961e933cb29f4effbe47239533035ab522c7e654b7d9c1de1a0dad"
+  }
+}

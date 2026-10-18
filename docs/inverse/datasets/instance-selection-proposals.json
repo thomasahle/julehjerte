@@ -1,0 +1,269 @@
+{
+  "schema": "reviewed-instance-selection-proposals-1",
+  "status": "reviewed-proposals-only",
+  "purpose": "Define an explicit selected-heart input before admitting multi-heart annotations or training a selected-instance model.",
+  "handoff": {
+    "directory": "tmp/heart-learning/instance-roi-proposals-v1",
+    "sha256": "6469ac52bc23cee95e8bb2c23e44fed19d735e3ce67c25d4b130f4060da5ba54",
+    "artifactHashesVerified": 30,
+    "sourceImagesVerified": 7
+  },
+  "coordinateConvention": "Original source-image pixel edges; XYXY; no EXIF transform.",
+  "cueProvenance": {
+    "method": "Manual coarse box chosen from original RGB photographs with source-coordinate grid before checking draft polygon containment in this task. No mask bounds, overlap-corner targets or model outputs were used to calculate boxes.",
+    "priorExposure": "The same assistant previously reviewed these annotation drafts. These are separately photo-drawn cues, not a blinded independent human selection or a held-out prompt benchmark.",
+    "parentReview": "Both selected draft RGB crops and all five shortlisted RGB views visually inspected; photo-only rough selections, not fitted overlap quadrilaterals."
+  },
+  "draftSelections": [
+    {
+      "assetId": "real-7e2c5568d27c2860",
+      "roughBoxXYXY": [
+        2040,
+        760,
+        3140,
+        1800
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/7e2c5568d27c286022311d0b1c0bfd3628eb301518c004a78fd129a32c6bdece.jpg",
+      "sourceImageSha256": "7e2c5568d27c286022311d0b1c0bfd3628eb301518c004a78fd129a32c6bdece",
+      "sourceSize": [
+        3648,
+        2736
+      ],
+      "nearDuplicateGroup": "real-592223f36bcf2c87",
+      "splitGroupId": "real-split-9026287107aa6a63",
+      "familyId": null,
+      "intendedInstance": "Top-right red/white Danish-cross basket",
+      "otherWholeHeartBodiesInsideBox": 0,
+      "otherHeartBodyFragmentsInsideBox": 2,
+      "remainingOtherHeartDescription": "Upper parts of the lower-middle red/white/blue flag and lower-right blue/white flag remain at the box bottom. Their full bodies/tips are outside. Part of the lower-right handle also remains.",
+      "minimumDraftContourVertexMarginPixels": 82,
+      "draftAnnotationReference": {
+        "path": "tmp/heart-learning/cross-annotation-draft-v1/body-annotations.json",
+        "sha256": "b0dcc3dbd218682f0bbe69c7e73ffa5ec43e7b4886ccc2b3bddf9a780e071d5f",
+        "jsonPointer": "/instances/0"
+      }
+    },
+    {
+      "assetId": "real-ca2f9adc67ee4cea",
+      "roughBoxXYXY": [
+        10,
+        50,
+        500,
+        530
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/ca2f9adc67ee4ceaa2c4c8c9fa9dad183a536ebfd950d90ec17c1ab40e21dcf5.jpg",
+      "sourceImageSha256": "ca2f9adc67ee4ceaa2c4c8c9fa9dad183a536ebfd950d90ec17c1ab40e21dcf5",
+      "sourceSize": [
+        1024,
+        595
+      ],
+      "nearDuplicateGroup": "real-ca2f9adc67ee4cea",
+      "splitGroupId": "real-split-9000149a8629b681",
+      "familyId": null,
+      "intendedInstance": "Left red/green six-point-star basket",
+      "otherWholeHeartBodiesInsideBox": 0,
+      "otherHeartBodyFragmentsInsideBox": 0,
+      "remainingOtherHeartDescription": "The other right-hand heart is outside the selected rectangle. Quilt/background shadows remain.",
+      "minimumDraftContourVertexMarginPixels": 31,
+      "draftAnnotationReference": {
+        "path": "tmp/heart-learning/red-green-star-annotation-draft-v1/body-annotations.json",
+        "sha256": "87fc0c7d7028b1888371cf67048acd4f801a401e7e0372267cb199e2ee00cc25",
+        "jsonPointer": "/instances/0"
+      }
+    }
+  ],
+  "additionalCandidates": [
+    {
+      "assetId": "real-f1af2fbb127278e4",
+      "roughBoxXYXY": [
+        40,
+        1540,
+        2540,
+        3980
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/f1af2fbb127278e468a4dc45a4270c0193c64bfac19b8cecb25bbbeff2232cba.jpg",
+      "sourceImageSha256": "f1af2fbb127278e468a4dc45a4270c0193c64bfac19b8cecb25bbbeff2232cba",
+      "sourceSize": [
+        2616,
+        4000
+      ],
+      "nearDuplicateGroup": "real-f1af2fbb127278e4",
+      "splitGroupId": "real-split-1c907ad4f70d8815",
+      "familyId": null,
+      "candidateMotif": "dense-checker-with-lobe-appliques",
+      "why": "Aged burgundy/cream paper against near-white background: dense contacts, irregular worn outer strip edges, low-contrast cream boundary and material aging differ from the current cleaner checker images.",
+      "regularSlitCompatibility": {
+        "status": "base-grid-appears-compatible; ornamentation-needs-separate-treatment",
+        "confidence": "medium-high for visible woven overlap",
+        "note": "The overlap visibly uses a regular dense checker weave. Ornamental lobe shapes appear to be additional cut-paper appliques, not extra through-going weave slits. Exclude or separately mark those decoration pixels when defining two-sheet material identity; do not claim a pure two-sheet cutting-template ground truth."
+      },
+      "annotationUse": "Strong visible-body and conservative checker-interior candidate. Lobe applique identity requires review.",
+      "familyNote": "Broad checker/grid family already represented. Current Commons source grouping also connects it to existing five-by-five-checker real-12ce3c9180f7f317; no new holdout-family claim.",
+      "existingAnnotatedSourceGroupRelatives": [
+        {
+          "assetId": "real-12ce3c9180f7f317",
+          "motif": {
+            "candidateFamily": "five-by-five-checker",
+            "crossCorpusReview": "pending"
+          }
+        }
+      ]
+    },
+    {
+      "assetId": "real-80c07aedd993f117",
+      "roughBoxXYXY": [
+        1240,
+        900,
+        2600,
+        2137
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/80c07aedd993f11748e7a1141b922f91c9f4b8f4583e8a6ed63a56062bae6ec0.jpg",
+      "sourceImageSha256": "80c07aedd993f11748e7a1141b922f91c9f4b8f4583e8a6ed63a56062bae6ec0",
+      "sourceSize": [
+        3730,
+        2137
+      ],
+      "nearDuplicateGroup": "real-80c07aedd993f117",
+      "splitGroupId": "real-split-018c84732bc5d243",
+      "familyId": null,
+      "candidateMotif": "printed-two-by-two-checker",
+      "why": "Small red/green basket with strong snowflake/leaf printing, ribbon/eyelet, candy cane and wrapped chocolate provides scale, colored texture and distracting objects.",
+      "regularSlitCompatibility": {
+        "status": "appears-compatible",
+        "confidence": "high for simple visible checker overlap",
+        "note": "The visible overlap is a simple two-color checker; snowflakes/leaf shapes are ink/printed decoration, not slits. Ribbon/eyelet and possible contents are outside the regular overlap and should be excluded or unknown. No template was verified."
+      },
+      "annotationUse": "Visible body plus paper identities that retain printed colors within each paper; attachment/contents need uncertainty.",
+      "familyNote": "Same source page/group as current printed-checker real-c0cc1ce97cf5e6a6. Adds scale/ink/palette, not an independent source or new broad grid family.",
+      "existingAnnotatedSourceGroupRelatives": [
+        {
+          "assetId": "real-c0cc1ce97cf5e6a6",
+          "motif": {
+            "candidateFamily": "printed-checker",
+            "crossCorpusReview": "Keep with the existing checker motif family in any later grouped study; no split assignment."
+          }
+        }
+      ]
+    },
+    {
+      "assetId": "real-3f24113792188631",
+      "roughBoxXYXY": [
+        70,
+        430,
+        736,
+        1060
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/3f24113792188631683078b47c05b7f68373e8660888e09f48565cc793bda9d1.jpg",
+      "sourceImageSha256": "3f24113792188631683078b47c05b7f68373e8660888e09f48565cc793bda9d1",
+      "sourceSize": [
+        736,
+        1104
+      ],
+      "nearDuplicateGroup": "real-3f24113792188631",
+      "splitGroupId": "real-split-6459d28c6c10b90f",
+      "familyId": null,
+      "candidateMotif": "framed-tree-silhouette",
+      "why": "Pale printed paper and shaded gold against fabric, needles and a large ribbon add a non-grid silhouette, boundary occlusion and lighting variation.",
+      "regularSlitCompatibility": {
+        "status": "plausibly-compatible-but-unverified",
+        "confidence": "medium",
+        "note": "A connected tree/frame silhouette is visible and no enclosed background opening is apparent. The photographed weave could be realized by through-going cuts, but slit continuation is not visible/verified; the clipped lobe, folds and ribbon preclude certification. No irregular cut geometry should be inferred."
+      },
+      "annotationUse": "Strong body/partial-material challenge with explicit occlusion and clipped-edge unknowns; no reconstruction/regular-cut ground truth.",
+      "familyNote": "Existing conservative Isabellas source group connects it to floral-blue-gold real-68d8f25d8891df62 and other views. Tree is a descriptive motif candidate; exact family relationship remains unresolved.",
+      "existingAnnotatedSourceGroupRelatives": [
+        {
+          "assetId": "real-68d8f25d8891df62",
+          "motif": {
+            "candidateFamily": "floral-blue-gold",
+            "crossCorpusReview": "pending"
+          }
+        }
+      ]
+    },
+    {
+      "assetId": "real-3a89de4eae04a025",
+      "roughBoxXYXY": [
+        85,
+        180,
+        575,
+        614
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/3a89de4eae04a0256f3dfc47bf76a098386077e5cdb2c93a3382937541c8a79c.jpg",
+      "sourceImageSha256": "3a89de4eae04a0256f3dfc47bf76a098386077e5cdb2c93a3382937541c8a79c",
+      "sourceSize": [
+        885,
+        614
+      ],
+      "nearDuplicateGroup": "real-0d51442459c3d4c9",
+      "splitGroupId": "real-split-e15997e1ba929b7f",
+      "familyId": null,
+      "candidateMotif": "pale-printed-three-by-three-checker",
+      "why": "Pale blue/white and dusty-pink patterned stocks against a pale wall test low-contrast body boundaries without hands; large black text and cast shadow remain background.",
+      "regularSlitCompatibility": {
+        "status": "appears-compatible",
+        "confidence": "high for visible regular checker overlap",
+        "note": "The visible basket is a standard low-count checker. Small stars/geometric marks are printing; no enclosed cutout is visible. Exact cutting template remains unverified."
+      },
+      "annotationUse": "Visible body and paper identity under printed texture and pale-on-pale contrast.",
+      "familyNote": "Same existing source group as decorative-two-paper-checkerboard real-cdae5c890b6933cd; paper patterns also look related. Preserve the group and do not call this an independent motif-family example.",
+      "existingAnnotatedSourceGroupRelatives": [
+        {
+          "assetId": "real-cdae5c890b6933cd",
+          "motif": {
+            "candidateFamily": "decorative-two-paper-checkerboard",
+            "crossCorpusReview": "pending"
+          }
+        }
+      ]
+    },
+    {
+      "assetId": "real-e1b1492e32f6cdf5",
+      "roughBoxXYXY": [
+        95,
+        420,
+        425,
+        740
+      ],
+      "sourceImagePath": "tmp/heart-training-real/assets/e1b1492e32f6cdf5667e9fd0eec4650bbc0c6ec352e508aa10a80a81a6d170d6.jpg",
+      "sourceImageSha256": "e1b1492e32f6cdf5667e9fd0eec4650bbc0c6ec352e508aa10a80a81a6d170d6",
+      "sourceSize": [
+        567,
+        850
+      ],
+      "nearDuplicateGroup": "real-e1b1492e32f6cdf5",
+      "splitGroupId": "real-split-79137bb425b64798",
+      "familyId": null,
+      "candidateMotif": "painted-checker-worn-basket",
+      "why": "A multicolor painted basket worn against bright pink layered clothing adds a person/background context and surface colors that are not paper identities.",
+      "regularSlitCompatibility": {
+        "status": "appears-compatible",
+        "confidence": "high for simple visible checker overlap",
+        "note": "Visible construction is a low-count checker basket. Painted patches create many apparent colors on the same papers; they are not extra slits. Cord/handle and visible backing should be excluded or marked unknown as appropriate. No cutting template was verified."
+      },
+      "annotationUse": "Strong visible-body candidate. Partial material labels require careful sheet/paint interpretation; do not assign one material per paint color.",
+      "familyNote": "Same existing NurtureStore source group as painted regular-checker real-a414dfffbd2362ae. Adds scene and palette variation, not an independent source/family.",
+      "existingAnnotatedSourceGroupRelatives": [
+        {
+          "assetId": "real-a414dfffbd2362ae",
+          "motif": {
+            "candidateFamily": "regular-checkerboard",
+            "crossCorpusReview": "pending"
+          }
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "No labels admitted, split assignments changed or training/inference performed for these proposals. The inventory remains 24 visible-body and 22 partial-material annotations.",
+    "All five shortlisted photographs belong to source groups already connected to annotations; distinct photo files do not establish independent motif families or holdouts.",
+    "The gold tree is source-clipped and its hidden slit continuation is unverified. Museum lobe appliques require separate uncertainty/exclusion.",
+    "The existing 24 body-labelled photographs each contain one identifiable heart; the new multi-heart task ambiguity does not explain previous single-heart model failures.",
+    "A crop rectangle is a selection cue, not a body mask. Partial neighboring hearts remain in the cross selection."
+  ],
+  "nextProtocol": [
+    "Baseline the existing locator and fitter with the frozen rough boxes, retaining original source pixels, observed coverage and independent editable checks. Do not feed draft polygons or material labels to reconstruction.",
+    "For learning, explicitly provide the selected ROI or prompt as model input and transform RGB, body/material labels and uncertainty consistently. Preserve original source and motif grouping.",
+    "Score intended-instance selection, source-observed material/contacts and legal reconstruction separately. Do not treat fitting a learned or classified mask as original-design ground truth."
+  ]
+}

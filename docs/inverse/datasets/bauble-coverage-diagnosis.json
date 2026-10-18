@@ -1,0 +1,471 @@
+{
+  "schema": "bauble-coverage-diagnosis-1",
+  "status": "source review, four-arm ablation and observed-feature prototype complete; bauble unresolved",
+  "sourceReview": {
+    "id": "bauble",
+    "source": {
+      "file": "scripts/inverse/fixtures/hard-photos/collage.png",
+      "sha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+      "width": 1482,
+      "height": 1112,
+      "paperNames": [
+        "white paper",
+        "red paper"
+      ]
+    },
+    "groups": [
+      {
+        "id": "red-disc",
+        "paper": 1,
+        "points": [
+          [
+            570,
+            1001
+          ],
+          [
+            570,
+            1024
+          ],
+          [
+            550,
+            1011
+          ],
+          [
+            590,
+            1038
+          ]
+        ]
+      },
+      {
+        "id": "red-frame-upper-right",
+        "paper": 1,
+        "points": [
+          [
+            604,
+            952
+          ],
+          [
+            624,
+            973
+          ]
+        ]
+      },
+      {
+        "id": "red-checker-corners",
+        "paper": 1,
+        "points": [
+          [
+            512,
+            1014
+          ],
+          [
+            574,
+            945
+          ]
+        ]
+      },
+      {
+        "id": "white-inner-paper",
+        "paper": 0,
+        "points": [
+          [
+            550,
+            975
+          ],
+          [
+            528,
+            1033
+          ],
+          [
+            550,
+            1064
+          ],
+          [
+            609,
+            1052
+          ],
+          [
+            609,
+            979
+          ]
+        ]
+      }
+    ],
+    "status": "native_photo_and_neighbourhoods_visually_reviewed; diagnostic_only",
+    "scope": "Sparse development diagnostic on the original collage. No points supplied to the classifier or fitter; not dense colour or cutting ground truth.",
+    "review": {
+      "sourceOnly": true,
+      "sourcePixelCount": 13,
+      "excludedCandidatePoints": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        18
+      ],
+      "exclusionReason": "Blurred frame ends, possible paper/background mixtures on the lower outline, and the narrow right-hand connection do not support confident paper identity. No classifier scores used in this exclusion.",
+      "limitation": "Two selected upper-right frame pixels do not certify the entire frame or its physical routing."
+    }
+  },
+  "sparseScores": [
+    {
+      "name": "old",
+      "classifiedCorrect": 13,
+      "exportedCorrect": 13,
+      "total": 13,
+      "phase": 0,
+      "outsideCrop": 0
+    },
+    {
+      "name": "coverage",
+      "classifiedCorrect": 13,
+      "exportedCorrect": 13,
+      "total": 13,
+      "phase": 0,
+      "outsideCrop": 0
+    }
+  ],
+  "crop": {
+    "corners": [
+      [
+        585.124945734859,
+        905.2805093237887
+      ],
+      [
+        680.4272015903496,
+        1020.2331968915895
+      ],
+      [
+        619.5033182277817,
+        1139.311696191154
+      ],
+      [
+        466.440010833398,
+        1022.8877039896092
+      ]
+    ],
+    "assessment": {
+      "outlineSupported": false,
+      "withinPhotograph": false,
+      "outOfFrameCorners": [
+        2
+      ],
+      "lowerEdgeSupport": [
+        1,
+        0.625
+      ],
+      "lobeOutlineSupport": [
+        0.4722222222222222,
+        0.19444444444444445
+      ],
+      "capColourLoss": [
+        0.08657327621293223,
+        0.43616477850802343
+      ],
+      "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+    },
+    "visualObservation": "The automatic top corner is above the visible cleft, and the proposed lower-right side extends beyond the visible paper edge into background. The tip is 27.3 pixels below the photograph. This is an unsupported proposal, not a verified overlap square.",
+    "qualification": "No exact replacement corners or physical cutting paths have been established."
+  },
+  "lostMaskRegions": [
+    {
+      "value": 1,
+      "areaMm2": 8.4375,
+      "centerMm": [
+        83.9675925925926,
+        44.995370370370374
+      ],
+      "weightMass": 135,
+      "retainedFraction": 0,
+      "sourceCenter": [
+        641.7861573527159,
+        1051.5226667766278
+      ]
+    },
+    {
+      "value": 1,
+      "areaMm2": 44.75,
+      "centerMm": [
+        79.14629888268156,
+        56.90398044692738
+      ],
+      "weightMass": 716,
+      "retainedFraction": 0,
+      "sourceCenter": [
+        628.9247722668514,
+        1060.875880582351
+      ]
+    },
+    {
+      "value": 1,
+      "areaMm2": 14.875,
+      "centerMm": [
+        75.87289915966386,
+        77.88235294117646
+      ],
+      "weightMass": 238,
+      "retainedFraction": 0,
+      "sourceCenter": [
+        609.4741519716766,
+        1084.7873834906263
+      ]
+    }
+  ],
+  "findings": [
+    "All thirteen confidently reviewed source-paper points are correct in both saved classifications and both exported fits. These samples therefore do not support attributing the regression to colour classification at those locations.",
+    "Three classified regions have zero retention in the new export; they map to the ambiguous lower-right paper/background boundary. This proves a mismatch with the classified target, not that every lost fragment is a genuine design feature.",
+    "The old fit selected 5+4 cuts; the observed-only fit selected 4+4. Both considered 22 count/phase hypotheses and failed the source-feature checks.",
+    "Removing outside-image padding does not remove photographed background accidentally included by an inaccurate crop.",
+    "The four-arm experiment is complete. Classification and observation weights interact: new classification improves the whole-square arm, but its observed-only arm is worse. A fixed time budget and cold first run limit causal attribution."
+  ],
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/bauble-colour-review-v1/reviewed.json",
+      "sha256": "0a05e41ed06a427569c9e447392d7d3bad1e856065194475a5f3f2f1fbbb9038"
+    },
+    {
+      "path": "tmp/heart-learning/bauble-colour-review-v1/reviewed-points.png",
+      "sha256": "ee28a41e471a5c232022e9e1a8166a36adb00643127a6f3dd7da930c74143138"
+    },
+    {
+      "path": "tmp/heart-learning/bauble-colour-review-v1/saved-scores.json",
+      "sha256": "db38f7e797457c9897bb36a94241cafd765477f61e9fc1e486c9278dd51ff954"
+    },
+    {
+      "path": "tmp/heart-learning/bauble-colour-review-v1/missing-features.json",
+      "sha256": "9cd1e847bfd264c95b8f497704d056d02c28b9b65209b61dc73b74173413999e"
+    },
+    {
+      "path": "tmp/heart-learning/bauble-colour-review-v1/missing-feature-source.png",
+      "sha256": "e5bc83d3099c80c629d36b9170ef15051fd0e8ccceea8a24044266b5d6e31ab3"
+    },
+    {
+      "path": "tmp/heart-learning/bauble-colour-review-v1/candidate-patches.png",
+      "sha256": "2d67101dce96ec8f17eb8dd16fa77f650e9d8cf02753ae5a70fba26835af5475"
+    }
+  ],
+  "controlledExperiment": {
+    "scope": "Same original photograph and automatic crop. Four fresh binary fits; no saved curves supplied. Separate classification from missing-source weights, then cross-score every export on both observed classifications.",
+    "settings": {
+      "algorithm": "auto",
+      "polygonal": false,
+      "identicalSheets": false,
+      "resolution": 400,
+      "fitTolerance": 0.5,
+      "maxSpan": 15,
+      "smoothRadius": 0,
+      "snapRadius": 1.5,
+      "borderRadius": 3,
+      "gridPortals": false,
+      "neighbors": 16,
+      "connectorVariants": 2,
+      "junctionBalancePenalty": 0,
+      "gridPreference": 0,
+      "sharpPenalty": 50,
+      "acutePenalty": 30,
+      "turnPenalty": 3,
+      "maxTurn": 175,
+      "localNeighborhoodFactor": 8,
+      "roundHidden": false,
+      "timeLimit": 10,
+      "trials": 0
+    },
+    "results": [
+      {
+        "arm": "old-whole",
+        "seconds": 9.749006166000001,
+        "passed": false,
+        "slits": {
+          "left": 5,
+          "right": 4
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "featuresPassed": false,
+        "oldObservedError": 0.041309285581000305,
+        "newObservedError": 0.04075592131932335
+      },
+      {
+        "arm": "new-whole",
+        "seconds": 9.791964042,
+        "passed": false,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "featuresPassed": false,
+        "oldObservedError": 0.027558827125143973,
+        "newObservedError": 0.021587640673560126
+      },
+      {
+        "arm": "old-observed",
+        "seconds": 9.880242458999998,
+        "passed": false,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "featuresPassed": false,
+        "oldObservedError": 0.024315855172990678,
+        "newObservedError": 0.024444544536171363
+      },
+      {
+        "arm": "new-observed",
+        "seconds": 9.809304666,
+        "passed": false,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "featuresPassed": false,
+        "oldObservedError": 0.048348593746983845,
+        "newObservedError": 0.04341979113716356
+      }
+    ],
+    "artifact": {
+      "path": "tmp/heart-learning/bauble-coverage-ablation-v1/results.json",
+      "sha256": "5d4555709aacb56dce030b697829186cb07917648830c6091e666f6e0d0309e3"
+    },
+    "comparison": {
+      "path": "tmp/heart-learning/bauble-coverage-ablation-v1/comparison.png",
+      "sha256": "4b90ee16dbf7f705153e8416ead4e683f871c677066e7dd0049da356dee868cf"
+    },
+    "visualReview": "All four outputs retain the central disc but have broken border pieces and distorted frame regions. New-whole and old-observed are closer to their classified target than new-observed. None is a successful complete reconstruction.",
+    "qualification": "Each arm starts from fresh grids, but the old-whole arm ran cold and differs from its earlier saved baseline. All are time-limited; this is not a fixed-work or randomized replicated causal estimate."
+  },
+  "lowerEdgeProbe": {
+    "scope": "Offline diagnostic: alternate RANSAC lower-line hypotheses from the same source segmentation; no template error or cutting solution used. All complete-outline support checks retained.",
+    "rowsPerSide": 16,
+    "sampleSourceYRange": [
+      1046.1,
+      1061.1
+    ],
+    "distinctLinesPerSide": [
+      1,
+      1
+    ],
+    "supportedAlternatives": 0,
+    "finding": "The retained segmentation samples cover only sixteen adjacent source rows. Re-ranking the same samples yields no distinct useful alternative; the flexible-cap fit still extrapolates its tip outside the photo. Earlier broader sampling/colour experiments are preserved in remaining-photo-failures.md and crop-edge-evidence.md; this probe does not supersede them.",
+    "artifact": {
+      "path": "tmp/heart-learning/bauble-lower-edge-probe-v1/results.json",
+      "sha256": "3e5089b0c6eb03dd086af6469759f8b997e7f1036b342f98bc2388aaf4405736"
+    },
+    "comparison": {
+      "path": "tmp/heart-learning/bauble-lower-edge-probe-v1/comparison.png",
+      "sha256": "0b79028ad9295252645af3305dda429b49bd0987e3ba3051e80ecb0fd6f23824"
+    }
+  },
+  "observedFeaturePrototype": {
+    "status": "experimental; not integrated",
+    "scope": "Fresh ten-second binary fits on the exact three saved classified masks and observation regions. Candidate enables feature proposals on observation-only weights; no saved templates supplied.",
+    "change": "Enable early feature proposals for observation-only weights; compose all feature emphasis with original weights and score proposals against the original observed objective. The source masks, crops, missing-pixel support, physical rules and error limits stay fixed.",
+    "results": [
+      {
+        "case": "bauble",
+        "arm": "candidate",
+        "secondsIncludingIndependentRender": 10.739995708,
+        "passed": false,
+        "observedError": 0.02060960151338691,
+        "geometryPassed": false,
+        "paperStatus": "uncertain",
+        "featuresPassed": true,
+        "selectedInitialization": "feature-weighted-grid"
+      },
+      {
+        "case": "bauble",
+        "arm": "baseline",
+        "secondsIncludingIndependentRender": 9.778686875000002,
+        "passed": false,
+        "observedError": 0.043805859226705615,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "featuresPassed": false,
+        "selectedInitialization": "grid"
+      },
+      {
+        "case": "crossed-ribbons",
+        "arm": "baseline",
+        "secondsIncludingIndependentRender": 7.038528709000002,
+        "passed": true,
+        "observedError": 0.0055283063279704305,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "featuresPassed": true,
+        "selectedInitialization": "grid"
+      },
+      {
+        "case": "crossed-ribbons",
+        "arm": "candidate",
+        "secondsIncludingIndependentRender": 7.480882667000001,
+        "passed": true,
+        "observedError": 0.0055283063279704305,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "featuresPassed": true,
+        "selectedInitialization": "grid"
+      },
+      {
+        "case": "bottom-flower",
+        "arm": "candidate",
+        "secondsIncludingIndependentRender": 9.842828167,
+        "passed": true,
+        "observedError": 0.007314720875762472,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "featuresPassed": true,
+        "selectedInitialization": "grid"
+      },
+      {
+        "case": "bottom-flower",
+        "arm": "baseline",
+        "secondsIncludingIndependentRender": 9.735389292,
+        "passed": true,
+        "observedError": 0.00733350868623104,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "featuresPassed": true,
+        "selectedInitialization": "grid"
+      }
+    ],
+    "finding": "The candidate recovers the bauble classified regions and lowers error from 4.38% to 2.06%, but has a 1.341 mm self-clearance return below the required 1.5 mm, uncertain paper support, and no complete success. Ribbons remain identical by mask error; flower changes by three sampled pixels. A lower mask score cannot justify shipping invalid templates.",
+    "visualReview": "Bauble retains additional right-hand fragments but has visible narrow slivers and still does not establish a faithful frame. Ribbons and flower retain their main motifs. All three targets are estimated masks, not cutting ground truth.",
+    "artifacts": [
+      {
+        "path": "tmp/heart-learning/observed-feature-prototype-v1/results.json",
+        "sha256": "78754a8bbfeea39c835f444ffa4992888757080a13352493058d7c5efb0e1ce1"
+      },
+      {
+        "path": "tmp/heart-learning/observed-feature-prototype-v1/comparison.png",
+        "sha256": "9af6f24baf8f90cf5a007b7e73ee535f2dec6e6c64d518ea3de886d45a35c25d"
+      },
+      {
+        "path": "tmp/heart-learning/observed-feature-prototype-v1/source.json",
+        "sha256": "009736cfc61c32cee6d6390cf6d0cad0b69fe269e3939aa28b02f874bc9a4bdd"
+      },
+      {
+        "path": "tmp/heart-learning/observed-feature-prototype-v1/candidate-source.json",
+        "sha256": "0fd30309048b41d659a9bfce99aca83c15393a0e2fe8fab5d32c94415d23e7f1"
+      },
+      {
+        "path": "tmp/heart-learning/observed-feature-prototype-v1/candidate.patch",
+        "sha256": "5488e0b63b3bc9cb851c8934adb2c0254db5fbd1d144b7dffa5d2c270353748f"
+      },
+      {
+        "path": "tmp/heart-learning/observed-feature-prototype-v1/run.mjs",
+        "sha256": "4faab918982a47f18b99b9acd09f20850714056d608d85043dd8310686482ea2"
+      },
+      {
+        "path": "tmp/heart-learning/observed-feature-prototype-v1/prepare.py",
+        "sha256": "7792c227fc8a713bfc33bf2be83b210757c2e367bdbdd29a20d9567baf1fd256"
+      }
+    ]
+  },
+  "nextWork": "The observed-only fitter needs useful feature proposals without exhausting the budget on an invalid route, while the cropper needs paper/background evidence beyond its current short lower-edge samples. Neither lowering physical tolerances nor treating every ambiguous border fragment as genuine artwork is justified."
+}

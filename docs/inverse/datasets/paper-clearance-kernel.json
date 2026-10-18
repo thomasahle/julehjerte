@@ -1,0 +1,401 @@
+{
+  "schema": "woven-heart-paper-clearance-kernel-1",
+  "status": "qa-complete-with-strict-error-regressions",
+  "implementationCommit": "b869b20",
+  "referenceCommit": "fe64d5e",
+  "scope": "Exact guarded paper-mask acceleration. No change to distances, guard widths, fold anchoring, area thresholds, geometry gates or independent final offset audit. Fixed-geometry timings are not end-to-end solve speed.",
+  "method": [
+    "Classify ordinary lattice cells in the existing float64 freestanding WASM module.",
+    "Preserve original tile order and chord arithmetic; defer threshold ties, negative lower guards and extreme arithmetic to the original JavaScript hypot calculation.",
+    "Return owned masks and deferred indices; no cut clearances or geometry decisions are cached.",
+    "Use existing two-call opposite-order calibration, requiring identical outputs and more than ten-percent repeated gain. Missing kernel or unsupported inputs retain JavaScript."
+  ],
+  "evidence": {
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/benchmark.json": "ace30b01265da28f9e03b87efbeb65d02949bb44140ea1751eaee64b0aee98d5",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/browser-kernel.json": "7e177d9dfd04129aa3ee37dca9c4a01ba0ee31e5a827ceb2d77988d557610e5c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/browser/results.json": "a883a6668456e39674e22f09256f5c6afad5e909ca84dbd353aa3ea1f18351bd",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/served-assets.json": "2d1dcd587b2f6c0dd1394663da40a65439c627aa02d172b1da8ff564fc048342",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/visual-review.json": "97443ac8e3b6eb68af2624e364e16ff356464a66d97bc3adf98bfbc27b874bca",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/benchmark.mjs": "25bf9313bf4385fb44a4e9cd48802ef96365e0f072bd5e3d403771c098ce9bc7",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/browser-kernel.mjs": "52e0a4c0ad5d7d8717a59817e1895fbd916bc27272ae0b0545e276c778015313",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/run-qa.py": "41c4542fe285c67e05f89a50ee6e3039c814e194951f118edddd9adbac2f3e3c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/qa-source.json": "0e4af1f2c28cdba0e19f659a0b83e738f96b64690cfd4de94ffbbfef7538d84d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/focused.log": "df4a4223f1972fc0ecc63366a880e7b87af063c5132a9f7ce983f38d97ead70b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/record-preflight.py": "fd74189d09e7812cf4a9826228c297777ace1da2df708fab31c59f02bd257493",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/record-complete.py": "5a103c63dcac248dcc1c1f04d6df1a0bb125cc392e08b639f8a0bc05096326e7",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/qa-checks.json": "a3551b65cbca54db3ff9bd756145301b1cb8fb0b9470dd8e09eea9abee0386c5",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/qa-state.json": "4c6586f557b97c0af81d29345c5290957eb12762fb4b3f7a8ddcb5633df73682",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/test.log": "f5c6c95d38cbadde296d9a025f0e968a698663abed15b3f3d06bd9ecda3573d5",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/native/checks.json": "a107d08d4218a2dc2c9cc3d750b7aaa2df4186c1d6115e709087b4c0410f22cb",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/native/running.json": "f800ae7eb5e7c39e39762bfc4a6e839f859893dcd3feb547b5bcfc5e6f930ea5",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/native/native-gates.json": "7d806377ab8d8976d9830cd8c1c5a9f48f37c19d8bd48104be5a134f0d17c014",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/native/hunodan/results.json": "64aa0724dddfc9d090f466f1a4db4560590026eb437c7f593c5d0b98dc8b1257",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/native/hunodan-comparison.json": "77219b1540ad7d81f1fae62771da66af4b8696d1ced83d4f783c381e6eda6636",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/native/photos/results.json": "bd3cae9365b9c9e2fb9df5486af2d4f511a5a39d13496f134bf4bd8af614519c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/native/photo-comparison.json": "8777970aa9e5bb238c4f2f4b3f1bbc46eaa5e43e0d0e1c7256080f3967247fbd",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/native/hunodan-editor/results.json": "a0e1a0f4ad062cad0a0ba855b03a6c839948b7a40c58a2faf1426222f9147bb7",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/native/photo-editor/results.json": "8b7bb223812e86089b1b11aa4c52d530131c43ee80fac4e69e9731840b03ff76",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/native/source.json": "947d8f077d5d391b0d709fba9269ce97a4e1ee2eed566585264911790fd04ca4",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/hunodan-change.json": "cce74510fa938f201b18ecd92fc3b08b742957977db0ed7d61fc285781a66842",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/corpus-visual-review.json": "4e9d5ab151eb38896d4d5db58e84ac479a79b67404787fa3ee163344ca436fc5"
+  },
+  "validation": {
+    "fixedGeometryCases": 37,
+    "roundsPerPolicy": 4,
+    "fixedGeometryCompleteMasksAndFieldsIdentical": true,
+    "nodeSummary": {
+      "cases": 37,
+      "allIdentical": true,
+      "medianPerCaseSaving": 0.1876304486759991,
+      "totalMedianBefore": 1.7911915425000022,
+      "totalMedianAfter": 1.4530024970000033,
+      "totalMedianAutomatic": 1.4378014169999946
+    },
+    "privateChromiumCases": 8,
+    "chromiumRoundsPerPolicy": 3,
+    "browserCompleteMasksAndFieldsIdentical": true,
+    "chromiumVersion": "145.0.7632.6",
+    "editableBrowserWorkflows": 2,
+    "editableBrowserWorkflowsPassed": 2,
+    "servedAssetsVerified": 172,
+    "focusedExistingTestsPassed": 17,
+    "newThresholdAndOwnershipTestsPassed": 5,
+    "applicationTestsPassed": 857,
+    "applicationTestsSkipped": 1,
+    "completedQaStages": [
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 11.763951583
+      },
+      {
+        "stage": "lint-final",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 7.465204541999999
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 16.629910333
+      },
+      {
+        "stage": "preview",
+        "command": [
+          "python3",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/restart-preview.py"
+        ],
+        "exitCode": 0,
+        "seconds": 1.0648757499999988
+      },
+      {
+        "stage": "browser-kernel",
+        "command": [
+          "node",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/browser-kernel.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 8.651829917
+      },
+      {
+        "stage": "browser",
+        "command": [
+          "node",
+          "scripts/inverse/paint-browser-test.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 18.10078933399999
+      },
+      {
+        "stage": "benchmark-final",
+        "command": [
+          "node",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/benchmark.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 25.29618445899999
+      },
+      {
+        "stage": "test",
+        "command": [
+          "npm",
+          "test"
+        ],
+        "exitCode": 0,
+        "seconds": 1040.199618792
+      },
+      {
+        "stage": "native",
+        "command": [
+          "python3",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/native/run.py"
+        ],
+        "exitCode": 0,
+        "seconds": 519.6278533340001
+      }
+    ],
+    "remainingQa": null,
+    "qaStatePath": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/qa-state.json",
+    "qaChecksPath": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/qa-checks.json",
+    "inverseTestsPassed": 930,
+    "inverseTestsFailed": 0,
+    "sourceFilesVerified": 770,
+    "freshCorpusGate": {
+      "hunodanPassed": 22,
+      "hunodanTotal": 22,
+      "hunodanErrorRegressions": [
+        {
+          "id": "hjfla-01",
+          "passed": true,
+          "qualityPassed": true,
+          "seconds": 9.565649833,
+          "previousSeconds": 9.645914375000004,
+          "error": 0.007107204861111111,
+          "previousError": 0.007100423177083333,
+          "errorDelta": 6.7816840277779705e-06
+        }
+      ],
+      "photoPassed": 26,
+      "photoPassRegressions": [],
+      "photoErrorRegressions": [
+        {
+          "id": "flettede-puppy",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.0103125,
+          "error": 0.0104,
+          "errorDelta": 8.749999999999904e-05
+        }
+      ],
+      "editablePassed": 48,
+      "editableTotal": 48,
+      "passed": false
+    },
+    "changedPhotoCasesVisuallyReviewed": 19
+  },
+  "binaryBytes": {
+    "before": 6361,
+    "after": 7592
+  },
+  "limitations": [
+    "All fixed-geometry audit decisions agree, but budget-dependent optimized geometry can change. One Hunodan case and the puppy regress by one and fourteen independent-render pixels respectively.",
+    "The Hunodan change reaches 160 polishing steps instead of 125. Internal point-sampled mismatch improves by four pixels while independent antialiased mismatch worsens by one; earlier reported stages match apart from timing.",
+    "The prior strict baseline photographic regressions are not erased by this incremental comparison. No all-errors-nonincreasing release claim.",
+    "The previously intermittent short HiGHS routing test passes in this suite; a single passing run does not establish timing robustness.",
+    "Accepted photographs can retain opened motifs, seams, distorted crops and border artifacts. Current acceptance is not original-artwork fidelity.",
+    "Discrete paper checks are not a physical assembly or tearing-strength proof."
+  ],
+  "freshCorpus": {
+    "comparisonBaseline": "tmp/heart-learning/conditional-paper-repair-v2/release-v1/native",
+    "scope": "One fresh serial corpus run per version under ten-second fitting budgets. Incremental comparison to the latest preceding run; not an interleaved timing study or erasure of older strict regressions.",
+    "hunodan": {
+      "passed": 22,
+      "cases": 22,
+      "maximumSeconds": 9.565649833,
+      "previousMaximumSeconds": 9.645914375000004,
+      "medianSeconds": 5.469180020999998,
+      "previousMedianSeconds": 5.559537395499998,
+      "totalSeconds": 124.71073433199997,
+      "previousTotalSeconds": 130.61617929200003,
+      "totalRuntimeReductionFraction": 0.04521220106123369,
+      "errorsUnchanged": 21,
+      "errorsImproved": 0,
+      "errorsRegressed": [
+        {
+          "id": "hjfla-01",
+          "passed": true,
+          "qualityPassed": true,
+          "seconds": 9.565649833,
+          "previousSeconds": 9.645914375000004,
+          "error": 0.007107204861111111,
+          "previousError": 0.007100423177083333,
+          "errorDelta": 6.7816840277779705e-06
+        }
+      ]
+    },
+    "photos": {
+      "manifestCases": 47,
+      "completeCases": 31,
+      "incompleteCases": 15,
+      "obscuredCases": 1,
+      "passed": 26,
+      "acceptedErrorsUnchanged": 10,
+      "acceptedErrorsImproved": 15,
+      "passRegressions": [],
+      "errorRegressions": [
+        {
+          "id": "flettede-puppy",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.0103125,
+          "error": 0.0104,
+          "errorDelta": 8.749999999999904e-05
+        }
+      ],
+      "inputCropsAndMasksExactlyReproduced": true
+    },
+    "editable": {
+      "passed": 48,
+      "cases": 48
+    },
+    "strictIncrementalErrorGatePassed": false,
+    "hunodanChangeInvestigation": {
+      "case": "hjfla-01",
+      "referenceRun": "tmp/heart-learning/conditional-paper-repair-v2/release-v1/native/hunodan",
+      "newRun": "tmp/heart-learning/paper-clearance-kernel-v1/native/hunodan",
+      "resolution": 384,
+      "coarseFineClearanceReportedAttemptsIdenticalApartFromSeconds": true,
+      "before": {
+        "polishSteps": 125,
+        "internalMismatchPixels": 1029,
+        "independentMismatchPixels": 1047
+      },
+      "after": {
+        "polishSteps": 160,
+        "internalMismatchPixels": 1025,
+        "independentMismatchPixels": 1048
+      },
+      "independentOutputChangedPixels": 27,
+      "changedPixelCoordinates": [
+        [
+          13,
+          76
+        ],
+        [
+          249,
+          88
+        ],
+        [
+          196,
+          91
+        ],
+        [
+          242,
+          112
+        ],
+        [
+          155,
+          131
+        ],
+        [
+          291,
+          162
+        ],
+        [
+          326,
+          181
+        ],
+        [
+          330,
+          181
+        ],
+        [
+          188,
+          184
+        ],
+        [
+          185,
+          185
+        ],
+        [
+          186,
+          185
+        ],
+        [
+          187,
+          185
+        ],
+        [
+          188,
+          185
+        ],
+        [
+          159,
+          194
+        ],
+        [
+          199,
+          199
+        ],
+        [
+          189,
+          205
+        ],
+        [
+          190,
+          206
+        ],
+        [
+          186,
+          221
+        ],
+        [
+          183,
+          223
+        ],
+        [
+          79,
+          236
+        ],
+        [
+          245,
+          245
+        ],
+        [
+          299,
+          260
+        ],
+        [
+          300,
+          260
+        ],
+        [
+          301,
+          260
+        ],
+        [
+          302,
+          260
+        ],
+        [
+          303,
+          260
+        ],
+        [
+          147,
+          268
+        ]
+      ],
+      "visualReview": "Both independent 384-pixel renders visually reviewed side by side; no resolved improvement claim from a one-pixel target-error change.",
+      "interpretation": "The faster run reaches more polishing steps and chooses a lower internal-error candidate, while independent exported coverage error is one pixel worse. Reported earlier attempts and pre-polish image error match. Consistent with budget-dependent polishing plus point-sampling versus antialiased export scoring; not proof that every intermediate geometry was identical.",
+      "evidence": {
+        "tmp/heart-learning/conditional-paper-repair-v2/release-v1/native/hunodan/results.json": "bd52e44c8ee66de1d3a331b080f7f3cb030402bb43c08821f412ad87e959250c",
+        "tmp/heart-learning/conditional-paper-repair-v2/release-v1/native/hunodan/hjfla-01/report.json": "45c1b2bc36f0e5c0b29b168003ae64496fdf02c35c3b463c5d44242f5e056da3",
+        "tmp/heart-learning/conditional-paper-repair-v2/release-v1/native/hunodan/hjfla-01/cut_geometry.json": "199d374bfef4b9d9caf9dc83889d71972a00e2c1d754f939999c69bbddd28b69",
+        "tmp/heart-learning/conditional-paper-repair-v2/release-v1/native/hunodan/hjfla-01/independent.png": "d422539a60441238d175dc1c3cd397cced47594d84ec2f73c6fe91768e506445",
+        "tmp/heart-learning/paper-clearance-kernel-v1/native/hunodan/results.json": "64aa0724dddfc9d090f466f1a4db4560590026eb437c7f593c5d0b98dc8b1257",
+        "tmp/heart-learning/paper-clearance-kernel-v1/native/hunodan/hjfla-01/report.json": "e2703a3dce277ce6ca4a1aaa68246b393363a6d7491838ed365790d453016ea0",
+        "tmp/heart-learning/paper-clearance-kernel-v1/native/hunodan/hjfla-01/cut_geometry.json": "27be13527e9a7cd0fe61a039d6390c7f740aeafdc9176e80ed8ba4e0dfdc5193",
+        "tmp/heart-learning/paper-clearance-kernel-v1/native/hunodan/hjfla-01/independent.png": "2e9134cc66e019e205d39d1fef336c17bb3dddb3322f992804b0a11436514760"
+      }
+    }
+  }
+}

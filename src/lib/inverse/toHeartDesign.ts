@@ -95,6 +95,7 @@ import { maskMismatch } from '$lib/paint/mask';
 import { rasterizeDesign } from '$lib/paint/rasterize';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
+import { conversionFidelity, type ConversionFidelity, type ConversionReference } from './conversionFidelity';
 
 /** One cut's ordered reference into `curves`; `reverse` runs the cubic backwards. */
 export type CutReference = { curve: string; reverse: boolean };
@@ -156,6 +157,11 @@ export type CutGeometryOptions = {
   preserveShared?: boolean;
 };
 
+export type ValidatedCutGeometryOptions = CutGeometryOptions & {
+  /** Original drawing and optional importance weights; free borders have zero weight. */
+  reference?: ConversionReference;
+};
+
 export type ConvertedHeart = {
   design: HeartDesign;
   /**
@@ -172,7 +178,7 @@ export type ConvertedHeart = {
    */
   symmetryCost?: number;
   /** Present on results checked for use in the editor. */
-  editorValidation?: { passed: true; tolerance: number };
+  editorValidation?: { passed: true; tolerance: number; fidelity: ConversionFidelity };
 };
 
 /** How far an endpoint may sit from its square edge, in the 0–100 frame. */
@@ -546,6 +552,7 @@ export function convertCutGeometry(
       author: opts.author ?? '',
       weaveParity: geometry.phase,
       gridSize: { x: right.length + 1, y: left.length + 1 },
+      overlapAspectRatio: 1,
       colors,
       fingers: [
         ...left.map((segments, i) => toRawFinger(segments, 'left', i)),
@@ -595,28 +602,84 @@ export function cutGeometryToDesign(json: string | CutGeometry, opts: CutGeometr
   return convertCutGeometry(json, opts).design;
 }
 
+/** Preserve the solver's conservative control-hull clearance to paper sides.
+ * A fitted replacement can stay close to the curve yet swing its handles much
+ * nearer an outer edge. Area fidelity and the editor's smaller crossing margin
+ * do not retain this part of the engine's physical validation.
+ */
+function sideClearances(design: HeartDesign): number[] {
+  const rect = inferOverlapRect(design.fingers, design.gridSize);
+  return (['right', 'left'] as const).map((lobe) => {
+    const axis = lobe === 'right' ? 'x' : 'y', offset = axis === 'x' ? rect.left : rect.top;
+    const span = axis === 'x' ? rect.width : rect.height;
+    const cuts = design.fingers.filter(f => f.lobe === lobe && f.id.includes('-cut-'));
+    let minimum = Infinity;
+    for (const cut of cuts) for (const segment of cut.segments) for (const key of ['p0', 'p1', 'p2', 'p3'] as const) {
+      const coordinate = (segment[key][axis] - offset) / span;
+      minimum = Math.min(minimum, coordinate, 1 - coordinate);
+    }
+    return minimum;
+  });
+}
+
 /** Apply the same checks as Tegn to the final geometry, after simplification,
- * normalisation and symmetry correction. A solver's earlier validation cannot
- * certify curves changed by any of those operations. Low-level conversion
- * remains available for inspecting historical or deliberately invalid inputs. */
-export function convertValidatedCutGeometry(json: string | CutGeometry, opts: CutGeometryOptions): ConvertedHeart {
+ * normalisation and symmetry correction, and verify simplification preserves
+ * the combined weave. A solver's earlier validation cannot certify curves
+ * changed by those operations. Low-level conversion remains available for
+ * inspecting historical or deliberately invalid inputs. */
+export function convertValidatedCutGeometry(json: string | CutGeometry, opts: ValidatedCutGeometryOptions): ConvertedHeart {
   const geometry = parseCutGeometry(json);
   const tolerance = opts.tolerance ?? FIT_TOLERANCE;
   const legal = (value: ConvertedHeart): boolean => {
     const d = value.design;
     return findFingersWithIssues(d.fingers, intersectionMarginPx(inferOverlapRect(d.fingers, d.gridSize))).size === 0;
   };
-  for (const precision of [...new Set([tolerance, tolerance * 0.4, 0])]) {
+  const raw = new Map<string, ConvertedHeart>();
+  const checks = new Map<string, ReturnType<typeof conversionFidelity>>();
+  const key = (symmetry: SymmetrySettings): string => `${symmetry.curve}/${symmetry.lobe}/${symmetry.lobes}`;
+  const original = (enforce: SymmetrySettings): ConvertedHeart => {
+    const id = key(enforce);
+    let value = raw.get(id);
+    if (!value) {
+      value = convertCutGeometry(geometry, { ...opts, tolerance: 0, preserveShared: true, enforce });
+      raw.set(id, value);
+    }
+    return value;
+  };
+  const checked = (candidate: ConvertedHeart, precision: number): ConvertedHeart | null => {
+    if (!legal(candidate)) return null;
+    const id = key(candidate.honoured), baseline = original(candidate.honoured);
+    // Compare the same symmetry correction at both precisions. A simplifier
+    // must not make a correction appear cheap by distorting the source weave.
+    if (key(baseline.honoured) !== id) return null;
+    const clearance = sideClearances(candidate.design), originalClearance = sideClearances(baseline.design);
+    if (clearance.some((value, i) => value < originalClearance[i]! - 1e-8)) return null;
+    let check = checks.get(id);
+    if (!check) { check = conversionFidelity(baseline.design, opts.reference); checks.set(id, check); }
+    const fidelity = check(candidate.design);
+    return fidelity.passed ? { ...candidate, editorValidation: { passed: true, tolerance: precision, fidelity } } : null;
+  };
+  const expected = key(original(opts.enforce ?? NO_SYMMETRY).honoured);
+  let fallback: ConvertedHeart | null = null;
+  for (const precision of [...new Set([tolerance, tolerance * 0.4, tolerance * 0.1, 0])]) {
     const options = { ...opts, tolerance: precision, preserveShared: true };
-    const candidate = convertCutGeometry(geometry, options);
-    if (legal(candidate)) return { ...candidate, editorValidation: { passed: true, tolerance: precision } };
+    const candidate = precision === 0 ? original(opts.enforce ?? NO_SYMMETRY) : convertCutGeometry(geometry, options);
+    const result = checked(candidate, precision);
+    if (result) {
+      if (key(result.honoured) === expected) return result;
+      fallback ??= result;
+    }
     // A small area error does not make a symmetry correction geometrically
     // valid. Retain the uncorrected solution when that is the legal candidate.
     if (Object.values(candidate.honoured).some(mode => mode !== 'off')) {
-      const plain = convertCutGeometry(geometry, { ...options, enforce: NO_SYMMETRY });
-      if (legal(plain)) return { ...plain, symmetryCost: candidate.symmetryCost, editorValidation: { passed: true, tolerance: precision } };
+      const plain = precision === 0 ? original(NO_SYMMETRY) : convertCutGeometry(geometry, { ...options, enforce: NO_SYMMETRY });
+      const plainResult = checked(plain, precision);
+      if (plainResult) fallback ??= { ...plainResult, symmetryCost: candidate.symmetryCost };
     }
   }
+  // Try finer curves before dropping a correction that the original geometry
+  // can carry. Simplification is not a reason to turn a requested symmetry off.
+  if (fallback) return fallback;
   throw new CutGeometryError('paintErrorGeometryCurves', 'The converted cuts fail the editor’s crossing or minimum-spacing checks, including without simplification.');
 }
 

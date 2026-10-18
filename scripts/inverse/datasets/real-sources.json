@@ -1,0 +1,269 @@
+[
+  {
+    "id": "flettede",
+    "pages": [
+      "https://flettedehjerter.dk/"
+    ],
+    "maxPages": 115,
+    "rights": {
+      "status": "unknown",
+      "fact": "No photograph training/redistribution license established from the source page."
+    },
+    "depth": 1,
+    "pagePattern": "https://flettedehjerter.dk/[\\w-]*(?:december|December)[\\w-]*/$",
+    "imagePattern": "wp-content/uploads/"
+  },
+  {
+    "id": "hunodan",
+    "pages": [
+      "https://www.hunodan.dk/julehjerter/julehjerter.html"
+    ],
+    "maxPages": 1,
+    "rights": {
+      "status": "unknown",
+      "fact": "No photograph training/redistribution license established from the source page."
+    },
+    "imagePattern": "img-hjerter/"
+  },
+  {
+    "id": "bibel",
+    "pages": [
+      "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download"
+    ],
+    "maxPages": 1,
+    "rights": {
+      "status": "unknown",
+      "fact": "No photograph training/redistribution license established from the source page."
+    },
+    "imagePattern": "julehjerte|flettede|hjerter"
+  },
+  {
+    "id": "krymmel",
+    "pages": [
+      "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php"
+    ],
+    "maxPages": 1,
+    "rights": {
+      "status": "unknown",
+      "fact": "No photograph training/redistribution license established from the source page."
+    }
+  },
+  {
+    "id": "danishthings",
+    "pages": [
+      "https://danishthings.com/da/flettede-julehjerter/"
+    ],
+    "maxPages": 10,
+    "rights": {
+      "status": "copyright-stated",
+      "fact": "Danish Things states copyright; private craft use of templates is free, with separate institutional copying requirements. No neural-network training license established.",
+      "evidenceUrl": "https://danishthings.com/da/flettet-julehjerte-med-et-flettet-julehjerte/"
+    },
+    "depth": 1,
+    "pagePattern": "https://danishthings.com/da/[^/]*(?:julehjerte|hjerter)[^/]*/$",
+    "imagePattern": "wp-content/uploads/",
+    "author": "Christel Parby"
+  },
+  {
+    "id": "carina",
+    "pages": [
+      "https://www.carinascraftblog.com/2021/12/15/woven-paper-heart-tutorial.html"
+    ],
+    "maxPages": 1,
+    "rights": {
+      "status": "unknown",
+      "fact": "No photograph training/redistribution license established from the source page."
+    },
+    "imagePattern": "wp-content/uploads|staticflickr"
+  },
+  {
+    "id": "gathering",
+    "pages": [
+      "https://www.gatheringbeauty.com/blog/2018/02/diy-danish-woven-paper-heart-valentine-baskets.html"
+    ],
+    "maxPages": 1,
+    "rights": {
+      "status": "unknown",
+      "fact": "No photograph training/redistribution license established from the source page."
+    },
+    "imagePattern": "squarespace-cdn"
+  },
+  {
+    "id": "vissevasse",
+    "pages": [
+      "https://vissevasse.dk/pages/julehjerter-her-far-du-4-gratis-skabeloner"
+    ],
+    "maxPages": 1,
+    "rights": {
+      "status": "unknown",
+      "fact": "No photograph training/redistribution license established from the source page."
+    },
+    "imagePattern": "julepynt|julehjerte"
+  },
+  {
+    "id": "sunset",
+    "pages": [
+      "https://sunsetpapercrafts.wordpress.com/2021/12/16/woven-hearts/"
+    ],
+    "maxPages": 1,
+    "rights": {
+      "status": "unknown",
+      "fact": "No photograph training/redistribution license established from the source page."
+    },
+    "imagePattern": "wordpress.com/(?:wp-content|files)"
+  },
+  {
+    "id": "terrabeata",
+    "pages": [
+      "https://terrabeata.wordpress.com/2009/02/13/woven-hearts/"
+    ],
+    "maxPages": 1,
+    "rights": {
+      "status": "unknown",
+      "fact": "No photograph training/redistribution license established from the source page."
+    },
+    "imagePattern": "wordpress.com/(?:wp-content|files)"
+  },
+  {
+    "id": "northpole",
+    "pages": [
+      "https://www.northpole.com/craftcottage/scandinavian-woven-hearts"
+    ],
+    "maxPages": 1,
+    "rights": {
+      "status": "unknown",
+      "fact": "No photograph training/redistribution license established from the source page."
+    },
+    "imagePattern": "woven|heart"
+  },
+  {
+    "id": "allfreecrafts",
+    "pages": [
+      "https://www.allfreecrafts.com/valentine/woven-heart-baskets/"
+    ],
+    "maxPages": 1,
+    "rights": {
+      "status": "unknown",
+      "fact": "No photograph training/redistribution license established from the source page."
+    },
+    "imagePattern": "heart"
+  },
+  {
+    "id": "kiwico",
+    "pages": [
+      "https://www.kiwico.com/diy/art-creativity/quick-easy-crafts/danish-woven-paper-heart-baskets"
+    ],
+    "maxPages": 1,
+    "rights": {
+      "status": "unknown",
+      "fact": "No photograph training/redistribution license established from the source page."
+    }
+  },
+  {
+    "id": "cewe",
+    "pages": [
+      "https://www.cewe.dk/inspiration/flettet-julehjerte.html"
+    ],
+    "maxPages": 1,
+    "rights": {
+      "status": "unknown",
+      "fact": "No photograph training/redistribution license established from the source page."
+    },
+    "imagePattern": "jule|heart"
+  },
+  {
+    "id": "creager",
+    "pages": [
+      "https://danielcreager.com/Patterns/Danish%20Hearts/index.html"
+    ],
+    "maxPages": 1,
+    "rights": {
+      "status": "unknown",
+      "fact": "No photograph training/redistribution license established from the source page."
+    }
+  },
+  {
+    "id": "rosemary",
+    "pages": [
+      "https://rosemarywashington.wordpress.com/2011/02/02/valentine-papercrafts/"
+    ],
+    "maxPages": 1,
+    "rights": {
+      "status": "unknown",
+      "fact": "No photograph training/redistribution license established from the source page."
+    },
+    "imagePattern": "wordpress.com/(?:wp-content|files)"
+  },
+  {
+    "id": "cloudberry",
+    "pages": [
+      "https://cloudberryliving.co.uk/blogs/blog/how-to-make-danish-woven-paper-hearts"
+    ],
+    "maxPages": 1,
+    "rights": {
+      "status": "unknown",
+      "fact": "No photograph training/redistribution license established from the source page."
+    },
+    "imagePattern": "heart|hygge"
+  },
+  {
+    "id": "doodlecraft",
+    "pages": [
+      "https://www.doodlecraftblog.com/2021/02/how-to-make-woven-paper-heart-basket.html"
+    ],
+    "maxPages": 1,
+    "rights": {
+      "status": "unknown",
+      "fact": "No photograph training/redistribution license established from the source page."
+    },
+    "imagePattern": "blogspot|googleusercontent"
+  },
+  {
+    "id": "sparkle",
+    "pages": [
+      "https://sparkleandsplatter.com/2023/02/how-to-make-woven-paper-hearts-video-2.html"
+    ],
+    "maxPages": 1,
+    "rights": {
+      "status": "unknown",
+      "fact": "No photograph training/redistribution license established from the source page."
+    },
+    "imagePattern": "wp-content/uploads"
+  },
+  {
+    "id": "fletstudio",
+    "pages": [
+      "https://www.flet.studio/"
+    ],
+    "maxPages": 1,
+    "rights": {
+      "status": "unknown",
+      "fact": "No photograph training/redistribution license established from the source page."
+    }
+  },
+  {
+    "id": "commons",
+    "pages": [
+      "https://commons.wikimedia.org/wiki/Category:Pleated_Christmas_hearts"
+    ],
+    "maxPages": 9,
+    "rights": {
+      "status": "unknown",
+      "fact": "No photograph training/redistribution license established from the source page."
+    },
+    "depth": 1,
+    "pagePattern": "/wiki/File:",
+    "imagePattern": "upload.wikimedia.org/wikipedia/commons/(?!thumb/)"
+  },
+  {
+    "id": "natmus",
+    "pages": [
+      "https://samlinger.natmus.dk/dnt/object/348445"
+    ],
+    "maxPages": 1,
+    "rights": {
+      "status": "unknown",
+      "fact": "No photograph training/redistribution license established from the source page."
+    }
+  }
+]

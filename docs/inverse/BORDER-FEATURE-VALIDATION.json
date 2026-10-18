@@ -1,0 +1,1982 @@
+{
+  "createdAt": "2026-10-11T19:16:13.744Z",
+  "algorithmCommit": "88eefd2",
+  "baselineCommit": "ca79a33",
+  "sourceHashes": {
+    "static/inverse/core/image-features.js": "5265746de5cf60430a0b3a09af04d8d99037744c825cf4d7ea829525a6c69104",
+    "static/inverse/core/direct/fit.js": "6b16b0667ce6a380ba61fbbd9bba9eaebe330ee2fa16655e42bb2b7757d8f7d9",
+    "scripts/inverse/image-features.test.mjs": "f9d8c6825135ced0ed715fedd6cd2c1ffd45ee8e171111252220f59ec9ab0aae",
+    "scripts/inverse/feature-refinement.test.mjs": "a4cb73b49434d853bed033ddd1772c03708e269b3326fe54a617aed90649736a",
+    "scripts/inverse/paint-browser-test.mjs": "2a251463725eae4951a2aef0f0ced6eba3c33f4229bdd72a20009ddc875ad10a"
+  },
+  "policy": "Interior-feature checks require more than one source pixel of clearance from the square boundary. All observed pixels remain in image error. Geometry, paper and image-error thresholds are unchanged. Routing can also be triggered by poor grid agreement without missing components.",
+  "qa": {
+    "applicationPassed": 845,
+    "applicationExistingSkipped": 1,
+    "inversePassed": 538,
+    "typeErrors": 0,
+    "typeExistingWarnings": 7,
+    "lint": "passed",
+    "build": "passed"
+  },
+  "hunodan": {
+    "medianSeconds": 4.94427175,
+    "maxSeconds": 8.370116084000008,
+    "results": [
+      {
+        "id": "hjfig-01",
+        "passed": true,
+        "seconds": 4.513250125000001,
+        "error": 0.009799111111111111,
+        "beforeError": 0.009799111111111111
+      },
+      {
+        "id": "hjfig-02",
+        "passed": true,
+        "seconds": 4.635479208999999,
+        "error": 0.013923555555555555,
+        "beforeError": 0.013923555555555555
+      },
+      {
+        "id": "hjfig-03",
+        "passed": true,
+        "seconds": 3.7812594590000006,
+        "error": 0.006634666666666666,
+        "beforeError": 0.006634666666666666
+      },
+      {
+        "id": "hjfig-04",
+        "passed": true,
+        "seconds": 4.090418583000003,
+        "error": 0.013824,
+        "beforeError": 0.013824
+      },
+      {
+        "id": "hjfig-05",
+        "passed": true,
+        "seconds": 3.090755249999998,
+        "error": 0.009042960667083447,
+        "beforeError": 0.009042960667083447
+      },
+      {
+        "id": "hjfla-01",
+        "passed": true,
+        "seconds": 5.345674959,
+        "error": 0.013468424479166666,
+        "beforeError": 0.013468424479166666
+      },
+      {
+        "id": "hjcur-01",
+        "passed": true,
+        "seconds": 5.30084175,
+        "error": 0.005148444444444444,
+        "beforeError": 0.005148444444444444
+      },
+      {
+        "id": "hjcur-02",
+        "passed": true,
+        "seconds": 4.9289205,
+        "error": 0.005397333333333333,
+        "beforeError": 0.005397333333333333
+      },
+      {
+        "id": "hjcur-03",
+        "passed": true,
+        "seconds": 4.959623,
+        "error": 0.004522666666666667,
+        "beforeError": 0.004522666666666667
+      },
+      {
+        "id": "hjcur-04",
+        "passed": true,
+        "seconds": 7.069608542000002,
+        "error": 0.005639111111111111,
+        "beforeError": 0.005639111111111111
+      },
+      {
+        "id": "hjcur-05",
+        "passed": true,
+        "seconds": 3.375857167000002,
+        "error": 0.009436444444444445,
+        "beforeError": 0.009436444444444445
+      },
+      {
+        "id": "hjhih-01",
+        "passed": true,
+        "seconds": 6.360314666999999,
+        "error": 0.006040430615586996,
+        "beforeError": 0.006040430615586996
+      },
+      {
+        "id": "hjhih-02",
+        "passed": true,
+        "seconds": 4.7975713749999995,
+        "error": 0.003899406226779104,
+        "beforeError": 0.003899406226779104
+      },
+      {
+        "id": "hjhih-04",
+        "passed": true,
+        "seconds": 7.462466250000005,
+        "error": 0.007776029627903062,
+        "beforeError": 0.007776029627903062
+      },
+      {
+        "id": "hjstr-01",
+        "passed": true,
+        "seconds": 4.319982749999996,
+        "error": 0.007550237322696868,
+        "beforeError": 0.007550237322696868
+      },
+      {
+        "id": "hjstr-02",
+        "passed": true,
+        "seconds": 6.166863125000003,
+        "error": 0.004365548980933596,
+        "beforeError": 0.004365548980933596
+      },
+      {
+        "id": "hjstr-03",
+        "passed": true,
+        "seconds": 8.370116084000008,
+        "error": 0.0056129769369752365,
+        "beforeError": 0.0056129769369752365
+      },
+      {
+        "id": "hjsta-01",
+        "passed": true,
+        "seconds": 4.826402916999999,
+        "error": 0.007929362880886427,
+        "beforeError": 0.007929362880886427
+      },
+      {
+        "id": "hjsta-02",
+        "passed": true,
+        "seconds": 4.31462662499999,
+        "error": 0.0038045247395833335,
+        "beforeError": 0.0038045247395833335
+      },
+      {
+        "id": "hjsta-03",
+        "passed": true,
+        "seconds": 6.185578083,
+        "error": 0.012332213049376572,
+        "beforeError": 0.012332213049376572
+      },
+      {
+        "id": "hjsta-04",
+        "passed": true,
+        "seconds": 6.736464416999995,
+        "error": 0.005053050026595,
+        "beforeError": 0.005053050026595
+      },
+      {
+        "id": "hjsta-05",
+        "passed": true,
+        "seconds": 6.010545708000005,
+        "error": 0.010624446293860237,
+        "beforeError": 0.010624446293860237
+      }
+    ]
+  },
+  "web": {
+    "counts": {
+      "candidate_needs_review": 19,
+      "candidate_checks_passed": 10,
+      "no_crop": 15
+    },
+    "methodology": "Original photographs and rough ROIs, automatic crops, fresh initialization and independent resvg replay. Passes are candidate checks, not validated ground-truth recovery. Before values come from PROVISIONAL-ROUTING-VALIDATION.json.",
+    "results": [
+      {
+        "id": "danish-silver-on-tree",
+        "track": "two-colour",
+        "sourceSha256": "960a8d2c6b1123b117fc96b13a915e292a67521590f5603dbdd2a7a75a7463fe",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 1,
+            "right": 1
+          },
+          "error": 0.03775,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 1,
+          "missingRegions": 0,
+          "totalSeconds": 10.260207000000001,
+          "fitAndValidationSeconds": 7.731789583
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 1,
+            "right": 1
+          },
+          "error": 0.03775,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 1,
+          "missingRegions": 0,
+          "totalSeconds": 9.324950000000001,
+          "fitAndValidationSeconds": 6.905769666
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "danish-green-yellow",
+        "track": "two-colour",
+        "sourceSha256": "5957b2a8f5e25981f400cef687784effdb6c8491b8f0886ab5117ea66d610d4f",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.0033125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 6,
+          "missingRegions": 0,
+          "totalSeconds": 7.13264825,
+          "fitAndValidationSeconds": 5.241627458000001
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.0033125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 5,
+          "missingRegions": 0,
+          "totalSeconds": 6.784771333000001,
+          "fitAndValidationSeconds": 5.030279500000001
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "danish-silver-white",
+        "track": "two-colour",
+        "sourceSha256": "9a2a6d6fdae42655ec1ee153635ea85556aea24ed79d5960f7837b6bb0a01458",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "error": 0.0551625,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 19,
+          "missingRegions": 17,
+          "totalSeconds": 8.691180625000001,
+          "fitAndValidationSeconds": 7.661401333999998
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "error": 0.0551625,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 19,
+          "missingRegions": 17,
+          "totalSeconds": 8.708062709,
+          "fitAndValidationSeconds": 7.643705833
+        },
+        "gridMismatchTrigger": true,
+        "errorChange": 0
+      },
+      {
+        "id": "danish-red-gold",
+        "track": "printed-paper",
+        "sourceSha256": "8de9081d6aad37c1e63600cf1f51f5c205c2d383b89f22a16cb14aab63d36a96",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 6,
+            "right": 6
+          },
+          "error": 0.139425,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 28,
+          "missingRegions": 11,
+          "totalSeconds": 10.174274582999999,
+          "fitAndValidationSeconds": 9.218097583000002
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 6,
+            "right": 6
+          },
+          "error": 0.139425,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 27,
+          "missingRegions": 11,
+          "totalSeconds": 10.145812707999998,
+          "fitAndValidationSeconds": 9.223111667000001
+        },
+        "gridMismatchTrigger": true,
+        "errorChange": 0
+      },
+      {
+        "id": "danish-tree-red",
+        "track": "two-colour",
+        "sourceSha256": "6603c4c02f4c45d097a47b06bf003e62d5710ef33ce574b35f2a2e351d274b40",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0205375,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 5,
+          "missingRegions": 1,
+          "totalSeconds": 9.068535791000002,
+          "fitAndValidationSeconds": 8.083595125
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0205375,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 4,
+          "missingRegions": 0,
+          "totalSeconds": 4.535794792000001,
+          "fitAndValidationSeconds": 3.591221167000003
+        },
+        "gridMismatchTrigger": true,
+        "errorChange": 0
+      },
+      {
+        "id": "danish-tree-green",
+        "track": "two-colour",
+        "sourceSha256": "5a8c872aeae2452165ddc05753a2255effaba318a7eb4b5b57ad9fb4361c1439",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.011375,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 4,
+          "missingRegions": 0,
+          "totalSeconds": 7.757499374999999,
+          "fitAndValidationSeconds": 6.490505583999998
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.011375,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 3,
+          "missingRegions": 0,
+          "totalSeconds": 7.844748915999997,
+          "fitAndValidationSeconds": 6.617196166999995
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "danish-tree-dots",
+        "track": "printed-paper",
+        "sourceSha256": "b7a0ae1209a1fbc5092b1e1b453dae5a19decc11c33a12e12b345ba9cfb16063",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.1311,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 15,
+          "missingRegions": 7,
+          "totalSeconds": 12.800738959000002,
+          "fitAndValidationSeconds": 9.863389499999997
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.1311,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 15,
+          "missingRegions": 7,
+          "totalSeconds": 11.799349000000001,
+          "fitAndValidationSeconds": 9.878150667000002
+        },
+        "gridMismatchTrigger": true,
+        "errorChange": 0
+      },
+      {
+        "id": "gathering-pink-single",
+        "track": "printed-paper",
+        "sourceSha256": "867f0e5852ebeba92db6e89b0d4883f88b12a30226a93bb2042d9bce0e17500b",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 1.8999696250000124
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 1.8339809999999999
+        }
+      },
+      {
+        "id": "bibel-checker-2",
+        "track": "two-colour",
+        "sourceSha256": "d715441c747a0f9d93db029c5b97b4c0a9dff0f5d3bd6480a871ae8285abfb4b",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 1,
+            "right": 1
+          },
+          "error": 0.01753125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 0,
+          "missingRegions": 0,
+          "totalSeconds": 3.536025582999995,
+          "fitAndValidationSeconds": 2.428760500000004
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 1,
+            "right": 1
+          },
+          "error": 0.01753125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 0,
+          "missingRegions": 0,
+          "totalSeconds": 3.451041000000005,
+          "fitAndValidationSeconds": 2.3714817079999992
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "bibel-checker-3",
+        "track": "two-colour",
+        "sourceSha256": "ca918edf5ebf69b903f8f0c95cf048280c7ed4e1dea135f5e14aca3529decbc7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "error": 0.014375,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 1,
+          "missingRegions": 0,
+          "totalSeconds": 6.048655207999997,
+          "fitAndValidationSeconds": 5.030382540999999
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "error": 0.014375,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 1,
+          "missingRegions": 0,
+          "totalSeconds": 5.974630042000005,
+          "fitAndValidationSeconds": 4.97265854199999
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "bibel-checker-4",
+        "track": "two-colour",
+        "sourceSha256": "8552792996b59b8c94b8ef67759ce53f9799c73683f55d673314415cefd9ac87",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0035625,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 2,
+          "missingRegions": 0,
+          "totalSeconds": 5.571690333999999,
+          "fitAndValidationSeconds": 4.267758541000003
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0035625,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 2,
+          "missingRegions": 0,
+          "totalSeconds": 5.387497041000009,
+          "fitAndValidationSeconds": 4.150674625
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "bibel-narrow-wide",
+        "track": "two-colour",
+        "sourceSha256": "f89f56183194d4035b3e4f0864d5ea7642912342a5717da2ad0c6c38da7da194",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 4,
+            "right": 5
+          },
+          "error": 0.02026875,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 4,
+          "missingRegions": 0,
+          "totalSeconds": 10.032916750000004,
+          "fitAndValidationSeconds": 8.844145375000007
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 4,
+            "right": 5
+          },
+          "error": 0.02026875,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 4,
+          "missingRegions": 0,
+          "totalSeconds": 10.007175625000004,
+          "fitAndValidationSeconds": 8.853023167000007
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "bibel-nested-heart-green",
+        "track": "two-colour",
+        "sourceSha256": "0c426b93e08995e5daf1714aca5cee453e5126781455e1f284f4f00c42a40990",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.8950144169999985
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.873733917000005
+        }
+      },
+      {
+        "id": "bibel-nested-heart-red",
+        "track": "two-colour",
+        "sourceSha256": "2a3c21b4bab08513abb8d5538143dd2670df0ce0fe3048ec16b93359914f97a2",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.02806875,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 1,
+          "missingRegions": 0,
+          "totalSeconds": 11.101365834000012,
+          "fitAndValidationSeconds": 9.193414458
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.02806875,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 1,
+          "missingRegions": 0,
+          "totalSeconds": 11.043930000000007,
+          "fitAndValidationSeconds": 9.196666958999995
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "bibel-angel",
+        "track": "two-colour",
+        "sourceSha256": "524ac9f34366e7db1cdf04687a802e0e89ea36589f8943f72e7fee4d9c6551d9",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.884952707999997
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.8702246660000091
+        }
+      },
+      {
+        "id": "danish-tree-group-top",
+        "track": "scene",
+        "sourceSha256": "2f5e6fcf603f627d3184407ff89e078880f62c3f6376af720e6030397d7461bc",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.397439458000008
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.3898239579999936
+        }
+      },
+      {
+        "id": "danish-tree-group-right",
+        "track": "scene",
+        "sourceSha256": "2f5e6fcf603f627d3184407ff89e078880f62c3f6376af720e6030397d7461bc",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.05973125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 3,
+          "missingRegions": 0,
+          "totalSeconds": 9.873102375000002,
+          "fitAndValidationSeconds": 8.966331125000012
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.05973125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 3,
+          "missingRegions": 0,
+          "totalSeconds": 9.936964875000005,
+          "fitAndValidationSeconds": 8.959519874999998
+        },
+        "gridMismatchTrigger": true,
+        "errorChange": 0
+      },
+      {
+        "id": "danish-tree-group-left",
+        "track": "scene",
+        "sourceSha256": "2f5e6fcf603f627d3184407ff89e078880f62c3f6376af720e6030397d7461bc",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.32131645800000114
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.31256216600000336
+        }
+      },
+      {
+        "id": "danish-tree-group-bottom",
+        "track": "scene",
+        "sourceSha256": "2f5e6fcf603f627d3184407ff89e078880f62c3f6376af720e6030397d7461bc",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.2710751659999951
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.2866365000000078
+        }
+      },
+      {
+        "id": "gathering-striped-scene-top",
+        "track": "printed-paper",
+        "sourceSha256": "fee1e0ab49ac2a4d4704e4011ff323cd35f8d754b24a14e45380ccd46f59089d",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0633125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 24,
+          "missingRegions": 19,
+          "totalSeconds": 9.696672332999995,
+          "fitAndValidationSeconds": 8.827180584000002
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0633125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 24,
+          "missingRegions": 19,
+          "totalSeconds": 9.693601708000003,
+          "fitAndValidationSeconds": 8.833695166999998
+        },
+        "gridMismatchTrigger": true,
+        "errorChange": 0
+      },
+      {
+        "id": "gathering-striped-scene-bottom",
+        "track": "printed-paper",
+        "sourceSha256": "fee1e0ab49ac2a4d4704e4011ff323cd35f8d754b24a14e45380ccd46f59089d",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.21347629200000665
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.21492845800000943
+        }
+      },
+      {
+        "id": "gathering-hanging-trio-top",
+        "track": "printed-paper",
+        "sourceSha256": "8430404de482224c669c12d30d76ca039a4d582a7b606e0b719d2ed1464341e9",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.9191299999999901
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.8975190410000068
+        }
+      },
+      {
+        "id": "gathering-hanging-trio-middle",
+        "track": "printed-paper",
+        "sourceSha256": "8430404de482224c669c12d30d76ca039a4d582a7b606e0b719d2ed1464341e9",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.19473766699999395
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.18957079199999863
+        }
+      },
+      {
+        "id": "gathering-hanging-trio-bottom",
+        "track": "printed-paper",
+        "sourceSha256": "8430404de482224c669c12d30d76ca039a4d582a7b606e0b719d2ed1464341e9",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.8055854160000017
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.7974357500000042
+        }
+      },
+      {
+        "id": "vissevasse-arranged-r1c1",
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.13779429200000595
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.13903291700000409
+        }
+      },
+      {
+        "id": "vissevasse-arranged-r1c2",
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.0270875,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 20,
+          "missingRegions": 17,
+          "totalSeconds": 9.28500770799999,
+          "fitAndValidationSeconds": 8.442674042000013
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.0270875,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 20,
+          "missingRegions": 17,
+          "totalSeconds": 9.217174166000012,
+          "fitAndValidationSeconds": 8.46232920800001
+        },
+        "gridMismatchTrigger": true,
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r1c3",
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0326375,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 3,
+          "missingRegions": 2,
+          "totalSeconds": 9.138437791999982,
+          "fitAndValidationSeconds": 8.413698250000015
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0326375,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 3,
+          "missingRegions": 2,
+          "totalSeconds": 9.048303583000001,
+          "fitAndValidationSeconds": 8.33154120800001
+        },
+        "gridMismatchTrigger": false,
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r1c4",
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.007725,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 2,
+          "missingRegions": 0,
+          "totalSeconds": 7.276127666999994,
+          "fitAndValidationSeconds": 6.542863416000007
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.007725,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 2,
+          "missingRegions": 0,
+          "totalSeconds": 7.164097957999998,
+          "fitAndValidationSeconds": 6.454626416999992
+        },
+        "gridMismatchTrigger": false,
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r2c1",
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.08258125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 9,
+          "missingRegions": 1,
+          "totalSeconds": 9.704230415999977,
+          "fitAndValidationSeconds": 8.854288541999995
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0826,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 8,
+          "missingRegions": 0,
+          "totalSeconds": 9.926569332999993,
+          "fitAndValidationSeconds": 9.122980333999992
+        },
+        "gridMismatchTrigger": true,
+        "errorChange": 0.000018750000000011813
+      },
+      {
+        "id": "vissevasse-arranged-r2c2",
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.05739375,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 16,
+          "missingRegions": 0,
+          "totalSeconds": 9.930636750000005,
+          "fitAndValidationSeconds": 9.164777417000005
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.05739375,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 16,
+          "missingRegions": 0,
+          "totalSeconds": 9.88055591700002,
+          "fitAndValidationSeconds": 9.132230207999994
+        },
+        "gridMismatchTrigger": true,
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r2c3",
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.0985125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 39,
+          "missingRegions": 0,
+          "totalSeconds": 9.615703500000004,
+          "fitAndValidationSeconds": 8.808853917
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.0985125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 37,
+          "missingRegions": 0,
+          "totalSeconds": 9.555794165999977,
+          "fitAndValidationSeconds": 8.771653332999994
+        },
+        "gridMismatchTrigger": true,
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r3c1",
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.14567304200000944
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.14350533400001586
+        }
+      },
+      {
+        "id": "vissevasse-arranged-r3c2",
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.04849375,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 23,
+          "missingRegions": 21,
+          "totalSeconds": 9.912251874999987,
+          "fitAndValidationSeconds": 9.09835508399998
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.04849375,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 23,
+          "missingRegions": 21,
+          "totalSeconds": 9.952856790999999,
+          "fitAndValidationSeconds": 9.15607920800001
+        },
+        "gridMismatchTrigger": true,
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r3c3",
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.13658125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 46,
+          "missingRegions": 3,
+          "totalSeconds": 9.796936166999979,
+          "fitAndValidationSeconds": 8.917947667
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.13658125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 46,
+          "missingRegions": 3,
+          "totalSeconds": 9.786589750000013,
+          "fitAndValidationSeconds": 8.928712499999994
+        },
+        "gridMismatchTrigger": true,
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r3c4",
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "error": 0.058225,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 14,
+          "missingRegions": 0,
+          "totalSeconds": 10.035375,
+          "fitAndValidationSeconds": 9.193027500000026
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "error": 0.058225,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 14,
+          "missingRegions": 0,
+          "totalSeconds": 10.020434417000011,
+          "fitAndValidationSeconds": 9.18249554199999
+        },
+        "gridMismatchTrigger": true,
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r4c1",
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.06788125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 25,
+          "missingRegions": 24,
+          "totalSeconds": 8.926046708000008,
+          "fitAndValidationSeconds": 8.15110162500001
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.06788125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 25,
+          "missingRegions": 24,
+          "totalSeconds": 8.958944667000003,
+          "fitAndValidationSeconds": 8.181804999999994
+        },
+        "gridMismatchTrigger": true,
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r4c2",
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.03785625,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 6,
+          "missingRegions": 1,
+          "totalSeconds": 8.973167291999998,
+          "fitAndValidationSeconds": 8.186395124999981
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.03785625,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 6,
+          "missingRegions": 1,
+          "totalSeconds": 9.000528833000018,
+          "fitAndValidationSeconds": 8.230767583999986
+        },
+        "gridMismatchTrigger": true,
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r4c3",
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.035325,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 31,
+          "missingRegions": 30,
+          "totalSeconds": 9.281805541999987,
+          "fitAndValidationSeconds": 8.575439916999981
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.035325,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 30,
+          "missingRegions": 30,
+          "totalSeconds": 9.287949083999992,
+          "fitAndValidationSeconds": 8.583316334000003
+        },
+        "gridMismatchTrigger": true,
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-scattered-pale-fish",
+        "track": "printed-paper",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.14369399999998858
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.14175920900001074
+        }
+      },
+      {
+        "id": "vissevasse-scattered-yellow-checker",
+        "track": "printed-paper",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.1394632500000007
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.13701129200001014
+        }
+      },
+      {
+        "id": "vissevasse-scattered-blue-fish",
+        "track": "printed-paper",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.14034324999997624
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.1413937080000178
+        }
+      },
+      {
+        "id": "vissevasse-scattered-blue-checker",
+        "track": "printed-paper",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.07458125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 24,
+          "missingRegions": 2,
+          "totalSeconds": 9.682030333000002,
+          "fitAndValidationSeconds": 8.87596445899998
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.07458125,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 24,
+          "missingRegions": 2,
+          "totalSeconds": 9.69139387499998,
+          "fitAndValidationSeconds": 8.87939279100002
+        },
+        "gridMismatchTrigger": true,
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-scattered-green-checker",
+        "track": "printed-paper",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0142,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 1,
+          "missingRegions": 0,
+          "totalSeconds": 5.534015500000009,
+          "fitAndValidationSeconds": 4.735530375000002
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0142,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 0,
+          "missingRegions": 0,
+          "totalSeconds": 5.723487250000006,
+          "fitAndValidationSeconds": 4.918198417000007
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-scattered-purple-checker",
+        "track": "printed-paper",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "error": 0.04591875,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 18,
+          "missingRegions": 12,
+          "totalSeconds": 8.473184708999995,
+          "fitAndValidationSeconds": 7.672506209000014
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "error": 0.04591875,
+          "geometry": true,
+          "paper": "pass",
+          "protectedRegions": 16,
+          "missingRegions": 11,
+          "totalSeconds": 8.441977333999995,
+          "fitAndValidationSeconds": 7.6405385419999945
+        },
+        "gridMismatchTrigger": true,
+        "errorChange": 0
+      }
+    ]
+  },
+  "browser": {
+    "methodology": "Actual production editor with its 180-second budget. Page-clock Find-to-ready timing; downloaded editable SVG error. Every captured source mask and crop is compared with the previous run.",
+    "results": [
+      {
+        "browser": "chromium",
+        "name": "web-danish-tree-red",
+        "passed": true,
+        "sourceMaskUnchanged": true,
+        "maskSha256": "242e845545caec329460d2fc50e591a50f485b23da38a67bb2a718397d7351d8",
+        "cropUnchanged": true,
+        "beforeSeconds": 72.393,
+        "afterSeconds": 4.556300000071525,
+        "beforeError": 0.02024375,
+        "afterError": 0.02024375,
+        "beforeTemplateChecksPassed": false,
+        "afterTemplateChecksPassed": true,
+        "counts": [
+          3,
+          3
+        ],
+        "gridMismatchTrigger": true,
+        "gridAttempts": 0,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.02024375,
+          "sourceError": 0.02024375
+        },
+        "sharedSpans": 7,
+        "pageErrors": []
+      },
+      {
+        "browser": "chromium",
+        "name": "web-danish-tree-green",
+        "passed": true,
+        "sourceMaskUnchanged": true,
+        "maskSha256": "99fa80c07d5bccbb8354d2301e844e0231a84101b5f8d9351da0baf0747b5bb9",
+        "cropUnchanged": true,
+        "beforeSeconds": 7.827899999976158,
+        "afterSeconds": 7.843,
+        "beforeError": 0.01104375,
+        "afterError": 0.01104375,
+        "beforeTemplateChecksPassed": true,
+        "afterTemplateChecksPassed": true,
+        "counts": [
+          3,
+          3
+        ],
+        "gridAttempts": 1,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.01104375,
+          "sourceError": 0.01104375
+        },
+        "sharedSpans": 4,
+        "pageErrors": []
+      },
+      {
+        "browser": "chromium",
+        "name": "hunodan-hjfig-05",
+        "passed": true,
+        "sourceMaskUnchanged": true,
+        "maskSha256": "0445f9d1abf328342785e2aa278e7a7c4072613fee0e9db8db5f08f3791b2aba",
+        "cropUnchanged": true,
+        "beforeSeconds": 4.894099999904633,
+        "afterSeconds": 4.927199999928474,
+        "beforeError": 0.00861875,
+        "afterError": 0.00861875,
+        "beforeTemplateChecksPassed": true,
+        "afterTemplateChecksPassed": true,
+        "counts": [
+          4,
+          4
+        ],
+        "gridMismatchTrigger": true,
+        "gridAttempts": 0,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00861875,
+          "sourceError": 0.00861875
+        },
+        "sharedSpans": 4,
+        "pageErrors": []
+      },
+      {
+        "browser": "chromium",
+        "name": "top-hat-preferred",
+        "passed": true,
+        "sourceMaskUnchanged": true,
+        "maskSha256": "c41bc699904f56cc07cd003be29111caeec37e585023705b3bc0f57d6c23f00f",
+        "cropUnchanged": true,
+        "beforeSeconds": 7.138100000023842,
+        "afterSeconds": 7.261,
+        "beforeError": 0.0040834041950113375,
+        "afterError": 0.0040834041950113375,
+        "beforeTemplateChecksPassed": true,
+        "afterTemplateChecksPassed": true,
+        "counts": [
+          3,
+          3
+        ],
+        "gridAttempts": 1,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.0007875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0004625
+            }
+          ],
+          "originalSourceError": 0.004118835034013606,
+          "sourceError": 0.0040834041950113375
+        },
+        "sharedSpans": 43,
+        "sharedLengthMm": 228.28581422182742,
+        "pageErrors": []
+      },
+      {
+        "browser": "chromium",
+        "name": "top-hat-independent",
+        "passed": true,
+        "sourceMaskUnchanged": true,
+        "maskSha256": "c41bc699904f56cc07cd003be29111caeec37e585023705b3bc0f57d6c23f00f",
+        "cropUnchanged": true,
+        "beforeSeconds": 5.986,
+        "afterSeconds": 5.9945,
+        "beforeError": 0.0029584750566893424,
+        "afterError": 0.0029584750566893424,
+        "beforeTemplateChecksPassed": true,
+        "afterTemplateChecksPassed": true,
+        "counts": [
+          2,
+          2
+        ],
+        "gridAttempts": 1,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00036875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000325
+            }
+          ],
+          "originalSourceError": 0.0029584750566893424,
+          "sourceError": 0.0029584750566893424
+        },
+        "sharedSpans": 28,
+        "sharedLengthMm": 71.12407746187121,
+        "pageErrors": []
+      },
+      {
+        "browser": "chromium",
+        "name": "web-bibel-checker-3",
+        "passed": true,
+        "sourceMaskUnchanged": true,
+        "maskSha256": "b7417d49a05f351d70203f50df5927543b6ee8384aa4a0ca3cd838c40d7f39c8",
+        "cropUnchanged": true,
+        "beforeSeconds": 5.870100000023842,
+        "afterSeconds": 5.849600000023842,
+        "beforeError": 0.0142,
+        "afterError": 0.0142,
+        "beforeTemplateChecksPassed": true,
+        "afterTemplateChecksPassed": true,
+        "counts": [
+          2,
+          2
+        ],
+        "gridAttempts": 2,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0142,
+          "sourceError": 0.0142
+        },
+        "sharedSpans": 0,
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "name": "web-danish-tree-red",
+        "passed": true,
+        "sourceMaskUnchanged": true,
+        "maskSha256": "242e845545caec329460d2fc50e591a50f485b23da38a67bb2a718397d7351d8",
+        "cropUnchanged": true,
+        "beforeSeconds": 75.896,
+        "afterSeconds": 4.6,
+        "beforeError": 0.02031875,
+        "afterError": 0.02031875,
+        "beforeTemplateChecksPassed": false,
+        "afterTemplateChecksPassed": true,
+        "counts": [
+          3,
+          3
+        ],
+        "gridMismatchTrigger": true,
+        "gridAttempts": 0,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.02031875,
+          "sourceError": 0.02031875
+        },
+        "sharedSpans": 7,
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "name": "web-danish-tree-green",
+        "passed": true,
+        "sourceMaskUnchanged": true,
+        "maskSha256": "99fa80c07d5bccbb8354d2301e844e0231a84101b5f8d9351da0baf0747b5bb9",
+        "cropUnchanged": true,
+        "beforeSeconds": 8.615,
+        "afterSeconds": 8.593,
+        "beforeError": 0.01104375,
+        "afterError": 0.01104375,
+        "beforeTemplateChecksPassed": true,
+        "afterTemplateChecksPassed": true,
+        "counts": [
+          3,
+          3
+        ],
+        "gridAttempts": 1,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.01104375,
+          "sourceError": 0.01104375
+        },
+        "sharedSpans": 4,
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "name": "hunodan-hjfig-05",
+        "passed": true,
+        "sourceMaskUnchanged": true,
+        "maskSha256": "0445f9d1abf328342785e2aa278e7a7c4072613fee0e9db8db5f08f3791b2aba",
+        "cropUnchanged": true,
+        "beforeSeconds": 5.511000000000001,
+        "afterSeconds": 5.571,
+        "beforeError": 0.00861875,
+        "afterError": 0.00861875,
+        "beforeTemplateChecksPassed": true,
+        "afterTemplateChecksPassed": true,
+        "counts": [
+          4,
+          4
+        ],
+        "gridMismatchTrigger": true,
+        "gridAttempts": 0,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00861875,
+          "sourceError": 0.00861875
+        },
+        "sharedSpans": 4,
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "name": "top-hat-preferred",
+        "passed": true,
+        "sourceMaskUnchanged": true,
+        "maskSha256": "c41bc699904f56cc07cd003be29111caeec37e585023705b3bc0f57d6c23f00f",
+        "cropUnchanged": true,
+        "beforeSeconds": 7.723,
+        "afterSeconds": 7.62,
+        "beforeError": 0.0040834041950113375,
+        "afterError": 0.0040834041950113375,
+        "beforeTemplateChecksPassed": true,
+        "afterTemplateChecksPassed": true,
+        "counts": [
+          3,
+          3
+        ],
+        "gridAttempts": 1,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.0007875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0004625
+            }
+          ],
+          "originalSourceError": 0.004118835034013606,
+          "sourceError": 0.0040834041950113375
+        },
+        "sharedSpans": 43,
+        "sharedLengthMm": 228.28581422182341,
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "name": "top-hat-independent",
+        "passed": true,
+        "sourceMaskUnchanged": true,
+        "maskSha256": "c41bc699904f56cc07cd003be29111caeec37e585023705b3bc0f57d6c23f00f",
+        "cropUnchanged": true,
+        "beforeSeconds": 6.192000000000001,
+        "afterSeconds": 6.035,
+        "beforeError": 0.0029584750566893424,
+        "afterError": 0.0029584750566893424,
+        "beforeTemplateChecksPassed": true,
+        "afterTemplateChecksPassed": true,
+        "counts": [
+          2,
+          2
+        ],
+        "gridAttempts": 1,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00036875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000325
+            }
+          ],
+          "originalSourceError": 0.0029584750566893424,
+          "sourceError": 0.0029584750566893424
+        },
+        "sharedSpans": 28,
+        "sharedLengthMm": 71.12407746164283,
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "name": "web-bibel-checker-3",
+        "passed": true,
+        "sourceMaskUnchanged": true,
+        "maskSha256": "b7417d49a05f351d70203f50df5927543b6ee8384aa4a0ca3cd838c40d7f39c8",
+        "cropUnchanged": true,
+        "beforeSeconds": 5.838,
+        "afterSeconds": 5.853,
+        "beforeError": 0.0142,
+        "afterError": 0.0142,
+        "beforeTemplateChecksPassed": true,
+        "afterTemplateChecksPassed": true,
+        "counts": [
+          2,
+          2
+        ],
+        "gridAttempts": 2,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0142,
+          "sourceError": 0.0142
+        },
+        "sharedSpans": 0,
+        "pageErrors": []
+      }
+    ]
+  }
+}

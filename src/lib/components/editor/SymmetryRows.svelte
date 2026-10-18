@@ -77,7 +77,9 @@
 	// A single-choice ToggleGroup lets a second click on the chosen item clear the
 	// group, which would leave a row on no mode at all — neither Fra nor Sym nor
 	// Anti, and read as "on" by everything downstream. A row always means one of
-	// the three, so an empty answer keeps what was there.
+	// the three, so an empty answer keeps what was there. A function binding
+	// keeps the primitive controlled too; rejecting only its change callback
+	// would leave its internal selection empty while our model stayed unchanged.
 	function choose(key: Row, next: unknown): void {
 		if (!isMode(next) || next === value[key]) return;
 		onChange({ ...value, [key]: next });
@@ -91,8 +93,7 @@
 		type="single"
 		role="radiogroup"
 		aria-label={tr(row.name)}
-		value={value[row.key]}
-		onValueChange={(next) => choose(row.key, next)}
+		bind:value={() => value[row.key], (next) => choose(row.key, next)}
 		disabled={!!disabled[row.key]}
 	>
 		{#each MODES as segment (segment.mode)}

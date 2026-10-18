@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "description": "Original user-linked Bauhaus poster. The rightmost three columns and top three rows reproduce the earlier screenshot motif; coordinates selected visually before fitting. This is an artwork selection, not automatic heart detection.",
+  "splitStatus": "qa-reserved",
+  "source": {
+    "file": "scripts/inverse/fixtures/user-photos-2026-10-17/artesta-curved-triangles.jpg",
+    "sha256": "e3348a430099a088a2e2ecd23c7d4f85f7a33850d542b711dfb1fd56fc5f9550",
+    "width": 600,
+    "height": 840,
+    "receivedAt": "2026-10-17",
+    "url": "https://artesta.dk/cdn/shop/files/027524_cap_2a23a975-d5cd-4194-8f7e-f724cfc01235.jpg?v=1763603420&width=1600"
+  },
+  "cases": [
+    {
+      "id": "artesta-curved-triangles",
+      "roi": [
+        0,
+        0,
+        600,
+        840
+      ],
+      "quad": [
+        [
+          177,
+          66
+        ],
+        [
+          546,
+          66
+        ],
+        [
+          546,
+          435
+        ],
+        [
+          177,
+          435
+        ]
+      ],
+      "cropStatus": "visually_reviewed",
+      "cropNote": "Artwork selection from original poster: rightmost three columns, top three rows. Selected before any solve; no solver-driven crop adjustment.",
+      "tags": [
+        "original-artwork",
+        "tangent-circular-joins",
+        "not-a-photographic-crop-benchmark"
+      ]
+    }
+  ],
+  "trainingEligibility": "excluded-existing-development-qa",
+  "familyReviewStatus": "same family as curved-triangles screenshot; keep together",
+  "rights": "Source creator rights retained; local regression fixture, not a public website asset or approved training data."
+}

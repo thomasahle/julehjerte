@@ -1,0 +1,195 @@
+{
+  "schema": "woven-heart-paper-scene-labels-1",
+  "status": "reviewed-and-admitted",
+  "scope": "Two new development photographs from unassigned Pinterest source groups. Visible basket body and partial paper identities only; no exact corners, cutting geometry, unseen-test claim or training run.",
+  "bodyInstances": 21,
+  "materialInstances": 19,
+  "newInstances": 2,
+  "sourceGroups": 2,
+  "annotations": [
+    {
+      "id": "real-710703159f609111-body-1",
+      "description": "Hand-held red/green checker, including shadowed green strips. Fingers, handle, sleeve and background excluded; narrow white backing is unknown."
+    },
+    {
+      "id": "real-a414dfffbd2362ae-body-1",
+      "description": "Painted purple/pink and white checker on a wooden table. Pale and dark paint remain one sheet; seams and cast shadows excluded."
+    }
+  ],
+  "review": {
+    "reviewed": [
+      "Native source photos and body/material outlines.",
+      "Both body and material overlays at 256 pixels.",
+      "Both body and material overlays at 768 pixels; inspected separately to avoid display truncation."
+    ],
+    "corrections": [
+      "The hand-held red/green right body edge was moved from x=681 to x=675 at y=389 before compilation to exclude background."
+    ],
+    "uncertainty": [
+      "Narrow white backing above the hand-held red lobe is unknown.",
+      "Handles, fingers, seams, cast shadows and boundary bands are excluded from material supervision.",
+      "All purple, magenta, pink and pale brush marks belong to one painted sheet; no color threshold defines identity."
+    ],
+    "grouping": "Two previously unlabelled and unassigned source groups, excluded from existing annotated groups during selection. Both are regular-checkerboard candidates; motif-family grouping remains required before any new training."
+  },
+  "sourceGroupsAndCoverage": [
+    {
+      "id": "real-710703159f609111-body-1",
+      "assetId": "real-710703159f609111",
+      "imageSha256": "710703159f60911143f7ff114e8f33e0e59996aa86e22d1de98840d071c4e8c8",
+      "splitGroupId": "real-split-81569cae44356567",
+      "splitStatus": "unassigned",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "regular-checkerboard",
+        "crossCorpusReview": "pending"
+      },
+      "bodyPixelCounts": {
+        "0": 33714,
+        "1": 9265,
+        "255": 22557
+      },
+      "materialPixelCounts": {
+        "0": 2959,
+        "1": 2686,
+        "255": 59891
+      }
+    },
+    {
+      "id": "real-a414dfffbd2362ae-body-1",
+      "assetId": "real-a414dfffbd2362ae",
+      "imageSha256": "a414dfffbd2362aeefd731a1eff42092e47dcd3955acc72cb8aec426d1200d99",
+      "splitGroupId": "real-split-dd8b4add0daf5a6d",
+      "splitStatus": "unassigned",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "regular-checkerboard",
+        "crossCorpusReview": "pending"
+      },
+      "bodyPixelCounts": {
+        "0": 24940,
+        "1": 17247,
+        "255": 23349
+      },
+      "materialPixelCounts": {
+        "0": 4920,
+        "1": 2829,
+        "255": 57787
+      }
+    }
+  ],
+  "admission": {
+    "status": "complete",
+    "admittedInstances": [
+      "real-710703159f609111-body-1",
+      "real-a414dfffbd2362ae-body-1"
+    ],
+    "bodyInstances": 21,
+    "materialInstances": 19,
+    "reviewedBytesReproduced": true,
+    "matchedPNGFiles": 28,
+    "checks": [
+      {
+        "passed": true,
+        "instances": 2,
+        "sourceGroups": 2,
+        "approximateOverlapReferences": 0,
+        "manifestSha256": "3deec05aac10663d8f24cb9b1c8a5fcbe72495e854663612cd48eec0c736ae8e",
+        "annotationsSha256": "2f153ec1b274adac461bf384c06f72303f3b50914e4a3faa9716962a13fb3ee0",
+        "scope": "All source hashes, inherited groups, transforms, known/unknown labels and RGB pixels; not an independent human annotation audit."
+      },
+      {
+        "passed": true,
+        "instances": 2,
+        "sourceGroups": 2,
+        "approximateOverlapReferences": 0,
+        "manifestSha256": "3deec05aac10663d8f24cb9b1c8a5fcbe72495e854663612cd48eec0c736ae8e",
+        "annotationsSha256": "2f153ec1b274adac461bf384c06f72303f3b50914e4a3faa9716962a13fb3ee0",
+        "scope": "All source hashes, inherited groups, transforms, known/unknown labels and RGB pixels; not an independent human annotation audit."
+      },
+      {
+        "passed": true,
+        "instances": 2,
+        "sourceGroups": 2,
+        "manifestSha256": "e4ed708e8cbf145be9a350d915ba0ae7ac0dd5cffe2a236ff3ccac637095a7b3",
+        "annotationsSha256": "c4857fc3cceec4c2150353515dfb679ea8055bf65a30c10a4bd724d0bb118741",
+        "scope": "Source bytes, body references, grouping, transforms and every output pixel; annotation correctness still requires visual review."
+      },
+      {
+        "passed": true,
+        "instances": 2,
+        "sourceGroups": 2,
+        "manifestSha256": "e4ed708e8cbf145be9a350d915ba0ae7ac0dd5cffe2a236ff3ccac637095a7b3",
+        "annotationsSha256": "c4857fc3cceec4c2150353515dfb679ea8055bf65a30c10a4bd724d0bb118741",
+        "scope": "Source bytes, body references, grouping, transforms and every output pixel; annotation correctness still requires visual review."
+      },
+      {
+        "passed": true,
+        "instances": 2,
+        "sourceGroups": 2,
+        "approximateOverlapReferences": 0,
+        "manifestSha256": "3f5f83aa4c3c79c2a5f0e34dd149b8a45c2815e427f547992a39f54a04790ab8",
+        "annotationsSha256": "2f153ec1b274adac461bf384c06f72303f3b50914e4a3faa9716962a13fb3ee0",
+        "scope": "All source hashes, inherited groups, transforms, known/unknown labels and RGB pixels; not an independent human annotation audit."
+      },
+      {
+        "passed": true,
+        "instances": 2,
+        "sourceGroups": 2,
+        "approximateOverlapReferences": 0,
+        "manifestSha256": "3f5f83aa4c3c79c2a5f0e34dd149b8a45c2815e427f547992a39f54a04790ab8",
+        "annotationsSha256": "2f153ec1b274adac461bf384c06f72303f3b50914e4a3faa9716962a13fb3ee0",
+        "scope": "All source hashes, inherited groups, transforms, known/unknown labels and RGB pixels; not an independent human annotation audit."
+      },
+      {
+        "passed": true,
+        "instances": 2,
+        "sourceGroups": 2,
+        "manifestSha256": "9c85b2bb8d5d62cddfc163ff9e8c7e6dcf08308865151fbf33310307a98682bc",
+        "annotationsSha256": "c4857fc3cceec4c2150353515dfb679ea8055bf65a30c10a4bd724d0bb118741",
+        "scope": "Source bytes, body references, grouping, transforms and every output pixel; annotation correctness still requires visual review."
+      },
+      {
+        "passed": true,
+        "instances": 2,
+        "sourceGroups": 2,
+        "manifestSha256": "9c85b2bb8d5d62cddfc163ff9e8c7e6dcf08308865151fbf33310307a98682bc",
+        "annotationsSha256": "c4857fc3cceec4c2150353515dfb679ea8055bf65a30c10a4bd724d0bb118741",
+        "scope": "Source bytes, body references, grouping, transforms and every output pixel; annotation correctness still requires visual review."
+      }
+    ],
+    "sources": {
+      "scripts/inverse/datasets/real-annotations-paper-scenes.json": "2f153ec1b274adac461bf384c06f72303f3b50914e4a3faa9716962a13fb3ee0",
+      "scripts/inverse/datasets/real-materials-paper-scenes.json": "c4857fc3cceec4c2150353515dfb679ea8055bf65a30c10a4bd724d0bb118741"
+    },
+    "existingAnnotationsUnchanged": true,
+    "qaTreeExcluded": true,
+    "noModelTraining": true,
+    "sourceAllocationUnchanged": true
+  },
+  "validation": {
+    "compiledAndVerifiedResolutions": [
+      256,
+      768
+    ],
+    "matchedPNGFiles": 28,
+    "existingBodyAndMaterialSidecarsUnchanged": true,
+    "sourceManifestUnchanged": true
+  },
+  "limitations": [
+    "Assistant-reviewed conservative polygons, not an independent human annotation audit.",
+    "Unknown seam and boundary pixels are excluded; sparse material accuracy cannot certify full-mask quality.",
+    "Both photographs depict regular checker motifs; whole motif-family grouping remains necessary before training.",
+    "Source groups remain unassigned and existing QA reservations are preserved. No model or site changes."
+  ],
+  "evidence": {
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/new-photo-labels-v2/review.json": "f8f0f4311adae34926826449180ac7cb24f0eb8133a3b76a6dbc843a2348ac46",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/new-photo-labels-v2/admit.py": "c93f78e987ab82c091682c5e3960c71593a2e013c91a59e313e9c1706e3a6a17",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/new-photo-labels-v2/admission.json": "2425e5a051350044e3aea72c5a5ae7db299d7c067071c2b44848090de44ea1d5",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/new-photo-labels-v2/record.py": "cf184e8bcca02500a99bcef94f161aa05e6199925ebd9f4844d4560b0523b349",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/new-photo-labels-v2/admitted-body-256/manifest.json": "3deec05aac10663d8f24cb9b1c8a5fcbe72495e854663612cd48eec0c736ae8e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/new-photo-labels-v2/admitted-body-768/manifest.json": "3f5f83aa4c3c79c2a5f0e34dd149b8a45c2815e427f547992a39f54a04790ab8",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/new-photo-labels-v2/admitted-material-256/manifest.json": "e4ed708e8cbf145be9a350d915ba0ae7ac0dd5cffe2a236ff3ccac637095a7b3",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/new-photo-labels-v2/admitted-material-768/manifest.json": "9c85b2bb8d5d62cddfc163ff9e8c7e6dcf08308865151fbf33310307a98682bc"
+  }
+}

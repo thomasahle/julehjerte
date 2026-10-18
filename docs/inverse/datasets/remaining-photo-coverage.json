@@ -1,0 +1,180 @@
+{
+  "scope": "Geometric source-image coverage of three frozen rejected crops and their missing features. Excludes alpha; no crop, pixel, template, acceptance or fitting changes.",
+  "paddingCheck": "All 1,440,000 RGB samples match the production rectifier on opaque-black inputs with white padding, within one byte.",
+  "benchmarkSha256": "047932a72d80aa9fb98527cd0b0583838544bd7129f280bc2dadd4096d154f7f",
+  "sourceHashes": {
+    "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+    "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+    "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+    "scripts/inverse/hard-photo-target.mjs": "69bdd88cd8f4c992d6b958082ce5b60d88abfab6c3f0299346b7b4a143f80d4a",
+    "src/lib/inverse/engine.ts": "8f6674a430cb5f89ff597eb1f290a730173a5d82afcb42263a14762ded568618"
+  },
+  "records": [
+    {
+      "id": "outline-star",
+      "maskSha256": "311d3c3542ec6605918892cfcecae25749f176d32dcf563b65e2ffdc1336ce3e",
+      "effectiveQuad": [
+        [
+          430.32931226516513,
+          171.9092353088924
+        ],
+        [
+          525.2431230765773,
+          267.80938630026435
+        ],
+        [
+          403.3299806510149,
+          349.9830567410715
+        ],
+        [
+          320.83807769917655,
+          259.9176512630082
+        ]
+      ],
+      "resolution": 400,
+      "pixels": 160000,
+      "paddedPixels": 0,
+      "fullyOutsidePixels": 0,
+      "missingFeatures": [
+        {
+          "areaMm2": 4.25,
+          "centerMm": [
+            7.154411764705881,
+            98.7904411764706
+          ],
+          "pixels": 68,
+          "paddedPixels": 0,
+          "fullyOutsidePixels": 0,
+          "minimumCoverage": 1
+        }
+      ]
+    },
+    {
+      "id": "crossed-ribbons",
+      "maskSha256": "1cbf915a65da247a233be22e9040531719c238a2ae9a546d9e6d0ab8b98f07ce",
+      "effectiveQuad": [
+        [
+          402.13745403852283,
+          920.2819656234791
+        ],
+        [
+          482.00372354384695,
+          1030.9815069791907
+        ],
+        [
+          379.5099406019051,
+          1134.274064383248
+        ],
+        [
+          291.35871775582666,
+          1006.9599203709363
+        ]
+      ],
+      "resolution": 400,
+      "pixels": 160000,
+      "paddedPixels": 2809,
+      "fullyOutsidePixels": 2564,
+      "missingFeatures": [
+        {
+          "areaMm2": 4.5,
+          "centerMm": [
+            48.64583333333334,
+            98.73263888888889
+          ],
+          "pixels": 72,
+          "paddedPixels": 0,
+          "fullyOutsidePixels": 0,
+          "minimumCoverage": 1
+        }
+      ]
+    },
+    {
+      "id": "bauble",
+      "maskSha256": "90cfecd3f41ee3b4261b6e821e02339019ddd6bcb43bcb07c1b06abf1cb93d8c",
+      "effectiveQuad": [
+        [
+          585.124945734859,
+          905.2805093237887
+        ],
+        [
+          680.4272015903496,
+          1020.2331968915895
+        ],
+        [
+          619.5033182277817,
+          1139.311696191154
+        ],
+        [
+          466.440010833398,
+          1022.8877039896092
+        ]
+      ],
+      "resolution": 400,
+      "pixels": 160000,
+      "paddedPixels": 4587,
+      "fullyOutsidePixels": 4266,
+      "missingFeatures": [
+        {
+          "areaMm2": 77.4375,
+          "centerMm": [
+            68.6657586763519,
+            24.045702179176757
+          ],
+          "pixels": 1239,
+          "paddedPixels": 0,
+          "fullyOutsidePixels": 0,
+          "minimumCoverage": 0.9999999999999999
+        },
+        {
+          "areaMm2": 56.5625,
+          "centerMm": [
+            82.81174033149173,
+            39.64074585635359
+          ],
+          "pixels": 905,
+          "paddedPixels": 0,
+          "fullyOutsidePixels": 0,
+          "minimumCoverage": 0.9999999999999999
+        },
+        {
+          "areaMm2": 56.4375,
+          "centerMm": [
+            79.33070321151716,
+            57.12140088593577
+          ],
+          "pixels": 903,
+          "paddedPixels": 0,
+          "fullyOutsidePixels": 0,
+          "minimumCoverage": 0.9999999999999999
+        },
+        {
+          "areaMm2": 3.1875,
+          "centerMm": [
+            72.49754901960785,
+            72.13480392156863
+          ],
+          "pixels": 51,
+          "paddedPixels": 0,
+          "fullyOutsidePixels": 0,
+          "minimumCoverage": 1
+        },
+        {
+          "areaMm2": 18.0625,
+          "centerMm": [
+            75.94506920415225,
+            77.95025951557093
+          ],
+          "pixels": 289,
+          "paddedPixels": 0,
+          "fullyOutsidePixels": 0,
+          "minimumCoverage": 0.9999999999999999
+        }
+      ]
+    }
+  ],
+  "artifacts": {
+    "tmp/heart-learning/final-integration-v1/crop-coverage.mjs": "2ed8c86c92f3a30aa441dbc6361ed392258d6466e7e944b7438023452d0e226e",
+    "tmp/heart-learning/final-integration-v1/crop-coverage.json": "5d813e6872153711cc5ee4ed44cf04f226f1a705f2bfc7d1ed433818cb46c6f9",
+    "tmp/heart-learning/final-integration-v1/crop-coverage.log": "9080f472b31c9097848634d48c358c72a488bb88e2e61fe4bf604745557d490c"
+  }
+}

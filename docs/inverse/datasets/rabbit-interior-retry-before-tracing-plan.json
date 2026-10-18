@@ -1,0 +1,17 @@
+{
+  "schema": "rabbit-interior-retry-plan-2",
+  "status": "declared-before-outcomes",
+  "scope": "Copied-runtime intervention on the unchanged sharper rabbit mask. Only weak-interior proposal scheduling and its proposal-level feature list differ; final original-source checks stay unchanged.",
+  "guards": [
+    "Only when all interior features already pass and the original feature failure is confined to the existing nominal boundary band.",
+    "Proposal must improve original image error, pass all interior feature checks and not regress any full-source feature retention or enclosure.",
+    "No edited target, ignored final feature or imported template. Same ten-second allowance."
+  ],
+  "control": "tmp/heart-learning/rabbit-border-intervention-v1/report.json",
+  "sourceSha256": {
+    "tmp/heart-learning/rabbit-interior-retry-v2/replay.mjs": "7afe006a816da0c107cb916beb56cfbf5092c9da761f2ed9a2ea30ad6c315dbc",
+    "tmp/heart-learning/rabbit-interior-retry-v2/runtime/core/direct/fit.js": "af753e632e4c144e04a7964fa05512d8c63f20c7c56bf42367dea11b0e16a4fa",
+    "static/inverse/core/direct/fit.js": "3a77f84783dbae215f4e04b9bf622d5825923c7edaca53eb40c18b7a4fd14fc3"
+  },
+  "difference": "Schedule the guarded border-only weak-region retry before tracing; the first intervention computed it but tracing exhausted its time before it could run. Avoid scheduling that same retry twice."
+}

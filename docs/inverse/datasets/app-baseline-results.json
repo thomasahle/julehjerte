@@ -1,0 +1,436 @@
+{
+  "schema": "heart-junction-replay-1",
+  "status": "complete",
+  "arguments": {
+    "prepared": "tmp/heart-learning/prepared-v1",
+    "run": "tmp/heart-learning/balanced-corners-v1",
+    "app_baseline": "tmp/heart-learning/app-baseline-v1",
+    "output": "tmp/heart-learning/junction-replay-v1",
+    "device": "mps"
+  },
+  "preparedManifestSha256": "4be61d42373722e3ead15fc27e2a5baffb485cc5e2e6c8468df5e8347c02a0a8",
+  "datasetManifestSha256": "6649301431add7c3a7b7ba2ccb374723bc165fd3a64c9adede0ad11b3a54133d",
+  "appManifestSha256": "e37a0c6b7b872489bbd4765cf0a94588fb42787e7adcb5649299e0177bf20d2a",
+  "trainingReportSha256": "32b636dd752d7ccaecee321fbbf6bb5a27269ce4dbc5f2577c84fd3ee448a31d",
+  "checkpointSha256": "99001a3bf232c230a209a13cc5fd5a9b9d363dd131edc1ece937e1b9b6f668b9",
+  "sourceHashes": {
+    "metrics.py": "96b099fa0ad61afd75d16becfc07264b4c60c329b1de596f5ee90049ef07d49e",
+    "losses.test.py": "7bb818061b6c7ffb20a9a562f50c20321e790852d6fbf7359e0cdcaf8b453587",
+    "classical.test.py": "385312c4b1753281d6c69e0d655696d14fdb812edc0693e2c918f1519ebbcc7c",
+    "coverage.py": "bd39679bd01ddd800e68d7966fa1d5bda49096ede0cacbc0de41b30aecb6193c",
+    "test.py": "1b4717925fca025c7f07a34382b7b401ed322fa00f7840f85beb6ae3aaa0c7fa",
+    "model.py": "d23659db131eb826ce713d67bdaa870f032c9ef295715b210d83d02abedd382b",
+    "localization.py": "df5b2f6ba0c1347f5b34e64570c296fe20d00f6ac4c01ebf4df8e8b5edfc941f",
+    "classical.py": "4aa37fab61594f5e33fbcb292ed622661264f12c3caf0b6cd717441252603a6a",
+    "coverage.test.py": "cd0643062d188fc17f114e1749437a31e4e5fd5d81d9334ea24bec54faae3c89",
+    "junction-replay.test.py": "659a4a70d1f2664f70728fff8ac37f6cd2b2cdfefd160fa3aaec54d808428e8b",
+    "train.py": "ea74131a7ffe96703770c24b63cf571b0488c90b7dfc9952eabf062b46f89fed",
+    "data.test.py": "52a631b7ad49f31641674e1728d4f4f6dacaafd0736a0738a0ddce937acd82f4",
+    "metrics.test.py": "98583d9e8b6edb0f405b38e2ef12b327295c673335a996225c66086a3aac4a4e",
+    "losses.py": "6b0a54a2ee7c0770671847cd4d198ff7e6efc62947b1a703394125ce03880cec",
+    "model.test.py": "92590682b56a328eb7e1a9ea1e733068adb78dfce05ed29563c778e35f92be7f",
+    "junction-replay.py": "4dc399cbc9f3f9709cebd6e5f48c6bf87b34b16d72d9d156056b8be563d2976e",
+    "data.py": "c4c1c890daff9fa5ccc618d55150b2da7f92e359c50cd0d9d1e689b5283fc54b"
+  },
+  "threshold": 0.4,
+  "protocol": [
+    "No training, changed input mask, or neural threshold tuning.",
+    "The app initializer is replayed at the frozen study resolution; it is not a completed template solve.",
+    "Refinement uses only the production binary mask; no reference coordinates enter a local move.",
+    "Refinement preserves proposal count; moves outside the known valid region revert to the original proposal.",
+    "Refinement choices none/5px/9px are selected by original development F1 only.",
+    "Repeatedly inspected synthetic diagnostic splits, not pristine or topology-disjoint test sets."
+  ],
+  "metrics": {
+    "legacy-trace": {
+      "development": {
+        "precision": 0.7512953367875648,
+        "recall": 0.5735759493670886,
+        "f1": 0.6505159264244056,
+        "matched": 725,
+        "predicted": 965,
+        "target": 1264,
+        "views": 52,
+        "allJunctionsRecovered": 35,
+        "maximumProposals": 68
+      },
+      "recipe-test": {
+        "precision": 0.38402061855670105,
+        "recall": 0.1455078125,
+        "f1": 0.21104815864022666,
+        "matched": 149,
+        "predicted": 388,
+        "target": 1024,
+        "views": 128,
+        "allJunctionsRecovered": 0,
+        "maximumProposals": 17
+      },
+      "recipe-validation": {
+        "precision": 0.25547445255474455,
+        "recall": 0.13671875,
+        "f1": 0.178117048346056,
+        "matched": 35,
+        "predicted": 137,
+        "target": 256,
+        "views": 128,
+        "allJunctionsRecovered": 1,
+        "maximumProposals": 9
+      }
+    },
+    "app-trace": {
+      "development": {
+        "precision": 0.24731182795698925,
+        "recall": 0.6368670886075949,
+        "f1": 0.3562735118389024,
+        "matched": 805,
+        "predicted": 3255,
+        "target": 1264,
+        "views": 52,
+        "allJunctionsRecovered": 21,
+        "maximumProposals": 207
+      },
+      "recipe-test": {
+        "precision": 0.2124333925399645,
+        "recall": 0.583984375,
+        "f1": 0.31153946340192756,
+        "matched": 598,
+        "predicted": 2815,
+        "target": 1024,
+        "views": 128,
+        "allJunctionsRecovered": 9,
+        "maximumProposals": 57
+      },
+      "recipe-validation": {
+        "precision": 0.132429614181439,
+        "recall": 0.49609375,
+        "f1": 0.20905349794238684,
+        "matched": 127,
+        "predicted": 959,
+        "target": 256,
+        "views": 128,
+        "allJunctionsRecovered": 37,
+        "maximumProposals": 27
+      }
+    },
+    "cnn": {
+      "development": {
+        "precision": 0.731418918918919,
+        "recall": 0.685126582278481,
+        "f1": 0.7075163398692811,
+        "matched": 866,
+        "predicted": 1184,
+        "target": 1264,
+        "views": 52,
+        "allJunctionsRecovered": 23,
+        "maximumProposals": 60
+      },
+      "recipe-test": {
+        "precision": 0.8649669499527857,
+        "recall": 0.89453125,
+        "f1": 0.8795007201152185,
+        "matched": 916,
+        "predicted": 1059,
+        "target": 1024,
+        "views": 128,
+        "allJunctionsRecovered": 71,
+        "maximumProposals": 16
+      },
+      "recipe-validation": {
+        "precision": 0.7724137931034483,
+        "recall": 0.875,
+        "f1": 0.8205128205128206,
+        "matched": 224,
+        "predicted": 290,
+        "target": 256,
+        "views": 128,
+        "allJunctionsRecovered": 101,
+        "maximumProposals": 5
+      }
+    },
+    "cnn-refined-5": {
+      "development": {
+        "precision": 0.762668918918919,
+        "recall": 0.7143987341772152,
+        "f1": 0.7377450980392157,
+        "matched": 903,
+        "predicted": 1184,
+        "target": 1264,
+        "views": 52,
+        "allJunctionsRecovered": 23,
+        "maximumProposals": 60
+      },
+      "recipe-test": {
+        "precision": 0.6610009442870632,
+        "recall": 0.68359375,
+        "f1": 0.672107537205953,
+        "matched": 700,
+        "predicted": 1059,
+        "target": 1024,
+        "views": 128,
+        "allJunctionsRecovered": 31,
+        "maximumProposals": 16
+      },
+      "recipe-validation": {
+        "precision": 0.5793103448275863,
+        "recall": 0.65625,
+        "f1": 0.6153846153846154,
+        "matched": 168,
+        "predicted": 290,
+        "target": 256,
+        "views": 128,
+        "allJunctionsRecovered": 66,
+        "maximumProposals": 5
+      }
+    },
+    "cnn-refined-9": {
+      "development": {
+        "precision": 0.8116554054054054,
+        "recall": 0.7602848101265823,
+        "f1": 0.7851307189542484,
+        "matched": 961,
+        "predicted": 1184,
+        "target": 1264,
+        "views": 52,
+        "allJunctionsRecovered": 30,
+        "maximumProposals": 60
+      },
+      "recipe-test": {
+        "precision": 0.7459867799811143,
+        "recall": 0.771484375,
+        "f1": 0.7585213634181469,
+        "matched": 790,
+        "predicted": 1059,
+        "target": 1024,
+        "views": 128,
+        "allJunctionsRecovered": 56,
+        "maximumProposals": 16
+      },
+      "recipe-validation": {
+        "precision": 0.6758620689655173,
+        "recall": 0.765625,
+        "f1": 0.717948717948718,
+        "matched": 196,
+        "predicted": 290,
+        "target": 256,
+        "views": 128,
+        "allJunctionsRecovered": 75,
+        "maximumProposals": 5
+      }
+    }
+  },
+  "appBoundary": {
+    "development": {
+      "views": 52,
+      "boundary": {
+        "1": {
+          "precision": 0.9476195332303837,
+          "recall": 0.8900238082206776,
+          "f1": 0.917919083301582,
+          "matched": 130093,
+          "predicted": 137284,
+          "target": 146168
+        },
+        "2": {
+          "precision": 0.9816730281751698,
+          "recall": 0.9220075529527667,
+          "f1": 0.9509052679113218,
+          "matched": 134768,
+          "predicted": 137284,
+          "target": 146168
+        },
+        "3": {
+          "precision": 0.987937414411002,
+          "recall": 0.9278911936949263,
+          "f1": 0.9569733147058409,
+          "matched": 135628,
+          "predicted": 137284,
+          "target": 146168
+        }
+      },
+      "junctions": {
+        "precision": 0.24731182795698925,
+        "recall": 0.6368670886075949,
+        "f1": 0.3562735118389024,
+        "matched": 805,
+        "predicted": 3255,
+        "target": 1264
+      },
+      "viewsWithEveryJunctionRecovered": 21,
+      "viewsWithReferenceJunctions": 52,
+      "nonemptyViewsWithEveryJunctionRecovered": 21,
+      "maximumJunctionProposals": 207,
+      "macroBoundaryF1": {
+        "1": 0.860332973760086,
+        "2": 0.8975048501012968,
+        "3": 0.906049377503664
+      },
+      "rawBoundaryPixels": 138069,
+      "thinBoundaryPixels": 137284
+    },
+    "recipe-test": {
+      "views": 128,
+      "boundary": {
+        "1": {
+          "precision": 0.9281371833792232,
+          "recall": 0.910145462657405,
+          "f1": 0.9190532783383435,
+          "matched": 118318,
+          "predicted": 127479,
+          "target": 129999
+        },
+        "2": {
+          "precision": 0.9767569560476628,
+          "recall": 0.9578227524827114,
+          "f1": 0.9671971974304601,
+          "matched": 124516,
+          "predicted": 127479,
+          "target": 129999
+        },
+        "3": {
+          "precision": 0.9845935408969321,
+          "recall": 0.9655074269802075,
+          "f1": 0.9749570837120064,
+          "matched": 125515,
+          "predicted": 127479,
+          "target": 129999
+        }
+      },
+      "junctions": {
+        "precision": 0.2124333925399645,
+        "recall": 0.583984375,
+        "f1": 0.31153946340192756,
+        "matched": 598,
+        "predicted": 2815,
+        "target": 1024
+      },
+      "viewsWithEveryJunctionRecovered": 9,
+      "viewsWithReferenceJunctions": 128,
+      "nonemptyViewsWithEveryJunctionRecovered": 9,
+      "maximumJunctionProposals": 57,
+      "macroBoundaryF1": {
+        "1": 0.9106181574794839,
+        "2": 0.958677206576839,
+        "3": 0.9663671935160206
+      },
+      "rawBoundaryPixels": 128026,
+      "thinBoundaryPixels": 127479
+    },
+    "recipe-validation": {
+      "views": 128,
+      "boundary": {
+        "1": {
+          "precision": 0.8616146230007616,
+          "recall": 0.8583785424333245,
+          "f1": 0.8599935384556909,
+          "matched": 45252,
+          "predicted": 52520,
+          "target": 52718
+        },
+        "2": {
+          "precision": 0.9143945163747144,
+          "recall": 0.9109602033461057,
+          "f1": 0.912674129116859,
+          "matched": 48024,
+          "predicted": 52520,
+          "target": 52718
+        },
+        "3": {
+          "precision": 0.9231530845392232,
+          "recall": 0.9196858757919496,
+          "f1": 0.9214162184762159,
+          "matched": 48484,
+          "predicted": 52520,
+          "target": 52718
+        }
+      },
+      "junctions": {
+        "precision": 0.132429614181439,
+        "recall": 0.49609375,
+        "f1": 0.20905349794238684,
+        "matched": 127,
+        "predicted": 959,
+        "target": 256
+      },
+      "viewsWithEveryJunctionRecovered": 37,
+      "viewsWithReferenceJunctions": 128,
+      "nonemptyViewsWithEveryJunctionRecovered": 37,
+      "maximumJunctionProposals": 27,
+      "macroBoundaryF1": {
+        "1": 0.8517828293870173,
+        "2": 0.8989996243880009,
+        "3": 0.9064177403818064
+      },
+      "rawBoundaryPixels": 52664,
+      "thinBoundaryPixels": 52520
+    }
+  },
+  "developmentSelected": "cnn-refined-9",
+  "fullReportPath": "tmp/heart-learning/junction-replay-v1/report.json",
+  "fullReportSha256": "9e7397b7d7584df688c2fa991a79daeb01fe05e0c896a6c0f2b8da93b0f2cb6b",
+  "unchangedNeuralCountsVerified": true,
+  "appBaselineSourceHashes": {
+    "scripts/inverse/learning/app-baseline.mjs": "43413409c913d83347cbcc112ca444663e9554130e0a0ed32e5bb5b6357edcdc",
+    "static/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+    "static/inverse/core/chord-distance.js": "cb79dd6d90d22b6bea6bb4bd0593cc8e32a18a09116084e53f5d942bcbef3c04",
+    "static/inverse/core/crop.js": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88",
+    "static/inverse/core/engine.js": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+    "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+    "static/inverse/core/feature-recovery.js": "5106e25e15a23740776dfced1f95e3be005fa5217d837f4400c5ee3399190c42",
+    "static/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+    "static/inverse/core/geometry.js": "e9ada76afbaa0ef4bd957cbc4c8c20f09f471cf6ba0c33b84a774aba10a9da84",
+    "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+    "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+    "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+    "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+    "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+    "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+    "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+    "static/inverse/core/material.js": "b38677af5801e894eb869d38df247ea02c06ba2bd773d606da97494e2297ce29",
+    "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+    "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+    "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+    "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+    "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+    "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/routing.js": "af2ab7ff657356438dafdc6e41adfd1bb737fe368fb094cada4f8dd2bb7ffce5",
+    "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+    "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+    "static/inverse/core/solver.js": "c4e1362454df612592753de03af71522de75cb87227417bb0d43c077940588d5",
+    "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+    "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+    "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+    "static/inverse/core/validate.js": "1625909f0db6745596ab64bc44b99c306dec0377d1322e7eb31e2f860e5b8224",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+    "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+    "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+    "static/inverse/core/direct/counts.js": "38b429832cff5844bef49d4e393d18cb59d689578c6a39f7e1860a257bb34ea8",
+    "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+    "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+    "static/inverse/core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+    "static/inverse/core/direct/feature-seeds.js": "8d13605875bf0f4dfe74c0bc18ac7145023c895754e9842499d6d00879999c45",
+    "static/inverse/core/direct/finalize.js": "0eeb4fac8d8c26d3f1acf6341159ba29b1850da47c58d8b45ecb70b6590b9e2e",
+    "static/inverse/core/direct/fit.js": "a86a3ff6c104b2be384718cd4b6d0751e5204c71bd7b3c97467fbe6f388b7a4c",
+    "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+    "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+    "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+    "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+    "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+    "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+    "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+    "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+    "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+    "static/inverse/core/direct/refine.js": "7bb1e8f18ff62c6c4cf5f2c5e7f6c398ca7a7ffed0668bc4b8dfef0c8c73953d",
+    "static/inverse/core/direct/share.js": "acb741442325dcfc2c608959aa5003a3e68a2b8168a254c93c1c07997af662bd",
+    "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+    "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+    "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+    "static/inverse/core/direct/short-returns.js": "d89c3a75df735ca5d519b354b0e47327f58ce56e55f86693de44ded98e857269",
+    "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+    "static/inverse/core/direct/topology.js": "ce6ceff1d1742efd45ae1be71ff58e88d44a6c0dac4b53d141121d68f141a173"
+  }
+}

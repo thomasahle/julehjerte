@@ -1,12 +1,80 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {auditImageFeatures,imageFeatures} from '../../static/inverse/core/image-features.js';
+import {auditImageFeatures,auditFeatureChange,imageFeatures} from '../../static/inverse/core/image-features.js';
 import {finish} from '../../static/inverse/core/engine.js';
 import {gridModel,gridPaths} from '../../static/inverse/core/direct/grid.js';
 import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
 import {sampleWeave} from '../../static/inverse/core/validate.js';
 import {settings} from '../../static/inverse/core/settings.js';
 import {LinearModel} from '../../static/inverse/core/solver.js';
+import {referenceError} from '../../static/inverse/core/image-reference.js';
+
+function squareSource(n=64){
+  const mask=new Uint8Array(n*n);
+  for(let y=n/4;y<n/2;y++)for(let x=n/4;x<n/2;x++)mask[y*n+x]=1;
+  return{mask,resolution:n};
+}
+
+test('reused feature analysis follows in-place edits without sharing caller-owned arrays',()=>{
+  const source=squareSource(),saved=source.mask.slice(),first=imageFeatures(source),expected=structuredClone(first);
+  assert.equal(first.length,1);assert.equal(first[0].areaMm2,625);assert.deepEqual(first[0].centerMm,[37.5,37.5]);
+  const poison=features=>{features[0].pixels.fill(-1);features[0].centerMm.fill(-100);features[0].value=0;features.push({value:0});};
+  poison(first);assert.deepEqual(imageFeatures(source),expected);
+  const second=imageFeatures(source);poison(second);assert.deepEqual(imageFeatures(source),expected);
+  assert.deepEqual(source.mask,saved);
+  for(let y=0;y<16;y++)source.mask[y*64+20]=1;
+  assert.deepEqual(imageFeatures(source),[],'A newly border-connected region must stop being an interior feature.');
+  source.mask.set(saved);assert.deepEqual(imageFeatures(source),expected);
+  source.mask=new Uint8Array(saved.length);assert.deepEqual(imageFeatures(source),[]);
+  source.mask=saved.slice();assert.deepEqual(imageFeatures(source),expected);
+});
+
+test('feature reuse respects physical scale, replacement resolution and array representations',()=>{
+  const source=squareSource(),expected=imageFeatures(source);
+  const larger=imageFeatures(source,200);assert.equal(larger[0].areaMm2,2500);assert.deepEqual(larger[0].centerMm,[75,75]);
+  assert.deepEqual(imageFeatures(source),expected);
+  Object.assign(source,squareSource(32));
+  const smaller=imageFeatures(source);assert.equal(smaller[0].pixels.length,64);assert.equal(smaller[0].areaMm2,625);
+  source.mask=Array.from(source.mask);assert.deepEqual(imageFeatures(source),smaller);
+  if(typeof SharedArrayBuffer!=='undefined'){
+    const shared=new Uint8Array(new SharedArrayBuffer(source.mask.length));shared.set(source.mask);source.mask=shared;
+    assert.deepEqual(imageFeatures(source),smaller);shared.fill(0);assert.deepEqual(imageFeatures(source),[]);
+  }
+});
+
+test('adding and editing observation fields cannot reuse a fully observed feature audit',()=>{
+  const source=squareSource(),saved=source.mask.slice(),expected=imageFeatures(source);
+  source.validMask=new Uint8Array(saved.length).fill(1);assert.deepEqual(imageFeatures(source),expected);
+  source.validMask[20*64+20]=0;assert.deepEqual(imageFeatures(source),[]);
+  delete source.validMask;assert.deepEqual(imageFeatures(source),expected);
+  source.weights=new Float64Array(saved.length).fill(1);
+  assert.deepEqual(imageFeatures(source),expected,'Uniform unit weights keep the unweighted representation.');
+  source.weights.fill(.5);assert.equal(imageFeatures(source)[0].weightMass,128);
+  source.weights.fill(0,16*64,32*64);assert.deepEqual(imageFeatures(source),[]);
+  source.mask.fill(0);delete source.weights;assert.deepEqual(imageFeatures(source),[]);
+  source.mask.set(saved);assert.deepEqual(imageFeatures(source),expected);
+});
+
+test('one-pixel crop fringes do not turn border regions into mandatory interior motifs',()=>{
+  for(const n of[100,400,800])for(const invert of[0,1])for(const side of[0,1,2,3]){
+    const width=Math.ceil(2*Math.max(1.5,.005*n))+1,clean=new Uint8Array(n*n).fill(invert),fringe=clean.slice(),interior=clean.slice(),woven=clean.slice();
+    const index=(x,y)=>side===0?y*n+x:side===1?x*n+n-1-y:side===2?(n-1-y)*n+n-1-x:(n-1-x)*n+y;
+    let retainedPixels=0;
+    for(let y=Math.floor(.2*n);y<.35*n;y++)for(let x=0;x<width;x++){
+      clean[index(x,y)]=1-invert;
+      if(x){fringe[index(x,y)]=1-invert;interior[index(x+1,y)]=1-invert;retainedPixels++;}
+    }
+    const source={mask:fringe,resolution:n},before=fringe.slice();
+    assert.deepEqual(imageFeatures({mask:clean,resolution:n}),[]);
+    assert.deepEqual(imageFeatures(source),[],'A one-cell fringe must preserve border classification.');
+    assert.equal(auditImageFeatures(source,woven).passed,true);
+    assert.equal(referenceError(source,woven).mismatchPixels,retainedPixels,'Every fringe pixel remains in the image-error measurement.');
+    assert.deepEqual(fringe,before);
+    const separated=auditImageFeatures({mask:interior,resolution:n},woven);
+    assert.equal(separated.passed,false,'A genuine feature with two cells of clearance must remain protected.');
+    assert.equal(separated.missing.length,1);assert.equal(separated.missing[0].retainedFraction,0);
+  }
+});
 
 test('recovery model canonicalization removes floating-point noise while retaining bounds and integrality',()=>{
   const make=epsilon=>{const m=new LinearModel(),a=m.variable({binary:true,cost:3.14159265+epsilon}),b=m.variable({hi:Infinity});m.row([[a,1.234567890123+epsilon],[b,1]],-Infinity,1.234567890123+epsilon);return m;};
@@ -55,4 +123,28 @@ test('tiny specks, thin seams, border fragments and unobserved areas do not forc
   const validMask=new Uint8Array(n*n).fill(1);validMask[75*n+75]=0;
   assert.deepEqual(imageFeatures({mask,resolution:n,validMask}),[]);
   assert.equal(auditImageFeatures(null,new Uint8Array(n*n)).referenceAvailable,false);
+});
+
+test('cleanup protects each feature without treating an existing omission as a veto',()=>{
+  const n=100;
+  for(const invert of[0,1])for(const weighted of[false,true]){
+    const mask=new Uint8Array(n*n).fill(invert),regions=[20,60].map(x=>Array.from({length:100},(_,i)=>(20+Math.floor(i/10))*n+x+i%10));
+    for(const region of regions)for(const i of region)mask[i]=1-invert;
+    const source={mask,resolution:n,...(weighted?{weights:Float64Array.from(mask,(_,i)=>i%n<50?.5:1)}:{})},saved=mask.slice();
+    const woven=counts=>{const out=new Uint8Array(n*n).fill(invert);regions.forEach((region,j)=>region.slice(0,counts[j]).forEach(i=>out[i]=1-invert));return out;};
+    const before=woven([90,30]);
+    for(const counts of[[90,30],[90,40],[60,30],[60,60]]){
+      const after=woven(counts),change=auditFeatureChange(source,before,after);
+      assert.equal(change.passed,true);assert.equal(change.missingBefore,1);
+      assert.equal(change.missingAfter,Number(counts[1]<60));
+      assert.equal(auditImageFeatures(source,after).passed,counts[1]>=60,'Final certification still needs all features');
+    }
+    for(const counts of[[59,100],[100,29]]){
+      const change=auditFeatureChange(source,before,woven(counts));
+      assert.equal(change.passed,false,'A gain elsewhere cannot pay for losing an individual feature');
+      assert.equal(change.regressed.length,1);
+      assert.equal(change.regressed[0].requiredRetention,counts[0]===59?.6:.3);
+    }
+    assert.deepEqual(source.mask,saved);
+  }
 });

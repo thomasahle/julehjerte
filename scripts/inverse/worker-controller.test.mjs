@@ -1,0 +1,83 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {workerController} from '../../static/inverse/worker-controller.js';
+import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
+import {fixture} from './fixtures.mjs';
+import {solutionJSON} from '../../static/inverse/core/graph.js';
+
+const config={...AUTOMATIC_PRESET,width:60,materialResolution:80,trials:0};
+const input={type:'mask',resolution:80,mask:Uint8Array.from({length:6400},(_,i)=>(Math.floor((i%80)/20)+Math.floor(i/1600))%2)};
+const packet={geometry:JSON.stringify(solutionJSON(fixture('straight'))),error:0};
+const value={report:{stoppedEarly:true},files:{'cut_geometry.json':packet.geometry}};
+function harness(options={}){
+  const messages=[],workers=[],events=[];
+  const scope={postMessage:data=>{messages.push(structuredClone(data));events.push(data.type);},close:()=>events.push('close')};
+  const createWorker=()=>{
+    const worker={sent:[],terminated:0,onmessage:null,onerror:null,onmessageerror:null,
+      postMessage(data){this.sent.push(structuredClone(data));},terminate(){this.terminated++;events.push('terminate');}};
+    workers.push(worker);return worker;
+  };
+  const handle=workerController(scope,{createWorker,...options});
+  const send=(id,action,more={})=>handle({data:{id,action,settings:config,...more}});
+  const reply=(worker,id,type,extra={})=>worker.onmessage?.({data:structuredClone({id,type,...extra})});
+  return{messages,workers,events,send,reply};
+}
+
+test('Stop retains the artwork, returns on the solve channel and ignores late compute messages',async()=>{
+  let complete,retained;
+  const h=harness({finalize:async(target,cfg,packets)=>{retained={target,cfg,packets};return new Promise(resolve=>{complete=resolve;});}});
+  await h.send(1,'prepare',{input});const solving=h.send(2,'solve'),child=h.workers[0];
+  h.reply(child,2,'candidate',{candidate:packet});h.reply(child,2,'candidate',{candidate:packet});
+  h.reply(child,2,'progress',{event:{stage:'directRefining',error:.1}});
+  assert.equal(h.messages.filter(m=>m.type==='candidate').length,0);
+  const late=child.onmessage,stopping=h.send(2,'stop');
+  assert.equal(child.terminated,1);assert.equal(retained.packets.length,1);
+  late({data:{id:2,type:'result',result:{wrong:true}}});
+  await h.send(3,'prepare',{input});assert.match(h.messages.at(-1).message,/already working/);
+  complete(value);await stopping;await solving;
+  assert.deepEqual(h.messages.at(-1),{id:2,type:'result',result:value});assert.ok(!h.events.includes('close'));
+  await h.send(4,'archive');assert.equal(h.messages.at(-1).type,'archive');
+  const again=h.send(5,'solve');assert.equal(h.workers.length,2);
+  assert.deepEqual(h.workers[1].sent[0].target,child.sent[0].target);
+  await h.send(5,'cancel');await again;
+});
+
+test('Stop before the first valid checkpoint reports no solution and permits another solve',async()=>{
+  const h=harness();await h.send(1,'prepare',{input});const solving=h.send(2,'solve');
+  await h.send(2,'stop');await solving;
+  assert.equal(h.messages.at(-1).type,'error');assert.equal(h.messages.at(-1).report.status,'no_validated_solution');
+  assert.equal(h.messages.at(-1).report.termination,'user_stop');
+  await h.send(3,'archive');assert.match(h.messages.at(-1).message,/Generate or check/);
+  const retry=h.send(4,'solve');h.reply(h.workers[1],4,'result',{result:value});await retry;
+  assert.equal(h.messages.at(-1).type,'result');
+});
+
+test('normal completion reuses the compute worker but no checkpoint survives into the next request',async()=>{
+  const h=harness();await h.send(1,'prepare',{input});const first=h.send(2,'solve'),child=h.workers[0];
+  h.reply(child,2,'candidate',{candidate:packet});h.reply(child,2,'result',{result:value});await first;
+  const second=h.send(3,'solve');assert.equal(h.workers.length,1);
+  h.reply(child,2,'candidate',{candidate:packet});await h.send(2,'stop');assert.equal(child.terminated,0);
+  await h.send(3,'stop');await second;
+  assert.equal(h.messages.at(-1).report.status,'no_validated_solution');assert.equal(child.terminated,1);
+});
+
+test('Cancel terminates the compute worker before acknowledging shutdown and discards finalization',async()=>{
+  let complete;
+  const h=harness({finalize:async()=>new Promise(resolve=>{complete=resolve;})});
+  await h.send(1,'prepare',{input});const solving=h.send(2,'solve');
+  const stopping=h.send(2,'stop');await h.send(2,'cancel');await solving;
+  complete(value);await stopping;
+  assert.equal(h.messages.filter(m=>m.type==='result').length,0);
+  assert.equal(h.messages.at(-1).type,'cancelled');
+  assert.ok(h.events.indexOf('terminate')<h.events.indexOf('cancelled'));
+  assert.equal(h.events.at(-1),'close');
+});
+
+test('a failed child reports an engine failure and a subsequent solve creates a fresh child',async()=>{
+  const h=harness();await h.send(1,'prepare',{input});const solving=h.send(2,'solve');
+  h.workers[0].onerror({message:'Missing compute asset',preventDefault(){}});await solving;
+  assert.equal(h.messages.at(-1).code,'ENGINE_UNAVAILABLE');assert.equal(h.workers[0].terminated,1);
+  const retry=h.send(3,'solve');assert.equal(h.workers.length,2);
+  h.reply(h.workers[1],3,'error',{message:'No routes',report:{status:'no_validated_solution'}});await retry;
+  assert.equal(h.messages.at(-1).report.status,'no_validated_solution');
+});

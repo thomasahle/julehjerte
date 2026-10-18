@@ -1,0 +1,68 @@
+{
+  "scope": "Read-only input and recorded timing comparison; no fitting or browser rerun.",
+  "case": "hjfig-05",
+  "sameQuad": true,
+  "sourceRoiSize": [
+    398,
+    337
+  ],
+  "nativeResolution": 337,
+  "browserResolution": 400,
+  "nativeMaskSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+  "browserMaskSha256": "0445f9d1abf328342785e2aa278e7a7c4072613fee0e9db8db5f08f3791b2aba",
+  "comparisons": [
+    {
+      "resolution": 337,
+      "method": "nearest pixel-centre sampling in normalized crop coordinates",
+      "mismatchPixels": 0,
+      "totalPixels": 113569,
+      "disagreement": 0
+    },
+    {
+      "resolution": 400,
+      "method": "nearest pixel-centre sampling in normalized crop coordinates",
+      "mismatchPixels": 0,
+      "totalPixels": 160000,
+      "disagreement": 0
+    }
+  ],
+  "nativeSeconds": 5.417689749999997,
+  "browserTimings": {
+    "clickToPrepareRequestSeconds": 0.008900000095367431,
+    "prepareRoundTripSeconds": 0.18659999990463258,
+    "preparedToSolveRequestSeconds": 0.00040000009536743164,
+    "solveRoundTripSeconds": 18.995599999904634,
+    "resultToReadySeconds": 0.5289000000953674,
+    "clickToReadySeconds": 19.720400000095367
+  },
+  "nativeCounts": [
+    4,
+    4
+  ],
+  "browserCounts": [
+    6,
+    4
+  ],
+  "nativeBudget": 10,
+  "browserBudget": 180,
+  "nativeIndependentError": 0.008021555177909465,
+  "browserError": 0.0145375,
+  "browserMatchingSeconds": 5.555599999904633,
+  "sourceHashes": {
+    "scripts/inverse/fixtures/hunodan/speed-crops.json": "b2a2f8908a54eec466c02dfbd8d0284509b6d482eed1cbdd9f016229e5ba9e1c",
+    "tmp/heart-learning/primitive-boundary-groups-v1/qa/browser/results.json": "cfde43f2877418f59a8614a82e80263a659d3fda12e9120a0bc266eea9ba2fbb",
+    "tmp/heart-learning/primitive-boundary-groups-v1/qa/hunodan/results.json": "d6115e05d4ae8ffbbbdc79d738aa4096890db72cb40c4d13034fbe1fd734c63e",
+    "tmp/heart-learning/primitive-boundary-groups-v1/qa/browser/chromium-hunodan-hjfig-05/prepared.json": "7c3368ca7b2b3e690ac1b7f996545df44361da41bed637619704d8f481694077"
+  },
+  "limitations": [
+    "Different-resolution masks are compared by nearest pixel-centre sampling; this comparison includes resampling differences.",
+    "Recorded timings have different targets, configurations and execution contexts and are not a controlled performance comparison.",
+    "No causal runtime contribution has been assigned to target resolution, search budget or browser execution."
+  ],
+  "schema": "browser-hunodan-input-audit-1",
+  "artifactsSha256": {
+    "tmp/heart-learning/browser-hunodan-input-audit-v1/audit.mjs": "af65ecc32cd8c6b09a6a586c294379f36eda2cad9bb752eb7a8837b8ef41a262",
+    "tmp/heart-learning/browser-hunodan-input-audit-v1/report.json": "3b9ecbe1cd11984a213627afb4f6540f3ee49d58a8fa1ace95816821b1923176"
+  },
+  "finding": "The automatic browser crop equals the frozen benchmark quad exactly. Both nearest-pixel resampling comparisons have zero mismatches: the 400px browser mask is an enlargement of the 337px native target with no additional image detail. The two solvers nevertheless return different counts; targets, budget, settings and runtime must be isolated before assigning causality."
+}

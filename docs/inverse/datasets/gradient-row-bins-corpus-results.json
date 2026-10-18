@@ -1,0 +1,1839 @@
+{
+  "schema": "gradient-row-bins-corpus-1",
+  "status": "fits-editable-audit-and-release-qa-complete",
+  "method": "Fresh prepare + design for both arms on 55 fixed native masks, with captured production settings and candidate observers. Alternating arm order; the baseline loader substitutes only the preceding boundary.js. Times include preparation and solving, excluding file writes, independent render and editable conversion. One pair per mask, not repeated latency measurements.",
+  "runtimeCommit": "94da53a899f449ceb9da79e042263059589d49c4",
+  "sourceFilesVerified": 1011,
+  "overall": {
+    "cases": 55,
+    "baselinePassed": 53,
+    "candidatePassed": 53,
+    "unchangedGeometry": 38,
+    "unchangedCounts": 55,
+    "lowerError": 9,
+    "unchangedError": 41,
+    "higherError": 5,
+    "baselineMedianSeconds": 7.540282166999999,
+    "candidateMedianSeconds": 7.41218275,
+    "baselineMaximumSeconds": 20.999452958,
+    "candidateMaximumSeconds": 20.40799125,
+    "baselineUnder10Seconds": 47,
+    "candidateUnder10Seconds": 48
+  },
+  "cohorts": {
+    "browser-hunodan": {
+      "cases": 22,
+      "baselinePassed": 22,
+      "candidatePassed": 22,
+      "unchangedGeometry": 22,
+      "unchangedCounts": 22,
+      "lowerError": 0,
+      "unchangedError": 22,
+      "higherError": 0,
+      "baselineMedianSeconds": 5.8219908545,
+      "candidateMedianSeconds": 5.7771855,
+      "baselineMaximumSeconds": 9.088325459,
+      "candidateMaximumSeconds": 8.21113375,
+      "baselineUnder10Seconds": 22,
+      "candidateUnder10Seconds": 22
+    },
+    "browser-photos": {
+      "cases": 4,
+      "baselinePassed": 4,
+      "candidatePassed": 4,
+      "unchangedGeometry": 2,
+      "unchangedCounts": 4,
+      "lowerError": 2,
+      "unchangedError": 2,
+      "higherError": 0,
+      "baselineMedianSeconds": 6.7626632915,
+      "candidateMedianSeconds": 6.7663948125,
+      "baselineMaximumSeconds": 20.999452958,
+      "candidateMaximumSeconds": 20.40799125,
+      "baselineUnder10Seconds": 3,
+      "candidateUnder10Seconds": 3
+    },
+    "photos": {
+      "cases": 29,
+      "baselinePassed": 27,
+      "candidatePassed": 27,
+      "unchangedGeometry": 14,
+      "unchangedCounts": 29,
+      "lowerError": 7,
+      "unchangedError": 17,
+      "higherError": 5,
+      "baselineMedianSeconds": 9.669665292,
+      "candidateMedianSeconds": 9.542786625000002,
+      "baselineMaximumSeconds": 10.74541525,
+      "candidateMaximumSeconds": 10.598547334000001,
+      "baselineUnder10Seconds": 22,
+      "candidateUnder10Seconds": 23
+    }
+  },
+  "failureCases": [
+    "photo-outline-star",
+    "photo-bauble"
+  ],
+  "regressions": [
+    {
+      "id": "photo-gift",
+      "percentagePoints": 0.050000000000000044
+    },
+    {
+      "id": "photo-warped-checker",
+      "percentagePoints": 0.025000000000000022
+    },
+    {
+      "id": "photo-maple-leaf",
+      "percentagePoints": 0.0012500000000000358
+    },
+    {
+      "id": "photo-crown",
+      "percentagePoints": 0.03125000000000003
+    },
+    {
+      "id": "photo-flettede-puppy",
+      "percentagePoints": 0.008749999999999904
+    }
+  ],
+  "qualifications": [
+    "This fixed-mask replay does not rerun the 31-photo cropper. The existing nested-squares and santa no-crop cases remain excluded from the 29-mask photo subset, not counted as successes.",
+    "Pass requires template checks, source-feature fidelity and the configured image-error limit. Independent mask agreement is not agreement with unknown original cutting paths or evidence of physical assembly.",
+    "Exact fixed-geometry gradients do not make wall-clock-budgeted search deterministic. Five photo error increases are retained; timing and checkpoint diagnostics are prepared separately."
+  ],
+  "visualReview": {
+    "photo-gift": "Both renders inspected: motif retained with existing thin seams and uneven frame edges; 80 additional wrong pixels in candidate.",
+    "photo-warped-checker": "Both renders inspected: small boundary/central-join changes, 40 additional wrong pixels.",
+    "photo-maple-leaf": "Both renders inspected: leaf and frame retained; small frame/leaf joins differ, 2 additional wrong pixels.",
+    "photo-crown": "Both renders inspected: crown and grid structure retained, with small boundary differences and 50 additional wrong pixels.",
+    "photo-flettede-puppy": "Both renders inspected: silhouette retained; existing thin diagonal seam and imperfect frame/leg join remain, with 14 additional wrong pixels.",
+    "hard-bibel-star-outline-half": "Both renders inspected: star outline retained; curved tips and border joins remain imperfect.",
+    "hard-flettede-puppy-half": "Both renders inspected: silhouette retained with existing thin seams and frame/leg defects; lower mask error does not resolve those visible defects.",
+    "photo-floral-checker": "Both renders inspected: petals and checker regions retained; small contour/junction changes remain.",
+    "photo-round-checker": "Both renders inspected: checker layout retained with uneven frame cells and top-right joins.",
+    "photo-fine-checker": "Both renders inspected: dense alternating regions retained, with uneven cell boundaries and border contacts.",
+    "photo-orb": "Both renders inspected: central disk and surrounding regions retained; small contour changes and narrow seams remain.",
+    "photo-stacked-hearts": "Both renders inspected: three heart shapes retained; slightly changed curved joins do not resolve the imperfect surrounding grid.",
+    "photo-jigsaw": "Both renders inspected: interlocking regions retained with small boundary and contact changes.",
+    "photo-flettede-viking": "Both renders inspected: main motif retained; thin seams and narrow central connectors remain despite lower mask error.",
+    "photo-dense-checker": "Both renders inspected: checker layout and mask error retained; exported geometry changes and the rendered images are not pixel-identical.",
+    "photo-bird": "Both renders inspected: silhouette, opening and frame retained with thin seams; equal mask errors do not imply pixel-identical images.",
+    "photo-bottom-flower": "Both renders inspected: petals and center retained with small contact changes; equal mask errors do not imply pixel-identical images."
+  },
+  "results": [
+    {
+      "id": "hunodan-hjfig-01",
+      "cohort": "browser-hunodan",
+      "resolution": 375,
+      "baselineSeconds": 3.820008625,
+      "candidateSeconds": 3.8690015,
+      "baselineError": 0.009799111111111111,
+      "candidateError": 0.009799111111111111,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        2,
+        2
+      ],
+      "candidateCounts": [
+        2,
+        2
+      ],
+      "baselineGeometrySha256": "0717b7f54e321855c47d7a8c7b8f90ca238c1d20c832ba9aacde0c539c1f4d6d",
+      "candidateGeometrySha256": "0717b7f54e321855c47d7a8c7b8f90ca238c1d20c832ba9aacde0c539c1f4d6d"
+    },
+    {
+      "id": "hunodan-hjfig-02",
+      "cohort": "browser-hunodan",
+      "resolution": 400,
+      "baselineSeconds": 3.7250424160000004,
+      "candidateSeconds": 3.712164584,
+      "baselineError": 0.0056125,
+      "candidateError": 0.0056125,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        2,
+        2
+      ],
+      "candidateCounts": [
+        2,
+        2
+      ],
+      "baselineGeometrySha256": "7a787529cee75ae4818cd83ecfbdc8e806ae93e3079e77db3a08579d143d3ea6",
+      "candidateGeometrySha256": "7a787529cee75ae4818cd83ecfbdc8e806ae93e3079e77db3a08579d143d3ea6"
+    },
+    {
+      "id": "hunodan-hjfig-03",
+      "cohort": "browser-hunodan",
+      "resolution": 375,
+      "baselineSeconds": 4.084799707999999,
+      "candidateSeconds": 4.214902042,
+      "baselineError": 0.006634666666666666,
+      "candidateError": 0.006634666666666666,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        2,
+        2
+      ],
+      "candidateCounts": [
+        2,
+        2
+      ],
+      "baselineGeometrySha256": "d3f47ff554886b31446c27a552958d00e7bf5f4550d18edc305c610f3f7d892f",
+      "candidateGeometrySha256": "d3f47ff554886b31446c27a552958d00e7bf5f4550d18edc305c610f3f7d892f"
+    },
+    {
+      "id": "hunodan-hjfig-04",
+      "cohort": "browser-hunodan",
+      "resolution": 375,
+      "baselineSeconds": 4.613751625,
+      "candidateSeconds": 4.7139968340000005,
+      "baselineError": 0.013824,
+      "candidateError": 0.013824,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        2,
+        2
+      ],
+      "candidateCounts": [
+        2,
+        2
+      ],
+      "baselineGeometrySha256": "15a6f2a0f062634cf90c785e72f00c31f8dc694a6f868c242491d370067c701f",
+      "candidateGeometrySha256": "15a6f2a0f062634cf90c785e72f00c31f8dc694a6f868c242491d370067c701f"
+    },
+    {
+      "id": "hunodan-hjfig-05",
+      "cohort": "browser-hunodan",
+      "resolution": 337,
+      "baselineSeconds": 5.817928125000001,
+      "candidateSeconds": 5.996039125,
+      "baselineError": 0.008021555177909465,
+      "candidateError": 0.008021555177909465,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "candidateCounts": [
+        4,
+        4
+      ],
+      "baselineGeometrySha256": "25dcfdbc8aaa913f1c8e40f8c5eb0c9c81e3835b2dfdc8f5f4a3ead431114219",
+      "candidateGeometrySha256": "25dcfdbc8aaa913f1c8e40f8c5eb0c9c81e3835b2dfdc8f5f4a3ead431114219"
+    },
+    {
+      "id": "hunodan-hjfla-01",
+      "cohort": "browser-hunodan",
+      "resolution": 384,
+      "baselineSeconds": 6.385523,
+      "candidateSeconds": 6.179285875,
+      "baselineError": 0.007181803385416667,
+      "candidateError": 0.007181803385416667,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "candidateCounts": [
+        4,
+        4
+      ],
+      "baselineGeometrySha256": "4d557100cb7d0edf17125128d4f91406be4c3dcf1124d46347b5172e79a89e01",
+      "candidateGeometrySha256": "4d557100cb7d0edf17125128d4f91406be4c3dcf1124d46347b5172e79a89e01"
+    },
+    {
+      "id": "hunodan-hjcur-01",
+      "cohort": "browser-hunodan",
+      "resolution": 375,
+      "baselineSeconds": 5.826053583999999,
+      "candidateSeconds": 5.5583318749999995,
+      "baselineError": 0.005148444444444444,
+      "candidateError": 0.005148444444444444,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "candidateCounts": [
+        4,
+        4
+      ],
+      "baselineGeometrySha256": "68fd6312200192d29edecb108feb54da73c66ff45d665da8eea145ce994e7df9",
+      "candidateGeometrySha256": "68fd6312200192d29edecb108feb54da73c66ff45d665da8eea145ce994e7df9"
+    },
+    {
+      "id": "hunodan-hjcur-02",
+      "cohort": "browser-hunodan",
+      "resolution": 375,
+      "baselineSeconds": 6.933024417,
+      "candidateSeconds": 6.742413708,
+      "baselineError": 0.0050702222222222225,
+      "candidateError": 0.0050702222222222225,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "candidateCounts": [
+        4,
+        4
+      ],
+      "baselineGeometrySha256": "7305d13bf74ed0a1ba720558bd7dea56688bc8a46e529b5bf993549ddc62c7e6",
+      "candidateGeometrySha256": "7305d13bf74ed0a1ba720558bd7dea56688bc8a46e529b5bf993549ddc62c7e6"
+    },
+    {
+      "id": "hunodan-hjcur-03",
+      "cohort": "browser-hunodan",
+      "resolution": 375,
+      "baselineSeconds": 5.350962375,
+      "candidateSeconds": 5.1636102919999995,
+      "baselineError": 0.004522666666666667,
+      "candidateError": 0.004522666666666667,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "candidateCounts": [
+        4,
+        4
+      ],
+      "baselineGeometrySha256": "ecf9207093215827322fda7f79ed4e5e0f363cb8d51a80af5c504cf51f3db6f4",
+      "candidateGeometrySha256": "ecf9207093215827322fda7f79ed4e5e0f363cb8d51a80af5c504cf51f3db6f4"
+    },
+    {
+      "id": "hunodan-hjcur-04",
+      "cohort": "browser-hunodan",
+      "resolution": 375,
+      "baselineSeconds": 7.540282166999999,
+      "candidateSeconds": 6.9091197499999994,
+      "baselineError": 0.005639111111111111,
+      "candidateError": 0.005639111111111111,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        6,
+        6
+      ],
+      "candidateCounts": [
+        6,
+        6
+      ],
+      "baselineGeometrySha256": "218ac92944240fd26d494898852fa9ab4e5a2de88c8b9b63dec338516452bd47",
+      "candidateGeometrySha256": "218ac92944240fd26d494898852fa9ab4e5a2de88c8b9b63dec338516452bd47"
+    },
+    {
+      "id": "hunodan-hjcur-05",
+      "cohort": "browser-hunodan",
+      "resolution": 375,
+      "baselineSeconds": 4.185547165999999,
+      "candidateSeconds": 4.186660666,
+      "baselineError": 0.00933688888888889,
+      "candidateError": 0.00933688888888889,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        2,
+        2
+      ],
+      "candidateCounts": [
+        2,
+        2
+      ],
+      "baselineGeometrySha256": "ec19c21af26c4d7896911ede6e0ae898223343a28b301162ba6e662df15acf7f",
+      "candidateGeometrySha256": "ec19c21af26c4d7896911ede6e0ae898223343a28b301162ba6e662df15acf7f"
+    },
+    {
+      "id": "hunodan-hjhih-01",
+      "cohort": "browser-hunodan",
+      "resolution": 386,
+      "baselineSeconds": 7.035632624999999,
+      "candidateSeconds": 6.448474667,
+      "baselineError": 0.006040430615586996,
+      "candidateError": 0.006040430615586996,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "candidateCounts": [
+        4,
+        4
+      ],
+      "baselineGeometrySha256": "5dcf3aa988971043f36f30de13323ad1d5ac3ac15774bab8bc6a0a94a387dd8b",
+      "candidateGeometrySha256": "5dcf3aa988971043f36f30de13323ad1d5ac3ac15774bab8bc6a0a94a387dd8b"
+    },
+    {
+      "id": "hunodan-hjhih-02",
+      "cohort": "browser-hunodan",
+      "resolution": 383,
+      "baselineSeconds": 5.422390792,
+      "candidateSeconds": 4.914095958,
+      "baselineError": 0.003899406226779104,
+      "candidateError": 0.003899406226779104,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        3,
+        3
+      ],
+      "candidateCounts": [
+        3,
+        3
+      ],
+      "baselineGeometrySha256": "584eb549a9844d1c126354d822fbcbd05faa2157f4f96ec74b0631c6cb733778",
+      "candidateGeometrySha256": "584eb549a9844d1c126354d822fbcbd05faa2157f4f96ec74b0631c6cb733778"
+    },
+    {
+      "id": "hunodan-hjhih-04",
+      "cohort": "browser-hunodan",
+      "resolution": 393,
+      "baselineSeconds": 8.251982667,
+      "candidateSeconds": 7.743765709,
+      "baselineError": 0.007776029627903062,
+      "candidateError": 0.007776029627903062,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        5,
+        5
+      ],
+      "candidateCounts": [
+        5,
+        5
+      ],
+      "baselineGeometrySha256": "21e7fbe88544dfa713c8f5df5b97a467574747563e69623b838e276921642dd3",
+      "candidateGeometrySha256": "21e7fbe88544dfa713c8f5df5b97a467574747563e69623b838e276921642dd3"
+    },
+    {
+      "id": "hunodan-hjstr-01",
+      "cohort": "browser-hunodan",
+      "resolution": 381,
+      "baselineSeconds": 4.492585,
+      "candidateSeconds": 4.3732665420000005,
+      "baselineError": 0.007550237322696868,
+      "candidateError": 0.007550237322696868,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        3,
+        3
+      ],
+      "candidateCounts": [
+        3,
+        3
+      ],
+      "baselineGeometrySha256": "fac793c9973ce4dab88ad515da2f56e05695f8d27ea301bcbe8dba73fb924779",
+      "candidateGeometrySha256": "fac793c9973ce4dab88ad515da2f56e05695f8d27ea301bcbe8dba73fb924779"
+    },
+    {
+      "id": "hunodan-hjstr-02",
+      "cohort": "browser-hunodan",
+      "resolution": 390,
+      "baselineSeconds": 6.697845375000001,
+      "candidateSeconds": 6.106577457999999,
+      "baselineError": 0.004365548980933596,
+      "candidateError": 0.004365548980933596,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        5,
+        5
+      ],
+      "candidateCounts": [
+        5,
+        5
+      ],
+      "baselineGeometrySha256": "6149fce91ab11bf78342afac674985622af112a67f7d902dc9f9558a4ee3ec83",
+      "candidateGeometrySha256": "6149fce91ab11bf78342afac674985622af112a67f7d902dc9f9558a4ee3ec83"
+    },
+    {
+      "id": "hunodan-hjstr-03",
+      "cohort": "browser-hunodan",
+      "resolution": 388,
+      "baselineSeconds": 9.088325459,
+      "candidateSeconds": 8.081399583,
+      "baselineError": 0.0056129769369752365,
+      "candidateError": 0.0056129769369752365,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        7,
+        7
+      ],
+      "candidateCounts": [
+        7,
+        7
+      ],
+      "baselineGeometrySha256": "f56429ad6c7a2faceb7df95a22be4962cf6834878da575768a79c727408c2e1d",
+      "candidateGeometrySha256": "f56429ad6c7a2faceb7df95a22be4962cf6834878da575768a79c727408c2e1d"
+    },
+    {
+      "id": "hunodan-hjsta-01",
+      "cohort": "browser-hunodan",
+      "resolution": 380,
+      "baselineSeconds": 5.447646083,
+      "candidateSeconds": 5.3351315,
+      "baselineError": 0.007922437673130193,
+      "candidateError": 0.007922437673130193,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        2,
+        2
+      ],
+      "candidateCounts": [
+        2,
+        2
+      ],
+      "baselineGeometrySha256": "f9a87bbae1eb74068d6d37efb0da4154cc2797e076c4439075126b6052fafee5",
+      "candidateGeometrySha256": "f9a87bbae1eb74068d6d37efb0da4154cc2797e076c4439075126b6052fafee5"
+    },
+    {
+      "id": "hunodan-hjsta-02",
+      "cohort": "browser-hunodan",
+      "resolution": 400,
+      "baselineSeconds": 4.487584541,
+      "candidateSeconds": 4.349451166999999,
+      "baselineError": 0.00221875,
+      "candidateError": 0.00221875,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        3,
+        3
+      ],
+      "candidateCounts": [
+        3,
+        3
+      ],
+      "baselineGeometrySha256": "3621194944664f36ee909c48379d6b624a071aeb432e7085cf826722a1cb682b",
+      "candidateGeometrySha256": "3621194944664f36ee909c48379d6b624a071aeb432e7085cf826722a1cb682b"
+    },
+    {
+      "id": "hunodan-hjsta-03",
+      "cohort": "browser-hunodan",
+      "resolution": 383,
+      "baselineSeconds": 8.488335959,
+      "candidateSeconds": 8.21113375,
+      "baselineError": 0.012352664480635904,
+      "candidateError": 0.012352664480635904,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "candidateCounts": [
+        4,
+        4
+      ],
+      "baselineGeometrySha256": "cdde79d11cfd53cb478dbb875efd93a618f6cfcd6919f702ab3ca69b7b220738",
+      "candidateGeometrySha256": "cdde79d11cfd53cb478dbb875efd93a618f6cfcd6919f702ab3ca69b7b220738"
+    },
+    {
+      "id": "hunodan-hjsta-04",
+      "cohort": "browser-hunodan",
+      "resolution": 378,
+      "baselineSeconds": 7.161270375,
+      "candidateSeconds": 6.453415333,
+      "baselineError": 0.0050250552896055544,
+      "candidateError": 0.0050250552896055544,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        5,
+        5
+      ],
+      "candidateCounts": [
+        5,
+        5
+      ],
+      "baselineGeometrySha256": "2442191125eaf16453e403ec791cf99b9cd6fca5e0f84fb3780bedc10ba41eee",
+      "candidateGeometrySha256": "2442191125eaf16453e403ec791cf99b9cd6fca5e0f84fb3780bedc10ba41eee"
+    },
+    {
+      "id": "hunodan-hjsta-05",
+      "cohort": "browser-hunodan",
+      "resolution": 386,
+      "baselineSeconds": 6.462247875,
+      "candidateSeconds": 6.2005666249999996,
+      "baselineError": 0.010624446293860237,
+      "candidateError": 0.010624446293860237,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "candidateCounts": [
+        4,
+        4
+      ],
+      "baselineGeometrySha256": "62bd41e23ed7c6141dbc780b0ea5366c993490ebcbbf229764ad966792b87a40",
+      "candidateGeometrySha256": "62bd41e23ed7c6141dbc780b0ea5366c993490ebcbbf229764ad966792b87a40"
+    },
+    {
+      "id": "hard-bibel-star-outline",
+      "cohort": "browser-photos",
+      "resolution": 400,
+      "baselineSeconds": 7.765702333,
+      "candidateSeconds": 7.73736975,
+      "baselineError": 0.0116,
+      "candidateError": 0.0116,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "candidateCounts": [
+        4,
+        4
+      ],
+      "baselineGeometrySha256": "288ec06ba84f88c7422d53a4448709e1afd9975ce24d19f2517cd51af4fc86cb",
+      "candidateGeometrySha256": "288ec06ba84f88c7422d53a4448709e1afd9975ce24d19f2517cd51af4fc86cb"
+    },
+    {
+      "id": "hard-bibel-star-outline-half",
+      "cohort": "browser-photos",
+      "resolution": 331,
+      "baselineSeconds": 5.75962425,
+      "candidateSeconds": 5.795419874999999,
+      "baselineError": 0.017807431476529058,
+      "candidateError": 0.017469720064621535,
+      "errorChangePercentagePoints": -0.033771141190752293,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": false,
+      "countsExact": true,
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "candidateCounts": [
+        4,
+        4
+      ],
+      "baselineGeometrySha256": "759513932b5f37d7b5689397c0aba6e2c8421e91d2a5c0dc2765876a2ff9cb78",
+      "candidateGeometrySha256": "84f3b54ba3053a43a6d8fb346bb731ff66829bcd0120a561e0c5f19814f29ce8"
+    },
+    {
+      "id": "hard-bibel-star-outline-jpeg75",
+      "cohort": "browser-photos",
+      "resolution": 400,
+      "baselineSeconds": 3.678548042,
+      "candidateSeconds": 3.749178166,
+      "baselineError": 0.016825,
+      "candidateError": 0.016825,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "candidateCounts": [
+        4,
+        4
+      ],
+      "baselineGeometrySha256": "8553fb86553272a807f3573e4425254bc0ba7866c2c19243e12e52c9ae183eb0",
+      "candidateGeometrySha256": "8553fb86553272a807f3573e4425254bc0ba7866c2c19243e12e52c9ae183eb0"
+    },
+    {
+      "id": "hard-flettede-puppy-half",
+      "cohort": "browser-photos",
+      "resolution": 390,
+      "baselineSeconds": 20.999452958,
+      "candidateSeconds": 20.40799125,
+      "baselineError": 0.01299802761341223,
+      "candidateError": 0.011821170282708744,
+      "errorChangePercentagePoints": -0.11768573307034853,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": false,
+      "countsExact": true,
+      "baselineCounts": [
+        3,
+        5
+      ],
+      "candidateCounts": [
+        3,
+        5
+      ],
+      "baselineGeometrySha256": "14a3d74edb4a8ffa71912375a216d7383c4094d8fbb1939ffa349a94b2366eee",
+      "candidateGeometrySha256": "35085c39869d34b0193c00be13c652cbbf2ccaef75c32457eb27c4510b0a7ad0"
+    },
+    {
+      "id": "photo-outline-star",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 9.030568708,
+      "candidateSeconds": 9.156973917,
+      "baselineError": 0.00743125,
+      "candidateError": 0.00743125,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": false,
+      "candidatePassed": false,
+      "baselineFeaturesPassed": false,
+      "candidateFeaturesPassed": false,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        3,
+        3
+      ],
+      "candidateCounts": [
+        3,
+        3
+      ],
+      "baselineGeometrySha256": "0cee78a605838bb7a2aa20fb2649957d9ec10682910656c0ec219c26a776d2e2",
+      "candidateGeometrySha256": "0cee78a605838bb7a2aa20fb2649957d9ec10682910656c0ec219c26a776d2e2"
+    },
+    {
+      "id": "photo-floral-checker",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 10.327257083000001,
+      "candidateSeconds": 10.213685375,
+      "baselineError": 0.01334375,
+      "candidateError": 0.01315,
+      "errorChangePercentagePoints": -0.019374999999999948,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": false,
+      "countsExact": true,
+      "baselineCounts": [
+        7,
+        7
+      ],
+      "candidateCounts": [
+        7,
+        7
+      ],
+      "baselineGeometrySha256": "6c6f3f47e29cdf7adc213d479797e1a04c2ff843c0f96b7ae799c777fbf311d9",
+      "candidateGeometrySha256": "3002b63de36e0883b227c295038d23941544fa3dbac545b3c71887364899b7a0"
+    },
+    {
+      "id": "photo-dense-checker",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 9.704062666000002,
+      "candidateSeconds": 8.38717,
+      "baselineError": 0.00699375,
+      "candidateError": 0.00699375,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": false,
+      "countsExact": true,
+      "baselineCounts": [
+        7,
+        7
+      ],
+      "candidateCounts": [
+        7,
+        7
+      ],
+      "baselineGeometrySha256": "571d81f6ee2db7aecc287e09df37548301679bff2a2e78e4cff04f7d35dc78f8",
+      "candidateGeometrySha256": "0ba6a61f0e66805d5d5db934f2ce9f574330700451e6a692794da8a14944c5af"
+    },
+    {
+      "id": "photo-bird",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 10.011285707999999,
+      "candidateSeconds": 10.027639291,
+      "baselineError": 0.01963125,
+      "candidateError": 0.01963125,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": false,
+      "countsExact": true,
+      "baselineCounts": [
+        5,
+        5
+      ],
+      "candidateCounts": [
+        5,
+        5
+      ],
+      "baselineGeometrySha256": "965da33d0b882cb796192a13156e2dab3e6faf91c88e719dee239fd5045c8ea0",
+      "candidateGeometrySha256": "8dcbd171497372a5343a01c24f28370a93f676d3bc34e308597a19a70491f427"
+    },
+    {
+      "id": "photo-leaf",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 9.68887,
+      "candidateSeconds": 9.662034499999999,
+      "baselineError": 0.00929375,
+      "candidateError": 0.00929375,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        3,
+        3
+      ],
+      "candidateCounts": [
+        3,
+        3
+      ],
+      "baselineGeometrySha256": "2be49e265daa89b0957affc6586d55c3b832230f0a9f65138249047942f6389b",
+      "candidateGeometrySha256": "2be49e265daa89b0957affc6586d55c3b832230f0a9f65138249047942f6389b"
+    },
+    {
+      "id": "photo-gift",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 9.586128917,
+      "candidateSeconds": 9.607844708999998,
+      "baselineError": 0.01659375,
+      "candidateError": 0.01709375,
+      "errorChangePercentagePoints": 0.050000000000000044,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": false,
+      "countsExact": true,
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "candidateCounts": [
+        4,
+        4
+      ],
+      "baselineGeometrySha256": "092ce4bbb0670a1362fa1f4e5875332e2bae909f84c7e712302f74406e9c020d",
+      "candidateGeometrySha256": "361f0b99afcf8a2849cd4f55b7a01c2d29fbfcad7670f8da4169b087676c31ec"
+    },
+    {
+      "id": "photo-gingerbread",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 6.905848291,
+      "candidateSeconds": 7.41218275,
+      "baselineError": 0.010925,
+      "candidateError": 0.010925,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        3,
+        3
+      ],
+      "candidateCounts": [
+        3,
+        3
+      ],
+      "baselineGeometrySha256": "7a4ba8731b91f5497a199f99c18454deaf75dd86fac6542d7a73a926706b3ff9",
+      "candidateGeometrySha256": "7a4ba8731b91f5497a199f99c18454deaf75dd86fac6542d7a73a926706b3ff9"
+    },
+    {
+      "id": "photo-white-birds",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 5.552212666,
+      "candidateSeconds": 5.765103,
+      "baselineError": 0.00379375,
+      "candidateError": 0.00379375,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        3,
+        3
+      ],
+      "candidateCounts": [
+        3,
+        3
+      ],
+      "baselineGeometrySha256": "6c8c0ef9ecf16ffde3f8b46b9424f2c8f7d169e8b2e0de6f278547cd700fb1ce",
+      "candidateGeometrySha256": "6c8c0ef9ecf16ffde3f8b46b9424f2c8f7d169e8b2e0de6f278547cd700fb1ce"
+    },
+    {
+      "id": "photo-flower",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 5.925680417000001,
+      "candidateSeconds": 6.003961250000001,
+      "baselineError": 0.00350625,
+      "candidateError": 0.00350625,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        3,
+        3
+      ],
+      "candidateCounts": [
+        3,
+        3
+      ],
+      "baselineGeometrySha256": "ee213574b4e67da650a4192f28fcfa776655c1e05604e517aa4c37dfb19b90b1",
+      "candidateGeometrySha256": "ee213574b4e67da650a4192f28fcfa776655c1e05604e517aa4c37dfb19b90b1"
+    },
+    {
+      "id": "photo-warped-checker",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 10.432092709,
+      "candidateSeconds": 10.511623917,
+      "baselineError": 0.0143125,
+      "candidateError": 0.0145625,
+      "errorChangePercentagePoints": 0.025000000000000022,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": false,
+      "countsExact": true,
+      "baselineCounts": [
+        9,
+        9
+      ],
+      "candidateCounts": [
+        9,
+        9
+      ],
+      "baselineGeometrySha256": "5d85a5eab5532a6c91374d9467330270e722e3424739419eeddce840be56aca8",
+      "candidateGeometrySha256": "490c6a3bbccfff8d34a733e752e4436a705d76377d0ae647ca1ea03fefbde39d"
+    },
+    {
+      "id": "photo-round-checker",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 9.837511000000001,
+      "candidateSeconds": 9.801724333,
+      "baselineError": 0.0120875,
+      "candidateError": 0.0120375,
+      "errorChangePercentagePoints": -0.00499999999999997,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": false,
+      "countsExact": true,
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "candidateCounts": [
+        4,
+        4
+      ],
+      "baselineGeometrySha256": "85679c1d38449e3295be1462b2209f5f85ee4afb7f0057dd7c0a19487e29e270",
+      "candidateGeometrySha256": "c3a85e303dfe419212468d78890ed3c9a683c57d19f6592516a626a984ba50f8"
+    },
+    {
+      "id": "photo-fine-checker",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 10.74541525,
+      "candidateSeconds": 10.598547334000001,
+      "baselineError": 0.01954375,
+      "candidateError": 0.0193875,
+      "errorChangePercentagePoints": -0.015625000000000014,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": false,
+      "countsExact": true,
+      "baselineCounts": [
+        9,
+        10
+      ],
+      "candidateCounts": [
+        9,
+        10
+      ],
+      "baselineGeometrySha256": "8c541beef135aadf57f9b7d36a9edf06428d2dfd0ad0a7ea12c822c025217900",
+      "candidateGeometrySha256": "5c371bccfdc451f4b1f73919de09ffc93df5ca532343ca5f52a5c3a0c362f97b"
+    },
+    {
+      "id": "photo-orb",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 9.831023083999998,
+      "candidateSeconds": 9.9362975,
+      "baselineError": 0.01189375,
+      "candidateError": 0.01138125,
+      "errorChangePercentagePoints": -0.05124999999999991,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": false,
+      "countsExact": true,
+      "baselineCounts": [
+        5,
+        5
+      ],
+      "candidateCounts": [
+        5,
+        5
+      ],
+      "baselineGeometrySha256": "affe82cf1602e7a7bfeb31b1962c528bcac4fc06e3278529c3cf44bf8598b26e",
+      "candidateGeometrySha256": "b060cfb869d10678833e743e025810453c8c02f5dfcc147c2b48db0262e8909d"
+    },
+    {
+      "id": "photo-stacked-hearts",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 9.097114750000001,
+      "candidateSeconds": 8.776506375,
+      "baselineError": 0.0059375,
+      "candidateError": 0.00566875,
+      "errorChangePercentagePoints": -0.02687499999999999,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": false,
+      "countsExact": true,
+      "baselineCounts": [
+        4,
+        3
+      ],
+      "candidateCounts": [
+        4,
+        3
+      ],
+      "baselineGeometrySha256": "3ef14d589adab4cd32ccb6eb4e52d8372d45e4adf4082e4b2aa2da2c04d7a215",
+      "candidateGeometrySha256": "e9152fc039552ad99d19c2ea8f5af57cf9760bcc4c9f1512b8ccbedb2df736b2"
+    },
+    {
+      "id": "photo-jigsaw",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 10.010588958,
+      "candidateSeconds": 9.938254584000001,
+      "baselineError": 0.01034375,
+      "candidateError": 0.01026875,
+      "errorChangePercentagePoints": -0.007500000000000041,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": false,
+      "countsExact": true,
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "candidateCounts": [
+        4,
+        4
+      ],
+      "baselineGeometrySha256": "a19d319e5afb68e61e68593ef46721fe3086c678f679da50601be84205a704d9",
+      "candidateGeometrySha256": "6a873f29e1d505c8257fea4ec3390b07cd24f33b2cbd129f14baec51982642a5"
+    },
+    {
+      "id": "photo-candle",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 3.436999792,
+      "candidateSeconds": 3.4418400840000003,
+      "baselineError": 0.0048375,
+      "candidateError": 0.0048375,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        1,
+        1
+      ],
+      "candidateCounts": [
+        1,
+        1
+      ],
+      "baselineGeometrySha256": "1bc0dd1dba943690ef6f316b404c1a855be582f7ca0fd9b98fd70ef814ec26f7",
+      "candidateGeometrySha256": "1bc0dd1dba943690ef6f316b404c1a855be582f7ca0fd9b98fd70ef814ec26f7"
+    },
+    {
+      "id": "photo-maple-leaf",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 9.748771375,
+      "candidateSeconds": 9.665419,
+      "baselineError": 0.0086625,
+      "candidateError": 0.008675,
+      "errorChangePercentagePoints": 0.0012500000000000358,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": false,
+      "countsExact": true,
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "candidateCounts": [
+        4,
+        4
+      ],
+      "baselineGeometrySha256": "d3fbcfd89e6abc39e4ca6d51eacf6bcc884c48d846ce20f51ca08ac22bffb9cb",
+      "candidateGeometrySha256": "f1cc691a6285e0b143c4be07dd0791d61a7445250d95a26573b306da0faa3332"
+    },
+    {
+      "id": "photo-crown",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 10.117653959,
+      "candidateSeconds": 10.055898792,
+      "baselineError": 0.02241875,
+      "candidateError": 0.02273125,
+      "errorChangePercentagePoints": 0.03125000000000003,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": false,
+      "countsExact": true,
+      "baselineCounts": [
+        5,
+        5
+      ],
+      "candidateCounts": [
+        5,
+        5
+      ],
+      "baselineGeometrySha256": "316e423324ac4b7b995583757e0713a48814460a6323c539b15180cd468148c7",
+      "candidateGeometrySha256": "66258b05805918e87e57760bcd73947952f64b8e82b6ed434a2c3adf38bf477a"
+    },
+    {
+      "id": "photo-crossed-ribbons",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 8.052932415999999,
+      "candidateSeconds": 7.754518333,
+      "baselineError": 0.0055283063279704305,
+      "candidateError": 0.0055283063279704305,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        2,
+        2
+      ],
+      "candidateCounts": [
+        2,
+        2
+      ],
+      "baselineGeometrySha256": "13cfb006f8b620aacf6a40a3722acfd1c5e7871e033c9161c4149a869df4d721",
+      "candidateGeometrySha256": "13cfb006f8b620aacf6a40a3722acfd1c5e7871e033c9161c4149a869df4d721"
+    },
+    {
+      "id": "photo-bauble",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 9.810396082999999,
+      "candidateSeconds": 9.785406333,
+      "baselineError": 0.043805859226705615,
+      "candidateError": 0.043805859226705615,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": false,
+      "candidatePassed": false,
+      "baselineFeaturesPassed": false,
+      "candidateFeaturesPassed": false,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "candidateCounts": [
+        4,
+        4
+      ],
+      "baselineGeometrySha256": "19f840fab50adf4b50a0c9a6e7f5b1087d7498b17aa2a46180026fbac71d4f42",
+      "candidateGeometrySha256": "19f840fab50adf4b50a0c9a6e7f5b1087d7498b17aa2a46180026fbac71d4f42"
+    },
+    {
+      "id": "photo-bottom-flower",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 9.934315833000001,
+      "candidateSeconds": 9.735600457999999,
+      "baselineError": 0.007314720875762472,
+      "candidateError": 0.007314720875762472,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": false,
+      "countsExact": true,
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "candidateCounts": [
+        4,
+        4
+      ],
+      "baselineGeometrySha256": "b6458070b7da803c1f966e0c62aae644d918c6c286e660d104dd04c8ba4352ca",
+      "candidateGeometrySha256": "1d7eddb51f738ee13f7038413d2d95adb707a9d7c665a5af60041e7072c84415"
+    },
+    {
+      "id": "photo-faceted-star",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 9.264376875,
+      "candidateSeconds": 9.2766055,
+      "baselineError": 0.0064125,
+      "candidateError": 0.0064125,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        5,
+        5
+      ],
+      "candidateCounts": [
+        5,
+        5
+      ],
+      "baselineGeometrySha256": "41c7d7a81cd7e768d2638bdc7e9a3b6b967f66dbb5c0522b6d6b865f67b62481",
+      "candidateGeometrySha256": "41c7d7a81cd7e768d2638bdc7e9a3b6b967f66dbb5c0522b6d6b865f67b62481"
+    },
+    {
+      "id": "photo-bibel-star-8",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 4.335910875000001,
+      "candidateSeconds": 4.241887334,
+      "baselineError": 0.003675,
+      "candidateError": 0.003675,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        2,
+        2
+      ],
+      "candidateCounts": [
+        2,
+        2
+      ],
+      "baselineGeometrySha256": "86835af75f4222c274fdd1757ba65e6494909876bac46bb31a18561628d53e97",
+      "candidateGeometrySha256": "86835af75f4222c274fdd1757ba65e6494909876bac46bb31a18561628d53e97"
+    },
+    {
+      "id": "photo-bibel-star-curved",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 9.378973082999998,
+      "candidateSeconds": 9.285694042,
+      "baselineError": 0.0064625,
+      "candidateError": 0.0064625,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        5,
+        5
+      ],
+      "candidateCounts": [
+        5,
+        5
+      ],
+      "baselineGeometrySha256": "21efb325c91acc04e39ecbe926f97f6a82ecc8f11e900a65fd1671fbca19c260",
+      "candidateGeometrySha256": "21efb325c91acc04e39ecbe926f97f6a82ecc8f11e900a65fd1671fbca19c260"
+    },
+    {
+      "id": "photo-bibel-star-outline",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 7.434054333,
+      "candidateSeconds": 7.351695,
+      "baselineError": 0.0116,
+      "candidateError": 0.0116,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "candidateCounts": [
+        4,
+        4
+      ],
+      "baselineGeometrySha256": "4c9a25ea9b9317a32f57efe82c23cd260ded4e1aa313d40780c7dc38f47f706a",
+      "candidateGeometrySha256": "4c9a25ea9b9317a32f57efe82c23cd260ded4e1aa313d40780c7dc38f47f706a"
+    },
+    {
+      "id": "photo-bibel-cross",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 3.717547375,
+      "candidateSeconds": 3.808738958,
+      "baselineError": 0.00243125,
+      "candidateError": 0.00243125,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        2,
+        2
+      ],
+      "candidateCounts": [
+        2,
+        2
+      ],
+      "baselineGeometrySha256": "9668da65c3b88ef077b3054d27e022b021851263785e9868f692bb7cc9fa0a05",
+      "candidateGeometrySha256": "9668da65c3b88ef077b3054d27e022b021851263785e9868f692bb7cc9fa0a05"
+    },
+    {
+      "id": "photo-flettede-puppy",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 9.669665292,
+      "candidateSeconds": 9.542786625000002,
+      "baselineError": 0.01028125,
+      "candidateError": 0.01036875,
+      "errorChangePercentagePoints": 0.008749999999999904,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": false,
+      "countsExact": true,
+      "baselineCounts": [
+        5,
+        3
+      ],
+      "candidateCounts": [
+        5,
+        3
+      ],
+      "baselineGeometrySha256": "374fd0fb7d7cbaee6fc65490d9b8516b241c97d9131b0d444182a024e1ef8aba",
+      "candidateGeometrySha256": "9abd524bd01225169574a601f5193600c81271f22925829454d286d8add08f6b"
+    },
+    {
+      "id": "photo-flettede-stonehenge",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 9.019751708,
+      "candidateSeconds": 8.776104875,
+      "baselineError": 0.0143875,
+      "candidateError": 0.0143875,
+      "errorChangePercentagePoints": 0.0,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": true,
+      "countsExact": true,
+      "baselineCounts": [
+        3,
+        3
+      ],
+      "candidateCounts": [
+        3,
+        3
+      ],
+      "baselineGeometrySha256": "c3daa02eb52950ad2a581bd9c7b490a48af95e8e6419f205ee942d75c82f1a69",
+      "candidateGeometrySha256": "c3daa02eb52950ad2a581bd9c7b490a48af95e8e6419f205ee942d75c82f1a69"
+    },
+    {
+      "id": "photo-flettede-viking",
+      "cohort": "photos",
+      "resolution": 400,
+      "baselineSeconds": 10.132954958000001,
+      "candidateSeconds": 10.192970749999999,
+      "baselineError": 0.0217125,
+      "candidateError": 0.0205125,
+      "errorChangePercentagePoints": -0.11999999999999997,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "baselineFeaturesPassed": true,
+      "candidateFeaturesPassed": true,
+      "baselineGeometryPassed": true,
+      "candidateGeometryPassed": true,
+      "baselinePaper": "pass",
+      "candidatePaper": "pass",
+      "geometryExact": false,
+      "countsExact": true,
+      "baselineCounts": [
+        6,
+        6
+      ],
+      "candidateCounts": [
+        6,
+        6
+      ],
+      "baselineGeometrySha256": "b0c1011005f73e9ad1de01dd8c9651330b9e5ab40c6ca04258487997b9cd2350",
+      "candidateGeometrySha256": "6494f1819f2dfd66a2b080a749fcc08903ea09dd78ea1ec5e2a4952884080ac3"
+    }
+  ],
+  "editableAudit": {
+    "status": "complete",
+    "completed": 110,
+    "conversionsPassed": 110,
+    "completeCandidatePassed": 106,
+    "sourceFilesVerified": 1011
+  },
+  "releaseQA": {
+    "status": "complete",
+    "seconds": 2415.69567575,
+    "sourceFilesVerified": 1011,
+    "applicationPassed": 874,
+    "applicationSkipped": 1,
+    "inversePassed": 1004
+  },
+  "artifactsSha256": {
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/results.json": "fedeb0a5ee7d4fdc1ffcf4d12a8d0be2ef94143005053debd037d4c64a8649c5",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/state.json": "6aee1f968736e14eb1aa0369f65acfd8211280ebc903a05a7341eb1df2186c6b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/source.json": "124307ffaaf7104f4cbd5fa91e0d3fa9a48ae8f2253de7e7387e7ccd277a3c1e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/replay.mjs": "34740b9473531cc4b30cd810ae861bc22c384e7318ce377d41a0c686a9744e52",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/run.py": "403e9f87e0f8109dac39af3146940d08a629a52ccfdd2196a8d855943ce30542",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/audit.mjs": "feb8e00d155c14251f4f6580084600e319f89cc0791847f0f39bbd56415e6766",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/summarize-corpus.py": "162152a96302cc90d421ac00ddf53991182ef00958a618565f7aa08eadc8df42",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/audit-results.json": "a9c2a44c843f2d37e7c4cde2d5470457f7e1df8771c6029a11dcba2a318844ab",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/audit-source.json": "124307ffaaf7104f4cbd5fa91e0d3fa9a48ae8f2253de7e7387e7ccd277a3c1e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/qa/state.json": "2d5d60175822d4bb01e7b0d19f03ff348ddbcd321177a8278fdea47e58a14561",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/qa/checks.json": "953925b91e15d153602ed382324846e5e2608f6bf92ee188fd320a6987e9d5a1",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/qa/source.json": "124307ffaaf7104f4cbd5fa91e0d3fa9a48ae8f2253de7e7387e7ccd277a3c1e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/qa/test.log": "818ec9547ed005c095de73c12acbfac1d70312f29c276430187ee6dd63cba723",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-gift/baseline/woven.png": "c3636cef3dca140e0cddd0ceecdf912eed4b3feb8158a5d007aa906626479150",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-gift/candidate/woven.png": "4a383edcb6fa327f704cb9c4f5884b02b3a9b188ba88eb09ea821e14473a928d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-warped-checker/baseline/woven.png": "2e3142acf0c716ebe09a852a8ba51123861d13b83ae8cfd012030d55d9451ad8",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-warped-checker/candidate/woven.png": "19cb179648dcbb21e1991030721e2f0c36d44dbca62675a21bfe717eca1857e1",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-maple-leaf/baseline/woven.png": "89e0a09f7502edaa4143004bcfe3752db43e38f78d8739d78b9a163f41df5a09",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-maple-leaf/candidate/woven.png": "3715995a21c96aa015febb513002366896e1354a03018beccbd0b4f6a40fd264",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-crown/baseline/woven.png": "92bda1eb137d9b9321f15bba31795f42a53581273398e04371eebe991357bcca",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-crown/candidate/woven.png": "d6ab211d015496ff6b63a049bdced4965deee3f776f09232f73cac2b53b68dad",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-flettede-puppy/baseline/woven.png": "1756f62953db14730a637498b9253c03209cdd7570496c0bca388a1641eb3da7",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-flettede-puppy/candidate/woven.png": "28dc6a177df784f97aaf3e7aa3596165e0b87cad5c6c0723e35594e3b1a7e8f4",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/hard-bibel-star-outline-half/baseline/woven.png": "7d5782b3faeabbc9a6f190297a32d967ccf933c8c4dd8ebb6373af45d2697790",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/hard-bibel-star-outline-half/candidate/woven.png": "dd43d77bcde8806efbde2e4fc91c7126f33bc353d0ffdd7556549fceb7c84823",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/hard-flettede-puppy-half/baseline/woven.png": "a4050bbf20a2694c01fa59b6377e46de4bace03c5edd460d85f0c1134bdf6c66",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/hard-flettede-puppy-half/candidate/woven.png": "b2f2ae87b62132702088e1a6cce17c9fbbf4550d098f8f826bf11347e114392a",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-floral-checker/baseline/woven.png": "db85b221b4969a8a51160079242ae61953e3e046c344c5b2102259e71819cc32",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-floral-checker/candidate/woven.png": "1c4e08448c77724effda69812f4a2134399fe4e60ee0564534fd4dc6191c9d20",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-round-checker/baseline/woven.png": "63bfbf2d4d5d86a3719c21a2cc9bd84ab921bd15918f26e0f81ec38bf44b0528",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-round-checker/candidate/woven.png": "e3ed6c20068c8213045c3dc1f65da3879772893256063daa8a9c7bd0b1f495d8",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-fine-checker/baseline/woven.png": "c3cc0436920267f9c966aca0b795dd01505942feefeb4953b9921dbf08f9edfc",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-fine-checker/candidate/woven.png": "de502dd0a275810fd44d07c0d3f077a03b52430f05217bc94fa4c3119a611e33",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-orb/baseline/woven.png": "743e1dc26ddec3f63c3010f0bb73a024c1385764311d643459e3cea7f1f347ea",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-orb/candidate/woven.png": "1b5cbb7cb9376cd67276f3b799dd0b91c63e1ca4ef5c544900449acc21bfc26b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-stacked-hearts/baseline/woven.png": "4785811b262ec6d2be98f0d6f8bf1a10f91e0b55208c2713c461baf8bafa4776",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-stacked-hearts/candidate/woven.png": "2e843984d4956fd631b22ba54fba30f4e0d72fb9a2a224aff8aa19d0d415e9eb",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-jigsaw/baseline/woven.png": "c6dfa24e6394854123d72eb311da145cba4306eda0cdf2a5746c4e7e8a0f74cf",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-jigsaw/candidate/woven.png": "b091e932c2fad1b7fe354d0143f30559519fb6bce7bed4947584206473ed4d40",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-flettede-viking/baseline/woven.png": "d2c91e6d9858022a6f9adf0a87fedd98abe15928633340c86f447871377f481c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-flettede-viking/candidate/woven.png": "8052fd8f06794b0e2d630a5e93668910a47b023712bffc2d20c91040ef7306a9",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-dense-checker/baseline/woven.png": "1584c616d166cd752ba6015d53d943c2af39f144470bd053507a93d692108481",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-dense-checker/candidate/woven.png": "02df941ac787becf92e34e276537989a71f0c181bc692d4fed673f06c6174f21",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-bird/baseline/woven.png": "2ae81d95b4406c34e34423ead2f0d37be4f7445f9ee22a49c8785beec1fd71a5",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-bird/candidate/woven.png": "afe48d161f89921fd8d5a75589b2f0e6fa0ee17e0a87311458ae07e8a2a1eed8",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-bottom-flower/baseline/woven.png": "e5bbc47a916e938b1b39377637a2411d639361be7108c6f27bb33535e0ece48f",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-bottom-flower/candidate/woven.png": "17db508c795b8a8adce2b8ae2f9303e8a1834753d578770bfd82acf8a8681314"
+  }
+}

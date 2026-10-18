@@ -1,0 +1,357 @@
+{
+  "schema": "woven-heart-junction-observations-1",
+  "status": "reviewed-development-observations; not_training_data",
+  "coordinateConvention": "source-image pixel edges; x right, y down; no EXIF transform",
+  "source": {
+    "assetId": "real-e936e08ac62db19b",
+    "file": "tmp/heart-training-real/assets/e936e08ac62db19b9b12cf9ce4e1a0b10fbb50023316daaee6f36747beae5643.jpg",
+    "sha256": "e936e08ac62db19b9b12cf9ce4e1a0b10fbb50023316daaee6f36747beae5643",
+    "size": [
+      1280,
+      720
+    ],
+    "splitGroupId": "real-split-72d2783b2c260682",
+    "splitStatus": "unassigned",
+    "familyId": null,
+    "sourcePages": [
+      "https://dk.pinterest.com/pin/581175526900721056/"
+    ],
+    "existingBodyInstance": "real-e936e08ac62db19b-body-1"
+  },
+  "purpose": "Supervise local visible four-sector candidate locations and distinguish them from ordinary two-sector boundaries for a future graph-proposal model.",
+  "scope": "Nine sparse four-sector neighbourhoods and eight two-sector controls on one existing orange/yellow source. No negative labels outside the listed regions, no hidden cuts, no exact intersection topology, no overlap corners, and no new photograph, body/material label or split assignment.",
+  "review": {
+    "method": "Original 1280x720 source, numbered overview and all seventeen 48x48 source patches inspected at three-times scale.",
+    "localization": "Each 16x16 source-pixel region describes the observed neighbourhood. Its center is a representative, not a mathematically exact junction.",
+    "topology": "Shadows and small offsets are visible. Four alternating sectors do not establish exactly shared cutting controls or physical connection.",
+    "controls": "The eight marked controls each contain one ordinary material boundary and no four-sector convergence inside their marked 16x16 region.",
+    "coverage": "Sparse local observations only; all unlisted areas remain unlabelled.",
+    "training": "No new training or validation split is created. This source already appears in the material adaptation studies, so these observations must inherit its existing grouped evaluation treatment."
+  },
+  "paperAppearance": {
+    "paperA": "orange paper",
+    "paperB": "yellow paper"
+  },
+  "observations": [
+    {
+      "id": "contact-01",
+      "center": [
+        643,
+        250
+      ],
+      "kind": "alternating-four-sector-neighbourhood",
+      "region": [
+        635,
+        242,
+        651,
+        258
+      ],
+      "reviewStatus": "assistant-reviewed-source-overview-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "four alternating orange/yellow sectors with pixel-scale contact unresolved"
+    },
+    {
+      "id": "contact-02",
+      "center": [
+        570,
+        316
+      ],
+      "kind": "alternating-four-sector-neighbourhood",
+      "region": [
+        562,
+        308,
+        578,
+        324
+      ],
+      "reviewStatus": "assistant-reviewed-source-overview-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "four alternating orange/yellow sectors with pixel-scale contact unresolved"
+    },
+    {
+      "id": "contact-03",
+      "center": [
+        714,
+        322
+      ],
+      "kind": "alternating-four-sector-neighbourhood",
+      "region": [
+        706,
+        314,
+        722,
+        330
+      ],
+      "reviewStatus": "assistant-reviewed-source-overview-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "four alternating orange/yellow sectors with pixel-scale contact unresolved"
+    },
+    {
+      "id": "contact-04",
+      "center": [
+        504,
+        381
+      ],
+      "kind": "alternating-four-sector-neighbourhood",
+      "region": [
+        496,
+        373,
+        512,
+        389
+      ],
+      "reviewStatus": "assistant-reviewed-source-overview-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "shadowed four-sector approach; exact joining unresolved"
+    },
+    {
+      "id": "contact-05",
+      "center": [
+        647,
+        391
+      ],
+      "kind": "alternating-four-sector-neighbourhood",
+      "region": [
+        639,
+        383,
+        655,
+        399
+      ],
+      "reviewStatus": "assistant-reviewed-source-overview-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "four alternating orange/yellow sectors with pixel-scale contact unresolved"
+    },
+    {
+      "id": "contact-06",
+      "center": [
+        789,
+        393
+      ],
+      "kind": "alternating-four-sector-neighbourhood",
+      "region": [
+        781,
+        385,
+        797,
+        401
+      ],
+      "reviewStatus": "assistant-reviewed-source-overview-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "four alternating orange/yellow sectors with pixel-scale contact unresolved"
+    },
+    {
+      "id": "contact-07",
+      "center": [
+        577,
+        460
+      ],
+      "kind": "alternating-four-sector-neighbourhood",
+      "region": [
+        569,
+        452,
+        585,
+        468
+      ],
+      "reviewStatus": "assistant-reviewed-source-overview-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "four alternating orange/yellow sectors with pixel-scale contact unresolved"
+    },
+    {
+      "id": "contact-08",
+      "center": [
+        719,
+        468
+      ],
+      "kind": "alternating-four-sector-neighbourhood",
+      "region": [
+        711,
+        460,
+        727,
+        476
+      ],
+      "reviewStatus": "assistant-reviewed-source-overview-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "four alternating orange/yellow sectors with pixel-scale contact unresolved"
+    },
+    {
+      "id": "contact-09",
+      "center": [
+        655,
+        540
+      ],
+      "kind": "alternating-four-sector-neighbourhood",
+      "region": [
+        647,
+        532,
+        663,
+        548
+      ],
+      "reviewStatus": "assistant-reviewed-source-overview-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "four alternating orange/yellow sectors with pixel-scale contact unresolved"
+    },
+    {
+      "id": "edge-01",
+      "center": [
+        608,
+        282
+      ],
+      "kind": "two-sector-boundary-neighbourhood",
+      "region": [
+        600,
+        274,
+        616,
+        290
+      ],
+      "reviewStatus": "assistant-reviewed-source-overview-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "one ordinary orange/yellow boundary; no four-sector junction in the marked region"
+    },
+    {
+      "id": "edge-02",
+      "center": [
+        679,
+        287
+      ],
+      "kind": "two-sector-boundary-neighbourhood",
+      "region": [
+        671,
+        279,
+        687,
+        295
+      ],
+      "reviewStatus": "assistant-reviewed-source-overview-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "one ordinary orange/yellow boundary; no four-sector junction in the marked region"
+    },
+    {
+      "id": "edge-03",
+      "center": [
+        537,
+        348
+      ],
+      "kind": "two-sector-boundary-neighbourhood",
+      "region": [
+        529,
+        340,
+        545,
+        356
+      ],
+      "reviewStatus": "assistant-reviewed-source-overview-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "one ordinary orange/yellow boundary; no four-sector junction in the marked region"
+    },
+    {
+      "id": "edge-04",
+      "center": [
+        609,
+        355
+      ],
+      "kind": "two-sector-boundary-neighbourhood",
+      "region": [
+        601,
+        347,
+        617,
+        363
+      ],
+      "reviewStatus": "assistant-reviewed-source-overview-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "one ordinary orange/yellow boundary; no four-sector junction in the marked region"
+    },
+    {
+      "id": "edge-05",
+      "center": [
+        682,
+        357
+      ],
+      "kind": "two-sector-boundary-neighbourhood",
+      "region": [
+        674,
+        349,
+        690,
+        365
+      ],
+      "reviewStatus": "assistant-reviewed-source-overview-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "one ordinary orange/yellow boundary; no four-sector junction in the marked region"
+    },
+    {
+      "id": "edge-06",
+      "center": [
+        752,
+        357
+      ],
+      "kind": "two-sector-boundary-neighbourhood",
+      "region": [
+        744,
+        349,
+        760,
+        365
+      ],
+      "reviewStatus": "assistant-reviewed-source-overview-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "one ordinary orange/yellow boundary; no four-sector junction in the marked region"
+    },
+    {
+      "id": "edge-07",
+      "center": [
+        542,
+        420
+      ],
+      "kind": "two-sector-boundary-neighbourhood",
+      "region": [
+        534,
+        412,
+        550,
+        428
+      ],
+      "reviewStatus": "assistant-reviewed-source-overview-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "one ordinary orange/yellow boundary; no four-sector junction in the marked region"
+    },
+    {
+      "id": "edge-08",
+      "center": [
+        686,
+        505
+      ],
+      "kind": "two-sector-boundary-neighbourhood",
+      "region": [
+        678,
+        497,
+        694,
+        513
+      ],
+      "reviewStatus": "assistant-reviewed-source-overview-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "one ordinary orange/yellow boundary; no four-sector junction in the marked region"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/orange-contact-observations-v1/draft.json",
+      "sha256": "6a992660a997a1c6618fdbb3f2cd81ac15f2f8e8f16c80097a605ff82b6ade4e"
+    },
+    {
+      "path": "tmp/heart-learning/orange-contact-observations-v1/overview.png",
+      "sha256": "a3797051373937e0fa6c1b1adb5f5d4704b60ae476733e27ac0ddca3038a109a"
+    },
+    {
+      "path": "tmp/heart-learning/orange-contact-observations-v1/patches.png",
+      "sha256": "f3f3edf6104661d8f409f73329574d53e2ee8dd0bb638dc6552596bdc4726cd1"
+    }
+  ]
+}

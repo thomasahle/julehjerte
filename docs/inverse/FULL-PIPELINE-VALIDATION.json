@@ -1,0 +1,2455 @@
+{
+  "description": "Offline end-to-end photo runs. Original source photos and pre-annotated ROIs only; crops held fixed throughout fitting. Disagreement measures the classified photo mask, not ground-truth artwork. Manual orange crops are diagnostic annotations, not truth.",
+  "baselineCommit": "4f9bb925ec26288f6889302ab3809077779fc20a",
+  "webBudgetSeconds": 10,
+  "web": [
+    {
+      "id": "danish-tree-red",
+      "status": "candidate_needs_review",
+      "seconds": 11.129594832999999,
+      "quad": [
+        [
+          556.0975766903264,
+          521.5736084705238
+        ],
+        [
+          908.5974861031686,
+          835.6634941021031
+        ],
+        [
+          598.4190381184407,
+          1165.102659683867
+        ],
+        [
+          277.09631098883773,
+          832.2343720900503
+        ]
+      ],
+      "independentMaskError": 0.07024375,
+      "geometry": true,
+      "paper": "pass",
+      "features": false,
+      "selectedCounts": [
+        4,
+        4
+      ]
+    },
+    {
+      "id": "danish-tree-green",
+      "status": "candidate_checks_passed",
+      "seconds": 9.380971167,
+      "quad": [
+        [
+          613.4629495846865,
+          709.8754165460504
+        ],
+        [
+          991.3479406135674,
+          1101.880332092388
+        ],
+        [
+          589.7733778087984,
+          1526.3403443658829
+        ],
+        [
+          201.96444906745154,
+          1085.6004246480518
+        ]
+      ],
+      "independentMaskError": 0.0265375,
+      "geometry": true,
+      "paper": "pass",
+      "features": true,
+      "selectedCounts": [
+        3,
+        3
+      ]
+    },
+    {
+      "id": "bibel-checker-2",
+      "status": "candidate_checks_passed",
+      "seconds": 4.964246499999997,
+      "quad": [
+        [
+          463.32871077227776,
+          163.52690443466037
+        ],
+        [
+          674.7768124351633,
+          380.0728413983725
+        ],
+        [
+          477.2778856976256,
+          588.0147828851123
+        ],
+        [
+          267.8423056748111,
+          383.1302641627054
+        ]
+      ],
+      "independentMaskError": 0.01745625,
+      "geometry": true,
+      "paper": "pass",
+      "features": true,
+      "selectedCounts": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "bibel-checker-3",
+      "status": "candidate_checks_passed",
+      "seconds": 7.0863187079999985,
+      "quad": [
+        [
+          428.52499957084467,
+          107.94140443033162
+        ],
+        [
+          651.1719003615806,
+          307.87535698407953
+        ],
+        [
+          457.77859974478423,
+          527.5446206961046
+        ],
+        [
+          247.86376696068473,
+          325.5685826170488
+        ]
+      ],
+      "independentMaskError": 0.01486875,
+      "geometry": true,
+      "paper": "pass",
+      "features": true,
+      "selectedCounts": [
+        3,
+        3
+      ]
+    },
+    {
+      "id": "bibel-checker-4",
+      "status": "candidate_checks_passed",
+      "seconds": 6.646887875,
+      "quad": [
+        [
+          429.70317261193094,
+          122.10481294430112
+        ],
+        [
+          652.5269364078364,
+          331.6303238738545
+        ],
+        [
+          446.11534233992893,
+          562.4943090857911
+        ],
+        [
+          228.89995848689574,
+          353.5303167050975
+        ]
+      ],
+      "independentMaskError": 0.0035125,
+      "geometry": true,
+      "paper": "pass",
+      "features": true,
+      "selectedCounts": [
+        3,
+        3
+      ]
+    },
+    {
+      "id": "bibel-narrow-wide",
+      "status": "candidate_checks_passed",
+      "seconds": 11.440710166999997,
+      "quad": [
+        [
+          479.4201306253251,
+          106.79662147269192
+        ],
+        [
+          695.726809621462,
+          316.1675646420967
+        ],
+        [
+          492.9391897261545,
+          559.9533150678765
+        ],
+        [
+          258.89314608770366,
+          346.1147488291578
+        ]
+      ],
+      "independentMaskError": 0.02026875,
+      "geometry": true,
+      "paper": "pass",
+      "features": true,
+      "selectedCounts": [
+        5,
+        4
+      ]
+    },
+    {
+      "id": "bibel-nested-heart-red",
+      "status": "candidate_checks_passed",
+      "seconds": 12.782545791000004,
+      "quad": [
+        [
+          474.0910731679586,
+          138.3127622344359
+        ],
+        [
+          688.8053555743762,
+          358.5571722152888
+        ],
+        [
+          511.29773346920297,
+          576.8853021021612
+        ],
+        [
+          267.703177909864,
+          383.3879679813726
+        ]
+      ],
+      "independentMaskError": 0.0284375,
+      "geometry": true,
+      "paper": "pass",
+      "features": true,
+      "selectedCounts": [
+        4,
+        4
+      ]
+    },
+    {
+      "id": "bibel-angel",
+      "status": "no_crop",
+      "seconds": 1.011670665999998
+    }
+  ],
+  "orangeBudgetSeconds": 60,
+  "orange": [
+    {
+      "id": "tilted-orange-weave",
+      "crops": [
+        {
+          "name": "automatic-0",
+          "quad": [
+            [
+              469.72435429721304,
+              129.96728654585738
+            ],
+            [
+              852.0188741695723,
+              586.0014000598356
+            ],
+            [
+              350.5483863458043,
+              933.1123126724174
+            ],
+            [
+              51.321027596640675,
+              445.2259143646169
+            ]
+          ],
+          "seconds": 12.641414082999999,
+          "error": 0.0164875,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": []
+        },
+        {
+          "name": "manual-diagnostic",
+          "quad": [
+            [
+              447,
+              160
+            ],
+            [
+              845,
+              574
+            ],
+            [
+              350,
+              921
+            ],
+            [
+              55,
+              451
+            ]
+          ],
+          "seconds": 12.581561542,
+          "error": 0.0141375,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": []
+        }
+      ]
+    },
+    {
+      "id": "orange-upload-1254",
+      "crops": [
+        {
+          "name": "automatic-0",
+          "quad": [
+            [
+              325.9952014925149,
+              100.97801810333502
+            ],
+            [
+              580.234950696136,
+              428.49175300007715
+            ],
+            [
+              232.65346284085797,
+              670.4655277448043
+            ],
+            [
+              21.850107634368808,
+              322.3901758352161
+            ]
+          ],
+          "seconds": 12.896911250000004,
+          "error": 0.0150625,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": []
+        },
+        {
+          "name": "manual-diagnostic",
+          "quad": [
+            [
+              301,
+              124
+            ],
+            [
+              581,
+              416
+            ],
+            [
+              227,
+              663
+            ],
+            [
+              25,
+              336
+            ]
+          ],
+          "seconds": 27.699853708999996,
+          "error": 0.0148375,
+          "passed": false,
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [
+            {
+              "value": 0,
+              "areaMm2": 4.3125,
+              "centerMm": [
+                91.20471014492755,
+                13.371376811594203
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 23.1875,
+              "centerMm": [
+                13.91677897574124,
+                98.00774932614554
+              ],
+              "retainedFraction": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "treeLongBudget": {
+    "budgetSeconds": 60,
+    "before": {
+      "id": "danish-tree-red",
+      "status": "candidate_needs_review",
+      "seconds": 16.935943750000003,
+      "quad": [
+        [
+          556.0975766903264,
+          521.5736084705238
+        ],
+        [
+          908.5974861031686,
+          835.6634941021031
+        ],
+        [
+          598.4190381184407,
+          1165.102659683867
+        ],
+        [
+          277.09631098883773,
+          832.2343720900503
+        ]
+      ],
+      "independentMaskError": 0.07024375,
+      "geometry": true,
+      "paper": "pass",
+      "features": false,
+      "selectedCounts": [
+        4,
+        4
+      ]
+    },
+    "after": {
+      "id": "danish-tree-red",
+      "status": "candidate_needs_review",
+      "seconds": 60.978384542,
+      "quad": [
+        [
+          556.0975766903264,
+          521.5736084705238
+        ],
+        [
+          908.5974861031686,
+          835.6634941021031
+        ],
+        [
+          598.4190381184407,
+          1165.102659683867
+        ],
+        [
+          277.09631098883773,
+          832.2343720900503
+        ]
+      ],
+      "independentMaskError": 0.03454375,
+      "geometry": true,
+      "paper": "pass",
+      "features": false,
+      "selectedCounts": [
+        3,
+        3
+      ]
+    },
+    "beforeCandidates": [
+      {
+        "counts": [
+          4,
+          4
+        ],
+        "error": 0.0695648193359375,
+        "score": 0.07135082604809823,
+        "geometry": true,
+        "paper": true
+      },
+      {
+        "counts": [
+          5,
+          5
+        ],
+        "error": 0.0343170166015625,
+        "score": 0.040947650934446134,
+        "geometry": true,
+        "paper": false
+      },
+      {
+        "counts": [
+          5,
+          5
+        ],
+        "error": 0.0257415771484375,
+        "score": 0.03273208999595589,
+        "geometry": true,
+        "paper": false
+      }
+    ],
+    "afterCandidates": [
+      {
+        "counts": [
+          3,
+          3
+        ],
+        "error": 0.0349578857421875,
+        "score": 0.03722710939276275,
+        "geometry": true,
+        "paper": true
+      },
+      {
+        "counts": [
+          4,
+          4
+        ],
+        "error": 0.0695648193359375,
+        "score": 0.07135082604809823,
+        "geometry": true,
+        "paper": true
+      },
+      {
+        "counts": [
+          3,
+          4
+        ],
+        "error": 0.0929107666015625,
+        "score": 0.0917060060480297,
+        "geometry": true,
+        "paper": true
+      },
+      {
+        "counts": [
+          6,
+          6
+        ],
+        "error": 0.108612060546875,
+        "score": 0.10791276438094294,
+        "geometry": true,
+        "paper": true
+      },
+      {
+        "counts": [
+          5,
+          5
+        ],
+        "error": 0.0343170166015625,
+        "score": 0.040947650934446134,
+        "geometry": true,
+        "paper": false
+      },
+      {
+        "counts": [
+          5,
+          5
+        ],
+        "error": 0.0257415771484375,
+        "score": 0.03273208999595589,
+        "geometry": true,
+        "paper": false
+      },
+      {
+        "counts": [
+          7,
+          7
+        ],
+        "error": 0.040802001953125,
+        "score": 0.04822869984012948,
+        "geometry": true,
+        "paper": false
+      },
+      {
+        "counts": [
+          4,
+          4
+        ],
+        "error": 0.0266265869140625,
+        "score": 0.03282954573246796,
+        "geometry": true,
+        "paper": false
+      },
+      {
+        "counts": [
+          3,
+          4
+        ],
+        "error": 0.0128021240234375,
+        "score": 0.019222712370173284,
+        "geometry": true,
+        "paper": false
+      },
+      {
+        "counts": [
+          6,
+          6
+        ],
+        "error": 0.03240966796875,
+        "score": 0.0396560336820464,
+        "geometry": true,
+        "paper": false
+      },
+      {
+        "counts": [
+          7,
+          7
+        ],
+        "error": 0.0378265380859375,
+        "score": 0.04510618592627447,
+        "geometry": true,
+        "paper": false
+      },
+      {
+        "counts": [
+          8,
+          8
+        ],
+        "error": 0.0343475341796875,
+        "score": 0.043793004474658864,
+        "geometry": true,
+        "paper": false
+      },
+      {
+        "counts": [
+          8,
+          8
+        ],
+        "error": 0.06561279296875,
+        "score": 0.07319940727905416,
+        "geometry": false,
+        "paper": false
+      }
+    ],
+    "topology": {
+      "method": "mixed-boundary-topology",
+      "accepted": false,
+      "boundarySegments": 119,
+      "boundarySimplification": [
+        {
+          "fitTolerance": 0.5,
+          "segments": 88,
+          "imageError": 0.00758125,
+          "maximumError": 0.002,
+          "accepted": false
+        },
+        {
+          "fitTolerance": 0.6,
+          "segments": 81,
+          "imageError": 0.007925,
+          "maximumError": 0.002,
+          "accepted": false
+        },
+        {
+          "fitTolerance": 0.75,
+          "segments": 73,
+          "imageError": 0.01080625,
+          "maximumError": 0.002,
+          "accepted": false
+        }
+      ],
+      "traceError": 0.00579375,
+      "seconds": 0.005317625000000135
+    },
+    "recovery": {
+      "method": "trace-milp",
+      "budgetSeconds": 6.469614225000001,
+      "accepted": false,
+      "attempts": [
+        {
+          "neighbors": 8,
+          "connectorVariants": 1,
+          "budgetSeconds": 5.105902812800001,
+          "error": "Sheet A has 3 start transitions but 4 end transitions. Opposite borders must agree.",
+          "seconds": 0.03233341599999994
+        },
+        {
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "budgetSeconds": 6.303571725000001,
+          "error": "Sheet A has 3 start transitions but 4 end transitions. Opposite borders must agree.",
+          "seconds": 0.05615737500000023
+        }
+      ],
+      "error": "Feature recovery found no validated routing within its budget.",
+      "seconds": 0.16614045899999974
+    }
+  },
+  "validation": {
+    "applicationTests": {
+      "passed": 842,
+      "skipped": 1
+    },
+    "inverseTests": {
+      "passed": 502
+    },
+    "check": {
+      "errors": 0,
+      "warnings": 7
+    },
+    "lint": "passed",
+    "build": "passed",
+    "browsers": {
+      "artifactDirectories": [
+        "tmp/full-pipeline-20261011-browser",
+        "tmp/full-pipeline-20261011-webkit"
+      ],
+      "completed": 10,
+      "passed": 10,
+      "runs": [
+        {
+          "browser": "chromium",
+          "browserVersion": "145.0.7632.6",
+          "case": "star",
+          "passed": true,
+          "clickToReadySeconds": 1.9702000000476838,
+          "engineError": 0.0016,
+          "editableError": 0.0016,
+          "conversionFidelity": {
+            "passed": true,
+            "maximumWeaveDrift": 0.001,
+            "weaveDrift": [
+              {
+                "resolution": 400,
+                "mismatch": 0
+              },
+              {
+                "resolution": 800,
+                "mismatch": 0.0000625
+              }
+            ],
+            "originalSourceError": 0.0016,
+            "sourceError": 0.0016
+          }
+        },
+        {
+          "browser": "chromium",
+          "browserVersion": "145.0.7632.6",
+          "case": "top-hat",
+          "passed": true,
+          "clickToReadySeconds": 9.742,
+          "engineError": 0.0031887755102040817,
+          "editableError": 0.0032064909297052154,
+          "sharedLengthMm": 236.91135721080278,
+          "conversionFidelity": {
+            "passed": true,
+            "maximumWeaveDrift": 0.001,
+            "weaveDrift": [
+              {
+                "resolution": 400,
+                "mismatch": 0
+              },
+              {
+                "resolution": 800,
+                "mismatch": 0
+              }
+            ],
+            "originalSourceError": 0.0032064909297052154,
+            "sourceError": 0.0032064909297052154
+          }
+        },
+        {
+          "browser": "chromium",
+          "browserVersion": "145.0.7632.6",
+          "case": "top-hat-independent",
+          "passed": true,
+          "clickToReadySeconds": 6.268800000071526,
+          "engineError": 0.0029584750566893424,
+          "editableError": 0.0029584750566893424,
+          "sharedLengthMm": 71.2051140422349,
+          "conversionFidelity": {
+            "passed": true,
+            "maximumWeaveDrift": 0.001,
+            "weaveDrift": [
+              {
+                "resolution": 400,
+                "mismatch": 0.00036875
+              },
+              {
+                "resolution": 800,
+                "mismatch": 0.000325
+              }
+            ],
+            "originalSourceError": 0.0029584750566893424,
+            "sourceError": 0.0029584750566893424
+          }
+        },
+        {
+          "browser": "chromium",
+          "browserVersion": "145.0.7632.6",
+          "case": "top-hat-anti",
+          "passed": true,
+          "clickToReadySeconds": 7.871700000047683,
+          "engineError": 0.0032064909297052154,
+          "editableError": 0.0031887755102040817,
+          "sharedLengthMm": 224.88910310503672,
+          "conversionFidelity": {
+            "passed": true,
+            "maximumWeaveDrift": 0.001,
+            "weaveDrift": [
+              {
+                "resolution": 400,
+                "mismatch": 0
+              },
+              {
+                "resolution": 800,
+                "mismatch": 0
+              }
+            ],
+            "originalSourceError": 0.0031887755102040817,
+            "sourceError": 0.0031887755102040817
+          }
+        },
+        {
+          "browser": "chromium",
+          "browserVersion": "145.0.7632.6",
+          "case": "hunodan",
+          "passed": true,
+          "clickToReadySeconds": 4.7545,
+          "engineError": 0.00943125,
+          "editableError": 0.00944375,
+          "conversionFidelity": {
+            "passed": true,
+            "maximumWeaveDrift": 0.001,
+            "weaveDrift": [
+              {
+                "resolution": 400,
+                "mismatch": 0
+              },
+              {
+                "resolution": 800,
+                "mismatch": 0
+              }
+            ],
+            "originalSourceError": 0.00944375,
+            "sourceError": 0.00944375
+          }
+        },
+        {
+          "browser": "webkit",
+          "browserVersion": "26.0",
+          "case": "star",
+          "passed": true,
+          "clickToReadySeconds": 2.071,
+          "engineError": 0.0016,
+          "editableError": 0.0016,
+          "conversionFidelity": {
+            "passed": true,
+            "maximumWeaveDrift": 0.001,
+            "weaveDrift": [
+              {
+                "resolution": 400,
+                "mismatch": 0
+              },
+              {
+                "resolution": 800,
+                "mismatch": 0.0000625
+              }
+            ],
+            "originalSourceError": 0.0016,
+            "sourceError": 0.0016
+          }
+        },
+        {
+          "browser": "webkit",
+          "browserVersion": "26.0",
+          "case": "top-hat",
+          "passed": true,
+          "clickToReadySeconds": 10.419,
+          "engineError": 0.0031887755102040817,
+          "editableError": 0.0032064909297052154,
+          "sharedLengthMm": 236.9113572108241,
+          "conversionFidelity": {
+            "passed": true,
+            "maximumWeaveDrift": 0.001,
+            "weaveDrift": [
+              {
+                "resolution": 400,
+                "mismatch": 0
+              },
+              {
+                "resolution": 800,
+                "mismatch": 0
+              }
+            ],
+            "originalSourceError": 0.0032064909297052154,
+            "sourceError": 0.0032064909297052154
+          }
+        },
+        {
+          "browser": "webkit",
+          "browserVersion": "26.0",
+          "case": "top-hat-independent",
+          "passed": true,
+          "clickToReadySeconds": 6.586,
+          "engineError": 0.0029584750566893424,
+          "editableError": 0.0029584750566893424,
+          "sharedLengthMm": 71.20511404200474,
+          "conversionFidelity": {
+            "passed": true,
+            "maximumWeaveDrift": 0.001,
+            "weaveDrift": [
+              {
+                "resolution": 400,
+                "mismatch": 0.00036875
+              },
+              {
+                "resolution": 800,
+                "mismatch": 0.000325
+              }
+            ],
+            "originalSourceError": 0.0029584750566893424,
+            "sourceError": 0.0029584750566893424
+          }
+        },
+        {
+          "browser": "webkit",
+          "browserVersion": "26.0",
+          "case": "top-hat-anti",
+          "passed": true,
+          "clickToReadySeconds": 8.101,
+          "engineError": 0.0032064909297052154,
+          "editableError": 0.0031887755102040817,
+          "sharedLengthMm": 224.88910310507052,
+          "conversionFidelity": {
+            "passed": true,
+            "maximumWeaveDrift": 0.001,
+            "weaveDrift": [
+              {
+                "resolution": 400,
+                "mismatch": 0
+              },
+              {
+                "resolution": 800,
+                "mismatch": 0
+              }
+            ],
+            "originalSourceError": 0.0031887755102040817,
+            "sourceError": 0.0031887755102040817
+          }
+        },
+        {
+          "browser": "webkit",
+          "browserVersion": "26.0",
+          "case": "hunodan",
+          "passed": true,
+          "clickToReadySeconds": 4.326,
+          "engineError": 0.00943125,
+          "editableError": 0.00944375,
+          "conversionFidelity": {
+            "passed": true,
+            "maximumWeaveDrift": 0.001,
+            "weaveDrift": [
+              {
+                "resolution": 400,
+                "mismatch": 0
+              },
+              {
+                "resolution": 800,
+                "mismatch": 0
+              }
+            ],
+            "originalSourceError": 0.00944375,
+            "sourceError": 0.00944375
+          }
+        }
+      ]
+    },
+    "firefox": {
+      "status": "browser_startup_timeout",
+      "timeoutMilliseconds": 180000,
+      "appPageOpened": false,
+      "log": "tmp/full-pipeline-browser.log",
+      "processSample": "tmp/full-pipeline-firefox-startup.sample.txt",
+      "reportedDiagnostics": [
+        "sandbox_extension_issue_file_to_process failed: Operation not permitted",
+        "RenderCompositorSWGL failed mapping default framebuffer"
+      ]
+    },
+    "provenanceReplay": {
+      "artifactDirectory": "tmp/full-pipeline-20261011-provenance",
+      "sourceFilesHashed": 70
+    }
+  },
+  "artifactDirectories": {
+    "webBaseline": "tmp/full-pipeline-20261011-web-baseline",
+    "orange": "tmp/full-pipeline-20261011-baseline",
+    "treeBefore": "tmp/full-pipeline-20261011-tree-60",
+    "treeAfter": "tmp/full-pipeline-20261011-tree-portfolio",
+    "countDiagnostics": "tmp/tree-count-tests"
+  },
+  "matchingRepair": [
+    {
+      "name": "old",
+      "identical": true,
+      "hiddenLength": 0,
+      "coverageError": 0.03088516543674632,
+      "applied": false
+    },
+    {
+      "name": "new",
+      "identical": true,
+      "hiddenLength": 215.16600260496577,
+      "coverageError": 0.030620624993403907,
+      "applied": true
+    }
+  ],
+  "hunodan": {
+    "artifactDirectory": "tmp/full-pipeline-20261011-hunodan",
+    "count": 22,
+    "passed": 22,
+    "medianSeconds": 5.039389875500005,
+    "maximumSeconds": 8.582278332999994,
+    "errorComparison": "tmp/robustness-count-selection-hunodan-v2/results.json",
+    "changedErrors": [],
+    "sourceHashes": {
+      "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+      "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+      "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+      "static/inverse/core/chord-distance.js": "cb79dd6d90d22b6bea6bb4bd0593cc8e32a18a09116084e53f5d942bcbef3c04",
+      "static/inverse/core/crop.js": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88",
+      "static/inverse/core/engine.js": "f4c7f3f11b4543b9270ef849d3924fd67ea722574abdef8a861b118cdf3731c1",
+      "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+      "static/inverse/core/feature-recovery.js": "8bdb94171ff20e7bdd9e192b567a9721c6f6b6e7319e98fdeb75289a0dcb80bd",
+      "static/inverse/core/geometry.js": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+      "static/inverse/core/graph.js": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
+      "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+      "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+      "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+      "static/inverse/core/junctions.js": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
+      "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+      "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+      "static/inverse/core/material.js": "1d7d4e33811d46aa4e815bf9e4a410a8844c9bba7e50fdb6e0fa850181801898",
+      "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+      "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+      "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+      "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+      "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+      "static/inverse/core/progress.js": "5034d4c14b1abdf9c656208a13f0d24cf7254a1ce6323f452bb45f39d67e5370",
+      "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+      "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+      "static/inverse/core/solver.js": "de7d3b887d0b2faf28af21ba9b29de331b4566ff5374523db15fbbb0487dd8ea",
+      "static/inverse/core/stopped.js": "f2c50e6dca6ac2a1ea8d7b2fa1c5984109a5502dca728601f4e9e885ebf406a8",
+      "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+      "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+      "static/inverse/core/validate.js": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+      "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+      "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+      "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+      "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+      "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+      "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+      "static/inverse/core/direct/finalize.js": "fb76ad1ba8aa6caed2b8643a6b2795049ed4a850f996a1707e3698cc6042f0da",
+      "static/inverse/core/direct/fit.js": "b949bcff17975a9ff987db240b6b88371272140869fb21a5fd895899369d5cd1",
+      "static/inverse/core/direct/grid.js": "57ada8e2f1c794b0012ddedbb8b508f29971186c313e517a8f40ca3788e1dfbd",
+      "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+      "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+      "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+      "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+      "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+      "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+      "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+      "static/inverse/core/direct/prefer-matching.js": "2e07c19f7e09a296bf93677c53ff78de489e85fc3064d295c4149c8cc567cf00",
+      "static/inverse/core/direct/primitive-selection.js": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904",
+      "static/inverse/core/direct/primitives.js": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b",
+      "static/inverse/core/direct/refine.js": "b5ee17d9c021b724011054544a33dfbdab798ed91adca9c32c6cbb8d2a5fc1ad",
+      "static/inverse/core/direct/share.js": "af031c51dace35702cfbde9ccf8c48989858ef405b631652521a8f538f01e352",
+      "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+      "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+      "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+      "static/inverse/core/direct/short-returns.js": "289b4bb963ae4f5b9fd068d2eb742fc5b025566c43409bf9c0ac3a14f909c3a9",
+      "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+      "static/inverse/core/direct/topology.js": "bbe79bf0dca7c4786c7728413026fee9f77bb9bca5bb788be7d6674267ad9292",
+      "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+      "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58"
+    },
+    "results": [
+      {
+        "id": "hjfig-01",
+        "seconds": 4.560661083000001,
+        "error": 0.009799111111111111,
+        "passed": true
+      },
+      {
+        "id": "hjfig-02",
+        "seconds": 4.416763667,
+        "error": 0.013952,
+        "passed": true
+      },
+      {
+        "id": "hjfig-03",
+        "seconds": 3.6593480830000007,
+        "error": 0.006634666666666666,
+        "passed": true
+      },
+      {
+        "id": "hjfig-04",
+        "seconds": 3.9893097909999997,
+        "error": 0.013824,
+        "passed": true
+      },
+      {
+        "id": "hjfig-05",
+        "seconds": 2.760970207999999,
+        "error": 0.009060571106551963,
+        "passed": true
+      },
+      {
+        "id": "hjfla-01",
+        "seconds": 5.148651750000001,
+        "error": 0.013414171006944444,
+        "passed": true
+      },
+      {
+        "id": "hjcur-01",
+        "seconds": 5.245284250000001,
+        "error": 0.00512,
+        "passed": true
+      },
+      {
+        "id": "hjcur-02",
+        "seconds": 5.029791084000004,
+        "error": 0.005397333333333333,
+        "passed": true
+      },
+      {
+        "id": "hjcur-03",
+        "seconds": 5.048988667000005,
+        "error": 0.004522666666666667,
+        "passed": true
+      },
+      {
+        "id": "hjcur-04",
+        "seconds": 7.010271417000004,
+        "error": 0.0056248888888888885,
+        "passed": true
+      },
+      {
+        "id": "hjcur-05",
+        "seconds": 3.3072589999999984,
+        "error": 0.009436444444444445,
+        "passed": true
+      },
+      {
+        "id": "hjhih-01",
+        "seconds": 6.456293833000004,
+        "error": 0.0060202958468683725,
+        "passed": true
+      },
+      {
+        "id": "hjhih-02",
+        "seconds": 4.913113583999999,
+        "error": 0.003899406226779104,
+        "passed": true
+      },
+      {
+        "id": "hjhih-04",
+        "seconds": 7.233863083000004,
+        "error": 0.007678910190418844,
+        "passed": true
+      },
+      {
+        "id": "hjstr-01",
+        "seconds": 4.221612000000008,
+        "error": 0.007543348420030173,
+        "passed": true
+      },
+      {
+        "id": "hjstr-02",
+        "seconds": 6.101616500000004,
+        "error": 0.004339250493096647,
+        "passed": true
+      },
+      {
+        "id": "hjstr-03",
+        "seconds": 8.582278332999994,
+        "error": 0.005519980869380381,
+        "passed": true
+      },
+      {
+        "id": "hjsta-01",
+        "seconds": 4.504760250000007,
+        "error": 0.007936288088642659,
+        "passed": true
+      },
+      {
+        "id": "hjsta-02",
+        "seconds": 4.246461542000005,
+        "error": 0.0036485460069444445,
+        "passed": true
+      },
+      {
+        "id": "hjsta-03",
+        "seconds": 6.200295375000001,
+        "error": 0.012339030193129683,
+        "passed": true
+      },
+      {
+        "id": "hjsta-04",
+        "seconds": 6.6823464169999935,
+        "error": 0.005053050026595,
+        "passed": true
+      },
+      {
+        "id": "hjsta-05",
+        "seconds": 6.3199517920000075,
+        "error": 0.010624446293860237,
+        "passed": true
+      }
+    ]
+  },
+  "preview": {
+    "url": "http://127.0.0.1:5232/en/editor/paint/",
+    "checkedSources": [
+      {
+        "file": "direct/fit.js",
+        "status": 200,
+        "same": true,
+        "sha256": "b949bcff17975a9ff987db240b6b88371272140869fb21a5fd895899369d5cd1"
+      },
+      {
+        "file": "direct/matching.js",
+        "status": 200,
+        "same": true,
+        "sha256": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559"
+      },
+      {
+        "file": "direct/share.js",
+        "status": 200,
+        "same": true,
+        "sha256": "af031c51dace35702cfbde9ccf8c48989858ef405b631652521a8f538f01e352"
+      }
+    ]
+  },
+  "edgeTopologyFollowup": {
+    "commit": "4cecc0d",
+    "engineSha256": {
+      "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+      "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+      "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+      "static/inverse/core/chord-distance.js": "cb79dd6d90d22b6bea6bb4bd0593cc8e32a18a09116084e53f5d942bcbef3c04",
+      "static/inverse/core/crop.js": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88",
+      "static/inverse/core/engine.js": "f4c7f3f11b4543b9270ef849d3924fd67ea722574abdef8a861b118cdf3731c1",
+      "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+      "static/inverse/core/feature-recovery.js": "8bdb94171ff20e7bdd9e192b567a9721c6f6b6e7319e98fdeb75289a0dcb80bd",
+      "static/inverse/core/geometry.js": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+      "static/inverse/core/graph.js": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
+      "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+      "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+      "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+      "static/inverse/core/junctions.js": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
+      "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+      "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+      "static/inverse/core/material.js": "1d7d4e33811d46aa4e815bf9e4a410a8844c9bba7e50fdb6e0fa850181801898",
+      "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+      "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+      "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+      "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+      "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+      "static/inverse/core/progress.js": "5034d4c14b1abdf9c656208a13f0d24cf7254a1ce6323f452bb45f39d67e5370",
+      "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+      "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+      "static/inverse/core/solver.js": "de7d3b887d0b2faf28af21ba9b29de331b4566ff5374523db15fbbb0487dd8ea",
+      "static/inverse/core/stopped.js": "f2c50e6dca6ac2a1ea8d7b2fa1c5984109a5502dca728601f4e9e885ebf406a8",
+      "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+      "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+      "static/inverse/core/validate.js": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+      "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+      "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+      "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+      "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+      "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+      "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+      "static/inverse/core/direct/finalize.js": "fb76ad1ba8aa6caed2b8643a6b2795049ed4a850f996a1707e3698cc6042f0da",
+      "static/inverse/core/direct/fit.js": "b949bcff17975a9ff987db240b6b88371272140869fb21a5fd895899369d5cd1",
+      "static/inverse/core/direct/grid.js": "57ada8e2f1c794b0012ddedbb8b508f29971186c313e517a8f40ca3788e1dfbd",
+      "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+      "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+      "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+      "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+      "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+      "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+      "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+      "static/inverse/core/direct/prefer-matching.js": "2e07c19f7e09a296bf93677c53ff78de489e85fc3064d295c4149c8cc567cf00",
+      "static/inverse/core/direct/primitive-selection.js": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904",
+      "static/inverse/core/direct/primitives.js": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b",
+      "static/inverse/core/direct/refine.js": "b5ee17d9c021b724011054544a33dfbdab798ed91adca9c32c6cbb8d2a5fc1ad",
+      "static/inverse/core/direct/share.js": "af031c51dace35702cfbde9ccf8c48989858ef405b631652521a8f538f01e352",
+      "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+      "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+      "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+      "static/inverse/core/direct/short-returns.js": "289b4bb963ae4f5b9fd068d2eb742fc5b025566c43409bf9c0ac3a14f909c3a9",
+      "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+      "static/inverse/core/direct/topology.js": "1765f2959e059e793ebc9f14b7922a8f14f84c312a5c26cc7d7dc220a335f3db",
+      "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+      "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58"
+    },
+    "methodology": "Every fit receives pixels only. Clean-tree input pixels are rendered from an approximate straight-span annotation of the published template, not an exact digitization. Edge-noise tests flip 20 of 160000 pixels. Original input remains the final accuracy reference. Crop overrides are diagnostic manual annotations fixed before fitting, not surveyed truth; percentages against different classified crops are not directly interchangeable.",
+    "reference": {
+      "source": "https://danishthings.com/wp-content/uploads/2022/11/Danish-Things-Julehjerte-med-juletrae-1.pdf",
+      "fixture": "scripts/inverse/tree-fixture.mjs",
+      "independentMaskError": 0.001475,
+      "solverSeconds": 1.526636583,
+      "slits": [
+        3,
+        3
+      ],
+      "checksPassed": true
+    },
+    "before": [
+      {
+        "side": 0,
+        "seconds": 9.786235667000001,
+        "independentMaskError": 0.00245625,
+        "passed": true,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "termination": "candidate_found"
+      },
+      {
+        "side": 1,
+        "seconds": 9.141983667,
+        "independentMaskError": 0.00255625,
+        "passed": true,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "termination": "candidate_found"
+      }
+    ],
+    "after": [
+      {
+        "side": 0,
+        "seconds": 3.355453292,
+        "independentMaskError": 0.0016,
+        "passed": true,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "termination": "validated_topology_seed",
+        "borderRecovery": {
+          "trigger": "Sheet A has 5 start transitions but 3 end transitions. Opposite borders must agree.",
+          "accepted": true,
+          "attempts": [
+            {
+              "borderRadius": 0.5,
+              "imageError": 0.0011625,
+              "endpointIssue": null,
+              "segments": 52,
+              "accepted": true
+            }
+          ],
+          "borderRadius": 0.5,
+          "border": {
+            "radiusMm": 0.5,
+            "depthPixels": 2,
+            "profileNoiseRadiusMm": 0.5,
+            "profilePixelsChanged": 0,
+            "editedBandWidthMm": 0.5,
+            "changedPixels": 20,
+            "changeFraction": 0.000125,
+            "transitionsBefore": [
+              5,
+              3,
+              3,
+              3
+            ],
+            "transitionsAfter": [
+              3,
+              3,
+              3,
+              3
+            ],
+            "method": "Majority across and along inward edge profiles; suppress sub-strip noise before bounded border extension."
+          }
+        }
+      },
+      {
+        "side": 1,
+        "seconds": 3.1161600419999997,
+        "independentMaskError": 0.0016,
+        "passed": true,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "termination": "validated_topology_seed",
+        "borderRecovery": {
+          "trigger": "Sheet B has 3 start transitions but 5 end transitions. Opposite borders must agree.",
+          "accepted": true,
+          "attempts": [
+            {
+              "borderRadius": 0.5,
+              "imageError": 0.0011625,
+              "endpointIssue": null,
+              "segments": 52,
+              "accepted": true
+            }
+          ],
+          "borderRadius": 0.5,
+          "border": {
+            "radiusMm": 0.5,
+            "depthPixels": 2,
+            "profileNoiseRadiusMm": 0.5,
+            "profilePixelsChanged": 0,
+            "editedBandWidthMm": 0.5,
+            "changedPixels": 20,
+            "changeFraction": 0.000125,
+            "transitionsBefore": [
+              3,
+              5,
+              3,
+              3
+            ],
+            "transitionsAfter": [
+              3,
+              3,
+              3,
+              3
+            ],
+            "method": "Majority across and along inward edge profiles; suppress sub-strip noise before bounded border extension."
+          }
+        }
+      },
+      {
+        "side": 2,
+        "seconds": 2.054771250000001,
+        "independentMaskError": 0.0016,
+        "passed": true,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "termination": "validated_topology_seed",
+        "borderRecovery": {
+          "trigger": "Sheet A has 3 start transitions but 5 end transitions. Opposite borders must agree.",
+          "accepted": true,
+          "attempts": [
+            {
+              "borderRadius": 0.5,
+              "imageError": 0.0011625,
+              "endpointIssue": null,
+              "segments": 52,
+              "accepted": true
+            }
+          ],
+          "borderRadius": 0.5,
+          "border": {
+            "radiusMm": 0.5,
+            "depthPixels": 2,
+            "profileNoiseRadiusMm": 0.5,
+            "profilePixelsChanged": 0,
+            "editedBandWidthMm": 0.5,
+            "changedPixels": 20,
+            "changeFraction": 0.000125,
+            "transitionsBefore": [
+              3,
+              3,
+              5,
+              3
+            ],
+            "transitionsAfter": [
+              3,
+              3,
+              3,
+              3
+            ],
+            "method": "Majority across and along inward edge profiles; suppress sub-strip noise before bounded border extension."
+          }
+        }
+      },
+      {
+        "side": 3,
+        "seconds": 1.3926620829999992,
+        "independentMaskError": 0.0016,
+        "passed": true,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "termination": "validated_topology_seed",
+        "borderRecovery": {
+          "trigger": "Sheet B has 5 start transitions but 3 end transitions. Opposite borders must agree.",
+          "accepted": true,
+          "attempts": [
+            {
+              "borderRadius": 0.5,
+              "imageError": 0.0011625,
+              "endpointIssue": null,
+              "segments": 52,
+              "accepted": true
+            }
+          ],
+          "borderRadius": 0.5,
+          "border": {
+            "radiusMm": 0.5,
+            "depthPixels": 2,
+            "profileNoiseRadiusMm": 0.5,
+            "profilePixelsChanged": 0,
+            "editedBandWidthMm": 0.5,
+            "changedPixels": 20,
+            "changeFraction": 0.000125,
+            "transitionsBefore": [
+              3,
+              3,
+              3,
+              5
+            ],
+            "transitionsAfter": [
+              3,
+              3,
+              3,
+              3
+            ],
+            "method": "Majority across and along inward edge profiles; suppress sub-strip noise before bounded border extension."
+          }
+        }
+      }
+    ],
+    "web": [
+      {
+        "id": "danish-tree-red",
+        "quad": [
+          [
+            556.0975766903264,
+            521.5736084705238
+          ],
+          [
+            908.5974861031686,
+            835.6634941021031
+          ],
+          [
+            598.4190381184407,
+            1165.102659683867
+          ],
+          [
+            277.09631098883773,
+            832.2343720900503
+          ]
+        ],
+        "cropMode": "automatic",
+        "status": "candidate_needs_review",
+        "seconds": 9.963918916999999,
+        "independentMaskError": 0.07024375,
+        "templateChecksPassed": false,
+        "selectedCounts": [
+          4,
+          4
+        ]
+      },
+      {
+        "id": "danish-tree-green",
+        "quad": [
+          [
+            613.4629495846865,
+            709.8754165460504
+          ],
+          [
+            991.3479406135674,
+            1101.880332092388
+          ],
+          [
+            589.7733778087984,
+            1526.3403443658829
+          ],
+          [
+            201.96444906745154,
+            1085.6004246480518
+          ]
+        ],
+        "cropMode": "automatic",
+        "status": "candidate_checks_passed",
+        "seconds": 8.224725083000001,
+        "independentMaskError": 0.0265375,
+        "templateChecksPassed": true,
+        "selectedCounts": [
+          3,
+          3
+        ]
+      },
+      {
+        "id": "bibel-checker-2",
+        "quad": [
+          [
+            463.32871077227776,
+            163.52690443466037
+          ],
+          [
+            674.7768124351633,
+            380.0728413983725
+          ],
+          [
+            477.2778856976256,
+            588.0147828851123
+          ],
+          [
+            267.8423056748111,
+            383.1302641627054
+          ]
+        ],
+        "cropMode": "automatic",
+        "status": "candidate_checks_passed",
+        "seconds": 3.9494016250000024,
+        "independentMaskError": 0.01745625,
+        "templateChecksPassed": true,
+        "selectedCounts": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "bibel-checker-3",
+        "quad": [
+          [
+            428.52499957084467,
+            107.94140443033162
+          ],
+          [
+            651.1719003615806,
+            307.87535698407953
+          ],
+          [
+            457.77859974478423,
+            527.5446206961046
+          ],
+          [
+            247.86376696068473,
+            325.5685826170488
+          ]
+        ],
+        "cropMode": "automatic",
+        "status": "candidate_checks_passed",
+        "seconds": 5.8468952919999975,
+        "independentMaskError": 0.01486875,
+        "templateChecksPassed": true,
+        "selectedCounts": [
+          3,
+          3
+        ]
+      },
+      {
+        "id": "bibel-checker-4",
+        "quad": [
+          [
+            429.70317261193094,
+            122.10481294430112
+          ],
+          [
+            652.5269364078364,
+            331.6303238738545
+          ],
+          [
+            446.11534233992893,
+            562.4943090857911
+          ],
+          [
+            228.89995848689574,
+            353.5303167050975
+          ]
+        ],
+        "cropMode": "automatic",
+        "status": "candidate_checks_passed",
+        "seconds": 5.4262066660000015,
+        "independentMaskError": 0.0035125,
+        "templateChecksPassed": true,
+        "selectedCounts": [
+          3,
+          3
+        ]
+      },
+      {
+        "id": "bibel-narrow-wide",
+        "quad": [
+          [
+            479.4201306253251,
+            106.79662147269192
+          ],
+          [
+            695.726809621462,
+            316.1675646420967
+          ],
+          [
+            492.9391897261545,
+            559.9533150678765
+          ],
+          [
+            258.89314608770366,
+            346.1147488291578
+          ]
+        ],
+        "cropMode": "automatic",
+        "status": "candidate_checks_passed",
+        "seconds": 10.312538334000005,
+        "independentMaskError": 0.02026875,
+        "templateChecksPassed": true,
+        "selectedCounts": [
+          5,
+          4
+        ]
+      },
+      {
+        "id": "bibel-nested-heart-red",
+        "quad": [
+          [
+            474.0910731679586,
+            138.3127622344359
+          ],
+          [
+            688.8053555743762,
+            358.5571722152888
+          ],
+          [
+            511.29773346920297,
+            576.8853021021612
+          ],
+          [
+            267.703177909864,
+            383.3879679813726
+          ]
+        ],
+        "cropMode": "automatic",
+        "status": "candidate_checks_passed",
+        "seconds": 11.434017082999999,
+        "independentMaskError": 0.0284375,
+        "templateChecksPassed": true,
+        "selectedCounts": [
+          4,
+          4
+        ]
+      },
+      {
+        "id": "bibel-angel",
+        "cropMode": "automatic",
+        "status": "no_crop",
+        "seconds": 0.9687154579999988
+      }
+    ],
+    "manualCrop": [
+      {
+        "id": "danish-tree-red",
+        "quad": [
+          [
+            598,
+            562
+          ],
+          [
+            874,
+            867
+          ],
+          [
+            600,
+            1153
+          ],
+          [
+            293,
+            848
+          ]
+        ],
+        "cropMode": "manual_diagnostic",
+        "status": "candidate_checks_passed",
+        "seconds": 10.151278791000001,
+        "independentMaskError": 0.0075125,
+        "templateChecksPassed": true,
+        "selectedCounts": [
+          3,
+          3
+        ]
+      }
+    ],
+    "otherDiagnosticCrops": [
+      {
+        "name": "manual-notch-only",
+        "quad": [
+          [
+            598,
+            562
+          ],
+          [
+            908.5974861031686,
+            835.6634941021031
+          ],
+          [
+            598.4190381184407,
+            1165.102659683867
+          ],
+          [
+            277.09631098883773,
+            832.2343720900503
+          ]
+        ],
+        "seconds": 10.910519249999998,
+        "independentMaskError": 0.06118125,
+        "checksPassed": false
+      },
+      {
+        "name": "manual-inset",
+        "quad": [
+          [
+            598,
+            613
+          ],
+          [
+            846,
+            845
+          ],
+          [
+            599,
+            1100
+          ],
+          [
+            348,
+            847
+          ]
+        ],
+        "seconds": 11.553268667000005,
+        "independentMaskError": 0.0871875,
+        "checksPassed": false
+      }
+    ],
+    "hunodan": {
+      "count": 22,
+      "passed": 22,
+      "unchangedErrors": 22,
+      "medianSeconds": 5.298777645499999,
+      "maximumSeconds": 8.552460082999998,
+      "results": [
+        {
+          "id": "hjfig-01",
+          "error": 0.009799111111111111,
+          "seconds": 4.7624085,
+          "passed": true
+        },
+        {
+          "id": "hjfig-02",
+          "error": 0.013952,
+          "seconds": 4.67146475,
+          "passed": true
+        },
+        {
+          "id": "hjfig-03",
+          "error": 0.006634666666666666,
+          "seconds": 3.969651833,
+          "passed": true
+        },
+        {
+          "id": "hjfig-04",
+          "error": 0.013824,
+          "seconds": 4.4170557079999995,
+          "passed": true
+        },
+        {
+          "id": "hjfig-05",
+          "error": 0.009060571106551963,
+          "seconds": 2.9895844580000013,
+          "passed": true
+        },
+        {
+          "id": "hjfla-01",
+          "error": 0.013414171006944444,
+          "seconds": 5.526030875,
+          "passed": true
+        },
+        {
+          "id": "hjcur-01",
+          "error": 0.00512,
+          "seconds": 5.497067082999998,
+          "passed": true
+        },
+        {
+          "id": "hjcur-02",
+          "error": 0.005397333333333333,
+          "seconds": 5.242749166999994,
+          "passed": true
+        },
+        {
+          "id": "hjcur-03",
+          "error": 0.004522666666666667,
+          "seconds": 5.336039875000003,
+          "passed": true
+        },
+        {
+          "id": "hjcur-04",
+          "error": 0.0056248888888888885,
+          "seconds": 7.339445625000001,
+          "passed": true
+        },
+        {
+          "id": "hjcur-05",
+          "error": 0.009436444444444445,
+          "seconds": 3.6685180000000037,
+          "passed": true
+        },
+        {
+          "id": "hjhih-01",
+          "error": 0.0060202958468683725,
+          "seconds": 6.630629292000005,
+          "passed": true
+        },
+        {
+          "id": "hjhih-02",
+          "error": 0.003899406226779104,
+          "seconds": 5.261515415999995,
+          "passed": true
+        },
+        {
+          "id": "hjhih-04",
+          "error": 0.007678910190418844,
+          "seconds": 7.849657999999996,
+          "passed": true
+        },
+        {
+          "id": "hjstr-01",
+          "error": 0.007543348420030173,
+          "seconds": 4.365441583000007,
+          "passed": true
+        },
+        {
+          "id": "hjstr-02",
+          "error": 0.004339250493096647,
+          "seconds": 6.493280291000003,
+          "passed": true
+        },
+        {
+          "id": "hjstr-03",
+          "error": 0.005519980869380381,
+          "seconds": 8.552460082999998,
+          "passed": true
+        },
+        {
+          "id": "hjsta-01",
+          "error": 0.007936288088642659,
+          "seconds": 4.554648207999999,
+          "passed": true
+        },
+        {
+          "id": "hjsta-02",
+          "error": 0.0036485460069444445,
+          "seconds": 4.523931291999994,
+          "passed": true
+        },
+        {
+          "id": "hjsta-03",
+          "error": 0.012339030193129683,
+          "seconds": 6.4465502919999995,
+          "passed": true
+        },
+        {
+          "id": "hjsta-04",
+          "error": 0.005053050026595,
+          "seconds": 6.914440624999989,
+          "passed": true
+        },
+        {
+          "id": "hjsta-05",
+          "error": 0.010624446293860237,
+          "seconds": 6.16794191699999,
+          "passed": true
+        }
+      ]
+    },
+    "artifacts": {
+      "edgeBefore": "tmp/tree-edge-baseline",
+      "edgeAfter": "tmp/tree-edge-repaired",
+      "clean": "tmp/tree-clean-replay",
+      "web": "tmp/edge-topology-web",
+      "manualCrop": "tmp/edge-topology-tree-manual",
+      "hunodan": "tmp/edge-topology-hunodan"
+    },
+    "beforeCommit": "e1ae9d3",
+    "qa": {
+      "applicationTests": {
+        "passed": 842,
+        "skipped": 1
+      },
+      "inverseTests": {
+        "passed": 518
+      },
+      "sharedFixtureFollowupTests": {
+        "passed": 16
+      },
+      "check": {
+        "errors": 0,
+        "existingWarnings": 7
+      },
+      "lint": true,
+      "build": true,
+      "logs": [
+        "tmp/edge-topology-all-tests-final.log",
+        "tmp/edge-topology-shared-fixture.log",
+        "tmp/edge-topology-check.log",
+        "tmp/edge-topology-lint-final.log",
+        "tmp/edge-topology-build.log"
+      ]
+    },
+    "browser": {
+      "tested": [
+        "chromium",
+        "webkit"
+      ],
+      "method": "Page-clock timestamps from the Find click, worker requests/replies and the first visible, enabled Open in Draw button. DOM readiness is not a paint timestamp. Result capture and artifact writes happen afterward and have separate Node-clock durations. Version 1 solveAndConversionSeconds included harness capture and artifact writes and is not directly comparable.",
+      "harnessSourceHashes": {
+        "scripts/inverse/paint-browser-test.mjs": "09630e61033306bc588b1432241dc3362427b102ee818e320acfbba734c1f7a3",
+        "scripts/inverse/paint-observer.mjs": "1e295aacf3b488ff4d1bfe73b67f0976b88d6e2d3ea03dbca9f5b69e222568b7",
+        "scripts/inverse/motif-fixture.mjs": "4c735dc7b27f39ce30362830ef911b79347a8b7f43d01b4eaeaf5750460355f1",
+        "scripts/inverse/tree-fixture.mjs": "771d6383cf90e840c911543258e26cd82c5d287336e65f53898045f429a1d84a",
+        "scripts/inverse/stop-browser-hooks.mjs": "61774cef8a958c5ef62784142c52e8abecf51755b29d9c1a5494ccacba2bb220"
+      },
+      "workspaceSourceHashes": {
+        "static/inverse/worker.js": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70",
+        "static/inverse/worker-bootstrap.js": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+        "static/inverse/worker-controller.js": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+        "static/inverse/compute-worker.js": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+        "static/inverse/core/engine.js": "f4c7f3f11b4543b9270ef849d3924fd67ea722574abdef8a861b118cdf3731c1",
+        "static/inverse/core/stopped.js": "f2c50e6dca6ac2a1ea8d7b2fa1c5984109a5502dca728601f4e9e885ebf406a8",
+        "static/inverse/core/progress.js": "5034d4c14b1abdf9c656208a13f0d24cf7254a1ce6323f452bb45f39d67e5370",
+        "static/inverse/core/feature-recovery.js": "8bdb94171ff20e7bdd9e192b567a9721c6f6b6e7319e98fdeb75289a0dcb80bd",
+        "static/inverse/core/solver.js": "de7d3b887d0b2faf28af21ba9b29de331b4566ff5374523db15fbbb0487dd8ea",
+        "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+        "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+        "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+        "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+        "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+        "static/inverse/core/direct/prefer-matching.js": "2e07c19f7e09a296bf93677c53ff78de489e85fc3064d295c4149c8cc567cf00",
+        "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+        "src/lib/inverse/engine.ts": "227682f8f1640f5b82bac0d34ced733350bbf6aa030cee4fc20f4204e44a99e6",
+        "static/inverse/core/direct/finalize.js": "fb76ad1ba8aa6caed2b8643a6b2795049ed4a850f996a1707e3698cc6042f0da",
+        "static/inverse/core/direct/topology.js": "1765f2959e059e793ebc9f14b7922a8f14f84c312a5c26cc7d7dc220a335f3db",
+        "static/inverse/core/direct/fit.js": "b949bcff17975a9ff987db240b6b88371272140869fb21a5fd895899369d5cd1",
+        "static/inverse/core/direct/share.js": "af031c51dace35702cfbde9ccf8c48989858ef405b631652521a8f538f01e352",
+        "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+        "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+        "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+        "src/lib/inverse/toHeartDesign.ts": "41edadce4a5be5b8c7dd977a3761e5c7992bb462633f8651e0d9f0293370e931",
+        "src/lib/inverse/simplifyCurves.ts": "c693b9eb86084926d941d7e60a1a38178156d081657feabce41ff03261714173",
+        "src/lib/editor/curveIssues.ts": "293535d5f73d3dd4c9a7bbfc1c83b25ba81558d593644743496cf9e8afa5358e",
+        "src/lib/components/paint/PaintPage.svelte": "dc0b6df3cbd9ea561930722be4cca05d96066ecfabc06962907de2443e648193",
+        "src/lib/inverse/conversionFidelity.ts": "45db43e0919b98cfe03c115bda7473896de0da1aeec89e94ee74bbaeffdbb589",
+        "static/inverse/core/direct/refine.js": "b5ee17d9c021b724011054544a33dfbdab798ed91adca9c32c6cbb8d2a5fc1ad",
+        "static/inverse/core/direct/primitive-selection.js": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904",
+        "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+        "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+        "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+        "static/inverse/core/direct/short-returns.js": "289b4bb963ae4f5b9fd068d2eb742fc5b025566c43409bf9c0ac3a14f909c3a9",
+        "src/lib/components/editor/SymmetryRows.svelte": "1bf99195778a11baf02bff2bf0ab9983a9ab6ae3d5d52b7f29f17eb0efb57884",
+        "src/lib/components/ui/toggle-group/toggle-group.svelte": "ef3ac7b6559268d4e5b8f34870b91939fc39a92718a5d90b650c383f0ca178d4",
+        "src/lib/components/paint/FramePanel.svelte": "9d048e201f9c83b3343d487f716dc835cfe9e61067fa228c8b4c043f7624bc1f",
+        "src/lib/components/paint/MaskToolPanel.svelte": "b37ff23378e86b8411f911a2c2106d8d3f410ab395b0c08915d4329b4ec143cb"
+      },
+      "results": [
+        {
+          "browser": "chromium",
+          "browserVersion": "145.0.7632.6",
+          "name": "star",
+          "passed": true,
+          "seconds": 2.012399999976158,
+          "sourceEditableError": 0.0016,
+          "conversionFidelity": {
+            "passed": true,
+            "maximumWeaveDrift": 0.001,
+            "weaveDrift": [
+              {
+                "resolution": 400,
+                "mismatch": 0
+              },
+              {
+                "resolution": 800,
+                "mismatch": 0.0000625
+              }
+            ],
+            "originalSourceError": 0.0016,
+            "sourceError": 0.0016
+          }
+        },
+        {
+          "browser": "chromium",
+          "browserVersion": "145.0.7632.6",
+          "name": "top-hat",
+          "passed": true,
+          "seconds": 9.734300000071526,
+          "sourceEditableError": 0.0032064909297052154,
+          "conversionFidelity": {
+            "passed": true,
+            "maximumWeaveDrift": 0.001,
+            "weaveDrift": [
+              {
+                "resolution": 400,
+                "mismatch": 0
+              },
+              {
+                "resolution": 800,
+                "mismatch": 0
+              }
+            ],
+            "originalSourceError": 0.0032064909297052154,
+            "sourceError": 0.0032064909297052154
+          }
+        },
+        {
+          "browser": "chromium",
+          "browserVersion": "145.0.7632.6",
+          "name": "top-hat-independent",
+          "passed": true,
+          "seconds": 5.9523999999761585,
+          "sourceEditableError": 0.0029584750566893424,
+          "conversionFidelity": {
+            "passed": true,
+            "maximumWeaveDrift": 0.001,
+            "weaveDrift": [
+              {
+                "resolution": 400,
+                "mismatch": 0.00036875
+              },
+              {
+                "resolution": 800,
+                "mismatch": 0.000325
+              }
+            ],
+            "originalSourceError": 0.0029584750566893424,
+            "sourceError": 0.0029584750566893424
+          }
+        },
+        {
+          "browser": "chromium",
+          "browserVersion": "145.0.7632.6",
+          "name": "top-hat-anti",
+          "passed": true,
+          "seconds": 7.630900000095368,
+          "sourceEditableError": 0.0031887755102040817,
+          "conversionFidelity": {
+            "passed": true,
+            "maximumWeaveDrift": 0.001,
+            "weaveDrift": [
+              {
+                "resolution": 400,
+                "mismatch": 0
+              },
+              {
+                "resolution": 800,
+                "mismatch": 0
+              }
+            ],
+            "originalSourceError": 0.0031887755102040817,
+            "sourceError": 0.0031887755102040817
+          }
+        },
+        {
+          "browser": "chromium",
+          "browserVersion": "145.0.7632.6",
+          "name": "hunodan",
+          "passed": true,
+          "seconds": 4.831300000071526,
+          "sourceEditableError": 0.00944375,
+          "conversionFidelity": {
+            "passed": true,
+            "maximumWeaveDrift": 0.001,
+            "weaveDrift": [
+              {
+                "resolution": 400,
+                "mismatch": 0
+              },
+              {
+                "resolution": 800,
+                "mismatch": 0
+              }
+            ],
+            "originalSourceError": 0.00944375,
+            "sourceError": 0.00944375
+          }
+        },
+        {
+          "browser": "webkit",
+          "browserVersion": "26.0",
+          "name": "star",
+          "passed": true,
+          "seconds": 2.087,
+          "sourceEditableError": 0.0016,
+          "conversionFidelity": {
+            "passed": true,
+            "maximumWeaveDrift": 0.001,
+            "weaveDrift": [
+              {
+                "resolution": 400,
+                "mismatch": 0
+              },
+              {
+                "resolution": 800,
+                "mismatch": 0.0000625
+              }
+            ],
+            "originalSourceError": 0.0016,
+            "sourceError": 0.0016
+          }
+        },
+        {
+          "browser": "webkit",
+          "browserVersion": "26.0",
+          "name": "top-hat",
+          "passed": true,
+          "seconds": 10.267,
+          "sourceEditableError": 0.0032064909297052154,
+          "conversionFidelity": {
+            "passed": true,
+            "maximumWeaveDrift": 0.001,
+            "weaveDrift": [
+              {
+                "resolution": 400,
+                "mismatch": 0
+              },
+              {
+                "resolution": 800,
+                "mismatch": 0
+              }
+            ],
+            "originalSourceError": 0.0032064909297052154,
+            "sourceError": 0.0032064909297052154
+          }
+        },
+        {
+          "browser": "webkit",
+          "browserVersion": "26.0",
+          "name": "top-hat-independent",
+          "passed": true,
+          "seconds": 6.059,
+          "sourceEditableError": 0.0029584750566893424,
+          "conversionFidelity": {
+            "passed": true,
+            "maximumWeaveDrift": 0.001,
+            "weaveDrift": [
+              {
+                "resolution": 400,
+                "mismatch": 0.00036875
+              },
+              {
+                "resolution": 800,
+                "mismatch": 0.000325
+              }
+            ],
+            "originalSourceError": 0.0029584750566893424,
+            "sourceError": 0.0029584750566893424
+          }
+        },
+        {
+          "browser": "webkit",
+          "browserVersion": "26.0",
+          "name": "top-hat-anti",
+          "passed": true,
+          "seconds": 7.892,
+          "sourceEditableError": 0.0031887755102040817,
+          "conversionFidelity": {
+            "passed": true,
+            "maximumWeaveDrift": 0.001,
+            "weaveDrift": [
+              {
+                "resolution": 400,
+                "mismatch": 0
+              },
+              {
+                "resolution": 800,
+                "mismatch": 0
+              }
+            ],
+            "originalSourceError": 0.0031887755102040817,
+            "sourceError": 0.0031887755102040817
+          }
+        },
+        {
+          "browser": "webkit",
+          "browserVersion": "26.0",
+          "name": "hunodan",
+          "passed": true,
+          "seconds": 5.382,
+          "sourceEditableError": 0.00944375,
+          "conversionFidelity": {
+            "passed": true,
+            "maximumWeaveDrift": 0.001,
+            "weaveDrift": [
+              {
+                "resolution": 400,
+                "mismatch": 0
+              },
+              {
+                "resolution": 800,
+                "mismatch": 0
+              }
+            ],
+            "originalSourceError": 0.00944375,
+            "sourceError": 0.00944375
+          }
+        },
+        {
+          "browser": "chromium",
+          "browserVersion": "145.0.7632.6",
+          "name": "noisy-checker",
+          "passed": true,
+          "seconds": 4.082299999952316,
+          "sourceEditableError": 0.000125,
+          "conversionFidelity": {
+            "passed": true,
+            "maximumWeaveDrift": 0.001,
+            "weaveDrift": [
+              {
+                "resolution": 400,
+                "mismatch": 0
+              },
+              {
+                "resolution": 800,
+                "mismatch": 0
+              }
+            ],
+            "originalSourceError": 0.000125,
+            "sourceError": 0.000125
+          }
+        },
+        {
+          "browser": "chromium",
+          "browserVersion": "145.0.7632.6",
+          "name": "noisy-tree",
+          "passed": true,
+          "seconds": 1.747,
+          "sourceEditableError": 0.0012,
+          "conversionFidelity": {
+            "passed": true,
+            "maximumWeaveDrift": 0.001,
+            "weaveDrift": [
+              {
+                "resolution": 400,
+                "mismatch": 0
+              },
+              {
+                "resolution": 800,
+                "mismatch": 0
+              }
+            ],
+            "originalSourceError": 0.0012,
+            "sourceError": 0.0012
+          },
+          "borderRecovery": {
+            "trigger": "Sheet A has 5 start transitions but 3 end transitions. Opposite borders must agree.",
+            "accepted": true,
+            "attempts": [
+              {
+                "borderRadius": 0.5,
+                "imageError": 0.0012875,
+                "endpointIssue": null,
+                "segments": 52,
+                "accepted": true
+              }
+            ],
+            "borderRadius": 0.5,
+            "border": {
+              "radiusMm": 0.5,
+              "depthPixels": 2,
+              "profileNoiseRadiusMm": 0.5,
+              "profilePixelsChanged": 0,
+              "editedBandWidthMm": 0.5,
+              "changedPixels": 40,
+              "changeFraction": 0.00025,
+              "transitionsBefore": [
+                5,
+                3,
+                3,
+                5
+              ],
+              "transitionsAfter": [
+                3,
+                3,
+                3,
+                3
+              ],
+              "method": "Majority across and along inward edge profiles; suppress sub-strip noise before bounded border extension."
+            }
+          }
+        },
+        {
+          "browser": "webkit",
+          "browserVersion": "26.0",
+          "name": "noisy-checker",
+          "passed": true,
+          "seconds": 4.13,
+          "sourceEditableError": 0.000125,
+          "conversionFidelity": {
+            "passed": true,
+            "maximumWeaveDrift": 0.001,
+            "weaveDrift": [
+              {
+                "resolution": 400,
+                "mismatch": 0
+              },
+              {
+                "resolution": 800,
+                "mismatch": 0
+              }
+            ],
+            "originalSourceError": 0.000125,
+            "sourceError": 0.000125
+          }
+        },
+        {
+          "browser": "webkit",
+          "browserVersion": "26.0",
+          "name": "noisy-tree",
+          "passed": true,
+          "seconds": 1.793,
+          "sourceEditableError": 0.0012,
+          "conversionFidelity": {
+            "passed": true,
+            "maximumWeaveDrift": 0.001,
+            "weaveDrift": [
+              {
+                "resolution": 400,
+                "mismatch": 0
+              },
+              {
+                "resolution": 800,
+                "mismatch": 0
+              }
+            ],
+            "originalSourceError": 0.0012,
+            "sourceError": 0.0012
+          },
+          "borderRecovery": {
+            "trigger": "Sheet A has 5 start transitions but 3 end transitions. Opposite borders must agree.",
+            "accepted": true,
+            "attempts": [
+              {
+                "borderRadius": 0.5,
+                "imageError": 0.0012875,
+                "endpointIssue": null,
+                "segments": 52,
+                "accepted": true
+              }
+            ],
+            "borderRadius": 0.5,
+            "border": {
+              "radiusMm": 0.5,
+              "depthPixels": 2,
+              "profileNoiseRadiusMm": 0.5,
+              "profilePixelsChanged": 0,
+              "editedBandWidthMm": 0.5,
+              "changedPixels": 40,
+              "changeFraction": 0.00025,
+              "transitionsBefore": [
+                5,
+                3,
+                3,
+                5
+              ],
+              "transitionsAfter": [
+                3,
+                3,
+                3,
+                3
+              ],
+              "method": "Majority across and along inward edge profiles; suppress sub-strip noise before bounded border extension."
+            }
+          }
+        }
+      ],
+      "harnessCorrections": [
+        {
+          "artifact": "tmp/edge-topology-browser",
+          "case": "noisy-checker",
+          "issue": "The equal-width input was made exactly symmetric by the import UI before solving, so a routing-recovery assertion could not exercise the intended perturbation."
+        },
+        {
+          "artifact": "tmp/edge-topology-browser-noise",
+          "case": "noisy-checker",
+          "issue": "The unequal-width checker retained its edge defect and fit correctly through the grid initializer, before topology was needed. Final harness checks quality for this case and exercises topology recovery with a symmetric noisy tree instead."
+        }
+      ],
+      "artifacts": [
+        "tmp/edge-topology-browser",
+        "tmp/edge-topology-browser-noise-final"
+      ],
+      "firefox": "Not rerun: the previous full-pipeline check recorded a native launch failure before any page opened.",
+      "harnessCommit": "f484528"
+    },
+    "servedSourceCheck": {
+      "origin": "http://127.0.0.1:5232",
+      "files": [
+        "static/inverse/core/direct/topology.js",
+        "static/inverse/core/direct/fit.js",
+        "static/inverse/core/direct/matching.js",
+        "static/inverse/core/direct/share.js"
+      ],
+      "allHashesMatch": true
+    }
+  }
+}

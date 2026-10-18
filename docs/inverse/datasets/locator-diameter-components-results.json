@@ -1,0 +1,845 @@
+{
+  "schema": "locator-diameter-components-results-1",
+  "status": "complete-experiment-global-change-rejected",
+  "deployed": false,
+  "training": false,
+  "scope": "Isolate cap-side purity from the colour-step reward in the palette locator objective using frozen SAM body and RGB material predictions. Same photographs, geometry, support gates and fitting allowance. No annotations enter reconstruction.",
+  "plans": [
+    "docs/inverse/datasets/locator-diameter-components-plan.json",
+    "docs/inverse/datasets/locator-diameter-components-pipeline-plan.json"
+  ],
+  "cropAttempts": 66,
+  "cropSummary": {
+    "baseline": {
+      "proposed": 14,
+      "gains": [],
+      "losses": []
+    },
+    "no-contrast": {
+      "proposed": 15,
+      "gains": [
+        "real-3f7b76e1a98e808f-body-1",
+        "real-45744a03afddccb1-body-1"
+      ],
+      "losses": [
+        "real-340f5e5b0f447889-body-1"
+      ]
+    },
+    "no-purity": {
+      "proposed": 14,
+      "gains": [],
+      "losses": []
+    }
+  },
+  "baselineCropCoordinatesReproducedExactly": true,
+  "baselineMasksReproducedExactly": true,
+  "pipelineAttempts": 44,
+  "pipeline": {
+    "baseline": {
+      "counts": {
+        "checked-derived-mask": 12,
+        "crop-unresolved": 8,
+        "review-required": 2
+      },
+      "editableConverted": 14,
+      "completeEditable": 12,
+      "rows": [
+        {
+          "id": "real-12ce3c9180f7f317-body-1",
+          "status": "checked-derived-mask",
+          "independentImageError": 0.00373125,
+          "solveSeconds": 5.794589041,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 160000,
+            "method": "Production complete bilinear support in original source RGB"
+          }
+        },
+        {
+          "id": "real-2044b1d98ed6f262-body-1",
+          "status": "checked-derived-mask",
+          "independentImageError": 0.01205,
+          "solveSeconds": 5.296825666999998,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 160000,
+            "method": "Production complete bilinear support in original source RGB"
+          }
+        },
+        {
+          "id": "real-340f5e5b0f447889-body-1",
+          "status": "checked-derived-mask",
+          "independentImageError": 0.0141875,
+          "solveSeconds": 8.430865459000005,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 160000,
+            "method": "Production complete bilinear support in original source RGB"
+          }
+        },
+        {
+          "id": "real-39f3a1ba97852876-body-1",
+          "status": "checked-derived-mask",
+          "independentImageError": 0.00515625,
+          "solveSeconds": 3.489791624999998,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 160000,
+            "method": "Production complete bilinear support in original source RGB"
+          }
+        },
+        {
+          "id": "real-3f7b76e1a98e808f-body-1",
+          "status": "crop-unresolved"
+        },
+        {
+          "id": "real-45744a03afddccb1-body-1",
+          "status": "crop-unresolved"
+        },
+        {
+          "id": "real-5330aa8b62176216-body-1",
+          "status": "review-required",
+          "independentImageError": 0.046875,
+          "solveSeconds": 9.522929292000008,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 160000,
+            "method": "Production complete bilinear support in original source RGB"
+          }
+        },
+        {
+          "id": "real-68d8f25d8891df62-body-1",
+          "status": "crop-unresolved"
+        },
+        {
+          "id": "real-710703159f609111-body-1",
+          "status": "checked-derived-mask",
+          "independentImageError": 0.0026375,
+          "solveSeconds": 3.100519583000001,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 160000,
+            "method": "Production complete bilinear support in original source RGB"
+          }
+        },
+        {
+          "id": "real-80794af7903e5d29-body-1",
+          "status": "checked-derived-mask",
+          "independentImageError": 0.0108875,
+          "solveSeconds": 5.816570500000002,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 160000,
+            "method": "Production complete bilinear support in original source RGB"
+          }
+        },
+        {
+          "id": "real-8c875dd0f298b5a4-body-1",
+          "status": "review-required",
+          "independentImageError": 0.01940625,
+          "solveSeconds": 9.671430208000006,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 160000,
+            "method": "Production complete bilinear support in original source RGB"
+          }
+        },
+        {
+          "id": "real-990ac34431be87fe-body-1",
+          "status": "crop-unresolved"
+        },
+        {
+          "id": "real-995899fe049540ed-body-1",
+          "status": "crop-unresolved"
+        },
+        {
+          "id": "real-a414dfffbd2362ae-body-1",
+          "status": "checked-derived-mask",
+          "independentImageError": 0.0103375,
+          "solveSeconds": 9.235904666999994,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 160000,
+            "method": "Production complete bilinear support in original source RGB"
+          }
+        },
+        {
+          "id": "real-abf590088db891f9-body-1",
+          "status": "checked-derived-mask",
+          "independentImageError": 0.0057125,
+          "solveSeconds": 7.820732875000016,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 160000,
+            "method": "Production complete bilinear support in original source RGB"
+          }
+        },
+        {
+          "id": "real-b87b0b19f12724f3-body-1",
+          "status": "checked-derived-mask",
+          "independentImageError": 0.00655625,
+          "solveSeconds": 3.2759541250000184,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 160000,
+            "method": "Production complete bilinear support in original source RGB"
+          }
+        },
+        {
+          "id": "real-c0cc1ce97cf5e6a6-body-1",
+          "status": "checked-derived-mask",
+          "independentImageError": 0.01606875,
+          "solveSeconds": 8.098478332999978,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 160000,
+            "method": "Production complete bilinear support in original source RGB"
+          }
+        },
+        {
+          "id": "real-c4a9ee6e2d0a4185-body-1",
+          "status": "checked-derived-mask",
+          "independentImageError": 0.01065625,
+          "solveSeconds": 7.994294458999997,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 160000,
+            "method": "Production complete bilinear support in original source RGB"
+          }
+        },
+        {
+          "id": "real-cdae5c890b6933cd-body-1",
+          "status": "crop-unresolved"
+        },
+        {
+          "id": "real-cf2d0fcff65d7386-body-1",
+          "status": "crop-unresolved"
+        },
+        {
+          "id": "real-d5b0aa8d4d2465ee-body-1",
+          "status": "crop-unresolved"
+        },
+        {
+          "id": "real-e936e08ac62db19b-body-1",
+          "status": "checked-derived-mask",
+          "independentImageError": 0.00563125,
+          "solveSeconds": 4.142343083000014,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 160000,
+            "method": "Production complete bilinear support in original source RGB"
+          }
+        }
+      ]
+    },
+    "no-contrast": {
+      "counts": {
+        "checked-derived-mask": 11,
+        "crop-unresolved": 7,
+        "review-required": 4
+      },
+      "editableConverted": 14,
+      "completeEditable": 11,
+      "rows": [
+        {
+          "id": "real-12ce3c9180f7f317-body-1",
+          "status": "checked-derived-mask",
+          "independentImageError": 0.0040375,
+          "solveSeconds": 8.769022166999997,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 160000,
+            "method": "Production complete bilinear support in original source RGB"
+          }
+        },
+        {
+          "id": "real-2044b1d98ed6f262-body-1",
+          "status": "checked-derived-mask",
+          "independentImageError": 0.00956875,
+          "solveSeconds": 5.577661209000001,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 160000,
+            "method": "Production complete bilinear support in original source RGB"
+          }
+        },
+        {
+          "id": "real-340f5e5b0f447889-body-1",
+          "status": "crop-unresolved"
+        },
+        {
+          "id": "real-39f3a1ba97852876-body-1",
+          "status": "checked-derived-mask",
+          "independentImageError": 0.0110125,
+          "solveSeconds": 3.1643808330000027,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 160000,
+            "method": "Production complete bilinear support in original source RGB"
+          }
+        },
+        {
+          "id": "real-3f7b76e1a98e808f-body-1",
+          "status": "review-required",
+          "independentImageError": 0.0074949481046790245,
+          "solveSeconds": 9.429219167000003,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 159841,
+            "method": "Production complete bilinear support in original source RGB",
+            "file": "observed.bin",
+            "sha256": "f5af4c541a010e4af6a1b7311b42e0cf73673093b4684cdf68aa03000cbd9845"
+          }
+        },
+        {
+          "id": "real-45744a03afddccb1-body-1",
+          "status": "checked-derived-mask",
+          "independentImageError": 0.005675,
+          "solveSeconds": 7.770041917000002,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 160000,
+            "method": "Production complete bilinear support in original source RGB"
+          }
+        },
+        {
+          "id": "real-5330aa8b62176216-body-1",
+          "status": "review-required",
+          "independentImageError": 0.10289375,
+          "solveSeconds": 9.849311625000002,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 160000,
+            "method": "Production complete bilinear support in original source RGB"
+          }
+        },
+        {
+          "id": "real-68d8f25d8891df62-body-1",
+          "status": "crop-unresolved"
+        },
+        {
+          "id": "real-710703159f609111-body-1",
+          "status": "checked-derived-mask",
+          "independentImageError": 0.00470625,
+          "solveSeconds": 5.992788709,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 160000,
+            "method": "Production complete bilinear support in original source RGB"
+          }
+        },
+        {
+          "id": "real-80794af7903e5d29-body-1",
+          "status": "checked-derived-mask",
+          "independentImageError": 0.01879375,
+          "solveSeconds": 6.4824543330000015,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 160000,
+            "method": "Production complete bilinear support in original source RGB"
+          }
+        },
+        {
+          "id": "real-8c875dd0f298b5a4-body-1",
+          "status": "review-required",
+          "independentImageError": 0.0338625,
+          "solveSeconds": 9.597737875000005,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 160000,
+            "method": "Production complete bilinear support in original source RGB"
+          }
+        },
+        {
+          "id": "real-990ac34431be87fe-body-1",
+          "status": "crop-unresolved"
+        },
+        {
+          "id": "real-995899fe049540ed-body-1",
+          "status": "crop-unresolved"
+        },
+        {
+          "id": "real-a414dfffbd2362ae-body-1",
+          "status": "checked-derived-mask",
+          "independentImageError": 0.01016875,
+          "solveSeconds": 9.415006999999997,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 160000,
+            "method": "Production complete bilinear support in original source RGB"
+          }
+        },
+        {
+          "id": "real-abf590088db891f9-body-1",
+          "status": "checked-derived-mask",
+          "independentImageError": 0.01919375,
+          "solveSeconds": 9.168319917000016,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 160000,
+            "method": "Production complete bilinear support in original source RGB"
+          }
+        },
+        {
+          "id": "real-b87b0b19f12724f3-body-1",
+          "status": "checked-derived-mask",
+          "independentImageError": 0.01159375,
+          "solveSeconds": 3.971838958999986,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 160000,
+            "method": "Production complete bilinear support in original source RGB"
+          }
+        },
+        {
+          "id": "real-c0cc1ce97cf5e6a6-body-1",
+          "status": "checked-derived-mask",
+          "independentImageError": 0.02181875,
+          "solveSeconds": 9.374771500000003,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 160000,
+            "method": "Production complete bilinear support in original source RGB"
+          }
+        },
+        {
+          "id": "real-c4a9ee6e2d0a4185-body-1",
+          "status": "review-required",
+          "independentImageError": 0.00930625,
+          "solveSeconds": 8.614093292000005,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 160000,
+            "method": "Production complete bilinear support in original source RGB"
+          }
+        },
+        {
+          "id": "real-cdae5c890b6933cd-body-1",
+          "status": "crop-unresolved"
+        },
+        {
+          "id": "real-cf2d0fcff65d7386-body-1",
+          "status": "crop-unresolved"
+        },
+        {
+          "id": "real-d5b0aa8d4d2465ee-body-1",
+          "status": "crop-unresolved"
+        },
+        {
+          "id": "real-e936e08ac62db19b-body-1",
+          "status": "checked-derived-mask",
+          "independentImageError": 0.0088625,
+          "solveSeconds": 8.985704041999998,
+          "observation": {
+            "totalPixels": 160000,
+            "observedPixels": 160000,
+            "method": "Production complete bilinear support in original source RGB"
+          }
+        }
+      ]
+    }
+  },
+  "coverageCorrection": {
+    "implementation": "scripts/inverse/learning/material-target.mjs",
+    "onlyClippedCase": "real-3f7b76e1a98e808f-body-1",
+    "observation": {
+      "totalPixels": 160000,
+      "observedPixels": 159841,
+      "method": "Production complete bilinear support in original source RGB",
+      "file": "observed.bin",
+      "sha256": "f5af4c541a010e4af6a1b7311b42e0cf73673093b4684cdf68aa03000cbd9845"
+    },
+    "missingPixels": 159,
+    "through": [
+      "binary preparation and fitting weights",
+      "independent render and feature scoring",
+      "editable conversion, serialization and scoring"
+    ],
+    "focusedNodeChecksPassed": 12,
+    "cornerMetricPythonChecksPassed": 6
+  },
+  "editable": {
+    "allExpectedExportsAudited": 29,
+    "sourceFilesVerified": 876,
+    "allAcceptedOutputsPassEditable": true,
+    "controllerStatusPreserved": {
+      "status": "failed",
+      "stage": "editable",
+      "exitCode": 1
+    },
+    "rejectedConversions": [
+      {
+        "id": "real-5330aa8b62176216-body-1-no-contrast",
+        "preset": "automatic",
+        "engineChecksPassed": false,
+        "independentEngineError": 0.10289375,
+        "geometrySha256": "9bfb7eb034ad2a8e23043505e76ef5dd3085faa356204d7bcd5ba6ec28e89e2b",
+        "maskSha256": "6936d5f8d11c9f929c3491965b77f3393e6403a594b4f900bc693c82b9675c7f",
+        "conversionPassed": false,
+        "completeCandidatePassed": false,
+        "error": "The converted cuts fail the editor\u2019s crossing or minimum-spacing checks, including without simplification.",
+        "seconds": 0.6669029999999985
+      }
+    ]
+  },
+  "independentCornerReferences": [
+    {
+      "id": "real-12ce3c9180f7f317-body-1",
+      "method": "baseline",
+      "proposed": true,
+      "metrics": {
+        "cornerErrorPixels": [
+          21.09518634231083,
+          3.6746315515489454,
+          15.027922135846024,
+          8.62032809635503
+        ],
+        "referenceMeanSidePixels": 1609.3110618156265,
+        "referenceUncertaintyPixels": 29.0273,
+        "maximumCornerErrorSideFraction": 0.013108209371599804,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.0
+      }
+    },
+    {
+      "id": "real-12ce3c9180f7f317-body-1",
+      "method": "no-contrast",
+      "proposed": true,
+      "metrics": {
+        "cornerErrorPixels": [
+          21.4744849909296,
+          6.42645946530821,
+          15.027922135846024,
+          6.422965054283116
+        ],
+        "referenceMeanSidePixels": 1609.3110618156265,
+        "referenceUncertaintyPixels": 29.0273,
+        "maximumCornerErrorSideFraction": 0.013343899448936903,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.0
+      }
+    },
+    {
+      "id": "real-12ce3c9180f7f317-body-1",
+      "method": "no-purity",
+      "proposed": true,
+      "metrics": {
+        "cornerErrorPixels": [
+          21.295763320121907,
+          3.960681208726089,
+          15.027922135846024,
+          7.109201685996078
+        ],
+        "referenceMeanSidePixels": 1609.3110618156265,
+        "referenceUncertaintyPixels": 29.0273,
+        "maximumCornerErrorSideFraction": 0.013232844678328378,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.0
+      }
+    },
+    {
+      "id": "real-5330aa8b62176216-body-1",
+      "method": "baseline",
+      "proposed": true,
+      "metrics": {
+        "cornerErrorPixels": [
+          8.369059826521244,
+          3.0861674051884136,
+          3.3651028275644155,
+          3.4803767420402885
+        ],
+        "referenceMeanSidePixels": 138.69028614139583,
+        "referenceUncertaintyPixels": 6.0,
+        "maximumCornerErrorSideFraction": 0.0603435183484222,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.017081656491111204
+      }
+    },
+    {
+      "id": "real-5330aa8b62176216-body-1",
+      "method": "no-contrast",
+      "proposed": true,
+      "metrics": {
+        "cornerErrorPixels": [
+          7.7864950344419865,
+          2.7820653875896144,
+          3.3651028275644155,
+          4.603760319903427
+        ],
+        "referenceMeanSidePixels": 138.69028614139583,
+        "referenceUncertaintyPixels": 6.0,
+        "maximumCornerErrorSideFraction": 0.05614304542211121,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.012881183564800211
+      }
+    },
+    {
+      "id": "real-5330aa8b62176216-body-1",
+      "method": "no-purity",
+      "proposed": true,
+      "metrics": {
+        "cornerErrorPixels": [
+          8.507289483840665,
+          3.0113025231245127,
+          3.3651028275644155,
+          3.3681695019786893
+        ],
+        "referenceMeanSidePixels": 138.69028614139583,
+        "referenceUncertaintyPixels": 6.0,
+        "maximumCornerErrorSideFraction": 0.06134019707167824,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.018078335214367244
+      }
+    },
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "method": "no-contrast",
+      "proposed": true,
+      "metrics": {
+        "cornerErrorPixels": [
+          11.890549971412954,
+          5.007155993080996,
+          12.470758511405325,
+          4.226640262109047
+        ],
+        "referenceMeanSidePixels": 209.4456998764857,
+        "referenceUncertaintyPixels": 6.0,
+        "maximumCornerErrorSideFraction": 0.05954172617895512,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.030894683038235022
+      }
+    },
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "method": "no-purity",
+      "proposed": true,
+      "metrics": {
+        "cornerErrorPixels": [
+          2.2944700157906786,
+          9.788752718551665,
+          12.470758511405325,
+          3.1405124099867034
+        ],
+        "referenceMeanSidePixels": 209.4456998764857,
+        "referenceUncertaintyPixels": 6.0,
+        "maximumCornerErrorSideFraction": 0.05954172617895512,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.030894683038235022
+      }
+    },
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "method": "baseline",
+      "proposed": true,
+      "metrics": {
+        "cornerErrorPixels": [
+          2.460151594789048,
+          9.612635867226938,
+          12.470758511405325,
+          3.0651775650289204
+        ],
+        "referenceMeanSidePixels": 209.4456998764857,
+        "referenceUncertaintyPixels": 6.0,
+        "maximumCornerErrorSideFraction": 0.05954172617895512,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.030894683038235022
+      }
+    },
+    {
+      "id": "real-995899fe049540ed-body-1",
+      "method": "baseline",
+      "proposed": false,
+      "metrics": null
+    },
+    {
+      "id": "real-995899fe049540ed-body-1",
+      "method": "no-contrast",
+      "proposed": false,
+      "metrics": null
+    },
+    {
+      "id": "real-995899fe049540ed-body-1",
+      "method": "no-purity",
+      "proposed": false,
+      "metrics": null
+    },
+    {
+      "id": "real-abf590088db891f9-body-1",
+      "method": "no-purity",
+      "proposed": true,
+      "metrics": {
+        "cornerErrorPixels": [
+          3.6256999541642982,
+          4.689905188229894,
+          1.0520831436762959,
+          4.74444992658081
+        ],
+        "referenceMeanSidePixels": 138.96634024760576,
+        "referenceUncertaintyPixels": 6.0,
+        "maximumCornerErrorSideFraction": 0.034141000749730484,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.0
+      }
+    },
+    {
+      "id": "real-abf590088db891f9-body-1",
+      "method": "baseline",
+      "proposed": true,
+      "metrics": {
+        "cornerErrorPixels": [
+          3.403948015313903,
+          4.555578198478684,
+          1.0520831436762959,
+          4.5404659623763255
+        ],
+        "referenceMeanSidePixels": 138.96634024760576,
+        "referenceUncertaintyPixels": 6.0,
+        "maximumCornerErrorSideFraction": 0.03278188221954828,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.0
+      }
+    },
+    {
+      "id": "real-abf590088db891f9-body-1",
+      "method": "no-contrast",
+      "proposed": true,
+      "metrics": {
+        "cornerErrorPixels": [
+          2.128343737373724,
+          2.2171404477128434,
+          1.0520831436762959,
+          2.1132351366035964
+        ],
+        "referenceMeanSidePixels": 138.96634024760576,
+        "referenceUncertaintyPixels": 6.0,
+        "maximumCornerErrorSideFraction": 0.01595451419215915,
+        "maximumExcessBeyondReferenceUncertaintySideFraction": 0.0
+      }
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1",
+      "method": "no-purity",
+      "proposed": false,
+      "metrics": null
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1",
+      "method": "baseline",
+      "proposed": false,
+      "metrics": null
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1",
+      "method": "no-contrast",
+      "proposed": false,
+      "metrics": null
+    }
+  ],
+  "visualReview": {
+    "cropPanels": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "reconstructionPanels": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "exportedOutputsInspected": 29,
+    "starFeatureSourcePointPixels": [
+      44.8398602453974,
+      489.8889385982767
+    ],
+    "starFeatureInterpretation": "The lost classified region lies on a thin dark strip at the photographed outer edge. It is visible in the source zoom; do not relabel it as noise or ignore the feature check. Its precise physical paper identity remains uncertain."
+  },
+  "findings": [
+    "Removing only the contrast reward gains rotated star and rabbit crops but loses aircraft: 14 to 15 crop proposals. Removing only the purity term keeps 14 and the same proposed IDs.",
+    "Full reconstruction regresses from 12 to 11 checked outputs: rabbit gained; aircraft crop and candle feature lost. Star reaches 0.7495% observed-mask disagreement but loses a 9.4375 square mm classified border feature. Geometry passes; overall template checks do not.",
+    "The new rabbit passes at 0.5675% disagreement. The ship, fish and several checker borders still show reconstruction deviations; changed crop coordinates alter both the target and optimization trajectory.",
+    "The checker reference corner error stays near 1.3% of side length (baseline 1.311%, no-contrast 1.334%). Better body/corner fits do not guarantee better templates.",
+    "The printed-heart checker continues to confuse decoration with underlying paper: roughly 23.5% error on the independent known paper samples. Sparse interior labels do not certify the bicycle motif.",
+    "All 23 accepted outputs pass editable checks. The one editable conversion failure is the no-contrast bicycle, already rejected by engine, feature and image checks. The controller failure is preserved, not overwritten as a pass."
+  ],
+  "nextStep": "Test a deterministic fallback only when the original cropper fails its unchanged support gates. Preserve accepted baseline crops; evaluate actual fallback selection and end-to-end exports before claiming an improvement. No best-arm union is claimed.",
+  "limitations": [
+    "Twenty-two repeatedly inspected development photographs, not an untouched test set.",
+    "Derived masks are estimated artwork; low error is not original-template accuracy.",
+    "Six approximate corner references and partial interior paper labels leave most photos unscored against independent source labels.",
+    "Timed solves are not fully deterministic; changed crop targets also differ, so aggregate disagreement is not a fixed-target causal quality metric.",
+    "No model or locator objective change is integrated into the application."
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/locator-diameter-components-v1/state.json": "a981c61d18857e9e57ad1c0d58c9370205ae54e15795ef82b10d8dc0975a57cf",
+    "tmp/heart-learning/locator-diameter-components-v1/source.json": "60fd0180ce6622b642be7ae683cc8b8e00844d2d05a16eabc3d125eb920d4617",
+    "tmp/heart-learning/locator-diameter-components-v1/results/report.json": "e6ff3e8a8a0afe9b9e4e25698b36306903a06aa68d9609e304f6de1d329f1c6c",
+    "tmp/heart-learning/locator-diameter-components-v1/pipeline/report.json": "2c92decfc0fc53d76b515662606be765d1d8e6d4f6428101b56be1a201c5ff92",
+    "tmp/heart-learning/locator-diameter-components-v1/pipeline-state.json": "78aee66b39122a45136f06e391473cb1a8ddfdb634892a164d91385b12cbfc85",
+    "tmp/heart-learning/locator-diameter-components-v1/pipeline-checks.json": "dfb909d8016592225d1019e0ba569571ff1c866cf360cf8b26e66d463af6b540",
+    "tmp/heart-learning/locator-diameter-components-v1/pipeline-source.json": "09c205537f2cb8e8a5a889d30a4a0ff123665a6f7a790f1975351a93e0f28ed0",
+    "tmp/heart-learning/locator-diameter-components-v1/post-audit-verification.json": "36f41f420d0cda35e4222fe5d023fd078e4e65e68300d1b7ffb2dc270f20b6be",
+    "tmp/heart-learning/locator-diameter-components-v1/editable/results.json": "72bf4f99502ebe25ce3b4e9b320316c4041451bd1beb2eb83e7967a4315ea8eb",
+    "tmp/heart-learning/locator-diameter-components-v1/corner-audit.json": "312f66264351e24a3e52d15616e4677d60f6478f874521cc02b16aae100785d9",
+    "tmp/heart-learning/locator-diameter-components-v1/source-paper-scores.json": "bc94c2864394640f0ae045ed2bdd994713bd92f39ac24916a1bf309e185a3c03",
+    "tmp/heart-learning/locator-diameter-components-v1/reconstruction-figures.json": "1241cd67ef0a0d8c7a4cddceab891f88b8c24de8b2f20f89cd2a2ba19936637e",
+    "tmp/heart-learning/locator-diameter-components-v1/star-feature-diagnosis.png": "cafe8148e7e30cdb87aee860b8543eac5f933bfd314bc33b950fd0ce6340c2f0",
+    "tmp/heart-learning/locator-diameter-components-v1/star-source-feature-zoom.png": "7694c5f30f0851cc087b3bd1e528fe328805f838b7b12cd27d572735fa8b23e3"
+  },
+  "repositoryQA": {
+    "status": "complete",
+    "applicationPassed": 865,
+    "applicationSkipped": 1,
+    "inversePassed": 972,
+    "cornerMetricPythonPassed": 6,
+    "commands": [
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 10.29124775
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 6.665888582999999
+      },
+      {
+        "stage": "test",
+        "command": [
+          "npm",
+          "run",
+          "test"
+        ],
+        "exitCode": 0,
+        "seconds": 1101.407473375
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 19.8315843339999
+      }
+    ],
+    "sourceFilesVerified": 870,
+    "previousProductionPinsUnchanged": 801,
+    "artifactsSha256": {
+      "tmp/heart-learning/locator-diameter-components-v1/qa/source.json": "477e3716f62b4c2262ca69219973ac1cd38334e75bc1aec09b75d853a24ed951",
+      "tmp/heart-learning/locator-diameter-components-v1/qa/state.json": "5126d27eebf9563fa394bb76879d4add4e84006863eeaa113332e1dda95cbf1b",
+      "tmp/heart-learning/locator-diameter-components-v1/qa/checks.json": "a7ecaa1493ae44a3dfb1d7bf62d2f02a9973d0c4bd04fa18d0fe9bc24bc4c546",
+      "tmp/heart-learning/locator-diameter-components-v1/qa/check.log": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+      "tmp/heart-learning/locator-diameter-components-v1/qa/lint.log": "2b7add329ca80a0f26dcb26c7eb139cd28b3768793c6b0797002f91a54119a34",
+      "tmp/heart-learning/locator-diameter-components-v1/qa/test.log": "cd489534e48dd1de860cc55aa90099c09d472e14ed7282087b15cc644dd8ffe0",
+      "tmp/heart-learning/locator-diameter-components-v1/qa/build.log": "72bbe6e81d7b0b5dc149b94f31dea7e73685a3e20b16af698c8413d76dbd4fbd"
+    }
+  }
+}

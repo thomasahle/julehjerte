@@ -1,0 +1,44 @@
+{
+  "sourceCatalogue": "scripts/inverse/photo-cases.json",
+  "sourceCase": "flettede-stonehenge",
+  "sourceFileSha256": "b9a1c5a2059b3781aef01b48d21b90110791cd6befc232999113c732c0a6aa24",
+  "decodedPixelsSha256": "867fdac5181320b2e898b95abb5ee778f6fc8aacab71a78a85be0ed6fa622248",
+  "quad": [
+    [
+      305.5967262064524,
+      107.0274863625818
+    ],
+    [
+      529.7725951657528,
+      350.803899019794
+    ],
+    [
+      294.27536884429037,
+      573.8330869731378
+    ],
+    [
+      74.36258333728793,
+      334.03682567312495
+    ]
+  ],
+  "maskSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+  "probabilitySha256": "d609c5f7fd0b218a53b44872a94f6794a666d163d55904d544f183b9ae726b23",
+  "translations": {
+    "negative-diagonal": {
+      "offset": [-1, -1],
+      "maskSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+      "probabilitySha256": "e02873ac8ffeba37b4ba01394e20ac4cd801d6aeb77ab5b410fd6acb5ad0b20b"
+    },
+    "vertical": {
+      "offset": [0, 1],
+      "maskSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+      "probabilitySha256": "6466b2be539d90b28d67882a07374a1eb508bee20581481c5ed567d1d454efbe"
+    },
+    "horizontal": {
+      "offset": [1, 0],
+      "maskSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+      "probabilitySha256": "250e43d02e140e51b9c03b5a0ca00885fea0f6f5bbfe13a1493968876750c3ac"
+    }
+  },
+  "provenance": "Frozen offline foreground-model crop with a bounded rejected-lobe search. No cutting template or solver feedback was used to generate these corners; they remain needs_review, not ground truth. The old fitter discards the 3+3 color-retaining seed at 9.274% coarse error, changes the routing, and exports a rejected 4.698% mask fit."
+}

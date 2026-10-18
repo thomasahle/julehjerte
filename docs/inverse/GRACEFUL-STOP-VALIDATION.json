@@ -1,0 +1,640 @@
+{
+  "sourceCommit": "1bce9f0f70f2726ea2e37c259c5d74909262d909",
+  "baseline": "a2fd848",
+  "origin": "http://127.0.0.1:5232",
+  "runtime": "v25.6.1",
+  "checks": {
+    "application": 783,
+    "engine": 289,
+    "optionalFixtureSkipped": 1,
+    "svelteErrors": 0,
+    "svelteExistingWarnings": 7,
+    "lintPassed": true,
+    "buildPassed": true
+  },
+  "stop": {
+    "keep-browser": {
+      "cases": 12,
+      "allPassed": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "intervention": {
+        "hashes": {
+          "/inverse/compute-worker.js": {
+            "original": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+            "served": "373f78ea89d08ba2bfe39e6cd5ab6be19dc80561da17d789bd6dcd9c12537ff8"
+          }
+        },
+        "method": "HTTP source override: block the actual compute worker for 30 s before fitting (empty), or immediately after a real validated checkpoint with error <= 0.6%. Cancel-finishing additionally yields for 2 s in finalization. No geometry, counts or seed is supplied."
+      },
+      "rows": [
+        {
+          "browser": "chromium",
+          "name": "star",
+          "seconds": 0.544,
+          "sourceError": 0.001825,
+          "sharedSpans": 12
+        },
+        {
+          "browser": "chromium",
+          "name": "top-hat",
+          "seconds": 1.8480999999642371,
+          "sourceError": 0.004180839002267574,
+          "sharedSpans": 45
+        },
+        {
+          "browser": "chromium",
+          "name": "top-hat-independent",
+          "seconds": 1.3733000000119209,
+          "sourceError": 0.006049815759637188,
+          "sharedSpans": 18
+        },
+        {
+          "browser": "chromium",
+          "name": "top-hat-anti",
+          "seconds": 2.401100000023842,
+          "sourceError": 0.004482001133786848,
+          "sharedSpans": 37
+        },
+        {
+          "browser": "firefox",
+          "name": "star",
+          "seconds": 0.834,
+          "sourceError": 0.001825,
+          "sharedSpans": 12
+        },
+        {
+          "browser": "firefox",
+          "name": "top-hat",
+          "seconds": 2.655,
+          "sourceError": 0.004180839002267574,
+          "sharedSpans": 45
+        },
+        {
+          "browser": "firefox",
+          "name": "top-hat-independent",
+          "seconds": 1.689,
+          "sourceError": 0.006049815759637188,
+          "sharedSpans": 18
+        },
+        {
+          "browser": "firefox",
+          "name": "top-hat-anti",
+          "seconds": 3.168,
+          "sourceError": 0.004482001133786848,
+          "sharedSpans": 37
+        },
+        {
+          "browser": "webkit",
+          "name": "star",
+          "seconds": 0.509,
+          "sourceError": 0.001825,
+          "sharedSpans": 12
+        },
+        {
+          "browser": "webkit",
+          "name": "top-hat",
+          "seconds": 2.1,
+          "sourceError": 0.004180839002267574,
+          "sharedSpans": 45
+        },
+        {
+          "browser": "webkit",
+          "name": "top-hat-independent",
+          "seconds": 1.288000000000001,
+          "sourceError": 0.006049815759637188,
+          "sharedSpans": 18
+        },
+        {
+          "browser": "webkit",
+          "name": "top-hat-anti",
+          "seconds": 2.4170000000000007,
+          "sourceError": 0.004482001133786848,
+          "sharedSpans": 37
+        }
+      ]
+    },
+    "empty-browser-final": {
+      "cases": 3,
+      "allPassed": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "intervention": {
+        "hashes": {
+          "/inverse/compute-worker.js": {
+            "original": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+            "served": "cb98efa658c2f44f6161ac87e939c8df986b070922d49e17b93e0fe4aa1db3d6"
+          }
+        },
+        "method": "HTTP source override: block the actual compute worker for 30 s before fitting (empty), or immediately after a real validated checkpoint with error <= 0.6%. Cancel-finishing additionally yields for 2 s in finalization. No geometry, counts or seed is supplied."
+      },
+      "rows": [
+        {
+          "browser": "chromium",
+          "name": "top-hat",
+          "sourceError": 0.0032064909297052154,
+          "sharedSpans": 41,
+          "stop": {
+            "blocked": 1510,
+            "finishing": null,
+            "stopSent": 1591.699999988079,
+            "stopId": 5,
+            "resultId": 7,
+            "results": 1,
+            "errors": 1,
+            "cancelled": 0
+          }
+        },
+        {
+          "browser": "firefox",
+          "name": "top-hat",
+          "sourceError": 0.0032064909297052154,
+          "sharedSpans": 41,
+          "stop": {
+            "blocked": 1234,
+            "finishing": null,
+            "stopSent": 1333,
+            "stopId": 5,
+            "resultId": 7,
+            "results": 1,
+            "errors": 1,
+            "cancelled": 0
+          }
+        },
+        {
+          "browser": "webkit",
+          "name": "top-hat",
+          "sourceError": 0.0032064909297052154,
+          "sharedSpans": 41,
+          "stop": {
+            "blocked": 1271.0000000000002,
+            "finishing": null,
+            "stopSent": 1367,
+            "stopId": 5,
+            "resultId": 7,
+            "results": 1,
+            "errors": 1,
+            "cancelled": 0
+          }
+        }
+      ]
+    },
+    "cancel-finishing-browser-final": {
+      "cases": 3,
+      "allPassed": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "intervention": {
+        "hashes": {
+          "/inverse/compute-worker.js": {
+            "original": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+            "served": "373f78ea89d08ba2bfe39e6cd5ab6be19dc80561da17d789bd6dcd9c12537ff8"
+          },
+          "/inverse/core/stopped.js": {
+            "original": "e9e62059b5795b867281ab4db4575f825bb1170542d7dcbf398b9ccde648fcbf",
+            "served": "c8fa3ae93eb9cb5a84eaa851c8b12ae5f44fb829273fa9a2c8a8b709001d769a"
+          }
+        },
+        "method": "HTTP source override: block the actual compute worker for 30 s before fitting (empty), or immediately after a real validated checkpoint with error <= 0.6%. Cancel-finishing additionally yields for 2 s in finalization. No geometry, counts or seed is supplied."
+      },
+      "rows": [
+        {
+          "browser": "chromium",
+          "name": "top-hat",
+          "sourceError": 0.0032064909297052154,
+          "sharedSpans": 41,
+          "stop": {
+            "blocked": 7622.400000035763,
+            "finishing": 7708.800000011921,
+            "stopSent": 7701.400000035763,
+            "stopId": 5,
+            "resultId": 8,
+            "results": 1,
+            "errors": 0,
+            "cancelled": 1
+          }
+        },
+        {
+          "browser": "firefox",
+          "name": "top-hat",
+          "sourceError": 0.0032064909297052154,
+          "sharedSpans": 41,
+          "stop": {
+            "blocked": 12792,
+            "finishing": 12899,
+            "stopSent": 12897,
+            "stopId": 5,
+            "resultId": 8,
+            "results": 1,
+            "errors": 0,
+            "cancelled": 1
+          }
+        },
+        {
+          "browser": "webkit",
+          "name": "top-hat",
+          "sourceError": 0.0032064909297052154,
+          "sharedSpans": 41,
+          "stop": {
+            "blocked": 7832,
+            "finishing": 7951.000000000001,
+            "stopSent": 7950,
+            "stopId": 5,
+            "resultId": 8,
+            "results": 1,
+            "errors": 0,
+            "cancelled": 1
+          }
+        }
+      ]
+    },
+    "keep-mobile": {
+      "cases": 1,
+      "allPassed": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "intervention": {
+        "hashes": {
+          "/inverse/compute-worker.js": {
+            "original": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+            "served": "373f78ea89d08ba2bfe39e6cd5ab6be19dc80561da17d789bd6dcd9c12537ff8"
+          }
+        },
+        "method": "HTTP source override: block the actual compute worker for 30 s before fitting (empty), or immediately after a real validated checkpoint with error <= 0.6%. Cancel-finishing additionally yields for 2 s in finalization. No geometry, counts or seed is supplied."
+      },
+      "rows": [
+        {
+          "browser": "chromium",
+          "name": "top-hat",
+          "seconds": 1.9545,
+          "sourceError": 0.004180839002267574,
+          "sharedSpans": 45
+        }
+      ]
+    }
+  },
+  "datasets": {
+    "hunodan": {
+      "cases": 22,
+      "allPassed": true,
+      "retainsCheckpoints": true,
+      "medianSeconds": 4.935239645499998,
+      "maximumSeconds": 8.094796208,
+      "geometryIdenticalToPrevious": 22,
+      "changes": [],
+      "maximumRetainedCandidates": 27,
+      "maximumRetainedBytes": 1107336
+    },
+    "weighted": {
+      "cases": 32,
+      "allPassed": true,
+      "retainsCheckpoints": true,
+      "medianSeconds": 4.612696104000001,
+      "maximumSeconds": 7.851606749999999,
+      "geometryIdenticalToPrevious": 32,
+      "changes": [],
+      "maximumRetainedCandidates": 27,
+      "maximumRetainedBytes": 420812
+    }
+  },
+  "browser": {
+    "browser": {
+      "cases": 18,
+      "allPassed": true,
+      "geometryIdenticalToPrevious": 15,
+      "changes": [],
+      "added": [
+        {
+          "browser": "chromium",
+          "name": "circle-free"
+        },
+        {
+          "browser": "firefox",
+          "name": "circle-free"
+        },
+        {
+          "browser": "webkit",
+          "name": "circle-free"
+        }
+      ],
+      "rows": [
+        {
+          "browser": "chromium",
+          "name": "star",
+          "seconds": 1.919699999988079,
+          "sourceError": 0.0016,
+          "sharedSpans": 12,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "chromium",
+          "name": "hunodan",
+          "seconds": 4.463,
+          "sourceError": 0.00944375,
+          "sharedSpans": 5,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "chromium",
+          "name": "circle-free",
+          "seconds": 6.450300000011921,
+          "sourceError": 0.0012932256235827664,
+          "sharedSpans": 42,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "chromium",
+          "name": "top-hat",
+          "seconds": 9.31130000001192,
+          "sourceError": 0.0032064909297052154,
+          "sharedSpans": 41,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "chromium",
+          "name": "top-hat-independent",
+          "seconds": 5.796,
+          "sourceError": 0.0029584750566893424,
+          "sharedSpans": 30,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "chromium",
+          "name": "top-hat-anti",
+          "seconds": 7.580699999988079,
+          "sourceError": 0.0031887755102040817,
+          "sharedSpans": 39,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "firefox",
+          "name": "star",
+          "seconds": 4.455,
+          "sourceError": 0.0016,
+          "sharedSpans": 12,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "firefox",
+          "name": "hunodan",
+          "seconds": 7.071,
+          "sourceError": 0.00944375,
+          "sharedSpans": 5,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "firefox",
+          "name": "circle-free",
+          "seconds": 10.55,
+          "sourceError": 0.0012666524943310657,
+          "sharedSpans": 45,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "firefox",
+          "name": "top-hat",
+          "seconds": 16.495,
+          "sourceError": 0.0032064909297052154,
+          "sharedSpans": 41,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "firefox",
+          "name": "top-hat-independent",
+          "seconds": 11.067,
+          "sourceError": 0.0029584750566893424,
+          "sharedSpans": 30,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "firefox",
+          "name": "top-hat-anti",
+          "seconds": 11.876,
+          "sourceError": 0.0031887755102040817,
+          "sharedSpans": 39,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "webkit",
+          "name": "star",
+          "seconds": 2.0600000000000005,
+          "sourceError": 0.0016,
+          "sharedSpans": 12,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "webkit",
+          "name": "hunodan",
+          "seconds": 3.942,
+          "sourceError": 0.00944375,
+          "sharedSpans": 5,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "webkit",
+          "name": "circle-free",
+          "seconds": 6.575,
+          "sourceError": 0.0013197987528344671,
+          "sharedSpans": 41,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "webkit",
+          "name": "top-hat",
+          "seconds": 10.237,
+          "sourceError": 0.0032064909297052154,
+          "sharedSpans": 41,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "webkit",
+          "name": "top-hat-independent",
+          "seconds": 6.495,
+          "sourceError": 0.0029584750566893424,
+          "sharedSpans": 30,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "webkit",
+          "name": "top-hat-anti",
+          "seconds": 7.604,
+          "sourceError": 0.0031887755102040817,
+          "sharedSpans": 39,
+          "numericalBackend": "wasm"
+        }
+      ]
+    },
+    "circle-browser": {
+      "cases": 3,
+      "allPassed": true,
+      "geometryIdenticalToPrevious": 3,
+      "changes": [],
+      "added": [],
+      "rows": [
+        {
+          "browser": "chromium",
+          "name": "circle",
+          "seconds": 1.9987000000476838,
+          "sourceError": 0.00095,
+          "sharedSpans": 9,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "firefox",
+          "name": "circle",
+          "seconds": 3.916,
+          "sourceError": 0.0009375,
+          "sharedSpans": 9,
+          "numericalBackend": "wasm"
+        },
+        {
+          "browser": "webkit",
+          "name": "circle",
+          "seconds": 2.141,
+          "sourceError": 0.0009375,
+          "sharedSpans": 9,
+          "numericalBackend": "wasm"
+        }
+      ]
+    },
+    "fallback": {
+      "cases": 1,
+      "allPassed": true,
+      "geometryIdenticalToPrevious": 0,
+      "changes": [],
+      "added": [
+        {
+          "browser": "chromium",
+          "name": "top-hat"
+        }
+      ],
+      "rows": [
+        {
+          "browser": "chromium",
+          "name": "top-hat",
+          "seconds": 11.0225,
+          "sourceError": 0.0032064909297052154,
+          "sharedSpans": 41,
+          "numericalBackend": "javascript",
+          "blockedKernelRequests": 1
+        }
+      ]
+    },
+    "anti-fallback": {
+      "cases": 1,
+      "allPassed": true,
+      "geometryIdenticalToPrevious": 1,
+      "changes": [],
+      "added": [],
+      "rows": [
+        {
+          "browser": "chromium",
+          "name": "top-hat-anti",
+          "seconds": 9.007600000023842,
+          "sourceError": 0.0031887755102040817,
+          "sharedSpans": 39,
+          "numericalBackend": "javascript",
+          "blockedKernelRequests": 1
+        }
+      ]
+    },
+    "controls": {
+      "cases": 2,
+      "allPassed": true
+    }
+  },
+  "servedSourceHashes": {
+    "static/inverse/compute-worker.js": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+    "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+    "static/inverse/core/chord-distance.js": "cb79dd6d90d22b6bea6bb4bd0593cc8e32a18a09116084e53f5d942bcbef3c04",
+    "static/inverse/core/crop.js": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88",
+    "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+    "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+    "static/inverse/core/direct/curves.js": "a3cad0cb2c96d62c0e1d99474777157eae8fb3fd6b7631f3af203243f4909ad3",
+    "static/inverse/core/direct/finalize.js": "6ad14f5ee83a7efc6d8ae9605f278a65eeef1e2325846221a51f2be2e2ab12d3",
+    "static/inverse/core/direct/fit.js": "45455a16777bfbeabe937d62bc5cdf6bb6498429e7c4dea458c464e394fcbe00",
+    "static/inverse/core/direct/grid.js": "57ada8e2f1c794b0012ddedbb8b508f29971186c313e517a8f40ca3788e1dfbd",
+    "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+    "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+    "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+    "static/inverse/core/direct/matching.js": "db113f3e5c6ed3be820f7c863a113e9181a02c7efa5ea66a46e56df7f2428414",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+    "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+    "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58",
+    "static/inverse/core/direct/prefer-matching.js": "1ff682f298014f8c29387ad3bbe330c52e4ee619defd5a2d116cb3703e0f5d48",
+    "static/inverse/core/direct/primitive-selection.js": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904",
+    "static/inverse/core/direct/primitives.js": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b",
+    "static/inverse/core/direct/refine.js": "13e91f32104b457f6d7d471975a1737b803d1f4fc4d0c3eb5221a3d5e6d687fc",
+    "static/inverse/core/direct/share.js": "247241745ec8b1ac03c41b7e619bda30e821bbddbad2c60d4ec2d51c8aea1e6d",
+    "static/inverse/core/direct/shared-simplification.js": "9617dbe47fc1ac6d6d99a7dc228a160e783cf5a325992d7cc5f5e15719420ed5",
+    "static/inverse/core/direct/symmetry.js": "ed9f633ea42af93b46293d0d753e21dd7a5921485d5d55847e5a02665c14cf13",
+    "static/inverse/core/direct/topology.js": "bbe79bf0dca7c4786c7728413026fee9f77bb9bca5bb788be7d6674267ad9292",
+    "static/inverse/core/engine.js": "f4c7f3f11b4543b9270ef849d3924fd67ea722574abdef8a861b118cdf3731c1",
+    "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+    "static/inverse/core/feature-recovery.js": "37831af78afffd94b19a4145091d199f9771d12e505514e88cf1943e6023279e",
+    "static/inverse/core/geometry.js": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+    "static/inverse/core/graph.js": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
+    "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+    "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+    "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+    "static/inverse/core/junctions.js": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
+    "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+    "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+    "static/inverse/core/material.js": "1d7d4e33811d46aa4e815bf9e4a410a8844c9bba7e50fdb6e0fa850181801898",
+    "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+    "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+    "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+    "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+    "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+    "static/inverse/core/progress.js": "5034d4c14b1abdf9c656208a13f0d24cf7254a1ce6323f452bb45f39d67e5370",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+    "static/inverse/core/solver.js": "de7d3b887d0b2faf28af21ba9b29de331b4566ff5374523db15fbbb0487dd8ea",
+    "static/inverse/core/stopped.js": "e9e62059b5795b867281ab4db4575f825bb1170542d7dcbf398b9ccde648fcbf",
+    "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+    "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+    "static/inverse/core/validate.js": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+    "static/inverse/worker-bootstrap.js": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+    "static/inverse/worker-controller.js": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+    "static/inverse/worker.js": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70"
+  },
+  "artifacts": {
+    "tmp/graceful-keep-browser/results.json": "074f9688b43d6db4d0e7b7b433d235c5e105430bab6cc85c90b15da2187910df",
+    "tmp/graceful-empty-browser-final/results.json": "978e00f808587f31ad5cfb5ed19fd2b0c89a3f9e480f5c8b4720ce9649742434",
+    "tmp/graceful-empty-browser-final/chromium-top-hat/stopped-attempt.json": "fcab4798e48e3c238a4e157c4ba7a99a4b7f43660243634d4f9328461087723a",
+    "tmp/graceful-empty-browser-final/firefox-top-hat/stopped-attempt.json": "3637a4a006ba776e08ce7aa5d4e4ac9695f649e16d05d2378e485a3417b3c21f",
+    "tmp/graceful-empty-browser-final/webkit-top-hat/stopped-attempt.json": "726ff8473ff72791ab8f865e1a0365836c6a4824312eea98ac4e184aa550ae27",
+    "tmp/graceful-cancel-finishing-browser-final/results.json": "5fc8197c26d94850899322d2a64fded3db4c54bb6f9e499bad4cc6149df60440",
+    "tmp/graceful-cancel-finishing-browser-final/chromium-top-hat/stopped-attempt.json": "48303dc768df74d487a046b81b9e2175b95381e0be9dd01a42c3944007af802c",
+    "tmp/graceful-cancel-finishing-browser-final/firefox-top-hat/stopped-attempt.json": "933bfc2ddcf745bd97360831f2de6e7dec00922c932537d5d4a53fe56a4ef004",
+    "tmp/graceful-cancel-finishing-browser-final/webkit-top-hat/stopped-attempt.json": "e84a889c5db21040ade1cbb5358beb30e5777b7f76d13b8f331418c9e9599c2f",
+    "tmp/graceful-keep-mobile/results.json": "59da71c4ddd51f9d5dd1050c0e2935dcce5de1c58a18c8ce38654bcfc40bc913",
+    "tmp/graceful-hunodan/results.json": "2c53ff80ab709ebcc7eab66d61d82c6f79763ecf826600627b42123aa660e158",
+    "tmp/paper-index-hunodan/results.json": "9ec4fc1cd8218064a245a9da5c4c44fcb3057d4fe31ff578c77ca8beb5467c2b",
+    "tmp/graceful-weighted/results.json": "334686a49a187aa5d988902429dc3e386a7dc770b3dfecf218eddb4ab2235ac7",
+    "tmp/paper-index-weighted/results.json": "9f003ea0528f92901b941634d196455d58e4042f30a9a075aa31a6f1292b57da",
+    "tmp/graceful-browser/results.json": "0b9fbc95612e5c9f1b37758dbb03a583dcea2501cfd200424aa29140afe3e3ea",
+    "tmp/paper-index-browser/results.json": "a6345e748b8503e9af96dabf0da069d7896b77010299f73a2e94f35b76ec17a6",
+    "tmp/graceful-circle-browser/results.json": "f22658a38dca8d204b27156727ba2892363cb57feda1784f5510210261fcfcce",
+    "tmp/graceful-fallback/results.json": "894c148c7aebe3bf5c6fd7e94ac2f04dc7b1e098b0f4eaf7bb2c5b93c261f560",
+    "tmp/paper-index-fallback/results.json": "4b33563aa92516ca85a4151e25facc77e1e5d22a894242a757a4b7575061949d",
+    "tmp/graceful-anti-fallback/results.json": "4fae0631f0986799c17416daa8a4018c5b91e1a19c58c8ab9cd950d4398dfb64",
+    "tmp/graceful-controls/results.json": "f013c48511eafefa6fa5b0646bd59d83b818e3d8726b9f7f591011dc06f99dfc",
+    "tmp/graceful-test-complete.log": "fc32c55788315c8061a09c47be775a5accde565465047509ccb01d7008e33b93",
+    "tmp/graceful-check-final.log": "1be3902fa1acaae6b0990406476a41369d095dc32dda58ba4b2a1df01155978b",
+    "tmp/graceful-lint-complete.log": "a552732ebea6b64b49ac0a1299170db75e8c45dbbc66c284f28e99be5613e5c7",
+    "tmp/graceful-build-qa.log": "7b42f26d575defea0c7ecd67964e452a6ba750e2157edce1811780794036bfee"
+  }
+}

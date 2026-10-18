@@ -1,0 +1,47 @@
+{
+  "schema": "published-template-construction-review-1",
+  "status": "visually-reviewed-both-pages",
+  "photoAssetId": "real-5330aa8b62176216",
+  "photoSha256": "5330aa8b621762167ded8a0c2662e38947ee3422d7b06f669b18e6db43f0779d",
+  "title": "Skabelon til hjerte med Cykel i cirkel",
+  "author": "Jan Kr\u00fcmmel",
+  "source": {
+    "sourcePage": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+    "downloadUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=81&id=1710081553",
+    "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=81&id=1710081553",
+    "contentType": "application/octet-stream",
+    "contentDisposition": "attachment; filename=\"Julehjerte_cykel_i_cirkel_skabelon.pdf\"",
+    "sha256": "65d855a136521474a35f2aa9ca16ae6393cb715291884ec6387f10a119c6e3eb",
+    "bytes": 154035,
+    "retrievedAt": "2026-10-16T05:38:51.577323+00:00"
+  },
+  "localPdf": "tmp/heart-training-real/references/65d855a136521474a35f2aa9ca16ae6393cb715291884ec6387f10a119c6e3eb.pdf",
+  "pages": 2,
+  "associationEvidence": [
+    "The source page links the bicycle photograph and a Cykel PDF in the same entry.",
+    "The first PDF page reproduces the green/white bicycle-in-circle photograph and labels the two sheets Gr\u00f8n and Hvid."
+  ],
+  "construction": {
+    "publishedRecipe": "Woven sheets with additional enclosed cutout regions on the green sheet.",
+    "instruction": "Det med gult markerede skal sk\u00e6res ud.",
+    "instructionMeaning": "The yellow-marked areas must be cut out.",
+    "observedOnPage": 1,
+    "regularSlitChainModelCanExpressPublishedRecipe": false,
+    "regularAlternativeFeasibility": "Not established. This review does not prove that the visible design has no alternative regular-slit construction.",
+    "physicalAssemblyVerified": false
+  },
+  "evaluationImplications": [
+    "Keep the existing 22-photo reconstruction results and denominators unchanged. This is a post-hoc construction diagnosis, not a newly solved or silently excluded case.",
+    "Treat failure to reproduce the published bicycle as an unsupported-reference construction before attributing it to optimizer convergence alone.",
+    "The current partial material labels deliberately omit the fine bicycle strokes. Their source-paper score cannot certify motif recovery.",
+    "The photograph remains useful for body/background learning; future graph supervision must explicitly distinguish regular slits from additional cutouts.",
+    "The user previously allowed irregular constructions to be excluded from regular-solver goals. No new irregular-pattern support is added."
+  ],
+  "artifactsSha256": {
+    "tmp/heart-training-real/references/65d855a136521474a35f2aa9ca16ae6393cb715291884ec6387f10a119c6e3eb.pdf": "65d855a136521474a35f2aa9ca16ae6393cb715291884ec6387f10a119c6e3eb",
+    "tmp/pdfs/krymmel-bicycle/source.json": "9f336fece6c6d948fc96add35001dd1cf6d8f44d334a5f892945fee234b892ed",
+    "tmp/pdfs/krymmel-bicycle/text.txt": "8735c0232c235174ff6d292eadd0d5e7c47eadb62f284b87699695b4037b7f0c",
+    "tmp/pdfs/krymmel-bicycle/page-1.png": "e64b86cc51b9ea9498d44901ca339f729254798950855de1b21bf985d38ea3db",
+    "tmp/pdfs/krymmel-bicycle/page-2.png": "b75e1ced5c301a32c0ab92a6e51b28de88824121c409e0c1c8274737a0b8fa5a"
+  }
+}

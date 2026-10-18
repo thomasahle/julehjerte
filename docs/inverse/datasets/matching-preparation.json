@@ -1,0 +1,510 @@
+{
+  "schema": 1,
+  "baseCommit": "996fdae",
+  "problem": "The free-border matching regression sometimes exhausts its ten-second allowance after producing a valid independent pair. Profiling also identifies repeated spline basis construction and repeated image-weight validation/reporting during candidate scoring.",
+  "changes": [
+    "Evaluate spline interval bases once per grid-to-cubic conversion, preserving dot products and arithmetic order.",
+    "Prepare an owned observed-image snapshot once per synchronous matching stage; score only positive-weight observed pixels. Keep ordinary referenceError live and retain all geometry, source-feature, paper and one-percentage-point preference gates."
+  ],
+  "basis": {
+    "coordinateComparisons": 216,
+    "allExactlyEqual": true,
+    "measurement": "Ten conversions of every already initialized grid seed, eight alternating-order rounds. This measures conversion, not overall solving.",
+    "medianBeforeMs": 213.2542085,
+    "medianAfterMs": 42.227083500000106,
+    "rows": [
+      {
+        "round": 0,
+        "variant": "before",
+        "milliseconds": 216.98641700000007,
+        "curves": 1440
+      },
+      {
+        "round": 0,
+        "variant": "after",
+        "milliseconds": 44.71337500000004,
+        "curves": 1440
+      },
+      {
+        "round": 1,
+        "variant": "after",
+        "milliseconds": 42.02166700000009,
+        "curves": 1440
+      },
+      {
+        "round": 1,
+        "variant": "before",
+        "milliseconds": 215.334792,
+        "curves": 1440
+      },
+      {
+        "round": 2,
+        "variant": "before",
+        "milliseconds": 215.5389580000001,
+        "curves": 1440
+      },
+      {
+        "round": 2,
+        "variant": "after",
+        "milliseconds": 42.43250000000012,
+        "curves": 1440
+      },
+      {
+        "round": 3,
+        "variant": "after",
+        "milliseconds": 41.08641699999998,
+        "curves": 1440
+      },
+      {
+        "round": 3,
+        "variant": "before",
+        "milliseconds": 210.23012500000004,
+        "curves": 1440
+      },
+      {
+        "round": 4,
+        "variant": "before",
+        "milliseconds": 210.07537500000012,
+        "curves": 1440
+      },
+      {
+        "round": 4,
+        "variant": "after",
+        "milliseconds": 41.70316700000012,
+        "curves": 1440
+      },
+      {
+        "round": 5,
+        "variant": "after",
+        "milliseconds": 42.019250000000056,
+        "curves": 1440
+      },
+      {
+        "round": 5,
+        "variant": "before",
+        "milliseconds": 211.35154199999988,
+        "curves": 1440
+      },
+      {
+        "round": 6,
+        "variant": "before",
+        "milliseconds": 209.22612499999968,
+        "curves": 1440
+      },
+      {
+        "round": 6,
+        "variant": "after",
+        "milliseconds": 42.55533299999979,
+        "curves": 1440
+      },
+      {
+        "round": 7,
+        "variant": "after",
+        "milliseconds": 45.929375000000164,
+        "curves": 1440
+      },
+      {
+        "round": 7,
+        "variant": "before",
+        "milliseconds": 215.15687500000013,
+        "curves": 1440
+      }
+    ]
+  },
+  "scoring": {
+    "exactComparisons": 481,
+    "measurement": "One hundred scores of a fixed rendered mask per batch, eight alternating-order rounds. Snapshot construction excluded; end-to-end comparison below includes preparation.",
+    "medianBeforeMs": 385.444459,
+    "medianAfterMs": 18.162500499999993,
+    "rows": [
+      {
+        "round": 0,
+        "variant": "before",
+        "milliseconds": 383.873834,
+        "total": 19.94047619047624
+      },
+      {
+        "round": 0,
+        "variant": "after",
+        "milliseconds": 18.721708999999976,
+        "total": 19.94047619047624
+      },
+      {
+        "round": 1,
+        "variant": "after",
+        "milliseconds": 17.60329200000001,
+        "total": 19.94047619047624
+      },
+      {
+        "round": 1,
+        "variant": "before",
+        "milliseconds": 387.015084,
+        "total": 19.94047619047624
+      },
+      {
+        "round": 2,
+        "variant": "before",
+        "milliseconds": 412.443125,
+        "total": 19.94047619047624
+      },
+      {
+        "round": 2,
+        "variant": "after",
+        "milliseconds": 26.55508400000008,
+        "total": 19.94047619047624
+      },
+      {
+        "round": 3,
+        "variant": "after",
+        "milliseconds": 19.957791999999927,
+        "total": 19.94047619047624
+      },
+      {
+        "round": 3,
+        "variant": "before",
+        "milliseconds": 457.3068330000001,
+        "total": 19.94047619047624
+      },
+      {
+        "round": 4,
+        "variant": "before",
+        "milliseconds": 355.08012499999995,
+        "total": 19.94047619047624
+      },
+      {
+        "round": 4,
+        "variant": "after",
+        "milliseconds": 15.355540999999903,
+        "total": 19.94047619047624
+      },
+      {
+        "round": 5,
+        "variant": "after",
+        "milliseconds": 16.068708000000242,
+        "total": 19.94047619047624
+      },
+      {
+        "round": 5,
+        "variant": "before",
+        "milliseconds": 344.6207909999998,
+        "total": 19.94047619047624
+      },
+      {
+        "round": 6,
+        "variant": "before",
+        "milliseconds": 323.2048749999999,
+        "total": 19.94047619047624
+      },
+      {
+        "round": 6,
+        "variant": "after",
+        "milliseconds": 25.759625000000142,
+        "total": 19.94047619047624
+      },
+      {
+        "round": 7,
+        "variant": "after",
+        "milliseconds": 16.536667000000307,
+        "total": 19.94047619047624
+      },
+      {
+        "round": 7,
+        "variant": "before",
+        "milliseconds": 393.36745900000005,
+        "total": 19.94047619047624
+      }
+    ]
+  },
+  "fixedWorkMatching": {
+    "backend": "JavaScript; no native kernel loaded",
+    "steps": 200,
+    "geometryIdentical": true,
+    "sourceUnchanged": true,
+    "rows": [
+      {
+        "variant": "baseline",
+        "milliseconds": 2413.691667,
+        "geometrySha256": "96e56a8bc3fc7503adaf38b747d971adad10d0d190eebcf3c488ec9d56a2a293",
+        "status": "matched",
+        "attempts": [
+          {
+            "proposal": "copy-first-sheet",
+            "refined": false,
+            "imageError": 0.6465596655328798,
+            "withinAllowance": false
+          },
+          {
+            "proposal": "copy-second-sheet",
+            "refined": false,
+            "imageError": 0.6466482426303855,
+            "withinAllowance": false
+          },
+          {
+            "proposal": "matching-grid",
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "refined": true,
+            "steps": 200,
+            "imageError": 0.00547406462585034,
+            "withinAllowance": true,
+            "featuresPassed": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "geometryPassed": true,
+            "paperPassed": true
+          }
+        ]
+      },
+      {
+        "variant": "scored",
+        "milliseconds": 2203.6817499999997,
+        "geometrySha256": "96e56a8bc3fc7503adaf38b747d971adad10d0d190eebcf3c488ec9d56a2a293",
+        "status": "matched",
+        "attempts": [
+          {
+            "proposal": "copy-first-sheet",
+            "refined": false,
+            "imageError": 0.6465596655328798,
+            "withinAllowance": false
+          },
+          {
+            "proposal": "copy-second-sheet",
+            "refined": false,
+            "imageError": 0.6466482426303855,
+            "withinAllowance": false
+          },
+          {
+            "proposal": "matching-grid",
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "refined": true,
+            "steps": 200,
+            "imageError": 0.00547406462585034,
+            "withinAllowance": true,
+            "featuresPassed": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "geometryPassed": true,
+            "paperPassed": true
+          }
+        ]
+      }
+    ],
+    "scope": "One stored intermediate independent fit and its image-derived count seeds. Fresh matching optimization with identical 200-step allowance, no wall deadline, JavaScript kernels; not a blind photo reconstruction or broad speed benchmark.",
+    "visualReview": "The exported hat is recognizable. The same pre-sharing seams are present in both pixel-identical previews; this optimization does not repair their geometry.",
+    "pngIdentical": true
+  },
+  "rejectedSchedulingExperiments": {
+    "scope": "Frozen matching input, two alternating-order rounds, 750 and 1250 ms stage allowances, warm-up per fresh process.",
+    "variants": {
+      "baseline": "Original three-way remaining-time split.",
+      "priority": "Half of available time to the highest-ranked seed, then two thirds to the second.",
+      "resized": "Original scheduling with weighted 256px fitting and unchanged full-source acceptance."
+    },
+    "results": [
+      {
+        "variant": "baseline",
+        "accepted": 0,
+        "runs": 4
+      },
+      {
+        "variant": "priority",
+        "accepted": 1,
+        "runs": 4
+      },
+      {
+        "variant": "resized",
+        "accepted": 0,
+        "runs": 4
+      }
+    ],
+    "decision": "Not integrated. Only one priority run matches; the improvement is not repeatable. Resizing does not recover this case.",
+    "additionalOptimizedProbe": {
+      "variant": "scored",
+      "budget": 1250,
+      "milliseconds": 1194.583916,
+      "error": 0.0025953089569161,
+      "paper": "pass",
+      "geometry": true
+    },
+    "optimizedProbeMatched": false,
+    "qualification": "Other unrelated CPU-intensive Node processes were observed during the investigation; their effect on individual timings was not measured. The work is kept serial within this worktree."
+  },
+  "integration": {
+    "focusedTests": 30,
+    "passed": 29,
+    "failed": 1,
+    "failure": "Existing matching-seeds regression: matching_budget_exhausted instead of matched; independent template and paper assertions pass. The micro-optimizations do not establish a fix for this scheduling failure.",
+    "lint": "passed for all modified runtime/test files",
+    "newUnitTests": 4,
+    "fullRepositoryAndCorpusQa": {
+      "runtimeRevision": "09c0461",
+      "sourceFilesVerified": 739,
+      "status": "test_assertion_failed",
+      "inverseTests": {
+        "total": 901,
+        "passed": 900,
+        "failed": 1,
+        "seconds": 1022.020147
+      },
+      "failure": {
+        "test": "a late routing candidate uses the repair time already provided by its caller",
+        "file": "scripts/inverse/late-routing-repair.test.mjs",
+        "actualAdditionalBudgetSeconds": 0.4999999999999991,
+        "expectedAdditionalBudgetSeconds": 0.5,
+        "classification": "Exact floating-point comparison of a subtracted and scaled duration; subsequent repair-success assertions were not reached in this run."
+      },
+      "matchingSeedsRegression": "passed in this full run; previous timed failures remain part of the record",
+      "otherChecks": [
+        {
+          "stage": "core-lint",
+          "exitCode": 0,
+          "seconds": 1.9662408329999999
+        },
+        {
+          "stage": "check",
+          "exitCode": 0,
+          "seconds": 9.53525475
+        },
+        {
+          "stage": "lint",
+          "exitCode": 0,
+          "seconds": 6.524262083
+        },
+        {
+          "stage": "app",
+          "exitCode": 0,
+          "seconds": 26.217318959000004
+        },
+        {
+          "stage": "build",
+          "exitCode": 0,
+          "seconds": 14.779648000000002
+        }
+      ],
+      "native": "not_started",
+      "browser": "not_started",
+      "testCorrection": "The real-MILP borrowed-budget and no-borrow tests pass with a 1e-12-second comparison tolerance. All geometry and paper assertions remain. The other 899 full-suite tests were unchanged at the correction; subsequent runtime improvements require new full QA."
+    }
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/matching-budget-v1/basis-bench.mjs",
+      "sha256": "08161767ae9bf80df7e42f543a8fbac7ef4cdbceea2f91a3fa3ac819e679c3b3"
+    },
+    {
+      "path": "tmp/heart-learning/matching-budget-v1/basis-bench.json",
+      "sha256": "3e5413ebee79421ed64540022c09de42a8c1a53121a3bdbcc0bc1abb616c6e75"
+    },
+    {
+      "path": "tmp/heart-learning/matching-budget-v1/score-bench.mjs",
+      "sha256": "d57abe11071510c82b5cd238ebd8b01da6611974a8d7d4089131bc3afcf65e6d"
+    },
+    {
+      "path": "tmp/heart-learning/matching-budget-v1/score-bench.json",
+      "sha256": "c318313cfabc7c3d28dac74e3b921e9f3630426cd9fa862ba418ec27230f8b1e"
+    },
+    {
+      "path": "tmp/heart-learning/matching-budget-v1/fixed-work.mjs",
+      "sha256": "ca591779da743ed6b669f94e30c6439f80e854315d545178bd59ffbb0865e1af"
+    },
+    {
+      "path": "tmp/heart-learning/matching-budget-v1/fixed-work.json",
+      "sha256": "537585e543d0b6f9be8998cc1d2b571f27b82c16c60b0898deaa8876e3a26908"
+    },
+    {
+      "path": "tmp/heart-learning/matching-budget-v1/fixed-work-baseline.png",
+      "sha256": "6bf70b6dd5979f0ebdbf2e079b8a7947b5c40f54581d7e8b8c4ecbdca0f703fa"
+    },
+    {
+      "path": "tmp/heart-learning/matching-budget-v1/fixed-work-scored.png",
+      "sha256": "6bf70b6dd5979f0ebdbf2e079b8a7947b5c40f54581d7e8b8c4ecbdca0f703fa"
+    },
+    {
+      "path": "tmp/heart-learning/matching-budget-v1/replay.mjs",
+      "sha256": "ba5ea4d9bcf0ec9cee0d2f77b2f0cdff91cefd30028f2596968cd2a8e910c0fc"
+    },
+    {
+      "path": "tmp/heart-learning/matching-budget-v1/replay.py",
+      "sha256": "4777cadc28c0dd5b3fddaaed82cf4d0213ecaa0c3f40f6436d34fc3d5f928096"
+    },
+    {
+      "path": "tmp/heart-learning/matching-budget-v1/replay-source.json",
+      "sha256": "8af10664bbfcaca56268c95c06f18cbbc7678952e7a59a217974026e937de5e1"
+    },
+    {
+      "path": "tmp/heart-learning/matching-budget-v1/replay-results.json",
+      "sha256": "740e3310e25a3c18717a14c0c02ce3188efc8640e99bd38a29c8b8ed9f539d59"
+    },
+    {
+      "path": "tmp/heart-learning/matching-budget-v1/replay-state.json",
+      "sha256": "8134064e2671f899a8b9dbc798449451c7691317fb92b9cd926e9ccd65144eda"
+    },
+    {
+      "path": "tmp/heart-learning/matching-budget-v1/matching.cpuprofile",
+      "sha256": "9c817a07113b4074fe31b9aa45d01d5785ef62a6d3711432a790efa492387846"
+    },
+    {
+      "path": "tmp/heart-learning/matching-budget-v1/capture-2/matching-input.bin",
+      "sha256": "8826d397ec8cdeb77758b85393432c470af480ffc4f021490152f8ee07381838"
+    },
+    {
+      "path": "tmp/heart-learning/matching-budget-v1/scored-probe/result.json",
+      "sha256": "56b68a440bbd4e721cf40693f587b1d08bfd351877df89a43e28b3df154a3d0b"
+    },
+    {
+      "path": "tmp/heart-learning/matching-preparation-release-v1/source.json",
+      "sha256": "c0b89fb3418fcbd26bcf3cdee890a439ed323e43134066e20749da21c058c051"
+    },
+    {
+      "path": "tmp/heart-learning/matching-preparation-release-v1/checks.json",
+      "sha256": "f088ac03ed2a1a458cdc5fe980fca0c354cce73f1042fbda31df16a1ef792d1d"
+    },
+    {
+      "path": "tmp/heart-learning/matching-preparation-release-v1/state.json",
+      "sha256": "1f8f9347ef767e22673e31ed51f5a4ddfae173efb6e1f95d404090bfebcc4eab"
+    },
+    {
+      "path": "tmp/heart-learning/matching-preparation-release-v1/qa/checks.json",
+      "sha256": "f785f54bc7f89d317cff490bee2f38e246ade9041e575bf048a3e4db132d21bd"
+    },
+    {
+      "path": "tmp/heart-learning/matching-preparation-release-v1/qa/inverse.log",
+      "sha256": "4349e652a24754a2cc9e5062e2be41f79eb31cefaac3a2311e0928d392bf9c88"
+    },
+    {
+      "path": "tmp/heart-learning/matching-preparation-release-v1/qa/running.json",
+      "sha256": "d4fbbae5ba35f408cca166c81f2a7356c490734cfb99d733ccf0ab9bcb8f2b3b"
+    },
+    {
+      "path": "tmp/heart-learning/matching-preparation-release-v1/harness-source.json",
+      "sha256": "da4c6b32c51fafeef382031165b95b775c87d2e13f0a075610af932b9620bb1e"
+    },
+    {
+      "path": "tmp/heart-learning/matching-preparation-release-v1/late-repair-failure.txt",
+      "sha256": "c128229b9d75c9dbe1b7c48c449a1c38515bc3a0060fc0fc4b264719b000baed"
+    },
+    {
+      "path": "tmp/heart-learning/matching-tree-integration-v1/checks.json",
+      "sha256": "8bfb1b408ae4fe0c6c143a6e8d244c67c325c0b530c0a0111dfb6cadd83d9c60"
+    },
+    {
+      "path": "tmp/heart-learning/matching-tree-integration-v1/focused.log",
+      "sha256": "38ee9b7997d7475754841e266baf26c90a714840c89ce53d71afc38879291b4e"
+    }
+  ]
+}

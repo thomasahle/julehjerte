@@ -1,0 +1,199 @@
+{
+  "schema": "new-photo-rejected-crops-results-1",
+  "status": "complete-counterfactual-diagnostic",
+  "deployed": false,
+  "plan": "docs/inverse/datasets/new-photo-rejected-crops-plan.json",
+  "summary": {
+    "frozenAutomaticPhotos": 20,
+    "frozenLearnedAutomaticPasses": 4,
+    "frozenProductionAutomaticPasses": 3,
+    "learnedCropFailures": 16,
+    "finalRejectedQuadsAvailable": 10,
+    "counterfactualDerivedMaskPasses": 6,
+    "editableConverted": 10,
+    "editableComplete": 6
+  },
+  "scope": "All ten final rejected quadrilaterals were fitted without manual adjustment, with original material fields and complete source observation support. Crop gates were bypassed only in this isolated diagnostic; final template checks were unchanged. These are not additional automatic-photo successes.",
+  "rows": [
+    {
+      "id": "real-1fa372c6288da69f",
+      "maskError": 0.03236875,
+      "slits": {
+        "left": 7,
+        "right": 7
+      },
+      "derivedChecksPassed": false,
+      "editableConverted": true,
+      "editableChecksPassed": false,
+      "geometryPassed": true,
+      "warnings": [
+        "The exported weave differs from the original classified artwork by 3.26%, above the 3.00% limit. This limit measures image fidelity, not similarity to unknown original cutting paths.",
+        "The paper-core test is uncertain. Inspect the unfolded paper-support views; a disconnected core needs a geometry change."
+      ],
+      "visualReview": "Main fine checker is recovered, but spurious side ink becomes target geometry and the output has curved/thin protrusions in its broad plain strips. Error exceeds 3%; paper check is uncertain."
+    },
+    {
+      "id": "real-202b8421f50252f2",
+      "maskError": 0.012625,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "derivedChecksPassed": true,
+      "editableConverted": true,
+      "editableChecksPassed": true,
+      "geometryPassed": true,
+      "warnings": [],
+      "visualReview": "Rejected overlap is much more plausible than the oversized production crop. Recovered checker ignores the decorative cap outlines, which lie outside overlap. Gold ribbon/shading still joins regions in the estimated mask; no original-paper ground truth."
+    },
+    {
+      "id": "real-7076a4d811c096db",
+      "maskError": 0.01096875,
+      "slits": {
+        "left": 4,
+        "right": 4
+      },
+      "derivedChecksPassed": true,
+      "editableConverted": true,
+      "editableChecksPassed": true,
+      "geometryPassed": true,
+      "warnings": [
+        "4 hidden curve(s) remain below the desired radius. The radius is a refinement goal, not a globally enforced feasibility guarantee."
+      ],
+      "visualReview": "Main checker recovered despite flame-shaped caps. Some printed birds become tiny holes, most disappear in the estimated material map. This is not verified ink-invariant paper classification."
+    },
+    {
+      "id": "real-931ac5ea86dbe082",
+      "maskError": 0.02589375,
+      "slits": {
+        "left": 7,
+        "right": 3
+      },
+      "derivedChecksPassed": false,
+      "editableConverted": true,
+      "editableChecksPassed": false,
+      "geometryPassed": true,
+      "warnings": [
+        "3 substantial interior artwork region(s) lost their colour or enclosure. Inspect the original mask and comparison."
+      ],
+      "visualReview": "Santa torso and grid recovered; small face/hat features lost. All three missing target features remain reported. Crop differs from the plausible production crop; neither yields a fully checked pair."
+    },
+    {
+      "id": "real-962159dea653810f",
+      "maskError": 0.02230625,
+      "slits": {
+        "left": 4,
+        "right": 4
+      },
+      "derivedChecksPassed": true,
+      "editableConverted": true,
+      "editableChecksPassed": true,
+      "geometryPassed": true,
+      "warnings": [
+        "1 hidden curve(s) remain below the desired radius. The radius is a refinement goal, not a globally enforced feasibility guarantee."
+      ],
+      "visualReview": "The crossing strips fit, but the upper crop cuts through a bird motif and the reconstruction inherits a cropped dark fragment. Low mask error does not establish correct physical overlap."
+    },
+    {
+      "id": "real-9b47cfbdf0004f4d",
+      "maskError": 0.00369375,
+      "slits": {
+        "left": 4,
+        "right": 4
+      },
+      "derivedChecksPassed": true,
+      "editableConverted": true,
+      "editableChecksPassed": true,
+      "geometryPassed": true,
+      "warnings": [],
+      "visualReview": "Framed bird looks recognizable and the candidate overlap approximately follows the woven square. Border distortions and a thin protrusion remain. No exact manual corner reference."
+    },
+    {
+      "id": "real-c7bc99827b382da7",
+      "maskError": 0.007814209358297127,
+      "slits": {
+        "left": 4,
+        "right": 4
+      },
+      "derivedChecksPassed": true,
+      "editableConverted": true,
+      "editableChecksPassed": true,
+      "geometryPassed": true,
+      "warnings": [
+        "1 hidden curve(s) remain below the desired radius. The radius is a refinement goal, not a globally enforced feasibility guarantee."
+      ],
+      "visualReview": "The curved/deformed child-held checker fits its crop, but reconstructed strips reproduce its shear and curved borders. This is not ideal straight checker artwork."
+    },
+    {
+      "id": "real-e4baad0c914577c8",
+      "maskError": 0.01139375,
+      "slits": {
+        "left": 3,
+        "right": 3
+      },
+      "derivedChecksPassed": false,
+      "editableConverted": true,
+      "editableChecksPassed": false,
+      "geometryPassed": true,
+      "warnings": [
+        "1 substantial interior artwork region(s) lost their colour or enclosure. Inspect the original mask and comparison.",
+        "2 hidden curve(s) remain below the desired radius. The radius is a refinement goal, not a globally enforced feasibility guarantee."
+      ],
+      "visualReview": "The foil leaf silhouette is recovered, but a small reflected-colour component fails feature retention. Light/shadow and printed border remain encoded as material boundaries."
+    },
+    {
+      "id": "real-e9131a2d52b78220",
+      "maskError": 0.00769375,
+      "slits": {
+        "left": 3,
+        "right": 3
+      },
+      "derivedChecksPassed": true,
+      "editableConverted": true,
+      "editableChecksPassed": true,
+      "geometryPassed": true,
+      "warnings": [],
+      "visualReview": "A visibly undersized final crop gets a valid low-error checker fit. It omits part of the source overlap: proof that downstream mask fit cannot validate crop accuracy."
+    },
+    {
+      "id": "real-f882e57ac79e63d3",
+      "maskError": 0.02796777530484938,
+      "slits": {
+        "left": 4,
+        "right": 4
+      },
+      "derivedChecksPassed": false,
+      "editableConverted": true,
+      "editableChecksPassed": false,
+      "geometryPassed": true,
+      "warnings": [
+        "10 substantial interior artwork region(s) lost their colour or enclosure. Inspect the original mask and comparison."
+      ],
+      "visualReview": "Oversized crop includes background and excludes the intended cap geometry; gold printed details become small target holes. Ten target features fail despite below-3% disagreement."
+    }
+  ],
+  "findings": [
+    "Six of ten internal rejected crops produce checked editable masks. Crop rejection prevents otherwise possible fitting, but this does not show all six are correct crops.",
+    "Flower-cap and flame-cap examples have roughly plausible overlap proposals despite outer shapes outside the semicircular-lobe model. Framed bird also yields a recognizable motif.",
+    "The small checker is a counterexample to selecting crops by downstream fit: an undersized crop passes at 0.77% error. The crossed-bird example similarly passes while cutting through source decoration.",
+    "The remaining four separate into fine-checker image/paper failure and three feature-retention failures: Santa, foil leaf and swan. Geometry passes for all ten outputs.",
+    "Do not weaken crop gates globally or hide source-feature warnings. Next priority is independent overlap evidence using the visible lower edges, notch/diameter transitions and full photographed paper coverage, plus ink/reflectance-aware material estimates."
+  ],
+  "verification": {
+    "sourceFilesVerified": 884,
+    "allStagesPassed": true,
+    "allTenExportsVisuallyInspected": true,
+    "allSixCounterfactualPassesEditable": true,
+    "runtimeChanged": false
+  },
+  "artifactsSha256": {
+    "tmp/heart-learning/new-photo-rejected-crops-v1/plan.json": "df3a65be513b64f3d01483b135aa281c352871c5accf3733dcaccf7e08d30bca",
+    "tmp/heart-learning/new-photo-rejected-crops-v1/probe/manifest.json": "6e38322f2cecb8506c59c183f7bb88146cf3dcc321f11310892f32f37b1faae8",
+    "tmp/heart-learning/new-photo-rejected-crops-v1/state.json": "b0831c6c88d026f92dd52aaa8999afe11e0a703c034b5a9b0186fe8c0378f451",
+    "tmp/heart-learning/new-photo-rejected-crops-v1/source.json": "2920440d843294b1cfa2ea0bb9225b40c3f95eb253e65501e219e11e68f7591b",
+    "tmp/heart-learning/new-photo-rejected-crops-v1/checks.json": "9f54067e353085dfd452831fdade499c775a6ff955406481bab42a9fc22a1246",
+    "tmp/heart-learning/new-photo-rejected-crops-v1/pipeline/report.json": "3bc42495e11b8c7bf5db0ad872d592dc5d52341971526d3360b28a0469c81651",
+    "tmp/heart-learning/new-photo-rejected-crops-v1/editable/results.json": "690116e5de402f671bf8a45a4a28938ef9dd68abd24029213644844ee206dbe9",
+    "tmp/heart-learning/new-photo-rejected-crops-v1/reconstruction-figures.json": "62c68a2161d334241dffb015a0b84b49cbae65985e57b25383e03e6bb53b0402"
+  }
+}

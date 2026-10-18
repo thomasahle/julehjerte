@@ -1,0 +1,211 @@
+{
+  "schema": "woven-heart-pinterest-material-study-1",
+  "recordedAt": "2026-10-14T22:39:13.897295+00:00",
+  "scope": "Two additional partial material annotations on previously reviewed Pinterest bodies. No new photographs, cut-path labels, train/test allocation or model fitting.",
+  "counts": {
+    "newMaterialInstances": 2,
+    "newSourcePhotos": 0,
+    "allMaterialInstances": 5,
+    "allMaterialSourceGroups": 5,
+    "knownMaterialPixels256": 24331
+  },
+  "audits": {
+    "256": {
+      "passed": true,
+      "instances": 2,
+      "sourceGroups": 2,
+      "manifestSha256": "db69efc6221b9c7ede0b8ed137d7091409ee4905082c44ef4fd498918dd81c04",
+      "annotationsSha256": "3a9d3bb965d0165dde196b72968af30c426802fa71429ca041c045b16c31137e",
+      "scope": "Source bytes, body references, grouping, transforms and every output pixel; annotation correctness still requires visual review."
+    },
+    "768": {
+      "passed": true,
+      "instances": 2,
+      "sourceGroups": 2,
+      "manifestSha256": "a1ad84fd76288bf13d3f7876480e31462b3a4c506d7929e7560f1baaa97fb34b",
+      "annotationsSha256": "3a9d3bb965d0165dde196b72968af30c426802fa71429ca041c045b16c31137e",
+      "scope": "Source bytes, body references, grouping, transforms and every output pixel; annotation correctness still requires visual review."
+    }
+  },
+  "unchangedBodyAndRGB": [
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "kind": "rgb",
+      "historicalPath": "tmp/heart-learning/pinterest-body-review-v1/review-labels/real-8c875dd0f298b5a4-body-1-rgb.png",
+      "sha256": "5684375760927d721181bef98ce52a1601e55c55868588d7ab256745cbd113d1",
+      "byteIdentical": true
+    },
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "kind": "body",
+      "historicalPath": "tmp/heart-learning/pinterest-body-review-v1/review-labels/real-8c875dd0f298b5a4-body-1-labels.png",
+      "sha256": "ae279e37a1acfdbc67831d4a55c4d670f94c0e74d9f69b7c1b378d92508954ef",
+      "byteIdentical": true
+    },
+    {
+      "id": "real-3f7b76e1a98e808f-body-1",
+      "kind": "rgb",
+      "historicalPath": "tmp/heart-learning/pinterest-body-review-v1/review-labels/real-3f7b76e1a98e808f-body-1-rgb.png",
+      "sha256": "cff6f7ac1e93d155087f3a96cb0c6e36808fda6443343d0173d4361f8451a37e",
+      "byteIdentical": true
+    },
+    {
+      "id": "real-3f7b76e1a98e808f-body-1",
+      "kind": "body",
+      "historicalPath": "tmp/heart-learning/pinterest-body-review-v1/review-labels/real-3f7b76e1a98e808f-body-1-labels.png",
+      "sha256": "c70186e8359cf3a98b6f7531e4380d76e840c69328af607ff807cc5f8666f899",
+      "byteIdentical": true
+    }
+  ],
+  "currentSourceGroupsOutsideQA": true,
+  "visualReview": {
+    "reviewer": "assistant",
+    "nativeSources": 2,
+    "nativePolygonOverlays": 2,
+    "compiledOverlays256": 2,
+    "compiledOverlays768": 2,
+    "correction": "Moved one pale-border polygon away from green paper and narrowed the green lower-lobe polygon near the attachment.",
+    "limitation": "Conservative interiors leave material boundaries, uncertain contacts and apertures unknown; no independent human audit or template ground truth."
+  },
+  "instances": [
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "assetId": "real-8c875dd0f298b5a4",
+      "imageSha256": "8c875dd0f298b5a406a9d6047b0ffc33746fe6f288bc8672b9a467a7c9df063f",
+      "nearDuplicateGroup": "real-8c875dd0f298b5a4",
+      "splitGroupId": "real-split-79fb92ea84d04dc8",
+      "splitStatus": "unassigned",
+      "trainingRightsStatus": "not-cleared",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "small-hearts-in-checker-frame",
+        "crossCorpusReview": "pending"
+      },
+      "transform": {
+        "scale": 0.5818181818181818,
+        "offset": [
+          0.0,
+          0.0
+        ],
+        "resolution": 256
+      },
+      "bodyPixelCounts": {
+        "0": 37026,
+        "1": 25836,
+        "255": 2674
+      },
+      "materialPixelCounts": {
+        "0": 7522,
+        "1": 5913,
+        "255": 52101
+      },
+      "assets": {
+        "rgb": {
+          "path": "real-8c875dd0f298b5a4-body-1-rgb.png",
+          "sha256": "5684375760927d721181bef98ce52a1601e55c55868588d7ab256745cbd113d1"
+        },
+        "body": {
+          "path": "real-8c875dd0f298b5a4-body-1-body.png",
+          "sha256": "ae279e37a1acfdbc67831d4a55c4d670f94c0e74d9f69b7c1b378d92508954ef"
+        },
+        "materials": {
+          "path": "real-8c875dd0f298b5a4-body-1-materials.png",
+          "sha256": "73cd38d2fc48e4ab1d4c65ea7d40d962d8910004db31c45bf69b2d146281ed98"
+        },
+        "overlay": {
+          "path": "real-8c875dd0f298b5a4-body-1-overlay.png",
+          "sha256": "517e7d68566ba579050aae6cdbd0e02d00791d23e334a05bdb1e32af286844b8"
+        }
+      }
+    },
+    {
+      "id": "real-3f7b76e1a98e808f-body-1",
+      "assetId": "real-3f7b76e1a98e808f",
+      "imageSha256": "3f7b76e1a98e808f75597010c4dc1f5b591527aec6265f77810c96df80a794df",
+      "nearDuplicateGroup": "real-3f7b76e1a98e808f",
+      "splitGroupId": "real-split-fa81b0c40b1f06c4",
+      "splitStatus": "unassigned",
+      "trainingRightsStatus": "not-cleared",
+      "allocation": "unassigned",
+      "motif": {
+        "candidateFamily": "four-point-star-frame",
+        "crossCorpusReview": "pending"
+      },
+      "transform": {
+        "scale": 0.191904047976012,
+        "offset": [
+          0.0,
+          32.04797601199401
+        ],
+        "resolution": 256
+      },
+      "bodyPixelCounts": {
+        "0": 24047,
+        "1": 21488,
+        "255": 20001
+      },
+      "materialPixelCounts": {
+        "0": 5681,
+        "1": 5215,
+        "255": 54640
+      },
+      "assets": {
+        "rgb": {
+          "path": "real-3f7b76e1a98e808f-body-1-rgb.png",
+          "sha256": "cff6f7ac1e93d155087f3a96cb0c6e36808fda6443343d0173d4361f8451a37e"
+        },
+        "body": {
+          "path": "real-3f7b76e1a98e808f-body-1-body.png",
+          "sha256": "c70186e8359cf3a98b6f7531e4380d76e840c69328af607ff807cc5f8666f899"
+        },
+        "materials": {
+          "path": "real-3f7b76e1a98e808f-body-1-materials.png",
+          "sha256": "f653b1e68a98cecfe6218bb1ef68b17f78a63a1321e43e06ad63e2c4915c5190"
+        },
+        "overlay": {
+          "path": "real-3f7b76e1a98e808f-body-1-overlay.png",
+          "sha256": "2f5704ea58cac9b5a1902f0e32c22a85e66d9e1782e60f94449fdf8dd0437394"
+        }
+      }
+    }
+  ],
+  "sourceHashes": {
+    "scripts/inverse/datasets/real-materials-pinterest.json": "3a9d3bb965d0165dde196b72968af30c426802fa71429ca041c045b16c31137e",
+    "docs/inverse/datasets/real-manifest.json": "149697fc7cdd535736dd8727bba7847bca10d74823a28bdfaf77c95c44a6ffb3",
+    "scripts/inverse/datasets/real-annotations-pinterest.json": "470cab7fe80cb06709d90a718791af8ca790de83831ae8db0af0822d4559a5e5",
+    "scripts/inverse/datasets/real_materials.py": "7f6052d404e66b971bc76821e4de75d7fee38972cdd2af30fa076037faaf878a",
+    "scripts/inverse/datasets/real_annotations.py": "b505fb723dc45b644cb95a058ddf45317f6afb700c61fb88cb3d93571fb9e33c"
+  },
+  "artifactsSha256": {
+    "tmp/heart-learning/pinterest-materials-v1/initial-draft.json": "aae09f3ada65d27d075cf02a0226857fcdb68935a71dc2e106d5e17c21b2814b",
+    "tmp/heart-learning/pinterest-materials-v1/real-3f7b76e1a98e808f-body-1-source-review.png": "5552b3fef10a00b4db737e267243fbe080b88eb35df0e1643ff3ae44f80a763f",
+    "tmp/heart-learning/pinterest-materials-v1/real-8c875dd0f298b5a4-body-1-source-review.png": "8fa5c161026083c5a1ed57053c366b3b46c20e7313582c93346039e0593529c9",
+    "tmp/heart-learning/pinterest-materials-v1/source-review.json": "02da6c73f6962c526d7fa824f70c4c690e4fd40fd687386dba4df66b2e5981c9",
+    "tmp/heart-learning/pinterest-materials-v1/draft-annotations.json": "3a9d3bb965d0165dde196b72968af30c426802fa71429ca041c045b16c31137e",
+    "tmp/heart-learning/pinterest-materials-v1/labels-256/real-8c875dd0f298b5a4-body-1-materials.png": "73cd38d2fc48e4ab1d4c65ea7d40d962d8910004db31c45bf69b2d146281ed98",
+    "tmp/heart-learning/pinterest-materials-v1/labels-256/real-3f7b76e1a98e808f-body-1-overlay.png": "2f5704ea58cac9b5a1902f0e32c22a85e66d9e1782e60f94449fdf8dd0437394",
+    "tmp/heart-learning/pinterest-materials-v1/labels-256/real-8c875dd0f298b5a4-body-1-rgb.png": "5684375760927d721181bef98ce52a1601e55c55868588d7ab256745cbd113d1",
+    "tmp/heart-learning/pinterest-materials-v1/labels-256/index.html": "90b5363d3cb18b2029c19c52ac83f6c5500ab862c30abbccc0ccd093631cd81a",
+    "tmp/heart-learning/pinterest-materials-v1/labels-256/real-8c875dd0f298b5a4-body-1-overlay.png": "517e7d68566ba579050aae6cdbd0e02d00791d23e334a05bdb1e32af286844b8",
+    "tmp/heart-learning/pinterest-materials-v1/labels-256/real-3f7b76e1a98e808f-body-1-rgb.png": "cff6f7ac1e93d155087f3a96cb0c6e36808fda6443343d0173d4361f8451a37e",
+    "tmp/heart-learning/pinterest-materials-v1/labels-256/real-3f7b76e1a98e808f-body-1-materials.png": "f653b1e68a98cecfe6218bb1ef68b17f78a63a1321e43e06ad63e2c4915c5190",
+    "tmp/heart-learning/pinterest-materials-v1/labels-256/manifest.json": "db69efc6221b9c7ede0b8ed137d7091409ee4905082c44ef4fd498918dd81c04",
+    "tmp/heart-learning/pinterest-materials-v1/labels-256/real-8c875dd0f298b5a4-body-1-body.png": "ae279e37a1acfdbc67831d4a55c4d670f94c0e74d9f69b7c1b378d92508954ef",
+    "tmp/heart-learning/pinterest-materials-v1/labels-256/real-3f7b76e1a98e808f-body-1-body.png": "c70186e8359cf3a98b6f7531e4380d76e840c69328af607ff807cc5f8666f899",
+    "tmp/heart-learning/pinterest-materials-v1/labels-768/real-8c875dd0f298b5a4-body-1-materials.png": "a313ce093bf4364118ca839a30933cf704fef9237525f7ca8531fd3977591d10",
+    "tmp/heart-learning/pinterest-materials-v1/labels-768/real-3f7b76e1a98e808f-body-1-overlay.png": "963be72c4054a92ad41a6e324fe8fba7e571b1ca9c8d782370c180eb609764cf",
+    "tmp/heart-learning/pinterest-materials-v1/labels-768/real-8c875dd0f298b5a4-body-1-rgb.png": "f2ebe3e1ddc4176aa7d11421ed94c751a7d484baac7f270a5c1f16fa7ae5de7d",
+    "tmp/heart-learning/pinterest-materials-v1/labels-768/index.html": "8add7a786dbab274acd5f3af5eba0c18c99854a882266e1f923325c115118e84",
+    "tmp/heart-learning/pinterest-materials-v1/labels-768/real-8c875dd0f298b5a4-body-1-overlay.png": "421e6a8f4dd1279799802ccf44623d1633333b86dcd3d777bd5bf965be05462f",
+    "tmp/heart-learning/pinterest-materials-v1/labels-768/real-3f7b76e1a98e808f-body-1-rgb.png": "b87b805f1a874ceaff462eb7aa3650f8c934d33df2c9665b9a002f3de5922d47",
+    "tmp/heart-learning/pinterest-materials-v1/labels-768/real-3f7b76e1a98e808f-body-1-materials.png": "e73fba6325c1875cc7df688e5c551fe6822b58315f41bf067c9a74f405a82740",
+    "tmp/heart-learning/pinterest-materials-v1/labels-768/manifest.json": "a1ad84fd76288bf13d3f7876480e31462b3a4c506d7929e7560f1baaa97fb34b",
+    "tmp/heart-learning/pinterest-materials-v1/labels-768/real-8c875dd0f298b5a4-body-1-body.png": "ac07f3b445cf1f8fa5f6d27f046bac4b6b421f263aa8222a4009f155cfa4174f",
+    "tmp/heart-learning/pinterest-materials-v1/labels-768/real-3f7b76e1a98e808f-body-1-body.png": "ac00e9334c2cd23f04b6aea8a38836edd75ab770641da7b1cd06e3e3f47d73ad"
+  },
+  "limitations": [
+    "No material-trained checkpoint or automatic reconstruction result.",
+    "Family review and training allocation remain unassigned.",
+    "Known interior labels do not establish fine boundary accuracy."
+  ]
+}

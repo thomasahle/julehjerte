@@ -1,0 +1,3128 @@
+{
+  "schema": "controlled-border-perturbations-1",
+  "sourceCommit": "f1c602b1ae183e1d6d98dae2e69e7a1a9f73ba42",
+  "scope": "Development diagnostic from generated validated cuts. Fixed noise without cut labels. No photograph or crop uncertainty. Source cuts are used only to validate and score, never in fitting.",
+  "selection": [
+    {
+      "recipe": "lattice",
+      "seed": 840101
+    },
+    {
+      "recipe": "shared-lattice",
+      "seed": 840102
+    },
+    {
+      "recipe": "corner-lattice",
+      "seed": 840103
+    },
+    {
+      "recipe": "channel",
+      "seed": 840104
+    },
+    {
+      "recipe": "frame",
+      "seed": 840105
+    },
+    {
+      "recipe": "radial-motif",
+      "seed": 840106
+    }
+  ],
+  "sourceStatus": [
+    {
+      "id": "lattice-840101",
+      "valid": true,
+      "counts": [
+        6,
+        5
+      ],
+      "rejectedGeometry": null
+    },
+    {
+      "id": "shared-lattice-840102",
+      "valid": true,
+      "counts": [
+        5,
+        1
+      ],
+      "rejectedGeometry": null
+    },
+    {
+      "id": "corner-lattice-840103",
+      "valid": false,
+      "counts": [
+        6,
+        7
+      ],
+      "rejectedGeometry": {
+        "passed": false,
+        "issues": [
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 0,
+            "slit": 1,
+            "edgeChain": [
+              24,
+              25,
+              26
+            ],
+            "distanceLower": 2.456624302536736,
+            "point": [
+              26.3919381586103,
+              22.820509587181732
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 0,
+            "slit": 1,
+            "edgeChain": [
+              25,
+              26
+            ],
+            "distanceLower": 2.291698675652303,
+            "point": [
+              26.664374460212585,
+              23.092945888784016
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 0,
+            "slit": 1,
+            "edgeChain": [
+              26,
+              27
+            ],
+            "distanceLower": 2.4167443596853633,
+            "point": [
+              28.843864873030853,
+              28.541671920829685
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 0,
+            "slit": 1,
+            "edgeChain": [
+              26,
+              27,
+              28
+            ],
+            "distanceLower": 2.5041190262929134,
+            "point": [
+              28.571428571428573,
+              28.48718466050923
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 0,
+            "slit": 3,
+            "edgeChain": [
+              67,
+              68,
+              69
+            ],
+            "distanceLower": 2.4566243025367274,
+            "point": [
+              54.963366730038885,
+              60.32050958718173
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 0,
+            "slit": 3,
+            "edgeChain": [
+              68,
+              69
+            ],
+            "distanceLower": 2.291698675652298,
+            "point": [
+              55.23580303164117,
+              60.592945888784016
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 0,
+            "slit": 3,
+            "edgeChain": [
+              69,
+              70
+            ],
+            "distanceLower": 2.4167443596853633,
+            "point": [
+              57.41529344445944,
+              66.04167192082969
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 0,
+            "slit": 3,
+            "edgeChain": [
+              69,
+              70,
+              71
+            ],
+            "distanceLower": 2.504119026292919,
+            "point": [
+              57.142857142857146,
+              65.98718466050923
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 0,
+            "slit": 4,
+            "edgeChain": [
+              75,
+              76,
+              77
+            ],
+            "distanceLower": 2.456624302536722,
+            "point": [
+              69.24908101575318,
+              22.820509587181732
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 0,
+            "slit": 4,
+            "edgeChain": [
+              76,
+              77
+            ],
+            "distanceLower": 2.291698675652298,
+            "point": [
+              69.52151731735546,
+              23.092945888784016
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 0,
+            "slit": 4,
+            "edgeChain": [
+              77,
+              78
+            ],
+            "distanceLower": 2.4167443596853633,
+            "point": [
+              71.70100773017373,
+              28.541671920829685
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 0,
+            "slit": 4,
+            "edgeChain": [
+              77,
+              78,
+              79
+            ],
+            "distanceLower": 2.504119026292923,
+            "point": [
+              71.42857142857143,
+              28.48718466050923
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 0,
+            "slit": 5,
+            "edgeChain": [
+              106,
+              107,
+              108
+            ],
+            "distanceLower": 2.456624302536722,
+            "point": [
+              83.53479530146745,
+              85.32050958718173
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 0,
+            "slit": 5,
+            "edgeChain": [
+              107,
+              108
+            ],
+            "distanceLower": 2.291698675652298,
+            "point": [
+              83.80723160306974,
+              85.59294588878402
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 0,
+            "slit": 5,
+            "edgeChain": [
+              108,
+              109
+            ],
+            "distanceLower": 2.4167443596853633,
+            "point": [
+              85.986722015888,
+              91.04167192082969
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 0,
+            "slit": 5,
+            "edgeChain": [
+              108,
+              109,
+              110
+            ],
+            "distanceLower": 2.504119026292923,
+            "point": [
+              85.71428571428571,
+              90.98718466050923
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 1,
+            "slit": 1,
+            "edgeChain": [
+              127,
+              128,
+              26
+            ],
+            "distanceLower": 2.4566243025367305,
+            "point": [
+              24.746789860131685,
+              25
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 1,
+            "slit": 1,
+            "edgeChain": [
+              128,
+              26
+            ],
+            "distanceLower": 2.330882799829534,
+            "point": [
+              24.920782129957978,
+              24.18269109519315
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 1,
+            "slit": 1,
+            "edgeChain": [
+              26,
+              129
+            ],
+            "distanceLower": 2.4167443596853633,
+            "point": [
+              29.661173777837703,
+              26.089745206409134
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 1,
+            "slit": 1,
+            "edgeChain": [
+              26,
+              129,
+              130
+            ],
+            "distanceLower": 2.504119026292915,
+            "point": [
+              29.661173777837703,
+              26.089745206409134
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 1,
+            "slit": 4,
+            "edgeChain": [
+              168,
+              169,
+              69
+            ],
+            "distanceLower": 2.4566243025367376,
+            "point": [
+              53.31821843156026,
+              62.5
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 1,
+            "slit": 4,
+            "edgeChain": [
+              169,
+              69
+            ],
+            "distanceLower": 2.3308827998295416,
+            "point": [
+              53.492210701386554,
+              61.68269109519315
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 1,
+            "slit": 4,
+            "edgeChain": [
+              69,
+              170
+            ],
+            "distanceLower": 2.4167443596853633,
+            "point": [
+              58.23260234926629,
+              63.589745206409134
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 1,
+            "slit": 4,
+            "edgeChain": [
+              69,
+              170,
+              171
+            ],
+            "distanceLower": 2.504119026292909,
+            "point": [
+              58.23260234926629,
+              63.589745206409134
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 1,
+            "slit": 6,
+            "edgeChain": [
+              198,
+              199,
+              108
+            ],
+            "distanceLower": 2.456624302536742,
+            "point": [
+              81.770141993483,
+              87.5
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 1,
+            "slit": 6,
+            "edgeChain": [
+              199,
+              108
+            ],
+            "distanceLower": 2.330882799829547,
+            "point": [
+              82.06363927281512,
+              86.68269109519315
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 1,
+            "slit": 6,
+            "edgeChain": [
+              108,
+              200
+            ],
+            "distanceLower": 2.4167443596853633,
+            "point": [
+              86.80403092069486,
+              88.58974520640913
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 1,
+            "slit": 6,
+            "edgeChain": [
+              108,
+              200,
+              201
+            ],
+            "distanceLower": 2.5041190262929036,
+            "point": [
+              86.80403092069486,
+              88.58974520640913
+            ]
+          }
+        ],
+        "nominalWidthRequired": 2.50501002004008,
+        "minimumInterSlitDistanceLower": 7.925184983646718,
+        "minimumOuterSideClearance": 8.141019174363464,
+        "boundaryParityMatches": true,
+        "forwardSampleMismatchPixels": null,
+        "forwardBoundaryAmbiguousPixels": 0,
+        "forwardSampleResolution": 101,
+        "geometryTolerance": 0.01,
+        "sharedCurvesStoredOnce": true,
+        "physicalAssemblyTested": false,
+        "limitations": [
+          "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+          "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+          "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+          "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+        ]
+      }
+    },
+    {
+      "id": "channel-840104",
+      "valid": true,
+      "counts": [
+        1,
+        1
+      ],
+      "rejectedGeometry": null
+    },
+    {
+      "id": "frame-840105",
+      "valid": true,
+      "counts": [
+        2,
+        2
+      ],
+      "rejectedGeometry": null
+    },
+    {
+      "id": "radial-motif-840106",
+      "valid": true,
+      "counts": [
+        2,
+        2
+      ],
+      "rejectedGeometry": null
+    }
+  ],
+  "sourceHashes": {
+    "tmp/heart-learning/border-perturbation-v1/automatic-early.mjs": "a65d234bc6614cce2627a86a6747a9a86489c2f7d1bf2e60ff62aa4e76acd934",
+    "tmp/heart-learning/border-perturbation-v1/automatic-row.mjs": "9d0622db21b5b49616dc43bb232b4ff3e224ad2a9e7c05752caac0adb679f926",
+    "tmp/heart-learning/border-perturbation-v1/automatic-smooth-row.mjs": "fe6a7fe11d795b6054e174b32ff4a297ae726115ac448011ff686d6d8433e4a6",
+    "tmp/heart-learning/border-perturbation-v1/automatic.mjs": "55ff73d87ca6fe7360acafe2b2b3e9f8a25b54933693f1b829142b92e09f8be6",
+    "tmp/heart-learning/border-perturbation-v1/direct-fit-early.mjs": "152493f3a4b4932ce0788fe2a2ae3e768db5b58912d3796913deef461bcb4a97",
+    "tmp/heart-learning/border-perturbation-v1/direct-fit-row.mjs": "a19d1c4d29d3f4e87f975be7c1c05080f8618bce8bb0c95759ca2574e5aa0781",
+    "tmp/heart-learning/border-perturbation-v1/direct-fit-smooth-row.mjs": "b367f114b44fcea740d95ce66c941ef6ace141b7d8385eac600560b63080552c",
+    "tmp/heart-learning/border-perturbation-v1/direct-fit.mjs": "c1d9209e5ccf3ba94bf4801b6e9f0f32e29b715a525c2d244ee2c6d83982387e",
+    "tmp/heart-learning/border-perturbation-v1/feature-recovery.mjs": "bf1c1c5a98ea6da0044078b6b612bd55ab7599687229d0428ff1723ed82356cc",
+    "tmp/heart-learning/border-perturbation-v1/fit-early.mjs": "0ffbb4f916c7d64025d19f1f520b344bec9d5c55c115ff60256c6e9197520048",
+    "tmp/heart-learning/border-perturbation-v1/fit-row.mjs": "71c4efa38235b06a9543ad61cc5c328851309c4548dd7d2384ab16c2023ad041",
+    "tmp/heart-learning/border-perturbation-v1/fit-smooth-row.mjs": "86cb2f533e78776bac62ddaa18e8d249e391441f7b293ec5250be47661e91282",
+    "tmp/heart-learning/border-perturbation-v1/fit.mjs": "a5f5c83264f508b915a550500eb56afdee4179b73e5ba1cda4a48d982d2b41ef",
+    "tmp/heart-learning/border-perturbation-v1/probe.mjs": "d63ce8ed674b275386c1ca7a6a3197d98c8ce938698eb7d934494de4d8d01788",
+    "tmp/heart-learning/border-perturbation-v1/row-profiles.mjs": "ca9659be2c03c9482bf95dcc7a39ebc2f4a03c39ed19f110e3c9c5d271ef066b",
+    "tmp/heart-learning/border-perturbation-v1/smooth-row-profiles.mjs": "63cda0d83be493e5ed88c628c1d2b844d2657266c8b31f22f19a701866be8cde",
+    "tmp/heart-learning/border-perturbation-v1/topology-early.mjs": "9d97139d94a5e0bebcc87d51a328042b86bc6dd6b0564266f26c93a42c5c60d9",
+    "tmp/heart-learning/border-perturbation-v1/topology-row.mjs": "eb8c0bfa3d32b843379ddb653db909e03165b5122ca300ad4d113c42a467e015",
+    "tmp/heart-learning/border-perturbation-v1/topology-smooth-row.mjs": "f842f131cb451ad4d499d5ce12a6c41f6488f9b8e2b1272ac4e4877e12e78974",
+    "scripts/inverse/border-profile-proposals.mjs": "831e70fbdfd7b0bb8def5c9266c42fa3b106c46c7d6a1823e1e4dbbea7d0f062",
+    "scripts/inverse/border-profile-proposals.test.mjs": "f1f2cb87960b7b9c9bb6d37d635508e1a7356af0f57e0f52740bbaee25148650",
+    "scripts/inverse/datasets/synthetic-geometry.mjs": "57832799ec34075de10da364c9d8dcdba65ad72ef5f249dab49a9550fcb89811",
+    "scripts/inverse/datasets/synthetic-motif.mjs": "994e5fa4b55bc267a04cb7b8ae6c4e09a5ea9eaf111f15d8a5be66d07494f546",
+    "scripts/inverse/export-renderer.mjs": "fb393f73b9c39780795c3951eb82d864fef7ab40ec63a90a4365aae6041afbbe",
+    "static/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+    "static/inverse/core/chord-distance.js": "6be52281e3056d29ad7093f902b0f768410f3c414f049f164f94e969bd89dd48",
+    "static/inverse/core/crop.js": "03552409b48975702527fb365eea6841cb441a2be26637a7d44a85aa8ea763ff",
+    "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+    "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+    "static/inverse/core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+    "static/inverse/core/direct/counts.js": "efdfa3fc371dc9d9cfbbc9ce763df8b8cdca6f8f6324b55fde9d23ed05f31d8e",
+    "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+    "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+    "static/inverse/core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+    "static/inverse/core/direct/feature-seeds.js": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+    "static/inverse/core/direct/finalize.js": "d8504b811b223296c006c1cca57466c28fef0adc0e880b2d0073bfcdcd554ae4",
+    "static/inverse/core/direct/fit.js": "ce926fbf75afdbe4a8b062c30da551832c5bff0305514f905ec87cfdb6687e7e",
+    "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+    "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+    "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+    "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+    "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+    "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+    "static/inverse/core/direct/outline-details.js": "ff9d4df5f27fd9ca97d15b115cc95c5692bd17e302f0dcd11c62e7295b85d8aa",
+    "static/inverse/core/direct/polish.js": "3f9df26508076465860a62ce72c2de3aeb67413a1d67ab1927dc37b89b7b622e",
+    "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+    "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+    "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+    "static/inverse/core/direct/refine.js": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+    "static/inverse/core/direct/rejected-routing.js": "26be56dd3367eeb0648833ca347f008af73c8717d58358664ff1d15bbd240540",
+    "static/inverse/core/direct/reroute.js": "84a8cf2cfb6bcb1101a63004f638d0f3dc398baf3fe15ec1068b20336535d9ed",
+    "static/inverse/core/direct/share.js": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+    "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+    "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+    "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+    "static/inverse/core/direct/short-returns.js": "b329b2ca19cb7fca3493d33b0e65dcd44f32ff7bba507cddad106df7f85321ab",
+    "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+    "static/inverse/core/direct/topology.js": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097",
+    "static/inverse/core/engine.js": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+    "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+    "static/inverse/core/feature-recovery.js": "2db84f0963f188ae820dff82610f3d63dc7f51c61207b775a65973c12b390288",
+    "static/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+    "static/inverse/core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+    "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+    "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+    "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+    "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+    "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+    "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+    "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+    "static/inverse/core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+    "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+    "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+    "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+    "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+    "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+    "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+    "static/inverse/core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+    "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+    "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+    "static/inverse/core/solver.js": "29eeca095cfe123f378a424f099954e5ae082866b8ad437f1a6dbb064eddbbf1",
+    "static/inverse/core/spatial-color.js": "f170ff447ef905fc21121d286ac427a079b184ca077fd178065b0a3e247fb132",
+    "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+    "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+    "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+    "static/inverse/core/validate.js": "31cc29c6873896f53a2f999782dcd2292f0924611166932114b45534f5cbebd7",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b"
+  },
+  "executedOldProposalImplementation": {
+    "file": "tmp/heart-learning/border-perturbation-v1/source-before-smooth.mjs",
+    "sha256": "af7e4c4dccad598694cb0a3fcebecf9dd1b2d620e925391dd9cde5fdfb6f22ab",
+    "commit": "c291f87"
+  },
+  "criteria": {
+    "sourceNoiseFraction": 0.0028,
+    "solverAllowanceSeconds": 10,
+    "originalInputNeverModified": true,
+    "referenceUsedForInitialization": false,
+    "nativeGeometryAndPaperRequired": true,
+    "sourceAndReferenceFeaturesRequired": true,
+    "maximumSourceAndReferenceError": 0.03,
+    "timings": "Single native solve/validation/export measurement per track; preparation and independent scoring excluded. Not isolated startup, repeated latency or browser timing.",
+    "noNewAutomaticPhotoSuccesses": true
+  },
+  "native": [
+    {
+      "id": "lattice-840101-clean-baseline",
+      "design": "lattice-840101",
+      "mode": "clean",
+      "method": "baseline",
+      "sourceCounts": [
+        6,
+        5
+      ],
+      "sourceHash": "829b602524d8315a3dea44fab01c511ecd9a55cbe6c143519f0d2f61f4414d40",
+      "preparationSeconds": 0.122609625,
+      "solveSeconds": 1.7724559160000004,
+      "totalSeconds": 2.0224196660000002,
+      "templateChecksPassed": true,
+      "sourceError": 0,
+      "referenceError": 0,
+      "passed": true,
+      "slits": {
+        "left": 5,
+        "right": 6
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits"
+    },
+    {
+      "id": "lattice-840101-clean-joint",
+      "design": "lattice-840101",
+      "mode": "clean",
+      "method": "joint",
+      "sourceCounts": [
+        6,
+        5
+      ],
+      "sourceHash": "829b602524d8315a3dea44fab01c511ecd9a55cbe6c143519f0d2f61f4414d40",
+      "preparationSeconds": 0.0866752919999999,
+      "solveSeconds": 1.4304397910000002,
+      "totalSeconds": 1.5792788340000001,
+      "templateChecksPassed": true,
+      "sourceError": 0,
+      "referenceError": 0,
+      "passed": true,
+      "slits": {
+        "left": 5,
+        "right": 6
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits"
+    },
+    {
+      "id": "lattice-840101-slivers-baseline",
+      "design": "lattice-840101",
+      "mode": "slivers",
+      "method": "baseline",
+      "sourceCounts": [
+        6,
+        5
+      ],
+      "sourceHash": "4ff3b04676ee8753c29d2e14496d689fa70fe099ee5db1463a41d3ca2fc55553",
+      "preparationSeconds": 0.09331795800000009,
+      "solveSeconds": 6.719487375000001,
+      "totalSeconds": 6.876825916,
+      "templateChecksPassed": true,
+      "sourceError": 0.00195,
+      "referenceError": 0.000875,
+      "passed": true,
+      "slits": {
+        "left": 5,
+        "right": 6
+      },
+      "termination": "candidate_found",
+      "folder": "fits"
+    },
+    {
+      "id": "lattice-840101-slivers-joint",
+      "design": "lattice-840101",
+      "mode": "slivers",
+      "method": "joint",
+      "sourceCounts": [
+        6,
+        5
+      ],
+      "sourceHash": "4ff3b04676ee8753c29d2e14496d689fa70fe099ee5db1463a41d3ca2fc55553",
+      "preparationSeconds": 0.10794266699999934,
+      "solveSeconds": 6.462605333,
+      "totalSeconds": 6.6360692499999985,
+      "templateChecksPassed": true,
+      "sourceError": 0.00195,
+      "referenceError": 0.000875,
+      "passed": true,
+      "slits": {
+        "left": 5,
+        "right": 6
+      },
+      "termination": "candidate_found",
+      "folder": "fits"
+    },
+    {
+      "id": "shared-lattice-840102-clean-joint",
+      "design": "shared-lattice-840102",
+      "mode": "clean",
+      "method": "joint",
+      "sourceCounts": [
+        5,
+        1
+      ],
+      "sourceHash": "9c790f1ced5f6db492e5fc26f1300c56a5b36ee3597f403301ee22db10c96f5a",
+      "preparationSeconds": 0.024930124999998953,
+      "solveSeconds": 1.2314601660000009,
+      "totalSeconds": 1.3147989579999995,
+      "templateChecksPassed": true,
+      "sourceError": 0,
+      "referenceError": 0,
+      "passed": true,
+      "slits": {
+        "left": 1,
+        "right": 5
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits"
+    },
+    {
+      "id": "shared-lattice-840102-clean-baseline",
+      "design": "shared-lattice-840102",
+      "mode": "clean",
+      "method": "baseline",
+      "sourceCounts": [
+        5,
+        1
+      ],
+      "sourceHash": "9c790f1ced5f6db492e5fc26f1300c56a5b36ee3597f403301ee22db10c96f5a",
+      "preparationSeconds": 0.022918332999997803,
+      "solveSeconds": 1.1414529579999981,
+      "totalSeconds": 1.220018541999998,
+      "templateChecksPassed": true,
+      "sourceError": 0,
+      "referenceError": 0,
+      "passed": true,
+      "slits": {
+        "left": 1,
+        "right": 5
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits"
+    },
+    {
+      "id": "shared-lattice-840102-slivers-joint",
+      "design": "shared-lattice-840102",
+      "mode": "slivers",
+      "method": "joint",
+      "sourceCounts": [
+        5,
+        1
+      ],
+      "sourceHash": "49b77d7f4c67b1f31e68d03666949c2a97d6407c779c1b7a92806611bb27d6b4",
+      "preparationSeconds": 0.02530970900000102,
+      "solveSeconds": 3.734214500000002,
+      "totalSeconds": 3.8161101249999994,
+      "templateChecksPassed": true,
+      "sourceError": 0.00285,
+      "referenceError": 5e-05,
+      "passed": true,
+      "slits": {
+        "left": 1,
+        "right": 5
+      },
+      "termination": "candidate_found",
+      "folder": "fits"
+    },
+    {
+      "id": "shared-lattice-840102-slivers-baseline",
+      "design": "shared-lattice-840102",
+      "mode": "slivers",
+      "method": "baseline",
+      "sourceCounts": [
+        5,
+        1
+      ],
+      "sourceHash": "49b77d7f4c67b1f31e68d03666949c2a97d6407c779c1b7a92806611bb27d6b4",
+      "preparationSeconds": 0.03806866699999955,
+      "solveSeconds": 3.628868957999999,
+      "totalSeconds": 3.729824958000001,
+      "templateChecksPassed": true,
+      "sourceError": 0.00285,
+      "referenceError": 5e-05,
+      "passed": true,
+      "slits": {
+        "left": 1,
+        "right": 5
+      },
+      "termination": "candidate_found",
+      "folder": "fits"
+    },
+    {
+      "id": "channel-840104-clean-joint",
+      "design": "channel-840104",
+      "mode": "clean",
+      "method": "joint",
+      "sourceCounts": [
+        1,
+        1
+      ],
+      "sourceHash": "a7128c8e22aea047b657f59948fdfa4e2d998723a3ac462f62697aeb092b5b2d",
+      "preparationSeconds": 0.019421540999999706,
+      "solveSeconds": 0.8844377920000006,
+      "totalSeconds": 0.9622419579999987,
+      "templateChecksPassed": true,
+      "sourceError": 0,
+      "referenceError": 0,
+      "passed": true,
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits"
+    },
+    {
+      "id": "channel-840104-clean-baseline",
+      "design": "channel-840104",
+      "mode": "clean",
+      "method": "baseline",
+      "sourceCounts": [
+        1,
+        1
+      ],
+      "sourceHash": "a7128c8e22aea047b657f59948fdfa4e2d998723a3ac462f62697aeb092b5b2d",
+      "preparationSeconds": 0.0334061249999977,
+      "solveSeconds": 0.9213711660000008,
+      "totalSeconds": 1.0126709579999988,
+      "templateChecksPassed": true,
+      "sourceError": 0,
+      "referenceError": 0,
+      "passed": true,
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits"
+    },
+    {
+      "id": "channel-840104-slivers-joint",
+      "design": "channel-840104",
+      "mode": "slivers",
+      "method": "joint",
+      "sourceCounts": [
+        1,
+        1
+      ],
+      "sourceHash": "d5e323adae329c48fff84d84f456b46c905125ad6bfc09b5ea18aa1dcd1b3659",
+      "preparationSeconds": 0.019662041999999928,
+      "solveSeconds": 2.5455894579999985,
+      "totalSeconds": 2.6243041249999988,
+      "templateChecksPassed": true,
+      "sourceError": 0.00281875,
+      "referenceError": 1.875e-05,
+      "passed": true,
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "termination": "candidate_found",
+      "folder": "fits"
+    },
+    {
+      "id": "channel-840104-slivers-baseline",
+      "design": "channel-840104",
+      "mode": "slivers",
+      "method": "baseline",
+      "sourceCounts": [
+        1,
+        1
+      ],
+      "sourceHash": "d5e323adae329c48fff84d84f456b46c905125ad6bfc09b5ea18aa1dcd1b3659",
+      "preparationSeconds": 0.02081062500000189,
+      "solveSeconds": 2.449929791999999,
+      "totalSeconds": 2.533017458000002,
+      "templateChecksPassed": true,
+      "sourceError": 0.00281875,
+      "referenceError": 1.875e-05,
+      "passed": true,
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "termination": "candidate_found",
+      "folder": "fits"
+    },
+    {
+      "id": "frame-840105-clean-baseline",
+      "design": "frame-840105",
+      "mode": "clean",
+      "method": "baseline",
+      "sourceCounts": [
+        2,
+        2
+      ],
+      "sourceHash": "fa0f0b853e0805e1e1b01deb8a887c78ee3f74d88b54784ff73d8698d401d55e",
+      "preparationSeconds": 0.021231917000004614,
+      "solveSeconds": 0.8982219590000022,
+      "totalSeconds": 0.9789728329999998,
+      "templateChecksPassed": true,
+      "sourceError": 0,
+      "referenceError": 0,
+      "passed": true,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits"
+    },
+    {
+      "id": "frame-840105-clean-joint",
+      "design": "frame-840105",
+      "mode": "clean",
+      "method": "joint",
+      "sourceCounts": [
+        2,
+        2
+      ],
+      "sourceHash": "fa0f0b853e0805e1e1b01deb8a887c78ee3f74d88b54784ff73d8698d401d55e",
+      "preparationSeconds": 0.02039479199999914,
+      "solveSeconds": 0.8542105830000001,
+      "totalSeconds": 0.9361161670000001,
+      "templateChecksPassed": true,
+      "sourceError": 0,
+      "referenceError": 0,
+      "passed": true,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits"
+    },
+    {
+      "id": "frame-840105-slivers-baseline",
+      "design": "frame-840105",
+      "mode": "slivers",
+      "method": "baseline",
+      "sourceCounts": [
+        2,
+        2
+      ],
+      "sourceHash": "d2b9d2e00e4492442ef781de86b6e63bd3fca56bf36dc7cd6cdc1c014c864c2c",
+      "preparationSeconds": 0.021131375000004483,
+      "solveSeconds": 3.561854124999998,
+      "totalSeconds": 3.6391570829999984,
+      "templateChecksPassed": true,
+      "sourceError": 0.0028,
+      "referenceError": 0,
+      "passed": true,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "termination": "candidate_found",
+      "folder": "fits"
+    },
+    {
+      "id": "frame-840105-slivers-joint",
+      "design": "frame-840105",
+      "mode": "slivers",
+      "method": "joint",
+      "sourceCounts": [
+        2,
+        2
+      ],
+      "sourceHash": "d2b9d2e00e4492442ef781de86b6e63bd3fca56bf36dc7cd6cdc1c014c864c2c",
+      "preparationSeconds": 0.023624374999999417,
+      "solveSeconds": 3.5152915829999984,
+      "totalSeconds": 3.596231875000005,
+      "templateChecksPassed": true,
+      "sourceError": 0.0028,
+      "referenceError": 0,
+      "passed": true,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "termination": "candidate_found",
+      "folder": "fits"
+    },
+    {
+      "id": "radial-motif-840106-clean-joint",
+      "design": "radial-motif-840106",
+      "mode": "clean",
+      "method": "joint",
+      "sourceCounts": [
+        2,
+        2
+      ],
+      "sourceHash": "1dce76066f577951dca15ae8888850738d7a6c33892df20dbafbb4af38cd3007",
+      "preparationSeconds": 0.03408350000000064,
+      "solveSeconds": 1.3112574160000003,
+      "totalSeconds": 1.4044677499999962,
+      "templateChecksPassed": true,
+      "sourceError": 0.0009125,
+      "referenceError": 0.0009125,
+      "passed": true,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits"
+    },
+    {
+      "id": "radial-motif-840106-clean-baseline",
+      "design": "radial-motif-840106",
+      "mode": "clean",
+      "method": "baseline",
+      "sourceCounts": [
+        2,
+        2
+      ],
+      "sourceHash": "1dce76066f577951dca15ae8888850738d7a6c33892df20dbafbb4af38cd3007",
+      "preparationSeconds": 0.03708970799999952,
+      "solveSeconds": 1.2580927500000034,
+      "totalSeconds": 1.3521196249999994,
+      "templateChecksPassed": true,
+      "sourceError": 0.0009125,
+      "referenceError": 0.0009125,
+      "passed": true,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits"
+    },
+    {
+      "id": "radial-motif-840106-slivers-joint",
+      "design": "radial-motif-840106",
+      "mode": "slivers",
+      "method": "joint",
+      "sourceCounts": [
+        2,
+        2
+      ],
+      "sourceHash": "e6e08e6bcfe1d1007fd5f7ae8b7cbc6038eb9f0b4e1e08a8edf25cd711aea689",
+      "preparationSeconds": 0.033266457999998236,
+      "solveSeconds": 3.598961374999999,
+      "totalSeconds": 3.689297832999997,
+      "templateChecksPassed": true,
+      "sourceError": 0.00314375,
+      "referenceError": 0.00034375,
+      "passed": true,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "termination": "candidate_found",
+      "folder": "fits"
+    },
+    {
+      "id": "radial-motif-840106-slivers-baseline",
+      "design": "radial-motif-840106",
+      "mode": "slivers",
+      "method": "baseline",
+      "sourceCounts": [
+        2,
+        2
+      ],
+      "sourceHash": "e6e08e6bcfe1d1007fd5f7ae8b7cbc6038eb9f0b4e1e08a8edf25cd711aea689",
+      "preparationSeconds": 0.039950959000001604,
+      "solveSeconds": 3.5477667079999957,
+      "totalSeconds": 3.6464214589999973,
+      "templateChecksPassed": true,
+      "sourceError": 0.00314375,
+      "referenceError": 0.00034375,
+      "passed": true,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "termination": "candidate_found",
+      "folder": "fits"
+    },
+    {
+      "id": "lattice-840101-clean-joint-early",
+      "design": "lattice-840101",
+      "mode": "clean",
+      "method": "joint-early",
+      "sourceCounts": [
+        6,
+        5
+      ],
+      "sourceHash": "829b602524d8315a3dea44fab01c511ecd9a55cbe6c143519f0d2f61f4414d40",
+      "preparationSeconds": 0.11788879199999999,
+      "solveSeconds": 1.75084225,
+      "totalSeconds": 2.003503667,
+      "templateChecksPassed": true,
+      "sourceError": 0,
+      "referenceError": 0,
+      "passed": true,
+      "slits": {
+        "left": 5,
+        "right": 6
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits-early"
+    },
+    {
+      "id": "lattice-840101-slivers-joint-early",
+      "design": "lattice-840101",
+      "mode": "slivers",
+      "method": "joint-early",
+      "sourceCounts": [
+        6,
+        5
+      ],
+      "sourceHash": "4ff3b04676ee8753c29d2e14496d689fa70fe099ee5db1463a41d3ca2fc55553",
+      "preparationSeconds": 0.11184050000000025,
+      "solveSeconds": 8.201643958,
+      "totalSeconds": 8.379725916,
+      "templateChecksPassed": true,
+      "sourceError": 0.00195,
+      "referenceError": 0.000875,
+      "passed": true,
+      "slits": {
+        "left": 5,
+        "right": 6
+      },
+      "termination": "candidate_found",
+      "folder": "fits-early"
+    },
+    {
+      "id": "shared-lattice-840102-clean-joint-early",
+      "design": "shared-lattice-840102",
+      "mode": "clean",
+      "method": "joint-early",
+      "sourceCounts": [
+        5,
+        1
+      ],
+      "sourceHash": "9c790f1ced5f6db492e5fc26f1300c56a5b36ee3597f403301ee22db10c96f5a",
+      "preparationSeconds": 0.04359429099999943,
+      "solveSeconds": 1.1669381670000003,
+      "totalSeconds": 1.2701259159999991,
+      "templateChecksPassed": true,
+      "sourceError": 0,
+      "referenceError": 0,
+      "passed": true,
+      "slits": {
+        "left": 1,
+        "right": 5
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits-early"
+    },
+    {
+      "id": "shared-lattice-840102-slivers-joint-early",
+      "design": "shared-lattice-840102",
+      "mode": "slivers",
+      "method": "joint-early",
+      "sourceCounts": [
+        5,
+        1
+      ],
+      "sourceHash": "49b77d7f4c67b1f31e68d03666949c2a97d6407c779c1b7a92806611bb27d6b4",
+      "preparationSeconds": 0.04333416699999907,
+      "solveSeconds": 1.7610375000000003,
+      "totalSeconds": 1.8626387079999986,
+      "templateChecksPassed": true,
+      "sourceError": 0.001125,
+      "referenceError": 0.002725,
+      "passed": true,
+      "slits": {
+        "left": 1,
+        "right": 5
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits-early"
+    },
+    {
+      "id": "channel-840104-clean-joint-early",
+      "design": "channel-840104",
+      "mode": "clean",
+      "method": "joint-early",
+      "sourceCounts": [
+        1,
+        1
+      ],
+      "sourceHash": "a7128c8e22aea047b657f59948fdfa4e2d998723a3ac462f62697aeb092b5b2d",
+      "preparationSeconds": 0.02158008299999892,
+      "solveSeconds": 0.9893396670000002,
+      "totalSeconds": 1.071453540999999,
+      "templateChecksPassed": true,
+      "sourceError": 0,
+      "referenceError": 0,
+      "passed": true,
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits-early"
+    },
+    {
+      "id": "channel-840104-slivers-joint-early",
+      "design": "channel-840104",
+      "mode": "slivers",
+      "method": "joint-early",
+      "sourceCounts": [
+        1,
+        1
+      ],
+      "sourceHash": "d5e323adae329c48fff84d84f456b46c905125ad6bfc09b5ea18aa1dcd1b3659",
+      "preparationSeconds": 0.021667292000000088,
+      "solveSeconds": 2.636820875000001,
+      "totalSeconds": 2.720816667000001,
+      "templateChecksPassed": true,
+      "sourceError": 0.00281875,
+      "referenceError": 1.875e-05,
+      "passed": true,
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "termination": "candidate_found",
+      "folder": "fits-early"
+    },
+    {
+      "id": "frame-840105-clean-joint-early",
+      "design": "frame-840105",
+      "mode": "clean",
+      "method": "joint-early",
+      "sourceCounts": [
+        2,
+        2
+      ],
+      "sourceHash": "fa0f0b853e0805e1e1b01deb8a887c78ee3f74d88b54784ff73d8698d401d55e",
+      "preparationSeconds": 0.02240504200000214,
+      "solveSeconds": 0.8577231250000005,
+      "totalSeconds": 0.9406899169999997,
+      "templateChecksPassed": true,
+      "sourceError": 0,
+      "referenceError": 0,
+      "passed": true,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits-early"
+    },
+    {
+      "id": "frame-840105-slivers-joint-early",
+      "design": "frame-840105",
+      "mode": "slivers",
+      "method": "joint-early",
+      "sourceCounts": [
+        2,
+        2
+      ],
+      "sourceHash": "d2b9d2e00e4492442ef781de86b6e63bd3fca56bf36dc7cd6cdc1c014c864c2c",
+      "preparationSeconds": 0.022924042000002372,
+      "solveSeconds": 1.2748536669999995,
+      "totalSeconds": 1.3567250000000022,
+      "templateChecksPassed": true,
+      "sourceError": 0.0039,
+      "referenceError": 0.0033625,
+      "passed": true,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits-early"
+    },
+    {
+      "id": "radial-motif-840106-clean-joint-early",
+      "design": "radial-motif-840106",
+      "mode": "clean",
+      "method": "joint-early",
+      "sourceCounts": [
+        2,
+        2
+      ],
+      "sourceHash": "1dce76066f577951dca15ae8888850738d7a6c33892df20dbafbb4af38cd3007",
+      "preparationSeconds": 0.03286049999999886,
+      "solveSeconds": 1.3136253749999995,
+      "totalSeconds": 1.406732415999999,
+      "templateChecksPassed": true,
+      "sourceError": 0.0009125,
+      "referenceError": 0.0009125,
+      "passed": true,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits-early"
+    },
+    {
+      "id": "radial-motif-840106-slivers-joint-early",
+      "design": "radial-motif-840106",
+      "mode": "slivers",
+      "method": "joint-early",
+      "sourceCounts": [
+        2,
+        2
+      ],
+      "sourceHash": "e6e08e6bcfe1d1007fd5f7ae8b7cbc6038eb9f0b4e1e08a8edf25cd711aea689",
+      "preparationSeconds": 0.032117458000000626,
+      "solveSeconds": 4.535571583000001,
+      "totalSeconds": 4.626696875000001,
+      "templateChecksPassed": true,
+      "sourceError": 0.00314375,
+      "referenceError": 0.00034375,
+      "passed": true,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "termination": "candidate_found",
+      "folder": "fits-early"
+    },
+    {
+      "id": "lattice-840101-clean-joint-row",
+      "design": "lattice-840101",
+      "mode": "clean",
+      "method": "joint-row",
+      "sourceCounts": [
+        6,
+        5
+      ],
+      "sourceHash": "829b602524d8315a3dea44fab01c511ecd9a55cbe6c143519f0d2f61f4414d40",
+      "preparationSeconds": 0.107275792,
+      "solveSeconds": 1.704311542,
+      "totalSeconds": 1.9378626250000002,
+      "templateChecksPassed": true,
+      "sourceError": 0,
+      "referenceError": 0,
+      "passed": true,
+      "slits": {
+        "left": 5,
+        "right": 6
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits-row"
+    },
+    {
+      "id": "lattice-840101-slivers-joint-row",
+      "design": "lattice-840101",
+      "mode": "slivers",
+      "method": "joint-row",
+      "sourceCounts": [
+        6,
+        5
+      ],
+      "sourceHash": "4ff3b04676ee8753c29d2e14496d689fa70fe099ee5db1463a41d3ca2fc55553",
+      "preparationSeconds": 0.11472462500000029,
+      "solveSeconds": 2.189678625,
+      "totalSeconds": 2.3680456249999997,
+      "templateChecksPassed": true,
+      "sourceError": 0.002025,
+      "referenceError": 0.003525,
+      "passed": true,
+      "slits": {
+        "left": 5,
+        "right": 6
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits-row"
+    },
+    {
+      "id": "shared-lattice-840102-clean-joint-row",
+      "design": "shared-lattice-840102",
+      "mode": "clean",
+      "method": "joint-row",
+      "sourceCounts": [
+        5,
+        1
+      ],
+      "sourceHash": "9c790f1ced5f6db492e5fc26f1300c56a5b36ee3597f403301ee22db10c96f5a",
+      "preparationSeconds": 0.029461583999999676,
+      "solveSeconds": 1.2051937499999994,
+      "totalSeconds": 1.2947619169999998,
+      "templateChecksPassed": true,
+      "sourceError": 0,
+      "referenceError": 0,
+      "passed": true,
+      "slits": {
+        "left": 1,
+        "right": 5
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits-row"
+    },
+    {
+      "id": "shared-lattice-840102-slivers-joint-row",
+      "design": "shared-lattice-840102",
+      "mode": "slivers",
+      "method": "joint-row",
+      "sourceCounts": [
+        5,
+        1
+      ],
+      "sourceHash": "49b77d7f4c67b1f31e68d03666949c2a97d6407c779c1b7a92806611bb27d6b4",
+      "preparationSeconds": 0.0384291659999999,
+      "solveSeconds": 1.542918917,
+      "totalSeconds": 1.6394969160000001,
+      "templateChecksPassed": true,
+      "sourceError": 0.002625,
+      "referenceError": 0.002625,
+      "passed": true,
+      "slits": {
+        "left": 1,
+        "right": 5
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits-row"
+    },
+    {
+      "id": "channel-840104-clean-joint-row",
+      "design": "channel-840104",
+      "mode": "clean",
+      "method": "joint-row",
+      "sourceCounts": [
+        1,
+        1
+      ],
+      "sourceHash": "a7128c8e22aea047b657f59948fdfa4e2d998723a3ac462f62697aeb092b5b2d",
+      "preparationSeconds": 0.018755291999999826,
+      "solveSeconds": 0.9166644999999999,
+      "totalSeconds": 0.9961359590000002,
+      "templateChecksPassed": true,
+      "sourceError": 0,
+      "referenceError": 0,
+      "passed": true,
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits-row"
+    },
+    {
+      "id": "channel-840104-slivers-joint-row",
+      "design": "channel-840104",
+      "mode": "slivers",
+      "method": "joint-row",
+      "sourceCounts": [
+        1,
+        1
+      ],
+      "sourceHash": "d5e323adae329c48fff84d84f456b46c905125ad6bfc09b5ea18aa1dcd1b3659",
+      "preparationSeconds": 0.021007708000001003,
+      "solveSeconds": 1.076960583,
+      "totalSeconds": 1.1599427919999998,
+      "templateChecksPassed": true,
+      "sourceError": 0.0028,
+      "referenceError": 0,
+      "passed": true,
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits-row"
+    },
+    {
+      "id": "frame-840105-clean-joint-row",
+      "design": "frame-840105",
+      "mode": "clean",
+      "method": "joint-row",
+      "sourceCounts": [
+        2,
+        2
+      ],
+      "sourceHash": "fa0f0b853e0805e1e1b01deb8a887c78ee3f74d88b54784ff73d8698d401d55e",
+      "preparationSeconds": 0.02069024999999965,
+      "solveSeconds": 0.8508302499999991,
+      "totalSeconds": 0.9396372080000001,
+      "templateChecksPassed": true,
+      "sourceError": 0,
+      "referenceError": 0,
+      "passed": true,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits-row"
+    },
+    {
+      "id": "frame-840105-slivers-joint-row",
+      "design": "frame-840105",
+      "mode": "slivers",
+      "method": "joint-row",
+      "sourceCounts": [
+        2,
+        2
+      ],
+      "sourceHash": "d2b9d2e00e4492442ef781de86b6e63bd3fca56bf36dc7cd6cdc1c014c864c2c",
+      "preparationSeconds": 0.02211974999999984,
+      "solveSeconds": 3.7734809169999988,
+      "totalSeconds": 3.852915541999999,
+      "templateChecksPassed": true,
+      "sourceError": 0.0028,
+      "referenceError": 0,
+      "passed": true,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "termination": "candidate_found",
+      "folder": "fits-row"
+    },
+    {
+      "id": "radial-motif-840106-clean-joint-row",
+      "design": "radial-motif-840106",
+      "mode": "clean",
+      "method": "joint-row",
+      "sourceCounts": [
+        2,
+        2
+      ],
+      "sourceHash": "1dce76066f577951dca15ae8888850738d7a6c33892df20dbafbb4af38cd3007",
+      "preparationSeconds": 0.03603954200000044,
+      "solveSeconds": 1.3358194590000003,
+      "totalSeconds": 1.4277138749999994,
+      "templateChecksPassed": true,
+      "sourceError": 0.0009125,
+      "referenceError": 0.0009125,
+      "passed": true,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits-row"
+    },
+    {
+      "id": "radial-motif-840106-slivers-joint-row",
+      "design": "radial-motif-840106",
+      "mode": "slivers",
+      "method": "joint-row",
+      "sourceCounts": [
+        2,
+        2
+      ],
+      "sourceHash": "e6e08e6bcfe1d1007fd5f7ae8b7cbc6038eb9f0b4e1e08a8edf25cd711aea689",
+      "preparationSeconds": 0.044236667000001034,
+      "solveSeconds": 1.5438239580000008,
+      "totalSeconds": 1.6452766250000004,
+      "templateChecksPassed": true,
+      "sourceError": 0.0037125,
+      "referenceError": 0.0009125,
+      "passed": true,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits-row"
+    },
+    {
+      "id": "lattice-840101-clean-joint-smooth-row",
+      "design": "lattice-840101",
+      "mode": "clean",
+      "method": "joint-smooth-row",
+      "sourceCounts": [
+        6,
+        5
+      ],
+      "sourceHash": "829b602524d8315a3dea44fab01c511ecd9a55cbe6c143519f0d2f61f4414d40",
+      "preparationSeconds": 0.11993491700000002,
+      "solveSeconds": 1.8416375410000003,
+      "totalSeconds": 2.093361125,
+      "templateChecksPassed": true,
+      "sourceError": 0,
+      "referenceError": 0,
+      "passed": true,
+      "slits": {
+        "left": 5,
+        "right": 6
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits-smooth-row"
+    },
+    {
+      "id": "lattice-840101-slivers-joint-smooth-row",
+      "design": "lattice-840101",
+      "mode": "slivers",
+      "method": "joint-smooth-row",
+      "sourceCounts": [
+        6,
+        5
+      ],
+      "sourceHash": "4ff3b04676ee8753c29d2e14496d689fa70fe099ee5db1463a41d3ca2fc55553",
+      "preparationSeconds": 0.1062990420000001,
+      "solveSeconds": 2.145072375,
+      "totalSeconds": 2.3156462079999995,
+      "templateChecksPassed": true,
+      "sourceError": 0.002225,
+      "referenceError": 0.000925,
+      "passed": true,
+      "slits": {
+        "left": 5,
+        "right": 6
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits-smooth-row"
+    },
+    {
+      "id": "shared-lattice-840102-clean-joint-smooth-row",
+      "design": "shared-lattice-840102",
+      "mode": "clean",
+      "method": "joint-smooth-row",
+      "sourceCounts": [
+        5,
+        1
+      ],
+      "sourceHash": "9c790f1ced5f6db492e5fc26f1300c56a5b36ee3597f403301ee22db10c96f5a",
+      "preparationSeconds": 0.040946750000000066,
+      "solveSeconds": 1.3161911249999994,
+      "totalSeconds": 1.4163453340000005,
+      "templateChecksPassed": true,
+      "sourceError": 0,
+      "referenceError": 0,
+      "passed": true,
+      "slits": {
+        "left": 1,
+        "right": 5
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits-smooth-row"
+    },
+    {
+      "id": "shared-lattice-840102-slivers-joint-smooth-row",
+      "design": "shared-lattice-840102",
+      "mode": "slivers",
+      "method": "joint-smooth-row",
+      "sourceCounts": [
+        5,
+        1
+      ],
+      "sourceHash": "49b77d7f4c67b1f31e68d03666949c2a97d6407c779c1b7a92806611bb27d6b4",
+      "preparationSeconds": 0.025728291999999785,
+      "solveSeconds": 1.3998048330000001,
+      "totalSeconds": 1.482772667,
+      "templateChecksPassed": true,
+      "sourceError": 0.0028,
+      "referenceError": 0,
+      "passed": true,
+      "slits": {
+        "left": 1,
+        "right": 5
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits-smooth-row"
+    },
+    {
+      "id": "channel-840104-clean-joint-smooth-row",
+      "design": "channel-840104",
+      "mode": "clean",
+      "method": "joint-smooth-row",
+      "sourceCounts": [
+        1,
+        1
+      ],
+      "sourceHash": "a7128c8e22aea047b657f59948fdfa4e2d998723a3ac462f62697aeb092b5b2d",
+      "preparationSeconds": 0.018704874999999448,
+      "solveSeconds": 0.9101509580000011,
+      "totalSeconds": 0.9887787919999992,
+      "templateChecksPassed": true,
+      "sourceError": 0,
+      "referenceError": 0,
+      "passed": true,
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits-smooth-row"
+    },
+    {
+      "id": "channel-840104-slivers-joint-smooth-row",
+      "design": "channel-840104",
+      "mode": "slivers",
+      "method": "joint-smooth-row",
+      "sourceCounts": [
+        1,
+        1
+      ],
+      "sourceHash": "d5e323adae329c48fff84d84f456b46c905125ad6bfc09b5ea18aa1dcd1b3659",
+      "preparationSeconds": 0.023069416999998794,
+      "solveSeconds": 1.0329347500000003,
+      "totalSeconds": 1.1123872919999995,
+      "templateChecksPassed": true,
+      "sourceError": 0.0028,
+      "referenceError": 0,
+      "passed": true,
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits-smooth-row"
+    },
+    {
+      "id": "frame-840105-clean-joint-smooth-row",
+      "design": "frame-840105",
+      "mode": "clean",
+      "method": "joint-smooth-row",
+      "sourceCounts": [
+        2,
+        2
+      ],
+      "sourceHash": "fa0f0b853e0805e1e1b01deb8a887c78ee3f74d88b54784ff73d8698d401d55e",
+      "preparationSeconds": 0.021081499999998414,
+      "solveSeconds": 0.8826695,
+      "totalSeconds": 0.961832124999999,
+      "templateChecksPassed": true,
+      "sourceError": 0,
+      "referenceError": 0,
+      "passed": true,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits-smooth-row"
+    },
+    {
+      "id": "frame-840105-slivers-joint-smooth-row",
+      "design": "frame-840105",
+      "mode": "slivers",
+      "method": "joint-smooth-row",
+      "sourceCounts": [
+        2,
+        2
+      ],
+      "sourceHash": "d2b9d2e00e4492442ef781de86b6e63bd3fca56bf36dc7cd6cdc1c014c864c2c",
+      "preparationSeconds": 0.021135874999999943,
+      "solveSeconds": 1.0371877920000006,
+      "totalSeconds": 1.1202777909999986,
+      "templateChecksPassed": true,
+      "sourceError": 0.0028,
+      "referenceError": 0,
+      "passed": true,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits-smooth-row"
+    },
+    {
+      "id": "radial-motif-840106-clean-joint-smooth-row",
+      "design": "radial-motif-840106",
+      "mode": "clean",
+      "method": "joint-smooth-row",
+      "sourceCounts": [
+        2,
+        2
+      ],
+      "sourceHash": "1dce76066f577951dca15ae8888850738d7a6c33892df20dbafbb4af38cd3007",
+      "preparationSeconds": 0.03397149999999965,
+      "solveSeconds": 1.3594164999999994,
+      "totalSeconds": 1.4561534169999995,
+      "templateChecksPassed": true,
+      "sourceError": 0.0009125,
+      "referenceError": 0.0009125,
+      "passed": true,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits-smooth-row"
+    },
+    {
+      "id": "radial-motif-840106-slivers-joint-smooth-row",
+      "design": "radial-motif-840106",
+      "mode": "slivers",
+      "method": "joint-smooth-row",
+      "sourceCounts": [
+        2,
+        2
+      ],
+      "sourceHash": "e6e08e6bcfe1d1007fd5f7ae8b7cbc6038eb9f0b4e1e08a8edf25cd711aea689",
+      "preparationSeconds": 0.032622083000000204,
+      "solveSeconds": 1.5703073330000006,
+      "totalSeconds": 1.6635755419999987,
+      "templateChecksPassed": true,
+      "sourceError": 0.0037125,
+      "referenceError": 0.0009125,
+      "passed": true,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "termination": "validated_topology_seed",
+      "folder": "fits-smooth-row"
+    }
+  ],
+  "editable": [
+    {
+      "id": "lattice-840101-clean-baseline",
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "editableError": 0,
+      "missingFeatures": 0,
+      "editorIssues": [],
+      "seconds": 0.25376879199999997
+    },
+    {
+      "id": "lattice-840101-slivers-baseline",
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "editableError": 0.00195625,
+      "missingFeatures": 0,
+      "editorIssues": [],
+      "seconds": 0.369036458
+    },
+    {
+      "id": "shared-lattice-840102-clean-baseline",
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "editableError": 0,
+      "missingFeatures": 0,
+      "editorIssues": [],
+      "seconds": 0.2192057080000002
+    },
+    {
+      "id": "shared-lattice-840102-slivers-baseline",
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "editableError": 0.0028875,
+      "missingFeatures": 0,
+      "editorIssues": [],
+      "seconds": 0.3077624169999999
+    },
+    {
+      "id": "channel-840104-clean-baseline",
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "editableError": 0.0008375,
+      "missingFeatures": 0,
+      "editorIssues": [],
+      "seconds": 0.08866045800000029
+    },
+    {
+      "id": "channel-840104-slivers-baseline",
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "editableError": 0.00365625,
+      "missingFeatures": 0,
+      "editorIssues": [],
+      "seconds": 0.14393404200000032
+    },
+    {
+      "id": "frame-840105-clean-baseline",
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "editableError": 0,
+      "missingFeatures": 0,
+      "editorIssues": [],
+      "seconds": 0.09691320900000028
+    },
+    {
+      "id": "frame-840105-slivers-baseline",
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "editableError": 0.0028375,
+      "missingFeatures": 0,
+      "editorIssues": [],
+      "seconds": 0.15122441699999992
+    },
+    {
+      "id": "radial-motif-840106-clean-baseline",
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "editableError": 0.0008625,
+      "missingFeatures": 0,
+      "editorIssues": [],
+      "seconds": 0.25900825000000033
+    },
+    {
+      "id": "radial-motif-840106-slivers-baseline",
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "editableError": 0.00320625,
+      "missingFeatures": 0,
+      "editorIssues": [],
+      "seconds": 0.2776779579999998
+    },
+    {
+      "id": "lattice-840101-clean-joint-smooth-row",
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "editableError": 0,
+      "missingFeatures": 0,
+      "editorIssues": [],
+      "seconds": 0.14597116700000015
+    },
+    {
+      "id": "lattice-840101-slivers-joint-smooth-row",
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "editableError": 0.002225,
+      "missingFeatures": 0,
+      "editorIssues": [],
+      "seconds": 0.15735125000000016
+    },
+    {
+      "id": "shared-lattice-840102-clean-joint-smooth-row",
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "editableError": 0,
+      "missingFeatures": 0,
+      "editorIssues": [],
+      "seconds": 0.19845583299999997
+    },
+    {
+      "id": "shared-lattice-840102-slivers-joint-smooth-row",
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "editableError": 0.0028,
+      "missingFeatures": 0,
+      "editorIssues": [],
+      "seconds": 0.203992792
+    },
+    {
+      "id": "channel-840104-clean-joint-smooth-row",
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "editableError": 0.0008375,
+      "missingFeatures": 0,
+      "editorIssues": [],
+      "seconds": 0.08957204200000024
+    },
+    {
+      "id": "channel-840104-slivers-joint-smooth-row",
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "editableError": 0.0036375,
+      "missingFeatures": 0,
+      "editorIssues": [],
+      "seconds": 0.08757945800000017
+    },
+    {
+      "id": "frame-840105-clean-joint-smooth-row",
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "editableError": 0,
+      "missingFeatures": 0,
+      "editorIssues": [],
+      "seconds": 0.09448924999999962
+    },
+    {
+      "id": "frame-840105-slivers-joint-smooth-row",
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "editableError": 0.0028,
+      "missingFeatures": 0,
+      "editorIssues": [],
+      "seconds": 0.09543870799999968
+    },
+    {
+      "id": "radial-motif-840106-clean-joint-smooth-row",
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "editableError": 0.0008625,
+      "missingFeatures": 0,
+      "editorIssues": [],
+      "seconds": 0.214549
+    },
+    {
+      "id": "radial-motif-840106-slivers-joint-smooth-row",
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "editableError": 0.0036625,
+      "missingFeatures": 0,
+      "editorIssues": [],
+      "seconds": 0.21495591700000022
+    }
+  ],
+  "stability": [
+    {
+      "id": "lattice-840101",
+      "sameControlCoordinatesAndMemberships": false,
+      "sameIndependentPng": false
+    },
+    {
+      "id": "shared-lattice-840102",
+      "sameControlCoordinatesAndMemberships": true,
+      "sameIndependentPng": true
+    },
+    {
+      "id": "channel-840104",
+      "sameControlCoordinatesAndMemberships": true,
+      "sameIndependentPng": true
+    },
+    {
+      "id": "frame-840105",
+      "sameControlCoordinatesAndMemberships": true,
+      "sameIndependentPng": true
+    },
+    {
+      "id": "radial-motif-840106",
+      "sameControlCoordinatesAndMemberships": true,
+      "sameIndependentPng": true
+    }
+  ],
+  "committedProposalReplay": {
+    "file": "tmp/heart-learning/border-perturbation-v1/smooth-replay.json",
+    "sha256": "c4c5f8380bc5a67983e8024aeea8df176421b332641f935743e9157996d8b87f",
+    "matchingMasks": 60
+  },
+  "validation": {
+    "focusedTestsPassed": 6,
+    "nativeCasesPassed": 50,
+    "editableCasesPassed": 20,
+    "unchangedReleaseSourceFiles": 93,
+    "fullSuite": {
+      "status": "running at collection; not claimed complete",
+      "sourceCommit": "f1c602b",
+      "ledger": "tmp/heart-learning/border-perturbation-v1/checks.json"
+    }
+  },
+  "visualReview": {
+    "reviewer": "assistant",
+    "files": [
+      "tmp/heart-learning/border-perturbation-v1/lattice-840101-review.png",
+      "tmp/heart-learning/border-perturbation-v1/shared-lattice-840102-review.png",
+      "tmp/heart-learning/border-perturbation-v1/channel-840104-review.png",
+      "tmp/heart-learning/border-perturbation-v1/frame-840105-review.png",
+      "tmp/heart-learning/border-perturbation-v1/radial-motif-840106-review.png"
+    ],
+    "findings": [
+      "Constant profile extrusion left visible fringe notches; the smooth-row proposal removes them in the shared lattice and frame.",
+      "Dense-lattice edges still deviate slightly; radial contour has small irregularities.",
+      "Reference error is slightly higher for the lattice and radial motif despite faster observed fitting.",
+      "Editable channel gains a small raster discrepancy; all twenty editable candidates still pass original-source/geometry/paper checks."
+    ]
+  },
+  "limitations": [
+    "Five valid development designs, not a real-photo benchmark or a held-out topology study.",
+    "One selected generated source failed physical self-clearance and was retained as rejected, not replaced.",
+    "Row prior weight 100 was chosen during development on these inputs.",
+    "Four experimental variants were inspected; this is not an unbiased model selection estimate.",
+    "Wider border proposals may damage real near-edge motifs; no runtime integration or physical assembly verification."
+  ],
+  "artifacts": {
+    "tmp/heart-learning/border-perturbation-v1/automatic-early.mjs": {
+      "sha256": "a65d234bc6614cce2627a86a6747a9a86489c2f7d1bf2e60ff62aa4e76acd934",
+      "bytes": 6175
+    },
+    "tmp/heart-learning/border-perturbation-v1/automatic-row.mjs": {
+      "sha256": "9d0622db21b5b49616dc43bb232b4ff3e224ad2a9e7c05752caac0adb679f926",
+      "bytes": 6173
+    },
+    "tmp/heart-learning/border-perturbation-v1/automatic-smooth-row.mjs": {
+      "sha256": "fe6a7fe11d795b6054e174b32ff4a297ae726115ac448011ff686d6d8433e4a6",
+      "bytes": 6180
+    },
+    "tmp/heart-learning/border-perturbation-v1/automatic.mjs": {
+      "sha256": "55ff73d87ca6fe7360acafe2b2b3e9f8a25b54933693f1b829142b92e09f8be6",
+      "bytes": 6169
+    },
+    "tmp/heart-learning/border-perturbation-v1/channel-840104-clean.bin": {
+      "sha256": "a7128c8e22aea047b657f59948fdfa4e2d998723a3ac462f62697aeb092b5b2d",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/border-perturbation-v1/channel-840104-cuts.json": {
+      "sha256": "73353abb1fdff71f25d30d1e0789a1c6defd20f463a662310f2fe8fe30429f0a",
+      "bytes": 1396
+    },
+    "tmp/heart-learning/border-perturbation-v1/channel-840104-patches.bin": {
+      "sha256": "4b1c705a443c4d257059b6b5d5f7e43a6e8c2fc478370fdcea89af3c1348a366",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/border-perturbation-v1/channel-840104-pixels.bin": {
+      "sha256": "baca80f03a44c0df260dc089ef714dc52d865b3de8591946f7a1a1f9ff72f5eb",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/border-perturbation-v1/channel-840104-reference.bin": {
+      "sha256": "a7128c8e22aea047b657f59948fdfa4e2d998723a3ac462f62697aeb092b5b2d",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/border-perturbation-v1/channel-840104-reference.png": {
+      "sha256": "06700287d15e9fb95c5eeccd432fe0c5347f4af374c8754f38fccaeec436e2c1",
+      "bytes": 2245
+    },
+    "tmp/heart-learning/border-perturbation-v1/channel-840104-review.png": {
+      "sha256": "f6586fd5c124016e09cbde25db7c3133e065e45767c2ac60b6ad05825e02a2fa",
+      "bytes": 18422
+    },
+    "tmp/heart-learning/border-perturbation-v1/channel-840104-slivers.bin": {
+      "sha256": "d5e323adae329c48fff84d84f456b46c905125ad6bfc09b5ea18aa1dcd1b3659",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/border-perturbation-v1/collect.py": {
+      "sha256": "ee1dd469b93fb20925423f157d1b706cde440b9b5ace761ceb16a744c9e1ff4f",
+      "bytes": 5909
+    },
+    "tmp/heart-learning/border-perturbation-v1/direct-fit-early.mjs": {
+      "sha256": "152493f3a4b4932ce0788fe2a2ae3e768db5b58912d3796913deef461bcb4a97",
+      "bytes": 61633
+    },
+    "tmp/heart-learning/border-perturbation-v1/direct-fit-row.mjs": {
+      "sha256": "a19d1c4d29d3f4e87f975be7c1c05080f8618bce8bb0c95759ca2574e5aa0781",
+      "bytes": 61631
+    },
+    "tmp/heart-learning/border-perturbation-v1/direct-fit-smooth-row.mjs": {
+      "sha256": "b367f114b44fcea740d95ce66c941ef6ace141b7d8385eac600560b63080552c",
+      "bytes": 61638
+    },
+    "tmp/heart-learning/border-perturbation-v1/direct-fit.mjs": {
+      "sha256": "c1d9209e5ccf3ba94bf4801b6e9f0f32e29b715a525c2d244ee2c6d83982387e",
+      "bytes": 61634
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/channel-840104-clean-baseline-automatic-weave.png": {
+      "sha256": "5ad0f73da94b2fa19ae9e1f6868b86c8d8b3a18a3d26ca2766daa94bbe8ecb49",
+      "bytes": 1551
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/channel-840104-clean-baseline-automatic.svg": {
+      "sha256": "19b87034d7af599b9f30deb766a2ba99ba9ba4869123cbd04c383e77f7df015b",
+      "bytes": 1372
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/channel-840104-clean-joint-smooth-row-automatic-weave.png": {
+      "sha256": "5ad0f73da94b2fa19ae9e1f6868b86c8d8b3a18a3d26ca2766daa94bbe8ecb49",
+      "bytes": 1551
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/channel-840104-clean-joint-smooth-row-automatic.svg": {
+      "sha256": "57824ee328529e74ded0fd5149424f0f312f9130675578546adba5c6ebc352de",
+      "bytes": 1388
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/channel-840104-slivers-baseline-automatic-weave.png": {
+      "sha256": "e041c9d4c13c29088665e03fa213454da4bfcdbf15c05146e443b4556636a9d1",
+      "bytes": 1575
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/channel-840104-slivers-baseline-automatic.svg": {
+      "sha256": "406ee7a650a8d8b75e6a7d8389a24c528695c30f333863860eacbb64ab91d4a3",
+      "bytes": 3140
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/channel-840104-slivers-joint-smooth-row-automatic-weave.png": {
+      "sha256": "5ad0f73da94b2fa19ae9e1f6868b86c8d8b3a18a3d26ca2766daa94bbe8ecb49",
+      "bytes": 1551
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/channel-840104-slivers-joint-smooth-row-automatic.svg": {
+      "sha256": "aeeba34655b0fcc3bea872dc7dba949c0930587f7e226652a2c397667680e31b",
+      "bytes": 1392
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/frame-840105-clean-baseline-automatic-weave.png": {
+      "sha256": "bfe76dcd9e0411691136e96e003bdf2160ea0019b169989116264c83237f3b9c",
+      "bytes": 1571
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/frame-840105-clean-baseline-automatic.svg": {
+      "sha256": "d86e28ce35630e385fdb5bfa293bd05f91c2c48e763d93df11ef03ab29ec36f6",
+      "bytes": 2257
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/frame-840105-clean-joint-smooth-row-automatic-weave.png": {
+      "sha256": "bfe76dcd9e0411691136e96e003bdf2160ea0019b169989116264c83237f3b9c",
+      "bytes": 1571
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/frame-840105-clean-joint-smooth-row-automatic.svg": {
+      "sha256": "453554c3483266fa3262f49654e31f2561a9182688c5d1b18db29b32e50ce2ab",
+      "bytes": 2273
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/frame-840105-slivers-baseline-automatic-weave.png": {
+      "sha256": "8cb7c03c934525e7b4a303a5d3e323791563064cd29eccc25190b99314fac041",
+      "bytes": 1607
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/frame-840105-slivers-baseline-automatic.svg": {
+      "sha256": "8ac5babb543ee89bd4fbe677a74cbeb6311368eb07b9c71c42c484118ceb6ab8",
+      "bytes": 4591
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/frame-840105-slivers-joint-smooth-row-automatic-weave.png": {
+      "sha256": "bfe76dcd9e0411691136e96e003bdf2160ea0019b169989116264c83237f3b9c",
+      "bytes": 1571
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/frame-840105-slivers-joint-smooth-row-automatic.svg": {
+      "sha256": "3755fb2dda65011f8669b7e6be02f2d7b09424e99badf5f09b2513ab852cb5f1",
+      "bytes": 2277
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/lattice-840101-clean-baseline-automatic-weave.png": {
+      "sha256": "1f37b3ec1d2ff268b2580b5de0da6d49ca18b82c1dc43cde341c41fe66e6185a",
+      "bytes": 1664
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/lattice-840101-clean-baseline-automatic.svg": {
+      "sha256": "7f9b8a466488b8ddcc3740f086aa0597add41938dbd6d36bdde5114caf1559e4",
+      "bytes": 4452
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/lattice-840101-clean-joint-smooth-row-automatic-weave.png": {
+      "sha256": "1f37b3ec1d2ff268b2580b5de0da6d49ca18b82c1dc43cde341c41fe66e6185a",
+      "bytes": 1664
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/lattice-840101-clean-joint-smooth-row-automatic.svg": {
+      "sha256": "e99e5423ce82a6174c45baa3c1dfc5dcb3fc2c0b5b1ee6b961b1c57eb978e4bc",
+      "bytes": 4468
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/lattice-840101-slivers-baseline-automatic-weave.png": {
+      "sha256": "8e3a2145cfaf569d5fd191a511166dfaaf50d0270fbd5fefd2462498c26efae5",
+      "bytes": 1689
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/lattice-840101-slivers-baseline-automatic.svg": {
+      "sha256": "072b9b99ad8ee4a7e3f7d757728dfe0e735143428a090f2a2a26ba8c41ff38a9",
+      "bytes": 5609
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/lattice-840101-slivers-joint-smooth-row-automatic-weave.png": {
+      "sha256": "430ea710fb8b556d6d440a3f407f2cecc5cb2dfc059da85836cefeadc7441567",
+      "bytes": 1701
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/lattice-840101-slivers-joint-smooth-row-automatic.svg": {
+      "sha256": "7f8be8906ec6b7ed858b676a253d388ae195e52f999fe9a68f3d9631f7bba082",
+      "bytes": 6971
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/radial-motif-840106-clean-baseline-automatic-weave.png": {
+      "sha256": "4b26ccc9b424d4caa2360b7dd12d28441cf2ad1250cdc51fb7df633b3a03e439",
+      "bytes": 2360
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/radial-motif-840106-clean-baseline-automatic.svg": {
+      "sha256": "4e16c283f98dd17710073e3e0e6ae6a8d85fb0dc8df55ecf8a374614c616c448",
+      "bytes": 6821
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/radial-motif-840106-clean-joint-smooth-row-automatic-weave.png": {
+      "sha256": "4b26ccc9b424d4caa2360b7dd12d28441cf2ad1250cdc51fb7df633b3a03e439",
+      "bytes": 2360
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/radial-motif-840106-clean-joint-smooth-row-automatic.svg": {
+      "sha256": "573af5d54fa3595274979d301a45bf7afd598d5d61cc6877106349149af61f6a",
+      "bytes": 6837
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/radial-motif-840106-slivers-baseline-automatic-weave.png": {
+      "sha256": "1c0ab02f34a1bfa67f66934d7e2fd70af6b93166195200552e0d9db49d508b82",
+      "bytes": 2400
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/radial-motif-840106-slivers-baseline-automatic.svg": {
+      "sha256": "d8197cb8effd61af4bc858a351d0a0dcda3d93fde84582c54477d1c8b33de1bd",
+      "bytes": 9700
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/radial-motif-840106-slivers-joint-smooth-row-automatic-weave.png": {
+      "sha256": "4b26ccc9b424d4caa2360b7dd12d28441cf2ad1250cdc51fb7df633b3a03e439",
+      "bytes": 2360
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/radial-motif-840106-slivers-joint-smooth-row-automatic.svg": {
+      "sha256": "1ca933994ab782a9799b896ecdf2082bce7a5757c38b17bd544771b7b994f980",
+      "bytes": 6841
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/results.json": {
+      "sha256": "ca39dff52889ef43f86e16684ae4d2896d9f2591843618c78c48add66c2e8c41",
+      "bytes": 131997
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/shared-lattice-840102-clean-baseline-automatic-weave.png": {
+      "sha256": "2cf56d9371dfda6ff47a1cf7102281370a7273ef66b63719ecbb394f38ad238a",
+      "bytes": 1697
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/shared-lattice-840102-clean-baseline-automatic.svg": {
+      "sha256": "269d8dbbe23b7eb6aa0ab0ae13ef5241c805b7c70b38e514bca3c86dfdf648a2",
+      "bytes": 3232
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/shared-lattice-840102-clean-joint-smooth-row-automatic-weave.png": {
+      "sha256": "2cf56d9371dfda6ff47a1cf7102281370a7273ef66b63719ecbb394f38ad238a",
+      "bytes": 1697
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/shared-lattice-840102-clean-joint-smooth-row-automatic.svg": {
+      "sha256": "9d53e1292f5aa044d82df6db5c576661cf07fe78171731959fd3239b2dc19cc9",
+      "bytes": 3248
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/shared-lattice-840102-slivers-baseline-automatic-weave.png": {
+      "sha256": "0d339b6ffab7690ce1843be136878fa357fd0f54071f9b12540b3061599c0ad4",
+      "bytes": 1719
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/shared-lattice-840102-slivers-baseline-automatic.svg": {
+      "sha256": "3e3d2bb90d7cfd43f7521a26158ef3fee8e095f3c87be8fa36c2f8adb7f06171",
+      "bytes": 4389
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/shared-lattice-840102-slivers-joint-smooth-row-automatic-weave.png": {
+      "sha256": "2cf56d9371dfda6ff47a1cf7102281370a7273ef66b63719ecbb394f38ad238a",
+      "bytes": 1697
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor/shared-lattice-840102-slivers-joint-smooth-row-automatic.svg": {
+      "sha256": "fb5097e66557a657276fb8aa9beaffd328d3fe2de2065c47166463f7b44e3719",
+      "bytes": 3252
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/channel-840104-clean-baseline/automatic/cut_geometry.json": {
+      "sha256": "dc893b0c31e85e53d3e1492bfdbe6e4699c7a1c2c43631ca8ef3bda71100dfa6",
+      "bytes": 2649
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/channel-840104-clean-baseline/automatic/mask.png": {
+      "sha256": "1c82d6d9e8b953a119c3ca89c04eeeb3d16f93f0daad1ac57662ceb3d4818def",
+      "bytes": 1536
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/channel-840104-clean-joint-smooth-row/automatic/cut_geometry.json": {
+      "sha256": "dc893b0c31e85e53d3e1492bfdbe6e4699c7a1c2c43631ca8ef3bda71100dfa6",
+      "bytes": 2649
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/channel-840104-clean-joint-smooth-row/automatic/mask.png": {
+      "sha256": "1c82d6d9e8b953a119c3ca89c04eeeb3d16f93f0daad1ac57662ceb3d4818def",
+      "bytes": 1536
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/channel-840104-slivers-baseline/automatic/cut_geometry.json": {
+      "sha256": "a6510715df48d1e2b10242464a5dc062864e4236d0f9134b2beb23e1aa4fa18a",
+      "bytes": 10043
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/channel-840104-slivers-baseline/automatic/mask.png": {
+      "sha256": "8f6db98732331776d046411c82f4d518b44e86011ece8ed7c97f7658f04cdc59",
+      "bytes": 1572
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/channel-840104-slivers-joint-smooth-row/automatic/cut_geometry.json": {
+      "sha256": "dc893b0c31e85e53d3e1492bfdbe6e4699c7a1c2c43631ca8ef3bda71100dfa6",
+      "bytes": 2649
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/channel-840104-slivers-joint-smooth-row/automatic/mask.png": {
+      "sha256": "8f6db98732331776d046411c82f4d518b44e86011ece8ed7c97f7658f04cdc59",
+      "bytes": 1572
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/frame-840105-clean-baseline/automatic/cut_geometry.json": {
+      "sha256": "949238267cdb7fcbd08b38cff8ba02ed7d7bf1ff3fc8624f83726127396b97dc",
+      "bytes": 6922
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/frame-840105-clean-baseline/automatic/mask.png": {
+      "sha256": "bfe76dcd9e0411691136e96e003bdf2160ea0019b169989116264c83237f3b9c",
+      "bytes": 1571
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/frame-840105-clean-joint-smooth-row/automatic/cut_geometry.json": {
+      "sha256": "949238267cdb7fcbd08b38cff8ba02ed7d7bf1ff3fc8624f83726127396b97dc",
+      "bytes": 6922
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/frame-840105-clean-joint-smooth-row/automatic/mask.png": {
+      "sha256": "bfe76dcd9e0411691136e96e003bdf2160ea0019b169989116264c83237f3b9c",
+      "bytes": 1571
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/frame-840105-slivers-baseline/automatic/cut_geometry.json": {
+      "sha256": "f813d390c0fc06e4cae0f4491ba5137349cc9c4c40a41782b497953c8569041a",
+      "bytes": 20033
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/frame-840105-slivers-baseline/automatic/mask.png": {
+      "sha256": "8ff6b75af20b4befd857440ae3faece3a7c34915ffd92b8a67d75797d01b19ed",
+      "bytes": 1599
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/frame-840105-slivers-joint-smooth-row/automatic/cut_geometry.json": {
+      "sha256": "949238267cdb7fcbd08b38cff8ba02ed7d7bf1ff3fc8624f83726127396b97dc",
+      "bytes": 6922
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/frame-840105-slivers-joint-smooth-row/automatic/mask.png": {
+      "sha256": "8ff6b75af20b4befd857440ae3faece3a7c34915ffd92b8a67d75797d01b19ed",
+      "bytes": 1599
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/lattice-840101-clean-baseline/automatic/cut_geometry.json": {
+      "sha256": "73a85586c8321537de168a3ebf9073c41e6940e796e6b14100e73a98647dc96f",
+      "bytes": 35810
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/lattice-840101-clean-baseline/automatic/mask.png": {
+      "sha256": "1f37b3ec1d2ff268b2580b5de0da6d49ca18b82c1dc43cde341c41fe66e6185a",
+      "bytes": 1664
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/lattice-840101-clean-joint-smooth-row/automatic/cut_geometry.json": {
+      "sha256": "73a85586c8321537de168a3ebf9073c41e6940e796e6b14100e73a98647dc96f",
+      "bytes": 35810
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/lattice-840101-clean-joint-smooth-row/automatic/mask.png": {
+      "sha256": "1f37b3ec1d2ff268b2580b5de0da6d49ca18b82c1dc43cde341c41fe66e6185a",
+      "bytes": 1664
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/lattice-840101-slivers-baseline/automatic/cut_geometry.json": {
+      "sha256": "f5f032aea9de64f646a2eccaf2ad8dec10eefcfa109e31c657395644333347b5",
+      "bytes": 66331
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/lattice-840101-slivers-baseline/automatic/mask.png": {
+      "sha256": "3f792b8bf7b16a628f0ec3dc2290540a2e820a8f8a474d47746782462bf96ee0",
+      "bytes": 1704
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/lattice-840101-slivers-joint-smooth-row/automatic/cut_geometry.json": {
+      "sha256": "23e80be4e85d4a311a83ffe4283a78a8f35081953e2ed57eeb315ea9c4567c55",
+      "bytes": 44606
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/lattice-840101-slivers-joint-smooth-row/automatic/mask.png": {
+      "sha256": "3f792b8bf7b16a628f0ec3dc2290540a2e820a8f8a474d47746782462bf96ee0",
+      "bytes": 1704
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/radial-motif-840106-clean-baseline/automatic/cut_geometry.json": {
+      "sha256": "8ca41383f208b3f198c7e034f657368df2d011ce78f4c53280f54c70a58677ca",
+      "bytes": 24341
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/radial-motif-840106-clean-baseline/automatic/mask.png": {
+      "sha256": "0ca031d9e99670bad88ce00f0c0ad0cbc88cbaed6f119bdca294625b6b9854d5",
+      "bytes": 2383
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/radial-motif-840106-clean-joint-smooth-row/automatic/cut_geometry.json": {
+      "sha256": "8ca41383f208b3f198c7e034f657368df2d011ce78f4c53280f54c70a58677ca",
+      "bytes": 24341
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/radial-motif-840106-clean-joint-smooth-row/automatic/mask.png": {
+      "sha256": "0ca031d9e99670bad88ce00f0c0ad0cbc88cbaed6f119bdca294625b6b9854d5",
+      "bytes": 2383
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/radial-motif-840106-slivers-baseline/automatic/cut_geometry.json": {
+      "sha256": "0874e15f3da486b0f0ab96d59ea7832550ce1c301cf2de86ac043a97d0f5e5cd",
+      "bytes": 32152
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/radial-motif-840106-slivers-baseline/automatic/mask.png": {
+      "sha256": "2bc45c96a930e150f868dc4b11249a3ec9b9b8b7e8a7fb05805ad022578d638d",
+      "bytes": 2411
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/radial-motif-840106-slivers-joint-smooth-row/automatic/cut_geometry.json": {
+      "sha256": "8ca41383f208b3f198c7e034f657368df2d011ce78f4c53280f54c70a58677ca",
+      "bytes": 24341
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/radial-motif-840106-slivers-joint-smooth-row/automatic/mask.png": {
+      "sha256": "2bc45c96a930e150f868dc4b11249a3ec9b9b8b7e8a7fb05805ad022578d638d",
+      "bytes": 2411
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/results.json": {
+      "sha256": "18fb2efd7bd83a01301726f1e17f933c8c005c1277de2cfe73125dcac0d951b3",
+      "bytes": 1044911
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/shared-lattice-840102-clean-baseline/automatic/cut_geometry.json": {
+      "sha256": "965b4a34a1bcab4ce8be6f6147d8ddee241efa2bd2885ed718b5b2a85f7ca4cc",
+      "bytes": 16719
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/shared-lattice-840102-clean-baseline/automatic/mask.png": {
+      "sha256": "2cf56d9371dfda6ff47a1cf7102281370a7273ef66b63719ecbb394f38ad238a",
+      "bytes": 1697
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/shared-lattice-840102-clean-joint-smooth-row/automatic/cut_geometry.json": {
+      "sha256": "965b4a34a1bcab4ce8be6f6147d8ddee241efa2bd2885ed718b5b2a85f7ca4cc",
+      "bytes": 16719
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/shared-lattice-840102-clean-joint-smooth-row/automatic/mask.png": {
+      "sha256": "2cf56d9371dfda6ff47a1cf7102281370a7273ef66b63719ecbb394f38ad238a",
+      "bytes": 1697
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/shared-lattice-840102-slivers-baseline/automatic/cut_geometry.json": {
+      "sha256": "526f7bd9c1cb6ee0fbb549646dffbc6ae728ba2c62078ff608a54b3f7b5fa623",
+      "bytes": 36279
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/shared-lattice-840102-slivers-baseline/automatic/mask.png": {
+      "sha256": "39cf3f0f303b407386e7eef1f557b4ae40e04367f32a18a8c9d85d5af7414e9e",
+      "bytes": 1720
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/shared-lattice-840102-slivers-joint-smooth-row/automatic/cut_geometry.json": {
+      "sha256": "965b4a34a1bcab4ce8be6f6147d8ddee241efa2bd2885ed718b5b2a85f7ca4cc",
+      "bytes": 16719
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor-inputs/shared-lattice-840102-slivers-joint-smooth-row/automatic/mask.png": {
+      "sha256": "39cf3f0f303b407386e7eef1f557b4ae40e04367f32a18a8c9d85d5af7414e9e",
+      "bytes": 1720
+    },
+    "tmp/heart-learning/border-perturbation-v1/editor.log": {
+      "sha256": "d4df39faf66c0961298940fe82e14b1210c44b62720ced9e7b33835d8a3b4a03",
+      "bytes": 1868
+    },
+    "tmp/heart-learning/border-perturbation-v1/feature-recovery.mjs": {
+      "sha256": "bf1c1c5a98ea6da0044078b6b612bd55ab7599687229d0428ff1723ed82356cc",
+      "bytes": 18598
+    },
+    "tmp/heart-learning/border-perturbation-v1/fit-early.log": {
+      "sha256": "264d7154c0b2d96a910f9f64d4c3775f538ab01cb4b63fed606ad3963b638fd2",
+      "bytes": 945
+    },
+    "tmp/heart-learning/border-perturbation-v1/fit-early.mjs": {
+      "sha256": "0ffbb4f916c7d64025d19f1f520b344bec9d5c55c115ff60256c6e9197520048",
+      "bytes": 6059
+    },
+    "tmp/heart-learning/border-perturbation-v1/fit-row.log": {
+      "sha256": "a74d192658004dbe9c39737b8f0eba1ba04c7e6de52b8a7a6c6b63808faa3bb8",
+      "bytes": 892
+    },
+    "tmp/heart-learning/border-perturbation-v1/fit-row.mjs": {
+      "sha256": "71c4efa38235b06a9543ad61cc5c328851309c4548dd7d2384ab16c2023ad041",
+      "bytes": 6101
+    },
+    "tmp/heart-learning/border-perturbation-v1/fit-smooth-row.log": {
+      "sha256": "b9ea6d272d31246f749d087e512fc43ddf5bda555fffa544ef8ef1ad29f3cf44",
+      "bytes": 965
+    },
+    "tmp/heart-learning/border-perturbation-v1/fit-smooth-row.mjs": {
+      "sha256": "86cb2f533e78776bac62ddaa18e8d249e391441f7b293ec5250be47661e91282",
+      "bytes": 6224
+    },
+    "tmp/heart-learning/border-perturbation-v1/fit-startup-failure.log": {
+      "sha256": "faa51072a85f76fa639a25c8afaa88076414e08d5b3c6847bf78fb858ffb50ba",
+      "bytes": 726
+    },
+    "tmp/heart-learning/border-perturbation-v1/fit.log": {
+      "sha256": "fa0b6d98a0bce2d75ad3634ee8b463f153679e114e710b72fb5d3feb57ade6ef",
+      "bytes": 1801
+    },
+    "tmp/heart-learning/border-perturbation-v1/fit.mjs": {
+      "sha256": "a5f5c83264f508b915a550500eb56afdee4179b73e5ba1cda4a48d982d2b41ef",
+      "bytes": 5372
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/channel-840104-clean-baseline-cuts.json": {
+      "sha256": "dc893b0c31e85e53d3e1492bfdbe6e4699c7a1c2c43631ca8ef3bda71100dfa6",
+      "bytes": 2649
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/channel-840104-clean-baseline-woven.png": {
+      "sha256": "0a0866c1a75ea789f8e3a5040decc1d0ae53618b0b6e70b31bfaa4e5c974d41d",
+      "bytes": 2298
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/channel-840104-clean-joint-cuts.json": {
+      "sha256": "dc893b0c31e85e53d3e1492bfdbe6e4699c7a1c2c43631ca8ef3bda71100dfa6",
+      "bytes": 2649
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/channel-840104-clean-joint-woven.png": {
+      "sha256": "0a0866c1a75ea789f8e3a5040decc1d0ae53618b0b6e70b31bfaa4e5c974d41d",
+      "bytes": 2298
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/channel-840104-slivers-baseline-cuts.json": {
+      "sha256": "a6510715df48d1e2b10242464a5dc062864e4236d0f9134b2beb23e1aa4fa18a",
+      "bytes": 10043
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/channel-840104-slivers-baseline-woven.png": {
+      "sha256": "eafa4dfa015806eb483b8a5a8941d1193ea682a206b18e94c5a81dd2c231fd30",
+      "bytes": 2313
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/channel-840104-slivers-joint-cuts.json": {
+      "sha256": "a6510715df48d1e2b10242464a5dc062864e4236d0f9134b2beb23e1aa4fa18a",
+      "bytes": 10043
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/channel-840104-slivers-joint-woven.png": {
+      "sha256": "eafa4dfa015806eb483b8a5a8941d1193ea682a206b18e94c5a81dd2c231fd30",
+      "bytes": 2313
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/frame-840105-clean-baseline-cuts.json": {
+      "sha256": "949238267cdb7fcbd08b38cff8ba02ed7d7bf1ff3fc8624f83726127396b97dc",
+      "bytes": 6922
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/frame-840105-clean-baseline-woven.png": {
+      "sha256": "89150b49c5a3037f34dbe38ce336effbf649e9179e101a960ceafa1a12b3ebe8",
+      "bytes": 2683
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/frame-840105-clean-joint-cuts.json": {
+      "sha256": "949238267cdb7fcbd08b38cff8ba02ed7d7bf1ff3fc8624f83726127396b97dc",
+      "bytes": 6922
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/frame-840105-clean-joint-woven.png": {
+      "sha256": "89150b49c5a3037f34dbe38ce336effbf649e9179e101a960ceafa1a12b3ebe8",
+      "bytes": 2683
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/frame-840105-slivers-baseline-cuts.json": {
+      "sha256": "f813d390c0fc06e4cae0f4491ba5137349cc9c4c40a41782b497953c8569041a",
+      "bytes": 20033
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/frame-840105-slivers-baseline-woven.png": {
+      "sha256": "5aafdc97290b337521e719f4e85e83441e4805fa262db5e5b47a97a232460533",
+      "bytes": 2968
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/frame-840105-slivers-joint-cuts.json": {
+      "sha256": "f813d390c0fc06e4cae0f4491ba5137349cc9c4c40a41782b497953c8569041a",
+      "bytes": 20033
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/frame-840105-slivers-joint-woven.png": {
+      "sha256": "5aafdc97290b337521e719f4e85e83441e4805fa262db5e5b47a97a232460533",
+      "bytes": 2968
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/lattice-840101-clean-baseline-cuts.json": {
+      "sha256": "73a85586c8321537de168a3ebf9073c41e6940e796e6b14100e73a98647dc96f",
+      "bytes": 35810
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/lattice-840101-clean-baseline-woven.png": {
+      "sha256": "91e4ce32cbb97423d5806e940f01850a0930921639eec939f2d3dc1836e38024",
+      "bytes": 5072
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/lattice-840101-clean-joint-cuts.json": {
+      "sha256": "73a85586c8321537de168a3ebf9073c41e6940e796e6b14100e73a98647dc96f",
+      "bytes": 35810
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/lattice-840101-clean-joint-woven.png": {
+      "sha256": "91e4ce32cbb97423d5806e940f01850a0930921639eec939f2d3dc1836e38024",
+      "bytes": 5072
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/lattice-840101-slivers-baseline-cuts.json": {
+      "sha256": "f5f032aea9de64f646a2eccaf2ad8dec10eefcfa109e31c657395644333347b5",
+      "bytes": 66331
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/lattice-840101-slivers-baseline-woven.png": {
+      "sha256": "3805ab8278c897529545952861f4f85df30185253fcf136a47f6686e5f4e86eb",
+      "bytes": 5625
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/lattice-840101-slivers-joint-cuts.json": {
+      "sha256": "f5f032aea9de64f646a2eccaf2ad8dec10eefcfa109e31c657395644333347b5",
+      "bytes": 66331
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/lattice-840101-slivers-joint-woven.png": {
+      "sha256": "3805ab8278c897529545952861f4f85df30185253fcf136a47f6686e5f4e86eb",
+      "bytes": 5625
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/radial-motif-840106-clean-baseline-cuts.json": {
+      "sha256": "8ca41383f208b3f198c7e034f657368df2d011ce78f4c53280f54c70a58677ca",
+      "bytes": 24341
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/radial-motif-840106-clean-baseline-woven.png": {
+      "sha256": "11c602a94d2618fbf4f5f136452c1eb5498d779a15009cf134f7ebfff98772b8",
+      "bytes": 5317
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/radial-motif-840106-clean-joint-cuts.json": {
+      "sha256": "8ca41383f208b3f198c7e034f657368df2d011ce78f4c53280f54c70a58677ca",
+      "bytes": 24341
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/radial-motif-840106-clean-joint-woven.png": {
+      "sha256": "11c602a94d2618fbf4f5f136452c1eb5498d779a15009cf134f7ebfff98772b8",
+      "bytes": 5317
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/radial-motif-840106-slivers-baseline-cuts.json": {
+      "sha256": "0874e15f3da486b0f0ab96d59ea7832550ce1c301cf2de86ac043a97d0f5e5cd",
+      "bytes": 32152
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/radial-motif-840106-slivers-baseline-woven.png": {
+      "sha256": "70e6b4efe0c33eabeadcc714f6d085d0413e98f8abc58c7422cbbd8c8a584e66",
+      "bytes": 5587
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/radial-motif-840106-slivers-joint-cuts.json": {
+      "sha256": "0874e15f3da486b0f0ab96d59ea7832550ce1c301cf2de86ac043a97d0f5e5cd",
+      "bytes": 32152
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/radial-motif-840106-slivers-joint-woven.png": {
+      "sha256": "70e6b4efe0c33eabeadcc714f6d085d0413e98f8abc58c7422cbbd8c8a584e66",
+      "bytes": 5587
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/report.json": {
+      "sha256": "22e954fabab2eb45ee33d78492fb313e6710a75cfa3c4d7952d08308eb2e10fc",
+      "bytes": 1005080
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/shared-lattice-840102-clean-baseline-cuts.json": {
+      "sha256": "965b4a34a1bcab4ce8be6f6147d8ddee241efa2bd2885ed718b5b2a85f7ca4cc",
+      "bytes": 16719
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/shared-lattice-840102-clean-baseline-woven.png": {
+      "sha256": "38d47ea8cfe6a4dc767adce3673a36f6c7dd563b1d8134417a799cc911be2896",
+      "bytes": 5573
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/shared-lattice-840102-clean-joint-cuts.json": {
+      "sha256": "965b4a34a1bcab4ce8be6f6147d8ddee241efa2bd2885ed718b5b2a85f7ca4cc",
+      "bytes": 16719
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/shared-lattice-840102-clean-joint-woven.png": {
+      "sha256": "38d47ea8cfe6a4dc767adce3673a36f6c7dd563b1d8134417a799cc911be2896",
+      "bytes": 5573
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/shared-lattice-840102-slivers-baseline-cuts.json": {
+      "sha256": "526f7bd9c1cb6ee0fbb549646dffbc6ae728ba2c62078ff608a54b3f7b5fa623",
+      "bytes": 36279
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/shared-lattice-840102-slivers-baseline-woven.png": {
+      "sha256": "3a9cc147dffc70cb075b730ae41fa5dc893bd9c1aa07acf1d5964e20ff38bc1c",
+      "bytes": 5898
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/shared-lattice-840102-slivers-joint-cuts.json": {
+      "sha256": "526f7bd9c1cb6ee0fbb549646dffbc6ae728ba2c62078ff608a54b3f7b5fa623",
+      "bytes": 36279
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits/shared-lattice-840102-slivers-joint-woven.png": {
+      "sha256": "3a9cc147dffc70cb075b730ae41fa5dc893bd9c1aa07acf1d5964e20ff38bc1c",
+      "bytes": 5898
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-early/channel-840104-clean-joint-early-cuts.json": {
+      "sha256": "dc893b0c31e85e53d3e1492bfdbe6e4699c7a1c2c43631ca8ef3bda71100dfa6",
+      "bytes": 2649
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-early/channel-840104-clean-joint-early-woven.png": {
+      "sha256": "0a0866c1a75ea789f8e3a5040decc1d0ae53618b0b6e70b31bfaa4e5c974d41d",
+      "bytes": 2298
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-early/channel-840104-slivers-joint-early-cuts.json": {
+      "sha256": "a6510715df48d1e2b10242464a5dc062864e4236d0f9134b2beb23e1aa4fa18a",
+      "bytes": 10043
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-early/channel-840104-slivers-joint-early-woven.png": {
+      "sha256": "eafa4dfa015806eb483b8a5a8941d1193ea682a206b18e94c5a81dd2c231fd30",
+      "bytes": 2313
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-early/frame-840105-clean-joint-early-cuts.json": {
+      "sha256": "949238267cdb7fcbd08b38cff8ba02ed7d7bf1ff3fc8624f83726127396b97dc",
+      "bytes": 6922
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-early/frame-840105-clean-joint-early-woven.png": {
+      "sha256": "89150b49c5a3037f34dbe38ce336effbf649e9179e101a960ceafa1a12b3ebe8",
+      "bytes": 2683
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-early/frame-840105-slivers-joint-early-cuts.json": {
+      "sha256": "b4cdcbf28a7d879263d0777cce238ee7700b59dcadbb0aa60748ab5ad9bb6b97",
+      "bytes": 13512
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-early/frame-840105-slivers-joint-early-woven.png": {
+      "sha256": "05884fbf33623f7cb3ca63c3fc6bece07a4f93a596f738426cae68f72f08cf9f",
+      "bytes": 3104
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-early/lattice-840101-clean-joint-early-cuts.json": {
+      "sha256": "73a85586c8321537de168a3ebf9073c41e6940e796e6b14100e73a98647dc96f",
+      "bytes": 35810
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-early/lattice-840101-clean-joint-early-woven.png": {
+      "sha256": "91e4ce32cbb97423d5806e940f01850a0930921639eec939f2d3dc1836e38024",
+      "bytes": 5072
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-early/lattice-840101-slivers-joint-early-cuts.json": {
+      "sha256": "f5f032aea9de64f646a2eccaf2ad8dec10eefcfa109e31c657395644333347b5",
+      "bytes": 66331
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-early/lattice-840101-slivers-joint-early-woven.png": {
+      "sha256": "3805ab8278c897529545952861f4f85df30185253fcf136a47f6686e5f4e86eb",
+      "bytes": 5625
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-early/radial-motif-840106-clean-joint-early-cuts.json": {
+      "sha256": "8ca41383f208b3f198c7e034f657368df2d011ce78f4c53280f54c70a58677ca",
+      "bytes": 24341
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-early/radial-motif-840106-clean-joint-early-woven.png": {
+      "sha256": "11c602a94d2618fbf4f5f136452c1eb5498d779a15009cf134f7ebfff98772b8",
+      "bytes": 5317
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-early/radial-motif-840106-slivers-joint-early-cuts.json": {
+      "sha256": "0874e15f3da486b0f0ab96d59ea7832550ce1c301cf2de86ac043a97d0f5e5cd",
+      "bytes": 32152
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-early/radial-motif-840106-slivers-joint-early-woven.png": {
+      "sha256": "70e6b4efe0c33eabeadcc714f6d085d0413e98f8abc58c7422cbbd8c8a584e66",
+      "bytes": 5587
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-early/report.json": {
+      "sha256": "09ae7efbd75e11f008d142e331d7171c5d15df5d6f033f2786c9b21a9121e811",
+      "bytes": 531911
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-early/shared-lattice-840102-clean-joint-early-cuts.json": {
+      "sha256": "965b4a34a1bcab4ce8be6f6147d8ddee241efa2bd2885ed718b5b2a85f7ca4cc",
+      "bytes": 16719
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-early/shared-lattice-840102-clean-joint-early-woven.png": {
+      "sha256": "38d47ea8cfe6a4dc767adce3673a36f6c7dd563b1d8134417a799cc911be2896",
+      "bytes": 5573
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-early/shared-lattice-840102-slivers-joint-early-cuts.json": {
+      "sha256": "f62864b586c8540e3ea78c29e1c3dc477be87576f182787c7a072b4c66570a83",
+      "bytes": 20131
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-early/shared-lattice-840102-slivers-joint-early-woven.png": {
+      "sha256": "2a6a5ca8f551aa2a2d57d323dd5c8b8747d558b944fca4c4034acdaf99df9482",
+      "bytes": 5875
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-row/channel-840104-clean-joint-row-cuts.json": {
+      "sha256": "dc893b0c31e85e53d3e1492bfdbe6e4699c7a1c2c43631ca8ef3bda71100dfa6",
+      "bytes": 2649
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-row/channel-840104-clean-joint-row-woven.png": {
+      "sha256": "0a0866c1a75ea789f8e3a5040decc1d0ae53618b0b6e70b31bfaa4e5c974d41d",
+      "bytes": 2298
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-row/channel-840104-slivers-joint-row-cuts.json": {
+      "sha256": "dc893b0c31e85e53d3e1492bfdbe6e4699c7a1c2c43631ca8ef3bda71100dfa6",
+      "bytes": 2649
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-row/channel-840104-slivers-joint-row-woven.png": {
+      "sha256": "0a0866c1a75ea789f8e3a5040decc1d0ae53618b0b6e70b31bfaa4e5c974d41d",
+      "bytes": 2298
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-row/frame-840105-clean-joint-row-cuts.json": {
+      "sha256": "949238267cdb7fcbd08b38cff8ba02ed7d7bf1ff3fc8624f83726127396b97dc",
+      "bytes": 6922
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-row/frame-840105-clean-joint-row-woven.png": {
+      "sha256": "89150b49c5a3037f34dbe38ce336effbf649e9179e101a960ceafa1a12b3ebe8",
+      "bytes": 2683
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-row/frame-840105-slivers-joint-row-cuts.json": {
+      "sha256": "f813d390c0fc06e4cae0f4491ba5137349cc9c4c40a41782b497953c8569041a",
+      "bytes": 20033
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-row/frame-840105-slivers-joint-row-woven.png": {
+      "sha256": "5aafdc97290b337521e719f4e85e83441e4805fa262db5e5b47a97a232460533",
+      "bytes": 2968
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-row/lattice-840101-clean-joint-row-cuts.json": {
+      "sha256": "73a85586c8321537de168a3ebf9073c41e6940e796e6b14100e73a98647dc96f",
+      "bytes": 35810
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-row/lattice-840101-clean-joint-row-woven.png": {
+      "sha256": "91e4ce32cbb97423d5806e940f01850a0930921639eec939f2d3dc1836e38024",
+      "bytes": 5072
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-row/lattice-840101-slivers-joint-row-cuts.json": {
+      "sha256": "c0ed9fd132326349f17e0d0e1228fbbbf7044d6399b2bc4596b05c70684fe1bd",
+      "bytes": 48121
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-row/lattice-840101-slivers-joint-row-woven.png": {
+      "sha256": "2d065002c082b60b8d0f6b153bc569d4185ed1c5f0af61d1eb94832efa348367",
+      "bytes": 5795
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-row/radial-motif-840106-clean-joint-row-cuts.json": {
+      "sha256": "8ca41383f208b3f198c7e034f657368df2d011ce78f4c53280f54c70a58677ca",
+      "bytes": 24341
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-row/radial-motif-840106-clean-joint-row-woven.png": {
+      "sha256": "11c602a94d2618fbf4f5f136452c1eb5498d779a15009cf134f7ebfff98772b8",
+      "bytes": 5317
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-row/radial-motif-840106-slivers-joint-row-cuts.json": {
+      "sha256": "8ca41383f208b3f198c7e034f657368df2d011ce78f4c53280f54c70a58677ca",
+      "bytes": 24341
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-row/radial-motif-840106-slivers-joint-row-woven.png": {
+      "sha256": "11c602a94d2618fbf4f5f136452c1eb5498d779a15009cf134f7ebfff98772b8",
+      "bytes": 5317
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-row/report.json": {
+      "sha256": "4eee92df99f4f2388ad33e9bac23998e34310f2070e9ff6ab1bdf57bd0b5d999",
+      "bytes": 518617
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-row/shared-lattice-840102-clean-joint-row-cuts.json": {
+      "sha256": "965b4a34a1bcab4ce8be6f6147d8ddee241efa2bd2885ed718b5b2a85f7ca4cc",
+      "bytes": 16719
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-row/shared-lattice-840102-clean-joint-row-woven.png": {
+      "sha256": "38d47ea8cfe6a4dc767adce3673a36f6c7dd563b1d8134417a799cc911be2896",
+      "bytes": 5573
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-row/shared-lattice-840102-slivers-joint-row-cuts.json": {
+      "sha256": "6380f40003c2b42c819d32028fa2195b735102ef030a871bdc34ded59bde6b60",
+      "bytes": 17031
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-row/shared-lattice-840102-slivers-joint-row-woven.png": {
+      "sha256": "2157493d0ff81a3c64233140729a50ec041217963165401953854186167e8b58",
+      "bytes": 5642
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-smooth-row/channel-840104-clean-joint-smooth-row-cuts.json": {
+      "sha256": "dc893b0c31e85e53d3e1492bfdbe6e4699c7a1c2c43631ca8ef3bda71100dfa6",
+      "bytes": 2649
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-smooth-row/channel-840104-clean-joint-smooth-row-woven.png": {
+      "sha256": "0a0866c1a75ea789f8e3a5040decc1d0ae53618b0b6e70b31bfaa4e5c974d41d",
+      "bytes": 2298
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-smooth-row/channel-840104-slivers-joint-smooth-row-cuts.json": {
+      "sha256": "dc893b0c31e85e53d3e1492bfdbe6e4699c7a1c2c43631ca8ef3bda71100dfa6",
+      "bytes": 2649
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-smooth-row/channel-840104-slivers-joint-smooth-row-woven.png": {
+      "sha256": "0a0866c1a75ea789f8e3a5040decc1d0ae53618b0b6e70b31bfaa4e5c974d41d",
+      "bytes": 2298
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-smooth-row/frame-840105-clean-joint-smooth-row-cuts.json": {
+      "sha256": "949238267cdb7fcbd08b38cff8ba02ed7d7bf1ff3fc8624f83726127396b97dc",
+      "bytes": 6922
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-smooth-row/frame-840105-clean-joint-smooth-row-woven.png": {
+      "sha256": "89150b49c5a3037f34dbe38ce336effbf649e9179e101a960ceafa1a12b3ebe8",
+      "bytes": 2683
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-smooth-row/frame-840105-slivers-joint-smooth-row-cuts.json": {
+      "sha256": "949238267cdb7fcbd08b38cff8ba02ed7d7bf1ff3fc8624f83726127396b97dc",
+      "bytes": 6922
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-smooth-row/frame-840105-slivers-joint-smooth-row-woven.png": {
+      "sha256": "89150b49c5a3037f34dbe38ce336effbf649e9179e101a960ceafa1a12b3ebe8",
+      "bytes": 2683
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-smooth-row/lattice-840101-clean-joint-smooth-row-cuts.json": {
+      "sha256": "73a85586c8321537de168a3ebf9073c41e6940e796e6b14100e73a98647dc96f",
+      "bytes": 35810
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-smooth-row/lattice-840101-clean-joint-smooth-row-woven.png": {
+      "sha256": "91e4ce32cbb97423d5806e940f01850a0930921639eec939f2d3dc1836e38024",
+      "bytes": 5072
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-smooth-row/lattice-840101-slivers-joint-smooth-row-cuts.json": {
+      "sha256": "23e80be4e85d4a311a83ffe4283a78a8f35081953e2ed57eeb315ea9c4567c55",
+      "bytes": 44606
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-smooth-row/lattice-840101-slivers-joint-smooth-row-woven.png": {
+      "sha256": "a5a2af74da4eccea9f1689127c985c0c71c0bd0c2b9f1f22da6fab19f5caa7d9",
+      "bytes": 5639
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-smooth-row/radial-motif-840106-clean-joint-smooth-row-cuts.json": {
+      "sha256": "8ca41383f208b3f198c7e034f657368df2d011ce78f4c53280f54c70a58677ca",
+      "bytes": 24341
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-smooth-row/radial-motif-840106-clean-joint-smooth-row-woven.png": {
+      "sha256": "11c602a94d2618fbf4f5f136452c1eb5498d779a15009cf134f7ebfff98772b8",
+      "bytes": 5317
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-smooth-row/radial-motif-840106-slivers-joint-smooth-row-cuts.json": {
+      "sha256": "8ca41383f208b3f198c7e034f657368df2d011ce78f4c53280f54c70a58677ca",
+      "bytes": 24341
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-smooth-row/radial-motif-840106-slivers-joint-smooth-row-woven.png": {
+      "sha256": "11c602a94d2618fbf4f5f136452c1eb5498d779a15009cf134f7ebfff98772b8",
+      "bytes": 5317
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-smooth-row/report.json": {
+      "sha256": "8ed87e63b331804d7421889ae7044616e924fd7009f6d8b7187ccf746316581b",
+      "bytes": 499632
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-smooth-row/shared-lattice-840102-clean-joint-smooth-row-cuts.json": {
+      "sha256": "965b4a34a1bcab4ce8be6f6147d8ddee241efa2bd2885ed718b5b2a85f7ca4cc",
+      "bytes": 16719
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-smooth-row/shared-lattice-840102-clean-joint-smooth-row-woven.png": {
+      "sha256": "38d47ea8cfe6a4dc767adce3673a36f6c7dd563b1d8134417a799cc911be2896",
+      "bytes": 5573
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-smooth-row/shared-lattice-840102-slivers-joint-smooth-row-cuts.json": {
+      "sha256": "965b4a34a1bcab4ce8be6f6147d8ddee241efa2bd2885ed718b5b2a85f7ca4cc",
+      "bytes": 16719
+    },
+    "tmp/heart-learning/border-perturbation-v1/fits-smooth-row/shared-lattice-840102-slivers-joint-smooth-row-woven.png": {
+      "sha256": "38d47ea8cfe6a4dc767adce3673a36f6c7dd563b1d8134417a799cc911be2896",
+      "bytes": 5573
+    },
+    "tmp/heart-learning/border-perturbation-v1/frame-840105-clean.bin": {
+      "sha256": "fa0f0b853e0805e1e1b01deb8a887c78ee3f74d88b54784ff73d8698d401d55e",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/border-perturbation-v1/frame-840105-cuts.json": {
+      "sha256": "69b774fb044bf2e1e71afc6ccae5e5b3dec702a1548fcd5ab660a7e9d1cdfc36",
+      "bytes": 4029
+    },
+    "tmp/heart-learning/border-perturbation-v1/frame-840105-patches.bin": {
+      "sha256": "bfce1c26865443a30688a5d7ca34bde4ad71f00e5b9213583d76b98cce276e42",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/border-perturbation-v1/frame-840105-pixels.bin": {
+      "sha256": "10cef78a3b1c4500e202a8b45a35f012c8678ccc29cb6818d7faa6511eddc350",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/border-perturbation-v1/frame-840105-reference.bin": {
+      "sha256": "fa0f0b853e0805e1e1b01deb8a887c78ee3f74d88b54784ff73d8698d401d55e",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/border-perturbation-v1/frame-840105-reference.png": {
+      "sha256": "89150b49c5a3037f34dbe38ce336effbf649e9179e101a960ceafa1a12b3ebe8",
+      "bytes": 2683
+    },
+    "tmp/heart-learning/border-perturbation-v1/frame-840105-review.png": {
+      "sha256": "816f3777fa0b8227366b76a7c2ff9cff29b1e68348b56a601eee4974ba9b256e",
+      "bytes": 18694
+    },
+    "tmp/heart-learning/border-perturbation-v1/frame-840105-slivers.bin": {
+      "sha256": "d2b9d2e00e4492442ef781de86b6e63bd3fca56bf36dc7cd6cdc1c014c864c2c",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/border-perturbation-v1/lattice-840101-clean.bin": {
+      "sha256": "829b602524d8315a3dea44fab01c511ecd9a55cbe6c143519f0d2f61f4414d40",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/border-perturbation-v1/lattice-840101-cuts.json": {
+      "sha256": "493a1127a8e234ef006a837d3377fe66a6ad07d8f96f54bdbf9ac133ed627a5b",
+      "bytes": 16101
+    },
+    "tmp/heart-learning/border-perturbation-v1/lattice-840101-patches.bin": {
+      "sha256": "329c2cbd7f57f897587812e5b55ff33f792c2e677cd83d21e8518e955c616f65",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/border-perturbation-v1/lattice-840101-pixels.bin": {
+      "sha256": "3b40286d3ccc8bfd16c8ec74ff64954fbe07c3c43eb803e9191e84fce88e43e7",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/border-perturbation-v1/lattice-840101-reference.bin": {
+      "sha256": "829b602524d8315a3dea44fab01c511ecd9a55cbe6c143519f0d2f61f4414d40",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/border-perturbation-v1/lattice-840101-reference.png": {
+      "sha256": "de80f6799815111218d68b03aebd8b09f7e0c31b8da7be7e8075c4fa0b3450e7",
+      "bytes": 5496
+    },
+    "tmp/heart-learning/border-perturbation-v1/lattice-840101-review.png": {
+      "sha256": "5c42fb99721931d2cec5542781f0026adac9f2c2d056bbc568ccdc53025832da",
+      "bytes": 21214
+    },
+    "tmp/heart-learning/border-perturbation-v1/lattice-840101-slivers.bin": {
+      "sha256": "4ff3b04676ee8753c29d2e14496d689fa70fe099ee5db1463a41d3ca2fc55553",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/border-perturbation-v1/prepare-editor.mjs": {
+      "sha256": "f076677736bd17ca037f8041ebcc050de2c3f90983762a99bea1f14a94cecbac",
+      "bytes": 1504
+    },
+    "tmp/heart-learning/border-perturbation-v1/probe.json": {
+      "sha256": "efb1be913ec4dba15026a1c188388acae980cfb89665d636675790fa332e5061",
+      "bytes": 311820
+    },
+    "tmp/heart-learning/border-perturbation-v1/probe.log": {
+      "sha256": "47b2a6dea31a679ce946979fe7539cc00a958687c84df684b3a794fced171006",
+      "bytes": 1410
+    },
+    "tmp/heart-learning/border-perturbation-v1/probe.mjs": {
+      "sha256": "d63ce8ed674b275386c1ca7a6a3197d98c8ce938698eb7d934494de4d8d01788",
+      "bytes": 4597
+    },
+    "tmp/heart-learning/border-perturbation-v1/radial-motif-840106-clean.bin": {
+      "sha256": "1dce76066f577951dca15ae8888850738d7a6c33892df20dbafbb4af38cd3007",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/border-perturbation-v1/radial-motif-840106-cuts.json": {
+      "sha256": "4d0537936802a040297bfd99298741bb1dfb71841a0ae40aa15ceed69364c1bb",
+      "bytes": 10564
+    },
+    "tmp/heart-learning/border-perturbation-v1/radial-motif-840106-patches.bin": {
+      "sha256": "a7cf93690702917e636db4768622f42548247b9b08b175daee9df464361b630b",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/border-perturbation-v1/radial-motif-840106-pixels.bin": {
+      "sha256": "c1b8f894a8a9c65466a6eb01d46add0cf491523ee5311943b1f89b94774a2f0d",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/border-perturbation-v1/radial-motif-840106-reference.bin": {
+      "sha256": "1dce76066f577951dca15ae8888850738d7a6c33892df20dbafbb4af38cd3007",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/border-perturbation-v1/radial-motif-840106-reference.png": {
+      "sha256": "51e2255e1f47010fa2f8031ef9d6cd2b58b33f87f577885587e8527ba2220137",
+      "bytes": 5397
+    },
+    "tmp/heart-learning/border-perturbation-v1/radial-motif-840106-review.png": {
+      "sha256": "36bd9fc0a23d6ea2895b2301faa182e48f3148323b05349b638e8dfb973fe5a9",
+      "bytes": 35062
+    },
+    "tmp/heart-learning/border-perturbation-v1/radial-motif-840106-slivers.bin": {
+      "sha256": "e6e08e6bcfe1d1007fd5f7ae8b7cbc6038eb9f0b4e1e08a8edf25cd711aea689",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/border-perturbation-v1/replay-smooth.log": {
+      "sha256": "667819aa3e642a360d7ec9ef89bbec0efb274623b9e2d60c54024229aade93ab",
+      "bytes": 41
+    },
+    "tmp/heart-learning/border-perturbation-v1/replay-smooth.mjs": {
+      "sha256": "11bc7c1eb9761de23471232202928312f1c992cf42fdf96a6ee51f51fc0a296f",
+      "bytes": 1235
+    },
+    "tmp/heart-learning/border-perturbation-v1/review.mjs": {
+      "sha256": "bd71f8702effdf622eca786039f1f6e0b689e138af7bcf9fc197bc06d63ba8c7",
+      "bytes": 1043
+    },
+    "tmp/heart-learning/border-perturbation-v1/row-profiles.mjs": {
+      "sha256": "ca9659be2c03c9482bf95dcc7a39ebc2f4a03c39ed19f110e3c9c5d271ef066b",
+      "bytes": 1456
+    },
+    "tmp/heart-learning/border-perturbation-v1/run-checks.py": {
+      "sha256": "cdd23e09012090eaa8af8ab1ed008cab99b7786c31245e903330bbb004fd6458",
+      "bytes": 783
+    },
+    "tmp/heart-learning/border-perturbation-v1/selection.json": {
+      "sha256": "027b25f20244e2f93bfb5fa2225f18a54202a15dc57cb94fa4212f06717b1417",
+      "bytes": 337
+    },
+    "tmp/heart-learning/border-perturbation-v1/shared-lattice-840102-clean.bin": {
+      "sha256": "9c790f1ced5f6db492e5fc26f1300c56a5b36ee3597f403301ee22db10c96f5a",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/border-perturbation-v1/shared-lattice-840102-cuts.json": {
+      "sha256": "7a46fb131142b1b9489bbfb437bcf5b5d13dfac248a1c71f734882ff7f15f305",
+      "bytes": 5590
+    },
+    "tmp/heart-learning/border-perturbation-v1/shared-lattice-840102-patches.bin": {
+      "sha256": "a2e312aa42c4c69bc7d03b02378a402b1361668dee29b0558b225dde2753bc4d",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/border-perturbation-v1/shared-lattice-840102-pixels.bin": {
+      "sha256": "abd9812dd476b9987a34020b157f6e2e7bd9e2ad354c48ac8f111a01c44829a9",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/border-perturbation-v1/shared-lattice-840102-reference.bin": {
+      "sha256": "9c790f1ced5f6db492e5fc26f1300c56a5b36ee3597f403301ee22db10c96f5a",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/border-perturbation-v1/shared-lattice-840102-reference.png": {
+      "sha256": "61a82db6ebcf3cfb51ffb012552dbde7c052d64404c217a0320718d4b0401789",
+      "bytes": 7092
+    },
+    "tmp/heart-learning/border-perturbation-v1/shared-lattice-840102-review.png": {
+      "sha256": "840d58afbf8c92822587c05af75bfe5692cc9ef9b1d7eb1a0db6f17afa8acf03",
+      "bytes": 21666
+    },
+    "tmp/heart-learning/border-perturbation-v1/shared-lattice-840102-slivers.bin": {
+      "sha256": "49b77d7f4c67b1f31e68d03666949c2a97d6407c779c1b7a92806611bb27d6b4",
+      "bytes": 160000
+    },
+    "tmp/heart-learning/border-perturbation-v1/smooth-replay.json": {
+      "sha256": "c4c5f8380bc5a67983e8024aeea8df176421b332641f935743e9157996d8b87f",
+      "bytes": 85357
+    },
+    "tmp/heart-learning/border-perturbation-v1/smooth-row-profiles.mjs": {
+      "sha256": "63cda0d83be493e5ed88c628c1d2b844d2657266c8b31f22f19a701866be8cde",
+      "bytes": 2215
+    },
+    "tmp/heart-learning/border-perturbation-v1/source-before-smooth.mjs": {
+      "sha256": "af7e4c4dccad598694cb0a3fcebecf9dd1b2d620e925391dd9cde5fdfb6f22ab",
+      "bytes": 6836
+    },
+    "tmp/heart-learning/border-perturbation-v1/tests.log": {
+      "sha256": "8ab38161281fa2dad628b2e4dc17715c48383914241277941f01fb40882f0c77",
+      "bytes": 786
+    },
+    "tmp/heart-learning/border-perturbation-v1/topology-early.mjs": {
+      "sha256": "9d97139d94a5e0bebcc87d51a328042b86bc6dd6b0564266f26c93a42c5c60d9",
+      "bytes": 14375
+    },
+    "tmp/heart-learning/border-perturbation-v1/topology-row.mjs": {
+      "sha256": "eb8c0bfa3d32b843379ddb653db909e03165b5122ca300ad4d113c42a467e015",
+      "bytes": 14413
+    },
+    "tmp/heart-learning/border-perturbation-v1/topology-smooth-row.mjs": {
+      "sha256": "f842f131cb451ad4d499d5ce12a6c41f6488f9b8e2b1272ac4e4877e12e78974",
+      "bytes": 14420
+    }
+  }
+}

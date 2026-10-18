@@ -34,6 +34,7 @@ declare module '$inverse/core/graph.js' {
 
   /** Read a saved `heartcurves-2` template back into a solution. Throws on bad input. */
   export function loadSolutionJSON(data: unknown): EngineSolution;
+  export function solutionJSON(solution: EngineSolution): unknown;
 }
 
 declare module '$inverse/core/validate.js' {
@@ -82,6 +83,9 @@ declare module '$inverse/locator/locator.js' {
 }
 
 declare module '$inverse/core/engine.js' {
+  import type { EngineSolution } from '$inverse/core/graph.js';
+  import type { ArtworkInput, PreparedArtwork } from '$lib/inverse/client';
+  export function finish(solution: EngineSolution, settings: Record<string, unknown>, onProgress?: (event: Record<string, unknown>) => void, options?: { refine?: boolean; deadline?: number }): { files: Record<string, string>; report: Record<string, unknown> };
   /**
    * Classify artwork into the engine's own two-colour reading of the woven
    * square — the very call the worker makes for a `prepare` request.
@@ -90,17 +94,30 @@ declare module '$inverse/core/engine.js' {
    * worker keeps and we never touch.
    */
   export function prepare(
-    input: {
-      type: 'pixels';
-      rgba: Uint8ClampedArray;
-      imageWidth: number;
-      imageHeight: number;
-      quad?: number[][];
-    },
+    input: ArtworkInput,
     settings?: Record<string, unknown>,
     onProgress?: (event: { stage: string }) => void
   ): {
-    target: unknown;
-    preview: { mask: Uint8Array; resolution: number; metadata: Record<string, unknown> };
+    target: { sourceImage: { weights?: Float64Array; validMask?: Uint8Array } };
+    preview: PreparedArtwork;
   };
+
+  /**
+   * Solve a prepared target and finish it into files and a report — the very
+   * call the worker makes for a 'solve' request, and the only way to get the
+   * real progress stream out of the engine in a test. `onProgress` is handed
+   * each event whole, which is what `src/lib/paint/searchProgress.test.ts`
+   * records to build its fixture.
+   */
+  export function design(
+    target: unknown,
+    settings?: Record<string, unknown>,
+    onProgress?: (event: Record<string, unknown>) => void
+  ): Promise<{ files: Record<string, string>; report: Record<string, unknown> }>;
+}
+
+/** Topology simplification uses the same exported geometry checked by Draw. */
+declare module '$inverse/core/direct/short-returns.js' {
+  import type { EngineSolution } from '$inverse/core/graph.js';
+  export function finalizeShortReturns(solution: EngineSolution, settings: Record<string, unknown>, options?: { deadline?: number; completionDeadline?: number }): EngineSolution;
 }

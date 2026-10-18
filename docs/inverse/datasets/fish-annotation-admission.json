@@ -1,0 +1,101 @@
+{
+  "schema": "real-fish-annotation-admission-1",
+  "status": "reviewed development annotation; no training or split allocation",
+  "scope": "Visible physical body and partial cream/blue paper identities. Handle, cast shadow, outer-boundary uncertainty and four narrow contact neighbourhoods are excluded from supervision. No exact cut paths or contact topology are asserted.",
+  "sourceSelection": "Largest eligible unassigned photo sources by pixel area, excluding already body-annotated sources. Chosen from an eight-source contact sheet after native-photo review, without model or solver outputs.",
+  "annotations": [
+    {
+      "path": "scripts/inverse/datasets/real-annotations-fish.json",
+      "sha256": "bc6732a800d30de22dce18ff134612d92ebb6b2e6f2f28bd2d820e1f278df013"
+    },
+    {
+      "path": "scripts/inverse/datasets/real-materials-fish.json",
+      "sha256": "2847a706279d81edee4b64034ee73b81882c55cb9aa7b76ae963d48097555296"
+    }
+  ],
+  "verification": {
+    "checks": [
+      {
+        "stage": "compile-256",
+        "exitCode": 0
+      },
+      {
+        "stage": "verify-256",
+        "exitCode": 0
+      },
+      {
+        "stage": "compile-768",
+        "exitCode": 0
+      },
+      {
+        "stage": "verify-768",
+        "exitCode": 0
+      }
+    ],
+    "reviewedRastersIdentical": 8,
+    "registryCounts": {
+      "body": 24,
+      "materials": 22
+    },
+    "compiled": [
+      {
+        "resolution": 256,
+        "manifestSha256": "91c85abd5a912ac50c6e283bcf1b0b39e8e8596d3fdbdcdce5a2d205d77522fa",
+        "instances": [
+          {
+            "id": "real-80794af7903e5d29-body-1",
+            "assetId": "real-80794af7903e5d29",
+            "splitGroupId": "real-split-66587aa0e20b89c8",
+            "allocation": "unassigned",
+            "bodyPixelCounts": {
+              "0": 26660,
+              "1": 10771,
+              "255": 28105
+            },
+            "materialPixelCounts": {
+              "0": 5578,
+              "1": 4026,
+              "255": 55932
+            }
+          }
+        ]
+      },
+      {
+        "resolution": 768,
+        "manifestSha256": "276747a4eaa0d15194f761256d0ecfecc8e70bed72a868def73fd8ba576c12e8",
+        "instances": [
+          {
+            "id": "real-80794af7903e5d29-body-1",
+            "assetId": "real-80794af7903e5d29",
+            "splitGroupId": "real-split-66587aa0e20b89c8",
+            "allocation": "unassigned",
+            "bodyPixelCounts": {
+              "0": 241383,
+              "1": 96897,
+              "255": 251544
+            },
+            "materialPixelCounts": {
+              "0": 50065,
+              "1": 36225,
+              "255": 503534
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "visualReview": "Source photo and 256/768 overlays inspected. Both paper colours follow the visible fish motif; handle and background are excluded. Four narrow contacts remain unknown rather than forcing connectivity. Final compiled PNGs match all reviewed staged PNGs byte-for-byte.",
+  "limitations": [
+    "Assistant-reviewed development labels, not held-out ground truth.",
+    "Related fish motifs require family review before any split allocation.",
+    "Contact uncertainty does not establish which hidden cutting curves connect.",
+    "No model training or inference change follows from admission."
+  ],
+  "artifacts": {
+    "tmp/heart-learning/fish-annotation-final-v1/comparison.json": "7fedede372c7eb8b373b02bb7967226194dad8a535ea689ff5bf7e16bec1ae40",
+    "tmp/heart-learning/fish-annotation-final-v1/checks.json": "fcd5106d447cc26bcc4354c58f197790c1d5fdc69ab833c9606804b2601ba185",
+    "tmp/heart-learning/next-source-review-v2/material-body-clipping.json": "bd7ebb59ae693d9890a918cb9ae014f2d7d58d17eaa298cdd5a1c79f99ce0393",
+    "tmp/heart-learning/next-source-review-v2/fish-labels-256/real-80794af7903e5d29-body-1-overlay.png": "f0bacc45637d4aca0a5354759c1bea90872977fffcf0749c6fef67b9e444d7a3",
+    "tmp/heart-learning/next-source-review-v2/fish-labels-768/real-80794af7903e5d29-body-1-overlay.png": "dd57629830381c83c64408088f80c9ae4b83744f9721519adc8381ac1bc3c26c"
+  }
+}

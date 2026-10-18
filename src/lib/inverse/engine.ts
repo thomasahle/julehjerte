@@ -4,8 +4,8 @@
  * `client.ts` is the wire protocol: a worker, a request id, and the shapes that
  * travel. This module is the handful of calls the UI actually makes, with the
  * engine's settings filled in once rather than at every call site — the settings
- * a hobbyist's heart is solved with, the mask as an image the engine can
- * classify, and the one worker the whole of Mal shares. The old generator page
+ * a hobbyist's heart is solved with, the mask and its protected region,
+ * and the one worker the whole of Mal shares. The old generator page
  * carried the whole settings form in its markup and handed all twenty-odd keys
  * to every button; here the visitor chooses only what §2 offers them, so the
  * rest lives here, next to the reason it is what it is.
@@ -21,18 +21,11 @@
  * whichever caller was written first; a caller that had to remember to wait
  * would meet the engine's raw English refusal instead.
  *
- * ## The mask's round trip
- *
- * A mask is `0` for the left paper and `1` for the right, so it is sent as a
- * 400 × 400 image painted in exactly those two colours, classified with
- * `mode: 'swatches'` and `swatches: [right, left]`. The engine's classifier
- * gives cell 1 to whichever swatch comes first, which is why the pair is the
- * right colour first — the mask's own convention, upside down from
- * `HeartColors`. `engine.test.ts` sends a mask through the engine's own
- * `prepare` and gets the same cells back, so the two conventions cannot drift.
- *
- * Nothing here assumes a cell is 0 or 1: a third value ("free", PAINT.md §11) is
- * coming, and it will need its own colour rather than a new branch.
+ * A painted mask travels as binary cells, preserving its exact colours and
+ * coordinates. Free-border weights travel beside it: ignored cells keep their
+ * original colour for comparison, but exert no image force. Paper colours are
+ * still sent as [right, left], matching the engine's convention for cell 1.
+ * Imported photographs use the separate pixel classification path.
  */
 
 import { base } from '$app/paths';
@@ -43,16 +36,11 @@ import {
 	type DesignResult,
 	type DetectedCrops,
 	type PixelsInput,
+	type MaskInput,
 	type PreparedArtwork
 } from '$lib/inverse/client';
-import {
-	DEFAULT_FRAME_CELLS,
-	FRAME_MAX_CELLS,
-	FRAME_MIN_CELLS,
-	insideCell,
-	type Frame
-} from '$lib/paint/frame';
-import { MASK_SIZE, type Mask } from '$lib/paint/mask';
+import { insideCell, type Frame } from '$lib/paint/frame';
+import { MASK_SIZE, solverRaster, type Mask } from '$lib/paint/mask';
 import type { SymmetrySettings } from '$lib/paint/symmetry';
 import type { HeartColors } from '$lib/types/heart';
 import { toHexColor } from '$lib/utils/heartColors';
@@ -138,18 +126,8 @@ export function engineSymmetry(rows: SymmetrySettings): EngineSymmetry {
  * The frame as per-cell loss weights: 1 for a cell that must come out as painted,
  * 0 for a cell of a free band the search may fill as it likes.
  *
- * **Nothing sends this to the engine yet, and that is deliberate.** The fitter's
- * loss has no per-cell weight to take: `core/` scores a candidate against every
- * cell of the target equally, and MOTIF-BORDER.md says plainly why the obvious
- * workaround does not work — a neutral 0.5 probability is not ignored, because
- * the squared-error grid loss still pulls predictions towards it and several
- * ranking stages threshold probabilities on the way out. Weights are Codex's
- * lane. Until they land, a free band reaches the engine as
- * `substituteCheckerBand`'s woven pattern instead (PAINT.md §11).
- *
- * It is written now, and tested, so that the day the engine takes weights the
- * change is one added settings key here and the deletion of one function in
- * `$lib/paint/frame` — not a new model of what the mask is.
+ * The weights share the mask's coordinates throughout initialization, fitting,
+ * matching and final validation (docs/inverse/WEIGHTED-IMAGE.md).
  */
 export function frameWeights(mask: Mask, frame: Frame): Float32Array {
 	const weights = new Float32Array(mask.data.length);
@@ -194,7 +172,7 @@ export type FindSettings = {
 	symmetry: SymmetrySettings;
 	widthMm?: number;
 	minWidthMm?: number;
-	/** Cut both lobes from one template. Follows Mellem lapper: Sym by default. */
+	/** Prefer one template within 1 percentage point of error, independently of symmetry. */
 	matchingSheets?: boolean;
 };
 
@@ -209,20 +187,10 @@ export type AdvancedSettings = {
 	widthMm: number;
 	minWidthMm: number;
 	matchingSheets: boolean;
-	/**
-	 * "Rammens felter": how many checker cells a free band is woven from, per side
-	 * of the square (PAINT.md §11).
-	 *
-	 * The one number here that the engine never sees: it shapes the *target* the
-	 * search is given, in `$lib/paint/frame`, rather than the search. It sits with
-	 * the others because it belongs to the same disclosure and the same Nulstil,
-	 * and because it goes away with the checker when weights arrive.
-	 */
-	frameCells: number;
 };
 
 /** The settings in it that are numbers, which are the ones that have bounds. */
-export type AdvancedNumber = 'widthMm' | 'minWidthMm' | 'frameCells';
+export type AdvancedNumber = 'widthMm' | 'minWidthMm';
 
 /**
  * What each of those numbers may be.
@@ -236,16 +204,12 @@ export type AdvancedNumber = 'widthMm' | 'minWidthMm' | 'frameCells';
  */
 export const ADVANCED_LIMITS: Record<AdvancedNumber, readonly [number, number]> = {
 	widthMm: [20, 300],
-	minWidthMm: [0.5, 30],
-	// Codex's benchmark tried three, four and five and four won on both fixtures;
-	// outside that range the band stops being a weave a heart can be cut from.
-	frameCells: [FRAME_MIN_CELLS, FRAME_MAX_CELLS]
+	minWidthMm: [0.5, 30]
 };
 
 const ADVANCED_DEFAULTS: Record<AdvancedNumber, number> = {
 	widthMm: DEFAULT_WIDTH_MM,
-	minWidthMm: DEFAULT_MIN_WIDTH_MM,
-	frameCells: DEFAULT_FRAME_CELLS
+	minWidthMm: DEFAULT_MIN_WIDTH_MM
 };
 
 /** One typed number brought inside the range; a non-number goes back to the default. */
@@ -255,18 +219,123 @@ export function clampAdvanced(key: AdvancedNumber, value: number): number {
 	return Math.min(hi, Math.max(lo, value));
 }
 
-/** What Nulstil goes back to; matching sheets follows Mellem lapper: Sym. */
-export function defaultAdvanced(symmetry: SymmetrySettings): AdvancedSettings {
+/** Reset to the standard fitting preferences, independently of forced symmetry. */
+export function defaultAdvanced(): AdvancedSettings {
 	return {
 		widthMm: DEFAULT_WIDTH_MM,
 		minWidthMm: DEFAULT_MIN_WIDTH_MM,
-		matchingSheets: symmetry.lobes === 'sym',
-		frameCells: DEFAULT_FRAME_CELLS
+		matchingSheets: true
 	};
 }
 
-/** Progress from the engine, as the stage names `core/` emits ('graph', 'paper', …). */
-export type StageListener = (stage: string) => void;
+/** The controller can retain a valid checkpoint while stopping computation.
+ * The panel also requires a handler, which Paint supplies only during a solve.
+ */
+export const ENGINE_GRACEFUL_STOP: boolean = true;
+
+/**
+ * One progress event from the engine, whole.
+ *
+ * The bridge used to keep only `event.stage` and throw the rest away, which is
+ * why the panel could say no more than "working". The engine reports a great
+ * deal more per event, and the shapes below are what `static/inverse/core/`
+ * actually sends — read off `direct/fit.js`, `direct/refine.js`, `solver.js`
+ * and `automatic.js`, not invented here.
+ *
+ * Every member extends the same all-optional `ProgressFields` on purpose. The
+ * engine sends a bare `{stage}` for the beginning of each phase and the full
+ * record at each checkpoint (`stage()` in `fit.js` against the `rec` object in
+ * `refineCurves`), so *no* field can be promised by its stage name; and a
+ * shared base means a reader that has narrowed to one member can still read a
+ * field the engine has newly started attaching, rather than failing to compile
+ * the day `core/` grows one. The union is what says which stage sends what.
+ */
+interface ProgressFields {
+	/** Cuts per family, `[A, B]` — the engine's A is our right lobe. */
+	counts?: [number, number];
+	/** Share of the square's cells the candidate gets wrong, 0…1. */
+	error?: number;
+	/** The refiner's step number inside one attempt. */
+	step?: number;
+	/** The refiner's own objective; not the same thing as `error`. */
+	score?: number;
+	/**
+	 * A validity flag, or a `heartcurves-2` snapshot when progressGeometry is
+	 * enabled and its rate limit permits. `searchProgress.candidateGeometry`
+	 * distinguishes the two by type. Snapshots describe an in-progress candidate.
+	 */
+	geometry?: boolean | string | Record<string, unknown>;
+	/** The material audit's verdict on the unfolded paper. */
+	paper?: string;
+	/** Up to eight validation complaints, for the console. */
+	issues?: unknown[];
+	/** MILP: which round of the cutting-plane loop. */
+	round?: number;
+	/** MILP: seconds of the budget left. */
+	remaining?: number;
+	/** MILP: branch-and-bound nodes explored. */
+	nodes?: number;
+	/** MILP: the relative gap to the best possible answer, 0…1, or null. */
+	gap?: number | null;
+	/** MILP: whether a validated incumbent is already in hand. */
+	validatedIncumbent?: boolean;
+	/** MILP: the size of the model that was built. */
+	variables?: number;
+	constraints?: number;
+	/** Whatever else the engine attaches; nothing here reads it by name. */
+	[key: string]: unknown;
+}
+
+/** One grid seed the count search scored (`fit.js`, inside `directInitializing`). */
+export interface DirectSeedProgress extends ProgressFields {
+	stage: 'directInitializing';
+}
+
+/** One refinement checkpoint of the direct fitter (`refine.js`'s `rec`, spread by `fit.js`). */
+export interface DirectStepProgress extends ProgressFields {
+	stage:
+		| 'directFitting'
+		| 'directClearance'
+		| 'directRefining'
+		| 'directSharing'
+		| 'directPolishing';
+}
+
+/** The MILP route's model, once built (`solver.js`). */
+export interface MilpModelProgress extends ProgressFields {
+	stage: 'model';
+}
+
+/** The MILP route solving, either per round or per logging callback (`solver.js`). */
+export interface MilpSolvingProgress extends ProgressFields {
+	stage: 'solving';
+}
+
+/** The MILP route checking a candidate it has just extracted (`solver.js`). */
+export interface MilpValidatingProgress extends ProgressFields {
+	stage: 'validating';
+}
+
+/**
+ * Any other stage: 'preprocessing', 'graph', 'connectors', 'rounding', 'paper',
+ * 'tolerances', 'exporting' — and whatever `core/` adds next. It is last in the
+ * union and its `stage` is a plain string, so a name nobody has heard of still
+ * reaches the UI as an event rather than as a type error.
+ */
+export interface PlainProgress extends ProgressFields {
+	stage: string;
+}
+
+export type EngineProgress =
+	| DirectSeedProgress
+	| DirectStepProgress
+	| MilpModelProgress
+	| MilpSolvingProgress
+	| MilpValidatingProgress
+	| PlainProgress;
+
+/** Progress from the engine, whole; `event.stage` is the name `core/` emits. */
+export type StageListener = (event: EngineProgress) => void;
 
 let worker: InverseWorker | null = null;
 
@@ -301,9 +370,9 @@ function queue<T>(work: () => Promise<T>): Promise<T> {
 /**
  * Stop the engine: what it is doing now, and what is waiting behind it.
  *
- * Terminating the worker is the only interruption there is — a solve is one
- * long synchronous computation inside it — so the request in flight rejects
- * with an `AbortError` and the next call builds a fresh worker. Afbryd is this,
+ * The request in flight rejects immediately with an `AbortError`; the
+ * controller shuts down its compute worker before being terminated itself.
+ * The next call builds a fresh worker. Afbryd is this,
  * and so is closing the import dialog on a prepare the visitor no longer wants.
  * The artwork prepared inside the worker goes with it, so the next search has
  * to prepare again; `findCuts` is never called on its own, so that costs
@@ -312,6 +381,11 @@ function queue<T>(work: () => Promise<T>): Promise<T> {
 export function cancel(): void {
 	epoch++;
 	worker?.stop();
+}
+
+/** Use the current solve's normal response, without joining the request queue. */
+export function useBest(): boolean {
+	return worker?.useBest() ?? false;
 }
 
 /** The pair every fallback lands on: the site's own default paper. */
@@ -337,10 +411,8 @@ export function paperPair(colors: HeartColors): PaperPair {
 }
 
 /**
- * The mask as an image the engine can classify.
- *
- * Exported because the test sends exactly this through the engine's own
- * `prepare`; nothing else should need it.
+ * The mask as a two-colour photograph, retained for classification regressions
+ * and historical benchmarks. Paint sends binary cells through `maskToArtwork`.
  */
 export function maskToPixels(mask: Mask, colors: HeartColors): PixelsInput {
 	const [right, left] = paperPair(colors);
@@ -384,16 +456,30 @@ export function maskPrepareSettings(colors: HeartColors): Record<string, unknown
 	};
 }
 
-/** Classify the painted mask, which is what a search is run against. */
+/** Snapshot the drawing without replacing the visitor's border colours. */
+export function maskToArtwork(mask: Mask, frame?: Frame): MaskInput {
+	const raster = solverRaster(mask);
+	return {
+		type: 'mask',
+		mask: new Uint8Array(raster.data),
+		resolution: raster.size,
+		...(raster.validMask ? { validMask: raster.validMask.slice() } : {}),
+		...(frame?.mode === 'free' ? { weights: frameWeights(raster, frame) } : {})
+	};
+}
+
+/** Prepare the painted mask and the region the search must preserve. */
 export function prepareMask(
 	mask: Mask,
 	colors: HeartColors,
-	onStage: StageListener = () => {}
+	onStage: StageListener = () => {},
+	frame?: Frame
 ): Promise<PreparedArtwork> {
+	const input = maskToArtwork(mask, frame);
 	return queue(() =>
 		engine().request<PreparedArtwork>(
 			'prepare',
-			maskToPixels(mask, colors),
+			input,
 			maskPrepareSettings(colors),
 			onStage
 		)
@@ -479,13 +565,14 @@ export function solveSettings(settings: FindSettings): Record<string, unknown> {
 		minWidth: clampAdvanced('minWidthMm', settings.minWidthMm ?? DEFAULT_MIN_WIDTH_MM),
 		cutError: 0.25,
 		timeLimit: MAX_TIME_LIMIT_SECONDS,
-		// "Samme skabelon til begge sider" — the checkbox, which follows Mellem
-		// lapper Sym until the visitor says otherwise. A requested symmetry
+		// Prefer a reusable template even when a photograph has no detected
+		// symmetry. This does not fold the mask. A requested symmetry
 		// overrules it inside `settings()`: the transpose implies matching sheets,
 		// and any other mirror rules them out, because the two families are then
 		// each other's images rather than copies.
-		preferMatchingSheets: settings.matchingSheets ?? settings.symmetry.lobes === 'sym',
+		preferMatchingSheets: settings.matchingSheets ?? true,
 		matchingErrorAllowance: 0.01,
+		progressGeometry: true,
 		earlyStop: false,
 		removeSpecks: 0,
 		fillHoles: 0,

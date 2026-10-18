@@ -1,0 +1,467 @@
+{
+  "schema": "primitive-boundary-groups-results-1",
+  "status": "adopted-local-runtime-full-qa-passed",
+  "plan": "docs/inverse/datasets/primitive-boundary-groups-plan.json",
+  "implementation": "Keep both existing final primitive passes. Only after a boundary-objective rejection, retry candidate groups with sequential non-increasing pixel and boundary-plus-complexity costs. The existing source-error, feature, geometry, symmetry and material checks still gate the result. All passes share the existing deadline.",
+  "focusedTests": {
+    "passed": 14,
+    "newAnalyticRegression": "Both color phases, weighted and unweighted. All candidate pixel-centre masks are equal, but the complete straightening batch has strictly worse continuous cost. The new policy retains the supported bend and straightens the unrelated noise without changing the independent exported mask or inputs."
+  },
+  "timedReplay": {
+    "cases": 64,
+    "geometryAndPaperPassed": 64,
+    "sourceFeaturesRetained": true,
+    "changes": [
+      {
+        "cohort": "photos",
+        "id": "floral-checker",
+        "curvedBefore": 182,
+        "curvedAfter": 180,
+        "sourceErrorBefore": 0.01309375,
+        "sourceErrorAfter": 0.01309375,
+        "independentErrorDelta": 1.2500000000000358e-05,
+        "boundaryFallbackApplied": false
+      },
+      {
+        "cohort": "photos",
+        "id": "crown",
+        "curvedBefore": 126,
+        "curvedAfter": 124,
+        "sourceErrorBefore": 0.02225,
+        "sourceErrorAfter": 0.02225,
+        "independentErrorDelta": 0,
+        "boundaryFallbackApplied": false
+      },
+      {
+        "cohort": "photos",
+        "id": "faceted-star",
+        "curvedBefore": 126,
+        "curvedAfter": 124,
+        "sourceErrorBefore": 0.00625,
+        "sourceErrorAfter": 0.0062375,
+        "independentErrorDelta": -6.249999999999312e-06,
+        "boundaryFallbackApplied": true
+      },
+      {
+        "cohort": "hunodan",
+        "id": "hjfig-04",
+        "curvedBefore": 40,
+        "curvedAfter": 38,
+        "sourceErrorBefore": 0.014001777777777778,
+        "sourceErrorAfter": 0.014001777777777778,
+        "independentErrorDelta": 0,
+        "boundaryFallbackApplied": true
+      }
+    ]
+  },
+  "untimedIsolation": {
+    "cases": 64,
+    "geometryAndPaperPassed": 64,
+    "sourceFeaturesRetained": true,
+    "changes": [
+      {
+        "cohort": "photos",
+        "id": "faceted-star",
+        "curvedBefore": 126,
+        "curvedAfter": 124,
+        "sourceErrorBefore": 0.00625,
+        "sourceErrorAfter": 0.0062375,
+        "independentErrorDelta": -6.249999999999312e-06,
+        "boundaryFallbackApplied": true
+      },
+      {
+        "cohort": "hunodan",
+        "id": "hjfig-04",
+        "curvedBefore": 40,
+        "curvedAfter": 38,
+        "sourceErrorBefore": 0.014001777777777778,
+        "sourceErrorAfter": 0.014001777777777778,
+        "independentErrorDelta": 0,
+        "boundaryFallbackApplied": true
+      }
+    ]
+  },
+  "timingQualification": "Timed floral-checker and crown changes disappear with the deadline removed; they are scheduling differences, not evidence of the new filter. Both original and candidate cleanup can finish final material checks beyond the 500ms request. Whole-pipeline speed is being checked separately.",
+  "editableReplay": {
+    "pairs": 8,
+    "converted": 8,
+    "complete": 8,
+    "editorIssues": 0,
+    "scope": "Baseline and candidate for all four timed changed cases, including both genuinely policy-dependent cases.",
+    "warnings": "Both hjfig-04 policies emit the same legacy outside-control-box warning; both pass independent curve, paper, source fidelity and editor intersection checks."
+  },
+  "visualReview": {
+    "allFourTimedChangesReviewed": true,
+    "finding": "Only small edge differences; no visible lost features or opened shared seams. The untimed policy-dependent outputs equal their inspected timed counterparts.",
+    "path": "tmp/heart-learning/primitive-boundary-groups-v1/corpus-review.png",
+    "sha256": "8ee673e93be663e3620e762d6e02fb35fff5137f62e24a1491c7bf700d1d23a1"
+  },
+  "limitations": [
+    "No new complete photographic reconstruction pass is claimed.",
+    "This only removes near-straight cubic handle freedom; it does not repair the flower photo's hidden centre or infer paper identity behind ribbons.",
+    "Fresh Hunodan/photo benchmarks, full repository checks, and browser workflows remain pending."
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/primitive-boundary-groups-v1/corpus.json": "f3c67d226a8a3927bd5bf30b3e9c7edc3b314e9e067c9053f8f6d99f72f861ce",
+    "tmp/heart-learning/primitive-boundary-groups-v1/unbounded/corpus.json": "cf9e238be784bc5bb23e7501066ed16f3e74bc06dd2aeb783f3888706722034d",
+    "tmp/heart-learning/primitive-boundary-groups-v1/editable/results.json": "ae0e72db386a638e0db10d815fd58618ca2dd13df5763c3cdc86afe6b1e64972",
+    "tmp/heart-learning/primitive-boundary-groups-v1/early-filter-results.json": "60df9057c3483c40ecab9fec650f805147aadfb93dc5182c57be644210ee4837",
+    "tmp/heart-learning/primitive-boundary-groups-v1/baseline-original.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+    "tmp/heart-learning/primitive-boundary-groups-v1/corpus.mjs": "3a347930181bd861ec3fcaef0263b5ee1b02b80764273fbe60a536090c585ce0",
+    "tmp/heart-learning/primitive-boundary-groups-v1/corpus-unbounded.mjs": "11780eefde29aeee306ffb4b3f8b08a4b93d96b680456a42f06cca1676d38b66",
+    "tmp/heart-learning/primitive-boundary-groups-v1/analytic.log": "63cbb19a29934b93b3292ee69df01b5671e0019db45a2c2d47c405d229dee916"
+  },
+  "deployment": "Local branch only; not pushed or deployed.",
+  "freshHunodan": {
+    "cases": 22,
+    "passed": 22,
+    "medianSeconds": 5.291481978999997,
+    "maxSeconds": 8.830321291,
+    "exactlyUnchangedErrors": 22,
+    "changedErrors": []
+  },
+  "remainingVerification": [],
+  "ribbonReplay": {
+    "status": "complete-on-committed-runtime",
+    "rows": [
+      {
+        "id": "real-202b8421f50252f2",
+        "arm": "unchanged",
+        "curvedBefore": 96,
+        "curvedAfter": 96,
+        "sourceErrorBefore": 0.0350875,
+        "sourceErrorAfter": 0.0350875,
+        "independentErrorBefore": 0.03535625,
+        "independentErrorAfter": 0.03535625,
+        "knownCleanErrorBefore": null,
+        "knownCleanErrorAfter": null,
+        "geometry": true,
+        "paper": "pass",
+        "featureChange": {
+          "passed": true,
+          "missingBefore": 0,
+          "missingAfter": 0,
+          "regressed": []
+        }
+      },
+      {
+        "id": "real-202b8421f50252f2",
+        "arm": "caps-unobserved",
+        "curvedBefore": 40,
+        "curvedAfter": 40,
+        "sourceErrorBefore": 0.005652573529411765,
+        "sourceErrorAfter": 0.005652573529411765,
+        "independentErrorBefore": 0.005689338235294118,
+        "independentErrorAfter": 0.005689338235294118,
+        "knownCleanErrorBefore": null,
+        "knownCleanErrorAfter": null,
+        "geometry": true,
+        "paper": "pass",
+        "featureChange": {
+          "passed": true,
+          "missingBefore": 0,
+          "missingAfter": 0,
+          "regressed": []
+        }
+      },
+      {
+        "id": "real-202b8421f50252f2",
+        "arm": "ribbon-unobserved",
+        "curvedBefore": 93,
+        "curvedAfter": 93,
+        "sourceErrorBefore": 0.03612081969022479,
+        "sourceErrorAfter": 0.03612081969022479,
+        "independentErrorBefore": 0.03607667120414996,
+        "independentErrorAfter": 0.03607667120414996,
+        "knownCleanErrorBefore": null,
+        "knownCleanErrorAfter": null,
+        "geometry": true,
+        "paper": "pass",
+        "featureChange": {
+          "passed": true,
+          "missingBefore": 0,
+          "missingAfter": 0,
+          "regressed": []
+        }
+      },
+      {
+        "id": "real-202b8421f50252f2",
+        "arm": "caps-and-ribbon-unobserved",
+        "curvedBefore": 52,
+        "curvedAfter": 39,
+        "sourceErrorBefore": 0.002427938553593004,
+        "sourceErrorAfter": 0.0024164317358034634,
+        "independentErrorBefore": 0.0025084862781197858,
+        "independentErrorAfter": 0.0025314999136988666,
+        "knownCleanErrorBefore": null,
+        "knownCleanErrorAfter": null,
+        "geometry": true,
+        "paper": "pass",
+        "featureChange": {
+          "passed": true,
+          "missingBefore": 0,
+          "missingAfter": 0,
+          "regressed": []
+        }
+      },
+      {
+        "id": "known-two-cut-ribbon",
+        "arm": "unchanged",
+        "curvedBefore": 4,
+        "curvedAfter": 2,
+        "sourceErrorBefore": 0.00386875,
+        "sourceErrorAfter": 0.00386875,
+        "independentErrorBefore": 0.003675,
+        "independentErrorAfter": 0.003675,
+        "knownCleanErrorBefore": 0.052525,
+        "knownCleanErrorAfter": 0.0525,
+        "geometry": true,
+        "paper": "pass",
+        "featureChange": {
+          "passed": true,
+          "missingBefore": 0,
+          "missingAfter": 0,
+          "regressed": []
+        }
+      },
+      {
+        "id": "known-two-cut-ribbon",
+        "arm": "caps-unobserved",
+        "curvedBefore": 23,
+        "curvedAfter": 23,
+        "sourceErrorBefore": 0.0017922794117647058,
+        "sourceErrorAfter": 0.0017922794117647058,
+        "independentErrorBefore": 0.001479779411764706,
+        "independentErrorAfter": 0.001479779411764706,
+        "knownCleanErrorBefore": 0.0626625,
+        "knownCleanErrorAfter": 0.0626625,
+        "geometry": true,
+        "paper": "pass",
+        "featureChange": {
+          "passed": true,
+          "missingBefore": 0,
+          "missingAfter": 0,
+          "regressed": []
+        }
+      },
+      {
+        "id": "known-two-cut-ribbon",
+        "arm": "ribbon-unobserved",
+        "curvedBefore": 0,
+        "curvedAfter": 0,
+        "sourceErrorBefore": 0,
+        "sourceErrorAfter": 0,
+        "independentErrorBefore": 0,
+        "independentErrorAfter": 0,
+        "knownCleanErrorBefore": 0,
+        "knownCleanErrorAfter": 0,
+        "geometry": true,
+        "paper": "pass",
+        "featureChange": {
+          "passed": true,
+          "missingBefore": 0,
+          "missingAfter": 0,
+          "regressed": []
+        }
+      },
+      {
+        "id": "known-two-cut-ribbon",
+        "arm": "caps-and-ribbon-unobserved",
+        "curvedBefore": 0,
+        "curvedAfter": 0,
+        "sourceErrorBefore": 0,
+        "sourceErrorAfter": 0,
+        "independentErrorBefore": 0,
+        "independentErrorAfter": 0,
+        "knownCleanErrorBefore": 3.125e-05,
+        "knownCleanErrorAfter": 3.125e-05,
+        "geometry": true,
+        "paper": "pass",
+        "featureChange": {
+          "passed": true,
+          "missingBefore": 0,
+          "missingAfter": 0,
+          "regressed": []
+        }
+      }
+    ],
+    "changedOutputsReviewed": 2,
+    "finding": "The weighted real case has 13 fewer curved spans, but the central hooks remain. Independent observed error increases by two weighted pixels despite a one-pixel source-sampler improvement; this is a sampling difference, not a new reconstruction success. The exact correctly masked synthetic controls retain zero clean-mask error.",
+    "reportSha256": "dd582d077d2628a481e14cb3cc7cfe75581f17c80518785b3d78a530c4ea2a7c",
+    "reviewImageSha256": "7357ad4bd3ba01cd73c4f9ac7dcdad63bd8456e0ccb9478a8d58b08a9a04cd29"
+  },
+  "freshPhotos": {
+    "eligible": 31,
+    "checked": 27,
+    "statusChanges": [],
+    "maskHashesAndRecordedQuadsUnchanged": true,
+    "changedErrors": [
+      {
+        "id": "floral-checker",
+        "before": 0.01334375,
+        "after": 0.01320625
+      },
+      {
+        "id": "leaf",
+        "before": 0.0095125,
+        "after": 0.00929375
+      },
+      {
+        "id": "gift",
+        "before": 0.01655,
+        "after": 0.016575
+      },
+      {
+        "id": "warped-checker",
+        "before": 0.013625,
+        "after": 0.01373125
+      },
+      {
+        "id": "fine-checker",
+        "before": 0.01941875,
+        "after": 0.01663125
+      },
+      {
+        "id": "jigsaw",
+        "before": 0.01026875,
+        "after": 0.0101125
+      },
+      {
+        "id": "maple-leaf",
+        "before": 0.00869375,
+        "after": 0.00876875
+      },
+      {
+        "id": "crown",
+        "before": 0.02241875,
+        "after": 0.022725
+      },
+      {
+        "id": "faceted-star",
+        "before": 0.00641875,
+        "after": 0.0064125
+      },
+      {
+        "id": "flettede-viking",
+        "before": 0.0207875,
+        "after": 0.02230625
+      }
+    ],
+    "visualReview": {
+      "reviewedChangedOutputs": 10,
+      "images": {
+        "tmp/heart-learning/primitive-boundary-groups-v1/qa/photos-review-1.png": "d1d4e3360b2431593ac1613318aa7e2c9045718878aceadaabc6f90250c6c2af",
+        "tmp/heart-learning/primitive-boundary-groups-v1/qa/photos-review-2.png": "0fd1d134ee7d669d65d547e115038d936754b4a732ee66d42c8e669505927036",
+        "tmp/heart-learning/primitive-boundary-groups-v1/qa/photos-review-3.png": "d07001ed830e7d16fd4d1702c044813dbc8b6b7f051f8aceb220fca848c87ffc"
+      },
+      "finding": "Fine checker improves; all ten changes preserve recognizable motifs and existing connections. Viking mask disagreement rises from 2.08% to 2.23%; it remains checked, and is retained in the comparison rather than hidden."
+    },
+    "editable": {
+      "converted": 29,
+      "complete": 27,
+      "editorIssues": 0
+    }
+  },
+  "verification": {
+    "checks": [
+      {
+        "stage": "focused",
+        "exitCode": 0,
+        "seconds": 4.267077958
+      },
+      {
+        "stage": "ribbon",
+        "exitCode": 0,
+        "seconds": 9.591926292
+      },
+      {
+        "stage": "hunodan",
+        "exitCode": 0,
+        "seconds": 123.76814083299999
+      },
+      {
+        "stage": "photos",
+        "exitCode": 0,
+        "seconds": 332.04429541700006
+      },
+      {
+        "stage": "photos-editable",
+        "exitCode": 0,
+        "seconds": 34.702083207999976
+      },
+      {
+        "stage": "check",
+        "exitCode": 0,
+        "seconds": 11.122671249999996
+      },
+      {
+        "stage": "lint",
+        "exitCode": 0,
+        "seconds": 7.151830541999971
+      },
+      {
+        "stage": "build",
+        "exitCode": 0,
+        "seconds": 16.994211250000035
+      },
+      {
+        "stage": "preview",
+        "exitCode": 0,
+        "seconds": 1.1073171250000087
+      },
+      {
+        "stage": "browser",
+        "exitCode": 0,
+        "seconds": 40.10736854100003
+      },
+      {
+        "stage": "test",
+        "exitCode": 1,
+        "seconds": 1157.8055129999998
+      },
+      {
+        "stage": "test-retry",
+        "exitCode": 0,
+        "seconds": 1132.189458042,
+        "logMirrorFailure": null
+      }
+    ],
+    "browser": {
+      "cases": [
+        {
+          "name": "star",
+          "passed": true,
+          "pageErrors": [],
+          "clickToReadySeconds": 2.1455
+        },
+        {
+          "name": "top-hat-preferred",
+          "passed": true,
+          "pageErrors": [],
+          "clickToReadySeconds": 7.373
+        },
+        {
+          "name": "hunodan-hjfig-05",
+          "passed": true,
+          "pageErrors": [],
+          "clickToReadySeconds": 19.720400000095367
+        }
+      ],
+      "builtAssetsVerified": 173
+    },
+    "repositoryTests": {
+      "applicationPassed": 865,
+      "applicationSkipped": 1,
+      "inversePassed": 1002,
+      "failures": 0,
+      "sourceFilesVerified": 931,
+      "log": "tmp/heart-learning/primitive-boundary-groups-v1/qa/test-retry.log",
+      "logSha256": "e38489486331baa6a18c728fb31882dc80086c80e79e5114306a3dc972de7524",
+      "sourcePins": "tmp/heart-learning/primitive-boundary-groups-v1/qa/retry-tests-source.json",
+      "sourcePinsSha256": "dc00a32bfa203c49e02716c6c5ccbd44786f0b24b09a1cf145bf28c62fcedb7d",
+      "originalAttempt": "Inconclusive during a disk-space incident; retained separately and not counted as a pass."
+    },
+    "qaState": "tmp/heart-learning/primitive-boundary-groups-v1/qa/state.json",
+    "interruptedRun": "docs/inverse/datasets/storage-recovery.json"
+  }
+}

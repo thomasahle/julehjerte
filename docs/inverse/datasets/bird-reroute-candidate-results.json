@@ -1,0 +1,290 @@
+{
+  "schema": "bird-reroute-candidate-study-1",
+  "status": "rejected_experiments; no portfolio or checkpoint-frequency change integrated",
+  "finding": "The newly certified step-zero checkpoint changes subsequent rollback/exploration. Starting plan controls are identical; old ordinary checkpoint is paper-uncertain, current is pass. Later rejected boundary graphs differ. The two step-zero records are a straightened proposal followed by the ordinary gradient state; neither is a short-return projection.",
+  "proposalReplays": [
+    {
+      "arm": "before",
+      "step": 40,
+      "accepted": true,
+      "seconds": 1.0110832920000001,
+      "error": 0.02529375
+    },
+    {
+      "arm": "before",
+      "step": 80,
+      "accepted": false,
+      "seconds": 0.026669417000000067,
+      "error": null
+    },
+    {
+      "arm": "before",
+      "step": 120,
+      "accepted": false,
+      "seconds": 0.022346458999999867,
+      "error": null
+    },
+    {
+      "arm": "before",
+      "step": 159,
+      "accepted": false,
+      "seconds": 0.016556332999999996,
+      "error": null
+    },
+    {
+      "arm": "current",
+      "step": 40,
+      "accepted": false,
+      "seconds": 1.5051600420000002,
+      "error": null
+    },
+    {
+      "arm": "current",
+      "step": 80,
+      "accepted": true,
+      "seconds": 0.4678615,
+      "error": 0.02551875
+    },
+    {
+      "arm": "current",
+      "step": 120,
+      "accepted": false,
+      "seconds": 0.028019500000000336,
+      "error": null
+    },
+    {
+      "arm": "current",
+      "step": 159,
+      "accepted": false,
+      "seconds": 0.014478791999999885,
+      "error": null
+    }
+  ],
+  "portfolio": [
+    {
+      "allowance": 10,
+      "seconds": 9.926731459,
+      "reportedTemplateChecksPassed": true,
+      "independentError": 0.02546875,
+      "eyes": [
+        {
+          "resolution": 400,
+          "centerMm": [
+            23.10141509433962,
+            46.09198113207547
+          ],
+          "sourceAreaMm2": 3.3125,
+          "intersectionPixels": 52,
+          "retention": 0.9811320754716981,
+          "predictedComponentAreaMm2": 5.1875,
+          "touchesBorder": false,
+          "componentIoU": 0.6190476190476191
+        },
+        {
+          "resolution": 800,
+          "centerMm": [
+            23.10141509433962,
+            46.09198113207547
+          ],
+          "sourceAreaMm2": 3.3125,
+          "intersectionPixels": 203,
+          "retention": 0.9575471698113207,
+          "predictedComponentAreaMm2": 5.140625,
+          "touchesBorder": false,
+          "componentIoU": 0.6005917159763313
+        }
+      ],
+      "acceptedForIntegration": false,
+      "reason": "Eye closes but is enlarged: IoU remains below the existing 0.85 regression bound."
+    },
+    {
+      "allowance": 180,
+      "seconds": 13.163445959,
+      "reportedTemplateChecksPassed": true,
+      "independentError": 0.02511875,
+      "eyes": [
+        {
+          "resolution": 400,
+          "centerMm": [
+            23.10141509433962,
+            46.09198113207547
+          ],
+          "sourceAreaMm2": 3.3125,
+          "intersectionPixels": 53,
+          "retention": 1,
+          "predictedComponentAreaMm2": 4.8125,
+          "touchesBorder": false,
+          "componentIoU": 0.6883116883116883
+        },
+        {
+          "resolution": 800,
+          "centerMm": [
+            23.10141509433962,
+            46.09198113207547
+          ],
+          "sourceAreaMm2": 3.3125,
+          "intersectionPixels": 204,
+          "retention": 0.9622641509433962,
+          "predictedComponentAreaMm2": 4.8125,
+          "touchesBorder": false,
+          "componentIoU": 0.6455696202531646
+        }
+      ],
+      "acceptedForIntegration": false,
+      "reason": "Eye closes but is enlarged: IoU remains below the existing 0.85 regression bound."
+    }
+  ],
+  "moreFrequentCheckpoints": {
+    "shortPassed": false,
+    "longPassed": false,
+    "qualification": "Long timing excluded because an accidentally overlapping focused test run was interrupted. The valid final output remains a diagnostic failure; no speed claim."
+  },
+  "fixedWorkRefinementDiagnosis": [
+    {
+      "name": "gift",
+      "resolution": 360,
+      "steps": 750,
+      "variants": {
+        "selected": {
+          "error": 0.04345703125,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceError": 0.04268125,
+          "fineStatus": "pass"
+        },
+        "alternative": {
+          "error": 0.0345306396484375,
+          "geometryPassed": true,
+          "paperStatus": "uncertain",
+          "sourceError": 0.0332375,
+          "fineStatus": "pass"
+        }
+      }
+    },
+    {
+      "name": "gift",
+      "resolution": 180,
+      "steps": 750,
+      "variants": {
+        "selected": {
+          "error": 0.02960205078125,
+          "geometryPassed": true,
+          "paperStatus": "uncertain",
+          "sourceError": 0.02885,
+          "fineStatus": "pass"
+        },
+        "rejected": {
+          "error": 0.026092529296875,
+          "geometryPassed": true,
+          "paperStatus": "fail",
+          "sourceError": 0.0254125,
+          "fineStatus": "pass"
+        }
+      }
+    },
+    {
+      "name": "floral-checker",
+      "resolution": 360,
+      "steps": 81,
+      "variants": {
+        "selected": {
+          "error": 0.0196685791015625,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceError": 0.019275,
+          "fineStatus": "pass"
+        }
+      }
+    },
+    {
+      "name": "floral-checker",
+      "resolution": 360,
+      "steps": 201,
+      "variants": {
+        "selected": {
+          "error": 0.0187225341796875,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "sourceError": 0.01805625,
+          "fineStatus": "pass"
+        },
+        "alternative": {
+          "error": 0.018402099609375,
+          "geometryPassed": true,
+          "paperStatus": "uncertain",
+          "sourceError": 0.01738125,
+          "fineStatus": "pass"
+        }
+      }
+    },
+    {
+      "name": "viking",
+      "variants": {
+        "selected": {
+          "hash": "fcdbd52f4939b615d64405d6f57a949c5f5f0cdca0c73b2f93a72f828cd089f9",
+          "error": 0.0311737060546875,
+          "paperStatus": "pass",
+          "sourceError": 0.0299625,
+          "fineStatus": "pass"
+        },
+        "alternative": {
+          "hash": "bdc9a172b75541be31984040e17dde6fa8e7fe18afb880068112342764d091cd",
+          "error": 0.0305328369140625,
+          "paperStatus": "uncertain",
+          "sourceError": 0.02930625,
+          "fineStatus": "fail"
+        },
+        "rejected": {
+          "hash": "991d28d7dfa6861b91c655aaad5f8e0d130f5fc903dfdfd8d2a76b3d92190115",
+          "error": 0.0298919677734375,
+          "paperStatus": "fail",
+          "sourceError": 0.02851875,
+          "fineStatus": "fail"
+        }
+      }
+    }
+  ],
+  "next": "Investigate how safe-checkpoint rollback truncates useful exploration after more paper states become certifiable. Retain original feature-shape requirements; closing an enlarged eye is insufficient.",
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/bird-reroute-capture-v1/capture.mjs",
+      "sha256": "7a1d196d11a7eb66df7739ed77433f3f616f0b5add547e2d4c52b573c0653da2"
+    },
+    {
+      "path": "tmp/heart-learning/bird-reroute-capture-v1/replay-proposals.mjs",
+      "sha256": "69df3a04418235a0afa4ffbb94f72be607d91194809043c8ca9e6761a01b82a1"
+    },
+    {
+      "path": "tmp/heart-learning/bird-reroute-capture-v1/proposal-replays.json",
+      "sha256": "9c27bca0ffb47242cc64a187413995956ca4dff1010e2d855894d7719c1aa83f"
+    },
+    {
+      "path": "tmp/heart-learning/bird-reroute-capture-v1/frequent/measurement-qualification.json",
+      "sha256": "b59fac73f3e63865b3722f04623c0179f96b8a1f307e1169b2106ff5dc231a71"
+    },
+    {
+      "path": "tmp/heart-learning/round-paper-capture-v1/checkpoint-diagnostic.mjs",
+      "sha256": "7b4df84ef82170de23940262b0d279f2b1caa216aaaf5d6a98d93a474b142723"
+    },
+    {
+      "path": "tmp/heart-learning/round-paper-capture-v1/checkpoint-diagnostic.json",
+      "sha256": "92ba0dce4c3a82ab4e4b2e52dd4fc4cc627e7ba28c3459fa2ddabc7b33512f39"
+    },
+    {
+      "path": "tmp/heart-learning/bird-reroute-capture-v1/before/capture.json",
+      "sha256": "1644ffb3f65632d7c65f0022d7d7559940b2a5408f694669ea919580b26d937d"
+    },
+    {
+      "path": "tmp/heart-learning/bird-reroute-capture-v1/current/capture.json",
+      "sha256": "ca7e809074eb02ee53c010c0972dca8a37af71ad5361442bc238646557caeda0"
+    },
+    {
+      "path": "tmp/heart-learning/bird-reroute-capture-v1/portfolio/short.json",
+      "sha256": "777a1e62583e43f6fe727e0b02ca8d65c89bfc1de0947533b60925df2dd2a133"
+    },
+    {
+      "path": "tmp/heart-learning/bird-reroute-capture-v1/portfolio/long.json",
+      "sha256": "91809c8bac6200a459356aa5697505e9d99f515f029ed86177c35ec7494eff5b"
+    }
+  ]
+}

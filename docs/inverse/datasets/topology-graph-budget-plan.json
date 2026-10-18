@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "status": "prepared",
+  "question": "Can earlier graph selection leave time for verified routing and common curve refinement within the unchanged ten-second request?",
+  "productionCommit": "9cedec4",
+  "savedCorpusFinding": {
+    "classifiedCases": 51,
+    "coarseStageEntered": 15,
+    "coarseStageMILPAttempted": 1,
+    "coarseAccepted": 0,
+    "counterexample": "The bibel-star-outline coarse graph has 5070 binaries and 107 guide portals; later recovery graphs have 708/744/834 binaries. A separate y-minus-1 fixture uses 2544 binaries in failed coarse routing versus 1380 in later recovery."
+  },
+  "arms": {
+    "before": "Unmodified current runtime.",
+    "sparse-first": "Within the existing coarse allowance, try at most 0.8 seconds and half the remaining time with no guide portals and eight neighbours. Retain the existing guided graph for the rest of that same allowance. All objective coefficients and geometry tolerances remain unchanged.",
+    "detailed-first": "Move the unchanged coarse portfolio after ordinary detailed recovery. If detailed recovery succeeds, do not spend time on the coarse fallback. If it fails and time remains, the same coarse portfolio is still eligible."
+  },
+  "cases": [
+    "routing-x-plus-1",
+    "routing-y-minus-1",
+    "danish-tree-green",
+    "bibel-star-outline",
+    "real-abf590088db891f9-body-1",
+    "leaf-upward"
+  ],
+  "caseQualification": "The two routing fixtures are perturbations of one source and may share the original real-abf photo motif; cases are not counted as independent photographs. The real-photo mask is scored against the frozen production-derived mask, not unavailable original cutting paths.",
+  "repeats": 2,
+  "timing": "Serial fresh processes, alternate arm order. Preparation and final export remain measured; independent replay is separate. No CPU overlap with full QA.",
+  "gates": [
+    "Actual complete template checks",
+    "Original source mask hash and all image pixels unchanged",
+    "Independent SVG mask error and feature retention",
+    "Ten-second total request unchanged; report actual wall time without censoring overruns",
+    "Compare all errors and retain failures, not only pass counts"
+  ],
+  "queueAfter": "clearance-handoff-regression-v1/qa controller PID52958 and its complete native corpus stage",
+  "noProductionIntegration": true,
+  "artifactRoot": "tmp/heart-learning/topology-graph-budget-v1",
+  "addedBeforeExecution": "Full initializer-fix QA reports an upward-leaf test failure without a failure diagnostic. Its initial templateChecksPassed assertion apparently passed, but the later assertion and independent export quality are not yet known. Include all fresh reports and exports for this case instead of treating a rerun as evidence about the failed run.",
+  "savedEvidence": [
+    {
+      "path": "tmp/heart-learning/topology-graph-budget-v1/inventory.json",
+      "sha256": "3c45f9ddb142acb1f28d262397dfdc3bc0ecca19fdd0fd0e42eb6a378a791bce"
+    },
+    {
+      "path": "tmp/heart-learning/topology-graph-budget-v1/source.json",
+      "sha256": "82271de784c2ac75813401e040a68e2ac9563e18af97ba60f9c8730f8257dfbb"
+    },
+    {
+      "path": "tmp/heart-learning/topology-graph-budget-v1/runtime-source.json",
+      "sha256": "24e3373d9a3e81fdc2b38d649a0c2cbc2f739b15334919b2ad591e9298d8e066"
+    },
+    {
+      "path": "tmp/heart-learning/topology-graph-budget-v1/harness-source.json",
+      "sha256": "e18d9316482710d94ff8b0ea4dce0cc544defad8d2afacac145fbfd1ed643054"
+    }
+  ]
+}

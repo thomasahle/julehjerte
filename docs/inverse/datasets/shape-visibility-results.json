@@ -1,0 +1,139 @@
+{
+  "schema": "separate-shape-visibility-results-1",
+  "status": "experiment-complete-rejected-for-adoption",
+  "plan": "docs/inverse/datasets/shape-visibility-plan.json",
+  "deployed": false,
+  "trainingPerformed": false,
+  "synthetic": {
+    "original-visible": {
+      "cases": 16,
+      "proposals": 10,
+      "maximum": 0.11822270045289143,
+      "median": 0.07189355015377322,
+      "within": {
+        "0.01": 0,
+        "0.03": 1,
+        "0.05": 4
+      }
+    },
+    "original-separate": {
+      "cases": 16,
+      "proposals": 10,
+      "maximum": 0.11822270045289143,
+      "median": 0.07420550149394384,
+      "within": {
+        "0.01": 0,
+        "0.03": 0,
+        "0.05": 3
+      }
+    },
+    "occluded-visible": {
+      "cases": 16,
+      "proposals": 0,
+      "median": null,
+      "within": {
+        "0.01": 0,
+        "0.03": 0,
+        "0.05": 0
+      }
+    },
+    "occluded-separate": {
+      "cases": 16,
+      "proposals": 2,
+      "maximum": 0.13999623737477657,
+      "median": 0.09760969584898202,
+      "within": {
+        "0.01": 0,
+        "0.03": 0,
+        "0.05": 0
+      }
+    }
+  },
+  "exactGeometryDiagnostic": {
+    "scope": "Post-hoc diagnostic using exact source notch, tip and lower-edge directions. These do not enter inference.",
+    "geometries": 16,
+    "medianMaximumAffineCornerErrorFraction": 0.08878442128309341,
+    "maximumAffineCornerErrorFraction": 0.12237547313200514,
+    "conclusion": "The affine parallelogram itself is biased under the known perspective; more accurate notch inference alone cannot fix it."
+  },
+  "real": {
+    "status": "full-photo-and-editor-replay-complete",
+    "cohorts": {
+      "new-source": {
+        "checked-derived-mask": 4,
+        "crop-unresolved": 16
+      },
+      "previous-development": {
+        "checked-derived-mask": 15,
+        "review-required": 3,
+        "crop-unresolved": 4
+      }
+    },
+    "exports": 22,
+    "editableConverted": 22,
+    "editableComplete": 19,
+    "editorIssues": 0,
+    "allPriorCropsMasksCoverageAndStatusesUnchanged": true,
+    "changedWovenIds": [
+      "real-8c875dd0f298b5a4-body-1",
+      "real-1498fed65a8e41b7",
+      "real-31ed1172998ab1c5"
+    ]
+  },
+  "findings": [
+    "No new real crop is accepted; all 22 original baseline crops, masks, observation coverage and pass/fail statuses remain exactly unchanged.",
+    "The method rejects the previously admitted false small-checker crop, but also removes the four other proposals from the earlier local-support experiment. It is not adopted as an improvement.",
+    "Only two occluded synthetic views obtain a proposal, with maximum corner errors of 5.52% and 14.00% of side length. None meets the declared 5% corner threshold.",
+    "The original-image comparison also loses an accurate 2.93% candidate when the coarse shape becomes a hard support gate. The coarse model is not reliable enough to certify local corner structure.",
+    "Perspective and local visibility are separate problems; preserve distinct evidence without treating either learned mask as ground truth."
+  ],
+  "verification": {
+    "focusedNodeTestsPassed": 16,
+    "cropFitAndEditableStagesPassed": true,
+    "checkLintBuildPassed": true,
+    "repositoryTestSuite": {
+      "status": "passed",
+      "applicationPassed": 865,
+      "applicationSkipped": 1,
+      "inversePassed": 994
+    },
+    "visualReview": {
+      "status": "complete",
+      "allThirtyTwoSyntheticImagesInspected": true,
+      "allTwentyRealFallbackRejectionsInspected": true,
+      "allThreeChangedExportsInspected": true,
+      "notes": [
+        "Green exact synthetic corners and magenta selected crops show systematic affine side-corner displacement under perspective.",
+        "The coarse prior rejects the false small-checker notch but misses backgrounds and lobes on flower, printed and cluttered examples; the all-or-nothing shape support rule is not robust.",
+        "Three time-limited fitting reruns change woven pixels without any changed input crop, mask, observation coverage or status. The printed checker remains rejected; green checker and yellow cross retain curved borders and small seams. No new fit-quality gain is claimed."
+      ],
+      "panelSha256": {
+        "tmp/heart-learning/shape-visibility-v1/synthetic-review-1.png": "ff77909b7d7ab5a3e4538deffa1d60d3882810b29c098fa7c18574dcb2efa0b4",
+        "tmp/heart-learning/shape-visibility-v1/synthetic-review-2.png": "6c4f5cb417a861c70c0645a9323f4d49b34da5b11ae552033ccadc7d9c13283c",
+        "tmp/heart-learning/shape-visibility-v1/synthetic-review-3.png": "061b1b75468d42c55416f027742b1ff87e1c401f9cd1b52a8e735a65f8518c61",
+        "tmp/heart-learning/shape-visibility-v1/synthetic-review-4.png": "135d02b2ce31811ad1fbf85cd4042a4d0b66cce10a4fc88144899915f4be1337",
+        "tmp/heart-learning/shape-visibility-v1/real-review-1.png": "101b59a8c557b296611ee4b802fd726a010d46e99a3f9d215d12ba87f9ec93c7",
+        "tmp/heart-learning/shape-visibility-v1/real-review-2.png": "ae58d75fd8902f66d3bff2ba03c33dae12064157f290b3ad6cc21eca0d14404d",
+        "tmp/heart-learning/shape-visibility-v1/real-review-3.png": "0035996d76d602d89f548932877c269ebc735875447ccaa472d57a35f3a28c95",
+        "tmp/heart-learning/shape-visibility-v1/real-review-4.png": "55aeddbbcfb5c28cb9d395f9bfea81d4b6b6618faddccd1556ef5a7365a55fe3",
+        "tmp/heart-learning/shape-visibility-v1/real-review-5.png": "ab70a2b71ad6381523f567c4ff62bbbb9491e8f6da522947334693e3dd1701b8",
+        "tmp/heart-learning/shape-visibility-v1/changed-export-1.png": "6add8e40b04ceaf7df35a118d1dba46518b57876c8746e86eaf921ec912ffd61"
+      }
+    },
+    "sourceFilesVerified": 896
+  },
+  "nextStep": "Test a fully projective silhouette construction with separate visibility confidence, beginning with exact-shape diagnostic controls and the existing frozen predicted fields. Keep source material and observation coverage unchanged initially; do not lower corner-support thresholds to manufacture additional successes.",
+  "artifactsSha256": {
+    "tmp/heart-learning/shape-visibility-v1/plan.json": "bc659a63b363b2159082f36b9a4eed0d67f4f558cf097d2616cc3b6b5f8bbe3e",
+    "tmp/heart-learning/shape-visibility-v1/results/report.json": "59d00ccec5b8f4f40fbba67cfc488848c8316a920522999f4221e9002a4aad0c",
+    "tmp/heart-learning/shape-visibility-v1/pipeline/report.json": "50d74b098efe6c3efc5e1d3838b0837171806fae60ddb0b87588de80605c454e",
+    "tmp/heart-learning/shape-visibility-v1/editable/results.json": "c70f7498b3b978d5a1388e91512f871a22da36a360be53ec4d824494b399b7bd",
+    "tmp/heart-learning/shape-visibility-v1/synthetic/summary.json": "4fe2a6f0981355b96e040b909230d9e59a847c25e0a0a1d076c603fd39634ea6",
+    "tmp/heart-learning/shape-visibility-v1/synthetic/corner-audit.json": "ae7b0c515abeb0e1372b163fc6878a13de06f146ef09c0be240d0f98669bb435",
+    "tmp/heart-learning/shape-visibility-v1/selection-audit.json": "22ff81ac90871aac5f3f455b16bf23829bbcdc9069d8e8c98861f203c1e8c73f",
+    "tmp/heart-learning/shape-visibility-v1/real-crop-diagnostics.json": "685513b98bd6eba4ea120119d6e3ba79ea5876874bbfddbf82d076252bd5b1da",
+    "tmp/heart-learning/shape-visibility-v1/visual-review.json": "d2ba1c787bea2f19616d9287146b316d50789e3458b89049ea997dfd04493cc3",
+    "tmp/heart-learning/shape-visibility-v1/source.json": "1ffb1c6201d1409ed232da9266fe2c4ef4468ed4804fccb77270efcdf5204823",
+    "tmp/heart-learning/shape-visibility-v1/checks.json": "7bf262f903c6efb9f87806e1111ad48b6d61e2763de9203fc433554a5fc12d86"
+  }
+}

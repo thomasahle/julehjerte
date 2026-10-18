@@ -3,15 +3,16 @@ import {prepare} from './engine.js';
 import {GENERAL_PRESET,DIRECT_PRESET} from './presets.js';
 import {sampleTarget} from './input.js';
 import {normalizeSymmetry,requestedSymmetry,settings} from './settings.js';
-import {maskDisagreement,preferMatchingSolution} from './direct/prefer-matching.js';
+import {maskDisagreement} from './direct/prefer-matching.js';
+import {finalizeFittedSolution} from './direct/finalize.js';
 import {fitDirect} from './direct/fit.js';
 import {sampleWeave} from './validate.js';
-import {buildGraph} from './graph.js';
-import {solveGraph} from './solver.js';
+import {solveBoundary} from './routing.js';
 import {materialAudit} from './material.js';
-import {auditImageFeatures} from './image-features.js';
+import {auditFeatureFidelity} from './feature-shapes.js';
 import {prepareBoundary} from './direct/topology.js';
 import {boundarySVG} from './export.js';
+import {originalMaskBoundaries} from './mask-preview.js';
 
 /** Only the direct fitter enforces requested symmetries. transpose is the one
  * the traced routes already reproduce, through their identical-sheet grid; a
@@ -32,10 +33,18 @@ export function prepareAutomatic(input,raw,onProgress){
   }else{
     value=prepare(input,cfg,onProgress);
     value.target.metadata.automatic={route:'direct',reason:'Joint cubic and straight-span refinement against the original classified image'};
+    if(value.target.sourceImage.weights){
+      const original=originalMaskBoundaries(value.target.sourceImage,value.target.width,value.target.metadata.paperColors);
+      value.preview.boundaries=original.svg;
+      value.preview.metadata.originalBoundariesAvailable=original.segments>0;
+      value.preview.metadata.originalBoundaryMethod='pixel-edges';
+    }
     try{
       value.target.boundarySeed=prepareBoundary(value.target,settings(cfg));
-      value.preview.boundaries=boundarySVG(value.target.boundarySeed);
-      value.preview.metadata.originalBoundariesAvailable=value.target.boundarySeed.curves.length>0;
+      if(!value.target.sourceImage.weights){
+        value.preview.boundaries=boundarySVG(value.target.boundarySeed);
+        value.preview.metadata.originalBoundariesAvailable=value.target.boundarySeed.curves.length>0;
+      }
     }catch(error){value.target.metadata.automatic.boundaryEvidenceError=error.message;}
   }
   if(fitterOnly)value.target.metadata.automatic={...value.target.metadata.automatic,route:'direct',reason:'Fit the requested symmetry directly; the traced routes cannot constrain mirrored cuts'};
@@ -49,13 +58,12 @@ export async function solveAutomatic(target,cfg,onProgress){
   else if(route==='vector'){
     const traceCfg=settings({...cfg,...GENERAL_PRESET,timeLimit:Math.max(.1,Math.min(3,cfg.timeLimit*.4))});
     try{
-      onProgress({stage:'graph'});
-      const graph=buildGraph(target,traceCfg,{onProgress}),solution=await solveGraph(graph,traceCfg,{onProgress,coefficientQuantum:1e-7,coreGate:traceCfg.requireMaterialCore?s=>materialAudit(s,traceCfg):null});
+      const solution=await solveBoundary(target,traceCfg,{onProgress,coefficientQuantum:1e-7,coreGate:traceCfg.requireMaterialCore?s=>materialAudit(s,traceCfg):null});
       const woven=sampleWeave(solution,target.sourceImage.resolution),error=maskDisagreement(target.sourceImage,woven);
       // <=1% is already within the matching allowance of any possible better
       // image fit (whose error cannot be negative). Keep the original mask.
-      if(error<=Math.min(.01,cfg.maxImageError)&&auditImageFeatures(target.sourceImage,woven,cfg.width).passed){
-        const selected=preferMatchingSolution(solution,traceCfg,{deadline:start+Math.min(10,cfg.timeLimit)*1000-400,onProgress});
+      if(error<=Math.min(.01,cfg.maxImageError)&&auditFeatureFidelity(target.sourceImage,woven,cfg).passed){
+        const selected=finalizeFittedSolution(solution,traceCfg,{startedAt:start,timeLimit:cfg.timeLimit,onProgress});
         selected.automaticSettings=traceCfg;selected.report.automatic={selected:route,attempts};selected.report.seconds=(performance.now()-start)/1000;
         return selected;
       }

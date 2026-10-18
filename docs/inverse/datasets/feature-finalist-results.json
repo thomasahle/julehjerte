@@ -1,0 +1,574 @@
+{
+  "schema": "feature-finalist-probe-results-1",
+  "status": "complete",
+  "plan": "docs/inverse/datasets/feature-finalist-plan.json",
+  "deployed": false,
+  "sourceFilesVerified": 889,
+  "rows": [
+    {
+      "id": "real-3f7b76e1a98e808f-body-1",
+      "baselineStatus": "review-required",
+      "status": "ineligible-under-current-feature-seeding-policy",
+      "arms": []
+    },
+    {
+      "id": "real-5330aa8b62176216-body-1",
+      "baselineStatus": "review-required",
+      "status": "captured",
+      "arms": [
+        {
+          "rank": 0,
+          "counts": [
+            3,
+            4
+          ],
+          "phase": 1,
+          "beforeError": 0.08062744140625,
+          "beforeFeaturesPassed": false,
+          "beforeMissing": 3,
+          "seconds": 0.7970619579999993,
+          "status": "probed",
+          "seeds": []
+        },
+        {
+          "rank": 1,
+          "counts": [
+            4,
+            4
+          ],
+          "phase": 1,
+          "beforeError": 0.078277587890625,
+          "beforeFeaturesPassed": false,
+          "beforeMissing": 2,
+          "seconds": 0.3577984159999996,
+          "status": "probed",
+          "seeds": []
+        },
+        {
+          "rank": 2,
+          "counts": [
+            6,
+            6
+          ],
+          "phase": 1,
+          "beforeError": 0.0760650634765625,
+          "beforeFeaturesPassed": false,
+          "beforeMissing": 2,
+          "seconds": 0.7208313749999997,
+          "status": "probed",
+          "seeds": [
+            {
+              "counts": [
+                6,
+                8
+              ],
+              "phase": -1,
+              "error": 0.089752197265625,
+              "colourFeaturesPassed": true,
+              "fullFeaturesPassed": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "baselineStatus": "review-required",
+      "status": "captured",
+      "arms": [
+        {
+          "rank": 0,
+          "counts": [
+            5,
+            3
+          ],
+          "phase": -1,
+          "beforeError": 0.0509033203125,
+          "beforeFeaturesPassed": false,
+          "beforeMissing": 1,
+          "seconds": 0.37685766599999987,
+          "status": "probed",
+          "seeds": [
+            {
+              "counts": [
+                5,
+                3
+              ],
+              "phase": -1,
+              "error": 0.0868988037109375,
+              "colourFeaturesPassed": true,
+              "fullFeaturesPassed": true
+            },
+            {
+              "counts": [
+                6,
+                3
+              ],
+              "phase": -1,
+              "error": 0.0897674560546875,
+              "colourFeaturesPassed": true,
+              "fullFeaturesPassed": true
+            }
+          ]
+        },
+        {
+          "rank": 1,
+          "counts": [
+            5,
+            5
+          ],
+          "phase": 1,
+          "beforeError": 0.0545196533203125,
+          "beforeFeaturesPassed": false,
+          "beforeMissing": 1,
+          "seconds": 1.0932300000000015,
+          "status": "probed",
+          "seeds": [
+            {
+              "counts": [
+                6,
+                6
+              ],
+              "phase": 1,
+              "error": 0.0993499755859375,
+              "colourFeaturesPassed": true,
+              "fullFeaturesPassed": true
+            },
+            {
+              "counts": [
+                6,
+                6
+              ],
+              "phase": -1,
+              "error": 0.1148223876953125,
+              "colourFeaturesPassed": true,
+              "fullFeaturesPassed": true
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "counts": [
+            3,
+            3
+          ],
+          "phase": -1,
+          "beforeError": 0.0760650634765625,
+          "beforeFeaturesPassed": false,
+          "beforeMissing": 1,
+          "seconds": 0.34308608300000015,
+          "status": "probed",
+          "seeds": [
+            {
+              "counts": [
+                5,
+                3
+              ],
+              "phase": -1,
+              "error": 0.0868988037109375,
+              "colourFeaturesPassed": true,
+              "fullFeaturesPassed": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "real-995899fe049540ed-body-1",
+      "baselineStatus": "review-required",
+      "status": "captured",
+      "arms": [
+        {
+          "rank": 0,
+          "counts": [
+            4,
+            4
+          ],
+          "phase": -1,
+          "beforeError": 0.083343505859375,
+          "beforeFeaturesPassed": false,
+          "beforeMissing": 7,
+          "seconds": 0.7707640410000004,
+          "status": "probed",
+          "seeds": []
+        },
+        {
+          "rank": 1,
+          "counts": [
+            4,
+            6
+          ],
+          "phase": 1,
+          "beforeError": 0.0848846435546875,
+          "beforeFeaturesPassed": false,
+          "beforeMissing": 5,
+          "seconds": 0.8246713749999999,
+          "status": "probed",
+          "seeds": []
+        },
+        {
+          "rank": 2,
+          "counts": [
+            2,
+            2
+          ],
+          "phase": -1,
+          "beforeError": 0.11663818359375,
+          "beforeFeaturesPassed": false,
+          "beforeMissing": 10,
+          "seconds": 0.5912919579999998,
+          "status": "probed",
+          "seeds": []
+        }
+      ]
+    },
+    {
+      "id": "real-1fa372c6288da69f",
+      "baselineStatus": "review-required",
+      "status": "captured",
+      "arms": [
+        {
+          "rank": 0,
+          "counts": [
+            1,
+            2
+          ],
+          "phase": 1,
+          "beforeError": 0.0970001220703125,
+          "beforeFeaturesPassed": false,
+          "beforeMissing": 5,
+          "seconds": 0.6607297500000004,
+          "status": "probed",
+          "seeds": []
+        },
+        {
+          "rank": 1,
+          "counts": [
+            2,
+            2
+          ],
+          "phase": 1,
+          "beforeError": 0.1026763916015625,
+          "beforeFeaturesPassed": false,
+          "beforeMissing": 5,
+          "seconds": 0.6401083749999998,
+          "status": "probed",
+          "seeds": []
+        },
+        {
+          "rank": 2,
+          "counts": [
+            5,
+            5
+          ],
+          "phase": 1,
+          "beforeError": 0.0762939453125,
+          "beforeFeaturesPassed": false,
+          "beforeMissing": 2,
+          "seconds": 0.6525273750000015,
+          "status": "probed",
+          "seeds": []
+        }
+      ]
+    },
+    {
+      "id": "real-202b8421f50252f2",
+      "baselineStatus": "review-required",
+      "status": "captured",
+      "arms": [
+        {
+          "rank": 0,
+          "counts": [
+            3,
+            3
+          ],
+          "phase": 1,
+          "beforeError": 0.08441162109375,
+          "beforeFeaturesPassed": false,
+          "beforeMissing": 1,
+          "seconds": 0.3343855839999997,
+          "status": "probed",
+          "seeds": []
+        },
+        {
+          "rank": 1,
+          "counts": [
+            4,
+            4
+          ],
+          "phase": 1,
+          "beforeError": 0.0754547119140625,
+          "beforeFeaturesPassed": false,
+          "beforeMissing": 2,
+          "seconds": 0.46181266700000195,
+          "status": "probed",
+          "seeds": [
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.0754547119140625,
+              "colourFeaturesPassed": true,
+              "fullFeaturesPassed": true
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "counts": [
+            4,
+            5
+          ],
+          "phase": -1,
+          "beforeError": 0.072540283203125,
+          "beforeFeaturesPassed": false,
+          "beforeMissing": 1,
+          "seconds": 0.3585733749999999,
+          "status": "probed",
+          "seeds": []
+        }
+      ]
+    },
+    {
+      "id": "real-931ac5ea86dbe082",
+      "baselineStatus": "review-required",
+      "status": "captured",
+      "arms": [
+        {
+          "rank": 0,
+          "counts": [
+            5,
+            8
+          ],
+          "phase": 1,
+          "beforeError": 0.0702972412109375,
+          "beforeFeaturesPassed": false,
+          "beforeMissing": 3,
+          "seconds": 0.5528537089999991,
+          "status": "probed",
+          "seeds": []
+        },
+        {
+          "rank": 1,
+          "counts": [
+            4,
+            8
+          ],
+          "phase": 1,
+          "beforeError": 0.08642578125,
+          "beforeFeaturesPassed": false,
+          "beforeMissing": 3,
+          "seconds": 0.5451962089999979,
+          "status": "probed",
+          "seeds": []
+        }
+      ]
+    },
+    {
+      "id": "real-962159dea653810f",
+      "baselineStatus": "checked-derived-mask",
+      "status": "captured",
+      "arms": [
+        {
+          "rank": 0,
+          "counts": [
+            4,
+            4
+          ],
+          "phase": -1,
+          "beforeError": 0.0407867431640625,
+          "beforeFeaturesPassed": true,
+          "beforeMissing": 0,
+          "status": "already-retains-features"
+        },
+        {
+          "rank": 1,
+          "counts": [
+            5,
+            5
+          ],
+          "phase": -1,
+          "beforeError": 0.05023193359375,
+          "beforeFeaturesPassed": true,
+          "beforeMissing": 0,
+          "status": "already-retains-features"
+        }
+      ]
+    },
+    {
+      "id": "real-9b47cfbdf0004f4d",
+      "baselineStatus": "checked-derived-mask",
+      "status": "captured",
+      "arms": [
+        {
+          "rank": 0,
+          "counts": [
+            3,
+            3
+          ],
+          "phase": 1,
+          "beforeError": 0.02374267578125,
+          "beforeFeaturesPassed": true,
+          "beforeMissing": 0,
+          "status": "already-retains-features"
+        },
+        {
+          "rank": 1,
+          "counts": [
+            3,
+            4
+          ],
+          "phase": -1,
+          "beforeError": 0.02239990234375,
+          "beforeFeaturesPassed": true,
+          "beforeMissing": 0,
+          "status": "already-retains-features"
+        },
+        {
+          "rank": 2,
+          "counts": [
+            4,
+            4
+          ],
+          "phase": -1,
+          "beforeError": 0.0268402099609375,
+          "beforeFeaturesPassed": true,
+          "beforeMissing": 0,
+          "status": "already-retains-features"
+        }
+      ]
+    },
+    {
+      "id": "real-c7bc99827b382da7",
+      "baselineStatus": "checked-derived-mask",
+      "status": "ineligible-under-current-feature-seeding-policy",
+      "arms": []
+    },
+    {
+      "id": "real-d6d0462384722949",
+      "baselineStatus": "review-required",
+      "status": "captured",
+      "arms": [
+        {
+          "rank": 0,
+          "counts": [
+            4,
+            4
+          ],
+          "phase": 1,
+          "beforeError": 0.09942626953125,
+          "beforeFeaturesPassed": false,
+          "beforeMissing": 6,
+          "seconds": 0.6686330409999973,
+          "status": "probed",
+          "seeds": []
+        },
+        {
+          "rank": 2,
+          "counts": [
+            3,
+            3
+          ],
+          "phase": 1,
+          "beforeError": 0.1277618408203125,
+          "beforeFeaturesPassed": false,
+          "beforeMissing": 7,
+          "seconds": 0.607314333000002,
+          "status": "probed",
+          "seeds": []
+        }
+      ]
+    },
+    {
+      "id": "real-e4baad0c914577c8",
+      "baselineStatus": "checked-derived-mask",
+      "status": "captured",
+      "arms": [
+        {
+          "rank": 0,
+          "counts": [
+            4,
+            4
+          ],
+          "phase": -1,
+          "beforeError": 0.038604736328125,
+          "beforeFeaturesPassed": true,
+          "beforeMissing": 0,
+          "status": "already-retains-features"
+        },
+        {
+          "rank": 2,
+          "counts": [
+            5,
+            5
+          ],
+          "phase": -1,
+          "beforeError": 0.053955078125,
+          "beforeFeaturesPassed": true,
+          "beforeMissing": 0,
+          "status": "already-retains-features"
+        }
+      ]
+    },
+    {
+      "id": "real-e9131a2d52b78220",
+      "baselineStatus": "checked-derived-mask",
+      "status": "captured",
+      "arms": [
+        {
+          "rank": 0,
+          "counts": [
+            4,
+            3
+          ],
+          "phase": 1,
+          "beforeError": 0.0336761474609375,
+          "beforeFeaturesPassed": true,
+          "beforeMissing": 0,
+          "status": "already-retains-features"
+        },
+        {
+          "rank": 1,
+          "counts": [
+            4,
+            4
+          ],
+          "phase": -1,
+          "beforeError": 0.030670166015625,
+          "beforeFeaturesPassed": true,
+          "beforeMissing": 0,
+          "status": "already-retains-features"
+        },
+        {
+          "rank": 2,
+          "counts": [
+            3,
+            3
+          ],
+          "phase": -1,
+          "beforeError": 0.04278564453125,
+          "beforeFeaturesPassed": true,
+          "beforeMissing": 0,
+          "status": "already-retains-features"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    "Two failed cases gain colour- and enclosure-retaining initialization seeds only from alternate existing finalists: bicycle (6,6) base gives (6,8), and flower (4,4) base retains a (4,4) seed.",
+    "Brown checker does not obtain a retained feature seed from any of its three existing bases. Do not claim this scheduling change fixes that case.",
+    "Printed floral, text and Santa masks also remain without a retained alternate. One weighted failed input is ineligible under current feature-seed policy.",
+    "All five newly checked controls either already retain every feature or are weighted and ineligible; no extra seeding would be required for them.",
+    "These are initialization diagnostics; no new valid cutting pair or final-image gain has been demonstrated."
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/feature-finalist-probe-v1/report.json": "b98973c02c1a97212ae34efa06cb3c844bd88de870a2cb90df614528deb51c51",
+    "tmp/heart-learning/feature-finalist-probe-v1/source.json": "fa37ef3f39646f3e2500a5137d386d24d67523eb0800d2c844e2571d3330e025",
+    "tmp/heart-learning/feature-finalist-probe-v1/checks.json": "15736b0a521d96fcab73c140bcb9409b14572a16bc8afacd0bda76957e2a9dae",
+    "tmp/heart-learning/feature-finalist-probe-v1/input.json": "199452b5c6339596e1cbbf552ef8788c8b38402d7549e61bb4a7c77eb983314b",
+    "tmp/heart-learning/feature-finalist-probe-v1/replay.mjs": "7f8871b2a2db7204c1e779f369bb4d1b50493a237098a56db0cd90c6125ca5a1"
+  },
+  "nextStep": "Try at most two already-generated, distinct finalist bases only after primary feature seeding returns none and sufficient refinement time remains. Test all thirteen fixed masks with unchanged ten-second budget and independent export checks."
+}

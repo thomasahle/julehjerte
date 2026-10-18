@@ -1,0 +1,174 @@
+{
+  "schema": "fixed-flower-occlusion-plan-1",
+  "status": "declared-before-fitting",
+  "question": "How much of the flower-cap photographic failure is due to cap fragments versus the gold ribbon occluding a simpler regular weave?",
+  "caseId": "real-202b8421f50252f2",
+  "inputPipeline": "tmp/heart-learning/projective-real-v1/pipeline",
+  "inputReportSha256": "68bb42139f34201f48c1523b2ec38ce06cf60741cc64c2387c2853d1eede7cbc",
+  "assets": {
+    "detection.json": {
+      "path": "real-202b8421f50252f2-fallback/detection.json",
+      "sha256": "2719a614a057aea08348554219576f9c259d3ac44c0ec1891c6ca0d0f5168a6f"
+    },
+    "source.png": {
+      "path": "real-202b8421f50252f2-fallback/source.png",
+      "sha256": "ca6166648457d824961d4bb5dca18885dcbb1fe57cb5199c7a1af75b4858457d"
+    },
+    "probability.png": {
+      "path": "real-202b8421f50252f2-fallback/probability.png",
+      "sha256": "103b9e0a53aaa27d481d0757905b379054fe2ba07ce54360334b8060d119c18b"
+    },
+    "crop.png": {
+      "path": "real-202b8421f50252f2-fallback/crop.png",
+      "sha256": "51e64117be7482eab732e21f73c999eef4cea0721fb7008af2630995466371e8"
+    },
+    "mask.png": {
+      "path": "real-202b8421f50252f2-fallback/mask.png",
+      "sha256": "a9751f4de59cbd2f151945edf1c2caa1e4f03d9d23f89f61b504ba50b1a3f575"
+    },
+    "cut_geometry.json": {
+      "path": "real-202b8421f50252f2-fallback/cut_geometry.json",
+      "sha256": "fc680ea80f936838ce31a13882f2b1aa81d4b24ee57b89f1d5e083bb2e9bea99"
+    },
+    "template_left.svg": {
+      "path": "real-202b8421f50252f2-fallback/template_left.svg",
+      "sha256": "666035848141dc5f674bfbbe38ec46aa920c41e0a4c7b08fb58573cd5e7e8d83"
+    },
+    "template_right.svg": {
+      "path": "real-202b8421f50252f2-fallback/template_right.svg",
+      "sha256": "c1afd82d1d4598c830239ce5fe97263df437e05d5fbd2fc5d898bc7d20125e91"
+    },
+    "weave_preview.svg": {
+      "path": "real-202b8421f50252f2-fallback/weave_preview.svg",
+      "sha256": "cef5c43af4f40e4bba8c9f160d2a842474b7c4b5f78fa708b0721a75ce25140a"
+    },
+    "woven.png": {
+      "path": "real-202b8421f50252f2-fallback/woven.png",
+      "sha256": "52a54144e6c78d7b8c600d8bf9e0f6e56d0ed306ac4b52ef4bc63c72e6f202b4"
+    }
+  },
+  "resolution": 400,
+  "crop": [
+    [
+      238.69208616604539,
+      275.5317746793458
+    ],
+    [
+      382.72922633095476,
+      397.54416909987435
+    ],
+    [
+      232.64248199682197,
+      539.1701035291995
+    ],
+    [
+      98.5999863831083,
+      396.7339857354864
+    ]
+  ],
+  "sourceMaskSha256": "fa1f511165074bd08d8b8ed60fdfa10604dd59c2dce6adb123ddba8afb9ad420",
+  "annotationBasis": "Visual inspection of the already fixed 400-pixel RGB crop, before any diagnostic fitting. The coarse caps region and ribbon polygons indicate uncertainty, not observed hidden paper identity or ground-truth overlap corners.",
+  "annotations": {
+    "caps": {
+      "topRows": 80,
+      "leftColumns": 60,
+      "meaning": "Coarse diagnostic removal of upper/left lobe intrusions; also removes valid border evidence, so cannot certify a better crop."
+    },
+    "ribbonPolygons": [
+      [
+        [
+          34,
+          217
+        ],
+        [
+          400,
+          228
+        ],
+        [
+          400,
+          258
+        ],
+        [
+          34,
+          249
+        ]
+      ],
+      [
+        [
+          214,
+          43
+        ],
+        [
+          252,
+          49
+        ],
+        [
+          260,
+          400
+        ],
+        [
+          223,
+          400
+        ]
+      ]
+    ]
+  },
+  "arms": [
+    "unchanged",
+    "caps-unobserved",
+    "ribbon-unobserved",
+    "caps-and-ribbon-unobserved"
+  ],
+  "configuration": {
+    "algorithm": "auto",
+    "polygonal": false,
+    "identicalSheets": false,
+    "resolution": 400,
+    "fitTolerance": 0.5,
+    "maxSpan": 15,
+    "smoothRadius": 0,
+    "snapRadius": 1.5,
+    "borderRadius": 3,
+    "gridPortals": false,
+    "neighbors": 16,
+    "connectorVariants": 2,
+    "junctionBalancePenalty": 0,
+    "gridPreference": 0,
+    "sharpPenalty": 50,
+    "acutePenalty": 30,
+    "turnPenalty": 3,
+    "maxTurn": 175,
+    "localNeighborhoodFactor": 8,
+    "roundHidden": false,
+    "timeLimit": 10,
+    "trials": 0
+  },
+  "sourceInvariant": "Every arm keeps exactly the same mask and crop. Zero observation weights only in the declared diagnostic regions; no inpainting, threshold changes or solver-driven crop movement.",
+  "evaluation": [
+    "Independently render every exported curve pair at the prepared resolution.",
+    "Report protected error and coverage as well as disagreement with ALL original classified pixels, source features and geometry/paper status.",
+    "Do not count a weighted/protected success as success on the original photograph.",
+    "Inspect all four overlays and preserve every failure.",
+    "A second exact-geometry control will distinguish available hidden-image inference from a merely lower observed error; no exact geometry is supplied to fitting."
+  ],
+  "regularConstructionQualification": "The visible gold ribbon is an added decoration/occluder, not a third material the existing two-sheet mask can model. Whether the actual flat cutting template uses exactly two cuts remains an inference to test, not supplied truth.",
+  "execution": "Wait for current full repository QA to finish; no concurrent fitting jobs. No application changes or learned-model training in this diagnostic.",
+  "syntheticControl": {
+    "construction": "Exactly straight equal-width grid, two cuts per sheet, phase +1, at 400 pixels. Paint the declared ribbon polygons as material value 1 without changing the latent clean mask.",
+    "arms": "The same four observation-weight arms as the photograph. The cap exclusion is an irrelevant-region control here; no cap corruption is added.",
+    "role": "Known-mask counterfactual, not a photorealistic training sample; hidden reference pixels and cut counts never enter fitting or selection.",
+    "score": "Report disagreement with the known clean grid independently of observed-region fit, while still retaining disagreement with the corrupted input."
+  },
+  "replaySha256": "1dafd1c1215f74ab76395e4891947f69ea8ff4c353c644ad756562721604f69d",
+  "annotationVisualReview": {
+    "image": "tmp/heart-learning/flower-occlusion-v1/annotation.png",
+    "sha256": "43ebe495499717cdcfca8d0fdf8898955871d5a6df5f03baf432ce98670a6bb6",
+    "reviewedBeforeFitting": true,
+    "finding": "Cyan polygons cover the visible gold strips and a conservative fringe. Magenta limits discard the top and left decorative-cap intrusions, together with valid border pixels. These are manually supplied diagnostic regions, not an automatic detector."
+  },
+  "routingQualification": "Observation weights use the existing weighted direct-fitting path. The unweighted arm may also try MILP; differences include the pipeline response to uncertainty, not only an isolated loss gradient.",
+  "postFitAnnotationCorrection": {
+    "reference": "docs/inverse/datasets/ribbon-coverage-plan.json",
+    "finding": "Later enlarged RGB review shows that the original vertical uncertainty polygon clips the ribbon's right edge. The claim that it conservatively covers the ribbon fringe is withdrawn. Original experiment inputs and results remain unchanged; they do not isolate a fully hidden ribbon."
+  }
+}

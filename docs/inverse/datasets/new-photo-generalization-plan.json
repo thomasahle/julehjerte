@@ -1,0 +1,152 @@
+{
+  "schema": "new-photo-generalization-plan-1",
+  "status": "declared-before-inference",
+  "scope": "Twenty source photographs, including two multiple-heart scenes and three clearly non-semicircular cap outlines. No filtering on crop, mask or fit outcomes. Additional source-group evaluation, not a guarantee against unknown pretraining overlap.",
+  "selection": {
+    "rule": "All unassigned photograph sources whose split group and near-duplicate group do not intersect any existing body annotation; one largest-resolution asset per split group, SHA tie break. Sort by SHA. Scope review happens before model inference.",
+    "candidateFiles": 25,
+    "selectedPhotos": 20,
+    "excludedBeforeInference": {
+      "real-009b06de359dbabe": "Assembly-process photograph; the two paper halves are still unassembled.",
+      "real-1031a761b9a31912": "Open looped-strip ornament; material and equivalence to the regular folded-paper model are uncertain.",
+      "real-668dcbee05542ab8": "Letterboxed repost of the orange/yellow checker already evaluated as real-e936e08ac62db19b.",
+      "real-752b34e653e50135": "Small stylized/composite image; cannot establish that this depicts a photographed woven-paper construction.",
+      "real-e1b1492e32f6cdf5": "Same NurtureStore craft tutorial/source as previously evaluated painted checker real-a414dfffbd2362ae; reserve the publisher group together."
+    },
+    "selectedIds": [
+      "real-1498fed65a8e41b7",
+      "real-1fa372c6288da69f",
+      "real-202b8421f50252f2",
+      "real-26c948c0aa94f483",
+      "real-27c86e56296f2df5",
+      "real-31ed1172998ab1c5",
+      "real-642c4cb2ef3e92dc",
+      "real-7076a4d811c096db",
+      "real-931ac5ea86dbe082",
+      "real-962159dea653810f",
+      "real-970f4be1bd64e5d7",
+      "real-9b47cfbdf0004f4d",
+      "real-c7bc99827b382da7",
+      "real-d6d0462384722949",
+      "real-df27aec172744811",
+      "real-e15ec1906fab0f9c",
+      "real-e4baad0c914577c8",
+      "real-e4f8acc92d491b5a",
+      "real-e9131a2d52b78220",
+      "real-f882e57ac79e63d3"
+    ],
+    "manifest": "docs/inverse/datasets/real-manifest.json",
+    "manifestSha256": "0f3086fca422238235cbd8d9a46d154f42d1f00b8bd1e336892b3f69331a52d1",
+    "allSourcesReservedForQA": true,
+    "knownAnnotationAssets": [
+      "real-12ce3c9180f7f317",
+      "real-2044b1d98ed6f262",
+      "real-340f5e5b0f447889",
+      "real-39f3a1ba97852876",
+      "real-3f7b76e1a98e808f",
+      "real-4066fe9f9aafb3e4",
+      "real-45744a03afddccb1",
+      "real-5330aa8b62176216",
+      "real-68d8f25d8891df62",
+      "real-710703159f609111",
+      "real-80794af7903e5d29",
+      "real-8c875dd0f298b5a4",
+      "real-990ac34431be87fe",
+      "real-995899fe049540ed",
+      "real-a414dfffbd2362ae",
+      "real-abf590088db891f9",
+      "real-b87b0b19f12724f3",
+      "real-c0cc1ce97cf5e6a6",
+      "real-c4a9ee6e2d0a4185",
+      "real-cdae5c890b6933cd",
+      "real-cf2d0fcff65d7386",
+      "real-d5b0aa8d4d2465ee",
+      "real-e936e08ac62db19b",
+      "real-f4b397c381357dfa"
+    ],
+    "sourceGroupsDisjointFromAllKnownAnnotations": true
+  },
+  "frontend": {
+    "report": "tmp/heart-learning/material-corrected-scenes-v1/candidate/report.json",
+    "reportSha256": "47b1b5e1f8a50d53152a744d00b3750b7c1e96ca0d88511662fb4e1778122a29",
+    "initialRun": "tmp/heart-learning/foreground-scene-v1/scene-trained",
+    "checkpoint": "tmp/heart-learning/material-corrected-scenes-v1/candidate/fold-7f1a81db164f/model.pt",
+    "checkpointSha256": "e7ea2e695e50a8ae72ec759042dd849e1c3c8484e1ef33dd77b96067fe2fd5ea",
+    "fold": "fold-7f1a81db164f",
+    "selectionRule": "One fixed final checkpoint with the most real training instances; lexical fold ID breaks ties. Same checkpoint for every new photograph, chosen before inference. No motif-family oracle or outcome-based choice.",
+    "realTrainIds": [
+      "real-12ce3c9180f7f317-body-1",
+      "real-39f3a1ba97852876-body-1",
+      "real-68d8f25d8891df62-body-1",
+      "real-710703159f609111-body-1",
+      "real-8c875dd0f298b5a4-body-1",
+      "real-990ac34431be87fe-body-1",
+      "real-995899fe049540ed-body-1",
+      "real-a414dfffbd2362ae-body-1",
+      "real-b87b0b19f12724f3-body-1",
+      "real-cdae5c890b6933cd-body-1",
+      "real-cf2d0fcff65d7386-body-1",
+      "real-d5b0aa8d4d2465ee-body-1",
+      "real-e936e08ac62db19b-body-1"
+    ],
+    "realTrainCount": 13,
+    "differenceFromDevelopmentReplay": "The earlier 22-photo study used family-held-out checkpoints. This new evaluation uses one fixed checkpoint, so the result is not a strict same-model extension of its 15/22 score.",
+    "input": "Full EXIF-normalized original RGB; identical continuous 256px letterbox sampler used by training. No manual ROI, corners, counts or masks.",
+    "palette": "Frozen RGB-illumination calibration using predicted foreground. Record calibration failures and retain every input in the denominator."
+  },
+  "arms": [
+    "production",
+    "frozen-learned-policy"
+  ],
+  "cropPolicy": "Previously validated single-point SAM crop, no-contrast retry only after crop rejection, then two-paper SAM crop only after both reject. Existing support gates unchanged.",
+  "fitting": "Ten-second automatic preset, binary classified mask, full source observation coverage, no saved paths or count seeds. Independent exported mask and editable geometry replay.",
+  "evaluation": [
+    "Lock selected sources and the fixed checkpoint before inference; source bytes and policies must remain unchanged during the experiment.",
+    "Inspect all sources, prompts, segmentations, proposed corners and exported weaves. Report crop and source-classification failures separately from curve-fitting failures.",
+    "Count full original photograph inputs, including incomplete localization, printed papers, multi-heart scenes and nonstandard outer silhouettes. Keep pre-inference scope exclusions separately visible.",
+    "Mask agreement and geometry checks do not certify underlying paper identity or unseen physical cutting paths. No global accuracy claim from self-derived masks.",
+    "No tuning on this batch before the frozen results and visual audit are saved; any subsequent changes require a separate experiment.",
+    "No deployment, retraining or browser-inference speed claim. MobileSAM pretraining overlap with public images is unknown."
+  ],
+  "catalogCorrection": {
+    "all1034SourceHashesUnchanged": true,
+    "previousCounts": {
+      "uniqueFileHashes": 1034,
+      "kinds": {
+        "photo": 402,
+        "photo-multiple": 104,
+        "mixed-photo-template": 41,
+        "photo-collage": 20,
+        "template-render": 202,
+        "unrelated": 122,
+        "photo-process": 92,
+        "photo-other-material": 49,
+        "unknown": 2
+      },
+      "sourcePages": 134,
+      "visuallyReviewedFiles": 1034,
+      "reviewedPhotoFileHashes": 567,
+      "photoNearDuplicateGroups": 455,
+      "qaReservedFiles": 476
+    },
+    "currentCounts": {
+      "uniqueFileHashes": 1034,
+      "kinds": {
+        "photo": 397,
+        "photo-multiple": 106,
+        "mixed-photo-template": 41,
+        "photo-collage": 20,
+        "template-render": 202,
+        "unrelated": 122,
+        "photo-process": 93,
+        "photo-other-material": 49,
+        "unknown": 4
+      },
+      "sourcePages": 134,
+      "visuallyReviewedFiles": 1034,
+      "reviewedPhotoFileHashes": 564,
+      "photoNearDuplicateGroups": 451,
+      "qaReservedFiles": 524
+    }
+  }
+}

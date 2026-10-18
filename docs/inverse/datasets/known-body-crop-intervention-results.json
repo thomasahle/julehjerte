@@ -1,0 +1,293 @@
+{
+  "schema": "known-body-crop-intervention-results-1",
+  "status": "complete-offline-diagnostic",
+  "training": false,
+  "deployed": false,
+  "oracleDiagnostic": true,
+  "scope": "Oracle diagnostic using partial manually reviewed body/background labels. Not a model prediction or a reconstruction success benchmark. Known labels alter only the explicitly named body-field arms; unknown pixels and every material prediction stay unchanged.",
+  "sourceFilesVerified": 99,
+  "unchangedControlReproducedExactly": true,
+  "summary": {
+    "unchanged": {
+      "count": 3,
+      "ids": [
+        "real-c4a9ee6e2d0a4185-body-1",
+        "real-cf2d0fcff65d7386-body-1",
+        "real-d5b0aa8d4d2465ee-body-1"
+      ],
+      "gainsAgainstUnchanged": [],
+      "lossesAgainstUnchanged": [],
+      "reasons": {
+        "The two-colour foreground does not clearly support both heart lobes and lower edges.": 12,
+        "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 7
+      }
+    },
+    "known-background": {
+      "count": 13,
+      "ids": [
+        "real-12ce3c9180f7f317-body-1",
+        "real-39f3a1ba97852876-body-1",
+        "real-80794af7903e5d29-body-1",
+        "real-8c875dd0f298b5a4-body-1",
+        "real-990ac34431be87fe-body-1",
+        "real-a414dfffbd2362ae-body-1",
+        "real-abf590088db891f9-body-1",
+        "real-b87b0b19f12724f3-body-1",
+        "real-c0cc1ce97cf5e6a6-body-1",
+        "real-c4a9ee6e2d0a4185-body-1",
+        "real-cf2d0fcff65d7386-body-1",
+        "real-d5b0aa8d4d2465ee-body-1",
+        "real-e936e08ac62db19b-body-1"
+      ],
+      "gainsAgainstUnchanged": [
+        "real-12ce3c9180f7f317-body-1",
+        "real-39f3a1ba97852876-body-1",
+        "real-80794af7903e5d29-body-1",
+        "real-8c875dd0f298b5a4-body-1",
+        "real-990ac34431be87fe-body-1",
+        "real-a414dfffbd2362ae-body-1",
+        "real-abf590088db891f9-body-1",
+        "real-b87b0b19f12724f3-body-1",
+        "real-c0cc1ce97cf5e6a6-body-1",
+        "real-e936e08ac62db19b-body-1"
+      ],
+      "lossesAgainstUnchanged": [],
+      "reasons": {
+        "The two-colour foreground does not clearly support both heart lobes and lower edges.": 6,
+        "No nondegenerate heart-shape fit": 1,
+        "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 2
+      }
+    },
+    "known-paper": {
+      "count": 7,
+      "ids": [
+        "real-2044b1d98ed6f262-body-1",
+        "real-45744a03afddccb1-body-1",
+        "real-5330aa8b62176216-body-1",
+        "real-a414dfffbd2362ae-body-1",
+        "real-abf590088db891f9-body-1",
+        "real-cf2d0fcff65d7386-body-1",
+        "real-d5b0aa8d4d2465ee-body-1"
+      ],
+      "gainsAgainstUnchanged": [
+        "real-2044b1d98ed6f262-body-1",
+        "real-45744a03afddccb1-body-1",
+        "real-5330aa8b62176216-body-1",
+        "real-a414dfffbd2362ae-body-1",
+        "real-abf590088db891f9-body-1"
+      ],
+      "lossesAgainstUnchanged": [
+        "real-c4a9ee6e2d0a4185-body-1"
+      ],
+      "reasons": {
+        "The two-colour foreground does not clearly support both heart lobes and lower edges.": 9,
+        "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 6
+      }
+    },
+    "known-body": {
+      "count": 16,
+      "ids": [
+        "real-12ce3c9180f7f317-body-1",
+        "real-2044b1d98ed6f262-body-1",
+        "real-39f3a1ba97852876-body-1",
+        "real-45744a03afddccb1-body-1",
+        "real-5330aa8b62176216-body-1",
+        "real-80794af7903e5d29-body-1",
+        "real-8c875dd0f298b5a4-body-1",
+        "real-990ac34431be87fe-body-1",
+        "real-a414dfffbd2362ae-body-1",
+        "real-abf590088db891f9-body-1",
+        "real-b87b0b19f12724f3-body-1",
+        "real-c0cc1ce97cf5e6a6-body-1",
+        "real-cdae5c890b6933cd-body-1",
+        "real-cf2d0fcff65d7386-body-1",
+        "real-d5b0aa8d4d2465ee-body-1",
+        "real-e936e08ac62db19b-body-1"
+      ],
+      "gainsAgainstUnchanged": [
+        "real-12ce3c9180f7f317-body-1",
+        "real-2044b1d98ed6f262-body-1",
+        "real-39f3a1ba97852876-body-1",
+        "real-45744a03afddccb1-body-1",
+        "real-5330aa8b62176216-body-1",
+        "real-80794af7903e5d29-body-1",
+        "real-8c875dd0f298b5a4-body-1",
+        "real-990ac34431be87fe-body-1",
+        "real-a414dfffbd2362ae-body-1",
+        "real-abf590088db891f9-body-1",
+        "real-b87b0b19f12724f3-body-1",
+        "real-c0cc1ce97cf5e6a6-body-1",
+        "real-cdae5c890b6933cd-body-1",
+        "real-e936e08ac62db19b-body-1"
+      ],
+      "lossesAgainstUnchanged": [
+        "real-c4a9ee6e2d0a4185-body-1"
+      ],
+      "reasons": {
+        "The two-colour foreground does not clearly support both heart lobes and lower edges.": 4,
+        "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 2
+      }
+    }
+  },
+  "visualFindings": [
+    "All six comparison panels were inspected. Background-only controls remove attached scene clutter and recover plausible body/overlap proposals for ten previously rejected sources, including fish, ship and several checkers.",
+    "Paper-only controls recover the boar, rabbit and bicycle but lose the candle. The candle still fails left-lobe support after both interventions despite strong lower edges and low cap-colour losses.",
+    "With both interventions, six failures remain: protruding plane, rotated green/gold star, blue/gold hanging checker, hand-held red/green checker, floral/striped paper, and candle. These mix outline geometry, missing lower-edge fits and remaining material evidence; they are not all segmentation failures.",
+    "The floral/striped case has adequate initial lobe and lower-edge support but cap-colour loss 0.3167 exceeds the unchanged 0.30 bound. Two-color material identity remains a separate limitation.",
+    "Accepted model outlines agree with at least 93.9% known-region body IoU. Partial labels and plausible outlines do not establish exact overlap corners or successful templates."
+  ],
+  "panelsReviewed": 6,
+  "remainingKnownBodyFailures": [
+    {
+      "id": "real-340f5e5b0f447889-body-1",
+      "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "initialEvidence": {
+        "lowerEdgeSupport": [
+          1,
+          0.7844827586206896
+        ],
+        "lobeOutlineSupport": [
+          0.8888888888888888,
+          0.5555555555555556
+        ],
+        "capColourLoss": [
+          0.020154894645967432,
+          0.4377618816216321
+        ]
+      }
+    },
+    {
+      "id": "real-3f7b76e1a98e808f-body-1",
+      "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+      "initialEvidence": {
+        "lowerEdgeSupport": null,
+        "lobeOutlineSupport": null,
+        "capColourLoss": null
+      }
+    },
+    {
+      "id": "real-68d8f25d8891df62-body-1",
+      "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "initialEvidence": {
+        "lowerEdgeSupport": [
+          0.9690721649484536,
+          0.5051546391752577
+        ],
+        "lobeOutlineSupport": [
+          0.19444444444444445,
+          0.7222222222222222
+        ],
+        "capColourLoss": [
+          0.014460801882366548,
+          0.04372981376348209
+        ]
+      }
+    },
+    {
+      "id": "real-710703159f609111-body-1",
+      "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+      "initialEvidence": {
+        "lowerEdgeSupport": null,
+        "lobeOutlineSupport": null,
+        "capColourLoss": null
+      }
+    },
+    {
+      "id": "real-995899fe049540ed-body-1",
+      "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "initialEvidence": {
+        "lowerEdgeSupport": [
+          0.9878787878787879,
+          0.9696969696969697
+        ],
+        "lobeOutlineSupport": [
+          0.8888888888888888,
+          0.6944444444444444
+        ],
+        "capColourLoss": [
+          0.15624131940555797,
+          0.3167228829839304
+        ]
+      }
+    },
+    {
+      "id": "real-c4a9ee6e2d0a4185-body-1",
+      "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "initialEvidence": {
+        "lowerEdgeSupport": [
+          0.9361702127659575,
+          0.9929078014184397
+        ],
+        "lobeOutlineSupport": [
+          0.5,
+          0.8611111111111112
+        ],
+        "capColourLoss": [
+          0.0016206352145117539,
+          0.012646697004307058
+        ]
+      }
+    }
+  ],
+  "thresholdSensitivity": [
+    {
+      "threshold": 0.25,
+      "backgroundFalsePositive": 0.16103203181479145,
+      "paperFalseNegative": 0.019204370969955187,
+      "knownBodyIoU": 0.7356192833138281
+    },
+    {
+      "threshold": 0.5,
+      "backgroundFalsePositive": 0.08871456273908904,
+      "paperFalseNegative": 0.032322961304116826,
+      "knownBodyIoU": 0.7985058069087312
+    },
+    {
+      "threshold": 0.65,
+      "backgroundFalsePositive": 0.06343469459371742,
+      "paperFalseNegative": 0.04308822071472772,
+      "knownBodyIoU": 0.8231698206372017
+    },
+    {
+      "threshold": 0.75,
+      "backgroundFalsePositive": 0.04791447907161104,
+      "paperFalseNegative": 0.05494729642162089,
+      "knownBodyIoU": 0.8366283845852768
+    },
+    {
+      "threshold": 0.85,
+      "backgroundFalsePositive": 0.03280360559702495,
+      "paperFalseNegative": 0.07481300892715295,
+      "knownBodyIoU": 0.8437195402893582
+    },
+    {
+      "threshold": 0.95,
+      "backgroundFalsePositive": 0.01570061727220333,
+      "paperFalseNegative": 0.13408411046627802,
+      "knownBodyIoU": 0.8206528552282563
+    }
+  ],
+  "nextExperiment": "Complete and rejected: docs/inverse/datasets/body-threshold-crop-results.json. A fixed .75 foreground offset improves partial-label body IoU but reduces crop proposals from 3/22 to 2/22.",
+  "limitations": [
+    "The correction uses independently annotated body/background pixels. These counts are not model accuracy or template reconstruction success.",
+    "Unknown pixels retain their original predictions; this is not a perfect-silhouette oracle.",
+    "No fitting or editable-template replay was run in this control study.",
+    "Only the initial or selected orientation evidence is stored in the detailed support summary. Failed orientation attempts are not all individually diagnosed."
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/known-body-crop-intervention-v1/source.json": "c61fc19001006874bc9e94ade2e93e384c3ff1828bf84193150abecfb332c658",
+    "tmp/heart-learning/known-body-crop-intervention-v1/state.json": "feab54e2c95cde32454994e886741520c6477641c8fed1d0ab2e3d73b429bf60",
+    "tmp/heart-learning/known-body-crop-intervention-v1/checks.json": "f7e0db5eedf7d9b2b01c0983b3c2ce5486d8b59d2bcd51b8de29044927c5aa11",
+    "tmp/heart-learning/known-body-crop-intervention-v1/probe/manifest.json": "b656440db7cd09c1e4b1e8f4875c1e4721b0313adf470248951aee7516c26c20",
+    "tmp/heart-learning/known-body-crop-intervention-v1/results/report.json": "d8d9224c02a52e9c5e5b4186a9b1d3a22fc603b346bd38a374aa69143128795d",
+    "tmp/heart-learning/known-body-crop-intervention-v1/review.json": "cc263aecaefeed72b51ff7df096f2ae5ac783c5092b1f4599477d6618726b0ed",
+    "tmp/heart-learning/known-body-crop-intervention-v1/review.py": "347c528eaecae8f7a64971aea072a9c4761239309a81d2ff3d2911d2147ded0a",
+    "tmp/heart-learning/known-body-crop-intervention-v1/threshold-sensitivity.json": "55cb05c472db5a37d93c5182cd63fbef80b810c29510e8c0344fc07929975f83",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/known-body-crop-intervention-v1/comparison-1.png": "4f77591476eb246cc36466e62d91938403cc1c31f5580752269bdd5f75dedbb2",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/known-body-crop-intervention-v1/comparison-2.png": "3c96b3251799c63c019af30f2c9e3058d99a58cbe2cea23f91a3bdadf1083178",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/known-body-crop-intervention-v1/comparison-3.png": "767ac6899e01f8b24aeb52abbf367edfafb929fa18c82fa3ba7e18a98eb4184a",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/known-body-crop-intervention-v1/comparison-4.png": "8cf4bb0bb013d47625e2ddc25fd4029bb086635e672f12ea2222534adcfe9c37",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/known-body-crop-intervention-v1/comparison-5.png": "b5601923240b00503e60633d07a4d69f6ca2272f487e0b2e3d75a0a71e1ac6fa",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/known-body-crop-intervention-v1/comparison-6.png": "4524894a221c46d86a9bc0558ce9266ceea5265153cda4d3bd3d1b973fd754aa"
+  }
+}

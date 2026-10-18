@@ -1,0 +1,115 @@
+{
+  "schema": "locator-support-consistency-1",
+  "method": "Paired frozen scene-model fields through unchanged locator fits. One variant uses the final original-width tolerance also for selecting/intermediately validating rotated fits. All shared orientation hypotheses are replayed without the app two-second cutoff; this is diagnostic, not a public-crop benchmark.",
+  "photos": 6,
+  "pairedOrientations": 120,
+  "detectorRuns": 240,
+  "optimizerCandidatesIdentical": true,
+  "rows": [
+    {
+      "id": "real-cf2d0fcff65d7386-body-1",
+      "orientations": 20,
+      "currentSupported": [
+        0,
+        13.943116623210187
+      ],
+      "consistentSupported": [
+        0,
+        13.943116623210187
+      ],
+      "changedSelections": [],
+      "changedAcceptances": []
+    },
+    {
+      "id": "real-990ac34431be87fe-body-1",
+      "orientations": 20,
+      "currentSupported": [
+        2.8139760995336474
+      ],
+      "consistentSupported": [
+        2.8139760995336474
+      ],
+      "changedSelections": [],
+      "changedAcceptances": []
+    },
+    {
+      "id": "real-2044b1d98ed6f262-body-1",
+      "orientations": 20,
+      "currentSupported": [],
+      "consistentSupported": [],
+      "changedSelections": [],
+      "changedAcceptances": []
+    },
+    {
+      "id": "real-45744a03afddccb1-body-1",
+      "orientations": 20,
+      "currentSupported": [],
+      "consistentSupported": [],
+      "changedSelections": [],
+      "changedAcceptances": []
+    },
+    {
+      "id": "real-4066fe9f9aafb3e4-body-1",
+      "orientations": 20,
+      "currentSupported": [],
+      "consistentSupported": [],
+      "changedSelections": [],
+      "changedAcceptances": []
+    },
+    {
+      "id": "real-cdae5c890b6933cd-body-1",
+      "orientations": 20,
+      "currentSupported": [],
+      "consistentSupported": [],
+      "changedSelections": [],
+      "changedAcceptances": []
+    }
+  ],
+  "sourceHashes": {
+    "static/inverse/locator/anchored.js": "92f1ffb68bac38b1bc36f4209820b46200cfa7e6dcfbb746ed94f33beddac536",
+    "static/inverse/locator/background.js": "03d1c9b8f8237a97a7e8ed53d1dfa5117d1db079ba4162cac7117a8761f3441f",
+    "static/inverse/locator/fields.js": "569c2235139acdc3c22f1fee94158ae59406b682e7ef16e822de215fd94b36ea",
+    "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+    "static/inverse/locator/interior-palette.js": "6322efaa9772d488992a40da5b01091b0e71826d30c91fba5976c5b285e027bc",
+    "static/inverse/locator/locator.js": "bb745954e2fa2b59abf8be98ded36b75b134295363f913dab04d3a4ad1c6a419",
+    "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+    "static/inverse/locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+    "static/inverse/locator/palette.js": "4a373e0a911d8f8d2cdda42468c05cc52cb33b912a8990775f9db651cfc99158",
+    "static/inverse/core/crop.js": "03552409b48975702527fb365eea6841cb441a2be26637a7d44a85aa8ea763ff",
+    "scripts/inverse/learning/foreground-crop.mjs": "dd24a72deea6eba072d0162ed5da553e8d496cf61a98ed1ce0e1b02f6c83d170",
+    "tmp/heart-learning/locator-support-consistency-v1/probe.mjs": "072eb09284b6648f1309b82357b2c8b90fca3d591594e4c22d1da3e841dad336",
+    "tmp/heart-learning/locator-support-consistency-v1/collect.py": "2140d948d840543b51e9c4f8c40cff8140d6a4a70f34ce490e2e1846e981af2d"
+  },
+  "probeManifest": {
+    "path": "tmp/heart-learning/real-supplement-diagnostic-v1/models/probe-scene-trained/manifest.json",
+    "sha256": "204e0fc9d0abde8285ec4f1b6dbda444dd4a9d150d0bdb4cd5e17bc1fd0dea43"
+  },
+  "artifactLedger": [
+    {
+      "path": "tmp/heart-learning/locator-support-consistency-v1/collect.py",
+      "bytes": 2973,
+      "sha256": "2140d948d840543b51e9c4f8c40cff8140d6a4a70f34ce490e2e1846e981af2d"
+    },
+    {
+      "path": "tmp/heart-learning/locator-support-consistency-v1/probe.log",
+      "bytes": 425,
+      "sha256": "e141f090fd6a69b8c4119ff46f12b7e5d1085fccbfb8d2ead2eb73072c0c341c"
+    },
+    {
+      "path": "tmp/heart-learning/locator-support-consistency-v1/probe.mjs",
+      "bytes": 5886,
+      "sha256": "072eb09284b6648f1309b82357b2c8b90fca3d591594e4c22d1da3e841dad336"
+    },
+    {
+      "path": "tmp/heart-learning/locator-support-consistency-v1/results/report.json",
+      "bytes": 989958,
+      "sha256": "51c545faf7c9870e2d6610d8b87a0bed390b9ecc259266126817655b09edf5ea"
+    }
+  ],
+  "conclusion": "The inconsistent width-based support tolerance did not change candidate selection or crop acceptance on these six frozen fields. It is not an observed cause of their four missed crops.",
+  "limitations": [
+    "Inspected development photographs only; not an exhaustive locator proof.",
+    "All shared orientation hypotheses were tested without the app two-second cutoff.",
+    "No neural training, public cropper change, full reconstruction replay or claimed new recovery."
+  ]
+}

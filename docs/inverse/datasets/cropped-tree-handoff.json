@@ -1,0 +1,928 @@
+{
+  "schema": 1,
+  "status": "paired_repair_improves_tree_integration_in_progress",
+  "runtimeRevision": "09c0461",
+  "source": {
+    "fixture": "scripts/inverse/fixtures/browser-group-tree.json",
+    "maskSha256": "5a60916399cc8036f9a416c3229b971efc28790636f620e765cc10f803d80d5f",
+    "resolution": 400,
+    "scope": "Fixed prepared mask from a real browser upload. No crop or photograph is changed during these solves; this does not certify that the original crop contains every photographed detail."
+  },
+  "observed": {
+    "borderSeed": {
+      "radiiMm": [
+        3,
+        3,
+        3,
+        7
+      ],
+      "changedSide": 3,
+      "transitionsBefore": [
+        3,
+        3,
+        3,
+        1
+      ],
+      "transitionsAfter": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "changedPixels": 3762,
+      "changeFraction": 0.0235125,
+      "initializationOnly": true,
+      "traceImageError": 0.0380125
+    },
+    "firstCandidateImageError": 0.0380125,
+    "repairRejection": "initial_image",
+    "maximumAcceptedImageError": 0.03,
+    "geometry": {
+      "passed": false,
+      "issues": [
+        {
+          "type": "short_self_clearance",
+          "family": 0,
+          "slit": 1,
+          "curves": [
+            5,
+            6
+          ],
+          "parameters": [
+            0.6875,
+            0.25494410108900534
+          ],
+          "points": [
+            [
+              33.171875,
+              47.9375
+            ],
+            [
+              34.65506711218816,
+              47.74287785847711
+            ]
+          ],
+          "distanceUpper": 1.4959066212929693,
+          "required": 1.5,
+          "arcSeparation": 9.220805600783033,
+          "stationary": false,
+          "totalTurning": 186.39484744863933,
+          "edgeChain": [
+            148,
+            52
+          ]
+        },
+        {
+          "type": "short_self_clearance",
+          "family": 0,
+          "slit": 1,
+          "curves": [
+            6,
+            8
+          ],
+          "parameters": [
+            0.9998729590819408,
+            0.22662651687726817
+          ],
+          "points": [
+            [
+              34.500064200211,
+              34.002088566214574
+            ],
+            [
+              34.43978921360566,
+              32.503554157175024
+            ]
+          ],
+          "distanceUpper": 1.4997461282116342,
+          "required": 1.5,
+          "arcSeparation": 3.000000000000006,
+          "stationary": false,
+          "totalTurning": 199.28899705558752,
+          "edgeChain": [
+            52,
+            53,
+            123
+          ]
+        }
+      ],
+      "finalGeometry": true,
+      "editorClearanceRequired": 1.5,
+      "nominalWidthRequired": 2.50501002004008,
+      "minimumInterSlitDistanceLower": 3.3154160160315835,
+      "minimumOuterSideClearance": 6.5,
+      "boundaryParityMatches": true,
+      "forwardSampleMismatchPixels": null,
+      "forwardBoundaryAmbiguousPixels": 0,
+      "forwardSampleResolution": 101,
+      "geometryTolerance": 0.01,
+      "sharedCurvesStoredOnce": true,
+      "physicalAssemblyTested": false,
+      "limitations": [
+        "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+        "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+        "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+        "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+      ]
+    },
+    "repairSeconds": 0.010315625000000182,
+    "solverHistory": [
+      {
+        "round": 1,
+        "status": 16,
+        "budgetSeconds": 4.574505112681805,
+        "solveSeconds": 1.6665200830000004,
+        "elapsedSeconds": 1.680505458,
+        "objective": 3720.8789971,
+        "selfNeckChains": 2,
+        "shortReturnChains": 2
+      },
+      {
+        "round": 2,
+        "status": 16,
+        "budgetSeconds": 2.8155264876818045,
+        "solveSeconds": 1.267943792,
+        "elapsedSeconds": 3.0409249999999997,
+        "objective": 3378.1726572,
+        "selfNeckChains": 4,
+        "shortReturnChains": 2
+      },
+      {
+        "round": 3,
+        "status": 16,
+        "budgetSeconds": 1.524945279681805,
+        "solveSeconds": 0.5890017499999994,
+        "elapsedSeconds": 3.652564666,
+        "objective": 3251.4236487000003,
+        "selfNeckChains": 8,
+        "shortReturnChains": 4
+      },
+      {
+        "round": 4,
+        "status": 13,
+        "budgetSeconds": 0.9116598216818046,
+        "solveSeconds": 0.9131962499999999,
+        "elapsedSeconds": 4.590049416
+      }
+    ]
+  },
+  "rootCause": "The border-seed generator admits this provisional trace at 3.80125% error under its 5% initialization limit. The continuous repair then rejects the first near-valid routing against the final 3% image limit before taking a gradient step. Later MILP rounds retain that visible trace while searching different hidden routing and can exhaust the phase.",
+  "hypothesis": "Use the same bounded provisional image allowance for entry into continuous repair, then retain the existing final image, feature, geometry, paper and caller-deadline checks. This tests whether coarse routing followed by original-mask refinement recovers the case.",
+  "qualification": "Not an established repair or an explanation of every tree failure. The initial feature gate must also pass; a later curve fit may fail its unchanged final constraints. Source-border reinterpretation contributes to the initial mismatch, but its complete division into trace and border effects is not measured.",
+  "experiment": {
+    "root": "tmp/heart-learning/provisional-routing-repair-v1",
+    "variants": [
+      "baseline",
+      "provisional"
+    ],
+    "cases": [
+      "cropped-tree",
+      "synthetic-control",
+      "frozen",
+      "y-plus-1"
+    ],
+    "rounds": 2,
+    "order": "AB/BA, fresh process per fit, ten-second search request",
+    "finalLimitUnchanged": true,
+    "status": "complete",
+    "retainedRejectedRoutes": true,
+    "sourceFilesVerified": 219,
+    "checks": [
+      {
+        "round": 0,
+        "case": "cropped-tree",
+        "variant": "baseline",
+        "exitCode": 0,
+        "seconds": 9.060314499999999
+      },
+      {
+        "round": 0,
+        "case": "cropped-tree",
+        "variant": "provisional",
+        "exitCode": 0,
+        "seconds": 9.09356425
+      },
+      {
+        "round": 0,
+        "case": "synthetic-control",
+        "variant": "baseline",
+        "exitCode": 0,
+        "seconds": 9.534373250000002
+      },
+      {
+        "round": 0,
+        "case": "synthetic-control",
+        "variant": "provisional",
+        "exitCode": 0,
+        "seconds": 9.564602250000004
+      },
+      {
+        "round": 0,
+        "case": "frozen",
+        "variant": "baseline",
+        "exitCode": 0,
+        "seconds": 9.625152291
+      },
+      {
+        "round": 0,
+        "case": "frozen",
+        "variant": "provisional",
+        "exitCode": 0,
+        "seconds": 9.696755750000001
+      },
+      {
+        "round": 0,
+        "case": "y-plus-1",
+        "variant": "baseline",
+        "exitCode": 0,
+        "seconds": 9.311472957999996
+      },
+      {
+        "round": 0,
+        "case": "y-plus-1",
+        "variant": "provisional",
+        "exitCode": 0,
+        "seconds": 9.10066429199999
+      },
+      {
+        "round": 1,
+        "case": "cropped-tree",
+        "variant": "provisional",
+        "exitCode": 0,
+        "seconds": 9.405671999999996
+      },
+      {
+        "round": 1,
+        "case": "cropped-tree",
+        "variant": "baseline",
+        "exitCode": 0,
+        "seconds": 9.215700499999997
+      },
+      {
+        "round": 1,
+        "case": "synthetic-control",
+        "variant": "provisional",
+        "exitCode": 0,
+        "seconds": 9.575996125000003
+      },
+      {
+        "round": 1,
+        "case": "synthetic-control",
+        "variant": "baseline",
+        "exitCode": 0,
+        "seconds": 9.608017042
+      },
+      {
+        "round": 1,
+        "case": "frozen",
+        "variant": "provisional",
+        "exitCode": 0,
+        "seconds": 9.747876458000007
+      },
+      {
+        "round": 1,
+        "case": "frozen",
+        "variant": "baseline",
+        "exitCode": 0,
+        "seconds": 9.633013375000019
+      },
+      {
+        "round": 1,
+        "case": "y-plus-1",
+        "variant": "provisional",
+        "exitCode": 0,
+        "seconds": 9.223109917000016
+      },
+      {
+        "round": 1,
+        "case": "y-plus-1",
+        "variant": "baseline",
+        "exitCode": 0,
+        "seconds": 8.966727332999994
+      }
+    ],
+    "rows": [
+      {
+        "run": "0-cropped-tree-baseline",
+        "variant": "baseline",
+        "id": "cropped-tree",
+        "milliseconds": 8335.093375,
+        "maskSha256": "5a60916399cc8036f9a416c3229b971efc28790636f620e765cc10f803d80d5f",
+        "geometrySha256": "0dab051bff4d7d82056f059c74d30810b5e789e3e977f468d26ef13692b49f51",
+        "templateChecks": false,
+        "geometryPassed": true,
+        "paper": "uncertain",
+        "renders": [
+          {
+            "resolution": 400,
+            "error": 0.0788875,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0792671875,
+            "featuresPassed": true
+          }
+        ],
+        "repairs": [
+          {
+            "accepted": false,
+            "reason": "initial_image",
+            "initialImageError": 0.0380125,
+            "maximumInitialImageError": null,
+            "imageError": null,
+            "steps": null,
+            "seconds": 0.009926249999999527
+          }
+        ]
+      },
+      {
+        "run": "0-cropped-tree-provisional",
+        "variant": "provisional",
+        "id": "cropped-tree",
+        "milliseconds": 8392.492375,
+        "maskSha256": "5a60916399cc8036f9a416c3229b971efc28790636f620e765cc10f803d80d5f",
+        "geometrySha256": "4cf357dc283cba307b85af78370755f6dccf11059bd4e8a55c0ef119fb2a7921",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 400,
+            "error": 0.0227625,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0242859375,
+            "featuresPassed": true
+          }
+        ],
+        "repairs": [
+          {
+            "accepted": true,
+            "reason": null,
+            "initialImageError": 0.0380125,
+            "maximumInitialImageError": 0.05,
+            "imageError": 0.0241,
+            "steps": 125,
+            "seconds": 1.6705915830000004
+          }
+        ]
+      },
+      {
+        "run": "0-frozen-baseline",
+        "variant": "baseline",
+        "id": "frozen",
+        "milliseconds": 9093.478,
+        "maskSha256": "a8982a2283b5456498b52de1ec512872810276a52fc944e40acf550a4265ddfc",
+        "geometrySha256": "3178526ec28ef9c1f8efb14d6445bf51ec69ee8a3fee04950effd9e5879d8e39",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 250,
+            "error": 0.006,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 500,
+            "error": 0.009516,
+            "featuresPassed": true
+          }
+        ],
+        "repairs": [
+          {
+            "accepted": true,
+            "reason": null,
+            "initialImageError": 0.018592,
+            "maximumInitialImageError": null,
+            "imageError": 0.007984,
+            "steps": 125,
+            "seconds": 1.656299167
+          }
+        ]
+      },
+      {
+        "run": "0-frozen-provisional",
+        "variant": "provisional",
+        "id": "frozen",
+        "milliseconds": 9133.563625,
+        "maskSha256": "a8982a2283b5456498b52de1ec512872810276a52fc944e40acf550a4265ddfc",
+        "geometrySha256": "3178526ec28ef9c1f8efb14d6445bf51ec69ee8a3fee04950effd9e5879d8e39",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 250,
+            "error": 0.006,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 500,
+            "error": 0.009516,
+            "featuresPassed": true
+          }
+        ],
+        "repairs": [
+          {
+            "accepted": true,
+            "reason": null,
+            "initialImageError": 0.018592,
+            "maximumInitialImageError": 0.05,
+            "imageError": 0.007984,
+            "steps": 160,
+            "seconds": 1.6150509590000002
+          }
+        ]
+      },
+      {
+        "run": "0-synthetic-control-baseline",
+        "variant": "baseline",
+        "id": "synthetic-control",
+        "milliseconds": 9015.813125,
+        "maskSha256": "9d4accdee263a24380ff50f12f1739f29044b582e057c2835fe1b3461a6e62d3",
+        "geometrySha256": "8fad6042208af3ad4b1cbc5f70d6603647f257adf6d09ffe8bf28376152ac8c8",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 250,
+            "error": 0.016064,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 500,
+            "error": 0.01728,
+            "featuresPassed": true
+          }
+        ],
+        "repairs": [
+          {
+            "accepted": true,
+            "reason": null,
+            "initialImageError": 0.016304,
+            "maximumInitialImageError": null,
+            "imageError": 0.016304,
+            "steps": 5,
+            "seconds": 0.791587708
+          }
+        ]
+      },
+      {
+        "run": "0-synthetic-control-provisional",
+        "variant": "provisional",
+        "id": "synthetic-control",
+        "milliseconds": 9056.970500000001,
+        "maskSha256": "9d4accdee263a24380ff50f12f1739f29044b582e057c2835fe1b3461a6e62d3",
+        "geometrySha256": "8fad6042208af3ad4b1cbc5f70d6603647f257adf6d09ffe8bf28376152ac8c8",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 250,
+            "error": 0.016064,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 500,
+            "error": 0.01728,
+            "featuresPassed": true
+          }
+        ],
+        "repairs": [
+          {
+            "accepted": true,
+            "reason": null,
+            "initialImageError": 0.016304,
+            "maximumInitialImageError": 0.05,
+            "imageError": 0.016304,
+            "steps": 5,
+            "seconds": 0.7081688749999994
+          }
+        ]
+      },
+      {
+        "run": "0-y-plus-1-baseline",
+        "variant": "baseline",
+        "id": "y-plus-1",
+        "milliseconds": 8728.84625,
+        "maskSha256": "69d731a527592afab42c30f570d54e70c3a9d874837ded7fbfe75e9530295412",
+        "geometrySha256": "a81039366953d57ed44f8e865aeb1915f17af67816e4bf1e8d9c9917000d92da",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 250,
+            "error": 0.004736,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 500,
+            "error": 0.007908,
+            "featuresPassed": true
+          }
+        ],
+        "repairs": []
+      },
+      {
+        "run": "0-y-plus-1-provisional",
+        "variant": "provisional",
+        "id": "y-plus-1",
+        "milliseconds": 8582.920458,
+        "maskSha256": "69d731a527592afab42c30f570d54e70c3a9d874837ded7fbfe75e9530295412",
+        "geometrySha256": "a81039366953d57ed44f8e865aeb1915f17af67816e4bf1e8d9c9917000d92da",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 250,
+            "error": 0.004736,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 500,
+            "error": 0.007908,
+            "featuresPassed": true
+          }
+        ],
+        "repairs": []
+      },
+      {
+        "run": "1-cropped-tree-baseline",
+        "variant": "baseline",
+        "id": "cropped-tree",
+        "milliseconds": 8468.292625,
+        "maskSha256": "5a60916399cc8036f9a416c3229b971efc28790636f620e765cc10f803d80d5f",
+        "geometrySha256": "0dab051bff4d7d82056f059c74d30810b5e789e3e977f468d26ef13692b49f51",
+        "templateChecks": false,
+        "geometryPassed": true,
+        "paper": "uncertain",
+        "renders": [
+          {
+            "resolution": 400,
+            "error": 0.0788875,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0792671875,
+            "featuresPassed": true
+          }
+        ],
+        "repairs": [
+          {
+            "accepted": false,
+            "reason": "initial_image",
+            "initialImageError": 0.0380125,
+            "maximumInitialImageError": null,
+            "imageError": null,
+            "steps": null,
+            "seconds": 0.008611374999999498
+          }
+        ]
+      },
+      {
+        "run": "1-cropped-tree-provisional",
+        "variant": "provisional",
+        "id": "cropped-tree",
+        "milliseconds": 8656.027375,
+        "maskSha256": "5a60916399cc8036f9a416c3229b971efc28790636f620e765cc10f803d80d5f",
+        "geometrySha256": "684cf3949fe21855fce5d5308bf2b4a8875dbea47c91e46c69469a9b783abab0",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 400,
+            "error": 0.0229875,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0245125,
+            "featuresPassed": true
+          }
+        ],
+        "repairs": [
+          {
+            "accepted": true,
+            "reason": null,
+            "initialImageError": 0.0380125,
+            "maximumInitialImageError": 0.05,
+            "imageError": 0.02525625,
+            "steps": 125,
+            "seconds": 1.6412440829999997
+          }
+        ]
+      },
+      {
+        "run": "1-frozen-baseline",
+        "variant": "baseline",
+        "id": "frozen",
+        "milliseconds": 9094.012625,
+        "maskSha256": "a8982a2283b5456498b52de1ec512872810276a52fc944e40acf550a4265ddfc",
+        "geometrySha256": "3178526ec28ef9c1f8efb14d6445bf51ec69ee8a3fee04950effd9e5879d8e39",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 250,
+            "error": 0.006,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 500,
+            "error": 0.009516,
+            "featuresPassed": true
+          }
+        ],
+        "repairs": [
+          {
+            "accepted": true,
+            "reason": null,
+            "initialImageError": 0.018592,
+            "maximumInitialImageError": null,
+            "imageError": 0.007984,
+            "steps": 160,
+            "seconds": 1.5950623750000004
+          }
+        ]
+      },
+      {
+        "run": "1-frozen-provisional",
+        "variant": "provisional",
+        "id": "frozen",
+        "milliseconds": 9133.865208,
+        "maskSha256": "a8982a2283b5456498b52de1ec512872810276a52fc944e40acf550a4265ddfc",
+        "geometrySha256": "9366ad96fd13816dc1b17f7822c7a0910534a40795ef397e5442472757801b8f",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 250,
+            "error": 0.006544,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 500,
+            "error": 0.00992,
+            "featuresPassed": true
+          }
+        ],
+        "repairs": [
+          {
+            "accepted": true,
+            "reason": null,
+            "initialImageError": 0.018592,
+            "maximumInitialImageError": 0.05,
+            "imageError": 0.007984,
+            "steps": 145,
+            "seconds": 1.5910961250000009
+          }
+        ]
+      },
+      {
+        "run": "1-synthetic-control-baseline",
+        "variant": "baseline",
+        "id": "synthetic-control",
+        "milliseconds": 9055.973833,
+        "maskSha256": "9d4accdee263a24380ff50f12f1739f29044b582e057c2835fe1b3461a6e62d3",
+        "geometrySha256": "6c07cacd76da2e0e34d0468be3777805fa0f055a9be5d25a1f2a0e672c0ad660",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 250,
+            "error": 0.016128,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 500,
+            "error": 0.017292,
+            "featuresPassed": true
+          }
+        ],
+        "repairs": [
+          {
+            "accepted": true,
+            "reason": null,
+            "initialImageError": 0.016304,
+            "maximumInitialImageError": null,
+            "imageError": 0.016368,
+            "steps": 5,
+            "seconds": 0.7372747909999998
+          }
+        ]
+      },
+      {
+        "run": "1-synthetic-control-provisional",
+        "variant": "provisional",
+        "id": "synthetic-control",
+        "milliseconds": 9044.776542,
+        "maskSha256": "9d4accdee263a24380ff50f12f1739f29044b582e057c2835fe1b3461a6e62d3",
+        "geometrySha256": "572c674c21db3744d014d9a66790fcd246c68ede2f43582564cf981531369da6",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 250,
+            "error": 0.016064,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 500,
+            "error": 0.01728,
+            "featuresPassed": true
+          }
+        ],
+        "repairs": [
+          {
+            "accepted": true,
+            "reason": null,
+            "initialImageError": 0.016304,
+            "maximumInitialImageError": 0.05,
+            "imageError": 0.016368,
+            "steps": 5,
+            "seconds": 0.6920170830000006
+          }
+        ]
+      },
+      {
+        "run": "1-y-plus-1-baseline",
+        "variant": "baseline",
+        "id": "y-plus-1",
+        "milliseconds": 8441.984709,
+        "maskSha256": "69d731a527592afab42c30f570d54e70c3a9d874837ded7fbfe75e9530295412",
+        "geometrySha256": "a81039366953d57ed44f8e865aeb1915f17af67816e4bf1e8d9c9917000d92da",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 250,
+            "error": 0.004736,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 500,
+            "error": 0.007908,
+            "featuresPassed": true
+          }
+        ],
+        "repairs": []
+      },
+      {
+        "run": "1-y-plus-1-provisional",
+        "variant": "provisional",
+        "id": "y-plus-1",
+        "milliseconds": 8666.252208000002,
+        "maskSha256": "69d731a527592afab42c30f570d54e70c3a9d874837ded7fbfe75e9530295412",
+        "geometrySha256": "a81039366953d57ed44f8e865aeb1915f17af67816e4bf1e8d9c9917000d92da",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 250,
+            "error": 0.004736,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 500,
+            "error": 0.007908,
+            "featuresPassed": true
+          }
+        ],
+        "repairs": []
+      }
+    ],
+    "baselineAccepted": 6,
+    "candidateAccepted": 8,
+    "attemptsPerVariant": 8,
+    "qualification": "A small fixed-mask study, not a full-corpus release. All three controls retain passes. One frozen control increases from 0.6000% to 0.6544%, so strict no-error-regression is not established."
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/available-repair-tail-v1/0-cropped-tree-repair-tail/report.json",
+      "sha256": "1a8259bb3220e15dbb0230f6a3d5ebbedb159885309402a0ed4ca032149e977a"
+    },
+    {
+      "path": "scripts/inverse/fixtures/browser-group-tree.json",
+      "sha256": "9898b6dded7e634ec91c1104f0e030ed66e4fc2d3cd4679c8d6488fcb6f50301"
+    },
+    {
+      "path": "tmp/heart-learning/provisional-routing-repair-v1/run.py",
+      "sha256": "d64593c2d9ebc60f1e01ba859f0b92868be638dc69eea91e5d76b189655f7d0e"
+    },
+    {
+      "path": "tmp/heart-learning/provisional-routing-repair-v1/solve.mjs",
+      "sha256": "046c5fc10ec10f4ff0145324afe39e63ed57e2fc10bcbfc08b36a104484a6c34"
+    },
+    {
+      "path": "tmp/heart-learning/provisional-routing-repair-v1/source.json",
+      "sha256": "6ed2864101200f5ba42548668eab1b72d163480b3535803fd52f2c1baf381db5"
+    },
+    {
+      "path": "tmp/heart-learning/provisional-routing-repair-v1/checks.json",
+      "sha256": "69b220f3816a9606a84f52f77c426415fb5426a603a419bb61bed962a44fa2e3"
+    },
+    {
+      "path": "tmp/heart-learning/provisional-routing-repair-v1/state.json",
+      "sha256": "e56a684deccf4d1b825eb149265246b735a8d38fed612f3f1a615ac3c63a9564"
+    },
+    {
+      "path": "tmp/heart-learning/provisional-routing-repair-v1/0-cropped-tree-baseline/result.json",
+      "sha256": "b28eb85e89ed22363faf2fdebe8b422d7b4ad8f593e219012eeb0015069c094c"
+    },
+    {
+      "path": "tmp/heart-learning/provisional-routing-repair-v1/0-cropped-tree-provisional/result.json",
+      "sha256": "b7fb5b8900e914b6b0ae788294b72481f1fa1f86001a81fef64867c692b0957d"
+    },
+    {
+      "path": "tmp/heart-learning/provisional-routing-repair-v1/0-cropped-tree-provisional/rejected.json",
+      "sha256": "b7ef5c9fd0b0fa654f4dc60904a1e9094b17e44d0a86aad8749380f51ab4eda6"
+    },
+    {
+      "path": "tmp/heart-learning/provisional-routing-repair-v1/0-cropped-tree-provisional/source.png",
+      "sha256": "7dd5c1b9e74caaafbdf73397e4cfd8bbc50c24c42e0956ffa3ed8808940c8eff"
+    },
+    {
+      "path": "tmp/heart-learning/provisional-routing-repair-v1/0-cropped-tree-provisional/woven.png",
+      "sha256": "43f28a6cff8ccd0e2c347f454749d502aae7691479f77d77a2ce6ba0bdf7fc89"
+    },
+    {
+      "path": "tmp/heart-learning/provisional-routing-repair-v1/1-cropped-tree-baseline/result.json",
+      "sha256": "be97c9c4742db1ac50499d1df01694504274ad29bd214fd89cd84d93cab8644f"
+    },
+    {
+      "path": "tmp/heart-learning/provisional-routing-repair-v1/1-cropped-tree-provisional/result.json",
+      "sha256": "00347ecd3457ece06e4569fcc6c950447eea5fd17b4ac7b78b5eb0cd4c69ec9f"
+    },
+    {
+      "path": "tmp/heart-learning/matching-tree-integration-v1/source.json",
+      "sha256": "6dfd566248ede9baebd05fc6862ce5d3a7318d42438126421158df0a38c80d24"
+    },
+    {
+      "path": "tmp/heart-learning/matching-tree-integration-v1/state.json",
+      "sha256": "2ed5c1e486d2ff4045d3c3c3972bb876516b12f4d665a100dd4b8b818eda8ae0"
+    },
+    {
+      "path": "tmp/heart-learning/matching-tree-integration-v1/checks.json",
+      "sha256": "8bfb1b408ae4fe0c6c143a6e8d244c67c325c0b530c0a0111dfb6cadd83d9c60"
+    },
+    {
+      "path": "tmp/heart-learning/matching-tree-integration-v1/lint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "tmp/heart-learning/matching-tree-integration-v1/focused.log",
+      "sha256": "38ee9b7997d7475754841e266baf26c90a714840c89ce53d71afc38879291b4e"
+    },
+    {
+      "path": "tmp/heart-learning/provisional-routing-repair-v1/before-regression.test.mjs",
+      "sha256": "84a9927760a484d7d4f048783eeb7da2c548a8da2b521c4a80260b13f15bee1c"
+    },
+    {
+      "path": "tmp/heart-learning/provisional-routing-repair-v1/before-regression.log",
+      "sha256": "2a64c8510dd856571a5e1f2439b22f8ff3193b6d46e0df128532a27147905d62"
+    }
+  ],
+  "integration": {
+    "status": "focused_checks_pass",
+    "change": "Allow the same bounded provisional error used by trace preparation before continuous repair. Preserve feature eligibility and require the original error limit, valid geometry, paper and caller deadline afterward.",
+    "fullRepositoryAndCorpusQa": "pending",
+    "focusedTests": 18,
+    "passed": 18,
+    "sourceFilesVerified": 743,
+    "checks": [
+      {
+        "stage": "lint",
+        "exitCode": 0,
+        "seconds": 1.803541458
+      },
+      {
+        "stage": "focused",
+        "exitCode": 0,
+        "seconds": 62.991270875
+      }
+    ]
+  },
+  "visualReview": "The repaired tree retains the trunk, branches and frame; small frame protrusions and corner differences remain visible. The source mask is red/white and the independent preview is black/white; this is a display-palette difference.",
+  "regression": {
+    "oldRuntime": "The positive unit regression fails at initial_image before refinement.",
+    "newRuntime": "Both provisional-routing-repair tests pass in the integrated suite.",
+    "sourceUnchanged": true,
+    "strictAndUnrelatedInputControls": true
+  }
+}

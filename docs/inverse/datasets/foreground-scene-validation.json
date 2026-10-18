@@ -1,0 +1,434 @@
+{
+  "schema": "woven-heart-foreground-scene-validation-1",
+  "sourceCommit": "1cb47ff7317eb636a359dca70e1ebb709270e0e4",
+  "checks": [
+    {
+      "name": "control-train",
+      "command": [
+        "python3",
+        "scripts/inverse/learning/foreground-train.py",
+        "--dataset",
+        "tmp/heart-training-synthetic/batch-v1",
+        "--foreground",
+        "tmp/heart-learning/real-edge-v1/foreground-batch",
+        "--dataset",
+        "tmp/heart-training-synthetic/corner-lattice-v1",
+        "--foreground",
+        "tmp/heart-learning/real-edge-v1/foreground-corners",
+        "--training-probe",
+        "tmp/heart-learning/foreground-refinement-v1/background-training/batch",
+        "--training-probe",
+        "tmp/heart-learning/foreground-refinement-v1/background-training/corners",
+        "--initialization",
+        "imagenet",
+        "--output",
+        "tmp/heart-learning/foreground-scene-v1/control-trained"
+      ],
+      "exitCode": 0,
+      "seconds": 138.463002292,
+      "log": "tmp/heart-learning/foreground-scene-v1/control-train.log",
+      "logSha256": "992695a2e07942a906c4e320ec99375985fc680e0f97c2f0cc2045025659b290"
+    },
+    {
+      "name": "control-diagnostic",
+      "command": [
+        "python3",
+        "scripts/inverse/learning/foreground-interventions.py",
+        "--run",
+        "tmp/heart-learning/foreground-scene-v1/control-trained",
+        "--probe",
+        "tmp/heart-learning/foreground-scene-v1/verified-diagnostic",
+        "--output",
+        "tmp/heart-learning/foreground-scene-v1/control-diagnostic"
+      ],
+      "exitCode": 0,
+      "seconds": 5.211061916999995,
+      "log": "tmp/heart-learning/foreground-scene-v1/control-diagnostic.log",
+      "logSha256": "959a3906003d7176b05032ca553f44909f702d6f7732cb4b6619969172053711"
+    },
+    {
+      "name": "control-export",
+      "command": [
+        "python3",
+        "scripts/inverse/learning/foreground-export.py",
+        "--run",
+        "tmp/heart-learning/foreground-scene-v1/control-trained",
+        "--output",
+        "tmp/heart-learning/foreground-scene-v1/control-probe"
+      ],
+      "exitCode": 0,
+      "seconds": 4.4792645419999815,
+      "log": "tmp/heart-learning/foreground-scene-v1/control-export.log",
+      "logSha256": "e88ac9414942c0b2f6291f82acd87e3cfb10fff82622845ce2a94234a3dfd922"
+    },
+    {
+      "name": "control-replay",
+      "command": [
+        "node",
+        "scripts/inverse/learning/foreground-replay.mjs",
+        "--probe=tmp/heart-learning/foreground-scene-v1/control-probe",
+        "--output=tmp/heart-learning/foreground-scene-v1/control-replay",
+        "--methods=learned",
+        "--solve-ids=all"
+      ],
+      "exitCode": 0,
+      "seconds": 182.519814208,
+      "log": "tmp/heart-learning/foreground-scene-v1/control-replay.log",
+      "logSha256": "2b18184e1b96c22d9b98d8b27e2c2ed0ada9702e42e80b6e48da0a64548fb033"
+    },
+    {
+      "name": "scene-train",
+      "command": [
+        "python3",
+        "scripts/inverse/learning/foreground-train.py",
+        "--dataset",
+        "tmp/heart-training-synthetic/batch-v1",
+        "--foreground",
+        "tmp/heart-learning/real-edge-v1/foreground-batch",
+        "--dataset",
+        "tmp/heart-training-synthetic/corner-lattice-v1",
+        "--foreground",
+        "tmp/heart-learning/real-edge-v1/foreground-corners",
+        "--training-probe",
+        "tmp/heart-learning/foreground-refinement-v1/background-training/batch",
+        "--training-probe",
+        "tmp/heart-learning/foreground-refinement-v1/background-training/corners",
+        "--initialization",
+        "imagenet",
+        "--scene-probe",
+        "tmp/heart-learning/foreground-scene-v1/training-batch",
+        "--scene-probe",
+        "tmp/heart-learning/foreground-scene-v1/training-corners",
+        "--output",
+        "tmp/heart-learning/foreground-scene-v1/scene-trained"
+      ],
+      "exitCode": 0,
+      "seconds": 210.15525199999996,
+      "log": "tmp/heart-learning/foreground-scene-v1/scene-train.log",
+      "logSha256": "baea2304ecce24647d37056e21f1c529cff73dc5fff96baa30720f4283a4bbae"
+    },
+    {
+      "name": "scene-diagnostic",
+      "command": [
+        "python3",
+        "scripts/inverse/learning/foreground-interventions.py",
+        "--run",
+        "tmp/heart-learning/foreground-scene-v1/scene-trained",
+        "--probe",
+        "tmp/heart-learning/foreground-scene-v1/verified-diagnostic",
+        "--output",
+        "tmp/heart-learning/foreground-scene-v1/scene-diagnostic"
+      ],
+      "exitCode": 0,
+      "seconds": 4.965370417000031,
+      "log": "tmp/heart-learning/foreground-scene-v1/scene-diagnostic.log",
+      "logSha256": "a44445cdc80bef54325d675f5f93f2c9b21ed3ae829ee4126bd3d2d992b4bf47"
+    },
+    {
+      "name": "scene-export",
+      "command": [
+        "python3",
+        "scripts/inverse/learning/foreground-export.py",
+        "--run",
+        "tmp/heart-learning/foreground-scene-v1/scene-trained",
+        "--output",
+        "tmp/heart-learning/foreground-scene-v1/scene-probe"
+      ],
+      "exitCode": 0,
+      "seconds": 4.0779327080000485,
+      "log": "tmp/heart-learning/foreground-scene-v1/scene-export.log",
+      "logSha256": "e88ac9414942c0b2f6291f82acd87e3cfb10fff82622845ce2a94234a3dfd922"
+    },
+    {
+      "name": "scene-replay",
+      "command": [
+        "node",
+        "scripts/inverse/learning/foreground-replay.mjs",
+        "--probe=tmp/heart-learning/foreground-scene-v1/scene-probe",
+        "--output=tmp/heart-learning/foreground-scene-v1/scene-replay",
+        "--methods=learned",
+        "--solve-ids=all"
+      ],
+      "exitCode": 0,
+      "seconds": 142.43999029200006,
+      "log": "tmp/heart-learning/foreground-scene-v1/scene-replay.log",
+      "logSha256": "8edceb861242f4984573443a2fa8a174c375718efe31b98df8c791a1f2740212"
+    },
+    {
+      "name": "check",
+      "command": [
+        "npm",
+        "run",
+        "check"
+      ],
+      "exitCode": 0,
+      "seconds": 8.395869415999982,
+      "log": "tmp/heart-learning/foreground-scene-v1/check.log",
+      "logSha256": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092"
+    },
+    {
+      "name": "lint",
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "exitCode": 0,
+      "seconds": 5.726716292000106,
+      "log": "tmp/heart-learning/foreground-scene-v1/lint.log",
+      "logSha256": "f1a4b272f2f106d9cc645be00a12d8ac4dea14308d11091a0ea8c493d6036f90"
+    },
+    {
+      "name": "vitest",
+      "command": [
+        "npm",
+        "exec",
+        "--",
+        "vitest",
+        "run",
+        "--maxWorkers=2"
+      ],
+      "exitCode": 0,
+      "seconds": 32.930741167000065,
+      "log": "tmp/heart-learning/foreground-scene-v1/vitest.log",
+      "logSha256": "7e9bd89a6c4e6a2b523015eb7bd2b5c238ebcf89a808940df94c8850e351e911"
+    },
+    {
+      "name": "learning",
+      "command": [
+        "python3",
+        "scripts/inverse/learning/test.py"
+      ],
+      "exitCode": 0,
+      "seconds": 13.298079541999982,
+      "log": "tmp/heart-learning/foreground-scene-v1/learning.log",
+      "logSha256": "15b52f3aec45d7c3903c1fa2c18302bc185cd460d12f4c0ac0ba8d58d4c8603a"
+    },
+    {
+      "name": "inverse",
+      "command": [
+        "npm",
+        "run",
+        "test:inverse"
+      ],
+      "exitCode": 0,
+      "seconds": 653.0751327910001,
+      "log": "tmp/heart-learning/foreground-scene-v1/inverse.log",
+      "logSha256": "f3d060b31fb96d5cd5a9b26986da72eed34333d14e620037271e29f5b097ba5f"
+    },
+    {
+      "name": "build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exitCode": 0,
+      "seconds": 12.447805000000017,
+      "log": "tmp/heart-learning/foreground-scene-v1/build.log",
+      "logSha256": "bb60ce1b3223ccd3c377295ff71b0fdf5f105fb2a8fd5ebc88ed7538af034586"
+    }
+  ],
+  "totals": {
+    "inverseTests": 744,
+    "applicationTests": 855,
+    "applicationSkipped": 1,
+    "pythonTests": 45,
+    "browserFlows": 3,
+    "typeErrors": 0,
+    "existingTypeWarnings": 7,
+    "existingLintWarnings": 1
+  },
+  "browser": {
+    "report": "tmp/heart-learning/foreground-scene-v1/browser/results.json",
+    "sha256": "fb5ce8d6eb8b381e5d9c68cf56d8936d91f5f944ed3d5e398cbb9fbce68a4e38",
+    "workspaceSourceHashes": {
+      "static/inverse/worker.js": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70",
+      "static/inverse/worker-bootstrap.js": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+      "static/inverse/worker-controller.js": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+      "static/inverse/compute-worker.js": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+      "static/inverse/core/engine.js": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+      "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+      "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+      "static/inverse/core/feature-recovery.js": "6be5ef1c55009da6cff646e460a6601b6fab87212d3b87da4f3bb09fb2c962f9",
+      "static/inverse/core/solver.js": "cfc48549b0673167d0eeae4537cfc1f0d00c4cb4e6c34a10ee9972e42c65bcd6",
+      "static/inverse/core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+      "static/inverse/core/crop.js": "e44d3179ca229cb645779af3550ab2736547104c46684e0ccee402a1d1875ea6",
+      "static/inverse/locator/locator.js": "f4c769870e13481a30d149dbdad5a743b52d55d949bc9d898c2c7db0af434773",
+      "static/inverse/locator/fields.js": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
+      "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+      "static/inverse/locator/palette.js": "e6163193c14d753c2b93168c2e2e25602fb240117e1846a1c92a92308bc9084b",
+      "static/inverse/locator/anchored.js": "c4f5276af229a7b9bbc1f686ea308697200cdd787bcdee2692d87a60bcdad991",
+      "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+      "static/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+      "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+      "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+      "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+      "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+      "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+      "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+      "src/lib/inverse/engine.ts": "8f6674a430cb5f89ff597eb1f290a730173a5d82afcb42263a14762ded568618",
+      "static/inverse/core/direct/finalize.js": "40c9d60e5bd327876da0465ab8d371a05430d43412520a32a0f3ab90f07284e4",
+      "static/inverse/core/direct/topology.js": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097",
+      "static/inverse/core/direct/fit.js": "23fd42d720804d6794d9747d0359914b7ea2b990cc9edc05521c16e199262479",
+      "static/inverse/core/direct/share.js": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+      "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+      "static/inverse/core/direct/counts.js": "fbfcc89f1399bb76f2654b7476c52bd6aa29e2170ad1759e890268d9e392b23e",
+      "static/inverse/core/direct/feature-seeds.js": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+      "static/inverse/core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+      "static/inverse/core/direct/outline-details.js": "ff9d4df5f27fd9ca97d15b115cc95c5692bd17e302f0dcd11c62e7295b85d8aa",
+      "static/inverse/core/direct/polish.js": "3f9df26508076465860a62ce72c2de3aeb67413a1d67ab1927dc37b89b7b622e",
+      "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+      "src/lib/inverse/toHeartDesign.ts": "eb405a8bb15abebd46f07ed17457ebc44735221e92b9bc866a4ad5dc3c05c66f",
+      "src/lib/inverse/simplifyCurves.ts": "c693b9eb86084926d941d7e60a1a38178156d081657feabce41ff03261714173",
+      "src/lib/editor/curveIssues.ts": "293535d5f73d3dd4c9a7bbfc1c83b25ba81558d593644743496cf9e8afa5358e",
+      "src/lib/components/paint/PaintPage.svelte": "266fe756e5876ffe4293518a87d48c6f0f1813f37e112e19712678101f8d47af",
+      "src/lib/inverse/conversionFidelity.ts": "45db43e0919b98cfe03c115bda7473896de0da1aeec89e94ee74bbaeffdbb589",
+      "static/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+      "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+      "static/inverse/core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+      "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+      "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+      "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+      "static/inverse/core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+      "static/inverse/core/validate.js": "31cc29c6873896f53a2f999782dcd2292f0924611166932114b45534f5cbebd7",
+      "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+      "static/inverse/core/direct/refine.js": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+      "static/inverse/core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+      "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+      "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+      "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+      "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+      "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+      "static/inverse/core/direct/short-returns.js": "d89c3a75df735ca5d519b354b0e47327f58ce56e55f86693de44ded98e857269",
+      "src/lib/components/editor/SymmetryRows.svelte": "1bf99195778a11baf02bff2bf0ab9983a9ab6ae3d5d52b7f29f17eb0efb57884",
+      "src/lib/components/ui/toggle-group/toggle-group.svelte": "ef3ac7b6559268d4e5b8f34870b91939fc39a92718a5d90b650c383f0ca178d4",
+      "src/lib/components/paint/FramePanel.svelte": "9d048e201f9c83b3343d487f716dc835cfe9e61067fa228c8b4c043f7624bc1f",
+      "src/lib/components/paint/MaskToolPanel.svelte": "b37ff23378e86b8411f911a2c2106d8d3f410ab395b0c08915d4329b4ec143cb",
+      "src/lib/i18n/translations.ts": "408c079b8f04fd6da92d8b463442b7cbfb64846b5005e0b7e875dd4b8efff758",
+      "src/lib/components/paint/FindCutsPanel.svelte": "f47863c444d17e05c6d3076595c00e5c8c0e1b29ce1c7a11878a49299d0a48e1"
+    },
+    "cases": [
+      {
+        "browser": "chromium",
+        "name": "star",
+        "passed": true,
+        "pageErrors": [],
+        "engineError": 0.0016,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.008800000071525574,
+          "prepareRoundTripSeconds": 0.04039999997615814,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 1.922100000023842,
+          "resultToReadySeconds": 0.096,
+          "clickToReadySeconds": 2.067600000023842
+        },
+        "editableError": 0.00465
+      },
+      {
+        "browser": "chromium",
+        "name": "hat",
+        "passed": true,
+        "pageErrors": [],
+        "engineError": 0.001575,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005399999976158142,
+          "prepareRoundTripSeconds": 0.21940000009536742,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 1.805399999976158,
+          "resultToReadySeconds": 0.05989999997615814,
+          "clickToReadySeconds": 2.0905
+        },
+        "editableError": 0.0055
+      },
+      {
+        "browser": "chromium",
+        "name": "hunodan-hjcur-02",
+        "passed": true,
+        "pageErrors": [],
+        "engineError": 0.0057,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0055,
+          "prepareRoundTripSeconds": 0.16730000007152557,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 6.038700000047684,
+          "resultToReadySeconds": 0.568,
+          "clickToReadySeconds": 6.779800000071526
+        },
+        "editableError": 0.01295
+      }
+    ]
+  },
+  "gallery": {
+    "counts": {
+      "cases": 43,
+      "images": 177,
+      "broken": []
+    },
+    "errors": [],
+    "served": [
+      {
+        "file": "inverse/core/engine.js",
+        "status": 200,
+        "sha256": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390"
+      },
+      {
+        "file": "inverse/core/crop.js",
+        "status": 200,
+        "sha256": "e44d3179ca229cb645779af3550ab2736547104c46684e0ccee402a1d1875ea6"
+      },
+      {
+        "file": "inverse/locator/locator.js",
+        "status": 200,
+        "sha256": "f4c769870e13481a30d149dbdad5a743b52d55d949bc9d898c2c7db0af434773"
+      }
+    ],
+    "app": {
+      "url": "http://127.0.0.1:5232/editor/mal/",
+      "title": "Mal et hjerte - Juleflet: Flettede Julehjerter Skabeloner og Designer",
+      "bodyLength": 587
+    },
+    "gallerySha256": "cb2e8bc8e93e994be99af84037792ff8f9adf81d34fd4f0365ce94673de5ca10"
+  },
+  "displayMasksVerified": 16,
+  "visualReview": {
+    "assets": [
+      {
+        "path": "tmp/heart-learning/foreground-scene-v1/scene-replay/real-bauble-learned/source.png",
+        "sha256": "745ddc3c869bfda984b4d40961909e37f4c720b5ff1bffb4e9396cf111a14d3a"
+      },
+      {
+        "path": "tmp/heart-learning/foreground-scene-v1/scene-replay/real-bauble-learned/crop.png",
+        "sha256": "78a7cf43a7229cde65586b9e52f2e66750fd363fe9a284894ca12dc19165b4c0"
+      },
+      {
+        "path": "tmp/heart-learning/foreground-scene-v1/scene-replay/real-bauble-learned/mask.png",
+        "sha256": "72e48f77ede78682b73a6b0d83204b9a9c57574013fbb0203ccebc676cce8f67"
+      },
+      {
+        "path": "tmp/heart-learning/foreground-scene-v1/scene-replay/real-bauble-learned/woven.png",
+        "sha256": "18f598ed1405c73fe9877f5d03cc2f6a84fc289a9fa4a084c7d5c86f336bb0f0"
+      },
+      {
+        "path": "tmp/heart-learning/foreground-scene-v1/scene-probe/real-bibel-star-8/probability.png",
+        "sha256": "fb085787183800b4e88579636d3ca8ea9623bf0d0bac7e17d0dadeb63fbb12d8"
+      },
+      {
+        "path": "tmp/heart-learning/foreground-scene-v1/control-probe/real-bibel-star-8/probability.png",
+        "sha256": "3472b69371618bb8b1a209963ed64948cbebe7d404a6e434614bfb1c3ee6c5f6"
+      },
+      {
+        "path": "tmp/heart-learning/foreground-scene-v1/scene-diagnostic/channel-795789-v0.png",
+        "sha256": "289cb13e2845cba4f60d16449a9e7dc5f250f749b36a42609593b72dc0fec8fa"
+      }
+    ],
+    "bauble": "Not a visually faithful recovery: crop clips frame portions and classification removes much of the faint pink frame before fitting. Numerical mask agreement cannot validate the photographed design.",
+    "star": "New prediction fails lower-edge detection before fitting; probability differences alone do not identify a causal pixel subset.",
+    "synthetic": "The inspected channel example removes neighbouring hearts and the handle while retaining the selected body; this is not independent real-photo validation."
+  },
+  "evidenceSha256": "060928a74f9ca2c4c4f9f80b595b82d1081f5685708956bf60c8c3cbae249f09",
+  "scope": "Offline generator/training/audit only; application source and production inference unchanged. Owned preview restarted after the verified build."
+}

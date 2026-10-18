@@ -1,0 +1,365 @@
+{
+  "schema": 1,
+  "baseRevision": "09c0461",
+  "problem": "The common finalizer capped the matching deadline at ten seconds from fitting start, even after a longer requested solve had legitimately used that initial phase.",
+  "change": "Use startedAt + requested timeLimit - the existing 400 ms export reserve. Retain finite candidate/step limits, source scoring, the one-percentage-point allowance and all final checks. Ten-second requests keep exactly the same deadline expression value.",
+  "experiment": {
+    "method": "Replay the same saved intermediate independent hat and image-derived grids with twelve seconds already elapsed in a twenty-second request. The real clock keeps running. Two alternating-order rounds; preparation and independent export audits are outside measured finalization time.",
+    "sourceFilesVerified": 221,
+    "scope": "Isolated finalization, not a fresh whole-photo solve or a fix for the separate ten-second matching timeout.",
+    "rows": [
+      {
+        "run": "0-actual-deadline",
+        "variant": "actual-deadline",
+        "requestedSeconds": 20,
+        "simulatedHandoffSeconds": 12,
+        "milliseconds": 2953.792625,
+        "matching": {
+          "enabled": true,
+          "identical": true,
+          "rmsTemplateDifferenceMm": 0,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0,
+          "method": "Each conflicting diagonal pair forces at least its smaller pixel weight in error, normalized by total observed weight.",
+          "baselineImageError": 0.0025953089569161,
+          "baselineCounts": [
+            2,
+            2
+          ],
+          "baselinePhase": 1,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.0125953089569161,
+          "attempts": [
+            {
+              "proposal": "copy-first-sheet",
+              "refined": false,
+              "imageError": 0.6465596655328798,
+              "withinAllowance": false
+            },
+            {
+              "proposal": "copy-second-sheet",
+              "refined": false,
+              "imageError": 0.6466482426303855,
+              "withinAllowance": false
+            },
+            {
+              "proposal": "matching-grid",
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "refined": true,
+              "steps": 200,
+              "imageError": 0.00547406462585034,
+              "withinAllowance": true,
+              "featuresPassed": true,
+              "featureChange": {
+                "passed": true,
+                "missingBefore": 0,
+                "missingAfter": 0,
+                "regressed": []
+              },
+              "geometryPassed": true,
+              "paperPassed": true
+            }
+          ],
+          "status": "matched",
+          "seconds": 1.674578916,
+          "selectedImageError": 0.0039771116780045355,
+          "additionalImageError": 0.0013818027210884356
+        },
+        "error": 0.004012542517006803,
+        "paper": "pass",
+        "geometry": true,
+        "sourceUnchanged": true
+      },
+      {
+        "run": "0-baseline",
+        "variant": "baseline",
+        "requestedSeconds": 20,
+        "simulatedHandoffSeconds": 12,
+        "milliseconds": 1753.534083,
+        "matching": {
+          "enabled": true,
+          "identical": false,
+          "rmsTemplateDifferenceMm": 31.633788422242887,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0,
+          "method": "Each conflicting diagonal pair forces at least its smaller pixel weight in error, normalized by total observed weight.",
+          "baselineImageError": 0.0025953089569161,
+          "baselineCounts": [
+            2,
+            2
+          ],
+          "baselinePhase": 1,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.0125953089569161,
+          "attempts": [
+            {
+              "proposal": "copy-first-sheet",
+              "refined": false,
+              "imageError": 0.6465596655328798,
+              "withinAllowance": false
+            },
+            {
+              "proposal": "copy-second-sheet",
+              "refined": false,
+              "imageError": 0.6466482426303855,
+              "withinAllowance": false
+            }
+          ],
+          "status": "matching_budget_exhausted",
+          "seconds": 0.12749270799999995,
+          "selectedImageError": 0.002568735827664399,
+          "additionalImageError": -2.657312925170071e-05
+        },
+        "error": 0.002551020408163265,
+        "paper": "pass",
+        "geometry": true,
+        "sourceUnchanged": true
+      },
+      {
+        "run": "1-actual-deadline",
+        "variant": "actual-deadline",
+        "requestedSeconds": 20,
+        "simulatedHandoffSeconds": 12,
+        "milliseconds": 2996.8377910000004,
+        "matching": {
+          "enabled": true,
+          "identical": true,
+          "rmsTemplateDifferenceMm": 0,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0,
+          "method": "Each conflicting diagonal pair forces at least its smaller pixel weight in error, normalized by total observed weight.",
+          "baselineImageError": 0.0025953089569161,
+          "baselineCounts": [
+            2,
+            2
+          ],
+          "baselinePhase": 1,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.0125953089569161,
+          "attempts": [
+            {
+              "proposal": "copy-first-sheet",
+              "refined": false,
+              "imageError": 0.6465596655328798,
+              "withinAllowance": false
+            },
+            {
+              "proposal": "copy-second-sheet",
+              "refined": false,
+              "imageError": 0.6466482426303855,
+              "withinAllowance": false
+            },
+            {
+              "proposal": "matching-grid",
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "refined": true,
+              "steps": 200,
+              "imageError": 0.00547406462585034,
+              "withinAllowance": true,
+              "featuresPassed": true,
+              "featureChange": {
+                "passed": true,
+                "missingBefore": 0,
+                "missingAfter": 0,
+                "regressed": []
+              },
+              "geometryPassed": true,
+              "paperPassed": true
+            }
+          ],
+          "status": "matched",
+          "seconds": 1.674529125,
+          "selectedImageError": 0.0039771116780045355,
+          "additionalImageError": 0.0013818027210884356
+        },
+        "error": 0.004012542517006803,
+        "paper": "pass",
+        "geometry": true,
+        "sourceUnchanged": true
+      },
+      {
+        "run": "1-baseline",
+        "variant": "baseline",
+        "requestedSeconds": 20,
+        "simulatedHandoffSeconds": 12,
+        "milliseconds": 1653.931458,
+        "matching": {
+          "enabled": true,
+          "identical": false,
+          "rmsTemplateDifferenceMm": 31.633788422242887,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0,
+          "method": "Each conflicting diagonal pair forces at least its smaller pixel weight in error, normalized by total observed weight.",
+          "baselineImageError": 0.0025953089569161,
+          "baselineCounts": [
+            2,
+            2
+          ],
+          "baselinePhase": 1,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.0125953089569161,
+          "attempts": [
+            {
+              "proposal": "copy-first-sheet",
+              "refined": false,
+              "imageError": 0.6465596655328798,
+              "withinAllowance": false
+            },
+            {
+              "proposal": "copy-second-sheet",
+              "refined": false,
+              "imageError": 0.6466482426303855,
+              "withinAllowance": false
+            }
+          ],
+          "status": "matching_budget_exhausted",
+          "seconds": 0.122278958,
+          "selectedImageError": 0.002568735827664399,
+          "additionalImageError": -2.657312925170071e-05
+        },
+        "error": 0.002551020408163265,
+        "paper": "pass",
+        "geometry": true,
+        "sourceUnchanged": true
+      }
+    ]
+  },
+  "regression": {
+    "baseline": {
+      "passed": 1,
+      "failed": 1,
+      "failure": "matching_budget_exhausted instead of matched despite eight seconds of requested time remaining"
+    },
+    "candidate": {
+      "passed": 2,
+      "failed": 0
+    },
+    "negativeControl": "An expired ten-second request still attempts no gradient refinement.",
+    "checks": [
+      {
+        "stage": "0-baseline",
+        "exitCode": 0,
+        "seconds": 2.164362291
+      },
+      {
+        "stage": "0-actual-deadline",
+        "exitCode": 0,
+        "seconds": 3.282651
+      },
+      {
+        "stage": "1-actual-deadline",
+        "exitCode": 0,
+        "seconds": 3.3388660000000003
+      },
+      {
+        "stage": "1-baseline",
+        "exitCode": 0,
+        "seconds": 2.0182776250000014
+      },
+      {
+        "stage": "tests-baseline",
+        "exitCode": 1,
+        "seconds": 2.016444208000001
+      },
+      {
+        "stage": "tests-actual-deadline",
+        "exitCode": 0,
+        "seconds": 3.376101583999999
+      }
+    ]
+  },
+  "visualReview": "Selected matching hat has a clear protected silhouette; exactly shared approaches no longer show the pre-sharing seams. Free-border shapes remain allowed to differ. No physical assembly tested.",
+  "integration": {
+    "status": "focused_checks_pass",
+    "fullRepositoryAndCorpusQa": "pending",
+    "focusedTests": 18,
+    "passed": 18,
+    "sourceFilesVerified": 743,
+    "checks": [
+      {
+        "stage": "lint",
+        "exitCode": 0,
+        "seconds": 1.803541458
+      },
+      {
+        "stage": "focused",
+        "exitCode": 0,
+        "seconds": 62.991270875
+      }
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/late-matching-finalization-v1/source.json",
+      "sha256": "9fc54c186bbce586ad2fdc71f7f794d35a07a60ca8ee1c2cfcfe89409be03ec5"
+    },
+    {
+      "path": "tmp/heart-learning/late-matching-finalization-v1/checks.json",
+      "sha256": "50ba759b3a98114398f32e924c97337d74408788b1225cee8651a63ec2deb7f5"
+    },
+    {
+      "path": "tmp/heart-learning/late-matching-finalization-v1/state.json",
+      "sha256": "6fd3c6d12336949eeb9eef8bd5bf08f1c363558ced75be09ecc5d0aec87ba5e0"
+    },
+    {
+      "path": "tmp/heart-learning/late-matching-finalization-v1/replay.mjs",
+      "sha256": "6a3d0d4e78eee816e9f032604b5a6c977b96afa674bd0814167562f819376d00"
+    },
+    {
+      "path": "tmp/heart-learning/late-matching-finalization-v1/deadline.test.mjs",
+      "sha256": "45e08f78faf4aef8438d59cbfdffd7dbb8040e8341dca171c1370a9051780b8a"
+    },
+    {
+      "path": "tmp/heart-learning/late-matching-finalization-v1/handoff.json",
+      "sha256": "06a96fb58836d238141aadc4600d1a33f2eaa6aa23892681bbab10c9a0f86d71"
+    },
+    {
+      "path": "tmp/heart-learning/late-matching-finalization-v1/run.py",
+      "sha256": "5d0b11f7c8547a836c0e8054d21766245f4459ec8ee37e1e16d116b01256dd45"
+    },
+    {
+      "path": "tmp/heart-learning/late-matching-finalization-v1/tests-baseline/run.log",
+      "sha256": "2dde9fe50b07873c688303e6847b397f5577aaa6918b6bc9b7348e9824bebd86"
+    },
+    {
+      "path": "tmp/heart-learning/late-matching-finalization-v1/tests-actual-deadline/run.log",
+      "sha256": "7ef34e2fdf02fd2d58934586b33208da054f9684c6d8e7dc2607b636edf74b67"
+    },
+    {
+      "path": "tmp/heart-learning/late-matching-finalization-v1/0-baseline/woven.png",
+      "sha256": "f0c2a08ee289188a1a12e76833bd26da0f90948dac3692bcfce0f5ad140c1861"
+    },
+    {
+      "path": "tmp/heart-learning/late-matching-finalization-v1/0-actual-deadline/woven.png",
+      "sha256": "d9349e039b8331d81d35068078d9d74fa8578c6dabb307914c2754d7c1994022"
+    },
+    {
+      "path": "tmp/heart-learning/matching-tree-integration-v1/source.json",
+      "sha256": "6dfd566248ede9baebd05fc6862ce5d3a7318d42438126421158df0a38c80d24"
+    },
+    {
+      "path": "tmp/heart-learning/matching-tree-integration-v1/state.json",
+      "sha256": "2ed5c1e486d2ff4045d3c3c3972bb876516b12f4d665a100dd4b8b818eda8ae0"
+    },
+    {
+      "path": "tmp/heart-learning/matching-tree-integration-v1/checks.json",
+      "sha256": "8bfb1b408ae4fe0c6c143a6e8d244c67c325c0b530c0a0111dfb6cadd83d9c60"
+    },
+    {
+      "path": "tmp/heart-learning/matching-tree-integration-v1/lint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "tmp/heart-learning/matching-tree-integration-v1/focused.log",
+      "sha256": "38ee9b7997d7475754841e266baf26c90a714840c89ce53d71afc38879291b4e"
+    }
+  ]
+}

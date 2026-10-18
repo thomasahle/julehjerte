@@ -1,0 +1,153 @@
+{
+  "schema": "woven-heart-material-pilot-plan-1",
+  "scope": "Seventeen partially annotated, previously inspected development photographs. Keep inherited duplicate/source links and the same two conservative motif families intact. Eight additional material-labelled instances, not eight unseen tests. No all-data model or deployment.",
+  "sourceManifest": "docs/inverse/datasets/real-manifest.json",
+  "sourceManifestSha256": "149697fc7cdd535736dd8727bba7847bca10d74823a28bdfaf77c95c44a6ffb3",
+  "labelSources": [
+    {
+      "annotations": "scripts/inverse/datasets/real-materials-motifs.json",
+      "sha256": "5e439770d03347a528746a325ce995fb8f917d096fb480113fb45e4af97ec100",
+      "name": "real-materials-motifs"
+    },
+    {
+      "annotations": "scripts/inverse/datasets/real-materials-pinterest.json",
+      "sha256": "3a9d3bb965d0165dde196b72968af30c426802fa71429ca041c045b16c31137e",
+      "name": "real-materials-pinterest"
+    },
+    {
+      "annotations": "scripts/inverse/datasets/real-materials-printed.json",
+      "sha256": "96368a150b75fc0aa04aa03eda43293b094235cd2741abaa7a55bc4fab0feee2",
+      "name": "real-materials-printed"
+    },
+    {
+      "annotations": "scripts/inverse/datasets/real-materials.json",
+      "sha256": "fae5ef1cf8f1fbf4661776e05454da849be1dcada9f778d88e522d5d29773709",
+      "name": "real-materials"
+    },
+    {
+      "annotations": "scripts/inverse/datasets/real-materials-colors.json",
+      "sha256": "a7567a3a9452d038bb8dcbacbab6117f376b60de268e39c7c636ee2e75c67fe9",
+      "name": "real-materials-colors"
+    },
+    {
+      "annotations": "scripts/inverse/datasets/real-materials-curved.json",
+      "sha256": "2b2dea584e023ac296d603aedb17efd802a7082e54e4fd7f936182461abfad12",
+      "name": "real-materials-curved"
+    },
+    {
+      "annotations": "scripts/inverse/datasets/real-materials-hanging.json",
+      "sha256": "9376385a12d03d5e5e31356f61201912dc40bf037631273cd4a109189cea2727",
+      "name": "real-materials-hanging"
+    },
+    {
+      "annotations": "scripts/inverse/datasets/real-materials-palettes.json",
+      "sha256": "0269eaf9a4ef159b41b4b7e2717afe5254e8fac3b9eeeb5e434cbc81745accba",
+      "name": "real-materials-palettes"
+    },
+    {
+      "annotations": "scripts/inverse/datasets/real-materials-protruding.json",
+      "sha256": "beea1b34e342ee7152d1933e04182c81f1e0fd2d6c110ccdbae2e2c5eac71676",
+      "name": "real-materials-protruding"
+    }
+  ],
+  "initialRun": "tmp/heart-learning/foreground-scene-v1/scene-trained",
+  "initialReportSha256": "f3a71ff6de0cb0a00fe8db15051631d131b6cbd71bf607bd607acae5d101929c",
+  "initialCheckpointSha256": "3e94244975ee6641626b5b93c3948974bfa33609f461aae828e40bdf0a889fe6",
+  "groups": [
+    {
+      "id": "checker-family",
+      "members": [
+        "real-cf2d0fcff65d7386-body-1",
+        "real-cdae5c890b6933cd-body-1",
+        "real-68d8f25d8891df62-body-1",
+        "real-995899fe049540ed-body-1",
+        "real-b87b0b19f12724f3-body-1",
+        "real-990ac34431be87fe-body-1",
+        "real-12ce3c9180f7f317-body-1",
+        "real-d5b0aa8d4d2465ee-body-1",
+        "real-39f3a1ba97852876-body-1",
+        "real-e936e08ac62db19b-body-1"
+      ],
+      "reason": "Keep regular, decorative, printed and bowed checker variants together despite different photographs and counts. Includes new curved, hanging, decorated, reflective-background and orange/yellow checker photographs."
+    },
+    {
+      "id": "framed-motif-family",
+      "members": [
+        "real-2044b1d98ed6f262-body-1",
+        "real-3f7b76e1a98e808f-body-1",
+        "real-45744a03afddccb1-body-1",
+        "real-8c875dd0f298b5a4-body-1",
+        "real-5330aa8b62176216-body-1",
+        "real-abf590088db891f9-body-1",
+        "real-340f5e5b0f447889-body-1"
+      ],
+      "reason": "Conservatively keep star, small hearts, boar and rabbit inside surrounding frames/grids together; these are not independent topology families. Includes bicycle medallion, sloth and protruding silhouette motif; protruding pieces do not justify treating this as a separate independent family."
+    }
+  ],
+  "protocol": {
+    "updates": 240,
+    "seed": 20261015,
+    "batchSize": 4,
+    "realPerMixedBatch": 2,
+    "learningRate": 0.001,
+    "weightDecay": 0.0001,
+    "syntheticReplayGeometries": 32,
+    "device": "cpu",
+    "threads": 2,
+    "encoder": "Freeze parameters AND BatchNorm statistics; train existing decoder and neutral new material head.",
+    "comparison": "Synthetic-only control plus one mixed real/synthetic run per complete connected source/motif group; identical initial model, draw schedule and updates.",
+    "selection": "Fixed final update; no held-out checkpoint selection or tuning.",
+    "metric": "Body and globally exchangeable A/B identities, including missing-body joint errors and balanced per-material errors.",
+    "trainingTarget": "Undegraded fractional synthetic paper coverage; ignore only two-pixel outer body band for material labels, preserve all body supervision.",
+    "printedReplay": [
+      {
+        "directory": "tmp/heart-learning/material-prints-v1/source-1",
+        "manifestSha256": "8cb0e3894195861aa9212f2e3de82a013670693add652bb3600aa9cab1e3115a",
+        "parentManifestSha256": "6649301431add7c3a7b7ba2ccb374723bc165fd3a64c9adede0ad11b3a54133d"
+      },
+      {
+        "directory": "tmp/heart-learning/material-prints-v1/source-2",
+        "manifestSha256": "42e5b8af44acf6406d3baa22e7c207648ca86dcea66e0bf9f9c159fb5e1d9499",
+        "parentManifestSha256": "180ecc34ae4294b3e9a70d90009cd2610f918394c0fa531fa64b3aaad0b27732"
+      }
+    ]
+  },
+  "followup": {
+    "reason": "Measure whether broader real photographic supervision improves sheet identity and localization at the same compute budget.",
+    "comparison": "Same pretrained foreground model, frozen encoder/statistics, printed synthetic replay, seed, 240 updates and batch size as the nine-instance printed-paper study. Only the real labelled pool and its complete family groups expand. Fixed total updates mean fewer expected exposures per photograph.",
+    "baselinePlanSha256": "a85dd9ce7fd8a3e9b8a46acffec82f8963dbf34c71e105c6c3a12bf1aafedaa9",
+    "baselineStudy": "tmp/heart-learning/material-printed-pilot-v1/run-v1",
+    "baselineReportSha256": "48fb66e545ddc8d0e149589f83b90c6aa615a462e8beb993d434a38935cf0852",
+    "existingCohort": [
+      "real-2044b1d98ed6f262-body-1",
+      "real-3f7b76e1a98e808f-body-1",
+      "real-45744a03afddccb1-body-1",
+      "real-68d8f25d8891df62-body-1",
+      "real-8c875dd0f298b5a4-body-1",
+      "real-995899fe049540ed-body-1",
+      "real-b87b0b19f12724f3-body-1",
+      "real-cdae5c890b6933cd-body-1",
+      "real-cf2d0fcff65d7386-body-1"
+    ],
+    "additionalCohort": [
+      "real-12ce3c9180f7f317-body-1",
+      "real-340f5e5b0f447889-body-1",
+      "real-39f3a1ba97852876-body-1",
+      "real-5330aa8b62176216-body-1",
+      "real-990ac34431be87fe-body-1",
+      "real-abf590088db891f9-body-1",
+      "real-d5b0aa8d4d2465ee-body-1",
+      "real-e936e08ac62db19b-body-1"
+    ],
+    "successEvidence": "Report the nine existing photographs, eight additional photographs, both whole held-out motif groups and all seventeen separately. Compare the nine-photo cohort with the previous study using unchanged RGB and label hashes. Independently rerun model inference and inspect all seventeen predictions before any full pipeline comparison. Pixel metrics do not establish template recovery.",
+    "controlInvariant": "The synthetic-only run has unchanged training inputs and schedule. Compare its final weights and common-photo predictions with the previous control; investigate any discrepancy before attributing gains to added real labels.",
+    "selection": "Fixed final update; no outcome-dependent checkpoint, learning-rate, threshold or group selection. No current QA-reserved source enters the study.",
+    "limits": "One seed, two broad real motif families, partial assistant-reviewed labels and previously inspected examples. Synthetic replay still contains checker geometry. No topology-disjoint or unseen-photo generalization claim.",
+    "reviewEvidence": {
+      "docs/inverse/datasets/protruding-material-labels.json": "424a4f5bc515a7ef3751200d2ec478ad04ef89f0479eab6d5a17d550b3d52118",
+      "docs/inverse/datasets/curved-material-labels.json": "a7f7a71e69ccee30e18bf654a4332438a7bee44bb85647ab5130c0606c72f1d6",
+      "docs/inverse/datasets/additional-material-labels.json": "54c2e80887d0bdbd2e1a5601059ba9a6ad5dc0a31a9eb3f56859a15a479a1abd",
+      "docs/inverse/datasets/palette-photo-labels.json": "59df9198a50f1c2e50bcf696e5c3f79ff3a190ac93d3ad4c76035b1fa2c3ed37"
+    }
+  }
+}

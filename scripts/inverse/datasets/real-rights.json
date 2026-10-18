@@ -1,0 +1,62 @@
+{
+  "https://commons.wikimedia.org/wiki/File:02014_Traditionelle_Christbaumschmuck_in_Sanok.JPG": {
+    "author": "Silar",
+    "rights": {
+      "status": "stated-license",
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "evidenceUrl": "https://commons.wikimedia.org/wiki/File:02014_Traditionelle_Christbaumschmuck_in_Sanok.JPG",
+      "fact": "File description page states this author and license; retained separately from the Commons page-text license. Downstream obligations need review before training or redistribution."
+    }
+  },
+  "https://commons.wikimedia.org/wiki/File:Christmas_heart_20131022_200736.jpg": {
+    "author": "Stylva",
+    "rights": {
+      "status": "stated-license",
+      "license": "CC-BY-SA-2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+      "evidenceUrl": "https://commons.wikimedia.org/wiki/File:Christmas_heart_20131022_200736.jpg",
+      "fact": "File description page states this author and license; retained separately from the Commons page-text license. Downstream obligations need review before training or redistribution."
+    }
+  },
+  "https://commons.wikimedia.org/wiki/File:Christmas_hearts.jpg": {
+    "author": "Björn Söderqvist",
+    "rights": {
+      "status": "stated-license",
+      "license": "CC-BY-SA-2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+      "evidenceUrl": "https://commons.wikimedia.org/wiki/File:Christmas_hearts.jpg",
+      "fact": "File description page states this author and license; retained separately from the Commons page-text license. Downstream obligations need review before training or redistribution."
+    }
+  },
+  "https://commons.wikimedia.org/wiki/File:Flickr_-_cyclonebill_-_Marcipan_%284%29.jpg": {
+    "author": "cyclonebill",
+    "rights": {
+      "status": "stated-license",
+      "license": "CC-BY-SA-2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+      "evidenceUrl": "https://commons.wikimedia.org/wiki/File:Flickr_-_cyclonebill_-_Marcipan_%284%29.jpg",
+      "fact": "File description page states this author and license; retained separately from the Commons page-text license. Downstream obligations need review before training or redistribution."
+    }
+  },
+  "https://commons.wikimedia.org/wiki/File:Julehjerter.jpg": {
+    "author": "Jens Gyldenkærne Clausen",
+    "rights": {
+      "status": "stated-license",
+      "license": "public-domain-dedication",
+      "licenseUrl": null,
+      "evidenceUrl": "https://commons.wikimedia.org/wiki/File:Julehjerter.jpg",
+      "fact": "File description page states this author and license; retained separately from the Commons page-text license. Downstream obligations need review before training or redistribution."
+    }
+  },
+  "https://commons.wikimedia.org/wiki/File:Kopi_af_HCA_julehjerte.jpg": {
+    "author": "IbenIVA",
+    "rights": {
+      "status": "stated-license",
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "evidenceUrl": "https://commons.wikimedia.org/wiki/File:Kopi_af_HCA_julehjerte.jpg",
+      "fact": "File description page states this author and license; retained separately from the Commons page-text license. Downstream obligations need review before training or redistribution."
+    }
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "schema": "notch-local-support-results-1",
+  "status": "complete-offline-prototype-not-adopted",
+  "plan": "docs/inverse/datasets/notch-local-support-plan.json",
+  "deployed": false,
+  "summary": {
+    "previous-development": {
+      "photos": 22,
+      "statuses": {
+        "checked-derived-mask": 15,
+        "review-required": 4,
+        "crop-unresolved": 3
+      },
+      "editableConverted": 19,
+      "editableComplete": 15
+    },
+    "new-source": {
+      "photos": 20,
+      "statuses": {
+        "checked-derived-mask": 7,
+        "review-required": 1,
+        "crop-unresolved": 12
+      },
+      "editableConverted": 8,
+      "editableComplete": 7
+    }
+  },
+  "selectionAudit": {
+    "status": "complete",
+    "unchangedPriorCropsMasksAndCoverage": 22,
+    "allPriorPassFailOutcomesRetained": true,
+    "newIds": [
+      "real-995899fe049540ed-body-1",
+      "real-1fa372c6288da69f",
+      "real-202b8421f50252f2",
+      "real-e4baad0c914577c8",
+      "real-e9131a2d52b78220"
+    ],
+    "changedPriorExportIds": [
+      "real-5330aa8b62176216-body-1",
+      "real-8c875dd0f298b5a4-body-1",
+      "real-1498fed65a8e41b7",
+      "real-31ed1172998ab1c5"
+    ]
+  },
+  "newResults": [
+    {
+      "id": "real-995899fe049540ed-body-1",
+      "status": "review-required",
+      "maskError": 0.0394,
+      "warnings": [
+        "3 substantial interior artwork region(s) lost their colour or enclosure. Inspect the original mask and comparison.",
+        "The exported weave differs from the original classified artwork by 3.96%, above the 3.00% limit. This limit measures image fidelity, not similarity to unknown original cutting paths."
+      ],
+      "visualReview": "Rejected fit. Crop corner error reaches 15.02% of side versus the pre-existing approximate reference. Estimated paper error on fixed known interior observations is 15.01%; exported error including missing coverage is 16.74%. Printed paper identity and perspective remain unresolved."
+    },
+    {
+      "id": "real-1fa372c6288da69f",
+      "status": "review-required",
+      "maskError": 0.0174875,
+      "warnings": [
+        "1 substantial interior artwork region(s) lost their colour or enclosure. Inspect the original mask and comparison."
+      ],
+      "visualReview": "Rejected fit despite 1.75% mask error. Broad strips develop rounded/thin excursions and a printed component becomes target artwork. Paper-core/support warning remains."
+    },
+    {
+      "id": "real-202b8421f50252f2",
+      "status": "checked-derived-mask",
+      "maskError": 0.0179375,
+      "warnings": [
+        "1 hidden curve(s) remain below the desired radius. The radius is a refinement goal, not a globally enforced feasibility guarantee."
+      ],
+      "visualReview": "Checked editable fit at 1.79%, with a visually much more plausible overlap than the earlier oversized production crop. Ribbon/shading causes a thin stripe and small border artifacts. Exact source paper labels/corners unavailable."
+    },
+    {
+      "id": "real-e4baad0c914577c8",
+      "status": "checked-derived-mask",
+      "maskError": 0.0106375,
+      "warnings": [
+        "1 hidden curve(s) remain below the desired radius. The radius is a refinement goal, not a globally enforced feasibility guarantee."
+      ],
+      "visualReview": "Checked editable fit at 1.06%. Main leaf survives; reflected and printed details still contaminate the target and small border artifacts remain. Exact source paper labels/corners unavailable."
+    },
+    {
+      "id": "real-e9131a2d52b78220",
+      "status": "checked-derived-mask",
+      "maskError": 0.0045875,
+      "warnings": [],
+      "visualReview": "Counterexample: checked editable mask at 0.46% but source crop is undersized. A handle entering the paper is omitted by segmentation; its foot is mistaken for the notch. Do not count as a verified photo reconstruction."
+    }
+  ],
+  "interpretation": "The three additional derived-mask passes on the new-source cohort include one visibly incorrect crop. The 7/20 figure is not verified recovery of the original photographs. No original crop/feature/image/geometry/paper gate in the application has been changed.",
+  "rootCauses": [
+    {
+      "finding": "A visible-paper segmentation can turn an occluder into apparent background and produce a false notch.",
+      "evidence": "The independently constructed narrow-occluder fixture is incorrectly supported with a 30px notch error; the source teal-checker image shows the same failure pattern.",
+      "consequence": "A low body probability must not always be treated as evidence of exposed background. Maintain occlusion/visibility uncertainty or fit an underlying silhouette with appropriate evidence."
+    },
+    {
+      "finding": "Notch plus lower-edge lines do not determine a general projective overlap. The affine proposal supplies an extra parallelogram assumption.",
+      "evidence": "On the existing floral/striped reference, the notch is within 9.62px but the right corner is off by 117.81px (15.02% of reference side), beyond its 15px reference uncertainty.",
+      "consequence": "Use additional source evidence for perspective, and retain uncertain corners when it is absent. A valid fit to the cropped target cannot supply independent crop verification."
+    },
+    {
+      "finding": "Current synthetic scene distractors never occlude the selected heart.",
+      "evidence": "foreground_scenes.py rejects distractor pixels intersecting the selected body, and foreground-scene-report.py documents that the body is always in front.",
+      "consequence": "Add separately labelled foreground occlusion examples, retaining visible paper, hidden paper/occluder, and background as distinct evidence. Preserve exact latent geometry without presenting occluded material pixels as observed."
+    }
+  ],
+  "verification": {
+    "sourceFilesVerified": 891,
+    "allStagesPassed": true,
+    "syntheticAndAnalyticTestsPassed": 11,
+    "allTwentyFallbackPhotoPanelsInspected": true,
+    "allFiveNewAndFourChangedExportsInspected": true,
+    "allPriorCropsMasksCoverageAndPassFailOutcomesRetained": true,
+    "fullRepositoryQA": "Complete: 865 application tests (one skipped), 989 inverse tests, type checking, lint and build. See notch-overlap-qa.json."
+  },
+  "artifactsSha256": {
+    "tmp/heart-learning/notch-local-support-v1/plan.json": "722fab0a5efe8978b2a60cf669d4cf0b215535bfd637eb46719f93c2052024f2",
+    "tmp/heart-learning/notch-local-support-v1/state.json": "ba7614f1ff6b4937544e19f4e0bfad3d0ccfd12c99ca42115bf397d3247aed2a",
+    "tmp/heart-learning/notch-local-support-v1/source.json": "eea5a9c31ade7ef9d2044c975e5ed3d4fbbcd103acc797ea01de5024f069f0ae",
+    "tmp/heart-learning/notch-local-support-v1/checks.json": "70cbfc0d9a3bdc16d5d27a95ac5cb78d7aebbb170539e0631699d99218d5d39d",
+    "tmp/heart-learning/notch-local-support-v1/results/report.json": "2881e420c967a2e9358ee7d0707729c151bbff7e14e14e1ae020ab95b4118846",
+    "tmp/heart-learning/notch-local-support-v1/pipeline/report.json": "d53d0e06728e11279c4830571a9a564189253876b93eaf638e90ba1776ac30b7",
+    "tmp/heart-learning/notch-local-support-v1/editable/results.json": "3a1c71f8657018a45cbf553845615bf728d3976d96e2a88dc7208bd9db8c3664",
+    "tmp/heart-learning/notch-local-support-v1/selection-audit.json": "1447e16eb22e6360060500afb9109e0ce403a78c7204fbf72ed5aee455e58bcb",
+    "tmp/heart-learning/notch-local-support-v1/source-paper-scores.json": "9a42c81d900130e8072953afad7cb7b54c862429803605690cd9554b91f2d6d5",
+    "tmp/heart-learning/notch-local-support-v1/corner-audit.json": "8fdc42136cac35bd2eb36016411e80f60a3ef5a16875f52c9187f56c5aca57d7",
+    "tmp/heart-learning/notch-local-support-v1/occlusion-regression.mjs": "42286ffe57b2c38f9f23e26122098f439b7654d9b36a803cd3b07c052ba97c5c",
+    "tmp/heart-learning/notch-local-support-v1/occlusion-regression.json": "951b51b9f19615b56453a343d6cad0987d7c68168315659a0b4e31bb3099ed63",
+    "tmp/heart-learning/notch-local-support-v1/occlusion-regression.png": "d0afebbb76cb515cb3c772b214fad4d0577b3f3c5fa06ea97a63340d35b9ffa1"
+  }
+}

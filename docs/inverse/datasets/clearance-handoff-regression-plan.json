@@ -1,0 +1,88 @@
+{
+  "schema": 1,
+  "status": "prepared",
+  "purpose": "Separate a local verification-tail discard and a late routing-repair failure from the newly retained coarse-paper candidates.",
+  "productionCommit": "2cdfd25",
+  "beforeCommit": "0a3e68d8e9bf1bfe7f57d85721ea0e7d418e724e",
+  "arms": [
+    "before",
+    "current",
+    "handoff-tail"
+  ],
+  "fixedClock": {
+    "steps": 45,
+    "clockAfterStep40": 800,
+    "clockAfterStep44": 1100,
+    "clockAfterFinalPaperAudit": 1250,
+    "overallDeadlines": [
+      10000,
+      1200
+    ],
+    "expected": "Before/current discard a fully checked continuation at the 1200 ms local cap; candidate retains it only while the original caller deadline remains."
+  },
+  "freshCases": [
+    "clearance-feature-handoff",
+    "sloth-y-minus-1"
+  ],
+  "freshRepeats": 3,
+  "fixedOrder": [
+    "before",
+    "current",
+    "handoff-tail"
+  ],
+  "freshArmOrders": [
+    [
+      "before",
+      "current"
+    ],
+    [
+      "current",
+      "before"
+    ],
+    [
+      "before",
+      "current"
+    ]
+  ],
+  "inputPolicy": "Original test masks/configuration, no preprocessing or geometry-rule changes; fixed experiment controls only the clock.",
+  "queueAfter": "photo-sampling-support-v1 controller 74653",
+  "artifactRoot": "tmp/heart-learning/clearance-handoff-regression-v1",
+  "observedSuite": {
+    "tests": 947,
+    "passed": 945,
+    "failed": 2,
+    "source": "tmp/heart-learning/coarse-paper-recheck-v1/qa/test.log",
+    "failures": [
+      {
+        "test": "fresh fitting continues an unfinished verified initializer within the remaining search allowance",
+        "diagnostic": "tmp/heart-learning/clearance-handoff-regression-v1/diagnostic-0.json",
+        "repairSeconds": 1.2483733340000007,
+        "localCapSeconds": 1.2,
+        "sourceError": 0.03305625,
+        "initialError": 0.07486875,
+        "sourceFeaturesPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "returnedReason": "deadline",
+        "continuationReturned": false
+      },
+      {
+        "test": "fresh y-minus-1 fitting carries repaired clearance through final export",
+        "diagnostic": "tmp/heart-learning/clearance-handoff-regression-v1/diagnostic-1.json",
+        "repairBudgetSeconds": 1.0351004580000007,
+        "repairSteps": 85,
+        "repairedImageError": 0.014448,
+        "paperResolution": 700,
+        "paperStatus": "uncertain",
+        "returnedReason": "paper_rejected",
+        "finalFallbackImageError": 0.056432
+      }
+    ]
+  },
+  "limitations": [
+    "Observed failures are not yet attributed to the candidate-retention change.",
+    "The local-deadline change is experimental in a copied runtime.",
+    "The second failure has an unverified paper state, not merely a discarded verified continuation.",
+    "All original image, feature, geometry, material and overall timing gates stay unchanged."
+  ]
+}

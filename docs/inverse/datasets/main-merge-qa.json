@@ -1,0 +1,129 @@
+{
+  "date": "2026-10-18",
+  "mainParent": "1648e4e6dfce2f1a9195215e8438d13190a999b5",
+  "solverParent": "885302a0d89bed82e3ae573ed2c8487e252badec",
+  "scope": "Integration of the solver branch with current main; no solver algorithm changes.",
+  "conflictResolutions": [
+    "Preserve main SVG import reports, stitched subpaths and bilingual metadata alongside explicit physical overlap dimensions.",
+    "Preserve null-safe result formatting, omit unavailable cut clearance, and report free-border changes separately from protected-motif error.",
+    "Retain both result-panel test suites and update the dynamic fixture for the current progress-event API.",
+    "A deliberately incomplete SVG now produces four warnings: its existing unjoined/skipped paths plus the stricter validator detecting a reversed final segment."
+  ],
+  "checks": {
+    "typecheck": "passed (0 errors, 6 existing accessibility warnings)",
+    "lint": "passed (0 errors, 4 existing warnings)",
+    "build": "passed",
+    "applicationTests": {
+      "passed": 1570,
+      "skipped": 1,
+      "files": 112
+    },
+    "importDependentInverseTests": {
+      "passed": 25,
+      "files": [
+        "automatic.test.mjs",
+        "boundary-value.test.mjs",
+        "graph-oracle.test.mjs",
+        "reference.test.mjs"
+      ]
+    }
+  },
+  "unchangedInverseEvidence": {
+    "runtimeTree": "312a3b9c55c752b9660251974045c01132df5240",
+    "identicalToSolverParent": true,
+    "testSourcesIdentical": true,
+    "priorRecord": "finalist-release-qa.json",
+    "priorPassed": 1109,
+    "note": "The unchanged full inverse suite was not rerun for this merge. Its four importer-dependent suites were rerun because main changes the SVG parser and gallery sources. The only changed scripts/inverse file is the reference benchmark catalogue loader retained from main."
+  },
+  "browser": {
+    "browser": "Chromium 145.0.7632.6",
+    "paint": [
+      {
+        "name": "star",
+        "pageErrors": [],
+        "engineError": 0.0016,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "templateChecksPassed": true,
+        "sourceEditableError": 0.0016
+      },
+      {
+        "name": "top-hat",
+        "pageErrors": [],
+        "engineError": 0.024119543650793652,
+        "selectedCounts": [
+          2,
+          2
+        ],
+        "templateChecksPassed": true,
+        "sharedLengthMm": 92.32091192994437,
+        "failure": "AssertionError [ERR_ASSERTION]: The hat must retain its long exact shared cuts.\n    at file:///Users/ahle/repos/julehjerte-solver-main-merge-20261018/scripts/inverse/paint-browser-test.mjs:581:13"
+      },
+      {
+        "name": "unequal-lobes",
+        "pageErrors": [],
+        "engineError": 0.0004875,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "templateChecksPassed": true,
+        "sourceEditableError": 0.0004625
+      }
+    ],
+    "svgRoundTrips": [
+      {
+        "browser": "chromium",
+        "id": "classic-3x3",
+        "errors": [],
+        "maximumControlDrift": 0,
+        "coordinates": 64,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "id": "amy-pattern",
+        "errors": [],
+        "maximumControlDrift": 0,
+        "coordinates": 256,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "id": "triple-heart",
+        "errors": [],
+        "maximumControlDrift": 5.684341886080802e-14,
+        "coordinates": 256,
+        "passed": true
+      }
+    ],
+    "loading": [
+      {
+        "route": "/en/editor/",
+        "passed": true
+      },
+      {
+        "route": "/en/editor/paint/",
+        "passed": true
+      }
+    ],
+    "visualReview": "Inspected all three Paint result screenshots. Star and synthetic unequal-lobe photo display correctly; the free-border top-hat has visible fitting defects."
+  },
+  "preexistingFailure": {
+    "case": "top-hat",
+    "status": "reproduced on original solver preview and merged preview",
+    "engineError": 0.024119543650793652,
+    "sharedLengthMm": 92.32091192994437,
+    "requiredSharedLengthMm": 200,
+    "identicalInputAndGeometrySha256": {
+      "prepared.json": "e282afffeba691902afe6edd78d22a598486f4046013142a37c5f01ac6041f2b",
+      "cut_geometry.json": "2224253295d8add886f7a9997e66d2d9f0c7ef9288da83949ba553988a7a5ad7"
+    },
+    "sharedCurveExportIdentity": "passed before the length assertion failed",
+    "note": "This quality failure remains unresolved; it is not counted as a passing browser test. The prepared input and engine cutting geometry are byte-identical before and after the merge. Exported SVG bytes differ because main retains additional metadata."
+  },
+  "localArtifacts": "tmp/merge-qa/ in the isolated merge worktree; baseline replay in the solver worktree at tmp/merge-baseline-20261018/"
+}

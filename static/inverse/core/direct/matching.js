@@ -1,15 +1,16 @@
 /** A preference for reusing one physical cutting template. */
-import {pathPolyline} from '../bezier.js';
+import {Cubic,pathPolyline} from '../bezier.js';
 import {curvesOf} from '../graph.js';
 import {gridModel} from './grid.js';
+import {sourceWeights} from '../image-reference.js';
 
 export function symmetryEvidence(source){
-  const {mask,resolution:n,validMask}=source;let incompatiblePairs=0,observed=0;
+  const {mask,resolution:n,validMask}=source,weights=source.weights?sourceWeights(source):null;let incompatiblePairs=0,observed=0;
   for(let y=0;y<n;y++)for(let x=0;x<n;x++){
-    const i=y*n+x,j=x*n+y;if(validMask&&!validMask[i])continue;observed++;
-    if(x>y&&(!validMask||validMask[j])&&mask[i]!==mask[j])incompatiblePairs++;
+    const i=y*n+x,j=x*n+y;if(validMask&&!validMask[i])continue;observed+=weights?weights[i]:1;
+    if(x>y&&(!validMask||validMask[j])&&mask[i]!==mask[j])incompatiblePairs+=weights?Math.min(weights[i],weights[j]):1;
   }
-  return{minimumIdenticalImageError:incompatiblePairs/Math.max(1,observed),method:'Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.'};
+  return{minimumIdenticalImageError:observed?incompatiblePairs/observed:Infinity,method:weights?'Each conflicting diagonal pair forces at least its smaller pixel weight in error, normalized by total observed weight.':'Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.'};
 }
 
 export function matchingGrid(model,blend=.5){
@@ -21,9 +22,19 @@ export function matchingGrid(model,blend=.5){
 
 /** Match already fitted free curves in local sheet coordinates. */
 export function matchingPaths(paths,blend=.5){
-  const [A,B]=paths;if(A.length!==B.length||A.some((p,i)=>p.length!==B[i].length))return null;
+  const [A,B]=templatePathOrder(paths).map(f=>f.map(p=>p.path));if(A.length!==B.length||A.some((p,i)=>p.length!==B[i].length))return null;
   const first=A.map((p,i)=>p.map((c,j)=>c.map((v,k)=>v.map((x,axis)=>(1-blend)*x+blend*B[i][j][k][1-axis]))));
   return[first,first.map(p=>p.map(c=>c.map(([x,y])=>[y,x])))];
+}
+
+/** Pair physical cuts, independently of graph serialization and traversal.
+ * Orient toward the opposite edge before sorting by the starting endpoint.
+ */
+export function templatePathOrder(paths){
+  return paths.map((family,f)=>family.map((path,index)=>{
+    const reverse=path[0][0][1-f]>path.at(-1)[3][1-f];
+    return{index,reverse,path:reverse?path.toReversed().map(c=>c.toReversed()):path};
+  }).sort((a,b)=>a.path[0][0][f]-b.path[0][0][f]));
 }
 
 const cache=new WeakMap();
@@ -31,10 +42,12 @@ export function matchingGroups(graph){
   if(cache.has(graph))return cache.get(graph);
   const [A,B]=graph.families;
   if(A.length!==B.length)return [];
+  const order=templatePathOrder(graph.nested());
   const parent=Array.from({length:graph.points.length},(_,i)=>i);
   const root=i=>{while(parent[i]!==i){parent[i]=parent[parent[i]];i=parent[i];}return i;};
   for(let i=0;i<A.length;i++){
-    const a=graph.paths[A[i]],b=graph.paths[B[i]];if(a.length!==b.length)return [];
+    const entries=f=>{const p=order[f][i],cuts=graph.paths[graph.families[f][p.index]];return p.reverse?cuts.toReversed().map(([e,d])=>[e,-d]):cuts;};
+    const a=entries(0),b=entries(1);if(a.length!==b.length)return [];
     for(let j=0;j<a.length;j++){
       const [ea,da]=a[j],[eb,db]=b[j],ia=da===1?graph.edges[ea]:graph.edges[ea].toReversed(),ib=db===1?graph.edges[eb]:graph.edges[eb].toReversed();
       for(let k=0;k<4;k++)for(let axis=0;axis<2;axis++)parent[root(2*ia[k]+axis)]=root(2*ib[k]+1-axis);
@@ -82,11 +95,16 @@ export function matchingSummary(solution){
     for(let i=1;i<points.length;i++)arc.push(arc[i-1]+Math.hypot(points[i][0]-points[i-1][0],points[i][1]-points[i-1][1]));
     let at=0;return Array.from({length:101},(_,i)=>{const d=arc.at(-1)*i/100;while(at<arc.length-2&&arc[at+1]<d)at++;const t=(d-arc[at])/Math.max(1e-12,arc[at+1]-arc[at]);return points[at].map((v,k)=>v+t*(points[at+1][k]-v));});
   };
+  const controlDifference=(A,B)=>{
+    if(A.length!==B.length)return Infinity;
+    let maximum=0;for(let j=0;j<A.length;j++)for(let k=0;k<4;k++)maximum=Math.max(maximum,Math.hypot(A[j].p[k][0]-B[j].p[k][1],A[j].p[k][1]-B[j].p[k][0]));
+    return maximum;
+  };
+  const paths=solution.paths.map((family,f)=>family.map((_,i)=>curvesOf(solution,f,i).map(c=>c.p))),[left,right]=templatePathOrder(paths);
   let sum=0,count=0,identical=true;
-  for(let i=0;i<a.length;i++){
-    const A=curvesOf(solution,0,i),B=curvesOf(solution,1,i);
-    if(A.length!==B.length)identical=false;
-    else for(let j=0;j<A.length;j++)for(let k=0;k<4;k++)if(Math.hypot(A[j].p[k][0]-B[j].p[k][1],A[j].p[k][1]-B[j].p[k][0])>=1e-7)identical=false;
+  for(let position=0;position<a.length;position++){
+    const A=left[position].path.map(c=>new Cubic(c)),B=right[position].path.map(c=>new Cubic(c));
+    if(controlDifference(A,B)>=1e-7)identical=false;
     const aa=sample(A),bb=sample(B);for(let j=0;j<aa.length;j++){sum+=(aa[j][0]-bb[j][1])**2+(aa[j][1]-bb[j][0])**2;count++;}
   }
   return{identical,rmsTemplateDifferenceMm:Math.sqrt(sum/Math.max(1,count)),comparison:'Corresponding cuts sampled at uniform arc length in local template coordinates.'};

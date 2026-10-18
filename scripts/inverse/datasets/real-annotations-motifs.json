@@ -1,0 +1,418 @@
+{
+  "schema": "woven-heart-real-annotations-1",
+  "coordinateConvention": "source-image pixel edges; x right, y down; no EXIF transform",
+  "target": "Visible selected basket body including both papers; exclude handles, objects, shadows and other hearts. Unknown attachment/clipping regions and a band around manually traced boundaries receive zero supervision weight.",
+  "scope": "Two assistant-reviewed non-checker motif body annotations outside existing source QA groups. The original pilot and earlier supplement are unchanged. Cross-corpus motif review and global allocation remain pending; these labels have not entered training.",
+  "instances": [
+    {
+      "id": "real-2044b1d98ed6f262-body-1",
+      "assetId": "real-2044b1d98ed6f262",
+      "imageSha256": "2044b1d98ed6f262c52cdc80544b8b22ea909a2d8923dbfc27e4c41f91da3047",
+      "sourceSize": [
+        1000,
+        1334
+      ],
+      "review": {
+        "method": "assistant-visual-polygon",
+        "status": "initial-reviewed",
+        "viewSize": [
+          500,
+          667
+        ],
+        "note": "Red/green boar motif on a pale shaded surface. Both papers are foreground. The left lobe reaches the source frame; its unobserved continuation is not inferred. Handle, cast shadow and bottom wooden surface are excluded. The handle attachment and clipped boundary are uncertain. Coordinates traced on a half-size source view; no original cuts or surveyed overlap corners are available. Review-size source outlines and exported known/unknown overlays were inspected."
+      },
+      "motif": {
+        "candidateFamily": "boar-framed-silhouette",
+        "crossCorpusReview": "pending"
+      },
+      "allocation": "unassigned",
+      "pose": "flat",
+      "foregroundPolygons": [
+        [
+          [
+            474,
+            502
+          ],
+          [
+            536,
+            464
+          ],
+          [
+            600,
+            442
+          ],
+          [
+            666,
+            436
+          ],
+          [
+            732,
+            444
+          ],
+          [
+            794,
+            464
+          ],
+          [
+            850,
+            498
+          ],
+          [
+            900,
+            546
+          ],
+          [
+            932,
+            604
+          ],
+          [
+            950,
+            666
+          ],
+          [
+            952,
+            730
+          ],
+          [
+            946,
+            790
+          ],
+          [
+            928,
+            848
+          ],
+          [
+            904,
+            894
+          ],
+          [
+            870,
+            932
+          ],
+          [
+            468,
+            1306
+          ],
+          [
+            458,
+            1314
+          ],
+          [
+            98,
+            932
+          ],
+          [
+            44,
+            872
+          ],
+          [
+            20,
+            828
+          ],
+          [
+            0,
+            780
+          ],
+          [
+            0,
+            648
+          ],
+          [
+            12,
+            606
+          ],
+          [
+            36,
+            556
+          ],
+          [
+            78,
+            510
+          ],
+          [
+            126,
+            478
+          ],
+          [
+            178,
+            448
+          ],
+          [
+            236,
+            430
+          ],
+          [
+            286,
+            424
+          ],
+          [
+            342,
+            430
+          ],
+          [
+            390,
+            446
+          ],
+          [
+            428,
+            470
+          ]
+        ]
+      ],
+      "unknownPolygons": [
+        [
+          [
+            420,
+            460
+          ],
+          [
+            476,
+            498
+          ],
+          [
+            520,
+            466
+          ],
+          [
+            534,
+            516
+          ],
+          [
+            486,
+            560
+          ],
+          [
+            438,
+            526
+          ]
+        ],
+        [
+          [
+            0,
+            610
+          ],
+          [
+            12,
+            610
+          ],
+          [
+            12,
+            812
+          ],
+          [
+            0,
+            812
+          ]
+        ]
+      ],
+      "boundaryUncertaintyPixels": 6,
+      "overlapCorners": null
+    },
+    {
+      "id": "real-45744a03afddccb1-body-1",
+      "assetId": "real-45744a03afddccb1",
+      "imageSha256": "45744a03afddccb18b4b01fb770d6cfdcfbd35d25dad796e99b62a6dd9cbad33",
+      "sourceSize": [
+        2448,
+        3264
+      ],
+      "review": {
+        "method": "assistant-visual-polygon",
+        "status": "initial-reviewed",
+        "viewSize": [
+          612,
+          816
+        ],
+        "note": "White/green rabbit motif on coarse fabric with a strong cast shadow. Both sheets are foreground; handle, carpet and shadow are background. The handle attachment is uncertain. Coordinates traced on a quarter-size source view; the local overlap junction does not establish surveyed corners or cutting paths. Review-size source outlines and exported known/unknown overlays were inspected."
+      },
+      "motif": {
+        "candidateFamily": "rabbit-framed-silhouette",
+        "crossCorpusReview": "pending"
+      },
+      "allocation": "unassigned",
+      "pose": "flat",
+      "foregroundPolygons": [
+        [
+          [
+            1092,
+            1216
+          ],
+          [
+            1196,
+            1128
+          ],
+          [
+            1316,
+            1056
+          ],
+          [
+            1468,
+            1016
+          ],
+          [
+            1620,
+            1004
+          ],
+          [
+            1760,
+            1016
+          ],
+          [
+            1900,
+            1060
+          ],
+          [
+            2032,
+            1128
+          ],
+          [
+            2144,
+            1224
+          ],
+          [
+            2224,
+            1336
+          ],
+          [
+            2272,
+            1468
+          ],
+          [
+            2296,
+            1616
+          ],
+          [
+            2296,
+            1756
+          ],
+          [
+            2272,
+            1896
+          ],
+          [
+            2228,
+            2024
+          ],
+          [
+            2160,
+            2140
+          ],
+          [
+            2104,
+            2220
+          ],
+          [
+            1276,
+            3072
+          ],
+          [
+            1236,
+            3124
+          ],
+          [
+            1136,
+            3108
+          ],
+          [
+            1052,
+            3056
+          ],
+          [
+            212,
+            2216
+          ],
+          [
+            148,
+            2124
+          ],
+          [
+            80,
+            1996
+          ],
+          [
+            48,
+            1872
+          ],
+          [
+            24,
+            1740
+          ],
+          [
+            24,
+            1604
+          ],
+          [
+            48,
+            1468
+          ],
+          [
+            100,
+            1348
+          ],
+          [
+            180,
+            1236
+          ],
+          [
+            280,
+            1160
+          ],
+          [
+            400,
+            1104
+          ],
+          [
+            536,
+            1068
+          ],
+          [
+            676,
+            1064
+          ],
+          [
+            808,
+            1080
+          ],
+          [
+            924,
+            1128
+          ],
+          [
+            1004,
+            1172
+          ]
+        ]
+      ],
+      "unknownPolygons": [
+        [
+          [
+            936,
+            1012
+          ],
+          [
+            1240,
+            972
+          ],
+          [
+            1256,
+            1164
+          ],
+          [
+            1148,
+            1296
+          ],
+          [
+            1036,
+            1244
+          ],
+          [
+            948,
+            1152
+          ]
+        ]
+      ],
+      "boundaryUncertaintyPixels": 12,
+      "overlapCorners": null
+    }
+  ]
+}

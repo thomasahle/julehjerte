@@ -1,0 +1,2410 @@
+{
+  "implementationCommits": [
+    "ddf2a21",
+    "ece355f"
+  ],
+  "baselineCommit": "e658fba",
+  "methodology": "Reuse only image-derived grid initializations from the same solve. The unchanged source mask/weights remain the accuracy reference. No template geometry or crop changes are supplied to fitting. CPU benchmarks run serially; actual browser import, conversion and exports are measured separately.",
+  "initialBrowserProbe": {
+    "artifact": "tmp/matching-default-browser-probe",
+    "failure": "AssertionError [ERR_ASSERTION]: A reusable hat template must be found without forcing mask symmetry.\n\nfalse !== true\n\n    at file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/paint-browser-test.mjs:237:42",
+    "matchingPreference": {
+      "enabled": true,
+      "identical": false,
+      "rmsTemplateDifferenceMm": 32.37004683912292,
+      "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+      "minimumIdenticalImageError": 0,
+      "method": "Each conflicting diagonal pair forces at least its smaller pixel weight in error, normalized by total observed weight.",
+      "baselineImageError": 0.0029584750566893424,
+      "maximumAdditionalImageError": 0.01,
+      "maximumMatchingImageError": 0.012958475056689343,
+      "attempts": [
+        {
+          "proposal": "copy-first-sheet",
+          "refined": false,
+          "imageError": 0.6583404195011338,
+          "withinAllowance": false
+        },
+        {
+          "proposal": "copy-second-sheet",
+          "refined": false,
+          "imageError": 0.6586947278911565,
+          "withinAllowance": false
+        },
+        {
+          "proposal": "copy-first-sheet",
+          "refined": true,
+          "steps": 200,
+          "imageError": 0.5334821428571429,
+          "withinAllowance": false
+        },
+        {
+          "proposal": "copy-second-sheet",
+          "refined": true,
+          "steps": 200,
+          "imageError": 0.5986217403628118,
+          "withinAllowance": false
+        }
+      ],
+      "status": "no_valid_matching_candidate",
+      "seconds": 1.3155,
+      "selectedImageError": 0.0029584750566893424,
+      "additionalImageError": 0
+    }
+  },
+  "hunodan": {
+    "artifact": "tmp/matching-seeds-hunodan",
+    "criteria": "Each prepare + solve + validate + export <=10 seconds; independent error <= that case\u2019s validated release error, plus at most 1 percentage point for an identical pair; unchanged geometry, strict paper and substantial feature checks. Decode and independent external replay are timed separately. Optional retained snapshots reproduce the compute-worker observer; thread startup and message transfer are excluded.",
+    "runtime": "v25.6.1",
+    "cpu": "Apple M2 Pro",
+    "cfg": {
+      "algorithm": "auto",
+      "polygonal": false,
+      "identicalSheets": false,
+      "resolution": 400,
+      "fitTolerance": 0.5,
+      "maxSpan": 15,
+      "smoothRadius": 0,
+      "snapRadius": 1.5,
+      "borderRadius": 3,
+      "gridPortals": false,
+      "neighbors": 16,
+      "connectorVariants": 2,
+      "junctionBalancePenalty": 0,
+      "gridPreference": 0,
+      "sharpPenalty": 50,
+      "acutePenalty": 30,
+      "turnPenalty": 3,
+      "maxTurn": 175,
+      "localNeighborhoodFactor": 8,
+      "roundHidden": false,
+      "timeLimit": 10,
+      "trials": 0,
+      "earlyStop": false
+    },
+    "medianSeconds": 5.118740854,
+    "maximumSeconds": 8.297166415999992,
+    "passed": 22,
+    "results": [
+      {
+        "id": "hjfig-01",
+        "seconds": 4.428367458,
+        "previousError": 0.009799111111111111,
+        "error": 0.009799111111111111,
+        "passed": true,
+        "matchingStatus": "image_bound_exceeds_allowance"
+      },
+      {
+        "id": "hjfig-02",
+        "seconds": 4.654179500000001,
+        "previousError": 0.013952,
+        "error": 0.013952,
+        "passed": true,
+        "matchingStatus": "matched"
+      },
+      {
+        "id": "hjfig-03",
+        "seconds": 3.8404719999999997,
+        "previousError": 0.006634666666666666,
+        "error": 0.006634666666666666,
+        "passed": true,
+        "matchingStatus": "image_bound_exceeds_allowance"
+      },
+      {
+        "id": "hjfig-04",
+        "seconds": 4.105012833999999,
+        "previousError": 0.013824,
+        "error": 0.013824,
+        "passed": true,
+        "matchingStatus": "matched"
+      },
+      {
+        "id": "hjfig-05",
+        "seconds": 3.0101437080000033,
+        "previousError": 0.009060571106551963,
+        "error": 0.009060571106551963,
+        "passed": true,
+        "matchingStatus": "image_bound_exceeds_allowance"
+      },
+      {
+        "id": "hjfla-01",
+        "seconds": 5.298383791,
+        "previousError": 0.013414171006944444,
+        "error": 0.013414171006944444,
+        "passed": true,
+        "matchingStatus": "image_bound_exceeds_allowance"
+      },
+      {
+        "id": "hjcur-01",
+        "seconds": 5.424732583999997,
+        "previousError": 0.00512,
+        "error": 0.00512,
+        "passed": true,
+        "matchingStatus": "image_bound_exceeds_allowance"
+      },
+      {
+        "id": "hjcur-02",
+        "seconds": 5.038534957999997,
+        "previousError": 0.005397333333333333,
+        "error": 0.005397333333333333,
+        "passed": true,
+        "matchingStatus": "image_bound_exceeds_allowance"
+      },
+      {
+        "id": "hjcur-03",
+        "seconds": 5.198946750000003,
+        "previousError": 0.004522666666666667,
+        "error": 0.004522666666666667,
+        "passed": true,
+        "matchingStatus": "image_bound_exceeds_allowance"
+      },
+      {
+        "id": "hjcur-04",
+        "seconds": 7.0986823749999965,
+        "previousError": 0.0056248888888888885,
+        "error": 0.0056248888888888885,
+        "passed": true,
+        "matchingStatus": "image_bound_exceeds_allowance"
+      },
+      {
+        "id": "hjcur-05",
+        "seconds": 3.5035767909999995,
+        "previousError": 0.009436444444444445,
+        "error": 0.009436444444444445,
+        "passed": true,
+        "matchingStatus": "image_bound_exceeds_allowance"
+      },
+      {
+        "id": "hjhih-01",
+        "seconds": 6.405548999999999,
+        "previousError": 0.0060202958468683725,
+        "error": 0.0060202958468683725,
+        "passed": true,
+        "matchingStatus": "image_bound_exceeds_allowance"
+      },
+      {
+        "id": "hjhih-02",
+        "seconds": 4.930927667000003,
+        "previousError": 0.003899406226779104,
+        "error": 0.003899406226779104,
+        "passed": true,
+        "matchingStatus": "image_bound_exceeds_allowance"
+      },
+      {
+        "id": "hjhih-04",
+        "seconds": 7.582407958000011,
+        "previousError": 0.007678910190418844,
+        "error": 0.007678910190418844,
+        "passed": true,
+        "matchingStatus": "image_bound_exceeds_allowance"
+      },
+      {
+        "id": "hjstr-01",
+        "seconds": 4.232771541999988,
+        "previousError": 0.007543348420030173,
+        "error": 0.007543348420030173,
+        "passed": true,
+        "matchingStatus": "image_bound_exceeds_allowance"
+      },
+      {
+        "id": "hjstr-02",
+        "seconds": 6.189794041000001,
+        "previousError": 0.004339250493096647,
+        "error": 0.004339250493096647,
+        "passed": true,
+        "matchingStatus": "image_bound_exceeds_allowance"
+      },
+      {
+        "id": "hjstr-03",
+        "seconds": 8.297166415999992,
+        "previousError": 0.005519980869380381,
+        "error": 0.005519980869380381,
+        "passed": true,
+        "matchingStatus": "image_bound_exceeds_allowance"
+      },
+      {
+        "id": "hjsta-01",
+        "seconds": 4.799921667000002,
+        "previousError": 0.007936288088642659,
+        "error": 0.007936288088642659,
+        "passed": true,
+        "matchingStatus": "no_valid_matching_candidate"
+      },
+      {
+        "id": "hjsta-02",
+        "seconds": 4.302254666999986,
+        "previousError": 0.0036485460069444445,
+        "error": 0.0036485460069444445,
+        "passed": true,
+        "matchingStatus": "image_bound_exceeds_allowance"
+      },
+      {
+        "id": "hjsta-03",
+        "seconds": 6.2165872090000045,
+        "previousError": 0.012339030193129683,
+        "error": 0.012339030193129683,
+        "passed": true,
+        "matchingStatus": "image_bound_exceeds_allowance"
+      },
+      {
+        "id": "hjsta-04",
+        "seconds": 6.713026708000005,
+        "previousError": 0.005053050026595,
+        "error": 0.005053050026595,
+        "passed": true,
+        "matchingStatus": "image_bound_exceeds_allowance"
+      },
+      {
+        "id": "hjsta-05",
+        "seconds": 5.956259874999989,
+        "previousError": 0.010624446293860237,
+        "error": 0.010624446293860237,
+        "passed": true,
+        "matchingStatus": "image_bound_exceeds_allowance"
+      }
+    ]
+  },
+  "web": {
+    "artifact": "tmp/matching-seeds-web",
+    "cfg": {
+      "algorithm": "auto",
+      "polygonal": false,
+      "identicalSheets": false,
+      "resolution": 400,
+      "fitTolerance": 0.5,
+      "maxSpan": 15,
+      "smoothRadius": 0,
+      "snapRadius": 1.5,
+      "borderRadius": 3,
+      "gridPortals": false,
+      "neighbors": 16,
+      "connectorVariants": 2,
+      "junctionBalancePenalty": 0,
+      "gridPreference": 0,
+      "sharpPenalty": 50,
+      "acutePenalty": 30,
+      "turnPenalty": 3,
+      "maxTurn": 175,
+      "localNeighborhoodFactor": 8,
+      "roundHidden": false,
+      "width": 100,
+      "timeLimit": 10,
+      "trials": 0
+    },
+    "methodology": "Original source pixels and a pre-annotated rough ROI only. First automatic crop is fixed before preparation/fitting. No corrected corners or template geometry. Proposal presence and mask agreement do not establish correct cropping or ground-truth recovery.",
+    "counts": {
+      "candidate_needs_review": 1,
+      "candidate_checks_passed": 6,
+      "no_crop": 1
+    },
+    "results": [
+      {
+        "id": "danish-tree-red",
+        "status": "candidate_needs_review",
+        "seconds": 9.91541,
+        "previousError": 0.07024375,
+        "error": 0.07024375
+      },
+      {
+        "id": "danish-tree-green",
+        "status": "candidate_checks_passed",
+        "seconds": 8.193117125,
+        "previousError": 0.011375,
+        "error": 0.011375
+      },
+      {
+        "id": "bibel-checker-2",
+        "status": "candidate_checks_passed",
+        "seconds": 3.6828681670000005,
+        "previousError": 0.01745625,
+        "error": 0.01745625
+      },
+      {
+        "id": "bibel-checker-3",
+        "status": "candidate_checks_passed",
+        "seconds": 5.48844325,
+        "previousError": 0.01486875,
+        "error": 0.01486875
+      },
+      {
+        "id": "bibel-checker-4",
+        "status": "candidate_checks_passed",
+        "seconds": 5.266553958999997,
+        "previousError": 0.0035125,
+        "error": 0.0035125
+      },
+      {
+        "id": "bibel-narrow-wide",
+        "status": "candidate_checks_passed",
+        "seconds": 10.124465375,
+        "previousError": 0.02026875,
+        "error": 0.02026875
+      },
+      {
+        "id": "bibel-nested-heart-red",
+        "status": "candidate_checks_passed",
+        "seconds": 11.295585541000001,
+        "previousError": 0.02806875,
+        "error": 0.02806875
+      },
+      {
+        "id": "bibel-angel",
+        "status": "no_crop",
+        "seconds": 0.925895875000002,
+        "previousError": null,
+        "error": null
+      }
+    ]
+  },
+  "qa": {
+    "applicationTests": {
+      "passed": 845,
+      "skipped": 1
+    },
+    "inverseTests": {
+      "passed": 521
+    },
+    "focusedApplicationTests": {
+      "passed": 52
+    },
+    "check": {
+      "errors": 0,
+      "existingWarnings": 7
+    },
+    "lint": true,
+    "build": true,
+    "logs": [
+      "tmp/matching-seeds-tests.log",
+      "tmp/matching-default-focused.log",
+      "tmp/matching-seeds-check.log",
+      "tmp/matching-seeds-lint.log",
+      "tmp/matching-seeds-build.log"
+    ]
+  },
+  "engineSourceHashes": {
+    "static/inverse/core/direct/finalize.js": "8d104df7ab08eba58baf277e3f9fa7d99cbcbaad887857624e1f5dbffc74d3f8",
+    "static/inverse/core/direct/fit.js": "e58046034ad0082453edcc794a89adb171a05b474328d6aee89da313f6683000",
+    "static/inverse/core/direct/prefer-matching.js": "63c04775b91417c5731ee6243b49deee2c11fc92ce257c2fbeb29f49bc9401c5"
+  },
+  "artifacts": {
+    "initialSeedProbe": "tmp/matching-seed-probe.log",
+    "integratedSeedProbe": "tmp/matching-seed-integrated.log",
+    "browser": "tmp/matching-seeds-browser"
+  },
+  "browserHarnessCommit": "e1bdbff",
+  "browser": {
+    "passed": 18,
+    "total": 18,
+    "timingMethod": "Page-clock timestamps from the Find click, worker requests/replies and the first visible, enabled Open in Draw button. DOM readiness is not a paint timestamp. Result capture and artifact writes happen afterward and have separate Node-clock durations. Version 1 solveAndConversionSeconds included harness capture and artifact writes and is not directly comparable.",
+    "harnessSourceHashes": {
+      "scripts/inverse/paint-browser-test.mjs": "d7180695203cb7b563678b228bf8bf0bcf670c684dbee2cf655253ca3c96f93e",
+      "scripts/inverse/paint-observer.mjs": "5b94da7de2cf22fa79dc7744c8a056430c23f37f37dd44add9f6fc19596b5dc2",
+      "scripts/inverse/motif-fixture.mjs": "4c735dc7b27f39ce30362830ef911b79347a8b7f43d01b4eaeaf5750460355f1",
+      "scripts/inverse/tree-fixture.mjs": "771d6383cf90e840c911543258e26cd82c5d287336e65f53898045f429a1d84a",
+      "scripts/inverse/web-photo-data.mjs": "52f805dc9f18f54e0a393a86892876bb8728d2efff4c386525834ad25e8150a0",
+      "scripts/inverse/stop-browser-hooks.mjs": "61774cef8a958c5ef62784142c52e8abecf51755b29d9c1a5494ccacba2bb220"
+    },
+    "workspaceSourceHashes": {
+      "static/inverse/worker.js": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70",
+      "static/inverse/worker-bootstrap.js": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+      "static/inverse/worker-controller.js": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+      "static/inverse/compute-worker.js": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+      "static/inverse/core/engine.js": "f4c7f3f11b4543b9270ef849d3924fd67ea722574abdef8a861b118cdf3731c1",
+      "static/inverse/core/stopped.js": "f2c50e6dca6ac2a1ea8d7b2fa1c5984109a5502dca728601f4e9e885ebf406a8",
+      "static/inverse/core/progress.js": "5034d4c14b1abdf9c656208a13f0d24cf7254a1ce6323f452bb45f39d67e5370",
+      "static/inverse/core/feature-recovery.js": "8bdb94171ff20e7bdd9e192b567a9721c6f6b6e7319e98fdeb75289a0dcb80bd",
+      "static/inverse/core/solver.js": "de7d3b887d0b2faf28af21ba9b29de331b4566ff5374523db15fbbb0487dd8ea",
+      "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+      "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+      "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+      "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+      "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+      "static/inverse/core/direct/prefer-matching.js": "63c04775b91417c5731ee6243b49deee2c11fc92ce257c2fbeb29f49bc9401c5",
+      "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+      "src/lib/inverse/engine.ts": "8f6674a430cb5f89ff597eb1f290a730173a5d82afcb42263a14762ded568618",
+      "static/inverse/core/direct/finalize.js": "8d104df7ab08eba58baf277e3f9fa7d99cbcbaad887857624e1f5dbffc74d3f8",
+      "static/inverse/core/direct/topology.js": "eafb18dc05980a06e4844f31e0ede16d0f1aee594590f282214d0793cda7b6a3",
+      "static/inverse/core/direct/fit.js": "e58046034ad0082453edcc794a89adb171a05b474328d6aee89da313f6683000",
+      "static/inverse/core/direct/share.js": "af031c51dace35702cfbde9ccf8c48989858ef405b631652521a8f538f01e352",
+      "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+      "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+      "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+      "src/lib/inverse/toHeartDesign.ts": "41edadce4a5be5b8c7dd977a3761e5c7992bb462633f8651e0d9f0293370e931",
+      "src/lib/inverse/simplifyCurves.ts": "c693b9eb86084926d941d7e60a1a38178156d081657feabce41ff03261714173",
+      "src/lib/editor/curveIssues.ts": "293535d5f73d3dd4c9a7bbfc1c83b25ba81558d593644743496cf9e8afa5358e",
+      "src/lib/components/paint/PaintPage.svelte": "a745be5102228e42c4f68aad6e03e6c6f028970670934665289cfccb240d3f3a",
+      "src/lib/inverse/conversionFidelity.ts": "45db43e0919b98cfe03c115bda7473896de0da1aeec89e94ee74bbaeffdbb589",
+      "static/inverse/core/direct/refine.js": "b5ee17d9c021b724011054544a33dfbdab798ed91adca9c32c6cbb8d2a5fc1ad",
+      "static/inverse/core/direct/primitive-selection.js": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904",
+      "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+      "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+      "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+      "static/inverse/core/direct/short-returns.js": "289b4bb963ae4f5b9fd068d2eb742fc5b025566c43409bf9c0ac3a14f909c3a9",
+      "src/lib/components/editor/SymmetryRows.svelte": "1bf99195778a11baf02bff2bf0ab9983a9ab6ae3d5d52b7f29f17eb0efb57884",
+      "src/lib/components/ui/toggle-group/toggle-group.svelte": "ef3ac7b6559268d4e5b8f34870b91939fc39a92718a5d90b650c383f0ca178d4",
+      "src/lib/components/paint/FramePanel.svelte": "9d048e201f9c83b3343d487f716dc835cfe9e61067fa228c8b4c043f7624bc1f",
+      "src/lib/components/paint/MaskToolPanel.svelte": "b37ff23378e86b8411f911a2c2106d8d3f410ab395b0c08915d4329b4ec143cb",
+      "src/lib/i18n/translations.ts": "74e3df14dde3b613ca34f009623061453c039a6ffd3d3c9078d3f5c428f03249",
+      "src/lib/components/paint/FindCutsPanel.svelte": "54ed98dbcfe167d1aa201bd11cb8412e240be0ee2b408445faeb3ef4b96e08d0"
+    },
+    "results": [
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "top-hat-preferred",
+        "passed": true,
+        "pageErrors": [],
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "matchingRequested": true,
+        "solveSettings": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "width": 100,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "timeLimit": 180,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "progressGeometry": true,
+          "earlyStop": false,
+          "removeSpecks": 0,
+          "fillHoles": 0,
+          "minRadius": 0.8,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "materialResolution": 360,
+          "trials": 12,
+          "requireMaterialCore": true,
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "symmetry": {}
+        },
+        "matchingPreference": {
+          "enabled": true,
+          "identical": true,
+          "rmsTemplateDifferenceMm": 0,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0,
+          "method": "Each conflicting diagonal pair forces at least its smaller pixel weight in error, normalized by total observed weight.",
+          "baselineImageError": 0.0029584750566893424,
+          "baselineCounts": [
+            2,
+            2
+          ],
+          "baselinePhase": 1,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.012958475056689343,
+          "attempts": [
+            {
+              "proposal": "copy-first-sheet",
+              "refined": false,
+              "imageError": 0.6583404195011338,
+              "withinAllowance": false
+            },
+            {
+              "proposal": "copy-second-sheet",
+              "refined": false,
+              "imageError": 0.6586947278911565,
+              "withinAllowance": false
+            },
+            {
+              "proposal": "matching-grid",
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "refined": true,
+              "steps": 200,
+              "imageError": 0.005456349206349206,
+              "withinAllowance": true,
+              "featuresPassed": true,
+              "geometryPassed": true,
+              "paperPassed": true
+            }
+          ],
+          "status": "matched",
+          "seconds": 0.7395,
+          "selectedImageError": 0.003941680839002267,
+          "additionalImageError": 0.000983205782312925
+        },
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0195,
+          "prepareRoundTripSeconds": 0.2522999999523163,
+          "preparedToSolveRequestSeconds": 0.00030000007152557374,
+          "solveRoundTripSeconds": 6.850199999928474,
+          "resultToReadySeconds": 0.12030000007152557,
+          "clickToReadySeconds": 7.242600000023842
+        },
+        "sourceEditableError": 0.004101119614512472,
+        "sharedLengthMm": 228.09324265500402,
+        "sharedSpans": 49,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.0007625
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000496875
+            }
+          ],
+          "originalSourceError": 0.004136550453514739,
+          "sourceError": 0.004101119614512472
+        }
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "top-hat-independent",
+        "passed": true,
+        "pageErrors": [],
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "matchingRequested": false,
+        "solveSettings": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "width": 100,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "timeLimit": 180,
+          "preferMatchingSheets": false,
+          "matchingErrorAllowance": 0.01,
+          "progressGeometry": true,
+          "earlyStop": false,
+          "removeSpecks": 0,
+          "fillHoles": 0,
+          "minRadius": 0.8,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "materialResolution": 360,
+          "trials": 12,
+          "requireMaterialCore": true,
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "symmetry": {}
+        },
+        "matchingPreference": {
+          "enabled": false,
+          "identical": false,
+          "rmsTemplateDifferenceMm": 32.37004683912292,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0,
+          "method": "Each conflicting diagonal pair forces at least its smaller pixel weight in error, normalized by total observed weight.",
+          "baselineImageError": 0.0029584750566893424,
+          "baselineCounts": [
+            2,
+            2
+          ],
+          "baselinePhase": 1,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.012958475056689343,
+          "attempts": [],
+          "status": "disabled",
+          "seconds": 0.009200000047683716,
+          "selectedImageError": 0.0029584750566893424,
+          "additionalImageError": 0
+        },
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.01889999997615814,
+          "prepareRoundTripSeconds": 0.23890000009536744,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 5.417,
+          "resultToReadySeconds": 0.13239999997615814,
+          "clickToReadySeconds": 5.8075
+        },
+        "sourceEditableError": 0.0029584750566893424,
+        "sharedLengthMm": 71.2051140422349,
+        "sharedSpans": 30,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00036875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000325
+            }
+          ],
+          "originalSourceError": 0.0029584750566893424,
+          "sourceError": 0.0029584750566893424
+        }
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "web-danish-tree-green",
+        "passed": true,
+        "pageErrors": [],
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "matchingRequested": true,
+        "solveSettings": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "width": 100,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "timeLimit": 180,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "progressGeometry": true,
+          "earlyStop": false,
+          "removeSpecks": 0,
+          "fillHoles": 0,
+          "minRadius": 0.8,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "materialResolution": 360,
+          "trials": 12,
+          "requireMaterialCore": true,
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "symmetry": {}
+        },
+        "matchingPreference": {
+          "enabled": true,
+          "identical": false,
+          "rmsTemplateDifferenceMm": 0.9689632651218212,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0.02635,
+          "method": "Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.",
+          "baselineImageError": 0.011,
+          "baselineCounts": [
+            3,
+            3
+          ],
+          "baselinePhase": 0,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.020999999999999998,
+          "attempts": [],
+          "status": "image_bound_exceeds_allowance",
+          "seconds": 0.009,
+          "selectedImageError": 0.01095625,
+          "additionalImageError": -4.374999999999865e-05
+        },
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0055,
+          "prepareRoundTripSeconds": 0.14960000002384186,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 7.265,
+          "resultToReadySeconds": 0.3474000000953674,
+          "clickToReadySeconds": 7.767900000095367
+        },
+        "sourceEditableError": 0.01104375,
+        "sharedSpans": 4,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.01104375,
+          "sourceError": 0.01104375
+        }
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "star",
+        "passed": true,
+        "pageErrors": [],
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "matchingRequested": true,
+        "solveSettings": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "width": 100,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "timeLimit": 180,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "progressGeometry": true,
+          "earlyStop": false,
+          "removeSpecks": 0,
+          "fillHoles": 0,
+          "minRadius": 0.8,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "materialResolution": 360,
+          "trials": 12,
+          "requireMaterialCore": true,
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "symmetry": {
+            "transpose": true
+          }
+        },
+        "matchingPreference": {
+          "enabled": true,
+          "identical": true,
+          "rmsTemplateDifferenceMm": 0,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0,
+          "method": "Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.",
+          "baselineImageError": 0.0016,
+          "baselineCounts": [
+            4,
+            4
+          ],
+          "baselinePhase": 0,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.011600000000000001,
+          "attempts": [],
+          "status": "already_identical",
+          "seconds": 0.011800000071525573,
+          "selectedImageError": 0.0016,
+          "additionalImageError": 0
+        },
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.013300000071525573,
+          "prepareRoundTripSeconds": 0.036,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 1.8088000000715256,
+          "resultToReadySeconds": 0.09519999992847443,
+          "clickToReadySeconds": 1.9536000000238418
+        },
+        "sourceEditableError": 0.0016,
+        "sharedSpans": 12,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 6.25e-05
+            }
+          ],
+          "originalSourceError": 0.0016,
+          "sourceError": 0.0016
+        }
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "top-hat",
+        "passed": true,
+        "pageErrors": [],
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "matchingRequested": true,
+        "solveSettings": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "width": 100,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "timeLimit": 180,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "progressGeometry": true,
+          "earlyStop": false,
+          "removeSpecks": 0,
+          "fillHoles": 0,
+          "minRadius": 0.8,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "materialResolution": 360,
+          "trials": 12,
+          "requireMaterialCore": true,
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "symmetry": {
+            "transpose": true
+          }
+        },
+        "matchingPreference": {
+          "enabled": true,
+          "identical": true,
+          "rmsTemplateDifferenceMm": 0,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0,
+          "method": "Each conflicting diagonal pair forces at least its smaller pixel weight in error, normalized by total observed weight.",
+          "baselineImageError": 0.004411139455782313,
+          "baselineCounts": [
+            3,
+            3
+          ],
+          "baselinePhase": 0,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.014411139455782313,
+          "attempts": [],
+          "status": "already_identical",
+          "seconds": 0.012899999976158143,
+          "selectedImageError": 0.0031887755102040817,
+          "additionalImageError": -0.001222363945578231
+        },
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.023799999952316284,
+          "prepareRoundTripSeconds": 0.24339999997615813,
+          "preparedToSolveRequestSeconds": 0.00040000009536743164,
+          "solveRoundTripSeconds": 8.856099999904632,
+          "resultToReadySeconds": 0.28710000002384184,
+          "clickToReadySeconds": 9.410799999952316
+        },
+        "sourceEditableError": 0.0032064909297052154,
+        "sharedLengthMm": 236.91135721080278,
+        "sharedSpans": 41,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0032064909297052154,
+          "sourceError": 0.0032064909297052154
+        }
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "top-hat-anti",
+        "passed": true,
+        "pageErrors": [],
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "anti"
+        },
+        "matchingRequested": true,
+        "solveSettings": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "width": 100,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "timeLimit": 180,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "progressGeometry": true,
+          "earlyStop": false,
+          "removeSpecks": 0,
+          "fillHoles": 0,
+          "minRadius": 0.8,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "materialResolution": 360,
+          "trials": 12,
+          "requireMaterialCore": true,
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "symmetry": {
+            "antiTranspose": true
+          }
+        },
+        "matchingPreference": {
+          "enabled": false,
+          "identical": false,
+          "rmsTemplateDifferenceMm": 13.774164953401637,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0.03635204081632653,
+          "method": "Each conflicting diagonal pair forces at least its smaller pixel weight in error, normalized by total observed weight.",
+          "baselineImageError": 0.004482001133786848,
+          "baselineCounts": [
+            3,
+            3
+          ],
+          "baselinePhase": 1,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.014482001133786847,
+          "attempts": [],
+          "status": "disabled",
+          "seconds": 0.013100000023841858,
+          "selectedImageError": 0.0032064909297052154,
+          "additionalImageError": -0.0012755102040816328
+        },
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.025799999952316285,
+          "prepareRoundTripSeconds": 0.09729999995231628,
+          "preparedToSolveRequestSeconds": 0.00040000009536743164,
+          "solveRoundTripSeconds": 7.0933999999761586,
+          "resultToReadySeconds": 0.292,
+          "clickToReadySeconds": 7.508899999976158
+        },
+        "sourceEditableError": 0.0031887755102040817,
+        "sharedLengthMm": 224.88910310503672,
+        "sharedSpans": 39,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0031887755102040817,
+          "sourceError": 0.0031887755102040817
+        }
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "hunodan",
+        "passed": true,
+        "pageErrors": [],
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "matchingRequested": true,
+        "solveSettings": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "width": 100,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "timeLimit": 180,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "progressGeometry": true,
+          "earlyStop": false,
+          "removeSpecks": 0,
+          "fillHoles": 0,
+          "minRadius": 0.8,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "materialResolution": 360,
+          "trials": 12,
+          "requireMaterialCore": true,
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "symmetry": {}
+        },
+        "matchingPreference": {
+          "enabled": true,
+          "identical": false,
+          "rmsTemplateDifferenceMm": 9.834444440388111,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0.03599375,
+          "method": "Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.",
+          "baselineImageError": 0.0094375,
+          "baselineCounts": [
+            2,
+            2
+          ],
+          "baselinePhase": 0,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.0194375,
+          "attempts": [],
+          "status": "image_bound_exceeds_allowance",
+          "seconds": 0.007100000023841858,
+          "selectedImageError": 0.00943125,
+          "additionalImageError": -6.249999999999312e-06
+        },
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005399999976158142,
+          "prepareRoundTripSeconds": 0.14389999997615815,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 4.1008000000715255,
+          "resultToReadySeconds": 0.40789999997615817,
+          "clickToReadySeconds": 4.658399999976158
+        },
+        "sourceEditableError": 0.00944375,
+        "sharedSpans": 5,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00944375,
+          "sourceError": 0.00944375
+        }
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "noisy-checker",
+        "passed": true,
+        "pageErrors": [],
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "matchingRequested": true,
+        "solveSettings": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "width": 100,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "timeLimit": 180,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "progressGeometry": true,
+          "earlyStop": false,
+          "removeSpecks": 0,
+          "fillHoles": 0,
+          "minRadius": 0.8,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "materialResolution": 360,
+          "trials": 12,
+          "requireMaterialCore": true,
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "symmetry": {}
+        },
+        "matchingPreference": {
+          "enabled": true,
+          "identical": false,
+          "rmsTemplateDifferenceMm": 8.124039416826896,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0.182275,
+          "method": "Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.",
+          "baselineImageError": 0.000125,
+          "baselineCounts": [
+            3,
+            3
+          ],
+          "baselinePhase": 0,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.010125,
+          "attempts": [],
+          "status": "image_bound_exceeds_allowance",
+          "seconds": 0.0025999999046325685,
+          "selectedImageError": 0.000125,
+          "additionalImageError": 0
+        },
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005,
+          "prepareRoundTripSeconds": 0.06820000004768371,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 3.940399999976158,
+          "resultToReadySeconds": 0.020200000047683717,
+          "clickToReadySeconds": 4.034100000023842
+        },
+        "sourceEditableError": 0.000125,
+        "sharedSpans": 0,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.000125,
+          "sourceError": 0.000125
+        }
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "noisy-tree",
+        "passed": true,
+        "pageErrors": [],
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "matchingRequested": true,
+        "solveSettings": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "width": 100,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "timeLimit": 180,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "progressGeometry": true,
+          "earlyStop": false,
+          "removeSpecks": 0,
+          "fillHoles": 0,
+          "minRadius": 0.8,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "materialResolution": 360,
+          "trials": 12,
+          "requireMaterialCore": true,
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "symmetry": {
+            "transpose": true
+          }
+        },
+        "matchingPreference": {
+          "enabled": true,
+          "identical": true,
+          "rmsTemplateDifferenceMm": 0,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0,
+          "method": "Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.",
+          "baselineImageError": 0.0012,
+          "baselineCounts": [
+            3,
+            3
+          ],
+          "baselinePhase": 0,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.0112,
+          "attempts": [],
+          "status": "already_identical",
+          "seconds": 0.0062999999523162846,
+          "selectedImageError": 0.0012,
+          "additionalImageError": 0
+        },
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.012600000023841857,
+          "prepareRoundTripSeconds": 0.07879999995231629,
+          "preparedToSolveRequestSeconds": 0.00030000007152557374,
+          "solveRoundTripSeconds": 1.5215,
+          "resultToReadySeconds": 0.13569999992847442,
+          "clickToReadySeconds": 1.748899999976158
+        },
+        "sourceEditableError": 0.0012,
+        "sharedSpans": 2,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0012,
+          "sourceError": 0.0012
+        }
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "top-hat-preferred",
+        "passed": true,
+        "pageErrors": [],
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "matchingRequested": true,
+        "solveSettings": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "width": 100,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "timeLimit": 180,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "progressGeometry": true,
+          "earlyStop": false,
+          "removeSpecks": 0,
+          "fillHoles": 0,
+          "minRadius": 0.8,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "materialResolution": 360,
+          "trials": 12,
+          "requireMaterialCore": true,
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "symmetry": {}
+        },
+        "matchingPreference": {
+          "enabled": true,
+          "identical": true,
+          "rmsTemplateDifferenceMm": 0,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0,
+          "method": "Each conflicting diagonal pair forces at least its smaller pixel weight in error, normalized by total observed weight.",
+          "baselineImageError": 0.0029584750566893424,
+          "baselineCounts": [
+            2,
+            2
+          ],
+          "baselinePhase": 1,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.012958475056689343,
+          "attempts": [
+            {
+              "proposal": "copy-first-sheet",
+              "refined": false,
+              "imageError": 0.6583404195011338,
+              "withinAllowance": false
+            },
+            {
+              "proposal": "copy-second-sheet",
+              "refined": false,
+              "imageError": 0.6586947278911565,
+              "withinAllowance": false
+            },
+            {
+              "proposal": "matching-grid",
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "refined": true,
+              "steps": 200,
+              "imageError": 0.005456349206349206,
+              "withinAllowance": true,
+              "featuresPassed": true,
+              "geometryPassed": true,
+              "paperPassed": true
+            }
+          ],
+          "status": "matched",
+          "seconds": 0.868,
+          "selectedImageError": 0.003941680839002267,
+          "additionalImageError": 0.000983205782312925
+        },
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.015,
+          "prepareRoundTripSeconds": 0.289,
+          "preparedToSolveRequestSeconds": 0.001,
+          "solveRoundTripSeconds": 7.293,
+          "resultToReadySeconds": 0.075,
+          "clickToReadySeconds": 7.673
+        },
+        "sourceEditableError": 0.004101119614512472,
+        "sharedLengthMm": 228.09324265500365,
+        "sharedSpans": 49,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.0007625
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000496875
+            }
+          ],
+          "originalSourceError": 0.004136550453514739,
+          "sourceError": 0.004101119614512472
+        }
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "top-hat-independent",
+        "passed": true,
+        "pageErrors": [],
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "matchingRequested": false,
+        "solveSettings": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "width": 100,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "timeLimit": 180,
+          "preferMatchingSheets": false,
+          "matchingErrorAllowance": 0.01,
+          "progressGeometry": true,
+          "earlyStop": false,
+          "removeSpecks": 0,
+          "fillHoles": 0,
+          "minRadius": 0.8,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "materialResolution": 360,
+          "trials": 12,
+          "requireMaterialCore": true,
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "symmetry": {}
+        },
+        "matchingPreference": {
+          "enabled": false,
+          "identical": false,
+          "rmsTemplateDifferenceMm": 32.37004683922767,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0,
+          "method": "Each conflicting diagonal pair forces at least its smaller pixel weight in error, normalized by total observed weight.",
+          "baselineImageError": 0.0029584750566893424,
+          "baselineCounts": [
+            2,
+            2
+          ],
+          "baselinePhase": 1,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.012958475056689343,
+          "attempts": [],
+          "status": "disabled",
+          "seconds": 0.008,
+          "selectedImageError": 0.0029584750566893424,
+          "additionalImageError": 0
+        },
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.014,
+          "prepareRoundTripSeconds": 0.276,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 5.612,
+          "resultToReadySeconds": 0.072,
+          "clickToReadySeconds": 5.974
+        },
+        "sourceEditableError": 0.0029584750566893424,
+        "sharedLengthMm": 71.20511404200474,
+        "sharedSpans": 30,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00036875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000325
+            }
+          ],
+          "originalSourceError": 0.0029584750566893424,
+          "sourceError": 0.0029584750566893424
+        }
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "web-danish-tree-green",
+        "passed": true,
+        "pageErrors": [],
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "matchingRequested": true,
+        "solveSettings": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "width": 100,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "timeLimit": 180,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "progressGeometry": true,
+          "earlyStop": false,
+          "removeSpecks": 0,
+          "fillHoles": 0,
+          "minRadius": 0.8,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "materialResolution": 360,
+          "trials": 12,
+          "requireMaterialCore": true,
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "symmetry": {}
+        },
+        "matchingPreference": {
+          "enabled": true,
+          "identical": false,
+          "rmsTemplateDifferenceMm": 0.968963265077928,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0.02635,
+          "method": "Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.",
+          "baselineImageError": 0.011,
+          "baselineCounts": [
+            3,
+            3
+          ],
+          "baselinePhase": 0,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.020999999999999998,
+          "attempts": [],
+          "status": "image_bound_exceeds_allowance",
+          "seconds": 0.01,
+          "selectedImageError": 0.01095625,
+          "additionalImageError": -4.374999999999865e-05
+        },
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.006,
+          "prepareRoundTripSeconds": 0.20900000000000046,
+          "preparedToSolveRequestSeconds": 0.0009999999999995453,
+          "solveRoundTripSeconds": 8.686000000000002,
+          "resultToReadySeconds": 0.19799999999999818,
+          "clickToReadySeconds": 9.1
+        },
+        "sourceEditableError": 0.01104375,
+        "sharedSpans": 4,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.01104375,
+          "sourceError": 0.01104375
+        }
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "star",
+        "passed": true,
+        "pageErrors": [],
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "matchingRequested": true,
+        "solveSettings": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "width": 100,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "timeLimit": 180,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "progressGeometry": true,
+          "earlyStop": false,
+          "removeSpecks": 0,
+          "fillHoles": 0,
+          "minRadius": 0.8,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "materialResolution": 360,
+          "trials": 12,
+          "requireMaterialCore": true,
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "symmetry": {
+            "transpose": true
+          }
+        },
+        "matchingPreference": {
+          "enabled": true,
+          "identical": true,
+          "rmsTemplateDifferenceMm": 0,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0,
+          "method": "Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.",
+          "baselineImageError": 0.0016,
+          "baselineCounts": [
+            4,
+            4
+          ],
+          "baselinePhase": 0,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.011600000000000001,
+          "attempts": [],
+          "status": "already_identical",
+          "seconds": 0.004,
+          "selectedImageError": 0.0016,
+          "additionalImageError": 0
+        },
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.010000000000000057,
+          "prepareRoundTripSeconds": 0.04299999999999994,
+          "preparedToSolveRequestSeconds": 0.001,
+          "solveRoundTripSeconds": 1.941,
+          "resultToReadySeconds": 0.088,
+          "clickToReadySeconds": 2.083
+        },
+        "sourceEditableError": 0.0016,
+        "sharedSpans": 12,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 6.25e-05
+            }
+          ],
+          "originalSourceError": 0.0016,
+          "sourceError": 0.0016
+        }
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "top-hat",
+        "passed": true,
+        "pageErrors": [],
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "matchingRequested": true,
+        "solveSettings": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "width": 100,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "timeLimit": 180,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "progressGeometry": true,
+          "earlyStop": false,
+          "removeSpecks": 0,
+          "fillHoles": 0,
+          "minRadius": 0.8,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "materialResolution": 360,
+          "trials": 12,
+          "requireMaterialCore": true,
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "symmetry": {
+            "transpose": true
+          }
+        },
+        "matchingPreference": {
+          "enabled": true,
+          "identical": true,
+          "rmsTemplateDifferenceMm": 0,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0,
+          "method": "Each conflicting diagonal pair forces at least its smaller pixel weight in error, normalized by total observed weight.",
+          "baselineImageError": 0.004411139455782313,
+          "baselineCounts": [
+            3,
+            3
+          ],
+          "baselinePhase": 0,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.014411139455782313,
+          "attempts": [],
+          "status": "already_identical",
+          "seconds": 0.015,
+          "selectedImageError": 0.0031887755102040817,
+          "additionalImageError": -0.001222363945578231
+        },
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.018000000000000113,
+          "prepareRoundTripSeconds": 0.28699999999999987,
+          "preparedToSolveRequestSeconds": 0.001,
+          "solveRoundTripSeconds": 9.546000000000001,
+          "resultToReadySeconds": 0.16799999999999818,
+          "clickToReadySeconds": 10.02
+        },
+        "sourceEditableError": 0.0032064909297052154,
+        "sharedLengthMm": 236.9113572108241,
+        "sharedSpans": 41,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0032064909297052154,
+          "sourceError": 0.0032064909297052154
+        }
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "top-hat-anti",
+        "passed": true,
+        "pageErrors": [],
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "anti"
+        },
+        "matchingRequested": true,
+        "solveSettings": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "width": 100,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "timeLimit": 180,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "progressGeometry": true,
+          "earlyStop": false,
+          "removeSpecks": 0,
+          "fillHoles": 0,
+          "minRadius": 0.8,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "materialResolution": 360,
+          "trials": 12,
+          "requireMaterialCore": true,
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "symmetry": {
+            "antiTranspose": true
+          }
+        },
+        "matchingPreference": {
+          "enabled": false,
+          "identical": false,
+          "rmsTemplateDifferenceMm": 13.774164953417966,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0.03635204081632653,
+          "method": "Each conflicting diagonal pair forces at least its smaller pixel weight in error, normalized by total observed weight.",
+          "baselineImageError": 0.004482001133786848,
+          "baselineCounts": [
+            3,
+            3
+          ],
+          "baselinePhase": 1,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.014482001133786847,
+          "attempts": [],
+          "status": "disabled",
+          "seconds": 0.01500000000000091,
+          "selectedImageError": 0.0032064909297052154,
+          "additionalImageError": -0.0012755102040816328
+        },
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.021999999999999773,
+          "prepareRoundTripSeconds": 0.12,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 7.308,
+          "resultToReadySeconds": 0.149,
+          "clickToReadySeconds": 7.599
+        },
+        "sourceEditableError": 0.0031887755102040817,
+        "sharedLengthMm": 224.88910310507052,
+        "sharedSpans": 39,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0031887755102040817,
+          "sourceError": 0.0031887755102040817
+        }
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "hunodan",
+        "passed": true,
+        "pageErrors": [],
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "matchingRequested": true,
+        "solveSettings": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "width": 100,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "timeLimit": 180,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "progressGeometry": true,
+          "earlyStop": false,
+          "removeSpecks": 0,
+          "fillHoles": 0,
+          "minRadius": 0.8,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "materialResolution": 360,
+          "trials": 12,
+          "requireMaterialCore": true,
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "symmetry": {}
+        },
+        "matchingPreference": {
+          "enabled": true,
+          "identical": false,
+          "rmsTemplateDifferenceMm": 9.834444440418498,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0.03599375,
+          "method": "Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.",
+          "baselineImageError": 0.0094375,
+          "baselineCounts": [
+            2,
+            2
+          ],
+          "baselinePhase": 0,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.0194375,
+          "attempts": [],
+          "status": "image_bound_exceeds_allowance",
+          "seconds": 0.013,
+          "selectedImageError": 0.00943125,
+          "additionalImageError": -6.249999999999312e-06
+        },
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.006,
+          "prepareRoundTripSeconds": 0.20900000000000024,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 4.758000000000001,
+          "resultToReadySeconds": 0.18799999999999908,
+          "clickToReadySeconds": 5.161
+        },
+        "sourceEditableError": 0.00944375,
+        "sharedSpans": 5,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00944375,
+          "sourceError": 0.00944375
+        }
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "noisy-checker",
+        "passed": true,
+        "pageErrors": [],
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "matchingRequested": true,
+        "solveSettings": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "width": 100,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "timeLimit": 180,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "progressGeometry": true,
+          "earlyStop": false,
+          "removeSpecks": 0,
+          "fillHoles": 0,
+          "minRadius": 0.8,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "materialResolution": 360,
+          "trials": 12,
+          "requireMaterialCore": true,
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "symmetry": {}
+        },
+        "matchingPreference": {
+          "enabled": true,
+          "identical": false,
+          "rmsTemplateDifferenceMm": 8.124039416826896,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0.182275,
+          "method": "Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.",
+          "baselineImageError": 0.000125,
+          "baselineCounts": [
+            3,
+            3
+          ],
+          "baselinePhase": 0,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.010125,
+          "attempts": [],
+          "status": "image_bound_exceeds_allowance",
+          "seconds": 0.001,
+          "selectedImageError": 0.000125,
+          "additionalImageError": 0
+        },
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.006,
+          "prepareRoundTripSeconds": 0.083,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 4.014,
+          "resultToReadySeconds": 0.024,
+          "clickToReadySeconds": 4.127
+        },
+        "sourceEditableError": 0.000125,
+        "sharedSpans": 0,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.000125,
+          "sourceError": 0.000125
+        }
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "noisy-tree",
+        "passed": true,
+        "pageErrors": [],
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "matchingRequested": true,
+        "solveSettings": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "width": 100,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "timeLimit": 180,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "progressGeometry": true,
+          "earlyStop": false,
+          "removeSpecks": 0,
+          "fillHoles": 0,
+          "minRadius": 0.8,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "materialResolution": 360,
+          "trials": 12,
+          "requireMaterialCore": true,
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "symmetry": {
+            "transpose": true
+          }
+        },
+        "matchingPreference": {
+          "enabled": true,
+          "identical": true,
+          "rmsTemplateDifferenceMm": 0,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0,
+          "method": "Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.",
+          "baselineImageError": 0.0012,
+          "baselineCounts": [
+            3,
+            3
+          ],
+          "baselinePhase": 0,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.0112,
+          "attempts": [],
+          "status": "already_identical",
+          "seconds": 0.003,
+          "selectedImageError": 0.0012,
+          "additionalImageError": 0
+        },
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.009,
+          "prepareRoundTripSeconds": 0.093,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 1.613,
+          "resultToReadySeconds": 0.098,
+          "clickToReadySeconds": 1.813
+        },
+        "sourceEditableError": 0.0012,
+        "sharedSpans": 2,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0012,
+          "sourceError": 0.0012
+        }
+      }
+    ]
+  },
+  "servedSourceCheck": [
+    {
+      "file": "static/inverse/core/direct/fit.js",
+      "status": 200,
+      "sourceSha256": "e58046034ad0082453edcc794a89adb171a05b474328d6aee89da313f6683000",
+      "servedSha256": "e58046034ad0082453edcc794a89adb171a05b474328d6aee89da313f6683000",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/finalize.js",
+      "status": 200,
+      "sourceSha256": "8d104df7ab08eba58baf277e3f9fa7d99cbcbaad887857624e1f5dbffc74d3f8",
+      "servedSha256": "8d104df7ab08eba58baf277e3f9fa7d99cbcbaad887857624e1f5dbffc74d3f8",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/prefer-matching.js",
+      "status": 200,
+      "sourceSha256": "63c04775b91417c5731ee6243b49deee2c11fc92ce257c2fbeb29f49bc9401c5",
+      "servedSha256": "63c04775b91417c5731ee6243b49deee2c11fc92ce257c2fbeb29f49bc9401c5",
+      "matches": true
+    }
+  ]
+}

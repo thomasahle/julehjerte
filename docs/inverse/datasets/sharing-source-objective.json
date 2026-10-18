@@ -1,0 +1,1005 @@
+{
+  "schema": "sharing-source-objective-diagnostic-1",
+  "scope": "Fixed saved exports and fixed masks for Viking, gift, one-pixel-shifted bird and the symmetric hat. First-generation proposals are inspected independently; no crop change, new fit, time-limit improvement or new photographic pass count.",
+  "productionChanged": false,
+  "diagnosis": [
+    "Exactly shared curved geometry cancels under independent SVG rendering. Remaining measured Viking hairlines lie between distinct near-coincident cuts.",
+    "The ordinary sharing gate compares 256-pixel masks and a 512-pixel enlargement of that coarse target before inspecting the original source. Some source-improving valid joins are rejected by these coarse quantized scores.",
+    "Simply resizing the original mask directly at 512 does not fix every case: pixel-center classification can disagree even with the independent 800-pixel render.",
+    "Averaging the existing continuous boundary objective in both orientations gives an improvement at 512 and 1024 rows for every inspected valid blocked join. This is a numerical area approximation, not an exact discrete-pixel derivative."
+  ],
+  "firstGeneration": [
+    {
+      "id": "viking",
+      "base": {
+        "coarse": 0.022369384765625,
+        "upsampled": 0.02144622802734375,
+        "directHigh": 0.023284912109375,
+        "source": 0.02148125,
+        "independent800": 0.023309375,
+        "coverage800": 0.02414934434557217
+      },
+      "proposalTrials": 45,
+      "rejectedByOldScoreButSourceNonWorse": 3,
+      "validBlocked": 3,
+      "independentBinaryNonWorseAndCoverageImproved": 3,
+      "validProposals": [
+        {
+          "index": 21,
+          "originalGate": "upsampled",
+          "coarse": 0.022369384765625,
+          "upsampled": 0.021450042724609375,
+          "directHigh": 0.023288726806640625,
+          "source": 0.02146875,
+          "independent800": 0.023296875,
+          "coverage800": 0.024131825963489246
+        },
+        {
+          "index": 22,
+          "originalGate": "upsampled",
+          "coarse": 0.0223541259765625,
+          "upsampled": 0.021450042724609375,
+          "directHigh": 0.023288726806640625,
+          "source": 0.02145,
+          "independent800": 0.023296875,
+          "coverage800": 0.024118351699097547
+        },
+        {
+          "index": 36,
+          "originalGate": "coarse",
+          "coarse": 0.0223846435546875,
+          "upsampled": 0.02142333984375,
+          "directHigh": 0.02326202392578125,
+          "source": 0.0214625,
+          "independent800": 0.02330625,
+          "coverage800": 0.024137579640344485
+        }
+      ]
+    },
+    {
+      "id": "gift",
+      "base": {
+        "coarse": 0.0177459716796875,
+        "upsampled": 0.017971038818359375,
+        "directHigh": 0.018314361572265625,
+        "source": 0.01650625,
+        "independent800": 0.0186859375,
+        "coverage800": 0.019107653185189703
+      },
+      "proposalTrials": 18,
+      "rejectedByOldScoreButSourceNonWorse": 3,
+      "validBlocked": 3,
+      "independentBinaryNonWorseAndCoverageImproved": 3,
+      "validProposals": [
+        {
+          "index": 2,
+          "originalGate": "coarse",
+          "coarse": 0.01776123046875,
+          "upsampled": 0.01790618896484375,
+          "directHigh": 0.01824951171875,
+          "source": 0.01650625,
+          "independent800": 0.01863125,
+          "coverage800": 0.01906093136945274
+        },
+        {
+          "index": 3,
+          "originalGate": "coarse",
+          "coarse": 0.0177764892578125,
+          "upsampled": 0.01793670654296875,
+          "directHigh": 0.0182952880859375,
+          "source": 0.0165,
+          "independent800": 0.0186828125,
+          "coverage800": 0.01907781862829579
+        },
+        {
+          "index": 8,
+          "originalGate": "coarse",
+          "coarse": 0.01776123046875,
+          "upsampled": 0.01796722412109375,
+          "directHigh": 0.018310546875,
+          "source": 0.0165,
+          "independent800": 0.0186859375,
+          "coverage800": 0.019096476714126766
+        }
+      ]
+    },
+    {
+      "id": "bird-x1",
+      "base": {
+        "coarse": 0.0252532958984375,
+        "upsampled": 0.025238037109375,
+        "directHigh": 0.0261383056640625,
+        "source": 0.02514375,
+        "independent800": 0.0262171875,
+        "coverage800": 0.026699332088336813
+      },
+      "proposalTrials": 39,
+      "rejectedByOldScoreButSourceNonWorse": 6,
+      "validBlocked": 6,
+      "independentBinaryNonWorseAndCoverageImproved": 3,
+      "validProposals": [
+        {
+          "index": 5,
+          "originalGate": "coarse",
+          "coarse": 0.0252685546875,
+          "upsampled": 0.02519989013671875,
+          "directHigh": 0.02610015869140625,
+          "source": 0.025075,
+          "independent800": 0.0261859375,
+          "coverage800": 0.026647469344898127
+        },
+        {
+          "index": 6,
+          "originalGate": "upsampled",
+          "coarse": 0.0252227783203125,
+          "upsampled": 0.025241851806640625,
+          "directHigh": 0.026134490966796875,
+          "source": 0.02513125,
+          "independent800": 0.02621875,
+          "coverage800": 0.026687824735231697
+        },
+        {
+          "index": 8,
+          "originalGate": "upsampled",
+          "coarse": 0.025238037109375,
+          "upsampled": 0.025241851806640625,
+          "directHigh": 0.026134490966796875,
+          "source": 0.02513125,
+          "independent800": 0.0262203125,
+          "coverage800": 0.026689589441084537
+        },
+        {
+          "index": 17,
+          "originalGate": "coarse",
+          "coarse": 0.0252685546875,
+          "upsampled": 0.025238037109375,
+          "directHigh": 0.0261383056640625,
+          "source": 0.02510625,
+          "independent800": 0.0262203125,
+          "coverage800": 0.026690961991081712
+        },
+        {
+          "index": 27,
+          "originalGate": "upsampled",
+          "coarse": 0.0252227783203125,
+          "upsampled": 0.0252532958984375,
+          "directHigh": 0.0261383056640625,
+          "source": 0.0250875,
+          "independent800": 0.0261984375,
+          "coverage800": 0.026673768362228293
+        },
+        {
+          "index": 29,
+          "originalGate": "coarse",
+          "coarse": 0.0253143310546875,
+          "upsampled": 0.025241851806640625,
+          "directHigh": 0.026142120361328125,
+          "source": 0.025075,
+          "independent800": 0.026209375,
+          "coverage800": 0.02668158086221083
+        }
+      ]
+    },
+    {
+      "id": "hat",
+      "base": {
+        "coarse": 0.031975,
+        "upsampled": 0.03185,
+        "directHigh": 0.03185,
+        "source": 0.031925,
+        "independent800": 0.030875,
+        "coverage800": 0.031368167888565224
+      },
+      "proposalTrials": 23,
+      "rejectedByOldScoreButSourceNonWorse": 0,
+      "validBlocked": 0,
+      "independentBinaryNonWorseAndCoverageImproved": 0,
+      "validProposals": []
+    }
+  ],
+  "continuousAreaProbe": [
+    {
+      "name": "viking",
+      "variants": [
+        {
+          "id": "before",
+          "values": [
+            {
+              "rows": 256,
+              "x": 0.02638252895076576,
+              "y": 0.026813360744059822,
+              "average": 0.02659794484741279,
+              "seconds": 0.0409716249999999
+            },
+            {
+              "rows": 512,
+              "x": 0.026541172861957618,
+              "y": 0.026648081378917443,
+              "average": 0.02659462712043753,
+              "seconds": 0.041743875
+            },
+            {
+              "rows": 1024,
+              "x": 0.026560174090432043,
+              "y": 0.02660060380267859,
+              "average": 0.026580388946555317,
+              "seconds": 0.07893670899999995
+            }
+          ]
+        },
+        {
+          "id": "proposal-21",
+          "values": [
+            {
+              "rows": 256,
+              "x": 0.02636832182602572,
+              "y": 0.02681330291054257,
+              "average": 0.026590812368284145,
+              "seconds": 0.02938995800000009
+            },
+            {
+              "rows": 512,
+              "x": 0.02653457734754061,
+              "y": 0.026627200911209903,
+              "average": 0.026580889129375257,
+              "seconds": 0.03784050000000002
+            },
+            {
+              "rows": 1024,
+              "x": 0.026543813055303123,
+              "y": 0.026585558391282293,
+              "average": 0.026564685723292708,
+              "seconds": 0.0743760000000001
+            }
+          ]
+        },
+        {
+          "id": "proposal-22",
+          "values": [
+            {
+              "rows": 256,
+              "x": 0.026352052365349155,
+              "y": 0.026782507152658952,
+              "average": 0.026567279759004053,
+              "seconds": 0.02143116699999996
+            },
+            {
+              "rows": 512,
+              "x": 0.026516990826038422,
+              "y": 0.026617704717152912,
+              "average": 0.026567347771595667,
+              "seconds": 0.03718250000000012
+            },
+            {
+              "rows": 1024,
+              "x": 0.02652995970925548,
+              "y": 0.026570600572916048,
+              "average": 0.026550280141085764,
+              "seconds": 0.08086045799999989
+            }
+          ]
+        },
+        {
+          "id": "proposal-36",
+          "values": [
+            {
+              "rows": 256,
+              "x": 0.0263918204731598,
+              "y": 0.026806565941993654,
+              "average": 0.026599193207576727,
+              "seconds": 0.04701237500000002
+            },
+            {
+              "rows": 512,
+              "x": 0.026523601587578938,
+              "y": 0.0266428756934336,
+              "average": 0.026583238640506268,
+              "seconds": 0.041680374999999915
+            },
+            {
+              "rows": 1024,
+              "x": 0.026551999735574316,
+              "y": 0.02659713675037728,
+              "average": 0.0265745682429758,
+              "seconds": 0.07307024999999999
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "gift",
+      "variants": [
+        {
+          "id": "before",
+          "values": [
+            {
+              "rows": 256,
+              "x": 0.020489538503954408,
+              "y": 0.02038871068292747,
+              "average": 0.020439124593440938,
+              "seconds": 0.034676958999999896
+            },
+            {
+              "rows": 512,
+              "x": 0.020633023171345077,
+              "y": 0.020664883248464605,
+              "average": 0.02064895320990484,
+              "seconds": 0.025129666999999925
+            },
+            {
+              "rows": 1024,
+              "x": 0.020611765798545123,
+              "y": 0.020608778785241644,
+              "average": 0.020610272291893383,
+              "seconds": 0.044826250000000074
+            }
+          ]
+        },
+        {
+          "id": "proposal-2",
+          "values": [
+            {
+              "rows": 256,
+              "x": 0.020442130950399207,
+              "y": 0.02039070183990943,
+              "average": 0.02041641639515432,
+              "seconds": 0.014235707999999932
+            },
+            {
+              "rows": 512,
+              "x": 0.020585634264662866,
+              "y": 0.020600689535421823,
+              "average": 0.020593161900042345,
+              "seconds": 0.023760917000000062
+            },
+            {
+              "rows": 1024,
+              "x": 0.020564455311616325,
+              "y": 0.020574252594025788,
+              "average": 0.020569353952821057,
+              "seconds": 0.04617054200000007
+            }
+          ]
+        },
+        {
+          "id": "proposal-3",
+          "values": [
+            {
+              "rows": 256,
+              "x": 0.020459937712133613,
+              "y": 0.020374479884084362,
+              "average": 0.020417208798108988,
+              "seconds": 0.013860374999999977
+            },
+            {
+              "rows": 512,
+              "x": 0.020604251332136725,
+              "y": 0.020633018503288247,
+              "average": 0.020618634917712486,
+              "seconds": 0.024276041999999963
+            },
+            {
+              "rows": 1024,
+              "x": 0.020581936433646975,
+              "y": 0.020578470900751933,
+              "average": 0.020580203667199454,
+              "seconds": 0.061671916999999896
+            }
+          ]
+        },
+        {
+          "id": "proposal-8",
+          "values": [
+            {
+              "rows": 256,
+              "x": 0.020480111962619063,
+              "y": 0.020378188482904736,
+              "average": 0.0204291502227619,
+              "seconds": 0.018329833000000236
+            },
+            {
+              "rows": 512,
+              "x": 0.02062158918782997,
+              "y": 0.020653041054179422,
+              "average": 0.020637315121004696,
+              "seconds": 0.02615650000000005
+            },
+            {
+              "rows": 1024,
+              "x": 0.020600219386080143,
+              "y": 0.020597466113314422,
+              "average": 0.020598842749697283,
+              "seconds": 0.04744529199999988
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "bird-x1",
+      "variants": [
+        {
+          "id": "before",
+          "values": [
+            {
+              "rows": 256,
+              "x": 0.027834641017146833,
+              "y": 0.027649910795464694,
+              "average": 0.027742275906305763,
+              "seconds": 0.03232795799999985
+            },
+            {
+              "rows": 512,
+              "x": 0.027885576917455357,
+              "y": 0.02779537152061795,
+              "average": 0.027840474219036654,
+              "seconds": 0.050769667000000025
+            },
+            {
+              "rows": 1024,
+              "x": 0.027844528807021096,
+              "y": 0.02785053618114658,
+              "average": 0.027847532494083838,
+              "seconds": 0.09643320900000026
+            }
+          ]
+        },
+        {
+          "id": "proposal-5",
+          "values": [
+            {
+              "rows": 256,
+              "x": 0.02778271234148022,
+              "y": 0.02760071172086309,
+              "average": 0.027691712031171656,
+              "seconds": 0.02861175000000003
+            },
+            {
+              "rows": 512,
+              "x": 0.02783384405211453,
+              "y": 0.027743477239714265,
+              "average": 0.027788660645914398,
+              "seconds": 0.05498075000000017
+            },
+            {
+              "rows": 1024,
+              "x": 0.02779269998818057,
+              "y": 0.027799456253135124,
+              "average": 0.027796078120657847,
+              "seconds": 0.11526800000000002
+            }
+          ]
+        },
+        {
+          "id": "proposal-6",
+          "values": [
+            {
+              "rows": 256,
+              "x": 0.027824549931205644,
+              "y": 0.027634465517387574,
+              "average": 0.02772950772429661,
+              "seconds": 0.030031916999999794
+            },
+            {
+              "rows": 512,
+              "x": 0.02787489109954827,
+              "y": 0.027782725845860168,
+              "average": 0.02782880847270422,
+              "seconds": 0.05410237500000039
+            },
+            {
+              "rows": 1024,
+              "x": 0.027833755122664172,
+              "y": 0.027840249108496085,
+              "average": 0.02783700211558013,
+              "seconds": 0.099511708
+            }
+          ]
+        },
+        {
+          "id": "proposal-8",
+          "values": [
+            {
+              "rows": 256,
+              "x": 0.02782824739806533,
+              "y": 0.02763572360132588,
+              "average": 0.027731985499695605,
+              "seconds": 0.029579707999999753
+            },
+            {
+              "rows": 512,
+              "x": 0.02787801480161345,
+              "y": 0.027784942631011167,
+              "average": 0.027831478716312308,
+              "seconds": 0.05652429100000018
+            },
+            {
+              "rows": 1024,
+              "x": 0.0278364754809729,
+              "y": 0.02784433193591579,
+              "average": 0.027840403708444345,
+              "seconds": 0.09672454199999993
+            }
+          ]
+        },
+        {
+          "id": "proposal-17",
+          "values": [
+            {
+              "rows": 256,
+              "x": 0.027824899119215263,
+              "y": 0.027641524285935193,
+              "average": 0.027733211702575228,
+              "seconds": 0.02809875000000011
+            },
+            {
+              "rows": 512,
+              "x": 0.027875298231266776,
+              "y": 0.027785294347053957,
+              "average": 0.027830296289160367,
+              "seconds": 0.053681208999999855
+            },
+            {
+              "rows": 1024,
+              "x": 0.027834634525513324,
+              "y": 0.027840594726967482,
+              "average": 0.027837614626240403,
+              "seconds": 0.10016454199999998
+            }
+          ]
+        },
+        {
+          "id": "proposal-27",
+          "values": [
+            {
+              "rows": 256,
+              "x": 0.027803257324138353,
+              "y": 0.02762809447883935,
+              "average": 0.02771567590148885,
+              "seconds": 0.027846542000000227
+            },
+            {
+              "rows": 512,
+              "x": 0.027890882541526052,
+              "y": 0.027770166283453135,
+              "average": 0.027830524412489593,
+              "seconds": 0.05131091699999979
+            },
+            {
+              "rows": 1024,
+              "x": 0.027826690072945193,
+              "y": 0.027829786048952643,
+              "average": 0.027828238060948918,
+              "seconds": 0.1031557499999999
+            }
+          ]
+        },
+        {
+          "id": "proposal-29",
+          "values": [
+            {
+              "rows": 256,
+              "x": 0.0278640776360487,
+              "y": 0.027631919761048007,
+              "average": 0.027747998698548354,
+              "seconds": 0.028641625000000205
+            },
+            {
+              "rows": 512,
+              "x": 0.027888791083128472,
+              "y": 0.027774153962303816,
+              "average": 0.027831472522716144,
+              "seconds": 0.05076837499999965
+            },
+            {
+              "rows": 1024,
+              "x": 0.027823740129312102,
+              "y": 0.0278356028791375,
+              "average": 0.0278296715042248,
+              "seconds": 0.09798529099999996
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hat",
+      "variants": [
+        {
+          "id": "before",
+          "values": [
+            {
+              "rows": 256,
+              "x": 0.03427778176970958,
+              "y": 0.034287708404325656,
+              "average": 0.03428274508701762,
+              "seconds": 0.00811687499999971
+            },
+            {
+              "rows": 512,
+              "x": 0.033971451827967014,
+              "y": 0.03396773450649726,
+              "average": 0.03396959316723214,
+              "seconds": 0.02281537500000013
+            },
+            {
+              "rows": 1024,
+              "x": 0.03402577854377181,
+              "y": 0.03402589448507959,
+              "average": 0.0340258365144257,
+              "seconds": 0.023047583999999916
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "greedyRecovery": {
+    "status": "not-integrated",
+    "arms": [
+      {
+        "id": "viking",
+        "arms": [
+          {
+            "arm": "baseline",
+            "seconds": 5.0770370830000005,
+            "error": 0.023171875,
+            "coverage": 0.023871801456762477,
+            "sourceError": 0.021175,
+            "geometryPassed": true,
+            "paperStatus": "pass",
+            "features": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            }
+          },
+          {
+            "arm": "candidate",
+            "seconds": 13.499028082999999,
+            "error": 0.0231890625,
+            "coverage": 0.023886574741156075,
+            "sourceError": 0.02119375,
+            "geometryPassed": true,
+            "paperStatus": "pass",
+            "features": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            }
+          }
+        ]
+      },
+      {
+        "id": "gift",
+        "arms": [
+          {
+            "arm": "baseline",
+            "seconds": 2.3885512500000003,
+            "error": 0.0185875,
+            "coverage": 0.01899536764426157,
+            "sourceError": 0.01643125,
+            "geometryPassed": true,
+            "paperStatus": "pass",
+            "features": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            }
+          },
+          {
+            "arm": "candidate",
+            "seconds": 2.4772715830000016,
+            "error": 0.01858125,
+            "coverage": 0.018954160537791902,
+            "sourceError": 0.01641875,
+            "geometryPassed": true,
+            "paperStatus": "pass",
+            "features": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            }
+          }
+        ]
+      },
+      {
+        "id": "bird-x1",
+        "arms": [
+          {
+            "arm": "baseline",
+            "seconds": 4.063959082999998,
+            "error": 0.0260359375,
+            "coverage": 0.026381354149320396,
+            "sourceError": 0.0248375,
+            "geometryPassed": true,
+            "paperStatus": "pass",
+            "features": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            }
+          },
+          {
+            "arm": "candidate",
+            "seconds": 5.557802083999995,
+            "error": 0.026028125,
+            "coverage": 0.02637782473724219,
+            "sourceError": 0.02478125,
+            "geometryPassed": true,
+            "paperStatus": "pass",
+            "features": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            }
+          }
+        ]
+      },
+      {
+        "id": "hat",
+        "arms": [
+          {
+            "arm": "baseline",
+            "seconds": 0.5314254999999976,
+            "error": 0.0308703125,
+            "coverage": 0.031105575974681415,
+            "sourceError": 0.029475,
+            "geometryPassed": true,
+            "paperStatus": "pass",
+            "features": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            }
+          },
+          {
+            "arm": "candidate",
+            "seconds": 0.5668416250000009,
+            "error": 0.0308703125,
+            "coverage": 0.031105575974681415,
+            "sourceError": 0.029475,
+            "geometryPassed": true,
+            "paperStatus": "pass",
+            "features": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            }
+          }
+        ]
+      }
+    ],
+    "interpretation": "Enabling area recovery during every ordinary round changes the greedy order. All four pairs stay valid, but Viking error and coverage both worsen versus the ordinary extra sharing pass, and alignment takes 13.50 versus 5.08 seconds. Gift and bird improve slightly; hat is unchanged. These are extra unconstrained sharing passes, not fresh application solves. The prototype is rejected for integration.",
+    "nextExperiment": "Allow area recovery only after ordinary sharing stalls; retain its achieved source-error ceiling and existing round/deadline limits. Staged at tmp/heart-learning/sharing-area-tail-v1."
+  },
+  "visualReview": "Inspected valid blocked Viking/gift/bird proposals at 800 pixels. Some interior hairlines disappear while major contours and the bird eye remain; other seams and contour defects are still visible.",
+  "artifactsSha256": {
+    "tmp/heart-learning/sharing-source-objective-v1/probe.mjs": "93d627a3a69383dfa0979fa9955b4672d09759f72bdaa4b6726d647c0f1729d0",
+    "tmp/heart-learning/sharing-source-objective-v1/results.json": "e6f89139fda3b129cd6c258c30cb3fcc71dd2ea9b79368346e79adfe75d7f299",
+    "tmp/heart-learning/sharing-source-objective-v1/source.json": "ed088133b1a3b4e7546d0474de9958e21dcbc23c24d0e837518bad39a9aff37f",
+    "tmp/heart-learning/sharing-source-objective-v1/area.mjs": "680ed3f2f9bbb2398c8ad673bf7a5f9fde7365b71caefc77bb49450ed7283339",
+    "tmp/heart-learning/sharing-source-objective-v1/area-results.json": "66618256f6cb7002e6f24be5792496ea3ed150d07449c263733645bb296c1887",
+    "tmp/heart-learning/sharing-area-recovery-v1/replay.mjs": "5de7fb048222b09463cc3f524925136f81331292de3ce1f8c322e7285cf02579",
+    "tmp/heart-learning/sharing-area-recovery-v1/candidate/inverse/core/direct/share.js": "db1f2d7c6897d3322551274b13d55373d15d78156ce7768df060642cedc50dfb",
+    "tmp/heart-learning/sharing-area-recovery-v1/results.json": "6644248c01ae764a9fc8f2e1d95456388947f98935bd7811a7ccd0c6f9b70f86",
+    "tmp/heart-learning/sharing-area-tail-v1/results.json": "84b2e50ba819473d057207188fd3d065c9a8848dc98f1160b73b49b926cc1d24",
+    "tmp/heart-learning/sharing-area-tail-v1/replay.mjs": "5de7fb048222b09463cc3f524925136f81331292de3ce1f8c322e7285cf02579",
+    "tmp/heart-learning/sharing-area-tail-v1/candidate/inverse/core/direct/share.js": "199dfd9659c6b6b4f015b88a01cbc5af276a62f642fac1602a67915d5b51d9e9",
+    "tmp/heart-learning/sharing-area-tail-v1/matrix.py": "7bcaf9f870d21ba74edf47d7cf258da4a761289330a0b86f08c6b201ac5cf2c2",
+    "tmp/heart-learning/sharing-area-tail-v1/round-checker-audit.mjs": "190c4a06f15ce2e41e61afef6f6f3a30e45fb86f537ef6d1554af10a312af6e4",
+    "tmp/heart-learning/sharing-area-tail-v1/round-checker-audit.json": "7802082d7baeca81b3a8c467265c64b2cc485e7500f59809f33235c2e54ea0df",
+    "tmp/heart-learning/sharing-area-tail-v1/matrix-state.json": "f8c56ad64fb282d936484eadc774904763a25b62fcb6214ad1284ac46d74f6b8",
+    "tmp/heart-learning/sharing-area-tail-v1/matrix-baseline.log": "bf3f5f74a6a4c2453a3bcf5af61a668645e753c74fb98e966aa194ec76d8da72",
+    "tmp/heart-learning/sharing-area-tail-current-v1/matrix.mjs": "212bed7381827334007b7f499201ab5e57db5c38d9a46a000f7549db654c2208",
+    "tmp/heart-learning/sharing-area-tail-current-v1/matrix.py": "564db66d797770b217f730d0976d7bcc35cb584e15cbb301022a1aa7f5543402",
+    "tmp/heart-learning/sharing-area-tail-current-v1/corpus/hunodan-editor-input/results.json": "26643ffc6a065e364f0a1633f40ade92c8eb6d3c835a0baf5f10ddf140eb1d26"
+  },
+  "tailRecovery": {
+    "status": "offline-four-case-comparison-complete",
+    "productionChanged": false,
+    "scope": "Same twelve-round limit and acceptance gates; ordinary prefix runs first, area recovery only after it stalls. No wall-clock deadline in this local fixed-export probe.",
+    "rows": [
+      {
+        "id": "viking",
+        "arms": [
+          {
+            "arm": "baseline",
+            "seconds": 5.241121667,
+            "error": 0.023171875,
+            "coverage": 0.023871801456762477,
+            "sourceError": 0.021175,
+            "geometryPassed": true,
+            "paperStatus": "pass",
+            "features": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            }
+          },
+          {
+            "arm": "candidate",
+            "seconds": 5.059817333,
+            "error": 0.023171875,
+            "coverage": 0.023871801456762477,
+            "sourceError": 0.021175,
+            "geometryPassed": true,
+            "paperStatus": "pass",
+            "features": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            }
+          }
+        ]
+      },
+      {
+        "id": "gift",
+        "arms": [
+          {
+            "arm": "baseline",
+            "seconds": 2.3797316250000002,
+            "error": 0.0185875,
+            "coverage": 0.01899536764426157,
+            "sourceError": 0.01643125,
+            "geometryPassed": true,
+            "paperStatus": "pass",
+            "features": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            }
+          },
+          {
+            "arm": "candidate",
+            "seconds": 3.3872559169999987,
+            "error": 0.0185875,
+            "coverage": 0.01895963847904932,
+            "sourceError": 0.01641875,
+            "geometryPassed": true,
+            "paperStatus": "pass",
+            "features": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            }
+          }
+        ]
+      },
+      {
+        "id": "bird-x1",
+        "arms": [
+          {
+            "arm": "baseline",
+            "seconds": 3.944414917000002,
+            "error": 0.0260359375,
+            "coverage": 0.026381354149320396,
+            "sourceError": 0.0248375,
+            "geometryPassed": true,
+            "paperStatus": "pass",
+            "features": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            }
+          },
+          {
+            "arm": "candidate",
+            "seconds": 3.8418709579999994,
+            "error": 0.0260359375,
+            "coverage": 0.026381354149320396,
+            "sourceError": 0.0248375,
+            "geometryPassed": true,
+            "paperStatus": "pass",
+            "features": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            }
+          }
+        ]
+      },
+      {
+        "id": "hat",
+        "arms": [
+          {
+            "arm": "baseline",
+            "seconds": 0.5285303329999987,
+            "error": 0.0308703125,
+            "coverage": 0.031105575974681415,
+            "sourceError": 0.029475,
+            "geometryPassed": true,
+            "paperStatus": "pass",
+            "features": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            }
+          },
+          {
+            "arm": "candidate",
+            "seconds": 0.519963667,
+            "error": 0.0308703125,
+            "coverage": 0.031105575974681415,
+            "sourceError": 0.029475,
+            "geometryPassed": true,
+            "paperStatus": "pass",
+            "features": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            }
+          }
+        ]
+      }
+    ],
+    "interpretation": "Viking, bird and hat retain exactly the ordinary output scores. Gift gains two shared spans with lower original-source and fractional-coverage error, while independent binary error stays unchanged. Gift alignment costs 3.39 versus 2.38 seconds; no end-to-end speed or recovery improvement is claimed.",
+    "nextExperiment": "Paired alignment on the latest verified outputs: 22 regular Hunodan exports and 27 accepted photographic exports, under tmp/heart-learning/sharing-area-tail-current-v1. Rebuilt Hunodan source masks reproduce all saved independent errors exactly. Partially observed photographs retain their observed.bin masks; scoring excludes missing pixels. Final paper checks include both lattice and polygon offsets. This is still a fixed-export local operation study, not a new timed solve.",
+    "historicalMatrix": {
+      "status": "stopped-on-baseline-before-testing-candidate",
+      "reason": "Historical round-checker is paper-uncertain at its saved 700-sample setting under the current audit, both before and after ordinary alignment. Both pass at 1000; polygon offsets pass at both resolutions. No proposed area recovery was involved.",
+      "audit": [
+        {
+          "name": "before",
+          "resolution": 700,
+          "status": "uncertain",
+          "lattice": "uncertain",
+          "offset": "pass"
+        },
+        {
+          "name": "before",
+          "resolution": 1000,
+          "status": "pass",
+          "lattice": "pass",
+          "offset": "pass"
+        },
+        {
+          "name": "after",
+          "resolution": 700,
+          "status": "uncertain",
+          "lattice": "uncertain",
+          "offset": "pass"
+        },
+        {
+          "name": "after",
+          "resolution": 1000,
+          "status": "pass",
+          "lattice": "pass",
+          "offset": "pass"
+        }
+      ],
+      "failureLog": "tmp/heart-learning/sharing-area-tail-v1/matrix-baseline.log",
+      "sourceGeometry": "tmp/heart-learning/return-projection-speed-v1/production-release/photos/round-checker/automatic/cut_geometry.json"
+    },
+    "currentMatrix": {
+      "cases": 49,
+      "allGeometryPaperAndFeatureChecksPassed": true,
+      "baselineTotalMilliseconds": 32231.80466800001,
+      "candidateTotalMilliseconds": 47600.60971100002,
+      "changedCases": 8,
+      "decision": "Not integrated: substantial additional work for small image/coverage differences. Investigate direct original-source fine-scale scoring instead.",
+      "artifactsSha256": {
+        "tmp/heart-learning/sharing-area-tail-current-v1/matrix-baseline/results.json": "ab1c30c11ff61f3e9ece9ba0bc8d468e411e88e7f5e5ec1b46d5e4bc59a89e41",
+        "tmp/heart-learning/sharing-area-tail-current-v1/matrix-candidate/results.json": "81d22669c3959d6be66dce3cc4e528a03c4ae294ccde7fb7546312799c345d50",
+        "tmp/heart-learning/sharing-area-tail-current-v1/matrix-state.json": "9f9717125ee1b54ef82bf08c8de1e8213dffcb9fc477b6b2fd94d1b2bf0cf402"
+      }
+    }
+  }
+}

@@ -1,0 +1,445 @@
+{
+  "schema": "woven-heart-real-annotations-1",
+  "coordinateConvention": "source-image pixel edges; x right, y down; no EXIF transform",
+  "target": "visible woven basket body, excluding handle",
+  "scope": "Two previously unlabelled Pinterest photographs: a hand-held red/green checker and painted purple/pink and white checker. Reviewed visible body and conservative uncertainty; no exact overlap corners or cutting paths.",
+  "instances": [
+    {
+      "id": "real-710703159f609111-body-1",
+      "assetId": "real-710703159f609111",
+      "imageSha256": "710703159f60911143f7ff114e8f33e0e59996aa86e22d1de98840d071c4e8c8",
+      "sourceSize": [
+        1000,
+        669
+      ],
+      "review": {
+        "method": "assistant-visual-polygon",
+        "status": "initial-reviewed",
+        "viewSize": [
+          1000,
+          669
+        ],
+        "note": "Hand-held red/green heart. Fingers, handle, sleeve and fuzzy background are excluded. The narrow white backing near the upper red lobe is unknown. Native source outline and compiled body/material overlays at 256 and 768 pixels were visually reviewed."
+      },
+      "motif": {
+        "candidateFamily": "regular-checkerboard",
+        "crossCorpusReview": "pending"
+      },
+      "allocation": "unassigned",
+      "pose": "tilted",
+      "foregroundPolygons": [
+        [
+          [
+            451,
+            249
+          ],
+          [
+            466,
+            217
+          ],
+          [
+            488,
+            184
+          ],
+          [
+            516,
+            155
+          ],
+          [
+            545,
+            135
+          ],
+          [
+            576,
+            125
+          ],
+          [
+            603,
+            123
+          ],
+          [
+            634,
+            131
+          ],
+          [
+            663,
+            145
+          ],
+          [
+            692,
+            168
+          ],
+          [
+            712,
+            194
+          ],
+          [
+            726,
+            224
+          ],
+          [
+            731,
+            251
+          ],
+          [
+            729,
+            271
+          ],
+          [
+            716,
+            297
+          ],
+          [
+            697,
+            330
+          ],
+          [
+            690,
+            348
+          ],
+          [
+            675,
+            389
+          ],
+          [
+            656,
+            433
+          ],
+          [
+            650,
+            456
+          ],
+          [
+            617,
+            519
+          ],
+          [
+            582,
+            591
+          ],
+          [
+            543,
+            574
+          ],
+          [
+            482,
+            546
+          ],
+          [
+            423,
+            518
+          ],
+          [
+            391,
+            508
+          ],
+          [
+            345,
+            490
+          ],
+          [
+            303,
+            483
+          ],
+          [
+            269,
+            474
+          ],
+          [
+            240,
+            457
+          ],
+          [
+            220,
+            432
+          ],
+          [
+            211,
+            407
+          ],
+          [
+            208,
+            381
+          ],
+          [
+            211,
+            352
+          ],
+          [
+            219,
+            321
+          ],
+          [
+            234,
+            288
+          ],
+          [
+            254,
+            267
+          ],
+          [
+            278,
+            254
+          ],
+          [
+            296,
+            244
+          ],
+          [
+            319,
+            241
+          ],
+          [
+            342,
+            241
+          ],
+          [
+            365,
+            240
+          ],
+          [
+            395,
+            244
+          ],
+          [
+            423,
+            251
+          ]
+        ]
+      ],
+      "unknownPolygons": [
+        [
+          [
+            270,
+            251
+          ],
+          [
+            288,
+            234
+          ],
+          [
+            315,
+            222
+          ],
+          [
+            342,
+            220
+          ],
+          [
+            385,
+            232
+          ],
+          [
+            423,
+            244
+          ],
+          [
+            451,
+            254
+          ],
+          [
+            420,
+            263
+          ],
+          [
+            385,
+            250
+          ],
+          [
+            335,
+            244
+          ],
+          [
+            291,
+            255
+          ]
+        ]
+      ],
+      "boundaryUncertaintyPixels": 4,
+      "overlapCorners": null
+    },
+    {
+      "id": "real-a414dfffbd2362ae-body-1",
+      "assetId": "real-a414dfffbd2362ae",
+      "imageSha256": "a414dfffbd2362aeefd731a1eff42092e47dcd3955acc72cb8aec426d1200d99",
+      "sourceSize": [
+        600,
+        400
+      ],
+      "review": {
+        "method": "assistant-visual-polygon",
+        "status": "initial-reviewed",
+        "viewSize": [
+          600,
+          400
+        ],
+        "note": "Painted purple/pink and white paper on a wooden table. Paint color changes remain one paper identity. Cast shadows, seams and table are excluded. Native source outline and compiled body/material overlays at 256 and 768 pixels were visually reviewed."
+      },
+      "motif": {
+        "candidateFamily": "regular-checkerboard",
+        "crossCorpusReview": "pending"
+      },
+      "allocation": "unassigned",
+      "pose": "tilted",
+      "foregroundPolygons": [
+        [
+          [
+            287,
+            83
+          ],
+          [
+            307,
+            64
+          ],
+          [
+            328,
+            50
+          ],
+          [
+            351,
+            41
+          ],
+          [
+            376,
+            38
+          ],
+          [
+            399,
+            40
+          ],
+          [
+            420,
+            48
+          ],
+          [
+            440,
+            61
+          ],
+          [
+            460,
+            83
+          ],
+          [
+            478,
+            110
+          ],
+          [
+            490,
+            139
+          ],
+          [
+            494,
+            163
+          ],
+          [
+            490,
+            188
+          ],
+          [
+            475,
+            250
+          ],
+          [
+            459,
+            307
+          ],
+          [
+            438,
+            379
+          ],
+          [
+            397,
+            368
+          ],
+          [
+            368,
+            358
+          ],
+          [
+            323,
+            346
+          ],
+          [
+            278,
+            330
+          ],
+          [
+            244,
+            317
+          ],
+          [
+            215,
+            310
+          ],
+          [
+            184,
+            296
+          ],
+          [
+            157,
+            284
+          ],
+          [
+            132,
+            269
+          ],
+          [
+            111,
+            252
+          ],
+          [
+            97,
+            232
+          ],
+          [
+            88,
+            211
+          ],
+          [
+            83,
+            185
+          ],
+          [
+            84,
+            162
+          ],
+          [
+            93,
+            134
+          ],
+          [
+            106,
+            112
+          ],
+          [
+            124,
+            94
+          ],
+          [
+            147,
+            79
+          ],
+          [
+            173,
+            70
+          ],
+          [
+            201,
+            68
+          ],
+          [
+            223,
+            72
+          ],
+          [
+            247,
+            77
+          ]
+        ]
+      ],
+      "unknownPolygons": [],
+      "boundaryUncertaintyPixels": 3,
+      "overlapCorners": null
+    }
+  ]
+}

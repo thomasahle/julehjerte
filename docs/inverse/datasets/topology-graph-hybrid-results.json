@@ -1,0 +1,422 @@
+{
+  "status": "complete; all_24_exported_images_visually_reviewed; policy_not_integrated",
+  "scope": "Six development cases, two repeats per arm; includes related perturbations. Paired timing varies with clock-limited work. All source masks/probabilities/configurations are pinned across arms. No production integration.",
+  "summary": {
+    "before": {
+      "passed": 12,
+      "attempts": 12,
+      "featuresPassed": 12,
+      "maximumSeconds": 9.945138042,
+      "overTenSeconds": 0,
+      "pairedPassLosses": 0,
+      "pairedErrorIncreases": 0
+    },
+    "hybrid": {
+      "passed": 12,
+      "attempts": 12,
+      "featuresPassed": 12,
+      "maximumSeconds": 9.952066792,
+      "overTenSeconds": 0,
+      "pairedPassLosses": 0,
+      "pairedErrorIncreases": 5
+    }
+  },
+  "visualReview": {
+    "routing-x-plus-1": "Same visible result in both repeats; hybrid saves 1.48 and 1.09 seconds.",
+    "routing-y-minus-1": "Hybrid keeps all three openings and improves the silhouette/error in both repeats.",
+    "danish-tree-green": "Small border and tree-contour changes. One paired error increases; the other is exactly equal. Baseline itself varies across repeats.",
+    "bibel-star-outline": "Hybrid approximately halves mask disagreement but takes about two more seconds and adds the same small corner protrusion seen in the sparse-first study. A lower global error is not automatically a cleaner template.",
+    "real-abf590088db891f9-body-1": "Thin seams and border imperfections persist. Both hybrid errors are higher. Related to the perturbation sources and not an independent motif.",
+    "leaf-upward": "Both hybrid errors are slightly higher; leaf and border silhouettes change. All four outputs retain the motif and pass actual gates."
+  },
+  "conclusion": "The combined order preserves all twelve paired acceptance outcomes and the ten-second cap but increases error in five pairs. Do not integrate this universal policy. Timing changes alter the starting and ending points of later refinement/polishing; inspect actual retained paper-uncertain polishing geometry before changing acceptance or adding another scheduling heuristic.",
+  "plan": "docs/inverse/datasets/topology-graph-hybrid-plan.json",
+  "measurements": [
+    {
+      "id": "routing-x-plus-1",
+      "repeat": 0,
+      "arm": "before",
+      "passed": true,
+      "featuresPassed": true,
+      "seconds": 8.612721125,
+      "independentError": 0.012192,
+      "coarseSeconds": 2.3346540829999998,
+      "recoverySeconds": 3.0621655420000002,
+      "selectedInitialization": null,
+      "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/topology-graph-hybrid-v1/0-routing-x-plus-1-before.json",
+      "sha256": "b95336440965e4328963ed8875b99e3c298bf6209fb95427ea518fb968d6bc6f"
+    },
+    {
+      "id": "routing-x-plus-1",
+      "repeat": 0,
+      "arm": "hybrid",
+      "passed": true,
+      "featuresPassed": true,
+      "seconds": 7.1297365,
+      "independentError": 0.012192,
+      "coarseSeconds": 1.10792025,
+      "recoverySeconds": 2.9034372090000002,
+      "selectedInitialization": null,
+      "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/topology-graph-hybrid-v1/0-routing-x-plus-1-hybrid.json",
+      "sha256": "9ef883812cc09e2e9ceeee75ab1d95f15e99d76a9b09f63fd909a1761c8c5176"
+    },
+    {
+      "id": "routing-x-plus-1",
+      "repeat": 1,
+      "arm": "before",
+      "passed": true,
+      "featuresPassed": true,
+      "seconds": 8.385805917,
+      "independentError": 0.012192,
+      "coarseSeconds": 2.347647292,
+      "recoverySeconds": 2.8744930830000004,
+      "selectedInitialization": null,
+      "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/topology-graph-hybrid-v1/1-routing-x-plus-1-before.json",
+      "sha256": "06c7fe454a49ec7beef7b26ba30184e8b7fbfe3c31ec01a9f7ee8c4713d1e5e3"
+    },
+    {
+      "id": "routing-x-plus-1",
+      "repeat": 1,
+      "arm": "hybrid",
+      "passed": true,
+      "featuresPassed": true,
+      "seconds": 7.29087075,
+      "independentError": 0.012192,
+      "coarseSeconds": 1.105271209,
+      "recoverySeconds": 2.9935804590000004,
+      "selectedInitialization": null,
+      "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/topology-graph-hybrid-v1/1-routing-x-plus-1-hybrid.json",
+      "sha256": "7d6f8452877202befbf6742ce2c7c5340558c51ad388e8dbf3d3c481eeadb0a3"
+    },
+    {
+      "id": "routing-y-minus-1",
+      "repeat": 0,
+      "arm": "before",
+      "passed": true,
+      "featuresPassed": true,
+      "seconds": 9.487263125,
+      "independentError": 0.013312,
+      "coarseSeconds": 2.3581500419999997,
+      "recoverySeconds": 4.85092875,
+      "selectedInitialization": null,
+      "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/topology-graph-hybrid-v1/0-routing-y-minus-1-before.json",
+      "sha256": "5c4438aa9aba39d51fe282ff68063313703bb9bf13073f6af66dce14b61bef22"
+    },
+    {
+      "id": "routing-y-minus-1",
+      "repeat": 0,
+      "arm": "hybrid",
+      "passed": true,
+      "featuresPassed": true,
+      "seconds": 9.437245834,
+      "independentError": 0.009152,
+      "coarseSeconds": 1.1014990839999999,
+      "recoverySeconds": 4.693767583,
+      "selectedInitialization": null,
+      "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/topology-graph-hybrid-v1/0-routing-y-minus-1-hybrid.json",
+      "sha256": "8ae9dacfce1cb261d6e1dbf948a6ce151b7e2d2190c447746b2b9a9a18f3b9aa"
+    },
+    {
+      "id": "routing-y-minus-1",
+      "repeat": 1,
+      "arm": "before",
+      "passed": true,
+      "featuresPassed": true,
+      "seconds": 9.402914375,
+      "independentError": 0.013328,
+      "coarseSeconds": 2.383971,
+      "recoverySeconds": 4.860626167,
+      "selectedInitialization": null,
+      "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/topology-graph-hybrid-v1/1-routing-y-minus-1-before.json",
+      "sha256": "8f172d77b2c030250b9a6518ad7313e32a4e61d1fa678e2c6bcf8eddbaa28feb"
+    },
+    {
+      "id": "routing-y-minus-1",
+      "repeat": 1,
+      "arm": "hybrid",
+      "passed": true,
+      "featuresPassed": true,
+      "seconds": 9.366680875,
+      "independentError": 0.009456,
+      "coarseSeconds": 1.1018217909999999,
+      "recoverySeconds": 4.724557917,
+      "selectedInitialization": null,
+      "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/topology-graph-hybrid-v1/1-routing-y-minus-1-hybrid.json",
+      "sha256": "49278248e1149c8eea7888f051929ec0c50676a0b30a7bb653a9253746b46493"
+    },
+    {
+      "id": "danish-tree-green",
+      "repeat": 0,
+      "arm": "before",
+      "passed": true,
+      "featuresPassed": true,
+      "seconds": 9.945138042,
+      "independentError": 0.00849375,
+      "coarseSeconds": 1.9328975409999998,
+      "recoverySeconds": null,
+      "selectedInitialization": "grid",
+      "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/topology-graph-hybrid-v1/0-danish-tree-green-before.json",
+      "sha256": "5b2d1c13823660903cb0f774351583359880890f114d5441849f5f093b05f9d6"
+    },
+    {
+      "id": "danish-tree-green",
+      "repeat": 0,
+      "arm": "hybrid",
+      "passed": true,
+      "featuresPassed": true,
+      "seconds": 9.75719075,
+      "independentError": 0.00875,
+      "coarseSeconds": 0.824732,
+      "recoverySeconds": null,
+      "selectedInitialization": "grid",
+      "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/topology-graph-hybrid-v1/0-danish-tree-green-hybrid.json",
+      "sha256": "beccf724005f3e6e4c8464a97ae67041b852aa253bb200c46b9991cbead7b91f"
+    },
+    {
+      "id": "danish-tree-green",
+      "repeat": 1,
+      "arm": "before",
+      "passed": true,
+      "featuresPassed": true,
+      "seconds": 9.816084292,
+      "independentError": 0.00899375,
+      "coarseSeconds": 2.019062042,
+      "recoverySeconds": null,
+      "selectedInitialization": "grid",
+      "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/topology-graph-hybrid-v1/1-danish-tree-green-before.json",
+      "sha256": "3a2c5aedb1d189486b97d031ba1182b2e16b89f09a5fb15bdfa6f25331c6c38a"
+    },
+    {
+      "id": "danish-tree-green",
+      "repeat": 1,
+      "arm": "hybrid",
+      "passed": true,
+      "featuresPassed": true,
+      "seconds": 9.740107875,
+      "independentError": 0.00899375,
+      "coarseSeconds": 0.8745868329999998,
+      "recoverySeconds": null,
+      "selectedInitialization": "grid",
+      "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/topology-graph-hybrid-v1/1-danish-tree-green-hybrid.json",
+      "sha256": "7a69ecfb93b1b6a27480f9e823832adc390e788fafe7744762eeb041fce6de8d"
+    },
+    {
+      "id": "bibel-star-outline",
+      "repeat": 0,
+      "arm": "before",
+      "passed": true,
+      "featuresPassed": true,
+      "seconds": 7.7823150000000005,
+      "independentError": 0.0116,
+      "coarseSeconds": 2.1512473329999997,
+      "recoverySeconds": 0.5455794999999998,
+      "selectedInitialization": null,
+      "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/topology-graph-hybrid-v1/0-bibel-star-outline-before.json",
+      "sha256": "637a059b192203e25b9e18164c4b7ec6c317b5f434e3cb5dd8d69b9a220bb3f9"
+    },
+    {
+      "id": "bibel-star-outline",
+      "repeat": 0,
+      "arm": "hybrid",
+      "passed": true,
+      "featuresPassed": true,
+      "seconds": 9.849479167,
+      "independentError": 0.00633125,
+      "coarseSeconds": 0.500784458,
+      "recoverySeconds": null,
+      "selectedInitialization": "feature-weighted-grid",
+      "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/topology-graph-hybrid-v1/0-bibel-star-outline-hybrid.json",
+      "sha256": "89676dfa1cde59b579a1cee6745f5ffe85cfb84fac15ba775168dd2ba0ee75cf"
+    },
+    {
+      "id": "bibel-star-outline",
+      "repeat": 1,
+      "arm": "before",
+      "passed": true,
+      "featuresPassed": true,
+      "seconds": 7.848685875,
+      "independentError": 0.0116,
+      "coarseSeconds": 2.117767458,
+      "recoverySeconds": 0.5444349590000002,
+      "selectedInitialization": null,
+      "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/topology-graph-hybrid-v1/1-bibel-star-outline-before.json",
+      "sha256": "c6626fbda7c0eb1700b813881505e089775a0ced4907560ed5c94fc5e8134986"
+    },
+    {
+      "id": "bibel-star-outline",
+      "repeat": 1,
+      "arm": "hybrid",
+      "passed": true,
+      "featuresPassed": true,
+      "seconds": 9.859134790999999,
+      "independentError": 0.00629375,
+      "coarseSeconds": 0.5203891250000001,
+      "recoverySeconds": null,
+      "selectedInitialization": "feature-weighted-grid",
+      "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/topology-graph-hybrid-v1/1-bibel-star-outline-hybrid.json",
+      "sha256": "4c60be8f93cf3f1af1195b7f7757f57eab1e1475f231fbf4bec885366bf60276"
+    },
+    {
+      "id": "real-abf590088db891f9-body-1",
+      "repeat": 0,
+      "arm": "before",
+      "passed": true,
+      "featuresPassed": true,
+      "seconds": 9.921795125000001,
+      "independentError": 0.017152,
+      "coarseSeconds": 2.43278025,
+      "recoverySeconds": 0.4249379170000002,
+      "selectedInitialization": "feature-preserving-grid",
+      "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/topology-graph-hybrid-v1/0-real-abf590088db891f9-body-1-before.json",
+      "sha256": "723d1be81a724f40a9a7c28b2087979f9840a666d70a0a9a06509d86d5ad63bc"
+    },
+    {
+      "id": "real-abf590088db891f9-body-1",
+      "repeat": 0,
+      "arm": "hybrid",
+      "passed": true,
+      "featuresPassed": true,
+      "seconds": 9.946731542,
+      "independentError": 0.017952,
+      "coarseSeconds": 2.339996706999999,
+      "recoverySeconds": 0.752625,
+      "selectedInitialization": "feature-preserving-grid",
+      "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/topology-graph-hybrid-v1/0-real-abf590088db891f9-body-1-hybrid.json",
+      "sha256": "b7e2ead753ee3de3d4d1b53ed197547830384c15d8ff6675fb3cb25e0b623754"
+    },
+    {
+      "id": "real-abf590088db891f9-body-1",
+      "repeat": 1,
+      "arm": "before",
+      "passed": true,
+      "featuresPassed": true,
+      "seconds": 9.900896875,
+      "independentError": 0.01712,
+      "coarseSeconds": 2.3494649580000004,
+      "recoverySeconds": 0.42199175000000017,
+      "selectedInitialization": "feature-preserving-grid",
+      "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/topology-graph-hybrid-v1/1-real-abf590088db891f9-body-1-before.json",
+      "sha256": "4df31e97ecadfa727c20ccb9c097a0bf80d74f269e4e401659aee9db428f2903"
+    },
+    {
+      "id": "real-abf590088db891f9-body-1",
+      "repeat": 1,
+      "arm": "hybrid",
+      "passed": true,
+      "featuresPassed": true,
+      "seconds": 9.952066792,
+      "independentError": 0.017952,
+      "coarseSeconds": 2.353061792,
+      "recoverySeconds": 0.7593342499999999,
+      "selectedInitialization": "feature-preserving-grid",
+      "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/topology-graph-hybrid-v1/1-real-abf590088db891f9-body-1-hybrid.json",
+      "sha256": "2b50bea60df1dab6f786e2d42d2c412dcea6ec3fdc08d187ec2e3c694525ebc6"
+    },
+    {
+      "id": "leaf-upward",
+      "repeat": 0,
+      "arm": "before",
+      "passed": true,
+      "featuresPassed": true,
+      "seconds": 9.617937,
+      "independentError": 0.00835625,
+      "coarseSeconds": 0.17984620799999992,
+      "recoverySeconds": 2.7867087500000007,
+      "selectedInitialization": "grid",
+      "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/topology-graph-hybrid-v1/0-leaf-upward-before.json",
+      "sha256": "92f64ff86d82b5e83f575060157386e6dd0e1dc32afc9da223e7b8f0f4b018d5"
+    },
+    {
+      "id": "leaf-upward",
+      "repeat": 0,
+      "arm": "hybrid",
+      "passed": true,
+      "featuresPassed": true,
+      "seconds": 9.529108957999998,
+      "independentError": 0.0091625,
+      "coarseSeconds": 0.3698648750000002,
+      "recoverySeconds": 2.611482542,
+      "selectedInitialization": "grid",
+      "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/topology-graph-hybrid-v1/0-leaf-upward-hybrid.json",
+      "sha256": "93ddc669596b26090e92db0470a1e24601d046b2374ced0450cda14e38b8fa88"
+    },
+    {
+      "id": "leaf-upward",
+      "repeat": 1,
+      "arm": "before",
+      "passed": true,
+      "featuresPassed": true,
+      "seconds": 9.584932208999998,
+      "independentError": 0.008275,
+      "coarseSeconds": 0.18307958299999996,
+      "recoverySeconds": 2.7871488749999997,
+      "selectedInitialization": "grid",
+      "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/topology-graph-hybrid-v1/1-leaf-upward-before.json",
+      "sha256": "5a652661e2e7a8f8f5405d023d1d4174e041560c966cadb04794ffa0400bb9a6"
+    },
+    {
+      "id": "leaf-upward",
+      "repeat": 1,
+      "arm": "hybrid",
+      "passed": true,
+      "featuresPassed": true,
+      "seconds": 9.566269041,
+      "independentError": 0.00905,
+      "coarseSeconds": 0.3543378339999997,
+      "recoverySeconds": 2.794631125,
+      "selectedInitialization": "grid",
+      "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/topology-graph-hybrid-v1/1-leaf-upward-hybrid.json",
+      "sha256": "ff1dc0e900c883fd3504c8adfb926c10022484fd01ec68295cba8efdd0bf1187"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/topology-graph-hybrid-v1/results.json",
+      "sha256": "1c20cf76651725468417413643d32c81a1d21e8bd44a3c47732318c4b2e1a452"
+    },
+    {
+      "path": "tmp/heart-learning/topology-graph-hybrid-v1/state.json",
+      "sha256": "87fdd949f3ae3b4326f9d81c20c5f0e0174f300bbbb6f5c3f46346f3be261243"
+    },
+    {
+      "path": "tmp/heart-learning/topology-graph-hybrid-v1/checks.json",
+      "sha256": "a8872a16d03e8c6c7c80df04a326cfce1f57abf5c7b8b33c516b3ad9c7b88678"
+    },
+    {
+      "path": "tmp/heart-learning/topology-graph-hybrid-v1/source.json",
+      "sha256": "a325f334e006fc9f96553ea8618a66cdd8aa3ad0428c26401b1e4c528b9f5317"
+    },
+    {
+      "path": "tmp/heart-learning/topology-graph-hybrid-v1/input-identities.json",
+      "sha256": "3a7fd5b682dd8e55ee3f7a5613674cf27dae52e49c4ef5e2decba2a5c23229e7"
+    },
+    {
+      "path": "tmp/heart-learning/topology-graph-hybrid-v1/summarize.py",
+      "sha256": "d4978cd39ff56a485198472ccd6be3c18ab05cd799811e89cb15017e4a271a6e"
+    },
+    {
+      "path": "tmp/heart-learning/topology-graph-hybrid-v1/routing-x-plus-1-comparison.png",
+      "sha256": "2b48e5535da0b6fa862e157f27ce66468f06d5545e154e2fec18f4a4699e6c52"
+    },
+    {
+      "path": "tmp/heart-learning/topology-graph-hybrid-v1/routing-y-minus-1-comparison.png",
+      "sha256": "e25d9ea7a25391dd7a4f9b2521e4d6ba7d4ff7055795aac5243dbf0169046fe7"
+    },
+    {
+      "path": "tmp/heart-learning/topology-graph-hybrid-v1/danish-tree-green-comparison.png",
+      "sha256": "8f226ad14efb8dda8a286083ca3beb6cfb9185db39ccdabec1bef6cd57bb6b0f"
+    },
+    {
+      "path": "tmp/heart-learning/topology-graph-hybrid-v1/bibel-star-outline-comparison.png",
+      "sha256": "99c25c393a8cfe1b0afecd0922f03be11cf36879c0982faf8b3e928bcb6272d3"
+    },
+    {
+      "path": "tmp/heart-learning/topology-graph-hybrid-v1/real-abf590088db891f9-body-1-comparison.png",
+      "sha256": "3778e41e8e7fdf1350f07337db7ae2d39f0e81b6e98b5d022de332de38bda959"
+    },
+    {
+      "path": "tmp/heart-learning/topology-graph-hybrid-v1/leaf-upward-comparison.png",
+      "sha256": "b5706af90cfc5d48a820e775d4c1b17eb7aa1fb71758e1a7cbb3f002fb2d5ac9"
+    }
+  ]
+}

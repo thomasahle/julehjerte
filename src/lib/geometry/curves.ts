@@ -41,7 +41,7 @@ function solveQuadratic(a: number, b: number, c: number): number[] {
   return [r1, r2];
 }
 
-function cubicDerivativeRoots(p0: number, p1: number, p2: number, p3: number): number[] {
+export function cubicDerivativeRoots(p0: number, p1: number, p2: number, p3: number): number[] {
   // Derivative quadratic coefficients from the power basis.
   const a = 3 * (-p0 + 3 * p1 - 3 * p2 + p3);
   const b = 2 * (3 * p0 - 6 * p1 + 3 * p2);

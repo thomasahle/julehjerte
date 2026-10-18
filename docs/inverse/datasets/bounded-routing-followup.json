@@ -1,0 +1,288 @@
+{
+  "schema": "bounded-routing-repair-followup-1",
+  "baseCommit": "a2d415df49346e284128d332b48c6e17e9dd5fe7",
+  "sourceHashes": {
+    "static/inverse/core/direct/refine.js": "15b63f56271bbd4c921dd5719a220b48dcf6d24294b1ab563dbd54aae2e0ce45",
+    "static/inverse/core/direct/rejected-routing.js": "3bfedc941260de88fe5459c380848b47ac3840f52bd84be79de688bdd082088a",
+    "static/inverse/core/feature-recovery.js": "2e6e8e71053435a7400be5e8a7bdde0f0b25b9f903f99a5f07d4cc564a6c9297",
+    "scripts/inverse/clearance-routing.test.mjs": "c6e0dcf939677f7686f52240d2c23cf514b671d6ba5b954a68f52419cb20d1c7",
+    "scripts/inverse/rejected-routing.test.mjs": "cee348197975835f441d772fa2659b8e57ed8b0ad0a699c0b67dbadb21fa735a",
+    "scripts/inverse/search-scheduling.test.mjs": "79566190422fe5a240487b3e05217d2d5c98a1ccc30d54da111a78c5bb626b5c",
+    "scripts/inverse/trace-order.test.mjs": "04abbe27fd2ca14606f17f1ba0532be6b53457c173b9c3c4b848e63b1ecb34a3",
+    "scripts/inverse/learning/rejected-routing-replay.mjs": "5fbc4d96f63819bbfb250031d601a7e0f96031baed40abb1bff020598ef1d07b"
+  },
+  "scope": "Fresh classified-mask solves and saved-route repair. Source pixels and final acceptance limits unchanged. Not a completed release, neural experiment, or physical assembly test.",
+  "changes": [
+    "Bound repair eligibility by at most four affected cuts rather than four diagnostic records.",
+    "Retain observed deficits for diagnostics; bounded first-witness gaps are not a global severity measure.",
+    "Use up to 1.5 seconds locally, capped by the existing caller deadline; reserve 250 ms for final checks.",
+    "Skip repeated return projection after only the first gradient step; initial and later checkpoints still validate geometry."
+  ],
+  "focused": {
+    "log": "tmp/heart-learning/final-integration-v1/repair-reserve-focused.log",
+    "sha256": "a36798b2a09c739836d7bb2880d963b581f27ba27e810ebd2c7d25d9dd3de33d",
+    "passed": 16,
+    "failed": 0,
+    "rows": [
+      {
+        "test": "bounded repair resolves a nonlocal slit neck without changing the x-plus-1 artwork",
+        "milliseconds": 1682.548375
+      },
+      {
+        "test": "fresh x-plus-1 fitting carries repaired clearance through final export",
+        "milliseconds": 7869.838292
+      },
+      {
+        "test": "bounded repair resolves a nonlocal slit neck without changing the y-minus-1 artwork",
+        "milliseconds": 1345.548833
+      },
+      {
+        "test": "fresh y-minus-1 fitting carries repaired clearance through final export",
+        "milliseconds": 9287.124458
+      },
+      {
+        "test": "exact subdivision and reflection cannot disqualify the same clearance repair",
+        "milliseconds": 273.251333
+      },
+      {
+        "test": "visible-chain evidence detects the raster return before assigning either sheet",
+        "milliseconds": 176.1745
+      },
+      {
+        "test": "continuous repair of radius 0.3 retains the original pixels and independently passes exported geometry",
+        "milliseconds": 1543.503416
+      },
+      {
+        "test": "continuous repair of radius 0.5 retains the original pixels and independently passes exported geometry",
+        "milliseconds": 1266.75225
+      },
+      {
+        "test": "repair does not accept crossings, expired work, different artwork or unsupported constraints",
+        "milliseconds": 80.828792
+      },
+      {
+        "test": "observing rejected MILP geometry cannot turn it into a validated incumbent",
+        "milliseconds": 155.538333
+      },
+      {
+        "test": "a fresh solve recovers the perturbed sloth without loading either saved routing",
+        "milliseconds": 8396.897333
+      },
+      {
+        "test": "fresh frozen routing retains time for a valid template without changing the mask",
+        "milliseconds": 9349.9625
+      },
+      {
+        "test": "fresh synthetic-control routing retains time for a valid template without changing the mask",
+        "milliseconds": 9142.818167
+      },
+      {
+        "test": "fresh y-plus-1 routing retains time for a valid template without changing the mask",
+        "milliseconds": 7512.288667
+      },
+      {
+        "test": "fresh x-plus-1-paint routing retains time for a valid template without changing the mask",
+        "milliseconds": 9487.287292
+      },
+      {
+        "test": "the photographed gold heart retains its shape through sparse routing and refinement",
+        "milliseconds": 7205.259
+      }
+    ]
+  },
+  "subdivisionRegression": {
+    "fixtures": 2,
+    "representations": [
+      "original",
+      "halves",
+      "thirds",
+      "unequal"
+    ],
+    "reflections": [
+      false,
+      true
+    ],
+    "checkedRepresentations": 16,
+    "maximumPermittedCoordinateDifference": 1e-10,
+    "allInvalidInputsRemainInvalid": true,
+    "allEligibleForBoundedRepair": true
+  },
+  "editableReplay": {
+    "report": "tmp/heart-learning/final-integration-v1/repair-final-replay/report.json",
+    "sha256": "64be9427ba1e312eff4af1878e8ff7875f00cc9d769fde4c36c67a1d9618af7d",
+    "rows": [
+      {
+        "radius": 0.3,
+        "enginePassed": true,
+        "editablePassed": true,
+        "independentImageError": 0.008608,
+        "editableImageError": 0.008576,
+        "refinementSeconds": 1.071443083
+      },
+      {
+        "radius": 0.5,
+        "enginePassed": true,
+        "editablePassed": true,
+        "independentImageError": 0.008512,
+        "editableImageError": 0.008432,
+        "refinementSeconds": 0.9092764160000002
+      }
+    ]
+  },
+  "remaining": "Two shifted-bird regressions fail at the 90% eye-retention assertion. All other full-suite cases pass. Both complete native corpora and fresh browser QA remain pending.",
+  "retryCorrection": {
+    "reason": "Full application QA of 1059bad found an anchor regression from unconditionally skipping the first post-gradient projection. Retry suppression now requires both an initially failed projection and less than one second remaining.",
+    "previousFullQA": {
+      "directory": "tmp/heart-learning/final-integration-v1/qa-repair-v1",
+      "check": "pass",
+      "lint": "pass",
+      "appPassed": 856,
+      "appFailed": 1,
+      "appSkipped": 1,
+      "build": "not run",
+      "inverse": "not run"
+    },
+    "source": "static/inverse/core/direct/refine.js",
+    "sourceSha256": "d3020fff836da449d0525b8cc9a45dd9a5bfef0152db339c114599a399a0d36c",
+    "focusedAnchor": {
+      "log": "tmp/heart-learning/final-integration-v1/repair-anchor-reserve.log",
+      "sha256": "f358628bc80f9c122e417543e5be94b7ebbdc5bc848bcf9681fd3a7c4e0bb5ee",
+      "passed": 1,
+      "failed": 0
+    },
+    "fullQA": {
+      "baseCommit": "b18b263fde66d4a0505b456588bfd990647dea35",
+      "directory": "tmp/heart-learning/final-integration-v1/qa-repair-v2",
+      "checks": [
+        {
+          "stage": "focused",
+          "command": [
+            "node",
+            "--test",
+            "--test-concurrency=1",
+            "scripts/inverse/clearance-routing.test.mjs",
+            "scripts/inverse/rejected-routing.test.mjs",
+            "scripts/inverse/search-scheduling.test.mjs",
+            "scripts/inverse/trace-order.test.mjs"
+          ],
+          "exitCode": 0,
+          "seconds": 76.461774125
+        },
+        {
+          "stage": "check",
+          "command": [
+            "npm",
+            "run",
+            "check"
+          ],
+          "exitCode": 0,
+          "seconds": 8.689166917000009
+        },
+        {
+          "stage": "lint",
+          "command": [
+            "npm",
+            "run",
+            "lint"
+          ],
+          "exitCode": 0,
+          "seconds": 6.260907333000006
+        },
+        {
+          "stage": "app",
+          "command": [
+            "npx",
+            "vitest",
+            "run",
+            "--maxWorkers=2"
+          ],
+          "exitCode": 0,
+          "seconds": 32.48454445799999
+        },
+        {
+          "stage": "build",
+          "command": [
+            "npm",
+            "run",
+            "build"
+          ],
+          "exitCode": 0,
+          "seconds": 13.242699584000007
+        },
+        {
+          "stage": "editable-repair",
+          "command": [
+            "node",
+            "scripts/inverse/learning/rejected-routing-replay.mjs",
+            "--fixture=scripts/inverse/fixtures/sloth-rejected-routing.json",
+            "--output=tmp/heart-learning/final-integration-v1/qa-repair-v2/editable-repair",
+            "--bounded=true"
+          ],
+          "exitCode": 0,
+          "seconds": 4.534857375000001
+        },
+        {
+          "stage": "inverse",
+          "command": [
+            "npm",
+            "run",
+            "test:inverse"
+          ],
+          "exitCode": 1,
+          "seconds": 876.083565709
+        }
+      ],
+      "sourceFilesVerified": 840,
+      "sourceManifestSha256": "862a27d8c96fdee7f8a6be7a40d128a168ff352e6793e46ac7796693975df2ab",
+      "application": {
+        "passed": 857,
+        "skipped": 1,
+        "failed": 0
+      },
+      "inverse": {
+        "tests": 848,
+        "passed": 846,
+        "failed": 2,
+        "logSha256": "f022d9056954644c1c4c487f97153a197d6726627d8c8f14041f73abfcfa58f5",
+        "failures": [
+          {
+            "location": "scripts/inverse/fitted-rerouting.test.mjs:53:33",
+            "test": "\u2716 a fresh shifted bird fit reroutes its rejected eye with a 10-second allowance (10213.604375ms)",
+            "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+            "stack": [
+              "at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/fitted-rerouting.test.mjs:75:50)",
+              "at async Test.run (node:internal/test_runner/test:1125:7)",
+              "at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {"
+            ]
+          },
+          {
+            "location": "scripts/inverse/fitted-rerouting.test.mjs:53:33",
+            "test": "\u2716 a fresh shifted bird fit reroutes its rejected eye with a 180-second allowance (15125.676667ms)",
+            "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+            "stack": [
+              "at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/fitted-rerouting.test.mjs:75:50)",
+              "at async Test.run (node:internal/test_runner/test:1125:7)",
+              "at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {"
+            ]
+          }
+        ]
+      },
+      "editableRepair": [
+        {
+          "radius": 0.3,
+          "enginePassed": true,
+          "editablePassed": true,
+          "error": 0.008608,
+          "editableError": 0.008576
+        },
+        {
+          "radius": 0.5,
+          "enginePassed": true,
+          "editablePassed": true,
+          "error": 0.008512,
+          "editableError": 0.008432
+        }
+      ]
+    }
+  }
+}

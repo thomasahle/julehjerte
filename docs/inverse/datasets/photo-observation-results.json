@@ -1,0 +1,259 @@
+{
+  "schema": "photo-observation-results-1",
+  "status": "integrated; full QA completed with five prior fitter failures and one observer expectation subsequently corrected",
+  "problem": "Out-of-photo padding was classified as white paper, could move automatic colour thresholds/palette centres, and was counted as photographed evidence after binary editor handoff.",
+  "semantics": [
+    "A pixel is observed only when every nonzero bilinear contribution comes from inside the source image. This is conservative binary support, not a fractional-confidence estimate.",
+    "Transparent pixels inside the source still composite to the chosen background and remain observed.",
+    "Colour estimation excludes missing samples. Validity follows mask import, cloning, explicit painting, selections, undo/redo, session serialization, solver preparation and conversion scoring.",
+    "Explicit painting makes missing cells known. Symmetry inference does not turn inferred cells into observations.",
+    "Missing source pixels and permitted free-border edits are distinct. Their weights combine for fitting, while the reported observed denominator remains explicit.",
+    "Geometry, paper checks and full-weave conversion drift checks still cover the complete templates. No physical tolerance was relaxed.",
+    "The canvas shows neutral hatching for missing pixels; original-boundary previews omit edges touching unknown cells."
+  ],
+  "verification": {
+    "applicationTests": {
+      "passed": 865,
+      "skipped": 1,
+      "files": 59,
+      "artifact": {
+        "path": "tmp/heart-learning/photo-coverage-prototype-v1/vitest.log",
+        "sha256": "3a6d5f76ec1663a4bd96f926af8b0e9166179d48e6553e528d164ac80988034d"
+      }
+    },
+    "focusedCore": {
+      "passed": 12,
+      "total": 12,
+      "artifact": {
+        "path": "tmp/heart-learning/photo-coverage-prototype-v1/focused-final.log",
+        "sha256": "8abf4172d40465690de56b9f6e9059c8ac614f80b65783487095c00c10464920"
+      }
+    },
+    "typecheck": {
+      "errors": 0,
+      "existingWarnings": 7,
+      "artifact": {
+        "path": "tmp/heart-learning/photo-coverage-prototype-v1/check.log",
+        "sha256": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092"
+      }
+    },
+    "lint": {
+      "errors": 0,
+      "existingWarnings": 2,
+      "artifact": {
+        "path": "tmp/heart-learning/photo-coverage-prototype-v1/lint-final.log",
+        "sha256": "2b7add329ca80a0f26dcb26c7eb139cd28b3768793c6b0797002f91a54119a34"
+      }
+    },
+    "build": {
+      "passed": true,
+      "artifact": {
+        "path": "tmp/heart-learning/photo-coverage-prototype-v1/build-final.log",
+        "sha256": "11eb126bec7dc96ec9c0f6e29f97a4d59e3fafd2b58806ba9f28815c97aeaad8"
+      }
+    },
+    "servedAssets": {
+      "path": "tmp/heart-learning/photo-coverage-prototype-v1/served-assets.json",
+      "sha256": "8910613cb655eace8662b678320b4870b33a3b5c4140f0f003c14c21cdf61930"
+    }
+  },
+  "realPhotoComparison": {
+    "scope": "Same sources and crop coordinates; both old/new exports scored against both old/new observed classifications. Missing pixels never enter these four comparisons.",
+    "baselineRuntimeCommit": "3edc6b8",
+    "cases": [
+      {
+        "id": "crossed-ribbons",
+        "oldPassed": false,
+        "newPassed": true,
+        "oldReportedError": 0.00885,
+        "observedFraction": 0.98244375,
+        "oldAgainstNewObserved": 0.011737313204954481,
+        "newAgainstNewObserved": 0.0055283063279704305,
+        "oldAgainstOldObserved": 0.008785490263437475,
+        "newAgainstOldObserved": 0.008938170760412492,
+        "observedClassificationChanges": 946
+      },
+      {
+        "id": "bauble",
+        "oldPassed": false,
+        "newPassed": false,
+        "oldReportedError": 0.03125,
+        "observedFraction": 0.97133125,
+        "oldAgainstNewObserved": 0.031174998230521257,
+        "newAgainstNewObserved": 0.043805859226705615,
+        "oldAgainstOldObserved": 0.030492944605663617,
+        "newAgainstOldObserved": 0.0487346618365259,
+        "observedClassificationChanges": 1446
+      },
+      {
+        "id": "bottom-flower",
+        "oldPassed": true,
+        "newPassed": true,
+        "oldReportedError": 0.0093125,
+        "observedFraction": 0.9979875,
+        "oldAgainstNewObserved": 0.007465023359511016,
+        "newAgainstNewObserved": 0.00733350868623104,
+        "oldAgainstOldObserved": 0.007483811169979584,
+        "newAgainstOldObserved": 0.007540174601385288,
+        "observedClassificationChanges": 59
+      }
+    ],
+    "artifact": {
+      "path": "tmp/heart-learning/photo-coverage-prototype-v1/clipped-verified/results.json",
+      "sha256": "27b076334fe32008c8d91266a886f390bb904816c4ac8beb030441b3861c5fc6"
+    },
+    "visualReview": "Crossed ribbons retain their two crossing white bands and now fill the unobserved tip instead of chasing padded white. Small edge irregularities remain. Bottom flower retains its central disc and surrounding petals. Bauble still has a fragmented classified frame; its new fit has worse contour/frame departures. Changing colour estimation and denominator prevents direct comparison of old and new headline percentages."
+  },
+  "editableReplay": {
+    "cases": [
+      {
+        "id": "crossed-ribbons",
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "observedError": 0.005490136203726677
+      },
+      {
+        "id": "bauble",
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "observedError": 0.04418549284808864
+      },
+      {
+        "id": "bottom-flower",
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "observedError": 0.0073836095141472215
+      }
+    ],
+    "artifact": {
+      "path": "tmp/heart-learning/photo-coverage-prototype-v1/clipped-editor/results.json",
+      "sha256": "0761298516eb3ecd338e370c40e83c1bc100010741b29ec3e52b98d5a9bde923"
+    }
+  },
+  "browser": {
+    "harness": "scripts/inverse/photo-coverage-browser-test.mjs",
+    "scope": "Real collage upload, rough ROI through UI, production detector and worker. Only solve time budget set to ten seconds.",
+    "passed": true,
+    "observedPixels": 157191,
+    "totalPixels": 160000,
+    "paintUndoRedo": {
+      "before": [
+        224,
+        224,
+        224,
+        255
+      ],
+      "painted": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "undo": [
+        224,
+        224,
+        224,
+        255
+      ],
+      "redo": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    "clickToReadySeconds": 8.022599999904633,
+    "downloadedSVGObservedError": 0.005490136203726677,
+    "downloadedGeometryPassed": true,
+    "downloadedPaperStatus": "pass",
+    "pageErrors": [],
+    "artifact": {
+      "path": "tmp/heart-learning/photo-coverage-prototype-v1/browser-final/results.json",
+      "sha256": "248da658200293d737f55647f336e1f64724d59127ed1b4b6e817b76817a25ab"
+    },
+    "screenshots": [
+      {
+        "path": "tmp/heart-learning/photo-coverage-prototype-v1/browser-final/import.png",
+        "sha256": "1c1a4df0ea892f83d7e5482ebc9fd0f9a0bb3e5c3cf7003d3a2167fd153ccbce"
+      },
+      {
+        "path": "tmp/heart-learning/photo-coverage-prototype-v1/browser-final/mask.png",
+        "sha256": "e88ce813fbf4c76bdd812f91b28d24e7abb1c298a69e1bc067a9da64e644bcc4"
+      },
+      {
+        "path": "tmp/heart-learning/photo-coverage-prototype-v1/browser-final/result.png",
+        "sha256": "28e289f23f3e1447bd8a7e8c9c8db81231c04377bf8bf3922aa044761e3192b5"
+      },
+      {
+        "path": "tmp/heart-learning/photo-coverage-prototype-v1/browser-final/draw.png",
+        "sha256": "5d6dca6d3235b2fda6ad56bfb7f0fe43fc7337390014e6038f60c8b833572e44"
+      }
+    ],
+    "visualReview": "Import and canvas hatching identify the missing tip. The fitted heart replaces that uncertainty with full editable geometry; the downloaded Draw result preserves the crossing bands and passes the independent editor/paper checks."
+  },
+  "ordinaryBrowser": [
+    {
+      "case": "star",
+      "passed": true,
+      "reportedFitSeconds": 1.5525,
+      "geometryIdenticalToPreviousQA": true
+    },
+    {
+      "case": "top-hat-preferred",
+      "passed": true,
+      "reportedFitSeconds": 6.720599999904633,
+      "geometryIdenticalToPreviousQA": true
+    }
+  ],
+  "fullQA": {
+    "status": "complete",
+    "root": "tmp/heart-learning/photo-coverage-prototype-v1/full-qa",
+    "sourceManifest": {
+      "path": "tmp/heart-learning/photo-coverage-prototype-v1/full-qa/source.json",
+      "sha256": "6bfda39404930b61ea1a9372c36c02290b9b5f318aadac1a61233ce97594848d"
+    },
+    "commands": [
+      "npm test",
+      "node scripts/inverse/hunodan-speed-benchmark.mjs"
+    ],
+    "sourceFilesVerified": 793,
+    "allCommandsPassed": false,
+    "applicationTests": {
+      "passed": 865,
+      "skipped": 1
+    },
+    "inverseTests": {
+      "passed": 958,
+      "total": 964,
+      "failed": 6,
+      "note": "Five prior fitter failures plus the observer expectation for the new validMask field. The subsequent irregular-mixture fix corrects that expectation and adds a coverage ownership test; no aggregate passing count is inferred from the focused rerun."
+    },
+    "checks": {
+      "path": "tmp/heart-learning/photo-coverage-prototype-v1/full-qa/checks.json",
+      "sha256": "e0f282e540a393ed96b9246262e2744c3615fb5296634e9f9204451e0057bdaa"
+    },
+    "testLog": {
+      "path": "tmp/heart-learning/photo-coverage-prototype-v1/full-qa/test.log",
+      "sha256": "a1f7a82f09e9ddd95151f5dd55017d701a89f459fa0eeb2968eac884c174cedf"
+    },
+    "hunodan": {
+      "passed": 22,
+      "total": 22,
+      "maximumSeconds": 8.809860042,
+      "identicalErrorsToPrecedingRun": 22,
+      "scope": "Preparation, solve, validation and export on native fixtures; excludes decoding, independent external replay, browser startup and worker transfer. Uses the stated matching-sheet allowance.",
+      "artifact": {
+        "path": "tmp/heart-learning/photo-coverage-prototype-v1/full-qa/hunodan/results.json",
+        "sha256": "8d26c3fa0c172ce29572b1680ef63f531fa1bb57bf01f3f9d85c5741b080cfc0"
+      }
+    }
+  },
+  "limitations": [
+    "The three clipped cases are development photographs, not an independent generalization test.",
+    "Bauble remains failed and has higher disagreement on both the old and new observed classifications.",
+    "Improvement against a reclassified mask does not prove greater fidelity to unavailable original artwork; both masks and all four cross-scores are retained.",
+    "This does not fix inaccurate corners inside the photograph or classify badly faded paper correctly.",
+    "No model was trained/deployed and no changes were pushed or deployed."
+  ],
+  "followup": "irregular-mixture-results.json"
+}

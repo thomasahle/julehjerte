@@ -1,0 +1,26 @@
+{
+  "schema": "projective-body-probe-plan-1",
+  "status": "declared-before-implementation-and-evaluation",
+  "rationale": "Exact camera geometry exposes 8.88% median maximum affine corner error even when the notch and lower edges are known. Complete-shape hard gates add no real crops. Test projective geometry using visible outline support first.",
+  "inputManifest": "tmp/heart-learning/shape-visibility-v1/synthetic-input/manifest.json",
+  "inputManifestSha256": "3ce85e3f6a5396a21849ef2a712404138f7210a78058a71543897794c2517339",
+  "cases": "All 16 original/occluded synthetic pairs, plus a separate exact-complete-body diagnostic on the 16 originals. No selection by previous crop success.",
+  "mainMethod": "Use the existing projective outline model and its lower-edge estimator. Remove paper-color/purity/diameter-contrast terms and the corresponding color gates for this offline body-only arm. Retain outline/edge support, bounds and perspective constraints. No annotated corners enter proposals.",
+  "fields": "For the measured arm, use the frozen automatically prompted MobileSAM body and source RGB. Material input is neutral and cannot favor a crop. The coarse CNN is not a hard support gate.",
+  "oracleControl": "Use the known physical synthetic body only to diagnose the projective model and optimizer ceiling. Label clearly as an oracle; never combine these crops with predicted-field success counts. Exact corners enter scoring only.",
+  "fixedPolicy": "Same model defaults, current maxSize=650, current orientation exploration and support thresholds. No per-case parameter adjustment. Freeze source before running.",
+  "measurement": "Report proposal counts, maximum per-corner error normalized by mean source-square side, counts below 1%, 3% and 5%, before/after occlusion changes and runtime. Inspect all proposals and rejections.",
+  "decision": "Only after this identifies a reliable projective construction, evaluate on the fixed real-photo cohorts with unchanged material masks and downstream geometry/paper/editor checks. If visible outlines still bias covered corners, test soft visibility weighting separately; do not blindly union masks.",
+  "qaDependency": "Wait for the live shape-visibility-v1 full test suite to terminate before the next substantial fitting run.",
+  "limitations": [
+    "Sixteen training-source geometries from one procedural family; not held-out generalization.",
+    "The ellipse-cap outline model may remain unsuitable for decorative caps; no claim otherwise.",
+    "This isolates crop geometry, not hidden material recovery or complete-template accuracy."
+  ],
+  "sourceHashes": {
+    "static/inverse/locator/locator.js": "bb745954e2fa2b59abf8be98ded36b75b134295363f913dab04d3a4ad1c6a419",
+    "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+    "static/inverse/locator/fields.js": "569c2235139acdc3c22f1fee94158ae59406b682e7ef16e822de215fd94b36ea",
+    "static/inverse/locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28"
+  }
+}

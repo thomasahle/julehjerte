@@ -1,0 +1,81 @@
+{
+  "schema": "selected-checker-editable-1",
+  "status": "complete",
+  "fitRuntimeCommit": "fd85519",
+  "auditGitHead": "496fdd8",
+  "scope": "Four previously saved exports, two fixed development photo targets. No new fitting, crop or mask changes. Not a browser upload test.",
+  "rows": [
+    {
+      "id": "real-f1af2fbb127278e4-roi-current",
+      "nativeError": 0.05613125,
+      "editableError": 0.05586875,
+      "cuts": {
+        "left": 8,
+        "right": 8
+      },
+      "conversionPassed": true,
+      "completeCandidatePassed": false,
+      "geometry": true,
+      "paper": "pass",
+      "editorIssues": [],
+      "geometrySha256": "dc9317539ea62ff114951b2797b2929c0bae19de5334c616b7b9d10e84fdc5bf",
+      "maskSha256": "9ac385b123d8f9783d50523b4c68f609ccb94287780ce2cdc8a4e8de7020fa9c"
+    },
+    {
+      "id": "real-f1af2fbb127278e4-roi-12",
+      "nativeError": 0.02706875,
+      "editableError": 0.0265875,
+      "cuts": {
+        "left": 11,
+        "right": 10
+      },
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "geometry": true,
+      "paper": "pass",
+      "editorIssues": [],
+      "geometrySha256": "afcac5255820214dad5d8b6bb41227e748aef950d3a54adffa6d6f54a3a7fbd7",
+      "maskSha256": "9ac385b123d8f9783d50523b4c68f609ccb94287780ce2cdc8a4e8de7020fa9c"
+    },
+    {
+      "id": "real-ca2f9adc67ee4cea-roi-current",
+      "nativeError": 0.0227875,
+      "editableError": 0.0227125,
+      "cuts": {
+        "left": 3,
+        "right": 3
+      },
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "geometry": true,
+      "paper": "pass",
+      "editorIssues": [],
+      "geometrySha256": "d13f655378a2cf8bae9f3c83edf6206fd6cbc9bcbf3ecfec84b42f8dbb9ed103",
+      "maskSha256": "9bc7deb8e8fb5df179865fa7e3227e5c494c2edea2bf7c5a3deade7ed1b17717"
+    },
+    {
+      "id": "real-ca2f9adc67ee4cea-roi-12",
+      "nativeError": 0.0227875,
+      "editableError": 0.0227125,
+      "cuts": {
+        "left": 3,
+        "right": 3
+      },
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "geometry": true,
+      "paper": "pass",
+      "editorIssues": [],
+      "geometrySha256": "d13f655378a2cf8bae9f3c83edf6206fd6cbc9bcbf3ecfec84b42f8dbb9ed103",
+      "maskSha256": "9bc7deb8e8fb5df179865fa7e3227e5c494c2edea2bf7c5a3deade7ed1b17717"
+    }
+  ],
+  "visualReview": "Inspected both checker editable previews and the identical star preview. More cuts remove much of the checker interior merging, but uneven edge cells, top-edge bends and thin seams remain. The star retains rounded corners. Passing the measured mask and geometry checks does not establish original cutting-path recovery.",
+  "artifacts": {
+    "tmp/heart-learning/selected-checker-editor-v1/source.json": "735680198c9ea9a110e23bb8dafa3d5aa878098df8173df175421f485b6a07d5",
+    "tmp/heart-learning/selected-checker-editor-v1/input/results.json": "48c7631689225cd2ceb45fd6bdd9822ac793202f846a5648c5a2b9953a47af5c",
+    "tmp/heart-learning/selected-checker-editor-v1/editable/results.json": "5d8b8c682463095e775f18e6ae5d1fc6f59e212fb8ba4b0d4c59fc5ac6f36aa4"
+  },
+  "verifiedSources": 8,
+  "verifiedCopies": 4
+}

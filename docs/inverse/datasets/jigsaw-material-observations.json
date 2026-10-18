@@ -1,0 +1,1444 @@
+{
+  "schema": "woven-heart-source-material-review-1",
+  "purpose": "Reserved development QA only. These observations never enter crop selection, fitting or neural training.",
+  "annotation": {
+    "id": "jigsaw",
+    "source": {
+      "file": "scripts/inverse/fixtures/hard-photos/collage.png",
+      "sha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+      "decodedPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+      "width": 1482,
+      "height": 1112,
+      "paperNames": [
+        "red paper",
+        "white paper"
+      ]
+    },
+    "roi": [
+      681,
+      590,
+      914,
+      832
+    ],
+    "review": {
+      "reviewer": "assistant visual inspection",
+      "purpose": "Reserved development QA observations; never training, crop selection, or fitting inputs.",
+      "selection": "Clear motif-interior samples across the photograph, chosen after seeing a distorted crop. Not blind, random or exhaustive; no asserted original cutting paths or exact physical corners.",
+      "coordinateConvention": "Integer original-source pixel indices; evaluate centres at x+0.5,y+0.5.",
+      "status": "source-and-labelled-overlay-reviewed",
+      "excludedDraftPoints": [
+        {
+          "point": [
+            809,
+            745
+          ],
+          "reason": "A narrow blurred bridge contains a substantial mixture of both colours; paper identity is withheld."
+        }
+      ]
+    },
+    "groups": [
+      {
+        "id": "red-motif-interiors",
+        "paper": 0,
+        "points": [
+          [
+            772,
+            690
+          ],
+          [
+            790,
+            703
+          ],
+          [
+            832,
+            690
+          ],
+          [
+            846,
+            697
+          ],
+          [
+            836,
+            710
+          ],
+          [
+            723,
+            744
+          ],
+          [
+            733,
+            752
+          ],
+          [
+            768,
+            737
+          ],
+          [
+            786,
+            754
+          ],
+          [
+            827,
+            738
+          ],
+          [
+            844,
+            750
+          ],
+          [
+            831,
+            765
+          ],
+          [
+            776,
+            791
+          ],
+          [
+            789,
+            804
+          ]
+        ]
+      },
+      {
+        "id": "white-motif-interiors",
+        "paper": 1,
+        "points": [
+          [
+            811,
+            668
+          ],
+          [
+            801,
+            681
+          ],
+          [
+            811,
+            710
+          ],
+          [
+            816,
+            725
+          ],
+          [
+            855,
+            730
+          ],
+          [
+            867,
+            710
+          ],
+          [
+            750,
+            715
+          ],
+          [
+            746,
+            731
+          ],
+          [
+            754,
+            764
+          ],
+          [
+            806,
+            780
+          ],
+          [
+            791,
+            771
+          ]
+        ]
+      }
+    ],
+    "sourceRGB": [
+      {
+        "paper": 0,
+        "point": [
+          772,
+          690
+        ],
+        "rgb": [
+          204,
+          54,
+          66
+        ]
+      },
+      {
+        "paper": 0,
+        "point": [
+          790,
+          703
+        ],
+        "rgb": [
+          224,
+          65,
+          74
+        ]
+      },
+      {
+        "paper": 0,
+        "point": [
+          832,
+          690
+        ],
+        "rgb": [
+          209,
+          47,
+          54
+        ]
+      },
+      {
+        "paper": 0,
+        "point": [
+          846,
+          697
+        ],
+        "rgb": [
+          208,
+          70,
+          68
+        ]
+      },
+      {
+        "paper": 0,
+        "point": [
+          836,
+          710
+        ],
+        "rgb": [
+          198,
+          62,
+          78
+        ]
+      },
+      {
+        "paper": 0,
+        "point": [
+          723,
+          744
+        ],
+        "rgb": [
+          224,
+          55,
+          67
+        ]
+      },
+      {
+        "paper": 0,
+        "point": [
+          733,
+          752
+        ],
+        "rgb": [
+          221,
+          78,
+          85
+        ]
+      },
+      {
+        "paper": 0,
+        "point": [
+          768,
+          737
+        ],
+        "rgb": [
+          205,
+          62,
+          67
+        ]
+      },
+      {
+        "paper": 0,
+        "point": [
+          786,
+          754
+        ],
+        "rgb": [
+          213,
+          62,
+          72
+        ]
+      },
+      {
+        "paper": 0,
+        "point": [
+          827,
+          738
+        ],
+        "rgb": [
+          210,
+          57,
+          67
+        ]
+      },
+      {
+        "paper": 0,
+        "point": [
+          844,
+          750
+        ],
+        "rgb": [
+          198,
+          60,
+          67
+        ]
+      },
+      {
+        "paper": 0,
+        "point": [
+          831,
+          765
+        ],
+        "rgb": [
+          172,
+          72,
+          85
+        ]
+      },
+      {
+        "paper": 0,
+        "point": [
+          776,
+          791
+        ],
+        "rgb": [
+          221,
+          55,
+          62
+        ]
+      },
+      {
+        "paper": 0,
+        "point": [
+          789,
+          804
+        ],
+        "rgb": [
+          232,
+          64,
+          77
+        ]
+      },
+      {
+        "paper": 1,
+        "point": [
+          811,
+          668
+        ],
+        "rgb": [
+          231,
+          205,
+          208
+        ]
+      },
+      {
+        "paper": 1,
+        "point": [
+          801,
+          681
+        ],
+        "rgb": [
+          215,
+          204,
+          201
+        ]
+      },
+      {
+        "paper": 1,
+        "point": [
+          811,
+          710
+        ],
+        "rgb": [
+          221,
+          189,
+          194
+        ]
+      },
+      {
+        "paper": 1,
+        "point": [
+          816,
+          725
+        ],
+        "rgb": [
+          229,
+          178,
+          188
+        ]
+      },
+      {
+        "paper": 1,
+        "point": [
+          855,
+          730
+        ],
+        "rgb": [
+          219,
+          203,
+          200
+        ]
+      },
+      {
+        "paper": 1,
+        "point": [
+          867,
+          710
+        ],
+        "rgb": [
+          209,
+          202,
+          201
+        ]
+      },
+      {
+        "paper": 1,
+        "point": [
+          750,
+          715
+        ],
+        "rgb": [
+          230,
+          195,
+          201
+        ]
+      },
+      {
+        "paper": 1,
+        "point": [
+          746,
+          731
+        ],
+        "rgb": [
+          233,
+          194,
+          193
+        ]
+      },
+      {
+        "paper": 1,
+        "point": [
+          754,
+          764
+        ],
+        "rgb": [
+          217,
+          200,
+          196
+        ]
+      },
+      {
+        "paper": 1,
+        "point": [
+          806,
+          780
+        ],
+        "rgb": [
+          224,
+          201,
+          206
+        ]
+      },
+      {
+        "paper": 1,
+        "point": [
+          791,
+          771
+        ],
+        "rgb": [
+          231,
+          189,
+          194
+        ]
+      }
+    ]
+  },
+  "freeze": {
+    "annotationSha256": "4d9be66d464c481b1268069bbaef2494924d2d1d42ac65f5d23466236c069dcb",
+    "sourcePhotoSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+    "decodedPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+    "points": 25,
+    "frozenBeforeCropCoverageReplay": true
+  },
+  "coverage": {
+    "annotationSha256": "4d9be66d464c481b1268069bbaef2494924d2d1d42ac65f5d23466236c069dcb",
+    "method": "Source-pixel centre projection only; no classification or fitting, no template feedback, no asserted ground-truth corners.",
+    "rows": [
+      {
+        "name": "automatic",
+        "quad": [
+          [
+            796.940953842628,
+            631.6593539438662
+          ],
+          [
+            856.2204646604408,
+            748.7890866349005
+          ],
+          [
+            764.8124220376249,
+            864.0519986487432
+          ],
+          [
+            715.8813933469556,
+            745.1522092092067
+          ]
+        ],
+        "review": {
+          "total": 25,
+          "covered": 21,
+          "correct": 0,
+          "mismatched": 0,
+          "outsideCrop": 4,
+          "unavailable": 21,
+          "coverage": 0.84,
+          "agreementAllSamples": 0,
+          "agreementCovered": 0,
+          "phase": null,
+          "phaseInferred": true,
+          "phaseAmbiguous": true,
+          "allReviewedSamplesMatch": false,
+          "groups": [
+            {
+              "id": "red-motif-interiors",
+              "paper": 0,
+              "total": 14,
+              "covered": 12,
+              "correct": 0,
+              "mismatched": 0,
+              "outsideCrop": 2,
+              "unavailable": 12,
+              "coverage": 0.8571428571428571,
+              "agreementAllSamples": 0,
+              "agreementCovered": 0
+            },
+            {
+              "id": "white-motif-interiors",
+              "paper": 1,
+              "total": 11,
+              "covered": 9,
+              "correct": 0,
+              "mismatched": 0,
+              "outsideCrop": 2,
+              "unavailable": 9,
+              "coverage": 0.8181818181818182,
+              "agreementAllSamples": 0,
+              "agreementCovered": 0
+            }
+          ],
+          "rows": [
+            {
+              "group": "red-motif-interiors",
+              "point": [
+                772,
+                690
+              ],
+              "paper": 0,
+              "cropPoint": [
+                54.144242498268184,
+                149.2321791557297
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "red-motif-interiors",
+              "point": [
+                790,
+                703
+              ],
+              "paper": 0,
+              "cropPoint": [
+                135.22707328823842,
+                115.30077717040474
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "red-motif-interiors",
+              "point": [
+                832,
+                690
+              ],
+              "paper": 0,
+              "cropPoint": [
+                224.80875818800814,
+                -14.970101908074266
+              ],
+              "covered": false,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "red-motif-interiors",
+              "point": [
+                846,
+                697
+              ],
+              "paper": 0,
+              "cropPoint": [
+                275.6691247285665,
+                -41.425571381301644
+              ],
+              "covered": false,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "red-motif-interiors",
+              "point": [
+                836,
+                710
+              ],
+              "paper": 0,
+              "cropPoint": [
+                275.5602508058662,
+                0.8794984029052888
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "red-motif-interiors",
+              "point": [
+                723,
+                744
+              ],
+              "paper": 0,
+              "cropPoint": [
+                22.922704453114733,
+                373.97895019940046
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "red-motif-interiors",
+              "point": [
+                733,
+                752
+              ],
+              "paper": 0,
+              "cropPoint": [
+                72.36173783002923,
+                352.45269150983364
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "red-motif-interiors",
+              "point": [
+                768,
+                737
+              ],
+              "paper": 0,
+              "cropPoint": [
+                144.29109907403748,
+                224.3157463068713
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "red-motif-interiors",
+              "point": [
+                786,
+                754
+              ],
+              "paper": 0,
+              "cropPoint": [
+                231.34237340853096,
+                194.260627426855
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "red-motif-interiors",
+              "point": [
+                827,
+                738
+              ],
+              "paper": 0,
+              "cropPoint": [
+                308.094344543073,
+                60.5939579382317
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "red-motif-interiors",
+              "point": [
+                844,
+                750
+              ],
+              "paper": 0,
+              "cropPoint": [
+                374.6577235079941,
+                31.827461765942516
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "red-motif-interiors",
+              "point": [
+                831,
+                765
+              ],
+              "paper": 0,
+              "cropPoint": [
+                371.69043109972273,
+                84.69562155726459
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "red-motif-interiors",
+              "point": [
+                776,
+                791
+              ],
+              "paper": 0,
+              "cropPoint": [
+                281.1227330523644,
+                271.70857508684827
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "red-motif-interiors",
+              "point": [
+                789,
+                804
+              ],
+              "paper": 0,
+              "cropPoint": [
+                342.48106476679567,
+                250.4803664837349
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "white-motif-interiors",
+              "point": [
+                811,
+                668
+              ],
+              "paper": 1,
+              "cropPoint": [
+                121.49185848491447,
+                10.856998639088603
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "white-motif-interiors",
+              "point": [
+                801,
+                681
+              ],
+              "paper": 1,
+              "cropPoint": [
+                120.24434998318732,
+                55.313589161612775
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "white-motif-interiors",
+              "point": [
+                811,
+                710
+              ],
+              "paper": 1,
+              "cropPoint": [
+                208.7881030774936,
+                66.73831818429876
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "white-motif-interiors",
+              "point": [
+                816,
+                725
+              ],
+              "paper": 1,
+              "cropPoint": [
+                253.0149210185293,
+                72.9670449405074
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "white-motif-interiors",
+              "point": [
+                855,
+                730
+              ],
+              "paper": 1,
+              "cropPoint": [
+                363.0115166785046,
+                -21.44526776677012
+              ],
+              "covered": false,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "white-motif-interiors",
+              "point": [
+                867,
+                710
+              ],
+              "paper": 1,
+              "cropPoint": [
+                353.972021373863,
+                -76.45973423021586
+              ],
+              "covered": false,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "white-motif-interiors",
+              "point": [
+                750,
+                715
+              ],
+              "paper": 1,
+              "cropPoint": [
+                42.117863429752106,
+                248.94818634410916
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "white-motif-interiors",
+              "point": [
+                746,
+                731
+              ],
+              "paper": 1,
+              "cropPoint": [
+                65.4363544300495,
+                283.01926918860414
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "white-motif-interiors",
+              "point": [
+                754,
+                764
+              ],
+              "paper": 1,
+              "cropPoint": [
+                161.85099504971643,
+                302.5869077933146
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "white-motif-interiors",
+              "point": [
+                806,
+                780
+              ],
+              "paper": 1,
+              "cropPoint": [
+                338.0321777827032,
+                171.51818590340292
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "white-motif-interiors",
+              "point": [
+                791,
+                771
+              ],
+              "paper": 1,
+              "cropPoint": [
+                280.2020580104307,
+                202.13774735151463
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            }
+          ],
+          "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+        }
+      },
+      {
+        "name": "historical-diagnostic-only",
+        "quad": [
+          [
+            786.16125,
+            637.36125
+          ],
+          [
+            888.6012499999999,
+            716.16125
+          ],
+          [
+            803.89125,
+            821.55625
+          ],
+          [
+            708.34625,
+            731.92125
+          ]
+        ],
+        "review": {
+          "total": 25,
+          "covered": 25,
+          "correct": 0,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 25,
+          "coverage": 1,
+          "agreementAllSamples": 0,
+          "agreementCovered": 0,
+          "phase": null,
+          "phaseInferred": true,
+          "phaseAmbiguous": true,
+          "allReviewedSamplesMatch": false,
+          "groups": [
+            {
+              "id": "red-motif-interiors",
+              "paper": 0,
+              "total": 14,
+              "covered": 14,
+              "correct": 0,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 14,
+              "coverage": 1,
+              "agreementAllSamples": 0,
+              "agreementCovered": 0
+            },
+            {
+              "id": "white-motif-interiors",
+              "paper": 1,
+              "total": 11,
+              "covered": 11,
+              "correct": 0,
+              "mismatched": 0,
+              "outsideCrop": 0,
+              "unavailable": 11,
+              "coverage": 1,
+              "agreementAllSamples": 0,
+              "agreementCovered": 0
+            }
+          ],
+          "rows": [
+            {
+              "group": "red-motif-interiors",
+              "point": [
+                772,
+                690
+              ],
+              "paper": 0,
+              "cropPoint": [
+                77.53065498903509,
+                162.91592082238995
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "red-motif-interiors",
+              "point": [
+                790,
+                703
+              ],
+              "paper": 0,
+              "cropPoint": [
+                148.95910029546246,
+                158.0229995202472
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "red-motif-interiors",
+              "point": [
+                832,
+                690
+              ],
+              "paper": 0,
+              "cropPoint": [
+                224.82302963983022,
+                43.346861194697084
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "red-motif-interiors",
+              "point": [
+                846,
+                697
+              ],
+              "paper": 0,
+              "cropPoint": [
+                271.0877671215906,
+                33.62753757794181
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "red-motif-interiors",
+              "point": [
+                836,
+                710
+              ],
+              "paper": 0,
+              "cropPoint": [
+                272.3271300261016,
+                84.1787262032767
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "red-motif-interiors",
+              "point": [
+                723,
+                744
+              ],
+              "paper": 0,
+              "cropPoint": [
+                65.53033462544848,
+                396.1924716953329
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "red-motif-interiors",
+              "point": [
+                733,
+                752
+              ],
+              "paper": 0,
+              "cropPoint": [
+                107.06831631278104,
+                393.050072138119
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "red-motif-interiors",
+              "point": [
+                768,
+                737
+              ],
+              "paper": 0,
+              "cropPoint": [
+                162.97222293784515,
+                284.164829660592
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "red-motif-interiors",
+              "point": [
+                786,
+                754
+              ],
+              "paper": 0,
+              "cropPoint": [
+                238.94179017367358,
+                286.5843451255436
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "red-motif-interiors",
+              "point": [
+                827,
+                738
+              ],
+              "paper": 0,
+              "cropPoint": [
+                303.7635371889861,
+                167.84938974392182
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "red-motif-interiors",
+              "point": [
+                844,
+                750
+              ],
+              "paper": 0,
+              "cropPoint": [
+                363.7468543582908,
+                162.75800278572973
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "red-motif-interiors",
+              "point": [
+                831,
+                765
+              ],
+              "paper": 0,
+              "cropPoint": [
+                361.7207439919393,
+                222.0889353398263
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "red-motif-interiors",
+              "point": [
+                776,
+                791
+              ],
+              "paper": 0,
+              "cropPoint": [
+                285.2331422555124,
+                390.39804036082455
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "red-motif-interiors",
+              "point": [
+                789,
+                804
+              ],
+              "paper": 0,
+              "cropPoint": [
+                338.2838059626047,
+                392.2750183920985
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "white-motif-interiors",
+              "point": [
+                811,
+                668
+              ],
+              "paper": 1,
+              "cropPoint": [
+                130.23854094892317,
+                29.547286805359928
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "white-motif-interiors",
+              "point": [
+                801,
+                681
+              ],
+              "paper": 1,
+              "cropPoint": [
+                131.77995343543097,
+                81.88933803846236
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "white-motif-interiors",
+              "point": [
+                811,
+                710
+              ],
+              "paper": 1,
+              "cropPoint": [
+                213.53525642887848,
+                132.96208259087996
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "white-motif-interiors",
+              "point": [
+                816,
+                725
+              ],
+              "paper": 1,
+              "cropPoint": [
+                254.07346605827445,
+                158.87755526153992
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "white-motif-interiors",
+              "point": [
+                855,
+                730
+              ],
+              "paper": 1,
+              "cropPoint": [
+                352.3644616901987,
+                95.36519627462694
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "white-motif-interiors",
+              "point": [
+                867,
+                710
+              ],
+              "paper": 1,
+              "cropPoint": [
+                343.11743871878576,
+                25.439505177553936
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "white-motif-interiors",
+              "point": [
+                750,
+                715
+              ],
+              "paper": 1,
+              "cropPoint": [
+                73.70035362974912,
+                269.67421938466464
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "white-motif-interiors",
+              "point": [
+                746,
+                731
+              ],
+              "paper": 1,
+              "cropPoint": [
+                96.62816508904375,
+                316.2427183993146
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "white-motif-interiors",
+              "point": [
+                754,
+                764
+              ],
+              "paper": 1,
+              "cropPoint": [
+                182.31205954456667,
+                375.7610030616603
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "white-motif-interiors",
+              "point": [
+                806,
+                780
+              ],
+              "paper": 1,
+              "cropPoint": [
+                332.9911314425929,
+                305.0982686356138
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            },
+            {
+              "group": "white-motif-interiors",
+              "point": [
+                791,
+                771
+              ],
+              "paper": 1,
+              "cropPoint": [
+                282.5004669247617,
+                315.103928643902
+              ],
+              "covered": true,
+              "maskValue": null,
+              "predictedPaper": null,
+              "correct": null
+            }
+          ],
+          "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+        }
+      }
+    ]
+  },
+  "visualReview": {
+    "sourceCloseup": true,
+    "sourceCoordinateGrid": true,
+    "draftOverlay": true,
+    "finalOverlay": true,
+    "reviewer": "assistant",
+    "uncertainBridgeRemovedBeforeCoverageReplay": [
+      809,
+      745
+    ]
+  },
+  "interpretation": "The automatic crop excludes two reviewed red and two reviewed white motif-interior pixels. Its low fitted-mask error cannot score or recover those excluded observations.",
+  "limitations": [
+    "Sparse development observations chosen after inspecting a failed crop; not blind, random or exhaustive.",
+    "Paper labels are assistant-reviewed source observations, not original artwork or cutting geometry.",
+    "The historical crop covering all samples is a diagnostic intervention, not verified physical corners.",
+    "The 25 new points are not yet installed in the common benchmark fixture; its existing 78 observations remain unchanged."
+  ],
+  "reproduction": {
+    "module": "scripts/inverse/photo-material-samples.mjs",
+    "function": "reviewMaterialSamples",
+    "annotationField": "annotation",
+    "resolution": 400,
+    "quadFields": [
+      "coverage.rows[0].quad",
+      "coverage.rows[1].quad"
+    ],
+    "noMaskInput": true
+  },
+  "artifacts": {
+    "tmp/heart-learning/jigsaw-source-review-v1/annotation-draft.json": "8cc9f071e78a20af73380a713439db7364aead4fed86b860e31a5bb7a49265a7",
+    "tmp/heart-learning/jigsaw-source-review-v1/annotation.json": "4d9be66d464c481b1268069bbaef2494924d2d1d42ac65f5d23466236c069dcb",
+    "tmp/heart-learning/jigsaw-source-review-v1/frozen-labels.json": "5c5ac96f7cf7960177f1d1f7e4e524493388dc359c317525b933f161c991bdd4",
+    "tmp/heart-learning/jigsaw-source-review-v1/coverage.mjs": "0e6ccea150298a81b3ed80a64ad3a62e8f241e82eee9b43de0ae30c57e4da1b2",
+    "tmp/heart-learning/jigsaw-source-review-v1/coverage.json": "8a970116d1f9908cb7a850d6d41ac843a2043253e176a05a8044f9845cf5ed56",
+    "tmp/heart-learning/jigsaw-source-review-v1/source-closeup.png": "30782b66d678d6f9ed8742ea1eb85b4c9a8b0f29c81bf8072d96431e73c080d5",
+    "tmp/heart-learning/jigsaw-source-review-v1/source-grid.png": "d8d1a0cc2baf06cf20ff612bb7032cd11a29f435231740365abde1e294caae60",
+    "tmp/heart-learning/jigsaw-source-review-v1/samples-draft.png": "ecf9163fed4ba7f78a31d623202fbdfc631f0aa28240fcedff6df60b0892fb30",
+    "tmp/heart-learning/jigsaw-source-review-v1/samples-final.png": "0adc7b969a61b62636be298ca5c40ca5b26ad00d7ae3b773c02030ffdd193efc",
+    "scripts/inverse/photo-material-samples.mjs": "8a28ea92b7206bb517d2561c8e14211cdb0a6fcfaea9de587f13a920b0f43c3d"
+  }
+}

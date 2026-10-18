@@ -76,6 +76,9 @@ export interface HeartDesign {
   weaveParity?: 0 | 1;
   // Number of strips in the overlap rectangle (x = columns, y = rows).
   gridSize: GridSize;
+  // Optional physical overlap width / height, independent of strip counts.
+  // Fitted templates use 1; older designs retain their strip-sized rectangle.
+  overlapAspectRatio?: number;
   // The heart's own paper colours, as picked in the editor. Absent on gallery
   // hearts and on everything saved before the editor could set them, and those
   // follow the site-wide colour store instead ($lib/stores/colors).

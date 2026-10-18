@@ -1,0 +1,27 @@
+{
+  "scope": "Offline joint body/material evaluation. No training, ONNX export, runtime integration or changed solver acceptance.",
+  "checks": {
+    "analyticTests": 8,
+    "offlineLearningTests": 90,
+    "offlineLearningModules": 15,
+    "exitCode": 0
+  },
+  "sourceHashes": {
+    "scripts/inverse/learning/material_metrics.py": "099e18064c065a64ca35cb40bcb6ba44103544c54b949e8a818ae48f8e94cedb",
+    "scripts/inverse/learning/material_metrics.test.py": "27ba341333b306e2289f4a334ec3fdf89889801100a14d02d6f889a1dff5a1b4",
+    "scripts/inverse/learning/test.py": "1b4717925fca025c7f07a34382b7b401ed322fa00f7840f85beb6ae3aaa0c7fa"
+  },
+  "artifactsSha256": {
+    "tmp/heart-learning/material-evaluation-v1/final-checks-v2/learning-tests.log": "cf40faae222796ccf31a5f97d28fb96404d88a34529f04122e4d74a84fa762ee",
+    "tmp/heart-learning/material-evaluation-v1/final-checks-v2/checks.json": "e0c6241f98dbf043a18f8ba5d864184590d81afb50ed4bbe7332fdf5d2afd7b5",
+    "tmp/heart-learning/material-evaluation-v1/tests.log": "6ff8cb6673e52248481ba0fa0eca3657ce430b443dbc93e93c7a3e25938b7877"
+  },
+  "policy": {
+    "threshold": 0.5,
+    "phase": "One global A/B exchange per image, selected on every known material pixel and retained for joint scoring.",
+    "missingBody": "Always an error on known material; never excluded from denominator.",
+    "unknownMaterial": "Excluded from joint classes but retained in the body task when body is known.",
+    "fractionalCoverage": "Expected hard-classification disagreement without target thresholding.",
+    "scope": "Known regions only; not crop, complete-boundary, graph or physical-template accuracy."
+  }
+}

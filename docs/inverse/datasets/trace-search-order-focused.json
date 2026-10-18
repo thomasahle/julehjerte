@@ -1,0 +1,1460 @@
+{
+  "schema": "trace-search-order-focused-1",
+  "runtimeCommit": "66e91bd28c1e53a6b206e6cb09d09b40608da544",
+  "status": "focused-and-hunodan-complete; broader release checks pending",
+  "hunodan": [
+    {
+      "id": "hjfig-01",
+      "seconds": 4.464533625,
+      "error": 0.009799111111111111,
+      "priorError": 0.009799111111111111,
+      "passed": true
+    },
+    {
+      "id": "hjfig-02",
+      "seconds": 5.4127167499999995,
+      "error": 0.013340444444444445,
+      "priorError": 0.013340444444444445,
+      "passed": true
+    },
+    {
+      "id": "hjfig-03",
+      "seconds": 3.7955971249999982,
+      "error": 0.006634666666666666,
+      "priorError": 0.006634666666666666,
+      "passed": true
+    },
+    {
+      "id": "hjfig-04",
+      "seconds": 4.285536791999999,
+      "error": 0.013824,
+      "priorError": 0.013824,
+      "passed": true
+    },
+    {
+      "id": "hjfig-05",
+      "seconds": 3.1434579169999997,
+      "error": 0.009042960667083447,
+      "priorError": 0.009042960667083447,
+      "passed": true
+    },
+    {
+      "id": "hjfla-01",
+      "seconds": 6.368749541999998,
+      "error": 0.012166341145833334,
+      "priorError": 0.012166341145833334,
+      "passed": true
+    },
+    {
+      "id": "hjcur-01",
+      "seconds": 5.801788333000004,
+      "error": 0.005148444444444444,
+      "priorError": 0.005148444444444444,
+      "passed": true
+    },
+    {
+      "id": "hjcur-02",
+      "seconds": 5.709491582999996,
+      "error": 0.005219555555555555,
+      "priorError": 0.005219555555555555,
+      "passed": true
+    },
+    {
+      "id": "hjcur-03",
+      "seconds": 5.447755833000003,
+      "error": 0.004522666666666667,
+      "priorError": 0.004522666666666667,
+      "passed": true
+    },
+    {
+      "id": "hjcur-04",
+      "seconds": 7.076626457999999,
+      "error": 0.005639111111111111,
+      "priorError": 0.005639111111111111,
+      "passed": true
+    },
+    {
+      "id": "hjcur-05",
+      "seconds": 3.4260319999999993,
+      "error": 0.009436444444444445,
+      "priorError": 0.009436444444444445,
+      "passed": true
+    },
+    {
+      "id": "hjhih-01",
+      "seconds": 6.779479416999995,
+      "error": 0.006040430615586996,
+      "priorError": 0.006040430615586996,
+      "passed": true
+    },
+    {
+      "id": "hjhih-02",
+      "seconds": 5.037635957999999,
+      "error": 0.003899406226779104,
+      "priorError": 0.003899406226779104,
+      "passed": true
+    },
+    {
+      "id": "hjhih-04",
+      "seconds": 7.437974459000005,
+      "error": 0.007776029627903062,
+      "priorError": 0.007776029627903062,
+      "passed": true
+    },
+    {
+      "id": "hjstr-01",
+      "seconds": 4.439327791999997,
+      "error": 0.007550237322696868,
+      "priorError": 0.007550237322696868,
+      "passed": true
+    },
+    {
+      "id": "hjstr-02",
+      "seconds": 6.1068940000000005,
+      "error": 0.004365548980933596,
+      "priorError": 0.004365548980933596,
+      "passed": true
+    },
+    {
+      "id": "hjstr-03",
+      "seconds": 8.221285959000001,
+      "error": 0.0056129769369752365,
+      "priorError": 0.0056129769369752365,
+      "passed": true
+    },
+    {
+      "id": "hjsta-01",
+      "seconds": 4.9132632500000035,
+      "error": 0.007929362880886427,
+      "priorError": 0.007929362880886427,
+      "passed": true
+    },
+    {
+      "id": "hjsta-02",
+      "seconds": 4.742404582999996,
+      "error": 0.0038045247395833335,
+      "priorError": 0.0038045247395833335,
+      "passed": true
+    },
+    {
+      "id": "hjsta-03",
+      "seconds": 6.625253333000001,
+      "error": 0.012332213049376572,
+      "priorError": 0.012332213049376572,
+      "passed": true
+    },
+    {
+      "id": "hjsta-04",
+      "seconds": 6.435016875000001,
+      "error": 0.0050250552896055544,
+      "priorError": 0.0050250552896055544,
+      "passed": true
+    },
+    {
+      "id": "hjsta-05",
+      "seconds": 6.168405916999997,
+      "error": 0.010624446293860237,
+      "priorError": 0.010624446293860237,
+      "passed": true
+    }
+  ],
+  "maxHunodanSeconds": 8.221285959000001,
+  "tests": {
+    "existing-tests": {
+      "path": "tmp/heart-learning/trace-order-v1/existing-tests.log",
+      "sha256": "835c4c258a2f24303367fbdd83c8f039e54e188b02cf26cb00f49002ff2bb8b2",
+      "passed": 12
+    },
+    "new-test": {
+      "path": "tmp/heart-learning/trace-order-v1/new-test.log",
+      "sha256": "52f43991bb29490ba6c05c3a42c6d4e3b1368bd5e12aede94ded65838bc33387",
+      "passed": 1
+    }
+  },
+  "prototype": {
+    "scope": "Earlier two-photo replay before final bookkeeping of deferred budgets and selected neighbor traces; annotation-assisted crops, not learned/automatic cropping.",
+    "sourceHashes": {
+      "scripts/inverse/fixtures/photo-material-samples.json": "30b1d24b9a380cb8cfda5fda26d32b20750d64335f99a71b7ebb37b6a8985eb6",
+      "scripts/inverse/photo-material-samples.mjs": "8a28ea92b7206bb517d2561c8e14211cdb0a6fcfaea9de587f13a920b0f43c3d",
+      "scripts/inverse/learning/foreground-replay.mjs": "a0faa13f03495a01b7fa5cf09a5bd2c6006d1c88bde00ae541bc35eed0d357f4",
+      "scripts/inverse/learning/foreground-crop.mjs": "dd24a72deea6eba072d0162ed5da553e8d496cf61a98ed1ce0e1b02f6c83d170",
+      "scripts/inverse/learning/foreground-refine.mjs": "11ae48367b704a927fff9245f196ab01b057d3816f880dbe2ce0fb519dbb1c54",
+      "scripts/inverse/learning/photo-labels.mjs": "7bfde5fd031e15a05573bb4a32e676c704614d70593bade9e015b515a943fd34",
+      "scripts/inverse/hard-photo-target.mjs": "69bdd88cd8f4c992d6b958082ce5b60d88abfab6c3f0299346b7b4a143f80d4a",
+      "scripts/inverse/export-renderer.mjs": "fb393f73b9c39780795c3951eb82d864fef7ab40ec63a90a4365aae6041afbbe",
+      "static/inverse/locator/anchored.js": "92f1ffb68bac38b1bc36f4209820b46200cfa7e6dcfbb746ed94f33beddac536",
+      "static/inverse/locator/background.js": "03d1c9b8f8237a97a7e8ed53d1dfa5117d1db079ba4162cac7117a8761f3441f",
+      "static/inverse/locator/fields.js": "569c2235139acdc3c22f1fee94158ae59406b682e7ef16e822de215fd94b36ea",
+      "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+      "static/inverse/locator/interior-palette.js": "6322efaa9772d488992a40da5b01091b0e71826d30c91fba5976c5b285e027bc",
+      "static/inverse/locator/locator.js": "bb745954e2fa2b59abf8be98ded36b75b134295363f913dab04d3a4ad1c6a419",
+      "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+      "static/inverse/locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+      "static/inverse/locator/palette.js": "4a373e0a911d8f8d2cdda42468c05cc52cb33b912a8990775f9db651cfc99158",
+      "static/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+      "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+      "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+      "static/inverse/core/chord-distance.js": "6be52281e3056d29ad7093f902b0f768410f3c414f049f164f94e969bd89dd48",
+      "static/inverse/core/crop.js": "03552409b48975702527fb365eea6841cb441a2be26637a7d44a85aa8ea763ff",
+      "static/inverse/core/engine.js": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+      "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+      "static/inverse/core/feature-recovery.js": "524382a36a2edbaedb078d777ace49751310c2d817a0ffcb64d842293c219c73",
+      "static/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+      "static/inverse/core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+      "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+      "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+      "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+      "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+      "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+      "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+      "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+      "static/inverse/core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+      "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+      "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+      "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+      "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+      "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+      "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+      "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+      "static/inverse/core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+      "static/inverse/core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+      "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+      "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+      "static/inverse/core/solver.js": "29eeca095cfe123f378a424f099954e5ae082866b8ad437f1a6dbb064eddbbf1",
+      "static/inverse/core/spatial-color.js": "f170ff447ef905fc21121d286ac427a079b184ca077fd178065b0a3e247fb132",
+      "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+      "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+      "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+      "static/inverse/core/validate.js": "31cc29c6873896f53a2f999782dcd2292f0924611166932114b45534f5cbebd7",
+      "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+      "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+      "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+      "static/inverse/core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+      "static/inverse/core/direct/counts.js": "efdfa3fc371dc9d9cfbbc9ce763df8b8cdca6f8f6324b55fde9d23ed05f31d8e",
+      "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+      "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+      "static/inverse/core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+      "static/inverse/core/direct/feature-seeds.js": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+      "static/inverse/core/direct/finalize.js": "d8504b811b223296c006c1cca57466c28fef0adc0e880b2d0073bfcdcd554ae4",
+      "static/inverse/core/direct/fit.js": "ce926fbf75afdbe4a8b062c30da551832c5bff0305514f905ec87cfdb6687e7e",
+      "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+      "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+      "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+      "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+      "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+      "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+      "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+      "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+      "static/inverse/core/direct/outline-details.js": "ff9d4df5f27fd9ca97d15b115cc95c5692bd17e302f0dcd11c62e7295b85d8aa",
+      "static/inverse/core/direct/polish.js": "3f9df26508076465860a62ce72c2de3aeb67413a1d67ab1927dc37b89b7b622e",
+      "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+      "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+      "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+      "static/inverse/core/direct/refine.js": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+      "static/inverse/core/direct/rejected-routing.js": "26be56dd3367eeb0648833ca347f008af73c8717d58358664ff1d15bbd240540",
+      "static/inverse/core/direct/reroute.js": "84a8cf2cfb6bcb1101a63004f638d0f3dc398baf3fe15ec1068b20336535d9ed",
+      "static/inverse/core/direct/share.js": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+      "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+      "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+      "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+      "static/inverse/core/direct/short-returns.js": "b329b2ca19cb7fca3493d33b0e65dcd44f32ff7bba507cddad106df7f85321ab",
+      "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+      "static/inverse/core/direct/topology.js": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097"
+    },
+    "rows": [
+      {
+        "id": "real-45744a03afddccb1-body-1",
+        "maskSha256": "27aa49fafcc86a9abb839eb010f837c4e1e62c707da940c72cd33621cd6762ff",
+        "quad": [
+          [
+            1170.5495484163653,
+            1283.2528649354379
+          ],
+          [
+            2138.3550925138293,
+            2154.593957016273
+          ],
+          [
+            1156.1425996948778,
+            3218.971632426867
+          ],
+          [
+            311.7035121240154,
+            2323.672617061654
+          ]
+        ],
+        "beforeError": 0.04344375,
+        "prototypeError": 0.04344375,
+        "checkedPair": false,
+        "solveSeconds": 8.660929915999999,
+        "featureRecovery": {
+          "method": "trace-milp",
+          "budgetSeconds": 6.313483799100001,
+          "accepted": false,
+          "attempts": [
+            {
+              "neighbors": 8,
+              "connectorVariants": 1,
+              "smoothRadius": 0.3,
+              "budgetSeconds": 6.218052507100002,
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+              "solver": {
+                "binaryVariables": 852,
+                "continuousVariables": 760,
+                "linearConstraints": 4049,
+                "turnAuxiliaries": 86,
+                "crossingConflicts": 90,
+                "widthPairs": 81,
+                "coefficientQuantum": 1e-07,
+                "stopAfterValidated": true,
+                "graph": {
+                  "visibleEdges": 55,
+                  "hiddenCandidates": 87,
+                  "vertices": 53,
+                  "buildSeconds": 0.0041581249999999275,
+                  "guidePortals": 0,
+                  "guideCount": 0,
+                  "guideSkip": null,
+                  "vertexNormalization": {
+                    "collapsedSegments": 0,
+                    "closedSplits": 0,
+                    "maximumEndpointMoveMm": 0
+                  },
+                  "unconnectedNeighbors": false,
+                  "candidateMethod": "border-inferred guide portals, nearest portal neighbours and tangent-shaped cubic variants; adaptive noding",
+                  "delaunayCandidates": false
+                },
+                "history": [
+                  {
+                    "round": 1,
+                    "status": 16,
+                    "objective": 4231.6739565,
+                    "selfNeckChains": 5,
+                    "shortReturnChains": 1
+                  },
+                  {
+                    "round": 2,
+                    "status": 8
+                  }
+                ],
+                "elapsedSeconds": 0.5151430840000003,
+                "solverVersion": {
+                  "major": 1,
+                  "minor": 15,
+                  "patch": 1,
+                  "string": "1.15.1",
+                  "gitHash": "04024d7"
+                },
+                "solverRuntime": "locally hosted HiGHS WebAssembly",
+                "physicalAssemblyTested": false,
+                "status": "no_validated_solution",
+                "termination": "candidate_graph_exhausted"
+              },
+              "seconds": 0.5203615
+            },
+            {
+              "neighbors": 8,
+              "connectorVariants": 1,
+              "smoothRadius": 0.5,
+              "budgetSeconds": 5.646130215100001,
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+              "solver": {
+                "binaryVariables": 990,
+                "continuousVariables": 864,
+                "linearConstraints": 5316,
+                "turnAuxiliaries": 92,
+                "crossingConflicts": 139,
+                "widthPairs": 211,
+                "coefficientQuantum": 1e-07,
+                "stopAfterValidated": true,
+                "graph": {
+                  "visibleEdges": 57,
+                  "hiddenCandidates": 108,
+                  "vertices": 56,
+                  "buildSeconds": 0.0038168329999998603,
+                  "guidePortals": 0,
+                  "guideCount": 0,
+                  "guideSkip": null,
+                  "vertexNormalization": {
+                    "collapsedSegments": 0,
+                    "closedSplits": 0,
+                    "maximumEndpointMoveMm": 0
+                  },
+                  "unconnectedNeighbors": false,
+                  "candidateMethod": "border-inferred guide portals, nearest portal neighbours and tangent-shaped cubic variants; adaptive noding",
+                  "delaunayCandidates": false
+                },
+                "history": [
+                  {
+                    "round": 1,
+                    "status": 16,
+                    "objective": 1995.578893,
+                    "selfNeckChains": 5,
+                    "shortReturnChains": 1
+                  },
+                  {
+                    "round": 2,
+                    "status": 8
+                  }
+                ],
+                "elapsedSeconds": 1.156249167,
+                "solverVersion": {
+                  "major": 1,
+                  "minor": 15,
+                  "patch": 1,
+                  "string": "1.15.1",
+                  "gitHash": "04024d7"
+                },
+                "solverRuntime": "locally hosted HiGHS WebAssembly",
+                "physicalAssemblyTested": false,
+                "status": "no_validated_solution",
+                "termination": "candidate_graph_exhausted"
+              },
+              "seconds": 1.1627678749999995
+            },
+            {
+              "neighbors": 16,
+              "connectorVariants": 2,
+              "smoothRadius": 0.3,
+              "budgetSeconds": 4.451169174100001,
+              "denseRetryOf": 0,
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+              "solver": {
+                "binaryVariables": 2070,
+                "continuousVariables": 1572,
+                "linearConstraints": 26794,
+                "turnAuxiliaries": 86,
+                "crossingConflicts": 3172,
+                "widthPairs": 1000,
+                "coefficientQuantum": 1e-07,
+                "stopAfterValidated": true,
+                "graph": {
+                  "visibleEdges": 55,
+                  "hiddenCandidates": 290,
+                  "vertices": 53,
+                  "buildSeconds": 0.03409191600000122,
+                  "guidePortals": 0,
+                  "guideCount": 0,
+                  "guideSkip": null,
+                  "vertexNormalization": {
+                    "collapsedSegments": 0,
+                    "closedSplits": 0,
+                    "maximumEndpointMoveMm": 0
+                  },
+                  "unconnectedNeighbors": false,
+                  "candidateMethod": "border-inferred guide portals, nearest portal neighbours and tangent-shaped cubic variants; adaptive noding",
+                  "delaunayCandidates": false
+                },
+                "history": [
+                  {
+                    "round": 1,
+                    "status": 16,
+                    "objective": 3434.6220228,
+                    "selfNeckChains": 8,
+                    "shortReturnChains": 4
+                  },
+                  {
+                    "round": 2,
+                    "status": 8
+                  }
+                ],
+                "elapsedSeconds": 4.1965864999999996,
+                "solverVersion": {
+                  "major": 1,
+                  "minor": 15,
+                  "patch": 1,
+                  "string": "1.15.1",
+                  "gitHash": "04024d7"
+                },
+                "solverRuntime": "locally hosted HiGHS WebAssembly",
+                "physicalAssemblyTested": false,
+                "status": "no_validated_solution",
+                "termination": "candidate_graph_exhausted"
+              },
+              "seconds": 4.2311264589999995
+            },
+            {
+              "neighbors": 16,
+              "connectorVariants": 2,
+              "smoothRadius": 0.5,
+              "budgetSeconds": 0.21986538210000184,
+              "denseRetryOf": 1,
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+              "solver": {
+                "binaryVariables": 2376,
+                "continuousVariables": 1788,
+                "linearConstraints": 32291,
+                "turnAuxiliaries": 92,
+                "crossingConflicts": 3727,
+                "widthPairs": 1387,
+                "coefficientQuantum": 1e-07,
+                "stopAfterValidated": true,
+                "graph": {
+                  "visibleEdges": 57,
+                  "hiddenCandidates": 339,
+                  "vertices": 56,
+                  "buildSeconds": 0.03938787499999853,
+                  "guidePortals": 0,
+                  "guideCount": 0,
+                  "guideSkip": null,
+                  "vertexNormalization": {
+                    "collapsedSegments": 0,
+                    "closedSplits": 0,
+                    "maximumEndpointMoveMm": 0
+                  },
+                  "unconnectedNeighbors": false,
+                  "candidateMethod": "border-inferred guide portals, nearest portal neighbours and tangent-shaped cubic variants; adaptive noding",
+                  "delaunayCandidates": false
+                },
+                "history": [
+                  {
+                    "round": 1,
+                    "status": 13
+                  }
+                ],
+                "elapsedSeconds": 0.18686112499999943,
+                "solverVersion": {
+                  "major": 1,
+                  "minor": 15,
+                  "patch": 1,
+                  "string": "1.15.1",
+                  "gitHash": "04024d7"
+                },
+                "solverRuntime": "locally hosted HiGHS WebAssembly",
+                "physicalAssemblyTested": false,
+                "status": "no_validated_solution",
+                "termination": "time_limit"
+              },
+              "seconds": 0.22670062500000132
+            }
+          ],
+          "seedSmoothingRetry": true,
+          "seedTopologyRetry": {
+            "smoothRadius": 0.75,
+            "junctionsBefore": 6,
+            "junctionsAfter": 6,
+            "attempted": false,
+            "recovered": false
+          },
+          "deferredDenseGraphs": 2,
+          "deferredNeighborExpansions": 1,
+          "error": "Feature recovery found no validated routing within its budget.",
+          "seconds": 6.320333874999999,
+          "trigger": {
+            "passed": false,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 0,
+                "areaMm2": 1699,
+                "centerMm": [
+                  52.333210712183636,
+                  54.45630701883461
+                ],
+                "retainedFraction": 0.8989479105356092
+              },
+              {
+                "value": 0,
+                "areaMm2": 102.5,
+                "centerMm": [
+                  83.96966463414634,
+                  81.56432926829268
+                ],
+                "retainedFraction": 0.7567073170731707
+              },
+              {
+                "value": 1,
+                "areaMm2": 6,
+                "centerMm": [
+                  73.59895833333333,
+                  96.0625
+                ],
+                "retainedFraction": 0.03125
+              }
+            ],
+            "missing": [
+              {
+                "value": 1,
+                "areaMm2": 6,
+                "centerMm": [
+                  73.59895833333333,
+                  96.0625
+                ],
+                "retainedFraction": 0.03125
+              }
+            ],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement. Small interior regions must also remain separate from the square boundary.",
+            "enclosures": {
+              "components": [
+                {
+                  "centerMm": [
+                    73.59895833333333,
+                    96.0625
+                  ],
+                  "sourceAreaMm2": 6,
+                  "intersectionPixels": 3,
+                  "retention": 0.03125,
+                  "predictedComponentAreaMm2": 148.3125,
+                  "touchesBorder": false,
+                  "componentIoU": 0.0012165450121654502
+                }
+              ],
+              "opened": 0
+            }
+          },
+          "budgetPolicy": "prioritize_routing",
+          "gridMismatchTrigger": false
+        }
+      },
+      {
+        "id": "real-4066fe9f9aafb3e4-body-1",
+        "maskSha256": "004d9473394c8869854e3b286389a6d992aeea6570409d92d699f138dce01239",
+        "quad": [
+          [
+            263.46793133997556,
+            343.47629348397675
+          ],
+          [
+            479.3429396804974,
+            553.9482626695931
+          ],
+          [
+            261.3559940216393,
+            766.5286832449086
+          ],
+          [
+            58.87704902878169,
+            546.5661762755101
+          ]
+        ],
+        "beforeError": 0.07073125,
+        "prototypeError": 0.0076125,
+        "checkedPair": true,
+        "solveSeconds": 5.839708666999999,
+        "featureRecovery": {
+          "trigger": {
+            "passed": true,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [],
+            "missing": [],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          },
+          "method": "trace-milp",
+          "budgetSeconds": 6.4428873741,
+          "accepted": true,
+          "attempts": [
+            {
+              "neighbors": 8,
+              "connectorVariants": 1,
+              "smoothRadius": 0.3,
+              "budgetSeconds": 6.4107367491,
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+              "solver": {
+                "binaryVariables": 804,
+                "continuousVariables": 740,
+                "linearConstraints": 3636,
+                "turnAuxiliaries": 90,
+                "crossingConflicts": 48,
+                "widthPairs": 102,
+                "coefficientQuantum": 1e-07,
+                "stopAfterValidated": true,
+                "graph": {
+                  "visibleEdges": 58,
+                  "hiddenCandidates": 76,
+                  "vertices": 57,
+                  "buildSeconds": 0.00297966599999927,
+                  "guidePortals": 0,
+                  "guideCount": 0,
+                  "guideSkip": null,
+                  "vertexNormalization": {
+                    "collapsedSegments": 0,
+                    "closedSplits": 0,
+                    "maximumEndpointMoveMm": 0
+                  },
+                  "unconnectedNeighbors": false,
+                  "candidateMethod": "border-inferred guide portals, nearest portal neighbours and tangent-shaped cubic variants; adaptive noding",
+                  "delaunayCandidates": false
+                },
+                "history": [
+                  {
+                    "round": 1,
+                    "status": 16,
+                    "objective": 2122.6098665,
+                    "selfNeckChains": 1,
+                    "shortReturnChains": 1
+                  },
+                  {
+                    "round": 2,
+                    "status": 16,
+                    "objective": 2961.5773611,
+                    "selfNeckChains": 2,
+                    "shortReturnChains": 1
+                  },
+                  {
+                    "round": 3,
+                    "status": 8
+                  }
+                ],
+                "elapsedSeconds": 0.9396400409999988,
+                "solverVersion": {
+                  "major": 1,
+                  "minor": 15,
+                  "patch": 1,
+                  "string": "1.15.1",
+                  "gitHash": "04024d7"
+                },
+                "solverRuntime": "locally hosted HiGHS WebAssembly",
+                "physicalAssemblyTested": false,
+                "status": "no_validated_solution",
+                "termination": "candidate_graph_exhausted"
+              },
+              "seconds": 0.9430753330000007
+            },
+            {
+              "neighbors": 8,
+              "connectorVariants": 1,
+              "smoothRadius": 0.5,
+              "budgetSeconds": 5.4409779991,
+              "error": "A required boundary curve crosses itself. Try another trace; this does not prove the artwork impossible.",
+              "solver": {
+                "status": "no_validated_solution",
+                "termination": "candidate_graph_exhausted",
+                "connectorIndependentIssue": {
+                  "type": "visible_edge_self_intersection",
+                  "edge": 38,
+                  "geometryTolerance": 0.01,
+                  "message": "A required boundary curve crosses itself in both travel directions. Hidden connectors cannot repair this segmentation."
+                },
+                "validationPreflight": true,
+                "graph": {
+                  "visibleEdges": 57,
+                  "hiddenCandidates": 68,
+                  "vertices": 56,
+                  "buildSeconds": 0.0028292919999985317,
+                  "guidePortals": 0,
+                  "guideCount": 0,
+                  "guideSkip": null,
+                  "vertexNormalization": {
+                    "collapsedSegments": 0,
+                    "closedSplits": 0,
+                    "maximumEndpointMoveMm": 0
+                  },
+                  "unconnectedNeighbors": false,
+                  "candidateMethod": "border-inferred guide portals, nearest portal neighbours and tangent-shaped cubic variants; adaptive noding",
+                  "delaunayCandidates": false
+                },
+                "history": [],
+                "elapsedSeconds": 0.0033853330000019922
+              },
+              "seconds": 0.0035029999999969734
+            },
+            {
+              "neighbors": 8,
+              "connectorVariants": 1,
+              "smoothRadius": 0.75,
+              "budgetSeconds": 5.407813499099998,
+              "solver": {
+                "validation": {
+                  "passed": true,
+                  "issues": [],
+                  "nominalWidthRequired": 2.50501002004008,
+                  "minimumInterSlitDistanceLower": 4.666069118705005,
+                  "minimumOuterSideClearance": 5.71078182238773,
+                  "boundaryParityMatches": true,
+                  "forwardSampleMismatchPixels": 0,
+                  "forwardBoundaryAmbiguousPixels": 0,
+                  "forwardSampleResolution": 101,
+                  "geometryTolerance": 0.01,
+                  "sharedCurvesStoredOnce": true,
+                  "physicalAssemblyTested": false,
+                  "limitations": [
+                    "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                    "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                    "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                    "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+                  ],
+                  "materialCore": {
+                    "status": "pass",
+                    "requiredRemainingWidth": 2,
+                    "nominalDiameter": 2.50501002004008,
+                    "gridSpacing": 0.2777777777777778,
+                    "clearanceGuard": 0.20641855032959658,
+                    "families": [
+                      {
+                        "family": 0,
+                        "status": "pass",
+                        "detachedCertainCoreIslands": 0,
+                        "detachedPossibleCoreIslands": 0,
+                        "detachedPossibleArea": 0,
+                        "foldIntervals": [
+                          {
+                            "interval": [
+                              0,
+                              18.75
+                            ],
+                            "certainCoreLength": 15.833333333333353,
+                            "possibleCoreLength": 16.66666666666669
+                          },
+                          {
+                            "interval": [
+                              18.75,
+                              74.75
+                            ],
+                            "certainCoreLength": 53.05555555555568,
+                            "possibleCoreLength": 53.888888888889014
+                          },
+                          {
+                            "interval": [
+                              74.75,
+                              81.25
+                            ],
+                            "certainCoreLength": 3.6111111111111103,
+                            "possibleCoreLength": 4.444444444444444
+                          },
+                          {
+                            "interval": [
+                              81.25,
+                              100
+                            ],
+                            "certainCoreLength": 15.833333333333353,
+                            "possibleCoreLength": 16.66666666666669
+                          }
+                        ]
+                      },
+                      {
+                        "family": 1,
+                        "status": "pass",
+                        "detachedCertainCoreIslands": 0,
+                        "detachedPossibleCoreIslands": 0,
+                        "detachedPossibleArea": 0,
+                        "foldIntervals": [
+                          {
+                            "interval": [
+                              0,
+                              20.75
+                            ],
+                            "certainCoreLength": 17.777777777777803,
+                            "possibleCoreLength": 18.61111111111114
+                          },
+                          {
+                            "interval": [
+                              20.75,
+                              75.5
+                            ],
+                            "certainCoreLength": 51.944444444444564,
+                            "possibleCoreLength": 52.7777777777779
+                          },
+                          {
+                            "interval": [
+                              75.5,
+                              82.75
+                            ],
+                            "certainCoreLength": 4.444444444444444,
+                            "possibleCoreLength": 4.999999999999999
+                          },
+                          {
+                            "interval": [
+                              82.75,
+                              100
+                            ],
+                            "certainCoreLength": 14.44444444444446,
+                            "possibleCoreLength": 15.000000000000018
+                          }
+                        ]
+                      }
+                    ],
+                    "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+                    "seconds": 0.06293454199999905,
+                    "limitations": [
+                      "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+                      "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+                      "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+                      "Small tips and features below the explicitly stated area threshold are not certified."
+                    ]
+                  }
+                },
+                "binaryVariables": 852,
+                "continuousVariables": 780,
+                "linearConstraints": 3584,
+                "turnAuxiliaries": 94,
+                "crossingConflicts": 67,
+                "widthPairs": 40,
+                "coefficientQuantum": 1e-07,
+                "stopAfterValidated": true,
+                "graph": {
+                  "visibleEdges": 59,
+                  "hiddenCandidates": 83,
+                  "vertices": 59,
+                  "buildSeconds": 0.0028308340000003226,
+                  "guidePortals": 0,
+                  "guideCount": 0,
+                  "guideSkip": null,
+                  "vertexNormalization": {
+                    "collapsedSegments": 0,
+                    "closedSplits": 0,
+                    "maximumEndpointMoveMm": 0
+                  },
+                  "unconnectedNeighbors": false,
+                  "candidateMethod": "border-inferred guide portals, nearest portal neighbours and tangent-shaped cubic variants; adaptive noding",
+                  "delaunayCandidates": false
+                },
+                "history": [
+                  {
+                    "round": 1,
+                    "status": 16,
+                    "objective": 2080.3611074,
+                    "selfNeckChains": 0,
+                    "shortReturnChains": 0,
+                    "materialCore": {
+                      "status": "pass",
+                      "requiredRemainingWidth": 2,
+                      "nominalDiameter": 2.50501002004008,
+                      "gridSpacing": 0.2777777777777778,
+                      "clearanceGuard": 0.20641855032959658,
+                      "families": [
+                        {
+                          "family": 0,
+                          "status": "pass",
+                          "detachedCertainCoreIslands": 0,
+                          "detachedPossibleCoreIslands": 0,
+                          "detachedPossibleArea": 0,
+                          "foldIntervals": [
+                            {
+                              "interval": [
+                                0,
+                                18.75
+                              ],
+                              "certainCoreLength": 15.833333333333353,
+                              "possibleCoreLength": 16.66666666666669
+                            },
+                            {
+                              "interval": [
+                                18.75,
+                                74.75
+                              ],
+                              "certainCoreLength": 53.05555555555568,
+                              "possibleCoreLength": 53.888888888889014
+                            },
+                            {
+                              "interval": [
+                                74.75,
+                                81.25
+                              ],
+                              "certainCoreLength": 3.6111111111111103,
+                              "possibleCoreLength": 4.444444444444444
+                            },
+                            {
+                              "interval": [
+                                81.25,
+                                100
+                              ],
+                              "certainCoreLength": 15.833333333333353,
+                              "possibleCoreLength": 16.66666666666669
+                            }
+                          ]
+                        },
+                        {
+                          "family": 1,
+                          "status": "pass",
+                          "detachedCertainCoreIslands": 0,
+                          "detachedPossibleCoreIslands": 0,
+                          "detachedPossibleArea": 0,
+                          "foldIntervals": [
+                            {
+                              "interval": [
+                                0,
+                                20.75
+                              ],
+                              "certainCoreLength": 17.777777777777803,
+                              "possibleCoreLength": 18.61111111111114
+                            },
+                            {
+                              "interval": [
+                                20.75,
+                                75.5
+                              ],
+                              "certainCoreLength": 51.944444444444564,
+                              "possibleCoreLength": 52.7777777777779
+                            },
+                            {
+                              "interval": [
+                                75.5,
+                                82.75
+                              ],
+                              "certainCoreLength": 4.444444444444444,
+                              "possibleCoreLength": 4.999999999999999
+                            },
+                            {
+                              "interval": [
+                                82.75,
+                                100
+                              ],
+                              "certainCoreLength": 14.44444444444446,
+                              "possibleCoreLength": 15.000000000000018
+                            }
+                          ]
+                        }
+                      ],
+                      "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+                      "seconds": 0.06293454199999905,
+                      "limitations": [
+                        "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+                        "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+                        "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+                        "Small tips and features below the explicitly stated area threshold are not certified."
+                      ]
+                    },
+                    "validationPassed": true
+                  }
+                ],
+                "elapsedSeconds": 0.7034490829999995,
+                "solverVersion": {
+                  "major": 1,
+                  "minor": 15,
+                  "patch": 1,
+                  "string": "1.15.1",
+                  "gitHash": "04024d7"
+                },
+                "solverRuntime": "locally hosted HiGHS WebAssembly",
+                "physicalAssemblyTested": false,
+                "status": "solved",
+                "objective": 2080.3611074,
+                "lowerBound": 1413.5341248372233,
+                "mipGap": 0.3205342477278696,
+                "optimality": "Only the finite candidate graph is optimized. Gap concerns cut complexity, not artwork fidelity."
+              },
+              "seconds": 0.7065939169999983
+            }
+          ],
+          "solver": {
+            "validation": {
+              "passed": true,
+              "issues": [],
+              "nominalWidthRequired": 2.50501002004008,
+              "minimumInterSlitDistanceLower": 4.666069118705005,
+              "minimumOuterSideClearance": 5.71078182238773,
+              "boundaryParityMatches": true,
+              "forwardSampleMismatchPixels": 0,
+              "forwardBoundaryAmbiguousPixels": 0,
+              "forwardSampleResolution": 101,
+              "geometryTolerance": 0.01,
+              "sharedCurvesStoredOnce": true,
+              "physicalAssemblyTested": false,
+              "limitations": [
+                "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+              ],
+              "materialCore": {
+                "status": "pass",
+                "requiredRemainingWidth": 2,
+                "nominalDiameter": 2.50501002004008,
+                "gridSpacing": 0.2777777777777778,
+                "clearanceGuard": 0.20641855032959658,
+                "families": [
+                  {
+                    "family": 0,
+                    "status": "pass",
+                    "detachedCertainCoreIslands": 0,
+                    "detachedPossibleCoreIslands": 0,
+                    "detachedPossibleArea": 0,
+                    "foldIntervals": [
+                      {
+                        "interval": [
+                          0,
+                          18.75
+                        ],
+                        "certainCoreLength": 15.833333333333353,
+                        "possibleCoreLength": 16.66666666666669
+                      },
+                      {
+                        "interval": [
+                          18.75,
+                          74.75
+                        ],
+                        "certainCoreLength": 53.05555555555568,
+                        "possibleCoreLength": 53.888888888889014
+                      },
+                      {
+                        "interval": [
+                          74.75,
+                          81.25
+                        ],
+                        "certainCoreLength": 3.6111111111111103,
+                        "possibleCoreLength": 4.444444444444444
+                      },
+                      {
+                        "interval": [
+                          81.25,
+                          100
+                        ],
+                        "certainCoreLength": 15.833333333333353,
+                        "possibleCoreLength": 16.66666666666669
+                      }
+                    ]
+                  },
+                  {
+                    "family": 1,
+                    "status": "pass",
+                    "detachedCertainCoreIslands": 0,
+                    "detachedPossibleCoreIslands": 0,
+                    "detachedPossibleArea": 0,
+                    "foldIntervals": [
+                      {
+                        "interval": [
+                          0,
+                          20.75
+                        ],
+                        "certainCoreLength": 17.777777777777803,
+                        "possibleCoreLength": 18.61111111111114
+                      },
+                      {
+                        "interval": [
+                          20.75,
+                          75.5
+                        ],
+                        "certainCoreLength": 51.944444444444564,
+                        "possibleCoreLength": 52.7777777777779
+                      },
+                      {
+                        "interval": [
+                          75.5,
+                          82.75
+                        ],
+                        "certainCoreLength": 4.444444444444444,
+                        "possibleCoreLength": 4.999999999999999
+                      },
+                      {
+                        "interval": [
+                          82.75,
+                          100
+                        ],
+                        "certainCoreLength": 14.44444444444446,
+                        "possibleCoreLength": 15.000000000000018
+                      }
+                    ]
+                  }
+                ],
+                "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+                "seconds": 0.06293454199999905,
+                "limitations": [
+                  "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+                  "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+                  "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+                  "Small tips and features below the explicitly stated area threshold are not certified."
+                ]
+              }
+            },
+            "binaryVariables": 852,
+            "continuousVariables": 780,
+            "linearConstraints": 3584,
+            "turnAuxiliaries": 94,
+            "crossingConflicts": 67,
+            "widthPairs": 40,
+            "coefficientQuantum": 1e-07,
+            "stopAfterValidated": true,
+            "graph": {
+              "visibleEdges": 59,
+              "hiddenCandidates": 83,
+              "vertices": 59,
+              "buildSeconds": 0.0028308340000003226,
+              "guidePortals": 0,
+              "guideCount": 0,
+              "guideSkip": null,
+              "vertexNormalization": {
+                "collapsedSegments": 0,
+                "closedSplits": 0,
+                "maximumEndpointMoveMm": 0
+              },
+              "unconnectedNeighbors": false,
+              "candidateMethod": "border-inferred guide portals, nearest portal neighbours and tangent-shaped cubic variants; adaptive noding",
+              "delaunayCandidates": false
+            },
+            "history": [
+              {
+                "round": 1,
+                "status": 16,
+                "objective": 2080.3611074,
+                "selfNeckChains": 0,
+                "shortReturnChains": 0,
+                "materialCore": {
+                  "status": "pass",
+                  "requiredRemainingWidth": 2,
+                  "nominalDiameter": 2.50501002004008,
+                  "gridSpacing": 0.2777777777777778,
+                  "clearanceGuard": 0.20641855032959658,
+                  "families": [
+                    {
+                      "family": 0,
+                      "status": "pass",
+                      "detachedCertainCoreIslands": 0,
+                      "detachedPossibleCoreIslands": 0,
+                      "detachedPossibleArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            18.75
+                          ],
+                          "certainCoreLength": 15.833333333333353,
+                          "possibleCoreLength": 16.66666666666669
+                        },
+                        {
+                          "interval": [
+                            18.75,
+                            74.75
+                          ],
+                          "certainCoreLength": 53.05555555555568,
+                          "possibleCoreLength": 53.888888888889014
+                        },
+                        {
+                          "interval": [
+                            74.75,
+                            81.25
+                          ],
+                          "certainCoreLength": 3.6111111111111103,
+                          "possibleCoreLength": 4.444444444444444
+                        },
+                        {
+                          "interval": [
+                            81.25,
+                            100
+                          ],
+                          "certainCoreLength": 15.833333333333353,
+                          "possibleCoreLength": 16.66666666666669
+                        }
+                      ]
+                    },
+                    {
+                      "family": 1,
+                      "status": "pass",
+                      "detachedCertainCoreIslands": 0,
+                      "detachedPossibleCoreIslands": 0,
+                      "detachedPossibleArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            20.75
+                          ],
+                          "certainCoreLength": 17.777777777777803,
+                          "possibleCoreLength": 18.61111111111114
+                        },
+                        {
+                          "interval": [
+                            20.75,
+                            75.5
+                          ],
+                          "certainCoreLength": 51.944444444444564,
+                          "possibleCoreLength": 52.7777777777779
+                        },
+                        {
+                          "interval": [
+                            75.5,
+                            82.75
+                          ],
+                          "certainCoreLength": 4.444444444444444,
+                          "possibleCoreLength": 4.999999999999999
+                        },
+                        {
+                          "interval": [
+                            82.75,
+                            100
+                          ],
+                          "certainCoreLength": 14.44444444444446,
+                          "possibleCoreLength": 15.000000000000018
+                        }
+                      ]
+                    }
+                  ],
+                  "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+                  "seconds": 0.06293454199999905,
+                  "limitations": [
+                    "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+                    "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+                    "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+                    "Small tips and features below the explicitly stated area threshold are not certified."
+                  ]
+                },
+                "validationPassed": true
+              }
+            ],
+            "elapsedSeconds": 0.7034490829999995,
+            "solverVersion": {
+              "major": 1,
+              "minor": 15,
+              "patch": 1,
+              "string": "1.15.1",
+              "gitHash": "04024d7"
+            },
+            "solverRuntime": "locally hosted HiGHS WebAssembly",
+            "physicalAssemblyTested": false,
+            "status": "solved",
+            "objective": 2080.3611074,
+            "lowerBound": 1413.5341248372233,
+            "mipGap": 0.3205342477278696,
+            "optimality": "Only the finite candidate graph is optimized. Gap concerns cut complexity, not artwork fidelity."
+          },
+          "seedSmoothingRetry": true,
+          "seedIntersectionRetry": true,
+          "selectedTrace": {
+            "smoothRadius": 0.75,
+            "neighbors": 8,
+            "connectorVariants": 1
+          },
+          "deferredDenseGraphs": 1,
+          "deferredNeighborExpansions": 0,
+          "imageError": 0.0194125,
+          "features": {
+            "passed": true,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [],
+            "missing": [],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          },
+          "geometryPassed": true,
+          "paperPassed": true,
+          "seconds": 1.8367471670000013,
+          "budgetPolicy": "prioritize_routing",
+          "gridMismatchTrigger": true,
+          "refinement": {
+            "imageError": 0.00726875,
+            "featuresPassed": true,
+            "geometryPassed": true,
+            "paperPassed": true,
+            "steps": 800
+          }
+        }
+      }
+    ]
+  },
+  "finalRuntimeSourceHashes": {
+    "static/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+    "static/inverse/core/chord-distance.js": "6be52281e3056d29ad7093f902b0f768410f3c414f049f164f94e969bd89dd48",
+    "static/inverse/core/crop.js": "03552409b48975702527fb365eea6841cb441a2be26637a7d44a85aa8ea763ff",
+    "static/inverse/core/engine.js": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+    "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+    "static/inverse/core/feature-recovery.js": "2db84f0963f188ae820dff82610f3d63dc7f51c61207b775a65973c12b390288",
+    "static/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+    "static/inverse/core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+    "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+    "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+    "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+    "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+    "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+    "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+    "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+    "static/inverse/core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+    "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+    "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+    "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+    "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+    "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+    "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+    "static/inverse/core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+    "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+    "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+    "static/inverse/core/solver.js": "29eeca095cfe123f378a424f099954e5ae082866b8ad437f1a6dbb064eddbbf1",
+    "static/inverse/core/spatial-color.js": "f170ff447ef905fc21121d286ac427a079b184ca077fd178065b0a3e247fb132",
+    "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+    "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+    "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+    "static/inverse/core/validate.js": "31cc29c6873896f53a2f999782dcd2292f0924611166932114b45534f5cbebd7",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+    "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+    "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+    "static/inverse/core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+    "static/inverse/core/direct/counts.js": "efdfa3fc371dc9d9cfbbc9ce763df8b8cdca6f8f6324b55fde9d23ed05f31d8e",
+    "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+    "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+    "static/inverse/core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+    "static/inverse/core/direct/feature-seeds.js": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+    "static/inverse/core/direct/finalize.js": "d8504b811b223296c006c1cca57466c28fef0adc0e880b2d0073bfcdcd554ae4",
+    "static/inverse/core/direct/fit.js": "ce926fbf75afdbe4a8b062c30da551832c5bff0305514f905ec87cfdb6687e7e",
+    "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+    "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+    "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+    "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+    "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+    "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+    "static/inverse/core/direct/outline-details.js": "ff9d4df5f27fd9ca97d15b115cc95c5692bd17e302f0dcd11c62e7295b85d8aa",
+    "static/inverse/core/direct/polish.js": "3f9df26508076465860a62ce72c2de3aeb67413a1d67ab1927dc37b89b7b622e",
+    "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+    "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+    "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+    "static/inverse/core/direct/refine.js": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+    "static/inverse/core/direct/rejected-routing.js": "26be56dd3367eeb0648833ca347f008af73c8717d58358664ff1d15bbd240540",
+    "static/inverse/core/direct/reroute.js": "84a8cf2cfb6bcb1101a63004f638d0f3dc398baf3fe15ec1068b20336535d9ed",
+    "static/inverse/core/direct/share.js": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+    "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+    "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+    "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+    "static/inverse/core/direct/short-returns.js": "b329b2ca19cb7fca3493d33b0e65dcd44f32ff7bba507cddad106df7f85321ab",
+    "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+    "static/inverse/core/direct/topology.js": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097",
+    "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+    "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58",
+    "scripts/inverse/export-renderer.mjs": "fb393f73b9c39780795c3951eb82d864fef7ab40ec63a90a4365aae6041afbbe"
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/trace-order-v1/collect-focused.py",
+      "sha256": "0acf126ce533356cd0d25181afc5d6187659777546c15c55d9907c901d6b888b",
+      "bytes": 3289
+    },
+    {
+      "path": "tmp/heart-learning/trace-order-v1/annotation-replay/report.json",
+      "sha256": "2c7878407419b4ff8146806a53c595e58f7a5b49595568fbd41bdc45cd319649",
+      "bytes": 685820
+    },
+    {
+      "path": "tmp/heart-learning/trace-order-release-v1/hunodan/results.json",
+      "sha256": "3665bcb29b218ea328fef03780251313e5b1fc7bbab956e5c9f4ff22b9f06abf",
+      "bytes": 810681
+    },
+    {
+      "path": "tmp/heart-learning/trace-order-release-v1/source-snapshot.json",
+      "sha256": "7d19c731490d46e6887bfab5ee1ef4feb897d384867b69a2f94aded005da259d",
+      "bytes": 53635
+    },
+    {
+      "path": "scripts/inverse/trace-order.test.mjs",
+      "sha256": "e842d07e314be1dc632071b1f892e2d2d39bb348101998860bf94b5a7c5f63e4",
+      "bytes": 2552
+    },
+    {
+      "path": "scripts/inverse/fixtures/photographic-gold-routing.json",
+      "sha256": "a92dde5baf3d5f4cb3e9777657e66bde956632ed16267181d6251f0877f9b04a",
+      "bytes": 42249
+    },
+    {
+      "path": "scripts/inverse/paint-browser-test.mjs",
+      "sha256": "0f3fe809d0e5cd19da02b693e38cd13ff464ecc9d0accb2a6e1c1467ee892b5a",
+      "bytes": 58648
+    }
+  ],
+  "limitations": [
+    "Full difficult-photo, editable, application, build and browser checks are pending.",
+    "Gold mask originates in an annotation-assisted crop; this does not fix automatic photograph detection.",
+    "The fixed-mask regression passes without supplied cutting geometry or preferred trace."
+  ]
+}

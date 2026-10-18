@@ -1,0 +1,5918 @@
+{
+  "scope": "Read-only retrospective audit of existing saved neural crops, classified masks and independently rendered exports. No fresh inference, crop selection or fitting; no source samples enter reconstruction. The first two rows share an identical prediction and crop and are not independent models. Sparse original-photo observations do not certify unobserved seams or cutting geometry.",
+  "annotationSha256": "f9d4e408dc150a4ca9609ca14002b1fa0344d048043d02420fbab264bc59f60f",
+  "sourceSha256": "50182945f46ea5e51dc4ab75227d73abfd332e07a4568a1acc52ae43c1c8638c",
+  "rows": [
+    {
+      "name": "background",
+      "checkpointSha256": "fe037f1f0ab8cbd93b359b6bf047b0e3a5f253b5f57df3a32427701f86eae39b",
+      "predictionSha256": "f003674299e9d49ce1607c487f91873b60ef432768ae89ff61e5a16cb8f2ae6b",
+      "quad": [
+        [
+          509.0754771093246,
+          139.90881205644737
+        ],
+        [
+          734.0535093713297,
+          382.1892973114441
+        ],
+        [
+          501.0947867786813,
+          612.3317319644113
+        ],
+        [
+          269.0034779973999,
+          366.68254794957005
+        ]
+      ],
+      "historicalCheckedPair": true,
+      "historicalIndependentImageError": 0.015125,
+      "crop": {
+        "total": 28,
+        "covered": 28,
+        "correct": 0,
+        "mismatched": 0,
+        "outsideCrop": 0,
+        "unavailable": 28,
+        "coverage": 1,
+        "agreementAllSamples": 0,
+        "agreementCovered": 0,
+        "phase": null,
+        "phaseInferred": true,
+        "phaseAmbiguous": true,
+        "allReviewedSamplesMatch": false,
+        "groups": [
+          {
+            "id": "upper-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 2,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          },
+          {
+            "id": "left-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 2,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          },
+          {
+            "id": "right-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 2,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          },
+          {
+            "id": "lower-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 2,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          },
+          {
+            "id": "upper-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 2,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          },
+          {
+            "id": "left-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 2,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          },
+          {
+            "id": "right-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 2,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          },
+          {
+            "id": "lower-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 2,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          },
+          {
+            "id": "white-star-centre",
+            "paper": 1,
+            "total": 5,
+            "covered": 5,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 5,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          },
+          {
+            "id": "white-surround-and-gaps",
+            "paper": 1,
+            "total": 7,
+            "covered": 7,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 7,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          }
+        ],
+        "rows": [
+          {
+            "group": "upper-star-arms",
+            "point": [
+              480,
+              298
+            ],
+            "paper": 0,
+            "cropPoint": [
+              114.0312633760089,
+              158.58240172187197
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "upper-star-arms",
+            "point": [
+              524,
+              296
+            ],
+            "paper": 0,
+            "cropPoint": [
+              148.76061170729113,
+              117.58007479396105
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "left-star-arms",
+            "point": [
+              412,
+              350
+            ],
+            "paper": 0,
+            "cropPoint": [
+              102.81717260100298,
+              261.8919496719431
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "left-star-arms",
+            "point": [
+              416,
+              397
+            ],
+            "paper": 0,
+            "cropPoint": [
+              146.41092793931824,
+              297.13796245057415
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "right-star-arms",
+            "point": [
+              587,
+              359
+            ],
+            "paper": 0,
+            "cropPoint": [
+              255.88878104773278,
+              113.79996024338722
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "right-star-arms",
+            "point": [
+              586,
+              397
+            ],
+            "paper": 0,
+            "cropPoint": [
+              287.8611490637964,
+              146.54669593878575
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "lower-star-arms",
+            "point": [
+              481,
+              450
+            ],
+            "paper": 0,
+            "cropPoint": [
+              245.57057502771917,
+              283.8298905697375
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "lower-star-arms",
+            "point": [
+              520,
+              450
+            ],
+            "paper": 0,
+            "cropPoint": [
+              278.0904878215652,
+              249.44990780789882
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "upper-border-diamonds",
+            "point": [
+              490,
+              183
+            ],
+            "paper": 0,
+            "cropPoint": [
+              22.653275915504345,
+              53.459041190945484
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "upper-border-diamonds",
+            "point": [
+              521,
+              199
+            ],
+            "paper": 0,
+            "cropPoint": [
+              62.14272795595165,
+              38.910257845962995
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "left-border-diamonds",
+            "point": [
+              310,
+              359
+            ],
+            "paper": 0,
+            "cropPoint": [
+              27.383729663059086,
+              358.299172463843
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "left-border-diamonds",
+            "point": [
+              315,
+              390
+            ],
+            "paper": 0,
+            "cropPoint": [
+              57.91024450904652,
+              379.28736458688473
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "right-border-diamonds",
+            "point": [
+              687,
+              367
+            ],
+            "paper": 0,
+            "cropPoint": [
+              347.44016095286406,
+              30.045051971697397
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "right-border-diamonds",
+            "point": [
+              688,
+              397
+            ],
+            "paper": 0,
+            "cropPoint": [
+              374.30054561538105,
+              54.52126041993485
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "lower-border-diamonds",
+            "point": [
+              481,
+              567
+            ],
+            "paper": 0,
+            "cropPoint": [
+              345.46175233090173,
+              380.22534887451326
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "lower-border-diamonds",
+            "point": [
+              512,
+              573
+            ],
+            "paper": 0,
+            "cropPoint": [
+              376.5353354390343,
+              358.13941902136776
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              500,
+              377
+            ],
+            "paper": 1,
+            "cropPoint": [
+              198.70008210339617,
+              206.54193108973325
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              504,
+              336
+            ],
+            "paper": 1,
+            "cropPoint": [
+              166.70115986289375,
+              168.8605266346586
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              503,
+              415
+            ],
+            "paper": 1,
+            "cropPoint": [
+              233.8632931181204,
+              235.44329513282702
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              464,
+              370
+            ],
+            "paper": 1,
+            "cropPoint": [
+              162.83294863494314,
+              232.60710399775965
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              546,
+              373
+            ],
+            "paper": 1,
+            "cropPoint": [
+              233.60556484680112,
+              162.26075437727098
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              455,
+              295
+            ],
+            "paper": 1,
+            "cropPoint": [
+              90.82372062671992,
+              178.33112211417563
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              552,
+              303
+            ],
+            "paper": 1,
+            "cropPoint": [
+              178.13454799593652,
+              98.29875056449826
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              451,
+              439
+            ],
+            "paper": 1,
+            "cropPoint": [
+              211.25840568057984,
+              301.0861706728123
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              552,
+              437
+            ],
+            "paper": 1,
+            "cropPoint": [
+              293.73077432299385,
+              210.28470125900654
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              428,
+              374
+            ],
+            "paper": 1,
+            "cropPoint": [
+              136.56665022586034,
+              267.6415692933355
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              581,
+              382
+            ],
+            "paper": 1,
+            "cropPoint": [
+              270.7128697021975,
+              138.46762988557822
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              501,
+              577
+            ],
+            "paper": 1,
+            "cropPoint": [
+              370.7143439660765,
+              371.0276082504959
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          }
+        ],
+        "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+      },
+      "classification": {
+        "total": 28,
+        "covered": 28,
+        "correct": 28,
+        "mismatched": 0,
+        "outsideCrop": 0,
+        "unavailable": 0,
+        "coverage": 1,
+        "agreementAllSamples": 1,
+        "agreementCovered": 1,
+        "phase": 1,
+        "phaseInferred": true,
+        "phaseAmbiguous": false,
+        "allReviewedSamplesMatch": true,
+        "groups": [
+          {
+            "id": "upper-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "left-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "right-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "lower-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "upper-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "left-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "right-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "lower-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "white-star-centre",
+            "paper": 1,
+            "total": 5,
+            "covered": 5,
+            "correct": 5,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "white-surround-and-gaps",
+            "paper": 1,
+            "total": 7,
+            "covered": 7,
+            "correct": 7,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          }
+        ],
+        "rows": [
+          {
+            "group": "upper-star-arms",
+            "point": [
+              480,
+              298
+            ],
+            "paper": 0,
+            "cropPoint": [
+              114.0312633760089,
+              158.58240172187197
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "upper-star-arms",
+            "point": [
+              524,
+              296
+            ],
+            "paper": 0,
+            "cropPoint": [
+              148.76061170729113,
+              117.58007479396105
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "left-star-arms",
+            "point": [
+              412,
+              350
+            ],
+            "paper": 0,
+            "cropPoint": [
+              102.81717260100298,
+              261.8919496719431
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "left-star-arms",
+            "point": [
+              416,
+              397
+            ],
+            "paper": 0,
+            "cropPoint": [
+              146.41092793931824,
+              297.13796245057415
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "right-star-arms",
+            "point": [
+              587,
+              359
+            ],
+            "paper": 0,
+            "cropPoint": [
+              255.88878104773278,
+              113.79996024338722
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "right-star-arms",
+            "point": [
+              586,
+              397
+            ],
+            "paper": 0,
+            "cropPoint": [
+              287.8611490637964,
+              146.54669593878575
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "lower-star-arms",
+            "point": [
+              481,
+              450
+            ],
+            "paper": 0,
+            "cropPoint": [
+              245.57057502771917,
+              283.8298905697375
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "lower-star-arms",
+            "point": [
+              520,
+              450
+            ],
+            "paper": 0,
+            "cropPoint": [
+              278.0904878215652,
+              249.44990780789882
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "upper-border-diamonds",
+            "point": [
+              490,
+              183
+            ],
+            "paper": 0,
+            "cropPoint": [
+              22.653275915504345,
+              53.459041190945484
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "upper-border-diamonds",
+            "point": [
+              521,
+              199
+            ],
+            "paper": 0,
+            "cropPoint": [
+              62.14272795595165,
+              38.910257845962995
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "left-border-diamonds",
+            "point": [
+              310,
+              359
+            ],
+            "paper": 0,
+            "cropPoint": [
+              27.383729663059086,
+              358.299172463843
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "left-border-diamonds",
+            "point": [
+              315,
+              390
+            ],
+            "paper": 0,
+            "cropPoint": [
+              57.91024450904652,
+              379.28736458688473
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "right-border-diamonds",
+            "point": [
+              687,
+              367
+            ],
+            "paper": 0,
+            "cropPoint": [
+              347.44016095286406,
+              30.045051971697397
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "right-border-diamonds",
+            "point": [
+              688,
+              397
+            ],
+            "paper": 0,
+            "cropPoint": [
+              374.30054561538105,
+              54.52126041993485
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "lower-border-diamonds",
+            "point": [
+              481,
+              567
+            ],
+            "paper": 0,
+            "cropPoint": [
+              345.46175233090173,
+              380.22534887451326
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "lower-border-diamonds",
+            "point": [
+              512,
+              573
+            ],
+            "paper": 0,
+            "cropPoint": [
+              376.5353354390343,
+              358.13941902136776
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              500,
+              377
+            ],
+            "paper": 1,
+            "cropPoint": [
+              198.70008210339617,
+              206.54193108973325
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              504,
+              336
+            ],
+            "paper": 1,
+            "cropPoint": [
+              166.70115986289375,
+              168.8605266346586
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              503,
+              415
+            ],
+            "paper": 1,
+            "cropPoint": [
+              233.8632931181204,
+              235.44329513282702
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              464,
+              370
+            ],
+            "paper": 1,
+            "cropPoint": [
+              162.83294863494314,
+              232.60710399775965
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              546,
+              373
+            ],
+            "paper": 1,
+            "cropPoint": [
+              233.60556484680112,
+              162.26075437727098
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              455,
+              295
+            ],
+            "paper": 1,
+            "cropPoint": [
+              90.82372062671992,
+              178.33112211417563
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              552,
+              303
+            ],
+            "paper": 1,
+            "cropPoint": [
+              178.13454799593652,
+              98.29875056449826
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              451,
+              439
+            ],
+            "paper": 1,
+            "cropPoint": [
+              211.25840568057984,
+              301.0861706728123
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              552,
+              437
+            ],
+            "paper": 1,
+            "cropPoint": [
+              293.73077432299385,
+              210.28470125900654
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              428,
+              374
+            ],
+            "paper": 1,
+            "cropPoint": [
+              136.56665022586034,
+              267.6415692933355
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              581,
+              382
+            ],
+            "paper": 1,
+            "cropPoint": [
+              270.7128697021975,
+              138.46762988557822
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              501,
+              577
+            ],
+            "paper": 1,
+            "cropPoint": [
+              370.7143439660765,
+              371.0276082504959
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          }
+        ],
+        "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+      },
+      "export": {
+        "total": 28,
+        "covered": 28,
+        "correct": 28,
+        "mismatched": 0,
+        "outsideCrop": 0,
+        "unavailable": 0,
+        "coverage": 1,
+        "agreementAllSamples": 1,
+        "agreementCovered": 1,
+        "phase": 1,
+        "phaseInferred": false,
+        "phaseAmbiguous": false,
+        "allReviewedSamplesMatch": true,
+        "groups": [
+          {
+            "id": "upper-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "left-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "right-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "lower-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "upper-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "left-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "right-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "lower-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "white-star-centre",
+            "paper": 1,
+            "total": 5,
+            "covered": 5,
+            "correct": 5,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "white-surround-and-gaps",
+            "paper": 1,
+            "total": 7,
+            "covered": 7,
+            "correct": 7,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          }
+        ],
+        "rows": [
+          {
+            "group": "upper-star-arms",
+            "point": [
+              480,
+              298
+            ],
+            "paper": 0,
+            "cropPoint": [
+              114.0312633760089,
+              158.58240172187197
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "upper-star-arms",
+            "point": [
+              524,
+              296
+            ],
+            "paper": 0,
+            "cropPoint": [
+              148.76061170729113,
+              117.58007479396105
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "left-star-arms",
+            "point": [
+              412,
+              350
+            ],
+            "paper": 0,
+            "cropPoint": [
+              102.81717260100298,
+              261.8919496719431
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "left-star-arms",
+            "point": [
+              416,
+              397
+            ],
+            "paper": 0,
+            "cropPoint": [
+              146.41092793931824,
+              297.13796245057415
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "right-star-arms",
+            "point": [
+              587,
+              359
+            ],
+            "paper": 0,
+            "cropPoint": [
+              255.88878104773278,
+              113.79996024338722
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "right-star-arms",
+            "point": [
+              586,
+              397
+            ],
+            "paper": 0,
+            "cropPoint": [
+              287.8611490637964,
+              146.54669593878575
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "lower-star-arms",
+            "point": [
+              481,
+              450
+            ],
+            "paper": 0,
+            "cropPoint": [
+              245.57057502771917,
+              283.8298905697375
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "lower-star-arms",
+            "point": [
+              520,
+              450
+            ],
+            "paper": 0,
+            "cropPoint": [
+              278.0904878215652,
+              249.44990780789882
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "upper-border-diamonds",
+            "point": [
+              490,
+              183
+            ],
+            "paper": 0,
+            "cropPoint": [
+              22.653275915504345,
+              53.459041190945484
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "upper-border-diamonds",
+            "point": [
+              521,
+              199
+            ],
+            "paper": 0,
+            "cropPoint": [
+              62.14272795595165,
+              38.910257845962995
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "left-border-diamonds",
+            "point": [
+              310,
+              359
+            ],
+            "paper": 0,
+            "cropPoint": [
+              27.383729663059086,
+              358.299172463843
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "left-border-diamonds",
+            "point": [
+              315,
+              390
+            ],
+            "paper": 0,
+            "cropPoint": [
+              57.91024450904652,
+              379.28736458688473
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "right-border-diamonds",
+            "point": [
+              687,
+              367
+            ],
+            "paper": 0,
+            "cropPoint": [
+              347.44016095286406,
+              30.045051971697397
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "right-border-diamonds",
+            "point": [
+              688,
+              397
+            ],
+            "paper": 0,
+            "cropPoint": [
+              374.30054561538105,
+              54.52126041993485
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "lower-border-diamonds",
+            "point": [
+              481,
+              567
+            ],
+            "paper": 0,
+            "cropPoint": [
+              345.46175233090173,
+              380.22534887451326
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "lower-border-diamonds",
+            "point": [
+              512,
+              573
+            ],
+            "paper": 0,
+            "cropPoint": [
+              376.5353354390343,
+              358.13941902136776
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              500,
+              377
+            ],
+            "paper": 1,
+            "cropPoint": [
+              198.70008210339617,
+              206.54193108973325
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              504,
+              336
+            ],
+            "paper": 1,
+            "cropPoint": [
+              166.70115986289375,
+              168.8605266346586
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              503,
+              415
+            ],
+            "paper": 1,
+            "cropPoint": [
+              233.8632931181204,
+              235.44329513282702
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              464,
+              370
+            ],
+            "paper": 1,
+            "cropPoint": [
+              162.83294863494314,
+              232.60710399775965
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              546,
+              373
+            ],
+            "paper": 1,
+            "cropPoint": [
+              233.60556484680112,
+              162.26075437727098
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              455,
+              295
+            ],
+            "paper": 1,
+            "cropPoint": [
+              90.82372062671992,
+              178.33112211417563
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              552,
+              303
+            ],
+            "paper": 1,
+            "cropPoint": [
+              178.13454799593652,
+              98.29875056449826
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              451,
+              439
+            ],
+            "paper": 1,
+            "cropPoint": [
+              211.25840568057984,
+              301.0861706728123
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              552,
+              437
+            ],
+            "paper": 1,
+            "cropPoint": [
+              293.73077432299385,
+              210.28470125900654
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              428,
+              374
+            ],
+            "paper": 1,
+            "cropPoint": [
+              136.56665022586034,
+              267.6415692933355
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              581,
+              382
+            ],
+            "paper": 1,
+            "cropPoint": [
+              270.7128697021975,
+              138.46762988557822
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              501,
+              577
+            ],
+            "paper": 1,
+            "cropPoint": [
+              370.7143439660765,
+              371.0276082504959
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          }
+        ],
+        "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+      }
+    },
+    {
+      "name": "background-control",
+      "checkpointSha256": "fe037f1f0ab8cbd93b359b6bf047b0e3a5f253b5f57df3a32427701f86eae39b",
+      "predictionSha256": "f003674299e9d49ce1607c487f91873b60ef432768ae89ff61e5a16cb8f2ae6b",
+      "quad": [
+        [
+          509.0754771093246,
+          139.90881205644737
+        ],
+        [
+          734.0535093713297,
+          382.1892973114441
+        ],
+        [
+          501.0947867786813,
+          612.3317319644113
+        ],
+        [
+          269.0034779973999,
+          366.68254794957005
+        ]
+      ],
+      "historicalCheckedPair": true,
+      "historicalIndependentImageError": 0.01260625,
+      "crop": {
+        "total": 28,
+        "covered": 28,
+        "correct": 0,
+        "mismatched": 0,
+        "outsideCrop": 0,
+        "unavailable": 28,
+        "coverage": 1,
+        "agreementAllSamples": 0,
+        "agreementCovered": 0,
+        "phase": null,
+        "phaseInferred": true,
+        "phaseAmbiguous": true,
+        "allReviewedSamplesMatch": false,
+        "groups": [
+          {
+            "id": "upper-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 2,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          },
+          {
+            "id": "left-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 2,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          },
+          {
+            "id": "right-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 2,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          },
+          {
+            "id": "lower-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 2,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          },
+          {
+            "id": "upper-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 2,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          },
+          {
+            "id": "left-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 2,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          },
+          {
+            "id": "right-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 2,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          },
+          {
+            "id": "lower-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 2,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          },
+          {
+            "id": "white-star-centre",
+            "paper": 1,
+            "total": 5,
+            "covered": 5,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 5,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          },
+          {
+            "id": "white-surround-and-gaps",
+            "paper": 1,
+            "total": 7,
+            "covered": 7,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 7,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          }
+        ],
+        "rows": [
+          {
+            "group": "upper-star-arms",
+            "point": [
+              480,
+              298
+            ],
+            "paper": 0,
+            "cropPoint": [
+              114.0312633760089,
+              158.58240172187197
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "upper-star-arms",
+            "point": [
+              524,
+              296
+            ],
+            "paper": 0,
+            "cropPoint": [
+              148.76061170729113,
+              117.58007479396105
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "left-star-arms",
+            "point": [
+              412,
+              350
+            ],
+            "paper": 0,
+            "cropPoint": [
+              102.81717260100298,
+              261.8919496719431
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "left-star-arms",
+            "point": [
+              416,
+              397
+            ],
+            "paper": 0,
+            "cropPoint": [
+              146.41092793931824,
+              297.13796245057415
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "right-star-arms",
+            "point": [
+              587,
+              359
+            ],
+            "paper": 0,
+            "cropPoint": [
+              255.88878104773278,
+              113.79996024338722
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "right-star-arms",
+            "point": [
+              586,
+              397
+            ],
+            "paper": 0,
+            "cropPoint": [
+              287.8611490637964,
+              146.54669593878575
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "lower-star-arms",
+            "point": [
+              481,
+              450
+            ],
+            "paper": 0,
+            "cropPoint": [
+              245.57057502771917,
+              283.8298905697375
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "lower-star-arms",
+            "point": [
+              520,
+              450
+            ],
+            "paper": 0,
+            "cropPoint": [
+              278.0904878215652,
+              249.44990780789882
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "upper-border-diamonds",
+            "point": [
+              490,
+              183
+            ],
+            "paper": 0,
+            "cropPoint": [
+              22.653275915504345,
+              53.459041190945484
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "upper-border-diamonds",
+            "point": [
+              521,
+              199
+            ],
+            "paper": 0,
+            "cropPoint": [
+              62.14272795595165,
+              38.910257845962995
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "left-border-diamonds",
+            "point": [
+              310,
+              359
+            ],
+            "paper": 0,
+            "cropPoint": [
+              27.383729663059086,
+              358.299172463843
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "left-border-diamonds",
+            "point": [
+              315,
+              390
+            ],
+            "paper": 0,
+            "cropPoint": [
+              57.91024450904652,
+              379.28736458688473
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "right-border-diamonds",
+            "point": [
+              687,
+              367
+            ],
+            "paper": 0,
+            "cropPoint": [
+              347.44016095286406,
+              30.045051971697397
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "right-border-diamonds",
+            "point": [
+              688,
+              397
+            ],
+            "paper": 0,
+            "cropPoint": [
+              374.30054561538105,
+              54.52126041993485
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "lower-border-diamonds",
+            "point": [
+              481,
+              567
+            ],
+            "paper": 0,
+            "cropPoint": [
+              345.46175233090173,
+              380.22534887451326
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "lower-border-diamonds",
+            "point": [
+              512,
+              573
+            ],
+            "paper": 0,
+            "cropPoint": [
+              376.5353354390343,
+              358.13941902136776
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              500,
+              377
+            ],
+            "paper": 1,
+            "cropPoint": [
+              198.70008210339617,
+              206.54193108973325
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              504,
+              336
+            ],
+            "paper": 1,
+            "cropPoint": [
+              166.70115986289375,
+              168.8605266346586
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              503,
+              415
+            ],
+            "paper": 1,
+            "cropPoint": [
+              233.8632931181204,
+              235.44329513282702
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              464,
+              370
+            ],
+            "paper": 1,
+            "cropPoint": [
+              162.83294863494314,
+              232.60710399775965
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              546,
+              373
+            ],
+            "paper": 1,
+            "cropPoint": [
+              233.60556484680112,
+              162.26075437727098
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              455,
+              295
+            ],
+            "paper": 1,
+            "cropPoint": [
+              90.82372062671992,
+              178.33112211417563
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              552,
+              303
+            ],
+            "paper": 1,
+            "cropPoint": [
+              178.13454799593652,
+              98.29875056449826
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              451,
+              439
+            ],
+            "paper": 1,
+            "cropPoint": [
+              211.25840568057984,
+              301.0861706728123
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              552,
+              437
+            ],
+            "paper": 1,
+            "cropPoint": [
+              293.73077432299385,
+              210.28470125900654
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              428,
+              374
+            ],
+            "paper": 1,
+            "cropPoint": [
+              136.56665022586034,
+              267.6415692933355
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              581,
+              382
+            ],
+            "paper": 1,
+            "cropPoint": [
+              270.7128697021975,
+              138.46762988557822
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              501,
+              577
+            ],
+            "paper": 1,
+            "cropPoint": [
+              370.7143439660765,
+              371.0276082504959
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          }
+        ],
+        "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+      },
+      "classification": {
+        "total": 28,
+        "covered": 28,
+        "correct": 28,
+        "mismatched": 0,
+        "outsideCrop": 0,
+        "unavailable": 0,
+        "coverage": 1,
+        "agreementAllSamples": 1,
+        "agreementCovered": 1,
+        "phase": 1,
+        "phaseInferred": true,
+        "phaseAmbiguous": false,
+        "allReviewedSamplesMatch": true,
+        "groups": [
+          {
+            "id": "upper-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "left-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "right-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "lower-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "upper-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "left-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "right-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "lower-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "white-star-centre",
+            "paper": 1,
+            "total": 5,
+            "covered": 5,
+            "correct": 5,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "white-surround-and-gaps",
+            "paper": 1,
+            "total": 7,
+            "covered": 7,
+            "correct": 7,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          }
+        ],
+        "rows": [
+          {
+            "group": "upper-star-arms",
+            "point": [
+              480,
+              298
+            ],
+            "paper": 0,
+            "cropPoint": [
+              114.0312633760089,
+              158.58240172187197
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "upper-star-arms",
+            "point": [
+              524,
+              296
+            ],
+            "paper": 0,
+            "cropPoint": [
+              148.76061170729113,
+              117.58007479396105
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "left-star-arms",
+            "point": [
+              412,
+              350
+            ],
+            "paper": 0,
+            "cropPoint": [
+              102.81717260100298,
+              261.8919496719431
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "left-star-arms",
+            "point": [
+              416,
+              397
+            ],
+            "paper": 0,
+            "cropPoint": [
+              146.41092793931824,
+              297.13796245057415
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "right-star-arms",
+            "point": [
+              587,
+              359
+            ],
+            "paper": 0,
+            "cropPoint": [
+              255.88878104773278,
+              113.79996024338722
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "right-star-arms",
+            "point": [
+              586,
+              397
+            ],
+            "paper": 0,
+            "cropPoint": [
+              287.8611490637964,
+              146.54669593878575
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "lower-star-arms",
+            "point": [
+              481,
+              450
+            ],
+            "paper": 0,
+            "cropPoint": [
+              245.57057502771917,
+              283.8298905697375
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "lower-star-arms",
+            "point": [
+              520,
+              450
+            ],
+            "paper": 0,
+            "cropPoint": [
+              278.0904878215652,
+              249.44990780789882
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "upper-border-diamonds",
+            "point": [
+              490,
+              183
+            ],
+            "paper": 0,
+            "cropPoint": [
+              22.653275915504345,
+              53.459041190945484
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "upper-border-diamonds",
+            "point": [
+              521,
+              199
+            ],
+            "paper": 0,
+            "cropPoint": [
+              62.14272795595165,
+              38.910257845962995
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "left-border-diamonds",
+            "point": [
+              310,
+              359
+            ],
+            "paper": 0,
+            "cropPoint": [
+              27.383729663059086,
+              358.299172463843
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "left-border-diamonds",
+            "point": [
+              315,
+              390
+            ],
+            "paper": 0,
+            "cropPoint": [
+              57.91024450904652,
+              379.28736458688473
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "right-border-diamonds",
+            "point": [
+              687,
+              367
+            ],
+            "paper": 0,
+            "cropPoint": [
+              347.44016095286406,
+              30.045051971697397
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "right-border-diamonds",
+            "point": [
+              688,
+              397
+            ],
+            "paper": 0,
+            "cropPoint": [
+              374.30054561538105,
+              54.52126041993485
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "lower-border-diamonds",
+            "point": [
+              481,
+              567
+            ],
+            "paper": 0,
+            "cropPoint": [
+              345.46175233090173,
+              380.22534887451326
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "lower-border-diamonds",
+            "point": [
+              512,
+              573
+            ],
+            "paper": 0,
+            "cropPoint": [
+              376.5353354390343,
+              358.13941902136776
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              500,
+              377
+            ],
+            "paper": 1,
+            "cropPoint": [
+              198.70008210339617,
+              206.54193108973325
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              504,
+              336
+            ],
+            "paper": 1,
+            "cropPoint": [
+              166.70115986289375,
+              168.8605266346586
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              503,
+              415
+            ],
+            "paper": 1,
+            "cropPoint": [
+              233.8632931181204,
+              235.44329513282702
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              464,
+              370
+            ],
+            "paper": 1,
+            "cropPoint": [
+              162.83294863494314,
+              232.60710399775965
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              546,
+              373
+            ],
+            "paper": 1,
+            "cropPoint": [
+              233.60556484680112,
+              162.26075437727098
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              455,
+              295
+            ],
+            "paper": 1,
+            "cropPoint": [
+              90.82372062671992,
+              178.33112211417563
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              552,
+              303
+            ],
+            "paper": 1,
+            "cropPoint": [
+              178.13454799593652,
+              98.29875056449826
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              451,
+              439
+            ],
+            "paper": 1,
+            "cropPoint": [
+              211.25840568057984,
+              301.0861706728123
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              552,
+              437
+            ],
+            "paper": 1,
+            "cropPoint": [
+              293.73077432299385,
+              210.28470125900654
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              428,
+              374
+            ],
+            "paper": 1,
+            "cropPoint": [
+              136.56665022586034,
+              267.6415692933355
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              581,
+              382
+            ],
+            "paper": 1,
+            "cropPoint": [
+              270.7128697021975,
+              138.46762988557822
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              501,
+              577
+            ],
+            "paper": 1,
+            "cropPoint": [
+              370.7143439660765,
+              371.0276082504959
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          }
+        ],
+        "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+      },
+      "export": {
+        "total": 28,
+        "covered": 28,
+        "correct": 28,
+        "mismatched": 0,
+        "outsideCrop": 0,
+        "unavailable": 0,
+        "coverage": 1,
+        "agreementAllSamples": 1,
+        "agreementCovered": 1,
+        "phase": 1,
+        "phaseInferred": false,
+        "phaseAmbiguous": false,
+        "allReviewedSamplesMatch": true,
+        "groups": [
+          {
+            "id": "upper-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "left-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "right-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "lower-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "upper-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "left-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "right-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "lower-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "white-star-centre",
+            "paper": 1,
+            "total": 5,
+            "covered": 5,
+            "correct": 5,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "white-surround-and-gaps",
+            "paper": 1,
+            "total": 7,
+            "covered": 7,
+            "correct": 7,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          }
+        ],
+        "rows": [
+          {
+            "group": "upper-star-arms",
+            "point": [
+              480,
+              298
+            ],
+            "paper": 0,
+            "cropPoint": [
+              114.0312633760089,
+              158.58240172187197
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "upper-star-arms",
+            "point": [
+              524,
+              296
+            ],
+            "paper": 0,
+            "cropPoint": [
+              148.76061170729113,
+              117.58007479396105
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "left-star-arms",
+            "point": [
+              412,
+              350
+            ],
+            "paper": 0,
+            "cropPoint": [
+              102.81717260100298,
+              261.8919496719431
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "left-star-arms",
+            "point": [
+              416,
+              397
+            ],
+            "paper": 0,
+            "cropPoint": [
+              146.41092793931824,
+              297.13796245057415
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "right-star-arms",
+            "point": [
+              587,
+              359
+            ],
+            "paper": 0,
+            "cropPoint": [
+              255.88878104773278,
+              113.79996024338722
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "right-star-arms",
+            "point": [
+              586,
+              397
+            ],
+            "paper": 0,
+            "cropPoint": [
+              287.8611490637964,
+              146.54669593878575
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "lower-star-arms",
+            "point": [
+              481,
+              450
+            ],
+            "paper": 0,
+            "cropPoint": [
+              245.57057502771917,
+              283.8298905697375
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "lower-star-arms",
+            "point": [
+              520,
+              450
+            ],
+            "paper": 0,
+            "cropPoint": [
+              278.0904878215652,
+              249.44990780789882
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "upper-border-diamonds",
+            "point": [
+              490,
+              183
+            ],
+            "paper": 0,
+            "cropPoint": [
+              22.653275915504345,
+              53.459041190945484
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "upper-border-diamonds",
+            "point": [
+              521,
+              199
+            ],
+            "paper": 0,
+            "cropPoint": [
+              62.14272795595165,
+              38.910257845962995
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "left-border-diamonds",
+            "point": [
+              310,
+              359
+            ],
+            "paper": 0,
+            "cropPoint": [
+              27.383729663059086,
+              358.299172463843
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "left-border-diamonds",
+            "point": [
+              315,
+              390
+            ],
+            "paper": 0,
+            "cropPoint": [
+              57.91024450904652,
+              379.28736458688473
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "right-border-diamonds",
+            "point": [
+              687,
+              367
+            ],
+            "paper": 0,
+            "cropPoint": [
+              347.44016095286406,
+              30.045051971697397
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "right-border-diamonds",
+            "point": [
+              688,
+              397
+            ],
+            "paper": 0,
+            "cropPoint": [
+              374.30054561538105,
+              54.52126041993485
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "lower-border-diamonds",
+            "point": [
+              481,
+              567
+            ],
+            "paper": 0,
+            "cropPoint": [
+              345.46175233090173,
+              380.22534887451326
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "lower-border-diamonds",
+            "point": [
+              512,
+              573
+            ],
+            "paper": 0,
+            "cropPoint": [
+              376.5353354390343,
+              358.13941902136776
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              500,
+              377
+            ],
+            "paper": 1,
+            "cropPoint": [
+              198.70008210339617,
+              206.54193108973325
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              504,
+              336
+            ],
+            "paper": 1,
+            "cropPoint": [
+              166.70115986289375,
+              168.8605266346586
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              503,
+              415
+            ],
+            "paper": 1,
+            "cropPoint": [
+              233.8632931181204,
+              235.44329513282702
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              464,
+              370
+            ],
+            "paper": 1,
+            "cropPoint": [
+              162.83294863494314,
+              232.60710399775965
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              546,
+              373
+            ],
+            "paper": 1,
+            "cropPoint": [
+              233.60556484680112,
+              162.26075437727098
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              455,
+              295
+            ],
+            "paper": 1,
+            "cropPoint": [
+              90.82372062671992,
+              178.33112211417563
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              552,
+              303
+            ],
+            "paper": 1,
+            "cropPoint": [
+              178.13454799593652,
+              98.29875056449826
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              451,
+              439
+            ],
+            "paper": 1,
+            "cropPoint": [
+              211.25840568057984,
+              301.0861706728123
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              552,
+              437
+            ],
+            "paper": 1,
+            "cropPoint": [
+              293.73077432299385,
+              210.28470125900654
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              428,
+              374
+            ],
+            "paper": 1,
+            "cropPoint": [
+              136.56665022586034,
+              267.6415692933355
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              581,
+              382
+            ],
+            "paper": 1,
+            "cropPoint": [
+              270.7128697021975,
+              138.46762988557822
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              501,
+              577
+            ],
+            "paper": 1,
+            "cropPoint": [
+              370.7143439660765,
+              371.0276082504959
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          }
+        ],
+        "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+      }
+    },
+    {
+      "name": "scene",
+      "checkpointSha256": "3e94244975ee6641626b5b93c3948974bfa33609f461aae828e40bdf0a889fe6",
+      "predictionSha256": "dacaf5b5b7e34bd36cee634caf3802ad8dc564e610b26e812e1d8cb3741f3943",
+      "quad": [
+        [
+          513.3545428148515,
+          146.27395317629365
+        ],
+        [
+          727.2435237755178,
+          382.2806819789985
+        ],
+        [
+          485.55361224150624,
+          596.6805118169444
+        ],
+        [
+          273.4449956033525,
+          371.1741352002313
+        ]
+      ],
+      "historicalCheckedPair": true,
+      "historicalIndependentImageError": 0.0059625,
+      "crop": {
+        "total": 28,
+        "covered": 27,
+        "correct": 0,
+        "mismatched": 0,
+        "outsideCrop": 1,
+        "unavailable": 27,
+        "coverage": 0.9642857142857143,
+        "agreementAllSamples": 0,
+        "agreementCovered": 0,
+        "phase": null,
+        "phaseInferred": true,
+        "phaseAmbiguous": true,
+        "allReviewedSamplesMatch": false,
+        "groups": [
+          {
+            "id": "upper-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 2,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          },
+          {
+            "id": "left-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 2,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          },
+          {
+            "id": "right-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 2,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          },
+          {
+            "id": "lower-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 2,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          },
+          {
+            "id": "upper-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 2,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          },
+          {
+            "id": "left-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 2,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          },
+          {
+            "id": "right-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 2,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          },
+          {
+            "id": "lower-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 1,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 1,
+            "unavailable": 1,
+            "coverage": 0.5,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          },
+          {
+            "id": "white-star-centre",
+            "paper": 1,
+            "total": 5,
+            "covered": 5,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 5,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          },
+          {
+            "id": "white-surround-and-gaps",
+            "paper": 1,
+            "total": 7,
+            "covered": 7,
+            "correct": 0,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 7,
+            "coverage": 1,
+            "agreementAllSamples": 0,
+            "agreementCovered": 0
+          }
+        ],
+        "rows": [
+          {
+            "group": "upper-star-arms",
+            "point": [
+              480,
+              298
+            ],
+            "paper": 0,
+            "cropPoint": [
+              111.0409283032804,
+              152.02962014049442
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "upper-star-arms",
+            "point": [
+              524,
+              296
+            ],
+            "paper": 0,
+            "cropPoint": [
+              146.73486958335943,
+              111.10648426442836
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "left-star-arms",
+            "point": [
+              412,
+              350
+            ],
+            "paper": 0,
+            "cropPoint": [
+              101.0058744993991,
+              256.2870686205455
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "left-star-arms",
+            "point": [
+              416,
+              397
+            ],
+            "paper": 0,
+            "cropPoint": [
+              148.43307364964917,
+              292.2413392819205
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "right-star-arms",
+            "point": [
+              587,
+              359
+            ],
+            "paper": 0,
+            "cropPoint": [
+              259.42499666316024,
+              106.35915859866103
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "right-star-arms",
+            "point": [
+              586,
+              397
+            ],
+            "paper": 0,
+            "cropPoint": [
+              294.570135044945,
+              138.54261064644402
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "lower-star-arms",
+            "point": [
+              481,
+              450
+            ],
+            "paper": 0,
+            "cropPoint": [
+              254.78789780734948,
+              277.9905098547913
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "lower-star-arms",
+            "point": [
+              520,
+              450
+            ],
+            "paper": 0,
+            "cropPoint": [
+              288.4441326496126,
+              242.4929927981553
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "upper-border-diamonds",
+            "point": [
+              490,
+              183
+            ],
+            "paper": 0,
+            "cropPoint": [
+              14.280841821223508,
+              49.77939248896944
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "upper-border-diamonds",
+            "point": [
+              521,
+              199
+            ],
+            "paper": 0,
+            "cropPoint": [
+              55.049420366057,
+              35.29434680380826
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "left-border-diamonds",
+            "point": [
+              310,
+              359
+            ],
+            "paper": 0,
+            "cropPoint": [
+              21.31446291191124,
+              356.29021651405236
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "left-border-diamonds",
+            "point": [
+              315,
+              390
+            ],
+            "paper": 0,
+            "cropPoint": [
+              54.46115476008784,
+              378.20704792568245
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "right-border-diamonds",
+            "point": [
+              687,
+              367
+            ],
+            "paper": 0,
+            "cropPoint": [
+              352.15269038534706,
+              23.487946952716552
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "right-border-diamonds",
+            "point": [
+              688,
+              397
+            ],
+            "paper": 0,
+            "cropPoint": [
+              381.63327467552074,
+              46.97450503060756
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "lower-border-diamonds",
+            "point": [
+              481,
+              567
+            ],
+            "paper": 0,
+            "cropPoint": [
+              367.8378613589566,
+              378.3521278103444
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "lower-border-diamonds",
+            "point": [
+              512,
+              573
+            ],
+            "paper": 0,
+            "cropPoint": [
+              400.7095630832712,
+              354.89663318292133
+            ],
+            "covered": false,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              500,
+              377
+            ],
+            "paper": 1,
+            "cropPoint": [
+              201.92992355802383,
+              199.43429803036292
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              504,
+              336
+            ],
+            "paper": 1,
+            "cropPoint": [
+              166.899534483819,
+              161.8389406270104
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              503,
+              415
+            ],
+            "paper": 1,
+            "cropPoint": [
+              240.43849935764217,
+              228.4876875799828
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              464,
+              370
+            ],
+            "paper": 1,
+            "cropPoint": [
+              164.42580589882894,
+              226.07806853411324
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              546,
+              373
+            ],
+            "paper": 1,
+            "cropPoint": [
+              237.59285203975142,
+              154.6878078293958
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              455,
+              295
+            ],
+            "paper": 1,
+            "cropPoint": [
+              86.89604346385528,
+              171.91961456765517
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              552,
+              303
+            ],
+            "paper": 1,
+            "cropPoint": [
+              177.0952830675664,
+              91.8560402780957
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              451,
+              439
+            ],
+            "paper": 1,
+            "cropPoint": [
+              218.38271435026465,
+              295.99528269008147
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              552,
+              437
+            ],
+            "paper": 1,
+            "cropPoint": [
+              303.5556456397341,
+              202.52359329367826
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              428,
+              374
+            ],
+            "paper": 1,
+            "cropPoint": [
+              137.1967797456309,
+              261.96957290151965
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              581,
+              382
+            ],
+            "paper": 1,
+            "cropPoint": [
+              276.0520444826036,
+              130.65617130431184
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              501,
+              577
+            ],
+            "paper": 1,
+            "cropPoint": [
+              395.05718192249486,
+              368.53259785010096
+            ],
+            "covered": true,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          }
+        ],
+        "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+      },
+      "classification": {
+        "total": 28,
+        "covered": 27,
+        "correct": 27,
+        "mismatched": 0,
+        "outsideCrop": 1,
+        "unavailable": 0,
+        "coverage": 0.9642857142857143,
+        "agreementAllSamples": 0.9642857142857143,
+        "agreementCovered": 1,
+        "phase": 1,
+        "phaseInferred": true,
+        "phaseAmbiguous": false,
+        "allReviewedSamplesMatch": false,
+        "groups": [
+          {
+            "id": "upper-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "left-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "right-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "lower-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "upper-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "left-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "right-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "lower-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 1,
+            "correct": 1,
+            "mismatched": 0,
+            "outsideCrop": 1,
+            "unavailable": 0,
+            "coverage": 0.5,
+            "agreementAllSamples": 0.5,
+            "agreementCovered": 1
+          },
+          {
+            "id": "white-star-centre",
+            "paper": 1,
+            "total": 5,
+            "covered": 5,
+            "correct": 5,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "white-surround-and-gaps",
+            "paper": 1,
+            "total": 7,
+            "covered": 7,
+            "correct": 7,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          }
+        ],
+        "rows": [
+          {
+            "group": "upper-star-arms",
+            "point": [
+              480,
+              298
+            ],
+            "paper": 0,
+            "cropPoint": [
+              111.0409283032804,
+              152.02962014049442
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "upper-star-arms",
+            "point": [
+              524,
+              296
+            ],
+            "paper": 0,
+            "cropPoint": [
+              146.73486958335943,
+              111.10648426442836
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "left-star-arms",
+            "point": [
+              412,
+              350
+            ],
+            "paper": 0,
+            "cropPoint": [
+              101.0058744993991,
+              256.2870686205455
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "left-star-arms",
+            "point": [
+              416,
+              397
+            ],
+            "paper": 0,
+            "cropPoint": [
+              148.43307364964917,
+              292.2413392819205
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "right-star-arms",
+            "point": [
+              587,
+              359
+            ],
+            "paper": 0,
+            "cropPoint": [
+              259.42499666316024,
+              106.35915859866103
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "right-star-arms",
+            "point": [
+              586,
+              397
+            ],
+            "paper": 0,
+            "cropPoint": [
+              294.570135044945,
+              138.54261064644402
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "lower-star-arms",
+            "point": [
+              481,
+              450
+            ],
+            "paper": 0,
+            "cropPoint": [
+              254.78789780734948,
+              277.9905098547913
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "lower-star-arms",
+            "point": [
+              520,
+              450
+            ],
+            "paper": 0,
+            "cropPoint": [
+              288.4441326496126,
+              242.4929927981553
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "upper-border-diamonds",
+            "point": [
+              490,
+              183
+            ],
+            "paper": 0,
+            "cropPoint": [
+              14.280841821223508,
+              49.77939248896944
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "upper-border-diamonds",
+            "point": [
+              521,
+              199
+            ],
+            "paper": 0,
+            "cropPoint": [
+              55.049420366057,
+              35.29434680380826
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "left-border-diamonds",
+            "point": [
+              310,
+              359
+            ],
+            "paper": 0,
+            "cropPoint": [
+              21.31446291191124,
+              356.29021651405236
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "left-border-diamonds",
+            "point": [
+              315,
+              390
+            ],
+            "paper": 0,
+            "cropPoint": [
+              54.46115476008784,
+              378.20704792568245
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "right-border-diamonds",
+            "point": [
+              687,
+              367
+            ],
+            "paper": 0,
+            "cropPoint": [
+              352.15269038534706,
+              23.487946952716552
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "right-border-diamonds",
+            "point": [
+              688,
+              397
+            ],
+            "paper": 0,
+            "cropPoint": [
+              381.63327467552074,
+              46.97450503060756
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "lower-border-diamonds",
+            "point": [
+              481,
+              567
+            ],
+            "paper": 0,
+            "cropPoint": [
+              367.8378613589566,
+              378.3521278103444
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "lower-border-diamonds",
+            "point": [
+              512,
+              573
+            ],
+            "paper": 0,
+            "cropPoint": [
+              400.7095630832712,
+              354.89663318292133
+            ],
+            "covered": false,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              500,
+              377
+            ],
+            "paper": 1,
+            "cropPoint": [
+              201.92992355802383,
+              199.43429803036292
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              504,
+              336
+            ],
+            "paper": 1,
+            "cropPoint": [
+              166.899534483819,
+              161.8389406270104
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              503,
+              415
+            ],
+            "paper": 1,
+            "cropPoint": [
+              240.43849935764217,
+              228.4876875799828
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              464,
+              370
+            ],
+            "paper": 1,
+            "cropPoint": [
+              164.42580589882894,
+              226.07806853411324
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              546,
+              373
+            ],
+            "paper": 1,
+            "cropPoint": [
+              237.59285203975142,
+              154.6878078293958
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              455,
+              295
+            ],
+            "paper": 1,
+            "cropPoint": [
+              86.89604346385528,
+              171.91961456765517
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              552,
+              303
+            ],
+            "paper": 1,
+            "cropPoint": [
+              177.0952830675664,
+              91.8560402780957
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              451,
+              439
+            ],
+            "paper": 1,
+            "cropPoint": [
+              218.38271435026465,
+              295.99528269008147
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              552,
+              437
+            ],
+            "paper": 1,
+            "cropPoint": [
+              303.5556456397341,
+              202.52359329367826
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              428,
+              374
+            ],
+            "paper": 1,
+            "cropPoint": [
+              137.1967797456309,
+              261.96957290151965
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              581,
+              382
+            ],
+            "paper": 1,
+            "cropPoint": [
+              276.0520444826036,
+              130.65617130431184
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              501,
+              577
+            ],
+            "paper": 1,
+            "cropPoint": [
+              395.05718192249486,
+              368.53259785010096
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          }
+        ],
+        "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+      },
+      "export": {
+        "total": 28,
+        "covered": 27,
+        "correct": 27,
+        "mismatched": 0,
+        "outsideCrop": 1,
+        "unavailable": 0,
+        "coverage": 0.9642857142857143,
+        "agreementAllSamples": 0.9642857142857143,
+        "agreementCovered": 1,
+        "phase": 1,
+        "phaseInferred": false,
+        "phaseAmbiguous": false,
+        "allReviewedSamplesMatch": false,
+        "groups": [
+          {
+            "id": "upper-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "left-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "right-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "lower-star-arms",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "upper-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "left-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "right-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 2,
+            "correct": 2,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "lower-border-diamonds",
+            "paper": 0,
+            "total": 2,
+            "covered": 1,
+            "correct": 1,
+            "mismatched": 0,
+            "outsideCrop": 1,
+            "unavailable": 0,
+            "coverage": 0.5,
+            "agreementAllSamples": 0.5,
+            "agreementCovered": 1
+          },
+          {
+            "id": "white-star-centre",
+            "paper": 1,
+            "total": 5,
+            "covered": 5,
+            "correct": 5,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          },
+          {
+            "id": "white-surround-and-gaps",
+            "paper": 1,
+            "total": 7,
+            "covered": 7,
+            "correct": 7,
+            "mismatched": 0,
+            "outsideCrop": 0,
+            "unavailable": 0,
+            "coverage": 1,
+            "agreementAllSamples": 1,
+            "agreementCovered": 1
+          }
+        ],
+        "rows": [
+          {
+            "group": "upper-star-arms",
+            "point": [
+              480,
+              298
+            ],
+            "paper": 0,
+            "cropPoint": [
+              111.0409283032804,
+              152.02962014049442
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "upper-star-arms",
+            "point": [
+              524,
+              296
+            ],
+            "paper": 0,
+            "cropPoint": [
+              146.73486958335943,
+              111.10648426442836
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "left-star-arms",
+            "point": [
+              412,
+              350
+            ],
+            "paper": 0,
+            "cropPoint": [
+              101.0058744993991,
+              256.2870686205455
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "left-star-arms",
+            "point": [
+              416,
+              397
+            ],
+            "paper": 0,
+            "cropPoint": [
+              148.43307364964917,
+              292.2413392819205
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "right-star-arms",
+            "point": [
+              587,
+              359
+            ],
+            "paper": 0,
+            "cropPoint": [
+              259.42499666316024,
+              106.35915859866103
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "right-star-arms",
+            "point": [
+              586,
+              397
+            ],
+            "paper": 0,
+            "cropPoint": [
+              294.570135044945,
+              138.54261064644402
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "lower-star-arms",
+            "point": [
+              481,
+              450
+            ],
+            "paper": 0,
+            "cropPoint": [
+              254.78789780734948,
+              277.9905098547913
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "lower-star-arms",
+            "point": [
+              520,
+              450
+            ],
+            "paper": 0,
+            "cropPoint": [
+              288.4441326496126,
+              242.4929927981553
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "upper-border-diamonds",
+            "point": [
+              490,
+              183
+            ],
+            "paper": 0,
+            "cropPoint": [
+              14.280841821223508,
+              49.77939248896944
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "upper-border-diamonds",
+            "point": [
+              521,
+              199
+            ],
+            "paper": 0,
+            "cropPoint": [
+              55.049420366057,
+              35.29434680380826
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "left-border-diamonds",
+            "point": [
+              310,
+              359
+            ],
+            "paper": 0,
+            "cropPoint": [
+              21.31446291191124,
+              356.29021651405236
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "left-border-diamonds",
+            "point": [
+              315,
+              390
+            ],
+            "paper": 0,
+            "cropPoint": [
+              54.46115476008784,
+              378.20704792568245
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "right-border-diamonds",
+            "point": [
+              687,
+              367
+            ],
+            "paper": 0,
+            "cropPoint": [
+              352.15269038534706,
+              23.487946952716552
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "right-border-diamonds",
+            "point": [
+              688,
+              397
+            ],
+            "paper": 0,
+            "cropPoint": [
+              381.63327467552074,
+              46.97450503060756
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "lower-border-diamonds",
+            "point": [
+              481,
+              567
+            ],
+            "paper": 0,
+            "cropPoint": [
+              367.8378613589566,
+              378.3521278103444
+            ],
+            "covered": true,
+            "maskValue": 1,
+            "predictedPaper": 0,
+            "correct": true
+          },
+          {
+            "group": "lower-border-diamonds",
+            "point": [
+              512,
+              573
+            ],
+            "paper": 0,
+            "cropPoint": [
+              400.7095630832712,
+              354.89663318292133
+            ],
+            "covered": false,
+            "maskValue": null,
+            "predictedPaper": null,
+            "correct": null
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              500,
+              377
+            ],
+            "paper": 1,
+            "cropPoint": [
+              201.92992355802383,
+              199.43429803036292
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              504,
+              336
+            ],
+            "paper": 1,
+            "cropPoint": [
+              166.899534483819,
+              161.8389406270104
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              503,
+              415
+            ],
+            "paper": 1,
+            "cropPoint": [
+              240.43849935764217,
+              228.4876875799828
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              464,
+              370
+            ],
+            "paper": 1,
+            "cropPoint": [
+              164.42580589882894,
+              226.07806853411324
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-star-centre",
+            "point": [
+              546,
+              373
+            ],
+            "paper": 1,
+            "cropPoint": [
+              237.59285203975142,
+              154.6878078293958
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              455,
+              295
+            ],
+            "paper": 1,
+            "cropPoint": [
+              86.89604346385528,
+              171.91961456765517
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              552,
+              303
+            ],
+            "paper": 1,
+            "cropPoint": [
+              177.0952830675664,
+              91.8560402780957
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              451,
+              439
+            ],
+            "paper": 1,
+            "cropPoint": [
+              218.38271435026465,
+              295.99528269008147
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              552,
+              437
+            ],
+            "paper": 1,
+            "cropPoint": [
+              303.5556456397341,
+              202.52359329367826
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              428,
+              374
+            ],
+            "paper": 1,
+            "cropPoint": [
+              137.1967797456309,
+              261.96957290151965
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              581,
+              382
+            ],
+            "paper": 1,
+            "cropPoint": [
+              276.0520444826036,
+              130.65617130431184
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          },
+          {
+            "group": "white-surround-and-gaps",
+            "point": [
+              501,
+              577
+            ],
+            "paper": 1,
+            "cropPoint": [
+              395.05718192249486,
+              368.53259785010096
+            ],
+            "covered": true,
+            "maskValue": 0,
+            "predictedPaper": 1,
+            "correct": true
+          }
+        ],
+        "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+      }
+    }
+  ],
+  "assets": [
+    {
+      "path": "tmp/heart-learning/foreground-refinement-v1/augmented-probe/manifest.json",
+      "sha256": "4defef504ff591f07a207a08faca66c9dfca274b625546d6c5f37166803fa87c",
+      "bytes": 46119
+    },
+    {
+      "path": "tmp/heart-learning/foreground-refinement-v1/augmented-replay/report.json",
+      "sha256": "d82f496b5af93f3c86b81b16d50e6b7aa90bdd362e340d880065c0abe98e283d",
+      "bytes": 1822325
+    },
+    {
+      "path": "tmp/heart-learning/foreground-refinement-v1/augmented-probe/real-bibel-star-outline/probability.f32",
+      "sha256": "f003674299e9d49ce1607c487f91873b60ef432768ae89ff61e5a16cb8f2ae6b",
+      "bytes": 262144
+    },
+    {
+      "path": "tmp/heart-learning/foreground-refinement-v1/augmented-replay/real-bibel-star-outline-learned/mask.png",
+      "sha256": "950ea728c7d71b4bd99a6b60dcc368828fc8ff69fc23004f2d828b33fed074bc",
+      "bytes": 6359
+    },
+    {
+      "path": "tmp/heart-learning/foreground-refinement-v1/augmented-replay/real-bibel-star-outline-learned/woven.png",
+      "sha256": "5883a44e3b1cf5c42c367b77873568dfb07998ec6fda19698b9c36f2623e9016",
+      "bytes": 17305
+    },
+    {
+      "path": "tmp/heart-learning/foreground-scene-v1/control-probe/manifest.json",
+      "sha256": "147da8e724742158484eb78757a0cbcf081e5c28398d4574342840ecdaa827e6",
+      "bytes": 46093
+    },
+    {
+      "path": "tmp/heart-learning/foreground-scene-v1/control-replay/report.json",
+      "sha256": "170584b1f6b2b313989d56d3c0d8507eb34facf04443ba5a6456436a33364b24",
+      "bytes": 2327353
+    },
+    {
+      "path": "tmp/heart-learning/foreground-scene-v1/control-probe/real-bibel-star-outline/probability.f32",
+      "sha256": "f003674299e9d49ce1607c487f91873b60ef432768ae89ff61e5a16cb8f2ae6b",
+      "bytes": 262144
+    },
+    {
+      "path": "tmp/heart-learning/foreground-scene-v1/control-replay/real-bibel-star-outline-learned/mask.png",
+      "sha256": "950ea728c7d71b4bd99a6b60dcc368828fc8ff69fc23004f2d828b33fed074bc",
+      "bytes": 6359
+    },
+    {
+      "path": "tmp/heart-learning/foreground-scene-v1/control-replay/real-bibel-star-outline-learned/woven.png",
+      "sha256": "1fc0abf2ca3c616c8ed6b60ea62777e3b66ba9526e05ef35bfcfa57416235622",
+      "bytes": 16945
+    },
+    {
+      "path": "tmp/heart-learning/foreground-scene-v1/scene-probe/manifest.json",
+      "sha256": "1cbaa30f7397427cada3a69c4bf8f6f727865c5c5f652a3eec7d49ff04ef6cd2",
+      "bytes": 46108
+    },
+    {
+      "path": "tmp/heart-learning/foreground-scene-v1/scene-replay/report.json",
+      "sha256": "d4703ce4a531477e9de126ead98eb8500058697d76ded5bbb304d3f172250825",
+      "bytes": 2120513
+    },
+    {
+      "path": "tmp/heart-learning/foreground-scene-v1/scene-probe/real-bibel-star-outline/probability.f32",
+      "sha256": "dacaf5b5b7e34bd36cee634caf3802ad8dc564e610b26e812e1d8cb3741f3943",
+      "bytes": 262144
+    },
+    {
+      "path": "tmp/heart-learning/foreground-scene-v1/scene-replay/real-bibel-star-outline-learned/mask.png",
+      "sha256": "371da24131b5fd31e30ccd05e6845bed021cc86c0eeee8681495d408af75eeb3",
+      "bytes": 6381
+    },
+    {
+      "path": "tmp/heart-learning/foreground-scene-v1/scene-replay/real-bibel-star-outline-learned/woven.png",
+      "sha256": "c9bafd66c4b6564b6376f5af6edb1ee9df554501df1aac679a8b81eb6eb23788",
+      "bytes": 16367
+    }
+  ],
+  "annotationFile": "docs/inverse/datasets/blue-star-material-observations.json",
+  "frozenSourceReview": {
+    "file": "tmp/heart-learning/neural-fallback-probe-v1/blue-star-observations.json",
+    "sha256": "f9d4e408dc150a4ca9609ca14002b1fa0344d048043d02420fbab264bc59f60f",
+    "points": 28,
+    "sourcePixelAudit": [
+      {
+        "group": "upper-star-arms",
+        "paper": 0,
+        "point": [
+          480,
+          298
+        ],
+        "rgb": [
+          6,
+          137,
+          219
+        ]
+      },
+      {
+        "group": "upper-star-arms",
+        "paper": 0,
+        "point": [
+          524,
+          296
+        ],
+        "rgb": [
+          7,
+          134,
+          213
+        ]
+      },
+      {
+        "group": "left-star-arms",
+        "paper": 0,
+        "point": [
+          412,
+          350
+        ],
+        "rgb": [
+          5,
+          139,
+          210
+        ]
+      },
+      {
+        "group": "left-star-arms",
+        "paper": 0,
+        "point": [
+          416,
+          397
+        ],
+        "rgb": [
+          10,
+          136,
+          220
+        ]
+      },
+      {
+        "group": "right-star-arms",
+        "paper": 0,
+        "point": [
+          587,
+          359
+        ],
+        "rgb": [
+          7,
+          136,
+          214
+        ]
+      },
+      {
+        "group": "right-star-arms",
+        "paper": 0,
+        "point": [
+          586,
+          397
+        ],
+        "rgb": [
+          16,
+          139,
+          216
+        ]
+      },
+      {
+        "group": "lower-star-arms",
+        "paper": 0,
+        "point": [
+          481,
+          450
+        ],
+        "rgb": [
+          5,
+          137,
+          212
+        ]
+      },
+      {
+        "group": "lower-star-arms",
+        "paper": 0,
+        "point": [
+          520,
+          450
+        ],
+        "rgb": [
+          10,
+          138,
+          221
+        ]
+      },
+      {
+        "group": "upper-border-diamonds",
+        "paper": 0,
+        "point": [
+          490,
+          183
+        ],
+        "rgb": [
+          7,
+          136,
+          212
+        ]
+      },
+      {
+        "group": "upper-border-diamonds",
+        "paper": 0,
+        "point": [
+          521,
+          199
+        ],
+        "rgb": [
+          10,
+          137,
+          213
+        ]
+      },
+      {
+        "group": "left-border-diamonds",
+        "paper": 0,
+        "point": [
+          310,
+          359
+        ],
+        "rgb": [
+          10,
+          136,
+          218
+        ]
+      },
+      {
+        "group": "left-border-diamonds",
+        "paper": 0,
+        "point": [
+          315,
+          390
+        ],
+        "rgb": [
+          9,
+          140,
+          220
+        ]
+      },
+      {
+        "group": "right-border-diamonds",
+        "paper": 0,
+        "point": [
+          687,
+          367
+        ],
+        "rgb": [
+          7,
+          134,
+          213
+        ]
+      },
+      {
+        "group": "right-border-diamonds",
+        "paper": 0,
+        "point": [
+          688,
+          397
+        ],
+        "rgb": [
+          9,
+          135,
+          217
+        ]
+      },
+      {
+        "group": "lower-border-diamonds",
+        "paper": 0,
+        "point": [
+          481,
+          567
+        ],
+        "rgb": [
+          4,
+          137,
+          212
+        ]
+      },
+      {
+        "group": "lower-border-diamonds",
+        "paper": 0,
+        "point": [
+          512,
+          573
+        ],
+        "rgb": [
+          8,
+          140,
+          215
+        ]
+      },
+      {
+        "group": "white-star-centre",
+        "paper": 1,
+        "point": [
+          500,
+          377
+        ],
+        "rgb": [
+          246,
+          242,
+          239
+        ]
+      },
+      {
+        "group": "white-star-centre",
+        "paper": 1,
+        "point": [
+          504,
+          336
+        ],
+        "rgb": [
+          242,
+          241,
+          237
+        ]
+      },
+      {
+        "group": "white-star-centre",
+        "paper": 1,
+        "point": [
+          503,
+          415
+        ],
+        "rgb": [
+          242,
+          239,
+          232
+        ]
+      },
+      {
+        "group": "white-star-centre",
+        "paper": 1,
+        "point": [
+          464,
+          370
+        ],
+        "rgb": [
+          241,
+          241,
+          239
+        ]
+      },
+      {
+        "group": "white-star-centre",
+        "paper": 1,
+        "point": [
+          546,
+          373
+        ],
+        "rgb": [
+          240,
+          243,
+          236
+        ]
+      },
+      {
+        "group": "white-surround-and-gaps",
+        "paper": 1,
+        "point": [
+          455,
+          295
+        ],
+        "rgb": [
+          243,
+          243,
+          235
+        ]
+      },
+      {
+        "group": "white-surround-and-gaps",
+        "paper": 1,
+        "point": [
+          552,
+          303
+        ],
+        "rgb": [
+          245,
+          244,
+          239
+        ]
+      },
+      {
+        "group": "white-surround-and-gaps",
+        "paper": 1,
+        "point": [
+          451,
+          439
+        ],
+        "rgb": [
+          248,
+          244,
+          243
+        ]
+      },
+      {
+        "group": "white-surround-and-gaps",
+        "paper": 1,
+        "point": [
+          552,
+          437
+        ],
+        "rgb": [
+          247,
+          237,
+          225
+        ]
+      },
+      {
+        "group": "white-surround-and-gaps",
+        "paper": 1,
+        "point": [
+          428,
+          374
+        ],
+        "rgb": [
+          242,
+          239,
+          232
+        ]
+      },
+      {
+        "group": "white-surround-and-gaps",
+        "paper": 1,
+        "point": [
+          581,
+          382
+        ],
+        "rgb": [
+          238,
+          240,
+          239
+        ]
+      },
+      {
+        "group": "white-surround-and-gaps",
+        "paper": 1,
+        "point": [
+          501,
+          577
+        ],
+        "rgb": [
+          241,
+          241,
+          239
+        ]
+      }
+    ],
+    "meaning": "Checks original RGB consistency only; not a network or reconstructed-template score."
+  },
+  "script": {
+    "path": "tmp/heart-learning/neural-fallback-probe-v1/review-historical.mjs",
+    "sha256": "58346f87751d6e18f9da681baf0882f9fcd8e46677c41f120667d0b42c8b2ae7"
+  }
+}

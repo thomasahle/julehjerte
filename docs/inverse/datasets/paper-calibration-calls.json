@@ -1,0 +1,359 @@
+{
+  "schema": 1,
+  "baseCommit": "da3cb2d",
+  "scope": "Reduce repeated startup kernel measurements in paper validation; no changes to image objectives, geometry, paper tolerances, deadlines or acceptance thresholds.",
+  "policy": "Compare JavaScript and WebAssembly outputs on each of the first two actual requests in a size bucket, in opposite orders. Return the current JavaScript result during calibration. Enable WebAssembly only after both outputs match and both paired timings show a greater than 10% gain. Retain timings only. Other measured-kernel clients keep their previous default policy.",
+  "integration": "Enabled locally through paperBackend at c484669. Prototype opted in at its two materialAudit call sites; the production wrapper supplies the same option. Generic default remains false. Focused integrated tests passed, but full inverse QA failed (880/895); native corpus and browser stages did not start. Follow-up isolates a frozen-clock test contamination and an overly restrictive intermediate-routing assertion; eight corrected tests pass. Remaining failures are unresolved. See paper-calibration-release-failures.json.",
+  "auditComparisons": {
+    "audits": {
+      "cases": 7,
+      "roundsPerCase": 4,
+      "timedCompleteAudits": 280,
+      "allOutputsIdentical": true,
+      "rows": [
+        {
+          "id": "straight-80",
+          "rounds": 4,
+          "firstMedianMs": {
+            "legacy": 18.625479499999997,
+            "acrossCalls": 13.427416499999993
+          },
+          "medianPairedFirstSaving": 0.27851687165749905,
+          "medianPairedFiveAuditSaving": 0.14483390358973974,
+          "medianPairedFollowupSaving": -0.4193314539202787
+        },
+        {
+          "id": "neck-180",
+          "rounds": 4,
+          "firstMedianMs": {
+            "legacy": 56.96389549999998,
+            "acrossCalls": 52.54762499999998
+          },
+          "medianPairedFirstSaving": 0.1440522020288948,
+          "medianPairedFiveAuditSaving": 0.13505572829072948,
+          "medianPairedFollowupSaving": -0.03572005748182727
+        },
+        {
+          "id": "matching-hat-360",
+          "rounds": 4,
+          "firstMedianMs": {
+            "legacy": 128.97779149999997,
+            "acrossCalls": 73.05139599999995
+          },
+          "medianPairedFirstSaving": 0.4350002645326343,
+          "medianPairedFiveAuditSaving": 0.23445671905145538,
+          "medianPairedFollowupSaving": -0.17966352008357012
+        },
+        {
+          "id": "hjhih-04",
+          "rounds": 4,
+          "firstMedianMs": {
+            "legacy": 151.77564600000005,
+            "acrossCalls": 120.26229199999943
+          },
+          "medianPairedFirstSaving": 0.2076979958386842,
+          "medianPairedFiveAuditSaving": 0.0812236595543116,
+          "medianPairedFollowupSaving": 0.00044965329973917223
+        },
+        {
+          "id": "circle",
+          "rounds": 4,
+          "firstMedianMs": {
+            "legacy": 153.75097900000037,
+            "acrossCalls": 103.9485209999998
+          },
+          "medianPairedFirstSaving": 0.3018609031402392,
+          "medianPairedFiveAuditSaving": 0.19054326851628922,
+          "medianPairedFollowupSaving": 0.013319745613789347
+        },
+        {
+          "id": "crown-700",
+          "rounds": 4,
+          "firstMedianMs": {
+            "legacy": 515.1833754999998,
+            "acrossCalls": 371.6399784999994
+          },
+          "medianPairedFirstSaving": 0.2851729115604414,
+          "medianPairedFiveAuditSaving": 0.16934382216169164,
+          "medianPairedFollowupSaving": 0.06729299040933434
+        },
+        {
+          "id": "crown-1000",
+          "rounds": 4,
+          "firstMedianMs": {
+            "legacy": 930.1671454999978,
+            "acrossCalls": 654.1942080000026
+          },
+          "medianPairedFirstSaving": 0.3074274751941266,
+          "medianPairedFiveAuditSaving": 0.10543979120695268,
+          "medianPairedFollowupSaving": -0.04719852216216491
+        }
+      ],
+      "method": "Fresh selector instances for each policy, geometry and round. Four rounds with rotating policy order. The reference policy, when requested, loads both selector and equality code from the named commit with an identical paper-audit source. First complete audit includes calibration and all equality checks performed by the selector. The following four complete audits are timed together. Fixture/module/kernel loading and the independent JavaScript/native oracle and map comparisons are outside timers. Common kernel code and scratch memory are warmed before each group. Both audit maps and all fields except elapsed time must equal the JavaScript oracle; first-call returned arrays are rechecked after subsequent calls. Only timing decisions may be retained. No optimizer runs or saved-template seeds."
+    },
+    "browser": {
+      "cases": 7,
+      "roundsPerCase": 4,
+      "timedCompleteAudits": 280,
+      "allOutputsIdentical": true,
+      "rows": [
+        {
+          "id": "straight-80",
+          "rounds": 4,
+          "firstMedianMs": {
+            "legacy": 15.200000047683716,
+            "acrossCalls": 10.300000071525574
+          },
+          "medianPairedFirstSaving": 0.3080270841130832,
+          "medianPairedFiveAuditSaving": 0.1734554326668321,
+          "medianPairedFollowupSaving": -0.34615386496399114
+        },
+        {
+          "id": "neck-180",
+          "rounds": 4,
+          "firstMedianMs": {
+            "legacy": 52.300000071525574,
+            "acrossCalls": 41.450000047683716
+          },
+          "medianPairedFirstSaving": 0.21163803114693314,
+          "medianPairedFiveAuditSaving": 0.15144882752385913,
+          "medianPairedFollowupSaving": 0.010078025482786468
+        },
+        {
+          "id": "matching-hat-360",
+          "rounds": 4,
+          "firstMedianMs": {
+            "legacy": 120.79999995231628,
+            "acrossCalls": 68.95000004768372
+          },
+          "medianPairedFirstSaving": 0.43321642588924003,
+          "medianPairedFiveAuditSaving": 0.19870075554465577,
+          "medianPairedFollowupSaving": -0.15081463642003023
+        },
+        {
+          "id": "hjhih-04",
+          "rounds": 4,
+          "firstMedianMs": {
+            "legacy": 146.39999997615814,
+            "acrossCalls": 110.70000004768372
+          },
+          "medianPairedFirstSaving": 0.23984135152139174,
+          "medianPairedFiveAuditSaving": 0.11875449243841052,
+          "medianPairedFollowupSaving": 0.01744856171498327
+        },
+        {
+          "id": "circle",
+          "rounds": 4,
+          "firstMedianMs": {
+            "legacy": 136.55000007152557,
+            "acrossCalls": 97.64999997615814
+          },
+          "medianPairedFirstSaving": 0.28706322716453675,
+          "medianPairedFiveAuditSaving": 0.11416914253151828,
+          "medianPairedFollowupSaving": -0.04249440976595853
+        },
+        {
+          "id": "crown-700",
+          "rounds": 4,
+          "firstMedianMs": {
+            "legacy": 507.7000000476837,
+            "acrossCalls": 357.85000002384186
+          },
+          "medianPairedFirstSaving": 0.2901768567093357,
+          "medianPairedFiveAuditSaving": 0.0982224619738965,
+          "medianPairedFollowupSaving": -0.06623182267313193
+        },
+        {
+          "id": "crown-1000",
+          "rounds": 4,
+          "firstMedianMs": {
+            "legacy": 988.6000000238419,
+            "acrossCalls": 689.1000000238419
+          },
+          "medianPairedFirstSaving": 0.30953752652408617,
+          "medianPairedFiveAuditSaving": 0.13021161490671584,
+          "medianPairedFollowupSaving": 0.017735647806929655
+        }
+      ],
+      "method": "Fresh selector instances for each policy, geometry and round. Four rounds with rotating policy order. The reference policy, when requested, loads both selector and equality code from the named commit with an identical paper-audit source. First complete audit includes calibration and all equality checks performed by the selector. The following four complete audits are timed together. Fixture/module/kernel loading and the independent JavaScript/native oracle and map comparisons are outside timers. Common kernel code and scratch memory are warmed before each group. Both audit maps and all fields except elapsed time must equal the JavaScript oracle; first-call returned arrays are rechecked after subsequent calls. Only timing decisions may be retained. No optimizer runs or saved-template seeds."
+    }
+  },
+  "coldRepair": {
+    "rows": [
+      {
+        "variant": "after",
+        "repeat": 0,
+        "seconds": 1.014071542,
+        "steps": 100,
+        "accepted": false,
+        "error": 0.01519375,
+        "reason": "paper_rejected"
+      },
+      {
+        "variant": "before",
+        "repeat": 0,
+        "seconds": 1.181518292,
+        "steps": 85,
+        "accepted": false,
+        "error": 0.01676875,
+        "reason": "paper_rejected"
+      },
+      {
+        "variant": "after",
+        "repeat": 1,
+        "seconds": 1.017353458,
+        "steps": 85,
+        "accepted": false,
+        "error": 0.01676875,
+        "reason": "paper_rejected"
+      },
+      {
+        "variant": "before",
+        "repeat": 1,
+        "seconds": 1.1935780000000002,
+        "steps": 85,
+        "accepted": false,
+        "error": 0.01676875,
+        "reason": "paper_rejected"
+      },
+      {
+        "variant": "after",
+        "repeat": 2,
+        "seconds": 1.016469417,
+        "steps": 85,
+        "accepted": false,
+        "error": 0.01676875,
+        "reason": "paper_rejected"
+      },
+      {
+        "variant": "before",
+        "repeat": 2,
+        "seconds": 1.375295666,
+        "steps": 85,
+        "accepted": false,
+        "error": 0.01676875,
+        "reason": "paper_rejected"
+      },
+      {
+        "variant": "after",
+        "repeat": 3,
+        "seconds": 1.000376875,
+        "steps": 95,
+        "accepted": false,
+        "error": 0.015875,
+        "reason": "paper_rejected"
+      },
+      {
+        "variant": "before",
+        "repeat": 3,
+        "seconds": 1.221028958,
+        "steps": 85,
+        "accepted": false,
+        "error": 0.01676875,
+        "reason": "paper_rejected"
+      }
+    ],
+    "acceptedBefore": 0,
+    "acceptedAfter": 0,
+    "trialsPerVariant": 4,
+    "medianSeconds": {
+      "before": 1.2073034790000001,
+      "after": 1.0152704794999998
+    },
+    "scope": "Eight fresh Node processes in alternating AB/BA order. Fixed leaf initializer and unchanged real 500 ms refinement / 1200 ms repair allowances. Preparation and kernel loading precede timing; this is not a complete photo solve.",
+    "finding": "Calibration saves time and allows some extra gradient steps, but all eight repairs remain rejected as paper-uncertain. No reconstruction success gain is claimed."
+  },
+  "limitations": [
+    "The calibration comparison warms common kernel code and memory; first audit means fresh timing selectors, not an entirely cold browser process.",
+    "The four-followup batch includes deferred calibration on a second request, and is sometimes slower; the combined first-plus-four total improves in these measurements.",
+    "Different valid geometries can be selected by a faster time-budgeted optimizer. Full-pipeline error and timing checks are still required.",
+    "No model, image classifier or crop detector changed."
+  ],
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/paper-calibration-calls-v1/source.json",
+      "sha256": "325530dee02e8df2315847d72a7d1ebb77b4f7247d196863fc626d56b107a7ec"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-calls-v1/checks.json",
+      "sha256": "a1414430c9cde939cba30e6ad6b96bd3a96bd4a32de1883992dc79888c43e62b"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-calls-v1/state.json",
+      "sha256": "e56a684deccf4d1b825eb149265246b735a8d38fed612f3f1a615ac3c63a9564"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-calls-v1/browser-source.json",
+      "sha256": "06701f36c892483280e38c6926a94d12ffaf43ff19895bf6d70f32abc8b869d0"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-calls-v1/browser-state.json",
+      "sha256": "aa5b8d777defa2fb9fe9dc392a41175cf53179c881da1ea83885b8497976e460"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-calls-v1/audits/results.json",
+      "sha256": "32e5e08455e8d551f6e3353bffc4da6da310666bf416692beab53542a2484e5b"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-calls-v1/browser/results.json",
+      "sha256": "36e8e48536deba61eb414113e9606e27d9fa28711cf0fe2e05e601a076bf1da9"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-calls-v1/selector.test.mjs",
+      "sha256": "c8d4236cf3bec0936fe59da9eed232df5036ff3b0a599b81b6c5f0c92292bcdb"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-calls-v1/material.test.mjs",
+      "sha256": "97aee7de8192a17b2ee318dd46ef6b494dcfedb2fd74abf68364189bb0877730"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-calls-v1/audit-benchmark.mjs",
+      "sha256": "bc5587e7d95ebd03d8e1d04a0475ee032e664b36c2acd7b24bea8dec66a3a390"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-calls-v1/browser-benchmark.mjs",
+      "sha256": "cc07d07138cfc44b73eb009ecbdcb24501c98a5149fd6996cbedcdf9d1020630"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-calls-v1/repair.mjs",
+      "sha256": "739310dc5037a077de4bb0befc6659ac2dde0c8e4b23a9d6f9b85b6b45434005"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-integration-v1/focused.log",
+      "sha256": "0883fe47ad1ca49e5d566412fac2190c985c7c733f1c33d04dfa3b0e16664b69"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-calls-v1/repair-0-after.json",
+      "sha256": "195e734aa2f4b7b373cf09687233fee32fc838f3a55c406a1ae1c476617fbe84"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-calls-v1/repair-0-before.json",
+      "sha256": "528006b582c6f57cc8529f42a2e9004622cf8db05c5373b3306859d7d198f322"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-calls-v1/repair-1-after.json",
+      "sha256": "027591cb8bc826fe749765aa370daedef376641c7efbc7b794d664a1ce9730aa"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-calls-v1/repair-1-before.json",
+      "sha256": "b20809090a04aea2eba44b4e4873cb74fe75864b960975e403fcdf609f412a7c"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-calls-v1/repair-2-after.json",
+      "sha256": "d2b3a842d9487da2fc74c60db83c1c7830fcff31412efe15e8cab967643eb1c3"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-calls-v1/repair-2-before.json",
+      "sha256": "d1a4678aaf41bf3be417a9b66ce2c59af7149f78f0644f253ba1741d6e9c2c60"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-calls-v1/repair-3-after.json",
+      "sha256": "737afc5a7cd92ae439d469cdac26224a5a28824484548a2f9e1523eb980d20b3"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-calls-v1/repair-3-before.json",
+      "sha256": "d1f2aad7e4b9c30f023a69d5ba5d16015cdcfeb0625d3286ddcbc066498586f7"
+    }
+  ],
+  "releaseFailureRecord": "docs/inverse/datasets/paper-calibration-release-failures.json"
+}

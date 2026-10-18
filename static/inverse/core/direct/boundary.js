@@ -6,13 +6,45 @@
 import {bernstein,dbernstein,bilinear} from './math.js';
 import {polygonIndex} from './curves.js';
 import {nativeBoundaryGradient} from './native.js';
+import {boundaryObjective} from './image-objective.js';
+import {numericalKernel} from '../numerical-kernel.js';
+import {measuredKernel,sameArray} from '../kernel-choice.js';
 
 const quadratureTables=new Map();
-export function boundaryGradient(graph,points,prob,n,phase,{nquad=64,maskSamples=24,native=true}={}){
-  const index=polygonIndex(graph,points,maskSamples),gradient=new Float64Array(points.length),w=graph.width;
+const gradientWork=new WeakMap();
+const gradientBackend=measuredKernel(sameArray,{
+  key:work=>work.key,
+  describe:({quadraturePoints,probabilityCells})=>({quadraturePoints,probabilityCells}),repetitions:16,minimumBatchMilliseconds:4
+});
+export const boundaryKernelChoices=()=>gradientBackend.report();
+export function boundaryGradient(graph,points,prob,n,phase,{nquad=64,maskSamples=24,native='auto',weights=null}={}){
+  if(weights)prob=boundaryObjective(prob,weights).target;
+  // Dense cuts otherwise scan many segments which cannot cross this row.
+  // Keep small graphs' cheaper index, and bound the denser index's storage.
+  // Buckets only reject impossible intersections; crossing arithmetic and
+  // quadrature remain unchanged for both JavaScript and Wasm derivatives.
+  const bins=graph.edges.length<=32?128:Math.min(1024,8*graph.edges.length);
+  const index=polygonIndex(graph,points,maskSamples,bins);
   if(!quadratureTables.has(nquad))quadratureTables.set(nquad,{B:Array.from({length:nquad},(_,j)=>bernstein((j+.5)/nquad)),D:Array.from({length:nquad},(_,j)=>dbernstein((j+.5)/nquad))});
-  const {B,D}=quadratureTables.get(nquad);
-  if(native){const result=nativeBoundaryGradient(graph,points,prob,n,phase,index,quadratureTables.get(nquad));if(result)return result;}
+  const table=quadratureTables.get(nquad);
+  const javascript=()=>javascriptBoundaryGradient(graph,points,prob,n,phase,index,table);
+  const accelerated=()=>nativeBoundaryGradient(graph,points,prob,n,phase,index,table);
+  if(native==='auto'&&numericalKernel()?.boundary_gradient){
+    // A CurveGraph's topology stays fixed while its points move. Retain only
+    // the last workload descriptor per graph, never a gradient or force field.
+    let work=gradientWork.get(graph);
+    if(!work||work.n!==n||work.nquad!==nquad){
+      const quadraturePoints=graph.visible.reduce((s,v)=>s+Number(v),0)*nquad,probabilityCells=n*n;
+      work={n,nquad,quadraturePoints,probabilityCells,key:Math.floor(Math.log2(Math.max(1,quadraturePoints)))+','+Math.floor(Math.log2(probabilityCells))};
+      gradientWork.set(graph,work);
+    }
+    return gradientBackend.run(work,javascript,accelerated);
+  }
+  if(native&&native!=='auto'){const result=accelerated();if(result)return result;}
+  return javascript();
+}
+function javascriptBoundaryGradient(graph,points,prob,n,phase,index,{B,D}){
+  const gradient=new Float64Array(points.length),w=graph.width,nquad=B.length;
   graph.edges.forEach((ids,e)=>{
     if(!graph.visible[e])return;const[pi,f,direction]=graph.occurrences[e][0];
     for(let j=0;j<nquad;j++){
@@ -29,19 +61,47 @@ export function boundaryGradient(graph,points,prob,n,phase,{nquad=64,maskSamples
  * Orthogonal averaging reduces row quadrature bias but is not used as the
  * backward derivative. The cubic controls are never chosen from target edges.
  */
-export function boundaryValue(graph,points,prob,n,phase,{rows=192,ns=24,transpose=false}={}){
-  const index=polygonIndex(graph,points,ns),w=graph.width,segments=transpose?index.segments.map(s=>[s[1],s[0],s[3],s[2]]):index.segments;
-  let total=0,constant=0;for(const p of prob)constant+=p*p/prob.length;
-  const cost=new Float64Array(n+2),cdf=new Float64Array(n+2),xs=Float64Array.from({length:n+2},(_,i)=>i===0?0:i===n+1?w:(i-.5)*w/n);
+export function boundaryValue(graph,points,prob,n,phase,{rows=192,ns=24,transpose=false,weights=null}={}){
+  return createBoundaryEvaluator(graph,prob,n,{rows,ns,transpose,weights})(points,phase);
+}
+
+/** Snapshot the image integrals for one refinement stage. Only geometry and
+ * phase vary during evaluation. No image, weight or result cache survives the
+ * caller's stage; boundaryValue still observes current pixels on every call.
+ */
+export function createBoundaryEvaluator(graph,prob,n,{rows=192,ns=24,transpose=false,weights=null}={}){
+  const objective=boundaryObjective(prob,weights);prob=objective.target;
+  const w=graph.width,stride=n+2,costs=new Float64Array(rows*stride),cdfs=new Float64Array(rows*stride);
+  let constant=0;for(const p of prob)constant+=p*p/prob.length;
+  const xs=Float64Array.from({length:stride},(_,i)=>i===0?0:i===n+1?w:(i-.5)*w/n);
   for(let row=0;row<rows;row++){
-    const y=(row+.5)*w/rows,crossings=[];
-    for(const s of segments)if((s[1]>y)!==(s[3]>y))crossings.push(s[0]+(y-s[1])*(s[2]-s[0])/(s[3]-s[1]));
-    crossings.sort((a,b)=>a-b);
+    const y=(row+.5)*w/rows,offset=row*stride,cost=costs.subarray(offset,offset+stride),cdf=cdfs.subarray(offset,offset+stride);
     for(let i=1;i<=n;i++)cost[i]=1-2*(transpose?bilinear(prob,n,y*n/w-.5,i-1):bilinear(prob,n,i-1,y*n/w-.5));
     cost[0]=cost[1];cost[n+1]=cost[n];cdf[0]=0;
     for(let i=1;i<cdf.length;i++)cdf[i]=cdf[i-1]+(cost[i-1]+cost[i])*.5*(xs[i]-xs[i-1]);
-    const integral=x=>{x=Math.max(0,Math.min(w,x));const j=Math.max(0,Math.min(n,Math.floor(x*n/w+.5))),dx=x-xs[j];return cdf[j]+cost[j]*dx+.5*(cost[j+1]-cost[j])*dx*dx/(xs[j+1]-xs[j]);};
-    let area=0;for(let j=0;j<crossings.length;j++)area+=(j%2?1:-1)*integral(crossings[j]);
-    total+=(phase===-1?cdf[n+1]-area:area)/(w*rows);
-  }return constant+total;
+  }
+  const offset=objective.offset;
+  return(points,phase)=>{
+    const index=polygonIndex(graph,points,ns),segments=transpose?index.segments.map(s=>[s[1],s[0],s[3],s[2]]):index.segments;
+    // Keep segment orientation and insertion order: bins only exclude rows
+    // which cannot cross a segment, without changing crossing arithmetic.
+    const bins=transpose?Array.from({length:index.bins.length},()=>[]):index.bins;
+    if(transpose)for(let id=0;id<segments.length;id++){
+      const s=segments[id];if(s[1]===s[3])continue;
+      const lo=Math.max(0,Math.min(bins.length-1,Math.floor(Math.min(s[1],s[3])/w*bins.length)));
+      const hi=Math.max(0,Math.min(bins.length-1,Math.floor(Math.max(s[1],s[3])/w*bins.length)));
+      for(let bin=lo;bin<=hi;bin++)bins[bin].push(id);
+    }
+    let total=0;
+    for(let row=0;row<rows;row++){
+      const y=(row+.5)*w/rows,crossings=[],start=row*stride;
+      for(const id of bins[Math.max(0,Math.min(bins.length-1,Math.floor(y/w*bins.length)))]){
+        const s=segments[id];if((s[1]>y)!==(s[3]>y))crossings.push(s[0]+(y-s[1])*(s[2]-s[0])/(s[3]-s[1]));
+      }
+      crossings.sort((a,b)=>a-b);
+      const integral=x=>{x=Math.max(0,Math.min(w,x));const j=Math.max(0,Math.min(n,Math.floor(x*n/w+.5))),dx=x-xs[j],i=start+j;return cdfs[i]+costs[i]*dx+.5*(costs[i+1]-costs[i])*dx*dx/(xs[j+1]-xs[j]);};
+      let area=0;for(let j=0;j<crossings.length;j++)area+=(j%2?1:-1)*integral(crossings[j]);
+      total+=(phase===-1?cdfs[start+n+1]-area:area)/(w*rows);
+    }return constant+total+offset;
+  };
 }

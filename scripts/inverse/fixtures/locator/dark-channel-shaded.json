@@ -1,0 +1,56 @@
+{
+  "source": "Procedural channel-715069-v3 from the frozen synthetic corpus; no fitted template was used as a label.",
+  "photoSha256": "cdf12ae979a607d84c9baaeed6d5ce1f0c440855afcef47fefaf44d996108b33",
+  "knownPixelEdgeCorners": [
+    [
+      127.76410819936687,
+      123.02651282933957
+    ],
+    [
+      291.4615132983117,
+      142.93391451756344
+    ],
+    [
+      249.60888599428839,
+      292.9187188608167
+    ],
+    [
+      114.00931707835511,
+      275.128274585253
+    ]
+  ],
+  "parameters": {
+    "angle": 0.20182634772320895,
+    "palette": [
+      [
+        33.50607093423605,
+        80.8292427547276,
+        44.46526759117842
+      ],
+      [
+        212.15233535692096,
+        27.17552112042904,
+        46.56711437553167
+      ]
+    ],
+    "light": [
+      -0.14372320845723152,
+      0.1418381551746279
+    ],
+    "exposure": 1.0254140791483222,
+    "vignette": 0.11486785640008748,
+    "noiseSigma": 1.751290500862524,
+    "texture": 1.0923410538583993,
+    "background": [
+      78.90334542375058,
+      84.01751994155347,
+      80.58636024128646
+    ],
+    "backgroundStyle": "soft-cloth",
+    "blurSigmaPixels": 1.1278059067088178,
+    "lowResolution": 355,
+    "jpegQuality": 0.8753024324565194,
+    "cropNoisePixels": 5.711262831062079
+  },
+  "labelSourceSha256": "718969c6eaeda22c515bf520a570e4e2c9b14e666bd3fb71f18e6e6ad358aac0"
+}

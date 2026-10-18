@@ -1,0 +1,208 @@
+{
+  "schema": "browser-hunodan-resolution-results-1",
+  "status": "completed-controlled-diagnostic-no-runtime-change",
+  "inputAudit": "docs/inverse/datasets/browser-hunodan-input-audit.json",
+  "plan": {
+    "status": "declared-before-fitting",
+    "case": "hjfig-05",
+    "arms": [
+      [
+        337,
+        10
+      ],
+      [
+        400,
+        10
+      ],
+      [
+        337,
+        180
+      ],
+      [
+        400,
+        180
+      ]
+    ],
+    "configuration": "Same captured browser settings and candidate-retention observer in every arm, varying only binary source resolution and search budget. Each arm runs in a fresh Node process.",
+    "source": "Frozen native 337px classified photo mask and its exact captured browser 400px nearest-neighbour enlargement. No templates, counts or ground truth enter fitting.",
+    "evaluation": "Independent render against both fixed source masks; geometry, paper, feature and editable export checks. Native wall timing includes prepare, solve and finish, excludes input decoding and independent validation.",
+    "limitations": [
+      "One case, one run per cell; not a corpus or browser-speed guarantee.",
+      "The enlarged mask has the same sampled labels but different pixel-cell boundary positions.",
+      "A binary-mask entry point is used for both arms; original photographic metadata is not supplied.",
+      "Observer retains candidates as the worker does but omits actual worker transport."
+    ]
+  },
+  "execution": {
+    "status": "complete",
+    "seconds": 45.359128625,
+    "sourceFilesVerified": 935
+  },
+  "results": [
+    {
+      "resolution": 337,
+      "allowanceSeconds": 10,
+      "sourceSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+      "prepareSeconds": 0.13485399999999992,
+      "solveAndFinishSeconds": 5.944959957999999,
+      "totalSeconds": 6.079813958,
+      "retainedCandidates": 10,
+      "retainedBytes": 152838,
+      "checksPassed": true,
+      "slits": {
+        "left": 4,
+        "right": 4
+      },
+      "scores": [
+        {
+          "resolution": 337,
+          "mismatchPixels": 911,
+          "error": 0.008021555177909465,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 400,
+          "mismatchPixels": 1740,
+          "error": 0.010875,
+          "featuresPassed": true
+        }
+      ],
+      "editableError": 0.007678151608273384,
+      "editableChecksPassed": true,
+      "editorIssues": [],
+      "matchingSeconds": 0.009047125000000052
+    },
+    {
+      "resolution": 400,
+      "allowanceSeconds": 10,
+      "sourceSha256": "0445f9d1abf328342785e2aa278e7a7c4072613fee0e9db8db5f08f3791b2aba",
+      "prepareSeconds": 0.09857345899999996,
+      "solveAndFinishSeconds": 10.601763875000001,
+      "totalSeconds": 10.700337334,
+      "retainedCandidates": 17,
+      "retainedBytes": 586124,
+      "checksPassed": true,
+      "slits": {
+        "left": 4,
+        "right": 6
+      },
+      "scores": [
+        {
+          "resolution": 337,
+          "mismatchPixels": 1807,
+          "error": 0.015911032059805052,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 400,
+          "mismatchPixels": 2542,
+          "error": 0.0158875,
+          "featuresPassed": true
+        }
+      ],
+      "editableError": 0.016025,
+      "editableChecksPassed": true,
+      "editorIssues": [],
+      "matchingSeconds": 1.0179898330000015
+    },
+    {
+      "resolution": 337,
+      "allowanceSeconds": 180,
+      "sourceSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+      "prepareSeconds": 0.08110183299999994,
+      "solveAndFinishSeconds": 6.006636167,
+      "totalSeconds": 6.087737999999999,
+      "retainedCandidates": 10,
+      "retainedBytes": 152838,
+      "checksPassed": true,
+      "slits": {
+        "left": 4,
+        "right": 4
+      },
+      "scores": [
+        {
+          "resolution": 337,
+          "mismatchPixels": 911,
+          "error": 0.008021555177909465,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 400,
+          "mismatchPixels": 1740,
+          "error": 0.010875,
+          "featuresPassed": true
+        }
+      ],
+      "editableError": 0.007678151608273384,
+      "editableChecksPassed": true,
+      "editorIssues": [],
+      "matchingSeconds": 0.009921166000000085
+    },
+    {
+      "resolution": 400,
+      "allowanceSeconds": 180,
+      "sourceSha256": "0445f9d1abf328342785e2aa278e7a7c4072613fee0e9db8db5f08f3791b2aba",
+      "prepareSeconds": 0.09400462500000004,
+      "solveAndFinishSeconds": 18.956045375,
+      "totalSeconds": 19.05005,
+      "retainedCandidates": 27,
+      "retainedBytes": 924220,
+      "checksPassed": true,
+      "slits": {
+        "left": 4,
+        "right": 6
+      },
+      "scores": [
+        {
+          "resolution": 337,
+          "mismatchPixels": 1730,
+          "error": 0.01523303014026715,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 400,
+          "mismatchPixels": 2352,
+          "error": 0.0147,
+          "featuresPassed": true
+        }
+      ],
+      "editableError": 0.01475,
+      "editableChecksPassed": true,
+      "editorIssues": [],
+      "matchingSeconds": 5.300399790999998
+    }
+  ],
+  "visualReview": {
+    "file": "tmp/heart-learning/browser-hunodan-input-audit-v1/fit-comparison.png",
+    "reviewedAllFour": true,
+    "findings": [
+      "Both 337px outcomes have four cuts per sheet and the same clean central anchor. Both 400px outcomes choose four and six cuts and introduce a thin seam through the motif.",
+      "The native-grid candidate has lower independently rendered error against BOTH target grids; the difference is not merely scoring at a more favourable resolution.",
+      "All four exports retain the existing checks, illustrating that passing geometric and mask-error thresholds does not mean equal visual quality."
+    ]
+  },
+  "rootCauseEvidence": [
+    "The same frozen photograph and exact same crop corners give the 337px classified source and an exact nearest-neighbour 400px enlargement. No new image detail is present in the larger target.",
+    "With the browser settings and retention observer held fixed in fresh Node processes, changing only target resolution changes the final topology and runtime. Increasing the search allowance does not fix the 400px result in this trial.",
+    "The import helper src/lib/paint/importImage.ts:maskFromPrepared unconditionally resamples the mask to MASK_SIZE before it reaches the drawing and solver.",
+    "Finalist logs already diverge before extended search: the 337px six-by-six finalist passes feature retention, while its 400px counterpart does not. This is an observed branch difference, not proof of the sole internal cause."
+  ],
+  "nextAction": "Preserve native import sampling as solver evidence while keeping the specified 400px painting surface, or improve initialization so the enlargement recovers the same candidates. Any such change must keep actual edited-mask and export checks and be tested on more than this case.",
+  "limitations": [
+    "Four fresh fits on one case, not repeated timing estimates or a 22-design browser guarantee.",
+    "Nearest-neighbour enlargement preserves sampled labels but shifts the represented pixel-cell boundaries slightly.",
+    "The controlled fits are Node runs with retained candidate snapshots, not actual browser worker transport.",
+    "No source, solver, frontend or acceptance setting is changed by this diagnostic."
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/browser-hunodan-input-audit-v1/fit-plan.json": "a97631dd8e549b756d1783911f7a0573393f3c2260bd744233562095839df7f4",
+    "tmp/heart-learning/browser-hunodan-input-audit-v1/fit-source.json": "8186ebc58635c7e5c6186715bf0151991a9e56883ba6c40ee8a51b3da255f012",
+    "tmp/heart-learning/browser-hunodan-input-audit-v1/fit-results.json": "043a869a4c6bf4f0fbd5bcca54586f4a31cff89bb00c521f8b8cf87c8eeb17d7",
+    "tmp/heart-learning/browser-hunodan-input-audit-v1/fit-state.json": "61d1ab521289f6cbba9aa54275caf3e9ecbb3b5272079ca251a18aa200cc344d",
+    "tmp/heart-learning/browser-hunodan-input-audit-v1/fit.mjs": "60c6307117d480023d0e221b08650c619d65e789ac62c24357885907200dfcd4",
+    "tmp/heart-learning/browser-hunodan-input-audit-v1/run-fits.py": "7cc5c55b3fe2637bc9495cbb14f120c0ea370c87f984fe2b92b8daf9633b78b7",
+    "tmp/heart-learning/browser-hunodan-input-audit-v1/fit-comparison.png": "e47ea5287693ae4c4229d7fb5ad79409cb12b8b3ed8734281c1b30752eb47d87",
+    "tmp/heart-learning/browser-hunodan-input-audit-v1/editable/results.json": "b85f9b18044f4b15cbf5815915f5fd1ca7d005178a49b1bbb63d1d8be2644744"
+  },
+  "deployment": "None."
+}
