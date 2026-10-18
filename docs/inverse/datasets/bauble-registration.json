@@ -1,5 +1,5 @@
 {
-  "status": "Validated crop/fitter available on local port 5232. Full run: 1081 passes and one offline adapter failure corrected with seven affected tests passing. Browser corpus and independent editable-SVG feature checks pass.",
+  "status": "Validated crop and early-polishing fitter available on local port 5232. Latest full inverse run: 1081 passes and one outdated routing assertion; the updated five-test scheduling file passes. Browser corpus and independent editable-SVG feature checks pass.",
   "photo": "scripts/inverse/fixtures/hard-photos/collage.png",
   "photoSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
   "case": "bauble (R5C4)",
@@ -670,7 +670,165 @@
         ]
       }
     ],
-    "nextExperiment": "Require candidate colour-edge refinements to retain an observed foreground/background transition; compare with shadows, blur, clipped and known-layout controls before adoption."
+    "nextExperiment": "Require candidate colour-edge refinements to retain an observed foreground/background transition; compare with shadows, blur, clipped and known-layout controls before adoption.",
+    "edgeStudy": {
+      "status": "Completed; both unconditional hypotheses rejected as general replacements",
+      "inputs": 89,
+      "realCollageInstances": 40,
+      "controlledInputs": 49,
+      "sourcePinsUnchanged": 1108,
+      "scope": "Two fixed foreground-transition constraints for photographic lower-edge refinement. Evaluate only geometry; known corners score results after selection, never drive fitting. All 83 previous inputs plus six shadow/blur/exposure controls. No template fitting is performed in this study.",
+      "summary": [
+        {
+          "id": "crossing",
+          "changed": 55,
+          "lostSupportedInPhotoCrop": [
+            "broad-study/collage-bauble",
+            "targeted-study/08-lighter-background-framed-blob"
+          ],
+          "knownErrorIncreaseOverHalfPixel": [
+            "targeted-study/01-tinted-checker",
+            "targeted-study/03-tinted-dim-checker",
+            "targeted-study/04-tinted-dim-framed-blob",
+            "targeted-study/06-neutral-framed-blob",
+            "targeted-study/08-lighter-background-framed-blob",
+            "dark-channel-shaded-1.1"
+          ],
+          "knownErrorDecreaseOverHalfPixel": [
+            "targeted-study/02-tinted-framed-blob",
+            "targeted-study/10-tinted-framed-blob",
+            "targeted-study/12-lighter-background-framed-blob",
+            "targeted-study/14-tinted-framed-blob",
+            "dark-channel-shaded-1"
+          ],
+          "clippedButSupportedInPhoto": [],
+          "supportedNegativeControl": [],
+          "knownCompleteSupportedMaximumError": 6.20135034846587
+        },
+        {
+          "id": "positive-gradient",
+          "changed": 53,
+          "lostSupportedInPhotoCrop": [
+            "broad-study/collage-bauble"
+          ],
+          "knownErrorIncreaseOverHalfPixel": [
+            "targeted-study/04-tinted-dim-framed-blob",
+            "targeted-study/13-tinted-checker"
+          ],
+          "knownErrorDecreaseOverHalfPixel": [
+            "targeted-study/02-tinted-framed-blob",
+            "targeted-study/07-lighter-background-checker",
+            "targeted-study/08-lighter-background-framed-blob",
+            "targeted-study/10-tinted-framed-blob",
+            "targeted-study/11-lighter-background-checker",
+            "targeted-study/12-lighter-background-framed-blob",
+            "targeted-study/14-tinted-framed-blob",
+            "dark-channel-shaded-1"
+          ],
+          "clippedButSupportedInPhoto": [],
+          "supportedNegativeControl": [],
+          "knownCompleteSupportedMaximumError": 7.046512227832334
+        }
+      ],
+      "selectedKnownCases": [
+        {
+          "id": "targeted-study/02-tinted-framed-blob",
+          "baselineMaximumCornerErrorPx": 8.8123419022697,
+          "alternatives": [
+            {
+              "id": "crossing",
+              "error": 4.832230971359912,
+              "supported": true,
+              "withinPhoto": true
+            },
+            {
+              "id": "positive-gradient",
+              "error": 4.950624452246138,
+              "supported": true,
+              "withinPhoto": true
+            }
+          ]
+        },
+        {
+          "id": "targeted-study/04-tinted-dim-framed-blob",
+          "baselineMaximumCornerErrorPx": 3.1774163226195755,
+          "alternatives": [
+            {
+              "id": "crossing",
+              "error": 5.1968239472054165,
+              "supported": true,
+              "withinPhoto": true
+            },
+            {
+              "id": "positive-gradient",
+              "error": 4.899570024623801,
+              "supported": true,
+              "withinPhoto": true
+            }
+          ]
+        },
+        {
+          "id": "targeted-study/08-lighter-background-framed-blob",
+          "baselineMaximumCornerErrorPx": 8.937659264942228,
+          "alternatives": [
+            {
+              "id": "crossing",
+              "error": 21.467186532159968,
+              "supported": false,
+              "withinPhoto": true
+            },
+            {
+              "id": "positive-gradient",
+              "error": 1.7989915455025485,
+              "supported": true,
+              "withinPhoto": true
+            }
+          ]
+        },
+        {
+          "id": "targeted-study/10-tinted-framed-blob",
+          "baselineMaximumCornerErrorPx": 11.062679766456247,
+          "alternatives": [
+            {
+              "id": "crossing",
+              "error": 3.4226366029299644,
+              "supported": true,
+              "withinPhoto": true
+            },
+            {
+              "id": "positive-gradient",
+              "error": 7.046512227832334,
+              "supported": true,
+              "withinPhoto": true
+            }
+          ]
+        },
+        {
+          "id": "targeted-study/12-lighter-background-framed-blob",
+          "baselineMaximumCornerErrorPx": 11.828856410066837,
+          "alternatives": [
+            {
+              "id": "crossing",
+              "error": 6.20135034846587,
+              "supported": true,
+              "withinPhoto": true
+            },
+            {
+              "id": "positive-gradient",
+              "error": 4.697920137920593,
+              "supported": true,
+              "withinPhoto": true
+            }
+          ]
+        }
+      ],
+      "baubleRegression": "Both alternatives lose the supported in-photo RGB fallback and return the old unsupported proposal with its tip below the photograph.",
+      "visualInspection": "Inspected known/estimated corner overlays for the tinted, lighter-background and dim framed controls. The hard crossing rule deforms the lighter-background right corner; the soft rule substantially improves that case but worsens the dim control.",
+      "record": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/results/results.json",
+      "sha256": "9ba7c7442682a2c12239e410a218aca4d33896900996d0e4c8859f8018c2216b",
+      "figure": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/results/corner-comparison.png",
+      "next": "A fixed follow-up applies the positive paper-transition weight only when the existing learned background covariance also supplies the colour-edge metric. It is running on the same 89 inputs. No production detector change has been made; no template reconstruction has been run for these proposals."
+    }
   },
   "fitterSensitivity": {
     "changedPixels": 15,

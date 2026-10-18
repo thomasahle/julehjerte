@@ -339,3 +339,35 @@ closed the import dialog without JavaScript errors or failed local requests.
 HTTP checks pass on `localhost`, `127.0.0.1` and `::1`; all 122 built inverse files
 match their sources. The private preflight server was stopped. No push or remote
 deployment was made. The framed-edge study is the next unshipped experiment.
+
+
+Two fixed edge-registration hypotheses completed on **89 inputs**: the previous
+83 plus six shadow/exposure controls. One requires a paper/background probability
+crossing at every proposed photographic edge; the other weights the colour gradient
+by the positive paper-probability difference. Known corners are used only to score
+outputs after selection. All source pins remained unchanged.
+
+**Neither unconditional rule is suitable for adoption.** Both improve several
+framed controls, but both lose the supported in-photo bauble crop and fall back to
+the old unsupported, out-of-photo proposal. The hard crossing rule also loses the
+lighter-background frame. The soft rule increases maximum corner error on the dim
+framed control from 3.18 to 4.90 pixels, despite improving other frames:
+
+| Known framed control | Baseline maximum corner error | Soft transition weight |
+|---|---:|---:|
+| Tinted, ordinary lobes | 8.81 px | 4.95 px |
+| Lighter background, ordinary lobes | 8.94 px | 1.80 px |
+| Tinted, deeper lobes | 11.06 px | 7.05 px |
+| Lighter background, deeper lobes | 11.83 px | 4.70 px |
+
+Neither hypothesis promotes the known clipped hearts or negative controls to
+supported in-photo crops. Inspected overlays confirm the lighter frame's
+improvement and the hard rule's displaced right corner. These are crop-only
+results, with no new template-fitting or artwork-ground-truth claim.
+
+The regressions involve different registration models: the successful bauble
+fallback uses the RGB paper-segment model, while the dim frame uses the original
+colour fields. The four original frame failures use the learned background
+covariance. A follow-up therefore limits the soft transition weight to that
+background model and retains the other models' refinement. It is running on the
+same 89 fixed inputs. Both experimental changes remain outside production.
