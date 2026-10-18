@@ -50,6 +50,7 @@
 		MIN_SHEET_MM,
 		MIN_WIDTH_MM,
 		WIDTH_STEP_MM,
+		a3FitsAll,
 		clamp,
 		laserFileContent,
 		laserFileName,
@@ -265,7 +266,9 @@
 			// With several hearts, say which ones the file will not hold.
 			if (several && laserPlan.heartsLeftOut.length && laserPlan.heartsOnSheet.length) {
 				const names = laserPlan.heartsLeftOut.map((h) => h.design.name).join(', ');
-				text += `. ${t('sheetLeftOut', lang, { names })}`;
+				// And how to get them all: A3 only when it would hold them.
+				const a3 = a3FitsAll(designs, { widthMm, count: hearts, sheet, lobe });
+				text += `. ${t('sheetLeftOut', lang, { names })}. ${t(a3 ? 'sheetLeftOutHintA3' : 'sheetLeftOutHint', lang)}`;
 			}
 			return { text, warn: true };
 		}

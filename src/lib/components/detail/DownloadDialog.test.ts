@@ -526,19 +526,33 @@ describe('DownloadDialog', () => {
 				const designs = three();
 				const view = await render(designs);
 				await view.choose('Laserskærer');
-				expect(view.note()).toBe('Der er kun plads til 2 af 3 stykker på arket. Ikke med: Weave 1');
+				expect(view.note()).toBe(
+					'Der er kun plads til 2 af 3 stykker på arket. Ikke med: Weave 1. Vælg A3 eller en mindre bredde, eller hent arket igen for de resterende.'
+				);
 				view.button('Hent SVG')!.click();
 				await settle();
 				expect(downloads[0]!.name).toBe('julehjerter-2-laser-80mm-venstre.svg');
+				// The title counts the hearts ticked; only the file counts the sheet.
+				expect(view.q('[data-testid="download-count"]')!.textContent).toBe('3');
 				const svg = await blobs[0]!.text();
 				expect(svg).toContain('<title>Classic 3x3, JUL</title>');
 				expect(svg).not.toContain('Weave 1');
 			});
 
+			it('suggests A3 only when A3 would hold them all', async () => {
+				const view = await render(three());
+				await view.choose('Laserskærer');
+				await view.choose('A3');
+				await view.type('#download-width', '120');
+				expect(view.note()).toMatch(/Ikke med: .*\. Vælg en mindre bredde, eller hent arket igen for de resterende\.$/);
+			});
+
 			it('says the same in English', async () => {
 				const view = await render(three(), 'en');
 				await view.choose('Laser cutter');
-				expect(view.note()).toBe('There is only room for 2 of 3 pieces on the sheet. Left out: Weave 1');
+				expect(view.note()).toBe(
+					'There is only room for 2 of 3 pieces on the sheet. Left out: Weave 1. Choose A3 or a smaller width, or download another sheet for the rest.'
+				);
 				view.button('Download SVG')!.click();
 				await settle();
 				expect(downloads[0]!.name).toBe('christmas-hearts-2-laser-80mm-left.svg');

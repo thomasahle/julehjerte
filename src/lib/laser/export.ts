@@ -9,7 +9,7 @@ import type { Language } from '$lib/i18n';
 import { heartPath, path } from '$lib/i18n/routes';
 import { lobesShareTemplate, SHARED_TEMPLATE_LOBE } from '$lib/utils/symmetry';
 import { serializeLaserDxf } from './dxf';
-import { layoutSheet, type LaserSheet, type SheetSize } from './sheet';
+import { layoutSheet, SHEETS, type LaserSheet, type SheetSize } from './sheet';
 import { serializeLaserSvg } from './svg';
 import { unfoldPiece, type UnfoldedPiece } from './unfold';
 import type { TemplateLobe } from '$lib/utils/templateSvg';
@@ -123,6 +123,19 @@ export function planLaserSheet(
 		heartsOnSheet: hearts.filter((_, i) => placed.has(i)),
 		heartsLeftOut: hearts.filter((_, i) => !placed.has(i))
 	};
+}
+
+/**
+ * Whether choosing A3 would put every piece asked for on the sheet. The note
+ * for hearts left out suggests A3 only then, and never when the sheet already
+ * holds an A3.
+ */
+export function a3FitsAll(designs: HeartDesign | readonly HeartDesign[], request: LaserRequest): boolean {
+	const { sheet } = request;
+	const a3 = SHEETS.A3;
+	if (sheet.widthMm >= a3.widthMm && sheet.heightMm >= a3.heightMm) return false;
+	const plan = planLaserSheet(designs, { ...request, sheet: a3 });
+	return plan.piecesFit === plan.piecesRequested;
 }
 
 export interface LaserFileInfo {
