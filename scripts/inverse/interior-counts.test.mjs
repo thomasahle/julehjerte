@@ -10,6 +10,7 @@ import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
 import {prepare,design} from '../../static/inverse/core/engine.js';
 import {auditFeatureFidelity} from '../../static/inverse/core/feature-shapes.js';
 import {renderExportedWeave} from './export-renderer.mjs';
+import {captureFitFailure} from './diagnostics/fit-failure.mjs';
 
 const cfg=settings({...AUTOMATIC_PRESET,timeLimit:10,trials:0});
 function context(fullProb,resolution,weights=null,config=cfg){
@@ -86,11 +87,7 @@ test('the main fitter reconstructs the dense binary photo target with legal edit
   const {mask,resolution}=await fixture(),raw={...AUTOMATIC_PRESET,timeLimit:10,trials:0};
   const target=prepare({type:'mask',mask:mask.slice(),resolution},raw).target,before=target.sourceImage.probability.slice();
   const answer=await design(target,raw),proposal=answer.report.solver.countSearch.interiorProposal;
-  if(!answer.report.templateChecksPassed)t.diagnostic(JSON.stringify({
-    validation:answer.report.validation,paper:answer.report.manufacturing.status,
-    imageError:answer.report.imageError,termination:answer.report.solver.termination,
-    counts:answer.report.solver.selectedCounts,stages:answer.report.solver.stages,
-  }));
+  try{
   assert.equal(proposal.previousMaximum,8);assert.equal(proposal.maximumCount,11);assert.ok(proposal.added>0);
   assert.ok(Object.values(answer.report.slits).every(n=>n<=11));
   assert.equal(answer.report.validation.passed,true);assert.equal(answer.report.manufacturing.status,'pass');
@@ -100,4 +97,5 @@ test('the main fitter reconstructs the dense binary photo target with legal edit
   assert.ok(error<.03,`Independent disagreement ${error}; the eight-cut result exceeded 5%.`);
   assert.equal(auditFeatureFidelity(target.sourceImage,woven.mask,answer.report.settings).passed,true);
   assert.deepEqual(target.sourceImage.mask,mask);assert.deepEqual(target.sourceImage.probability,before);
+  }catch(error){t.diagnostic(await captureFitFailure({answer,source:target.sourceImage,context:{case:'dense-interior-counts',assertion:error.message}}));throw error;}
 });

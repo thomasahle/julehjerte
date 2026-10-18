@@ -8,11 +8,12 @@ import {auditFeatureFidelity} from '../../static/inverse/core/feature-shapes.js'
 import {readHardPhoto} from './hard-photo-data.mjs';
 import {hardPhotoTarget} from './hard-photo-target.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
+import {captureFitFailure} from './diagnostics/fit-failure.mjs';
 
 const fixtures=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-short-budget-fits.json'));
 const hash=b=>createHash('sha256').update(b).digest('hex');
 
-for(const fixture of fixtures.cases)test(`${fixture.sourceCase} retains its interior detail in a fresh fit (${fixture.functionalTimeLimit||10}s allowance)`,async()=>{
+for(const fixture of fixtures.cases)test(`${fixture.sourceCase} retains its interior detail in a fresh fit (${fixture.functionalTimeLimit||10}s allowance)`,async t=>{
   const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue||fixtures.sourceCatalogue));
   const photo=await readHardPhoto({...catalogue.source,...catalogue.cases.find(c=>c.id===fixture.sourceCase)});
   assert.equal(photo.fileSha256,fixture.sourceFileSha256);
@@ -25,6 +26,7 @@ for(const fixture of fixtures.cases)test(`${fixture.sourceCase} retains its inte
   // The search is time-limited. Judge the exported result, not a fixed
   // iteration count: a valid fit can finish between progress checkpoints.
   const answer=await design(input,cfg);
+  try{
   assert.equal(answer.report.validation.passed,true);
   assert.equal(answer.report.manufacturing.status,'pass');
   assert.equal(answer.report.templateChecksPassed,true);
@@ -38,4 +40,5 @@ for(const fixture of fixtures.cases)test(`${fixture.sourceCase} retains its inte
     assert.equal(auditFeatureFidelity(reference,replay.mask,answer.report.settings).passed,true);
   }
   assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
+  }catch(error){t.diagnostic(await captureFitFailure({answer,source,context:{case:fixture.sourceCase,assertion:error.message}}));throw error;}
 });
