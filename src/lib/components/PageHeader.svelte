@@ -136,6 +136,20 @@
 <a class="skip-link" href="#main-content">{t('skipToContent', lang)}</a>
 
 <header bind:this={ref} class="nav" class:editor={variant === 'editor'}>
+	{#if variant === 'site'}
+		<!-- Without JavaScript the burger is dead, so html.no-js swaps in a
+		     label for this checkbox, which opens the same menu by CSS alone
+		     (pages-edges QA 7). Both are display: none once the script runs, so
+		     nothing of it is focusable or announced then. Visually hidden rather
+		     than hidden, so a keyboard can still reach it without JavaScript. -->
+		<input
+			type="checkbox"
+			class="nav-toggle"
+			id="nav-menu-toggle"
+			aria-controls="nav-menu"
+			aria-label={t('navOpenMenu', lang)}
+		/>
+	{/if}
 	<div class="nav-start">
 		{#if variant === 'editor'}
 			<!-- The label is a span so the editor bar can drop it on a phone, where
@@ -217,11 +231,18 @@
 					<MenuIcon size={22} />
 				{/if}
 			</button>
+			<label class="nav-burger nav-burger-nojs" for="nav-menu-toggle" aria-hidden="true">
+				<span class="nojs-open"><MenuIcon size={22} /></span>
+				<span class="nojs-close"><CloseIcon size={22} /></span>
+			</label>
 		{/if}
 	</div>
 
 	{#if variant === 'site'}
-		<div class="nav-menu" id="nav-menu" hidden={!menuOpen}>
+		<!-- A class rather than the `hidden` attribute: Tailwind's preflight makes
+		     [hidden] display: none !important from a layer, which no rule of ours
+		     could undo for the checkbox. Closed is display: none all the same. -->
+		<div class="nav-menu" id="nav-menu" class:open={menuOpen}>
 			{#each links as link (link.id)}
 				<a
 					class="menu-link"
@@ -383,6 +404,18 @@
 		cursor: pointer;
 	}
 
+	/* The checkbox behind the no-JavaScript burger: on the page only under
+	   html.no-js below 900, and then visually hidden (still focusable). */
+	.nav-toggle {
+		display: none;
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		margin: -1px;
+		opacity: 0;
+		pointer-events: none;
+	}
+
 	/* The drop-down under the burger. Absolutely positioned so it covers the
 	   hero rather than pushing the page down. */
 	.nav-menu {
@@ -458,12 +491,43 @@
 			display: none;
 		}
 
-		.nav-burger {
+		.nav-burger:not(.nav-burger-nojs) {
 			display: inline-flex;
 		}
 
-		.nav-menu:not([hidden]) {
+		.nav-menu.open {
 			display: flex;
+		}
+
+		/* No JavaScript: the label opens the menu through its checkbox. */
+		:global(html.no-js) .nav-burger:not(.nav-burger-nojs) {
+			display: none;
+		}
+
+		:global(html.no-js) .nav-burger-nojs {
+			display: inline-flex;
+		}
+
+		:global(html.no-js) .nav-toggle {
+			display: block;
+		}
+
+		:global(html.no-js) .nav-toggle:checked ~ .nav-menu {
+			display: flex;
+		}
+
+		:global(html.no-js) .nav-toggle:focus-visible ~ .nav-actions .nav-burger-nojs {
+			outline: 3px solid var(--blue);
+			outline-offset: 2px;
+		}
+
+		.nojs-close,
+		:global(html.no-js) .nav-toggle:checked ~ .nav-actions .nojs-open {
+			display: none;
+		}
+
+		:global(html.no-js) .nav-toggle:checked ~ .nav-actions .nojs-close {
+			display: contents;
 		}
 
 		.editor {

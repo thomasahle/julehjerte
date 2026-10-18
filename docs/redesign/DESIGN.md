@@ -84,6 +84,9 @@ text with a 2px red bottom border); right: EN pill, GitHub pill with star count.
 1px `--line` bottom border, `--page` background. Below 900px: padding 0 16px, height 58, logo 24px, links and
 GitHub pill hidden, a 44px burger button (white, 1.5px `--line` border, radius 10) opens a menu with
 Skabeloner, Sådan gør du, Om, EN, GitHub. Adapt the existing `PageHeader.svelte`.
+Without JavaScript (`html.no-js`) the burger is swapped for a `<label>` of a visually hidden checkbox that
+opens the same menu by CSS alone; with JavaScript both are `display: none`. The menu is shown by an `open`
+class, not the `hidden` attribute, because Tailwind's preflight makes `[hidden]` `display: none !important`.
 
 ### Hero (≥ 900px)
 Grid `minmax(0,1fr) 640px`, gap 40, padding `0 40px 0 80px`, height 660px (600px below 1200px, where the

@@ -9,6 +9,7 @@
 -->
 <script lang="ts">
 	import { CheckIcon, CloseIcon, DownloadIcon, PencilIcon, ShareIcon, TabletIcon } from '$lib/components/icons';
+	import { onMount } from 'svelte';
 	import { t, type Language } from '$lib/i18n';
 
 	interface Props {
@@ -49,6 +50,16 @@
 		onSaveShared,
 		onTrace
 	}: Props = $props();
+
+	// Both buttons open something the page's script draws (the dialog, the
+	// tracing view), so in the prerendered HTML, and for a visitor without
+	// JavaScript, they are disabled with a short reason rather than enabled
+	// and dead. Hydration renders the same, then this turns them on.
+	let hydrated = $state(false);
+	onMount(() => {
+		hydrated = true;
+	});
+	let waitTitle = $derived(hydrated ? undefined : t('needsJavaScript', lang));
 </script>
 
 <!-- One row: the two ways to get the template (download it, or trace it from
@@ -64,11 +75,23 @@
 			</button>
 		{/if}
 	{/if}
-	<button class="btn btn-primary" type="button" onclick={onDownload} disabled={!hasDesign}>
+	<button
+		class="btn btn-primary"
+		type="button"
+		onclick={onDownload}
+		disabled={!hasDesign || !hydrated}
+		title={waitTitle}
+	>
 		<DownloadIcon size={18} />
 		{t('getTemplate', lang)}
 	</button>
-	<button class="btn btn-outline" type="button" onclick={onTrace} disabled={!hasDesign}>
+	<button
+		class="btn btn-outline"
+		type="button"
+		onclick={onTrace}
+		disabled={!hasDesign || !hydrated}
+		title={waitTitle}
+	>
 		<TabletIcon size={18} />
 		{t('traceFromScreen', lang)}
 	</button>
