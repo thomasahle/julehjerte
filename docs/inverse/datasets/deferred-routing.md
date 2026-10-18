@@ -76,6 +76,18 @@ unchanged throughout the run. The separate application suite passed 874 tests
 with one existing skip; type checking, lint and the production build passed.
 These checks do not resolve the recorded Viking browser comparison failure.
 
+Six subsequent serial browser replays alternated the committed baseline and
+current fitter through the same reference-module proxy. Crops, native pixels,
+settings and independent export checks stayed fixed. All six passed geometry,
+paper and feature checks. Baseline native error ranged from **2.0100–2.02125%**
+(mean 2.0175%); current error ranged from **2.0150–2.06125%** (mean 2.03229%).
+All candidate-assessment reports remained identical and the new policy stayed
+inactive. Both versions produced more than one exported geometry, confirming
+timing variability, but the current mean and worst error were higher in this
+small sample. This does **not** establish equivalence or resolve the comparison.
+The next experiments concern the allocation between optional sharing and final
+polishing; no new postprocessing policy has been adopted.
+
 Machine-readable measurements, hashes, and outstanding verification are in
 [deferred-routing.json](deferred-routing.json). Local diagnostic artifacts are in
 `tmp/heart-learning/deferred-routing-2026-10-18/`.

@@ -188,8 +188,8 @@
     "scope": "Three native-mask quality checks plus a stalled first grid followed by actual coarse and feature routing, with independent export, geometry, paper and feature checks."
   },
   "pending": [
-    "complete six controlled baseline/current Viking browser replays",
-    "resolve strict Viking timing/fidelity comparison before refreshing stable preview"
+    "resolve timing-dependent Viking fidelity with controlled postprocessing experiments",
+    "refresh stable preview only after verification"
   ],
   "standardVerification": {
     "state": "tmp/heart-learning/deferred-routing-2026-10-18/qa/state.json",
@@ -350,5 +350,133 @@
     "logSha256": "9f21b72cd68c3ac865e0a15897901c0c89183f32be66923eb0b0802af7d5796e",
     "qualification": "Full inverse suite passed; the previously recorded browser Viking comparison failure remains open.",
     "path": "tmp/heart-learning/deferred-routing-2026-10-18/full/summary.json"
+  },
+  "controlledVikingComparison": {
+    "path": "tmp/heart-learning/deferred-routing-2026-10-18/viking-timing/summary.json",
+    "sha256": "95fcd3ae33771423836ce08bfb31f46f298190c74d588857d4f42210d37b1d3d",
+    "sourcesUnchanged": 1063,
+    "groups": {
+      "baseline": {
+        "count": 3,
+        "nativeErrorRange": [
+          0.0201,
+          0.0202125
+        ],
+        "nativeErrorMean": 0.020175000000000002,
+        "medianSeconds": 28.299300000190733,
+        "distinctCurveFiles": 2
+      },
+      "current": {
+        "count": 3,
+        "nativeErrorRange": [
+          0.02015,
+          0.0206125
+        ],
+        "nativeErrorMean": 0.020322916666666666,
+        "medianSeconds": 28.415599999904632,
+        "distinctCurveFiles": 3
+      }
+    },
+    "rows": [
+      {
+        "index": 1,
+        "variant": "baseline",
+        "seconds": 28.299300000190733,
+        "engineError": 0.02,
+        "nativeError": 0.0202125,
+        "paintError": 0.0202125,
+        "deferredRouting": null,
+        "candidateAssessmentsMatchFailedRun": true,
+        "sharingAccepted": 5,
+        "polishLastStep": 109,
+        "initialPolishError": 0.0227875,
+        "cutGeometrySha256": "054576aa937dadbdf5fc8fd2e3c114ae6e77f8a7a855dd61c72442ad7abf9299",
+        "editableSVGSha256": "16fdfef81b3f5d830c29ff27405ed95e0eb200b59a36a49d6445b633373f72a0",
+        "reportSha256": "917386bd9fa7fc5032c0d23f09b0a3b527e1d72b0c85b1d12ef39af7d71610c4"
+      },
+      {
+        "index": 2,
+        "variant": "current",
+        "seconds": 28.383900000095366,
+        "engineError": 0.0199375,
+        "nativeError": 0.02015,
+        "paintError": 0.02015,
+        "deferredRouting": null,
+        "candidateAssessmentsMatchFailedRun": true,
+        "sharingAccepted": 6,
+        "polishLastStep": 114,
+        "initialPolishError": 0.02275625,
+        "cutGeometrySha256": "26f7e4b1dd0e18a5d0d3417e66dfea59019cb3499e402ad3987df11551a79162",
+        "editableSVGSha256": "9d1f1d5ac10a498af792722ba9435bc538ec1527a986fc263100bacfed3b866a",
+        "reportSha256": "a200a6f49eb8eb5ff690b99b749ecc964ea07dc938c6ba5a11e38814c0a42958"
+      },
+      {
+        "index": 3,
+        "variant": "current",
+        "seconds": 28.415599999904632,
+        "engineError": 0.01995625,
+        "nativeError": 0.02020625,
+        "paintError": 0.02020625,
+        "deferredRouting": null,
+        "candidateAssessmentsMatchFailedRun": true,
+        "sharingAccepted": 5,
+        "polishLastStep": 99,
+        "initialPolishError": 0.0227875,
+        "cutGeometrySha256": "0769587c8503a66a2227e1e2fc488ede4128b76f1a48929b7dd19dc2f7abcd9e",
+        "editableSVGSha256": "96fd7eddf73d4923a2ee5b624c3fbe9798e770b3c77e479188fb872669e7a1f0",
+        "reportSha256": "4eb546e89553a610125f1a03f0c53f394bec6554e17bbb5fa3cc30c51b121b07"
+      },
+      {
+        "index": 4,
+        "variant": "baseline",
+        "seconds": 28.302899999856947,
+        "engineError": 0.02,
+        "nativeError": 0.0202125,
+        "paintError": 0.0202125,
+        "deferredRouting": null,
+        "candidateAssessmentsMatchFailedRun": true,
+        "sharingAccepted": 5,
+        "polishLastStep": 109,
+        "initialPolishError": 0.0227875,
+        "cutGeometrySha256": "054576aa937dadbdf5fc8fd2e3c114ae6e77f8a7a855dd61c72442ad7abf9299",
+        "editableSVGSha256": "16fdfef81b3f5d830c29ff27405ed95e0eb200b59a36a49d6445b633373f72a0",
+        "reportSha256": "61dfc739d399875abbae86a60b844e953fe01a44b3fd2c7e27f1fd4f47fddaac"
+      },
+      {
+        "index": 5,
+        "variant": "baseline",
+        "seconds": 28.19210000014305,
+        "engineError": 0.01985625,
+        "nativeError": 0.0201,
+        "paintError": 0.0201,
+        "deferredRouting": null,
+        "candidateAssessmentsMatchFailedRun": true,
+        "sharingAccepted": 6,
+        "polishLastStep": 109,
+        "initialPolishError": 0.02275625,
+        "cutGeometrySha256": "8d1ad7367cc95f5d15d4094a6258fcb990ca8da2bc683e9c52e770728e27e408",
+        "editableSVGSha256": "f5763b0992ae402204afac5776c98062a1f05bff670c6ba696d26210b04d0252",
+        "reportSha256": "409ece51a66fcc242e8ed4f22c33bb7c079a516726096b5e79db5acbd12a26a5"
+      },
+      {
+        "index": 6,
+        "variant": "current",
+        "seconds": 28.47259999990463,
+        "engineError": 0.0204,
+        "nativeError": 0.0206125,
+        "paintError": 0.0206125,
+        "deferredRouting": null,
+        "candidateAssessmentsMatchFailedRun": true,
+        "sharingAccepted": 2,
+        "polishLastStep": 84,
+        "initialPolishError": 0.02293125,
+        "cutGeometrySha256": "565b64240f27fc72c35063077d929491eed8f045cad4d24a71cc05c7e5d90b32",
+        "editableSVGSha256": "efaf28a768371043a6f3ce05a3e6721a182249ab30c9e93af3c0dd221e9bc1bb",
+        "reportSha256": "a60efca7c69dab96dafe9262682ba33a7185bfe5c845a5ea57a2cd81e9658e68"
+      }
+    ],
+    "allSixValidityAndFeaturesPassed": true,
+    "conclusion": "Both committed runtimes vary with timing. All candidate assessment reports match, and the new grid-first policy remains inactive. Current mean and worst error are higher in this small sample; it does not establish equivalence or resolve the failed comparison.",
+    "next": "Test a larger polishing reservation and postponing optional early sharing, retaining all final validity and source-image gates."
   }
 }
