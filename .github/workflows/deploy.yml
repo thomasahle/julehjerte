@@ -6,14 +6,14 @@ on:
       mode:
         type: choice
         default: full
-        options: [full, bicycle, comparison, maple, profile]
+        options: [full, bicycle, comparison, maple, profile, shared-runtime]
         description: Full diagnostics or focused normal-budget regressions
 permissions:
   contents: read
 jobs:
   diagnostics:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:
@@ -48,6 +48,9 @@ jobs:
         run: |
           mkdir -p tmp/ci-profiles
           node --cpu-prof --cpu-prof-dir=tmp/ci-profiles --test --test-name-pattern='^hard-bibel-star-outline:' scripts/inverse/deferred-routing.test.mjs
+      - name: Replay all regressions with a reused runtime and unchanged budgets
+        if: inputs.mode == 'shared-runtime'
+        run: node --experimental-test-isolation=none --test --test-concurrency=1 scripts/inverse/*.test.mjs scripts/inverse/datasets/*.test.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
