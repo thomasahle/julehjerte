@@ -1522,7 +1522,7 @@
         "sourcePinsUnchanged": 1109,
         "failure": "The delayed-grid regression still required routing after early polishing already passed all native gates."
       },
-      "publicPreviewRuntime": "47b3d08",
+      "publicPreviewRuntime": "073c8ca",
       "status": "validated; served locally on port 5232",
       "schedulingRecheck": {
         "tests": 5,
