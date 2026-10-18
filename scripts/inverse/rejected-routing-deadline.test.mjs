@@ -20,6 +20,25 @@ function input(){
   return prepare({type:'mask',mask,resolution:fixture.resolution},cfg).target;
 }
 
+test('untimed repair preserves its result when the same work takes longer',async t=>{
+  const source=input(),before=structuredClone(source.sourceImage);
+  const proposal=loadSolutionJSON(fixture.seeds.find(s=>s.smoothRadius===.5).geometry),original=solutionJSON(proposal);
+  let now=0,tick=0;
+  t.mock.method(performance,'now',()=>now+=tick);
+  const ordinary=repairRejectedRouting(proposal,source,cfg);
+  // All geometry, gradients and paper checks run normally. A slower clock
+  // must not truncate an operation for which no deadline was requested.
+  tick=100;
+  const slower=repairRejectedRouting(proposal,source,cfg);
+  t.mock.restoreAll();
+  assert.ok(ordinary.solution,ordinary.report.reason);
+  assert.ok(slower.solution,slower.report.reason);
+  assert.deepEqual(solutionJSON(slower.solution),solutionJSON(ordinary.solution));
+  const rendered=await renderExportedWeave(solutionJSON(slower.solution),fixture.resolution);
+  assert.ok(rendered.mask.reduce((sum,v,i)=>sum+Number(v!==before.mask[i]),0)/before.mask.length<.015);
+  assert.deepEqual(source.sourceImage,before);assert.deepEqual(solutionJSON(proposal),original);
+});
+
 test('finishing a real final paper audit after the deadline retains the checked repair',async t=>{
   const source=input(),before=structuredClone(source.sourceImage);
   const proposal=loadSolutionJSON(fixture.seeds.find(s=>s.smoothRadius===.5).geometry),original=solutionJSON(proposal);

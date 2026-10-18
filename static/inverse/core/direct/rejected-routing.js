@@ -58,7 +58,11 @@ export function rejectedRoutingQuality(solution,cfg){
 export function repairRejectedRouting(proposal,input,cfg,{deadline=Infinity,quality=null,projectClearance=false,paperAudit=materialAudit}={}){
   // Complete return checks and constraint projection need room to retain a
   // valid checkpoint. This local allowance never extends the caller deadline.
-  const started=performance.now(),until=Math.min(deadline,started+(projectClearance?projectedRoutingRepairMilliseconds:2000)),report={accepted:false,method:'continuous-rejected-routing',budgetSeconds:Math.max(0,until-started)/1000};
+  // Without a requested deadline, use the fixed step/iteration limits below.
+  // A hidden wall-clock cutoff would make identical diagnostic replays depend
+  // on CPU load. Production search always supplies its finite caller deadline.
+  const started=performance.now(),timed=Number.isFinite(deadline),until=timed?Math.min(deadline,started+(projectClearance?projectedRoutingRepairMilliseconds:2000)):Infinity,
+    report={accepted:false,method:'continuous-rejected-routing',budgetSeconds:timed?Math.max(0,until-started)/1000:null};
   const finish=reason=>({solution:null,report:{...report,reason,seconds:(performance.now()-started)/1000}});
   if(until-started<250)return finish('insufficient_time');
   if(!input.sourceImage||(projectClearance?!hasOnlyObservationWeights(input.sourceImage):input.sourceImage.weights)||requestedSymmetry(cfg.symmetry).length)return finish('unsupported_constraints');
@@ -80,7 +84,7 @@ export function repairRejectedRouting(proposal,input,cfg,{deadline=Infinity,qual
     // First project its clearance witnesses using the existing bounded repair.
     // The original pixels and full geometry/paper gates still judge the result.
     const projectionStarted=performance.now(),projected=projectShortReturns(graph,graph.points,phase,input,cfg,{initialAudit:initial.geometry,
-      deadline:until-500,maxIterations:128,maxMilliseconds:5000,clearanceMargin:fittingMargin(cfg,cfg.width)});
+      deadline:until-500,maxIterations:128,maxMilliseconds:timed?5000:Infinity,clearanceMargin:fittingMargin(cfg,cfg.width)});
     report.projection=projected.report;report.projectionSeconds=(performance.now()-projectionStarted)/1000;
     if(!projected.points)return finish('projection_rejected');
     graph.points=projected.points;
