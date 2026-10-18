@@ -1,12 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { generate } from './generate';
-import { type Font, type Ring, FRAMES } from './geometry';
+import { type Font, type Ring, FRAMES, FIGURE_STYLES } from './geometry';
 import { defaults, readGeneratorState, normalizeText } from './state';
-import {
-	FIGURE_TEMPLATES,
-	figureTemplates,
-	templateVariants
-} from './templates';
+import { FIGURE_TEMPLATES, templateVariants } from './templates';
 import { matchingMotifs, motifLabel } from './catalog';
 import { gridClearance, gridClearanceScale } from '$lib/geometry/clearance';
 import {
@@ -91,7 +87,7 @@ describe('longer and multiline text', () => {
 				'#make=' + encodeURIComponent(JSON.stringify({ text }))
 			).text
 		).toBe('GLÆDELIG\nJUL');
-		expect(normalizeText('12345678901\nA\nB\nC')).toBe('1234567890\nA\nB');
+		expect(normalizeText('12345678901\nA\nB\nC\nD\nE\nF')).toBe('1234567890\nA\nB\nC\nD\nE');
 	});
 });
 
@@ -132,21 +128,18 @@ describe('figures and complete templates', () => {
 		expect(design.gridSize).toEqual({ x: 5, y: 5 });
 		expect(design.templateWidthMm).toBeUndefined();
 	});
-	it('offers unique complete pairs and keeps old shared selections', () => {
-		expect(FIGURE_TEMPLATES).toHaveLength(22);
-		expect(new Set(FIGURE_TEMPLATES.map((t) => t.id)).size).toBe(22);
-		const state = {
-			...defaults,
-			mode: 'figure' as const,
-			frame: 'hexagon' as const,
-			style: 'plain' as const
-		};
-		expect(figureTemplates(state).some((t) => t.id === 'hexagon-plain')).toBe(
-			true
-		);
-		expect(
-			templateVariants(state).find((t) => t.id === 'hexagon-plain')?.state
-		).toEqual(state);
+	it('offers each figure frame once and opens links to the removed centre shapes and plain circle', () => {
+		expect(FIGURE_TEMPLATES.map((t) => t.style)).toEqual([...FIGURE_STYLES]);
+		const link = (value: object) => '#make=' + encodeURIComponent(JSON.stringify(value));
+		const state = { ...defaults, mode: 'figure' as const, style: 'check' as const };
+		const text = { ...defaults, mode: 'text' as const, textFrame: 'circle' as const };
+		for (const frame of ['diamond', 'hexagon', 'oval', 'rounded', 'scalloped']) {
+			expect(readGeneratorState(link({ ...state, frame }))).toEqual(state);
+			expect(readGeneratorState(link({ ...text, textFrame: frame }))).toEqual(text);
+		}
+		expect(templateVariants(state).find((t) => t.id === 'circle-check')?.state).toEqual(state);
+		// The circle with a plain edge mostly repeated the rays or the checks.
+		expect(readGeneratorState(link({ ...state, style: 'plain' })).style).toBe('rays');
 	});
 	it('starts with seasonal choices from both libraries and searches the full set', () => {
 		const initial = matchingMotifs(catalog, '');

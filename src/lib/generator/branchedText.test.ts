@@ -11,8 +11,7 @@ import cinzel from '../../../static/generator/fonts/cinzel.json';
 
 for (const [text, textFrame, strips, tips] of [
 	['EM', 'circle', 8, 3], ['ME', 'circle', 8, 1],
-	['EMMA', 'circle', 11, 2], ['EMMA', 'diamond', 11, 2],
-	['EMMA', 'hexagon', 11, 4], ['EMMA', 'rounded', 11, 2], ['EMMA', 'scalloped', 11, 2]
+	['EMMA', 'circle', 11, 2]
 ] as const)
 	it(`joins the Cinzel ${text} branches into open strips in ${textFrame}`, () => {
 		const { design } = generate({ mode: 'text', name: text, text, font: cinzel as unknown as Font,

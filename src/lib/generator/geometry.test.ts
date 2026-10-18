@@ -56,7 +56,7 @@ const text = (
 const figure = (
 	contours: Ring[],
 	frame: Frame = 'circle',
-	style: 'rays' | 'check' | 'plain' = 'rays'
+	style: 'rays' | 'check' = 'rays'
 ) =>
 	generate({ mode: 'figure', name: 'Figure', contours, colors, frame, style });
 const circle = (radius: number, x = 0, y = 0): Ring =>
@@ -86,7 +86,7 @@ describe('constructive figure generator', () => {
 		expect(() => fourPortMotif([], [ring], gates, [Math.PI / 4, 3 * Math.PI / 4, -3 * Math.PI / 4, -Math.PI / 4], 1.5, [0, 1, 2, 3], () => false, { practical: true })).toThrow(ConstructionError);
 	});
 	for (const frame of FRAMES)
-		for (const style of ['rays', 'check', 'plain'] as const)
+		for (const style of ['rays', 'check'] as const)
 			it(`${frame} / ${style} preserves the star`, () => {
 				const { design } = figure(star.contours as Ring[], frame, style);
 				expect(design.fingers.length).toBeGreaterThan(4);
@@ -100,9 +100,8 @@ describe('constructive figure generator', () => {
 							((y + 0.5) * 100) / 240
 						];
 						const u: [number, number] = [
-							((p[0] - p[1]) * Math.SQRT1_2) / (frame === 'oval' ? 36.75 : 49),
-							((p[0] + p[1] - 100) * Math.SQRT1_2) /
-								(frame === 'oval' ? 36.75 : 49)
+							((p[0] - p[1]) * Math.SQRT1_2) / 49,
+							((p[0] + p[1] - 100) * Math.SQRT1_2) / 49
 						];
 						if (inside(u, star.contours[0] as Ring))
 							expect(mask.data[y * 240 + x]).toBe(1);
@@ -131,8 +130,10 @@ describe('constructive figure generator', () => {
 			expect(result.recipe).toBe('nested');
 		}
 	});
-	it('does not turn an excessively thin ring into a downloadable template', () => {
-		expect(() => figure([circle(0.45), circle(0.444)])).toThrow();
+	it('warns that an excessively thin ring is hard to cut instead of refusing it', () => {
+		const result = figure([circle(0.45), circle(0.444)]);
+		expect(result.hardToCut?.letters).toEqual([]);
+		expect(result.hardToCut?.spacing).toBeLessThan(1);
 	});
 	it('uses each visible edge in one sheet and each shared edge in both', () => {
 		const r = generateFigure(star.contours as Ring[]);

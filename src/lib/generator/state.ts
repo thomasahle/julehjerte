@@ -1,4 +1,4 @@
-import { FRAMES, type Frame, type TextFrame } from './geometry';
+import { FIGURE_STYLES, FRAMES, type FigureStyle, type Frame, type TextFrame } from './geometry';
 export type GeneratorState = {
 	mode: 'start' | 'figure' | 'text';
 	motif: string;
@@ -7,19 +7,42 @@ export type GeneratorState = {
 	frame: Frame;
 	frameSize: number;
 	scale: number;
-	style: 'rays' | 'check' | 'plain' | 'sunburst' | 'fitted' | 'corners' | 'layers';
+	style: FigureStyle;
 	textFrame: TextFrame;
+	cells: Cells;
+	/** The space between the motif and the frame around it, in percent of the
+	 * square: the wedges' gap, the silhouette's corner checks. */
+	spacing: number;
 };
+/** Text cells: square, so every check around the letters is a square of one
+ * size, or fitted to the letters, so they can be larger. Only the frames whose
+ * checks follow the cells offer the choice; the circle's outer checks follow
+ * its ring, and the checkerboard's squares are the letters' own. */
+export const CELLS = ['square', 'letters'] as const;
+export type Cells = (typeof CELLS)[number];
+export const CELL_FRAMES: readonly TextFrame[] = ['woven', 'air'];
+/** The frames whose space around the motif the visitor sets. */
+export const SPACED_STYLES: readonly FigureStyle[] = ['wedges', 'silhouette'];
+/** The space a state asks between the motif and its frame, where it has one. */
+export function frameGap(s: GeneratorState): number | undefined {
+	return s.mode === 'figure' && SPACED_STYLES.includes(s.style) ? s.spacing : undefined;
+}
+/** The generator's choice of cells for a state, or none where it decides. */
+export function fittedCells(s: GeneratorState): boolean | undefined {
+	return s.mode === 'text' && CELL_FRAMES.includes(s.textFrame) ? s.cells === 'letters' : undefined;
+}
 export const defaults: GeneratorState = {
 	mode: 'start',
 	motif: 'star',
-	text: 'ANNA',
+	text: 'JUL',
 	font: 'nunito',
 	frame: 'circle',
 	frameSize: 70,
 	scale: 70,
 	style: 'rays',
-	textFrame: 'woven'
+	textFrame: 'woven',
+	cells: 'square',
+	spacing: 3
 };
 export function readGeneratorState(hash: string): GeneratorState {
 	const s = { ...defaults };
@@ -27,12 +50,19 @@ export function readGeneratorState(hash: string): GeneratorState {
 		const raw = JSON.parse(
 			new URLSearchParams(hash.replace(/^#/, '')).get('make') ?? ''
 		);
-		for (const [k, allowed] of Object.entries({
+		// Older links name the checkerboard by its former repeating layout,
+		// and text panels by centre shapes the generator no longer draws.
+		if (raw.textFrame === 'repeat-check') raw.textFrame = 'checkered';
+		if (['diamond', 'hexagon', 'oval', 'rounded', 'scalloped'].includes(raw.textFrame)) raw.textFrame = 'circle';
+		// The circle with a plain edge was removed: it mostly repeated the rays or the checks.
+		if (raw.style === 'plain') raw.style = 'rays';
+		for (const [k, allowed] of Object.entries<readonly string[]>({
 			mode: ['start', 'figure', 'text'],
 			font: ['nunito', 'breeserif', 'oswald', 'kalam', 'cinzel', 'righteous'],
 			frame: [...FRAMES],
-			style: ['rays', 'check', 'plain', 'sunburst', 'fitted', 'corners', 'layers'],
-			textFrame: ['woven', 'air', 'repeat', 'repeat-check', ...FRAMES]
+			style: [...FIGURE_STYLES],
+			textFrame: ['woven', 'air', 'checkered', ...FRAMES],
+			cells: [...CELLS]
 		}))
 			if (allowed.includes(raw[k])) Object.assign(s, { [k]: raw[k] });
 		if (typeof raw.text === 'string') s.text = normalizeText(raw.text);
@@ -40,7 +70,8 @@ export function readGeneratorState(hash: string): GeneratorState {
 			s.motif = raw.motif;
 		for (const [k, min, max] of [
 			['frameSize', 50, 80],
-			['scale', 45, 85]
+			['scale', 45, 85],
+			['spacing', 0, 15]
 		] as const)
 			if (typeof raw[k] === 'number' && Number.isFinite(raw[k]))
 				Object.assign(s, {
@@ -49,16 +80,18 @@ export function readGeneratorState(hash: string): GeneratorState {
 	} catch {
 		/* An absent or malformed link starts a fresh heart. */
 	}
-	if (s.style === 'sunburst' || s.style === 'fitted' || s.style === 'corners' || s.style === 'layers') s.frame = 'circle';
 	return s;
 }
+
+/** The longest text the generator takes: lines, and characters per line. */
+export const TEXT_LINES = 6, TEXT_LINE_LENGTH = 10;
 
 export function normalizeText(text: string): string {
 	return text
 		.normalize('NFC')
 		.replace(/\r\n?/g, '\n')
 		.split('\n')
-		.slice(0, 3)
-		.map((line) => [...line].slice(0, 10).join(''))
+		.slice(0, TEXT_LINES)
+		.map((line) => [...line].slice(0, TEXT_LINE_LENGTH).join(''))
 		.join('\n');
 }

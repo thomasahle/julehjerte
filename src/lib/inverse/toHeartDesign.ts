@@ -144,6 +144,9 @@ export type CutGeometryOptions = {
   overlapAspectRatio?: number;
   /** Relative gap threshold; dense generated grids can use finer cuts. */
   clearanceScale?: number;
+  /** Relative size of the smallest bend or loop of one cut; defaults to
+   * `clearanceScale`. A narrower spacing check keeps the usual resolution. */
+  resolutionScale?: number;
   name: string;
   author?: string;
   colors?: HeartColors;
@@ -616,8 +619,9 @@ export function convertValidatedCutGeometry(json: string | CutGeometry, opts: Cu
   const tolerance = opts.tolerance ?? FIT_TOLERANCE;
   const legal = (value: ConvertedHeart): boolean => {
     const d = value.design;
-    const margin = intersectionMarginPx(inferOverlapRect(d.fingers, d.gridSize), opts.clearanceScale);
-    return !d.fingers.some(finger => fingerHasIntersectionIssues(finger, d.fingers, margin));
+    const rect = inferOverlapRect(d.fingers, d.gridSize), margin = intersectionMarginPx(rect, opts.clearanceScale),
+      resolution = intersectionMarginPx(rect, opts.resolutionScale ?? opts.clearanceScale);
+    return !d.fingers.some(finger => fingerHasIntersectionIssues(finger, d.fingers, margin, resolution));
   };
   for (const precision of [...new Set([tolerance, tolerance * 0.4, 0])]) {
     const options = { ...opts, tolerance: precision, preserveShared: true };

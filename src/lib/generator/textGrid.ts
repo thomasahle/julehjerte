@@ -9,6 +9,7 @@ import {
 	type Edge,
 	uprightToSheet,
 	frameRing,
+	BOARD_CIRCLES,
 	ray,
 	distance,
 	fourPortMotif,
@@ -21,12 +22,38 @@ import { gridClearance } from '$lib/geometry/clearance';
 import { contoursWithinBoundary } from './contours';
 import { clipContours, stitch, filledSeamGate, panelDividers, panelSeamGuard } from './panels';
 
+/** How large the letters are with square cells, relative to cells fitted to
+ * the letters: the text block's width plus height, which the frame's size
+ * divides, for each kind of cell. Narrow letters such as i, l and j make
+ * square cells much wider than they need. */
+export function squareCellScale(text: string, font: Font, air = false): number {
+	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n').map(line => [...line]);
+	const cols = Math.max(...lines.map(line => line.length)), rows = lines.length;
+	const glyphs = lines.flat().flatMap(char => font.glyphs[char] ? [font.glyphs[char]] : []);
+	const ys = glyphs.flatMap(glyph => glyph.contours.flat().map(p => p[1]));
+	if (!ys.length) return 1;
+	const height = Math.max(...ys) - Math.min(...ys), padding = height * (air ? .5 : .22);
+	const ink = (char: string) => {
+		const xs = (font.glyphs[char]?.contours ?? []).flat().map(p => p[0]);
+		return xs.length ? Math.max(...xs) - Math.min(...xs) : 0;
+	};
+	const grid = lines.map(line => {
+		const offset = Math.floor((cols - line.length) / 2);
+		return Array.from({ length: cols }, (_, i) => line[i - offset] ?? ' ');
+	});
+	const fitted = Array.from({ length: cols }, (_, col) =>
+		Math.max(height * .45, ...grid.map(row => ink(row[col]) ? ink(row[col]) + padding : 0)))
+		.reduce((a, b) => a + b, 0) + rows * (height + padding);
+	const cell = Math.max(height, ...grid.flat().map(ink)) + padding;
+	return fitted / ((cols + rows) * cell);
+}
+
 export function generateTextGrid(
 	text: string,
 	font: Font,
 	air = false,
 	frame?: Frame,
-	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean } = {}
+	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; junction?: Point } = {}
 ) {
 	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n');
 	const cols = Math.max(...lines.map((l) => [...l].length)),
@@ -47,21 +74,35 @@ export function generateTextGrid(
 		maxY = Math.max(...points.map((p) => p[1]));
 	const height = maxY - minY,
 		cy = (minY + maxY) / 2;
-	const padding = height * (layout.padding ?? (air ? 0.5 : 0.22)),
-		cellHeight = height + padding;
-	const widths = Array.from({ length: cols }, (_, col) =>
-		Math.max(
-			height * 0.45,
-			...matrix.map((row) => {
-				const xs = row[col].glyph.contours.flat().map((p) => p[0]);
-				return xs.length ? Math.max(...xs) - Math.min(...xs) + padding : 0;
-			})
-		)
-	);
+	const padding = height * (layout.padding ?? (air ? 0.5 : 0.22));
+	// Square cells, as wide as the widest letter needs, keep every check of
+	// the weave around and between the letters square.
+	const ink = (glyph: Font['glyphs'][string]) => {
+		const xs = glyph.contours.flat().map((p) => p[0]);
+		return xs.length ? Math.max(...xs) - Math.min(...xs) : 0;
+	};
+	// Fitted cells, as wide as their column's letters, are the fallback when
+	// square ones leave too little paper.
+	const cellHeight = layout.fittedCells ? height + padding
+		: Math.max(height, ...matrix.flat().map(({ glyph }) => ink(glyph))) + padding;
+	const widths = Array.from({ length: cols }, (_, col) => layout.fittedCells
+		? Math.max(height * .45, ...matrix.map((row) => row[col].glyph.contours.length ? ink(row[col].glyph) + padding : 0))
+		: cellHeight);
+	// Panels that divide a letter share out its own column's ink, not the cell.
+	const inkWidths = widths.map((width, col) => layout.fittedCells ? Math.max(height * .1, width - padding)
+		: Math.max(height * .1, height * .45 - padding, ...matrix.map((row) => ink(row[col].glyph))));
 	const span = widths.reduce((a, b) => a + b, 0),
 		fullHeight = rows * cellHeight;
-	let scale = 128 / (span + fullHeight);
-	const boundary = frame ? frameRing(frame, 80) : undefined;
+	// Square cells without a frame lie on the regular checkerboard: each cell,
+	// or each of its square panels, is one square's diagonal wide. The lines
+	// leaving the block's sides, and the outer strips beyond them, are then all
+	// one square apart, on a board of columns + rows + 1 strips.
+	const regular = !layout.fittedCells && !frame;
+	let scale = regular
+		? 100 * Math.SQRT2 * (layout.slices ?? 1) / ((cols * (layout.columns ?? 1) + rows * (layout.slices ?? 1) + 1) * cellHeight)
+		: 128 / (span + fullHeight);
+	// A circle on the regular board has the board's own size.
+	const boundary = frame ? frameRing(frame, layout.board ? BOARD_CIRCLES[cols * (layout.columns ?? 1) - 1] : 80) : undefined;
 	if (boundary)
 		for (const x of [-span / 2, 0, span / 2])
 			for (const y of [-fullHeight / 2, 0, fullHeight / 2]) {
@@ -79,14 +120,17 @@ export function generateTextGrid(
 	// All rows share their horizontal dividers. Each source column likewise
 	// chooses one set of vertical dividers for all its glyphs, so adjoining
 	// panels use exactly the same clip and stitch coordinates.
-	const splitsY = layout.adaptivePanels
+	// A chosen junction (relative to the glyph's centre) places the seams
+	// of a glyph divided in four through it, such as a point of background.
+	const junction = layout.junction;
+	const splitsY = junction ? [junction[1]] : layout.adaptivePanels
 		? panelDividers(points.map(p => p[1] - cy), -height / 2, height / 2, slices) : undefined;
-	const splitsX = layout.adaptivePanels ? widths.map((width, col) => {
+	const splitsX = junction ? widths.map(() => [junction[0]]) : layout.adaptivePanels ? widths.map((_, col) => {
 		const values = matrix.flatMap(row => {
 			const xs = row[col].glyph.contours.flat().map(p => p[0]);
 			const cx = xs.length ? (Math.min(...xs) + Math.max(...xs)) / 2 : 0;
 			return xs.map(x => x - cx);
-		}), inkWidth = Math.max(height * .1, width - padding);
+		}), inkWidth = inkWidths[col];
 		return panelDividers(values, -inkWidth / 2, inkWidth / 2, columns);
 	}) : undefined;
 	const artwork: Ring[] = [],
@@ -109,11 +153,11 @@ export function generateTextGrid(
 				y = (-fullHeight / 2 + (row + 0.5) * cellHeight / slices) * scale;
 			let w = widths[sourceCol] * scale / columns,
 				h = cellHeight * scale / slices;
-			if (layout.inkPanels || layout.adaptivePanels) {
+			if (layout.inkPanels || layout.adaptivePanels || junction) {
 				// More panels should divide the letter, not its surrounding margin.
 				// Retain the outside gates and distribute only the internal seams
 				// over the ink dimensions. Blank cells still need positive widths.
-				const inkWidth = Math.max(height * .1, widths[sourceCol] - padding);
+				const inkWidth = inkWidths[sourceCol];
 				const xLine = (i: number) => glyphX + (i === 0 ? -widths[sourceCol] / 2 : i === columns ? widths[sourceCol] / 2 : splitsX?.[sourceCol][i - 1] ?? (i / columns - .5) * inkWidth) * scale;
 				const yLine = (i: number) => glyphY + (i === 0 ? -cellHeight / 2 : i === slices ? cellHeight / 2 : splitsY?.[i - 1] ?? (i / slices - .5) * height) * scale;
 				const lo = xLine(col % columns), hi = xLine(col % columns + 1),
@@ -149,7 +193,8 @@ export function generateTextGrid(
 			}
 			const xs = glyph.contours.flat().map((p) => p[0]),
 				cx = (Math.min(...xs) + Math.max(...xs)) / 2;
-			let upright = glyph.contours.map(r => r.map(p => [glyphX + (p[0] - cx) * scale, glyphY + (p[1] - cy) * scale] as Point));
+			const letterScale = scale * (layout.letterScale ?? 1);
+			let upright = glyph.contours.map(r => r.map(p => [glyphX + (p[0] - cx) * letterScale, glyphY + (p[1] - cy) * letterScale] as Point));
 			if (row % slices === 0 && col % columns === 0) artwork.push(...upright.map(r => r.map(uprightToSheet)));
 			if (columns > 1) {
 				if (col % columns) upright = clipContours(upright, x - w / 2, false);
@@ -254,7 +299,7 @@ export function generateTextGrid(
 		throw new ConstructionError('clearance', 'The letters extend beyond the frame');
 	if (slices > 1) {
 		const dividers = Array.from({length: rows}, (_, row) => Array.from({length: slices - 1}, (_, i) =>
-			(layout.inkPanels || layout.adaptivePanels
+			(layout.inkPanels || layout.adaptivePanels || junction
 				? -fullHeight / 2 + (row + .5) * cellHeight + (splitsY?.[i] ?? ((i + 1) / slices - .5) * height)
 				: -fullHeight / 2 + (row + (i + 1) / slices) * cellHeight) * scale)).flat();
 		edges = stitch(edges, dividers, 1);
@@ -262,7 +307,7 @@ export function generateTextGrid(
 	if (columns > 1) {
 		let cursor = -span / 2;
 		const dividers = widths.flatMap((width, col) => {
-			const values = Array.from({length: columns - 1}, (_, i) => (layout.inkPanels || layout.adaptivePanels
+			const values = Array.from({length: columns - 1}, (_, i) => (layout.inkPanels || layout.adaptivePanels || junction
 				? cursor + width / 2 + (splitsX?.[col][i] ?? ((i + 1) / columns - .5) * Math.max(height * .1, width - padding))
 				: cursor + (i + 1) * width / columns) * scale);
 			cursor += width;
@@ -270,7 +315,7 @@ export function generateTextGrid(
 		});
 		edges = stitch(edges, dividers);
 	}
-	connectCellGrid(edges, cells, boundary, 'check', layout.spread);
+	connectCellGrid(edges, cells, boundary, layout.board ? 'board' : 'check', layout.spread, undefined, layout.board);
 	const domain =
 		boundary ??
 		[

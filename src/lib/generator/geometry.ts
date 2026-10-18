@@ -22,16 +22,24 @@ export type Edge = {
 };
 export type Port = { point: Point; index: number };
 export type Contour = { ring: Ring; children: Contour[] };
-export const FRAMES = [
-	'circle',
-	'diamond',
-	'hexagon',
-	'oval',
-	'rounded',
-	'scalloped'
-] as const;
+export const FRAMES = ['circle'] as const;
 export type Frame = (typeof FRAMES)[number];
-export type TextFrame = 'woven' | 'air' | 'repeat' | 'repeat-check' | Frame;
+/** The frames around a figure, in the order the generator offers them: the
+ * default first, then the frames most real figure hearts use. */
+export const FIGURE_STYLES = ['rays', 'wedges', 'corners', 'silhouette', 'motifs', 'squares', 'board', 'fitted', 'sunburst', 'layers', 'check'] as const;
+export type FigureStyle = (typeof FIGURE_STYLES)[number];
+/** A frame without a centre panel joins each outer gate of the motif straight
+ * to the two paper edges at its corner of the square. Legs meeting the edges
+ * square on draw a checkerboard close around the motif; legs tapered toward
+ * the corner draw a wedge pointing at it. `gap` keeps the wedge tips off the
+ * motif, joined to it by an invisible coincident cut; `border` adds outer strips. */
+export type OpenFrame = { taper: number; gap: number; border: boolean };
+export const FITTED: OpenFrame = { taper: 1, gap: 0, border: true };
+export const WEDGES: OpenFrame = { taper: .45, gap: 3, border: false };
+/** A silhouette filling the square meets the edges near each corner, leaving
+ * a small check there in the other colour. */
+export const SILHOUETTE: OpenFrame = { taper: 1, gap: 0, border: false };
+export type TextFrame = 'woven' | 'air' | 'checkered' | Frame;
 export class ConstructionError extends Error {
 	constructor(
 		public code: 'topology' | 'clearance' | 'empty' | 'character',
@@ -327,41 +335,13 @@ export function contourChain(
 	add(edges, [previous, end], 'AB', 'shared');
 }
 export function frameRing(shape: Frame, size = 70): Ring {
-	if (shape === 'oval')
-		return Array.from({ length: 160 }, (_, i) => {
-			const a = (i * Math.PI * 2) / 160;
-			return uprightToSheet([
-				size * 0.56 * Math.cos(a),
-				size * 0.35 * Math.sin(a)
-			]);
-		});
-	if (shape === 'rounded')
-		return Array.from({ length: 160 }, (_, i) => {
-			const a = (i * Math.PI * 2) / 160,
-				r = size / 2;
-			return [
-				50 + r * Math.sign(Math.cos(a)) * Math.abs(Math.cos(a)) ** 0.5,
-				50 + r * Math.sign(Math.sin(a)) * Math.abs(Math.sin(a)) ** 0.5
-			] as Point;
-		});
-	if (shape === 'scalloped')
-		return Array.from({ length: 192 }, (_, i) => {
-			const a = (i * Math.PI * 2) / 192,
-				r = (size / 2) * (0.94 + 0.06 * Math.cos(8 * a));
-			return [50 + r * Math.cos(a), 50 + r * Math.sin(a)] as Point;
-		});
-	const n = shape === 'circle' ? 160 : shape === 'diamond' ? 4 : 6,
-		r = size / 2;
-	// Diamond is square in sheet coordinates; hexagon is flat-topped upright.
-	const angle =
-		shape === 'diamond' ? Math.PI / 4 : shape === 'hexagon' ? -Math.PI / 4 : 0;
-	const radius = shape === 'diamond' ? r * Math.SQRT2 : r;
+	const r = size / 2;
 	return Array.from(
-		{ length: n },
+		{ length: 160 },
 		(_, i) =>
 			[
-				50 + radius * Math.cos(angle + (i * 2 * Math.PI) / n),
-				50 + radius * Math.sin(angle + (i * 2 * Math.PI) / n)
+				50 + r * Math.cos((i * 2 * Math.PI) / 160),
+				50 + r * Math.sin((i * 2 * Math.PI) / 160)
 			] as Point
 	);
 }
@@ -376,7 +356,7 @@ export function outerFrame(
 	edges: Edge[],
 	frame: Ring,
 	sectors: number[],
-	style: 'rays' | 'check' | 'plain'
+	style: 'rays' | 'check'
 ) {
 	return sectors.map((i) => {
 		const t = Math.PI / 4 + (i * Math.PI) / 2,
@@ -479,13 +459,13 @@ export function generateFigure(
 	shape: Frame = 'circle',
 	size = 70,
 	scale = 0.7,
-	style: 'rays' | 'check' | 'plain' = 'rays'
+	style: 'rays' | 'check' = 'rays'
 ) {
 	const artwork = rings.map((r) =>
 		r.map((p) =>
 			uprightToSheet([
-				p[0] * size * scale * (shape === 'oval' ? 0.75 : 1),
-				p[1] * size * scale * (shape === 'oval' ? 0.75 : 1)
+				p[0] * size * scale,
+				p[1] * size * scale
 			])
 		)
 	);
@@ -495,7 +475,7 @@ export function generateFigure(
 	if (!nodes.length) throw new ConstructionError('empty', 'No contour');
 	// A simple silhouette can meet four frame gates. Perforated or disconnected
 	// artwork uses the two-gate chain, allowing alternating nested contours.
-	if (nodes.length === 1 && !nodes[0].children.length && style !== 'plain') {
+	if (nodes.length === 1 && !nodes[0].children.length) {
 		const gates = outerFrame(edges, frame, [0, 1, 2, 3], style),
 			r = nodes[0].ring;
 		const ports = gates.map((g) => ray(r, g.point, g.angle + Math.PI));
@@ -552,7 +532,9 @@ export function generateCheckedText(
 	text: string,
 	font: Font,
 	air = false,
-	frame?: Frame
+	frame?: Frame,
+	fittedCells = false,
+	letterScale = 1
 ) {
 	const chars = [...text.normalize('NFC')];
 	if (!chars.length || !text.trim())
@@ -567,16 +549,20 @@ export function generateCheckedText(
 	if (!all.length) throw new ConstructionError('empty', 'No letter outlines');
 	const height =
 		Math.max(...all.map((p) => p[1])) - Math.min(...all.map((p) => p[1]));
-	// Keep the font's baseline, including accents and descenders. Narrow letters
-	// get narrower cells instead of wasting the space needed by fine strokes.
+	// Keep the font's baseline, including accents and descenders.
 	const cy =
 		(Math.min(...all.map((p) => p[1])) + Math.max(...all.map((p) => p[1]))) / 2;
-	const cellHeight = height * (air ? 1.5 : 1.16);
-	const widths = letters.map(({ glyph }) => {
+	// Square cells, as wide as the widest letter needs, keep every check of
+	// the weave around the letters square. Cells fitted to each letter are the
+	// fallback when square ones leave too little paper.
+	const fitted = letters.map(({ glyph }) => {
 		if (!glyph.contours.length) return Math.max(glyph.advance, height * 0.35);
 		const xs = glyph.contours.flat().map((p) => p[0]);
 		return Math.max(...xs) - Math.min(...xs) + height * (air ? 0.5 : 0.16);
 	});
+	const cellHeight = fittedCells ? height * (air ? 1.5 : 1.16)
+		: Math.max(height * (air ? 1.5 : 1.16), ...fitted.filter((_, i) => letters[i].glyph.contours.length));
+	const widths = fittedCells ? fitted : letters.map(() => cellHeight);
 	const span = widths.reduce((a, b) => a + b, 0);
 	const offset = Math.max(
 		...nonempty.map(({ glyph }) => {
@@ -585,17 +571,25 @@ export function generateCheckedText(
 		})
 	);
 	const fullHeight = cellHeight + 2 * offset;
-	let scale = Math.min(128 / (span + fullHeight), 38 / cellHeight);
+	// Square cells without a frame lie on the regular checkerboard, as in
+	// Brodal's hearts: the cells share one row, each one square's diagonal
+	// wide, so the k letters sit on the middle row of a board of k + 2 strips
+	// and every strip, the outer ones included, is one square wide.
+	const regular = !fittedCells && !frame;
+	// A cell is otherwise at most what one letter gets on the regular 3-strip
+	// board, or less inside a frame.
+	let scale = regular ? 100 * Math.SQRT2 / ((letters.length + 2) * cellHeight)
+		: Math.min(128 / (span + fullHeight), (frame ? 38 : 100 * Math.SQRT2 / 3) / cellHeight);
 	const boundary = frame ? frameRing(frame, 80) : null;
-	// Keep letter scale stable when adding or removing a frame.
-	const envelope = boundary ?? frameRing('circle', 80);
-	if (envelope) {
+	// A frame holds the cells; without one they fill the heart like the
+	// regular board does, so letter-sized cells keep the larger letters.
+	if (boundary) {
 		// Fit the complete cell envelope, including shifted accent/descender cells.
 		for (const x of [-span / 2, 0, span / 2])
 			for (const y of [-fullHeight / 2, fullHeight / 2]) {
 				const p = uprightToSheet([x, y]),
 					d = sub(p, [50, 50]);
-				const hit = ray(envelope, [50, 50], Math.atan2(d[1], d[0]));
+				const hit = ray(boundary, [50, 50], Math.atan2(d[1], d[0]));
 				scale = Math.min(
 					scale,
 					(0.9 * distance(hit.point, [50, 50])) / Math.hypot(x, y)
@@ -616,12 +610,25 @@ export function generateCheckedText(
 		const x = (cursor + widths[i] / 2) * scale;
 		const cellWidth = widths[i] * scale;
 		cursor += widths[i];
-		if (!glyph.contours.length) continue;
+		if (!glyph.contours.length) {
+			// On the regular board a space keeps its square: the grid continues
+			// through it with the ordinary four-port pairing.
+			if (!regular) continue;
+			const gates = [[x, -cell / 2], [x + cellWidth / 2, 0], [x, cell / 2], [x - cellWidth / 2, 0]]
+				.map(p => uprightToSheet(p as Point));
+			add(edges, [gates[0], gates[3]], 'A', 'frame');
+			add(edges, [gates[1], gates[2]], 'A', 'frame');
+			add(edges, [gates[0], gates[1]], 'B', 'frame');
+			add(edges, [gates[2], gates[3]], 'B', 'frame');
+			previous = connectLetterRow(edges, gates, previous);
+			continue;
+		}
 		const pts = glyph.contours.flat(),
 			xs = pts.map((p) => p[0]),
 			ys = pts.map((p) => p[1]);
 		const cx = (Math.min(...xs) + Math.max(...xs)) / 2;
-		const y = ((Math.min(...ys) + Math.max(...ys)) / 2 - cy) * scale;
+		// A letter's cell otherwise follows its accent or descender.
+		const y = regular ? 0 : ((Math.min(...ys) + Math.max(...ys)) / 2 - cy) * scale;
 		domain.push(
 			[
 				[-1, -1],
@@ -632,9 +639,10 @@ export function generateCheckedText(
 				uprightToSheet([x + (a * cellWidth) / 2, y + (b * cell) / 2])
 			)
 		);
+		// The letter may be a little larger in its cell, which keeps its place.
 		const contours = glyph.contours.map((r) =>
 			r.map((p) =>
-				uprightToSheet([x + (p[0] - cx) * scale, (p[1] - cy) * scale])
+				uprightToSheet([x + (p[0] - cx) * scale * letterScale, (p[1] - cy) * scale * letterScale])
 			)
 		);
 		artwork.push(...contours);
@@ -665,25 +673,16 @@ export function generateCheckedText(
 				contours,
 				gates,
 				angles,
-				gridClearance(nonempty.length + 2)
+				gridClearance((regular ? letters : nonempty).length + 2)
 			);
 			letterCuts.set(chars[i], { x, edges: local });
 			edges.push(...local);
 		}
 		cells.push(gates);
-		const [north, east, south, west] = gates;
-		if (!boundary) {
-			add(edges, [[north[0], 0], north], 'A', 'frame');
-			add(edges, [[0, north[1]], north], 'B', 'frame');
-			add(edges, [south, [south[0], 100]], 'A', 'frame');
-			add(edges, [south, [100, south[1]]], 'B', 'frame');
-		}
-		if (previous) add(edges, [previous, west], 'AB', 'shared');
-		else if (!boundary) {
-			add(edges, [west, [west[0], 100]], 'A', 'frame');
-			add(edges, [[0, west[1]], west], 'B', 'frame');
-		}
-		previous = east;
+		if (boundary) {
+			if (previous) add(edges, [previous, gates[3]], 'AB', 'shared');
+			previous = gates[1];
+		} else previous = connectLetterRow(edges, gates, previous);
 	}
 	if (!previous) throw new ConstructionError('empty', 'Empty text');
 	if (boundary) {
@@ -730,6 +729,23 @@ export function generateCheckedText(
 		artwork,
 		domain: boundary ? [boundary] : domain
 	};
+}
+
+/** Joins a cell of an unframed letter row to the weave: its north and south
+ * gates continue to the sheet's edges, its west gate joins the previous cell
+ * by a shared cut (the first cell's continues to the edges), and its east gate
+ * is returned for the next cell. */
+function connectLetterRow(edges: Edge[], [north, east, south, west]: Point[], previous: Point | null): Point {
+	add(edges, [[north[0], 0], north], 'A', 'frame');
+	add(edges, [[0, north[1]], north], 'B', 'frame');
+	add(edges, [south, [south[0], 100]], 'A', 'frame');
+	add(edges, [south, [100, south[1]]], 'B', 'frame');
+	if (previous) add(edges, [previous, west], 'AB', 'shared');
+	else {
+		add(edges, [west, [west[0], 100]], 'A', 'frame');
+		add(edges, [[0, west[1]], west], 'B', 'frame');
+	}
+	return east;
 }
 
 /** The order depends only on the number of gates and candidates. Reuse it
@@ -1416,15 +1432,15 @@ export function generateFourPortFigure(
 	shape: Frame = 'circle',
 	size = 70,
 	scale = 0.7,
-	style: 'rays' | 'check' | 'plain' = 'rays',
+	style: 'rays' | 'check' = 'rays',
 	route = fourPortMotif,
 	extraStrips = 0
 ) {
 	const artwork = rings.map((r) =>
 			r.map((p) =>
 				uprightToSheet([
-					p[0] * size * scale * (shape === 'oval' ? 0.75 : 1),
-					p[1] * size * scale * (shape === 'oval' ? 0.75 : 1)
+					p[0] * size * scale,
+					p[1] * size * scale
 				])
 			)
 		),
@@ -1524,8 +1540,7 @@ export function framedGate(
 	angle: number,
 	half: number,
 	fan = 1,
-	spread = false,
-	sideCount = 1
+	spread = false
 ): Point {
 	const low = ray(ring, [50, 50], angle - half),
 		mid = ray(ring, [50, 50], angle),
@@ -1543,15 +1558,11 @@ export function framedGate(
 					Math.sin(angle) > 0 ? 100 - (100 - p[1]) * fan : p[1] * fan
 				];
 	const route = (point: Point, family: 'A' | 'B'): Ring => {
-		const flat = ring.length === 4;
-		if ((!spread && !flat) || (quadrant % 2 && (!flat || sideCount === 1)))
-			return [point, edge(point, family)];
-		// A diamond has flat sheet-aligned sides. A direct projection would stack
-		// several cuts at the same endpoint. Stagger their routes around its corner.
-		// Reflect every quadrant into the upper-left corner, reversing the angular
-		// order for a single-axis reflection. Tall grids need the same separated
-		// lanes on the other two sides as wide grids do on the first two. A lone
-		// gate on those sides already projects outward and keeps its direct cut.
+		if (!spread || quadrant % 2) return [point, edge(point, family)];
+		// A direct projection would stack several cuts at the same endpoint.
+		// Stagger their routes around the corner. Reflect every quadrant into
+		// the upper-left corner, reversing the angular order for a single-axis
+		// reflection.
 		const reflect = (p: Point): Point =>
 			[quadrant === 0 || quadrant === 3 ? 100 - p[0] : p[0],
 				quadrant === 0 || quadrant === 1 ? 100 - p[1] : p[1]];
@@ -1563,7 +1574,7 @@ export function framedGate(
 			const lane = margin * (0.1 + 0.8 * (1 - t));
 			const endX = 50 * t,
 				out = margin - lane;
-			return (spread ? p[0] < p[1] - EPS : p[0] < margin + EPS && p[1] > margin + EPS)
+			return p[0] < p[1] - EPS
 				? [p, [out, p[1]], [out, out], [endX, out], [endX, 0]]
 				: [p, [p[0], out], [endX, out], [endX, 0]];
 		};
@@ -1589,55 +1600,99 @@ export function framedGate(
 	return mid.point;
 }
 
+/** Where an open frame's leg from `gate` meets the paper edge through `corner`:
+ * straight along `axis`, then moved toward that corner by the frame's taper. */
+export function openLeg(gate: Point, corner: Point, axis: 0 | 1, taper: number): Point {
+	const end: Point = [gate[0], gate[1]], other = 1 - axis;
+	end[axis] = corner[axis];
+	if (taper !== 1) end[other] = corner[other] + (gate[other] - corner[other]) * taper;
+	return end;
+}
+
+/** The circle on the regular five-strip board, by the motif's cells on each
+ * side. One cell: the circle fills the middle three strips, midway between the
+ * centre square's corners and the next lines out, so only the two middle lines
+ * of each sheet meet it and the outer ring of squares stays whole. Two: it
+ * meets every line, midway between the junctions just inside and outside it.
+ * Either way no line ends near a junction. */
+export const BOARD_CIRCLES = [Math.hypot(10, 10) + 30, Math.hypot(30, 10) + Math.hypot(30, 30)];
+
+/** Where the lines of a regular board of `strips` strips meet a circle around
+ * its centre, for a cell grid with `count` outer gates on each side. In each
+ * quarter of the circle the lines' ends alternate between the sheets, and
+ * consecutive pairs meet at a gate: for an outer gate (side and index, as in
+ * `connectCellGrid`), the gate's angle and the half-angle to its two legs,
+ * which then lie exactly on the board's lines. Lines that miss the circle
+ * cross the paper whole. */
+function boardLegs(edges: Edge[], ring: Ring, strips: number, count: number): (side: number, index: number) => [number, number] {
+	const quarters: { angle: number; family: 'A' | 'B' }[][] = [[], [], [], []];
+	for (let k = 1; k < strips; k++) for (const axis of [0, 1]) {
+		const line = (100 * k) / strips;
+		let crossed = false;
+		ring.forEach((p, i) => {
+			const q = ring[(i + 1) % ring.length];
+			if ((p[axis] < line) === (q[axis] < line)) return;
+			const t = (line - p[axis]) / (q[axis] - p[axis]);
+			const point = [p[0] + t * (q[0] - p[0]), p[1] + t * (q[1] - p[1])];
+			const angle = (Math.atan2(point[1] - 50, point[0] - 50) + 2 * Math.PI) % (2 * Math.PI);
+			quarters[Math.floor(angle / (Math.PI / 2)) % 4].push({ angle, family: axis ? 'B' : 'A' });
+			crossed = true;
+		});
+		if (!crossed) add(edges, axis ? [[0, line], [100, line]] : [[line, 0], [line, 100]], axis ? 'B' : 'A', 'frame');
+	}
+	for (const [quarter, ends] of quarters.entries()) {
+		ends.sort((a, b) => a.angle - b.angle);
+		if (ends.length !== 2 * count || ends.some((end, i) => end.family !== ((quarter + i) % 2 ? 'A' : 'B')))
+			throw new ConstructionError('topology', 'The circle does not meet the board in turn');
+	}
+	return (side, index) => {
+		const ends = quarters[[2, 3, 0, 1][side]], k = side < 2 ? index : count - 1 - index;
+		const [low, high] = [ends[2 * k].angle, ends[2 * k + 1].angle];
+		return [(low + high) / 2, (high - low) / 2];
+	};
+}
+
 /** Join neighbouring motif cells with coincident cuts, and give every outer
- * cell its own connection to the paper edge or the decorative frame. */
+ * cell its own connection to the paper edge or the decorative frame. On a
+ * regular board of `strips` strips (`board`), the frame's legs lie on its lines. */
 export function connectCellGrid(
 	edges: Edge[],
 	cells: Point[][][],
 	boundary?: Ring,
-	style: 'rays' | 'check' | 'plain' = 'check',
-	spread = false
+	style: 'rays' | 'check' | 'board' = 'check',
+	spread = false,
+	open: OpenFrame = FITTED,
+	strips = 2 * cells[0].length + 1
 ) {
 	const rows = cells.length,
 		cols = cells[0].length;
 	const fan = style === 'rays' ? 0.72 : 1,
-		band = style === 'plain' ? 0.16 : 0.3;
+		band = 0.3;
+	if (style === 'board' && cols !== rows) throw new ConstructionError('topology', 'A regular board needs as many rows as columns');
+	const legs = style === 'board' && boundary ? boardLegs(edges, boundary, strips, cols) : undefined;
 	const connect = (gate: Point, side: number, index: number, count: number) => {
 		if (boundary) {
 			const step = Math.PI / (2 * count);
-			const angle =
+			const [angle, half] = legs ? legs(side, index) : [
 				side === 0
 					? Math.PI + (index + 0.5) * step
 					: side === 2
 						? Math.PI / 2 - (index + 0.5) * step
 						: side === 3
 							? Math.PI - (index + 0.5) * step
-							: (3 * Math.PI) / 2 + (index + 0.5) * step;
-			const half =
-				count === 1
-					? style === 'plain'
-						? Math.PI / 14
-						: Math.PI / 8
-					: step * band;
+							: (3 * Math.PI) / 2 + (index + 0.5) * step,
+				count === 1 ? Math.PI / 8 : step * band
+			];
 			add(
 				edges,
-				[gate, framedGate(edges, boundary, angle, half, fan, spread, count)],
+				[gate, framedGate(edges, boundary, angle, half, fan, spread)],
 				'AB',
 				'shared'
 			);
 		} else {
-			add(
-				edges,
-				[gate, [gate[0], side === 0 || side === 1 ? 0 : 100]],
-				'A',
-				'frame'
-			);
-			add(
-				edges,
-				[gate, [side === 0 || side === 3 ? 0 : 100, gate[1]]],
-				'B',
-				'frame'
-			);
+			const corner: Point = [side === 0 || side === 3 ? 0 : 100, side === 0 || side === 1 ? 0 : 100];
+			add(edges, [gate, openLeg(gate, corner, 1, open.taper)], 'A', 'frame');
+			add(edges, [gate, openLeg(gate, corner, 0, open.taper)], 'B', 'frame');
 		}
 	};
 	for (let row = 0; row < rows; row++)

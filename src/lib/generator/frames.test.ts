@@ -1,12 +1,13 @@
 import { describe, it, expect } from 'vitest';
-import { generate } from './generate';
+import { generate, fillSquare } from './generate';
 import { cutTipCounts } from './cutQuality';
 import { generateFittedFigure } from './fitted';
 import { generateLayeredFigure } from './layers';
 import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
-import { defaults, readGeneratorState } from './state';
+import { defaults, frameGap, readGeneratorState } from './state';
 import { templateVariants } from './templates';
-import { inside, uprightToSheet, type Point, type Ring } from './geometry';
+import { inside, uprightToSheet, distance, WEDGES, type Point, type Ring } from './geometry';
+import { geometryKey } from './cache';
 import { normalizeContours } from './contours';
 import { rasterizeDesign } from '$lib/paint/rasterize';
 import { serializeHeartDesign, normalizeHeartDesign, serializeHeartToSVG, parseHeartFromSVG } from '$lib/utils/heartDesign';
@@ -32,6 +33,7 @@ import bow from '../../../static/generator/motifs/tb-bow.json';
 import butterfly from '../../../static/generator/motifs/ph-butterfly.json';
 import paw from '../../../static/generator/motifs/tb-paw.json';
 import crown from '../../../static/generator/motifs/ph-crown.json';
+import bell from '../../../static/generator/motifs/bell.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
@@ -100,16 +102,6 @@ describe('complete motif frames', () => {
   it(`moves the ${name} panel seam clear of narrow outline details`, () => {
    const { design } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], colors, style });
    expect(design.gridSize).toEqual({ x: size, y: size });
-   expect(design).not.toHaveProperty('leftCutouts');
-   expect(design).not.toHaveProperty('rightCutouts');
-   const restored = normalizeHeartDesign(serializeHeartDesign(design));
-   expect(rasterizeDesign(restored!, 240).data).toEqual(rasterizeDesign(design, 240).data);
-  }, 20000);
- }
- for (const style of ['plain', 'rays', 'check'] as const) {
-  it(`divides the oval snowflake vertically in ${style}`, () => {
-   const { design } = generate({ mode: 'figure', name: 'Snowflake', contours: snow.contours as Ring[], colors, frame: 'oval', style });
-   expect(design.gridSize).toEqual({ x: 4, y: 4 });
    expect(design).not.toHaveProperty('leftCutouts');
    expect(design).not.toHaveProperty('rightCutouts');
    const restored = normalizeHeartDesign(serializeHeartDesign(design));
@@ -204,5 +196,146 @@ describe('complete motif frames', () => {
   const { design } = generate({ mode: 'figure', name: 'Snowflake and stars', contours, colors, style: 'corners' });
   expect(design.gridSize).toEqual({ x: 6, y: 6 });
  });
+});
 
+describe('frames from real hearts', () => {
+ const corners: Point[] = [[0, 0], [100, 0], [100, 100], [0, 100]];
+ it('points a wedge from each corner at the motif, stopping a gap short of it', () => {
+  const result = generateFittedFigure(star.contours as Ring[], 70, .7, undefined, undefined, 0, WEDGES);
+  const legs = result.edges.filter(e => e.kind === 'frame');
+  expect(legs).toHaveLength(8);
+  for (const [i, corner] of corners.entries()) {
+   const tip = result.domain[0][i], own = legs.filter(e => distance(e.to, tip) < 1e-9);
+   expect(own).toHaveLength(2);
+   // Each leg meets the paper edge part of the way from the corner.
+   for (const { from } of own) for (const axis of [0, 1]) if (from[axis] !== corner[axis])
+    expect(Math.abs(from[axis] - corner[axis])).toBeCloseTo(Math.abs(tip[axis] - corner[axis]) * WEDGES.taper);
+   // The tip lies the gap beyond the motif's own supporting line.
+   const d: Point = [corner[0] ? Math.SQRT1_2 : -Math.SQRT1_2, corner[1] ? Math.SQRT1_2 : -Math.SQRT1_2];
+   const reach = Math.max(...result.artwork.flat().map(p => p[0] * d[0] + p[1] * d[1]));
+   expect(tip[0] * d[0] + tip[1] * d[1] - reach).toBeCloseTo(WEDGES.gap);
+  }
+ });
+ it('colours the wedges like the motif, with plain paper between them', () => {
+  const { design } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'wedges' });
+  expect(design.gridSize).toEqual({ x: 3, y: 3 });
+  const mask = rasterizeDesign(design, 100).data, at = ([x, y]: Point) => mask[Math.floor(y) * 100 + Math.floor(x)];
+  const ink = at([50, 50]);
+  for (const corner of corners) expect(at([corner[0] ? 99 : 1, corner[1] ? 99 : 1])).toBe(ink);
+  for (const side of [[50, 1], [99, 50], [50, 99], [1, 50]] as Point[]) expect(at(side)).toBe(1 - ink);
+ }, 20000);
+ for (const [name, motif] of Object.entries(examples))
+  it(`weaves ${name} with wedges using validated open cuts`, () => {
+   const { design, hardToCut } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], colors, style: 'wedges' });
+   expect(hardToCut).toBeUndefined();
+   expect(design).not.toHaveProperty('rightCutouts');
+   expect(design).not.toHaveProperty('leftCutouts');
+   const restored = normalizeHeartDesign(serializeHeartDesign(design));
+   expect(rasterizeDesign(restored!, 240).data).toEqual(rasterizeDesign(design, 240).data);
+  }, 20000);
+ it('scales the silhouette to fill the square, keeping a margin for its corner checks', () => {
+  const request = { mode: 'figure' as const, name: 'Star', contours: star.contours as Ring[], colors, style: 'silhouette' as const };
+  const reach = (scale: number) => {
+   const filled = fillSquare({ ...request, scale });
+   const size = filled.frameSize! * filled.scale!;
+   return Math.max(...(star.contours as Ring[]).flat().map(([x, y]) => (Math.abs(x) + Math.abs(y)) * size));
+  };
+  expect(reach(.85)).toBeCloseTo(50 * Math.SQRT2 - 6);
+  expect(reach(.7) / reach(.85)).toBeCloseTo(.7 / .85);
+  expect(fillSquare({ ...request, style: 'fitted' })).toEqual({ ...request, style: 'fitted' });
+  const { design } = generate(request);
+  expect(design.gridSize).toEqual({ x: 3, y: 3 });
+  const mask = rasterizeDesign(design, 100).data, at = ([x, y]: Point) => mask[Math.floor(y) * 100 + Math.floor(x)];
+  // The motif's colour fills the centre; each corner keeps a check of it.
+  for (const corner of corners) expect(at([corner[0] ? 99 : 1, corner[1] ? 99 : 1])).toBe(at([50, 50]));
+ }, 20000);
+ it('repeats a simple motif on every square of one colour of a 4×4 board', () => {
+  const { design, hardToCut } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'motifs' });
+  expect(design.gridSize).toEqual({ x: 4, y: 4 });
+  expect(hardToCut).toBeUndefined();
+  const mask = rasterizeDesign(design, 400).data;
+  for (let row = 0; row < 4; row++) for (let col = 0; col < 4; col++) {
+   const background = (row + col) % 2, centre = mask[Math.floor((row + .5) * 100) * 400 + Math.floor((col + .5) * 100)];
+   // Squares of the first colour show a star in the other colour; the
+   // other squares are plain, so both centres have that other colour.
+   expect(mask[(row * 100 + 2) * 400 + col * 100 + 2]).toBe(background);
+   expect(centre).toBe(1);
+  }
+ }, 20000);
+ it('gives a motif that cannot be cut that small fewer, larger squares', () => {
+  const { design, hardToCut } = generate({ mode: 'figure', name: 'Bell', contours: bell.contours as Ring[], colors, style: 'motifs' });
+  expect(design.gridSize).toEqual({ x: 3, y: 3 });
+  expect(hardToCut).toBeUndefined();
+  const restored = parseHeartFromSVG(serializeHeartToSVG(design));
+  expect(rasterizeDesign(restored!, 240).data).toEqual(rasterizeDesign(design, 240).data);
+ }, 30000);
+ it('lays the motif in the centre square of a regular board, with equal squares around it', () => {
+  for (const [name, motif] of Object.entries({ star, tree, gift, cat })) {
+   const { design, hardToCut } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], colors, style: 'squares' });
+   expect(design.gridSize, name).toEqual({ x: 3, y: 3 });
+   expect(hardToCut, name).toBeUndefined();
+   // Every cut leaves the paper edge along a line of the board and runs one
+   // whole square before turning at a corner of the motif's square, and back.
+   const rect = inferOverlapRect(design.fingers, design.gridSize);
+   const board = ({ x, y }: { x: number; y: number }) => [(x - rect.left) / rect.width * 3, (y - rect.top) / rect.height * 3];
+   for (const { segments } of design.fingers.filter(f => f.segments.length > 1))
+    for (const { p0, p3 } of [segments[0], segments[segments.length - 1]])
+     for (const v of [...board(p0), ...board(p3)]) expect(Math.abs(v - Math.round(v)), name).toBeLessThan(1e-6);
+  }
+ }, 30000);
+ it('lays the circle on a regular five-strip board, every square outside it equal', () => {
+  for (const [name, motif] of Object.entries({ star, tree, cat, gift })) {
+   const { design, hardToCut } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], colors, style: 'board' });
+   expect(design.gridSize, name).toEqual({ x: 5, y: 5 });
+   expect(hardToCut, name).toBeUndefined();
+   // Every cut leaves the paper edge along a line of the board, straight
+   // across the paper or to the circle (unlike the santa heart's lines).
+   const rect = inferOverlapRect(design.fingers, design.gridSize);
+   const board = ({ x, y }: { x: number; y: number }) => [(x - rect.left) / rect.width * 5, (y - rect.top) / rect.height * 5];
+   const lines = new Set<number>();
+   for (const { segments } of design.fingers.filter(f => f.id.includes('cut')))
+    for (const { p0, p3 } of [segments[0], segments[segments.length - 1]]) {
+     const [a, b] = [board(p0), board(p3)], axis = Math.abs(a[0] - b[0]) < 1e-6 ? 0 : 1;
+     expect(Math.abs(a[axis] - b[axis]), name).toBeLessThan(1e-6);
+     expect(Math.abs(a[axis] - Math.round(a[axis])), name).toBeLessThan(1e-6);
+     lines.add(Math.round(a[axis]) + 10 * axis);
+    }
+   expect(lines.size, name).toBe(8);
+  }
+ }, 30000);
+ for (const style of ['wedges', 'silhouette', 'motifs', 'squares', 'board'] as const)
+  it(`shares ${style} as one complete frame selection`, () => {
+   const state = { ...defaults, mode: 'figure' as const, style };
+   expect(readGeneratorState('#make=' + encodeURIComponent(JSON.stringify(state)))).toEqual(state);
+   expect(templateVariants(state).find(v => v.state.style === style)?.state).toEqual(state);
+  });
+ it('recomputes the new frames only for the settings they use', () => {
+  const state = { ...defaults, mode: 'figure' as const };
+  for (const [style, size, scale, spacing] of [['motifs', false, false, false], ['squares', false, false, false], ['board', false, false, false],
+   ['silhouette', false, true, true], ['wedges', true, true, true], ['fitted', true, true, false], ['rays', true, true, false]] as const) {
+   const key = geometryKey({ ...state, style });
+   expect(geometryKey({ ...state, style, frameSize: 55 }) !== key).toBe(size);
+   expect(geometryKey({ ...state, style, scale: 50 }) !== key).toBe(scale);
+   expect(geometryKey({ ...state, style, spacing: 9 }) !== key, style).toBe(spacing);
+   expect(frameGap({ ...state, style, spacing: 9 }), style).toBe(spacing ? 9 : undefined);
+  }
+  expect(readGeneratorState('#make=' + JSON.stringify({ ...state, spacing: 40 })).spacing).toBe(15);
+ });
+ it('leaves the space around the motif that the visitor sets, in the wedges and the silhouette', () => {
+  // The legs move toward the paper's corners: the wedges get shorter and the
+  // silhouette's corner checks smaller, as in the gallery's simple five-point star.
+  for (const [style, scale] of [['silhouette', .65], ['wedges', .7]] as const) {
+   const reach = (gap: number) => {
+    const { design, hardToCut } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style, scale, gap });
+    expect(hardToCut).toBeUndefined();
+    const rect = inferOverlapRect(design.fingers, design.gridSize);
+    // Where the cuts leave the paper edges, as a fraction of the side from the nearest corner.
+    return Math.min(...design.fingers.filter(f => f.id.includes('cut')).map(({ segments: [{ p0 }] }) =>
+     Math.min(Math.abs(p0.x - rect.left), Math.abs(rect.right - p0.x)) < 1e-6
+      ? Math.min(p0.y - rect.top, rect.bottom - p0.y) / rect.height : Math.min(p0.x - rect.left, rect.right - p0.x) / rect.width));
+   };
+   // The wedges' legs taper toward the corner, so they move about half as far.
+   expect(reach(9), style).toBeLessThan(reach(0) - .02);
+  }
+ }, 20000);
 });

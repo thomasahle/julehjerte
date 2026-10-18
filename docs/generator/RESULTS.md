@@ -1,5 +1,223 @@
 # Generator robustness results
 
+## Letters of one size on the checkerboard; equal squares for figures
+
+Product decisions (2026-10-18): checkerboard (Tern) letters were each scaled to
+fill their own square, so PHILIP's I stood 55% taller than the H beside it and
+MIA's I 66% taller than the M ("looks wrong"). Every letter of a text now has
+the size of its widest. Figures get equal squares too: the motif in the centre
+square of a regular 3×3 board (Lige store tern), and, with an extra layer and a
+circle like the gallery's santa heart (whose lines are not evenly spaced), the
+circle in the middle three strips of a regular 5×5 board (Cirkel · Lige store
+tern). "Cirkel · Enkel" is removed: it joined a simple solid motif at two points
+instead of four (a 2×2 heart), and for motifs with holes or several parts, which
+every circle frame already joins at two points, it differed from Stråler or Tern
+only by thinner spokes. Old links open with Stråler; its 51 fixture entries go.
+
+**Text, checkerboard (216).** 179 clean / 37 hard, no refusals (176 clean
+before). Nunito and Oswald William become hard to cut: the W sets the size, and
+the other letters are about half of what they had alone. Five texts become clean
+(Åse in Nunito, Oswald and Righteous, Kalam William, Cinzel B). When no layout
+weaves cleanly, the first is tried with all letters 5% and 10% larger: without
+that retry, eight fixture entries were lost. A result whose exported cuts keep
+narrow paper tips is compared with the first layout 5% larger (Nunito ANNA stays
+tip-free); triggering that comparison on raw rather than exported cuts had
+doubled every text's time. Clean texts: median 0.65 s (0.77 s before), p90 4.2 s.
+Hard results average 10.4 s, against 4.9 s for the same texts before, since the
+larger sizes are tried first; only the standard size's rejected cuts go on to
+the hard-to-cut fallback.
+
+**Figures, equal squares (51 motifs).** 48 clean, 2 hard (snow, bicycle), 1
+refused (Tabler's paw: five separate pads in one cell). Median 0.07 s, slowest
+3.2 s. **Circle on equal squares (51).** 44 clean, 3 hard (snow, rabbit, crown;
+the rabbit takes 29 s), 4 refused (coffee, bicycle, sun, paw: parts that neither
+one cell nor four panels connect); small motifs, the other board frame, refuses
+7. 23 motifs get the santa-sized circle reaching into the outer squares (the
+cat, horse, house, flowers, smiley, gift); the convex ones, with no point of
+background where four panels can meet, the smaller circle (star, heart, tree,
+bell). Every straight cut of both frames lies on the board (tested).
+**Space around the figure.** With the page's default 3% gap the silhouette and
+the wedges stay 51 / 51 clean. The fixture now has **1,672** entries: the plain circle's 51 and the
+two Williams leave it; 5 checkerboard texts and 92 equal-squares figures join.
+
+## Equal squares on a regular board, as in Brodal's hearts
+
+Product decision (2026-10-18): "Lige store tern" must mean what Gerth Stølting
+Brodal's hearts show, one size of square across the whole heart. Square cells
+had square checks, but not equal ones: each letter's cell moved up or down with
+its accent or descender, the text was scaled to fit a circle so the outer strips
+had another width, and the fallback recipes split letters into uneven panels.
+Square cells without a frame now lie on a regular board: each cell is one
+square's diagonal wide, a line of k characters on the middle row of k + 2
+strips (JUL and amy on 5×5, like Brodal's JUL) and a block on columns + rows + 1.
+Every straight grid cut lies on the board (checked numerically). Only recipes
+that keep cells whole or split into square panels run; when those fail, the
+letters may be 5% or 10% larger inside their unchanged cells. One-line words are
+24–58% larger than with the old square cells. Letter-sized cells without a frame
+now fill the heart like the board instead of a circle, so they stay at least as
+large as the square ones (a single letter equally large).
+
+**Text, square cells (432 configurations).** Close 185 clean / 31 hard,
+spacious 170 / 46, no refusals. Compared with the uneven square cells this is
+10 and 22 fewer clean results: mostly the handwriting font (Kalam) and accented
+words, whose letters needed their outer connections moved (or panels split
+unevenly), which the regular board does not allow. They remain hard-to-cut
+results with the usual warning, and their letter-sized pair is clean. Those 32
+square-cell entries leave the acceptance fixture, since square cells now mean
+the regular board. **Letter-sized cells (432).** Close 200 / 16, spacious 198 /
+18: no acceptance lost, and Cinzel JULEMAND newly clean. Times: median 0.1 s,
+p90 5 s, slowest 24 s. The fixture now has **1,628** entries.
+
+## Square or larger letters by choice; packed checkerboards on smaller boards
+
+Product decisions (2026-10-18): which cells look better depends on the word
+(square ones for J / UL / L, whose fitted checks become slanted rectangles;
+fitted ones for lowercase jul, which square cells shrink to 61%), so the
+close and spacious frames each come as a pair in the picker, square cells by
+default. The circle keeps the automatic choice. Checkerboard lines first fill
+their rows, so a triangle such as JUL / ul / b packs into a tip; and a 3×3
+board may now use neighbouring junctions, so a full 3×3 diamond and the
+3-2-1 triangle no longer need 4×4.
+
+**Neighbouring junctions.** A junction's group switches only the pieces of its
+four grid edges between the junction and its connections; from outside it
+passes one cut of each sheet straight through, like a plain crossing. Two
+junctions on one edge therefore compose when each keeps its connections in its
+own half (connections up to a quarter square stay, farther ones are pulled in).
+On 3×3 the four junctions are the corners of the centre square and each tip
+square touches only one, so the tips needed this. It is used only when a board
+connects no other way; the next board, without it, follows as the fallback, and
+letter cells are now cached per board size (one text's layouts can now differ
+in size; without that, a failed 3×3 attempt fed 3×3 letters to the 4×4 one).
+
+**Text (1,296 configurations: 36 texts × 6 fonts × 6 frames).** Close, square
+cells 183 clean / 21 hard; close, letter-sized 187 / 17; spacious, square 180 /
+24; spacious, letter-sized 186 / 18. No refusals. The letter-sized results equal
+the earlier automatic ones; every earlier clean close or spacious entry is clean
+in at least one of its pair. No corpus text changes its checkerboard placement
+or board. The two added texts, J / UL / JUL / UL / J and JUL / JU / L, are clean
+in all 72 of their configurations, on 3×3 in the checkerboard (under a second
+each). A comparison of 30 further 3×3-shaped texts (five texts × six fonts)
+against the earlier rule: 19 now use 3×3 cleanly (three of them were hard on
+4×4), two fall back to a clean 4×4, nine stay hard as before; none got worse.
+Hard texts of this shape take longer, because the 3×3 layouts are tried in
+full first (Cinzel S / OS / SOS 3.4 s → 14 s).
+
+The acceptance fixture renames the close and spacious entries to their pairs
+and adds the new texts: **1,659** entries.
+
+## Frames from real hearts, square checks and up to six lines
+
+Product decisions (2026-10-17): a photo study of 435 real figure hearts found
+no diamond, hexagon, oval, soft-diamond or scalloped centre panel, so those five
+shapes are gone from both figure and text frames (old links open with the
+circle). Three frames real hearts do use were added: **wedges** (a quarter of
+them), a **large silhouette** and **small repeated motifs**. Background checks
+should be squares, symmetric motifs should get symmetric frames, the text box
+takes six lines, and the checkerboard keeps lines centred before the block.
+
+**Figures (510 configurations, 51 motifs × 10 frames).** Rays, checks, plain,
+checked tips and the double border: 51 clean each. Sunburst: 50 clean, the
+coffee cup hard (as before). Close-fitting: **51 clean**, up from 48: tied
+extremes (a star's two lower tips) first share a symmetric gate, kept only when
+it leaves no needle-sharp paper; the butterfly now gets a 5×5 grid, and the
+two multi-part motifs no cell grid connects (bicycle, coffee cup) fall back to
+three lanes ending above and below the motif (4×4), with the frame's legs from
+there, after the close-fitting retries.
+Wedges: 51 clean (wedge tips 3, then 1.5, then 0 units from the motif).
+Large silhouette: 51 clean. Small motifs: 41 clean, 3 hard (snow, Tabler paw
+and butterfly) and 7 refused (Phosphor butterfly, rabbit, coffee, bicycle,
+crown, sun, Tabler gift: too detailed for a checker square even on 2×2). Boards
+used: 4×4 for 19 motifs, 3×3 for 14, 2×2 for 11. Times, on a shared machine at
+load 25–35: median 0.17 s for the other frames, 3.1 s for small motifs (p90
+15 s; the slowest, 58 s, is the refused rabbit). No earlier acceptance was lost.
+
+**Text (816 configurations).** Woven 187 clean / 17 hard, spacious 186 / 18,
+circle 188 / 16, checkerboard 164 / 40. No refusals (Cinzel Hej! in the
+spacious frame was refused by fitted cells and is now a hard result through
+the square-cell last resort) and no lost acceptances. Square cells are as wide
+as the widest letter, so narrow letters leave gaps: William keeps only 54% of
+its letter size, JUL 79%. Square cells are therefore the first, quick attempt
+only when they keep at least 85% of the letter size (ANNA, J / UL / L); other
+words start with the established fitted cells and try square ones before a
+hard result. Either way a word's earlier clean result is kept. Woven, spacious
+and circle text take a median of 0.1 s (p90 5.5 s, slowest 35 s for a hard
+Cinzel word) on the loaded machine. The checkerboard's new placement order changed no
+acceptance; its one regression (Bree Serif Å alone) is fixed by trying the next
+placement before a hard result. Cinzel 2026 is newly clean in the woven and
+spacious frames. The acceptance fixture keeps the 1,076 entries of the remaining
+frames and adds 148 (51 wedges, 51 silhouettes, 41 small motifs, three
+close-fitting figures, two texts): **1,224** entries.
+
+**Validation.** Type check: zero errors (the seven existing Svelte warnings).
+Lint and the production build pass. The full unit run (one worker) passes all
+**1,049** tests in 72 files, and the inverse suite all 177. On the way, forced
+symmetric gates had changed two close-fitting results (Tabler butterfly tips,
+sailboat grid); keeping symmetric gates only when they add no needle-sharp
+paper, and trying lanes after the close-fitting retries, restored both. The
+figure picker was checked in the browser at 1,400 and 390 px, in Danish and
+English. Six lines work in every text frame: six lines of ten letters make a
+clean 17-strip woven, spacious or circle heart in under a second, and a clean
+13×13 checkerboard in 27 s.
+
+## Never refuse a weavable heart; one checkerboard without repetition
+
+Product decisions (2026-10-17): keep exact glyph outlines and do not refuse a
+heart whose weave and picture can be made. Instead show a warning that names
+the letters making it hard to cut, so the visitor can change them. Remove the
+repeating letter frame ("Gentag som mønster"); the checkerboard frame ("Tern",
+formerly "Gentag med tern") places the typed text once.
+
+**Why the refusals happened.** Cinzel caused 179 of the 262 corpus refusals.
+Its serif terminals are narrower than the paper clearance at the sizes these
+words need. Each such terminal needs its own gate connection at its tip (an
+invisible chord from the tip would leave a sliver), and a four-port letter cell
+has four gates. At the failing sizes Cinzel E, e, F and R have five thin
+terminals and f has six; 120 of the 256 text refusals contained a letter cell
+with more than four. No connection choice can make those cuts clear.
+
+**Hard-to-cut results.** When every clean construction fails, the generator
+finishes the rejected constructions with cuts at least 10%, 3% or 1% of the
+clearance apart, keeping exact outlines, frame, topology and fidelity checks,
+and returns the one keeping the widest spacing, then the fewest strips with
+narrow paper, then the fewest sharp tips. The editor's check gained an optional
+resolution: bends and loops shorter than the full clearance stay part of one
+cut at every spacing; without it, tiny glyph edges were flagged at 1%. The
+result names the letters beside its narrow paper, found by matching placed
+outlines to glyph contours. Examples: Cinzel circle OSCAR (S, R), Sofie (S, f,
+e), JULEMAND (E), 2026 (6), A-B (B), ÆØÅ (Æ); the coffee cup in hexagon-rays
+(no letters). Clean results never take this path.
+
+**Checkerboard.** The heart shows the board turned 45°, so each typed line now
+sits on one horizontal row of the diamond, on the smallest board that fits:
+JUL and abc are 3×3, ANNA 4×4, OSCAR 5×5, GOD JUL 7×7; abc / def needs 4×4 with
+abc half a square left. Odd sides needed the 2×2 letter groups to move: each
+letter joins a grid junction at one of its corners, junctions never share a grid
+edge, and a letter between two junctions at opposite corners keeps a short
+coincident cut across its other corner. The three best junction choices are
+tried in turn when a letter leaves narrow paper; that fixed Kalam EMMA. All
+**204** corpus configurations produce a design: **164 clean, 40 hard to cut,
+none refused or invalid** (median 0.76 s, slowest 9.2 s, one process), against
+154 / 50 for the previous rows. Two earlier clean results are now hard: Oswald
+GLÆDELIG / JUL (both G's are forced to their side corners at the ends of the
+widest row) and Kalam JULE / MAND (M at its top corner in every choice). The
+acceptance fixture follows the new checkerboard set: **2,766** entries.
+
+**Audit.** Regenerating all 2,231 accepted framed text and figure designs found
+no visibly cropped letter or motif. 22 hexagon figure motifs cross the hexagon
+line by up to 2.3 units, but that line is an invisible guide inside the rays;
+every ink pixel outside it renders correctly.
+
+**Validation.** Type check: zero errors (the seven existing Svelte warnings).
+Lint and production build pass. The full unit run (one worker, 631 s) passed
+1,186 of 1,187 tests; the failure was the old expectation that an extremely
+thin figure ring is refused, which now returns a hard-to-cut result, and its
+updated test passes. The inverse suite passes all 177 tests.
+
+Not yet done: a full retest of the remaining baseline refusals (paused to keep
+the shared machine responsive), and constructions for the few cases with no
+valid topology at any spacing, such as some figures in the close-fitting circle.
+
 ## Fit difficult branched text within the selected frame
 
 Four additional configurations now pass: Cinzel **ME** and **EM** in the

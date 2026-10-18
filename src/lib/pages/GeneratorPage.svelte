@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount, untrack } from 'svelte';
 	import { GeometryCache, geometryKey } from '$lib/generator/cache';
-	import { figureTemplates, templateVariants } from '$lib/generator/templates';
+	import { FIGURE_TEMPLATES, TEXT_TEMPLATES, templateVariants } from '$lib/generator/templates';
 	import {
 		motifLabel,
 		matchingMotifs,
@@ -19,31 +19,26 @@
 	import { goto, replaceState } from '$app/navigation';
 	import PageHeader from '$lib/components/PageHeader.svelte';
 	import GeneratorFrameIcon from '$lib/components/GeneratorFrameIcon.svelte';
+	import DesignStart, { type StartArt } from '$lib/components/DesignStart.svelte';
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
 	import { href, editorHref, otherLanguage } from '$lib/i18n/routes';
 	import { pageTitle } from '$lib/seo';
 	import { renderHeartSvgMarkup } from '$lib/rendering/heartSvg';
 	import { handoffToDraw } from '$lib/editor/handoff';
 	import { saveUserDesign } from '$lib/stores/collection';
-	import {
-		defaults,
-		readGeneratorState,
-		normalizeText,
-		type GeneratorState
-	} from '$lib/generator/state';
+	import { defaults, readGeneratorState, normalizeText, fittedCells, TEXT_LINES, TEXT_LINE_LENGTH, type GeneratorState, frameGap, SPACED_STYLES } from '$lib/generator/state';
 	import type {
 		GeneratorResult,
 		GeneratorRequest
 	} from '$lib/generator/generate';
 	import type { Font, Ring } from '$lib/generator/geometry';
 	import {
-		ArrowRightIcon,
 		DownloadIcon,
 		PencilIcon,
 		SaveIcon
 	} from '$lib/components/icons';
 	import { Search as SearchIcon } from '@lucide/svelte';
-	let { lang }: { lang: Language } = $props();
+	let { lang, art }: { lang: Language; art: StartArt } = $props();
 	const fonts = [
 		['nunito', 'generatorFontNunito'],
 		['breeserif', 'generatorFontBree'],
@@ -51,14 +46,6 @@
 		['kalam', 'generatorFontHandwriting'],
 		['cinzel', 'generatorFontCinzel'],
 		['righteous', 'generatorFontRighteous']
-	] as const;
-	const frames = [
-		['circle', 'generatorCircle'],
-		['diamond', 'generatorDiamond'],
-		['hexagon', 'generatorHexagon'],
-		['oval', 'generatorOval'],
-		['rounded', 'generatorRounded'],
-		['scalloped', 'generatorScalloped']
 	] as const;
 
 	let config = $state<GeneratorState>({ ...defaults });
@@ -72,20 +59,33 @@
 	type Failure = { error: string; character?: string };
 	type Thumbnail = { result?: GeneratorResult; failure?: Failure };
 	let thumbnails = $state<Record<string, Thumbnail>>({});
-	let expandedTemplates = $state(false);
-	let figureChoices = $derived(figureTemplates(config, expandedTemplates));
-	const frameLabel = (frame: string) =>
-		t(frames.find((f) => f[0] === frame)![1], lang);
 	const borderNames: Record<GeneratorState['style'], TranslationKey> = {
 		rays: 'generatorRays',
+		wedges: 'generatorWedges',
+		silhouette: 'generatorSilhouette',
+		motifs: 'generatorMotifs',
+		squares: 'generatorSquareCells',
+		board: 'generatorSquareCells',
 		check: 'generatorCheck',
-		plain: 'generatorPlain',
 		sunburst: 'generatorSunburst',
 		fitted: 'generatorFitted',
 		corners: 'generatorCorners',
 		layers: 'generatorLayers'
 	};
 	const borderLabel = (style: GeneratorState['style']) => t(borderNames[style], lang);
+	const textFrameNames: Record<GeneratorState['textFrame'], TranslationKey> = {
+		woven: 'generatorDense',
+		air: 'generatorAir',
+		checkered: 'generatorCheckered',
+		circle: 'generatorCircle'
+	};
+	const cellNames: Record<GeneratorState['cells'], TranslationKey> = {
+		square: 'generatorSquareCells',
+		letters: 'generatorLetterCells'
+	};
+	/** Frames drawn around a round centre panel name the circle first. */
+	const circled = (style: GeneratorState['style']) =>
+		style === 'rays' || style === 'check' || style === 'sunburst' || style === 'board';
 
 	const failures = new GeometryCache<Failure>();
 	const errorText = (failure: Failure) => {
@@ -99,6 +99,14 @@
 						: 'generatorClearanceError';
 		return t(key, lang, { char: failure.character ?? '' });
 	};
+	const hardToCutText = (letters: string[]) =>
+		letters.length
+			? t('generatorHardToCutLetters', lang, {
+					letters: new Intl.ListFormat(lang, { type: 'conjunction' }).format(
+						letters.map((letter) => `“${letter}”`)
+					)
+				})
+			: t('generatorHardToCut', lang);
 	let displayed = $state<GeneratorResult | null>(null);
 	let result = $state<GeneratorResult | null>(null),
 		busy = $state(false),
@@ -161,7 +169,9 @@
 			frameSize: snapshot.frameSize,
 			scale: snapshot.scale / 100,
 			style: snapshot.style,
-			textFrame: snapshot.textFrame
+			textFrame: snapshot.textFrame,
+			fittedCells: fittedCells(snapshot),
+			gap: frameGap(snapshot)
 		};
 		if (snapshot.mode === 'text')
 			request.font = await asset<Font>(`fonts/${snapshot.font}.json`);
@@ -182,8 +192,13 @@
 		config = readGeneratorState(window.location.hash);
 		const mode = new URLSearchParams(window.location.search).get('mode');
 		if (mode === 'figure' || mode === 'text') config.mode = mode;
+		// A shared link pasted into an open generator changes only the hash.
+		// The page's own replaceState below never fires this event.
+		const follow = () => (config = readGeneratorState(window.location.hash));
+		window.addEventListener('hashchange', follow);
 		mounted = true;
 		return () => {
+			window.removeEventListener('hashchange', follow);
 			unsubscribe();
 			revision++;
 			worker?.terminate();
@@ -306,7 +321,7 @@
 		if (!mounted) return;
 		void geometryKey(config);
 		const snapshot = untrack(() => ({ ...config }));
-		const variants = templateVariants(snapshot, expandedTemplates);
+		const variants = templateVariants(snapshot);
 		const initial: Record<string, Thumbnail> = {};
 		const pending = variants.filter((variant) => {
 			const key = geometryKey(variant.state),
@@ -315,6 +330,8 @@
 			initial[variant.id] = { result, failure };
 			return !result && !failure;
 		});
+		// Small motifs may try several boards; prepare them after the others.
+		pending.sort((a, b) => Number(a.state.style === 'motifs') - Number(b.state.style === 'motifs'));
 		thumbnails = initial;
 		if (busy || snapshot.mode === 'start' || !pending.length) return;
 		let live = true;
@@ -338,7 +355,9 @@
 						...request,
 						frame: state.frame,
 						style: state.style,
-						textFrame: state.textFrame
+						textFrame: state.textFrame,
+						fittedCells: fittedCells(state),
+						gap: frameGap(state)
 					});
 				};
 				background.onmessage = (e) => {
@@ -421,37 +440,7 @@
 			}}
 ></PageHeader>
 {#if config.mode === 'start'}
-	<main id="main-content" class="start" tabindex="-1">
-		<div class="eyebrow">{t('generatorTitle', lang)}</div>
-		<h1>{t('generatorStart', lang)}</h1>
-		<p class="lede">{t('generatorIntro', lang)}</p>
-		<div class="start-grid">
-			<button class="start-card featured" onclick={() => chooseMode('figure')}
-				><div class="card-art figures" aria-hidden="true">
-					★ <span>♥</span> ✦
-				</div>
-				<h2>{t('generatorFigure', lang)}</h2>
-				<p>{t('generatorFigureHint', lang)}</p>
-				<ArrowRightIcon /></button
-			>
-			<button class="start-card featured" onclick={() => chooseMode('text')}
-				><div class="card-art lettering" aria-hidden="true">
-					ANNA<span>♥</span>
-				</div>
-				<h2>{t('generatorText', lang)}</h2>
-				<p>{t('generatorTextHint', lang)}</p>
-				<ArrowRightIcon /></button
-			>
-			{#each [['generatorTemplate', 'generatorTemplateHint', 'home', '▧'], ['generatorPicture', 'generatorPictureHint', 'paint', '▨'], ['generatorPaint', 'generatorPaintHint', 'paint', '✎'], ['generatorDraw', 'generatorDrawHint', 'editor', '⌘']] as const as choice (choice[0])}
-				<a class="start-card small" href={href(choice[2], lang)}
-					><span class="small-art" aria-hidden="true">{choice[3]}</span>
-					<h2>{t(choice[0], lang)}</h2>
-					<p>{t(choice[1], lang)}</p>
-					<ArrowRightIcon /></a
-				>
-			{/each}
-		</div>
-	</main>
+	<DesignStart {lang} {art} onchoose={chooseMode} />
 {:else}
 	<main id="main-content" class="workbench" tabindex="-1">
 		<section
@@ -479,7 +468,7 @@
 				<label for="heart-text">{t('generatorName', lang)}</label><textarea
 					id="heart-text"
 					class="name-input"
-					rows="3"
+					rows={Math.max(3, config.text.split('\n').length)}
 					value={config.text}
 					oninput={(event) => {
 						const value = normalizeText(event.currentTarget.value);
@@ -489,9 +478,9 @@
 					}}
 					autocomplete="off"
 					spellcheck="false"></textarea>
-				<p class="hint">{t('generatorNameHint', lang)}</p>
+				<p class="hint">{t('generatorNameHint', lang, { lines: TEXT_LINES, chars: TEXT_LINE_LENGTH })}</p>
 				<div class="examples">
-					{#each (config.textFrame === 'repeat' || config.textFrame === 'repeat-check' ? ['LOVE', 'JUL', 'ANNA'] : ['ANNA', 'JUL', 'JULE\nMAND']) as word (word)}<button
+					{#each ['ANNA', 'JUL', 'JULE\nMAND'] as word (word)}<button
 							onclick={() => (config.text = word)}>{word}</button
 						>{/each}
 				</div>
@@ -594,6 +583,9 @@
 						: ''}
 			</div>
 			{#if error}<div class="error" role="alert">{error}</div>{/if}
+			{#if result?.hardToCut}<div class="warning" role="status">
+					{hardToCutText(result.hardToCut.letters)}
+				</div>{/if}
 			{#if displayed}<p class="cut-note">
 					{t('generatorPureWeave', lang)}
 				</p>{/if}
@@ -607,11 +599,10 @@
 			{#if config.mode === 'figure'}
 				<h3>{t('generatorChooseTemplate', lang)}</h3>
 				<div class="frame-options">
-					{#each figureChoices as choice (choice.id)}
+					{#each FIGURE_TEMPLATES as choice (choice.id)}
 						<button
-							aria-label={['fitted', 'corners', 'layers'].includes(choice.style) ? borderLabel(choice.style) : `${frameLabel(choice.frame)} · ${borderLabel(choice.style)}`}
-							aria-pressed={config.frame === choice.frame &&
-								config.style === choice.style}
+							aria-label={circled(choice.style) ? `${t('generatorCircle', lang)} · ${borderLabel(choice.style)}` : borderLabel(choice.style)}
+							aria-pressed={config.style === choice.style}
 							title={thumbnails[choice.id]?.failure
 								? t('generatorTemplateUnavailable', lang)
 								: undefined}
@@ -620,70 +611,81 @@
 								config.style = choice.style;
 							}}
 						>
+							<!-- Until the thumbnail is ready, frames without a circle show a square. -->
 							<GeneratorFrameIcon
-								frame={choice.frame}
+								frame={circled(choice.style) || choice.style === 'layers' ? choice.frame : 'checkered'}
 								design={thumbnails[choice.id]?.result?.design}
 								{colors}
 								unavailable={!!thumbnails[choice.id]?.failure}
 							/>
-							{#if ['fitted', 'corners', 'layers'].includes(choice.style)}
-								{borderLabel(choice.style)}
+							{#if circled(choice.style)}
+								{t('generatorCircle', lang)}<small>{borderLabel(choice.style)}</small>
 							{:else}
-								{frameLabel(choice.frame)}<small>{borderLabel(choice.style)}</small>
+								{borderLabel(choice.style)}
 							{/if}
 						</button>
 					{/each}
 				</div>
-				<button
-					class="more template-more"
-					onclick={() => (expandedTemplates = !expandedTemplates)}
-				>
-					{t(
-						expandedTemplates
-							? 'generatorFewerTemplates'
-							: 'generatorMoreTemplates',
-						lang
-					)}
-				</button>
-				<label class="range-label" for="frame-size"
-					>{t('generatorFrameSize', lang)}<output>{config.frameSize}%</output
-					></label
-				><input
-					id="frame-size"
-					type="range"
-					min="50"
-					max="80"
-					step="1"
-					bind:value={config.frameSize}
-				/>
-				<label class="range-label" for="motif-size"
-					>{t('generatorSize', lang)}<output>{config.scale}%</output></label
-				><input
-					id="motif-size"
-					type="range"
-					min="45"
-					max="85"
-					step="1"
-					bind:value={config.scale}
-				/>
+				<!-- The frame size only scales the motif in the frames without a centre panel; small motifs and equal squares fill their squares, and the board fixes its circle and motif. -->
+				{#if !['silhouette', 'wedges', 'fitted', 'motifs', 'squares', 'board'].includes(config.style)}
+					<label class="range-label" for="frame-size"
+						>{t('generatorFrameSize', lang)}<output>{config.frameSize}%</output
+						></label
+					><input
+						id="frame-size"
+						type="range"
+						min="50"
+						max="80"
+						step="1"
+						bind:value={config.frameSize}
+					/>
+				{/if}
+				{#if SPACED_STYLES.includes(config.style)}
+					<label class="range-label" for="frame-spacing"
+						>{t('generatorSpacing', lang)}<output>{config.spacing}%</output></label
+					><input
+						id="frame-spacing"
+						type="range"
+						min="0"
+						max="15"
+						step="1"
+						bind:value={config.spacing}
+					/>
+				{/if}
+				{#if config.style !== 'motifs' && config.style !== 'squares' && config.style !== 'board'}
+					<label class="range-label" for="motif-size"
+						>{t('generatorSize', lang)}<output>{config.scale}%</output></label
+					><input
+						id="motif-size"
+						type="range"
+						min="45"
+						max="85"
+						step="1"
+						bind:value={config.scale}
+					/>
+				{/if}
 			{:else}
 				<h3>{t('generatorTextFrame', lang)}</h3>
 				<div class="frame-options">
-					{#each [['woven', 'generatorDense'], ['air', 'generatorAir'], ['repeat', 'generatorRepeat'], ['repeat-check', 'generatorRepeatCheck'], ...frames] as const as frame (frame[0])}
+					{#each TEXT_TEMPLATES as choice (choice.id)}
 						<button
-							aria-pressed={config.textFrame === frame[0]}
-							onclick={() => (config.textFrame = frame[0])}
+							aria-label={choice.cells ? `${t(textFrameNames[choice.textFrame], lang)} · ${t(cellNames[choice.cells], lang)}` : undefined}
+							aria-pressed={config.textFrame === choice.textFrame && (!choice.cells || config.cells === choice.cells)}
+							onclick={() => {
+								config.textFrame = choice.textFrame;
+								if (choice.cells) config.cells = choice.cells;
+							}}
 						>
 							<GeneratorFrameIcon
-								frame={frame[0]}
-								design={thumbnails[frame[0]]?.result?.design}
+								frame={choice.textFrame}
+								design={thumbnails[choice.id]?.result?.design}
 								{colors}
-								unavailable={!!thumbnails[frame[0]]?.failure}
-							/>{t(frame[1], lang)}
+								unavailable={!!thumbnails[choice.id]?.failure}
+							/>{t(textFrameNames[choice.textFrame], lang)}{#if choice.cells}<small>{t(cellNames[choice.cells], lang)}</small>{/if}
 						</button>
 					{/each}
 				</div>
-				{#if config.textFrame === 'repeat-check'}<p class="hint">{t('generatorRepeatCheckHint', lang)}</p>{/if}
+				{#if config.textFrame === 'checkered'}<p class="hint">{t('generatorCheckeredHint', lang)}</p>{/if}
 			{/if}
 			<div class="actions">
 				<button
@@ -722,109 +724,12 @@
 	:global(body) {
 		background: #f6f5ef;
 	}
-	.start {
-		max-width: 1130px;
-		margin: 0 auto;
-		padding: 54px 28px 70px;
-	}
 	.eyebrow {
 		text-transform: uppercase;
 		letter-spacing: 0.13em;
 		font-size: 11px;
 		font-weight: 800;
 		color: #6c8066;
-	}
-	.start > h1 {
-		font-size: clamp(32px, 4vw, 48px);
-		margin: 9px 0 8px;
-		color: #263d30;
-	}
-	.lede {
-		font-size: 17px;
-		color: #657368;
-		margin: 0 0 32px;
-	}
-	.start-grid {
-		display: grid;
-		grid-template-columns: repeat(4, 1fr);
-		gap: 18px;
-	}
-	.start-card {
-		position: relative;
-		border: 1px solid #dbe1d5;
-		border-radius: 20px;
-		background: #fffefa;
-		padding: 23px;
-		text-align: left;
-		box-shadow: 0 5px 16px #293c2405;
-		text-decoration: none;
-		color: #304b37;
-		transition:
-			transform 0.15s,
-			border-color 0.15s;
-	}
-	.start-card:hover {
-		transform: translateY(-3px);
-		border-color: #9aac8f;
-	}
-	.featured {
-		grid-column: span 2;
-	}
-	.start-card h2 {
-		font-size: 19px;
-		margin: 10px 0;
-	}
-	.start-card p {
-		font-size: 13px;
-		line-height: 1.6;
-		color: #748071;
-		padding-right: 10px;
-	}
-	.start-card :global(> svg) {
-		position: absolute;
-		right: 20px;
-		bottom: 23px;
-		width: 20px;
-	}
-	.card-art {
-		height: 135px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		border-radius: 13px;
-		background: #edf1e5;
-		font-size: 67px;
-		color: #b72f2b;
-		gap: 30px;
-	}
-	.figures span {
-		font-size: 80px;
-		color: #365943;
-	}
-	.lettering {
-		font-family: Georgia, serif;
-		letter-spacing: 0.03em;
-		font-size: 49px;
-		position: relative;
-	}
-	.lettering span {
-		font-size: 22px;
-		position: absolute;
-		top: 12px;
-		left: calc(50% - 11px);
-	}
-	.small-art {
-		font-size: 32px;
-	}
-	.small h2 {
-		font-size: 16px;
-	}
-	.small p {
-		padding: 0;
-	}
-	.small :global(> svg) {
-		bottom: 12px;
-		width: 16px;
 	}
 	.workbench {
 		display: grid;
@@ -1081,7 +986,8 @@
 		color: #8a927f;
 		max-width: 350px;
 	}
-	.error {
+	.error,
+	.warning {
 		background: #fbefe5;
 		border: 1px solid #e0cbb2;
 		color: #7a4e30;
@@ -1126,9 +1032,6 @@
 		font-size: 10px;
 		color: var(--ink-light);
 		margin-top: 2px;
-	}
-	.template-more {
-		margin: 8px 0 12px;
 	}
 	.frame-options button:hover {
 		border-color: var(--green);
@@ -1210,15 +1113,6 @@
 			display: grid;
 			grid-template-columns: 1fr;
 		}
-		.start-grid {
-			grid-template-columns: repeat(2, 1fr);
-		}
-		.featured {
-			grid-column: span 1;
-		}
-		.small {
-			grid-column: span 1;
-		}
 	}
 	@media (max-width: 650px) {
 		.workbench {
@@ -1272,47 +1166,6 @@
 		.panel h1 {
 			font-size: 21px;
 			margin: 17px 0;
-		}
-		.start {
-			padding: 30px 16px;
-		}
-		.start-grid {
-			gap: 12px;
-		}
-		.start-card {
-			padding: 16px;
-		}
-		.card-art {
-			height: 108px;
-			font-size: 39px;
-			gap: 9px;
-		}
-		.figures span {
-			font-size: 49px;
-		}
-		.lettering {
-			font-size: 30px;
-		}
-		.start-card h2 {
-			font-size: 17px;
-		}
-		.start-card p {
-			font-size: 12px;
-			padding: 0 0 7px;
-		}
-		.small h2 {
-			font-size: 15px;
-		}
-		.small-art {
-			font-size: 26px;
-		}
-		.start-card :global(> svg) {
-			right: 13px;
-			bottom: 13px;
-			width: 15px;
-		}
-		.start-card.featured :global(> svg) {
-			display: none;
 		}
 	}
 </style>

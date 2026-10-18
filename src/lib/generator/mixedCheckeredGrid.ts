@@ -2,10 +2,8 @@
  * compatible combination, with interleaved connections along its grid edges.
  * The group's boundary still has one open cut per sheet, so groups compose
  * without changing the visible checkerboard or the number of paper strips. */
-import { MAX_GRID_SIZE } from '$lib/constants';
 import { gridClearance } from '$lib/geometry/clearance';
-import { repeatedText } from './repeatedText';
-import type { checkeredGridCache } from './checkeredGrid';
+import { checkeredLayout, checkeredLetters, emptyCell, edgeReach, sharedRays, CORNER_INSETS, type checkeredGridCache } from './checkeredGrid';
 import {
 	ConstructionError, fourPortMotif, balancedFourPortMotif, twoPortMotif, usableMotif,
 	add, compile, centroid, type Font, type Ring, type Point, type Edge
@@ -19,8 +17,11 @@ const layouts = [[0, 0], [1, 0], [2, 2], [4, 0], [8, 8], [5, 0], [5, 5],
 type Cell = { origin: Point; edges: Edge[]; gates: Point[]; usable?: boolean };
 export const mixedCheckeredGridCache = () => new Map<string, Cell | false>();
 
-function contacts(quadrant: number, side: number, four: number): number[] {
+function contacts(quadrant: number, side: number, four: number, corner: boolean[]): number[] {
 	const neighbour = (quadrant + (side ? 1 : 3)) % 4;
+	// A corner cut and the square after it (never four-port) stay near the junction.
+	if (corner[quadrant]) return [CORNER_INSETS[side]];
+	if (!side && corner[neighbour]) return [CORNER_INSETS[0]];
 	const ownFour = !!(four & (1 << quadrant)), otherFour = !!(four & (1 << neighbour));
 	// Two adjacent four-port cells alternate their connections along the edge.
 	// With only one four-port cell, its two connections straddle its neighbour's.
@@ -33,45 +34,35 @@ export function generateMixedCheckeredGrid(text: string, font: Font, options: {
 	strokeTips?: boolean;
 	cache?: ReturnType<typeof mixedCheckeredGridCache>;
 	previous?: ReturnType<typeof checkeredGridCache>;
+	variant?: number;
+	fill?: number;
 } = {}) {
-	const repeated = repeatedText(text);
-	if (!repeated) throw new ConstructionError('empty', 'Empty text');
-	const letters = [...repeated.split('\n')[0]], n = letters.length * (letters.length % 2 ? 2 : 1), cell = 100 / n;
-	if (n > MAX_GRID_SIZE) throw new ConstructionError('clearance', 'Too many letters for the repeated grid');
-	const matrix = Array.from({ length: n }, (_, row) => Array.from({ length: n }, (_, col) => letters[(row + col) % letters.length]));
-	const glyphs = [...new Set(matrix.flat())].map(char => {
-		if (!font.glyphs[char]) throw new ConstructionError('character', char);
-		return font.glyphs[char];
-	});
-	const points = glyphs.flatMap(g => g.contours.flat());
-	if (!points.length) throw new ConstructionError('empty', 'No letter outlines');
-	const minY = Math.min(...points.map(p => p[1])), maxY = Math.max(...points.map(p => p[1])), cy = (minY + maxY) / 2;
+	const { matrix, groups, letterGroup } = checkeredLayout(text, options.variant), n = matrix.length, cell = 100 / n;
+	const letter = checkeredLetters(matrix, font, options.fill ?? .82);
 	const margin = gridClearance(n), cache = options.cache ?? mixedCheckeredGridCache();
 	const edges: Edge[] = [], artwork: Ring[] = [];
 	const flips: { axis: number; line: number; from: number; to: number }[] = [];
 	const placements = matrix.map((line, row) => line.map((char, col) => {
-		const glyph = font.glyphs[char], xs = glyph.contours.flat().map(p => p[0]);
-		const cx = (Math.min(...xs) + Math.max(...xs)) / 2;
-		const scale = cell * .82 / ((maxY - minY + Math.max(...xs) - Math.min(...xs)) * Math.SQRT1_2);
-		const contours = glyph.contours.map(r => r.map(([x, y]): Point => [
-			(col + .5) * cell + ((x - cx) + (y - cy)) * Math.SQRT1_2 * scale,
-			(row + .5) * cell + ((y - cy) - (x - cx)) * Math.SQRT1_2 * scale
-		]));
-		artwork.push(...contours);
 		if ((row + col) % 2) artwork.push([[col * cell, row * cell], [(col + 1) * cell, row * cell],
 			[(col + 1) * cell, (row + 1) * cell], [col * cell, (row + 1) * cell]]);
+		if (char === undefined) return [];
+		const contours = letter(char, row, col);
+		artwork.push(...contours);
 		return contours;
 	}));
-	const pieceAt = (row: number, col: number, four: number): Cell | false => {
-		const q = row % 2 ? col % 2 ? 0 : 1 : col % 2 ? 3 : 2;
+	const pieceAt = (g: number, q: number, four: number, corner: boolean[]): Cell | false => {
+		const [row, col] = groups[g].cells[q];
 		const origin: Point = [col * cell, row * cell];
-		const owner: Point = [(Math.floor(col / 2) * 2 + 1) * cell, (Math.floor(row / 2) * 2 + 1) * cell];
+		const owner: Point = [groups[g].x * cell, groups[g].y * cell];
+		const shared = sharedRays(groups, g), reach = `${n}:${Number(shared[q])}${Number(shared[(q + 1) % 4])}`;
 		const contact = (ray: number, d: number): Point => [
-			owner[0] + [1, 0, -1, 0][ray] * cell * d, owner[1] + [0, 1, 0, -1][ray] * cell * d
+			owner[0] + [1, 0, -1, 0][ray] * cell * edgeReach(d, shared[ray]),
+			owner[1] + [0, 1, 0, -1][ray] * cell * edgeReach(d, shared[ray])
 		];
-		const first = contacts(q, 0, four), second = contacts(q, 1, four), char = matrix[row][col];
+		const first = contacts(q, 0, four, corner), second = contacts(q, 1, four, corner);
+		const char = corner[q] ? undefined : matrix[row][col];
 		const hasFour = first.length === 2;
-		const baseKey = `${char}:${q}:${first}:${second}:${Number(hasFour && !!options.balanced)}`;
+		const baseKey = `${char}:${q}:${reach}:${first}:${second}:${Number(hasFour && !!options.balanced)}`;
 		const key = baseKey + (options.strokeTips ? ':tips' : '');
 		if (cache.has(key)) return cache.get(key)!;
 		if (options.strokeTips) {
@@ -79,10 +70,16 @@ export function generateMixedCheckeredGrid(text: string, font: Font, options: {
 			if (prior && (prior.usable ??= usableMotif(prior.edges, prior.gates, margin))) return prior;
 		}
 		const gates = [...first.map(d => contact(q, d)), ...second.slice().reverse().map(d => contact((q + 1) % 4, d))];
+		// A square without a letter keeps only the two-port pairing.
+		if (char === undefined) {
+			const result = hasFour ? false : { origin, edges: emptyCell(gates), gates };
+			cache.set(key, result);
+			return result;
+		}
 		// Reuse the original two-port pass where its connection positions match.
 		// The alternate pass changes only four-port routing; two-port cells and
 		// failed local routes stay cached across all group-layout choices.
-		const previous = !hasFour && !options.strokeTips ? options.previous?.get(`${char}:${q}:${first[0]},${second[0]}:0:0`) : undefined;
+		const previous = !hasFour && !options.strokeTips ? options.previous?.get(`${char}:${q}:${reach}:${first[0]},${second[0]}:0:0`) : undefined;
 		if (previous) { cache.set(key, previous); return previous; }
 		const contours = placements[row][col], local: Edge[] = [], center = centroid(contours.flat());
 		try {
@@ -99,14 +96,17 @@ export function generateMixedCheckeredGrid(text: string, font: Font, options: {
 			return false;
 		}
 	};
-	for (let row = 0; row < n; row += 2) for (let col = 0; col < n; col += 2) {
-		const cells = [[row + 1, col + 1], [row + 1, col], [row, col], [row, col + 1]];
-		const owner: Point = [(col + 1) * cell, (row + 1) * cell];
+	for (const [g, { x, y, cells }] of groups.entries()) {
+		const owner: Point = [x * cell, y * cell], shared = sharedRays(groups, g);
+		const corner = cells.map(([r, c]) => matrix[r][c] !== undefined && letterGroup.get(`${r},${c}`) !== g);
+		// Four-port squares stay clear of corner cuts and the squares after them.
+		const near = corner.reduce((mask, cut, q) => cut ? mask | 1 << q | 1 << (q + 1) % 4 | 1 << (q + 3) % 4 : mask, 0);
 		let selected: { four: number; phase: number; pieces: Cell[] } | undefined;
 		for (const [four, phase] of layouts) {
+			if (four & near) continue;
 			const pieces: Cell[] = [];
-			for (const [r, c] of cells) {
-				const piece = pieceAt(r, c, four);
+			for (const q of cells.keys()) {
+				const piece = pieceAt(g, q, four, corner);
 				if (!piece || !(piece.usable ??= usableMotif(piece.edges, piece.gates, margin))) break;
 				pieces.push(piece);
 			}
@@ -119,9 +119,9 @@ export function generateMixedCheckeredGrid(text: string, font: Font, options: {
 			const move = (p: Point): Point => [p[0] + origin[0] - piece.origin[0], p[1] + origin[1] - piece.origin[1]];
 			edges.push(...piece.edges.map(e => ({ ...e, from: move(e.from), to: move(e.to),
 				family: phase & (1 << q) && e.family !== 'AB' ? e.family === 'A' ? 'B' : 'A' : e.family })));
-			for (const side of [0, 1]) for (const d of contacts(q, side, four)) {
+			for (const side of [0, 1]) for (const d of contacts(q, side, four, corner)) {
 				const ray = (q + side) % 4, axis = ray % 2;
-				const coordinate = owner[axis] + [1, 1, -1, -1][ray] * cell * d;
+				const coordinate = owner[axis] + [1, 1, -1, -1][ray] * cell * edgeReach(d, shared[ray]);
 				flips.push({ axis, line: owner[1 - axis], from: Math.min(owner[axis], coordinate), to: Math.max(owner[axis], coordinate) });
 			}
 		}

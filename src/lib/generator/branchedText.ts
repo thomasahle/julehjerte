@@ -95,13 +95,13 @@ function placeBranchedText(text: string, font: Font, frame: Frame, frameFill: nu
 	if (!(span > 0)) throw new ConstructionError('empty', 'Empty text');
 	return placed.map(g => normalizeContours(g.map(r => r.map(([x, y]): Point =>
 		[(x - cx) / span, (y - cy) / span]))).map(r => r.map(([x, y]): Point =>
-		[x * 80 * frameFill * (frame === 'oval' ? .75 : 1), y * 80 * frameFill * (frame === 'oval' ? .75 : 1)])));
+		[x * 80 * frameFill, y * 80 * frameFill])));
 }
 
-/** Existing wide layouts can cross a concave frame even when their bounding
- * boxes fit. Shrink the complete unchanged outlines together about the frame
- * centre, then leave room for the outside connections. These frames are
- * star-shaped about their centre, so containment is monotone in this scale.
+/** Existing wide layouts can cross the frame even when their bounding boxes
+ * fit. Shrink the complete unchanged outlines together about the frame centre,
+ * then leave room for the outside connections. The circle is star-shaped about
+ * its centre, so containment is monotone in this scale.
  * Return no extra recipe when the established smaller layout already fits. */
 export function fittedBranchedTextFill(text: string, font: Font, frame: Frame): number | undefined {
 	const artwork = placeBranchedText(text, font, frame, 1).flat().map(r => r.map(uprightToSheet)),

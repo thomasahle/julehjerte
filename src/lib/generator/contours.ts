@@ -1,7 +1,7 @@
 import { type Ring, type Point, cross, sub, dot, mix, distance, inside } from './geometry';
 
-/** Check complete outline segments against a possibly concave frame. Testing
- * vertices or a few samples can miss an excursion through a narrow scallop. */
+/** Check complete outline segments against a frame, which need not be convex.
+ * Testing vertices or a few samples can miss an excursion between them. */
 export function contoursWithinBoundary(rings: Ring[], boundary: Ring): boolean {
 	if (boundary.length < 3) return false;
 	const edges = boundary.map((a, i) => ({ a, b: boundary[(i + 1) % boundary.length] }));

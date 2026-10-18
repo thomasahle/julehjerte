@@ -3,17 +3,17 @@ import { generateLayeredFigure } from './layers';
 import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
 import { generateFittedFigure } from './fitted';
 import { sunburstBorder } from './sunburst';
-import { generateTextGrid } from './textGrid';
+import { generateTextGrid, squareCellScale } from './textGrid';
 import { generateBranchedText, hasOverlappingTextBranches, fittedBranchedTextFill } from './branchedText';
-import { generateRepeatedGrid, repeatedGridCache } from './repeatedGrid';
-import { generateCheckeredGrid, checkeredGridCache } from './checkeredGrid';
+import { generateCheckeredGrid, checkeredGridCache, checkeredLayouts } from './checkeredGrid';
 import { generateMixedCheckeredGrid, mixedCheckeredGridCache } from './mixedCheckeredGrid';
 import { cutTipCounts, fewerCutTips } from './cutQuality';
+import { trickyLetters } from './trickyLetters';
 import { normalizeContours } from './contours';
 import { gridClearance, gridClearanceScale } from '$lib/geometry/clearance';
-import { generatePanelFigure } from './panels';
+import { generatePanelFigure, backgroundJunctions } from './panels';
 import { generateComponentFigure } from './components';
-import { generateComponentLanes, hasStackedComponents } from './componentLanes';
+import { generateComponentLanes } from './componentLanes';
 import { rerouteSharedCuts, rerouteFrameCuts } from './sharedCuts';
 import { curveSharedCuts, curveSharpSharedTips } from './curvedCuts';
 import {
@@ -49,6 +49,11 @@ import {
 	frameRing,
 	type Ring,
 	type Frame,
+	type FigureStyle,
+	type OpenFrame,
+	FITTED,
+	WEDGES,
+	SILHOUETTE,
 	type TextFrame,
 	type Font,
 	type Point,
@@ -64,13 +69,47 @@ export type GeneratorRequest = {
 	frame?: Frame;
 	frameSize?: number;
 	scale?: number;
-	style?: 'rays' | 'check' | 'plain' | 'sunburst' | 'fitted' | 'corners' | 'layers';
+	style?: FigureStyle;
 	textFrame?: TextFrame;
+	/** How far the legs of a frame without a centre panel stop short of the
+	 * motif (the wedges' tips, the silhouette's corner checks), when not the
+	 * frame's own gap. */
+	gap?: number;
+	/** Letter cells fitted to their letters instead of square ones. */
+	fittedCells?: boolean;
 };
 export type GeneratorResult = {
 	design: HeartDesign;
 	recipe: 'silhouette' | 'nested' | 'letters';
+	/** The weave and picture are valid, but some paper is narrower than the
+	 * usual cutting clearance. Shown with a warning naming the letters that
+	 * cause it (none for figures), instead of being refused. `spacing` is the
+	 * fraction of the clearance that every cut still keeps. */
+	hardToCut?: { letters: string[]; spacing: number };
 };
+/** The frame without a centre panel that a figure request selects, if any. */
+function openFrame(request: GeneratorRequest): OpenFrame | undefined {
+	if (request.mode !== 'figure') return;
+	return request.style === 'fitted' ? FITTED : request.style === 'wedges' ? { ...WEDGES, gap: request.gap ?? WEDGES.gap }
+		: request.style === 'silhouette' ? { ...SILHOUETTE, gap: request.gap ?? SILHOUETTE.gap } : undefined;
+}
+/** The largest motif keeps this distance (in the 100-unit square) from the
+ * paper edges, room for its corner checks and for cutting along its outline. */
+const SILHOUETTE_MARGIN = 6;
+/** A silhouette frame scales the motif to fill the square. The size setting,
+ * up to its 85% maximum, is the fraction of that largest size. */
+export function fillSquare(request: GeneratorRequest): GeneratorRequest {
+	if (request.mode !== 'figure' || request.style !== 'silhouette') return request;
+	const points = normalizeContours(request.contours ?? []).flat();
+	if (!points.length) return request;
+	// The square is |x| + |y| ≤ 50√2 in the upright coordinates of the heart.
+	const reach = Math.max(...points.map(([x, y]) => Math.abs(x) + Math.abs(y)));
+	const largest = (50 * Math.SQRT2 - SILHOUETTE_MARGIN) / reach;
+	return { ...request, frameSize: 100, scale: largest / 100 * Math.min(1, (request.scale ?? .7) / .85) };
+}
+/** Paper a hard-to-cut result keeps, as fractions of the grid clearance, from
+ * widest to narrowest. Cuts on one sheet never cross or touch at any of them. */
+export const HARD_TO_CUT_SPACINGS = [.1, .03, .01] as const;
 function pointDistance(p: Point, a: Point, b: Point) {
 	const d = sub(b, a),
 		t = Math.max(
@@ -292,17 +331,18 @@ type Construction = ReturnType<typeof generateFigure> & {
 };
 
 function finishConstruction(request: GeneratorRequest, r: Construction, recipe: GeneratorResult['recipe'],
-	geometry = r.geometry, curveFitter?: ReturnType<typeof createExactCurveFitter>): GeneratorResult {
+	geometry = r.geometry, curveFitter?: ReturnType<typeof createExactCurveFitter>, spacing = 1,
+	precheck = request.mode !== 'text'): GeneratorResult {
 	const curved = geometry !== r.geometry;
 	// The polygon prechecks describe the original straight cuts. A curved retry
 	// is checked on its actual cubics by the complete converter below.
 	if (!curved) audit(r.edges);
-	const clearanceScale = gridClearanceScale(
+	const resolutionScale = gridClearanceScale(
 		r.geometry.A_overlap_paths.length + 1,
 		r.geometry.B_overlap_paths.length + 1
-	);
+	), clearanceScale = resolutionScale * spacing;
 	// Avoid expensive curve fitting when cuts already leave a severe sliver.
-	if (!curved && request.mode !== 'text' && hasSeverePinch(r.geometry, clearanceScale))
+	if (!curved && spacing === 1 && precheck && hasSeverePinch(r.geometry, clearanceScale))
 		throw new ConstructionError(
 			'clearance',
 			'The original cuts have a severe pinch'
@@ -314,8 +354,9 @@ function finishConstruction(request: GeneratorRequest, r: Construction, recipe: 
 		tolerance: 0.025,
 		curveFitter,
 		reuseTranslatedFits: curved || request.mode === 'text' &&
-			(request.textFrame === 'repeat' || request.textFrame === 'repeat-check'),
+			request.textFrame === 'checkered',
 		clearanceScale,
+		resolutionScale,
 		overlapAspectRatio: r.overlapAspectRatio
 	});
 	const domain = r.domain ?? [
@@ -344,10 +385,103 @@ function improveSharedConnections(result: GeneratorResult): GeneratorResult {
 	return { ...result, design };
 }
 
+export function generate(request: GeneratorRequest): GeneratorResult {
+	const alternatives = frameAlternatives(request);
+	if (alternatives.length === 1) return generateOnce(alternatives[0].request);
+	// A figure names no letters, only that its paper is narrow.
+	const named = (result: GeneratorResult) => result.hardToCut && request.mode === 'figure'
+		? { ...result, hardToCut: { ...result.hardToCut, letters: [] } } : result;
+	// Prefer a clean alternative to a hard-to-cut earlier one. Only when none
+	// is clean is the first hard-to-cut alternative finished, and only when
+	// none is even that are the last resorts tried.
+	const hard: (() => GeneratorResult | undefined)[] = [];
+	let last: unknown;
+	for (const { request: alternative, retries, lastResort } of alternatives) {
+		if (lastResort) continue;
+		try {
+			// Identical small motifs gain little from other junctions; a
+			// smaller board is the better next choice.
+			return generateOnce(alternative, finish => hard.push(finish), 1, retries);
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			last = error;
+		}
+	}
+	for (const finish of hard) {
+		const result = finish();
+		if (result) return named(result);
+	}
+	for (const { request: alternative, lastResort } of alternatives) {
+		if (!lastResort) continue;
+		try {
+			return named(generateOnce(alternative));
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			last = error;
+		}
+	}
+	throw last;
+}
+
+/** The motif in place of a letter, so that it repeats on the checkerboard:
+ * on every square of one colour of a 4×4 board, else three across the middle
+ * of a 3×3 board, else two above each other on a 2×2 board. Each line is one
+ * row of the heart's diamond, as in the text frame. */
+const MOTIF = '*', MOTIF_PATTERNS = ['*\n  \n***\n    \n***\n  \n*', '***', '*\n  \n*'];
+
+/** Square text cells are worth letters this much of their fitted size. */
+const SQUARE_CELL_SCALE = .85;
+
+/** The requests a frame tries in turn. Small motifs move to smaller boards;
+ * wedges move nearer the motif, until they touch it; text fits its cells.
+ * An alternative without `retries` is tried with the standard recipes only;
+ * a last resort only when no other alternative gives even a hard-to-cut heart. */
+function frameAlternatives(request: GeneratorRequest): { request: GeneratorRequest; retries: boolean; lastResort?: boolean }[] {
+	if (request.mode !== 'figure') {
+		const frame = request.textFrame ?? 'woven';
+		if (frame === 'checkered' || !request.font) return [{ request, retries: true }];
+		// The visitor's choice of cells comes first. The other kind remains
+		// rather than refusing.
+		if (request.fittedCells !== undefined) return [{ request, retries: true },
+			{ request: { ...request, fittedCells: !request.fittedCells }, retries: true, lastResort: true }];
+		// Otherwise square cells keep the checks square, unless they would make
+		// the letters much smaller than cells fitted to them; narrow letters
+		// then start with fitted cells. Square cells with every recipe remain,
+		// rather than refusing.
+		const square = { request, retries: false }, fitted = { request: { ...request, fittedCells: true }, retries: true };
+		return [...squareCellScale(request.text ?? '', request.font, frame === 'air') >= SQUARE_CELL_SCALE
+			? [square, fitted] : [fitted, square], { request, retries: true, lastResort: true }];
+	}
+	if (request.style === 'motifs' || request.style === 'squares') {
+		const contours = normalizeContours(request.contours ?? []);
+		if (!contours.length) throw new ConstructionError('empty', 'No contour');
+		const font: Font = { glyphs: { [MOTIF]: { advance: 1, contours } } };
+		// Equal squares: the motif is the one letter of the woven text frame
+		// with square cells, the centre square of a regular board. Cells fitted
+		// to it remain rather than refusing.
+		if (request.style === 'squares') return [false, true].map(fittedCells => ({ retries: true, lastResort: fittedCells, request:
+			{ mode: 'text', name: request.name, colors: request.colors, text: MOTIF, font, textFrame: 'woven', fittedCells } }));
+		return MOTIF_PATTERNS.map(text => ({ retries: true, request:
+			{ mode: 'text', name: request.name, colors: request.colors, text, font, textFrame: 'checkered' } }));
+	}
+	// Wedges, and a silhouette given space around it, move nearer the motif
+	// when the space asked for cannot be cut, until they touch it.
+	if (request.style === 'wedges' || request.style === 'silhouette' && request.gap) {
+		const gap = request.gap ?? WEDGES.gap;
+		return [...new Set([gap, gap / 2, 0])].map(gap => ({ request: fillSquare({ ...request, gap }), retries: true }));
+	}
+	return [{ request: fillSquare(request), retries: true }];
+}
+
 /** Retry completed constructions after all established recipes fail.
  * Moving coincident cuts preserves the artwork and graph endpoints; the entire
- * result must pass the same topology, spacing and fidelity checks again. */
-export function generate(request: GeneratorRequest): GeneratorResult {
+ * result must pass the same topology, spacing and fidelity checks again.
+ * `deferHard` takes the hard-to-cut fallback instead of running it, and a
+ * checkerboard tries at most `variants` choices of junctions. Without
+ * `retries`, only recipes that keep text cells square run, and no
+ * hard-to-cut result is made. */
+function generateOnce(request: GeneratorRequest,
+	deferHard?: (finish: () => GeneratorResult | undefined) => void, variants = Infinity, retries = true): GeneratorResult {
 	const curveFitter = createExactCurveFitter();
 	const counterLanes = request.mode === 'figure' && request.style === 'corners' &&
 		hasThreeCounterLanes(normalizeContours(request.contours ?? []));
@@ -355,11 +489,9 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		const result = retryCornerLanes(request, curveFitter);
 		if (result) return result;
 	}
-	const stacked = tryStackedComponentLanes(request, curveFitter);
-	if (stacked) return stacked;
 	const frame = request.textFrame ?? 'woven';
 	const overlappingBranches = request.mode === 'text' && request.font &&
-		frame !== 'woven' && frame !== 'air' && frame !== 'repeat' && frame !== 'repeat-check' &&
+		frame !== 'woven' && frame !== 'air' && frame !== 'checkered' &&
 		hasOverlappingTextBranches(request.text ?? '', request.font);
 	if (overlappingBranches) {
 		// Rectangular panels repeatedly clip these overlapping ends. Use their
@@ -367,15 +499,16 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		const result = retryBranchedText(request, curveFitter);
 		if (result) return result;
 	}
-	const repetitionCache = request.mode === 'text' && request.textFrame === 'repeat' ? repeatedGridCache() : undefined;
 	const rejected: { construction: Construction; recipe: GeneratorResult['recipe'] }[] = [];
 	try {
 		const result = generateUsingRecipes(request,
-			(construction, recipe) => rejected.push({ construction, recipe }), curveFitter, repetitionCache);
-		return request.mode === 'text' && request.textFrame === 'repeat-check'
-			? improveSharedConnections(result) : improveTextPanelTips(request, result, curveFitter);
+			(construction, recipe) => rejected.push({ construction, recipe }), curveFitter, variants, retries);
+		// The checkerboard improves its shared connections as it compares sizes.
+		return request.mode === 'text' && request.textFrame === 'checkered'
+			? result : improveTextPanelTips(request, result, curveFitter);
 	} catch (error) {
 		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		if (!retries) throw error;
 		const curvedCandidates = [...rejected];
 		for (const { construction, recipe } of request.mode === 'figure' ? rejected : []) {
 			const margin = 1.5 * gridClearanceScale(
@@ -447,7 +580,8 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 				if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
 			}
 		}
-		const lanes = retryComponentLanes(request, curveFitter);
+		// Frames without a centre panel try their own retries before lanes.
+		const lanes = openFrame(request) ? undefined : retryComponentLanes(request, curveFitter, curvedCandidates);
 		if (lanes) return lanes;
 		const islands = retryFigureIslandPorts(request, curveFitter);
 		if (islands) return islands;
@@ -472,6 +606,8 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		if (fittedComponents) return fittedComponents;
 		const fittedGates = retryFittedGateClearance(request, curveFitter);
 		if (fittedGates) return fittedGates;
+		const openLanes = openFrame(request) ? retryComponentLanes(request, curveFitter, curvedCandidates) : undefined;
+		if (openLanes) return openLanes;
 		const chainContacts = retryChainContacts(request, curveFitter);
 		if (chainContacts) return chainContacts;
 		const cornerLanes = counterLanes ? undefined : retryCornerLanes(request, curveFitter);
@@ -481,55 +617,60 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		if (textPanels) return textPanels;
 		const branches = overlappingBranches ? undefined : retryBranchedText(request, curveFitter);
 		if (branches) return branches;
-		let bestRepeated: GeneratorResult | undefined;
-		const islandRoutes = [[false, false], [true, false], [true, true]].flatMap(([islandFlip, fresh]) =>
-			(islandFlip ? [0] : [0, 1, 2, 3]).map(islandRank => ({ islandRank, islandFlip, fresh })));
-		if (repetitionCache && request.font) for (const { islandRank, islandFlip, fresh } of islandRoutes) try {
-			// Preserve every successful original phase before reversing the
-			// sheet assignments of detached dots or accents in failed cells.
-			if (islandFlip && !fresh && !islandRank && bestRepeated) return bestRepeated;
-			// A locally usable old cell may still leave a narrow tip in a new
-			// whole heart. If the mixed phases do not reach zero tips, compare
-			// a fresh alternative phase before selecting the final construction.
-			if (fresh && !islandRank) {
-				repetitionCache.cells.clear();
-				repetitionCache.failed.clear();
-			}
-			// Multiple concave corners can require two invisible connections.
-			// Retain successful letter cells and try this only after all earlier
-			// whole-heart repairs, so established designs stay unchanged.
-			if (islandRank || islandFlip) {
-				const missing = [...repetitionCache.failed].filter(key => !repetitionCache.cells.has(key));
-				const chars = missing.length ? missing.map(key => [...key][0])
-					: [...(request.text ?? '').normalize('NFC').replace(/\s/g, '')];
-				// Dots and accents can use another active gate. A single contour
-				// has no such choice; do not repeat its unsuccessful routing.
-				if (!chars.some(char => forest(request.font!.glyphs[char]?.contours ?? []).length > 1)) break;
-				if (!missing.length) repetitionCache.cells.clear();
-			} else if (!repetitionCache.failed.size) repetitionCache.cells.clear();
-			repetitionCache.crowded.clear();
-			const construction = generateRepeatedGrid(request.text ?? '', request.font,
-				true, repetitionCache, true, false, false, true, islandRank, islandFlip);
-			const result = improveSharedConnections(finishConstruction(request, construction, 'letters', undefined, curveFitter));
-			// Keep a reserve around these extra connections after curve fitting.
-			// A barely clear neck can still be uncertain on the unfolded paper.
-			const rect = inferOverlapRect(result.design.fingers, result.design.gridSize),
-				margin = intersectionMarginPx(rect, gridClearanceScale(result.design.gridSize.x, result.design.gridSize.y));
-			if (findFingersWithIssues(result.design.fingers, margin * 1.1).size) continue;
-			if (!islandRank && !islandFlip) return result;
-			const tips = cutTipCounts(result.design);
-			if (!bestRepeated || fewerCutTips(tips, cutTipCounts(bestRepeated.design))) bestRepeated = result;
-			if (!tips[0] && !tips[1]) return bestRepeated;
-		} catch (retryError) {
-			if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
-		}
-		if (bestRepeated) return bestRepeated;
 		const widerConnections = retryPanelReserve(request, closePanels, curveFitter);
 		if (widerConnections) return widerConnections;
 		const guardedPanels = retryGuardedPanels(request, curveFitter);
 		if (guardedPanels) return guardedPanels;
+		const finishHard = () => hardToCutResult(request, [...curvedCandidates,
+			...closePanels.map(construction => ({ construction, recipe: 'letters' as const }))], curveFitter);
+		if (deferHard) {
+			deferHard(finishHard);
+			throw error;
+		}
+		const hardToCut = finishHard();
+		if (hardToCut) return hardToCut;
 		throw error;
 	}
+}
+
+/** Fine serifs and narrow gaps can need more paper than the clearance allows,
+ * even with exact outlines and every established construction. Rather than
+ * refusing, keep a completed construction whose weave and picture are valid and
+ * whose cuts stay apart, and flag it as hard to cut, naming the letters beside
+ * its narrow paper. Prefer the widest spacing kept, then the fewest strips with
+ * narrow paper, then the fewest sharp tips. Clean results never get here. */
+function hardToCutResult(request: GeneratorRequest,
+	candidates: { construction: Construction; recipe: GeneratorResult['recipe'] }[],
+	curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
+	type Choice = { result: GeneratorResult; construction: Construction; spacing: number; narrow: number; tips: [number, number] };
+	let best: Choice | undefined;
+	const seen = new Set<string>(), lowest = HARD_TO_CUT_SPACINGS.at(-1)!;
+	for (const { construction, recipe } of candidates) {
+		const key = JSON.stringify(construction.edges);
+		if (seen.has(key)) continue;
+		seen.add(key);
+		try {
+			// Finish once at the narrowest spacing, then record the widest one kept.
+			const result = finishConstruction(request, construction, recipe, undefined, curveFitter, lowest),
+				{ design } = result, rect = inferOverlapRect(design.fingers, design.gridSize),
+				full = intersectionMarginPx(rect, gridClearanceScale(design.gridSize.x, design.gridSize.y)),
+				narrow = findFingersWithIssues(design.fingers, full).size,
+				spacing = narrow ? HARD_TO_CUT_SPACINGS.find(fraction => fraction === lowest ||
+					!findFingersWithIssues(design.fingers, full * fraction, full).size)! : 1,
+				tips = cutTipCounts(design);
+			if (!best || spacing > best.spacing || spacing === best.spacing && (narrow < best.narrow ||
+				narrow === best.narrow && fewerCutTips(tips, best.tips)))
+				best = { result, construction, spacing, narrow, tips };
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		}
+	}
+	if (!best?.narrow) return best?.result;
+	const { construction, spacing } = best, letters = request.mode === 'text' && request.font
+		? trickyLetters(construction, request.text ?? '', request.font, 1.5 * gridClearanceScale(
+			construction.geometry.A_overlap_paths.length + 1, construction.geometry.B_overlap_paths.length + 1))
+		: [];
+	return { ...best.result, hardToCut: { letters, spacing } };
 }
 
 /** A single connected figure need not weave through one long central lane.
@@ -599,45 +740,13 @@ function retryChainContacts(request: GeneratorRequest, curveFitter: ReturnType<t
 	return best;
 }
 
-/** Stacked parts in a flat oval are poorly served by vertical cell clipping.
- * Recognize this topology before exhausting those constructions. Nearby arcs
- * use opposite sheets; counters remain open through coincident connections. */
-function tryStackedComponentLanes(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
-	if (request.mode !== 'figure' || request.frame !== 'oval' || request.style !== 'plain') return;
-	const rings = normalizeContours(request.contours ?? []);
-	if (!hasStackedComponents(rings)) return;
-	let best: GeneratorResult | undefined;
-	for (const aligned of [false, true]) for (const tilt of [-.08, .08]) try {
-		const construction = generateComponentLanes(rings, 'oval', request.frameSize, request.scale,
-			'plain', aligned, 0, { tilt });
-		let candidate: GeneratorResult;
-		try {
-			candidate = finishConstruction(request, construction, 'nested', undefined, curveFitter);
-		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-			const geometry = curveSharedCuts(construction.geometry);
-			if (!geometry) continue;
-			candidate = finishConstruction(request, construction, 'nested', geometry, curveFitter);
-		}
-		const result = improveSharedConnections(candidate), design = result.design,
-			margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize),
-				gridClearanceScale(design.gridSize.x, design.gridSize.y));
-		if (findFingersWithIssues(design.fingers, margin * 1.1).size) continue;
-		const tips = cutTipCounts(design);
-		if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
-		if (!tips[1]) return best;
-	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-	}
-	return best;
-}
-
 /** A convex-envelope gate can itself sit too close to an adjacent island.
  * Move the invisible joins outward by the actual grid clearance, without
  * adding a frame outline or moving the motif. Curved shared cuts then have
  * room to meet the silhouette normally. Earlier successful layouts stay fixed. */
 function retryFittedComponentEnvelope(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
-	if (request.mode !== 'figure' || request.style !== 'fitted') return;
+	const open = openFrame(request);
+	if (!open) return;
 	const rings = normalizeContours(request.contours ?? []), count = forest(rings).length;
 	if (count < 2 || count > 8) return;
 	let best: GeneratorResult | undefined;
@@ -645,7 +754,7 @@ function retryFittedComponentEnvelope(request: GeneratorRequest, curveFitter: Re
 	for (const route of [fourPortMotif, balancedFourPortMotif]) {
 		let construction: Construction;
 		try {
-			construction = generateComponentFigure(rings, 'fitted', request.frameSize, request.scale,
+			construction = generateComponentFigure(rings, open, request.frameSize, request.scale,
 				'check', route, columns, 0, true, true, padding);
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
@@ -673,13 +782,14 @@ function retryFittedComponentEnvelope(request: GeneratorRequest, curveFitter: Re
  * its invisible approach can reach a different outline point. Keep five strips
  * on each sheet, and retain all earlier successful layouts. */
 function retryFittedGateClearance(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
-	if (request.mode !== 'figure' || request.style !== 'fitted') return;
+	const open = openFrame(request);
+	if (!open) return;
 	const rings = normalizeContours(request.contours ?? []), count = forest(rings).length;
 	if (count < 2 || count > 8) return;
 	let best: GeneratorResult | undefined;
 	for (const padding of [2, 3]) try {
 		const construction = generateFittedFigure(rings, request.frameSize, request.scale,
-			fourPortMotif, undefined, padding);
+			fourPortMotif, undefined, padding, open, false);
 		const result = improveSharedConnections(finishConstruction(request, construction, 'silhouette', undefined, curveFitter));
 		const margin = intersectionMarginPx(inferOverlapRect(result.design.fingers, result.design.gridSize),
 			gridClearanceScale(result.design.gridSize.x, result.design.gridSize.y));
@@ -761,7 +871,7 @@ function retrySunburstPanels(request: GeneratorRequest, curveFitter: ReturnType<
  * Earlier successful layouts return before these bounded alternatives. */
 function retryTextPanelIslands(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>, closePanels: Construction[]): GeneratorResult | undefined {
 	const frame = request.textFrame ?? 'woven', text = request.text ?? '', font = request.font;
-	if (request.mode !== 'text' || !font || !text.trim() || frame === 'repeat' || frame === 'repeat-check') return;
+	if (request.mode !== 'text' || !font || !text.trim() || frame === 'checkered') return;
 	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n'),
 		letters = Math.max(...lines.map(line => [...line].length)),
 		shape = frame === 'woven' || frame === 'air' ? undefined : frame;
@@ -770,7 +880,7 @@ function retryTextPanelIslands(request: GeneratorRequest, curveFitter: ReturnTyp
 		for (const padding of [.16, .12]) for (const [columns, slices] of [[1, 2], [2, 1]]) {
 			if (columns * letters + slices * lines.length + 1 > 20) continue;
 			try {
-				const construction = generateTextGrid(text, font, frame === 'air', shape, {
+				const construction = generateTextGrid(text, font, frame === 'air', shape, { fittedCells: request.fittedCells,
 					padding, frameFill, columns, slices, spread: true, filled: true, adaptivePanels: true,
 					guardSeams: true, practical: true, compound: true, boundaryIslands: true
 				});
@@ -837,7 +947,7 @@ function retryPanelReserve(request: GeneratorRequest, candidates: Construction[]
  * fixed and validate the complete joined sheets, including a spacing reserve. */
 function retryGuardedPanels(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
 	const frame = request.textFrame ?? 'woven', text = request.text ?? '', font = request.font;
-	if (request.mode !== 'text' || !font || !text.trim() || frame === 'repeat' || frame === 'repeat-check') return;
+	if (request.mode !== 'text' || !font || !text.trim() || frame === 'checkered') return;
 	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n'),
 		letters = Math.max(...lines.map(line => [...line].length)),
 		shape = frame === 'woven' || frame === 'air' ? undefined : frame;
@@ -847,7 +957,7 @@ function retryGuardedPanels(request: GeneratorRequest, curveFitter: ReturnType<t
 			if (columns * letters + slices * lines.length + 1 > 20) continue;
 			let construction: Construction;
 			try {
-				construction = generateTextGrid(text, font, frame === 'air', shape, {
+				construction = generateTextGrid(text, font, frame === 'air', shape, { fittedCells: request.fittedCells,
 					padding, frameFill, columns, slices, spread: true, filled: true, adaptivePanels: true,
 					guardSeams: true, practical: true, compound: true, boundaryIslands: true,
 					contourApproaches: true, guardedAttachments: true
@@ -878,7 +988,7 @@ function retryGuardedPanels(request: GeneratorRequest, curveFitter: ReturnType<t
 function retryBranchedText(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
 	const frame = request.textFrame ?? 'woven', text = request.text ?? '', font = request.font;
 	if (request.mode !== 'text' || !font || !text.trim() || /\s/.test(text) ||
-		frame === 'woven' || frame === 'air' || frame === 'repeat' || frame === 'repeat-check') return;
+		frame === 'woven' || frame === 'air' || frame === 'checkered') return;
 	let best: GeneratorResult | undefined;
 	for (const splitFraction of [.55, .48, .62]) for (const practical of [false, true]) try {
 		const construction = generateBranchedText(text, font, frame, splitFraction, practical);
@@ -944,20 +1054,22 @@ function retryBranchedText(request: GeneratorRequest, curveFitter: ReturnType<ty
  * distance between their outlines. Preserve existing designs and try wider
  * contacts only after their established constructions have failed. */
 function retryWideComponentContacts(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
-	if (request.mode !== 'figure' || request.style === 'corners' || request.style === 'layers') return;
+	if (request.mode !== 'figure' || request.style === 'corners' || request.style === 'layers' || request.style === 'motifs' ||
+		request.style === 'squares' || request.style === 'board') return;
 	const rings = normalizeContours(request.contours ?? []), count = forest(rings).length;
 	if (count < 2 || count > 8) return;
 	const size = request.frameSize ?? 70, scale = request.scale ?? .7,
-		sunburst = request.style === 'sunburst',
-		frame = request.style === 'fitted' ? 'fitted' : sunburst ? 'circle' : (request.frame ?? 'circle'),
-		style = request.style === 'fitted' ? 'check' : request.style === 'sunburst' ? 'rays' : (request.style ?? 'rays');
+		sunburst = request.style === 'sunburst', open = openFrame(request),
+		frame = open ?? (sunburst ? 'circle' : (request.frame ?? 'circle')),
+		style = request.style === 'fitted' || request.style === 'wedges' || request.style === 'silhouette' ? 'check'
+			: request.style === 'sunburst' ? 'rays' : (request.style ?? 'rays');
 	let best: GeneratorResult | undefined;
 	for (const columns of [4, 3, 2] as const) for (const route of [fourPortMotif, balancedFourPortMotif]) try {
 		const inner = generateComponentFigure(rings, frame, sunburst ? size * .8 : size,
 			scale, style, route, columns, sunburst ? 2 : 0, true);
 		const construction = sunburst ? sunburstBorder(inner, size) : inner;
 		const result = improveSharedConnections(finishConstruction(request, construction,
-			frame === 'fitted' ? 'silhouette' : 'nested', undefined, curveFitter));
+			open ? 'silhouette' : 'nested', undefined, curveFitter));
 		const margin = intersectionMarginPx(inferOverlapRect(result.design.fingers, result.design.gridSize),
 			gridClearanceScale(result.design.gridSize.x, result.design.gridSize.y));
 		if (findFingersWithIssues(result.design.fingers, margin * 1.1).size) continue;
@@ -973,7 +1085,8 @@ function retryWideComponentContacts(request: GeneratorRequest, curveFitter: Retu
 /** A disconnected part need not use its nearest gate. Another attachment can
  * keep its approach clear of the main silhouette, retaining the same frame. */
 function retryFigureIslandPorts(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
-	if (request.mode !== 'figure' || request.style === 'corners' || request.style === 'layers') return;
+	if (request.mode !== 'figure' || request.style === 'corners' || request.style === 'layers' || request.style === 'motifs' ||
+		request.style === 'squares' || request.style === 'board') return;
 	const rings = normalizeContours(request.contours ?? []);
 	if (forest(rings).length < 2) return;
 	const size = request.frameSize ?? 70, scale = request.scale ?? .7,
@@ -984,12 +1097,13 @@ function retryFigureIslandPorts(request: GeneratorRequest, curveFitter: ReturnTy
 			args[7] = { ...args[7], islandRank, practical };
 			return fourPortMotif(...args);
 		};
-		const inner = style === 'fitted' ? generateFittedFigure(rings, size, scale, route)
+		const inner = style === 'fitted' || style === 'wedges' || style === 'silhouette'
+			? generateFittedFigure(rings, size, scale, route, undefined, 0, openFrame(request), false)
 			: generateFourPortFigure(rings, sunburst ? 'circle' : request.frame,
 				sunburst ? size * .8 : size, scale, sunburst ? 'rays' : style, route, sunburst ? 2 : 0);
 		const construction = sunburst ? sunburstBorder(inner, size) : inner;
 		const result = improveSharedConnections(finishConstruction(request, construction,
-			style === 'fitted' ? 'silhouette' : 'nested', undefined, curveFitter));
+			style === 'fitted' || style === 'wedges' || style === 'silhouette' ? 'silhouette' : 'nested', undefined, curveFitter));
 		const rect = inferOverlapRect(result.design.fingers, result.design.gridSize),
 			margin = intersectionMarginPx(rect, gridClearanceScale(result.design.gridSize.x, result.design.gridSize.y));
 		if (findFingersWithIssues(result.design.fingers, margin * 1.1).size) continue;
@@ -1006,13 +1120,14 @@ function retryFigureIslandPorts(request: GeneratorRequest, curveFitter: ReturnTy
  * same attachment. Try nearby support directions on the unchanged silhouette;
  * keep the valid construction with the fewest sharp paper tips. */
 function retryFittedSupports(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
-	if (request.mode !== 'figure' || request.style !== 'fitted') return;
+	const open = openFrame(request);
+	if (!open) return;
 	const rings = normalizeContours(request.contours ?? []), seen = new Set<string>();
 	let best: GeneratorResult | undefined;
 	for (const offset of [.15, -.15, .3, -.3])
 	for (const signs of [[1, 1, 1, 1], [1, -1, 1, -1], [1, -1, -1, 1], [1, 1, -1, -1]]) try {
 		const angles = signs.map(sign => sign * offset) as [number, number, number, number];
-		const construction = generateFittedFigure(rings, request.frameSize, request.scale, fourPortMotif, angles);
+		const construction = generateFittedFigure(rings, request.frameSize, request.scale, fourPortMotif, angles, 0, open, false);
 		// Several directions may select the same vertices and complete cuts.
 		const key = JSON.stringify(construction.geometry);
 		if (seen.has(key)) continue;
@@ -1028,7 +1143,7 @@ function retryFittedSupports(request: GeneratorRequest, curveFitter: ReturnType<
 	// Divide a deeply concave silhouette into two rows. Adjust only its outer
 	// contacts: both neighbours still agree on the original internal seam.
 	for (const offset of [.15, -.15]) try {
-		const construction = generatePanelFigure(rings, undefined, request.frameSize ?? 70,
+		const construction = generatePanelFigure(rings, open, request.frameSize ?? 70,
 			request.scale ?? .7, 1, 'check', 2, false, fourPortMotif, 'support', false, 0,
 			[offset, offset, offset, offset]);
 		const result = improveSharedConnections(finishConstruction(request, construction, 'silhouette', undefined, curveFitter));
@@ -1042,17 +1157,25 @@ function retryFittedSupports(request: GeneratorRequest, curveFitter: ReturnType<
 /** Keep islands in parallel lanes when a rectangular cell grid cannot connect
  * them cleanly. A clearance reserve keeps long shared approaches away from the
  * neighbouring paper after curve fitting and rounding. */
-function retryComponentLanes(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
-	if (request.mode !== 'figure' || request.style === 'fitted' || request.style === 'corners' || request.style === 'layers') return;
+function retryComponentLanes(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>,
+	rejected: { construction: Construction; recipe: GeneratorResult['recipe'] }[] = []): GeneratorResult | undefined {
+	if (request.mode !== 'figure' || request.style === 'corners' || request.style === 'layers' ||
+		request.style === 'motifs' || request.style === 'squares' || request.style === 'board') return;
 	const rings = normalizeContours(request.contours ?? []), size = request.frameSize ?? 70,
-		sunburst = request.style === 'sunburst', frame = sunburst ? 'circle' : (request.frame ?? 'circle'),
-		style = request.style === 'sunburst' ? 'rays' : (request.style ?? 'rays');
+		sunburst = request.style === 'sunburst', open = openFrame(request),
+		frame = open ?? (sunburst ? 'circle' : (request.frame ?? 'circle')),
+		style = request.style === 'rays' || request.style === 'check' ? request.style
+			: sunburst ? 'rays' : 'check';
 	let best: GeneratorResult | undefined;
-	for (const aligned of [false, true]) try {
+	// Lanes without a centre panel always end above and below the motif.
+	// A completed construction that fails its checks stays a hard-to-cut candidate.
+	const recipe = open ? 'silhouette' : 'nested';
+	for (const aligned of open ? [true] : [false, true]) try {
 		const inner = generateComponentLanes(rings, frame, sunburst ? size * .8 : size,
 			request.scale, style, aligned, sunburst ? 2 : 0);
 		const construction = sunburst ? sunburstBorder(inner, size) : inner;
-		const result = improveSharedConnections(finishConstruction(request, construction, 'nested', undefined, curveFitter));
+		rejected.push({ construction, recipe });
+		const result = improveSharedConnections(finishConstruction(request, construction, recipe, undefined, curveFitter));
 		const rect = inferOverlapRect(result.design.fingers, result.design.gridSize),
 			margin = intersectionMarginPx(rect, gridClearanceScale(result.design.gridSize.x, result.design.gridSize.y));
 		if (findFingersWithIssues(result.design.fingers, margin * 1.1).size) continue;
@@ -1072,13 +1195,13 @@ function improveTextPanelTips(request: GeneratorRequest, original: GeneratorResu
 	curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult {
 	const frame = request.textFrame ?? 'woven', text = request.text ?? '', font = request.font;
 	if (request.mode !== 'text' || !font || !cutTipCounts(original.design)[1] ||
-		frame === 'repeat' || frame === 'repeat-check') return original;
+		frame === 'checkered') return original;
 	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n');
 	const strips = 2 * Math.max(...lines.map(line => [...line].length)) + 3 * lines.length + 1;
 	if (strips > Math.min(20, original.design.gridSize.x, original.design.gridSize.y)) return original;
 	try {
 		const shape = frame === 'woven' || frame === 'air' ? undefined : frame;
-		const construction = generateTextGrid(text, font, frame === 'air', shape, {
+		const construction = generateTextGrid(text, font, frame === 'air', shape, { fittedCells: request.fittedCells,
 			columns: 2, slices: 3, spread: true, filled: true, inkPanels: true,
 			guardSeams: true, practical: true, compound: true, balanced: true,
 			boundaryIslands: true, contourApproaches: true
@@ -1108,25 +1231,25 @@ function retryPanelLayouts(request: GeneratorRequest, curveFitter?: ReturnType<t
 	let recipe: GeneratorResult['recipe'] = 'letters';
 	if (request.mode === 'text') {
 		const frame = request.textFrame ?? 'woven', text = request.text ?? '', font = request.font;
-		if (!font || !text.trim() || frame === 'repeat' || frame === 'repeat-check') return;
+		if (!font || !text.trim() || frame === 'checkered') return;
 		const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n');
 		if (2 * Math.max(...lines.map(line => [...line].length)) + 3 * lines.length + 1 > 20) return;
 		const shape = frame === 'woven' || frame === 'air' ? undefined : frame;
 		for (const adaptivePanels of [false, true]) recipes.push(() =>
-			generateTextGrid(text, font, frame === 'air', shape, {
+			generateTextGrid(text, font, frame === 'air', shape, { fittedCells: request.fittedCells,
 				columns: 2, slices: 3, filled: true, spread: true,
 				practical: true, compound: true, guardSeams: true, adaptivePanels
 			}));
 	} else {
 		const rings = normalizeContours(request.contours ?? []), size = request.frameSize ?? 70, scale = request.scale ?? .7;
-		if (request.style === 'corners') return;
+		if (request.style === 'corners' || request.style === 'motifs' || request.style === 'squares' || request.style === 'board') return;
 		if (request.style === 'layers') {
 			recipe = 'nested';
 			recipes.push(() => generateLayeredFigure(rings, size, scale,
 				{ columns: 2, rows: 1, filled: true, adaptive: true }));
-		} else if (request.style === 'fitted') {
+		} else if (request.style === 'fitted' || request.style === 'wedges' || request.style === 'silhouette') {
 			recipe = 'silhouette';
-			recipes.push(() => generatePanelFigure(rings, undefined, size, scale,
+			recipes.push(() => generatePanelFigure(rings, openFrame(request), size, scale,
 				2, 'check', 1, false, fourPortMotif, 'ray', true));
 		} else {
 			const sunburst = request.style === 'sunburst', shape = sunburst ? 'circle' : (request.frame ?? 'circle'),
@@ -1160,199 +1283,232 @@ function retryPanelLayouts(request: GeneratorRequest, curveFitter?: ReturnType<t
 
 function generateUsingRecipes(request: GeneratorRequest,
 	onRejected: (construction: Construction, recipe: GeneratorResult['recipe']) => void,
-	curveFitter: ReturnType<typeof createExactCurveFitter>, repetitionCache?: ReturnType<typeof repeatedGridCache>): GeneratorResult {
+	curveFitter: ReturnType<typeof createExactCurveFitter>, variants = Infinity, allRecipes = true): GeneratorResult {
 	if (request.mode === 'figure') {
 		const contours = normalizeContours(request.contours ?? []);
 		if (!contours.length) throw new ConstructionError('empty', 'No contour');
 		request = { ...request, contours };
 	}
-	const finish = (construction: Construction, recipe: GeneratorResult['recipe']) => {
-		try { return finishConstruction(request, construction, recipe, undefined, curveFitter); }
+	// A quick attempt has a fallback, so it also skips text with severe pinches.
+	const finish = (construction: Construction, recipe: GeneratorResult['recipe'], keep = true) => {
+		try { return finishConstruction(request, construction, recipe, undefined, curveFitter, 1, !allRecipes || undefined); }
 		catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-			onRejected(construction, recipe);
+			if (keep) onRejected(construction, recipe);
 			throw error;
 		}
 	};
 	if (request.mode === 'text') {
 		if (!request.font) throw new ConstructionError('empty', 'No font');
 		const frame = request.textFrame ?? 'woven';
-		if (frame === 'repeat-check') {
-			const text = request.text ?? '';
-			const cache = checkeredGridCache();
-			let best: GeneratorResult | undefined;
-			let bestInset = .35;
-			let rawTips: [number, number] | undefined;
-			let crowded = false;
-			let last: unknown;
-			// Keep the established layout (including the detached-accent fallback),
-			// then try slightly wider connections only when they improve its cuts.
-			const small = [...text.normalize('NFC').replace(/\s/g, '')].length <= 2;
-			for (const inset of small ? [.35, .25, .4, .46] : [.35, .4, .46]) {
-				if (inset === .25 && best) continue;
-				// This is a quality improvement for working cuts. Unsupported
-				// topology should still return promptly instead of trying it twice.
-				if (inset >= .4 && !best) break;
-				try {
-					const construction = generateCheckeredGrid(text, request.font, .82, inset, { cache, onCrowded: () => { crowded = true; } });
-					const tips = cutTipCounts(construction.geometry);
-					// Reject worse candidates before the more expensive curve fitting.
-					if (rawTips && !fewerCutTips(tips, rawTips)) continue;
-					const candidate = finish(construction, 'letters');
-					if (!best || fewerCutTips(cutTipCounts(candidate.design), cutTipCounts(best.design))) {
-						best = candidate;
-						bestInset = inset;
-						rawTips = tips;
-					}
-					if (best && !cutTipCounts(best.design)[1]) break;
-				} catch (error) {
-					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-					if (error instanceof ConstructionError && ['empty', 'character'].includes(error.code)) throw error;
-					last = error;
-				}
-			}
-			if (best) {
-				if (rawTips?.[1] && cutTipCounts(best.design)[1]) try {
-					const construction = generateCheckeredGrid(text, request.font, .82, bestInset, { cache, optimize: true });
-					// Skip fitting unchanged or worse combinations. A local improvement
-					// still has to pass every full-sheet check and improve the export.
-					if (fewerCutTips(cutTipCounts(construction.geometry), rawTips)) {
-						const candidate = finish(construction, 'letters');
-						if (fewerCutTips(cutTipCounts(candidate.design), cutTipCounts(best.design))) best = candidate;
-					}
-				} catch (error) {
-					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-				}
-				let bestTips = cutTipCounts(improveSharedConnections(best).design);
-				// A further chord can split the narrow notch of a solid letter such
-				// as N. Reuse cached cells, then try one wider pair of grid contacts.
-				// The original remains available if the joined cuts lose clearance.
-				if (bestTips[1]) for (const inset of [bestInset, .2]) {
+		if (frame === 'checkered') {
+			const text = request.text ?? '', font = request.font;
+			// The first junctions usually work. When their letters leave narrow
+			// paper, the next choices attach the letters at other square corners.
+			// Layouts on a smaller board, through neighbouring junctions, come
+			// before the next board's layouts, which follow as the fallback.
+			const layouts = checkeredLayouts(text);
+			const checkered = (variant: number, fill: number, cache: ReturnType<typeof checkeredGridCache>,
+				mixed: ReturnType<typeof mixedCheckeredGridCache>, finish: (construction: Construction, recipe: GeneratorResult['recipe']) => GeneratorResult): GeneratorResult => {
+				let best: GeneratorResult | undefined;
+				let bestInset = .35;
+				let rawTips: [number, number] | undefined;
+				let crowded = false;
+				let last: unknown;
+				// Keep the established layout (including the detached-accent fallback),
+				// then try slightly wider connections only when they improve its cuts.
+				const small = [...text.normalize('NFC').replace(/\s/g, '')].length <= 2;
+				for (const inset of small ? [.35, .25, .4, .46] : [.35, .4, .46]) {
+					if (inset === .25 && best) continue;
+					// This is a quality improvement for working cuts. Unsupported
+					// topology should still return promptly instead of trying it twice.
+					if (inset >= .4 && !best) break;
 					try {
-						const construction = generateCheckeredGrid(text, request.font, .82, inset,
-							{ cache, optimize: true, relieve: true });
+						const construction = generateCheckeredGrid(text, font, fill, inset, { cache, variant, onCrowded: () => { crowded = true; } });
+						const tips = cutTipCounts(construction.geometry);
+						// Reject worse candidates before the more expensive curve fitting.
+						if (rawTips && !fewerCutTips(tips, rawTips)) continue;
 						const candidate = finish(construction, 'letters');
-						const rounded = improveSharedConnections(candidate).design, tips = cutTipCounts(rounded);
-						if (fewerCutTips(tips, bestTips)) {
-							const rect = inferOverlapRect(rounded.fingers, rounded.gridSize);
-							const margin = intersectionMarginPx(rect, gridClearanceScale(rounded.gridSize.x, rounded.gridSize.y));
-							// A smaller tip count alone can hide a new thin neck. Leave a
-							// clearance reserve for the additional cuts on both sheets.
-							if (!findFingersWithIssues(rounded.fingers, margin * 1.1).size) { best = candidate; bestTips = tips; }
+						if (!best || fewerCutTips(cutTipCounts(candidate.design), cutTipCounts(best.design))) {
+							best = candidate;
+							bestInset = inset;
+							rawTips = tips;
 						}
-						if (!bestTips[1]) break;
-					} catch (error) {
-						if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-					}
-				}
-				return best;
-			}
-			if (crowded) for (const inset of small ? [.35, .25] : [.35]) {
-				try {
-					return finish(generateCheckeredGrid(text, request.font, .82, inset, { cache, balanced: true }), 'letters');
-				} catch (error) {
-					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-					last = error;
-				}
-			}
-			for (const inset of small ? [.35, .25] : [.35]) {
-				let repaired = false;
-				try {
-					const construction = generateCheckeredGrid(text, request.font, .82, inset, {
-						cache, repair: true, onRepair: () => { repaired = true; }
-					});
-					// All local cells can be clear while their joined paths fail.
-					// An unchanged construction does not need another global fit.
-					if (repaired) return finish(construction, 'letters');
-				} catch (error) {
-					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-					last = error;
-				}
-			}
-			// Keep the existing successful cuts: a four-port layout can be more
-			// intricate. Add connections only after the two-port repairs fail.
-			const mixed = mixedCheckeredGridCache();
-			// Individual stroke ends can separate several legs that a single
-			// support point leaves on the same paper. Reuse clear earlier cells.
-			for (const strokeTips of [false, true]) for (const balanced of [false, true]) {
-				try {
-					return finish(generateMixedCheckeredGrid(text, request.font, { cache: mixed, previous: cache, balanced, strokeTips }), 'letters');
-				} catch (error) {
-					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-					last = error;
-				}
-			}
-			throw last;
-		}
-		if (frame === 'repeat') {
-			const cache = repetitionCache ?? repeatedGridCache();
-			let last: unknown;
-			// Keep both established layouts before changing attachment candidates.
-			for (const [bentSpokes, strokeTips] of [[false, false], [true, false], [false, true], [true, true]]) {
-				if (bentSpokes || strokeTips) {
-					// Keep completed cells when one local route failed. If all cells
-					// existed but joining them failed, their connections need rebuilding.
-					if (!cache.failed.size) cache.cells.clear();
-					cache.failed.clear();
-					cache.crowded.clear();
-				}
-				for (const practical of [false, true]) {
-					if (practical && !cache.failed.size) break;
-					try {
-						return finish(generateRepeatedGrid(request.text ?? '', request.font, practical, cache, practical, bentSpokes, strokeTips), 'letters');
+						if (best && !cutTipCounts(best.design)[1]) break;
 					} catch (error) {
 						if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 						if (error instanceof ConstructionError && ['empty', 'character'].includes(error.code)) throw error;
 						last = error;
 					}
 				}
-			}
+				if (best) {
+					if (rawTips?.[1] && cutTipCounts(best.design)[1]) try {
+						const construction = generateCheckeredGrid(text, font, fill, bestInset, { cache, variant, optimize: true });
+						// Skip fitting unchanged or worse combinations. A local improvement
+						// still has to pass every full-sheet check and improve the export.
+						if (fewerCutTips(cutTipCounts(construction.geometry), rawTips)) {
+							const candidate = finish(construction, 'letters');
+							if (fewerCutTips(cutTipCounts(candidate.design), cutTipCounts(best.design))) best = candidate;
+						}
+					} catch (error) {
+						if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+					}
+					let bestTips = cutTipCounts(improveSharedConnections(best).design);
+					// A further chord can split the narrow notch of a solid letter such
+					// as N. Reuse cached cells, then try one wider pair of grid contacts.
+					// The original remains available if the joined cuts lose clearance.
+					if (bestTips[1]) for (const inset of [bestInset, .2]) {
+						try {
+							const construction = generateCheckeredGrid(text, font, fill, inset,
+								{ cache, variant, optimize: true, relieve: true });
+							const candidate = finish(construction, 'letters');
+							const rounded = improveSharedConnections(candidate).design, tips = cutTipCounts(rounded);
+							if (fewerCutTips(tips, bestTips)) {
+								const rect = inferOverlapRect(rounded.fingers, rounded.gridSize);
+								const margin = intersectionMarginPx(rect, gridClearanceScale(rounded.gridSize.x, rounded.gridSize.y));
+								// A smaller tip count alone can hide a new thin neck. Leave a
+								// clearance reserve for the additional cuts on both sheets.
+								if (!findFingersWithIssues(rounded.fingers, margin * 1.1).size) { best = candidate; bestTips = tips; }
+							}
+							if (!bestTips[1]) break;
+						} catch (error) {
+							if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+						}
+					}
+					return best;
+				}
+				if (crowded) for (const inset of small ? [.35, .25] : [.35]) {
+					try {
+						return finish(generateCheckeredGrid(text, font, fill, inset, { cache, variant, balanced: true }), 'letters');
+					} catch (error) {
+						if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+						last = error;
+					}
+				}
+				for (const inset of small ? [.35, .25] : [.35]) {
+					let repaired = false;
+					try {
+						const construction = generateCheckeredGrid(text, font, fill, inset, {
+							cache, variant, repair: true, onRepair: () => { repaired = true; }
+						});
+						// All local cells can be clear while their joined paths fail.
+						// An unchanged construction does not need another global fit.
+						if (repaired) return finish(construction, 'letters');
+					} catch (error) {
+						if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+						last = error;
+					}
+				}
+				// Keep the existing successful cuts: a four-port layout can be more
+				// intricate. Add connections only after the two-port repairs fail.
+				// Individual stroke ends can separate several legs that a single
+				// support point leaves on the same paper. Reuse clear earlier cells.
+				for (const strokeTips of [false, true]) for (const balanced of [false, true]) {
+					try {
+						return finish(generateMixedCheckeredGrid(text, font, { cache: mixed, previous: cache, variant, balanced, strokeTips, fill }), 'letters');
+					} catch (error) {
+						if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+						last = error;
+					}
+				}
+				throw last;
+			};
+			let last: unknown;
+			// Every letter has the size of the text's widest. When no layout weaves
+			// cleanly, the first may have all of them a little larger, as on the
+			// regular board, before a hard-to-cut heart: narrow letters then keep
+			// wider details. Only the standard size leaves its rejected cuts to
+			// that fallback. A result with narrow paper tips is compared with the
+			// first layout 5% larger, which can route a letter that shrank to
+			// match a wider one without them (Nunito ANNA's N).
+			const caches = new Map<number, [ReturnType<typeof checkeredGridCache>, ReturnType<typeof mixedCheckeredGridCache>]>();
+			const attempt = (variant: number, fill: number) => {
+				if (!caches.has(fill)) caches.set(fill, [checkeredGridCache(), mixedCheckeredGridCache()]);
+				const [cache, mixed] = caches.get(fill)!;
+				return checkered(variant, fill, cache, mixed, fill === .82 ? finish
+					: (construction, recipe) => finish(construction, recipe, false));
+			};
+			for (const fill of [.82, .82 * 1.05, .82 * 1.1])
+				for (let variant = 0; variant < Math.min(fill === .82 ? variants : 1, layouts.length); variant++) {
+					try {
+						// Compared as exported, after their shared connections are improved.
+						const result = improveSharedConnections(attempt(variant, fill));
+						if (fill === .82 && cutTipCounts(result.design)[1]) try {
+							const larger = improveSharedConnections(attempt(0, .82 * 1.05));
+							if (fewerCutTips(cutTipCounts(larger.design), cutTipCounts(result.design))) return larger;
+						} catch (error) {
+							if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+						}
+						return result;
+					} catch (error) {
+						if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+						if (error instanceof ConstructionError && ['empty', 'character'].includes(error.code)) throw error;
+						last = error;
+					}
+				}
 			throw last;
 		}
 		const text = request.text ?? '';
 		const font = request.font;
 		const shape = frame === 'woven' || frame === 'air' ? undefined : frame;
 		const recipes: Array<() => ReturnType<typeof generateTextGrid> | ReturnType<typeof generateCheckedText> | undefined> = text.includes('\n') ? [] : [
-			() => generateCheckedText(text, font, frame === 'air', shape)
+			() => generateCheckedText(text, font, frame === 'air', shape, request.fittedCells)
 		];
-		recipes.push(() => generateTextGrid(text, font, frame === 'air', shape));
-		// Give difficult counters/shoulders more room, and separate projections
-		// along flat frame sides. The requested font, frame and text are retained.
+		recipes.push(() => generateTextGrid(text, font, frame === 'air', shape, { fittedCells: request.fittedCells }));
+		// On the regular board the cells cannot grow, but a letter can be a
+		// little larger inside its cell; its connections then meet it elsewhere.
+		const regularGrid = !request.fittedCells && (frame === 'woven' || frame === 'air');
+		if (regularGrid) for (const letterScale of [1.05, 1.1]) recipes.push(text.includes('\n')
+			? () => generateTextGrid(text, font, frame === 'air', shape, { letterScale })
+			: () => generateCheckedText(text, font, frame === 'air', shape, false, letterScale));
+		// Give difficult counters/shoulders more room, and spread the projections
+		// around the frame. The requested font, frame and text are retained.
 		// The air layout already has this spacing and no decorative frame.
 		if (frame !== 'air')
-			recipes.push(() => generateTextGrid(text, font, false, shape, {
+			recipes.push(() => generateTextGrid(text, font, false, shape, { fittedCells: request.fittedCells,
 				padding: .5,
 				spread: true
 			}));
-		for (const [columns, slices] of [[2, 1], [1, 2], [2, 2], [1, 3]])
-			recipes.push(() => generateTextGrid(text, font, frame === 'air', shape, { columns, slices, spread: true }));
+		// A quick attempt keeps every cell square and skips the slow attachment
+		// searches: panels that split letters unevenly, moved gates and bent
+		// spokes follow, for fitted cells, when it fails. Square cells on the
+		// regular checkerboard never take them: they would make uneven squares.
+		const fittedOnly = new Set<(typeof recipes)[number]>();
+		for (const [columns, slices] of [[2, 1], [1, 2], [2, 2], [1, 3]]) {
+			const recipe = () => generateTextGrid(text, font, frame === 'air', shape, { fittedCells: request.fittedCells, columns, slices, spread: true });
+			recipes.push(recipe);
+			if (columns !== slices) fittedOnly.add(recipe);
+		}
 		let usedCompound = false;
 		let crowded = false;
-		recipes.push(() => generateTextGrid(text, font, frame === 'air', shape, {
+		recipes.push(() => generateTextGrid(text, font, frame === 'air', shape, { fittedCells: request.fittedCells,
 			spread: true, practical: true, compound: true, onCompound: () => { usedCompound = true; }, onCrowded: () => { crowded = true; }
 		}));
 		// A locally improved route can still conflict with a neighbouring cell.
 		// Retain the established recipe, but only rerun it if a chord changed.
 		recipes.push(() => usedCompound
-			? generateTextGrid(text, font, frame === 'air', shape, { spread: true, practical: true, onCrowded: () => { crowded = true; } })
+			? generateTextGrid(text, font, frame === 'air', shape, { fittedCells: request.fittedCells, spread: true, practical: true, onCrowded: () => { crowded = true; } })
 			: undefined);
-		recipes.push(() => crowded ? generateTextGrid(text, font, frame === 'air', shape, {
+		recipes.push(() => crowded ? generateTextGrid(text, font, frame === 'air', shape, { fittedCells: request.fittedCells,
 			spread: true, practical: true, compound: true, balanced: true
 		}) : undefined);
 		let gateCrowded = false;
 		const adaptGates = (balanced = false) => {
 			let moved = false;
-			const result = generateTextGrid(text, font, frame === 'air', shape, {
+			const result = generateTextGrid(text, font, frame === 'air', shape, { fittedCells: request.fittedCells,
 				spread: true, practical: true, compound: true, balanced, adaptGates: true,
 				onGateChange: () => { moved = true; }, onCrowded: () => { gateCrowded = true; }
 			});
 			// The unchanged recipe has already failed its full-sheet check.
 			return moved ? result : undefined;
 		};
-		recipes.push(() => adaptGates(), () => gateCrowded ? adaptGates(true) : undefined);
+		const searches = [() => adaptGates(), () => gateCrowded ? adaptGates(true) : undefined];
+		recipes.push(...searches);
+		for (const search of searches) fittedOnly.add(search);
 		for (const columns of [1, 2]) recipes.push(() => {
+			if (!allRecipes || regularGrid) return undefined;
 			let moved = false;
-			const result = generateTextGrid(text, font, frame === 'air', shape, {
+			const result = generateTextGrid(text, font, frame === 'air', shape, { fittedCells: request.fittedCells,
 				columns, slices: 3, spread: true, filled: true, onSeamChange: () => { moved = true; }
 			});
 			// The one-column layout was already tried with centred contacts.
@@ -1362,22 +1518,26 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// outside it. Count the resulting strips before attempting construction.
 		const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n'),
 			letters = Math.max(...lines.map(line => [...line].length));
-		if (2 * letters + 5 * lines.length + 1 <= 20)
-			recipes.push(() => generateTextGrid(text, font, frame === 'air', shape, {
+		if (2 * letters + 5 * lines.length + 1 <= 20 && allRecipes && !regularGrid)
+			recipes.push(() => generateTextGrid(text, font, frame === 'air', shape, { fittedCells: request.fittedCells,
 				columns: 2, slices: 5, spread: true, filled: true, inkPanels: true
 			}));
 		// A serif can need a more square approach than a straight shared spoke.
 		// Try bent connections only after the established constructions fail.
 		for (const padding of frame === 'air' ? [undefined] : [undefined, .5]) {
 			let bentCrowded = false;
-			for (const balanced of [false, true]) recipes.push(() => !balanced || bentCrowded
-				? generateTextGrid(text, font, frame === 'air', shape, {
-					padding, spread: true, practical: true, compound: true, adaptGates: true,
-					bentSpokes: true, balanced, onCrowded: () => { bentCrowded = true; }
-				}) : undefined);
+			for (const balanced of [false, true]) {
+				const bent = () => !balanced || bentCrowded
+					? generateTextGrid(text, font, frame === 'air', shape, { fittedCells: request.fittedCells,
+						padding, spread: true, practical: true, compound: true, adaptGates: true,
+						bentSpokes: true, balanced, onCrowded: () => { bentCrowded = true; }
+					}) : undefined;
+				recipes.push(bent);
+				fittedOnly.add(bent);
+			}
 		}
 		let last: unknown;
-		for (const construct of recipes) {
+		for (const construct of allRecipes && !regularGrid ? recipes : recipes.filter(recipe => !fittedOnly.has(recipe))) {
 			try {
 				const result = construct();
 				if (result) return finish(result, 'letters');
@@ -1416,6 +1576,34 @@ function generateUsingRecipes(request: GeneratorRequest,
 			return finishConstruction(request, construction, 'nested', geometry, curveFitter);
 		}
 	}
+	if (request.style === 'board') {
+		// The circle on a regular board of five strips, every square outside it
+		// equally large, like the gallery's santa: it meets every line of the
+		// board, midway between the junctions inside and outside it, and the
+		// motif, divided like a letter into four panels, meets the lines' ends
+		// in pairs. The panels meet at its centre, or else at a point of
+		// background near it, so their seams cross its paper but not each other.
+		// Failing that, a smaller circle fills the middle three strips: the outer
+		// lines cross the paper whole, and the undivided motif meets the middle
+		// lines like a letter in the circle frame. The motif fills its circle as
+		// in the other circle frames, else it is the size of a framed letter.
+		const contours = request.contours ?? [];
+		const font: Font = { glyphs: { [MOTIF]: { advance: 1, contours } } };
+		const xs = contours.flat().map(p => p[0]), ys = contours.flat().map(p => p[1]);
+		const centre: Point = [(Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2];
+		const fill = { padding: .05, frameFill: 1 }, compound = { practical: true, compound: true };
+		const four = [undefined, ...backgroundJunctions(contours).map((p): Point => [p[0] - centre[0], p[1] - centre[1]])]
+			.flatMap(junction => [fill, {}].flatMap(size => [{ ...size, columns: 2, slices: 2, junction },
+				{ ...size, ...compound, columns: 2, slices: 2, junction }]));
+		let last: unknown;
+		for (const layout of [...four, fill, { ...fill, ...compound }, {}, compound]) try {
+			return finish(generateTextGrid(MOTIF, font, false, 'circle', { ...layout, board: 5 }), 'nested');
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			last = error;
+		}
+		throw last;
+	}
 	if (request.style === 'corners') {
 		let last: unknown;
 		for (const [routing, fitBorder, bentSpokes] of [
@@ -1437,33 +1625,43 @@ function generateUsingRecipes(request: GeneratorRequest,
 		}
 		throw last;
 	}
-	if (request.style === 'fitted') {
-		for (const route of [fourPortMotif, originalFourPortMotif]) {
-			let constructed = false;
-			try {
-				const result = generateFittedFigure(request.contours ?? [], request.frameSize, request.scale, route);
-				constructed = true;
-				return finish(result, 'silhouette');
+	const open = openFrame(request);
+	if (open) {
+		const single = (symmetric: boolean) => {
+			for (const route of [fourPortMotif, originalFourPortMotif]) {
+				let constructed = false;
+				try {
+					const result = generateFittedFigure(request.contours ?? [], request.frameSize, request.scale, route,
+						undefined, 0, open, symmetric);
+					constructed = true;
+					return finish(result, 'silhouette');
+				}
+				catch (error) {
+					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+					if (!constructed && !(error instanceof CompilationError)) break;
+				}
 			}
-			catch (error) {
-				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-				if (!constructed && !(error instanceof CompilationError)) break;
-			}
-		}
+		};
+		// Symmetric gates come first, kept only without needle-sharp paper.
+		// Otherwise every construction uses the motif's own extreme points.
+		const balanced = single(true);
+		if (balanced && !cutTipCounts(balanced.design)[0]) return balanced;
+		const extreme = single(false);
+		if (extreme) return extreme;
 		for (const [columns, rows] of [[2, 1], [2, 2], [3, 1], [3, 2], [3, 3], [4, 2]]) {
 			try {
-				return finish(generatePanelFigure(request.contours ?? [], undefined, request.frameSize ?? 70, request.scale ?? .7, columns, 'check', rows), 'silhouette');
+				return finish(generatePanelFigure(request.contours ?? [], open, request.frameSize ?? 70, request.scale ?? .7, columns, 'check', rows), 'silhouette');
 			} catch (error) {
 				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 			}
 		}
 		try {
-			return finish(generatePanelFigure(request.contours ?? [], undefined, request.frameSize ?? 70, request.scale ?? .7, 3, 'check', 1, false, fourPortMotif, 'support', true), 'silhouette');
+			return finish(generatePanelFigure(request.contours ?? [], open, request.frameSize ?? 70, request.scale ?? .7, 3, 'check', 1, false, fourPortMotif, 'support', true), 'silhouette');
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 			for (const columns of [2, 3, 4] as const) {
 				try {
-					return finish(generateComponentFigure(request.contours ?? [], 'fitted', request.frameSize,
+					return finish(generateComponentFigure(request.contours ?? [], open, request.frameSize,
 						request.scale, 'check', fourPortMotif, columns), 'silhouette');
 				} catch (retryError) {
 					if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
@@ -1480,7 +1678,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 		scale = request.scale ?? 0.7,
 		style = sunburst
 			? 'rays'
-			: ((request.style as 'rays' | 'check' | 'plain') ?? 'rays');
+			: ((request.style as 'rays' | 'check') ?? 'rays');
 	// Spread complex artwork over a larger grid before considering a single cell.
 	// Each routing variant is attempted once; invalid recipes never become exports.
 	const baseFigure = () => generateFigure(rings, shape, size, scale, style);

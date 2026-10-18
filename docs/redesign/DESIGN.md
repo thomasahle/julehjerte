@@ -393,6 +393,15 @@ and five presets. Changing colours repaints previews without regenerating cuts o
 editor autosave. Saved/exported designs may retain a `colors` appearance snapshot; live previews
 always follow the footer. Desktop canvases account for the footer's measured height.
 
+The generator's start screen (`/design/`) follows view 1 of the clickable mockup in `docs/design-start/`:
+two featured cards (*Vælg en figur*, *Skriv et navn*), four smaller ways in (template, picture, paint,
+draw), the three steps and a link to the guide, over a faded strip of the winter landscape. Its drawings
+are real and prerendered by `$lib/server/designStart`: gallery hearts, the heart *Skriv et navn* opens
+with (the generator's default text and frame), and six catalogue motifs. They paint with
+`--paper-left`/`--paper-right`, so the footer's colours apply; a few set their own `--paper-right` to
+show other colours. The browser downloads neither the gallery data, the catalogue nor the generator to
+show the start screen.
+
 The figure and text generators use contour topology, never the image solver. Visible outlines belong
 to one sheet; invisible connecting cuts use exactly the same path in both sheets. Enclosed regions
 and detached components must be woven using these shared cuts: no cut-out fields, preview overlays
@@ -400,6 +409,18 @@ or grey areas to remove from a PDF. In a four-port cell, a pair of interior conn
 external port, preserving the open path pairings. Nested contours recurse, and sibling holes may
 share a chain. The compiler rejects branches, closed cycles and paths ending on the wrong edge;
 geometric clearance and artwork fidelity are checked before a result can be saved or downloaded.
+Fine serifs and narrow gaps can need more paper than the clearance allows, even with exact
+outlines: each terminal narrower than the clearance needs its own gate connection at its tip,
+and a four-port cell has only four. Never refuse a heart whose weave and picture can be made.
+When every construction fails clearance, recheck the completed constructions with cuts at least
+10%, then 3%, then 1% of the clearance apart, so cuts on one sheet never cross or touch, and keep
+exact outlines, frame, topology and fidelity checks. Bends and loops shorter than the full
+clearance remain part of one cut at every spacing, so tiny glyph edges are not mistaken for
+paper. Choose the widest spacing kept, then the fewest strips with narrow paper, then the
+fewest sharp tips. Show the result
+with a warning that names the letters next to the narrow paper ("tricky because of “F”") so the
+visitor can decide whether to change them. Earlier clean results never take this path; the
+robustness corpus reports these results as hard, not accepted.
 Imported figure walks are split at exactly repeated vertices, and collapsed
 loops are removed without changing the even-odd fill or moving any outline.
 Classify nested contours using bounds and a point off the parent's boundary;
@@ -413,9 +434,47 @@ the other side of an external port. The two connections must still bracket that
 port and preserve open strip pairings. Do not move the outline, merge away the
 counter, or create a zero-length cutting segment. Skip this fallback when the
 contour forest has no counter contact.
-Both generators offer circle, diamond, hexagon, oval, soft diamond and scalloped frames. Text also
-has close and spacious letter-cell framing. Figure choices combine the frame and outside weave
-into complete templates. Their thumbnails render the actual generated heart in the current colours,
+The circle with a plain edge (Enkel) was removed too (2026-10-18): it joined a simple solid
+motif at two points, and otherwise repeated the rays or the checks with thinner spokes; old
+links open with the rays. The only centre panel is the circle; the diamond, hexagon, oval, soft-diamond and scalloped
+panels were removed (2026-10-17) because none of 435 real figure hearts used them, and old links
+open with the circle. A link pasted into an open generator changes only the hash; the page follows
+it (the page's own address updates use replaceState and never trigger that). Text also has close and spacious letter-cell framing, each with square or letter-sized cells, the checkerboard and the circle.
+Figure frames follow what real hearts use. Next to the circle with rays, checks,
+a sunburst or a double border, and the close-fitting and checked-tip frames, there are four
+frames without a centre panel. **Wedges** (Kiler; a quarter of real figure hearts): from each
+corner of the square a kite points at the motif and stops a small gap short of it, in the motif's
+colour. They are the close-fitting frame's construction with its legs tapered toward the corner
+and no outer strips. **Large silhouette** (Stor silhuet): the motif is scaled to fill the square
+(the size setting is the fraction of the largest fit) and leaves a small check in each corner.
+**Small motifs** (Små motiver): the motif in place of a letter on the text checkerboard, on every
+square of one colour of a 4×4 board; a motif that cannot be cut that small gets three squares
+across a 3×3 board, then two on 2×2. A clean smaller board is preferred to a hard-to-cut larger
+one. **Equal squares** (Lige store tern): the motif in place of the one letter of the woven text
+frame with square cells, so it takes the centre square of a regular 3×3 board and every square
+around it is equally large, as in Brodal's hearts. Every cut runs a whole square from the paper
+edge to a corner of the motif's square (the circle with checks leaves the middle strip narrower).
+The motif's cell is one square's diagonal wide, so a wide motif is smaller; cells fitted to the
+motif are the last resort, rather than refusing. **The circle on equal squares** (Cirkel · Lige
+store tern) adds a layer, like the gallery's santa heart (whose lines are not evenly spaced): a
+regular 5×5 board with a circle that reaches into the outer ring of squares, midway between the
+board's junctions inside and outside it, so every line runs straight to it. The motif, divided
+like a letter into four panels, meets the lines' ends in pairs. The eight ends form two cycles,
+upper left to lower right and upper right to lower left, which must cross inside the circle: the
+four panels meet at the motif's centre, or else at a point of background near it with paper in
+every panel around it, so their invisible seams cross its paper but not each other. A convex
+motif has no such point (the star, the heart, the bell): it gets a smaller circle in the middle
+three strips, whose outer lines cross the paper whole, so only the two middle lines of each
+sheet meet the circle and the undivided motif meets them like a letter in the circle frame.
+Either way the motif fills its circle as in the other circle frames, else it is the size of a
+framed letter, and every straight cut lies on the board (tested).
+In the wedge, silhouette and close-fitting
+frames, a symmetric motif gets a symmetric frame: separate extremes that tie (a star's two lower tips, a cat's ears) share a gate
+midway between them, joined to the motif by an invisible coincident cut. That first attempt is
+kept only when it leaves no needle-sharp paper; otherwise every construction uses the motif's own
+extreme points as before. Multi-part motifs that no single cell or panel grid can connect (the
+bicycle, the coffee cup) end in three lanes above and below the motif, with the frame's legs
+from there, after the close-fitting retries. In the frames without a centre panel the frame size only repeated the motif size, so its slider is hidden there, as for small motifs and both equal-squares frames, which also hide the size slider. **Space around the figure** (Luft om figuren, 0–15% of the square, 3% by default) sets the wedges' gap and how far the silhouette's corner checks keep from the motif, so the gallery's simple five-point star can be recreated (about 65% size, 9% space); when the space asked for cannot be cut, half of it and then none are tried. Figure choices are complete templates. Their thumbnails render the actual generated heart in the current colours,
 with unique SVG IDs; a neutral outline appears while an uncached variant is being prepared. The
 main preview has priority over a cancellable sequential background worker. A circular sunburst
 adds four open outer strips around a smaller central field, creating eight rays without adding cuts
@@ -436,8 +495,30 @@ clearance on the completed, rounded sheets. Do not change successful earlier
 layouts. The paw sunburst uses nine actual strips per sheet and has no cutting
 tips below 45°; its separate material-connectivity audit must also pass.
 
-Framed words keep independent four-port cells for each letter, with a common font baseline and
-widths fitted to the glyphs. Text entry accepts three lines of ten characters. Multiline layouts
+Framed words keep independent four-port cells for each letter, with a common font baseline.
+In the close and spacious frames, square cells lie on a regular board, as in Brodal's hearts:
+each cell is one square's diagonal wide and the lines leaving the text block are one square apart,
+so the outer strips are as wide as the inner ones and every check is the same square. A line of k
+characters sits on the middle row of a board of k + 2 strips (JUL on 5×5, like Brodal's), a block
+of rows × columns cells on one of columns + rows + 1. The cells share one row height, which holds
+descenders and accents; spaces keep their square; and only recipes that keep cells whole or split
+them into square panels run, since unevenly split panels, moved gates or bent spokes would make
+uneven squares. When the cells as they are fail, the letters may be 5% and then 10% larger inside
+their unchanged cells, so their connections meet them elsewhere (Cinzel BO, Nunito ÆØÅ in the
+spacious frame and Oswald juleman became clean this way). Cells fitted to each letter make larger letters: without a frame they fill the
+heart like the regular board (a single letter as large as on its 3-strip board), but their checks
+come in several sizes, and uneven columns turn them into slanted rectangles (J / UL / L). Which
+looks better depends on the word: narrow letters leave square cells gappy (William's letters are
+54% of their fitted size, JUL's 69%). The picker therefore offers both as a pair of frames
+("Lige store tern" and "Store bogstaver"), square by default; the chosen kind gets every recipe it
+allows, retry and the hard-to-cut fallback, and the other kind runs only if that gives not even a
+hard-to-cut heart. The circle has no such pair, since its outer checks follow the ring. It keeps
+the automatic choice: square cells when they keep at least 85% of the fitted letter size, first
+as a quick attempt with only the recipes that keep every cell square, without the slow attachment
+searches (moved gates, bent spokes) or panels that split letters unevenly, and with the
+severe-pinch precheck that skips hopeless curve fits; otherwise, and when that is not clean,
+fitted cells with every recipe; square cells with every recipe only as the last resort.
+Text entry accepts six lines of ten characters. Multiline layouts
 connect a matrix of letter cells; shorter rows are centred on the grid and empty positions continue
 the ordinary weave. Counters use shared bridges in every row. North/south connections get separate frame gates rather than routing
 an entire word through two long cuts. Complicated figures first try neighbouring panels; paired
@@ -560,32 +641,47 @@ aligned approaches, keeping the result with fewer narrow tips and a 10% clearanc
 reserve. If all four fail, continue the established constructions. This avoids
 exhausting unsuitable vertical layouts during interactive editing.
 
-“Gentag som mønster” is a text frame, not a separate mode or control. It makes one n×n square
-of cyclic letter shifts: ANNA / NNAA / NAAN / AANN, with no surrounding checkerboard cells.
-Rows follow the paper grid; individual letters stay upright in the heart. Spaces and line breaks
-do not create empty cells. The letters occupy a staggered 2n×n cut lattice, with their centres
-aligned into n×n letter positions. Inner cells have four shared connections, edge cells two,
-and corner cells one. The outer letter strokes extend directly to the paper edges; there is no
-separate rim. Boundary counters and detached accents attach only to inward connections, so
-opening an outer stroke cannot discard them. Matching glyphs reuse their contour routing.
-If a letter cell fails, try bounded corner attachments and invisible relief
-cuts for that cell. Preserve completed cells between the two passes. Boundary
-route ranking must use the retained paths and their actual paper-edge ends,
-so a removed cap cannot hide a fragile or crossing cut.
-A single initial repeats in a 2×2 field. The shared 20-strip limit permits up to ten letters;
-longer messages are rejected before construction, not silently truncated. The paper remains
-square despite different strip counts: JSON and SVG preserve the physical overlap ratio.
-Fidelity covers the whole woven square, including the explicitly extended edge strokes, and
-tests check that the white spaces between letters reach the paper edges. SVG import deduplicates actual path geometry,
-not nearby starting positions, so these densely spaced cuts survive export and editing intact.
+“Tern” is a text frame, not a separate mode or control. It places the typed letters
+once on the classical checkerboard, one character per square. The heart shows the board turned
+45°, so each typed line is one horizontal row of the diamond: its squares touch at their corners
+and share a colour, and the next line's squares sit between them. A line is centred where its
+row allows, otherwise half a square to the left (to the right only if that is what connects).
+The lines first pack into the diamond, with the fewest empty squares beside them in their rows,
+so J / JU / JUL / JULE fills the top half of a 4×4 board and JUL / ul / b the bottom tip of 3×3. The heart is
+mirror symmetric, so the placement then keeps the most lines centred; then the block sits as near
+the widest row as it can; then the first line gets the wider row, else the higher one. When every junction choice of that placement leaves narrow paper, the next placement
+is tried before a hard-to-cut heart (a lone Bree Serif Å then sits beside the centre). The board
+is the smallest that fits and connects: abc is 3×3 with abc across the
+middle row, abc / de puts de below it on the same board, abc / def needs 4×4 with abc half a
+square left, a / bc / d is 2×2, ANNA 4×4, JUL 3×3, GOD JUL 7×7, J / UL / JUL / UL / J fills all
+nine squares of 3×3, JUL / JU / L fills the lower five, and a single letter takes the top square
+of a 2×2 board. Spaces stay plain squares. Nothing repeats: a visitor who wants a pattern types
+it. Letters stay upright, all at one size: the widest, at the full height of the text, fills
+its square, and narrower letters keep that size, centred, rather than growing to fill theirs (an
+I as tall as the H beside it). When no layout weaves cleanly, the first is tried with all letters
+5% and then 10% larger before a hard-to-cut heart (only the standard size's rejected cuts go to
+that fallback), and a result with narrow paper tips is compared, as exported, with the first
+layout 5% larger: a letter that shrank to match a wider one can then route without them. Every letter contrasts with its square; counters keep the square's
+background colour. It is actual cutting geometry, with no preview overlays or cutouts.
 
-“Gentag med tern” adds the classical alternating paper background to those cyclic
-letters. Every square contains a contrasting letter; counters keep the square's
-background colour. It is actual cutting geometry, with no preview overlays or
-cutouts. The combined letter-and-colour period is even: ANNA uses a 4×4 field,
-JUL a 6×6 field, and one initial a 2×2 field. Four neighbouring letters connect
-to a common grid junction through paired shared bridges. At each bridge the
-visible grid changes sheet, preserving open strips and the checkerboard.
+Each lettered square connects through paired shared bridges to one grid junction at one of its
+corners, shared with the other three squares around that junction. At each bridge the visible
+grid changes sheet, preserving open strips and the checkerboard. A group changes only the pieces
+of its four grid edges between the junction and its connections, and from outside it passes one
+cut of each sheet straight through, like a plain crossing. So two junctions may share a grid edge
+when each keeps its connections in its own half of it: connections up to a quarter square out
+stay put, farther ones are pulled into the junction's half. A 3×3 board needs this: its four
+junctions are the corners of the centre square, and each tip square touches only one of them, so
+JUL / JU / L and the full diamond J / UL / JUL / UL / J only connect with neighbouring junctions.
+Because they crowd the connections, neighbouring junctions are used only on a board that cannot
+connect without them, and the next board without them follows as a fallback. Choose junctions for
+the fewest lettered squares that lie between two junctions, then the fewest junctions and pairs
+of neighbours. Squares outside every group are the ordinary
+checkerboard. An empty square in a group keeps the group's two-port pairing with one coincident
+cut between its two connections. A lettered square between two junctions at opposite corners
+carries its letter in one group and, in the other, a short coincident cut across that corner
+(10% and 25% along its edges); the next square of that group connects inside the cut. Links to
+the former repeating frames open the woven frame, or this one for “Gentag med tern”.
 If the established checkerboard routes fail, move each failed letter's two
 connections independently along its cell edges. The start stays before the
 midpoint and the end after it, preserving neighbouring connection order. Try at
@@ -606,12 +702,12 @@ the same letter field and checker colours. Reuse the earlier two-port geometry
 where positions match, cache local failures, and reroute only four-port cells in
 the balanced retry. Validate the complete fitted result and both editor handoffs.
 
-When established repeating-text connections fail, consider the individual stroke
+When established checkerboard connections fail, consider the individual stroke
 tips facing each gate. Local maxima of the outline's projection find ends that
 the global support point misses, such as the separate legs of lowercase m.
 Keep the same bounded attachment budget and exact outline. Reuse clear existing
 cells, and give the alternate candidate set its own cache entries. This is a
-final fallback for both repeating frames; successful earlier constructions keep
+final fallback for the checkerboard; successful earlier constructions keep
 their cuts. Every completed sheet still needs the full spacing, topology and
 artwork checks. Routing around the outside of a letter is not part of this
 fallback: the tested detours left narrow gaps beside the unchanged grid lines.
@@ -645,14 +741,13 @@ the same 256-candidate budget across more outer attachments, considering at most
 four valid internal bridge variants per attachment. Retain existing successful
 recipes. Framed and checkerboard text only repeat this search when the earlier
 pass actually considered a fifth internal variant at some attachment; otherwise
-the extra pass cannot help. Repeated text retries failed cells individually and
-keeps completed cells intact. Failed figure layouts may use the wider search on
+the extra pass cannot help. Failed figure layouts may use the wider search on
 their initial panel and four-port constructions, retaining the selected frame.
 For framed text that still fails, try moving a whole letter's opposite contacts
 together along their cell edges, by at most 20% of the cell width or height.
 The nine position pairs retain cyclic gate order and visible glyph contours.
 Use this only for whole-letter cells, since clipped neighbouring panels must
-agree on their seam contacts. Repeated glyphs reuse both the chosen routes and
+agree on their seam contacts. Identical letters reuse both the chosen routes and
 their shifted gates. Keep the full-sheet spacing check; skip it if no contacts
 moved, and only widen the attachment search when its earlier budget was crowded.
 If those constructions still fail, shared connections may approach the glyph
@@ -661,10 +756,8 @@ bend at most twice the grid clearance from the outline and at most 35% of the
 gate distance away. This avoids grazing a serif without moving its visible
 boundary. Precompute these bends for the fixed attachment candidates; retain
 all contour-crossing, open-path, fidelity and full-sheet clearance checks.
-Framed text combines this with the existing bounded contact shifts. Repeated
-text first reuses completed cells and rebuilds its failed cells with bent
-connections; if the failure was in joining completed cells, rebuild their
-connections too. These are fallback constructions, preserving earlier successes.
+Framed text combines this with the existing bounded contact shifts. These are
+fallback constructions, preserving earlier successes.
 Framed text may combine these bends with the air layout's wider letter-cell
 padding as a final fallback. Keep the selected frame and exact font outlines.
 Only repeat the wider attachment pass when its earlier budget was crowded; the
@@ -698,17 +791,11 @@ Source SVGs, licenses and rebuild inputs are local, and asset URLs are versioned
 The generator keeps its last valid preview visible while calculating a new choice. Export actions
 wait for the latest result. A bounded per-visit cache makes revisiting recent choices immediate;
 colours and print size are excluded from geometry dependencies. Reuse idle workers, cancel obsolete
-work, and share letter routing within repeated glyphs. Do not add a fading or blocking loading
+work, and share letter routing between identical glyphs. Do not add a fading or blocking loading
 animation for routine edits. Local contour construction reuses integer point identities and
 adjacency slots across its routing candidates, with the existing coordinate precision and exact
 output points. Reset adjacency between candidates and sheets; still reject branches, wrong endpoint
 pairings and detached cycles. These digital checks do not replace testing actual paper assembly.
-Repeated-text construction also reuses exact spacing checks within one request.
-Cache a route's self-check separately from its ordered interactions with other
-routes, retaining every coordinate, boundary extension, margin and scale in the
-key. Bound both caches to 2,048 entries and preserve the original check order;
-reversing a pair must not silently reuse a numerical search in the other direction.
-
 A final close-fitting figure fallback may vary the four support directions by ±0.15 and ±0.3
 radians within their original quadrants. Attach to actual silhouette vertices, preserving the
 motif and outer bands. Try the bounded rotation/reflection patterns, skip identical completed
@@ -718,29 +805,12 @@ If those whole-silhouette supports fail, the close-fitting frame may divide it
 into two horizontal panels and vary only the outer support directions by ±0.15.
 Keep internal seams and their agreed contacts fixed.
 
-Ordinary repeated letters may finally use two coincident relief chords for
-independent concave corners, after all established whole-heart repairs fail.
-Reuse successful letter cells; preserve the exact outlines, counters and cyclic
-letter field. Round only shared joins, then require 10% extra full-sheet clearance
-for this fallback. An uncertain material candidate must not be counted as a
-verified success merely because the ordinary editor spacing check accepts it.
-
 A disconnected dot, accent or motif part may finally retry the next nearest
 active gates after the established constructions fail. Keep the nearest-gate
-rule unchanged for existing paths. Repeated text reuses completed cells and skips
-these retries when its missing glyphs have only one component. Figures retain
+rule unchanged for existing paths. Figures retain
 their requested frame; do not map corner checks or layered frames to another
 style. Compare new valid alternatives after rounding by sharp-tip counts, and
 retain the 10% full-sheet clearance reserve. Stop at zero sharp tips.
-
-If repeated text still fails, detached dots and accents may reverse which paper
-sheet carries each of their outline arcs. Their two coincident connections and
-the complete visible outline remain intact. Choose each cell's active gate
-locally, so one failed letter cannot prevent later letters from trying their
-own nearest gate. First reuse completed cells; when necessary, compare a fresh
-alternate-phase layout to avoid retaining narrow tips from the old cells.
-Keep earlier successful whole hearts unchanged and require the same clearance,
-open-path, artwork and export checks. This fallback does not add cutouts.
 
 Framed text may separate a connected stem from three branches whose
 serif ends overlap vertically. Clip only the stem at heights between the branch
@@ -794,7 +864,7 @@ fits. Preserve all glyph proportions, counters and the frame; keep the 10%
 full-sheet clearance reserve and select fewer sharp tips after fitting.
 Earlier successful layouts return first.
 
-Other nonrepeated text may use the same guarded attachments after all established
+Other text may use the same guarded attachments after all established
 recipes fail, including multiline layouts. Compare the existing two-panel row
 and column arrangements, with padding 16%/12% and frame fill 88%/94% (88% without
 a frame). Aim their connections towards the actual clipped contours. Retain the
@@ -818,8 +888,8 @@ attempts; compare completed, rounded hearts before accepting a change. One extra
 contact pair at 20%/80% of the cell edges can expose a better route. Preserve the
 original complete heart whenever the new arrangement fails validation or does
 not improve its exported cuts; additional cuts require 10% extra full-sheet
-clearance after rounding. Nunito ANNA must retain its exact cyclic 4×4
-checkerboard while eliminating all cutting tips narrower than 45°.
+clearance after rounding. Nunito ANNA's checkerboard must have no cutting tips
+narrower than 45°.
 
 A final layered-frame retry may place a 2×2 panel junction at the median centres
 of the motif's counters. Keep the circle, motif and both border bands unchanged.
@@ -858,7 +928,7 @@ ratios 0.16 and 0.12 and the existing adaptive seams. Preserve every outline,
 counter and requested frame. The complete result needs 10% extra clearance
 after fitting and shared-join rounding. Choose fewer sharp exported tips among
 the four bounded alternatives, with the existing 20-strip cap. Earlier valid
-layouts return unchanged; repeat and checkerboard text use their own routes.
+layouts return unchanged; checkerboard text uses its own routes.
 If all four fail inside a shaped frame, they may retry using 94% of its available
 envelope instead of 88%. Keep the frame boundary and exact glyph proportions,
 and require the same extra clearance for the outside connections as for the
@@ -876,7 +946,7 @@ try one 2-column, 3-row construction per glyph. Aim its attachment fans towards
 the mean of the clipped outline points instead of the cell axes. Keep the ink
 panels, agreed seam contacts, counters and coincident-cut rules. Skip this trial
 when its predicted strip count exceeds either existing sheet or the 20-strip
-cap; repeat frames and tip-free results do not need it. Accept only fewer sharp
+cap; the checkerboard and tip-free results do not need it. Accept only fewer sharp
 tips (prioritising tips below 30 degrees), no added strips, the full topology and
 fidelity checks, and 10% clearance reserve after shared-join improvement. Compare
 the old and new woven images at 240 samples and allow at most 0.2% disagreement,

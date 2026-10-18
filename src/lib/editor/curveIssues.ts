@@ -304,11 +304,15 @@ function segmentsHaveIssues(
 		proximityEndpointTolerance: number;
 		skipAdjacent?: boolean;
 		intersectionLoopThreshold?: number;
+		/** Along-curve distance below which a curve returning near itself is one
+		 * bend, not a neck of paper. Defaults to `minDistance`. */
+		resolution?: number;
 	}
 ): boolean {
 	const same = segsA === segsB;
 	const skipAdjacent = opts.skipAdjacent ?? false;
 	const minDist2 = opts.minDistance * opts.minDistance;
+	const resolution = opts.resolution ?? opts.minDistance;
 	const loopThreshold = same ? opts.intersectionLoopThreshold : undefined;
 	const intersectionEps = loopThreshold != null ? 0.2 : INTERSECTION_EPS;
 	let prefixLengths: number[] | null = null;
@@ -373,12 +377,12 @@ function segmentsHaveIssues(
 				// above already measures the same way (`intersectionLoopThreshold`).
 				if (same && prefixLengths) {
 					const along = curveArcSeparation(segsA, prefixLengths, i, hit.u, j, hit.v);
-					if (along != null && along < opts.minDistance) continue;
+					if (along != null && along < resolution) continue;
 					const delta = { x: hit.pointA.x - hit.pointB.x, y: hit.pointA.y - hit.pointB.y };
 					// Limit the subdivision exemption to a nearby bend. A remote
 					// return still uses the full proximity check, even if its
 					// approximate closest point has not converged to a stationary pair.
-					if (along != null && along < 2 * opts.minDistance &&
+					if (along != null && along < 2 * resolution &&
 						(!isLocalDistanceMinimum(segsA, i, hit.u, delta) ||
 						 !isLocalDistanceMinimum(segsA, j, hit.v, { x: -delta.x, y: -delta.y }))) continue;
 				}
@@ -393,8 +397,10 @@ function segmentsHaveIssues(
  * Whether a curve would ruin the heart: it loops back on itself, or it crosses, touches or
  * comes within `minDistance` (internal px, see intersectionMarginPx) of another curve in the
  * same lobe — anywhere along the curves, including where they meet the fold line.
+ * `resolution` is the smallest feature a cut can have: loops and bends shorter than it are
+ * part of one cut. It defaults to `minDistance`; a narrower spacing check keeps the usual one.
  */
-export function fingerHasIntersectionIssues(finger: Finger, fingers: Finger[], minDistance: number): boolean {
+export function fingerHasIntersectionIssues(finger: Finger, fingers: Finger[], minDistance: number, resolution = minDistance): boolean {
 	const segs = fingerToSegments(finger);
 	const n = segs.length;
 	if (!n) return false;
@@ -406,12 +412,12 @@ export function fingerHasIntersectionIssues(finger: Finger, fingers: Finger[], m
 	// Loops smaller than the margin are slivers below the physical resolution; ignore them.
 	for (const seg of segs) {
 		const loopSize = cubicSelfIntersectionLoopSize(seg);
-		if (loopSize != null && loopSize >= minDistance) return true;
+		if (loopSize != null && loopSize >= resolution) return true;
 	}
 
 	for (let i = 0; i < n - 1; i++) {
 		const join = segs[i]!.p3;
-		if (hasAdjacentIntersection(segs[i]!, segs[i + 1]!, join, minDistance)) return true;
+		if (hasAdjacentIntersection(segs[i]!, segs[i + 1]!, join, resolution)) return true;
 	}
 
 	if (
@@ -420,7 +426,8 @@ export function fingerHasIntersectionIssues(finger: Finger, fingers: Finger[], m
 			endpointTolerance: SELF_ENDPOINT_TOLERANCE,
 			proximityEndpointTolerance: SELF_ENDPOINT_TOLERANCE * 2,
 			skipAdjacent: true,
-			intersectionLoopThreshold: minDistance
+			intersectionLoopThreshold: resolution,
+			resolution
 		})
 	) {
 		return true;
@@ -456,10 +463,10 @@ export function fingerPairHasIntersectionIssues(finger: Finger, other: Finger, m
 }
 
 /** Ids of every curve that has an intersection issue with itself or another curve in its lobe. */
-export function findFingersWithIssues(fingers: Finger[], minDistance: number): Set<string> {
+export function findFingersWithIssues(fingers: Finger[], minDistance: number, resolution = minDistance): Set<string> {
 	const set = new Set<string>();
 	for (const finger of fingers) {
-		if (fingerHasIntersectionIssues(finger, fingers, minDistance)) set.add(finger.id);
+		if (fingerHasIntersectionIssues(finger, fingers, minDistance, resolution)) set.add(finger.id);
 	}
 	return set;
 }

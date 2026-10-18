@@ -21,7 +21,7 @@
 			: ''
 	);
 	let outline = $derived(
-		frame === 'woven' || frame === 'air' || frame === 'repeat' || frame === 'repeat-check'
+		frame === 'woven' || frame === 'air' || frame === 'checkered'
 			? ''
 			: 'M' +
 					frameRing(frame, 70)
@@ -50,9 +50,9 @@
 		>
 			{#if outline}<path d={outline} />{:else}<rect
 					x="20"
-					y={frame === 'repeat' || frame === 'repeat-check' ? 20 : frame === 'air' ? 25 : 32}
+					y={frame === 'checkered' ? 20 : frame === 'air' ? 25 : 32}
 					width="60"
-					height={frame === 'repeat' || frame === 'repeat-check' ? 60 : frame === 'air' ? 50 : 36}
+					height={frame === 'checkered' ? 60 : frame === 'air' ? 50 : 36}
 					rx="2"
 				/>{/if}
 			{#if unavailable}<path

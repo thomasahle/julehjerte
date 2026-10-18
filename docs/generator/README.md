@@ -1,18 +1,24 @@
 # Generator robustness checks
 
 Run `npm run test:generator:robustness` from the worktree. The offline corpus uses
-34 texts, six bundled fonts, and 51 authored, Phosphor and Tabler motifs.
-Every font is tested in all ten text frames. Every motif is tested in all 22 figure
-templates. Together this is 2,028 text configurations and 1,122 figure
-configurations. Repeat cases exceeding the frame's strip limit are excluded,
-not reported as successes. The checkerboard variant uses an even period:
-ANNA is 4×4, JUL is 6×6, and OSCAR is 10×10.
+36 texts, six bundled fonts, and 51 authored, Phosphor and Tabler motifs.
+Every font is tested in all six text frames of the picker: close and spacious,
+each with square and letter-sized cells, the checkerboard and the circle. Every
+motif is tested in all eleven figure frames, including the two of equal squares.
+Together this is 1,296 text configurations and 561 figure configurations. The checkerboard places each typed
+line once along a horizontal row of the heart's diamond, on the smallest board
+that fits: JUL is 3×3, ANNA 4×4, OSCAR 5×5, and the full diamond
+J / UL / JUL / UL / J 3×3.
 
 The command writes `tmp/generator/report.json` and a visual review in
 `tmp/generator/report.html`. It records generation time, accepted/refused status,
 errors and strip counts. An unsupported construction is a **refusal**, not a
-successful generation. The process fails on an unexpected runtime error, an
-invalid accepted result, or the loss of a previously accepted configuration in
+successful generation. A heart whose weave and picture are valid but whose paper
+is narrower than the clearance is **hard**: the product shows it with a warning
+naming the letters beside the narrow paper. It is never an acceptance; its
+handoffs are checked at the fraction of the clearance it keeps. The process
+fails on an unexpected runtime error, an invalid accepted result, or the loss
+of a previously accepted configuration in
 `expected.json`. Expand that acceptance list only after reviewing new successes;
 never remove entries merely to make a regression disappear.
 
@@ -27,17 +33,17 @@ size use the product defaults. This is a deliberately varied sample of the icon
 catalog, not a test of every available icon or every historical slider value.
 The expanded matrix has now been audited. Some configurations are still refused;
 finishing the sweep does not mean every combination is supported. The accepted
-configurations are pinned in `expected.json`, including the additional shaped
-frames for all six fonts.
+configurations are pinned in `expected.json`.
 
 Useful focused runs:
 
 ```sh
-node scripts/generator/robustness.mjs --mode=text --font=nunito --frame=repeat
-node scripts/generator/robustness.mjs --mode=text --frame=repeat-check
+node scripts/generator/robustness.mjs --mode=text --font=nunito --frame=checkered
+node scripts/generator/robustness.mjs --mode=text --frame=circle
+node scripts/generator/robustness.mjs --mode=text --frame=woven-letters
 node scripts/generator/robustness.mjs --mode=text --input=anna
 node scripts/generator/robustness.mjs --mode=figure --input=gift
-node scripts/generator/robustness.mjs --mode=figure --frame=circle-layers
+node scripts/generator/robustness.mjs --mode=figure --frame=circle-wedges
 node scripts/generator/robustness.mjs --mode=text --failed=tmp/generator/previous-report.json --out=tmp/generator/retest.json
 ```
 

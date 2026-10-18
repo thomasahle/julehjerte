@@ -13,11 +13,11 @@ it('does not regenerate for choices in the other design mode', () => {
 			...text,
 			motif: 'ph-cat',
 			scale: 45,
-			frame: 'diamond'
+			style: 'check'
 		})
 	).toBe(geometryKey(text));
 	expect(geometryKey({ ...figure, scale: 71 })).not.toBe(geometryKey(figure));
-	expect(geometryKey({ ...text, textFrame: 'oval' })).not.toBe(
+	expect(geometryKey({ ...text, textFrame: 'circle' })).not.toBe(
 		geometryKey(text)
 	);
 });

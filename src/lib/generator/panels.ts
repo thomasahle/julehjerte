@@ -8,11 +8,15 @@ import {
 	type Point,
 	type Edge,
 	type Frame,
+	type OpenFrame,
+	FITTED,
 	near,
 	ray,
 	distance,
 	support,
 	dot,
+	sub,
+	inside,
 	direction,
 	area,
 	forest,
@@ -221,6 +225,41 @@ export function panelDividers(values: number[], low: number, high: number, count
 	});
 }
 
+/** Points of the background inside a motif's box, nearest its centre first,
+ * where the junction of four panels can lie. Its two seams then cross the
+ * motif's paper but not each other: seams crossing inside the paper would make
+ * a four-way joint no cut pattern allows. Each of the four panels around it
+ * keeps some of the motif. Each point keeps clear of the outline, and of the
+ * points before it. A convex motif has none: four panels with paper around a
+ * point outside it cannot exist. */
+export function backgroundJunctions(rings: Ring[], limit = 4): Point[] {
+	const points = rings.flat();
+	if (!points.length) return [];
+	const xs = points.map(p => p[0]), ys = points.map(p => p[1]);
+	const [left, right, top, bottom] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
+	const extent = Math.max(right - left, bottom - top), centre: Point = [(left + right) / 2, (top + bottom) / 2];
+	const outline = (p: Point) => Math.min(...rings.flatMap(r => r.map((a, i) => {
+		const b = r[(i + 1) % r.length], d = sub(b, a), t = Math.max(0, Math.min(1, dot(sub(p, a), d) / (dot(d, d) || 1)));
+		return distance(p, [a[0] + t * d[0], a[1] + t * d[1]]);
+	})));
+	const steps = 40, candidates: Point[] = [], ink: Point[] = [];
+	for (let i = 1; i < steps; i++) for (let j = 1; j < steps; j++) {
+		const p: Point = [left + (i / steps) * (right - left), top + (j / steps) * (bottom - top)];
+		(rings.filter(r => inside(p, r)).length % 2 ? ink : candidates).push(p);
+	}
+	candidates.sort((a, b) => distance(a, centre) - distance(b, centre));
+	// Every panel keeps a share of the motif's paper, not a sliver of it.
+	const surrounded = (p: Point) => [[-1, -1], [1, -1], [1, 1], [-1, 1]].every(([sx, sy]) =>
+		ink.filter(q => (q[0] - p[0]) * sx > 0 && (q[1] - p[1]) * sy > 0).length >= .02 * ink.length);
+	const chosen: Point[] = [];
+	for (const p of candidates) {
+		if (chosen.length >= limit) break;
+		if (outline(p) < .04 * extent || !surrounded(p) || chosen.some(q => distance(p, q) < .15 * extent)) continue;
+		chosen.push(p);
+	}
+	return chosen;
+}
+
 /** Shared cuts may meet an internal seam only at that seam's agreed gate.
  * Bounds and flags follow the gates: top, right, bottom, left, in upright space.
  * Outer sides are unrestricted. Use the same tolerance as divider stitching. */
@@ -264,11 +303,11 @@ export function panelSeamGuard(gates: Point[], bounds: number[], internal: boole
 
 export function generatePanelFigure(
 	rings: Ring[],
-	frame: Frame | undefined,
+	frame: Frame | OpenFrame | undefined,
 	size: number,
 	scale: number,
 	count = 2,
-	style: 'rays' | 'check' | 'plain' = 'rays',
+	style: 'rays' | 'check' = 'rays',
 	rows = 1,
 	spread = false,
 	route = fourPortMotif,
@@ -278,7 +317,9 @@ export function generatePanelFigure(
 	angleOffsets: readonly [number, number, number, number] = [0, 0, 0, 0],
 	junction?: Point
 ) {
-	const factor = size * scale * (frame === 'oval' ? 0.75 : 1);
+	// Without a centre panel, the frame is open: its legs meet the paper edges.
+	const open = typeof frame === 'string' ? undefined : frame ?? FITTED;
+	const factor = size * scale;
 	const artworkUpright = rings.map((r) =>
 		r.map(([x, y]) => [x * factor, y * factor] as Point)
 	);
@@ -346,9 +387,12 @@ export function generatePanelFigure(
 			}
 			const contours = parts.map(r => r.map(uprightToSheet));
 			const angles = [Math.PI / 4, (3 * Math.PI) / 4, (-3 * Math.PI) / 4, -Math.PI / 4];
-			if (!frame) {
+			if (open) {
 				// In the close-fitting template, outer grid lines meet the actual
 				// silhouette of each panel. Interior gates retain the shared seam.
+				// A wedge's tip stays its gap further out, on the same direction.
+				const outward = (point: Point, side: number): Point => open.gap
+					? [point[0] - open.gap * Math.cos(angles[side]), point[1] - open.gap * Math.sin(angles[side])] : point;
 				for (const [side, outside] of [row === 0, col === count - 1, row === rows - 1, col === 0].entries()) {
 					if (!outside) continue;
 					if (attachments !== 'support') {
@@ -363,15 +407,15 @@ export function generatePanelFigure(
 							}
 						});
 						if (hits.length) {
-							gates[side] = hits.reduce((a, b) => distance(a, origin) < distance(b, origin) ? a : b);
+							gates[side] = outward(hits.reduce((a, b) => distance(a, origin) < distance(b, origin) ? a : b), side);
 							continue;
 						}
 					}
 					// An outer support may move along the same silhouette without
 					// changing the shared seam between neighbouring panels.
 					const angle = angles[side] + Math.PI + angleOffsets[side], d = direction(angle);
-					gates[side] = contours.map(r => support(r, angle).point)
-						.reduce((a, b) => dot(a, d) > dot(b, d) ? a : b);
+					gates[side] = outward(contours.map(r => support(r, angle).point)
+						.reduce((a, b) => dot(a, d) > dot(b, d) ? a : b), side);
 				}
 			}
 			route(
@@ -398,12 +442,12 @@ export function generatePanelFigure(
 		for (const row of cells) for (const gates of row)
 			for (let side = 0; side < gates.length; side++) gates[side] = restore(gates[side]);
 	}
-	connectCellGrid(edges, cells, frame ? frameRing(frame, size) : undefined, style, spread);
+	connectCellGrid(edges, cells, open ? undefined : frameRing(frame as Frame, size), style, spread, open);
 	const artwork = artworkUpright.map(r => r.map(uprightToSheet));
 	return {
 		geometry: compile(edges),
 		edges,
 		artwork,
-		...(!frame ? { domain: [...cells.flat(), ...artwork] } : {})
+		...(open ? { domain: [...cells.flat(), ...artwork] } : {})
 	};
 }

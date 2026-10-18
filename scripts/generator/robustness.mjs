@@ -1,5 +1,5 @@
 /** Reproducible, offline generator corpus. Refused inputs are reported separately
- * from invalid accepted output. Run --mode=text|figure, --font=nunito, --frame=repeat,
+ * from invalid accepted output. Run --mode=text|figure, --font=nunito, --frame=checkered,
  * --input=ANNA or --out=tmp/generator/report.json to narrow a diagnostic run. */
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -25,6 +25,7 @@ try {
     const { ConstructionError } = await server.ssrLoadModule('/src/lib/generator/geometry.ts');
     const { CutGeometryError } = await server.ssrLoadModule('/src/lib/inverse/toHeartDesign.ts');
     const { FIGURE_TEMPLATES, TEXT_TEMPLATES } = await server.ssrLoadModule('/src/lib/generator/templates.ts');
+    const { defaults, frameGap } = await server.ssrLoadModule('/src/lib/generator/state.ts');
     const { normalizeHeartDesign, serializeHeartDesign, serializeHeartToSVG, parseHeartFromSVG } = await server.ssrLoadModule('/src/lib/utils/heartDesign.ts');
     const { inferOverlapRect } = await server.ssrLoadModule('/src/lib/utils/overlapRect.ts');
     const { findFingersWithIssues, intersectionMarginPx } = await server.ssrLoadModule('/src/lib/editor/curveIssues.ts');
@@ -36,18 +37,18 @@ try {
         for (const fontId of fontIds.filter(f => !args.font || (args.font === 'others' ? f !== 'nunito' : String(args.font).split(',').includes(f)))) {
             const font = await read(`static/generator/fonts/${fontId}.json`);
             for (const text of texts.filter(t => !args.input || args.input === t))
-                for (const textFrame of TEXT_TEMPLATES.filter(f => !args.frame || f === args.frame)) {
-                    const letters = [...text.normalize('NFC').replace(/\s/g, '')].length;
-                    if (textFrame === 'repeat' && letters > 10 || textFrame === 'repeat-check' && letters * (letters % 2 ? 2 : 1) > 20)
-                        continue;
-                    cases.push({ id: `text/${fontId}/${textFrame}/${JSON.stringify(text)}`, mode: 'text', input: text, fontId, template: textFrame, request: { mode: 'text', name: text, text, font, textFrame, colors } });
+                for (const { id, textFrame, cells } of TEXT_TEMPLATES.filter(f => !args.frame || f.id === args.frame || f.textFrame === args.frame)) {
+                    const fittedCells = cells && cells === 'letters';
+                    cases.push({ id: `text/${fontId}/${id}/${JSON.stringify(text)}`, mode: 'text', input: text, fontId, template: id, request: { mode: 'text', name: text, text, font, textFrame, fittedCells, colors } });
                 }
         }
     if (args.mode !== 'text')
         for (const id of motifs.filter(m => !args.input || args.input === m)) {
             const { contours } = await read(`static/generator/motifs/${id}.json`);
             for (const template of FIGURE_TEMPLATES.filter(t => !args.frame || args.frame === t.id))
-                cases.push({ id: `figure/${id}/${template.id}`, mode: 'figure', input: id, template: template.id, request: { mode: 'figure', name: id, contours, colors, frame: template.frame, style: template.style } });
+                cases.push({ id: `figure/${id}/${template.id}`, mode: 'figure', input: id, template: template.id, request: { mode: 'figure', name: id, contours, colors, frame: template.frame, style: template.style,
+                    // The page's default space around the motif, where the frame has one.
+                    gap: frameGap({ ...defaults, mode: 'figure', style: template.style }) } });
         }
     if (args.failed) {
         const failed = new Set((await read(String(args.failed))).results.filter(r => r.status !== 'accepted').map(r => r.id));
@@ -61,10 +62,14 @@ try {
     for (const [index, entry] of cases.entries()) {
         const { request, ...record } = entry;
         const start = performance.now();
-        let design;
+        let design, spacing = 1;
         try {
-            design = generate(request).design;
-            record.status = 'accepted';
+            const result = generate(request);
+            design = result.design;
+            // A hard-to-cut result is not an acceptance: it keeps the weave and
+            // picture but leaves paper narrower than the clearance.
+            record.status = result.hardToCut ? 'hard' : 'accepted';
+            if (result.hardToCut) spacing = result.hardToCut.spacing;
             record.grid = design.gridSize;
         }
         catch (error) {
@@ -82,7 +87,7 @@ try {
                         throw Error('Lost cuts in serialization');
                     const rect = inferOverlapRect(restored.fingers, restored.gridSize);
                     const margin = intersectionMarginPx(rect, gridClearanceScale(restored.gridSize.x, restored.gridSize.y));
-                    if (findFingersWithIssues(restored.fingers, margin).size)
+                    if (findFingersWithIssues(restored.fingers, margin * spacing, margin).size)
                         throw Error('Editor rejects restored cuts');
                     if (restored.rightCutouts?.length || restored.leftCutouts?.length)
                         throw Error('Detached cutouts');
@@ -92,8 +97,8 @@ try {
                         throw Error(`Roundtrip changes ${mismatch} of the weave`);
                 }
                 const representative = entry.mode === 'figure'
-                    ? entry.template === 'circle-rays' || (entry.input === 'gift' && entry.template.startsWith('oval-'))
-                    : ['repeat', 'repeat-check'].includes(entry.template) && ['ANNA', 'anna', 'JUL'].includes(entry.input);
+                    ? entry.template === 'circle-rays' || entry.input === 'gift'
+                    : entry.template === 'checkered' && ['ANNA', 'anna', 'JUL'].includes(entry.input);
                 if (args.artifacts && (representative || (!expected.has(entry.id) && samples.length < 96)))
                     samples.push({ id: entry.id, svg: renderHeartSvgMarkup(design, colors, {idPrefix: 'sample-' + samples.length}) });
             }
@@ -112,7 +117,7 @@ try {
     const groups = {};
     for (const r of results) {
         const key = r.mode === 'text' ? `${r.fontId}/${r.template}` : r.template;
-        const g = groups[key] ??= { accepted: 0, refused: 0, invalid: 0, ms: 0 };
+        const g = groups[key] ??= { accepted: 0, hard: 0, refused: 0, invalid: 0, ms: 0 };
         g[r.status]++;
         g.ms += r.ms;
     }
