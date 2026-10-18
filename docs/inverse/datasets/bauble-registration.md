@@ -288,3 +288,27 @@ grid/clearance preparation, before free refinement, and diverge further later.
 These are corresponding control parameters, not visible-boundary displacements.
 This narrows the search-sensitivity diagnosis but does not yet separate coarse
 initialization, fine-grid fitting and clearance preparation.
+
+
+The private browser trial also passes. Actual upload, crop, solve, Open in Draw
+and SVG export take **37.38 s** for the bauble, with **2.804%** independent editable
+error, 4+7 cuts, and passing geometry/paper checks. Independent SVG feature analysis
+retains **85%** of the small region with its enclosure intact. The blue/orange
+control remains at 0.654% error and takes 6.56 s. Visual inspection confirms the
+central motif; the border remains irregular.
+
+All **33 browser corpus cases** keep exactly their previous three error measures.
+All 22 regular Hunodan cases remain under ten seconds: median **5.611 s**, maximum
+**8.519 s**. These timings remain individual runs. The browser trial excludes the
+diagnostic coordinate snapshots used in the earlier four-cell experiment.
+
+The exact browser-tested fitter source is now in the production worktree, with
+a regression requiring the near-threshold candidate to be polished and accepted
+before further grid exploration. Focused and full source validation are running.
+The public preview on port 5232 still serves the previous validated fitter.
+
+
+The production copy passes all **three focused regressions** in 90.31 seconds,
+including the nearby-crop case in 35.94 seconds and both late-cleanup budget tests.
+Typecheck, lint, 874 application tests (one existing skip) and build pass. The
+full inverse suite is running against pinned sources before a preview refresh.

@@ -27,6 +27,10 @@ test('a subpixel photo-crop perturbation still produces a feature-complete valid
   const result=await design(target,cfg);
   assert.equal(result.report.validation.passed,true);
   assert.equal(result.report.templateChecksPassed,true);
+  const comparison=result.report.solver.earlyPolishComparison;
+  assert.equal(comparison?.accepted,true,'A complete near-threshold layout should be polished before more grids are tried.');
+  assert.ok(comparison.beforeError>settings(cfg).maxImageError);
+  assert.ok(comparison.afterError<=settings(cfg).maxImageError);
   const woven=await renderExportedWeave(result.files['cut_geometry.json'],fixture.resolution);
   const error=woven.mask.reduce((s,v,i)=>s+Number(v!==target.sourceImage.mask[i]),0)/woven.mask.length;
   assert.ok(error<=.03,`${100*error}% independent mask disagreement`);

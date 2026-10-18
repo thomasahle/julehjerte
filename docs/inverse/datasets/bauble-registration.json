@@ -1140,7 +1140,7 @@
     }
   },
   "earlyPolishExperiment": {
-    "status": "Four fresh runs complete; promising isolated speed result, not adopted",
+    "status": "Implemented; focused/check/lint/application/build pass. Full inverse suite running; public preview remains the previous validated fitter.",
     "scope": "Same photo and settings; two automatic crops differ by 15 classified pixels. One fresh process per policy/crop. Five-cut progress coordinates captured in both policies and feature-audited after the timed solve. No saved templates or ground-truth cuts enter fitting.",
     "sourceFilesUnchanged": 1111,
     "rows": [
@@ -1425,6 +1425,97 @@
     "policy": "One bounded full-resolution polish of the first geometry/paper/feature-valid near-threshold candidate, before additional grids. Preserve candidates, acceptance gates and request deadline.",
     "next": "Actual editable-SVG workflows and strict 33-case browser comparison before adoption.",
     "record": "tmp/heart-learning/bauble-segmentation-2026-10-18/early-polish-study/results/checkpoint-diagnosis.json",
-    "sha256": "2be1a93ae503214a87fad857de9084b66b5f828b672ce91ed018d44371207e4c"
+    "sha256": "2be1a93ae503214a87fad857de9084b66b5f828b672ce91ed018d44371207e4c",
+    "browserValidation": {
+      "status": "Exact browser-tested policy copied into production worktree; focused and full source validation running. Public preview unchanged.",
+      "browser": [
+        {
+          "id": "bauble",
+          "status": "workflow-passed",
+          "editableError": 0.02804375,
+          "seconds": 37.376599999904634,
+          "counts": {
+            "left": 4,
+            "right": 7
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass"
+        },
+        {
+          "id": "window-blue-orange",
+          "status": "workflow-passed",
+          "editableError": 0.00654375,
+          "seconds": 6.560399999856949,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass"
+        }
+      ],
+      "browserRecord": "tmp/heart-learning/bauble-segmentation-2026-10-18/early-polish-browser/browser/results.json",
+      "browserSha256": "72bdc37861aa04cf15ed6e16a54081d73fee8873ba063b4dc1a47ea16c2505a0",
+      "corpus": {
+        "cases": 33,
+        "passed": true,
+        "allErrorsUnchanged": true,
+        "hunodanMedianSeconds": 5.611200000047683,
+        "hunodanMaximumSeconds": 8.518600000143051,
+        "record": "tmp/heart-learning/bauble-segmentation-2026-10-18/early-polish-browser/corpus-comparison.json",
+        "sha256": "25e82786e391f80894d2223f97f6dc5bed72940a42f3685c66f1d0140a1fed86"
+      },
+      "editableFeatures": {
+        "passed": true,
+        "record": "tmp/heart-learning/bauble-segmentation-2026-10-18/early-polish-browser/editable-feature-audit.json",
+        "sha256": "8e2505e7266fa84cb22046d5258d20397600e8c813aa093f6f0b0bbc161b4eb1",
+        "smallRegionRetention": 0.85
+      },
+      "policySha256": "d1bd28d6752ccd409406677d69638d3c3415666df0d5fab1edddb117b111cc0e",
+      "productionSourceExactlyMatchesPolicy": true,
+      "validation": "tmp/heart-learning/bauble-segmentation-2026-10-18/early-polish-production/state.json",
+      "visualInspection": "Central bauble retained; border still irregular. No claim of original cutting-path ground truth."
+    },
+    "baseSourceCommit": "b8eacee",
+    "browserBaseSourceCommit": "d89d99b",
+    "productionValidation": {
+      "state": "tmp/heart-learning/bauble-segmentation-2026-10-18/early-polish-production/state.json",
+      "sourceFiles": 1109,
+      "sourceManifestSha256": "ab4d8bee14f223a80eca832494f61b8c68a602018dd39c6d8d20f0685dc576d0",
+      "completedStages": [
+        {
+          "name": "focused",
+          "seconds": 90.310194125,
+          "status": "passed"
+        },
+        {
+          "name": "check",
+          "seconds": 10.551077582999994,
+          "status": "passed"
+        },
+        {
+          "name": "lint",
+          "seconds": 7.525909416999994,
+          "status": "passed"
+        },
+        {
+          "name": "application",
+          "seconds": 46.22998570799999,
+          "status": "passed"
+        },
+        {
+          "name": "build",
+          "seconds": 15.774618250000003,
+          "status": "passed"
+        }
+      ],
+      "focusedTests": 3,
+      "applicationTests": {
+        "passed": 874,
+        "skipped": 1
+      },
+      "fullInverse": "running",
+      "publicPreviewRuntime": "47b3d08"
+    }
   }
 }
