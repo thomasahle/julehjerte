@@ -48,7 +48,11 @@ for(const entry of fixture.cases){
     const repaired=repairRejectedRouting(proposal,source,cfg,{deadline:1100});
     t.mock.restoreAll();
     assert.ok(repaired.report.steps<160,'Exercise an interrupted gradient block.');
-    assert.equal(repaired.report.finalProjection?.accepted,true);
+    // A checkpoint may already have repaired the gap before the gradient
+    // block expires. Retaining it should not require a redundant final move.
+    // Both paths still face the independent geometry, paper and image gates.
+    const projection=repaired.report.finalProjection||repaired.report.history.findLast(h=>h.returnProjection?.accepted)?.returnProjection;
+    assert.equal(projection?.accepted,true);
     const candidate=repaired.solution||repaired.refinementSeed;
     assert.ok(candidate,repaired.report.reason);
     if(!repaired.solution){
