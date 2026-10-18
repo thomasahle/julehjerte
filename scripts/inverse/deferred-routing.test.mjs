@@ -41,6 +41,7 @@ for(const entry of fixture.cases)test(`${entry.id}: refine the retained grid bef
     assert.equal(solver.featureRecovery,null);
     assert.equal(solver.selectedInitialization,'grid');
     assert.deepEqual(solver.selectedCounts,[4,4]);
+    assert.equal(solver.cleanupBudget.addedSeconds,0,'A fast fit must retain its existing cleanup allowance.');
     await checkExport(answer,input.sourceImage,entry.baselineIndependentError+1/before.mask.length);
     assert.deepEqual(input.sourceImage,before);
   }catch(error){

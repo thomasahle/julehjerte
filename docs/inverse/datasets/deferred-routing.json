@@ -188,8 +188,10 @@
     "scope": "Three native-mask quality checks plus a stalled first grid followed by actual coarse and feature routing, with independent export, geometry, paper and feature checks."
   },
   "pending": [
-    "resolve timing-dependent Viking fidelity with controlled postprocessing experiments",
-    "refresh stable preview only after verification"
+    "late cleanup: existing targeted recovery checks, typecheck, lint, application suite and build",
+    "late cleanup: actual Viking repeats and33-case browser fidelity/speed comparison",
+    "late cleanup: complete inverse suite",
+    "refresh stable preview after verification"
   ],
   "standardVerification": {
     "state": "tmp/heart-learning/deferred-routing-2026-10-18/qa/state.json",
@@ -478,5 +480,136 @@
     "allSixValidityAndFeaturesPassed": true,
     "conclusion": "Both committed runtimes vary with timing. All candidate assessment reports match, and the new grid-first policy remains inactive. Current mean and worst error are higher in this small sample; it does not establish equivalence or resolve the failed comparison.",
     "next": "Test a larger polishing reservation and postponing optional early sharing, retaining all final validity and source-image gates."
+  },
+  "cleanupAllocationExperiments": {
+    "scope": "Cold Node diagnostics using unchanged browser-prepared pixels/settings; not browser latency or original-artwork error.",
+    "rejected": {
+      "scope": "Cold Node diagnosis only; not browser timing or a production policy",
+      "rows": [
+        {
+          "variant": "current",
+          "designSeconds": 26.151452208,
+          "independentError": 0.0194375,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "templateChecksPassed": true,
+          "path": "tmp/heart-learning/deferred-routing-2026-10-18/polish-allocation/1-current/record.json",
+          "sha256": "e5b10ae463632f17e831dde199b45f5c5ee9951aa7530e2c0273068602fff82a",
+          "sharingAccepted": 11,
+          "lastPolishStep": 124
+        },
+        {
+          "variant": "reserve-2200",
+          "designSeconds": 26.802916708,
+          "independentError": 0.01995,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "templateChecksPassed": true,
+          "path": "tmp/heart-learning/deferred-routing-2026-10-18/polish-allocation/2-reserve-2200/record.json",
+          "sha256": "4481139906de57a19a71bf8de1a97b2fa4a6f9554838130837ecba98267b6711",
+          "sharingAccepted": 5,
+          "lastPolishStep": 159
+        },
+        {
+          "variant": "final-sharing-only",
+          "designSeconds": 25.4950835,
+          "independentError": 0.02046875,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "templateChecksPassed": true,
+          "path": "tmp/heart-learning/deferred-routing-2026-10-18/polish-allocation/3-final-sharing-only/record.json",
+          "sha256": "d0607e2691e29922c2ec57af375f0c5bf1d250bb2f32efd967dceec01459d1b2",
+          "sharingAccepted": 0,
+          "lastPolishStep": 159
+        },
+        {
+          "variant": "final-sharing-only",
+          "designSeconds": 25.195072625,
+          "independentError": 0.02045625,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "templateChecksPassed": true,
+          "path": "tmp/heart-learning/deferred-routing-2026-10-18/polish-allocation/4-final-sharing-only/record.json",
+          "sha256": "8637b6ad0257a0b1c80472fc87b94fc52391ce7362783cf89e510e32d5e947f9",
+          "sharingAccepted": 0,
+          "lastPolishStep": 159
+        },
+        {
+          "variant": "reserve-2200",
+          "designSeconds": 26.710219083,
+          "independentError": 0.0196,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "templateChecksPassed": true,
+          "path": "tmp/heart-learning/deferred-routing-2026-10-18/polish-allocation/5-reserve-2200/record.json",
+          "sha256": "be33551b5d710afa43a5dd5248e4ee4a5d067804aa9b9f64fde2c03fbd559493",
+          "sharingAccepted": 7,
+          "lastPolishStep": 159
+        },
+        {
+          "variant": "current",
+          "designSeconds": 26.974590334000002,
+          "independentError": 0.01975625,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "templateChecksPassed": true,
+          "path": "tmp/heart-learning/deferred-routing-2026-10-18/polish-allocation/6-current/record.json",
+          "sha256": "797c7d19d8439e784707f3ee7471f1929c159cbcf4c5939963d8e799d913e007",
+          "sharingAccepted": 8,
+          "lastPolishStep": 124
+        }
+      ],
+      "conclusion": "Neither larger polishing reserve nor postponing optional early sharing establishes an improvement. Early sharing is useful; investigate completing both passes within unused requested time."
+    },
+    "lateCleanup": [
+      {
+        "run": "1-late-cleanup",
+        "designSeconds": 27.694703208,
+        "independentError": 0.01916875,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "featuresPassed": true,
+        "templateChecksPassed": true,
+        "shares": 11,
+        "lastPolishStep": 159,
+        "allocation": {
+          "startedAtSeconds": 20.773919583999998,
+          "beforeSeconds": 2.926080416000001,
+          "afterSeconds": 6.5
+        },
+        "cutGeometrySha256": "ef8d3dbd985ef5636c1ff71a3d84983fc024b4bcb5c31e1d701ed707a5057ddd"
+      },
+      {
+        "run": "2-late-cleanup",
+        "designSeconds": 27.248386124999996,
+        "independentError": 0.01916875,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "featuresPassed": true,
+        "templateChecksPassed": true,
+        "shares": 11,
+        "lastPolishStep": 159,
+        "allocation": {
+          "startedAtSeconds": 20.363725458,
+          "beforeSeconds": 3.336274541999999,
+          "afterSeconds": 6.5
+        },
+        "cutGeometrySha256": "ef8d3dbd985ef5636c1ff71a3d84983fc024b4bcb5c31e1d701ed707a5057ddd"
+      }
+    ],
+    "identicalExports": true
+  },
+  "lateCleanupImplementation": {
+    "status": "implemented; six focused tests passed; broader checks pending",
+    "fitSourceSha256": "ca7439fd671f69aa9c7181982c6ba05f5da14e29b03bb4130e89a6173c352d8c",
+    "focusedLog": "tmp/heart-learning/deferred-routing-2026-10-18/late-cleanup-production/focused.log",
+    "focusedLogSha256": "7e1ef0919c01accf392e1d62bde5bc175d260d9ffe2fffcf01ed1276d8af7540",
+    "scope": "After a long request has already spent10seconds, give existing cleanup up to6.5seconds, capped by the original request minus1.3seconds. Short requests and fast fits retain deadlines. Every original acceptance gate remains unchanged."
   }
 }
