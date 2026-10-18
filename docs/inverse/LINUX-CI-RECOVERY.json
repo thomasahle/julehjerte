@@ -539,6 +539,33 @@
     "scope": "Kernel-selection, paper-backend and all nine late-feature scheduling cases.",
     "linuxReplay": "https://github.com/thomasahle/julehjerte/actions/runs/39171889512",
     "diagnosticCommit": "3952c1aa",
-    "linuxStatus": "running"
+    "linuxStatus": "failure",
+    "linuxPassed": 14,
+    "linuxFailed": 2,
+    "lateOriginal3200Error": 0.03090625,
+    "matchingIndependentExportError": 0.005766369047619048,
+    "remainingFailures": [
+      "dense-interior-counts",
+      "late original same-count proposal with 3200ms left"
+    ],
+    "limitation": "The calibration regression is fixed, but this focused replay does not show a resolution of either remaining photographic failure."
+  },
+  "latestLocalAppChecks": {
+    "sourceCommit": "7af47d82",
+    "typecheck": {
+      "errors": 0,
+      "existingWarnings": 6
+    },
+    "lint": {
+      "errors": 0,
+      "existingWarnings": 4
+    },
+    "vitest": {
+      "passed": 1570,
+      "skipped": 1,
+      "files": 112
+    },
+    "build": "pass",
+    "inverseTests": "Focused matching 14/14, clearance verification 1/1, kernel/paper-backend/late-feature 29/29. The duplicate full local inverse phase launched by npm test was stopped to conserve CPU; no full local inverse pass is claimed."
   }
 }
