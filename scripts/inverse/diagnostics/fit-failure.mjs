@@ -16,7 +16,7 @@ export async function captureFitFailure({error=null,maximum=null,answer,source,r
       'report.json':JSON.stringify(answer.report,null,2),
       'cut_geometry.json':answer.files['cut_geometry.json'],
       'failure.json':JSON.stringify({schema:'woven-heart-test-failure-1',error,maximum,resolution,context,
-        note:'Captured after fitting, before the original strict error assertion. Source values are observations, not original artwork or cutting-path ground truth.'},null,2),
+        note:'Captured after fitting in response to a failed test assertion. Source values are observations, not original artwork or cutting-path ground truth.'},null,2),
     };
     const hashes={};
     for(const [name,text]of Object.entries(files)){
