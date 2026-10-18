@@ -42,9 +42,9 @@ describe('HILL_PATH', () => {
 		expect(hillY(1220)).toBeCloseTo(601, 6);
 		expect(hillY(1909)).toBeCloseTo(508, 6);
 		expect(hillY(2172)).toBeCloseTo(519, 6);
-		// Clamped outside the drawing.
+		// Level left of the drawing; mirrored past its right edge (see below).
 		expect(hillY(-50)).toBeCloseTo(523, 6);
-		expect(hillY(3000)).toBeCloseTo(519, 6);
+		expect(hillY(3000)).toBeCloseTo(hillY(2 * 2172 - 3000), 6);
 	});
 });
 
@@ -99,6 +99,31 @@ describe('hillTopBetween', () => {
 
 	it('takes the range in either order', () => {
 		expect(hillTopBetween(1500, 600)).toBe(hillTopBetween(600, 1500));
+	});
+
+	it('follows the mirror image past the right edge', () => {
+		for (const [x0, x1] of [
+			[1800, 2600],
+			[2200, 3000],
+			[1000, 4000]
+		]) {
+			const top = hillTopBetween(x0, x1);
+			let sampled = Infinity;
+			for (let x = x0; x <= x1; x += 0.5) sampled = Math.min(sampled, hillY(x));
+			expect(top).toBeLessThanOrEqual(sampled + 1e-9);
+			expect(sampled - top).toBeLessThan(0.01);
+		}
+	});
+});
+
+describe('past the drawing', () => {
+	it('mirrors the line at the right edge (Scene shows the mirror image there)', () => {
+		for (const d of [0, 1, 58, 400, 2000]) expect(hillY(2172 + d)).toBeCloseTo(hillY(2172 - d), 9);
+	});
+
+	it('stays level left of the drawing and past the mirror', () => {
+		expect(hillY(-50)).toBe(hillY(0));
+		expect(hillY(2 * 2172 + 50)).toBe(hillY(0));
 	});
 });
 

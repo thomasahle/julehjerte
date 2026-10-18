@@ -74,9 +74,19 @@ function segmentAt(x: number): Segment {
 	);
 }
 
-/** The hill line's y at x, both in drawing units; x is clamped to the drawing. */
+/**
+ * x folded into the drawing: past its right edge the scene shows the drawing's
+ * mirror image (Scene.svelte), so the line there is the line at 2W - x. Left of
+ * 0 and past the mirror the line stays level at its end value.
+ */
+export function foldX(x: number): number {
+	const mirrored = x > LANDSCAPE_WIDTH ? 2 * LANDSCAPE_WIDTH - x : x;
+	return Math.min(Math.max(mirrored, 0), LANDSCAPE_WIDTH);
+}
+
+/** The hill line's y at x, both in drawing units; see foldX for x outside the drawing. */
 export function hillY(x: number): number {
-	const clamped = Math.min(Math.max(x, 0), LANDSCAPE_WIDTH);
+	const clamped = foldX(x);
 	const segment = segmentAt(clamped);
 	const t = solveT(segment, clamped);
 	const [p0, p1, p2, p3] = segment;
@@ -101,6 +111,17 @@ function rootsInUnit(a: number, b: number, c: number): number[] {
  * drawing units: the ends of the range and every turning point of y inside it.
  */
 export function hillTopBetween(x0: number, x1: number): number {
+	const lo = Math.min(x0, x1);
+	const hi = Math.max(x0, x1);
+	// A range reaching into the mirror image: its two halves, folded.
+	if (hi > LANDSCAPE_WIDTH) {
+		const mirrored = hillTopWithin(foldX(hi), foldX(Math.max(lo, LANDSCAPE_WIDTH)));
+		return lo >= LANDSCAPE_WIDTH ? mirrored : Math.min(mirrored, hillTopWithin(lo, LANDSCAPE_WIDTH));
+	}
+	return hillTopWithin(lo, hi);
+}
+
+function hillTopWithin(x0: number, x1: number): number {
 	const from = Math.min(Math.max(Math.min(x0, x1), 0), LANDSCAPE_WIDTH);
 	const to = Math.min(Math.max(Math.max(x0, x1), 0), LANDSCAPE_WIDTH);
 	let top = Math.min(hillY(from), hillY(to));

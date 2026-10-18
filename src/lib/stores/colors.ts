@@ -1,5 +1,6 @@
 import { browser } from '$app/environment';
 import type { HeartColors } from '$lib/types/heart';
+import { readStorage, writeStorage } from '$lib/utils/safeStorage';
 
 // A heart's colours are a property of a design as much as of the site, so the
 // type lives with the other design types; it is re-exported here because most
@@ -27,6 +28,8 @@ export const DEFAULT_COLORS_HEX: HeartColors = {
   right: '#b91313'
 };
 
+const STORAGE_KEY = 'julehjerte-colors';
+
 // Simple module-level state with subscribers
 let currentColors: HeartColors = { ...DEFAULT_COLORS };
 const subscribers = new Set<(colors: HeartColors) => void>();
@@ -34,11 +37,12 @@ const subscribers = new Set<(colors: HeartColors) => void>();
 function loadColors(): HeartColors {
   if (!browser) return { ...DEFAULT_COLORS };
 
-  const stored = localStorage.getItem('julehjerte-colors');
+  // Blocked storage reads as nothing stored: the page starts from the defaults.
+  const stored = readStorage(STORAGE_KEY);
   if (stored) {
     try {
       const parsed = JSON.parse(stored);
-      if (parsed.left && parsed.right) {
+      if (parsed && typeof parsed.left === 'string' && typeof parsed.right === 'string' && parsed.left && parsed.right) {
         return parsed;
       }
     } catch {
@@ -50,7 +54,8 @@ function loadColors(): HeartColors {
 
 function saveColors(colors: HeartColors) {
   if (browser) {
-    localStorage.setItem('julehjerte-colors', JSON.stringify(colors));
+    // Blocked or full: the colours still change, for this page view only.
+    writeStorage(STORAGE_KEY, JSON.stringify(colors));
   }
 }
 

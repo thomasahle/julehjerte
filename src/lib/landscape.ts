@@ -19,6 +19,11 @@ import landscapeSvg from '$lib/assets/landscape.svg?raw';
 
 export const LANDSCAPE_WIDTH = 2172;
 export const LANDSCAPE_HEIGHT = 724;
+/**
+ * The widest the drawing is rendered, in CSS px (Scene.svelte spells it in its
+ * CSS too). Wider windows show a mirror image of it to the right of this.
+ */
+export const LANDSCAPE_MAX_WIDTH = 2000;
 export const LANDSCAPE_VIEWBOX = `0 0 ${LANDSCAPE_WIDTH} ${LANDSCAPE_HEIGHT}`;
 
 /** Fir fills from the drawing, dark to light. Index 0 is the front-most green. */
