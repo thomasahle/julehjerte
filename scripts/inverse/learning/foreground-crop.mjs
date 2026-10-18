@@ -2,6 +2,7 @@
  * This is not imported by the app. Oracle fields are diagnostic controls only.
  */
 import fs from 'node:fs/promises';
+import {LOCATOR_FIELD_SELECTION} from './locator-field-source.mjs';
 import {close,signedDistance} from '../../../static/inverse/locator/fields.js';
 import {bilinear,quantile,sigmoid} from '../../../static/inverse/locator/math.js';
 import {supportedCropOutline,pixelCentresToEdges} from '../../../static/inverse/core/crop.js';
@@ -42,7 +43,7 @@ async function injectedLocator(){
   if(locator)return locator;
   const file=new URL('../../../static/inverse/locator/locator.js',import.meta.url);
   let source=await fs.readFile(file,'utf8');
-  const before="baseFields=options.palette==='chromatic'?makeChromaticPaletteFields(work,{roi:sampleROI})\n  :options.palette==='rgb-background'?makeRGBBackgroundFields(work,{roi:sampleROI})\n  :options.palette==='interior'?makeInteriorPaletteFields(work)\n  :options.palette==='anchored'?makeAnchoredFields(work)\n  :['adaptive','pale'].includes(options.palette)?makePaletteFields(work,{pale:options.palette==='pale'})\n  :makeFields(work);";
+  const before=LOCATOR_FIELD_SELECTION;
   if(source.split(before).length!==2)throw new Error('Locator field seam changed; re-audit adapter.');
   source=source.replace(before,'baseFields=options.foregroundFields(work);');
   source=source.replace(/from '(\.\/[^']+)'/g,(_,p)=>`from '${new URL(p,file).href}'`);

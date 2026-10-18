@@ -1,5 +1,5 @@
 {
-  "status": "Browser workflows and 33-case comparison passed; full inverse suite running. Editable-SVG feature audit still pending.",
+  "status": "Browser/corpus and independent editable-SVG features pass. Full suite: 1081 passes; one offline adapter failure corrected and all seven affected tests rechecked. Preview refresh pending.",
   "photo": "scripts/inverse/fixtures/hard-photos/collage.png",
   "photoSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
   "case": "bauble (R5C4)",
@@ -894,7 +894,7 @@
     }
   },
   "cleanupComparison": {
-    "status": "Browser workflows and 33-case comparison passed; full inverse suite running. Editable-SVG feature audit still pending.",
+    "status": "Browser/corpus and independent editable-SVG features pass. Full suite: 1081 passes; one offline adapter failure corrected and all seven affected tests rechecked. Preview refresh pending.",
     "firstProbe": {
       "independentError": 0.02806875,
       "seconds": 108.987264584,
@@ -937,13 +937,11 @@
       ]
     },
     "pending": [
-      "full inverse suite",
-      "independent feature-retention audit of downloaded editable SVGs",
       "preview refresh after validation"
     ],
     "finalValidation": {
       "implementationCommit": "47b3d08",
-      "status": "Browser workflows and 33-case comparison passed; full inverse suite running. Editable-SVG feature audit still pending.",
+      "status": "Browser/corpus and independent editable-SVG features pass. Full suite: 1081 passes; one offline adapter failure corrected and all seven affected tests rechecked. Preview refresh pending.",
       "browser": {
         "record": "tmp/heart-learning/bauble-segmentation-2026-10-18/final-cleanup/browser/results.json",
         "recordSha256": "981486dabf171ed131d44be6935ef3b73e038e46d45c28d3667fa68de812e44c",
@@ -1002,7 +1000,7 @@
           }
         ],
         "scope": "Real uploads with pointer-selected rough rectangles, unchanged application solve settings (180-second maximum), and downloaded editable SVGs. No known ground-truth cutting paths; reported error is against the classified photo.",
-        "qualification": "Native feature checks pass. The browser harness independently checks editable geometry, paper and total image error; direct feature-retention checks on those editable SVGs remain pending."
+        "qualification": "Feature retention now independently passes on the actual editable SVG downloads as well as native curves; see editableFeatureAudit."
       },
       "corpus": {
         "record": "tmp/heart-learning/bauble-segmentation-2026-10-18/final-cleanup/corpus-comparison.json",
@@ -1053,10 +1051,70 @@
         }
       ],
       "inverseSuite": {
-        "status": "running",
-        "state": "tmp/heart-learning/bauble-segmentation-2026-10-18/final-cleanup/state.json"
+        "tests": 1082,
+        "passedInFullRun": 1081,
+        "failedInFullRun": 1,
+        "seconds": 1503.4131312499999,
+        "sourceFilesUnchanged": 1109,
+        "log": "tmp/heart-learning/bauble-segmentation-2026-10-18/final-cleanup/inverse.log",
+        "logSha256": "4e5816cc4e8ad7fd102109bf99a7bf493591561a998db74a90b1b96e4e94df55",
+        "failure": "Offline projective-body adapter expected the field-selection source from before RGB/background support. It rejected the source before numerical fitting."
       },
-      "previewRuntime": "043a8e3; refresh only after full validation and editable-SVG feature audit"
+      "previewRuntime": "043a8e3; refresh only after full validation and editable-SVG feature audit",
+      "offlineAdapterCorrection": {
+        "change": "Share the exact audited locator field-selection string between the two offline foreground adapters. No application or solver file changed.",
+        "projectiveBodyTests": 4,
+        "foregroundAdapterTests": 3,
+        "passed": 7,
+        "failed": 0,
+        "scope": "Full inverse run: 1081 passes and one offline projective-body adapter failure. After an offline-only shared-seam fix, all four projective-body tests and all three foreground adapter tests pass. The first adapter command had a nonexistent foreground test path, which Node ignored; the three tests were therefore run explicitly in the recorded follow-up. All application/runtime files are unchanged. Check, lint, 874 application tests and build were rerun. The entire inverse suite was not rerun after this offline fix.",
+        "record": "tmp/heart-learning/bauble-segmentation-2026-10-18/final-cleanup/validated-state.json",
+        "recordSha256": "5fbe053c3367a1aa9d7516613fe0f10e8c552fe879afd227625c29b7ea3705e5",
+        "applicationTests": {
+          "passed": 874,
+          "skipped": 1
+        },
+        "typecheck": "passed; existing seven warnings",
+        "lint": "passed; existing three warnings",
+        "build": "passed",
+        "sourceFilesUnchangedDuringRecheck": 1111
+      },
+      "editableFeatureAudit": {
+        "record": "tmp/heart-learning/bauble-segmentation-2026-10-18/final-cleanup/editable-feature-audit.json",
+        "recordSha256": "df77db01adbfb571439712883ea37f6f56053656e160524e1fa0cf034ab8d682",
+        "passed": true,
+        "scope": "Feature retention checked from the actually downloaded editable SVG, parsed and rasterized independently of the fitting engine. This supplements the browser workflow geometry/paper/error checks.",
+        "rows": [
+          {
+            "id": "bauble",
+            "svgSha256": "b93d9e2a18eab434408975170fae8b39f4675c6802bedc740203be2540fced2e",
+            "targetMaskSha256": "92431f8caa3e5c60e959947e2a0ee9685d99df15e6c52ed92b95a40fd9ab7547",
+            "independentEditableError": 0.0288125,
+            "featuresPassed": true,
+            "missing": [],
+            "smallRegions": [
+              {
+                "value": 1,
+                "areaMm2": 5,
+                "centerMm": [
+                  96.059375,
+                  68.88125
+                ],
+                "retainedFraction": 0.9
+              }
+            ]
+          },
+          {
+            "id": "window-blue-orange",
+            "svgSha256": "6e79d132e10f35ce29dff2e515a8dc1fb72b021a148f34977adeda3f87c6658b",
+            "targetMaskSha256": "b1ac269c223a774d0566ca71158fbbd49d39a5e6ec8b0b3774800e79d1a22d85",
+            "independentEditableError": 0.00654375,
+            "featuresPassed": true,
+            "missing": [],
+            "smallRegions": []
+          }
+        ]
+      }
     }
   }
 }

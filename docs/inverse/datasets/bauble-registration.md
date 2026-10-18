@@ -1,10 +1,10 @@
 # Bauble foreground diagnosis
 
-Current status at `47b3d08`: the bauble and blue/orange upload workflows pass,
-and the 33-case browser corpus has no increase in measured error. The full inverse
-suite is running. Direct feature checks on the downloaded editable SVGs are still
-pending, so port 5232 retains the previous validated runtime. The experiments below
-preserve both the earlier failures and the later improvements.
+Current status: the upload workflows and 33-case browser comparison pass. The
+full inverse run recorded 1,081 passes and one offline adapter failure; the
+adapter is corrected and all seven affected tests pass on recheck. Independent
+feature checks on the downloaded editable SVGs also pass. Port 5232 has not yet
+been refreshed. Earlier experiments below preserve the failures and improvements.
 
 The automatic R5C4 bauble crop includes background and extrapolates its bottom
 corner below the 1,112-pixel photograph. Earlier experiments with longer scan
@@ -222,3 +222,26 @@ takes about two seconds in both runs. The next candidate-selection experiment
 should test polishing a feature-complete near-threshold candidate when it first
 appears. The first point at which the 5+5 refinements diverge still needs a more
 detailed trace; these records do not establish a low-level numerical cause.
+
+
+The full inverse suite finished in **1,503.41 seconds**, with **1,081 passes and
+one failure**. All 1,109 source hashes remained unchanged throughout that run.
+The failure was in the offline projective-body experiment: its audited source
+replacement expected the locator before the RGB/background branch was added.
+It rejected the source before doing any numerical fitting. Both offline adapters
+now share that exact field-selection string, preventing the two copies drifting.
+
+All **four projective-body tests** and **three foreground adapter tests** pass
+after the fix. The first recheck command mistakenly named a nonexistent foreground
+test path, which Node ignored; its four-test result was inspected, and the actual
+three-test file was then run explicitly. The original failed run and both rechecks
+are preserved. Typecheck, lint, 874 application tests (one existing skip), and build
+were repeated successfully. Every application and solver source file is unchanged
+from the browser/full-suite run; the whole inverse suite was not repeated for this
+offline-only correction. Combined evidence is in `final-cleanup/validated-state.json`.
+
+The separate audit now verifies feature retention in the **downloaded editable
+SVGs** themselves. Both pass, with exactly the previously measured total errors.
+The bauble retains **90%** of the 5 mm² region that the failed four-cut fit erased.
+No substantial source region is missing in either exported SVG. This closes the
+export-validation gap; the bauble's solve time and irregular border remain open.
