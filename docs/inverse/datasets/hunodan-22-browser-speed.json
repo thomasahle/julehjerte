@@ -1,0 +1,1017 @@
+{
+  "scope": "All22regular Hunodan photograph imports through the actual current production build, automatic corner detection, mask conversion, worker fit and editable SVG/PDF checks. No reference-engine or time-budget substitution.",
+  "method": "Measure Find-click-to-ready time and independent exported fidelity for every required regular design; compare unchanged native inputs with the previous22case run. The five-case ABBA result is separate evidence; do not infer a causal speed gain from historical single-run timings.",
+  "runtimeRevision": "eaa358ac9be1c7a22557e6690c784d0a59629eb9",
+  "source": {
+    "path": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/hunodan-22/current/results.json",
+    "sha256": "33a6bb2b07cfa91a25f3f06933923ab668df26cb1c44db3982127270af04b832"
+  },
+  "prior": {
+    "path": "tmp/heart-learning/repair-budget-2026-10-17/qa-followup/browser-hunodan/results.json",
+    "sha256": "49e4f868f20e43dd137e9d9e247bb5631f975a4a77e5d2c0f994aa8c9c4c50bb"
+  },
+  "pairedEvidence": {
+    "path": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/browser-paired/comparison.json",
+    "sha256": "1d7215bd1c8c5bf441b4e49c77cc09c7093cf9fabc1eec739016549521d686b6"
+  },
+  "prerequisiteFullSuite": {
+    "runtime": "6efe473",
+    "passed": 1057,
+    "failed": 5,
+    "path": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/scoped-qa/summary.json",
+    "status": "failed",
+    "qualification": "Current38focused tests pass; that does not explain all previous timing-sensitive failures. This browser comparison is diagnostic, not release approval."
+  },
+  "integrityProblems": [],
+  "comparable": true,
+  "functionalPasses": 22,
+  "withinTenSeconds": 22,
+  "slowerThanTenSeconds": [],
+  "medianSeconds": 5.629449999928474,
+  "maximumSeconds": 8.665,
+  "errorIncreases": {
+    "engineError": [],
+    "sourceEditableError": [],
+    "paintingEditableError": [
+      "hunodan-hjfig-05"
+    ]
+  },
+  "all22WithinTenSeconds": true,
+  "all22NativeErrorsNoHigherThanPrior": true,
+  "limitations": [
+    "One current run and one historical full-corpus run; different host conditions do not isolate a speed effect.",
+    "The separate five-caseABBA comparison found identical errors and approximately2%median timing improvement, not a large whole-browser speedup.",
+    "Passing the current focused replays does not explain every failure in the preceding complete inverse suite.",
+    "Numerical geometry and paper checks do not establish physical assembly."
+  ],
+  "speedAndNativeErrorTargetMet": true,
+  "cases": [
+    {
+      "name": "hunodan-hjfig-01",
+      "passed": true,
+      "nativeInput": {
+        "resolution": 375,
+        "maskSha256": "0f602686e418c6e266fa6fc82f0a899b24920770cc69f3c1ce0c4004c8407fb6",
+        "coverageSha256": "141adb2a1f6ea97577e56c82abc1dca247f954cb5796c4c35dfbf9c621166cf9"
+      },
+      "comparisonDifferences": [],
+      "clickToReadySeconds": 4.116700000047683,
+      "previousClickToReadySeconds": 6.5815,
+      "withinTenSeconds": true,
+      "errors": {
+        "engineError": {
+          "previous": 0.009806222222222221,
+          "current": 0.009806222222222221,
+          "change": 0.0
+        },
+        "sourceEditableError": {
+          "previous": 0.009891555555555556,
+          "current": 0.009891555555555556,
+          "change": 0.0
+        },
+        "paintingEditableError": {
+          "previous": 0.0112625,
+          "current": 0.0112625,
+          "change": 0.0
+        }
+      },
+      "selectedCounts": [
+        2,
+        2
+      ],
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.009900000095367432,
+        "prepareRoundTripSeconds": 0.13909999990463257,
+        "preparedToSolveRequestSeconds": 0.00030000019073486326,
+        "solveRoundTripSeconds": 3.631,
+        "resultToReadySeconds": 0.33639999985694885,
+        "clickToReadySeconds": 4.116700000047683
+      },
+      "failure": null
+    },
+    {
+      "name": "hunodan-hjfig-02",
+      "passed": true,
+      "nativeInput": {
+        "resolution": 400,
+        "maskSha256": "23786d3968549698971a48060c5b9fdab3a4a021375d20db6a01304e6a138e47",
+        "coverageSha256": "141adb2a1f6ea97577e56c82abc1dca247f954cb5796c4c35dfbf9c621166cf9"
+      },
+      "comparisonDifferences": [],
+      "clickToReadySeconds": 3.717299999952316,
+      "previousClickToReadySeconds": 8.42060000014305,
+      "withinTenSeconds": true,
+      "errors": {
+        "engineError": {
+          "previous": 0.00540625,
+          "current": 0.00540625,
+          "change": 0.0
+        },
+        "sourceEditableError": {
+          "previous": 0.00548125,
+          "current": 0.00548125,
+          "change": 0.0
+        },
+        "paintingEditableError": {
+          "previous": 0.00548125,
+          "current": 0.00548125,
+          "change": 0.0
+        }
+      },
+      "selectedCounts": [
+        2,
+        2
+      ],
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.011799999952316283,
+        "prepareRoundTripSeconds": 0.14310000014305116,
+        "preparedToSolveRequestSeconds": 0.00029999995231628417,
+        "solveRoundTripSeconds": 3.434,
+        "resultToReadySeconds": 0.12809999990463256,
+        "clickToReadySeconds": 3.717299999952316
+      },
+      "failure": null
+    },
+    {
+      "name": "hunodan-hjfig-03",
+      "passed": true,
+      "nativeInput": {
+        "resolution": 375,
+        "maskSha256": "745c42b5e196f2b0fe973d982cf03c11b175a09274e672f451d838e48d9e6af9",
+        "coverageSha256": "141adb2a1f6ea97577e56c82abc1dca247f954cb5796c4c35dfbf9c621166cf9"
+      },
+      "comparisonDifferences": [],
+      "clickToReadySeconds": 4.407899999856949,
+      "previousClickToReadySeconds": 8.460900000095368,
+      "withinTenSeconds": true,
+      "errors": {
+        "engineError": {
+          "previous": 0.006535111111111111,
+          "current": 0.006535111111111111,
+          "change": 0.0
+        },
+        "sourceEditableError": {
+          "previous": 0.006592,
+          "current": 0.006592,
+          "change": 0.0
+        },
+        "paintingEditableError": {
+          "previous": 0.00825,
+          "current": 0.00825,
+          "change": 0.0
+        }
+      },
+      "selectedCounts": [
+        2,
+        2
+      ],
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.009700000047683717,
+        "prepareRoundTripSeconds": 0.19739999985694887,
+        "preparedToSolveRequestSeconds": 0.00029999995231628417,
+        "solveRoundTripSeconds": 3.956,
+        "resultToReadySeconds": 0.2445,
+        "clickToReadySeconds": 4.407899999856949
+      },
+      "failure": null
+    },
+    {
+      "name": "hunodan-hjfig-04",
+      "passed": true,
+      "nativeInput": {
+        "resolution": 375,
+        "maskSha256": "668167ba630a222f2601c6ace30f79ba1c9d0d88f99b0214904ffbc545c339fb",
+        "coverageSha256": "141adb2a1f6ea97577e56c82abc1dca247f954cb5796c4c35dfbf9c621166cf9"
+      },
+      "comparisonDifferences": [],
+      "clickToReadySeconds": 4.553,
+      "previousClickToReadySeconds": 9.308299999952316,
+      "withinTenSeconds": true,
+      "errors": {
+        "engineError": {
+          "previous": 0.014001777777777778,
+          "current": 0.014001777777777778,
+          "change": 0.0
+        },
+        "sourceEditableError": {
+          "previous": 0.014016,
+          "current": 0.014016,
+          "change": 0.0
+        },
+        "paintingEditableError": {
+          "previous": 0.01473125,
+          "current": 0.01473125,
+          "change": 0.0
+        }
+      },
+      "selectedCounts": [
+        2,
+        2
+      ],
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.009700000047683717,
+        "prepareRoundTripSeconds": 0.13619999980926514,
+        "preparedToSolveRequestSeconds": 0.00040000009536743164,
+        "solveRoundTripSeconds": 4.160700000047684,
+        "resultToReadySeconds": 0.246,
+        "clickToReadySeconds": 4.553
+      },
+      "failure": null
+    },
+    {
+      "name": "hunodan-hjfig-05",
+      "passed": true,
+      "nativeInput": {
+        "resolution": 337,
+        "maskSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+        "coverageSha256": "141adb2a1f6ea97577e56c82abc1dca247f954cb5796c4c35dfbf9c621166cf9"
+      },
+      "comparisonDifferences": [],
+      "clickToReadySeconds": 5.5849000000953675,
+      "previousClickToReadySeconds": 9.635299999952316,
+      "withinTenSeconds": true,
+      "errors": {
+        "engineError": {
+          "previous": 0.007757398585881711,
+          "current": 0.0075900994109308,
+          "change": -0.00016729917495091062
+        },
+        "sourceEditableError": {
+          "previous": 0.007775009025350227,
+          "current": 0.007678151608273384,
+          "change": -9.685741707684322e-05
+        },
+        "paintingEditableError": {
+          "previous": 0.01008125,
+          "current": 0.01015625,
+          "change": 7.500000000000041e-05
+        }
+      },
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.009,
+        "prepareRoundTripSeconds": 0.13760000014305115,
+        "preparedToSolveRequestSeconds": 0.00029999995231628417,
+        "solveRoundTripSeconds": 5.195900000095367,
+        "resultToReadySeconds": 0.24209999990463257,
+        "clickToReadySeconds": 5.5849000000953675
+      },
+      "failure": null
+    },
+    {
+      "name": "hunodan-hjfla-01",
+      "passed": true,
+      "nativeInput": {
+        "resolution": 384,
+        "maskSha256": "f5f772caadf20161dd72c25a4e06acf56e3122ddbd9b530c471121095a344f5d",
+        "coverageSha256": "141adb2a1f6ea97577e56c82abc1dca247f954cb5796c4c35dfbf9c621166cf9"
+      },
+      "comparisonDifferences": [],
+      "clickToReadySeconds": 6.2865,
+      "previousClickToReadySeconds": 15.469599999904633,
+      "withinTenSeconds": true,
+      "errors": {
+        "engineError": {
+          "previous": 0.008002387152777778,
+          "current": 0.007039388020833333,
+          "change": -0.0009629991319444449
+        },
+        "sourceEditableError": {
+          "previous": 0.008097330729166666,
+          "current": 0.007120768229166667,
+          "change": -0.0009765624999999991
+        },
+        "paintingEditableError": {
+          "previous": 0.01024375,
+          "current": 0.0093375,
+          "change": -0.0009062499999999991
+        }
+      },
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.0095,
+        "prepareRoundTripSeconds": 0.16079999995231628,
+        "preparedToSolveRequestSeconds": 0.00030000019073486326,
+        "solveRoundTripSeconds": 5.676799999952316,
+        "resultToReadySeconds": 0.43909999990463255,
+        "clickToReadySeconds": 6.2865
+      },
+      "failure": null
+    },
+    {
+      "name": "hunodan-hjcur-01",
+      "passed": true,
+      "nativeInput": {
+        "resolution": 375,
+        "maskSha256": "31fdc1c6e540f367bbfe0030eba717b477959af8b240863b3f45181ede25cc80",
+        "coverageSha256": "141adb2a1f6ea97577e56c82abc1dca247f954cb5796c4c35dfbf9c621166cf9"
+      },
+      "comparisonDifferences": [],
+      "clickToReadySeconds": 5.606899999856949,
+      "previousClickToReadySeconds": 11.801799999952316,
+      "withinTenSeconds": true,
+      "errors": {
+        "engineError": {
+          "previous": 0.004928,
+          "current": 0.004928,
+          "change": 0.0
+        },
+        "sourceEditableError": {
+          "previous": 0.005091555555555556,
+          "current": 0.005091555555555556,
+          "change": 0.0
+        },
+        "paintingEditableError": {
+          "previous": 0.00723125,
+          "current": 0.00723125,
+          "change": 0.0
+        }
+      },
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.009599999904632568,
+        "prepareRoundTripSeconds": 0.1452999999523163,
+        "preparedToSolveRequestSeconds": 0.00040000009536743164,
+        "solveRoundTripSeconds": 4.987299999952317,
+        "resultToReadySeconds": 0.4642999999523163,
+        "clickToReadySeconds": 5.606899999856949
+      },
+      "failure": null
+    },
+    {
+      "name": "hunodan-hjcur-02",
+      "passed": true,
+      "nativeInput": {
+        "resolution": 375,
+        "maskSha256": "ee27e7b1a962204080c43d064b331286e929ae897f20ff8f5ac082e961caf4de",
+        "coverageSha256": "141adb2a1f6ea97577e56c82abc1dca247f954cb5796c4c35dfbf9c621166cf9"
+      },
+      "comparisonDifferences": [],
+      "clickToReadySeconds": 6.998700000047684,
+      "previousClickToReadySeconds": 20.626,
+      "withinTenSeconds": true,
+      "errors": {
+        "engineError": {
+          "previous": 0.005048888888888889,
+          "current": 0.004828444444444444,
+          "change": -0.00022044444444444498
+        },
+        "sourceEditableError": {
+          "previous": 0.005063111111111111,
+          "current": 0.004878222222222222,
+          "change": -0.00018488888888888895
+        },
+        "paintingEditableError": {
+          "previous": 0.00861875,
+          "current": 0.00829375,
+          "change": -0.0003249999999999989
+        }
+      },
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.009099999904632568,
+        "prepareRoundTripSeconds": 0.1437000000476837,
+        "preparedToSolveRequestSeconds": 0.00029999995231628417,
+        "solveRoundTripSeconds": 6.427,
+        "resultToReadySeconds": 0.41860000014305115,
+        "clickToReadySeconds": 6.998700000047684
+      },
+      "failure": null
+    },
+    {
+      "name": "hunodan-hjcur-03",
+      "passed": true,
+      "nativeInput": {
+        "resolution": 375,
+        "maskSha256": "b8f60a17331591b6f27bf7ba9684c6e25383aafef960915a64af88582b00f4cf",
+        "coverageSha256": "141adb2a1f6ea97577e56c82abc1dca247f954cb5796c4c35dfbf9c621166cf9"
+      },
+      "comparisonDifferences": [],
+      "clickToReadySeconds": 5.4175,
+      "previousClickToReadySeconds": 9.701200000047685,
+      "withinTenSeconds": true,
+      "errors": {
+        "engineError": {
+          "previous": 0.004202666666666667,
+          "current": 0.004202666666666667,
+          "change": 0.0
+        },
+        "sourceEditableError": {
+          "previous": 0.004238222222222222,
+          "current": 0.004238222222222222,
+          "change": 0.0
+        },
+        "paintingEditableError": {
+          "previous": 0.0086375,
+          "current": 0.0086375,
+          "change": 0.0
+        }
+      },
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.010399999856948852,
+        "prepareRoundTripSeconds": 0.14580000019073486,
+        "preparedToSolveRequestSeconds": 0.00029999995231628417,
+        "solveRoundTripSeconds": 4.869200000047684,
+        "resultToReadySeconds": 0.3917999999523163,
+        "clickToReadySeconds": 5.4175
+      },
+      "failure": null
+    },
+    {
+      "name": "hunodan-hjcur-04",
+      "passed": true,
+      "nativeInput": {
+        "resolution": 375,
+        "maskSha256": "52ded25560667c41851d3d6a56932079e74d1d448bfa12a3e71172ad3aed5536",
+        "coverageSha256": "141adb2a1f6ea97577e56c82abc1dca247f954cb5796c4c35dfbf9c621166cf9"
+      },
+      "comparisonDifferences": [],
+      "clickToReadySeconds": 7.699599999904633,
+      "previousClickToReadySeconds": 11.621299999952317,
+      "withinTenSeconds": true,
+      "errors": {
+        "engineError": {
+          "previous": 0.005333333333333333,
+          "current": 0.005333333333333333,
+          "change": 0.0
+        },
+        "sourceEditableError": {
+          "previous": 0.005418666666666666,
+          "current": 0.005418666666666666,
+          "change": 0.0
+        },
+        "paintingEditableError": {
+          "previous": 0.0104,
+          "current": 0.0104,
+          "change": 0.0
+        }
+      },
+      "selectedCounts": [
+        6,
+        6
+      ],
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.009099999904632568,
+        "prepareRoundTripSeconds": 0.15420000004768372,
+        "preparedToSolveRequestSeconds": 0.0005,
+        "solveRoundTripSeconds": 6.9485,
+        "resultToReadySeconds": 0.5872999999523163,
+        "clickToReadySeconds": 7.699599999904633
+      },
+      "failure": null
+    },
+    {
+      "name": "hunodan-hjcur-05",
+      "passed": true,
+      "nativeInput": {
+        "resolution": 375,
+        "maskSha256": "c49156ccfdf43c4a11a0947e0b6dc16ca514f534199fc865db2224443ed3be76",
+        "coverageSha256": "141adb2a1f6ea97577e56c82abc1dca247f954cb5796c4c35dfbf9c621166cf9"
+      },
+      "comparisonDifferences": [],
+      "clickToReadySeconds": 4.276900000095368,
+      "previousClickToReadySeconds": 5.7765,
+      "withinTenSeconds": true,
+      "errors": {
+        "engineError": {
+          "previous": 0.009329777777777777,
+          "current": 0.009329777777777777,
+          "change": 0.0
+        },
+        "sourceEditableError": {
+          "previous": 0.009450666666666666,
+          "current": 0.009450666666666666,
+          "change": 0.0
+        },
+        "paintingEditableError": {
+          "previous": 0.0110375,
+          "current": 0.0110375,
+          "change": 0.0
+        }
+      },
+      "selectedCounts": [
+        2,
+        2
+      ],
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.009400000095367431,
+        "prepareRoundTripSeconds": 0.14289999985694884,
+        "preparedToSolveRequestSeconds": 0.00020000004768371582,
+        "solveRoundTripSeconds": 3.871,
+        "resultToReadySeconds": 0.25340000009536745,
+        "clickToReadySeconds": 4.276900000095368
+      },
+      "failure": null
+    },
+    {
+      "name": "hunodan-hjhih-01",
+      "passed": true,
+      "nativeInput": {
+        "resolution": 386,
+        "maskSha256": "a02bbceadda3acbc3ae67298e79ecc8e8f0dce4f0c8d61162c58e6e993804346",
+        "coverageSha256": "141adb2a1f6ea97577e56c82abc1dca247f954cb5796c4c35dfbf9c621166cf9"
+      },
+      "comparisonDifferences": [],
+      "clickToReadySeconds": 6.9755,
+      "previousClickToReadySeconds": 16.123299999952316,
+      "withinTenSeconds": true,
+      "errors": {
+        "engineError": {
+          "previous": 0.0058592176971193856,
+          "current": 0.0058592176971193856,
+          "change": 0.0
+        },
+        "sourceEditableError": {
+          "previous": 0.005919622003275255,
+          "current": 0.005919622003275255,
+          "change": 0.0
+        },
+        "paintingEditableError": {
+          "previous": 0.00824375,
+          "current": 0.00824375,
+          "change": 0.0
+        }
+      },
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.010099999904632569,
+        "prepareRoundTripSeconds": 0.174,
+        "preparedToSolveRequestSeconds": 0.00040000009536743164,
+        "solveRoundTripSeconds": 6.367899999856949,
+        "resultToReadySeconds": 0.42310000014305116,
+        "clickToReadySeconds": 6.9755
+      },
+      "failure": null
+    },
+    {
+      "name": "hunodan-hjhih-02",
+      "passed": true,
+      "nativeInput": {
+        "resolution": 383,
+        "maskSha256": "430f17aa29b1ee5b3018bc5a76c51d02693d43c0136c8b53b4f56543eb8c116a",
+        "coverageSha256": "141adb2a1f6ea97577e56c82abc1dca247f954cb5796c4c35dfbf9c621166cf9"
+      },
+      "comparisonDifferences": [],
+      "clickToReadySeconds": 5.467,
+      "previousClickToReadySeconds": 8.201899999856948,
+      "withinTenSeconds": true,
+      "errors": {
+        "engineError": {
+          "previous": 0.0037766976392231183,
+          "current": 0.0037766976392231183,
+          "change": 0.0
+        },
+        "sourceEditableError": {
+          "previous": 0.0038585033642604422,
+          "current": 0.0038585033642604422,
+          "change": 0.0
+        },
+        "paintingEditableError": {
+          "previous": 0.00619375,
+          "current": 0.00619375,
+          "change": 0.0
+        }
+      },
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.009700000047683717,
+        "prepareRoundTripSeconds": 0.17409999990463257,
+        "preparedToSolveRequestSeconds": 0.00029999995231628417,
+        "solveRoundTripSeconds": 4.784200000047684,
+        "resultToReadySeconds": 0.4987000000476837,
+        "clickToReadySeconds": 5.467
+      },
+      "failure": null
+    },
+    {
+      "name": "hunodan-hjhih-04",
+      "passed": true,
+      "nativeInput": {
+        "resolution": 393,
+        "maskSha256": "8c86ff1087e3248e8450d6cca93b879ead9373a20e7fd9baddb540f93cad3e11",
+        "coverageSha256": "141adb2a1f6ea97577e56c82abc1dca247f954cb5796c4c35dfbf9c621166cf9"
+      },
+      "comparisonDifferences": [],
+      "clickToReadySeconds": 7.616700000047683,
+      "previousClickToReadySeconds": 12.617400000095367,
+      "withinTenSeconds": true,
+      "errors": {
+        "engineError": {
+          "previous": 0.007892572952884123,
+          "current": 0.007542942977940939,
+          "change": -0.0003496299749431841
+        },
+        "sourceEditableError": {
+          "previous": 0.00808681182785256,
+          "current": 0.007750131111240604,
+          "change": -0.0003366807166119562
+        },
+        "paintingEditableError": {
+          "previous": 0.0110125,
+          "current": 0.01061875,
+          "change": -0.00039375
+        }
+      },
+      "selectedCounts": [
+        5,
+        5
+      ],
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.009600000143051148,
+        "prepareRoundTripSeconds": 0.17319999980926515,
+        "preparedToSolveRequestSeconds": 0.00040000009536743164,
+        "solveRoundTripSeconds": 6.945700000047684,
+        "resultToReadySeconds": 0.48779999995231627,
+        "clickToReadySeconds": 7.616700000047683
+      },
+      "failure": null
+    },
+    {
+      "name": "hunodan-hjstr-01",
+      "passed": true,
+      "nativeInput": {
+        "resolution": 381,
+        "maskSha256": "900ba653d4e9765749e3077f96826591e8ba8619daea61146e4b05ae48c9b5e9",
+        "coverageSha256": "141adb2a1f6ea97577e56c82abc1dca247f954cb5796c4c35dfbf9c621166cf9"
+      },
+      "comparisonDifferences": [],
+      "clickToReadySeconds": 4.988099999904633,
+      "previousClickToReadySeconds": 6.810599999904633,
+      "withinTenSeconds": true,
+      "errors": {
+        "engineError": {
+          "previous": 0.007226458897362239,
+          "current": 0.007226458897362239,
+          "change": 0.0
+        },
+        "sourceEditableError": {
+          "previous": 0.007295347924029181,
+          "current": 0.007295347924029181,
+          "change": 0.0
+        },
+        "paintingEditableError": {
+          "previous": 0.01006875,
+          "current": 0.01006875,
+          "change": 0.0
+        }
+      },
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.0095,
+        "prepareRoundTripSeconds": 0.141,
+        "preparedToSolveRequestSeconds": 0.00040000009536743164,
+        "solveRoundTripSeconds": 4.211199999809265,
+        "resultToReadySeconds": 0.626,
+        "clickToReadySeconds": 4.988099999904633
+      },
+      "failure": null
+    },
+    {
+      "name": "hunodan-hjstr-02",
+      "passed": true,
+      "nativeInput": {
+        "resolution": 390,
+        "maskSha256": "2ca1f380ea3e9403ff612efaf9d0f44d7e9eca41b4f35b78347dcc8d3f5d66d5",
+        "coverageSha256": "141adb2a1f6ea97577e56c82abc1dca247f954cb5796c4c35dfbf9c621166cf9"
+      },
+      "comparisonDifferences": [],
+      "clickToReadySeconds": 6.528399999856949,
+      "previousClickToReadySeconds": 9.578,
+      "withinTenSeconds": true,
+      "errors": {
+        "engineError": {
+          "previous": 0.0041025641025641026,
+          "current": 0.0041025641025641026,
+          "change": 0.0
+        },
+        "sourceEditableError": {
+          "previous": 0.004122287968441814,
+          "current": 0.004122287968441814,
+          "change": 0.0
+        },
+        "paintingEditableError": {
+          "previous": 0.0044,
+          "current": 0.0044,
+          "change": 0.0
+        }
+      },
+      "selectedCounts": [
+        5,
+        5
+      ],
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.0095,
+        "prepareRoundTripSeconds": 0.1345,
+        "preparedToSolveRequestSeconds": 0.00029999995231628417,
+        "solveRoundTripSeconds": 5.872799999952316,
+        "resultToReadySeconds": 0.5112999999523162,
+        "clickToReadySeconds": 6.528399999856949
+      },
+      "failure": null
+    },
+    {
+      "name": "hunodan-hjstr-03",
+      "passed": true,
+      "nativeInput": {
+        "resolution": 388,
+        "maskSha256": "d9ba414af2b114d628d5a1ee4df9b7c6cc875d31452495e8159a06d1e3021f11",
+        "coverageSha256": "141adb2a1f6ea97577e56c82abc1dca247f954cb5796c4c35dfbf9c621166cf9"
+      },
+      "comparisonDifferences": [],
+      "clickToReadySeconds": 8.665,
+      "previousClickToReadySeconds": 12.437900000095368,
+      "withinTenSeconds": true,
+      "errors": {
+        "engineError": {
+          "previous": 0.005440269954299076,
+          "current": 0.005387129344244872,
+          "change": -5.3140610054203466e-05
+        },
+        "sourceEditableError": {
+          "previous": 0.005513338293123605,
+          "current": 0.005446912530555851,
+          "change": -6.64257625677539e-05
+        },
+        "paintingEditableError": {
+          "previous": 0.00831875,
+          "current": 0.00808125,
+          "change": -0.00023749999999999986
+        }
+      },
+      "selectedCounts": [
+        7,
+        7
+      ],
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.009899999856948852,
+        "prepareRoundTripSeconds": 0.16240000009536742,
+        "preparedToSolveRequestSeconds": 0.00029999995231628417,
+        "solveRoundTripSeconds": 7.805799999952316,
+        "resultToReadySeconds": 0.6866000001430511,
+        "clickToReadySeconds": 8.665
+      },
+      "failure": null
+    },
+    {
+      "name": "hunodan-hjsta-01",
+      "passed": true,
+      "nativeInput": {
+        "resolution": 380,
+        "maskSha256": "1e64a4a98de31d02ca46a0cea403c50172ba6b472c4167059c699a05acf7bbc2",
+        "coverageSha256": "141adb2a1f6ea97577e56c82abc1dca247f954cb5796c4c35dfbf9c621166cf9"
+      },
+      "comparisonDifferences": [],
+      "clickToReadySeconds": 5.652,
+      "previousClickToReadySeconds": 8.095700000047684,
+      "withinTenSeconds": true,
+      "errors": {
+        "engineError": {
+          "previous": 0.0078601108033241,
+          "current": 0.0078601108033241,
+          "change": 0.0
+        },
+        "sourceEditableError": {
+          "previous": 0.00788781163434903,
+          "current": 0.00788781163434903,
+          "change": 0.0
+        },
+        "paintingEditableError": {
+          "previous": 0.009175,
+          "current": 0.009175,
+          "change": 0.0
+        }
+      },
+      "selectedCounts": [
+        2,
+        2
+      ],
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.009899999856948852,
+        "prepareRoundTripSeconds": 0.14730000019073486,
+        "preparedToSolveRequestSeconds": 0.00029999995231628417,
+        "solveRoundTripSeconds": 5.284599999904633,
+        "resultToReadySeconds": 0.20990000009536744,
+        "clickToReadySeconds": 5.652
+      },
+      "failure": null
+    },
+    {
+      "name": "hunodan-hjsta-02",
+      "passed": true,
+      "nativeInput": {
+        "resolution": 400,
+        "maskSha256": "a3e70f11997f0a60ed275ddeb4160e133d889027cf630d1b16b44ff323a0203e",
+        "coverageSha256": "141adb2a1f6ea97577e56c82abc1dca247f954cb5796c4c35dfbf9c621166cf9"
+      },
+      "comparisonDifferences": [],
+      "clickToReadySeconds": 4.5245,
+      "previousClickToReadySeconds": 5.000799999952316,
+      "withinTenSeconds": true,
+      "errors": {
+        "engineError": {
+          "previous": 0.00211875,
+          "current": 0.00211875,
+          "change": 0.0
+        },
+        "sourceEditableError": {
+          "previous": 0.00216875,
+          "current": 0.00216875,
+          "change": 0.0
+        },
+        "paintingEditableError": {
+          "previous": 0.00216875,
+          "current": 0.00216875,
+          "change": 0.0
+        }
+      },
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.011800000190734863,
+        "prepareRoundTripSeconds": 0.14669999980926512,
+        "preparedToSolveRequestSeconds": 0.00030000019073486326,
+        "solveRoundTripSeconds": 4.017,
+        "resultToReadySeconds": 0.34869999980926514,
+        "clickToReadySeconds": 4.5245
+      },
+      "failure": null
+    },
+    {
+      "name": "hunodan-hjsta-03",
+      "passed": true,
+      "nativeInput": {
+        "resolution": 383,
+        "maskSha256": "71928f2d6a8f59fd498bf144aa69020efad39b25bfdb4ed8f4887d2344845cad",
+        "coverageSha256": "141adb2a1f6ea97577e56c82abc1dca247f954cb5796c4c35dfbf9c621166cf9"
+      },
+      "comparisonDifferences": [],
+      "clickToReadySeconds": 8.57610000014305,
+      "previousClickToReadySeconds": 12.088799999952316,
+      "withinTenSeconds": true,
+      "errors": {
+        "engineError": {
+          "previous": 0.012004990149227276,
+          "current": 0.012004990149227276,
+          "change": 0.0
+        },
+        "sourceEditableError": {
+          "previous": 0.012257224468092359,
+          "current": 0.012257224468092359,
+          "change": 0.0
+        },
+        "paintingEditableError": {
+          "previous": 0.01418125,
+          "current": 0.01418125,
+          "change": 0.0
+        }
+      },
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.009400000095367431,
+        "prepareRoundTripSeconds": 0.1642000000476837,
+        "preparedToSolveRequestSeconds": 0.00039999985694885254,
+        "solveRoundTripSeconds": 7.6418000001907345,
+        "resultToReadySeconds": 0.7602999999523162,
+        "clickToReadySeconds": 8.57610000014305
+      },
+      "failure": null
+    },
+    {
+      "name": "hunodan-hjsta-04",
+      "passed": true,
+      "nativeInput": {
+        "resolution": 378,
+        "maskSha256": "40ef212bea0c4de0e21632a931e72ccb9c6d3a24c32384555d1d606341e7334d",
+        "coverageSha256": "141adb2a1f6ea97577e56c82abc1dca247f954cb5796c4c35dfbf9c621166cf9"
+      },
+      "comparisonDifferences": [],
+      "clickToReadySeconds": 7.176199999809265,
+      "previousClickToReadySeconds": 8.650200000047684,
+      "withinTenSeconds": true,
+      "errors": {
+        "engineError": {
+          "previous": 0.004829092130679433,
+          "current": 0.004829092130679433,
+          "change": 0.0
+        },
+        "sourceEditableError": {
+          "previous": 0.004885081604658325,
+          "current": 0.004885081604658325,
+          "change": 0.0
+        },
+        "paintingEditableError": {
+          "previous": 0.0063625,
+          "current": 0.0063625,
+          "change": 0.0
+        }
+      },
+      "selectedCounts": [
+        5,
+        5
+      ],
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.0095,
+        "prepareRoundTripSeconds": 0.148,
+        "preparedToSolveRequestSeconds": 0.00029999995231628417,
+        "solveRoundTripSeconds": 6.5028999998569486,
+        "resultToReadySeconds": 0.5155,
+        "clickToReadySeconds": 7.176199999809265
+      },
+      "failure": null
+    },
+    {
+      "name": "hunodan-hjsta-05",
+      "passed": true,
+      "nativeInput": {
+        "resolution": 386,
+        "maskSha256": "f6909fa97b2ec2b706ef6f0dd1ae779a6ef7b7aec276a1c1569dc016ce5e98f2",
+        "coverageSha256": "141adb2a1f6ea97577e56c82abc1dca247f954cb5796c4c35dfbf9c621166cf9"
+      },
+      "comparisonDifferences": [],
+      "clickToReadySeconds": 6.689799999952316,
+      "previousClickToReadySeconds": 10.043700000047684,
+      "withinTenSeconds": true,
+      "errors": {
+        "engineError": {
+          "previous": 0.010382829069236758,
+          "current": 0.010382829069236758,
+          "change": 0.0
+        },
+        "sourceEditableError": {
+          "previous": 0.010577465166850116,
+          "current": 0.010577465166850116,
+          "change": 0.0
+        },
+        "paintingEditableError": {
+          "previous": 0.01328125,
+          "current": 0.01328125,
+          "change": 0.0
+        }
+      },
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.009700000047683717,
+        "prepareRoundTripSeconds": 0.16429999995231628,
+        "preparedToSolveRequestSeconds": 0.00029999995231628417,
+        "solveRoundTripSeconds": 6.312,
+        "resultToReadySeconds": 0.2035,
+        "clickToReadySeconds": 6.689799999952316
+      },
+      "failure": null
+    }
+  ],
+  "rawComparison": {
+    "path": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/hunodan-22/comparison.json",
+    "sha256": "059f07cb1c2a03f3ab0578cc37ad655660b199ebf9408cac7ce7e3d5039c1be9"
+  },
+  "browserSourceManifest": {
+    "path": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/hunodan-22/browser-source.json",
+    "sha256": "f69c5f17cb2ea4b166f899b5025fc9cba762935490fbf5b053a337366ffa9692"
+  },
+  "servedAssets": {
+    "path": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/hunodan-22/served-assets.json",
+    "sha256": "bf09f3dffb36fed0a5d073b7ae92fcd5ccde58fd1170d103fe9f9a56e03cdc02"
+  },
+  "paintingRegression": {
+    "case": "hunodan-hjfig-05",
+    "additionalPixels": 12,
+    "paintingResolution": 400,
+    "additionalPercentagePoints": 0.0075,
+    "nativePixelsImproved": 11,
+    "nativeResolution": 337,
+    "qualification": "Native source fidelity improved, but the resizedPaint metric increased. Do not claim every error measure stayed unchanged or improved."
+  }
+}
