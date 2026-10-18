@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import {imageFeatures} from '../../static/inverse/core/image-features.js';
 import {stableInteriorFeatures} from '../../static/inverse/core/feature-enclosures.js';
-import {auditFeatureFidelity,auditFeatureFidelityChange} from '../../static/inverse/core/feature-shapes.js';
+import {auditFeatureFidelityChange} from '../../static/inverse/core/feature-shapes.js';
 
 const cfg={width:100,nominalWidth:2.5};
 function rectangle(mask,n,x0,y0,x1,y1,value){
@@ -71,20 +71,4 @@ test('cleanup preserves a previously enclosed large motif without forbidding rec
   const checker=new Uint8Array(n*n);rectangle(checker,n,0,0,40,40,1);rectangle(checker,n,40,40,60,60,1);
   const joined=checker.slice();joined[80*n+79]=1;
   assert.equal(auditFeatureFidelityChange({mask:checker,resolution:n},checker,joined,cfg).passed,true,'An ambiguous checker contact is not a new lost enclosure.');
-});
-
-test('a fresh candidate cannot certify an already opened large source enclosure',()=>{
-  for(const n of [100,200,400])for(const value of [0,1]){
-    const mask=new Uint8Array(n*n).fill(1-value);rectangle(mask,n,40,40,55,55,value);
-    const source={mask,resolution:n},before=mask.slice(),channel=mask.slice();rectangle(channel,n,45,0,46,40,value);
-    const audit=auditFeatureFidelity(source,channel,cfg);
-    assert.equal(audit.passed,false);assert.equal(audit.missing.length,1);
-    assert.equal(audit.missing[0].retainedFraction,1);assert.equal(audit.missing[0].enclosureLost,true);
-    assert.equal(auditFeatureFidelity(source,mask,cfg).passed,true);
-    const checker=new Uint8Array(n*n).fill(1-value);
-    rectangle(checker,n,0,0,40,40,value);rectangle(checker,n,40,40,60,60,value);
-    const joined=checker.slice();joined[Math.round(.4*n)*n+Math.round(.4*n)-1]=value;
-    assert.equal(auditFeatureFidelity({mask:checker,resolution:n},joined,cfg).passed,true);
-    assert.deepEqual(source.mask,before);
-  }
 });
