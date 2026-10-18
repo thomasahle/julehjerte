@@ -7,7 +7,7 @@ import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
 import {readHardPhoto} from './hard-photo-data.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
 
-for(const translation of ['original','horizontal','vertical'])for(const remaining of [4800,4200])test(`a late ${translation} same-count proposal retains the motif with ${remaining}ms left`,async t=>{
+for(const translation of ['original','horizontal','vertical'])for(const remaining of [4800,4200,3200])test(`a late ${translation} same-count proposal retains the motif with ${remaining}ms left`,async t=>{
   const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-near-miss-seed.json'));
   const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue));
   const photo=await readHardPhoto(catalogue.cases.find(c=>c.id===fixture.sourceCase));
@@ -20,7 +20,7 @@ for(const translation of ['original','horizontal','vertical'])for(const remainin
   assert.equal(hash(Buffer.from(source.probability.buffer)),expected.probabilitySha256);
   const mask=source.mask.slice(),probability=source.probability.slice();
   // Give the initial stages a deterministic simulated cost, then restore a
-  // normally advancing clock when feature work (or clearance) starts. This
+  // normally advancing clock when feature work, routing or clearance starts. This
   // exercises the scheduling decision without relying on machine load to
   // cross its cutoff. It is not a browser speed benchmark.
   const wallNow=performance.now.bind(performance),base=wallNow();
@@ -29,7 +29,7 @@ for(const translation of ['original','horizontal','vertical'])for(const remainin
   const answer=await design(prepared.target,raw,event=>{
     if(!fineStarted&&event.stage==='directFitting'){
       fineStarted=true;elapsed=8700-remaining;
-    }else if(fineStarted&&!running&&['directInitializing','directClearance'].includes(event.stage)){
+    }else if(fineStarted&&!running&&['directInitializing','directClearance','graph'].includes(event.stage)){
       running=true;resumedAt=wallNow();
     }
   });
@@ -50,10 +50,12 @@ for(const translation of ['original','horizontal','vertical'])for(const remainin
   }
   assert.deepEqual(solver.selectedCounts,[3,3]);
   assert.equal(solver.selectedInitialization,translation==='vertical'?'feature-sampling-grid':'feature-weighted-grid');
-  assert.equal(answer.report.templateChecksPassed,true);
+  assert.equal(answer.report.templateChecksPassed,true,JSON.stringify({error:answer.report.imageError,seconds:solver.seconds}));
+  assert.ok(solver.seconds<10,'The short feature proposal keeps the original overall deadline.');
   assert.equal(answer.report.validation.passed,true);assert.equal(answer.report.manufacturing.status,'pass');
   const woven=await renderExportedWeave(answer.files['cut_geometry.json'],400);
   const error=woven.mask.reduce((sum,v,i)=>sum+Number(v!==mask[i]),0)/mask.length;
   assert.ok(error<.03,`Independent mask error ${error}`);
+  t.diagnostic(JSON.stringify({translation,remaining,independentError:error,simulatedSolverSeconds:solver.seconds}));
   assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
 });

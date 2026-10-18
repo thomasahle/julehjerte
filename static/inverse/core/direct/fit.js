@@ -350,11 +350,12 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery){
   };
   // Reserve enough TOTAL time for a bounded feature proposal and refinement.
   // The full initializer keeps its stricter post-reserve threshold above;
-  // below it, try only the cheaper same-count alternative. A lost region
+  // below it, try only the cheaper same-count alternative, including the
+  // shorter tail that cannot fund a full count search. A lost region
   // cannot be created by spending all remaining time on an ordinary grid.
   // Feature objectives retain source coverage and importance. Missing pixels
   // do not disable observed-feature proposals; traced recovery keeps its guard.
-  const featureTimeAvailable=()=>!symmetryRequested&&deadline-performance.now()>3500;
+  const featureTimeAvailable=()=>!symmetryRequested&&deadline-performance.now()>2500;
   if(missingFeature&&featureTimeAvailable())initializeEarlyFeature(features.regions.flatMap((r,j)=>(r.retainedFraction<features.minimumRetention||r.enclosureLost)?[j]:[]));
   if(interiorRetry&&weakRegion!==null&&featureTimeAvailable())initializeEarlyFeature([weakRegion],weakRegion,'before-recovery');
   // Retaining a large region does not mean a coarse grid keeps its branches.
@@ -451,7 +452,9 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery){
     const recovered=await attemptRecovery(recoverySeconds,probeRouting?'probe_before_grid_refinement':reserveRefinement?'reserve_grid_refinement':'prioritize_routing');
     if(recovered)return recovered;
   }
-  if(featureRoutingFirst&&!recoveredCandidates.length)await attemptCoarseRouting();
+  // A feature grid selected since routing was deferred owns its refinement
+  // reserve. An unsuccessful probe must not spend that reserve on coarse MILP.
+  if(featureRoutingFirst&&!reserveRefinement&&!recoveredCandidates.length)await attemptCoarseRouting();
   if(deferredFeatureRecovery)deferredFeatureRecovery.remainingSeconds=Math.max(0,fullRecoverySeconds-(recovery?.report.seconds||0));
   // A still-retained region must not shorten a useful traced search. A tree
   // with hidden border endpoints needs that search to recover its simpler
@@ -657,7 +660,13 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery){
     const selected=fine[i],remaining=deadline-performance.now(),allocation=remaining;
     // A sampling start promoted by preflight is the primary candidate, not a
     // last-chance retry. It needs the ordinary outline-polishing reserve too.
-    const polishingReserve=samplingRetry&&!samplingRecovery?.preflight?.preferred?0:1700,end=Math.min(deadline-polishingReserve,performance.now()+allocation);
+    // A late feature start still needs its first useful curve fit. Reserving
+    // the full polishing window can leave only a few gradient steps after
+    // initialization. Lend that window to the initial fit while keeping a
+    // short polish tail and the enclosing final-verification reserve.
+    const featurePolishReserve=featureSeed(selected)&&!candidates.some(c=>c.imagePassed)
+      ?Math.min(1700,Math.max(450,remaining-2500)):1700;
+    const polishingReserve=samplingRetry&&!samplingRecovery?.preflight?.preferred?0:featurePolishReserve,end=Math.min(deadline-polishingReserve,performance.now()+allocation);
     const {clear,graph,protectedObjective,objectiveProb,objectiveWeights,refinementCfg,verification}=prepareRefinement(selected,allocation);
     // The unconstrained grid can look best only because its strips are too
     // narrow. If preparation reverses that ranking, give one existing
