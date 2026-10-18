@@ -6,7 +6,7 @@ on:
       mode:
         type: choice
         default: full
-        options: [full, cold, resources, retained-grid, source-resolution, return-repair, paper-finalists, paper-repair, budgets, remaining, bicycle, comparison, maple, polish, late-clearance, profile, shared-runtime]
+        options: [full, cold, resources, feature-detail, retained-grid, source-resolution, return-repair, paper-finalists, paper-repair, budgets, remaining, bicycle, comparison, maple, polish, late-clearance, profile, shared-runtime]
         description: Full diagnostics or focused normal-budget regressions
 permissions:
   contents: read
@@ -34,6 +34,9 @@ jobs:
         env:
           INVERSE_DIAGNOSTIC_CLOCK_RATE: ${{ matrix.clock }}
         run: node --import ./scripts/inverse/ci-clock.mjs --test --test-concurrency=1 --test-shard=${{ matrix.shard }}/4 scripts/inverse/*.test.mjs scripts/inverse/datasets/*.test.mjs
+      - name: Capture frozen and shifted photographic feature fits
+        if: inputs.mode == 'feature-detail'
+        run: node --test --test-concurrency=1 scripts/inverse/feature-seeds.test.mjs scripts/inverse/fitted-rerouting.test.mjs
       - name: Replay normal-budget partial-feature regressions
         if: inputs.mode == 'bicycle'
         run: node --test scripts/inverse/feature-finalists.test.mjs
