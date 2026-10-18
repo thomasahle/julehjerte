@@ -312,7 +312,7 @@ lobes mirror each other needs one template, so most hearts show three tiles (Hje
 heart with no photo shows two. Only an asymmetric heart *with* a photo would draw four, and no gallery heart
 is currently both (`jul` renders Skabelon venstre + Skabelon højre, `stjerne` renders Hjerte · Foto · Skabelon).
 
-Right column: panel `rgb(255 255 255 / .55)`, radius 16, padding 24px 28px, gap 22: h1 name 44px/600; meta
+Right column: panel `rgb(255 255 255 / .9)` (it was .55, which let the moon, stag and stars show through the text; .9 keeps `--muted` at 4.5:1 over the darkest fir behind it), radius 16, padding 24px 28px, gap 22: h1 name 44px/600; meta
 "af {author} · {grid} striber" 16px muted; the heart's own description paragraph with the link
 "Se den illustrerede vejledning →" to the guide page 12px under it; two-column block bordered top/bottom by
 `--line`: SVÆRHEDSGRAD (dots + label) and SYMMETRI ("Spejlsymmetri – én skabelon til begge sider" or the

@@ -118,7 +118,12 @@
 		gap: 22px;
 		padding: 24px 28px;
 		border-radius: 16px;
-		background: rgb(255 255 255 / 0.55);
+		/* Frosted, not opaque, but at 55% the moon, the stag and the stars showed
+		   through the paragraph. The darkest the drawing gets behind the panel is
+		   a fir at about #324f3c (measured 1100–1920px over several hearts), and
+		   --muted, the faintest text here, needs 90% white over that for 4.5:1
+		   (4.6:1; 4.5:1 even over the drawing's darkest green, #203b2a). */
+		background: rgb(255 255 255 / 0.9);
 	}
 
 	.shared-note {
@@ -233,7 +238,7 @@
 
 	/* Below 1100 the panel stacks under the stage and grows down into the
 	   landscape drawing at the foot of the scene: firs, deer and gold stars came
-	   through the 55% white and sat between the lines of the paragraph. Over
+	   through the then 55% white and sat between the lines of the paragraph. Over
 	   plain sky the frosted card is the intended treatment, so only the widths
 	   that share space with the drawing get an opaque ground. */
 	@media (max-width: 1099px) {
