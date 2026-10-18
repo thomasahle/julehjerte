@@ -392,7 +392,11 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery){
   // A longer allowance need not delay a useful grid behind the entire routing
   // search. Keep its unused routing budget as a fallback after the first grid;
   // retaining a source region never certifies the resulting cutting geometry.
-  const deferredFeatureRecovery=!shortBudget&&(probeRouting||deferredRouting)&&needsRecovery?{maximumSeconds:fullRecoverySeconds,attempted:false}:null;
+  // A short request cannot afford both a speculative routing probe and the
+  // first refinement of a newly recovered feature. Give a feature-complete
+  // start its reserved refinement first, retaining routing as a fallback.
+  const refineNewFeatureFirst=shortBudget&&earlyFeatureInitialization?.scheduled===1&&features.passed;
+  const deferredFeatureRecovery=((!shortBudget&&(probeRouting||deferredRouting))||refineNewFeatureFirst)&&needsRecovery?{maximumSeconds:fullRecoverySeconds,attempted:false}:null;
   const attemptRecovery=async(seconds,budgetPolicy,until=deadline)=>{
     // A missing region, or a worse grid selected to preserve one, cannot
     // replace a nearly verified route. Lend its remaining tail to bounded
@@ -450,7 +454,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery){
     }
     return null;
   };
-  if(!deferredRouting&&needsRecovery&&deadline-performance.now()>2000&&recoverySeconds>=.25){
+  if(!deferredRouting&&!refineNewFeatureFirst&&needsRecovery&&deadline-performance.now()>2000&&recoverySeconds>=.25){
     const recovered=await attemptRecovery(recoverySeconds,probeRouting?'probe_before_grid_refinement':reserveRefinement?'reserve_grid_refinement':'prioritize_routing');
     if(recovered)return recovered;
   }
