@@ -126,8 +126,12 @@ editable SVGs exactly, at the same **1.958125%** disagreement. They completed al
 160 polishing steps in 29.30–29.46 seconds click-to-ready, with every independent
 validity and feature check passing. This resolves the recorded regression in
 these replays, but does not establish timing invariance on every machine.
-A new complete inverse suite is running. The stable preview still serves the
-earlier validated build.
+The new complete inverse suite passed **1,076/1,076 tests**, with no failures,
+skips or cancellations, in **1,389.25 seconds**. All 1,064 pinned source/input
+files stayed unchanged. The local preview at `http://localhost:5232/` now serves
+this verified implementation: all 178 checked built assets match the browser
+benchmark byte-for-byte, and Chrome loaded the homepage and Paint editor without
+page errors or failed local requests. IPv4 and IPv6 loopback checks also passed.
 
 Machine-readable measurements, hashes, and outstanding verification are in
 [deferred-routing.json](deferred-routing.json). Local diagnostic artifacts are in

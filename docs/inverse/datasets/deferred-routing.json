@@ -187,10 +187,7 @@
     "fitSourceSha256": "246e3df24e92941c086cfc4b73475a660d28000f5df39b628c66c55dc06ffc40",
     "scope": "Three native-mask quality checks plus a stalled first grid followed by actual coarse and feature routing, with independent export, geometry, paper and feature checks."
   },
-  "pending": [
-    "late cleanup: complete inverse suite",
-    "refresh stable preview after verification"
-  ],
+  "pending": [],
   "standardVerification": {
     "state": "tmp/heart-learning/deferred-routing-2026-10-18/qa/state.json",
     "stateSha256": "fa5740fa8d4b910c71028c060199ea3f8e02f9039f3a85709d72491bd014e91c",
@@ -604,7 +601,7 @@
     "identicalExports": true
   },
   "lateCleanupImplementation": {
-    "status": "implemented; focused/application validation and all33 production browser comparisons passed; three additional Viking replays exported identical improved curves; new full inverse suite running",
+    "status": "verified: all1076inverse tests, focused/application checks, all33strict browser comparisons and three additional identical Viking replays passed; local preview refreshed",
     "fitSourceSha256": "ca7439fd671f69aa9c7181982c6ba05f5da14e29b03bb4130e89a6173c352d8c",
     "focusedLog": "tmp/heart-learning/deferred-routing-2026-10-18/late-cleanup-production/focused.log",
     "focusedLogSha256": "7e1ef0919c01accf392e1d62bde5bc175d260d9ffe2fffcf01ed1276d8af7540",
@@ -829,12 +826,40 @@
       "identicalToInitialProductionRun": true
     },
     "fullInverseVerification": {
-      "status": "running",
+      "status": "passed",
       "runtime": "043a8e3",
-      "sourceFiles": 1064,
-      "state": "tmp/heart-learning/deferred-routing-2026-10-18/late-cleanup-production/full/state.json",
+      "sourcesUnchanged": 1064,
+      "summary": {
+        "tests": 1076.0,
+        "pass": 1076.0,
+        "fail": 0.0,
+        "cancelled": 0.0,
+        "skipped": 0.0,
+        "duration_ms": 1389250.604667
+      },
+      "stateSha256": "4d9b48949bdffc8a5ee57fa46f1d77ac8989dee7825d5806b94de1d7499d4639",
+      "logSha256": "85573c92b944fe98717a410bd95417de475fd87a33e3f19a0839285d1e93ed34",
       "sourcePinsSha256": "f60acd7155661b9662a5dcb97abcb8ff5a65efbe2d7fc8dddd696e1b863647a8",
-      "scope": "Fresh full suite after cleanup policy; earlier1074 pass belongs to the prior runtime."
+      "qualification": "Fresh complete inverse suite for the late cleanup implementation, after all33 strict browser comparisons and three additional identical Viking exports passed.",
+      "path": "tmp/heart-learning/deferred-routing-2026-10-18/late-cleanup-production/full/summary.json"
+    },
+    "previewVerification": {
+      "runtime": "043a8e3",
+      "url": "http://localhost:5232/",
+      "servedAssetsByteIdentical": 178,
+      "smoke": "tmp/heart-learning/deferred-routing-2026-10-18/late-cleanup-production/preview-smoke.json",
+      "smokeSha256": "73255d63f70f4c9f14ca55d3f60d3989d5d20d312894d3e3a65cdf0db7c9d0d0",
+      "httpChecks": [
+        "localhost:200",
+        "127.0.0.1:200",
+        "IPv6loopback:200"
+      ],
+      "browserPages": [
+        "home",
+        "Paint"
+      ],
+      "pageErrors": 0,
+      "failedLocalRequests": 0
     }
   }
 }
