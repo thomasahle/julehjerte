@@ -79,6 +79,7 @@
 		saveDownloadSettings,
 		type DownloadMode
 	} from '$lib/download/settings';
+	import { parseWholeNumber, typeDecimalPoint } from '$lib/download/numberInput';
 
 	interface Props {
 		/** The hearts to get, in order; one is the heart page's dialog. */
@@ -351,7 +352,7 @@
 	}
 
 	function setNumber(field: NumberField, raw: string): void {
-		const value = Number(raw);
+		const value = parseWholeNumber(raw);
 		const [lo, hi] = LIMITS[field];
 		if (!raw.trim() || !Number.isFinite(value) || value < lo || value > hi) return;
 		assign(field, value);
@@ -359,8 +360,8 @@
 
 	function commitNumber(field: NumberField, input: HTMLInputElement): void {
 		const [lo, hi] = LIMITS[field];
-		const next = input.value.trim() && Number.isFinite(Number(input.value))
-			? clamp(Number(input.value), lo, hi)
+		const next = input.value.trim() && Number.isFinite(parseWholeNumber(input.value))
+			? clamp(parseWholeNumber(input.value), lo, hi)
 			: current(field);
 		assign(field, next);
 		// Written back as well: a refused value that clamps onto the current one
@@ -517,6 +518,7 @@
 						value={widthMm}
 						oninput={(e) => setNumber('width', e.currentTarget.value)}
 						onblur={(e) => commitNumber('width', e.currentTarget)}
+						onkeydown={typeDecimalPoint}
 					/>
 					{#if derivedLine}
 						<p class="hint" data-testid="download-derived">{derivedLine}</p>
@@ -569,6 +571,7 @@
 									value={customWidthMm}
 									oninput={(e) => setNumber('sheetWidth', e.currentTarget.value)}
 									onblur={(e) => commitNumber('sheetWidth', e.currentTarget)}
+									onkeydown={typeDecimalPoint}
 								/>
 							</label>
 							<label class="small-label">
@@ -582,6 +585,7 @@
 									value={customHeightMm}
 									oninput={(e) => setNumber('sheetHeight', e.currentTarget.value)}
 									onblur={(e) => commitNumber('sheetHeight', e.currentTarget)}
+									onkeydown={typeDecimalPoint}
 								/>
 							</label>
 						</div>
