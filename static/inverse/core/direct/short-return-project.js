@@ -33,6 +33,7 @@ export function projectShortReturns(graph,original,phase,input,cfg,{deadline=Inf
     for(const [id,partners]of linear)for(let axis=0;axis<2;axis++)if(fixed[2*id+axis])for(const [other]of partners)fixed[2*other+axis]=1;
   }
   const displacementLimit=hiddenOnly?cfg.nominalWidth:Math.min(cfg.nominalWidth,.015*graph.width);
+  const returnCache=new Map();
   for(let iteration=0;iteration<maxIterations;iteration++){
     if(performance.now()>limit){report.termination='time_limit';break;}
     const candidate=graph.solution(points,phase,input);
@@ -46,7 +47,7 @@ export function projectShortReturns(graph,original,phase,input,cfg,{deadline=Inf
     let issues;
     if(clearanceMargin!==null){if(!audit)report.returnConstraintAudits++;issues=clearanceWitnesses(candidate,cfg,clearanceMargin);}
     else if(audit)issues=audit.issues.filter(i=>i.type==='short_self_clearance');
-    else{report.returnConstraintAudits++;issues=completeSelfReturns(candidate).map(i=>({type:'short_self_clearance',...i}));}
+    else{report.returnConstraintAudits++;issues=completeSelfReturns(candidate,{cache:returnCache}).map(i=>({type:'short_self_clearance',...i}));}
     if(!iteration)report.initialReturns=issues.length;
     report.finalReturns=issues.length;
     if(audit&&(clearanceMargin===null?audit.issues.length!==issues.length:audit.issues.some(i=>!['short_self_clearance','nonlocal_self_clearance'].includes(i.type)))){report.termination='other_geometry';break;}
