@@ -35,8 +35,18 @@ for(const {seconds,delay,maximum}of [{seconds:180,delay:750,maximum:.0193},{seco
       assert.equal(delayed,true);assert.ok(budget.addedSeconds>0);
       assert.equal(solver.cleanupContinuation?.initialSteps??solver.checkpoints.at(-1).step+1,160,'The existing polishing pass must be able to finish.');
       assert.ok(solver.sharing.accepted.length>0,'Polishing must preserve useful early sharing.');
-      assert.equal(solver.cleanupContinuation?.applied,true,'A still-improving polish can use the unspent long request.');
-      assert.ok(solver.cleanupContinuation.errorAfter<solver.cleanupContinuation.errorBefore);
+      // The same photo may earn an outline subdivision from a different
+      // timed checkpoint. That completed refinement deliberately replaces
+      // the continuation; requiring both would reject a better legal fit.
+      const improvement=solver.outlineDetail||solver.cleanupContinuation;
+      assert.equal(improvement?.applied,true,'Late cleanup must retain a useful refinement.');
+      assert.ok(improvement.errorAfter<improvement.errorBefore);
+      if(solver.outlineDetail){
+        assert.equal(solver.outlineDetail.steps,160);
+        assert.equal(solver.outlineDetail.geometryPassed,true);
+        assert.equal(solver.outlineDetail.paperStatus,'pass');
+        assert.equal(solver.cleanupContinuation,null);
+      }
     }else{
       assert.equal(budget.addedSeconds,0,'An exhausted hard allowance cannot fund extra cleanup.');
       assert.equal(solver.cleanupContinuation,null,'Do not add work when the caller has no spare allowance.');
@@ -48,7 +58,7 @@ for(const {seconds,delay,maximum}of [{seconds:180,delay:750,maximum:.0193},{seco
     assert.equal(auditFeatureFidelity(input.sourceImage,replay.mask,answer.report.settings).passed,true);
     assert.equal(answer.report.templateChecksPassed,true);
     assert.deepEqual(input.sourceImage,before);
-    t.diagnostic(JSON.stringify({seconds,delay,error,cleanupBudget:budget,continuation:solver.cleanupContinuation}));
+    t.diagnostic(JSON.stringify({seconds,delay,error,cleanupBudget:budget,continuation:solver.cleanupContinuation,outline:solver.outlineDetail}));
   }catch(failure){
     t.diagnostic(await captureFitFailure({answer,source:input.sourceImage,error,maximum,context:{seconds,delay,delayed,assertion:failure.message}}));throw failure;
   }
