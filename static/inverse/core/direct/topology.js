@@ -155,7 +155,8 @@ function prepareTopologyPhase(input,cfg,{maximumError,guidePhase,onProgress}){
     if(!target.curves.length||target.curves.length>160||report.traceError>maximumError)return{report};
     const guideSource=source.weights?{mask:initializationMask(source,guidePhase),resolution:source.resolution}:source;
     if(symmetryEvidence(guideSource).minimumIdenticalImageError<=.005){target=transposeTarget({...target,sourceImage:guideSource});target.sourceImage=source;report.matchingProposal=true;}
-    const graphCfg=settings({...cfg,...MATCHING_GRID_PRESET,maxTurn:cfg.maxTurn,localNeighborhoodFactor:cfg.localNeighborhoodFactor});
+    const graphCfg=settings({...cfg,...MATCHING_GRID_PRESET,neighbors:Math.min(cfg.neighbors,MATCHING_GRID_PRESET.neighbors),maxTurn:cfg.maxTurn,localNeighborhoodFactor:cfg.localNeighborhoodFactor});
+    report.connectorNeighbors=graphCfg.neighbors;
     const seed={...target,curves:target.curves.slice()};
     // Noding and guide portals expand target.curves in place. The cached
     // boundary is reusable input: a second attempt must not inherit the first
