@@ -1,5 +1,26 @@
 # Generator robustness results
 
+## Sizes that move one way with the sliders
+
+Product decision (2026-10-18): dragging a slider must never make the motif or
+its circle jump back. Sweeps of every figure frame (sizes 45–85%, space 0–15%)
+over twelve motifs found hidden fallbacks that changed sizes: a circle moved 4%
+further out when the space asked for was hard to cut (the cookie's rays: larger
+at space 0 than at 3), small motifs changed their number of copies with the size
+(the cookie's 2 copies became 3 smaller ones at 75%), and equal squares drew the
+motif at the default size in their fallback recipes, a little larger in its cell,
+or over a finer board (the rabbit 45.7 → 34.7 at 75 → 80%). Now a frame keeps
+the space and size asked for, hard to cut if need be, and fallbacks that change
+them run only when nothing at all can be finished; the board frames keep their
+default size's choice of board at every size. At the defaults: rays and checks
+50 clean and 1 hard (snow, whose circle had moved out), sunburst 49 and 2 hard
+(snow, coffee), double border 50 and 1 hard (paw), the other open frames 51
+clean each; equal squares 49 clean, 1 hard, 1 refused (paw), 51 s (the bicycle
+28 s); small motifs 41 clean, 3 hard, 7 refused as before. Still jumping: the
+gift on equal squares at 55–65% (its centre square cannot be cut there at all),
+and a sunburst motif outgrowing the largest circle at 85%. The fixture has
+**1,669** entries.
+
 ## Size and space around the figure in every frame
 
 Product decision (2026-10-18): the two figure sliders often did the same thing

@@ -26,7 +26,7 @@
 	import { renderHeartSvgMarkup } from '$lib/rendering/heartSvg';
 	import { handoffToDraw } from '$lib/editor/handoff';
 	import { saveUserDesign } from '$lib/stores/collection';
-	import { defaults, readGeneratorState, normalizeText, fittedCells, TEXT_LINES, TEXT_LINE_LENGTH, type GeneratorState, frameGap, SPACED_STYLES } from '$lib/generator/state';
+	import { defaults, readGeneratorState, normalizeText, fittedCells, TEXT_LINES, TEXT_LINE_LENGTH, type GeneratorState, frameGap, SPACED_STYLES, BOARD_STYLES } from '$lib/generator/state';
 	import type {
 		GeneratorResult,
 		GeneratorRequest
@@ -237,6 +237,9 @@
 			fittedCells: fittedCells(snapshot),
 			gap: frameGap(snapshot)
 		};
+		// A motif on a board keeps the choice its default size made.
+		if (snapshot.mode === 'figure' && BOARD_STYLES.includes(snapshot.style))
+			request.layout = cache.get(geometryKey({ ...snapshot, scale: defaults.scale }))?.layout;
 		if (snapshot.mode === 'text')
 			request.font = await asset<Font>(`fonts/${snapshot.font}.json`);
 		else
@@ -345,17 +348,31 @@
 				}
 			});
 	});
+	// The thumbnails show every frame at the default size and space around the
+	// figure, so moving those sliders (or choosing a frame) leaves them alone.
+	let thumbnailState = $derived(
+		JSON.stringify({
+			...config,
+			frame: defaults.frame,
+			style: defaults.style,
+			textFrame: defaults.textFrame,
+			frameSize: defaults.frameSize,
+			scale: defaults.scale,
+			spacing: defaults.spacing
+		})
+	);
 	$effect(() => {
 		if (!mounted) return;
-		void geometryKey(config);
-		const snapshot = untrack(() => ({ ...config }));
+		const snapshot: GeneratorState = JSON.parse(thumbnailState);
 		const variants = templateVariants(snapshot);
+		// Each keeps its last heart until the new one is ready, which then fades in.
+		const previous = untrack(() => thumbnails);
 		const initial: Record<string, Thumbnail> = {};
 		const pending = variants.filter((variant) => {
 			const key = geometryKey(variant.state),
 				result = cache.get(key),
 				failure = failures.get(key);
-			initial[variant.id] = { result, failure };
+			initial[variant.id] = result || failure ? { result, failure } : { result: previous[variant.id]?.result };
 			return !result && !failure;
 		});
 		// Small motifs may try several boards; prepare them after the others.
@@ -405,7 +422,8 @@
 			} catch {
 				/* Foreground reports asset errors; thumbnails remain neutral. */
 			}
-		}, 180);
+			// Once typing pauses and the main preview is done.
+		}, 400);
 		return () => {
 			live = false;
 			clearTimeout(timer);

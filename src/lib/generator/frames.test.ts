@@ -303,6 +303,32 @@ describe('frames from real hearts', () => {
    expect(lines.size, name).toBe(8);
   }
  }, 30000);
+ it('keeps the space asked for, so a circle only grows with it', () => {
+  // A circle that could be cut cleanly further out stays where the space puts
+  // it, hard to cut if need be, rather than jumping out as the slider moves.
+  const radius = (gap: number) => {
+   const { design } = generate({ mode: 'figure', name: 'Cookie', contours: cookie.contours as Ring[], colors, style: 'rays', scale: .7, gap });
+   const rect = inferOverlapRect(design.fingers, design.gridSize);
+   const sheet = ({ x, y }: { x: number; y: number }) => [(x - rect.left) / rect.width * 100, (y - rect.top) / rect.height * 100];
+   // The rays run in from the paper's edges to the circle.
+   return Math.min(...design.fingers.filter(f => f.id.includes('cut')).flatMap(({ segments }) => [segments[0], segments.at(-1)!])
+    .map(({ p0, p3 }) => [sheet(p0), sheet(p3)]).filter(([a]) => a.some(v => Math.abs(v) < 1e-6 || Math.abs(v - 100) < 1e-6))
+    .map(([, b]) => Math.hypot(b[0] - 50, b[1] - 50)));
+  };
+  const [none, some, more] = [0, 3, 6].map(radius);
+  expect(none).toBeLessThanOrEqual(some + 1e-6);
+  expect(some).toBeLessThan(more);
+ }, 60000);
+ it('keeps a motif on equal squares on the board its default size chose', () => {
+  const heart = (scale: number) => generate({ mode: 'figure', name: 'Gift', contours: gift.contours as Ring[], colors, style: 'squares', scale });
+  const chosen = heart(.7);
+  expect(chosen.design.gridSize).toEqual({ x: 3, y: 3 });
+  for (const scale of [.75, .8]) {
+   const { design, layout } = heart(scale);
+   expect(layout, `${scale}`).toEqual(chosen.layout);
+   expect(design.gridSize, `${scale}`).toEqual({ x: 3, y: 3 });
+  }
+ }, 60000);
  it('grows the board\'s circle and its motif steadily with the size, never refusing', () => {
   // Through the touching circle at 70%, where the construction changes, the
   // circle and the motif only grow; sizes that cannot be cut cleanly are hard.

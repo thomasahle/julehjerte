@@ -491,17 +491,29 @@ from there, after the close-fitting retries. Every figure frame has the same two
 **space around the figure** (Luft om figuren, 0–15% of the square, 3% by default). The former
 frame-size slider is gone: in most frames it only scaled the motif a second time. A circle frame
 draws its circle that far outside the motif's outline (the sunburst's circle is four fifths of its
-frame), within the 50–80 frame sizes its outer strips have room for; the motif keeps its size, and a
-circle that cannot be cut that close moves 4% further out, then keeps the frame's own size. The
-wedges stop that far short of the motif; the silhouette's and the checked tips' corner checks move
-that far toward the paper's corners (the gallery's simple five-point star is the silhouette at about
-65% size and 9% space); the close-fitting frame keeps its lines on the motif and moves its outer
-strips out. These try half the space and then none when the space asked for cannot be cut. The
-two board frames whose squares hold the motif (small motifs, equal squares) fix the space with
+frame), within the 50–80 frame sizes its outer strips have room for, and the motif keeps its size.
+The wedges stop that far short of the motif; the silhouette's and the checked tips' corner checks
+move that far toward the paper's corners (the gallery's simple five-point star is the silhouette at
+about 65% size and 9% space); the close-fitting frame keeps its lines on the motif and moves its
+outer strips out. **Sizes move one way with the sliders** (2026-10-18): a frame keeps the space and
+size asked for, cut cleanly or else shown as hard to cut, so nothing jumps back while a slider
+moves. Only where nothing at all can be finished there do the frames without a centre panel try
+half the space and then none, and a circle move 4% further out and then keep the frame's own size.
+The two board frames whose squares hold the motif (small motifs, equal squares) fix the space with
 their squares; their size setting scales the motif within its square, 0.6–1.1 times the default.
-Figure choices are complete templates. Their thumbnails render the actual generated heart in the current colours,
-with unique SVG IDs; a neutral outline appears while an uncached variant is being prepared. The
-main preview has priority over a cancellable sequential background worker. While a slider moves,
+On them a motif keeps, at every size, the choice its default size made, since another board would
+make it jump in size: the number of small copies, or for equal squares the centre square of a
+three-strip board (the motif up to a tenth larger in it, or with the spacious frame's room around
+it), else several squares of a finer board. Each choice is first tried quickly, as woven text tries
+its recipes before the slower retries. The page passes the choice from its default-size heart, so
+other sizes build only that (the cookie's small motifs: 2–4 s instead of 25–37 s); beyond what the
+choice can be cut at, the motif keeps the default size's own size.
+Figure choices are complete templates. Their thumbnails render the actual generated heart in the
+current colours, with unique SVG IDs, at the default size and space, so moving those sliders or
+choosing a frame leaves them alone. Each keeps its last heart until the new one is ready, which then
+fades in (unless motion is reduced); a neutral outline appears only before the first. They are
+prepared once typing pauses and the main preview is done, by a cancellable sequential background
+worker, so the main preview has priority. While a slider moves,
 the preview worker keeps its current job, only the newest value waits, and a job for a value already
 left is abandoned after 400 ms; every finished result is cached, and a nearby one shows until the
 newest is ready, so the heart follows the slider. A circular sunburst
