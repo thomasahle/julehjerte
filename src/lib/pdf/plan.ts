@@ -11,6 +11,7 @@ import type { HeartDesign } from '$lib/types/heart';
 import { SITE_DOMAIN } from '$lib/config';
 import { ALL_HEART_IDS } from '$lib/data/categories';
 import { t, type Language } from '$lib/i18n';
+import { heartName } from '$lib/utils/heartName';
 import { heartPath } from '$lib/i18n/routes';
 import { heartScale } from '$lib/laser/unfold';
 import { layoutSheet, type Placement, type SheetSize } from '$lib/laser/sheet';
@@ -114,12 +115,14 @@ export function templateAddress(design: HeartDesign, lang: Language): string {
 }
 
 /**
- * The template's label, printed above it on the paper: the heart's name, and
+ * The template's label, printed above it on the paper: the heart's name in the
+ * PDF's language (`heartName`), and
  * for a heart whose two halves differ, which half this is ("Jul (Venstre)").
  */
 export function templateLabel(piece: Pick<TemplatePiece, 'design' | 'lobe' | 'shared'>, lang: Language): string {
-	if (piece.shared) return piece.design.name;
-	return `${piece.design.name} (${t(piece.lobe === 'left' ? 'lobeLeft' : 'lobeRight', lang)})`;
+	const name = heartName(piece.design, lang);
+	if (piece.shared) return name;
+	return `${name} (${t(piece.lobe === 'left' ? 'lobeLeft' : 'lobeRight', lang)})`;
 }
 
 /**

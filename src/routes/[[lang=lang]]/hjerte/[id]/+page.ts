@@ -2,7 +2,8 @@ import type { PageLoad } from './$types';
 import heartMeta from '$lib/data/heart-meta.json';
 import { ALL_HEART_IDS, categoryOfHeart, siblingHeartIds, type CategoryId } from '$lib/data/categories';
 import type { DifficultyLevel } from '$lib/utils/difficulty';
-import type { HeartDesign } from '$lib/types/heart';
+import type { HeartDesign, HeartNames } from '$lib/types/heart';
+import { heartName } from '$lib/utils/heartName';
 import { SHARED_HEART_ID } from '$lib/utils/shareDesign';
 
 export const prerender = true;
@@ -12,6 +13,8 @@ export type HeartPhoto = { src: string; width: number; height: number };
 // Build-time metadata for a gallery heart (see scripts/generate-heart-data.mjs).
 export type HeartMeta = {
 	name: string;
+	/** The name per site language, when the SVG has one; resolve with `heartName`. */
+	names?: HeartNames;
 	author: string | null;
 	authorUrl: string | null;
 	publisher: string | null;
@@ -68,12 +71,13 @@ export const load: PageLoad = async ({ params }) => {
 	// belong in that chunk, not in the bundle every page of the site loads.
 	const { heartDescription } = await import('$lib/data/heartDescriptions');
 
+	const lang = params.lang === 'en' ? 'en' : 'da';
 	const category = categoryOfHeart(params.id);
 	const related: RelatedHeart[] = [];
 	for (const id of siblingHeartIds(params.id)) {
 		if (related.length >= RELATED_LIMIT) break;
 		const design = getGalleryDesign(id);
-		if (design) related.push({ id, name: HEART_META[id]?.name ?? id, design });
+		if (design) related.push({ id, name: HEART_META[id] ? heartName(HEART_META[id], lang) : id, design });
 	}
 
 	return {
@@ -85,7 +89,7 @@ export const load: PageLoad = async ({ params }) => {
 		 * prerendered, so only the one language ends up in each page's data. `null`
 		 * for a user's own or a shared heart; those show what their maker typed.
 		 */
-		description: heartDescription(params.id, params.lang === 'en' ? 'en' : 'da'),
+		description: heartDescription(params.id, lang),
 		shared: params.id === SHARED_HEART_ID,
 		/** The gallery category this heart is in — null for user/shared hearts. */
 		categoryId: (category?.id ?? null) as CategoryId | null,

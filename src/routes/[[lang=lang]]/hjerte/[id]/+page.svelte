@@ -49,6 +49,7 @@
   import { openerOf } from "$lib/utils/focusTrap";
   import { formatHeartDate } from "$lib/utils/date";
   import type { HeartDesign, HeartInfo } from "$lib/types/heart";
+  import { heartName } from "$lib/utils/heartName";
   import { trackHeartShare, trackHeartEdit } from "$lib/analytics";
 
   let { data }: PageProps = $props();
@@ -136,10 +137,13 @@
     clientLoading = false;
   });
 
+  // The name is the one in this page's language (`heartName`): it is the h1, the
+  // title and meta tags, the share text, and what the tracing mode and the
+  // download dialog put on the template.
   let info = $derived.by<HeartInfo | null>(() => {
     if (meta) {
       return {
-        name: meta.name,
+        name: heartName(meta, lang),
         author: meta.author,
         authorUrl: meta.authorUrl,
         publisher: meta.publisher,
@@ -152,7 +156,7 @@
     }
     if (design) {
       return {
-        name: design.name,
+        name: heartName(design, lang),
         author: design.author || null,
         authorUrl: design.authorUrl ?? null,
         publisher: design.publisher ?? null,

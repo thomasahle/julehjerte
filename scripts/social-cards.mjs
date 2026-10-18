@@ -56,7 +56,7 @@ export function socialCardBuilder(root) {
       ].join(''));
     },
     heart(design, heart, lang) {
-      const name = design.id === 'classic-3x3' ? (lang === 'da' ? 'Klassisk julehjerte' : 'Classic woven heart') : design.name;
+      const name = design.id === 'classic-3x3' ? (lang === 'da' ? 'Klassisk julehjerte' : 'Classic woven heart') : design.names?.[lang] || design.name; // the language's name, as $lib/utils/heartName resolves it
       const author = design.author === 'Traditional' ? (lang === 'da' ? 'Traditionelt mønster' : 'Traditional pattern') : design.author ? `${lang === 'da' ? 'af' : 'by'} ${design.author}` : '';
       return frame([
         hanging(heart, 60, 72, 475),

@@ -423,9 +423,10 @@ function addTemplatesPage(
     // Draw template name at top
     pdf.setFontSize(8);
     pdf.setTextColor(0);
-    const label = template.lobe === 'both'
-      ? template.design.name
-      : `${template.design.name} (${t(template.lobe === 'left' ? 'lobeLeft' : 'lobeRight', lang)})`;
+    const label = templateLabel(
+      { design: template.design, lobe: template.lobe === 'both' ? 'left' : template.lobe, shared: template.lobe === 'both' },
+      lang
+    );
     pdf.text(label, pos.x, slotTop + 4, { align: 'center' });
     // A sheet often ends up separated from the rest (a school, a workshop), so
     // each template carries the address that leads back to it.

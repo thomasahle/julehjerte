@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import type { Finger, HeartDesign, LobeId, Vec } from '$lib/types/heart';
 import { MAX_GRID_SIZE } from '$lib/constants';
 import { getCenteredRectParams } from '$lib/utils/overlapRect';
+import { heartName } from '$lib/utils/heartName';
 import {
   normalizeHeartDesign,
   parseHeartFromSVG,
@@ -93,6 +94,68 @@ describe('heartDesign round trips', () => {
     const svg = serializeHeartToSVG(design);
     expect(svg).toContain('data-color-left="#0b3d2c"');
     expect(parseHeartFromSVG(svg, 'grid-test.svg')!.colors).toEqual(design.colors);
+  });
+
+  it('keeps the names per language through SVG export/import and through JSON', () => {
+    const names = { da: 'Flet <1> & "kopi"', en: 'Weave <1> & "copy"' };
+    const design: HeartDesign = { ...makeGridDesign(3), name: 'Weave 1', names };
+
+    const svg = serializeHeartToSVG(design);
+    expect(svg).toContain('<title>Weave 1</title>');
+    expect(svg).toContain('<title xml:lang="da">Flet &lt;1&gt; &amp; &quot;kopi&quot;</title>');
+    // Right after the plain title, before the paragraphs.
+    expect(svg.indexOf('<title>')).toBeLessThan(svg.indexOf('<title xml:lang="da">'));
+    expect(svg.indexOf('<title xml:lang="en">')).toBeLessThan(svg.indexOf('<desc xml:lang="da">'));
+    const parsed = parseHeartFromSVG(svg, 'grid-test.svg')!;
+    // The plain title stays the heart's own name; the others are its names.
+    expect(parsed.name).toBe('Weave 1');
+    expect(parsed.names).toEqual(names);
+    expect(heartName(parsed, 'da')).toBe(names.da);
+    expect(heartName(parsed, 'en')).toBe(names.en);
+    // Import → export → import is stable.
+    expect(parseHeartFromSVG(serializeHeartToSVG(parsed), 'again.svg')!.names).toEqual(names);
+
+    const json = serializeHeartDesign(design);
+    const back = normalizeHeartDesign(JSON.parse(JSON.stringify(json)) as unknown)!;
+    expect(back.name).toBe('Weave 1');
+    expect(back.names).toEqual(names);
+  });
+
+  it('writes empty title placeholders for a heart without names, and falls back to its own name', () => {
+    const design = { ...makeGridDesign(3), name: 'Mit hjerte' };
+    const svg = serializeHeartToSVG(design);
+    expect(svg).toContain('<title xml:lang="da"></title>');
+    expect(svg).toContain('<title xml:lang="en"></title>');
+    const parsed = parseHeartFromSVG(svg, 'grid-test.svg')!;
+    expect(parsed.name).toBe('Mit hjerte');
+    expect(parsed.names).toBeUndefined();
+    expect(heartName(parsed, 'en')).toBe('Mit hjerte');
+  });
+
+  it('takes the name from the plain title even when a language title comes first, or from dc:title', () => {
+    const first = serializeHeartToSVG({ ...makeGridDesign(3), name: 'Plain', names: { en: 'English' } }).replace(
+      / {2}<title>Plain<\/title>\n((?: {2}<title xml:lang="..">.*<\/title>\n)+)/,
+      '$1  <title>Plain</title>\n'
+    );
+    expect(first.indexOf('<title xml:lang')).toBeLessThan(first.indexOf('<title>Plain'));
+    const parsed = parseHeartFromSVG(first, 'grid-test.svg')!;
+    expect(parsed.name).toBe('Plain');
+    expect(parsed.names).toEqual({ en: 'English' });
+    // No plain <title>: the Dublin Core title, as before, and not a language's.
+    const noPlain = first.replace('  <title>Plain</title>\n', '');
+    expect(parseHeartFromSVG(noPlain, 'grid-test.svg')!.name).toBe('Plain');
+  });
+
+  it('loads a saved heart without names, and drops malformed ones', () => {
+    const json = serializeHeartDesign(makeGridDesign(3));
+    const { names: _omitted, ...legacy } = json;
+    expect(normalizeHeartDesign(legacy)!.names).toBeUndefined();
+    for (const bad of ['text', 42, { da: 3 }, { da: '  ', en: '' }]) {
+      expect(normalizeHeartDesign({ ...json, names: bad })!.names, JSON.stringify(bad)).toBeUndefined();
+    }
+    expect(normalizeHeartDesign({ ...json, names: { en: ' Only English ', fr: 'x' } })!.names).toEqual({
+      en: 'Only English'
+    });
   });
 
   it('keeps the written paragraphs through SVG export/import and through JSON', () => {

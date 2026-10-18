@@ -10,16 +10,20 @@
  *                                    metadata), so the gallery and detail pages render
  *                                    the hearts at prerender time without fetching or
  *                                    parsing SVG in the browser
- *   src/lib/data/heart-meta.json     name/author/description/date/grid size/difficulty/
- *                                    symmetry/photo per heart for head tags and headers
+ *   src/lib/data/heart-meta.json     name/names/author/description/date/grid size/
+ *                                    difficulty/symmetry/photo per heart for head tags and
+ *                                    headers. `names` is the name per site language from
+ *                                    the SVG's <title xml:lang="da"> / <title xml:lang="en">,
+ *                                    present only when the SVG has one; `name` (the plain
+ *                                    <title>) is the fallback ($lib/utils/heartName)
  *   src/lib/data/heart-descriptions.json
  *                                    the two written paragraphs per heart, {id: {da, en}},
  *                                    from the SVG's <desc xml:lang="da"> / <desc
  *                                    xml:lang="en">. Loaded lazily by the detail page
  *                                    only ($lib/data/heartDescriptions); the generator
  *                                    fails if a gallery SVG lacks either language
- *   src/lib/data/heart-cards.json    the two fields a gallery card needs in the browser,
- *                                    name and difficulty. A subset of heart-meta.json, so
+ *   src/lib/data/heart-cards.json    the fields a gallery card needs in the browser,
+ *                                    name (and names) and difficulty. A subset of heart-meta.json, so
  *                                    it cannot drift from it, but a twentieth of the size:
  *                                    the front page is the one page that downloads it, and
  *                                    it downloads nothing else about a heart (see
@@ -245,6 +249,7 @@ try {
       const symmetry = detectSymmetry(design.fingers);
       meta[id] = {
         name: design.name,
+        ...(design.names ? { names: design.names } : {}),
         author: design.author || null,
         authorUrl: design.authorUrl ?? null,
         publisher: design.publisher ?? null,
@@ -269,7 +274,14 @@ try {
   }
 
   const cards = Object.fromEntries(
-    ids.map((id) => [id, { name: meta[id].name, difficulty: meta[id].difficulty }])
+    ids.map((id) => [
+      id,
+      {
+        name: meta[id].name,
+        ...(meta[id].names ? { names: meta[id].names } : {}),
+        difficulty: meta[id].difficulty
+      }
+    ])
   );
 
   const metaChanged = writeIfChanged(metaPath, `${JSON.stringify(meta, null, 2)}\n`);

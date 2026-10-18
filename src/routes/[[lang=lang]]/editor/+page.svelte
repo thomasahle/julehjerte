@@ -18,6 +18,7 @@
   } from '$lib/editor/draft';
   import type { Finger, GridSize, HeartDesign } from '$lib/types/heart';
   import { normalizeHeartDesign, serializeHeartToSVG, parseHeartFromSVG } from '$lib/utils/heartDesign';
+  import { heartName as nameIn } from '$lib/utils/heartName';
   import { detectSymmetry } from '$lib/utils/symmetry';
   import { serializeTemplateToSVG, type TemplateLobe } from '$lib/utils/templateSvg';
   import { renderHeartSvgInline } from '$lib/rendering/heartSvg';
@@ -257,7 +258,8 @@
       heartName = sessionDesign.name || t('myHeart', lang);
     } else if (urlDesign) {
       // In edit mode, keep original name; in copy mode, append "(Copy)"
-      heartName = isEditMode ? urlDesign.name : `${urlDesign.name} ${t('copy', lang)}`;
+      // A copy is named after the heart's name in this language ("Flet 1 kopi").
+      heartName = isEditMode ? urlDesign.name : `${nameIn(urlDesign, lang)} ${t('copy', lang)}`;
     } else if (!heartName) {
       heartName = t('myHeart', lang);
     }
@@ -370,7 +372,7 @@
     currentGridSize = design.gridSize;
     currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
     designColors = design.colors ?? null;
-    heartName = `${design.name} ${t('copy', lang)}`;
+    heartName = `${nameIn(design, lang)} ${t('copy', lang)}`;
     authorName = design.author ?? '';
     description = design.description ?? '';
     editingExisting = true;
@@ -494,6 +496,9 @@
       // The written paragraphs of a gallery heart (or an imported file) are not
       // edited here; they ride along so "Eksportér SVG" writes them back.
       descriptions: initialDesign?.descriptions,
+      // The names per language ride along too, but only while the heart still
+      // has its own name: a copy or a renamed heart is named once, by the visitor.
+      names: initialDesign && sanitizeHtml(heartName) === initialDesign.name ? initialDesign.names : undefined,
       weaveParity: currentWeaveParity,
       // A heart keeps only the colours the visitor picked; one that was never
       // touched follows the site-wide pair, as the gallery hearts do.
