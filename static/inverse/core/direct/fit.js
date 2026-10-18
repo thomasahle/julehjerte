@@ -668,7 +668,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery){
     // short polish tail and the enclosing final-verification reserve.
     const featurePolishReserve=featureSeed(selected)&&!candidates.some(c=>c.imagePassed)
       ?Math.min(1700,Math.max(450,remaining-2500)):1700;
-    const polishingReserve=samplingRetry&&!samplingRecovery?.preflight?.preferred?0:featurePolishReserve,end=Math.min(deadline-polishingReserve,performance.now()+allocation);
+    const polishingReserve=samplingRetry?(samplingRecovery?.preflight?.preferred?1700:0):featurePolishReserve,end=Math.min(deadline-polishingReserve,performance.now()+allocation);
     const {clear,graph,protectedObjective,objectiveProb,objectiveWeights,refinementCfg,verification}=prepareRefinement(selected,allocation);
     // The unconstrained grid can look best only because its strips are too
     // narrow. If preparation reverses that ranking, give one existing
