@@ -17,6 +17,7 @@ import {auditImageFeatures} from '../../static/inverse/core/image-features.js';
 import {loadNumericalKernel} from '../../static/inverse/core/numerical-kernel.js';
 import {readHardPhoto} from './hard-photo-data.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
+import {captureFitFailure} from './diagnostics/fit-failure.mjs';
 
 test('longer gift refinement preserves a finer-verified export below the original error limit',async()=>{
   const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/gift-refinement-checkpoint.json'));
@@ -68,7 +69,7 @@ test('a coarse paper pass retains a better uncertain alternative without certify
   assert.equal(auditImageFeatures(source,rendered.mask).passed,true);
 });
 
-test('fresh photographic fitting selects and exports finer-verified refinement',async()=>{
+test('fresh photographic fitting selects and exports finer-verified refinement',async t=>{
   const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/floral-checker-refinement-checkpoint.json'));
   const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue)),photo=await readHardPhoto(catalogue.source);
   const cfg={...AUTOMATIC_PRESET,trials:0,timeLimit:180,earlyStop:false},crop=prepare({...photo,quad:fixture.quad},cfg);
@@ -76,6 +77,7 @@ test('fresh photographic fitting selects and exports finer-verified refinement',
   // used by the separate deterministic checkpoint regression above.
   const input=prepare({type:'mask',mask:crop.preview.mask,resolution:400},cfg).target,packets=[];
   const answer=await design(input,cfg,()=>{},{onCandidate:p=>packets.push(p)});
+  try{
   assert.equal(answer.report.templateChecksPassed,true);
   assert.equal(answer.report.settings.materialResolution,700);
   const budget=answer.report.solver.refinementBudget;
@@ -91,6 +93,7 @@ test('fresh photographic fitting selects and exports finer-verified refinement',
   const rendered=await renderExportedWeave(answer.files['cut_geometry.json'],400);
   assert.ok(mismatch(rendered.mask,crop.preview.mask)<.03);
   assert.equal(auditImageFeatures(input.sourceImage,rendered.mask).passed,true);
+  }catch(error){t.diagnostic(await captureFitFailure({answer,source:input.sourceImage,context:{case:'floral-checker-refinement',assertion:error.message}}));throw error;}
 });
 
 test('a fresh blue-star fit preserves exported quality and independently checked paper',async()=>{
