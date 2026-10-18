@@ -30,6 +30,9 @@
 
 	type NavSection = 'templates' | 'howto' | 'about';
 
+	/** The front page's gallery section (Gallery.svelte), in both languages. */
+	const GALLERY_ANCHOR = 'skabeloner';
+
 	/** Which of the editor's two modes the page is (docs/redesign/PAINT.md §1). */
 	type EditorMode = { current: 'draw' | 'paint' };
 
@@ -71,7 +74,10 @@
 
 	let homeHref = $derived(routeHref('home', lang));
 	let links = $derived([
-		{ id: 'templates' as NavSection, href: homeHref, label: t('navTemplates', lang) },
+		// The gallery, not the top of the hero: on a phone that is a whole hero
+		// and the landscape band above the first heart. The front page lands
+		// the hash under the gallery bar once the gallery has been measured.
+		{ id: 'templates' as NavSection, href: `${homeHref}#${GALLERY_ANCHOR}`, label: t('navTemplates', lang) },
 		{ id: 'howto' as NavSection, href: routeHref('howTo', lang), label: t('navHowTo', lang) },
 		{ id: 'about' as NavSection, href: routeHref('about', lang), label: t('navAbout', lang) }
 	]);
@@ -97,7 +103,7 @@
 	const trimSlash = (path: string) => path.replace(/\/+$/, '') || '/';
 	function ariaCurrent(link: { id: NavSection; href: string }): 'page' | 'true' | undefined {
 		if (active !== link.id) return undefined;
-		return trimSlash($page.url.pathname) === trimSlash(link.href) ? 'page' : 'true';
+		return trimSlash($page.url.pathname) === trimSlash(link.href.split('#')[0]!) ? 'page' : 'true';
 	}
 
 	afterNavigate(() => {
