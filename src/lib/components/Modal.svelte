@@ -17,7 +17,9 @@
     * Tab kept inside the dialog while it is open;
     * the page behind the scrim held still while it is open;
     * focus moved in on open — to `initialFocus` if the caller gives one,
-      otherwise to the dialog itself.
+      otherwise to the dialog itself;
+    * a history entry while it is open, so the phone's Back closes it
+      (utils/overlayHistory.ts; `closeOnBack={false}` opts out).
 
   What it leaves to the caller: returning focus to whatever opened the dialog,
   because only the caller knows whether that element still exists (the front
@@ -25,8 +27,9 @@
 -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { tick } from 'svelte';
+	import { tick, untrack } from 'svelte';
 	import { focusableIn, trapTab } from '$lib/utils/focusTrap';
+	import { openOverlay } from '$lib/utils/overlayHistory';
 
 	interface Props {
 		open: boolean;
@@ -44,6 +47,8 @@
 		column?: boolean;
 		/** Focused when the dialog opens; the dialog itself if not given. */
 		initialFocus?: HTMLElement | null;
+		/** Give the open dialog a history entry, so Back closes it. */
+		closeOnBack?: boolean;
 		onClose: () => void;
 		children: Snippet;
 	}
@@ -55,6 +60,7 @@
 		maxHeight = '90vh',
 		column = false,
 		initialFocus = null,
+		closeOnBack = true,
 		onClose,
 		children
 	}: Props = $props();
@@ -64,6 +70,19 @@
 	$effect(() => {
 		if (!open) return;
 		tick().then(() => (initialFocus ?? dialogEl)?.focus());
+	});
+
+	// Back closes the dialog. The entry is taken off again when the dialog
+	// closes any other way; `open` is read after onClose so a dialog that
+	// declines to close (busy) keeps its entry.
+	$effect(() => {
+		if (!open || !closeOnBack) return;
+		return untrack(() =>
+			openOverlay(labelledBy, () => {
+				onClose();
+				return !open;
+			})
+		);
 	});
 
 	let overlayEl = $state.raw<HTMLDivElement | null>(null);

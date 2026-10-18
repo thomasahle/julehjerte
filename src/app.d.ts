@@ -5,7 +5,10 @@ declare global {
 		// interface Error {}
 		// interface Locals {}
 		// interface PageData {}
-		// interface PageState {}
+		interface PageState {
+			/** An open overlay's own history entry; see utils/overlayHistory.ts. */
+			overlay?: string;
+		}
 		// interface Platform {}
 	}
 

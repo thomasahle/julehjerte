@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
 	DEFAULT_LASER_SETTINGS,
+	a3FitsAll,
 	laserFileContent,
 	laserFileName,
 	laserFileUrl,
@@ -104,6 +105,21 @@ describe('planLaserSheet', () => {
 			two.hearts.filter((h) => onSheet.has(h.pair[0]) || onSheet.has(h.pair[1])).map((h) => h.design.id)
 		);
 		expect(two.heartsOnSheet.length + two.heartsLeftOut.length).toBe(3);
+	});
+
+	it('says A3 would hold every heart only when it would, and never on A3 itself', () => {
+		const three = [loadHeart('classic-3x3'), loadHeart('jul'), loadHeart('amy-weave-1')];
+		const request = { widthMm: 80, count: 1, sheet: SHEETS.A4, lobe: 'left' } as const;
+		expect(planLaserSheet(three, request).piecesFit).toBe(2);
+		expect(a3FitsAll(three, request)).toBe(true);
+		expect(planLaserSheet(three, { ...request, sheet: SHEETS.A3 }).piecesFit).toBe(3);
+		// Already on A3, or on a sheet that holds one: A3 is no way out.
+		expect(a3FitsAll(three, { ...request, sheet: SHEETS.A3 })).toBe(false);
+		expect(a3FitsAll(three, { ...request, sheet: { widthMm: 400, heightMm: 500 } })).toBe(false);
+		// Too many for A3 as well.
+		const many = { ...request, widthMm: 150, count: 4 };
+		expect(planLaserSheet(three, { ...many, sheet: SHEETS.A3 }).piecesFit).toBeLessThan(12);
+		expect(a3FitsAll(three, many)).toBe(false);
 	});
 
 	it('fits nothing when one piece is taller than the sheet', () => {

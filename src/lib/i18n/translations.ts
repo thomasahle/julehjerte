@@ -170,6 +170,10 @@ export const translations = {
     sheetFit: 'Der er kun plads til {n} af {total} stykker på arket',
     /** After sheetFit with several hearts; {names} = the hearts with no piece on the sheet */
     sheetLeftOut: 'Ikke med: {names}',
+    /** After sheetLeftOut, when A3 would hold every heart */
+    sheetLeftOutHintA3: 'Vælg A3 eller en mindre bredde, eller hent arket igen for de resterende.',
+    /** After sheetLeftOut, when A3 would not hold them all either */
+    sheetLeftOutHint: 'Vælg en mindre bredde, eller hent arket igen for de resterende.',
     sheetPreview: 'Forhåndsvisning af arket',
     pdfOnePage: '1 side',
     /** {n} = pages in the PDF, 2 or more */
@@ -831,6 +835,10 @@ export const translations = {
     sheetFit: 'There is only room for {n} of {total} pieces on the sheet',
     /** After sheetFit with several hearts; {names} = the hearts with no piece on the sheet */
     sheetLeftOut: 'Left out: {names}',
+    /** After sheetLeftOut, when A3 would hold every heart */
+    sheetLeftOutHintA3: 'Choose A3 or a smaller width, or download another sheet for the rest.',
+    /** After sheetLeftOut, when A3 would not hold them all either */
+    sheetLeftOutHint: 'Choose a smaller width, or download another sheet for the rest.',
     sheetPreview: 'Preview of the sheet',
     pdfOnePage: '1 page',
     /** {n} = pages in the PDF, 2 or more */

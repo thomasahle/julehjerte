@@ -31,7 +31,7 @@
 	import { tick, untrack } from 'svelte';
 	import Modal from '$lib/components/Modal.svelte';
 	import { ToggleGroup, ToggleGroupItem } from '$lib/components/ui/toggle-group';
-	import { DownloadIcon } from '$lib/components/icons';
+	import { CloseIcon, DownloadIcon } from '$lib/components/icons';
 	import { t, type Language } from '$lib/i18n';
 	import { getGalleryDesign } from '$lib/data/heartDesigns';
 	import type { HeartDesign } from '$lib/types/heart';
@@ -50,6 +50,7 @@
 		MIN_SHEET_MM,
 		MIN_WIDTH_MM,
 		WIDTH_STEP_MM,
+		a3FitsAll,
 		clamp,
 		laserFileContent,
 		laserFileName,
@@ -78,6 +79,7 @@
 		saveDownloadSettings,
 		type DownloadMode
 	} from '$lib/download/settings';
+	import { parseNumberInput, parseWholeNumber, typeDecimalPoint } from '$lib/download/numberInput';
 
 	interface Props {
 		/** The hearts to get, in order; one is the heart page's dialog. */
@@ -136,8 +138,12 @@
 	/** What is typed into a field being edited, as the input reports it. */
 	let drafts = $state<Partial<Record<NumberField, string>>>({});
 
-	const parseField = (raw: string): number | null =>
-		raw.trim() && Number.isFinite(Number(raw)) ? Number(raw) : null;
+	// A decimal comma counts as a point (numberInput.ts); whole numbers only
+	// settle when the field is left, so "80,5" is not rewritten under the cursor.
+	const parseField = (raw: string): number | null => {
+		const value = parseNumberInput(raw);
+		return Number.isFinite(value) ? value : null;
+	};
 
 	const invalid = $derived<Record<NumberField, boolean>>({
 		width: drafts.width !== undefined && parseField(drafts.width) === null,
@@ -281,7 +287,9 @@
 			// With several hearts, say which ones the file will not hold.
 			if (several && laserPlan.heartsLeftOut.length && laserPlan.heartsOnSheet.length) {
 				const names = laserPlan.heartsLeftOut.map((h) => h.design.name).join(', ');
-				text += `. ${t('sheetLeftOut', lang, { names })}`;
+				// And how to get them all: A3 only when it would hold them.
+				const a3 = a3FitsAll(designs, { widthMm, count: hearts, sheet, lobe });
+				text += `. ${t('sheetLeftOut', lang, { names })}. ${t(a3 ? 'sheetLeftOutHintA3' : 'sheetLeftOutHint', lang)}`;
 			}
 			return { text, warn: true };
 		}
@@ -381,6 +389,8 @@
 
 	function commitNumber(field: NumberField, input: HTMLInputElement): void {
 		delete drafts[field];
+		const typed = parseWholeNumber(input.value);
+		if (input.value.trim() && Number.isFinite(typed)) assign(field, typed);
 		// Written back as well: the typed text may clamp onto the value already
 		// set, which changes no state, and the field would keep showing it.
 		input.value = String(current(field));
@@ -497,14 +507,27 @@
 
 <Modal {open} labelledBy="download-dialog-title" width="min(860px, 100%)" {onClose}>
 	<div class="download">
-		<h2 id="download-dialog-title" class="title">
-			{#if several}
-				{t('getTemplatesTitle', lang)}
-				<span class="title-count" data-testid="download-count">{designs.length}</span>
-			{:else}
-				{t('getTemplateTitle', lang)}
-			{/if}
-		</h2>
+		<div class="head">
+			<h2 id="download-dialog-title" class="title">
+				{#if several}
+					{t('getTemplatesTitle', lang)}
+					<span class="title-count" data-testid="download-count">{designs.length}</span>
+				{:else}
+					{t('getTemplateTitle', lang)}
+				{/if}
+			</h2>
+			<!-- At every width: on a phone "Annuller" sits below the fold of a
+			     scrolling dialog, and the scrim around it is a thin strip. -->
+			<button
+				class="btn btn-ghost btn-icon close"
+				type="button"
+				aria-label={t('close', lang)}
+				data-testid="download-close"
+				onclick={onClose}
+			>
+				<CloseIcon size={18} />
+			</button>
+		</div>
 
 		<div class="body">
 			<div class="controls">
@@ -540,6 +563,7 @@
 						aria-invalid={invalid.width}
 						oninput={(e) => setNumber('width', e.currentTarget.value)}
 						onblur={(e) => commitNumber('width', e.currentTarget)}
+						onkeydown={typeDecimalPoint}
 					/>
 					{#if derivedLine}
 						<p class="hint" data-testid="download-derived">{derivedLine}</p>
@@ -594,6 +618,7 @@
 									aria-invalid={invalid.sheetWidth}
 									oninput={(e) => setNumber('sheetWidth', e.currentTarget.value)}
 									onblur={(e) => commitNumber('sheetWidth', e.currentTarget)}
+									onkeydown={typeDecimalPoint}
 								/>
 							</label>
 							<label class="small-label">
@@ -608,6 +633,7 @@
 									aria-invalid={invalid.sheetHeight}
 									oninput={(e) => setNumber('sheetHeight', e.currentTarget.value)}
 									onblur={(e) => commitNumber('sheetHeight', e.currentTarget)}
+									onkeydown={typeDecimalPoint}
 								/>
 							</label>
 						</div>
@@ -717,10 +743,24 @@
 		gap: 18px;
 	}
 
+	.head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px;
+	}
+
+	/* Pulled into the card's padding so its glyph sits near the edge. */
+	.close {
+		flex: none;
+		margin-right: -10px;
+	}
+
 	.title {
 		display: flex;
 		align-items: center;
 		gap: 10px;
+		min-height: 44px;
 		margin: 0;
 		font-size: 24px;
 	}
