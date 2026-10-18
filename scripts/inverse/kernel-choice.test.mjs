@@ -158,3 +158,34 @@ test('cross-call calibration requires gains on both inputs and separates workloa
  for(let i=0;i<20;i++)backend.run(2**i,js,wasm);assert.equal(backend.report().length,8);
  for(const options of [{repetitions:2},{minimumBatchMilliseconds:1},{quickDecision:true},{calibrateAcrossCalls:'yes'}])assert.throws(()=>measuredKernel(sameArray,{calibrateAcrossCalls:true,...options}),RangeError);
 });
+
+for(const calibrateAcrossCalls of [false,true])test(`unresolved timing can be measured once after the clock resumes (cross-call: ${calibrateAcrossCalls})`,()=>{
+ let clock=0,running=false,value=3,nativeCalls=0;
+ const backend=measuredKernel(sameArray,{now:()=>clock,calibrateAcrossCalls});
+ const js=()=>{if(running)clock+=5;return [value];},native=()=>{nativeCalls++;if(running)clock++;return [value];};
+ for(let i=0;i<2;i++)backend.run(40000,js,native);
+ const initial=nativeCalls;assert.equal(backend.report()[0].backend,'javascript');
+ for(let i=0;i<3;i++)backend.run(40000,js,native);
+ assert.equal(nativeCalls,initial,'A frozen clock must not trigger repeated calibration.');
+ clock=100;running=true;value=7;
+ for(let i=0;i<2;i++)assert.deepEqual(backend.run(40000,js,native),[7]);
+ const report=backend.report()[0];assert.equal(report.backend,'wasm');assert.equal(report.retriedAfterClockAdvance,true);
+ const calibrated=nativeCalls;value=9;assert.deepEqual(backend.run(40000,js,native),[9]);assert.equal(nativeCalls,calibrated+1);
+});
+
+test('recalibration is bounded when the clock still cannot resolve work',()=>{
+ let clock=0,nativeCalls=0;const backend=measuredKernel(sameArray,{now:()=>clock});
+ const js=()=>[1],native=()=>{nativeCalls++;return [1];};
+ backend.run(40000,js,native);clock=1;backend.run(40000,js,native);
+ const calibrated=nativeCalls;
+ for(clock=2;clock<10;clock++)backend.run(40000,js,native);
+ assert.equal(nativeCalls,calibrated);assert.equal(backend.report()[0].backend,'javascript');
+});
+
+test('a result mismatch during clock recalibration permanently rejects the kernel',()=>{
+ let clock=0,nativeCalls=0;const backend=measuredKernel(sameArray,{now:()=>clock});
+ const js=()=>[1],native=()=>{nativeCalls++;return [clock===0?1:2];};
+ backend.run(40000,js,native);clock=1;assert.deepEqual(backend.run(40000,js,native),[1]);
+ const rejected=nativeCalls;clock=2;backend.run(40000,js,native);
+ assert.equal(nativeCalls,rejected);assert.equal(backend.report()[0].reason,'different_results');
+});
