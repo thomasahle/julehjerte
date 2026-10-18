@@ -676,10 +676,12 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery){
     // last-chance retry. It needs the ordinary outline-polishing reserve too.
     // A late feature start still needs its first useful curve fit. Reserving
     // the full polishing window can leave only a few gradient steps after
-    // initialization. Lend that window to the initial fit while keeping a
-    // short polish tail and the enclosing final-verification reserve.
+    // initialization. Lend that window to the initial fit. When less than
+    // 2.5 seconds remains, a 450 ms tail cannot even start polishing after
+    // assessment; use it for the unfinished fit instead. The enclosing
+    // final-verification reserve remains outside this deadline.
     const featurePolishReserve=featureSeed(selected)&&!candidates.some(c=>c.imagePassed)
-      ?Math.min(1700,Math.max(450,remaining-2500)):1700;
+      ?Math.min(1700,Math.max(0,remaining-2500)):1700;
     const polishingReserve=samplingRetry?(samplingRecovery?.preflight?.preferred?1700:0):featurePolishReserve,end=Math.min(deadline-polishingReserve,performance.now()+allocation);
     const {clear,graph,protectedObjective,objectiveProb,objectiveWeights,refinementCfg,verification}=prepareRefinement(selected,allocation);
     // The unconstrained grid can look best only because its strips are too
