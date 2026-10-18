@@ -558,7 +558,17 @@
     "delayedRoutingTest": "Preserves its independent 400/800-pixel image, feature and physical requirements. It now also accepts a checked candidate recorded at the fallback decision instead of demanding a redundant MILP retry.",
     "linuxStatus": "running",
     "linuxReplay": "https://github.com/thomasahle/julehjerte/actions/runs/39173141581",
-    "diagnosticCommit": "a4f1fdd8"
+    "diagnosticCommit": "a4f1fdd8",
+    "appChecks": {
+      "typecheckErrors": 0,
+      "typecheckExistingWarnings": 6,
+      "lintErrors": 0,
+      "lintExistingWarnings": 4,
+      "vitestPassed": 1570,
+      "vitestSkipped": 1,
+      "vitestFiles": 112,
+      "build": "pass"
+    }
   },
   "fullReplayBeforeHandoffs": {
     "url": "https://github.com/thomasahle/julehjerte/actions/runs/39170676301",
