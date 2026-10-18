@@ -124,7 +124,7 @@
     "A late feature start reserved 450 ms for a polish that could no longer start after assessment. Lending that time to its unfinished refinement improved the source fit without extending the ten-second request.",
     "The Viking continuation repeatedly gave the whole 400 ms repair allowance to hidden-only controls, starving the existing general-control fallback. A local split-budget experiment reduced independent error from 0.01941875 to 0.0186625 without extending the continuation."
   ],
-  "remaining": "Main remains red and no recovery commit has been merged into main. Best completed full cold-process replay passed 1105/1114 tests. More recent focused runs still fail. Rejected paper-audit reuse has been reverted. The narrowed verification reserve and matching priority fixes are now undergoing full Linux replay at 39170676301. No full-suite or release pass is claimed; NN work has not resumed.",
+  "remaining": "Main remains red; no recovery fix has been transferred to main. Latest complete normal-clock Linux replay passed 1108/1124 tests (16 failures), source 999b4072. A near-fit paper-verification fix is undergoing focused Linux replay at 39177180176. Quality and time limits are unchanged; no release pass or NN resumption is claimed.",
   "branchSafety": "codex/ci-inverse-diagnostics replaces the Pages workflow with manual diagnostics. Never merge that entire branch to main. Transfer only verified fixes from codex/solver-initialization.",
   "limitations": [
     "No fresh 22-design Hunodan speed benchmark in this CI recovery pass.",
@@ -422,9 +422,58 @@
     "url": "https://github.com/thomasahle/julehjerte/actions/runs/39176444982",
     "sourceCommit": "999b4072",
     "diagnosticCommit": "503d14a9",
-    "status": "running",
+    "status": "completed",
     "clock": "normal, unmodified, cold-process isolated test files",
-    "releaseReady": false
+    "releaseReady": false,
+    "conclusion": "failure",
+    "passed": 1108,
+    "failed": 16,
+    "shards": [
+      {
+        "shard": 1,
+        "passed": 251,
+        "failed": 1,
+        "failures": [
+          "fresh synthetic-control routing retains time for a valid template without changing the mask"
+        ]
+      },
+      {
+        "shard": 2,
+        "passed": 220,
+        "failed": 9,
+        "failures": [
+          "fresh fitting continues an unfinished verified initializer within the remaining search allowance",
+          "hard-bibel-star-outline: refine the retained grid before routing, preserving photographic quality",
+          "a finer spline recovers a half-resolution opening after all coarse feature starts fail",
+          "early feature routing recovers the frozen puppy opening within a ten-second search",
+          "a one-pixel crop shift cannot discard a feature-preserving fine-grid checkpoint",
+          "a fresh shifted bird fit preserves its eye with a 10-second allowance",
+          "a fresh shifted bird fit preserves its eye with a 180-second allowance",
+          "a late routing candidate uses the repair time already provided by its caller",
+          "a late routing candidate cannot manufacture an unprovided repair allowance"
+        ]
+      },
+      {
+        "shard": 3,
+        "passed": 240,
+        "failed": 4,
+        "failures": [
+          "a simpler seed that never contained the Viking opening leaves time for the viable routing",
+          "late clearance comparison can repair its first usable layout before polishing",
+          "a lower-error finalist that erodes a partially retained region cannot claim the refinement reserve",
+          "automatic shadowed-frame crop recovers two matching cuts per sheet"
+        ]
+      },
+      {
+        "shard": 4,
+        "passed": 397,
+        "failed": 2,
+        "failures": [
+          "the original near-miss layout produces checked exports within the original short search (1.5x clock)",
+          "the vertical near-miss layout produces checked exports within the original short search (1.5x clock)"
+        ]
+      }
+    ]
   },
   "matchingContinuation": {
     "commit": "1cc30d71",
@@ -1063,5 +1112,63 @@
         ]
       }
     ]
+  },
+  "nearFitPaperVerification": {
+    "sourceCommit": "e4f9cfcc",
+    "cause": "Image error above the acceptance limit returned before finer paper verification. Polishing required a paper pass, so a geometrically sound near-fit could spend its remaining time on sharing without ever receiving full-resolution polishing.",
+    "change": "Resolve unchanged, geometry-checked, feature-complete cuts in the existing near-fit band (maximum image error plus 0.01), before cleanup. Keep the image gate unchanged. Spend only the existing deadline, reserve the polishing tail, and skip optional pre-polish sharing for this candidate.",
+    "witness": {
+      "run": 39176444982,
+      "fit": "fit-zTUth4",
+      "paper360": "uncertain",
+      "paper700": "pass",
+      "sourceErrorBefore": 0.03495,
+      "sourceErrorAfterFixedWitnessPolish": 0.02736875,
+      "polishSteps": 55,
+      "geometry": "pass",
+      "paper": "pass",
+      "scope": "Saved Linux geometry replay, not a fresh end-to-end speed result; approximately 1.2 seconds requested for local polish."
+    },
+    "localTests": {
+      "passed": 6,
+      "failed": 0,
+      "log": "/tmp/julehjerte-nearfit-paper-tests.log",
+      "scope": "Viking and delayed clearance fresh fits; retained paper witnesses and incomplete approximation checks. Tests establish that independent paper verification never waives image acceptance."
+    },
+    "linux": {
+      "url": "https://github.com/thomasahle/julehjerte/actions/runs/39177180176",
+      "diagnosticCommit": "34b2e6dc",
+      "mode": "budgets",
+      "status": "in_progress"
+    },
+    "appChecks": {
+      "status": "in_progress",
+      "logPrefix": "/tmp/julehjerte-nearfit-paper-"
+    }
+  },
+  "rejectedDenseControlReduction": {
+    "scope": "Fresh source mask, full count search, independent exports, normal 10-second request, cold Node process for each grid size.",
+    "rows": [
+      {
+        "controls": 16,
+        "independentError": 0.0242875,
+        "templateChecksPassed": true,
+        "solverSeconds": 9.116265375
+      },
+      {
+        "controls": 8,
+        "independentError": 0.04643125,
+        "templateChecksPassed": false,
+        "solverSeconds": 8.730158209
+      },
+      {
+        "controls": 12,
+        "independentError": 0.03091875,
+        "templateChecksPassed": false,
+        "solverSeconds": 9.141972709
+      }
+    ],
+    "decision": "Keep sixteen controls; neither smaller model preserves required quality. No production change.",
+    "log": "/tmp/julehjerte-dense-controls-probe.log"
   }
 }
