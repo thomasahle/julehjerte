@@ -59,7 +59,12 @@ for(const translation of ['original','horizontal','vertical'])for(const remainin
     const woven=await renderExportedWeave(answer.files['cut_geometry.json'],400);
     error=woven.mask.reduce((sum,v,i)=>sum+Number(v!==mask[i]),0)/mask.length;
     assert.ok(error<.03,`Independent mask error ${error}`);
-    t.diagnostic(JSON.stringify({translation,remaining,independentError:error,simulatedSolverSeconds:solver.seconds}));
+    const handoff=solver.earlyFeatureInitialization.outlineHandoff;
+    if(handoff){
+      assert.ok(handoff.error<=answer.report.settings.maxImageError+.01);
+      assert.ok(handoff.addedCurves>0,'The earlier handoff must have an actual outline refinement to perform.');
+    }
+    t.diagnostic(JSON.stringify({translation,remaining,independentError:error,simulatedSolverSeconds:solver.seconds,outlineHandoff:handoff??null}));
     assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
   }catch(failure){
     t.diagnostic(await captureFitFailure({answer,source,error,maximum:.03,context:{translation,remaining,assertion:failure.message}}));throw failure;

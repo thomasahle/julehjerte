@@ -29,6 +29,7 @@ import {featureDetailPlan} from './feature-details.js';
 import {rerouteFittedBoundary} from './reroute.js';
 import {recoverClampedFeatures} from './clamped-features.js';
 import {polishCandidate} from './polish.js';
+import {outlineDetailPlan} from './outline-details.js';
 import {repairClearanceInitializer} from './clearance-repair.js';
 import {recoverCornerTopology} from './corner-topology.js';
 import {featureImprovingFinalist} from './feature-finalists.js';
@@ -803,8 +804,28 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
     // Feature seeds hand off to local outline polishing. Their checking tail
     // belongs to that pass; only ordinary grids borrow it for verification.
     const paperVerificationDeadline=featureSeed(selected)?end:Math.max(end,deadline-450);
+    const earlyOutline=shortBudget&&earlyFeatureInitialization?.scheduled===1&&featureSeed(selected)&&polishingReserve<1700&&!weights&&!symmetryRequested;
+    let outlineProbe=null,outlineHandoff=null;
     let candidate=stage('directRefining',()=>refineCurves(graph,objectiveProb,n,clear.phase,{...refinementCfg,preferMatchingSheets:false},{deadline:end,geometryRecoveryDeadline,input,weights:objectiveWeights,skipRepeatedRollbacks:true,resolvePaperBeforeRollback:true,paperVerificationDeadline,retryPaperSeparation:true,paperSeparationErrorThreshold:cfg.maxImageError,preferCheckpoint:featureSeed(selected)?(_candidate,solution)=>auditFeatureFidelity(source,sampleWeave(solution,source.resolution),cfg,sourceFeatures).passed:null,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:value=>{
       if(goodEnough(value))return true;
+      // A late initializer has borrowed the normal polish reserve. Once its
+      // checked routing retains the source features and is close enough for
+      // actual outline subdivision, hand back the remaining time. Spending
+      // every step on coarse spans can leave no chance to fit their detail.
+      // This ends only the coarse phase; source and physical acceptance still
+      // apply to the independently checked result of the existing polish.
+      if(earlyOutline&&value.preferred&&value!==outlineProbe&&deadline-performance.now()>650){
+        outlineProbe=value;
+        const woven=sampleWeave(value.graph.solution(value.points,value.phase,input),source.resolution),error=maskDisagreement(source,woven);
+        if(error<=cfg.maxImageError+.01){
+          const detail=outlineDetailPlan(value.graph,value.points,value.phase,source,refinementCfg);
+          if(detail){
+            outlineHandoff={error,addedCurves:detail.report.addedCurves,remainingSeconds:(deadline-performance.now())/1000};
+            earlyFeatureInitialization.outlineHandoff=outlineHandoff;
+            return true;
+          }
+        }
+      }
       if(!selected.protectFeatures||!earlyFeatureInitialization?.enclosurePending)return false;
       // Hand a checked colour-retaining fit to local shape refinement as soon
       // as its global error is acceptable. Waiting for the broad stage's
@@ -838,14 +859,15 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
       if(detailed!==candidate){addCandidate(detailed);candidate=detailed;}
     }
     // One bounded attempt before starting more grid layouts. Preserve every
-    // existing candidate and all acceptance checks. Successful/short fits skip it.
-    if(!shortBudget&&!earlyPolishComparison&&!candidates.some(c=>c.imagePassed)&&candidate.geometryPassed&&candidate.paperPassed&&candidate.originalFeatures?.passed&&candidate.originalImageError<=cfg.maxImageError+.01){
-      const at=performance.now(),until=Math.min(searchDeadline()-1300,at+6500);
-      if(until-at>1800){
+    // existing candidate and all acceptance checks. An explicit outline handoff
+    // also owns this step: a routing retry must not consume its reserved work.
+    if(outlineHandoff||!shortBudget&&!earlyPolishComparison&&!candidates.some(c=>c.imagePassed)&&candidate.geometryPassed&&candidate.paperPassed&&candidate.originalFeatures?.passed&&candidate.originalImageError<=cfg.maxImageError+.01){
+      const at=performance.now(),until=outlineHandoff?deadline:Math.min(searchDeadline()-1300,at+6500);
+      if(until-at>(outlineHandoff?450:1800)){
         const polishing=orbitObjective(Float64Array.from(source.mask),source.resolution,orbit,weights);
         const refined=stage('directPolishing',()=>polishCandidate(candidate,polishing.probability,source.resolution,{...cfg,preferMatchingSheets:false},{input,weights:polishing.weights,steps:160,rate:.008,deadline:until-250,selection:'mask',identicalSheets:candidate.matching?.identical||false,onProgress:hasCandidateObserver(onProgress)?(r,s)=>onProgress({stage:'directPolishing',detail:'early-feature-complete-comparison',counts:candidate.counts,...r},s):undefined}));
         refined.imagePassed=assess(refined);
-        earlyPolishComparison={counts:candidate.counts.slice(),phase:candidate.phase,startedAtSeconds:(at-start)/1000,beforeError:candidate.originalImageError,afterError:refined.originalImageError,featuresPassed:refined.originalFeatures?.passed,geometryPassed:refined.geometryPassed,paperPassed:refined.paperPassed,accepted:refined.imagePassed,seconds:(performance.now()-at)/1000};
+        earlyPolishComparison={...(outlineHandoff?{reason:'outline-handoff'}:{}),counts:candidate.counts.slice(),phase:candidate.phase,startedAtSeconds:(at-start)/1000,beforeError:candidate.originalImageError,afterError:refined.originalImageError,featuresPassed:refined.originalFeatures?.passed,geometryPassed:refined.geometryPassed,paperPassed:refined.paperPassed,accepted:refined.imagePassed,seconds:(performance.now()-at)/1000};
         if(refined.imagePassed){addCandidate(refined);candidate=refined;}
       }
     }
@@ -855,6 +877,10 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
       const until=Math.min(searchDeadline()-1300,performance.now()+coarseTopologySeconds*1000+1700);
       await attemptCoarseRouting(until);
       if(boundaryCandidate)addCandidate(boundaryCandidate);
+    }
+    if(i===0&&deferredFeatureRecovery){
+      const checked=candidates.find(c=>c.imagePassed);
+      if(checked)deferredFeatureRecovery.retainedCandidate={counts:checked.counts.slice(),imageError:checked.originalImageError,geometryPassed:checked.geometryPassed,paperPassed:checked.paperPassed,featuresPassed:checked.originalFeatures?.passed};
     }
     if(i===0&&deferredFeatureRecovery&&!candidates.some(c=>c.imagePassed)){
       const seconds=Math.min(deferredFeatureRecovery.remainingSeconds,(searchDeadline()-performance.now()-2200)/1000);
