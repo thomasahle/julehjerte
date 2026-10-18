@@ -33,7 +33,7 @@ import {outlineDetailPlan} from './outline-details.js';
 import {repairClearanceInitializer} from './clearance-repair.js';
 import {recoverCornerTopology} from './corner-topology.js';
 import {featureImprovingFinalist} from './feature-finalists.js';
-import {assessCandidate,assessPolishingAlternative} from './candidate-verification.js';
+import {assessCandidate,assessPolishingAlternative,verifyCandidatePaper} from './candidate-verification.js';
 
 export {borderEvidence,supportedBorderCounts,gridCountLimit,gridFinalists} from './counts.js';
 const featureSeed=c=>['feature-weighted-grid','feature-preserving-grid','feature-sampling-grid','fitted-boundary-rerouting'].includes(c.seed);
@@ -1038,6 +1038,18 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
   // optional cleanup must not reopen that deliberately completed search.
   if(!completedFeatureRepair&&!shortBudget&&cleanupStart-start>=fastSeconds*1000)deadline=Math.min(start+cfg.timeLimit*1000-1300,Math.max(deadline,cleanupStart+6500));
   const cleanupBudget={startedAtSeconds:(cleanupStart-start)/1000,previousSeconds:(cleanupBefore-cleanupStart)/1000,availableSeconds:(deadline-cleanupStart)/1000,addedSeconds:(deadline-cleanupBefore)/1000};
+  // An image just above its limit can still improve during polishing, but
+  // assess() intentionally spends no paper-verification time on that image.
+  // Resolve its unchanged cuts before requiring a paper pass to start polish.
+  // Use the same near-fit band as polishCandidate, preserve the refinement
+  // reserve, and leave imagePassed false until the normal gates accept it.
+  if(!candidate.paperPassed&&candidate.paper?.status==='uncertain'&&candidate.geometryPassed&&candidate.originalFeatures?.passed
+    &&candidate.originalImageError>cfg.maxImageError&&candidate.originalImageError<=cfg.maxImageError+.01&&deadline-performance.now()>1300){
+    const at=performance.now();
+    verifyCandidatePaper(candidate,input,cfg,{deadline:deadline-800});
+    cleanupBudget.refinementPaperVerification={status:candidate.paper?.status,resolution:candidate.paperVerification?.resolution??cfg.materialResolution,
+      imageError:candidate.originalImageError,seconds:(performance.now()-at)/1000};
+  }
   // A very close independent fit has met the same image floor used by the
   // fast initializer. In a short request, leave optional polish/sharing time
   // for the requested matching search instead. The incumbent stays available
@@ -1049,7 +1061,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
   if(matchingBeforePolish)cleanupBudget.polishingDeferredForMatching=true;
   // This optional early pass precedes polishing. The final selected pair also
   // receives sharing recovery after any matching-sheet replacement.
-  if(!matchingBeforePolish&&!featureDetail?.applied&&!candidate.matching?.identical&&!symmetryRequested&&candidate.paperPassed&&performance.now()<deadline-1300){
+  if(!matchingBeforePolish&&!cleanupBudget.refinementPaperVerification&&!featureDetail?.applied&&!candidate.matching?.identical&&!symmetryRequested&&candidate.paperPassed&&performance.now()<deadline-1300){
     const sharingCfg=verifiedPaperSettings({report:{paperVerification:candidate.paperVerification}},cfg);
     const shared=stage('directSharing',()=>recoverShared(candidate,prob,n,sharingCfg,{deadline:deadline-1300,input,weights:fitWeights}));
     if(assess(shared)&&shared.originalImageError<=candidate.originalImageError)candidate={...shared,seed:candidate.seed};
