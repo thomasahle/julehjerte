@@ -32,6 +32,13 @@
   everything else in the scene at every width: the scene is its own stacking
   context and the landscape sits at z-index -1 in it.
 
+  Past LANDSCAPE_MAX_WIDTH (2000px) the drawing stops growing, so on a very wide
+  window its trees do not rise into the hero copy (QA round 3). It stays at the
+  left, where the hero's text is laid out against it, and a mirror image of it
+  continues to the right: mirrored, every hill and the sky meet the original at
+  the seam exactly. The front page's hill line follows the mirror too
+  ($lib/front/hillLine). At 2000px and below nothing changes.
+
   Pass `band` to get the front page's variant: below 900px the landscape leaves
   the absolute layer and becomes an in-flow strip that many pixels tall, showing
   the right-hand part of the drawing. A banded scene is a column flex box at
@@ -95,9 +102,26 @@
 
 	.scene-land :global(.scene-land-svg) {
 		display: block;
-		width: 100%;
+		/* LANDSCAPE_MAX_WIDTH in $lib/landscape. */
+		width: min(100%, 2000px);
 		height: auto;
 		aspect-ratio: var(--scene-land-aspect);
+	}
+
+	/* The mirror image to the right of a capped drawing. A separate document (the
+	   asset file, not the inlined copy), so its ids do not clash with the page's.
+	   The wrapper is as tall as the drawing, so top/bottom 0 give it the same box. */
+	@media (min-width: 2001px) {
+		.scene-land::after {
+			content: '';
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 2000px;
+			width: 2000px;
+			background: url('../assets/landscape.svg') 0 0 / 100% 100% no-repeat;
+			transform: scaleX(-1);
+		}
 	}
 
 	@media (max-width: 899px) {
