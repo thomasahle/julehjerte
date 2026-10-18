@@ -403,7 +403,12 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
   // A short request cannot afford both a speculative routing probe and the
   // first refinement of a newly recovered feature. Give a feature-complete
   // start its reserved refinement first, retaining routing as a fallback.
-  const refineNewFeatureFirst=shortBudget&&earlyFeatureInitialization?.scheduled===1&&features.passed;
+  // A jointly protected start can already contain all feature colours while
+  // a small opening remains connected to the background. Its local shape
+  // pass needs that same reserve; speculative tracing cannot consume it
+  // before the dedicated routing gets any curve updates.
+  const protectedOpenFeature=earlyFeatureInitialization?.enclosurePending===true&&fine[0].protectFeatures===true;
+  const refineNewFeatureFirst=shortBudget&&earlyFeatureInitialization?.scheduled===1&&(features.passed||protectedOpenFeature);
   // A close ordinary grid which keeps almost all of every substantial region
   // also deserves a continuous fit before speculative tracing. Aggregate error
   // alone misses this evidence on dense patterns with many blurred boundaries.
@@ -419,7 +424,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
     &&features.regions.every(r=>r.retainedFraction>=.9);
   const sourceResolutionGrid=refineRetainedGridFirst?fine[0]:null;
   const deferredFeatureRecovery=((!shortBudget&&(probeRouting||deferredRouting))||refineNewFeatureFirst||refineRetainedGridFirst)&&needsRecovery
-    ?{maximumSeconds:fullRecoverySeconds,attempted:false,...(refineRetainedGridFirst?{reason:'well-retained-grid',minimumRegionRetention:Math.min(...features.regions.map(r=>r.retainedFraction))}:{})}:null;
+    ?{maximumSeconds:fullRecoverySeconds,attempted:false,...(refineRetainedGridFirst?{reason:'well-retained-grid',minimumRegionRetention:Math.min(...features.regions.map(r=>r.retainedFraction))}:refineNewFeatureFirst&&protectedOpenFeature?{reason:'protected-open-feature'}:{})}:null;
   const attemptRecovery=async(seconds,budgetPolicy,until=deadline)=>{
     // A missing region, or a worse grid selected to preserve one, cannot
     // replace a nearly verified route. Lend its remaining tail to bounded
