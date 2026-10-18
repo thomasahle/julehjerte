@@ -419,66 +419,12 @@
     "scope": "Near-miss crop translations at real and 1.5x stress clocks, plus late feature initializations."
   },
   "latestFullReplay": {
-    "url": "https://github.com/thomasahle/julehjerte/actions/runs/39174809846",
-    "sourceCommit": "5f53ec00",
-    "diagnosticCommit": "da0ac441",
-    "status": "completed",
+    "url": "https://github.com/thomasahle/julehjerte/actions/runs/39176444982",
+    "sourceCommit": "999b4072",
+    "diagnosticCommit": "503d14a9",
+    "status": "running",
     "clock": "normal, unmodified, cold-process isolated test files",
-    "releaseReady": false,
-    "conclusion": "failure",
-    "passed": 1102,
-    "failed": 21,
-    "shards": [
-      {
-        "shard": 1,
-        "passed": 249,
-        "failed": 3,
-        "failures": [
-          "the common fitter refines the alternative junction routing against the unchanged photograph",
-          "fresh photographic fitting selects and exports finer-verified refinement",
-          "fresh synthetic-control routing retains time for a valid template without changing the mask"
-        ]
-      },
-      {
-        "shard": 2,
-        "passed": 215,
-        "failed": 13,
-        "failures": [
-          "fresh fitting continues an unfinished verified initializer within the remaining search allowance",
-          "fresh automatic fitting repairs a rejected circular routing before common Bezier refinement",
-          "a fully observed mask refines or replaces corner routing without opening its enclosed regions",
-          "an exhausted corner MILP leaves the remaining caller allowance for fresh coarse routing",
-          "hard-bibel-star-outline-jpeg75: refine the retained grid before routing, preserving photographic quality",
-          "a finer spline recovers a half-resolution opening after all coarse feature starts fail",
-          "early feature routing recovers the frozen puppy opening within a ten-second search",
-          "a one-pixel crop shift cannot discard a feature-preserving fine-grid checkpoint",
-          "a fresh shifted bird fit preserves its eye with a 10-second allowance",
-          "a fresh shifted bird fit preserves its eye with a 180-second allowance",
-          "a late routing candidate uses the repair time already provided by its caller",
-          "a late routing candidate cannot manufacture an unprovided repair allowance",
-          "fresh round-checker fitting verifies its accurate finalist before choosing a worse routing"
-        ]
-      },
-      {
-        "shard": 3,
-        "passed": 242,
-        "failed": 2,
-        "failures": [
-          "a simpler seed that never contained the Viking opening leaves time for the viable routing",
-          "a lower-error finalist that erodes a partially retained region cannot claim the refinement reserve"
-        ]
-      },
-      {
-        "shard": 4,
-        "passed": 396,
-        "failed": 3,
-        "failures": [
-          "fresh fitting retains the stacked motif on the resampled mask",
-          "a late y-minus-1 gradient checkpoint can use its reserved clearance repair",
-          "the vertical near-miss layout produces checked exports within the original short search (1.5x clock)"
-        ]
-      }
-    ]
+    "releaseReady": false
   },
   "matchingContinuation": {
     "commit": "1cc30d71",
@@ -1007,7 +953,12 @@
     "linux": {
       "url": "https://github.com/thomasahle/julehjerte/actions/runs/39176243142",
       "diagnosticCommit": "503d14a9",
-      "status": "running"
+      "status": "completed",
+      "conclusion": "success",
+      "passed": 28,
+      "failed": 0,
+      "exhaustedCornerIndependentError": 0.0144375,
+      "exhaustedCornerSolverSeconds": 25.924359404999997
     },
     "appChecks": {
       "sourceCommit": "999b4072",
@@ -1050,5 +1001,67 @@
       "build": "pass",
       "generatedOgImage": "restored after build"
     }
+  },
+  "fullReplayBeforeSourceResolutionAndReturnCache": {
+    "url": "https://github.com/thomasahle/julehjerte/actions/runs/39174809846",
+    "sourceCommit": "5f53ec00",
+    "diagnosticCommit": "da0ac441",
+    "status": "completed",
+    "clock": "normal, unmodified, cold-process isolated test files",
+    "releaseReady": false,
+    "conclusion": "failure",
+    "passed": 1102,
+    "failed": 21,
+    "shards": [
+      {
+        "shard": 1,
+        "passed": 249,
+        "failed": 3,
+        "failures": [
+          "the common fitter refines the alternative junction routing against the unchanged photograph",
+          "fresh photographic fitting selects and exports finer-verified refinement",
+          "fresh synthetic-control routing retains time for a valid template without changing the mask"
+        ]
+      },
+      {
+        "shard": 2,
+        "passed": 215,
+        "failed": 13,
+        "failures": [
+          "fresh fitting continues an unfinished verified initializer within the remaining search allowance",
+          "fresh automatic fitting repairs a rejected circular routing before common Bezier refinement",
+          "a fully observed mask refines or replaces corner routing without opening its enclosed regions",
+          "an exhausted corner MILP leaves the remaining caller allowance for fresh coarse routing",
+          "hard-bibel-star-outline-jpeg75: refine the retained grid before routing, preserving photographic quality",
+          "a finer spline recovers a half-resolution opening after all coarse feature starts fail",
+          "early feature routing recovers the frozen puppy opening within a ten-second search",
+          "a one-pixel crop shift cannot discard a feature-preserving fine-grid checkpoint",
+          "a fresh shifted bird fit preserves its eye with a 10-second allowance",
+          "a fresh shifted bird fit preserves its eye with a 180-second allowance",
+          "a late routing candidate uses the repair time already provided by its caller",
+          "a late routing candidate cannot manufacture an unprovided repair allowance",
+          "fresh round-checker fitting verifies its accurate finalist before choosing a worse routing"
+        ]
+      },
+      {
+        "shard": 3,
+        "passed": 242,
+        "failed": 2,
+        "failures": [
+          "a simpler seed that never contained the Viking opening leaves time for the viable routing",
+          "a lower-error finalist that erodes a partially retained region cannot claim the refinement reserve"
+        ]
+      },
+      {
+        "shard": 4,
+        "passed": 396,
+        "failed": 3,
+        "failures": [
+          "fresh fitting retains the stacked motif on the resampled mask",
+          "a late y-minus-1 gradient checkpoint can use its reserved clearance repair",
+          "the vertical near-miss layout produces checked exports within the original short search (1.5x clock)"
+        ]
+      }
+    ]
   }
 }
