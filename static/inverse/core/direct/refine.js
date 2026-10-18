@@ -100,7 +100,7 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12,paperRecovery
   return{loss,gradient,minRadius};
 }
 
-export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=40,deadline=Infinity,repairDeadline=deadline,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null,preferCheckpoint=null,skipRepeatedRollbacks=false,finalGeometry=true,resolvePaperBeforeRollback=false,paperVerificationResolution=700,paperVerificationReserve=250,retryPaperSeparation=false,paperSeparationErrorThreshold=null,paperRecovery=null,paperAudit=materialAudit}={}){
+export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=40,deadline=Infinity,geometryRecoveryDeadline=deadline,repairDeadline=deadline,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null,preferCheckpoint=null,skipRepeatedRollbacks=false,finalGeometry=true,resolvePaperBeforeRollback=false,paperVerificationResolution=700,paperVerificationReserve=250,retryPaperSeparation=false,paperSeparationErrorThreshold=null,paperRecovery=null,paperAudit=materialAudit}={}){
   if(!Number.isInteger(checkpointEvery)||checkpointEvery<1)throw new RangeError('Checkpoint interval must be a positive integer.');
   // Compile the weighted force field once, not on every optimization step.
   let penaltySettings=cfg,paperSeparationRetry=null;
@@ -118,6 +118,7 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
   graph.paths.forEach((p,pi)=>{for(const[e]of p)for(const id of graph.edges[e])clampAxes[2*id+graph.family[pi]]=1;});
   const clampPoints=()=>{for(let i=0;i<points.length;i++)points[i]=graph.fixed[i]?initial[i]:clamp(points[i],clampAxes[i]?fittingMargin(cfg,graph.width):0,clampAxes[i]?graph.width-fittingMargin(cfg,graph.width):graph.width);const projected=!ties||applyTies(ties,points,points,{fixed:graph.fixed,original:initial});if(groups)projectMatching(points,groups,graph.fixed,initial);return projected;};
   clampPoints();let safe=null,best=null,bestUncertain=null,bestRejectedPaper=null,bestInvalid=null,completed=0,skippedSteps=0,lastRollback=null,initialReturnProjectionFailed=false;
+  let geometricCheckpoint=false,needsGeometryRecovery=false,recoveringGeometry=false,geometryRecoverySteps=0;
   // A preferred image checkpoint competes only within the same physical
   // validity class. Preference never certifies paper, changes rollback safety,
   // or substitutes weighted errors for the caller's original-source checks.
@@ -143,6 +144,7 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
         const symmetry=symmetryReport(solution,cfg.symmetry);
         if(symmetry.honoured.length!==symmetry.requested.length){check.passed=false;check.issues.push('Requested cutting symmetries are not satisfied.');}
       }
+      geometricCheckpoint||=check.passed;
       let paper=check.passed?paperAudit(solution,cfg):null;
       // Coarse lattice uncertainty can repeatedly reset a useful trajectory
       // to an older, much poorer fit. Verify the unchanged curves before that
@@ -241,7 +243,17 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
   };
   checkpoint(-1);
   for(let step=0;step<steps;step++){
-    if(stoppedEarly||(step%5===0&&performance.now()>deadline))break;
+    if(stoppedEarly)break;
+    if(step%5===0){
+      const now=performance.now();
+      // Borrow only when the ordinary cutoff has no geometric checkpoint to
+      // hand off. Existing uncertain-paper candidates keep time for the
+      // caller's finer audit. Once recovery starts, uncertainty cannot count
+      // as the first checked pair and silently waive the paper gate.
+      if(now>deadline&&!geometricCheckpoint)needsGeometryRecovery=true;
+      recoveringGeometry=now>deadline&&needsGeometryRecovery&&!best&&now<=geometryRecoveryDeadline;
+      if(now>deadline&&!recoveringGeometry)break;
+    }
     const g=boundaryGradient(graph,points,force,n,phase),penalty=curvePenalty(graph,points,penaltySettings,{paperRecovery});
     if(cfg.preferMatchingSheets&&!identicalSheets){const matching=matchingPenalty(graph,points);for(let i=0;i<g.length;i++)g[i]+=matching.gradient[i];}
     for(let i=0;i<g.length;i++)g[i]=graph.fixed[i]?0:g[i]+penalty.gradient[i]+.000004*(points[i]-initial[i])/points.length;
@@ -258,6 +270,7 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
       if(!recovered){points.set(previous);adam.reset();adam.rate=Math.max(.004*graph.width/100,adam.rate*.5);}
     }
     completed++;
+    if(recoveringGeometry)geometryRecoverySteps++;
     if(step%checkpointEvery===0||step===steps-1){
       const repeated=checkpoint(step);
       if(skipRepeatedRollbacks&&repeated){
@@ -282,5 +295,6 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
   // Keep this separate: a failed alternative must not hide an uncertain one
   // that existing callers already know how to verify. Neither is a pass.
   const rejectedPaperAlternative=bestRejectedPaper&&bestRejectedPaper!==selected?{...bestRejectedPaper,geometryPassed:true,paperPassed:false}:null;
-  return{...selected,geometryPassed:selected.validation.passed,paperPassed:!!best,history,steps:completed,computedSteps:completed-skippedSteps,skippedSteps,stoppedEarly,paperAlternative,rejectedPaperAlternative,paperSeparationRetry};
+  return{...selected,geometryPassed:selected.validation.passed,paperPassed:!!best,history,steps:completed,computedSteps:completed-skippedSteps,skippedSteps,stoppedEarly,paperAlternative,rejectedPaperAlternative,paperSeparationRetry,
+    ...(geometryRecoverySteps?{geometryRecovery:{steps:geometryRecoverySteps,maximumAdditionalMilliseconds:geometryRecoveryDeadline-deadline}}:{})};
 }

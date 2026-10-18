@@ -624,7 +624,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     const prepared={clear,graph,protectedObjective,objectiveProb,objectiveWeights,refinementCfg,verification};
     preparations.set(selected,prepared);return prepared;
   };
-  const extraGridComparisons=[];
+  const extraGridComparisons=[],geometryRecovery=[];
   let countSearchBound=null;
   let clearanceComparison=null;
   let initialGeometryComparison=null;
@@ -743,7 +743,12 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     // Ordinary grids can also repeat an identical failed block after the
     // optimizer resets at its minimum rate. Preserve the final partial block
     // while freeing the redundant work for polishing the retained candidate.
-    let candidate=stage('directRefining',()=>refineCurves(graph,objectiveProb,n,clear.phase,{...refinementCfg,preferMatchingSheets:false},{deadline:end,input,weights:objectiveWeights,skipRepeatedRollbacks:true,resolvePaperBeforeRollback:true,retryPaperSeparation:true,paperSeparationErrorThreshold:cfg.maxImageError,preferCheckpoint:featureSeed(selected)?(_candidate,solution)=>auditFeatureFidelity(source,sampleWeave(solution,source.resolution),cfg,sourceFeatures).passed:null,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:value=>{
+    // Polishing cannot improve a routing whose cuts still violate geometry.
+    // If no usable pair exists, let this fit spend part of that reserve on its
+    // first checked geometry-and-paper checkpoint. Keep finalization and a
+    // short polish window; existing geometric checkpoints keep their cutoff.
+    const geometryRecoveryDeadline=candidates.some(c=>c.geometryPassed&&c.paperPassed)?end:Math.max(end,deadline-450);
+    let candidate=stage('directRefining',()=>refineCurves(graph,objectiveProb,n,clear.phase,{...refinementCfg,preferMatchingSheets:false},{deadline:end,geometryRecoveryDeadline,input,weights:objectiveWeights,skipRepeatedRollbacks:true,resolvePaperBeforeRollback:true,retryPaperSeparation:true,paperSeparationErrorThreshold:cfg.maxImageError,preferCheckpoint:featureSeed(selected)?(_candidate,solution)=>auditFeatureFidelity(source,sampleWeave(solution,source.resolution),cfg,sourceFeatures).passed:null,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:value=>{
       if(goodEnough(value))return true;
       if(!selected.protectFeatures||!earlyFeatureInitialization?.enclosurePending)return false;
       // Hand a checked colour-retaining fit to local shape refinement as soon
@@ -760,6 +765,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       if(verification)solution.report={paperVerification:{...verification,status:r.paper}};
       onProgress({stage:'directRefining',counts:clear.model.counts,...r},solution);
     }}));
+    if(candidate.geometryRecovery)geometryRecovery.push({counts:clear.model.counts,...candidate.geometryRecovery});
     if(protectedObjective){
       candidate.error=mismatch(renderCurves(graph,candidate.points,candidate.phase,n,32),prob,fitWeights);
     }
@@ -920,6 +926,6 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   const paper={passed:candidate.paperPassed};
   solution.report={countSearch:countSearchReport,finalistPreference,deferredFeatureRecovery,...(recoveryHistory.length>1?{featureRecoveryAttempts:recoveryHistory}:{}),algorithm:'direct-bezier',numericalBackend,imported:false,termination:!candidate.geometryPassed?'geometry_failure':!paper.passed?'paper_failure':candidate.originalImageError>cfg.maxImageError?'image_mismatch':'candidate_found',seconds:(performance.now()-start)/1000,
     stoppedEarly,countSearchBound,clearanceComparison,initialGeometryComparison,extraGridComparisons,earlyClampedFeatureRecovery,clampedFeatureRecovery:candidate.clampedFeatureRecovery,refinementFeaturesPassed:candidate.originalFeatures?.passed,refinementBudget:{requestedSeconds:cfg.timeLimit,maximumSearchSeconds:searchSeconds(),verifiedAlternative},earlyFeatureInitialization,featureInitialization,samplingRecovery,featureDetail,featureDetailAttempts,outlineDetail,paperVerification:candidate.paperVerification,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,sourceImageError:c.originalImageError,imagePassed:c.imagePassed,featuresPassed:c.originalFeatures?.passed,enclosuresOpened:c.originalFeatures?.enclosures?.opened,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed,paperVerification:c.paperVerification})),
-    borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:['coarse-boundary-topology','feature-recovery'].includes(candidate.seed),cornerTopologyInitialization:cornerTopology?.report,topologyInitialization:topology?.report,coarseTopologyInitialization:coarseTopology?.report,selectedInitialization:candidate.seed||'grid',featureRecovery:recovery?.report||null,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,localFeaturePolish:candidate.localFeaturePolish,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
+    ...(geometryRecovery.length?{geometryRecovery}:{}),borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:['coarse-boundary-topology','feature-recovery'].includes(candidate.seed),cornerTopologyInitialization:cornerTopology?.report,topologyInitialization:topology?.report,coarseTopologyInitialization:coarseTopology?.report,selectedInitialization:candidate.seed||'grid',featureRecovery:recovery?.report||null,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,localFeaturePolish:candidate.localFeaturePolish,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
   return solution;
 }
