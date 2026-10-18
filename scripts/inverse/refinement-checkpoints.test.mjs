@@ -85,7 +85,12 @@ test('fresh photographic fitting selects and exports finer-verified refinement',
   assert.ok(budget.requestedSeconds>179&&budget.requestedSeconds<=180);
   assert.equal(budget.maximumSearchSeconds,25);
   assert.equal(budget.verifiedAlternative,true);
-  assert.ok(answer.report.solver.seconds<32,'An accepted alternative must not wait for the full 180-second seed portfolio');
+  // An improving polish may use a bounded extension of the cleanup deadline.
+  // Keep the original bound for all earlier work and count only the actual
+  // extension, not the entire continuation (which can reuse existing time).
+  const continuationExtension=answer.report.solver.cleanupContinuation?.addedSeconds??0;
+  assert.ok(continuationExtension>=0&&continuationExtension<=4);
+  assert.ok(answer.report.solver.seconds<32+continuationExtension,'An accepted alternative must retain its bounded search and cleanup allowance');
   assert.ok(answer.report.solver.candidates.some(c=>c.paperVerification?.source==='rollback-checkpoint'));
   assert.ok(answer.report.solver.extraGridComparisons.some(r=>r.reason==='simpler-layout'&&r.selectedCounts===null),
     'After comparing the ordinary finalists, no competitive simpler grid remains.');

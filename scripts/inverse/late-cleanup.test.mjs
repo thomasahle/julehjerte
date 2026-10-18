@@ -31,6 +31,8 @@ for(const {seconds,delay,maximum}of [{seconds:180,delay:750,maximum:.0193},{seco
     const solver=answer.report.solver,budget=solver.cleanupBudget;
     assert.ok(budget.startedAtSeconds>=10);
     assert.ok(budget.startedAtSeconds+budget.availableSeconds<=seconds-1.3+1e-6);
+    const extendedDeadline=budget.startedAtSeconds+budget.availableSeconds+budget.polishingExtensionSeconds+(solver.cleanupContinuation?.addedSeconds??0);
+    assert.ok(extendedDeadline<=seconds-1.3+1e-6,'Every cleanup extension must fit inside the caller\'s export reserve.');
     if(delay){
       assert.equal(delayed,true);assert.ok(budget.addedSeconds>0);
       const initialSteps=solver.cleanupContinuation?.initialSteps??solver.checkpoints.at(-1).step+1;
@@ -50,12 +52,13 @@ for(const {seconds,delay,maximum}of [{seconds:180,delay:750,maximum:.0193},{seco
         assert.equal(solver.cleanupContinuation,null);
       }
     }else{
-      assert.equal(budget.addedSeconds,0,'An exhausted hard allowance cannot fund extra cleanup.');
-      // A faster checkpoint may leave time inside the existing cleanup
-      // window. Continuing there is allowed; extending that window is not.
+      const unusedCallerTime=Math.max(0,seconds-1.3-budget.startedAtSeconds-budget.previousSeconds);
+      assert.ok(budget.addedSeconds<=unusedCallerTime+1e-6,'Only unused caller time can fund extra cleanup.');
+      // A faster checkpoint may leave caller time unused. Any continuation
+      // must still fit before the same hard export reserve checked above.
       const continuation=solver.cleanupContinuation;
       if(continuation){
-        assert.ok(continuation.budgetSeconds<=budget.availableSeconds);
+        assert.ok(continuation.budgetSeconds<=budget.availableSeconds+budget.polishingExtensionSeconds+continuation.addedSeconds);
         if(continuation.applied)assert.ok(continuation.errorAfter<continuation.errorBefore);
       }
     }

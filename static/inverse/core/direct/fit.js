@@ -900,6 +900,9 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery){
     const acceptedCounts=candidates.filter(c=>c.imagePassed).map(c=>c.counts.slice());
     const extraSimpler=candidate.imagePassed&&!shortBudget&&!weights
       ?simplerComparisonSeed([...fine.slice(i+1),...remainingSeeds],coarse,acceptedCounts):null;
+    if(candidate.imagePassed&&!shortBudget&&!weights&&!extraSimpler){
+      extraGridComparisons.push({reason:'simpler-layout',acceptedCounts,selectedCounts:null,phase:null,source:'verified-layout'});
+    }
     if(extraSimpler&&Math.min(searchDeadline(),start+25000)-performance.now()>4500){
       // An already fine-fitted alternative needs no repeated grid work.
       const queued=fine.indexOf(extraSimpler);
@@ -1024,11 +1027,12 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery){
     const continuationDeadline=cleanupBudget.addedSeconds>0?Math.min(hardCleanupDeadline,continuationStart+4000):deadline;
     if(!completedFeatureRepair&&polishAccepted&&polished.imagePassed&&!polished.outlineDetail&&polished.steps===160&&middle&&polished.error<middle.error
       &&continuationDeadline-continuationStart>=1000){
+      const addedSeconds=Math.max(0,continuationDeadline-deadline)/1000;
       deadline=continuationDeadline;
       const next=stage('directPolishing',()=>polishCandidate(candidate,polishing.probability,source.resolution,{...cfg,preferMatchingSheets:false},{input,weights:polishing.weights,steps:480,rate:.008,deadline:deadline-250,selection:'mask',identicalSheets:candidate.matching?.identical||false,onProgress:hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directPolishing',counts:candidate.counts,...r},solution):undefined}));
       next.imagePassed=assess(next);
       const applied=next.imagePassed&&next.originalImageError<candidate.originalImageError;
-      cleanupContinuation={reason:'polish_still_improving',budgetSeconds:(deadline-continuationStart)/1000,seconds:(performance.now()-continuationStart)/1000,
+      cleanupContinuation={reason:'polish_still_improving',budgetSeconds:(deadline-continuationStart)/1000,addedSeconds,seconds:(performance.now()-continuationStart)/1000,
         errorBefore:candidate.originalImageError,errorAfter:next.originalImageError,initialSteps:polished.steps,steps:next.steps,geometryPassed:next.geometryPassed,paperPassed:next.paperPassed,applied};
       if(applied)candidate=next;
     }
