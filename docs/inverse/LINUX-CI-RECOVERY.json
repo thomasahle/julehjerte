@@ -1142,7 +1142,17 @@
       "status": "in_progress"
     },
     "appChecks": {
-      "status": "in_progress",
+      "status": "passed",
+      "sourceCommit": "e4f9cfcc",
+      "check": "passed (six existing warnings)",
+      "lint": "passed (four existing warnings)",
+      "vitest": {
+        "testFiles": 112,
+        "passed": 1570,
+        "skipped": 1,
+        "failed": 0
+      },
+      "build": "passed",
       "logPrefix": "/tmp/julehjerte-nearfit-paper-"
     }
   },
@@ -1170,5 +1180,11 @@
     ],
     "decision": "Keep sixteen controls; neither smaller model preserves required quality. No production change.",
     "log": "/tmp/julehjerte-dense-controls-probe.log"
+  },
+  "featureFailureCapture": {
+    "sourceCommit": "148f1b1e",
+    "diagnosticCommit": "2b56cb81",
+    "scope": "Preserve source, final geometry/report, packet summaries and best actual Stop geometry at each lattice for original puppy, shifted puppy and shifted bird failures. No acceptance or timing assertion changes. Capture runs only after a failed assertion.",
+    "verification": "JavaScript syntax checks and ESLint passed; focused Linux capture run pending."
   }
 }
