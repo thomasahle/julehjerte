@@ -1,0 +1,30 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" data-weave-parity="0">
+  <title>Kugle 95</title>
+  <title xml:lang="en">Bauble 95</title>
+  <desc xml:lang="da">En stor ternet julekugle, der fylder næsten hele det flettede felt. Seks striber i hver halvdel: det midterste af de fem klip er lige, og de fire andre bøjer ud i buer, så felterne svulmer op til en rund kugle. Halvdelene er spejlvendte, så én skabelon er nok. Sværhedsgraden er mellem; klip hver bue i ét træk, og flet forsigtigt ved kuglens kant, hvor striberne er smalle. Inspireret af [en blyantstegning af kunstneren Prince](https://www.instagram.com/p/DdhD8WDnQwh/), hvor et skakbræt buler ud til en kugle, og af [Johans julekugle](https://johansjulehjerter.dk/julehjerter/julekugle/).</desc>
+  <desc xml:lang="en">A large chequered Christmas bauble that fills almost the whole woven field. Six strips in each half: the middle one of the five cuts is straight, and the other four bow out in arcs, so the squares swell into a round ball. The halves mirror each other, so one template is enough. Medium difficulty: cut each arc in a single stroke, and weave gently at the edge of the ball, where the strips are narrow. Inspired by [a pencil drawing by the artist Prince](https://www.instagram.com/p/DdhD8WDnQwh/), in which a chequerboard bulges into a sphere, and by [Johan's julekugle](https://johansjulehjerter.dk/julehjerter/julekugle/).</desc>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:title>Kugle 95</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Thomas Ahle</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:source>https://www.instagram.com/p/DdhD8WDnQwh/</dc:source>
+        <dc:date>2026-10-18</dc:date>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path d="M 100 16.666667 C 93.38942 16.666668 86.77884 16.666668 80.16826 16.666668 C 63.042412 1.166918 36.957708 1.166918 19.83186 16.666668 C 13.22124 16.666668 6.61062 16.666668 0 16.666667" stroke="orange" fill="none"/>
+  <path d="M 100 33.333332 C 96.799792 33.333333 93.599585 33.333333 90.399377 33.333333 C 65.114371 20.009048 34.885518 20.009048 9.600513 33.333333 C 6.400342 33.333334 3.200171 33.333334 0 33.333334" stroke="orange" fill="none"/>
+  <path d="M 100 50 C 66.666666667 50 33.333333333 50 0 50" stroke="orange" fill="none"/>
+  <path d="M 100 66.670994 C 96.799655 66.670994 93.599311 66.670994 90.398966 66.670993 C 65.11418 79.99499 34.885709 79.99499 9.600923 66.670993 C 6.400615 66.670993 3.200308 66.670993 0 66.670992" stroke="orange" fill="none"/>
+  <path d="M 100 83.337659 C 93.38934 83.337659 86.778681 83.337659 80.168021 83.337659 C 63.042245 98.83712 36.957876 98.83712 19.832099 83.337659 C 13.221399 83.337659 6.6107 83.337659 0 83.337659" stroke="orange" fill="none"/>
+  <path d="M 16.665122 100 C 16.665122 93.389352 16.665122 86.778703 16.665123 80.168055 C 1.165476 63.042232 1.165476 36.957648 16.665123 19.831825 C 16.665122 13.221217 16.665122 6.610608 16.665122 0" stroke="green" fill="none"/>
+  <path d="M 33.326957 100 C 33.326957 96.800554 33.326957 93.601107 33.326957 90.401661 C 20.002716 65.116289 20.002716 34.887164 33.326957 9.601792 C 33.326957 6.401195 33.326956 3.200597 33.326956 0" stroke="green" fill="none"/>
+  <path d="M 50 100 C 50 66.666666667 50 33.333333333 50 0" stroke="green" fill="none"/>
+  <path d="M 66.669298 100 C 66.669298 96.800672 66.669298 93.601344 66.669298 90.402016 C 79.993788 65.116455 79.993788 34.886998 66.669298 9.601437 C 66.669298 6.400958 66.669298 3.200479 66.669299 0" stroke="green" fill="none"/>
+  <path d="M 83.331133 100 C 83.331133 93.38942 83.331133 86.778841 83.331133 80.168261 C 98.831028 63.042376 98.831028 36.957503 83.331133 19.831618 C 83.331133 13.221078 83.331133 6.610539 83.331133 0" stroke="green" fill="none"/>
+</svg>

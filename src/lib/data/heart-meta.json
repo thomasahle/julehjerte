@@ -1309,6 +1309,32 @@
     },
     "photo": null
   },
+  "ball-95": {
+    "name": "Kugle 95",
+    "names": {
+      "en": "Bauble 95"
+    },
+    "author": "Thomas Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "https://www.instagram.com/p/DdhD8WDnQwh/",
+    "date": "2026-10-18",
+    "description": null,
+    "gridSize": {
+      "x": 6,
+      "y": 6
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
   "triple-heart": {
     "name": "Triple Hjerte",
     "names": {
