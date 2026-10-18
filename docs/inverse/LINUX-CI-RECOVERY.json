@@ -1185,6 +1185,12 @@
     "sourceCommit": "148f1b1e",
     "diagnosticCommit": "2b56cb81",
     "scope": "Preserve source, final geometry/report, packet summaries and best actual Stop geometry at each lattice for original puppy, shifted puppy and shifted bird failures. No acceptance or timing assertion changes. Capture runs only after a failed assertion.",
-    "verification": "JavaScript syntax checks and ESLint passed; focused Linux capture run pending."
+    "verification": "JavaScript syntax checks and ESLint passed; focused Linux capture run pending.",
+    "linux": {
+      "url": "https://github.com/thomasahle/julehjerte/actions/runs/39177445255",
+      "diagnosticCommit": "2b56cb81",
+      "mode": "feature-detail",
+      "status": "in_progress"
+    }
   }
 }
