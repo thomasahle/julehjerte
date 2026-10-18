@@ -4193,11 +4193,27 @@
 				justify-content: flex-start;
 			}
 
+			/* The canvas keeps its fixed share of the screen in the wrapper, and the
+			   notices follow it in flow, between the canvas and the panels: over the
+			   canvas the first-visit tip covered the top of both lobes. */
 			.paper-heart.fullPage .canvas-box {
 				position: relative;
 				inset: auto;
 				flex: none;
-				height: max(55dvh, 280px);
+				flex-direction: column;
+				align-items: stretch;
+				height: auto;
+			}
+
+			.paper-heart.fullPage .canvas-notices {
+				position: static;
+				transform: none;
+				align-self: center;
+				width: auto;
+			}
+
+			.paper-heart.fullPage .canvas-notices > :first-child {
+				margin-top: 12px;
 			}
 
 			/* A little air around the heart at its default zoom. */
@@ -4318,8 +4334,11 @@
 			}
 
 			.paper-heart.fullPage:not(.readonly) .canvas-wrapper {
+				position: relative;
+				inset: auto;
+				flex: none;
 				width: 100% !important;
-				height: 100% !important;
+				height: max(55dvh, 280px) !important;
 				aspect-ratio: unset;
 				max-width: none;
 			}
