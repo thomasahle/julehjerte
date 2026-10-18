@@ -11,6 +11,7 @@ import {validate} from '../../static/inverse/core/validate.js';
 import {materialAudit,verifiedPaperSettings} from '../../static/inverse/core/material.js';
 import {rejectedRoutingQuality,repairRejectedRouting} from '../../static/inverse/core/direct/rejected-routing.js';
 import {renderExportedWeave} from './export-renderer.mjs';
+import {captureFitFailure} from './diagnostics/fit-failure.mjs';
 
 const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/sloth-clearance-routing.json'));
 const cfg=settings({...fixture.configuration,invert:false,removeSpecks:0,fillHoles:0});
@@ -41,7 +42,8 @@ for(const entry of fixture.cases){
   test(`fresh ${entry.id} fitting carries repaired clearance through final export`,async t=>{
     const started=performance.now(),source=input(),answer=await design(source,cfg),report=answer.report;
     const seconds=(performance.now()-started)/1000;
-    if(!report.templateChecksPassed)t.diagnostic(JSON.stringify({report,cuts:answer.files['cut_geometry.json']}));
+    let exportedError=null;
+    try{
     assert.ok(seconds<10,`Complete preparation, fitting and export took ${seconds} seconds.`);
     assert.equal(report.templateChecksPassed,true);assert.deepEqual(report.slits,{left:2,right:2});
     assert.ok(report.solver.featureRecovery.attempts.some(a=>a.continuousRepair?.accepted));
@@ -52,8 +54,16 @@ for(const entry of fixture.cases){
     assert.equal(report.settings.materialResolution,entry.expectedPaperResolution);
     if(entry.expectedPaperResolution>cfg.materialResolution)assert.equal(report.solver.paperVerification.resolution,700);
     const rendered=await renderExportedWeave(answer.files['cut_geometry.json'],n);
-    assert.ok(rendered.mask.reduce((s,v,i)=>s+Number(v!==mask[i]),0)/mask.length<.02);
+    exportedError=rendered.mask.reduce((s,v,i)=>s+Number(v!==mask[i]),0)/mask.length;
+    assert.ok(exportedError<.02);
     assert.deepEqual(source.sourceImage.mask,mask);
+    }catch(error){
+      // Capture after the timed solve, including timing and late export
+      // failures. Large inline reports can be truncated by the test runner.
+      t.diagnostic(await captureFitFailure({answer,source:source.sourceImage,error:exportedError,maximum:.02,
+        context:{fixture:'sloth-clearance-routing',id:entry.id,seconds,requestedConfiguration:cfg,assertion:error.message}}));
+      throw error;
+    }
   });
 }
 
