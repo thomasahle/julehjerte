@@ -130,6 +130,22 @@
 	 */
 	let busy = $state(false);
 
+	// The number fields while they are edited; see "Inputs" below.
+	type NumberField = 'width' | 'hearts' | 'sheetWidth' | 'sheetHeight';
+
+	/** What is typed into a field being edited, as the input reports it. */
+	let drafts = $state<Partial<Record<NumberField, string>>>({});
+
+	const parseField = (raw: string): number | null =>
+		raw.trim() && Number.isFinite(Number(raw)) ? Number(raw) : null;
+
+	const invalid = $derived<Record<NumberField, boolean>>({
+		width: drafts.width !== undefined && parseField(drafts.width) === null,
+		hearts: drafts.hearts !== undefined && parseField(drafts.hearts) === null,
+		sheetWidth: drafts.sheetWidth !== undefined && parseField(drafts.sheetWidth) === null,
+		sheetHeight: drafts.sheetHeight !== undefined && parseField(drafts.sheetHeight) === null
+	});
+
 	// Each opening starts from the settings of the last download. They are
 	// stored when a download starts, not as they change: opening the dialog and
 	// cancelling it, or Escape, leaves what was stored as it was.
@@ -331,21 +347,6 @@
 	// fixed; leaving the field then puts the last good value back. The typed text
 	// is kept as it is while the field is being edited ("30" stays "30" and
 	// gives 40 mm), and settles on the value used when the field is left.
-
-	type NumberField = 'width' | 'hearts' | 'sheetWidth' | 'sheetHeight';
-
-	/** What is typed into a field being edited, as the input reports it. */
-	let drafts = $state<Partial<Record<NumberField, string>>>({});
-
-	const parseField = (raw: string): number | null =>
-		raw.trim() && Number.isFinite(Number(raw)) ? Number(raw) : null;
-
-	const invalid = $derived<Record<NumberField, boolean>>({
-		width: drafts.width !== undefined && parseField(drafts.width) === null,
-		hearts: drafts.hearts !== undefined && parseField(drafts.hearts) === null,
-		sheetWidth: drafts.sheetWidth !== undefined && parseField(drafts.sheetWidth) === null,
-		sheetHeight: drafts.sheetHeight !== undefined && parseField(drafts.sheetHeight) === null
-	});
 
 	/** The field's value: the typed text while it is edited, else the setting. */
 	const shown = (field: NumberField): string | number => drafts[field] ?? current(field);
