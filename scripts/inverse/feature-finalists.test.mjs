@@ -41,7 +41,9 @@ test('a low-cut preference cannot erase the central checker when an existing fin
   assert.deepEqual(preference.beforeCounts,[1,2]);assert.deepEqual(preference.selectedCounts,[5,5]);
   assert.equal(preference.beforeMissing,5);assert.equal(preference.attempts[0].missing,2);
   assert.equal(preference.attempts[0].change.passed,true);assert.equal(s.finalistPreference.reservesRefinement,true);
-  assert.equal(s.clearanceComparison.featureChange.passed,false);assert.equal(s.clearanceComparison.preferred,false,'Clearance cannot restore priority to the grid that erases the center.');
+  assert.equal(s.finalistPreference.shortBudgetRefinementFirst,true);
+  assert.equal(s.clearanceComparison,null,'A short request must refine the preferred grid before reconsidering the layout that erases the center.');
+  assert.equal(s.earlyFeatureInitialization,null,'Speculative initialization must not consume the selected grid\'s refinement window.');
   assert.ok(s.seconds<10);assert.equal(answer.report.validation.passed,true);assert.equal(answer.report.manufacturing.status,'pass');
   const replay=await renderExportedWeave(answer.files['cut_geometry.json'],source.resolution);
   assert.ok(mismatch(replay.mask,source.mask)<.035,'The old low-cut result lost the center grid at about 9.59% error.');
@@ -54,6 +56,8 @@ test('a lower-error finalist that erodes a partially retained region cannot clai
   const answer=await design(prepared.target,{...AUTOMATIC_PRESET,timeLimit:10,trials:0}),preference=answer.report.solver.finalistPreference.partialImprovement;
   const rejected=preference.attempts.find(a=>a.counts[0]===6&&a.counts[1]===6);
   assert.equal(rejected.change.passed,false);assert.equal(rejected.preferred,false);
+  assert.equal(answer.report.solver.finalistPreference.shortBudgetRefinementFirst,true);
+  assert.equal(answer.report.solver.clearanceComparison,null);
   assert.deepEqual(preference.selectedCounts,[4,4]);assert.equal(answer.report.validation.passed,true);assert.equal(answer.report.manufacturing.status,'pass');
   const replay=await renderExportedWeave(answer.files['cut_geometry.json'],source.resolution);
   await assertFitError({error:mismatch(replay.mask,source.mask),maximum:.04,answer,source,resolution:source.resolution,context:{case:'feature-finalist-bicycle'}});
