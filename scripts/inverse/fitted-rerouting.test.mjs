@@ -82,6 +82,7 @@ for(const timeLimit of [10,180])test(`a fresh shifted bird fit preserves its eye
     assert.ok(eye.componentIoU>.85,'Retaining the eye must also preserve its shape, without inflating it into surrounding paper.');
   }
   assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
+  t.diagnostic(JSON.stringify({solverSeconds:solver.seconds,selectedInitialization:solver.selectedInitialization,refinementBudget:solver.refinementBudget,extraGridComparisons:solver.extraGridComparisons}));
   }catch(error){
     t.diagnostic(await captureFitFailure({answer,source,candidatePackets:checkpoints,context:{fixture:'photographic-bird-fit',translation:[1,0],timeLimit,assertion:error.message}}));throw error;
   }

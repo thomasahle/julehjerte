@@ -528,7 +528,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
   };
   const addCandidate=c=>{
     c.matching=matchingSummary(c.graph.solution(c.points,c.phase,input));c.imagePassed=assess(c);
-    if(c.imagePassed&&c.paperVerification?.source==='rollback-checkpoint')verifiedAlternative=true;
+    if(c.imagePassed&&['rollback-checkpoint','fitted-boundary-rerouting'].includes(c.paperVerification?.source))verifiedAlternative=true;
     const proposals=[c];
     if(!c.imagePassed&&c.paperAlternative){
       const alternative={...c,...c.paperAlternative,paperAlternative:null,paperVerification:null};
@@ -967,9 +967,15 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
     // it. Give that existing start the next turn in a longer request. Keep
     // the comparison in the first 25 seconds and retain every other finalist.
     const acceptedCounts=candidates.filter(c=>c.imagePassed).map(c=>c.counts.slice());
-    const extraSimpler=candidate.imagePassed&&!shortBudget&&!weights
+    // Failure of the explicitly scheduled simpler comparison does not undo
+    // the already checked rerouting. Compare any remaining competitive
+    // simplification, then return to that incumbent instead of restarting
+    // the ordinary fallback queue as though no valid layout had been found.
+    const checkedRerouting=!candidate.imagePassed&&simplerComparisonLimits.has(selected)&&
+      candidates.some(c=>c.imagePassed&&c.seed==='fitted-boundary-rerouting');
+    const extraSimpler=(candidate.imagePassed||checkedRerouting)&&!shortBudget&&!weights
       ?simplerComparisonSeed([...fine.slice(i+1),...remainingSeeds],coarse,acceptedCounts):null;
-    if(candidate.imagePassed&&!shortBudget&&!weights&&!extraSimpler){
+    if((candidate.imagePassed||checkedRerouting)&&!shortBudget&&!weights&&!extraSimpler){
       extraGridComparisons.push({reason:'simpler-layout',acceptedCounts,selectedCounts:null,phase:null,source:'verified-layout'});
     }
     if(extraSimpler&&Math.min(searchDeadline(),start+25000)-performance.now()>4500){
@@ -983,6 +989,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
       extraGridComparisons.push({reason:'simpler-layout',acceptedCounts,selectedCounts:extraSimpler.model.counts.slice(),phase:extraSimpler.phase,source:'verified-layout'});
       continue;
     }
+    if(checkedRerouting&&!extraSimpler)break;
     // Border disagreement must not stop a competitive simpler finalist from
     // receiving curve refinement. Its grid error can overestimate its eventual
     // fit: accepting the first valid dense grid would hide that improvement.
