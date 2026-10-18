@@ -121,8 +121,14 @@
 	let previewImage = $state(defaults.previewImage);
 	/** The last download that went wrong, cleared by the next that works. */
 	let failure = $state<DownloadMode | null>(null);
-	/** jsPDF is loaded and the pictures rendered on the click: it takes a moment. */
-	let generating = $state(false);
+	/**
+	 * A download is under way: from the click until a moment after the file has
+	 * been handed to the browser. jsPDF is loaded and the pictures rendered on
+	 * the click, which takes a moment; a laser file is written at once, but the
+	 * second click of a double-click (or a repeated Enter) comes after that, and
+	 * would give a second file and a second set of events.
+	 */
+	let busy = $state(false);
 
 	// Each opening starts from what was used last time.
 	$effect(() => {
@@ -310,7 +316,7 @@
 
 	const canDownload = $derived(
 		mode === 'printer'
-			? printPlan !== null && printPlan.fits && !generating
+			? printPlan !== null && printPlan.fits
 			: laserPlan !== null && laserPlan.piecesFit > 0
 	);
 
@@ -387,10 +393,12 @@
 
 	// ---- Download -------------------------------------------------------------
 
+	/** How long the button stays busy after the file has gone to the browser. */
+	const BUSY_HOLD_MS = 1000;
+
 	// jsPDF is 140 KB gzipped and only this click needs it, so it is loaded here
 	// rather than with the page.
 	async function downloadPdf(): Promise<void> {
-		generating = true;
 		if (several) trackMultiDownload(heartList);
 		else trackHeartDownload(design.id, design.name);
 		try {
@@ -401,15 +409,12 @@
 			// Without this the download simply did nothing, with no sign of why.
 			console.error('Generating the PDF failed', err);
 			failure = 'printer';
-		} finally {
-			generating = false;
-			await restoreFocus();
 		}
 	}
 
 	let downloadButton = $state.raw<HTMLButtonElement | null>(null);
 
-	// The button disables itself while the PDF is generated, and a disabled
+	// The button disables itself while a download is under way, and a disabled
 	// button cannot keep focus: Chromium drops it to <body>, outside the dialog.
 	// Once it is enabled again it takes focus back, so the next Tab, Enter or
 	// Escape lands inside the dialog — but only if focus really went astray, not
@@ -450,10 +455,19 @@
 		}
 	}
 
-	function download(): void {
-		if (!canDownload) return;
-		if (mode === 'printer') void downloadPdf();
-		else downloadLaser();
+	// Every activation of the button comes through here, by mouse or keyboard;
+	// while one download is under way the rest are ignored.
+	async function download(): Promise<void> {
+		if (busy || !canDownload) return;
+		busy = true;
+		try {
+			if (mode === 'printer') await downloadPdf();
+			else downloadLaser();
+			await new Promise((resolve) => setTimeout(resolve, BUSY_HOLD_MS));
+		} finally {
+			busy = false;
+			await restoreFocus();
+		}
 	}
 </script>
 
@@ -652,10 +666,17 @@
 				type="button"
 				class="btn btn-primary"
 				onclick={download}
-				disabled={!canDownload}
+				disabled={!canDownload || busy}
+				aria-busy={busy}
+				data-busy={busy || undefined}
 			>
-				<DownloadIcon size={18} />
-				{generating ? t('generating', lang) : t('downloadFile', lang, { format: fileFormat })}
+				{#if busy}
+					<span class="spinner" aria-hidden="true"></span>
+					{t('generating', lang)}
+				{:else}
+					<DownloadIcon size={18} />
+					{t('downloadFile', lang, { format: fileFormat })}
+				{/if}
 			</button>
 		</div>
 	</div>
@@ -887,6 +908,34 @@
 		margin: 0;
 		color: var(--red);
 		font-size: 14px;
+	}
+
+	/* While a download is under way the button says so and turns a ring. */
+	.btn[data-busy] {
+		cursor: progress;
+	}
+
+	.spinner {
+		width: 16px;
+		height: 16px;
+		border: 2px solid currentColor;
+		border-right-color: transparent;
+		border-radius: 50%;
+		animation: spin 0.8s linear infinite;
+	}
+
+	@keyframes spin {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.spinner {
+			animation: none;
+			border-right-color: currentColor;
+			opacity: 0.6;
+		}
 	}
 
 	.buttons {

@@ -89,6 +89,12 @@ async function settle(): Promise<void> {
 	flushSync();
 }
 
+/** The button stays busy for a moment after a download; let that pass. */
+async function release(): Promise<void> {
+	await vi.advanceTimersByTimeAsync(1000);
+	await settle();
+}
+
 /** One heart, as the heart's page opens it, or several, as the front page does. */
 async function render(design: HeartDesign | HeartDesign[] = loadHeart('classic-3x3'), lang: 'da' | 'en' = 'da') {
 	const target = document.createElement('div');
@@ -256,6 +262,7 @@ describe('DownloadDialog', () => {
 		expect(trackHeartDownload).toHaveBeenCalledWith('classic-3x3', design.name);
 		expect(trackLaserDownload).not.toHaveBeenCalled();
 		expect(blobs).toHaveLength(0);
+		await release();
 
 		await view.choose('Eget mål');
 		await view.type('.sheet-size label:first-child input', '300');
@@ -315,6 +322,75 @@ describe('DownloadDialog', () => {
 		expect(trackLaserDownload).toHaveBeenCalledWith('classic-3x3', 'Klassisk', 'dxf', 70);
 	});
 
+	describe('activated again while a download is under way', () => {
+		// A double-click, a burst of clicks or Enter held down: the activations
+		// that arrive before the DOM has disabled the button reach the handler.
+		const burst = (button: HTMLButtonElement) => {
+			for (let i = 0; i < 5; i++) button.click();
+		};
+
+		it('makes one PDF and sends one download event', async () => {
+			const view = await render();
+			const button = view.button('Hent PDF')!;
+			burst(button);
+			await settle();
+			expect(button.disabled).toBe(true);
+			expect(button.getAttribute('aria-busy')).toBe('true');
+			expect(button.textContent!.trim()).toBe('Genererer...');
+			burst(button);
+			await vi.dynamicImportSettled();
+			await settle();
+			burst(button);
+			await settle();
+			expect(downloadTemplatesPDF).toHaveBeenCalledTimes(1);
+			expect(trackHeartDownload).toHaveBeenCalledTimes(1);
+			await release();
+			expect(button.disabled).toBe(false);
+			expect(button.getAttribute('aria-busy')).toBe('false');
+			expect(button.textContent!.trim()).toBe('Hent PDF');
+			// Once it is over, the next click is a new download.
+			button.click();
+			await vi.dynamicImportSettled();
+			await settle();
+			expect(downloadTemplatesPDF).toHaveBeenCalledTimes(2);
+		});
+
+		it('writes one laser file and sends one download_laser', async () => {
+			const view = await render();
+			await view.choose('Laserskærer');
+			const button = view.button('Hent SVG')!;
+			burst(button);
+			await settle();
+			expect(button.disabled).toBe(true);
+			burst(button);
+			await settle();
+			expect(downloads).toHaveLength(1);
+			expect(blobs).toHaveLength(1);
+			expect(trackLaserDownload).toHaveBeenCalledTimes(1);
+			await release();
+			expect(button.disabled).toBe(false);
+			button.click();
+			await settle();
+			expect(downloads).toHaveLength(2);
+		});
+
+		it('sends one set of events for several hearts', async () => {
+			const view = await render([loadHeart('classic-3x3'), loadHeart('jul')]);
+			await view.choose('Laserskærer');
+			burst(view.button('Hent SVG')!);
+			await settle();
+			expect(downloads).toHaveLength(1);
+			expect(trackMultiLaserDownload).toHaveBeenCalledTimes(1);
+			await release();
+			await view.choose('Printer');
+			burst(view.button('Hent PDF')!);
+			await vi.dynamicImportSettled();
+			await settle();
+			expect(downloadTemplatesPDF).toHaveBeenCalledTimes(1);
+			expect(trackMultiDownload).toHaveBeenCalledTimes(1);
+		});
+	});
+
 	it('says how many pieces fit on the laser sheet when not all of them do', async () => {
 		const view = await render();
 		await view.choose('Laserskærer');
@@ -348,6 +424,7 @@ describe('DownloadDialog', () => {
 		view.button('Hent SVG')!.click();
 		await settle();
 		expect(downloads[0]!.name).toBe('jul-laser-80mm-venstre.svg');
+		await release();
 
 		await view.choose('Højre');
 		expect(view.q('.preview-sheet')!.innerHTML).not.toBe(leftPreview);
