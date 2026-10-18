@@ -108,7 +108,19 @@ export function repairRejectedRouting(proposal,input,cfg,{deadline=Infinity,qual
     report.paperVerification={requestedResolution:cfg.materialResolution,initialStatus:'uncertain',resolution:700,status:paper.status};
     report.paper=paper.summary;
   }
-  if(report.paper.status!=='pass')return finish('paper_rejected');
+  if(report.paper.status!=='pass'){
+    const rejected=finish('paper_rejected');
+    // Keep an image-faithful geometric checkpoint available to the common
+    // fitter's finer paper audit. This is never an accepted repair: the
+    // caller must resolve uncertainty before publishing or exporting it.
+    if(report.paper.status==='uncertain'){
+      rejected.report.refinementSeedAvailable=true;
+      solution.report={status:'repair_needs_paper_verification',algorithm:'direct-bezier',rejectedRoutingRepair:rejected.report,
+        ...(report.paperVerification?{paperVerification:report.paperVerification}:{}),physicalAssemblyTested:false};
+      rejected.refinementSeed=solution;
+    }
+    return rejected;
+  }
   // Verification began before the deadline and every required check has now
   // passed. A slow final audit must not discard this completed repair and
   // leave the caller with worse geometry. No further search or audit starts;

@@ -32,6 +32,7 @@ import {polishCandidate} from './polish.js';
 import {repairClearanceInitializer} from './clearance-repair.js';
 import {recoverCornerTopology} from './corner-topology.js';
 import {featureImprovingFinalist} from './feature-finalists.js';
+import {assessCandidate} from './candidate-verification.js';
 
 export {borderEvidence,supportedBorderCounts,gridCountLimit,gridFinalists} from './counts.js';
 const featureSeed=c=>['feature-weighted-grid','feature-preserving-grid','feature-sampling-grid','fitted-boundary-rerouting'].includes(c.seed);
@@ -390,7 +391,11 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       // Keep the unchanged seed too; neither is a successful result until it
       // passes the same original-source gates as the independent grids.
       const raw=graph.solution(graph.points,phase,input),validation=validate(raw,recoveryCfg),paper=materialAudit(raw,recoveryCfg);
-      recoveredCandidates.push({graph,points:graph.points.slice(),phase,counts,seed:'feature-recovery',error:mismatch(renderCurves(graph,graph.points,phase,n,32),prob,fitWeights),geometryPassed:validation.passed,paperPassed:paper.passed,validation,history:[],...(verification?{paperVerification:verification}:{})});
+      recoveredCandidates.push({graph,points:graph.points.slice(),phase,counts,seed:'feature-recovery',error:mismatch(renderCurves(graph,graph.points,phase,n,32),prob,fitWeights),geometryPassed:validation.passed,paperPassed:paper.passed,paper:paper.summary,validation,history:[],...(verification?{paperVerification:verification}:{})});
+      // A late repair may have only the final verification reserve left.
+      // Preserve its exact coordinates for assess() instead of starting a
+      // refinement checkpoint after this phase's optimization deadline.
+      if(seed.report?.status==='repair_needs_paper_verification'&&until-performance.now()<=500)return null;
       // A recovered routing can still differ substantially from the image.
       // Give it the normal polishing step count within the same time reserve;
       // Constraint projection can interrupt the image trajectory. Allow up to
@@ -443,32 +448,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // when nothing fits; it must not force a usable result through every seed.
   const searchSeconds=()=>verifiedAlternative?Math.min(cfg.timeLimit,25):cfg.timeLimit;
   const searchDeadline=()=>start+searchSeconds()*1000;
-  const assess=(c,{recheckFailed=false}={})=>{
-    if(!c.geometryPassed)return false;
-    const s=c.graph.solution(c.points,c.phase,input),woven=sampleWeave(s,source.resolution);
-    c.originalImageError=maskDisagreement(source,woven);c.originalFeatures=auditFeatureFidelity(source,woven,cfg,sourceFeatures);
-    if(c.originalImageError>cfg.maxImageError||!c.originalFeatures.passed)return false;
-    // A coarse lattice may be inconclusive or miss a narrow connection that
-    // finer sampling resolves. Recheck a failed lattice only when the caller
-    // explicitly offers its retained geometric alternative. Image and feature
-    // gates above remain mandatory, and final export rechecks the actual finer
-    // resolution after every edit.
-    // A 700-cell core can still split a real connection into significant
-    // floating fragments. Resolve that uncertainty at the supported maximum
-    // before discarding the same good image fit. Retain the actual resolution
-    // for Stop/export, and never spend the final half-second reserve here.
-    const checkedResolution=c.paperVerification?.resolution??cfg.materialResolution;
-    for(const resolution of [700,1000]){
-      if(c.paperPassed||!(c.paper?.status==='uncertain'||recheckFailed&&c.paper?.status==='fail'))break;
-      if(resolution<=checkedResolution)continue;
-      if(searchDeadline()-performance.now()<=500)break;
-      const initialStatus=c.paperVerification?.initialStatus??c.paper.status;
-      const paper=materialAudit(s,{...cfg,materialResolution:resolution});
-      c.paperVerification={...c.paperVerification,requestedResolution:cfg.materialResolution,initialStatus,resolution,status:paper.status};
-      c.paperPassed=paper.passed;c.paper=paper.summary;
-    }
-    return c.paperPassed;
-  };
+  const assess=(c,options={})=>assessCandidate(c,input,cfg,{deadline:searchDeadline(),sourceFeatures,...options});
   const goodEnough=c=>{
     if(!cfg.earlyStop||c.error>Math.min(.0125,cfg.maxImageError*.5))return false;
     const probe={...c,geometryPassed:true,paperPassed:true};
@@ -652,6 +632,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     // An expired refinement window cannot improve another clearance grid.
     // Leave this time for polishing the candidates we have already fitted.
     const samplingRetry=fine[i].seed==='feature-sampling-grid';
+    if(candidates.some(c=>c.imagePassed)&&deadline-performance.now()<=1700)break;
     if(i&&deadline-performance.now()<=(samplingRetry?700:1700))break;
     // Spend the unsuccessful layout's ordinary polishing window on the fresh
     // shape; the overall deadline and final cleanup/export reserve stay fixed.

@@ -71,5 +71,12 @@ test('a late uncertain paper audit cannot bypass its required finer check',async
   assert.equal(repaired.report.paper.status,'uncertain');
   assert.equal(repaired.report.reason,'paper_rejected');
   assert.equal(repaired.report.paperVerification,undefined);
+  assert.equal(repaired.report.accepted,false);
+  assert.equal(repaired.report.refinementSeedAvailable,true);
+  assert.equal(repaired.refinementSeed.report.status,'repair_needs_paper_verification');
+  assert.equal(validate(repaired.refinementSeed,cfg,{finalGeometry:true}).passed,true);
+  assert.equal(materialAudit(repaired.refinementSeed,cfg).status,'uncertain');
+  assert.equal(materialAudit(repaired.refinementSeed,{...cfg,materialResolution:700}).status,'pass');
+  assert.equal(repaired.refinementSeed.report.rejectedRoutingRepair.accepted,false,'Keeping a seed never certifies it.');
   assert.deepEqual(solutionJSON(proposal),before);assert.deepEqual(source.sourceImage.mask,mask);
 });

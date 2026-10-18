@@ -9,6 +9,7 @@ import {subdivideDiagnosticPaths} from './self-return-subdivision-study.mjs';
 import {loadSolutionJSON,solutionJSON,curvesOf} from '../../static/inverse/core/graph.js';
 import {validate} from '../../static/inverse/core/validate.js';
 import {materialAudit,verifiedPaperSettings} from '../../static/inverse/core/material.js';
+import {finalMaterialAudit} from '../../static/inverse/core/geometric-material.js';
 import {rejectedRoutingQuality,repairRejectedRouting} from '../../static/inverse/core/direct/rejected-routing.js';
 import {renderExportedWeave} from './export-renderer.mjs';
 import {captureFitFailure} from './diagnostics/fit-failure.mjs';
@@ -46,13 +47,20 @@ for(const entry of fixture.cases){
     try{
     assert.ok(seconds<10,`Complete preparation, fitting and export took ${seconds} seconds.`);
     assert.equal(report.templateChecksPassed,true);assert.deepEqual(report.slits,{left:2,right:2});
-    assert.ok(report.solver.featureRecovery.attempts.some(a=>a.continuousRepair?.accepted));
-    const attempt=report.solver.featureRecovery.attempts.find(a=>a.continuousRepair?.accepted);
+    const attempt=report.solver.featureRecovery.attempts.find(a=>a.continuousRepair?.accepted||a.continuousRepair?.refinementSeedAvailable);
+    assert.ok(attempt,'Recovery must retain a repaired routing, accepted or awaiting the common paper gate.');
+    if(!attempt.continuousRepair.accepted){
+      assert.equal(attempt.continuousRepair.reason,'paper_rejected');
+      assert.equal(attempt.continuousRepair.paper.status,'uncertain');
+    }
     const observed=attempt.rejectedCandidates.find(r=>r.reason==='repair_attempted');
     assert.equal(observed.integerCandidateSeconds,attempt.continuousRepair.integerCandidateSeconds);
     assert.ok(observed.repairBudgetSeconds>0);
-    assert.equal(report.settings.materialResolution,entry.expectedPaperResolution);
-    if(entry.expectedPaperResolution>cfg.materialResolution)assert.equal(report.solver.paperVerification.resolution,700);
+    assert.ok(report.settings.materialResolution>=entry.expectedPaperResolution&&report.settings.materialResolution<=1000);
+    if(report.settings.materialResolution>cfg.materialResolution)assert.equal(report.solver.paperVerification.resolution,report.settings.materialResolution);
+    const exported=loadSolutionJSON(answer.files['cut_geometry.json']);
+    assert.equal(validate(exported,report.settings,{checkImage:false,finalGeometry:true}).passed,true);
+    assert.equal(finalMaterialAudit(exported,report.settings).status,'pass');
     const rendered=await renderExportedWeave(answer.files['cut_geometry.json'],n);
     exportedError=rendered.mask.reduce((s,v,i)=>s+Number(v!==mask[i]),0)/mask.length;
     assert.ok(exportedError<.02);

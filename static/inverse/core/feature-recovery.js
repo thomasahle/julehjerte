@@ -86,7 +86,7 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{},{
             observation.reason='repair_attempted';observation.repairBudgetSeconds=(deadline-performance.now())/1000;
             const repaired=repairRejectedRouting(proposal,input,cfg,{deadline,quality});
             attempt.continuousRepair={...repaired.report,additionalBudgetSeconds:(deadline-phaseDeadline)/1000,integerCandidateSeconds:timing.elapsedSeconds};
-            if(repaired.solution){solution=repaired.solution;return true;}
+            if(repaired.solution||repaired.refinementSeed){solution=repaired.solution||repaired.refinementSeed;return true;}
             return false;
           }catch(error){observation.reason='repair_error';attempt.continuousProbeError=error.message;return false;}
         };
@@ -224,6 +224,14 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{},{
       finally{attempt.seconds=(performance.now()-at)/1000;}
     }
     if(!solution)throw new Error('Feature recovery found no validated routing within its budget.');
+    // Stop discrete search when repair has supplied a geometrically valid,
+    // image-faithful seed that needs a finer paper check. The repair already
+    // audited these unchanged curves; repeating its inconclusive lattice
+    // here would consume the caller's remaining verification time.
+    if(solution.report?.status==='repair_needs_paper_verification'){
+      report.refinementSeedAvailable=true;report.solver=solution.report;
+      return{solution:null,refinementSeed:solution,report};
+    }
     const woven=sampleWeave(solution,source.resolution);
     report.imageError=referenceError(source,woven).mismatchFraction;report.features=auditFeatureFidelity(source,woven,cfg);
     const verifiedCfg=verifiedPaperSettings(solution,cfg);
