@@ -37,6 +37,7 @@ export const CLAIM_PRERENDERED = '<!--prerendered heart-->';
 /** A heart as the gallery shows it, without the geometry it is drawn from. */
 export interface GalleryHeart {
 	id: string;
+	/** In the page's language (`heartName`), resolved by the front page's load. */
 	name: string;
 	difficulty: DifficultyLevel;
 	/** The heart's own paper colours, if it has any; otherwise the site's pair. */

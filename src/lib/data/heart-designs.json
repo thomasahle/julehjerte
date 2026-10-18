@@ -2,6 +2,7 @@
   "classic-3x3": {
     "id": "classic-3x3",
     "name": "Classic 3x3",
+    "names": {"da":"Klassisk 3×3","en":"Classic 3×3"},
     "author": "Traditional",
     "source": "juleflet.dk",
     "description": "Det traditionelle danske vevne hjerte med 3 striber per side",
@@ -37,6 +38,7 @@
   "ramme": {
     "id": "ramme",
     "name": "Ramme",
+    "names": {"en":"Frame"},
     "author": "Thomas",
     "source": "juleflet.dk",
     "description": "En skæv lille ramme",
@@ -84,6 +86,7 @@
   "gaver": {
     "id": "gaver",
     "name": "Gaver",
+    "names": {"en":"Gifts"},
     "author": "Traditional",
     "source": "juleflet.dk",
     "description": "4 små julegaver",
@@ -253,6 +256,7 @@
   "stjerne": {
     "id": "stjerne",
     "name": "Stjerne",
+    "names": {"en":"Star"},
     "author": "Thomas",
     "source": "juleflet.dk",
     "description": "Klassisk design",
@@ -316,6 +320,7 @@
   "stjerne-ramme": {
     "id": "stjerne-ramme",
     "name": "Stjerne Ramme",
+    "names": {"da":"Stjerneramme","en":"Star frame"},
     "author": "Thomas Ahle",
     "source": "juleflet.dk",
     "description": "Baseret på et klassisk mønster",
@@ -407,6 +412,7 @@
   "5star": {
     "id": "5star",
     "name": "5-Stjerne",
+    "names": {"da":"Femstjerne","en":"Five-pointed star"},
     "author": "Thomas Ahle",
     "source": "juleflet.dk",
     "description": "Outline af en 5-takket stjerne",
@@ -510,6 +516,7 @@
   "simple-5star": {
     "id": "simple-5star",
     "name": "5-stjerne simpel",
+    "names": {"da":"Femstjerne, enkel","en":"Five-pointed star, simple"},
     "author": "Thomas Ahle",
     "weaveParity": 0,
     "gridSize": {"x":3,"y":3},
@@ -565,6 +572,7 @@
   "sun": {
     "id": "sun",
     "name": "Sol",
+    "names": {"en":"Sun"},
     "author": "Klassisk",
     "source": "juleflet.dk",
     "description": "To yin-yang symboler der sammen giver en roterende sol",
@@ -628,6 +636,7 @@
   "explosion": {
     "id": "explosion",
     "name": "Eksplosion",
+    "names": {"en":"Explosion"},
     "author": "Traditional",
     "source": "juleflet.dk",
     "description": "Strålende farver fra midten der skyder ud i alle retninger.",
@@ -734,6 +743,7 @@
   "davidsstjerne-circ": {
     "id": "davidsstjerne-circ",
     "name": "Davidsstjerne Cirkel",
+    "names": {"da":"Davidsstjerne i cirkel","en":"Star of David in a circle"},
     "author": "Thomas Ahle",
     "source": "juleflet.dk",
     "date": "2025-12-25",
@@ -971,6 +981,7 @@
   "david4": {
     "id": "david4",
     "name": "David 4",
+    "names": {"da":"Davidsstjerne 4","en":"Star of David 4"},
     "author": "Thomas Ahle",
     "source": "juleflet.dk",
     "date": "2025-12-25",
@@ -1354,6 +1365,7 @@
   "stjernegitter": {
     "id": "stjernegitter",
     "name": "Stjernegitter",
+    "names": {"en":"Star lattice"},
     "author": "Thomas Ahle & Claude",
     "source": "juleflet.dk",
     "weaveParity": 1,
@@ -1484,6 +1496,7 @@
   "stjernerogkors": {
     "id": "stjernerogkors",
     "name": "Stjerner og kors",
+    "names": {"en":"Stars and crosses"},
     "author": "Thomas Ahle & Claude",
     "source": "juleflet.dk",
     "weaveParity": 0,
@@ -1650,6 +1663,7 @@
   "circle": {
     "id": "circle",
     "name": "Uret v2",
+    "names": {"da":"Uret","en":"The clock"},
     "author": "Thomas Ahle",
     "source": "juleflet.dk",
     "description": "A simple clock",
@@ -2124,6 +2138,7 @@
   "kogle": {
     "id": "kogle",
     "name": "Kogle",
+    "names": {"en":"Pinecone"},
     "author": "Thomas",
     "source": "juleflet.dk",
     "description": "Et mønster inspireret af en kogles skæl",
@@ -2432,6 +2447,7 @@
   "amy-weave-1": {
     "id": "amy-weave-1",
     "name": "Weave 1",
+    "names": {"da":"Flet 1"},
     "author": "Amy Young",
     "date": "2025-12-20",
     "weaveParity": 0,
@@ -2493,6 +2509,7 @@
   "amy-weave-2": {
     "id": "amy-weave-2",
     "name": "Weave 2",
+    "names": {"da":"Flet 2"},
     "author": "Amy Young",
     "date": "2025-12-20",
     "weaveParity": 0,
@@ -2616,6 +2633,7 @@
   "amy-pattern": {
     "id": "amy-pattern",
     "name": "Klokke",
+    "names": {"en":"Bell"},
     "author": "Amy Young",
     "authorUrl": "https://www.amydesign.co/",
     "source": "juleflet.dk",
@@ -2692,6 +2710,7 @@
   "amy-flowering": {
     "id": "amy-flowering",
     "name": "Flowering",
+    "names": {"da":"Blomstring"},
     "author": "Amy Young",
     "source": "juleflet.dk",
     "date": "2025-12-20",
@@ -2759,6 +2778,7 @@
   "amy-pinecone": {
     "id": "amy-pinecone",
     "name": "Pinecone",
+    "names": {"da":"Grankogle","en":"Fir cone"},
     "author": "Amy",
     "source": "juleflet.dk",
     "date": "2025-12-20",
@@ -2920,6 +2940,7 @@
   "squares": {
     "id": "squares",
     "name": "Squares",
+    "names": {"da":"Firkanter"},
     "author": "Thomas Ahle",
     "description": "Kræver lidt koncentration at flette",
     "weaveParity": 0,
@@ -2994,6 +3015,7 @@
   "sildeben": {
     "id": "sildeben",
     "name": "Sildeben",
+    "names": {"en":"Herringbone"},
     "author": "Thomas Ahle & Claude",
     "source": "juleflet.dk",
     "date": "2026-10-14",
@@ -3072,6 +3094,7 @@
   "puslespil": {
     "id": "puslespil",
     "name": "Puslespil",
+    "names": {"en":"Jigsaw"},
     "author": "Thomas Ahle & Claude",
     "source": "juleflet.dk",
     "weaveParity": 1,
@@ -3255,6 +3278,7 @@
   "koelbuer": {
     "id": "koelbuer",
     "name": "Kølbuer",
+    "names": {"en":"Ogee arches"},
     "author": "Thomas Ahle & Claude",
     "source": "juleflet.dk",
     "weaveParity": 0,
@@ -3381,6 +3405,7 @@
   "roserude": {
     "id": "roserude",
     "name": "Roserude",
+    "names": {"en":"Rose window"},
     "author": "Thomas Ahle & Claude",
     "source": "juleflet.dk",
     "weaveParity": 1,
@@ -3523,6 +3548,7 @@
   "hanefod": {
     "id": "hanefod",
     "name": "Hanefod",
+    "names": {"en":"Houndstooth"},
     "author": "Thomas Ahle & Claude",
     "source": "juleflet.dk",
     "weaveParity": 0,
@@ -3669,6 +3695,7 @@
   "flyvendegaes": {
     "id": "flyvendegaes",
     "name": "Flyvende gæs",
+    "names": {"en":"Flying geese"},
     "author": "Thomas Ahle & Claude",
     "source": "juleflet.dk",
     "weaveParity": 1,
@@ -3903,6 +3930,7 @@
   "drageskael": {
     "id": "drageskael",
     "name": "Drageskæl",
+    "names": {"en":"Dragon scales"},
     "author": "Thomas Ahle & Claude",
     "source": "juleflet.dk",
     "weaveParity": 1,
@@ -3989,6 +4017,7 @@
   "hermanngitter": {
     "id": "hermanngitter",
     "name": "Hermann-gitter",
+    "names": {"en":"Hermann grid"},
     "author": "Thomas Ahle & Claude",
     "source": "juleflet.dk",
     "weaveParity": 1,
@@ -4181,6 +4210,7 @@
   "tragt": {
     "id": "tragt",
     "name": "Tragt",
+    "names": {"en":"Funnel"},
     "author": "Thomas Ahle & Claude",
     "source": "juleflet.dk",
     "weaveParity": 0,
@@ -4257,6 +4287,7 @@
   "boelgebrud": {
     "id": "boelgebrud",
     "name": "Bølgebrud",
+    "names": {"en":"Breakers"},
     "author": "Thomas Ahle & Claude",
     "source": "juleflet.dk",
     "weaveParity": 0,
@@ -4441,6 +4472,7 @@
   "glaskuppel": {
     "id": "glaskuppel",
     "name": "Glaskuppel",
+    "names": {"en":"Glass dome"},
     "author": "Thomas Ahle & Claude",
     "source": "juleflet.dk",
     "weaveParity": 1,
@@ -4607,6 +4639,7 @@
   "hvirvel": {
     "id": "hvirvel",
     "name": "Hvirvel",
+    "names": {"en":"Whirl"},
     "author": "Thomas Ahle & Claude",
     "source": "juleflet.dk",
     "weaveParity": 1,
@@ -4705,6 +4738,7 @@
   "juletrae": {
     "id": "juletrae",
     "name": "Juletræ",
+    "names": {"en":"Christmas tree"},
     "author": "Thomas",
     "source": "juleflet.dk",
     "weaveParity": 1,
@@ -4765,6 +4799,7 @@
   "flower": {
     "id": "flower",
     "name": "Blomst",
+    "names": {"en":"Flower"},
     "author": "Klassisk",
     "weaveParity": 0,
     "gridSize": {"x":4,"y":4},
@@ -4989,6 +5024,7 @@
   "angel": {
     "id": "angel",
     "name": "Engel",
+    "names": {"en":"Angel"},
     "author": "Thomas Ahle",
     "source": "juleflet.dk",
     "description": "Klassisk engle motiv",
@@ -5072,6 +5108,7 @@
   "snowflake": {
     "id": "snowflake",
     "name": "Snowflake",
+    "names": {"da":"Snefnug"},
     "author": "Thomas Ahle",
     "weaveParity": 0,
     "gridSize": {"x":4,"y":4},
@@ -5163,6 +5200,7 @@
   "santa": {
     "id": "santa",
     "name": "Santa",
+    "names": {"da":"Julemand"},
     "author": "Thomas Ahle",
     "source": "juleflet.dk",
     "date": "25/12/2025",
@@ -5401,6 +5439,7 @@
   "dagognat": {
     "id": "dagognat",
     "name": "Dag og nat",
+    "names": {"en":"Day and night"},
     "author": "Thomas Ahle & Claude",
     "source": "juleflet.dk",
     "weaveParity": 1,
@@ -5576,6 +5615,7 @@
   "ball": {
     "id": "ball",
     "name": "Kugle",
+    "names": {"en":"Bauble"},
     "author": "Thomas Ahle",
     "source": "https://www.instagram.com/p/DdhD8WDnQwh/",
     "date": "2026-10-18",
@@ -5653,6 +5693,7 @@
   "triple-heart": {
     "id": "triple-heart",
     "name": "Triple Hjerte",
+    "names": {"da":"Tre hjerter","en":"Triple heart"},
     "author": "Ukendt",
     "weaveParity": 0,
     "gridSize": {"x":6,"y":6},
@@ -5722,6 +5763,7 @@
   "h4h2": {
     "id": "h4h2",
     "name": "Hjerte i hjerte",
+    "names": {"en":"Heart in heart"},
     "author": "Thomas Ahle",
     "source": "juleflet.dk",
     "description": "En variation af det klassiske \"mor og barn\" julehjerte",
@@ -5795,6 +5837,7 @@
   "nemt-hjerte": {
     "id": "nemt-hjerte",
     "name": "Nemt Hjerte",
+    "names": {"da":"Nemt hjerte","en":"Easy heart"},
     "author": "Thomas Ahle",
     "source": "juleflet.dk",
     "date": "2025-12-20",
@@ -5834,6 +5877,7 @@
   "lilje1": {
     "id": "lilje1",
     "name": "Lilje 1",
+    "names": {"en":"Lily 1"},
     "author": "Niels Thygesen",
     "publisher": "Spejderliv",
     "weaveParity": 0,
@@ -5934,6 +5978,7 @@
   "lilje2": {
     "id": "lilje2",
     "name": "Lilje 2",
+    "names": {"en":"Lily 2"},
     "author": "Niels Thygesen",
     "publisher": "Spejderliv",
     "weaveParity": 0,
@@ -6062,6 +6107,7 @@
   "hjertekloever": {
     "id": "hjertekloever",
     "name": "Hjertekløver",
+    "names": {"en":"Heart clover"},
     "author": "Thomas Ahle & Claude",
     "source": "juleflet.dk",
     "weaveParity": 0,

@@ -19,8 +19,10 @@
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/"><title
      id="title11">Triple Hjerte</title>
-   xmlns:dc="http://purl.org/dc/elements/1.1/"><desc xml:lang="da">Et stort stribet hjerte tegnet inde i selve julehjertet, med et lille hvidt hjerte i bunden af det. Seks striber i hver halvdel; godt en tredjedel af klippene er buer, som danner hjerternes rundinger, og resten er lige. Halvdelene er spejlvendte, og én skabelon dækker begge. Det er buerne øverst, der afgør, om de to indre hjerter bliver symmetriske.</desc>
-   xmlns:dc="http://purl.org/dc/elements/1.1/"><desc xml:lang="en">A large striped heart drawn inside the woven heart itself, with a small white heart at the foot of it. Six strips in each half; a good third of the cuts are curves that form the rounded tops, and the rest are straight. The halves mirror each other, and one template covers both. It is the curves at the top that decide whether the two inner hearts come out symmetrical.</desc><sodipodi:namedview
+  <title xml:lang="da">Tre hjerter</title>
+  <title xml:lang="en">Triple heart</title>
+  <desc xml:lang="da">Et stort stribet hjerte tegnet inde i selve julehjertet, med et lille hvidt hjerte i bunden af det. Seks striber i hver halvdel; godt en tredjedel af klippene er buer, som danner hjerternes rundinger, og resten er lige. Halvdelene er spejlvendte, og én skabelon dækker begge. Det er buerne øverst, der afgør, om de to indre hjerter bliver symmetriske.</desc>
+  <desc xml:lang="en">A large striped heart drawn inside the woven heart itself, with a small white heart at the foot of it. Six strips in each half; a good third of the cuts are curves that form the rounded tops, and the rest are straight. The halves mirror each other, and one template covers both. It is the curves at the top that decide whether the two inner hearts come out symmetrical.</desc><sodipodi:namedview
      id="namedview1"
      pagecolor="#ffffff"
      bordercolor="#000000"

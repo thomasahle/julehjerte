@@ -327,7 +327,7 @@ cut crosses and folding keeps whole, so a template cut out of the sheet still sh
 e.g. juleflet.dk/hjerte/jul; juleflet.dk for a visitor's own heart), above the ear base where the cuts begin.
 On a small template the address shrinks to the ear's width and the band left under the picture, never below
 5 pt — the picture shrinks first; with the picture off the address takes its place (`$lib/pdf/earLayout`).
-The heart's name is not on the piece: it is printed above each template, on the paper around it (8 pt black,
+The heart's name (in the PDF's language, see "Names" in §4) is not on the piece: it is printed above each template, on the paper around it (8 pt black,
 centred over the rounded end in a 9 mm header band, with "(Venstre)"/"(Højre)" for the two different halves of
 an asymmetric heart). With that band six 60 mm templates fit an A4 page, four 80 mm ones. The preview draws the
 same layout with the real picture — the very PNG the PDF embeds, rendered once per heart — and leaves its place empty while it
@@ -353,6 +353,15 @@ in two to four plain sentences. The detail route resolves the paragraph for the 
 so both `/hjerte/<id>/` and `/en/hjerte/<id>/` are prerendered with it, and the page's `<meta name="description">`
 takes its opening sentence. A heart the visitor drew or received by link keeps whatever description its maker
 typed.
+
+Names work the same way. A gallery heart's SVG has its own name in the plain `<title>`, and its name per site
+language, where that differs, in `<title xml:lang="da">` / `<title xml:lang="en">` (the Danish site says
+"Flet 1", the English one "Weave 1"). The parser reads them into `HeartDesign.names`, the generator copies them
+into `heart-meta.json` and `heart-cards.json`, and everything that shows a name — the card, the hero's labels,
+the page's h1, `<title>` and meta tags, the related row, the share text, the tracing mode, the download dialog,
+the PDF's labels, the laser file's `<title>` and the social cards — resolves it with `heartName(heart, lang)`
+(`$lib/utils/heartName`: `names[lang]`, else `name`). URLs, file names and analytics keys stay on the id.
+A heart the visitor drew has one name, whatever it is called.
 
 Below the scene: "FLERE {KATEGORI}" heading row with "Se alle N {kategori} →" linking to `/#{category-id}`,
 and a grid `repeat(auto-fill, minmax(150px, 1fr))` of the other hearts in the same category as hanging hearts

@@ -53,7 +53,10 @@ describe('templatePair', () => {
 		expect(left.widthMm).toBeCloseTo(80);
 		expect(left.heightMm).toBeCloseTo(120);
 		expect(left.stripWidthMm).toBeCloseTo(80 / 3);
-		expect(templateLabel(left, 'da')).toBe(classic.name);
+		// The name in the PDF's language: the SVG's <title xml:lang>, not its plain <title>.
+		expect(classic.name).toBe('Classic 3x3');
+		expect(templateLabel(left, 'da')).toBe('Klassisk 3×3');
+		expect(templateLabel(left, 'en')).toBe('Classic 3×3');
 	});
 
 	it('gives an asymmetric heart its left and its right template, at one scale', () => {
@@ -64,6 +67,16 @@ describe('templatePair', () => {
 		expect(Math.max(left.widthMm, right.widthMm)).toBeCloseTo(60);
 		expect(templateLabel(left, 'da')).toBe(`${jul.name} (Venstre)`);
 		expect(templateLabel(right, 'en')).toBe(`${jul.name} (Right)`);
+	});
+
+	it("labels a template with the heart's name in each language, and its own name without one", () => {
+		const weave = loadHeart('amy-weave-1');
+		const [left, right] = templatePair(weave, 60);
+		expect(templateLabel(left, 'da')).toBe('Flet 1 (Venstre)');
+		expect(templateLabel(right, 'en')).toBe('Weave 1 (Right)');
+		const plain = { ...weave, names: undefined };
+		expect(templateLabel({ ...left, design: plain }, 'da')).toBe('Weave 1 (Venstre)');
+		expect(templateLabel({ ...left, design: { ...plain, names: { en: 'Woven' } } }, 'da')).toBe('Weave 1 (Venstre)');
 	});
 });
 
@@ -179,7 +192,7 @@ describe('serializeTemplatePageSvg', () => {
 		const labels = [...doc.querySelectorAll('text.label')];
 		const addresses = [...doc.querySelectorAll('text.address')];
 		// The page's four templates: a name and an address each, and the footer.
-		expect(labels.map((t) => t.textContent)).toEqual(Array(4).fill(classic.name));
+		expect(labels.map((t) => t.textContent)).toEqual(Array(4).fill('Klassisk 3×3'));
 		expect(addresses.map((t) => t.textContent)).toEqual([...Array(4).fill('juleflet.dk/hjerte/classic-3x3'), 'juleflet.dk']);
 		// The first box at (5, 5): the name 4 mm down, at 8 pt, centred over the
 		// ear and clear of its top at 5 + 9 = 14.

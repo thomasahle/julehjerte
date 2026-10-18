@@ -1,14 +1,24 @@
 {
   "classic-3x3": {
     "name": "Classic 3x3",
+    "names": {
+      "da": "Klassisk 3×3",
+      "en": "Classic 3×3"
+    },
     "difficulty": "easy"
   },
   "ramme": {
     "name": "Ramme",
+    "names": {
+      "en": "Frame"
+    },
     "difficulty": "medium"
   },
   "gaver": {
     "name": "Gaver",
+    "names": {
+      "en": "Gifts"
+    },
     "difficulty": "medium"
   },
   "jul": {
@@ -17,26 +27,47 @@
   },
   "stjerne": {
     "name": "Stjerne",
+    "names": {
+      "en": "Star"
+    },
     "difficulty": "medium"
   },
   "stjerne-ramme": {
     "name": "Stjerne Ramme",
+    "names": {
+      "da": "Stjerneramme",
+      "en": "Star frame"
+    },
     "difficulty": "medium"
   },
   "5star": {
     "name": "5-Stjerne",
+    "names": {
+      "da": "Femstjerne",
+      "en": "Five-pointed star"
+    },
     "difficulty": "hard"
   },
   "simple-5star": {
     "name": "5-stjerne simpel",
+    "names": {
+      "da": "Femstjerne, enkel",
+      "en": "Five-pointed star, simple"
+    },
     "difficulty": "easy"
   },
   "sun": {
     "name": "Sol",
+    "names": {
+      "en": "Sun"
+    },
     "difficulty": "medium"
   },
   "explosion": {
     "name": "Eksplosion",
+    "names": {
+      "en": "Explosion"
+    },
     "difficulty": "easy"
   },
   "nihon": {
@@ -45,10 +76,18 @@
   },
   "davidsstjerne-circ": {
     "name": "Davidsstjerne Cirkel",
+    "names": {
+      "da": "Davidsstjerne i cirkel",
+      "en": "Star of David in a circle"
+    },
     "difficulty": "expert"
   },
   "david4": {
     "name": "David 4",
+    "names": {
+      "da": "Davidsstjerne 4",
+      "en": "Star of David 4"
+    },
     "difficulty": "medium"
   },
   "khatam": {
@@ -57,14 +96,24 @@
   },
   "stjernegitter": {
     "name": "Stjernegitter",
+    "names": {
+      "en": "Star lattice"
+    },
     "difficulty": "expert"
   },
   "stjernerogkors": {
     "name": "Stjerner og kors",
+    "names": {
+      "en": "Stars and crosses"
+    },
     "difficulty": "hard"
   },
   "circle": {
     "name": "Uret v2",
+    "names": {
+      "da": "Uret",
+      "en": "The clock"
+    },
     "difficulty": "hard"
   },
   "balls": {
@@ -73,6 +122,9 @@
   },
   "kogle": {
     "name": "Kogle",
+    "names": {
+      "en": "Pinecone"
+    },
     "difficulty": "expert"
   },
   "plus": {
@@ -85,10 +137,16 @@
   },
   "amy-weave-1": {
     "name": "Weave 1",
+    "names": {
+      "da": "Flet 1"
+    },
     "difficulty": "medium"
   },
   "amy-weave-2": {
     "name": "Weave 2",
+    "names": {
+      "da": "Flet 2"
+    },
     "difficulty": "medium"
   },
   "amy-rosette": {
@@ -97,14 +155,24 @@
   },
   "amy-pattern": {
     "name": "Klokke",
+    "names": {
+      "en": "Bell"
+    },
     "difficulty": "hard"
   },
   "amy-flowering": {
     "name": "Flowering",
+    "names": {
+      "da": "Blomstring"
+    },
     "difficulty": "hard"
   },
   "amy-pinecone": {
     "name": "Pinecone",
+    "names": {
+      "da": "Grankogle",
+      "en": "Fir cone"
+    },
     "difficulty": "hard"
   },
   "alhambra": {
@@ -113,30 +181,51 @@
   },
   "squares": {
     "name": "Squares",
+    "names": {
+      "da": "Firkanter"
+    },
     "difficulty": "medium"
   },
   "sildeben": {
     "name": "Sildeben",
+    "names": {
+      "en": "Herringbone"
+    },
     "difficulty": "medium"
   },
   "puslespil": {
     "name": "Puslespil",
+    "names": {
+      "en": "Jigsaw"
+    },
     "difficulty": "hard"
   },
   "koelbuer": {
     "name": "Kølbuer",
+    "names": {
+      "en": "Ogee arches"
+    },
     "difficulty": "medium"
   },
   "roserude": {
     "name": "Roserude",
+    "names": {
+      "en": "Rose window"
+    },
     "difficulty": "medium"
   },
   "hanefod": {
     "name": "Hanefod",
+    "names": {
+      "en": "Houndstooth"
+    },
     "difficulty": "hard"
   },
   "flyvendegaes": {
     "name": "Flyvende gæs",
+    "names": {
+      "en": "Flying geese"
+    },
     "difficulty": "expert"
   },
   "origami": {
@@ -145,34 +234,58 @@
   },
   "drageskael": {
     "name": "Drageskæl",
+    "names": {
+      "en": "Dragon scales"
+    },
     "difficulty": "medium"
   },
   "hermanngitter": {
     "name": "Hermann-gitter",
+    "names": {
+      "en": "Hermann grid"
+    },
     "difficulty": "expert"
   },
   "tragt": {
     "name": "Tragt",
+    "names": {
+      "en": "Funnel"
+    },
     "difficulty": "medium"
   },
   "boelgebrud": {
     "name": "Bølgebrud",
+    "names": {
+      "en": "Breakers"
+    },
     "difficulty": "expert"
   },
   "glaskuppel": {
     "name": "Glaskuppel",
+    "names": {
+      "en": "Glass dome"
+    },
     "difficulty": "medium"
   },
   "hvirvel": {
     "name": "Hvirvel",
+    "names": {
+      "en": "Whirl"
+    },
     "difficulty": "medium"
   },
   "juletrae": {
     "name": "Juletræ",
+    "names": {
+      "en": "Christmas tree"
+    },
     "difficulty": "medium"
   },
   "flower": {
     "name": "Blomst",
+    "names": {
+      "en": "Flower"
+    },
     "difficulty": "medium"
   },
   "venus": {
@@ -181,46 +294,81 @@
   },
   "angel": {
     "name": "Engel",
+    "names": {
+      "en": "Angel"
+    },
     "difficulty": "medium"
   },
   "snowflake": {
     "name": "Snowflake",
+    "names": {
+      "da": "Snefnug"
+    },
     "difficulty": "medium"
   },
   "santa": {
     "name": "Santa",
+    "names": {
+      "da": "Julemand"
+    },
     "difficulty": "hard"
   },
   "dagognat": {
     "name": "Dag og nat",
+    "names": {
+      "en": "Day and night"
+    },
     "difficulty": "hard"
   },
   "ball": {
     "name": "Kugle",
+    "names": {
+      "en": "Bauble"
+    },
     "difficulty": "medium"
   },
   "triple-heart": {
     "name": "Triple Hjerte",
+    "names": {
+      "da": "Tre hjerter",
+      "en": "Triple heart"
+    },
     "difficulty": "medium"
   },
   "h4h2": {
     "name": "Hjerte i hjerte",
+    "names": {
+      "en": "Heart in heart"
+    },
     "difficulty": "medium"
   },
   "nemt-hjerte": {
     "name": "Nemt Hjerte",
+    "names": {
+      "da": "Nemt hjerte",
+      "en": "Easy heart"
+    },
     "difficulty": "easy"
   },
   "lilje1": {
     "name": "Lilje 1",
+    "names": {
+      "en": "Lily 1"
+    },
     "difficulty": "hard"
   },
   "lilje2": {
     "name": "Lilje 2",
+    "names": {
+      "en": "Lily 2"
+    },
     "difficulty": "expert"
   },
   "hjertekloever": {
     "name": "Hjertekløver",
+    "names": {
+      "en": "Heart clover"
+    },
     "difficulty": "medium"
   }
 }

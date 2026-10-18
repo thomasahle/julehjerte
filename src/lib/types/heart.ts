@@ -44,9 +44,22 @@ export interface HeartDescriptions {
   en?: string;
 }
 
+/** A heart's name per site language; either may be missing (see `heartName`). */
+export interface HeartNames {
+  da?: string;
+  en?: string;
+}
+
 export interface HeartDesign {
   id: string;
+  // The heart's own name: the SVG's plain `<title>`, and the name in every
+  // language that has none of its own in `names`.
   name: string;
+  // The name in each site language, where it differs from `name`. A gallery SVG
+  // carries them as `<title xml:lang="da">` / `<title xml:lang="en">`; hearts
+  // drawn in the editor and everything saved before the field existed have none.
+  // Resolve with `heartName` ($lib/utils/heartName), never read directly.
+  names?: HeartNames;
   author: string;
   authorUrl?: string;
   publisher?: string;

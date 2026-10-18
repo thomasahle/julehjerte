@@ -207,7 +207,8 @@ describe('DownloadDialog', () => {
 		// The address is in the ear already, where it will be with the picture;
 		// the heart's name is above the template, on the paper.
 		expect(sheet().querySelector('text.address')!.textContent).toBe('juleflet.dk/hjerte/classic-3x3');
-		expect(sheet().querySelector('text.label')!.textContent).toBe(design.name);
+		// In the dialog's language: Danish here, not the SVG's own "Classic 3x3".
+		expect(sheet().querySelector('text.label')!.textContent).toBe('Klassisk 3×3');
 
 		finish(new Map([[design.id, PICTURE]]));
 		await settle();
@@ -296,7 +297,7 @@ describe('DownloadDialog', () => {
 			previewImage: true
 		});
 		expect(trackHeartDownload).toHaveBeenCalledTimes(1);
-		expect(trackHeartDownload).toHaveBeenCalledWith('classic-3x3', design.name);
+		expect(trackHeartDownload).toHaveBeenCalledWith('classic-3x3', 'Klassisk');
 		expect(trackLaserDownload).not.toHaveBeenCalled();
 		expect(blobs).toHaveLength(0);
 		await release();
@@ -732,7 +733,7 @@ describe('DownloadDialog', () => {
 			]);
 			// The names, with the side for Jul's two halves, sit above the templates.
 			const labels = [...view.q('.preview-sheet')!.querySelectorAll('text.label')].map((t) => t.textContent);
-			expect(labels).toEqual(['Classic 3x3', 'Classic 3x3', 'JUL (Venstre)', 'JUL (Højre)']);
+			expect(labels).toEqual(['Klassisk 3×3', 'Klassisk 3×3', 'JUL (Venstre)', 'JUL (Højre)']);
 		});
 
 		it('hands the PDF generator every heart, with one shared download event', async () => {
@@ -743,8 +744,8 @@ describe('DownloadDialog', () => {
 			await settle();
 			expect(downloadTemplatesPDF).toHaveBeenCalledWith(designs, expect.objectContaining({ hearts: 1 }));
 			expect(trackMultiDownload).toHaveBeenCalledWith([
-				{ id: 'classic-3x3', name: designs[0]!.name },
-				{ id: 'jul', name: designs[1]!.name }
+				{ id: 'classic-3x3', name: 'Klassisk 3×3' },
+				{ id: 'jul', name: 'JUL' }
 			]);
 			expect(trackHeartDownload).not.toHaveBeenCalled();
 		});
@@ -760,12 +761,11 @@ describe('DownloadDialog', () => {
 			await settle();
 			expect(downloads[0]!.name).toBe('julehjerter-2-laser-80mm-venstre.svg');
 			const svg = await blobs[0]!.text();
-			expect(svg).toContain(designs[0]!.name);
-			expect(svg).toContain(designs[1]!.name);
+			expect(svg).toContain('<title>Klassisk 3×3, JUL</title>');
 			expect(trackMultiLaserDownload).toHaveBeenCalledWith(
 				[
-					{ id: 'classic-3x3', name: designs[0]!.name },
-					{ id: 'jul', name: designs[1]!.name }
+					{ id: 'classic-3x3', name: 'Klassisk 3×3' },
+					{ id: 'jul', name: 'JUL' }
 				],
 				'svg',
 				80
@@ -782,7 +782,7 @@ describe('DownloadDialog', () => {
 				const view = await render(designs);
 				await view.choose('Laserskærer');
 				expect(view.note()).toBe(
-					'Der er kun plads til 2 af 3 stykker på arket. Ikke med: Weave 1. Vælg A3 eller en mindre bredde, eller hent arket igen for de resterende.'
+					'Der er kun plads til 2 af 3 stykker på arket. Ikke med: Flet 1. Vælg A3 eller en mindre bredde, eller hent arket igen for de resterende.'
 				);
 				view.button('Hent SVG')!.click();
 				await settle();
@@ -790,14 +790,14 @@ describe('DownloadDialog', () => {
 				// The title counts the hearts ticked; only the file counts the sheet.
 				expect(view.q('[data-testid="download-count"]')!.textContent).toBe('3');
 				const svg = await blobs[0]!.text();
-				expect(svg).toContain('<title>Classic 3x3, JUL</title>');
-				expect(svg).not.toContain('Weave 1');
+				expect(svg).toContain('<title>Klassisk 3×3, JUL</title>');
+				expect(svg).not.toContain('Flet 1');
 				// The events count the hearts on the sheet too, not every ticked one.
 				expect(trackMultiLaserDownload).toHaveBeenCalledTimes(1);
 				expect(trackMultiLaserDownload).toHaveBeenCalledWith(
 					[
-						{ id: 'classic-3x3', name: designs[0]!.name },
-						{ id: 'jul', name: designs[1]!.name }
+						{ id: 'classic-3x3', name: 'Klassisk 3×3' },
+						{ id: 'jul', name: 'JUL' }
 					],
 					'svg',
 					80
@@ -821,6 +821,10 @@ describe('DownloadDialog', () => {
 				view.button('Download SVG')!.click();
 				await settle();
 				expect(downloads[0]!.name).toBe('christmas-hearts-2-laser-80mm-left.svg');
+				// The English names, in the file as in the note.
+				const svg = await blobs[0]!.text();
+				expect(svg).toContain('<title>Classic 3×3, JUL</title>');
+				expect(svg).not.toContain('Weave 1');
 			});
 		});
 

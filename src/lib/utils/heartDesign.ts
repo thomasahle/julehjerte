@@ -1,4 +1,4 @@
-import type { Finger, GridSize, HeartDescriptions, HeartDesign, HeartDesignJson, LobeId, NodeType, Vec } from '$lib/types/heart';
+import type { Finger, GridSize, HeartDescriptions, HeartDesign, HeartNames, HeartDesignJson, LobeId, NodeType, Vec } from '$lib/types/heart';
 import { STRIP_WIDTH, BASE_CENTER, MIN_GRID_SIZE, MAX_GRID_SIZE } from '$lib/constants';
 import { clamp, clampInt } from '$lib/utils/math';
 import {
@@ -301,12 +301,22 @@ function normalizeDescriptions(raw: unknown): HeartDescriptions | undefined {
   return out.da || out.en ? out : undefined;
 }
 
+/**
+ * The name in each site language, or `undefined` when there is none; validated
+ * like `normalizeDescriptions`, so a name that is not a non-empty string is
+ * dropped and the heart falls back to its own `name`.
+ */
+function normalizeNames(raw: unknown): HeartNames | undefined {
+  return normalizeDescriptions(raw);
+}
+
 export function normalizeHeartDesign(raw: unknown): HeartDesign | null {
   if (!raw || typeof raw !== 'object') return null;
   const r = raw as RawDesign;
 
   const id = typeof r.id === 'string' ? r.id : '';
   const name = typeof r.name === 'string' ? r.name : 'Untitled';
+  const names = normalizeNames(r.names);
   const author = typeof r.author === 'string' ? r.author : '';
   const authorUrl =
     typeof r.authorUrl === 'string' && r.authorUrl.trim() ? r.authorUrl.trim() : undefined;
@@ -346,6 +356,7 @@ export function normalizeHeartDesign(raw: unknown): HeartDesign | null {
   return {
     id,
     name,
+    names,
     author,
     authorUrl,
     publisher,
@@ -391,6 +402,7 @@ export function serializeHeartDesign(design: HeartDesign): HeartDesignJson {
   return {
     id: design.id,
     name: design.name,
+    names: design.names,
     author: design.author,
     authorUrl: design.authorUrl,
     publisher: design.publisher,
@@ -468,6 +480,12 @@ export function serializeHeartToSVG(design: HeartDesign): string {
     `<svg ${attrs.join(' ')}>`,
     `  <title>${escapeXml(design.name)}</title>`
   ];
+  // The name per site language, right after the plain title (which stays the
+  // heart's own name and the fallback). Written even when empty, like the
+  // paragraphs below, so an exported file shows where they go.
+  for (const lang of ['da', 'en'] as const) {
+    lines.push(`  <title xml:lang="${lang}">${escapeXml(design.names?.[lang] ?? '')}</title>`);
+  }
   // The paragraphs per site language, right after the title. Written even when
   // empty, so an exported file shows where a gallery heart's texts go
   // (docs/ADDING-A-HEART.md).
@@ -1054,14 +1072,21 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
   if (!svg) return null;
 
   // Extract metadata - check both standard SVG elements and Dublin Core (Inkscape) format
-  const titleEl = svg.querySelector('title');
+  // A plain `<title>` is the heart's own name (`name`); the ones with an
+  // `xml:lang` are its name per site language (`names`), as with `<desc>` below.
+  const XML_NS = 'http://www.w3.org/XML/1998/namespace';
+  const elLang = (el: Element): string =>
+    el.getAttributeNS(XML_NS, 'lang') || el.getAttribute('xml:lang') || '';
+  const titleEls = Array.from(svg.getElementsByTagName('title'));
+  const titleEl = titleEls.find((el) => !elLang(el));
+  const names = normalizeNames(
+    Object.fromEntries(titleEls.filter((el) => elLang(el)).map((el) => [elLang(el), el.textContent]))
+  );
   // A plain `<desc>` is the legacy one-line summary (`description`); the ones
   // with an `xml:lang` are the written paragraphs per site language
   // (`descriptions`), which a gallery SVG carries right after its `<title>`.
-  const XML_NS = 'http://www.w3.org/XML/1998/namespace';
   const descEls = Array.from(svg.getElementsByTagName('desc'));
-  const descLang = (el: Element): string =>
-    el.getAttributeNS(XML_NS, 'lang') || el.getAttribute('xml:lang') || '';
+  const descLang = elLang;
   const descEl = descEls.find((el) => !descLang(el));
   const descriptions = normalizeDescriptions(
     Object.fromEntries(descEls.filter((el) => descLang(el)).map((el) => [descLang(el), el.textContent]))
@@ -1434,6 +1459,7 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
   return {
     id,
     name,
+    names,
     author,
     authorUrl,
     publisher,

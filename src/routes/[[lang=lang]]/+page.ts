@@ -10,17 +10,19 @@ import { strandBootstrapScript } from '$lib/front/strandBootstrap';
 import { CATEGORIES, categoryTitle } from '$lib/data/categories';
 import { USER_COLLECTION_KEY } from '$lib/stores/collection';
 import { t, type Language } from '$lib/i18n';
-import type { HeartDesign } from '$lib/types/heart';
+import type { HeartDesign, HeartNames } from '$lib/types/heart';
+import { heartName } from '$lib/utils/heartName';
 import type { DifficultyLevel } from '$lib/utils/difficulty';
 
 // Enable SSR for meta tags (crawlers need them in initial HTML)
 export const prerender = true;
 export const ssr = true;
 
-// name + difficulty per gallery heart, generated alongside heart-meta.json. It
+// name (and the name per language) + difficulty per gallery heart, generated
+// alongside heart-meta.json. It
 // is the only thing about a heart the front page downloads, so it is its own
 // file: heart-meta.json carries seven more fields the gallery never shows.
-const CARDS = heartCards as Record<string, { name: string; difficulty: DifficultyLevel }>;
+const CARDS = heartCards as Record<string, { name: string; names?: HeartNames; difficulty: DifficultyLevel }>;
 
 /**
  * The front page's hearts.
@@ -48,13 +50,14 @@ export const load: PageLoad = async ({ params }) => {
 	const ids = indexCategories.flatMap((category) => category.hearts);
 	const lang = (params.lang === 'en' ? 'en' : 'da') as Language;
 
-	// What a card shows besides the heart: its name and its difficulty. The
+	// What a card shows besides the heart: its name in this page's language and
+	// its difficulty. The
 	// difficulty used to be computed from the geometry, which is exactly what is
 	// no longer downloaded, so it is read off the build-time data instead.
 	const hearts: Record<string, GalleryHeart> = {};
 	for (const id of ids) {
 		const card = CARDS[id];
-		if (card) hearts[id] = { id, name: card.name, difficulty: card.difficulty };
+		if (card) hearts[id] = { id, name: heartName(card, lang), difficulty: card.difficulty };
 	}
 
 	if (!browser) {

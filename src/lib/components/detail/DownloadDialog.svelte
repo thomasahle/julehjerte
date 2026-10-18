@@ -73,6 +73,7 @@
 	import { serializeTemplatePageSvg } from '$lib/pdf/preview';
 	import { prerenderHeartImages } from '$lib/pdf/heartRenderer';
 	import { lobesShareTemplate } from '$lib/utils/symmetry';
+	import { heartName as nameIn } from '$lib/utils/heartName';
 	import {
 		DEFAULT_DOWNLOAD_SETTINGS,
 		loadDownloadSettings,
@@ -84,7 +85,10 @@
 	interface Props {
 		/** The hearts to get, in order; one is the heart page's dialog. */
 		designs: readonly HeartDesign[];
-		/** The single heart's id and name, when they are not the design's own. */
+		/**
+		 * The single heart's id and name, when they are not the design's own. The
+		 * hearts' names are otherwise their names in `lang` (`heartName`).
+		 */
 		heartId?: string;
 		heartName?: string;
 		lang: Language;
@@ -98,9 +102,11 @@
 	const design = $derived(designs[0]!);
 	const several = $derived(designs.length > 1);
 	const heartId = $derived(idProp ?? design.id);
-	const heartName = $derived(several ? designs.map((d) => d.name).join(', ') : (nameProp ?? design.name));
+	const heartName = $derived(
+		several ? designs.map((d) => nameIn(d, lang)).join(', ') : (nameProp ?? nameIn(design, lang))
+	);
 	/** What the multi-heart PDF event counts: every heart, as the PDF holds them all. */
-	const heartList = $derived(designs.map((d) => ({ id: d.id, name: d.name })));
+	const heartList = $derived(designs.map((d) => ({ id: d.id, name: nameIn(d, lang) })));
 
 	// The laser lobe is remembered for this visit only (DOWNLOAD.md): having cut
 	// the left halves, the visitor comes back for the right ones, but a stored
@@ -286,7 +292,7 @@
 			let text = t('sheetFit', lang, { n: laserPlan.piecesFit, total: laserPlan.piecesRequested });
 			// With several hearts, say which ones the file will not hold.
 			if (several && laserPlan.heartsLeftOut.length && laserPlan.heartsOnSheet.length) {
-				const names = laserPlan.heartsLeftOut.map((h) => h.design.name).join(', ');
+				const names = laserPlan.heartsLeftOut.map((h) => nameIn(h.design, lang)).join(', ');
 				// And how to get them all: A3 only when it would hold them.
 				const a3 = a3FitsAll(designs, { widthMm, count: hearts, sheet, lobe });
 				text += `. ${t('sheetLeftOut', lang, { names })}. ${t(a3 ? 'sheetLeftOutHintA3' : 'sheetLeftOutHint', lang)}`;
@@ -302,7 +308,7 @@
 
 	const fileInfo = $derived({
 		heartId,
-		heartName: several ? laserHearts.map((d) => d.name).join(', ') : heartName,
+		heartName: several ? laserHearts.map((d) => nameIn(d, lang)).join(', ') : heartName,
 		url: laserFileUrl(
 			several ? laserHearts.map((d) => d.id) : [heartId],
 			lang,
@@ -425,7 +431,7 @@
 	// rather than with the page.
 	async function downloadPdf(): Promise<void> {
 		if (several) trackMultiDownload(heartList);
-		else trackHeartDownload(design.id, design.name);
+		else trackHeartDownload(design.id, heartName);
 		try {
 			const { downloadTemplatesPDF } = await import('$lib/pdf/template');
 			await downloadTemplatesPDF([...designs], { widthMm, hearts: 1, sheet, lang, previewImage });
@@ -473,7 +479,7 @@
 			setTimeout(() => URL.revokeObjectURL(url), 1000);
 			failure = null;
 			// The hearts with a piece on the sheet, as the file name counts them.
-			if (several) trackMultiLaserDownload(laserHearts.map((d) => ({ id: d.id, name: d.name })), format, widthMm);
+			if (several) trackMultiLaserDownload(laserHearts.map((d) => ({ id: d.id, name: nameIn(d, lang) })), format, widthMm);
 			else trackLaserDownload(heartId, heartName, format, widthMm);
 		} catch (err) {
 			console.error('Writing the laser file failed', err);

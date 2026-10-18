@@ -1,7 +1,7 @@
 # Adding a heart to the gallery
 
 A gallery heart is one SVG and one id in `hearts.json` in the project root. The SVG
-holds everything about the heart, its two descriptions included; `hearts.json` only
+holds everything about the heart, its names and two descriptions included; `hearts.json` only
 says which category it is in and where. Everything else is generated from those two.
 
 1. **The SVG.** Draw the heart in the editor (`/editor/`) and save it with
@@ -12,11 +12,26 @@ says which category it is in and where. Everything else is generated from those 
    `static/hearts/<id>.svg`, where `<id>` is lower-case ASCII with hyphens
    (`boelgebrud`, `stjerne-ramme`) — it becomes the URL `/hjerte/<id>/`.
 
-2. **The descriptions.** The exported file has two empty elements right after its
-   `<title>`:
+2. **The names.** The plain `<title>` is the heart's own name, the one the editor
+   exported. The site shows a name per language: right after it the exported file has
+   two empty titles, for the Danish and the English name:
 
    ```xml
    <title>Bølgebrud</title>
+   <title xml:lang="da"></title>
+   <title xml:lang="en">Breakers</title>
+   ```
+
+   Fill in the language whose name differs from the plain one, or both; an empty or
+   missing one falls back to the plain `<title>` (here the Danish site says
+   "Bølgebrud", the English one "Breakers"). Every page, card, PDF label, laser file
+   and social card shows the name of its own language; URLs and file names use the
+   id. No two hearts may share a name in either language (the test in step 6 checks).
+   Write `&amp;` for `&`.
+
+3. **The descriptions.** Two more empty elements follow the titles:
+
+   ```xml
    <desc xml:lang="da"></desc>
    <desc xml:lang="en"></desc>
    ```
@@ -32,7 +47,7 @@ says which category it is in and where. Everything else is generated from those 
    - how many strips each half has, and whether they are cut straight or curved,
    - whether the halves are mirror images (one template covers both) or differ
      (two templates),
-   - the difficulty (the one the site computes — see `heart-meta.json` after step 4),
+   - the difficulty (the one the site computes — see `heart-meta.json` after step 5),
      and one practical cutting or weaving tip.
 
    Keep the first sentence short — it doubles as the page's meta description. Facts
@@ -40,7 +55,7 @@ says which category it is in and where. Everything else is generated from those 
    symmetry), no invented history or authorship. No exclamation marks; 150–600
    characters each. The English one is a translation of the Danish, not a copy of it.
 
-3. **The id.** Add `"<id>"` to the right category's `hearts` list in `hearts.json`
+4. **The id.** Add `"<id>"` to the right category's `hearts` list in `hearts.json`
    (project root), at the place it should appear in the gallery. The file holds only
    the categories and their ids:
 
@@ -51,19 +66,20 @@ says which category it is in and where. Everything else is generated from those 
    The categories are `klassiske`, `stjerner`, `moenstre`, `figurer` and `hjerter`;
    a new category also needs translation keys in `src/lib/data/categories.ts`.
 
-4. **Generate the data:** `npm run generate:heart-data`. This rewrites
-   `src/lib/data/heart-designs.json`, `heart-meta.json`, `heart-cards.json` and
-   `heart-descriptions.json` (and the social cards under `static/og/`, which git
+5. **Generate the data:** `npm run generate:heart-data`. This rewrites
+   `src/lib/data/heart-designs.json`, `heart-meta.json`, `heart-cards.json` (these
+   three carry the names, `name` and `names`) and `heart-descriptions.json` (and the social cards under `static/og/`, which git
    ignores). It stops with an error if the SVG lacks the Danish or the English text.
 
-5. **Run the four checks:** `npm run check`, `npm run lint`, `npx vitest run`
+6. **Run the four checks:** `npm run check`, `npm run lint`, `npx vitest run`
    (`src/lib/data/hearts.test.ts` checks the id against its SVG and the category
    list; `heartSvgDescriptions.test.ts` checks both texts in the SVG and that
    `heart-descriptions.json` was regenerated; `heartDescriptions.test.ts` checks the
-   length and the house rules) and `npm run build`.
+   length and the house rules; `heartSvgNames.test.ts` checks that every heart has a
+   name in both languages, unique in each, and that the generated files carry them) and `npm run build`.
 
-6. **Preview:** `npx vite preview` and look at the front page and
+7. **Preview:** `npx vite preview` and look at the front page and
    `/hjerte/<id>/` and `/en/hjerte/<id>/`.
 
-7. **Commit** `static/hearts/<id>.svg`, `hearts.json` and the four generated JSON
+8. **Commit** `static/hearts/<id>.svg`, `hearts.json` and the four generated JSON
    files together.
