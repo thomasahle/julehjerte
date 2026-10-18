@@ -124,7 +124,7 @@
     "A late feature start reserved 450 ms for a polish that could no longer start after assessment. Lending that time to its unfinished refinement improved the source fit without extending the ten-second request.",
     "The Viking continuation repeatedly gave the whole 400 ms repair allowance to hidden-only controls, starving the existing general-control fallback. A local split-budget experiment reduced independent error from 0.01941875 to 0.0186625 without extending the continuation."
   ],
-  "remaining": "Main remains red. Full cold-process Linux replay 39167894342 passed 1105/1114 tests despite the focused 36/36 pass. Nine timed fit failures remain. Exact repeated paper-audit reuse is being tested; no full-suite or release pass is claimed.",
+  "remaining": "Main remains red. Full cold-process Linux replay 39167894342 passed 1105/1114 tests despite the focused 36/36 pass. Nine timed fit failures remained. The exact paper-audit reuse fix is committed and a fresh full Linux replay is running at 39169067866. No full-suite or release pass is claimed.",
   "branchSafety": "codex/ci-inverse-diagnostics replaces the Pages workflow with manual diagnostics. Never merge that entire branch to main. Transfer only verified fixes from codex/solver-initialization.",
   "limitations": [
     "No fresh 22-design Hunodan speed benchmark in this CI recovery pass.",
@@ -341,5 +341,21 @@
         "failed": 0
       }
     ]
+  },
+  "paperAuditReuse": {
+    "sourceCommit": "df775e6a",
+    "change": "Retain four small paper-family results keyed by exact chord coordinates, fold endpoints, width, nominal width, lattice resolution, tolerance and feature-area threshold. Clone stored inputs and returned results. Forced backends and map requests bypass reuse. No acceptance rule changes.",
+    "localVerification": {
+      "paperKernelAndIndependentCoreTestsPassed": 15,
+      "clearanceAndFeatureNeighborsPassed": 9,
+      "otherFailedScenarioReplaysPassed": 5,
+      "typecheckErrors": 0,
+      "lintErrors": 0,
+      "appTestsPassed": 1570,
+      "appTestsSkipped": 1,
+      "productionBuild": "passed"
+    },
+    "linuxReplay": "https://github.com/thomasahle/julehjerte/actions/runs/39169067866",
+    "linuxStatus": "running"
   }
 }
