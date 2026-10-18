@@ -22,6 +22,8 @@
 	import MyHearts from './MyHearts.svelte';
 	import { NARROW_QUERY, WIDE_FRAME_QUERY } from '$lib/breakpoints';
 	import { cardDrop, chipLift, hillTopPage, type LandRect } from '$lib/front/hillLine';
+	import { clearStrandBootstrap } from '$lib/front/strandBootstrap';
+	import { CLAIM_PRERENDERED } from '$lib/front/galleryHearts';
 	import { categoryTitle } from '$lib/data/categories';
 	import { t, type Language } from '$lib/i18n';
 	import type { HeartDesign } from '$lib/types/heart';
@@ -61,6 +63,12 @@
 		 * pull-up, the bar's room and the strands were known.
 		 */
 		onLayout?: () => void;
+		/**
+		 * The inline script that lays the gallery out on the hill line before it
+		 * paints ($lib/front/strandBootstrap); null in the browser, where it has
+		 * already run or, after a client-side navigation, is not needed.
+		 */
+		strandScript?: string | null;
 	}
 
 	let {
@@ -76,7 +84,8 @@
 		onSelect,
 		onClick,
 		onDelete,
-		onLayout
+		onLayout,
+		strandScript = null
 	}: Props = $props();
 
 	// Measured by the bar; the sections' scroll-margin-top reads it so a chip's
@@ -120,6 +129,8 @@
 	let galleryEl = $state.raw<HTMLElement | null>(null);
 	let wrapLift = $state<number | null>(null);
 	let chipLifts = $state.raw<number[]>([]);
+	/** The hill has been measured at least once, so the chips' lifts are known (or none). */
+	let hillMeasured = $state(false);
 	/** drop_k per grid column (GALLERY-CURVE.md amendment 3); empty: no strands. */
 	let strandDrops = $state.raw<number[]>([]);
 	/** D, the largest drop: how far below its layout every card hangs once level. */
@@ -146,6 +157,7 @@
 		const measure = () => {
 			frame = 0;
 			measured = true;
+			hillMeasured = true;
 			const land = document.querySelector('[data-scene-land] > svg');
 			if (narrow.matches || !land) {
 				wrapLift = null;
@@ -235,6 +247,10 @@
 		const push = () => {
 			pushFrame = 0;
 			strands();
+			// The gallery's own values are all written now (the pull-up and the
+			// cards' columns in the measure's flush, the strands just above), so
+			// the inline script's first-paint stand-ins on <html> can go.
+			clearStrandBootstrap();
 			if (measured) {
 				measured = false;
 				onLayout?.();
@@ -285,6 +301,14 @@
 	});
 </script>
 
+<!-- Lays the gallery out on the hill line while the page is still parsing, so
+     the prerendered page paints it where this component's measure puts it —
+     see $lib/front/strandBootstrap. It belongs right before the gallery: the
+     hero's scene above has been parsed by then and the gallery not yet. In
+     the browser the block claims the <script> the page came with. -->
+<!-- svelte-ignore hydration_html_changed -->
+{@html strandScript ?? CLAIM_PRERENDERED}
+
 <div
 	class="gallery-wrap"
 	bind:this={galleryWrapEl}
@@ -313,6 +337,7 @@
 			myHeartCount={myHearts.length}
 			bind:height={barHeight}
 			lifts={chipLifts}
+			measured={hillMeasured}
 			{strandRoom}
 			{selectedCount}
 			{onDownload}
@@ -355,16 +380,19 @@
 	   over it. The bar is transparent until it sticks (see GalleryBar), so its
 	   background never shows as a paler rectangle over the snow hill.
 
-	   The exact lift is measured after mount; the stylesheet's estimate, for
-	   the prerendered page, is the hill's highest point at 1440 (y 498 of the
-	   drawing's 724, which spans the viewport's width). Below 900 there is no
+	   The exact lift is measured after mount. Before that the prerendered page
+	   paints it from --gallery-pull, which the inline strand script works out
+	   while the page parses ($lib/front/strandBootstrap) to what the measure
+	   will find; without JavaScript, from the stylesheet's estimate, the hill's
+	   highest point at 1440 (y 498 of the drawing's 724, which spans the
+	   viewport's width). Below 900 there is no
 	   overlap at all: the landscape is an in-flow band there, with the scroll
 	   hint on it. */
 	.gallery-wrap {
 		position: relative;
 		/* Above the hero's scene, which is positioned as well. */
 		z-index: 1;
-		margin-top: calc(-100vw * 226 / 2172);
+		margin-top: var(--gallery-pull, calc(-100vw * 226 / 2172));
 	}
 
 	.gallery {

@@ -7,6 +7,9 @@ import { CLAIM_PRERENDERED, type GalleryHeart } from '$lib/front/galleryHearts';
 import { HERO_HEART_IDS, HERO_HEART_IDS_MOBILE } from '$lib/utils/randomHearts';
 import { HERO_PICKS_ATTRIBUTE, heroBootstrapScript } from '$lib/front/heroBootstrap';
 import { HERO_SLOTS_MOBILE } from '$lib/components/front/heroSlots';
+import { strandBootstrapScript } from '$lib/front/strandBootstrap';
+import { categoryTitle } from '$lib/data/categories';
+import { USER_COLLECTION_KEY } from '$lib/stores/collection';
 import { t, type Language } from '$lib/i18n';
 import type { HeartDesign } from '$lib/types/heart';
 import type { DifficultyLevel } from '$lib/utils/difficulty';
@@ -84,7 +87,20 @@ export const load: PageLoad = async ({ params }) => {
 			},
 			// The label still carries its {name} placeholder; the script fills in
 			// whichever heart it hangs in the slot.
-			heroScript: heroBootstrapScript(t('heroGoToHeart', lang)) as string | null
+			heroScript: heroBootstrapScript(t('heroGoToHeart', lang)) as string | null,
+			// Lays the gallery out on the hill line before it paints (desktop only).
+			strandScript: strandBootstrapScript({
+				// The bar's chips: the categories with hearts, counted as the gallery counts them.
+				categories: indexCategories
+					.map((category) => ({
+						title: categoryTitle(category.id, lang),
+						count: category.hearts.filter((id) => id in hearts).length
+					}))
+					.filter((category) => category.count > 0),
+				mine: t('categoryMine', lang),
+				download: t('printSelected', lang),
+				storageKey: USER_COLLECTION_KEY
+			}) as string | null
 		};
 	}
 
@@ -102,7 +118,8 @@ export const load: PageLoad = async ({ params }) => {
 			designs,
 			heroIds: { desktop: [...HERO_HEART_IDS], mobile: [...HERO_HEART_IDS_MOBILE] },
 			heroMarkup: null,
-			heroScript: null as string | null
+			heroScript: null as string | null,
+			strandScript: null as string | null
 		};
 	}
 
@@ -131,6 +148,7 @@ export const load: PageLoad = async ({ params }) => {
 			desktop: HERO_HEART_IDS.map(() => CLAIM_PRERENDERED),
 			mobile: HERO_HEART_IDS_MOBILE.map(() => CLAIM_PRERENDERED)
 		},
-		heroScript: null as string | null
+		heroScript: null as string | null,
+		strandScript: null as string | null
 	};
 };

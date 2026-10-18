@@ -300,6 +300,7 @@
     onClick={handleClick}
     onDelete={requestDelete}
     onLayout={handleGalleryLayout}
+    strandScript={data.strandScript}
   />
 
   <!-- Hangs the hero's hearts while the page is still parsing. It clones them

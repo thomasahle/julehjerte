@@ -178,6 +178,64 @@
 		}
 	}
 
+	/* Before hydration the cards have no strand of their own yet (HeartCard's
+	   --strand comes with `columns`, which the gallery measures), but the
+	   inline strand script ($lib/front/strandBootstrap) has already put each
+	   column's drop on <html> as --strand-<k> and the column count in a
+	   `strands-<n>` class. These hang every card from its column for the
+	   first paint; the gallery's own values replace them, the same numbers,
+	   and it removes the classes once it has measured. The grid has three to
+	   five columns on the desktop layout (1280px fits five). */
+	@media (min-width: 900px) {
+		:global(html.strands-3) .cat:not(.apart) .cat-grid > :global(:nth-child(3n + 1)) {
+			--strand: var(--strand-0);
+		}
+
+		:global(html.strands-3) .cat:not(.apart) .cat-grid > :global(:nth-child(3n + 2)) {
+			--strand: var(--strand-1);
+		}
+
+		:global(html.strands-3) .cat:not(.apart) .cat-grid > :global(:nth-child(3n + 3)) {
+			--strand: var(--strand-2);
+		}
+
+		:global(html.strands-4) .cat:not(.apart) .cat-grid > :global(:nth-child(4n + 1)) {
+			--strand: var(--strand-0);
+		}
+
+		:global(html.strands-4) .cat:not(.apart) .cat-grid > :global(:nth-child(4n + 2)) {
+			--strand: var(--strand-1);
+		}
+
+		:global(html.strands-4) .cat:not(.apart) .cat-grid > :global(:nth-child(4n + 3)) {
+			--strand: var(--strand-2);
+		}
+
+		:global(html.strands-4) .cat:not(.apart) .cat-grid > :global(:nth-child(4n + 4)) {
+			--strand: var(--strand-3);
+		}
+
+		:global(html.strands-5) .cat:not(.apart) .cat-grid > :global(:nth-child(5n + 1)) {
+			--strand: var(--strand-0);
+		}
+
+		:global(html.strands-5) .cat:not(.apart) .cat-grid > :global(:nth-child(5n + 2)) {
+			--strand: var(--strand-1);
+		}
+
+		:global(html.strands-5) .cat:not(.apart) .cat-grid > :global(:nth-child(5n + 3)) {
+			--strand: var(--strand-2);
+		}
+
+		:global(html.strands-5) .cat:not(.apart) .cat-grid > :global(:nth-child(5n + 4)) {
+			--strand: var(--strand-3);
+		}
+
+		:global(html.strands-5) .cat:not(.apart) .cat-grid > :global(:nth-child(5n + 5)) {
+			--strand: var(--strand-4);
+		}
+	}
+
 	.cat-head {
 		display: flex;
 		align-items: baseline;

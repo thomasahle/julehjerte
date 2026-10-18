@@ -4,7 +4,9 @@ import { normalizeHeartDesign, serializeHeartDesign, parseHeartFromSVG } from '$
 import { writeStorage } from '$lib/utils/safeStorage';
 import { trackHeartLoadError, trackSvgParseError } from '$lib/analytics';
 
-const STORAGE_KEY = 'julehjerte-collection';
+/** Where the visitor's own hearts are kept; the front page's inline strand script reads it too. */
+export const USER_COLLECTION_KEY = 'julehjerte-collection';
+const STORAGE_KEY = USER_COLLECTION_KEY;
 
 export function getUserCollection(): HeartDesign[] {
   if (!browser) return [];

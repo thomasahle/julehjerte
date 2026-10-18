@@ -57,6 +57,14 @@
 		 * sees where a category's hearts are rather than its box. 0: none.
 		 */
 		strandRoom?: number;
+		/**
+		 * The gallery has measured the hill, so `lifts` are final (desktop
+		 * only). Until then the chip row is invisible there: the lifts depend
+		 * on laid-out text, so the prerendered page cannot know them, and a
+		 * flat row that then steps down onto the curve is the jump amendment 4
+		 * of GALLERY-CURVE.md removes.
+		 */
+		measured?: boolean;
 		/** "Hent skabeloner": open the download dialog for the ticked hearts. */
 		onDownload: () => void;
 	}
@@ -69,6 +77,7 @@
 		height = $bindable(0),
 		lifts = [],
 		strandRoom = 0,
+		measured = false,
 		onDownload
 	}: Props = $props();
 
@@ -396,6 +405,7 @@
 		aria-label={t('galleryCategories', lang)}
 		bind:this={chipRow}
 		data-hill-chips
+		class:placed={measured}
 	>
 		{#if hasSelection && !narrow}
 			{@render getButton()}
@@ -502,6 +512,26 @@
 	@media (prefers-reduced-motion: no-preference) {
 		.chips {
 			scroll-behavior: smooth;
+		}
+	}
+
+	/* On the desktop layout the chips rest on the hill line, at lifts the
+	   gallery measures after hydration. Until it has (`placed`), the row and
+	   the download button in it are invisible, not flat: they appear where
+	   they belong (GALLERY-CURVE.md amendment 4). Visibility and opacity
+	   only, so the bar's layout is the same either way. Without JavaScript
+	   (html.no-js, see app.html) nothing will place them, and the flat row
+	   is the fallback. Below 900 nothing waits. */
+	@media (min-width: 900px) {
+		:global(html:not(.no-js)) .chips:not(.placed) {
+			visibility: hidden;
+			opacity: 0;
+		}
+	}
+
+	@media (min-width: 900px) and (prefers-reduced-motion: no-preference) {
+		.chips.placed {
+			transition: opacity 150ms ease-out;
 		}
 	}
 
