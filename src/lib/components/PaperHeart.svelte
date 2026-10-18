@@ -52,6 +52,7 @@
 	import { LOBE_OUTLINE_COLORS } from '$lib/editor/outlineColors';
 	import { findNearestOppositeAnchor, snapOppositeRadiusPx } from '$lib/editor/snapOpposite';
 	import { toggleNumberInList } from '$lib/editor/selection';
+	import { wheelZoomFactor } from '$lib/editor/wheelZoom';
 	import {
 		DEFAULT_COLORS,
 		DEFAULT_COLORS_HEX,
@@ -2094,9 +2095,8 @@
 		const isLineWheel = event.deltaMode === 1;
 		if (event.ctrlKey || isLineWheel) {
 			event.preventDefault();
-			const zoomScale = isLineWheel ? 0.05 : 0.01;
-			const delta = -event.deltaY * zoomScale;
-			const newZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, userZoom * (1 + delta)));
+			const factor = wheelZoomFactor(event.deltaY, event.deltaMode);
+			const newZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, userZoom * factor));
 			if (newZoom !== userZoom) {
 				const rect = svgEl.getBoundingClientRect();
 				// Measured from the heart's resting centre (the fit band's), which is
