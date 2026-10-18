@@ -31,6 +31,15 @@ test('the matching preference can change cut count and colour phase without forc
   assert.ok(matching.attempts.filter(a=>!a.refined).every(a=>!a.withinAllowance),'Copying either independent sheet must still fail this fixture.');
   const found=matching.attempts.find(a=>a.proposal==='matching-grid'&&a.withinAllowance&&a.geometryPassed&&a.paperPassed);
   assert.ok(found);assert.deepEqual(found.counts,[3,3]);assert.equal(found.phase,1);
+  for(const [i,attempt]of matching.attempts.entries())if(attempt.continuation){
+    const previous=matching.attempts[i-1];
+    assert.ok(previous.withinAllowance&&previous.featuresPassed&&previous.geometryPassed&&previous.paperPassed);
+    assert.ok(previous.steps+attempt.steps<=200,'Finishing a successful exploration slice must preserve its total step cap.');
+    if(attempt.accepted){
+      assert.ok(attempt.featuresPassed&&attempt.geometryPassed&&attempt.paperPassed);
+      assert.ok(attempt.imageError<previous.imageError,'Additional matching work must improve the checked incumbent.');
+    }
+  }
   assert.deepEqual(report.solver.selectedCounts,[3,3]);
   assert.deepEqual(report.slits,{left:3,right:3});
   const exported=loadSolutionJSON(result.files['cut_geometry.json']);
