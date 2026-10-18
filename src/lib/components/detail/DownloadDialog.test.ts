@@ -150,6 +150,32 @@ describe('DownloadDialog', () => {
 		expect(view.q<HTMLInputElement>('#download-hearts')!.value).toBe('1');
 	});
 
+	it('closes from a 44 px ✕ in its header, named Luk / Close', async () => {
+		for (const [lang, name] of [['da', 'Luk'], ['en', 'Close']] as const) {
+			const onClose = vi.fn();
+			const target = document.createElement('div');
+			document.body.appendChild(target);
+			const design = loadHeart('classic-3x3');
+			const component = mount(DownloadDialog, {
+				target,
+				props: { designs: [design], heartId: design.id, heartName: 'Klassisk', lang, open: true, onClose }
+			});
+			cleanup.push(() => {
+				unmount(component);
+				target.remove();
+			});
+			await settle();
+			const close = target.querySelector<HTMLButtonElement>('[data-testid="download-close"]')!;
+			expect(close.getAttribute('aria-label')).toBe(name);
+			expect(close.classList.contains('btn-icon')).toBe(true);
+			expect(close.classList.contains('btn-sm')).toBe(false); // .btn is 44 px; .btn-sm would be 40
+			// In the header, beside the title, not at the bottom with "Annuller".
+			expect(close.parentElement!.querySelector('h2')!.id).toBe('download-dialog-title');
+			close.click();
+			expect(onClose).toHaveBeenCalledTimes(1);
+		}
+	});
+
 	it('shows the real heart in the printer preview, as the PDF renders it', async () => {
 		let finish: (images: Map<string, string>) => void = () => {};
 		vi.mocked(prerenderHeartImages).mockImplementationOnce(

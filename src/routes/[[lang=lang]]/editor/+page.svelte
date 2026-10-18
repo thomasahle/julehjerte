@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { beforeNavigate, goto } from '$app/navigation';
+  import { settleOverlayHistory } from '$lib/utils/overlayHistory';
   import { onMount, tick } from 'svelte';
   import PaperHeart from '$lib/components/PaperHeart.svelte';
   import { pageTitle } from '$lib/seo';
@@ -405,6 +406,9 @@
     // from this would turn a Tegn → Mal → Tegn round trip into "Mit hjerte fra
     // billede".
     setMask(mask, { sourceName: design.name, symmetry: found, found });
+    // The confirmation just closed; its history entry has to be off before
+    // the navigation pushes one, or the back would land after it.
+    await settleOverlayHistory();
     await goto(href('paint', lang));
   }
 

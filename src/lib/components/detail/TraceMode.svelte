@@ -61,6 +61,7 @@
 		type Point,
 		type TraceView
 	} from '$lib/utils/trace';
+	import { openOverlay } from '$lib/utils/overlayHistory';
 
 	interface Props {
 		design: HeartDesign;
@@ -165,7 +166,15 @@
 				rootEl?.focus();
 			});
 
+			// Back closes the mode, as it would leave any full-screen view; a
+			// locked screen refuses, and the entry is pushed again.
+			const releaseHistory = openOverlay('trace', () => {
+				close();
+				return !open;
+			});
+
 			return () => {
+				releaseHistory();
 				cancelHold();
 				saveSettings();
 				body.style.overflow = previousOverflow;

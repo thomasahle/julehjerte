@@ -31,7 +31,7 @@
 	import { tick, untrack } from 'svelte';
 	import Modal from '$lib/components/Modal.svelte';
 	import { ToggleGroup, ToggleGroupItem } from '$lib/components/ui/toggle-group';
-	import { DownloadIcon } from '$lib/components/icons';
+	import { CloseIcon, DownloadIcon } from '$lib/components/icons';
 	import { t, type Language } from '$lib/i18n';
 	import { getGalleryDesign } from '$lib/data/heartDesigns';
 	import type { HeartDesign } from '$lib/types/heart';
@@ -459,14 +459,27 @@
 
 <Modal {open} labelledBy="download-dialog-title" width="min(860px, 100%)" {onClose}>
 	<div class="download">
-		<h2 id="download-dialog-title" class="title">
-			{#if several}
-				{t('getTemplatesTitle', lang)}
-				<span class="title-count" data-testid="download-count">{designs.length}</span>
-			{:else}
-				{t('getTemplateTitle', lang)}
-			{/if}
-		</h2>
+		<div class="head">
+			<h2 id="download-dialog-title" class="title">
+				{#if several}
+					{t('getTemplatesTitle', lang)}
+					<span class="title-count" data-testid="download-count">{designs.length}</span>
+				{:else}
+					{t('getTemplateTitle', lang)}
+				{/if}
+			</h2>
+			<!-- At every width: on a phone "Annuller" sits below the fold of a
+			     scrolling dialog, and the scrim around it is a thin strip. -->
+			<button
+				class="btn btn-ghost btn-icon close"
+				type="button"
+				aria-label={t('close', lang)}
+				data-testid="download-close"
+				onclick={onClose}
+			>
+				<CloseIcon size={18} />
+			</button>
+		</div>
 
 		<div class="body">
 			<div class="controls">
@@ -668,10 +681,24 @@
 		gap: 18px;
 	}
 
+	.head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px;
+	}
+
+	/* Pulled into the card's padding so its glyph sits near the edge. */
+	.close {
+		flex: none;
+		margin-right: -10px;
+	}
+
 	.title {
 		display: flex;
 		align-items: center;
 		gap: 10px;
+		min-height: 44px;
 		margin: 0;
 		font-size: 24px;
 	}
