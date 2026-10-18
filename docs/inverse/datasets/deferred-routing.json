@@ -188,8 +188,8 @@
     "scope": "Three native-mask quality checks plus a stalled first grid followed by actual coarse and feature routing, with independent export, geometry, paper and feature checks."
   },
   "pending": [
-    "production browser comparison",
-    "complete inverse suite"
+    "complete inverse suite",
+    "resolve strict Viking timing/fidelity comparison before refreshing stable preview"
   ],
   "standardVerification": {
     "state": "tmp/heart-learning/deferred-routing-2026-10-18/qa/state.json",
@@ -229,5 +229,109 @@
     "typeWarnings": 7,
     "lintErrors": 0,
     "lintWarnings": 3
+  },
+  "browserVerification": {
+    "comparison": "tmp/heart-learning/deferred-routing-2026-10-18/browser/comparison.json",
+    "comparisonSha256": "bd93e2f0a0b3169ce5248958d795045de70c928cc7aba8dcc657c5327b8ff2af",
+    "functionalPasses": 33,
+    "cases": 33,
+    "strictComparisonPassed": false,
+    "issues": [
+      "hard-flettede-viking: Error increase: engineError",
+      "hard-flettede-viking: Error increase: sourceEditableError",
+      "hard-flettede-viking: Error increase: paintingEditableError"
+    ],
+    "hunodan": {
+      "passed": 22,
+      "underTenSeconds": 22,
+      "maximumSeconds": 8.593299999952317,
+      "medianSeconds": 5.593700000047684,
+      "engineNativeAndPaintErrorsUnchanged": true
+    },
+    "stars": [
+      {
+        "name": "hard-bibel-star-outline",
+        "seconds": 7.6475,
+        "previousSeconds": 19.704200000047685,
+        "errors": {
+          "engineError": {
+            "previous": 0.00685625,
+            "current": 0.00685625
+          },
+          "sourceEditableError": {
+            "previous": 0.00696875,
+            "current": 0.00696875
+          },
+          "paintingEditableError": {
+            "previous": 0.00696875,
+            "current": 0.00696875
+          }
+        },
+        "passed": true,
+        "issues": [],
+        "cutGeometryIdentical": true,
+        "editableSVGIdentical": true
+      },
+      {
+        "name": "hard-bibel-star-outline-half",
+        "seconds": 7.0855,
+        "previousSeconds": 19.127099999904633,
+        "errors": {
+          "engineError": {
+            "previous": 0.0049926524949571475,
+            "current": 0.0049926524949571475
+          },
+          "sourceEditableError": {
+            "previous": 0.005120435191354588,
+            "current": 0.005120435191354588
+          },
+          "paintingEditableError": {
+            "previous": 0.00945,
+            "current": 0.00945
+          }
+        },
+        "passed": true,
+        "issues": [],
+        "cutGeometryIdentical": true,
+        "editableSVGIdentical": true
+      },
+      {
+        "name": "hard-bibel-star-outline-jpeg75",
+        "seconds": 7.258299999952317,
+        "previousSeconds": 19.611900000095368,
+        "errors": {
+          "engineError": {
+            "previous": 0.0070125,
+            "current": 0.0070125
+          },
+          "sourceEditableError": {
+            "previous": 0.00710625,
+            "current": 0.00710625
+          },
+          "paintingEditableError": {
+            "previous": 0.00710625,
+            "current": 0.00710625
+          }
+        },
+        "passed": true,
+        "issues": [],
+        "cutGeometryIdentical": true,
+        "editableSVGIdentical": true
+      }
+    ],
+    "viking": {
+      "case": "hard-flettede-viking",
+      "newPolicyActivated": false,
+      "refinedCandidateReportsIdentical": true,
+      "oldSharingAccepted": 6,
+      "newSharingAccepted": 7,
+      "oldLastPolishStep": 119,
+      "newLastPolishStep": 84,
+      "oldInitialPolishError": 0.02275625,
+      "newInitialPolishError": 0.02271875,
+      "errorPixelsIncrease": 20,
+      "finding": "Candidate assessment is identical. Recorded divergence is after selection, in deadline-limited sharing and polishing. The grid-first policy is inactive. This locates the difference but is not a controlled causal replay; no-regression comparison remains failed.",
+      "next": "Controlled replays should test timing variability and preserving enough polishing time after sharing. Keep all actual validity and fidelity gates."
+    }
   }
 }

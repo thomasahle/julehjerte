@@ -42,6 +42,30 @@ The resulting exported template must still pass independent geometry, paper,
 feature and original-image checks. This test and all three native-mask quality
 regressions pass.
 
+## Production browser verification
+
+All 33 upload-to-editable-export workflows passed on the production build. Every
+regular Hunodan case stayed below ten seconds (median 5.59 s, maximum 8.59 s),
+with exactly unchanged engine, native editable, and enlarged Paint errors.
+
+The three photographic stars reached the editable result in 7.65, 7.09 and
+7.26 seconds, versus 19.70, 19.13 and 19.61 seconds previously. Their exported
+curve JSON and editable SVG files were byte-for-byte identical. The worker
+reports confirm that they refined ordinary grids and never needed the deferred
+routing fallbacks. These browser comparisons are individual runs, not repeated
+timing distributions.
+
+The strict overall comparison **failed** on the Viking, despite passing its
+ordinary acceptance and independent geometry/paper checks. Its native editable
+error rose from 2.01375% to 2.02625% (20 of 160,000 pixels). The new scheduling
+policy was inactive for that case, and every refined-candidate assessment was
+identical to the previous run. The first recorded difference is in timed sharing
+and polishing: sharing changed the selected geometry, and polishing stopped at
+step 84 instead of 119. This locates the divergence after candidate selection;
+it does not by itself establish causality or excuse the failed comparison.
+The original failure is preserved. Controlled timing diagnosis remains open,
+and the stable preview has not been updated to this build.
+
 The frozen fixture records only classified pixels, source/crop provenance and
 settings. No saved curves enter the fit. Browser checks separately repeat photo
 upload, automatic cropping, worker fitting, and editable SVG/PDF export.
