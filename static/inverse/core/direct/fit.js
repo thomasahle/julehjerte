@@ -358,7 +358,14 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery){
   // Keep the longer reserve for speculative improvements to retained regions.
   // Only an absent feature justifies starting inside the shorter tail.
   const featureTimeAvailable=(minimum=3500)=>!symmetryRequested&&deadline-performance.now()>minimum;
-  if(missingFeature&&featureTimeAvailable(2500))initializeEarlyFeature(features.regions.flatMap((r,j)=>(r.retainedFraction<features.minimumRetention||r.enclosureLost)?[j]:[]));
+  // A partial-feature preference already earned the first refinement window.
+  // On a short request, another feature initializer and clearance comparison
+  // can consume that window before its selected grid gets a useful fit.
+  // Keep all ordinary finalists and the existing routing fallback; neither
+  // this scheduling preference nor an unresolved region certifies a result.
+  const refinePartialFirst=shortBudget&&partialPreferredGrid;
+  if(finalistPreference)finalistPreference.shortBudgetRefinementFirst=refinePartialFirst;
+  if(missingFeature&&!refinePartialFirst&&featureTimeAvailable(2500))initializeEarlyFeature(features.regions.flatMap((r,j)=>(r.retainedFraction<features.minimumRetention||r.enclosureLost)?[j]:[]));
   if(interiorRetry&&weakRegion!==null&&featureTimeAvailable())initializeEarlyFeature([weakRegion],weakRegion,'before-recovery');
   // Retaining a large region does not mean a coarse grid keeps its branches.
   // Only shorten routing when colour protection selected a better-fitting
@@ -681,7 +688,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery){
     // Weak-region starts already retain every source feature. Like ordinary
     // grids, their apparent improvement can disappear under the strip-width
     // constraint; compare the retained ordinary finalist before committing.
-    if(i===0&&!clearanceComparison&&!weights&&!symmetryRequested&&(!featureSeed(selected)||earlyFeatureInitialization?.trigger==='weak-region')&&deadline-performance.now()>2500){
+    if(i===0&&!clearanceComparison&&!refinePartialFirst&&!weights&&!symmetryRequested&&(!featureSeed(selected)||earlyFeatureInitialization?.trigger==='weak-region')&&deadline-performance.now()>2500){
       const retry=clearanceComparisonSeed(fine.slice(i+1).filter(r=>!featureSeed(r)),selected,clear);
       if(retry){
         const at=performance.now(),alternate=prepareRefinement(retry,deadline-at);
