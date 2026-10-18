@@ -20,19 +20,18 @@ export function smallInteriorFeatures(source,features,cfg){
 /** Pixel retention is useful while proposing a routing, but cannot certify an
  * opening that has become a channel to the background. Keep that extra final
  * check separate from coarse seed acceptance. This is a raster enclosure
- * check for substantial interior regions with source-supported enclosures,
- * not an exact topology proof. Larger checker contacts remain ambiguous.
+ * check for small, substantial interior regions, not an exact topology proof.
  */
 export function auditFeatureFidelity(source,woven,cfg,features=imageFeatures(source,cfg.width)){
   const retention=auditImageFeatures(source,woven,cfg.width,features);
-  const selected=[...smallInteriorFeatures(source,features,cfg),...stableInteriorFeatures(source,features,cfg)];
+  const selected=smallInteriorFeatures(source,features,cfg);
   if(!selected.length)return retention;
   const components=featureComponentMetrics(source,woven,cfg.width,selected);
   const opened=new Set(selected.filter((_,i)=>components[i].touchesBorder===true));
   const regions=retention.regions.map((r,i)=>opened.has(features[i])?{...r,enclosureLost:true}:r);
   const missing=regions.filter(r=>r.retainedFraction<retention.minimumRetention||r.enclosureLost);
   return{...retention,passed:!missing.length,regions,missing,enclosures:{components,opened:opened.size},
-    method:retention.method+' Source-supported interior regions must also remain separate from the square boundary.'};
+    method:retention.method+' Small interior regions must also remain separate from the square boundary.'};
 }
 
 /** Cleanup may improve an imperfect candidate, but cannot open a region that

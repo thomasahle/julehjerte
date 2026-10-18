@@ -33,7 +33,7 @@ function enclosureSupport(source){
   const result={n,mask:mask.slice(),observed,radiusPixels,borderReachable};cache.set(source,result);return result;
 }
 
-/** Larger-feature enclosure evidence; small-feature protection is separate.
+/** Additional candidates only: existing small-feature protection is separate.
  * Same-colour neighbours may merge inside a protected group. What matters here
  * is whether that group can reach the square or an unobserved region after a
  * small dilation. No source or predicted pixels are changed. */
