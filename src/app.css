@@ -346,3 +346,53 @@
     color: var(--green);
   }
 }
+
+/*
+ * Printing (QA round 3). Chrome lays a page out at the paper's width (about
+ * 720px on A4), so prints get the narrow layout. The rules here only take out
+ * what makes no sense on paper and keep things whole across page breaks.
+ * !important because the components' own scoped rules are more specific.
+ */
+@media print {
+  /* Controls: the sticky gallery bar (it printed over a card mid-page), the
+     header's menu and links, the footer's colour swatches, the tick boxes and
+     the hero's scroll hint. The wordmark and the footer's credit stay. */
+  .gallery-bar,
+  .skip-link,
+  .nav-links,
+  .nav-actions,
+  .nav-burger,
+  .nav-menu,
+  .site-footer .colors,
+  .card .pick,
+  .card .delete-btn,
+  .scroll-hint {
+    display: none !important;
+  }
+
+  /* Whole hearts, steps and the heart page's panel on one sheet each. */
+  .card,
+  .step,
+  .panel-col,
+  .stage-col,
+  figure {
+    break-inside: avoid;
+  }
+
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+
+  /* Without "Background graphics" (Chrome's default) these lost their colour:
+     the ribbons printed as white boxes, the difficulty dots vanished and the
+     primary buttons were white text on white. */
+  .ribbon,
+  .dot,
+  .btn-primary,
+  .chip-count {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}
