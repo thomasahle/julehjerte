@@ -1283,7 +1283,17 @@
       "status": "in_progress"
     },
     "appChecks": {
-      "status": "in_progress",
+      "status": "passed",
+      "sourceCommit": "d5c31a98",
+      "check": "passed (six existing warnings)",
+      "lint": "passed (four existing warnings)",
+      "vitest": {
+        "testFiles": 112,
+        "passed": 1570,
+        "skipped": 1,
+        "failed": 0
+      },
+      "build": "passed",
       "logPrefix": "/tmp/julehjerte-feature-routing-"
     }
   }
