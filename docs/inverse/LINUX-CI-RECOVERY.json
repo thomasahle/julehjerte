@@ -124,7 +124,7 @@
     "A late feature start reserved 450 ms for a polish that could no longer start after assessment. Lending that time to its unfinished refinement improved the source fit without extending the ten-second request.",
     "The Viking continuation repeatedly gave the whole 400 ms repair allowance to hidden-only controls, starving the existing general-control fallback. A local split-budget experiment reduced independent error from 0.01941875 to 0.0186625 without extending the continuation."
   ],
-  "remaining": "Main remains red; no recovery fix has been transferred to main. Latest complete normal-clock Linux replay passed 1108/1124 tests (16 failures), source 999b4072. Subsequent paper verification passes 30 focused Linux regressions, and feature priority fixes all three puppy variants on Linux. Focused feature replay 39177873822 still has five failures. Verified-rerouting comparison fix d5c31a98 passes seven local regressions and is running on Linux (39178247328). No full-suite/release pass or NN resumption is claimed.",
+  "remaining": "Main remains red; no recovery fix has been transferred to main. Latest complete normal-clock Linux replay passed 1108/1124 tests (16 failures), source 999b4072. Subsequent paper verification passes 30 focused Linux regressions; feature priority and verified-rerouting comparison pass all 26 focused Linux feature/geometry/budget tests (39178247328, source d5c31a98). All required app checks pass at d5c31a98. Prior focused timing failures remain relevant; no full-suite/release pass or NN resumption is claimed.",
   "branchSafety": "codex/ci-inverse-diagnostics replaces the Pages workflow with manual diagnostics. Never merge that entire branch to main. Transfer only verified fixes from codex/solver-initialization.",
   "limitations": [
     "No fresh 22-design Hunodan speed benchmark in this CI recovery pass.",
@@ -1280,7 +1280,11 @@
       "url": "https://github.com/thomasahle/julehjerte/actions/runs/39178247328",
       "diagnosticCommit": "26bd56ed",
       "mode": "feature-detail",
-      "status": "in_progress"
+      "status": "completed",
+      "conclusion": "success",
+      "passed": 26,
+      "failed": 0,
+      "log": "/tmp/julehjerte-ci-rerouting-comparison.log"
     },
     "appChecks": {
       "status": "passed",
