@@ -713,6 +713,11 @@ The website's existing `LICENSE` contains GPL-3 text while its README says MIT. 
 
 ## Exact solvability in the regular alternating-weave model
 
+The short paper [Exact solvability of regular alternating paper-heart patterns](../../output/pdf/exact-weave-solvability.pdf)
+gives a formal statement, proofs and two diagrams. Its self-contained
+[LaTeX source](exact-weave-solvability.tex) compiles with `pdflatex` (run twice
+to resolve references).
+
 The renderer uses `M = phase XOR A XOR B`, where `A` and `B` are the alternating
 strip parities of the two sheets. This is a restriction on the weave as well as
 on its cuts: arbitrary over/under choices, stopped interior cuts and extra
