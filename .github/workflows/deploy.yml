@@ -6,7 +6,7 @@ on:
       mode:
         type: choice
         default: full
-        options: [full, cold, resources, retained-grid, paper-finalists, paper-repair, budgets, remaining, bicycle, comparison, maple, polish, late-clearance, profile, shared-runtime]
+        options: [full, cold, resources, retained-grid, source-resolution, paper-finalists, paper-repair, budgets, remaining, bicycle, comparison, maple, polish, late-clearance, profile, shared-runtime]
         description: Full diagnostics or focused normal-budget regressions
 permissions:
   contents: read
@@ -58,6 +58,9 @@ jobs:
       - name: Verify retained-grid priority and traced-feature fallbacks
         if: inputs.mode == 'retained-grid'
         run: node --test --test-concurrency=1 scripts/inverse/interior-counts.test.mjs scripts/inverse/weak-feature-routing.test.mjs scripts/inverse/feature-refinement.test.mjs scripts/inverse/deferred-routing.test.mjs scripts/inverse/short-budget-features.test.mjs scripts/inverse/matching-seeds.test.mjs scripts/inverse/kernel-choice.test.mjs scripts/inverse/clearance-feature-geometry.test.mjs
+      - name: Verify source-resolution grid refinement and unchanged objectives
+        if: inputs.mode == 'source-resolution'
+        run: node --test --test-concurrency=1 scripts/inverse/interior-counts.test.mjs scripts/inverse/paper-resolution-finalist.test.mjs scripts/inverse/weighted-pipeline.test.mjs scripts/inverse/symmetry-fit.test.mjs scripts/inverse/feature-refinement.test.mjs scripts/inverse/weak-feature-routing.test.mjs
       - name: Replay explicit fitting and paper verification allowances
         if: inputs.mode == 'budgets'
         run: node --test --test-concurrency=1 scripts/inverse/clearance-feature-budget.test.mjs scripts/inverse/clearance-feature-late.test.mjs scripts/inverse/clearance-feature.test.mjs scripts/inverse/feature-finalists.test.mjs scripts/inverse/feature-near-miss.test.mjs scripts/inverse/weak-feature-routing.test.mjs scripts/inverse/paper-rollback.test.mjs scripts/inverse/late-cleanup.test.mjs
