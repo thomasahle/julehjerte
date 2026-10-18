@@ -1010,8 +1010,45 @@
       "status": "running"
     },
     "appChecks": {
-      "status": "running",
-      "logPrefix": "/tmp/julehjerte-return-cache-"
+      "sourceCommit": "999b4072",
+      "status": "completed",
+      "checks": [
+        {
+          "check": "check",
+          "exitCode": 0,
+          "log": "/tmp/julehjerte-return-cache-check.log"
+        },
+        {
+          "check": "lint",
+          "exitCode": 0,
+          "log": "/tmp/julehjerte-return-cache-lint.log"
+        },
+        {
+          "check": "vitest",
+          "exitCode": 0,
+          "log": "/tmp/julehjerte-return-cache-vitest.log"
+        },
+        {
+          "check": "build",
+          "exitCode": 0,
+          "log": "/tmp/julehjerte-return-cache-build.log"
+        }
+      ],
+      "typecheck": {
+        "errors": 0,
+        "existingWarnings": 6
+      },
+      "lint": {
+        "errors": 0,
+        "existingWarnings": 4
+      },
+      "vitest": {
+        "files": 112,
+        "passed": 1570,
+        "skipped": 1
+      },
+      "build": "pass",
+      "generatedOgImage": "restored after build"
     }
   }
 }
