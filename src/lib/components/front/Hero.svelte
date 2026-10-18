@@ -193,6 +193,20 @@
 		padding-top: 8px;
 	}
 
+	/* The drawing's two leftmost stars and its first five snow dots fall inside
+	   the text column (heading, paragraph, buttons) somewhere between 900 and
+	   1920px, where a gold star sat on "i editoren" and dots between the lines.
+	   Only this page's copy loses them, and only on the desktop layout: below
+	   900 the drawing is a band under the text, and the heart page lays its
+	   panel out elsewhere. Hidden, not moved, so the drawing's box, and with it
+	   the hill line the gallery follows, is the same. */
+	@media (min-width: 900px) {
+		.hero-inner ~ :global([data-scene-land] #stars > use:nth-child(-n + 2)),
+		.hero-inner ~ :global([data-scene-land] #snowflakes > circle:nth-child(-n + 5)) {
+			display: none;
+		}
+	}
+
 	.hero-hearts {
 		position: relative;
 	}

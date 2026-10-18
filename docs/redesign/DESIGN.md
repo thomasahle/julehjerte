@@ -112,6 +112,12 @@ shift, and no fade: the hearts are there from the first frame that has anything 
 within the set; user-created hearts are not in the HTML, so they are excluded by construction. The load
 function reads the draw back off `html[data-hero-hearts]` so hydration renders the same links.
 
+**Sky behind the text:** from 900 up the front page hides the drawing's first two stars and first five snow
+dots (`#stars > use:nth-child(-n+2)`, `#snowflakes > circle:nth-child(-n+5)`, Hero.svelte): somewhere between
+900 and 1920px each of them falls inside the text column, and one star sat on the paragraph's words (QA,
+2026-10-18). Hidden, not moved, so the drawing's box and the hill line are unchanged; the heart page and the
+phone band keep them.
+
 ### Hero (< 900px)
 Stacked and centred (padding `0 24px 22px`): a hearts block (width 100%, max 420, height 250) with three
 hearts — jul at left 4% (size 96, ribbon 130), stjerne at right 4% (90, 96), classic-3x3 centred (170, 40) —
