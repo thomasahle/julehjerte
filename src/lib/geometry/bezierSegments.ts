@@ -72,7 +72,7 @@ function quadraticToCubic(start: Vec, control: Vec, end: Vec): BezierSegment {
 
 // Convert arc to cubic bezier segments
 // Based on the SVG arc implementation algorithm
-function arcToCubic(
+export function arcToCubic(
   start: Vec,
   rx: number,
   ry: number,
@@ -157,8 +157,12 @@ function arcToCubic(
   const numSegments = Math.ceil(Math.abs(dTheta) / (Math.PI / 2));
   const deltaPerSegment = dTheta / numSegments;
 
-  // Magic number for cubic bezier arc approximation
-  // k = (4/3) * tan(angle/4)
+  // Control-point distance along the tangent for a cubic approximating an arc of
+  // angle d, per unit of the tangent's length (L. Maisonobe, "Drawing an elliptical
+  // arc using polylines, quadratic or cubic Bézier curves", 2003):
+  //   alpha = sin(d) * (sqrt(4 + 3 tan²(d/2)) - 1) / 3,  (√7 - 1)/3 ≈ 0.5486 for 90°.
+  // (The circle-midpoint choice 4/3 tan(d/4) ≈ 0.5523 would move the gallery's
+  // arcs by up to 0.013 px; this one is what their committed data was built with.)
   const alpha = Math.sin(deltaPerSegment) * (Math.sqrt(4 + 3 * Math.tan(deltaPerSegment / 2) ** 2) - 1) / 3;
 
   let currentAngle = theta1;
@@ -172,11 +176,11 @@ function arcToCubic(
     const cosEnd = Math.cos(nextAngle);
     const sinEnd = Math.sin(nextAngle);
 
-    // Points on the ellipse in transformed space
-    const p1x = cx + rx * (cosAngle * cosStart - sinAngle * sinStart);
-    const p1y = cy + rx * (sinAngle * cosStart + cosAngle * sinStart) * (ry / rx);
-    const p4x = cx + rx * (cosAngle * cosEnd - sinAngle * sinEnd);
-    const p4y = cy + rx * (sinAngle * cosEnd + cosAngle * sinEnd) * (ry / rx);
+    // Points on the (rotated) ellipse: centre + R(phi) * (rx cos t, ry sin t)
+    const p1x = cx + rx * cosAngle * cosStart - ry * sinAngle * sinStart;
+    const p1y = cy + rx * sinAngle * cosStart + ry * cosAngle * sinStart;
+    const p4x = cx + rx * cosAngle * cosEnd - ry * sinAngle * sinEnd;
+    const p4y = cy + rx * sinAngle * cosEnd + ry * cosAngle * sinEnd;
 
     // Tangent vectors
     const t1x = -rx * cosAngle * sinStart - ry * sinAngle * cosStart;
@@ -209,100 +213,142 @@ function arcToCubic(
   return segments;
 }
 
-export function parsePathDataToSegments(pathData: string): BezierSegment[] {
-  const segments: BezierSegment[] = [];
-  const commands = pathData.match(/[MmLlHhVvCcSsQqTtAaZz][^MmLlHhVvCcSsQqTtAaZz]*/g) || [];
+const ARG_COUNTS: Record<string, number> = { M: 2, L: 2, H: 1, V: 1, C: 6, S: 4, Q: 4, T: 2, A: 7, Z: 0 };
+const NUMBER_RE = /[+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?/y;
 
-  // Current position
+/**
+ * Split SVG path data into commands with their numeric arguments, the way the SVG
+ * grammar reads them: numbers may run together (`1.5.5`, `10-20`, `1e-5`), commas and
+ * whitespace are optional separators, and an arc's two flags may be written as single
+ * digits with nothing between them (`a 5 5 0 01 10 0`). Parsing stops at the first
+ * token that is not part of the grammar, keeping what came before (as browsers do).
+ */
+export function tokenizePathData(pathData: string): Array<{ type: string; args: number[] }> {
+  const out: Array<{ type: string; args: number[] }> = [];
+  const s = pathData;
+  let i = 0;
+  const skipSeparators = () => {
+    while (i < s.length && /[\s,]/.test(s[i]!)) i++;
+  };
+  let current: { type: string; args: number[] } | null = null;
+  while (true) {
+    skipSeparators();
+    if (i >= s.length) break;
+    const ch = s[i]!;
+    if (/[MmLlHhVvCcSsQqTtAaZz]/.test(ch)) {
+      current = { type: ch, args: [] };
+      out.push(current);
+      i++;
+      continue;
+    }
+    if (!current) break;
+    const absType = current.type.toUpperCase();
+    const perGroup = ARG_COUNTS[absType] ?? 0;
+    if (perGroup === 0) break;
+    const position = current.args.length % perGroup;
+    if (absType === 'A' && (position === 3 || position === 4)) {
+      if (ch !== '0' && ch !== '1') break;
+      current.args.push(ch === '1' ? 1 : 0);
+      i++;
+      continue;
+    }
+    NUMBER_RE.lastIndex = i;
+    const m = NUMBER_RE.exec(s);
+    if (!m) break;
+    current.args.push(Number(m[0]));
+    i += m[0].length;
+  }
+  return out;
+}
+
+/**
+ * Parse SVG path data into its subpaths, each a list of cubic Bézier segments in
+ * absolute coordinates. Every command of the SVG path grammar is read, absolute and
+ * relative: M/L/H/V become straight cubics, Q/T are degree-elevated, S/T reflect the
+ * previous control point, A is converted to cubics (at most 90° each), and Z closes
+ * the subpath with a straight segment when it is not already closed. A subpath with
+ * no drawing command (a bare `M x y`) is left out.
+ */
+export function parsePathDataToSubpaths(pathData: string): BezierSegment[][] {
+  const subpaths: BezierSegment[][] = [];
+  let segments: BezierSegment[] = [];
+  const startSubpath = () => {
+    if (segments.length) subpaths.push(segments);
+    segments = [];
+  };
+
   let currentX = 0;
   let currentY = 0;
-
-  // For Z command - start of current subpath
   let subpathStartX = 0;
   let subpathStartY = 0;
-
   // For S/T smooth commands - previous control point
   let lastControlX = 0;
   let lastControlY = 0;
   let lastCommandType: string | null = null;
+  // After Z the next drawing command (without an M) starts a new subpath at the start point.
+  let closed = false;
 
-  for (const cmd of commands) {
-    const type = cmd[0];
-    if (!type) continue;
-
+  for (const { type, args } of tokenizePathData(pathData)) {
     const isRelative = type === type.toLowerCase();
     const absType = type.toUpperCase();
-
-    const args = cmd
-      .slice(1)
-      .trim()
-      .split(/[\s,]+/)
-      .filter(Boolean)
-      .map(Number);
-
-    // Helper to convert relative to absolute
     const toAbsX = (x: number) => (isRelative ? currentX + x : x);
     const toAbsY = (y: number) => (isRelative ? currentY + y : y);
+    const n = ARG_COUNTS[absType] ?? 0;
+    // Only whole argument groups count; a trailing partial group is ignored.
+    const groups = n ? Math.floor(args.length / n) : 1;
+    if (absType !== 'M' && absType !== 'Z' && closed) {
+      startSubpath();
+      closed = false;
+    }
 
-    switch (absType) {
-      case 'M': {
-        // Move to
-        currentX = toAbsX(args[0] ?? 0);
-        currentY = toAbsY(args[1] ?? 0);
-        subpathStartX = currentX;
-        subpathStartY = currentY;
-        // Handle implicit lineto commands after M (per SVG spec)
-        for (let i = 2; i < args.length; i += 2) {
-          const endX = toAbsX(args[i] ?? 0);
-          const endY = toAbsY(args[i + 1] ?? 0);
+    for (let g = 0; g < groups; g++) {
+      const a = (k: number) => args[g * n + k] ?? 0;
+      switch (absType) {
+        case 'M': {
+          if (g === 0) {
+            startSubpath();
+            closed = false;
+            currentX = toAbsX(a(0));
+            currentY = toAbsY(a(1));
+            subpathStartX = currentX;
+            subpathStartY = currentY;
+          } else {
+            // Implicit lineto after the first pair (per SVG spec)
+            const endX = toAbsX(a(0));
+            const endY = toAbsY(a(1));
+            segments.push(lineToCubic({ x: currentX, y: currentY }, { x: endX, y: endY }));
+            currentX = endX;
+            currentY = endY;
+          }
+          break;
+        }
+        case 'L': {
+          const endX = toAbsX(a(0));
+          const endY = toAbsY(a(1));
           segments.push(lineToCubic({ x: currentX, y: currentY }, { x: endX, y: endY }));
           currentX = endX;
           currentY = endY;
+          break;
         }
-        break;
-      }
-
-      case 'L': {
-        // Line to
-        for (let i = 0; i < args.length; i += 2) {
-          const endX = toAbsX(args[i] ?? 0);
-          const endY = toAbsY(args[i + 1] ?? 0);
-          segments.push(lineToCubic({ x: currentX, y: currentY }, { x: endX, y: endY }));
-          currentX = endX;
-          currentY = endY;
-        }
-        break;
-      }
-
-      case 'H': {
-        // Horizontal line to
-        for (const arg of args) {
-          const endX = isRelative ? currentX + arg : arg;
+        case 'H': {
+          const endX = toAbsX(a(0));
           segments.push(lineToCubic({ x: currentX, y: currentY }, { x: endX, y: currentY }));
           currentX = endX;
+          break;
         }
-        break;
-      }
-
-      case 'V': {
-        // Vertical line to
-        for (const arg of args) {
-          const endY = isRelative ? currentY + arg : arg;
+        case 'V': {
+          const endY = toAbsY(a(0));
           segments.push(lineToCubic({ x: currentX, y: currentY }, { x: currentX, y: endY }));
           currentY = endY;
+          break;
         }
-        break;
-      }
-
-      case 'C': {
-        // Cubic bezier
-        for (let i = 0; i < args.length; i += 6) {
-          const c1x = toAbsX(args[i] ?? 0);
-          const c1y = toAbsY(args[i + 1] ?? 0);
-          const c2x = toAbsX(args[i + 2] ?? 0);
-          const c2y = toAbsY(args[i + 3] ?? 0);
-          const endX = toAbsX(args[i + 4] ?? 0);
-          const endY = toAbsY(args[i + 5] ?? 0);
+        case 'C': {
+          const c1x = toAbsX(a(0));
+          const c1y = toAbsY(a(1));
+          const c2x = toAbsX(a(2));
+          const c2y = toAbsY(a(3));
+          const endX = toAbsX(a(4));
+          const endY = toAbsY(a(5));
           segments.push({
             p0: { x: currentX, y: currentY },
             p1: { x: c1x, y: c1y },
@@ -313,24 +359,20 @@ export function parsePathDataToSegments(pathData: string): BezierSegment[] {
           lastControlY = c2y;
           currentX = endX;
           currentY = endY;
+          break;
         }
-        break;
-      }
-
-      case 'S': {
-        // Smooth cubic bezier
-        for (let i = 0; i < args.length; i += 4) {
-          // Reflect previous control point if last command was C or S
+        case 'S': {
+          // Reflect the previous control point if the last command was C or S
           let c1x = currentX;
           let c1y = currentY;
           if (lastCommandType === 'C' || lastCommandType === 'S') {
             c1x = 2 * currentX - lastControlX;
             c1y = 2 * currentY - lastControlY;
           }
-          const c2x = toAbsX(args[i] ?? 0);
-          const c2y = toAbsY(args[i + 1] ?? 0);
-          const endX = toAbsX(args[i + 2] ?? 0);
-          const endY = toAbsY(args[i + 3] ?? 0);
+          const c2x = toAbsX(a(0));
+          const c2y = toAbsY(a(1));
+          const endX = toAbsX(a(2));
+          const endY = toAbsY(a(3));
           segments.push({
             p0: { x: currentX, y: currentY },
             p1: { x: c1x, y: c1y },
@@ -341,89 +383,80 @@ export function parsePathDataToSegments(pathData: string): BezierSegment[] {
           lastControlY = c2y;
           currentX = endX;
           currentY = endY;
+          lastCommandType = 'S';
+          break;
         }
-        break;
-      }
-
-      case 'Q': {
-        // Quadratic bezier
-        for (let i = 0; i < args.length; i += 4) {
-          const cx = toAbsX(args[i] ?? 0);
-          const cy = toAbsY(args[i + 1] ?? 0);
-          const endX = toAbsX(args[i + 2] ?? 0);
-          const endY = toAbsY(args[i + 3] ?? 0);
+        case 'Q': {
+          const cx = toAbsX(a(0));
+          const cy = toAbsY(a(1));
+          const endX = toAbsX(a(2));
+          const endY = toAbsY(a(3));
           segments.push(quadraticToCubic({ x: currentX, y: currentY }, { x: cx, y: cy }, { x: endX, y: endY }));
           lastControlX = cx;
           lastControlY = cy;
           currentX = endX;
           currentY = endY;
+          lastCommandType = 'Q';
+          break;
         }
-        break;
-      }
-
-      case 'T': {
-        // Smooth quadratic bezier
-        for (let i = 0; i < args.length; i += 2) {
-          // Reflect previous control point if last command was Q or T
+        case 'T': {
+          // Reflect the previous control point if the last command was Q or T
           let cx = currentX;
           let cy = currentY;
           if (lastCommandType === 'Q' || lastCommandType === 'T') {
             cx = 2 * currentX - lastControlX;
             cy = 2 * currentY - lastControlY;
           }
-          const endX = toAbsX(args[i] ?? 0);
-          const endY = toAbsY(args[i + 1] ?? 0);
+          const endX = toAbsX(a(0));
+          const endY = toAbsY(a(1));
           segments.push(quadraticToCubic({ x: currentX, y: currentY }, { x: cx, y: cy }, { x: endX, y: endY }));
           lastControlX = cx;
           lastControlY = cy;
           currentX = endX;
           currentY = endY;
+          lastCommandType = 'T';
+          break;
         }
-        break;
-      }
-
-      case 'A': {
-        // Arc
-        for (let i = 0; i < args.length; i += 7) {
-          const rx = Math.abs(args[i] ?? 0);
-          const ry = Math.abs(args[i + 1] ?? 0);
-          const xAxisRotation = args[i + 2] ?? 0;
-          const largeArcFlag = Boolean(args[i + 3]);
-          const sweepFlag = Boolean(args[i + 4]);
-          const endX = toAbsX(args[i + 5] ?? 0);
-          const endY = toAbsY(args[i + 6] ?? 0);
-
-          const arcSegments = arcToCubic(
-            { x: currentX, y: currentY },
-            rx,
-            ry,
-            xAxisRotation,
-            largeArcFlag,
-            sweepFlag,
-            { x: endX, y: endY }
+        case 'A': {
+          const endX = toAbsX(a(5));
+          const endY = toAbsY(a(6));
+          segments.push(
+            ...arcToCubic(
+              { x: currentX, y: currentY },
+              Math.abs(a(0)),
+              Math.abs(a(1)),
+              a(2),
+              Boolean(a(3)),
+              Boolean(a(4)),
+              { x: endX, y: endY }
+            )
           );
-          segments.push(...arcSegments);
           currentX = endX;
           currentY = endY;
+          break;
         }
-        break;
-      }
-
-      case 'Z': {
-        // Close path
-        if (currentX !== subpathStartX || currentY !== subpathStartY) {
-          segments.push(lineToCubic({ x: currentX, y: currentY }, { x: subpathStartX, y: subpathStartY }));
-          currentX = subpathStartX;
-          currentY = subpathStartY;
+        case 'Z': {
+          if (currentX !== subpathStartX || currentY !== subpathStartY) {
+            segments.push(lineToCubic({ x: currentX, y: currentY }, { x: subpathStartX, y: subpathStartY }));
+            currentX = subpathStartX;
+            currentY = subpathStartY;
+          }
+          closed = true;
+          break;
         }
-        break;
       }
     }
 
     lastCommandType = absType;
   }
 
-  return segments;
+  startSubpath();
+  return subpaths;
+}
+
+/** All the segments of a path, its subpaths one after another (see parsePathDataToSubpaths). */
+export function parsePathDataToSegments(pathData: string): BezierSegment[] {
+  return parsePathDataToSubpaths(pathData).flat();
 }
 
 export function updateFingerSegments(finger: Finger, segments: BezierSegment[]): Finger {

@@ -17,8 +17,9 @@
     type EditorDraft
   } from '$lib/editor/draft';
   import type { Finger, GridSize, HeartDesign } from '$lib/types/heart';
-  import { normalizeHeartDesign, serializeHeartToSVG, parseHeartFromSVG } from '$lib/utils/heartDesign';
+  import { normalizeHeartDesign, serializeHeartToSVG, parseHeartFromSVGWithReport } from '$lib/utils/heartDesign';
   import { heartName as nameIn } from '$lib/utils/heartName';
+  import { importSummary } from '$lib/utils/svgImportSummary';
   import { detectSymmetry } from '$lib/utils/symmetry';
   import { serializeTemplateToSVG, type TemplateLobe } from '$lib/utils/templateSvg';
   import { renderHeartSvgInline } from '$lib/rendering/heartSvg';
@@ -674,7 +675,7 @@
     reader.onload = (e) => {
       try {
         const content = e.target?.result as string;
-        const design = parseHeartFromSVG(content, file.name);
+        const { design, report } = parseHeartFromSVGWithReport(content, file.name);
 
         if (!design) {
           trackImportError(file.name, 'No valid paths found in SVG');
@@ -682,7 +683,8 @@
           return;
         }
 
-        clearStatus('import');
+        // What the importer made of the file, so the author sees it at once.
+        showStatus('import', 'info', importSummary(design, report, lang).text);
         currentFingers = design.fingers;
         currentGridSize = design.gridSize;
         currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
