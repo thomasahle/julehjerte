@@ -6,8 +6,8 @@ on:
       mode:
         type: choice
         default: full
-        options: [full, bicycle]
-        description: Full comparison or one normal-budget bicycle reproduction
+        options: [full, bicycle, comparison]
+        description: Full diagnostics or focused normal-budget regressions
 permissions:
   contents: read
 jobs:
@@ -17,8 +17,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: ${{ fromJSON(inputs.mode == 'bicycle' && '[1]' || '[1,2,3,4]') }}
-        clock: ${{ fromJSON(inputs.mode == 'bicycle' && '[1]' || '[1,0.5]') }}
+        shard: ${{ fromJSON(inputs.mode == 'full' && '[1,2,3,4]' || '[1]') }}
+        clock: ${{ fromJSON(inputs.mode == 'full' && '[1,0.5]' || '[1]') }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -27,16 +27,19 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Capture numeric and fresh-fit evidence
-        if: inputs.mode != 'bicycle' && matrix.shard == 1 && matrix.clock == 1
+        if: inputs.mode == 'full' && matrix.shard == 1 && matrix.clock == 1
         run: node scripts/inverse/ci-diagnostics.mjs
       - name: Replay inverse regressions
-        if: inputs.mode != 'bicycle'
+        if: inputs.mode == 'full'
         env:
           INVERSE_DIAGNOSTIC_CLOCK_RATE: ${{ matrix.clock }}
         run: node --import ./scripts/inverse/ci-clock.mjs --test --test-concurrency=1 --test-shard=${{ matrix.shard }}/4 scripts/inverse/*.test.mjs scripts/inverse/datasets/*.test.mjs
       - name: Replay normal-budget partial-feature regressions
         if: inputs.mode == 'bicycle'
         run: node --test scripts/inverse/feature-finalists.test.mjs
+      - name: Replay simpler-layout and supported-count regressions
+        if: inputs.mode == 'comparison'
+        run: node --test --test-concurrency=1 scripts/inverse/comparison-search.test.mjs scripts/inverse/refinement-checkpoints.test.mjs scripts/inverse/supported-count-bound.test.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
