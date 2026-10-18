@@ -20,9 +20,14 @@ test('final polishing retains a better legal approximation above the image accep
   // Fix the work completed before polishing, rather than depending on CPU
   // load to interrupt refinement at a particular checkpoint. No saved cuts
   // enter the fitter; every candidate starts from this photograph and quad.
-  let elapsed=0,interrupted=false;
-  t.mock.method(performance,'now',()=>elapsed);
+  // HiGHS uses performance.now() inside Wasm too. Freeze only the curve
+  // stages: a deferred routing attempt needs a real, advancing timeout.
+  const realNow=performance.now.bind(performance);
+  let elapsed=0,interrupted=false,routingStarted=null;
+  t.mock.method(performance,'now',()=>elapsed+(routingStarted===null?0:realNow()-routingStarted));
   const answer=await design(prepared.target,cfg,event=>{
+    if(event.stage==='solving'&&routingStarted===null)routingStarted=realNow();
+    else if(event.stage!=='solving'&&routingStarted!==null){elapsed+=realNow()-routingStarted;routingStarted=null;}
     if(event.stage==='directFitting'&&!elapsed)elapsed=4500;
     if(event.stage==='directRefining'&&event.step===40&&!interrupted){elapsed=7001;interrupted=true;}
   },{onCandidate:c=>checkpoints.push(c)});
