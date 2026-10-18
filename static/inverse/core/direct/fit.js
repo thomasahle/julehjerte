@@ -223,6 +223,12 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // against the original image.
   const repairCoarseRouting=!shortBudget&&!symmetryRequested&&poorGrid&&hasOnlyObservationWeights(source)
     &&(finalistPreference?finalistPreference.before[0].featuresRetained:retainsGridColours(fine[0]));
+  // A near-fitting grid that keeps every source feature can already have the
+  // right routing. Refine it before spending twelve seconds on a new integer
+  // assignment. Retention alone does not certify usable cuts: keep the same
+  // routing and feature initializers as fallbacks after independent checks.
+  const deferredRouting=repairCoarseRouting&&retainsGridFeature(fine[0])&&fine[0].error<=cfg.maxImageError+.01
+    ?{reason:'feature-complete-near-fit',gridError:fine[0].error,counts:fine[0].model.counts.slice(),attempted:false}:null;
   // A rejected integer routing can need a small continuous clearance repair,
   // not another discrete assignment with the same narrow returns. Longer
   // requests may fund one such attempt; short searches and grids already
@@ -231,11 +237,12 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // a rejected seed must not change their original reservation decisions.
   const coarseDeadline=repairCoarseRouting?Math.max(deadline,start+Math.min(cfg.timeLimit,20)*1000-1300):deadline;
   const coarseTopologySeconds=shortBudget?Math.max(0,shortTopologyBudget-(topology?.report.seconds||0)):repairCoarseRouting?12:2.5;
-  if(!topology?.graph&&(!weights||repairCoarseRouting)&&requestedSymmetry(cfg.symmetry).every(name=>name==='transpose')&&poorGrid&&coarseTopologySeconds>.25&&coarseDeadline-performance.now()>3500){
-    coarseTopology=await initializeCoarseTopology(input,cfg,{seconds:Math.min(coarseTopologySeconds,(coarseDeadline-performance.now()-1700)/1000),onProgress,repairRejected:repairCoarseRouting,
+  const attemptCoarseRouting=async(until=coarseDeadline)=>{
+    if(topology?.graph||weights&&!repairCoarseRouting||!requestedSymmetry(cfg.symmetry).every(name=>name==='transpose')||!poorGrid||coarseTopologySeconds<=.25||until-performance.now()<=3500)return;
+    coarseTopology=await initializeCoarseTopology(input,cfg,{seconds:Math.min(coarseTopologySeconds,(until-performance.now()-1700)/1000),onProgress,repairRejected:repairCoarseRouting,
       repairDeadline:repairCoarseRouting?start+cfg.timeLimit*1000-2500:null});
     if(coarseTopology.graph){
-      deadline=coarseDeadline;
+      deadline=until;
       const verification=coarseTopology.report.paperVerification,refinementCfg=verifiedPaperSettings(coarseTopology,cfg);
       boundaryCandidate=stage('directRefining',()=>refineCurves(coarseTopology.graph,fullProb,source.resolution,coarseTopology.phase,refinementCfg,{input,weights:fullWeights,steps:80,rate:.008,selection:'mask',deadline:Math.min(deadline-1700,performance.now()+500),onProgress:cfg.progressGeometry||hasCandidateObserver(onProgress)?(r,solution)=>{
         if(verification)solution.report={...solution.report,paperVerification:{...verification,status:r.paper}};
@@ -244,7 +251,8 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       if(verification)boundaryCandidate.paperVerification={...verification,status:boundaryCandidate.paper?.status};
       boundaryCandidate.counts=coarseTopology.graph.families.map(f=>f.length);boundaryCandidate.seed='coarse-boundary-topology';
     }
-  }
+  };
+  if(!deferredRouting)await attemptCoarseRouting();
   // A local boundary gradient cannot create a remote missing region. Try an
   // alternate traced routing while there is still time within this search.
   const initialGridMask=gridMask(fine[0].model,source.resolution,fine[0].phase,fine[0].floor);
@@ -281,7 +289,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   const weakest=eligible.reduce((best,j)=>best===null||features.regions[j].retainedFraction<features.regions[best].retainedFraction?j:best,null);
   const weakRegion=poorGrid&&(features.passed||interiorRetry)&&weakest!==null&&1-features.regions[weakest].retainedFraction>fine[0].error?weakest:null;
   const missingFeature=(competitiveGrid||poorGrid&&lostColour)&&!features.passed;
-  const initializeEarlyFeature=(missed,weakRegion=null,when='before-recovery')=>{
+  const initializeEarlyFeature=(missed,weakRegion=null,when='before-recovery',insertAt=0)=>{
     featureSamplingContext={missed,counts:fine[0].model.counts};
     const interiorOnly=weakRegion!==null&&interiorRetry,seedFeatures=interiorOnly?routingFeatures:sourceFeatures,seedMissed=interiorOnly?missed.map(j=>routingIndices.indexOf(j)):missed;
     const beforeMask=interiorOnly?gridMask(fine[0].model,source.resolution,fine[0].phase,fine[0].floor):null;
@@ -314,7 +322,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       const preferred=weakRegion===null?audit.passed||enclosurePending:routingPassed&&seed.error<fine[0].error&&(!change||change.passed);
       if(weakRegion!==null)earlyFeatureInitialization.proposal={error:seed.error,featuresPassed:audit.passed,...(interiorOnly?{routingFeaturesPassed:routingPassed,featureChange:change}:{}),preferred};
       if(preferred){
-        fine.unshift(seed);features=audit;
+        fine.splice(insertAt,0,seed);features=audit;
         earlyFeatureInitialization.scheduled=1;
         earlyFeatureInitialization.enclosurePending=enclosurePending;
         featureInitialization=earlyFeatureInitialization;
@@ -359,11 +367,11 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // routing allowance or changes an already reserved feature-grid probe.
   const recoverySeconds=Math.min(probeRouting?.75:20,reserveRefinement?reservedRecoverySeconds:Math.min(ordinaryRecoverySeconds,Math.max(1,interpolatedRecoverySeconds)));
   const needsRecovery=(!features.passed||poorGrid&&!boundaryCandidate)&&!symmetryRequested;
-  const fullRecoverySeconds=Math.min(20,competitiveGrid?(refinementTimeLeft(deadline)-2000)/1000:(deadline-performance.now())/1000*.9);
+  const fullRecoverySeconds=Math.min(20,deferredRouting?(start+cfg.timeLimit*1000-performance.now()-2200)/1000:competitiveGrid?(refinementTimeLeft(deadline)-2000)/1000:(deadline-performance.now())/1000*.9);
   // A longer allowance need not delay a useful grid behind the entire routing
   // search. Keep its unused routing budget as a fallback after the first grid;
   // retaining a source region never certifies the resulting cutting geometry.
-  const deferredFeatureRecovery=!shortBudget&&probeRouting&&needsRecovery?{maximumSeconds:fullRecoverySeconds,attempted:false}:null;
+  const deferredFeatureRecovery=!shortBudget&&(probeRouting||deferredRouting)&&needsRecovery?{maximumSeconds:fullRecoverySeconds,attempted:false}:null;
   const attemptRecovery=async(seconds,budgetPolicy,until=deadline)=>{
     // A missing region, or a worse grid selected to preserve one, cannot
     // replace a nearly verified route. Lend its remaining tail to bounded
@@ -411,13 +419,13 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       recovery.report.refinement={imageError:maskDisagreement(source,woven),featuresPassed:auditFeatureFidelity(source,woven,cfg,sourceFeatures).passed,geometryPassed:candidate.geometryPassed,paperPassed:candidate.paperPassed,steps:candidate.steps};
       if(candidate.geometryPassed&&candidate.paperPassed&&maskDisagreement(source,woven)<=cfg.maxImageError&&auditFeatureFidelity(source,woven,cfg,sourceFeatures).passed){
         solution.graph.metadata.candidateMethod='Feature-recovery topology followed by joint cubic and straight-span refinement';
-        solution.report={countSearch:countSearchReport,finalistPreference,deferredFeatureRecovery,...(recoveryHistory.length>1?{featureRecoveryAttempts:recoveryHistory}:{}),...(candidate.paperVerification?{paperVerification:candidate.paperVerification}:{}),algorithm:'direct-bezier',numericalBackend,imported:false,termination:'candidate_found',seconds:(performance.now()-start)/1000,traceUsed:true,selectedCounts:solution.paths.map(p=>p.length),attempts,cornerTopologyInitialization:cornerTopology?.report,topologyInitialization:topology?.report,coarseTopologyInitialization:coarseTopology?.report,featureRecovery:{trigger:features,...recovery.report},borderCountsAreHardConstraints:false,checkpoints:candidate.history,primitives:candidate.primitives};
+        solution.report={countSearch:countSearchReport,finalistPreference,deferredRouting,deferredFeatureRecovery,...(recoveryHistory.length>1?{featureRecoveryAttempts:recoveryHistory}:{}),...(candidate.paperVerification?{paperVerification:candidate.paperVerification}:{}),algorithm:'direct-bezier',numericalBackend,imported:false,termination:'candidate_found',seconds:(performance.now()-start)/1000,traceUsed:true,selectedCounts:solution.paths.map(p=>p.length),attempts,cornerTopologyInitialization:cornerTopology?.report,topologyInitialization:topology?.report,coarseTopologyInitialization:coarseTopology?.report,featureRecovery:{trigger:features,...recovery.report},borderCountsAreHardConstraints:false,checkpoints:candidate.history,primitives:candidate.primitives};
         return solution;
       }
     }
     return null;
   };
-  if(needsRecovery&&deadline-performance.now()>2000&&recoverySeconds>=.25){
+  if(!deferredRouting&&needsRecovery&&deadline-performance.now()>2000&&recoverySeconds>=.25){
     const recovered=await attemptRecovery(recoverySeconds,probeRouting?'probe_before_grid_refinement':reserveRefinement?'reserve_grid_refinement':'prioritize_routing');
     if(recovered)return recovered;
   }
@@ -426,7 +434,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // with hidden border endpoints needs that search to recover its simpler
   // three-cut pair. Try the speculative grid only after routing has failed,
   // while fast border-model rejections still leave time for a fresh layout.
-  if(!interiorRetry&&weakRegion!==null&&featureTimeAvailable())initializeEarlyFeature([weakRegion],weakRegion,'after-recovery');
+  if(!deferredRouting&&!interiorRetry&&weakRegion!==null&&featureTimeAvailable())initializeEarlyFeature([weakRegion],weakRegion,'after-recovery');
   const floor=fittingMargin(cfg,cfg.width)/cfg.width,candidates=[];
   let verifiedAlternative=false;
   // Keep the established 25-second photographic comparison allowance after
@@ -783,6 +791,12 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       if(detailed!==candidate){addCandidate(detailed);candidate=detailed;}
     }
     stoppedEarly=!!(candidate.imagePassed&&candidate.originalImageError<=Math.min(.015,cfg.maxImageError*.5)&&cfg.earlyStop&&(!candidate.paperVerification||featureSeed(candidate)));
+    if(i===0&&deferredRouting&&!candidates.some(c=>c.imagePassed)){
+      deferredRouting.attempted=true;
+      const until=Math.min(searchDeadline()-1300,performance.now()+coarseTopologySeconds*1000+1700);
+      await attemptCoarseRouting(until);
+      if(boundaryCandidate)addCandidate(boundaryCandidate);
+    }
     if(i===0&&deferredFeatureRecovery&&!candidates.some(c=>c.imagePassed)){
       const seconds=Math.min(deferredFeatureRecovery.remainingSeconds,(searchDeadline()-performance.now()-2200)/1000);
       if(seconds>=.25){
@@ -792,6 +806,12 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
         if(recovered)return recovered;
         for(const proposal of recoveredCandidates.slice(before))addCandidate(proposal);
       }
+    }
+    if(i===0&&deferredRouting&&!candidates.some(c=>c.imagePassed)&&weakRegion!==null){
+      deadline=Math.min(searchDeadline()-1300,performance.now()+8700);
+      // Queue the proposal after the grid already tried, retaining every
+      // ordinary finalist without repeating its clearance/refinement work.
+      if(featureTimeAvailable())initializeEarlyFeature([weakRegion],weakRegion,'after-grid-refinement',i+1);
     }
     // Preserve the first refined checkpoint and all existing finalists. Only
     // unsuccessful feature retention earns this additional initialization;
@@ -924,7 +944,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   }
   const solution=candidate.graph.solution(candidate.points,candidate.phase,input);
   const paper={passed:candidate.paperPassed};
-  solution.report={countSearch:countSearchReport,finalistPreference,deferredFeatureRecovery,...(recoveryHistory.length>1?{featureRecoveryAttempts:recoveryHistory}:{}),algorithm:'direct-bezier',numericalBackend,imported:false,termination:!candidate.geometryPassed?'geometry_failure':!paper.passed?'paper_failure':candidate.originalImageError>cfg.maxImageError?'image_mismatch':'candidate_found',seconds:(performance.now()-start)/1000,
+  solution.report={countSearch:countSearchReport,finalistPreference,deferredRouting,deferredFeatureRecovery,...(recoveryHistory.length>1?{featureRecoveryAttempts:recoveryHistory}:{}),algorithm:'direct-bezier',numericalBackend,imported:false,termination:!candidate.geometryPassed?'geometry_failure':!paper.passed?'paper_failure':candidate.originalImageError>cfg.maxImageError?'image_mismatch':'candidate_found',seconds:(performance.now()-start)/1000,
     stoppedEarly,countSearchBound,clearanceComparison,initialGeometryComparison,extraGridComparisons,earlyClampedFeatureRecovery,clampedFeatureRecovery:candidate.clampedFeatureRecovery,refinementFeaturesPassed:candidate.originalFeatures?.passed,refinementBudget:{requestedSeconds:cfg.timeLimit,maximumSearchSeconds:searchSeconds(),verifiedAlternative},earlyFeatureInitialization,featureInitialization,samplingRecovery,featureDetail,featureDetailAttempts,outlineDetail,paperVerification:candidate.paperVerification,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,sourceImageError:c.originalImageError,imagePassed:c.imagePassed,featuresPassed:c.originalFeatures?.passed,enclosuresOpened:c.originalFeatures?.enclosures?.opened,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed,paperVerification:c.paperVerification})),
     ...(geometryRecovery.length?{geometryRecovery}:{}),borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:['coarse-boundary-topology','feature-recovery'].includes(candidate.seed),cornerTopologyInitialization:cornerTopology?.report,topologyInitialization:topology?.report,coarseTopologyInitialization:coarseTopology?.report,selectedInitialization:candidate.seed||'grid',featureRecovery:recovery?.report||null,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,localFeaturePolish:candidate.localFeaturePolish,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
   return solution;

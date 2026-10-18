@@ -1,0 +1,233 @@
+{
+  "scope": "Serial cold Node diagnostics on unchanged production-browser classified pixels and original settings. These are photographic mask errors, not artwork/template ground truth or browser latency. Timings are single runs, not repeated distributions.",
+  "baselineRuntime": "3ae36fd",
+  "sourcePins": "tmp/heart-learning/deferred-routing-2026-10-18/source.json",
+  "sourcePinsSha256": "bcf0b5b9e840bc770b9930e27c0f9b4d93bd792aef9a3831bb97e4e427a5086b",
+  "cases": [
+    {
+      "id": "hard-bibel-star-outline",
+      "variants": {
+        "baseline": {
+          "designSeconds": 18.337246084,
+          "independentError": 0.006875,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "templateChecksPassed": true,
+          "maskSha256": "069c4d534547341c69dc2233d6e210d5607f284d2d81b0d18623b06c148d4fe4",
+          "counts": [
+            4,
+            4
+          ],
+          "record": "tmp/heart-learning/deferred-routing-2026-10-18/hard-bibel-star-outline-baseline/record.json",
+          "recordSha256": "f23ea1e548826f669771d0403b98664e623280aa5167895f41b6fb50f270d35f",
+          "cutGeometrySha256": "85ff5ca9d9a6548a63f4d5cc2883ef16b3f92c8ac0589787383a72df45fd5e1d",
+          "renderSha256": "e807f2d8d00bed1b44e43a851ff622d11ea14d846f1a3b807ac7c4c15a05ae82"
+        },
+        "omit-early-coarse": {
+          "designSeconds": 5.110993333000001,
+          "independentError": 0.0116,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "templateChecksPassed": true,
+          "maskSha256": "069c4d534547341c69dc2233d6e210d5607f284d2d81b0d18623b06c148d4fe4",
+          "counts": [
+            4,
+            4
+          ],
+          "record": "tmp/heart-learning/deferred-routing-2026-10-18/hard-bibel-star-outline-omit-early-coarse/record.json",
+          "recordSha256": "e7eacb92f959bec5ce993065a9f31b85b0e5c1da84336177d172e61d114bb9fd",
+          "cutGeometrySha256": "288ec06ba84f88c7422d53a4448709e1afd9975ce24d19f2517cd51af4fc86cb",
+          "renderSha256": "c9d952fb937d199e25cedc9e66163f6a8469633986f79369e69bf7fe41683ac6"
+        },
+        "retained-grid-first": {
+          "designSeconds": 6.3982399999999995,
+          "independentError": 0.006875,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "templateChecksPassed": true,
+          "maskSha256": "069c4d534547341c69dc2233d6e210d5607f284d2d81b0d18623b06c148d4fe4",
+          "counts": [
+            4,
+            4
+          ],
+          "record": "tmp/heart-learning/deferred-routing-2026-10-18/hard-bibel-star-outline-retained-grid-first/record.json",
+          "recordSha256": "e9e0872a152e2f2731e57a278c865bcb563ef199898fa94f7bb71cefb2c4686d",
+          "cutGeometrySha256": "85ff5ca9d9a6548a63f4d5cc2883ef16b3f92c8ac0589787383a72df45fd5e1d",
+          "renderSha256": "e807f2d8d00bed1b44e43a851ff622d11ea14d846f1a3b807ac7c4c15a05ae82"
+        }
+      },
+      "identicalExportedCurves": true,
+      "identicalIndependentRender": true
+    },
+    {
+      "id": "hard-bibel-star-outline-half",
+      "variants": {
+        "baseline": {
+          "designSeconds": 18.479022541000003,
+          "independentError": 0.005376000584149469,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "templateChecksPassed": true,
+          "maskSha256": "fcb4b3c6c49608d68cc4bdbdfc507efe36c6fe80ecef002d5c31d924b773a606",
+          "counts": [
+            4,
+            4
+          ],
+          "record": "tmp/heart-learning/deferred-routing-2026-10-18/hard-bibel-star-outline-half-baseline/record.json",
+          "recordSha256": "f269c1e8fcb5b11c5dd3fad7e038d7388c283fb3c068d21634c0721933bd5f18",
+          "cutGeometrySha256": "366116691ca61111438be664495e5a1ae1a0d81013af1cde3901b266201634db",
+          "renderSha256": "98f0d40fbdb13b57a42a323e67a69de326f2a3a86929ecbfc4991f5a84ce525a"
+        },
+        "omit-early-coarse": {
+          "designSeconds": 3.2829114999999995,
+          "independentError": 0.015772035669626965,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "templateChecksPassed": true,
+          "maskSha256": "fcb4b3c6c49608d68cc4bdbdfc507efe36c6fe80ecef002d5c31d924b773a606",
+          "counts": [
+            4,
+            4
+          ],
+          "record": "tmp/heart-learning/deferred-routing-2026-10-18/hard-bibel-star-outline-half-omit-early-coarse/record.json",
+          "recordSha256": "a134f2243c5db28efa017062d513795c490c7dd780f305a9bbbdd8fa1428ef1f",
+          "cutGeometrySha256": "43c005b1651954d0e7ecf4d49c1964e86869495a51147714aa1ac236b3f3e133",
+          "renderSha256": "1e586d716f6ddf9994746a4b087b3cd6227732c4e5f861a1e5a8c367bf9d9169"
+        },
+        "retained-grid-first": {
+          "designSeconds": 6.419991041,
+          "independentError": 0.005376000584149469,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "templateChecksPassed": true,
+          "maskSha256": "fcb4b3c6c49608d68cc4bdbdfc507efe36c6fe80ecef002d5c31d924b773a606",
+          "counts": [
+            4,
+            4
+          ],
+          "record": "tmp/heart-learning/deferred-routing-2026-10-18/hard-bibel-star-outline-half-retained-grid-first/record.json",
+          "recordSha256": "d37b63be18fce0bc1c01a8075c4067c9d5b41a142a329dbcf6d9cf1191e089b6",
+          "cutGeometrySha256": "366116691ca61111438be664495e5a1ae1a0d81013af1cde3901b266201634db",
+          "renderSha256": "98f0d40fbdb13b57a42a323e67a69de326f2a3a86929ecbfc4991f5a84ce525a"
+        }
+      },
+      "identicalExportedCurves": true,
+      "identicalIndependentRender": true
+    },
+    {
+      "id": "hard-bibel-star-outline-jpeg75",
+      "variants": {
+        "baseline": {
+          "designSeconds": 18.816250791,
+          "independentError": 0.00719375,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "templateChecksPassed": true,
+          "maskSha256": "8a80f192fca54bd8205a22c335572b8acfd4a5a2f4c4042a804cbf85f08a196e",
+          "counts": [
+            4,
+            4
+          ],
+          "record": "tmp/heart-learning/deferred-routing-2026-10-18/hard-bibel-star-outline-jpeg75-baseline/record.json",
+          "recordSha256": "3c56a420a96837f1d8a89636ca2f974f65de96609c077343f7e0b8a8d427ead7",
+          "cutGeometrySha256": "d9eb9f89f757b5e044547ea427ab09d986b1b795f787e2389bd79bb9d34a05d8",
+          "renderSha256": "3b62e0a8326a3391ad8b60e00fd33ed9c6de918a0c9064dcf5a672380f88def3"
+        },
+        "omit-early-coarse": {
+          "designSeconds": 3.470537333,
+          "independentError": 0.01579375,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "templateChecksPassed": true,
+          "maskSha256": "8a80f192fca54bd8205a22c335572b8acfd4a5a2f4c4042a804cbf85f08a196e",
+          "counts": [
+            4,
+            4
+          ],
+          "record": "tmp/heart-learning/deferred-routing-2026-10-18/hard-bibel-star-outline-jpeg75-omit-early-coarse/record.json",
+          "recordSha256": "9669ffec024671900dd2cee43d48466e7d70f956c6547c2d5e604a63fe382dc5",
+          "cutGeometrySha256": "7f776579d7ea0ba163827c0c693e93d802c4415c5c4462aa6f8a32d1f80cdc3c",
+          "renderSha256": "b6283a2d5b5e158eb6839d10237da4bb28ab42b7eb46b9a9213aa0c0a98382ef"
+        },
+        "retained-grid-first": {
+          "designSeconds": 6.755866292,
+          "independentError": 0.00719375,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "featuresPassed": true,
+          "templateChecksPassed": true,
+          "maskSha256": "8a80f192fca54bd8205a22c335572b8acfd4a5a2f4c4042a804cbf85f08a196e",
+          "counts": [
+            4,
+            4
+          ],
+          "record": "tmp/heart-learning/deferred-routing-2026-10-18/hard-bibel-star-outline-jpeg75-retained-grid-first/record.json",
+          "recordSha256": "f1d74e5abda282c80846ffe1023ddb786ceaf567e4b03d0ebd6276e60bfcc6e7",
+          "cutGeometrySha256": "d9eb9f89f757b5e044547ea427ab09d986b1b795f787e2389bd79bb9d34a05d8",
+          "renderSha256": "3b62e0a8326a3391ad8b60e00fd33ed9c6de918a0c9064dcf5a672380f88def3"
+        }
+      },
+      "identicalExportedCurves": true,
+      "identicalIndependentRender": true
+    }
+  ],
+  "productionRegression": {
+    "tests": 4,
+    "passed": 4,
+    "log": "tmp/heart-learning/deferred-routing-2026-10-18/production-tests.log",
+    "logSha256": "bd404d686a703c7811b263607f9550db6264a25153007502c06807d3a54af229",
+    "fitSourceSha256": "246e3df24e92941c086cfc4b73475a660d28000f5df39b628c66c55dc06ffc40",
+    "scope": "Three native-mask quality checks plus a stalled first grid followed by actual coarse and feature routing, with independent export, geometry, paper and feature checks."
+  },
+  "pending": [
+    "production browser comparison",
+    "complete inverse suite"
+  ],
+  "standardVerification": {
+    "state": "tmp/heart-learning/deferred-routing-2026-10-18/qa/state.json",
+    "stateSha256": "fa5740fa8d4b910c71028c060199ea3f8e02f9039f3a85709d72491bd014e91c",
+    "sourceFiles": 1061,
+    "stages": [
+      {
+        "name": "focused",
+        "status": "passed",
+        "seconds": 162.10434029200002
+      },
+      {
+        "name": "check",
+        "status": "passed",
+        "seconds": 10.670214165999994
+      },
+      {
+        "name": "lint",
+        "status": "passed",
+        "seconds": 7.319469792000007
+      },
+      {
+        "name": "application",
+        "status": "passed",
+        "seconds": 46.361061457999995
+      },
+      {
+        "name": "build",
+        "status": "passed",
+        "seconds": 16.155614041999996
+      }
+    ],
+    "focusedPasses": 22,
+    "applicationPasses": 874,
+    "applicationSkipped": 1,
+    "typeErrors": 0,
+    "typeWarnings": 7,
+    "lintErrors": 0,
+    "lintWarnings": 3
+  }
+}
