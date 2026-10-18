@@ -38,7 +38,36 @@ the 0.8192% fit passes geometry, features and paper but is discarded for
 finishing 25 ms late. Afterward it is retained and independently rendered and
 validated. Two companion tests confirm that expired work cannot start and
 that a genuinely uncertain coarse paper audit cannot bypass finer verification
-when time is gone. All three pass. Fresh photograph replays remain pending.
+when time is gone. All three pass.
+
+## Fresh replay and application checks
+
+The serial replay on `eaa358a` passes 19 related repair tests and 19 tests
+covering the earlier coverage and near-miss failures. Type checks, lint, 874
+application tests (one existing skip) and the build also pass. All 1,045
+pinned sources match after the run.
+
+Independent rendering of the saved curved-pattern outputs measures:
+
+| Input | Previous full-run result | Fresh current result |
+| --- | ---: | ---: |
+| Partially observed photograph | 1.5030% | 0.6046% |
+| Fully observed mask | 1.8094% | 1.3356% |
+
+All four saved outputs independently pass geometry and paper checks. The
+source masks and observation weights are unchanged. These runs followed
+different timed trajectories: the new partial-photo repair records no deadline
+overrun. Its entire quality gain therefore cannot be attributed to this fix.
+
+The partial bauble remains unresolved despite its fallback regression passing:
+its returned legal pair has 4.3973% engine disagreement and loses three source
+regions. The regression permits a useful fallback below 5%; the normal 3%
+acceptance gate still rejects this result.
+
+A counterbalanced five-case browser diagnostic is now running, with the older
+full-suite failures explicitly recorded. It measures actual UI timing and
+independent exported errors; it is not a release claim or a substitute for the
+complete 22-design Hunodan benchmark. The stable preview is unchanged.
 
 These percentages come from the engine's logged sampling. The discarded
 candidate's coordinates were not saved, so its independent exported error is
