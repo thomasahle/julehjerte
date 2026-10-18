@@ -207,8 +207,13 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
         // silently change the result of the same fixed-work operation. Timed
         // fitting retains the shared 400 ms allowance and caller repair deadline.
         const maxMilliseconds=Number.isFinite(repairDeadline)?400:Infinity;
-        const projectionDeadline=Math.min(repairDeadline,performance.now()+maxMilliseconds);
-        let repair=projectShortReturns(graph,base.points,phase,input,cfg,{deadline:projectionDeadline,initialAudit:base.validation,hiddenOnly:true,maxIterations:64,maxMilliseconds});
+        const projectionStart=performance.now(),projectionDeadline=Math.min(repairDeadline,projectionStart+maxMilliseconds);
+        // A hidden-only repair can keep moving the same tight bend until it
+        // spends the entire allowance. Reserve half for the existing general
+        // repair, which also moves visible controls and must earn acceptance
+        // through the unchanged image, geometry and paper checks.
+        const hiddenDeadline=Number.isFinite(projectionDeadline)?projectionStart+(projectionDeadline-projectionStart)/2:projectionDeadline;
+        let repair=projectShortReturns(graph,base.points,phase,input,cfg,{deadline:hiddenDeadline,initialAudit:base.validation,hiddenOnly:true,maxIterations:64,maxMilliseconds});
         if(!repair.points&&performance.now()<projectionDeadline){
           const hiddenAttempt=repair.report;
           repair=projectShortReturns(graph,base.points,phase,input,cfg,{deadline:projectionDeadline,initialAudit:base.validation,maxIterations:64,maxMilliseconds});
