@@ -647,7 +647,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery){
     const prepared={clear,graph,protectedObjective,objectiveProb,objectiveWeights,refinementCfg,verification};
     preparations.set(selected,prepared);return prepared;
   };
-  const extraGridComparisons=[],geometryRecovery=[];
+  const extraGridComparisons=[],geometryRecovery=[],simplerComparisonLimits=new Map();
   let countSearchBound=null;
   let clearanceComparison=null;
   let initialGeometryComparison=null;
@@ -663,6 +663,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery){
       if(i&&performance.now()>searchDeadline()-1000)break;
       deadline=Math.min(searchDeadline()-1300,performance.now()+8700);
     }
+    if(simplerComparisonLimits.has(fine[i]))deadline=Math.min(deadline,simplerComparisonLimits.get(fine[i]));
     // An expired refinement window cannot improve another clearance grid.
     // Leave this time for polishing the candidates we have already fitted.
     const samplingRetry=fine[i].seed==='feature-sampling-grid';
@@ -889,6 +890,23 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery){
     if(supportedWinner){
       countSearchBound={reason:'supported-count-error-bound',counts:candidate.counts.slice(),sourceImageError:candidate.originalImageError,allowance:SUPPORTED_COUNT_ERROR_ALLOWANCE,skippedFineCounts:fine.slice(i+1).map(r=>r.model.counts.slice())};
       break;
+    }
+    // A competitive simpler start must not depend on which paper lattice
+    // happened to certify the first fit. Previously an ordinary-lattice pass
+    // could return here without ever trying a known simpler initialization,
+    // while a slightly different checkpoint needing finer verification kept
+    // it. Give that existing start the next turn in a longer request. Keep
+    // the comparison in the first 25 seconds and retain every other finalist.
+    const acceptedCounts=candidates.filter(c=>c.imagePassed).map(c=>c.counts.slice());
+    const extraSimpler=candidate.imagePassed&&!shortBudget&&!weights
+      ?simplerComparisonSeed(remainingSeeds,coarse,acceptedCounts):null;
+    if(extraSimpler&&Math.min(searchDeadline(),start+25000)-performance.now()>4500){
+      remainingSeeds.splice(remainingSeeds.indexOf(extraSimpler),1);
+      const fitted=stage('directFitting',()=>fitSeed(extraSimpler));
+      simplerComparisonLimits.set(fitted,start+25000-1300);
+      fine.splice(i+1,0,fitted);
+      extraGridComparisons.push({reason:'simpler-layout',acceptedCounts,selectedCounts:extraSimpler.model.counts.slice(),phase:extraSimpler.phase,source:'verified-layout'});
+      continue;
     }
     // Border disagreement must not stop a competitive simpler finalist from
     // receiving curve refinement. Its grid error can overestimate its eventual
