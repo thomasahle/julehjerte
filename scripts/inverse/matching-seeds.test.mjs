@@ -7,6 +7,7 @@ import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
 import {loadSolutionJSON} from '../../static/inverse/core/graph.js';
 import {matchingSummary} from '../../static/inverse/core/direct/matching.js';
 import {renderExportedWeave} from './export-renderer.mjs';
+import {captureFitFailure} from './diagnostics/fit-failure.mjs';
 
 const fixture=JSON.parse(await fs.readFile(new URL('./fixtures/matching/free-hat-mask.json',import.meta.url)));
 function expand(runs,Type){
@@ -15,12 +16,13 @@ function expand(runs,Type){
   assert.equal(at,out.length);return out;
 }
 
-test('the matching preference can change cut count and colour phase without forcing or editing the mask',async()=>{
+test('the matching preference can change cut count and colour phase without forcing or editing the mask',async t=>{
   const mask=expand(fixture.maskRuns,Uint8Array),weights=expand(fixture.weightRuns,Float64Array),before=mask.slice();
   assert.equal(createHash('sha256').update(mask).digest('hex'),fixture.maskSha256);
   const cfg={...AUTOMATIC_PRESET,width:100,minWidth:2,cutError:.25,minRadius:.8,kerf:0,printShrinkPercent:.2,materialResolution:360,timeLimit:10,trials:0,earlyStop:false,preferMatchingSheets:true,symmetry:{}};
   const prepared=prepare({type:'mask',mask,weights,resolution:fixture.resolution},cfg);
   const result=await design(prepared.target,cfg),report=result.report,matching=report.solver.matchingPreference;
+  try{
   assert.equal(report.templateChecksPassed,true);
   assert.equal(report.manufacturing.status,'pass');
   assert.deepEqual(report.symmetry.requested,[]);
@@ -42,4 +44,5 @@ test('the matching preference can change cut count and colour phase without forc
   assert.ok(error/total<=matching.maximumMatchingImageError,'Independent export must retain the allowance.');
   assert.deepEqual(mask,before);assert.deepEqual(prepared.target.sourceImage.mask,before);
   assert.deepEqual(prepared.target.sourceImage.weights,weights);
+  }catch(error){t.diagnostic(await captureFitFailure({answer:result,source:prepared.target.sourceImage,context:{case:'matching-free-hat',assertion:error.message}}));throw error;}
 });
