@@ -567,5 +567,27 @@
     },
     "build": "pass",
     "inverseTests": "Focused matching 14/14, clearance verification 1/1, kernel/paper-backend/late-feature 29/29. The duplicate full local inverse phase launched by npm test was stopped to conserve CPU; no full local inverse pass is claimed."
+  },
+  "retainedGridPriority": {
+    "commit": "bce82c36",
+    "change": "On a short request, refine an ordinary grid first when it is within twice the image limit and every substantial region retains at least 90% of its source colour. Keep failed-grid routing and weak-region initialization as later alternatives; no final acceptance threshold changes.",
+    "localPassed": 14,
+    "localFailed": 1,
+    "localDenseIndependentError": 0.0268625,
+    "localDenseSolverSeconds": 9.169920292,
+    "localFailure": "The stalled preferred-grid test expected a deferred routing retry in its combined file run. Its isolated baseline replay and isolated changed-source replay both passed; diagnostics were added, not an assertion change.",
+    "linuxReplay": "https://github.com/thomasahle/julehjerte/actions/runs/39172446843",
+    "diagnosticCommit": "31ae4a55",
+    "linuxStatus": "running",
+    "appChecks": {
+      "typecheckErrors": 0,
+      "typecheckExistingWarnings": 6,
+      "lintErrors": 0,
+      "lintExistingWarnings": 4,
+      "vitestPassed": 1570,
+      "vitestSkipped": 1,
+      "vitestFiles": 112,
+      "build": "pass"
+    }
   }
 }
