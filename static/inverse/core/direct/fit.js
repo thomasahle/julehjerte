@@ -987,9 +987,18 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
   // optional cleanup must not reopen that deliberately completed search.
   if(!completedFeatureRepair&&!shortBudget&&cleanupStart-start>=fastSeconds*1000)deadline=Math.min(start+cfg.timeLimit*1000-1300,Math.max(deadline,cleanupStart+6500));
   const cleanupBudget={startedAtSeconds:(cleanupStart-start)/1000,previousSeconds:(cleanupBefore-cleanupStart)/1000,availableSeconds:(deadline-cleanupStart)/1000,addedSeconds:(deadline-cleanupBefore)/1000};
+  // A very close independent fit has met the same image floor used by the
+  // fast initializer. In a short request, leave optional polish/sharing time
+  // for the requested matching search instead. The incumbent stays available
+  // and final sharing still runs on the selected pair.
+  const matchingBeforePolish=shortBudget&&matchingRequested&&!symmetryRequested&&candidate.imagePassed
+    &&candidate.originalImageError<=Math.min(.005,cfg.maxImageError*.5)
+    &&matchingEvidence.minimumIdenticalImageError<=candidate.originalImageError+cfg.matchingErrorAllowance
+    &&!matchingSummary(candidate.graph.solution(candidate.points,candidate.phase,input)).identical;
+  if(matchingBeforePolish)cleanupBudget.polishingDeferredForMatching=true;
   // This optional early pass precedes polishing. The final selected pair also
   // receives sharing recovery after any matching-sheet replacement.
-  if(!featureDetail?.applied&&!candidate.matching?.identical&&!symmetryRequested&&candidate.paperPassed&&performance.now()<deadline-1300){
+  if(!matchingBeforePolish&&!featureDetail?.applied&&!candidate.matching?.identical&&!symmetryRequested&&candidate.paperPassed&&performance.now()<deadline-1300){
     const sharingCfg=verifiedPaperSettings({report:{paperVerification:candidate.paperVerification}},cfg);
     const shared=stage('directSharing',()=>recoverShared(candidate,prob,n,sharingCfg,{deadline:deadline-1300,input,weights:fitWeights}));
     if(assess(shared)&&shared.originalImageError<=candidate.originalImageError)candidate={...shared,seed:candidate.seed};
@@ -1003,7 +1012,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
   const polishingStart=performance.now(),beforePolishing=deadline;
   if(!shortBudget&&!completedFeatureRepair&&!featureDetail?.applied&&candidate.paperPassed)deadline=Math.min(start+cfg.timeLimit*1000-1300,Math.max(deadline,polishingStart+4000));
   cleanupBudget.polishingExtensionSeconds=(deadline-beforePolishing)/1000;
-  if(!featureDetail?.applied&&candidate.paperPassed&&performance.now()<deadline-450){
+  if(!matchingBeforePolish&&!featureDetail?.applied&&candidate.paperPassed&&performance.now()<deadline-450){
     const polishing=orbitObjective(Float64Array.from(source.mask),source.resolution,orbit,weights);
     let polished=stage('directPolishing',()=>polishCandidate(candidate,polishing.probability,source.resolution,{...cfg,preferMatchingSheets:false},{input,weights:polishing.weights,steps:160,rate:.008,deadline:deadline-250,selection:'mask',identicalSheets:candidate.matching?.identical||false,onProgress:hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directPolishing',counts:candidate.counts,...r},solution):undefined}));
     polished.imagePassed=assess(polished,{approximationReference:candidate});
