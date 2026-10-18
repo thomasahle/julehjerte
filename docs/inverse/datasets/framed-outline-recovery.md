@@ -134,9 +134,35 @@ from the previous segmentation is not carried forward as an input constraint.
 Eighteen focused tests initially passed. The first frozen-output replay then
 found a 0.237-pixel difference on the deep tinted frame because of that inherited
 component-box policy. The corrected implementation passes all seven new focused
-tests. The first replay and its failure are preserved. A repeat of all 103 crops,
-application checks, actual browser import/solve/export checks and the complete
-inverse suite remain pending before refreshing the preview.
+tests. The first replay and its failure are preserved. The corrected replay
+matches **all 103 quadrilaterals byte for byte**, including all four recovered
+frames. Typecheck, lint, build and **874 application tests** pass, with one
+existing application skip.
+
+Both actual browser upload/selection/solve/editable-export workflows also pass:
+
+| Case | Corner error | Editable error versus import | Editable error versus artwork | Click to ready |
+|---|---:|---:|---:|---:|
+| Ordinary tinted frame | 1.029 px | 2.298% | 4.279% | 16.21 s |
+| Deep lighter-background frame | 1.996 px | 2.972% | 7.200% | 14.35 s |
+
+The pointer-generated selection is
+`[84.99998881554728, 40, 299.9999712399787, 250]`. Both workflows pass the exact
+native 320-pixel import to the solver without an automatic symmetry edit. The
+downloaded SVGs pass independent editable geometry and paper checks, with six
+cuts per sheet. These use the application's 180-second maximum request, not
+the offline ten-second request; the single timings are not speed-comparison
+measurements.
+
+Both result screenshots were inspected. Corner protrusions and thin seams
+remain. The deep-frame crop differs from its integer-selection counterpart,
+whose corner error was 1.341 pixels; small pointer-coordinate sensitivity is a
+remaining issue. No artwork or solver score selected either crop.
+
+The complete inverse suite is currently running. Its final result and a preview
+refresh are still pending. Source hashes are pinned for that run. Exact release
+measurements and artifact hashes are in
+[framed-outline-integration.json](framed-outline-integration.json).
 
 Investigate renderer-dependent enclosure diagnostics separately. Physical
 cutting, threading and assembly remain untested.
