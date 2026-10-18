@@ -1,6 +1,7 @@
 import { browser } from '$app/environment';
 import type { HeartDesign } from '$lib/types/heart';
 import { normalizeHeartDesign, serializeHeartDesign, parseHeartFromSVG } from '$lib/utils/heartDesign';
+import { writeStorage } from '$lib/utils/safeStorage';
 import { trackHeartLoadError, trackSvgParseError } from '$lib/analytics';
 
 const STORAGE_KEY = 'julehjerte-collection';
@@ -31,6 +32,10 @@ function readUserCollectionRaw(): unknown[] {
   }
 }
 
+/**
+ * Throws when storage is blocked or full: every caller reports a failed save to
+ * the visitor, so it must hear about it.
+ */
 export function saveUserDesign(design: HeartDesign): void {
   if (!browser) return;
 
@@ -52,7 +57,8 @@ export function deleteUserDesign(id: string): void {
 
   const raw = readUserCollectionRaw();
   const filtered = raw.filter((d) => !(d && typeof d === 'object' && 'id' in d && (d as { id?: unknown }).id === id));
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
+  // With storage blocked there is nothing stored to delete from, so a failure is silent.
+  writeStorage(STORAGE_KEY, JSON.stringify(filtered));
 }
 
 
