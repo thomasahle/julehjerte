@@ -1023,12 +1023,14 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery){
     // A fixed 160-step polish may still be improving when a long request has
     // ample unused time. Continue the checked trajectory instead of making
     // the returned quality depend on which earlier timed checkpoint seeded
-    // that pass. A fast fit may use only its existing cleanup remainder;
-    // exhausted callers and newly subdivided outlines keep their work. Every
-    // replacement still faces the same source, feature and physical gates.
+    // that pass. Short requests use only their existing cleanup remainder;
+    // longer requests receive the same bounded continuation whether their
+    // first valid grid arrived early or late. Exhausted callers and newly
+    // subdivided outlines keep their work. Every replacement still faces the
+    // same source, feature and physical gates.
     const middle=polished.history.find(h=>h.step>=80&&h.geometry&&h.paper==='pass');
     const continuationStart=performance.now(),hardCleanupDeadline=start+cfg.timeLimit*1000-1300;
-    const continuationDeadline=cleanupBudget.addedSeconds>0?Math.min(hardCleanupDeadline,continuationStart+4000):deadline;
+    const continuationDeadline=!shortBudget?Math.min(hardCleanupDeadline,Math.max(deadline,continuationStart+4000)):deadline;
     if(!completedFeatureRepair&&polishAccepted&&polished.imagePassed&&!polished.outlineDetail&&polished.steps===160&&middle&&polished.error<middle.error
       &&continuationDeadline-continuationStart>=1000){
       const addedSeconds=Math.max(0,continuationDeadline-deadline)/1000;
@@ -1037,7 +1039,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery){
       next.imagePassed=assess(next);
       const applied=next.imagePassed&&next.originalImageError<candidate.originalImageError;
       cleanupContinuation={reason:'polish_still_improving',budgetSeconds:(deadline-continuationStart)/1000,addedSeconds,seconds:(performance.now()-continuationStart)/1000,
-        errorBefore:candidate.originalImageError,errorAfter:next.originalImageError,initialSteps:polished.steps,steps:next.steps,geometryPassed:next.geometryPassed,paperPassed:next.paperPassed,applied};
+        errorBefore:candidate.originalImageError,errorAfter:next.originalImageError,initialSteps:polished.steps,steps:next.steps,geometryPassed:next.geometryPassed,paperPassed:next.paperPassed,checkpoints:next.history,applied};
       if(applied)candidate=next;
     }
   }
