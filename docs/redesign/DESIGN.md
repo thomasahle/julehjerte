@@ -474,6 +474,28 @@ selection and red invalid-cut highlights take priority. This is a visual overlap
 not a certificate of exact geometric coincidence. It must not intercept pointer events
 or change saved/exported cutting paths.
 
+Symmetri has two tabs at its top, **Normal** (the rows above) and **Escher**, which draws the whole heart from
+one tile, repeated the way Escher's regular divisions repeat one shape (`$lib/pattern`): an edit to one stretch
+of cut between two crossings reaches every stretch that carries the same curve. The visitor picks a tile type
+from the 28 isohedral types with four tiles at every corner that have a side to shape (Grünbaum and Shephard's
+IH41–IH74; the other eight of the 36 have only straight sides), or two shapes, no rule at all. Each is drawn as
+Tom McLean draws one (`RuleTemplates`, `TemplateGlyph`): the red tile with half arrowheads on its sides, one
+colour per shape, two half arrowheads for a side that is its own S, a bow tie for one that is its own mirror
+image, and a whole arrowhead for a straight side the tiles are mirrored in, which stays straight. Four come
+first — Flyttet, Flyttet og spejlet, To former and Symmetrisk — and "Vis flere" opens the rest in three groups:
+the other types with neither a straight side nor a symmetry of the tile's own, those with mirror edges, and
+those whose tile has a symmetry of its own. Under the picker: the chosen type's name, what it does and,
+small, Heesch's name for it (or its IH number where he has none), then the size, 3 × 3 to 7 × 7. Picking
+another type keeps the curves it reads the same way, if the heart they make with its own still weaves, and
+starts afresh if not; a size the pattern is too tight for is refused, with a line above the heart. Every type
+starts from one low peak of straight lines on each curve it reads and nothing more, because the visitor does
+the designing; nothing else is drawn on the heart, and nothing moves on its own. Points the tile places itself
+are drawn dark: dragging a crossing leans every tile (where the type lets tiles lean), and dragging a point the
+type fixes moves the whole pattern, which comes back in at the other edge without end. An end of a cut slides
+along the edge. Below 900px the picker shows its glyphs alone, five to a row, as Symmetri's rows do. In both
+tabs, a drag that cannot go where the pointer is stops at the last place that weaves, and a line above the heart
+says why: two cuts would cross, a curve would cross itself, or it would leave the woven square.
+
 The canvas fills the whole area under the top bar — full width and height, no three-column grid — and the tool
 rail and the panel **float over it** as white cards with `--shadow-panel`. So does the drawing surface: the SVG
 is the whole canvas area (`inset: 0`), so a zoomed or panned heart carries on under the rail and the panel and
