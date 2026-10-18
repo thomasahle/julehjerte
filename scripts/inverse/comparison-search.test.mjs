@@ -9,6 +9,7 @@ import {auditFeatureFidelity} from '../../static/inverse/core/feature-shapes.js'
 import {mismatch} from '../../static/inverse/core/direct/grid.js';
 import {readHardPhoto} from './hard-photo-data.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
+import {captureFitFailure} from './diagnostics/fit-failure.mjs';
 
 const seed=(counts,error,phase=-1)=>({model:{counts},error,phase});
 
@@ -50,5 +51,5 @@ test('fresh maple fitting retains the simpler routing and earns any extra cuts w
   assert.ok(mismatch(replay.mask,crop.preview.mask)<.012);
   assert.equal(auditFeatureFidelity(input.sourceImage,replay.mask,answer.report.settings).passed,true);
   assert.deepEqual(input.sourceImage.mask,crop.preview.mask);
-  }catch(error){t.diagnostic(JSON.stringify({report:answer.report,cutGeometry:answer.files['cut_geometry.json']}));throw error;}
+  }catch(error){t.diagnostic(await captureFitFailure({answer,source:input.sourceImage,context:{case:'maple-comparison',assertion:error.message}}));throw error;}
 });

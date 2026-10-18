@@ -899,10 +899,13 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery){
     // the comparison in the first 25 seconds and retain every other finalist.
     const acceptedCounts=candidates.filter(c=>c.imagePassed).map(c=>c.counts.slice());
     const extraSimpler=candidate.imagePassed&&!shortBudget&&!weights
-      ?simplerComparisonSeed(remainingSeeds,coarse,acceptedCounts):null;
+      ?simplerComparisonSeed([...fine.slice(i+1),...remainingSeeds],coarse,acceptedCounts):null;
     if(extraSimpler&&Math.min(searchDeadline(),start+25000)-performance.now()>4500){
-      remainingSeeds.splice(remainingSeeds.indexOf(extraSimpler),1);
-      const fitted=stage('directFitting',()=>fitSeed(extraSimpler));
+      // An already fine-fitted alternative needs no repeated grid work.
+      const queued=fine.indexOf(extraSimpler);
+      if(queued>=0)fine.splice(queued,1);
+      else remainingSeeds.splice(remainingSeeds.indexOf(extraSimpler),1);
+      const fitted=queued>=0?extraSimpler:stage('directFitting',()=>fitSeed(extraSimpler));
       simplerComparisonLimits.set(fitted,start+25000-1300);
       fine.splice(i+1,0,fitted);
       extraGridComparisons.push({reason:'simpler-layout',acceptedCounts,selectedCounts:extraSimpler.model.counts.slice(),phase:extraSimpler.phase,source:'verified-layout'});
