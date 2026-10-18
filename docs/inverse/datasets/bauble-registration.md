@@ -68,3 +68,29 @@ Production crop code has not changed. Measurements, source hashes and experiment
 identifiers are in [bauble-registration.json](bauble-registration.json).
 Local probe artifacts are under
 `tmp/heart-learning/bauble-segmentation-2026-10-18/`.
+
+
+The next crop-only replay covered 69 cases: 29 synthetic/known controls and all
+40 catalogued collage instances, including incomplete and obscured instances.
+The proposed fallback preserves an existing supported, in-photo crop. Otherwise
+it selects the lowest shape-score RGB proposal that passes the existing outline
+checks and lies within the photograph. Only the bauble changed; no known-corner
+case changed. Forcing the RGB hypotheses independently of that selection policy
+also checked their geometry: 28 supported, in-photo proposals over 14 known
+cases had at most 2.869 pixels maximum corner error.
+
+A further 14 fixed synthetic scenes used JPEG compression, tinted paper and
+spatially varying brown backgrounds. These did not activate the fallback. The
+14 supported, in-photo RGB proposals over seven scenes were within 4.832 pixels
+of known corners. Clipped-tip cases were not promoted to complete in-photo
+hearts. Thus unchanged control results establish regression coverage but do not
+by themselves validate successful fallback activation on known geometry.
+
+These scenes exposed a separate **existing** weakness: four fully observed
+framed-blob controls satisfy the current support gate while their maximum corner
+errors are 8.812–11.829 pixels. A clipped framed-blob control is also inaccurate.
+The RGB alternatives for the four fully observed failures remain unsupported;
+the proposed fallback does not fix them. This is retained as an open physical
+registration problem, not counted as successful corner detection merely because
+the outline checks pass. No synthetic painted motif is claimed to have a valid
+weave. Production changes and actual upload/crop/reconstruction QA remain pending.

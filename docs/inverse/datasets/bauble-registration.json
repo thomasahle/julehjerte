@@ -1,5 +1,5 @@
 {
-  "status": "Full-shape and independent reconstruction diagnosis complete; RGB extended-band candidate passes numerical checks but is unshipped pending broader geometry/photo QA",
+  "status": "Geometry/photo hypothesis checks complete; fallback integration and actual browser QA pending",
   "photo": "scripts/inverse/fixtures/hard-photos/collage.png",
   "photoSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
   "case": "bauble (R5C4)",
@@ -427,5 +427,68 @@
     "summary": "tmp/heart-learning/bauble-segmentation-2026-10-18/reconstruction/summary.json",
     "summarySha256": "657f4b27b4a5afdad0f94512f6f90fe1be7ae2727c9786b1fd88d6bf0bc46d1f",
     "visualReview": "Extended-band crop and independent weave inspected: central bauble recovered, with uneven and disconnected border details remaining. Numerical acceptance does not establish original artwork or cutting paths."
+  },
+  "geometryQA": {
+    "broad-study": {
+      "cases": 69,
+      "knownGeometryCases": 26,
+      "sourceHashesUnchanged": true,
+      "changed": [
+        "collage-bauble"
+      ],
+      "newIncorrectSupportedProposals": [],
+      "newKnownAccuracyRegressions": [],
+      "forcedSupportedInPhotoProposals": 28,
+      "forcedKnownCases": 14,
+      "maxForcedKnownCornerError": 2.868834442410236,
+      "existingSupportedErrorsAbove6px": [],
+      "rawResults": "tmp/heart-learning/bauble-segmentation-2026-10-18/broad-study/results.json",
+      "rawResultsSha256": "08ef37a4984e3a46cf75be9ff21d4568fd18a5ade5727b69fe2ec5a740897594",
+      "groups": {
+        "known": 23,
+        "partial": 2,
+        "occluded": 1,
+        "negative": 3,
+        "collage": 40
+      }
+    },
+    "targeted-study": {
+      "cases": 14,
+      "knownGeometryCases": 14,
+      "sourceHashesUnchanged": true,
+      "changed": [],
+      "newIncorrectSupportedProposals": [],
+      "newKnownAccuracyRegressions": [],
+      "forcedSupportedInPhotoProposals": 14,
+      "forcedKnownCases": 7,
+      "maxForcedKnownCornerError": 4.831587921608488,
+      "existingSupportedErrorsAbove6px": [
+        {
+          "id": "02-tinted-framed-blob",
+          "error": 8.8123419022697
+        },
+        {
+          "id": "08-lighter-background-framed-blob",
+          "error": 8.937659264942228
+        },
+        {
+          "id": "10-tinted-framed-blob",
+          "error": 11.062679766456247
+        },
+        {
+          "id": "12-lighter-background-framed-blob",
+          "error": 11.828856410066837
+        },
+        {
+          "id": "14-tinted-framed-blob",
+          "error": 12.744757290772649
+        }
+      ],
+      "rawResults": "tmp/heart-learning/bauble-segmentation-2026-10-18/targeted-study/results.json",
+      "rawResultsSha256": "9822401b1bd755672288bc668e20f303fbb791803a780f17c42fc7b538144bc2",
+      "groups": {
+        "known": 14
+      }
+    }
   }
 }
