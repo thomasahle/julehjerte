@@ -710,3 +710,70 @@ After review, merge the feature branch through the normal repository process. Ch
 ## Attribution
 
 The website's existing `LICENSE` contains GPL-3 text while its README says MIT. This integration preserves both existing files and does not resolve that pre-existing discrepancy or relicense the site. Imported application code retains `static/inverse/LICENSE.txt`; solver notices and binary provenance remain beside the vendored solver. `static/inverse/THIRD_PARTY_NOTICES.txt` is the original notice (its `site/` references describe the source archive). `HANDOFF_ATTRIBUTION.md` preserves the original handoff attribution text; its relative paths refer to that archive. Example artwork retains its original rights and is not assigned the software licence.
+
+## Exact solvability in the regular alternating-weave model
+
+The renderer uses `M = phase XOR A XOR B`, where `A` and `B` are the alternating
+strip parities of the two sheets. This is a restriction on the weave as well as
+on its cuts: arbitrary over/under choices, stopped interior cuts and extra
+cut-out pieces are outside this model. Cuts may bend backwards; no monotonicity
+or straight-line assumption is needed here.
+
+For a finite piecewise-smooth binary design in a fixed overlap square, an exact
+**topological** solution exists if and only if its visible boundary can be
+completed with invisible connectors and assigned to the sheets so that:
+
+- Every visible boundary segment belongs to exactly one sheet. Every invisible
+  connector belongs to both sheets, with exactly coincident geometry.
+- Each sheet consists entirely of simple, mutually disjoint paths joining its
+  designated pair of opposite edges. There are no closed cut loops, branches,
+  interior endpoints or additional boundary contacts.
+- The endpoints pair in their boundary order. The other sheet uses the other
+  pair of edges. One global colour phase agrees with the target.
+
+Necessity follows from tracing legal cuts. For sufficiency, form each sheet's
+ordered strips. Crossing a visible segment flips one strip parity; crossing a
+shared connector flips both and leaves their XOR unchanged. Thus the rendered
+and target colours have the same jumps, and fixing one region's phase fixes
+all regions. This proves representation in the ideal planar model, not easy
+physical assembly. Minimum clearance, self-return restrictions, finite cutting
+precision and the unfolded paper-core check remain additional constraints.
+
+This graph formulation agrees with the construction rules in Torben Mogensen's
+["Braided Christmas Hearts", section 4, printed page 10](https://hjemmesider.diku.dk/~torbenm/hearts.pdf#page=10).
+The proof and consequences below are applied to this codebase's regular model;
+the source also discusses other weaving conventions.
+
+Useful necessary tests follow directly:
+
+- Opposite edges have equal numbers of genuine colour transitions. Each such
+  transition is one cut endpoint; endpoints preserve order across the square.
+- Four corner colours have even XOR, provided no cut ends at a corner. This is
+  already implied by consistent opposite-edge transition counts and is not an
+  additional sufficient test.
+- An interior point can have at most four incident visible boundary branches:
+  at most one simple cut from each sheet passes through it, with two arms each.
+  Six- or eight-branch junctions are therefore impossible. This counts branches
+  *at the point*, not crossings of a finite sampling circle: a legal curve can
+  enter a finite neighbourhood several times.
+- A nonuniform interior with a completely uniform border is impossible: zero
+  edge transitions force zero cuts on both sheets. This is one reason free-border
+  completion is useful. Equal nonzero edge counts alone do not prove solvability.
+
+The ideal four-semicircle junction in the earlier Artésta/Bauhaus source is a
+concrete eight-branch example. Locally, place radius-R half-disks at (-R,0),
+(0,-R), (R,0) and (0,R), restricted respectively to the northwest, northeast,
+southeast and southwest quadrants. Their common origin has four straight
+boundary rays and four tangent circular boundary branches. An exact regular
+weave cannot represent this junction. This is a statement about that ideal
+construction, **not a certified impossibility result for its JPEG or the latest
+user screenshot**: blur, thresholding and rasterization can merge the white
+cusps into finite bridges and change the topology.
+
+Do not turn raw photograph border noise or a finite-radius junction count into
+an impossibility claim. A failed MILP proves only infeasibility of its particular
+candidate graph and constraints; omitted connector positions or shapes may
+still work. A timed-out Bézier fit provides no impossibility certificate. A
+future diagnostic should distinguish an exact source-boundary obstruction,
+a failure under the chosen physical width, an exhausted candidate graph and an
+unresolved search, and show the offending geometry when claiming an obstruction.
