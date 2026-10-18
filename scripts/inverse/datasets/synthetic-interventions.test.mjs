@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { syntheticPhoto, project, invert } from './synthetic-photo.mjs';
 import { sha256 } from './synthetic-geometry.mjs';
 import { createCanvas, loadImage } from 'canvas';
+import { numericSnapshot } from '../numeric-snapshot.mjs';
 
 function fixture() {
   const n = 32;
@@ -19,20 +20,25 @@ function unchangedParameters(actual, baseline, except) {
   assert.deepEqual(actual.labels.baselinePerturbations, baseline.labels.perturbations);
 }
 
-test('default and empty-intervention renders retain prechange files and labels', async () => {
+test('default and empty-intervention renders retain prechange pixels and labels', async () => {
   const baseline = await baselinePromise;
-  // Recorded with source dd4df10 before introducing interventions. Dependency
-  // upgrades that alter image encoding need an explicit reproducibility audit.
+  // Decoded from the byte snapshots frozen at dd4df10. Linux PNG encoding
+  // differs from macOS, but every RGBA byte is identical in the audited replay.
+  // Keep exact encoding equality for default/empty calls on the same runtime.
   const hashes = {
-    'photo.jpg': '91fabf0f6103a68acb03960df9df67001f5b9eab7563e76d630ad1b670474e82',
-    'crop.png': 'eed3971b7f67c7a7af2c8334b8f4ea613a664a5cf4b56b0d24a59d3303e9d343',
-    'photo-paper-a.png': '78c24a547f5bc8453aca04ecc0bc380a0e27ebba91ea77e75c4f09b7b06475dc',
-    'photo-overlap-valid.png': 'fd3298844d6a496a63608a68ba022880bcd39c33a9cc94317fcfdb29ad895147',
-    'crop-paper-a.png': '74b6d4e5b941e86a11d374f4a29189a96b61203fbfc5ed43e81e8af6b2d4a74c',
-    'crop-overlap-valid.png': 'a83b34545a607120cd3fe24e5d4d081b22f7d5483ac5ffaed5b4fd392aaa9c23'
+    'photo.jpg': '478ca76a7de2831ea3bfae6ec76d2e96886ceda135cf84b098ce633dbeee94bb',
+    'crop.png': '090ae0bee8a541bc781ba0ddfa056f88c13bed92305f0dfdccd14ba43209fe9e',
+    'photo-paper-a.png': '510c165d30a6da333608b0cd615aa4d4027bbf5a1ede23f5d9aa1c21950ec624',
+    'photo-overlap-valid.png': 'be527c7f32a8287df4b2f63d60f20c349b9f913ec9fea0b0a5f83f95f723d680',
+    'crop-paper-a.png': '2d8df4dfc302fcb5e6fcf17e36cbd7b7a8ed406f88152e03aa3939bef91235e0',
+    'crop-overlap-valid.png': 'f79f6c4299155c50e572f4b73cbec92e1102ce7810e63d8b34f7bbdcfdf9d2c7'
   };
-  for (const [key, value] of Object.entries(hashes)) assert.equal(sha256(baseline.files[key]), value, key);
-  assert.equal(sha256(JSON.stringify(baseline.labels)), '9747a31d25043b9c2d09a6d351920f7af6f48dbdef37312d76d6c3c8bc65a8b9');
+  for (const [key, value] of Object.entries(hashes)) {
+    const image=await loadImage(baseline.files[key]),canvas=createCanvas(image.width,image.height),ctx=canvas.getContext('2d');
+    assert.deepEqual([image.width,image.height],[64,64]);ctx.drawImage(image,0,0);
+    assert.equal(sha256(ctx.getImageData(0,0,64,64).data),value,key);
+  }
+  assert.equal(sha256(numericSnapshot(baseline.labels)), '2f1290128f698677a45c0cdff7bf83e4997f8b129700f4100ad059750b7a2ea3');
   const empty = await syntheticPhoto({ ...fixture(), interventions: {} });
   sameFiles(empty, baseline); assert.deepEqual(empty.labels, baseline.labels);
   assert.equal(Object.hasOwn(baseline.labels, 'interventions'), false);

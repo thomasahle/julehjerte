@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { RECIPES, proceduralDesign, validateDesign, graphLabels, sha256 } from './synthetic-geometry.mjs';
+import { RECIPES, proceduralDesign, validateDesign, graphLabels, geometryHash, sha256 } from './synthetic-geometry.mjs';
+import { numericSnapshot } from '../numeric-snapshot.mjs';
 import { generateSynthetic } from './synthetic-generate.mjs';
 import { homography, project, invert, multiply, SQUARE, syntheticPhoto } from './synthetic-photo.mjs';
 
@@ -61,21 +62,23 @@ test('opposite color phases of identical cut geometry do not count as new base g
   assert.equal(a.geometrySha256, b.geometrySha256);
 });
 
-// Recorded before corner-lattice existed, at source commit 703756f. Include
-// metadata, cut serialization and graph labels so RNG/numeric changes surface.
-test('optional corner generation preserves existing four recipes byte for byte', () => {
+// Audited against the byte snapshots recorded at 703756f before corner-lattice.
+// Linux and macOS differ only below 1e-13 mm; keep parameters, topology and
+// geometric labels in the snapshot without hashing those last bits twice.
+test('optional corner generation preserves existing recipe geometry and labels across platforms', () => {
   const seeds = [0, 1, 7, 26, 33, 713051, 714060, 827068];
   const expected = {
-    lattice: 'a95948c7427533785608c50feff030f9115cc16f3471f8def0a60122f28445ee',
-    'shared-lattice': '523f91327b49dfdf913a1d79f10c4dac7c2a9d61fe1d84f90bbfc8e2816d3eb9',
-    channel: '374dbabf89415f6accff4ab248bb49a7a9630efcd61ea9d4a43a422b41479b4d',
-    frame: '53a9bbd7ee617eaf278c17d01e17dd0be72689c056e4b9a9ab14679c804e023d'
+    lattice: 'b2d3fe067f4f056ef888866d844cef811b82f0a7c1735561bddcef2f69a4bec7',
+    'shared-lattice': 'c1061b15901a9911dec26d1b1394effd30258c0951bbd1a0a37b5e750435f9a6',
+    channel: '6dbada6cc0ffdf16e95455dcea21477a8d6e3e38a53ffb9f1855da32717bdc08',
+    frame: '12811b6b84ca401366c970c292b274ffb8fea9b80d05fccfd92728e78964bad7'
   };
   assert.deepEqual(RECIPES, ['lattice', 'shared-lattice', 'channel', 'frame']);
   for (const recipe of RECIPES) {
-    const actual = sha256(JSON.stringify(seeds.map(seed => {
+    const actual = sha256(numericSnapshot(seeds.map(seed => {
       const d = proceduralDesign(seed, recipe);
-      return { parameters: d.parameters, cuts: d.cuts, labels: graphLabels(d), geometrySha256: d.geometrySha256, topologySha256: d.topologySha256 };
+      assert.equal(d.geometrySha256,geometryHash(d.cuts));
+      return { parameters: d.parameters, cuts: d.cuts, labels: graphLabels(d), topologySha256: d.topologySha256 };
     })));
     assert.equal(actual, expected[recipe], recipe);
   }
