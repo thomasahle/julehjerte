@@ -10,8 +10,14 @@ export function measuredKernel(equal,{now=()=>performance.now(),key=size=>Math.f
   const remember=(bucket,value)=>{choices.set(bucket,value);if(choices.size>8)choices.delete(choices.keys().next().value);};
   return{
     run(size,javascript,native){
-      const bucket=key(size),selected=choices.get(bucket);
+      const bucket=key(size);let selected=choices.get(bucket),retried=!!selected?.retriedAfterClockAdvance;
+      // A suspended/coarse clock provides no performance evidence. Retry once
+      // when it advances instead of permanently disabling a useful kernel.
+      // Numerical disagreements and actual speed measurements remain final.
+      if(selected?.retryAfterClock!==undefined&&now()>selected.retryAfterClock){selected=null;retried=true;}
       if(selected&&!selected.calibrating)return selected.backend==='wasm'?native():javascript();
+      const rememberChoice=value=>remember(bucket,{...value,...(retried?{retriedAfterClockAdvance:true}:{}),
+        ...(!retried&&value.reason==='no_consistent_gain'&&value.timings.every(t=>t.javascript===0&&t.wasm===0)?{retryAfterClock:now()}:{})});
       const quick=quickDecision&&minimumBatchMilliseconds>0&&repetitions>1;
       const details={...describe(size),...(minimumBatchMilliseconds?{maximumTimingRepetitions:repetitions,minimumBatchMilliseconds}:repetitions>1?{timingRepetitions:repetitions}:{}),...(quick?{quickDecision:true}:{})};
       if(calibrateAcrossCalls){
@@ -22,16 +28,16 @@ export function measuredKernel(equal,{now=()=>performance.now(),key=size=>Math.f
           const start=now();values[name]=(name==='wasm'?native:javascript)();timing[name]=now()-start;
         }
         const timings=[...(selected?.timings||[]),timing],details={...describe(size),calibrationCalls:2};
-        if(!equal(values.javascript,values.wasm))remember(bucket,{...details,backend:'javascript',reason:'different_results',timings});
-        else if(timings.length<2)remember(bucket,{...details,backend:'javascript',reason:'awaiting_second_input',calibrating:true,timings});
+        if(!equal(values.javascript,values.wasm))rememberChoice({...details,backend:'javascript',reason:'different_results',timings});
+        else if(timings.length<2)rememberChoice({...details,backend:'javascript',reason:'awaiting_second_input',calibrating:true,timings});
         else{
           const faster=timings.every(t=>t.wasm<t.javascript*.9);
-          remember(bucket,{...details,backend:faster?'wasm':'javascript',reason:faster?'measured_faster':'no_consistent_gain',timings});
+          rememberChoice({...details,backend:faster?'wasm':'javascript',reason:faster?'measured_faster':'no_consistent_gain',timings});
         }
         return values.javascript;
       }
       const warm=javascript(),candidate=native();
-      if(!equal(warm,candidate)){remember(bucket,{...details,backend:'javascript',reason:'different_results'});return warm;}
+      if(!equal(warm,candidate)){rememberChoice({...details,backend:'javascript',reason:'different_results'});return warm;}
       const measure=(limit,minimum)=>{
         const timings=[];let result=warm;
         for(let round=0;round<2;round++){
@@ -65,11 +71,11 @@ export function measuredKernel(equal,{now=()=>performance.now(),key=size=>Math.f
       }
       const {result,timings,valid}=measured;
       const refinement=initialTimings?{initialTimings}:{};
-      if(!valid){remember(bucket,{...details,...refinement,backend:'javascript',reason:'different_results'});return result;}
+      if(!valid){rememberChoice({...details,...refinement,backend:'javascript',reason:'different_results'});return result;}
       // Require a repeated gain. Tied/coarse clocks and inconsistent timings
       // retain the reference implementation; there is no browser-name policy.
       const faster=timings.every(t=>t.wasm<t.javascript*.9);
-      remember(bucket,{...details,...refinement,backend:faster?'wasm':'javascript',reason:faster?'measured_faster':'no_consistent_gain',timings});
+      rememberChoice({...details,...refinement,backend:faster?'wasm':'javascript',reason:faster?'measured_faster':'no_consistent_gain',timings});
       return result;
     },
     report(){return[...choices.values()].map(v=>({...v,...(v.initialTimings?{initialTimings:v.initialTimings.map(t=>({...t}))}:{}),timings:v.timings?.map(t=>({...t,...(t.repetitions?{repetitions:{...t.repetitions}}:{})}))}));}
