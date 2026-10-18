@@ -51,6 +51,7 @@ export function finish(solution,cfg,onProgress=()=>{},{refine=true,stoppedEarly=
   const returnRepair=repairFinalReturns(solution,cfg,{deadline});
   const paperRepair=repairFinalPaper(returnRepair.solution,cfg,{deadline,includeMaps:true});
   solution=paperRepair.solution;
+  cfg=verifiedPaperSettings(solution,cfg);
   const check=validate(solution,cfg,{finalGeometry:true});
   onProgress({stage:'paper'});const material=paperRepair.material||finalMaterialAudit(solution,cfg,{includeMaps:true}),perturbation=check.passed?perturbationAudit(solution,cfg,{onProgress}):{summary:{trials:0,skipped:'Nominal geometry failed validation.'},trials:[],worst:null},metrics=easeMetrics(solution,cfg),source=solution.graph.target.sourceImage,comparison={resolution:source?.resolution??240,wovenMask:sampleWeave(solution,source?.resolution??240),validMask:source?.validMask,...(source?.weights?{weights:source.weights}:{})},imageError=errorFromSamples(source,comparison.wovenMask),imagePassed=!imageError||imageError.mismatchFraction<=cfg.maxImageError,features=auditFeatureFidelity(source,comparison.wovenMask,cfg),allowTemplates=features.passed&&check.passed&&(!cfg.requireMaterialCore||material.passed)&&imagePassed,symmetry=symmetryReport(solution,cfg.symmetry),warnings=[];
   // A dropped symmetry request belongs in the warnings the app already reads,

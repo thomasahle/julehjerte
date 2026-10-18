@@ -4,7 +4,7 @@ import fs from 'node:fs/promises';
 import {loadSolutionJSON,solutionJSON} from '../../static/inverse/core/graph.js';
 import {geometricMaterialAudit,finalMaterialAudit} from '../../static/inverse/core/geometric-material.js';
 import {repairFinalPaper} from '../../static/inverse/core/direct/final-paper-repair.js';
-import {materialAudit} from '../../static/inverse/core/material.js';
+import {materialAudit,verifiedPaperSettings} from '../../static/inverse/core/material.js';
 import {sampleWeave} from '../../static/inverse/core/validate.js';
 import {finish} from '../../static/inverse/core/engine.js';
 import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
@@ -83,4 +83,44 @@ test('the main fitter repairs the photographic fold defect and rechecks exported
   const error=rendered.mask.reduce((sum,v,i)=>sum+Number(v!==source.mask[i]),0)/rendered.mask.length;
   assert.ok(error<.01,'The independently exported weave must keep the photographic fit within 1%.');
   assert.deepEqual(solutionJSON(s),before);assert.deepEqual(source,sourceBefore);
+});
+
+test('final repair resolves an uncertain coarse lattice and exports its actual verification resolution',async t=>{
+  const {inflateSync}=await import('node:zlib'),{createHash}=await import('node:crypto');
+  const {loadNumericalKernel}=await import('../../static/inverse/core/numerical-kernel.js');
+  const {renderExportedWeave}=await import('./export-renderer.mjs');
+  await loadNumericalKernel();
+  const saved=JSON.parse(await fs.readFile('scripts/inverse/fixtures/paper-repair-lattice-candidate.json'));
+  const source={resolution:saved.source.resolution};
+  for(const[name,array]of Object.entries(saved.source.arrays)){
+    const bytes=Uint8Array.from(inflateSync(Buffer.from(array.deflate,'base64')));
+    assert.equal(createHash('sha256').update(bytes).digest('hex'),array.sha256);
+    const Type={Uint8Array,Float32Array}[array.type];assert.ok(Type);
+    source[name]=new Type(bytes.buffer);assert.equal(source[name].length,array.length);
+  }
+  const solution=loadSolutionJSON(saved.geometry);solution.graph.target.sourceImage=source;
+  const before=structuredClone(solutionJSON(solution)),sourceBefore=structuredClone(source);
+  // Exercise the complete bounded repair, independent of host CPU speed.
+  // Fresh-photo and browser cases separately exercise real deadlines.
+  t.mock.method(performance,'now',()=>0);
+  const repaired=repairFinalPaper(solution,saved.settings);
+  assert.equal(repaired.report.before.status,'fail');
+  assert.equal(repaired.report.accepted,true);
+  const attempt=repaired.report.attempts[0],verification=attempt.paperVerification;
+  assert.equal(verification.initialStatus,'uncertain');assert.equal(verification.resolution,700);
+  assert.equal(verification.status,'pass');assert.ok(Object.values(attempt.gates).every(Boolean));
+  assert.ok(attempt.errorChange<=0);
+  assert.equal(finalMaterialAudit(repaired.solution,saved.settings).status,'uncertain','The unchanged coarse lattice still cannot certify this repair.');
+  const checked=verifiedPaperSettings(repaired.solution,saved.settings);
+  assert.equal(finalMaterialAudit(repaired.solution,checked).status,'pass');
+  const exported=finish(solution,saved.settings,()=>{},{refine:false});
+  assert.equal(exported.report.templateChecksPassed,true);
+  assert.equal(exported.report.settings.materialResolution,700);
+  assert.equal(exported.report.solver.paperVerification.source,'final-paper-repair');
+  assert.equal(exported.report.manufacturing.latticeStatus,'pass');
+  assert.equal(exported.report.manufacturing.offset.status,'pass');
+  const replay=await renderExportedWeave(exported.files['cut_geometry.json'],source.resolution);
+  const error=replay.mask.reduce((sum,v,i)=>sum+Number(v!==source.mask[i]),0)/source.mask.length;
+  assert.ok(error<.03,`Independent disagreement ${error}`);
+  assert.deepEqual(solutionJSON(solution),before);assert.deepEqual(source,sourceBefore);
 });

@@ -47,13 +47,27 @@ export function repairFinalPaper(solution,cfg,{deadline=Infinity,maxMilliseconds
   const checkpointAudit=(s,c)=>geometricMaterialAudit(s,c,{tolerance:.002,probeRadii:false});
   const fitted=refineCurves(graph,objective.probability,source.resolution,phase,{...cfg,preferMatchingSheets:false,symmetry},{input,weights:objective.weights,steps:160,rate:.002,selection:'mask',identicalSheets:matchingBefore.identical,finalGeometry:true,deadline:limit-100,paperRecovery,paperAudit:checkpointAudit});
   attempt.refinement={steps:fitted.steps,geometryPassed:fitted.geometryPassed,paperPassed:fitted.paperPassed,history:fitted.history};
-  const points=fitted.points,candidate=graph.solution(points,phase,input),woven=sampleWeave(candidate,source.resolution),error=referenceError(source,woven),paper=finalMaterialAudit(candidate,cfg,{includeMaps});
+  const points=fitted.points,candidate=graph.solution(points,phase,input),woven=sampleWeave(candidate,source.resolution),error=referenceError(source,woven);
+  let paper=finalMaterialAudit(candidate,cfg,{includeMaps}),paperVerification=null;
+  // The offset repair can succeed while a coarse rolling-disk lattice cannot
+  // resolve the repaired connection. Finish verification of these coordinates
+  // at one finer supported resolution, rather than discarding a good repair.
+  // This is a bounded final audit, not further optimization; as with the first
+  // final audit above it completes after the search cutoff. Neither a failed
+  // lattice nor uncertain offsets qualify, and both models must then pass.
+  if(paper.offset.passed&&paper.summary.latticeStatus==='uncertain'&&cfg.materialResolution<1000){
+    const resolution=cfg.materialResolution<700?700:1000,at=performance.now();
+    paper=finalMaterialAudit(candidate,{...cfg,materialResolution:resolution},{includeMaps});
+    paperVerification={source:'final-paper-repair',requestedResolution:cfg.materialResolution,initialStatus:'uncertain',resolution,status:paper.status,seconds:(performance.now()-at)/1000};
+    attempt.paperVerification=paperVerification;
+  }
   const validation=validate(candidate,cfg,{checkImage:false,finalGeometry:true}),features=auditFeatureFidelityChange(source,before,woven,cfg),matching=matchingSummary(candidate),symmetryCheck=symmetryReport(candidate,cfg.symmetry);
   attempt.error=error;attempt.errorChange=error.mismatchFraction-errorBefore.mismatchFraction;attempt.paper=paper.summary;attempt.features=features;
   attempt.gates={geometry:validation.passed,paper:paper.passed,fixedPreserved:points.every((v,i)=>!graph.fixed[i]||v===original[i]),displacementBounded:points.every((v,i)=>Number.isFinite(v)&&Math.abs(v-original[i])<=cfg.nominalWidth),matchingPreserved:!matchingBefore.identical||matching.identical,symmetryPreserved:symmetryCheck.requested.length===symmetryCheck.honoured.length,features:features.passed,imageAccepted:Number.isFinite(error.mismatchFraction)&&error.mismatchFraction<=cfg.maxImageError};
   attempt.accepted=Object.values(attempt.gates).every(Boolean);
   if(!attempt.accepted)return unchanged();
   candidate.graph.metadata={...solution.graph.metadata};candidate.graph.target.metadata={...input.metadata};candidate.report={...solution.report};
+  if(paperVerification)candidate.report.paperVerification=paperVerification;
   if(solution.automaticSettings)candidate.automaticSettings=solution.automaticSettings;
   report.accepted=true;return{solution:candidate,report,material:paper};
 }
