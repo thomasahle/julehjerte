@@ -395,3 +395,46 @@ lighter frame, its tip stays near (191.50, 231.02), but the complete shape fit h
 correct upper overlap corners. The next diagnosis must separate shape-objective
 bias from search failure; lowering support thresholds would not resolve either.
 The production detector and the validated preview remain unchanged by these trials.
+
+
+The next diagnosis separates **objective bias, local-search failure and colour-field
+bias**. Three runs of 48 evaluations each preserve the original pixels and all
+physical acceptance gates. Logging the objective components reproduces the prior
+48 detections exactly; post-fit oracle scoring likewise leaves the 48 ablation
+selections unchanged. Known corners never initialize or select a returned crop.
+
+The overlap-diameter contrast reward strongly favours the decorative frame. For
+the ordinary tinted frame with unrefined lower lines, the selected crop has
+5.21 px maximum error and scores **−22.69**, while a feasible near-known probe has
+1.65 px error and scores **−10.98**. The diameter term supplies nearly all of that
+preference: **−23.88 versus −12.00**. A true pale-lobe/pale-border boundary has no
+colour step; sliding onto the red interior frame creates the rewarded contrast.
+Longer optimization cannot repair this objective mismatch.
+
+There is also a distinct search failure: the deeper lighter frame selects a
+19.50 px-error crop scoring **2.80**, despite a post-fit feasible probe scoring
+**−10.66** and passing the current outline gates. Neither observation justifies
+lowering those gates.
+
+Removing the contrast reward alone remains insufficient. Even after evaluating
+with exact known lower lines, cap depths and corners, the correct physical shape
+scores worse than a shifted fit on all four controls. Direct sampling identifies
+an additional input-field bias: the red paper's inferred outer boundary expands
+by **1.46–1.75 px** (median normal displacement). The pale boundary shifts inward
+by only **0.09–0.49 px**. Shape fitting is therefore trying to explain an asymmetric
+segmentation error as a change in paper geometry.
+
+Two unshipped foreground prototypes were checked against those boundaries. A
+relative paper/background distance barely reduces the red expansion and damages
+the pale silhouette. A constrained three-colour RGB mixture reduces the red-edge
+median displacement to **within 0.022 px**, but loses most pale-edge crossings on
+the lighter background: only **4 of 36** samples find a threshold crossing within
+six pixels. This is a failed replacement, despite its attractive red-edge result.
+It uses an empirical RGB mixture, not a calibrated camera model. The learned pale
+colour's selection bias and spatial background variation remain hypotheses to
+separate next.
+
+A broad replay now removes only the diameter-contrast reward for the learned
+background model, comparing original and unrefined lower lines on the same
+**89 inputs**. These trials remain outside production; no new template-fitting
+or overall-pipeline improvement is claimed yet.
