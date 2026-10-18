@@ -3,8 +3,8 @@
 Current status: the upload workflows and 33-case browser comparison pass. The
 full inverse run recorded 1,081 passes and one offline adapter failure; the
 adapter is corrected and all seven affected tests pass on recheck. Independent
-feature checks on the downloaded editable SVGs also pass. Port 5232 has not yet
-been refreshed. Earlier experiments below preserve the failures and improvements.
+feature checks on the downloaded editable SVGs also pass. The validated build is
+now available on port 5232. Earlier experiments below preserve the failures and improvements.
 
 The automatic R5C4 bauble crop includes background and extrapolates its bottom
 corner below the 1,112-pixel photograph. Earlier experiments with longer scan
@@ -245,3 +245,13 @@ SVGs** themselves. Both pass, with exactly the previously measured total errors.
 The bauble retains **90%** of the 5 mm² region that the failed four-cut fit erased.
 No substantial source region is missing in either exported SVG. This closes the
 export-validation gap; the bauble's solve time and irregular border remain open.
+
+
+The local preview on **port 5232** now serves the validated crop/fitter changes.
+A fresh Chrome check loaded the homepage and both language versions of Paint,
+opened and closed the import dialog, and reported no JavaScript errors or failed
+local requests. HTTP checks also pass for `localhost`, `127.0.0.1` and `::1`.
+The served fitter matches the validated source SHA-256. The repeated build changed
+Svelte bundle hashes through its default timestamp version; all 122 inverse source
+files still match byte-for-byte. The in-memory preview is isolated from subsequent
+experimental builds. No push or deployment was made.

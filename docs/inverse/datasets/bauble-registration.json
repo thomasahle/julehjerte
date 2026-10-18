@@ -1,5 +1,5 @@
 {
-  "status": "Browser/corpus and independent editable-SVG features pass. Full suite: 1081 passes; one offline adapter failure corrected and all seven affected tests rechecked. Preview refresh pending.",
+  "status": "Validated crop/fitter available on local port 5232. Full run: 1081 passes and one offline adapter failure corrected with seven affected tests passing. Browser corpus and independent editable-SVG feature checks pass.",
   "photo": "scripts/inverse/fixtures/hard-photos/collage.png",
   "photoSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
   "case": "bauble (R5C4)",
@@ -894,7 +894,7 @@
     }
   },
   "cleanupComparison": {
-    "status": "Browser/corpus and independent editable-SVG features pass. Full suite: 1081 passes; one offline adapter failure corrected and all seven affected tests rechecked. Preview refresh pending.",
+    "status": "Validated crop/fitter available on local port 5232. Full run: 1081 passes and one offline adapter failure corrected with seven affected tests passing. Browser corpus and independent editable-SVG feature checks pass.",
     "firstProbe": {
       "independentError": 0.02806875,
       "seconds": 108.987264584,
@@ -936,12 +936,10 @@
         "A 25-second request retains its hard cleanup allowance"
       ]
     },
-    "pending": [
-      "preview refresh after validation"
-    ],
+    "pending": [],
     "finalValidation": {
       "implementationCommit": "47b3d08",
-      "status": "Browser/corpus and independent editable-SVG features pass. Full suite: 1081 passes; one offline adapter failure corrected and all seven affected tests rechecked. Preview refresh pending.",
+      "status": "Validated crop/fitter available on local port 5232. Full run: 1081 passes and one offline adapter failure corrected with seven affected tests passing. Browser corpus and independent editable-SVG feature checks pass.",
       "browser": {
         "record": "tmp/heart-learning/bauble-segmentation-2026-10-18/final-cleanup/browser/results.json",
         "recordSha256": "981486dabf171ed131d44be6935ef3b73e038e46d45c28d3667fa68de812e44c",
@@ -1060,7 +1058,7 @@
         "logSha256": "4e5816cc4e8ad7fd102109bf99a7bf493591561a998db74a90b1b96e4e94df55",
         "failure": "Offline projective-body adapter expected the field-selection source from before RGB/background support. It rejected the source before numerical fitting."
       },
-      "previewRuntime": "043a8e3; refresh only after full validation and editable-SVG feature audit",
+      "previewRuntime": "47b3d08 application changes; offline adapter correction aa35e92; in-memory build on port 5232",
       "offlineAdapterCorrection": {
         "change": "Share the exact audited locator field-selection string between the two offline foreground adapters. No application or solver file changed.",
         "projectiveBodyTests": 4,
@@ -1113,6 +1111,30 @@
             "missing": [],
             "smallRegions": []
           }
+        ]
+      },
+      "preview": {
+        "runtimeFitSha256": "7ca49698d46123887669cf771540c5b00cafc1faeab929e7cba7478200d924ca",
+        "browserVersion": "145.0.7632.6",
+        "browserSmoke": {
+          "record": "tmp/heart-learning/bauble-segmentation-2026-10-18/final-cleanup/preview-live.json",
+          "sha256": "4bbdc401e54db1d3052cded8a9c87a87d72320e4221fccaeb146c2d13b978d58",
+          "passed": true
+        },
+        "http": {
+          "record": "tmp/heart-learning/bauble-segmentation-2026-10-18/final-cleanup/preview-http.json",
+          "sha256": "7c63e850b9c01e9accdee9c1b927fb451cc234a83f55f154bb08a0dfc1f44200",
+          "passed": true,
+          "addresses": [
+            "localhost",
+            "127.0.0.1",
+            "::1"
+          ]
+        },
+        "buildManifest": "tmp/heart-learning/bauble-segmentation-2026-10-18/final-cleanup/preview-build-after-recheck.json",
+        "limitations": [
+          "Bauble still takes about 110 seconds and has irregular border details.",
+          "Measured agreement is with the classified photograph, not original cutting-path ground truth."
         ]
       }
     }
