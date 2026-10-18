@@ -6,7 +6,7 @@ on:
       mode:
         type: choice
         default: full
-        options: [full, cold, resources, retained-grid, budgets, remaining, bicycle, comparison, maple, polish, late-clearance, profile, shared-runtime]
+        options: [full, cold, resources, retained-grid, paper-finalists, budgets, remaining, bicycle, comparison, maple, polish, late-clearance, profile, shared-runtime]
         description: Full diagnostics or focused normal-budget regressions
 permissions:
   contents: read
@@ -61,6 +61,9 @@ jobs:
       - name: Replay explicit fitting and paper verification allowances
         if: inputs.mode == 'budgets'
         run: node --test --test-concurrency=1 scripts/inverse/clearance-feature-budget.test.mjs scripts/inverse/clearance-feature-late.test.mjs scripts/inverse/clearance-feature.test.mjs scripts/inverse/feature-finalists.test.mjs scripts/inverse/feature-near-miss.test.mjs scripts/inverse/weak-feature-routing.test.mjs scripts/inverse/paper-rollback.test.mjs scripts/inverse/late-cleanup.test.mjs
+      - name: Verify retained paper alternatives at their actual lattice
+        if: inputs.mode == 'paper-finalists'
+        run: node --test --test-concurrency=1 scripts/inverse/paper-resolution-finalist.test.mjs scripts/inverse/recovered-paper-candidate.test.mjs scripts/inverse/incomplete-paper-alternative.test.mjs scripts/inverse/junction-routing.test.mjs
       - name: Replay remaining short-budget fitting regressions
         if: inputs.mode == 'remaining'
         run: node --test --test-concurrency=1 scripts/inverse/coverage-recovery.test.mjs scripts/inverse/interior-counts.test.mjs scripts/inverse/matching-seeds.test.mjs scripts/inverse/clearance-feature-late.test.mjs scripts/inverse/clearance-feature.test.mjs scripts/inverse/feature-near-miss.test.mjs scripts/inverse/search-scheduling.test.mjs scripts/inverse/short-budget-features.test.mjs
