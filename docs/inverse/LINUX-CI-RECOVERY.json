@@ -124,7 +124,7 @@
     "A late feature start reserved 450 ms for a polish that could no longer start after assessment. Lending that time to its unfinished refinement improved the source fit without extending the ten-second request.",
     "The Viking continuation repeatedly gave the whole 400 ms repair allowance to hidden-only controls, starving the existing general-control fallback. A local split-budget experiment reduced independent error from 0.01941875 to 0.0186625 without extending the continuation."
   ],
-  "remaining": "Main remains red; no recovery fix has been transferred to main. Latest complete normal-clock Linux replay passed 1108/1124 tests (16 failures), source 999b4072. A near-fit paper-verification fix is undergoing focused Linux replay at 39177180176. Quality and time limits are unchanged; no release pass or NN resumption is claimed.",
+  "remaining": "Main remains red; no recovery fix has been transferred to main. Latest complete normal-clock Linux replay passed 1108/1124 tests (16 failures), source 999b4072. The near-fit paper-verification fix passes its focused Linux budget regressions (39177180176); a photographic feature replay is running (39177445255). Quality and time limits are unchanged; no full-suite/release pass or NN resumption is claimed.",
   "branchSafety": "codex/ci-inverse-diagnostics replaces the Pages workflow with manual diagnostics. Never merge that entire branch to main. Transfer only verified fixes from codex/solver-initialization.",
   "limitations": [
     "No fresh 22-design Hunodan speed benchmark in this CI recovery pass.",
@@ -1139,7 +1139,11 @@
       "url": "https://github.com/thomasahle/julehjerte/actions/runs/39177180176",
       "diagnosticCommit": "34b2e6dc",
       "mode": "budgets",
-      "status": "in_progress"
+      "status": "completed",
+      "conclusion": "success",
+      "passed": 30,
+      "failed": 0,
+      "log": "/tmp/julehjerte-ci-nearfit-paper.log"
     },
     "appChecks": {
       "status": "passed",
