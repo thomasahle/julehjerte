@@ -124,7 +124,7 @@
     "A late feature start reserved 450 ms for a polish that could no longer start after assessment. Lending that time to its unfinished refinement improved the source fit without extending the ten-second request.",
     "The Viking continuation repeatedly gave the whole 400 ms repair allowance to hidden-only controls, starving the existing general-control fallback. A local split-budget experiment reduced independent error from 0.01941875 to 0.0186625 without extending the continuation."
   ],
-  "remaining": "Main remains red. The focused Linux replay now passes 36/36 tests. The full cold-process Linux suite is running at 39167894342. No full-suite or release pass is claimed.",
+  "remaining": "Main remains red. Full cold-process Linux replay 39167894342 passed 1105/1114 tests despite the focused 36/36 pass. Nine timed fit failures remain. Exact repeated paper-audit reuse is being tested; no full-suite or release pass is claimed.",
   "branchSafety": "codex/ci-inverse-diagnostics replaces the Pages workflow with manual diagnostics. Never merge that entire branch to main. Transfer only verified fixes from codex/solver-initialization.",
   "limitations": [
     "No fresh 22-design Hunodan speed benchmark in this CI recovery pass.",
@@ -315,7 +315,31 @@
     "url": "https://github.com/thomasahle/julehjerte/actions/runs/39167894342",
     "commit": "5e23b821",
     "sourceCommit": "46df4bd6",
-    "status": "running",
-    "scope": "All inverse tests in four cold-process shards; no diagnostic clock imported."
+    "status": "failure",
+    "scope": "All inverse tests in four cold-process shards; no diagnostic clock imported.",
+    "passed": 1105,
+    "failed": 9,
+    "shards": [
+      {
+        "shard": 1,
+        "passed": 248,
+        "failed": 5
+      },
+      {
+        "shard": 2,
+        "passed": 246,
+        "failed": 0
+      },
+      {
+        "shard": 3,
+        "passed": 286,
+        "failed": 4
+      },
+      {
+        "shard": 4,
+        "passed": 325,
+        "failed": 0
+      }
+    ]
   }
 }
