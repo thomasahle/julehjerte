@@ -188,7 +188,6 @@
     "scope": "Three native-mask quality checks plus a stalled first grid followed by actual coarse and feature routing, with independent export, geometry, paper and feature checks."
   },
   "pending": [
-    "late cleanup: actual Viking repeats and33-case browser fidelity/speed comparison",
     "late cleanup: complete inverse suite",
     "refresh stable preview after verification"
   ],
@@ -605,7 +604,7 @@
     "identicalExports": true
   },
   "lateCleanupImplementation": {
-    "status": "implemented;14focused tests, typecheck,lint,874application tests and build passed; browser running; full suite pending",
+    "status": "implemented; focused/application validation and all33 production browser comparisons passed; three additional Viking replays exported identical improved curves; new full inverse suite running",
     "fitSourceSha256": "ca7439fd671f69aa9c7181982c6ba05f5da14e29b03bb4130e89a6173c352d8c",
     "focusedLog": "tmp/heart-learning/deferred-routing-2026-10-18/late-cleanup-production/focused.log",
     "focusedLogSha256": "7e1ef0919c01accf392e1d62bde5bc175d260d9ffe2fffcf01ed1276d8af7540",
@@ -643,6 +642,199 @@
       ],
       "applicationPasses": 874,
       "applicationSkipped": 1
+    },
+    "browserVerification": {
+      "comparison": "tmp/heart-learning/deferred-routing-2026-10-18/late-cleanup-production/browser/comparison.json",
+      "comparisonSha256": "0899d9772305de71830a9c05f7892b0627a17461f85025a1d40765113e6baa44",
+      "sourcePinsSha256": "f60acd7155661b9662a5dcb97abcb8ff5a65efbe2d7fc8dddd696e1b863647a8",
+      "servedAssetsSha256": "be52fe19a8ceb60f2e449a5610ca3a31c19d3385ba3c380581bc2e389f22741c",
+      "functionalPasses": 33,
+      "cases": 33,
+      "strictComparisonPassed": true,
+      "issues": [],
+      "hunodan": {
+        "passed": 22,
+        "underTenSeconds": 22,
+        "maximumSeconds": 8.492700000047684,
+        "medianSeconds": 5.5746000000238425,
+        "engineNativeAndPaintErrorsUnchanged": true
+      },
+      "stars": [
+        {
+          "name": "hard-bibel-star-outline",
+          "seconds": 7.412700000047684,
+          "previousSeconds": 19.704200000047685,
+          "errors": {
+            "engineError": {
+              "previous": 0.00685625,
+              "current": 0.00685625
+            },
+            "sourceEditableError": {
+              "previous": 0.00696875,
+              "current": 0.00696875
+            },
+            "paintingEditableError": {
+              "previous": 0.00696875,
+              "current": 0.00696875
+            }
+          },
+          "passed": true,
+          "issues": [],
+          "cutGeometryIdentical": true,
+          "editableSVGIdentical": true
+        },
+        {
+          "name": "hard-bibel-star-outline-half",
+          "seconds": 7.258399999856949,
+          "previousSeconds": 19.127099999904633,
+          "errors": {
+            "engineError": {
+              "previous": 0.0049926524949571475,
+              "current": 0.0049926524949571475
+            },
+            "sourceEditableError": {
+              "previous": 0.005120435191354588,
+              "current": 0.005120435191354588
+            },
+            "paintingEditableError": {
+              "previous": 0.00945,
+              "current": 0.00945
+            }
+          },
+          "passed": true,
+          "issues": [],
+          "cutGeometryIdentical": true,
+          "editableSVGIdentical": true
+        },
+        {
+          "name": "hard-bibel-star-outline-jpeg75",
+          "seconds": 7.232,
+          "previousSeconds": 19.611900000095368,
+          "errors": {
+            "engineError": {
+              "previous": 0.0070125,
+              "current": 0.0070125
+            },
+            "sourceEditableError": {
+              "previous": 0.00710625,
+              "current": 0.00710625
+            },
+            "paintingEditableError": {
+              "previous": 0.00710625,
+              "current": 0.00710625
+            }
+          },
+          "passed": true,
+          "issues": [],
+          "cutGeometryIdentical": true,
+          "editableSVGIdentical": true
+        }
+      ],
+      "viking": {
+        "name": "hard-flettede-viking",
+        "seconds": 29.40510000014305,
+        "previousSeconds": 28.480800000190733,
+        "errors": {
+          "engineError": {
+            "previous": 0.01991875,
+            "current": 0.0193625
+          },
+          "sourceEditableError": {
+            "previous": 0.0201375,
+            "current": 0.01958125
+          },
+          "paintingEditableError": {
+            "previous": 0.0201375,
+            "current": 0.01958125
+          }
+        },
+        "passed": true,
+        "issues": []
+      },
+      "scope": "Production upload/crop/worker/editable exports after late cleanup scheduling043a8e3. Same33cases and historical fidelity baseline; all22regularHunodan must remain under10seconds. No engine or setting substitution.",
+      "limitations": [
+        "Single current runs versus historical browser runs, not repeated isolated speed measurements.",
+        "Observed photographic masks are not artwork or cutting-path ground truth."
+      ]
+    },
+    "browserRepeats": {
+      "passed": true,
+      "issues": [],
+      "rows": [
+        {
+          "index": 1,
+          "seconds": 29.459400000095368,
+          "engineError": 0.0193625,
+          "nativeError": 0.01958125,
+          "paintError": 0.01958125,
+          "cleanupBudget": {
+            "startedAtSeconds": 21.21210000014305,
+            "previousSeconds": 2.487899999856949,
+            "availableSeconds": 6.5,
+            "addedSeconds": 4.012100000143051
+          },
+          "sharingAccepted": 12,
+          "polishLastStep": 159,
+          "cutGeometrySha256": "b4446687b93397f160497d3bd34afab431dee2cae8e72ca2df822d493d49a8ce",
+          "editableSVGSha256": "1d85ce2d7eac3187bfbc5609c252040914df7f60442f5e4a84535224b747c002",
+          "issues": []
+        },
+        {
+          "index": 2,
+          "seconds": 29.299599999904633,
+          "engineError": 0.0193625,
+          "nativeError": 0.01958125,
+          "paintError": 0.01958125,
+          "cleanupBudget": {
+            "startedAtSeconds": 21.07640000009537,
+            "previousSeconds": 2.6235999999046324,
+            "availableSeconds": 6.5,
+            "addedSeconds": 3.8764000000953676
+          },
+          "sharingAccepted": 12,
+          "polishLastStep": 159,
+          "cutGeometrySha256": "b4446687b93397f160497d3bd34afab431dee2cae8e72ca2df822d493d49a8ce",
+          "editableSVGSha256": "1d85ce2d7eac3187bfbc5609c252040914df7f60442f5e4a84535224b747c002",
+          "issues": []
+        },
+        {
+          "index": 3,
+          "seconds": 29.400200000047683,
+          "engineError": 0.0193625,
+          "nativeError": 0.01958125,
+          "paintError": 0.01958125,
+          "cleanupBudget": {
+            "startedAtSeconds": 21.185,
+            "previousSeconds": 2.515,
+            "availableSeconds": 6.5,
+            "addedSeconds": 3.985
+          },
+          "sharingAccepted": 12,
+          "polishLastStep": 159,
+          "cutGeometrySha256": "b4446687b93397f160497d3bd34afab431dee2cae8e72ca2df822d493d49a8ce",
+          "editableSVGSha256": "1d85ce2d7eac3187bfbc5609c252040914df7f60442f5e4a84535224b747c002",
+          "issues": []
+        }
+      ],
+      "nativeErrorRange": [
+        0.01958125,
+        0.01958125
+      ],
+      "medianSeconds": 29.400200000047683,
+      "distinctCurveFiles": 1,
+      "scope": "Three serial fresh-browser uploads on unmodified production043a8e3, same photo/crop/pixels/settings; each compared against original historical fidelity baseline. This is not a physical assembly test or exact artwork ground truth.",
+      "summary": "tmp/heart-learning/deferred-routing-2026-10-18/late-cleanup-production/viking-repeats/summary.json",
+      "summarySha256": "6523b375b679e58b8869800477b69e0144b723293c62550994dcac119b870667",
+      "sourcePinsSha256": "0b12653d11f97245efadd26f56a5eedb16bed068a6aedb004671eb5953a7ef82",
+      "identicalToInitialProductionRun": true
+    },
+    "fullInverseVerification": {
+      "status": "running",
+      "runtime": "043a8e3",
+      "sourceFiles": 1064,
+      "state": "tmp/heart-learning/deferred-routing-2026-10-18/late-cleanup-production/full/state.json",
+      "sourcePinsSha256": "f60acd7155661b9662a5dcb97abcb8ff5a65efbe2d7fc8dddd696e1b863647a8",
+      "scope": "Fresh full suite after cleanup policy; earlier1074 pass belongs to the prior runtime."
     }
   }
 }

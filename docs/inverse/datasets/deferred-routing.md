@@ -85,8 +85,8 @@ All candidate-assessment reports remained identical and the new policy stayed
 inactive. Both versions produced more than one exported geometry, confirming
 timing variability, but the current mean and worst error were higher in this
 small sample. This does **not** establish equivalence or resolve the comparison.
-The next experiments concern the allocation between optional sharing and final
-polishing; no new postprocessing policy has been adopted.
+Those results motivated the cleanup-allocation experiments below; the original
+failed comparison remains preserved as evidence of the earlier policy.
 
 ## Cleanup scheduling follow-up
 
@@ -108,9 +108,26 @@ a 750 ms interruption, a capped 25-second request, and confirmation that all
 three fast star fits keep their existing allowance. The earlier 1,074-test
 result applies to the grid-first implementation, **not this new cleanup change**.
 Eight existing recovery/polishing tests, type checking, lint, 874 application
-tests (one existing skip), and the production build also passed. Actual browser
-verification is running; a new complete inverse suite remains pending. The stable
-preview still serves the earlier validated build.
+tests (one existing skip), and the production build also passed.
+
+The new production browser run passed all **33/33** strict comparisons. Every
+engine, native editable and enlarged Paint error was unchanged or lower, with
+independent geometry and paper checks passing throughout. All 22 regular Hunodan
+designs remained below ten seconds (median **5.57 s**, maximum **8.49 s**).
+The photographic stars took **7.41, 7.26 and 7.23 seconds**, with curves and
+editable SVGs byte-for-byte identical to the original baseline.
+
+The Viking's native editable disagreement improved from **2.01375% to 1.958125%**,
+with all 160 polishing steps completed. Click-to-ready time increased from
+28.48 to 29.41 seconds. Visual inspection still shows defects along the frame;
+the lower mask error does not establish recovery of the original artwork.
+Three additional serial fresh-browser replays each reproduced those curves and
+editable SVGs exactly, at the same **1.958125%** disagreement. They completed all
+160 polishing steps in 29.30–29.46 seconds click-to-ready, with every independent
+validity and feature check passing. This resolves the recorded regression in
+these replays, but does not establish timing invariance on every machine.
+A new complete inverse suite is running. The stable preview still serves the
+earlier validated build.
 
 Machine-readable measurements, hashes, and outstanding verification are in
 [deferred-routing.json](deferred-routing.json). Local diagnostic artifacts are in
