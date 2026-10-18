@@ -1013,5 +1013,102 @@
     "nativePixelsImproved": 11,
     "nativeResolution": 337,
     "qualification": "Native source fidelity improved, but the resizedPaint metric increased. Do not claim every error measure stayed unchanged or improved."
+  },
+  "resizedMaskDiagnosis": {
+    "case": "hunodan-hjfig-05",
+    "preparedBytesIdentical": true,
+    "orderedSheetCurveReferencesIdentical": true,
+    "curves": 64,
+    "changedCurves": 64,
+    "maximumControlDisplacementMm": 1.0691883917128393,
+    "measurements": [
+      {
+        "run": "prior",
+        "prepared": {
+          "path": "tmp/heart-learning/repair-budget-2026-10-17/qa-followup/browser-hunodan/chromium-hunodan-hjfig-05/prepared.json",
+          "sha256": "2ed9c43b3203a5857b432f6fa8d7254b6a6efd45e2511a88f060782dffca6710"
+        },
+        "cutGeometry": {
+          "path": "tmp/heart-learning/repair-budget-2026-10-17/qa-followup/browser-hunodan/chromium-hunodan-hjfig-05/cut_geometry.json",
+          "sha256": "816e7d68d1bd5f473bd4e24778f7b72cf34d338cdf22f7bd456c8b5959df60e2"
+        },
+        "nativeConversion": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 337,
+              "mismatch": 0
+            },
+            {
+              "resolution": 674,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.007775009025350227,
+          "sourceError": 0.007775009025350227
+        },
+        "paintingConversion": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.01008125,
+          "sourceError": 0.01008125
+        }
+      },
+      {
+        "run": "source",
+        "prepared": {
+          "path": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/hunodan-22/current/chromium-hunodan-hjfig-05/prepared.json",
+          "sha256": "2ed9c43b3203a5857b432f6fa8d7254b6a6efd45e2511a88f060782dffca6710"
+        },
+        "cutGeometry": {
+          "path": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/hunodan-22/current/chromium-hunodan-hjfig-05/cut_geometry.json",
+          "sha256": "25dcfdbc8aaa913f1c8e40f8c5eb0c9c81e3835b2dfdc8f5f4a3ead431114219"
+        },
+        "nativeConversion": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 337,
+              "mismatch": 0
+            },
+            {
+              "resolution": 674,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.007678151608273384,
+          "sourceError": 0.007678151608273384
+        },
+        "paintingConversion": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.01015625,
+          "sourceError": 0.01015625
+        }
+      }
+    ],
+    "conclusion": "The changed fit is measured against byte-identical prepared inputs; editable conversion contributes no measured drift at the four checked resolutions. The discrepancy therefore occurs in fitted-geometry scoring at the native versus enlarged mask resolution, not a changed crop or an introduced editable-export error. These records do not isolate which runtime change or timing decision moved the controls."
   }
 }

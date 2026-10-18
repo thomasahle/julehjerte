@@ -46,6 +46,14 @@ Both measurements are retained. This result meets the speed target and
 preserves native source accuracy; it does not establish that every resized
 comparison improves too.
 
+The saved `prepared.json` inputs are byte-identical. Independent conversion
+checks report zero weave drift at 337, 674, 400 and 800 pixels in both runs.
+The ordered curve references on both sheets are also identical, while the fitted
+control points differ (maximum movement 1.07 mm). This isolates the metric
+difference to the fitted geometry evaluated on the two sampling grids; neither
+a changed crop nor editable export conversion explains it. It does not isolate
+which runtime change or timed search decision moved those controls.
+
 ## Limits and follow-up
 
 This is one complete current run. Historical timing differences do not isolate
