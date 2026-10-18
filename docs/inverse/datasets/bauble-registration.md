@@ -483,3 +483,43 @@ shows that merely finding the known parameters would not make the current score
 select them. The next fixed experiment refines lower lines against oriented
 half-paper-fraction crossings, avoiding both internal colour steps and rounded
 binary-mask edges. Production and the validated preview remain unchanged.
+
+
+The half-paper-fraction crossing follow-up completed all **20 controls**. It
+reduces the deeper tinted checker from the previous 3.89 px to **1.78 px**, but
+the lighter checker remains at **3.28 px**, and several framed controls worsen
+relative to unrefined mixture lines. It remains unshipped.
+
+The downstream experiment now tests the **full import → mask → templates** path
+on the two deeper checkerboard photos, using three fixed automatic crops each.
+Two separate known-corner runs isolate downstream classification and fitting.
+These oracle crops are diagnostic only; no known artwork mask, slit count or
+saved cutting path enters fitting. The original classified masks remain intact.
+Every run is independently rendered from exported cutting geometry at 320².
+
+| Photo / crop | Imported-mask error vs ideal | Export error vs imported mask | Export error vs ideal |
+|---|---:|---:|---:|
+| Tinted / production | 2.588% | 0.251% | 2.489% |
+| Tinted / mixture, unrefined lines | 5.487% | 0.397% | 5.242% |
+| Tinted / mixture, fraction crossings | 4.173% | 0.355% | 3.972% |
+| Tinted / known corners (diagnostic) | 0.313% | 0.250% | 0.183% |
+| Lighter / production | 2.876% | 0.229% | 2.749% |
+| Lighter / mixture, unrefined lines | 5.647% | 0.378% | 5.418% |
+| Lighter / mixture, fraction crossings | 5.103% | 0.449% | 4.905% |
+| Lighter / known corners (diagnostic) | 0.308% | 0.252% | 0.171% |
+
+All **eight fits** return 3+3 cuts, pass geometry/paper and feature checks, and
+take **3.66–5.65 seconds** including final independent rendering. The fixed search
+budget is ten seconds; these are single timings, not a repeated distribution.
+The ideal checker is evaluated only after fitting, allowing a reported global
+colour-phase swap; none of these runs needs that swap. Source hashes are unchanged.
+Inspected exported-weave comparisons show shifted/slanted cells from the
+experimental crops and nearly regular cells from the known corners. Small
+JPEG-following irregularities remain even with known corners.
+
+This is a concrete full-pipeline rejection: low error against the imported mask
+and valid geometry do **not** establish fidelity to the original design. On these
+two controls, the fitter already works well when supplied the correct physical
+crop. The next investigation is subpixel boundary/coordinate consistency rather
+than additional fitter search. Broader real-photo validation remains required;
+none of these crop experiments has changed production or the local preview.

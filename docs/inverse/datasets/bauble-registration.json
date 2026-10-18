@@ -2225,7 +2225,240 @@
         ],
         "conclusion": "Every selected shifted fit scores lower than both known-geometry probes. These probes do not certify a global optimum; they show that simply finding the known parameters would not make the current selector choose them."
       },
-      "next": "Test oriented half-paper-fraction crossings for lower-edge refinement before changing optimizer search. No template reconstruction has yet been run for these candidates."
+      "next": "Investigate subpixel boundary and ROI coordinate consistency before more search or objective tuning; the current resizer uses nearest samples but maps outputs using fractional ROI origins. Also assess whether extending the existing high-evidence checker-lattice refinement to four cells and palette fields is justified, with false-positive and physical-outline checks. Neither is implemented or accepted yet. Any candidate must improve fresh exported-template agreement as well as crop geometry and pass broader real-photo QA.",
+      "fractionCrossingReplay": {
+        "status": "Complete; still unshipped",
+        "inputs": 20,
+        "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/mixture-crossing-results/results.json",
+        "sha256": "66085582d55656c3397c88e243d94e4425f3b19d03605339c7ab0a7d7c57818f",
+        "summary": [
+          {
+            "id": "mixture-no-contrast-paper-crossing",
+            "changed": [
+              "targeted-study/01-tinted-checker",
+              "targeted-study/02-tinted-framed-blob",
+              "targeted-study/05-neutral-checker",
+              "targeted-study/07-lighter-background-checker",
+              "targeted-study/08-lighter-background-framed-blob",
+              "targeted-study/09-tinted-checker",
+              "targeted-study/10-tinted-framed-blob",
+              "targeted-study/11-lighter-background-checker",
+              "targeted-study/12-lighter-background-framed-blob",
+              "targeted-study/13-tinted-checker",
+              "targeted-study/14-tinted-framed-blob",
+              "shadow-frame-0.9",
+              "shadow-frame-1",
+              "shadow-frame-1.1"
+            ],
+            "lostSupportedInPhotoCrop": [],
+            "knownErrorIncreaseOverHalfPixel": [
+              "targeted-study/01-tinted-checker",
+              "targeted-study/11-lighter-background-checker",
+              "shadow-frame-1"
+            ],
+            "knownErrorDecreaseOverHalfPixel": [
+              "targeted-study/02-tinted-framed-blob",
+              "targeted-study/05-neutral-checker",
+              "targeted-study/08-lighter-background-framed-blob",
+              "targeted-study/10-tinted-framed-blob",
+              "targeted-study/12-lighter-background-framed-blob",
+              "targeted-study/14-tinted-framed-blob"
+            ],
+            "clippedButSupportedInPhoto": [],
+            "supportedNegativeControl": [],
+            "knownCompleteSupportedMaximumError": 3.45670619745338
+          }
+        ],
+        "conclusion": "The oriented paper-fraction crossing improves the deeper tinted checker from the preceding 3.89px to 1.78px, but the lighter checker stays at 3.28px and some framed controls worsen relative to unrefined mixture lines. It is not a uniformly improved registration method."
+      },
+      "downstreamCheckerReplay": {
+        "status": "Complete; validates the source of the regression, not adoption",
+        "runs": 8,
+        "importAndIndependentRenderResolution": 320,
+        "automaticCrops": {
+          "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/checker-reconstruction/results.json",
+          "sha256": "0621592ac9b7369ebaa1f57d54586e42dbd0469c058b4d72dbdc82859a7164c1"
+        },
+        "oracleCrops": {
+          "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/checker-oracle-reconstruction/results.json",
+          "sha256": "8d123a42bb758259f26592955570a206bf3037ebf1bd47aed7a941550ec0eed7"
+        },
+        "figure": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/checker-reconstruction/comparison.png",
+        "rows": [
+          {
+            "id": "09-tinted-checker",
+            "variant": "baseline",
+            "status": "validated",
+            "seconds": 5.647659042,
+            "slits": {
+              "left": 3,
+              "right": 3
+            },
+            "templateChecksPassed": true,
+            "geometryPassed": true,
+            "independentMaskError": 0.002509765625,
+            "importedMaskAgainstIdeal": {
+              "error": 0.02587890625,
+              "globalColourPhaseSwapped": false
+            },
+            "exportAgainstIdeal": {
+              "error": 0.024892578125,
+              "globalColourPhaseSwapped": false
+            }
+          },
+          {
+            "id": "09-tinted-checker",
+            "variant": "mixture-no-contrast-segmentation-lines",
+            "status": "validated",
+            "seconds": 3.8430097920000006,
+            "slits": {
+              "left": 3,
+              "right": 3
+            },
+            "templateChecksPassed": true,
+            "geometryPassed": true,
+            "independentMaskError": 0.003974609375,
+            "importedMaskAgainstIdeal": {
+              "error": 0.054873046875,
+              "globalColourPhaseSwapped": false
+            },
+            "exportAgainstIdeal": {
+              "error": 0.052421875,
+              "globalColourPhaseSwapped": false
+            }
+          },
+          {
+            "id": "09-tinted-checker",
+            "variant": "mixture-no-contrast-paper-crossing",
+            "status": "validated",
+            "seconds": 3.6600564589999993,
+            "slits": {
+              "left": 3,
+              "right": 3
+            },
+            "templateChecksPassed": true,
+            "geometryPassed": true,
+            "independentMaskError": 0.0035546875,
+            "importedMaskAgainstIdeal": {
+              "error": 0.041728515625,
+              "globalColourPhaseSwapped": false
+            },
+            "exportAgainstIdeal": {
+              "error": 0.039716796875,
+              "globalColourPhaseSwapped": false
+            }
+          },
+          {
+            "id": "11-lighter-background-checker",
+            "variant": "baseline",
+            "status": "validated",
+            "seconds": 3.6671499580000018,
+            "slits": {
+              "left": 3,
+              "right": 3
+            },
+            "templateChecksPassed": true,
+            "geometryPassed": true,
+            "independentMaskError": 0.00228515625,
+            "importedMaskAgainstIdeal": {
+              "error": 0.028759765625,
+              "globalColourPhaseSwapped": false
+            },
+            "exportAgainstIdeal": {
+              "error": 0.027490234375,
+              "globalColourPhaseSwapped": false
+            }
+          },
+          {
+            "id": "11-lighter-background-checker",
+            "variant": "mixture-no-contrast-segmentation-lines",
+            "status": "validated",
+            "seconds": 3.8006015829999997,
+            "slits": {
+              "left": 3,
+              "right": 3
+            },
+            "templateChecksPassed": true,
+            "geometryPassed": true,
+            "independentMaskError": 0.003779296875,
+            "importedMaskAgainstIdeal": {
+              "error": 0.056474609375,
+              "globalColourPhaseSwapped": false
+            },
+            "exportAgainstIdeal": {
+              "error": 0.0541796875,
+              "globalColourPhaseSwapped": false
+            }
+          },
+          {
+            "id": "11-lighter-background-checker",
+            "variant": "mixture-no-contrast-paper-crossing",
+            "status": "validated",
+            "seconds": 3.8348184169999984,
+            "slits": {
+              "left": 3,
+              "right": 3
+            },
+            "templateChecksPassed": true,
+            "geometryPassed": true,
+            "independentMaskError": 0.0044921875,
+            "importedMaskAgainstIdeal": {
+              "error": 0.051025390625,
+              "globalColourPhaseSwapped": false
+            },
+            "exportAgainstIdeal": {
+              "error": 0.049052734375,
+              "globalColourPhaseSwapped": false
+            }
+          },
+          {
+            "id": "09-tinted-checker",
+            "variant": "known-corners-diagnostic-only",
+            "status": "validated",
+            "seconds": 4.259987375,
+            "slits": {
+              "left": 3,
+              "right": 3
+            },
+            "templateChecksPassed": true,
+            "geometryPassed": true,
+            "independentMaskError": 0.0025,
+            "importedMaskAgainstIdeal": {
+              "error": 0.003134765625,
+              "globalColourPhaseSwapped": false
+            },
+            "exportAgainstIdeal": {
+              "error": 0.001826171875,
+              "globalColourPhaseSwapped": false
+            }
+          },
+          {
+            "id": "11-lighter-background-checker",
+            "variant": "known-corners-diagnostic-only",
+            "status": "validated",
+            "seconds": 3.7035702919999993,
+            "slits": {
+              "left": 3,
+              "right": 3
+            },
+            "templateChecksPassed": true,
+            "geometryPassed": true,
+            "independentMaskError": 0.00251953125,
+            "importedMaskAgainstIdeal": {
+              "error": 0.003076171875,
+              "globalColourPhaseSwapped": false
+            },
+            "exportAgainstIdeal": {
+              "error": 0.001708984375,
+              "globalColourPhaseSwapped": false
+            }
+          }
+        ],
+        "sourcePinsUnchanged": true,
+        "qualification": "Known-corner runs are explicitly diagnostic, not automatic results. Every fit starts fresh without slit counts or cutting paths. Ideal checker masks are used only for post-fit scoring. All eight return valid 3+3 cuts and pass feature/geometry checks. These are synthetic known-geometry photographs; real-photo performance and physical assembly are not established. Single timings are not a repeated distribution.",
+        "visualInspection": "The experimental crops visibly introduce shifted/slanted cell boundaries; the known-corner exports are nearly regular. Small JPEG-following irregularities remain even with known corners.",
+        "conclusion": "The solver follows the imported mask well (0.23\u20130.45% independent error), but automatic crop errors distort the inferred design. Correct known corners reduce final ideal-design error to 0.171\u20130.183%, compared with 2.489\u20132.749% for production crops and 3.972\u20135.418% for these experimental crops."
+      }
     }
   },
   "fitterSensitivity": {
