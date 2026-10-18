@@ -422,7 +422,123 @@
     "url": "https://github.com/thomasahle/julehjerte/actions/runs/39170676301",
     "diagnosticCommit": "869d9b60",
     "sourceCommit": "31ad0811",
-    "status": "running",
-    "scope": "Full inverse suite, isolated processes, original real clocks and quality thresholds; no diagnostic clock imported."
+    "status": "failure",
+    "scope": "Full inverse suite, isolated processes, original real clocks and quality thresholds; no diagnostic clock imported.",
+    "passed": 1095,
+    "failed": 20,
+    "shards": [
+      {
+        "shard": 1,
+        "passed": 247,
+        "failed": 6,
+        "failures": [
+          "a valid coarse initializer can recover a missing feature through independently verified uncertain paper",
+          "one unobserved corner preserves the significant features of photo-bird",
+          "the main fitter reconstructs the dense binary photo target with legal editable-sized counts",
+          "a late original same-count proposal retains the motif with 3200ms left",
+          "the matching preference can change cut count and colour phase without forcing or editing the mask",
+          "fresh round-checker fitting verifies its accurate finalist before choosing a worse routing"
+        ]
+      },
+      {
+        "shard": 2,
+        "passed": 235,
+        "failed": 12,
+        "failures": [
+          "fresh fitting continues an unfinished verified initializer within the remaining search allowance",
+          "fresh fitting finds a checked pair for the upward-shifted photograph without saved cuts",
+          "fresh automatic fitting repairs a rejected circular routing before common Bezier refinement",
+          "a fully observed mask refines or replaces corner routing without opening its enclosed regions",
+          "an exhausted corner MILP leaves the remaining caller allowance for fresh coarse routing",
+          "a finer spline recovers a half-resolution opening after all coarse feature starts fail",
+          "early feature routing recovers the frozen puppy opening within a ten-second search",
+          "a one-pixel crop shift cannot discard a feature-preserving fine-grid checkpoint",
+          "a fresh shifted bird fit preserves its eye with a 10-second allowance",
+          "a fresh shifted bird fit preserves its eye with a 180-second allowance",
+          "a late routing candidate uses the repair time already provided by its caller",
+          "a late routing candidate cannot manufacture an unprovided repair allowance"
+        ]
+      },
+      {
+        "shard": 3,
+        "passed": 290,
+        "failed": 0,
+        "failures": []
+      },
+      {
+        "shard": 4,
+        "passed": 323,
+        "failed": 2,
+        "failures": [
+          "the vertical near-miss layout produces checked exports within the original short search (1.5x clock)",
+          "fresh synthetic-control routing retains time for a valid template without changing the mask"
+        ]
+      }
+    ]
+  },
+  "matchingContinuation": {
+    "commit": "1cc30d71",
+    "change": "Finish the remaining steps of a checked matching candidate using the unused alternatives allowance. Keep the original step cap, deadline and fallback; replace only after better source error and all feature, geometry and paper checks.",
+    "localPassed": 14,
+    "localFailed": 0,
+    "linuxReplay": "https://github.com/thomasahle/julehjerte/actions/runs/39171443031",
+    "diagnosticCommit": "6ca26e79",
+    "linuxPassed": 14,
+    "linuxFailed": 2,
+    "matchingPassed": true,
+    "independentExportError": 0.005934665532879819,
+    "requiredMaximum": 0.007,
+    "matchingSteps": [
+      130,
+      70
+    ],
+    "matchingSeconds": 1.8533534760000003,
+    "remainingFailures": [
+      "dense-interior-counts",
+      "late original same-count proposal with 3200ms left"
+    ],
+    "scope": "Focused existing regressions, normal clocks, no quality or time-limit changes. Not a full-suite pass."
+  },
+  "clearanceTailRegression": {
+    "commit": "fb520e7b",
+    "change": "Advance the controlled clock to 1000ms after step 80 so the last partial checkpoint still misses the 250ms in-loop checking reserve. The test again exercises independent verification of the retained uncertain candidate, with unchanged image, geometry, feature and paper requirements.",
+    "localPassed": 1,
+    "localFailed": 0
+  },
+  "resourceObservation": {
+    "url": "https://github.com/thomasahle/julehjerte/actions/runs/39170858726",
+    "passed": 13,
+    "failed": 3,
+    "node": "v22.23.3",
+    "cpu": "AMD EPYC 7763 64-Core Processor",
+    "availableParallelism": 4,
+    "files": [
+      {
+        "name": "interior-counts",
+        "wallSeconds": 10.9714,
+        "cpuSeconds": 16.7408
+      },
+      {
+        "name": "late-feature-initialization",
+        "wallSeconds": 73.4594,
+        "cpuSeconds": 94.4233
+      },
+      {
+        "name": "matching-seeds",
+        "wallSeconds": 10.1522,
+        "cpuSeconds": 15.7007
+      }
+    ],
+    "qualification": "CPU includes V8/background threads. These values do not establish idle waiting as the cause of failures; no clock modification was used."
+  },
+  "clockRecalibration": {
+    "commit": "7af47d82",
+    "change": "Allow one recalibration after a clock that could not resolve any measured work advances. Preserve permanent rejection for numerical mismatches and real inconsistent speed measurements.",
+    "localPassed": 29,
+    "localFailed": 0,
+    "scope": "Kernel-selection, paper-backend and all nine late-feature scheduling cases.",
+    "linuxReplay": "https://github.com/thomasahle/julehjerte/actions/runs/39171889512",
+    "diagnosticCommit": "3952c1aa",
+    "linuxStatus": "running"
   }
 }
