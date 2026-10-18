@@ -107,8 +107,10 @@ This bounded extension is now implemented. Six focused tests passed, including
 a 750 ms interruption, a capped 25-second request, and confirmation that all
 three fast star fits keep their existing allowance. The earlier 1,074-test
 result applies to the grid-first implementation, **not this new cleanup change**.
-Broader tests and actual browser verification of cleanup remain pending; the
-stable preview still serves the earlier validated build.
+Eight existing recovery/polishing tests, type checking, lint, 874 application
+tests (one existing skip), and the production build also passed. Actual browser
+verification is running; a new complete inverse suite remains pending. The stable
+preview still serves the earlier validated build.
 
 Machine-readable measurements, hashes, and outstanding verification are in
 [deferred-routing.json](deferred-routing.json). Local diagnostic artifacts are in

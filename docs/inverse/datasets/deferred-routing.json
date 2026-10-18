@@ -188,7 +188,6 @@
     "scope": "Three native-mask quality checks plus a stalled first grid followed by actual coarse and feature routing, with independent export, geometry, paper and feature checks."
   },
   "pending": [
-    "late cleanup: existing targeted recovery checks, typecheck, lint, application suite and build",
     "late cleanup: actual Viking repeats and33-case browser fidelity/speed comparison",
     "late cleanup: complete inverse suite",
     "refresh stable preview after verification"
@@ -606,10 +605,44 @@
     "identicalExports": true
   },
   "lateCleanupImplementation": {
-    "status": "implemented; six focused tests passed; broader checks pending",
+    "status": "implemented;14focused tests, typecheck,lint,874application tests and build passed; browser running; full suite pending",
     "fitSourceSha256": "ca7439fd671f69aa9c7181982c6ba05f5da14e29b03bb4130e89a6173c352d8c",
     "focusedLog": "tmp/heart-learning/deferred-routing-2026-10-18/late-cleanup-production/focused.log",
     "focusedLogSha256": "7e1ef0919c01accf392e1d62bde5bc175d260d9ffe2fffcf01ed1276d8af7540",
-    "scope": "After a long request has already spent10seconds, give existing cleanup up to6.5seconds, capped by the original request minus1.3seconds. Short requests and fast fits retain deadlines. Every original acceptance gate remains unchanged."
+    "scope": "After a long request has already spent10seconds, give existing cleanup up to6.5seconds, capped by the original request minus1.3seconds. Short requests and fast fits retain deadlines. Every original acceptance gate remains unchanged.",
+    "standardVerification": {
+      "state": "tmp/heart-learning/deferred-routing-2026-10-18/late-cleanup-production/qa/state.json",
+      "stateSha256": "72cb9255ae78fe25266b7839a167be15003fbbcc7ed6a3a56bc27fccabc22dc0",
+      "sourceFiles": 1064,
+      "stages": [
+        {
+          "name": "focused",
+          "status": "passed",
+          "seconds": 45.068607542
+        },
+        {
+          "name": "check",
+          "status": "passed",
+          "seconds": 10.654816875000002
+        },
+        {
+          "name": "lint",
+          "status": "passed",
+          "seconds": 7.4733153749999985
+        },
+        {
+          "name": "application",
+          "status": "passed",
+          "seconds": 46.605296458000005
+        },
+        {
+          "name": "build",
+          "status": "passed",
+          "seconds": 15.687728207999996
+        }
+      ],
+      "applicationPasses": 874,
+      "applicationSkipped": 1
+    }
   }
 }
