@@ -5,10 +5,11 @@
 import {close,signedDistance} from './fields.js';
 import {quantile,sigmoid} from './math.js';
 import {correlatedBackground} from './background.js';
+import {backgroundMixtureFields} from './background-mixture.js';
 
 const distance=(a,b)=>Math.hypot(...a.map((v,i)=>v-b[i]));
 /** Background evidence before requiring two distinct paper-colour clusters. */
-export function makePaperForeground(image,{pale=false,correlated=false}={}){
+export function makePaperForeground(image,{pale=false,correlated=false,backgroundMixture=false}={}){
   const{width:w,height:h,data}=image,n=w*h,border=[];
   const rgb=i=>[0,1,2].map(c=>data[4*i+c]/255);
   for(let y=0;y<h;y++)for(let x=0;x<w;x++)if(x<2||y<2||x>=w-2||y>=h-2)border.push(y*w+x);
@@ -28,7 +29,7 @@ export function makePaperForeground(image,{pale=false,correlated=false}={}){
     // A soft grey drop shadow on white is background; dark paper still counts.
     if(!transparent&&lightNeutral){const saturation=Math.max(...color)-Math.min(...color),dark=1-Math.max(...color);p*=Math.max(sigmoid((saturation-(pale?.025:.10))/(pale?.008:.02)),sigmoid((dark-.32)/.04));}
     paper[i]=p;
-    if(p>.95&&i%3===0)pool.push(color);
+    if(p>(backgroundMixture&&backgroundModel?.5:.95)&&i%3===0)pool.push(color);
   }
   if(pool.length<100)return null;
   return{w,h,paper,r,g,b,pool,background,transparent,noise,backgroundModel,pale,correlated};
@@ -43,11 +44,12 @@ function paletteFields(image,options={}){
   const spreads=[0,1,2].map(c=>quantile(pool.map(p=>p[c]),.9)-quantile(pool.map(p=>p[c]),.1));
   const axis=spreads.indexOf(Math.max(...spreads)),sorted=[...pool].sort((a,b)=>a[axis]-b[axis]);
   let centers=[sorted[Math.floor(sorted.length*.2)],sorted[Math.floor(sorted.length*.8)]],counts;
+  const robust=options.backgroundMixture&&correlated;
   for(let step=0;step<20;step++){
-    const sums=[[0,0,0],[0,0,0]];counts=[0,0];
-    for(const p of pool){const k=Number(distance(p,centers[1])<distance(p,centers[0]));counts[k]++;for(let c=0;c<3;c++)sums[k][c]+=p[c];}
+    const sums=[[0,0,0],[0,0,0]],groups=robust?[[],[]]:null;counts=[0,0];
+    for(const p of pool){const k=Number(distance(p,centers[1])<distance(p,centers[0]));counts[k]++;groups?.[k].push(p);for(let c=0;c<3;c++)sums[k][c]+=p[c];}
     if(counts.some(c=>c<pool.length*.08))return null;
-    centers=sums.map((p,k)=>p.map(v=>v/counts[k]));
+    centers=robust?groups.map(points=>[0,1,2].map(c=>quantile(points.map(p=>p[c]),.5))):sums.map((p,k)=>p.map(v=>v/counts[k]));
   }
   const separation=distance(...centers);
   const withinColorSpread=correlated?quantile(pool.map(p=>Math.min(...centers.map(c=>distance(p,c)))),.5):null;
@@ -60,5 +62,6 @@ function paletteFields(image,options={}){
   return{w,h,paper,red,white,chroma,r,g,b,mask:close(paper,w,h,2),pd:signedDistance(close(paper,w,h,1),w,h),rd:signedDistance(close(red,w,h,1),w,h),wd:signedDistance(close(white,w,h,1),w,h),palette:{method:correlated?'two-paper-colours-on-varying-background':'two-paper-colours-on-plain-background',pale,background,transparent,backgroundNoise:noise,colors:centers,separation,...(backgroundModel?{backgroundModel:{mean:backgroundModel.mean,covariance:backgroundModel.covariance,outlierFraction:backgroundModel.outlierFraction},withinColorSpread}:{})}};
 }
 export function makePaletteFields(image,options={}){
-  return paletteFields(image,options)||paletteFields(image,{...options,correlated:true});
+  const fields=paletteFields(image,options)||paletteFields(image,{...options,correlated:true});
+  return options.backgroundMixture?backgroundMixtureFields(image,fields):fields;
 }

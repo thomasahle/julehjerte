@@ -63,7 +63,7 @@ export function lowerEdgeLines(f,box,{outerRuns=false,extendLowerBand=false}={})
  const initial=lineEvidence(p,a,b,best.tol),fitPoints=p.map(point=>point.slice());
  // Refine the mask against colour steps, using the segmentation's background
  // metric when available so a stronger shadow edge cannot pull the paper line.
- for(let repeat=0;repeat<2;repeat++){
+ for(let repeat=0;repeat<(f.palette?.paperForeground?0:2);repeat++){
   const refined=[];
   for(const point of inliers){
    const y=point[1],x=a*y+b,norm=Math.hypot(1,a),nx=1/norm,ny=-a/norm;
@@ -117,7 +117,7 @@ function fitModel(f,box,lines,{iterations=550,flexibleCaps=false}={}){const[x0,y
    const clip=f.palette?Infinity:Math.max(8,w*.05);let loss=(1.5*trimMean(arcResiduals[0].map(x=>Math.min(x,clip)))+1.5*trimMean(arcResiduals[1].map(x=>Math.min(x,clip)))+trimMean(sideResiduals[0].map(x=>Math.min(x,clip)))+trimMean(sideResiduals[1].map(x=>Math.min(x,clip))))/5;
    let diameterLoss=0,diameterContrast=[];
    for(let l=0;l<2;l++){const ins=[],outs=[];for(let k=0;k<48;k++){const t=.04+.92*k/47,pin=l?[.018,t]:[t,.018],pout=l?[-.018,t]:[t,-.018];let pi=val(f.chroma,project(H,pin)),po=val(f.chroma,project(H,pout));const foreignIsRed=(l===0)===(mode===0);if(!foreignIsRed){pi=1-pi;po=1-po;}ins.push(pi);outs.push(po);}
-    const contrast=mean(ins.map((x,i)=>Math.max(x-outs[i],0)));diameterContrast.push(contrast);diameterLoss+=trimMean(outs,.85)-.60*contrast;
+    const contrast=mean(ins.map((x,i)=>Math.max(x-outs[i],0)));diameterContrast.push(contrast);diameterLoss+=trimMean(outs,.85)-(f.palette?.paperForeground?0:.60)*contrast;
    }
    loss+=(f.anchored?30:f.palette?20:6)*diameterLoss;
    const colorLoss=[];for(let l=0;l<2;l++){const ps=capSamples.map(p=>project(H,l?[p[1],p[0]]:p));colorLoss.push(trimMean(ps.map(p=>1-val(capProb[l],p)),.85));}loss+=(f.anchored?30:2)*mean(colorLoss);
@@ -164,9 +164,9 @@ export function createMotifDetector(image,options={}){checkImage(image);const pr
   :options.palette==='anchored'?makeAnchoredFields(work)
   :['adaptive','pale'].includes(options.palette)?makePaletteFields(work,{pale:options.palette==='pale'})
   :makeFields(work);
- const detector=(degrees=0,{refineSelection=false,extendLowerBand=false}={})=>{
+ const detectWithFields=(fields,degrees=0,{refineSelection=false,extendLowerBand=false}={})=>{
  const started=performance.now();if(!Number.isFinite(degrees))throw new TypeError('Expected a finite orientation angle.');
- const rotation=baseFields&&degrees%360!==0?orientFields(baseFields,degrees):null,f=rotation?.fields||baseFields;
+ const rotation=fields&&degrees%360!==0?orientFields(fields,degrees):null,f=rotation?.fields||fields;
  if(!f)return{status:'not_found',quad:null,reason:'No two distinct paper colours on a sufficiently plain background',elapsedMs:performance.now()-started};
  let box=inputROI.map((v,i)=>(v-workROI[i%2]+.5)*work.scale-.5),fg=null;
  if(!options.roi||f.anchored||rotation||refineSelection){fg=options.roi&&refineSelection?selectedForegroundBox(f,box,rotation):foregroundBox(f);if(fg.status!=='ok')return{...fg,quad:null,elapsedMs:performance.now()-started};box=fg.box;if(f.anchored)box=box.map((v,i)=>clamp(v+(i<2?-1:1)*.12*Math.max(fg.box[2]-fg.box[0],fg.box[3]-fg.box[1]),0,i%2?f.h:f.w));}
@@ -224,7 +224,29 @@ export function createMotifDetector(image,options={}){checkImage(image);const pr
  const heartBox=rotation?[Math.min(...corners.map(p=>p[0])),Math.min(...corners.map(p=>p[1])),Math.max(...corners.map(p=>p[0])),Math.max(...corners.map(p=>p[1]))]:box.map((v,i)=>(v+.5)/work.scale-.5+workROI[i%2]);
  return{version:f.backgroundSegmentation?'0.5.0':lobeRefinement?.accepted?'0.4.0':f.anchored?'0.3.0':f.palette?'0.2.0':'0.1.0',status,quad:finalQuad,shapeQuad:quad,gridRefinement,lobeRefinement,cornerOrder:CORNER_ORDER,outline:finalOutline,roi:inputROI,workingROI:workROI,heartBox,orientation:f.palette?(fit.mode===0?'first-colour-left':'second-colour-left'):fit.mode===0?'red-left-white-right':'white-left-red-right',score:fit.loss,elapsedMs:performance.now()-started,evaluations:fit.evaluations,evidence:{lowerEdgeSupport:sideSupport,...edgeEvidence,...(f.backgroundSegmentation?{backgroundSegmentation:f.backgroundSegmentation,lowerBand:extendLowerBand?'extended':'ordinary'}:{}),lobeOutlineSupport:arcSupport,medianLobeResidualPx:residuals,alternativeSpreadPx:spread,lowerLines:lines,diameterContrast:fit.diameterContrast,workingScale:work.scale,...(rotation?{workingRotation:{degrees,originalSize:[baseFields.w,baseFields.h],rotatedSize:[f.w,f.h],coordinateConvention:'Lower-line coordinates are in the rotated working image; returned corners and outlines are in the original photograph.'}}:{}),lobeDepths:gridRefinement?.physicalOutline?.passed?gridRefinement.physicalOutline.lobeDepths:fit.lobeDepths,palette:f.palette||null,anchored:f.anchored||null,capColourLoss:gridRefinement?.physicalOutline?.passed?gridRefinement.physicalOutline.capColourLoss:fit.colorLoss,...(gridRefinement?.physicalOutline?.passed?{lowerEdgeSupportMethod:"registered-lattice-paper-outline"}:{})},warnings,notes:['Coordinates estimate the physical overlap, not an arbitrary high-contrast interior frame.','Review is required for occlusion, non-planar paper, unusual caps or other paper palettes.']};
  };
+ const detector=(degrees=0,selection)=>detectWithFields(baseFields,degrees,selection);
  detector.preparationMs=performance.now()-preparationStart;
+ let recoveryFields;
+ detector.recoverOutline=(proposal,{refineSelection=false}={})=>{
+  if(!baseFields?.palette?.backgroundModel?.covariance||!proposal?.quad)return null;
+  // Both proposals are judged on the unchanged original fields. Only cap
+  // depths are refitted; an interior motif cannot supply the paper boundary.
+  const audit=quad=>{
+   const working=quad.map(p=>p.map((v,k)=>(v-workROI[k]+.5)*work.scale-.5));
+   const alternatives=[0,1].map(mode=>auditGridOutline(baseFields,working,{mode,scale:work.scale}));
+   const chosen=alternatives.find(a=>a.passed)||alternatives[0];
+   const {outline,...evidence}=chosen;
+   return evidence;
+  };
+  const initialAudit=audit(proposal.quad);
+  if(initialAudit.passed)return null;
+  recoveryFields??=makePaletteFields(work,{pale:baseFields.palette.pale,backgroundMixture:true});
+  if(!recoveryFields?.palette?.paperForeground)return{initialAudit,candidate:null,alternativeAudit:null};
+  // Retain the user's selection and pose. A component box estimated from the
+  // old segmentation is not an input constraint for the new colour model.
+  const candidate=detectWithFields(recoveryFields,proposal.evidence?.workingRotation?.degrees??0,{refineSelection});
+  return{initialAudit,candidate,alternativeAudit:candidate.quad?audit(candidate.quad):null};
+ };
  // A pose cannot supply a paper colour missing from the fixed segmentation.
  // In particular, avoid fitting dozens of red-only lobes in green/red photos.
  detector.orientations=()=>baseFields&&baseFields.rd.some(v=>v<-.75)&&baseFields.wd.some(v=>v<-.75)?orientationHypotheses(baseFields):[];

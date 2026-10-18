@@ -138,6 +138,28 @@ export function detectHeartCrops(input, { roi = input.roi, onProgress = () => {}
     alternatives.sort((a, b) => a.score - b.score);
     if (alternatives.length) proposal = alternatives[0];
   }
+  const palette = proposal.evidence?.palette;
+  if (supportedCropOutline(proposal) && withinPhotograph(proposal, image) &&
+      palette?.method === 'two-paper-colours-on-varying-background' &&
+      palette.backgroundModel?.covariance && palette.colourEvidenceUsed !== false) {
+    const detect = detector(palette.pale ? 'pale' : 'adaptive');
+    let recovery = detect.recoverOutline(proposal);
+    if (roi && recovery && !supportedCropOutline(recovery.candidate)) {
+      const selected = detect.recoverOutline(proposal, { refineSelection: true });
+      if (supportedCropOutline(selected?.candidate)) recovery = selected;
+    }
+    if (recovery) {
+      const { candidate, initialAudit, alternativeAudit } = recovery;
+      const accepted = supportedCropOutline(candidate) && withinPhotograph(candidate, image) && alternativeAudit?.passed === true;
+      const previousQuad = proposal.quad;
+      if (accepted) proposal = candidate;
+      proposal.outlineRecovery = {
+        method: 'original-field-paper-outline', accepted, previousQuad,
+        proposedQuad: candidate?.quad ?? null, initialAudit, alternativeAudit,
+        reason: accepted ? 'The original paper outline supports the recovered overlap.' : 'Keep the current crop: no independently supported recovery.',
+      };
+    }
+  }
   proposal.elapsedMs = performance.now() - started;
   return {
     status: proposal.status,

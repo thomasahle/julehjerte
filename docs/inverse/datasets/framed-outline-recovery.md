@@ -1,8 +1,8 @@
 # Framed-pattern crop recovery
 
 The experimental crop fallback substantially improves two photographed frame
-fixtures through the full reconstruction pipeline. It is **not integrated** in
-the live detector yet. The production runtime remains `3865cf1`; the branch was
+fixtures through the full reconstruction pipeline. It is **integrated in source,
+with release QA pending**. The public preview runtime remains `3865cf1`; the branch was
 pushed through documentation commit `e1e6959` before these experiments.
 
 The current crop's fitting score can hide a large registration error: the fitter
@@ -123,11 +123,23 @@ production feature-protection rule was weakened or changed in this experiment.
 
 ## Remaining integration work
 
-Integrate the conditional recovery with shared image preparation, retain its
-original-field acceptance check, and verify its outputs against the frozen
-replay. Add focused regression coverage and actual browser import/solve/export
-checks before refreshing the preview. Investigate renderer-dependent enclosure
-diagnostics separately. Physical cutting, threading and assembly remain untested.
+The source implementation reuses the working photograph and original registration
+fields. A robust colour-mixture model is prepared only after the original
+physical-outline audit fails. Both proposals are checked against the unchanged
+original fields, and the existing support and in-photo requirements still apply.
+It starts from the user's rough rectangle; a tighter component box is estimated
+only when the new model's first attempt lacks support. An inferred component box
+from the previous segmentation is not carried forward as an input constraint.
+
+Eighteen focused tests initially passed. The first frozen-output replay then
+found a 0.237-pixel difference on the deep tinted frame because of that inherited
+component-box policy. The corrected implementation passes all seven new focused
+tests. The first replay and its failure are preserved. A repeat of all 103 crops,
+application checks, actual browser import/solve/export checks and the complete
+inverse suite remain pending before refreshing the preview.
+
+Investigate renderer-dependent enclosure diagnostics separately. Physical
+cutting, threading and assembly remain untested.
 
 Exact measurements, input and artifact hashes, the retained raster failures,
 and polygon results are in [framed-outline-recovery.json](framed-outline-recovery.json).
