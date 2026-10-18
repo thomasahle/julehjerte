@@ -1,5 +1,13 @@
 import { describe, expect, it, vi } from 'vitest';
-import { parseWholeNumber, typeDecimalPoint } from './numberInput';
+import { parseNumberInput, parseWholeNumber, typeDecimalPoint } from './numberInput';
+
+describe('parseNumberInput', () => {
+	it('reads a decimal comma as a point and keeps the decimals while typing', () => {
+		expect(parseNumberInput('80,5')).toBe(80.5);
+		expect(parseNumberInput('80.')).toBe(80);
+		expect(parseNumberInput('')).toBeNaN();
+	});
+});
 
 describe('parseWholeNumber', () => {
 	it('reads a decimal comma as a point, never as a thousands separator', () => {

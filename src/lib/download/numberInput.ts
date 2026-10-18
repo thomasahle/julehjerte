@@ -4,14 +4,21 @@
  */
 
 /**
- * What a typed value means: a decimal comma read as a point, rounded to a
- * whole number. NaN for anything that is not a number (a blank too), which
- * the caller refuses.
+ * What a typed value means, a decimal comma read as a point. NaN for anything
+ * that is not a number (a blank too), which the caller refuses.
+ */
+export function parseNumberInput(raw: string): number {
+	const text = raw.trim().replace(',', '.');
+	return text ? Number(text) : NaN;
+}
+
+/**
+ * The same, rounded to a whole number: what a field settles on when the
+ * visitor leaves it. (Not while typing: "80.5" would turn into "81" under
+ * the cursor.)
  */
 export function parseWholeNumber(raw: string): number {
-	const text = raw.trim().replace(',', '.');
-	if (!text) return NaN;
-	return Math.round(Number(text));
+	return Math.round(parseNumberInput(raw));
 }
 
 /**

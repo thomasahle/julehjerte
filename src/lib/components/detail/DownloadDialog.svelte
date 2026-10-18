@@ -79,7 +79,7 @@
 		saveDownloadSettings,
 		type DownloadMode
 	} from '$lib/download/settings';
-	import { parseWholeNumber, typeDecimalPoint } from '$lib/download/numberInput';
+	import { parseNumberInput, parseWholeNumber, typeDecimalPoint } from '$lib/download/numberInput';
 
 	interface Props {
 		/** The hearts to get, in order; one is the heart page's dialog. */
@@ -352,7 +352,7 @@
 	}
 
 	function setNumber(field: NumberField, raw: string): void {
-		const value = parseWholeNumber(raw);
+		const value = parseNumberInput(raw);
 		const [lo, hi] = LIMITS[field];
 		if (!raw.trim() || !Number.isFinite(value) || value < lo || value > hi) return;
 		assign(field, value);
