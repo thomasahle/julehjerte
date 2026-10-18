@@ -270,6 +270,91 @@ the circle delimits the neighbourhood.}
 \label{fig:obstructions}
 \end{figure}
 
+\section{Constraints on a constructive algorithm}
+The absent-family corollary does not settle sufficiency when both families
+are present, even for simple polygons with disjoint interiors and corner-only
+contacts. Two issues remain in a proposed switching construction.
+
+\paragraph{An abstract splice need not embed.}
+Consider a closed visible component in a face, with four proposed hidden
+connectors $p_1c_1,q_1c_2,p_2c_3,q_2c_4$. Suppose the outer attachment order
+is $p_1,p_2,q_1,q_2$, while the inner order is $c_1,c_2,c_3,c_4$.
+The required inner order of their outer partners is $p_1,q_1,p_2,q_2$.
+Disjoint arcs across an annulus preserve cyclic order: cutting along one
+connector gives a disk in which an incompatible pair has alternating
+endpoints and must intersect (Lemma~\ref{lem:parity}). Narrowing the corridors
+cannot repair this. A crossing of hidden connectors violates both sheets'
+path constraints, since each connector belongs to both sheets.
+
+This order occurs when each backbone occupies one consecutive outer-boundary
+portion. A different global routing might work; failure of this splice does
+not prove the mask impossible.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=.85,line cap=round,line join=round]
+\begin{scope}
+  \draw[black!40] (-.35,0)--(4.55,0) (-.35,2)--(4.55,2);
+  \foreach \x/\lab in {0/p_1,1.4/p_2,2.8/q_1,4.2/q_2}
+    \node[above] at (\x,2) {$\lab$};
+  \foreach \x/\lab in {0/c_1,1.4/c_2,2.8/c_3,4.2/c_4}
+    \node[below] at (\x,0) {$\lab$};
+  \draw[sheetA,line width=1.2pt] (0,2)--(0,0) (4.2,2)--(4.2,0)
+    (1.4,2)--(2.8,0) (2.8,2)--(1.4,0);
+  \draw[paperred,line width=1.4pt] (1.96,.86)--(2.24,1.14)
+    (1.96,1.14)--(2.24,.86);
+  \node at (2.1,-.85) {(a) Incompatible attachment order};
+\end{scope}
+\begin{scope}[xshift=8cm,yshift=-.35cm,scale=.65]
+  \foreach \x in {1,3}{
+    \fill[paperred] (\x-.3,4)--(\x,3.55)--(\x+.3,4)--cycle;
+    \fill[paperred] (\x-.3,0)--(\x,.45)--(\x+.3,0)--cycle;
+    \fill[paperred] (0,\x-.3)--(.45,\x)--(0,\x+.3)--cycle;
+    \fill[paperred] (4,\x-.3)--(3.55,\x)--(4,\x+.3)--cycle;
+  }
+  \draw[black!45] (0,0) rectangle (4,4);
+  \node at (2,-.8) {(b) $k=\ell=4$, hence $h\ge16$};
+\end{scope}
+\end{tikzpicture}
+\caption{(a) A strip schematic of the proposed annular attachments.
+The obstruction is their order, not the use of straight segments.
+(b) Disjoint polygonal caps, viewed after clipping to $Q$. The gray square
+is the domain boundary, not a visible mask edge. There are no degree-four
+visible vertices. Any completion, if one exists, needs at least sixteen
+connected shared portions.}
+\label{fig:construction}
+\end{figure}
+
+\begin{samepage}
+\begin{lemma}[Intersection demand]\label{lem:demand}
+In an admissible completion, let $k=|\mathcal A|$, $\ell=|\mathcal B|$,
+let $v_4$ count the degree-four vertices of the visible boundary, and let
+$h$ count the connected components of the hidden shared subgraph. Then
+\[
+  k\ell\le v_4+h.
+\]
+\end{lemma}
+\begin{proof}
+Every $T$--$B$ arc meets every $L$--$R$ arc: otherwise the first crosscut
+would separate the endpoints of the second. An intersection outside a shared
+portion has four visible incident branches. Each such vertex involves exactly
+one arc from each family, since arcs in the same family are disjoint.
+Likewise, a connected shared portion belongs to exactly one pair of arcs.
+Thus these $v_4+h$ objects must account for all $k\ell$ different pairs.
+Hidden components cannot be cycles or terminate inside a uniform face;
+each is a path between visible switch points.
+\end{proof}
+\end{samepage}
+
+Place $m$ disjoint polygonal caps across each side, away from the corners,
+with no polygon edge along a side. Their $4m$ visible same-side arcs give
+$k=\ell=2m$, $v_4=0$ and $M=O(m)$ input edges. Any completion needs at least
+$4m^2$ connected shared portions and twice as many switch points.
+Thus a construction accepting all these masks cannot promise $O(M)$ essential
+connectors and vertices. A quadratic-size polynomial construction remains
+possible; existence is not settled here. Sufficiency still needs an embedded
+construction that excludes same-sheet cycles and same-side paths.
+
 \section{Implications for reconstruction}
 \paragraph{An obstruction is not an error bound.}
 Keep the impossible mask in Example~\ref{ex:stripe} fixed, and join its disk
