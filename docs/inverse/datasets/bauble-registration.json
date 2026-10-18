@@ -1,5 +1,5 @@
 {
-  "status": "RGB background fallback integrated; crop/application checks pass; actual browser and full inverse validation pending",
+  "status": "RGB crop fallback committed; browser QA exposed a separate 15-pixel template-fitting sensitivity. Controlled fresh-fit comparison running; full inverse suite pending.",
   "photo": "scripts/inverse/fixtures/hard-photos/collage.png",
   "photoSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
   "case": "bauble (R5C4)",
@@ -513,7 +513,50 @@
     "lint": "passed; 3 existing warnings",
     "build": "passed",
     "sourceFilesUnchanged": 1106,
-    "browser": "running, not yet validated",
+    "browser": {
+      "bauble": {
+        "status": "failed-feature-check",
+        "automaticCropSupported": true,
+        "maxDifferenceFromOfflineCornerPixels": 0.00850641917926858,
+        "roi": [
+          455.9999694237504,
+          859.99998429433,
+          710.9999444799678,
+          1112
+        ],
+        "independentEditableError": 0.01493125,
+        "clickToReadySeconds": 106.67239999985695,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "templateChecksPassed": false,
+        "missing": [
+          {
+            "value": 1,
+            "areaMm2": 5,
+            "centerMm": [
+              96.059375,
+              68.88125
+            ],
+            "retainedFraction": 0
+          }
+        ],
+        "pageErrors": [],
+        "visualReview": "Import and result screenshots inspected. The editor explicitly warns that motif details are missing and retains the original-mask comparison and editable export."
+      },
+      "windowControl": {
+        "status": "workflow-passed",
+        "independentEditableError": 0.00654375,
+        "clickToReadySeconds": 6.468200000047684,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "pageErrors": []
+      }
+    },
     "fullInverse": "pending",
     "evidence": [
       {
@@ -535,6 +578,22 @@
       {
         "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/production/replay.json",
         "sha256": "b3b23402eba21937226f94612d1f52eab4671b660fb5e5cc8634609666dd50dd"
+      },
+      {
+        "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/production/browser/results.json",
+        "sha256": "1ad6f74c9d6e49bd3c6340c312b6e16a4e5e5e3c3a12fd6c8e93acbab59bf165"
+      },
+      {
+        "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/production/browser-window/results.json",
+        "sha256": "ae3567c0e0564f447d51b0a09a5d9c4ebf132a60eba54237bfa027c71bf6d13b"
+      },
+      {
+        "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/production/mask-diagnosis.json",
+        "sha256": "76a1d261d53c6835f6464a143ab131bbfb59b177e5358c68f79660a242b0a3d7"
+      },
+      {
+        "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/production/feasibility.json",
+        "sha256": "61f2df199fc8423ea35d19ba1bacea741b08679f3e1be1ea1c85c92b138f7dc8"
       }
     ]
   },
@@ -612,5 +671,29 @@
       }
     ],
     "nextExperiment": "Require candidate colour-edge refinements to retain an observed foreground/background transition; compare with shadows, blur, clipped and known-layout controls before adoption."
+  },
+  "fitterSensitivity": {
+    "changedPixels": 15,
+    "totalPixels": 160000,
+    "fraction": 9.375e-05,
+    "browserMaskReproducedExactlyInNode": true,
+    "missingRegionAreaMm2": 5,
+    "missingRegionUnchangedByPerturbation": true,
+    "earlierCandidateOnBrowserTarget": {
+      "scope": "Feasibility check only: independently re-render the earlier valid five-cut candidate against the browser target. This candidate is NOT supplied to fresh fitting.",
+      "candidateSha256": "1696b69fe7dcfa69d6f4b4f3217cb8e58fab8f45bf3b50f89d06349f70ae9033",
+      "independentError": 0.017175,
+      "featuresPassed": true,
+      "smallRegionRetention": 0.8375
+    },
+    "interpretation": "An earlier valid five-cut candidate remains feature-complete on the browser target. The fresh browser fit chooses four cuts and loses the same small source region. This is evidence of a search robustness problem, not proof of an impossible target. Mask perturbation, settings and runtime scheduling require controlled separation.",
+    "fixture": "scripts/inverse/fixtures/locator/bauble-nearby-crops.json",
+    "comparison": {
+      "state": "tmp/heart-learning/bauble-segmentation-2026-10-18/sensitivity/state.json",
+      "sessionId": 29973,
+      "controllerPid": 39795,
+      "firstWorkerPid": 39801,
+      "status": "running"
+    }
   }
 }

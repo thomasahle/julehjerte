@@ -117,3 +117,30 @@ Thus the initial segmentation is close, and a later registration step introduces
 the displacement. A candidate fix must distinguish a physical paper/background
 edge from the stronger nearby interior frame; merely improving the segmentation
 network would not address this failure. No refinement change is included yet.
+
+
+Actual Chrome upload QA recovered the new bauble crop, imported the original
+400×400 mask, fitted templates and downloaded the editable SVG. Independent
+editable geometry and paper checks pass, with **1.493%** mask disagreement, but
+the workflow **fails the feature check**: a 5 mm² red region is completely lost.
+It took **106.67 seconds** to reach the editable result. The UI correctly warns
+that motif details are missing; export remains available as requested. This is
+not counted as a successful reconstruction. The reflective blue/orange control
+passes the entire workflow at **0.654%** independent editable disagreement.
+
+The pointer-selected rectangle differs from the offline rectangle only through
+floating-point input coordinates. Its crop moves by less than **0.01 source
+pixel**, changing **15 of 160,000** classified pixels. Node reproduces the browser
+mask exactly from that crop. The missing 5 mm² region itself is unchanged. The
+earlier five-cut candidate, independently rendered against the browser target,
+retains 83.75% of that detail and has 1.718% disagreement; thus an existing valid
+candidate remains feature-complete on this target. It is used only as a
+feasibility check, never as a fresh-fitting seed.
+
+Two nearby crops and their mask hashes are preserved in
+[`bauble-nearby-crops.json`](../../../scripts/inverse/fixtures/locator/bauble-nearby-crops.json).
+A four-cell fresh-process comparison is running to separate mask perturbation
+from the offline/application settings. Browser timing remains another factor.
+The production preview on port 5232 retains the previously validated runtime;
+the temporary browser-QA server has been stopped. Full inverse-suite validation
+of the new crop fallback is still pending.
