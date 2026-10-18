@@ -439,13 +439,16 @@ describe('DownloadDialog', () => {
 		await again.choose('Venstre');
 	});
 
-	it('remembers every setting for the next opening', async () => {
+	it('remembers every setting of a download for the next opening', async () => {
 		const first = await render();
 		await first.choose('Laserskærer');
 		await first.choose('DXF');
 		await first.type('#download-width', '70');
 		await first.type('#download-hearts', '2');
 		await first.choose('A3');
+		expect(window.localStorage.getItem('juleflet:download')).toBeNull();
+		first.button('Hent DXF')!.click();
+		await settle();
 		expect(JSON.parse(window.localStorage.getItem('juleflet:download')!)).toEqual({
 			mode: 'laser',
 			widthMm: 70,
@@ -464,10 +467,60 @@ describe('DownloadDialog', () => {
 		expect(again.q<HTMLInputElement>('#download-hearts')!.value).toBe('2');
 	});
 
+	it('stores nothing on opening, and nothing when cancelled', async () => {
+		const opened = await render();
+		expect(window.localStorage.getItem('juleflet:download')).toBeNull();
+		opened.button('Annuller')!.click();
+		opened.dispose();
+		expect(window.localStorage.getItem('juleflet:download')).toBeNull();
+
+		// A change and then Annuller or Escape: the next opening is as before.
+		for (const leave of ['Annuller', 'Escape']) {
+			const view = await render();
+			await view.choose('Laserskærer');
+			await view.type('#download-width', '120');
+			await view.choose('A3');
+			if (leave === 'Escape') {
+				document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+			} else {
+				view.button('Annuller')!.click();
+			}
+			await settle();
+			view.dispose();
+			expect(window.localStorage.getItem('juleflet:download')).toBeNull();
+			const again = await render();
+			expect(again.button('Printer')!.getAttribute('data-state')).toBe('on');
+			expect(again.q<HTMLInputElement>('#download-width')!.value).toBe('80');
+			again.dispose();
+		}
+	});
+
+	it('keeps the last download\'s settings when a later change is cancelled', async () => {
+		const first = await render();
+		await first.type('#download-width', '60');
+		first.button('Hent PDF')!.click();
+		await vi.dynamicImportSettled();
+		await settle();
+		const stored = window.localStorage.getItem('juleflet:download');
+		expect(JSON.parse(stored!).widthMm).toBe(60);
+		await release();
+		await first.type('#download-width', '150');
+		await first.choose('A3');
+		first.button('Annuller')!.click();
+		first.dispose();
+		expect(window.localStorage.getItem('juleflet:download')).toBe(stored);
+		const again = await render();
+		expect(again.q<HTMLInputElement>('#download-width')!.value).toBe('60');
+		expect(again.button('A4')!.getAttribute('data-state')).toBe('on');
+	});
+
 	it('remembers a custom sheet by its size', async () => {
 		const first = await render();
 		await first.choose('Eget mål');
 		await first.type('.sheet-size label:first-child input', '250');
+		first.button('Hent PDF')!.click();
+		await vi.dynamicImportSettled();
+		await settle();
 		first.dispose();
 		const again = await render();
 		expect(again.button('Eget mål')!.getAttribute('data-state')).toBe('on');
@@ -481,6 +534,9 @@ describe('DownloadDialog', () => {
 		expect(first.button('Printer')!.getAttribute('data-state')).toBe('on');
 		expect(first.q<HTMLInputElement>('#download-width')!.value).toBe('120');
 		await first.type('#download-width', '90');
+		first.button('Hent PDF')!.click();
+		await vi.dynamicImportSettled();
+		await settle();
 		first.dispose();
 		const again = await render();
 		expect(again.q<HTMLInputElement>('#download-width')!.value).toBe('90');

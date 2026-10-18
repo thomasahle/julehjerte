@@ -79,7 +79,10 @@ dialog does today. Settings, top to bottom:
 Settings are remembered in `localStorage` under `juleflet:download`
 (`{ mode, widthMm, hearts, sheet, format, previewImage }` since round 2; try/catch,
 unknown values ignored). Read the old `juleflet:laser` once as a fallback and
-then ignore it.
+then ignore it. (Since QA round 3, 2026-10-18:) they are written when a
+download starts, PDF or laser, and at no other time: opening the dialog
+stores nothing, and Annuller or Escape drops every change, so each opening
+starts from the settings of the last download (or the defaults).
 
 ## Printer PDF at a chosen size (`src/lib/pdf/template.ts`)
 

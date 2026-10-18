@@ -130,7 +130,9 @@
 	 */
 	let busy = $state(false);
 
-	// Each opening starts from what was used last time.
+	// Each opening starts from the settings of the last download. They are
+	// stored when a download starts, not as they change: opening the dialog and
+	// cancelling it, or Escape, leaves what was stored as it was.
 	$effect(() => {
 		if (!open) return;
 		untrack(() => {
@@ -148,18 +150,6 @@
 			}
 			previewImage = settings.previewImage;
 			failure = null;
-		});
-	});
-
-	$effect(() => {
-		if (!open) return;
-		saveDownloadSettings({
-			mode,
-			widthMm,
-			hearts,
-			sheet: sheetKind === 'custom' ? { widthMm: customWidthMm, heightMm: customHeightMm } : sheetKind,
-			format,
-			previewImage
 		});
 	});
 
@@ -460,6 +450,14 @@
 	async function download(): Promise<void> {
 		if (busy || !canDownload) return;
 		busy = true;
+		saveDownloadSettings({
+			mode,
+			widthMm,
+			hearts,
+			sheet: sheetKind === 'custom' ? { widthMm: customWidthMm, heightMm: customHeightMm } : sheetKind,
+			format,
+			previewImage
+		});
 		try {
 			if (mode === 'printer') await downloadPdf();
 			else downloadLaser();
