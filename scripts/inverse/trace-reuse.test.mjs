@@ -5,6 +5,7 @@ import {createHash} from 'node:crypto';
 import {prepare} from '../../static/inverse/core/engine.js';
 import {prepareMaskTrace,preprocessMask,sampleTarget} from '../../static/inverse/core/input.js';
 import {readHardPhoto} from './hard-photo-data.mjs';
+import {numericSnapshot} from './numeric-snapshot.mjs';
 
 const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/trace-reuse.json'));
 const hash=b=>createHash('sha256').update(b).digest('hex');
@@ -12,7 +13,6 @@ const shape=t=>JSON.stringify({width:t.width,phase:t.phase,curves:t.curves.map(c
 // V8/libm versions can differ in the last few bits of a fitted coordinate.
 // Freeze geometry well below the 0.01 mm validator tolerance, while keeping
 // exact masks and byte-for-byte equality between cached and uncached calls.
-const numericSnapshot=s=>JSON.stringify(JSON.parse(s),(_,v)=>typeof v==='number'?Number(v.toFixed(fixture.numericSnapshotDecimalPlaces)):v);
 
 for(const item of fixture.cases)test(`reusing ${item.id} pixel chains preserves frozen curves, sampling and cleanup`,async()=>{
   const photo=await readHardPhoto(item);
@@ -24,7 +24,7 @@ for(const item of fixture.cases)test(`reusing ${item.id} pixel chains preserves 
     for(const expected of outputs){
       const {target,sampled}=trace(expected.fitTolerance);
       const exactShape=shape(target);
-      assert.equal(hash(numericSnapshot(exactShape)),expected.numericShapeSha256);
+      assert.equal(hash(numericSnapshot(JSON.parse(exactShape),fixture.numericSnapshotDecimalPlaces)),expected.numericShapeSha256);
       assert.equal(hash(sampled),expected.sampleSha256);
       assert.deepEqual(sampleTarget(target,n),sampled);
       const single=preprocessMask(mask,n,{...settings,fitTolerance:expected.fitTolerance});
