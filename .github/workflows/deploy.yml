@@ -34,9 +34,9 @@ jobs:
         env:
           INVERSE_DIAGNOSTIC_CLOCK_RATE: ${{ matrix.clock }}
         run: node --import ./scripts/inverse/ci-clock.mjs --test --test-concurrency=1 --test-shard=${{ matrix.shard }}/4 scripts/inverse/*.test.mjs scripts/inverse/datasets/*.test.mjs
-      - name: Capture normal-budget bicycle failure
+      - name: Replay normal-budget partial-feature regressions
         if: inputs.mode == 'bicycle'
-        run: node --test --test-name-pattern='lower-error finalist' scripts/inverse/feature-finalists.test.mjs
+        run: node --test scripts/inverse/feature-finalists.test.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
