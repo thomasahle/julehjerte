@@ -1,0 +1,134 @@
+{
+  "scope": "Draw editor visual overlap only. SVG stroke masking plus alternating path dashes; no solver or cutting geometry change.",
+  "sources": {
+    "src/lib/components/PaperHeart.svelte": "32f9ecb75bc610907c4699c95e292432da15ef52bc72b7dbf678d155d2834f7f",
+    "src/lib/components/editor/SharedCutOverlay.svelte": "b1bb2ffa89d6f23e685c9326408d10e80225b5db3a980e9909206a36f4d0c62b"
+  },
+  "checks": [
+    {
+      "name": "check",
+      "status": "passed",
+      "pid": 98214,
+      "code": 0,
+      "seconds": 11.338078667
+    },
+    {
+      "name": "lint",
+      "status": "passed",
+      "pid": 98627,
+      "code": 0,
+      "seconds": 8.220689875
+    },
+    {
+      "name": "application",
+      "status": "passed",
+      "pid": 98970,
+      "code": 0,
+      "seconds": 53.538579334
+    },
+    {
+      "name": "build",
+      "status": "passed",
+      "pid": 1106,
+      "code": 0,
+      "seconds": 23.012479833000004
+    },
+    {
+      "name": "recheck-clearance",
+      "status": "failed",
+      "pid": 2130,
+      "code": 1,
+      "seconds": 11.758360207999997
+    },
+    {
+      "name": "recheck-round-checker",
+      "status": "failed",
+      "pid": 2625,
+      "code": 1,
+      "seconds": 12.903765832999998
+    },
+    {
+      "name": "recheck-near-miss",
+      "status": "passed",
+      "pid": 3154,
+      "code": 0,
+      "seconds": 8.725854083999991
+    }
+  ],
+  "applicationTests": {
+    "passed": 874,
+    "skipped": 1
+  },
+  "checkWarnings": 7,
+  "lintWarnings": 4,
+  "browser": {
+    "status": "passed",
+    "before": {
+      "scale": 1.4211786388045249,
+      "tilePixels": 8.000000147553987,
+      "maskStrokePixels": 2.0000000368884967,
+      "leftPaths": 4,
+      "rightPaths": 6,
+      "pointerEvents": "none"
+    },
+    "zoom": {
+      "scale": 3.12659272711749,
+      "tilePixels": 7.999999435590594,
+      "maskStrokePixels": 1.9999998588976484,
+      "leftPaths": 4,
+      "rightPaths": 6,
+      "pointerEvents": "none"
+    },
+    "selected": {
+      "scale": 1.4211786388045249,
+      "tilePixels": 8.000000147553987,
+      "maskStrokePixels": 2.0000000368884967,
+      "leftPaths": 3,
+      "rightPaths": 6,
+      "pointerEvents": "none"
+    },
+    "errors": []
+  },
+  "browserCoverage": [
+    "Actual editable SVG import",
+    "Desktop and mobile visual inspection",
+    "Control-wheel zoom with measured 2.2x scale change",
+    "Outline toggle",
+    "Pointer selection excludes selected cut from overlay",
+    "All cut path coordinates unchanged",
+    "Export contains no display overlay"
+  ],
+  "preview": {
+    "url": "http://localhost:5232/",
+    "solverCommit": "3865cf1",
+    "inverseSourceFilesVerified": 123,
+    "changedInverseFilesRestoredFromGit": 3,
+    "note": "UI build with previous fully validated inverse runtime. The newer crop runtime is not promoted by this UI change."
+  },
+  "broaderInverseRun": {
+    "runtimeCommit": "c2c3bf8",
+    "tests": 1096,
+    "passed": 1093,
+    "failed": 3,
+    "sourcePinsUnchangedBeforeUIEdit": true,
+    "failures": [
+      {
+        "case": "clearance-routing fresh y-minus-1",
+        "fullRun": "5.6432% mask disagreement; geometry passed",
+        "isolatedReplay": "Failed 10s bound at 10.1977s; no failure diagnostic for template checks before the time assertion"
+      },
+      {
+        "case": "feature-near-miss vertical 1.5x clock",
+        "fullRun": "3.08% mask disagreement",
+        "isolatedReplay": "passed"
+      },
+      {
+        "case": "paper-resolution-finalist round-checker",
+        "fullRun": "1.28125% disagreement above prior-quality bound",
+        "isolatedReplay": "paper resolution 700 instead of expected 1000; failed before final image assertion"
+      }
+    ],
+    "interpretation": "Unresolved fitting/test scheduling issues, not mask impossibility proofs. Fitter source unchanged from the previous runtime; fixture mask/hash assertions still pass. No thresholds changed."
+  },
+  "artifacts": "tmp/overlap-ui-2026-10-18/"
+}

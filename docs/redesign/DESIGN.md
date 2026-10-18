@@ -322,6 +322,12 @@ laps punkter" — drawn in the canvas's own cut colours, cyan for the left lobe 
 say. In the 149px column those two share with Farver on a phone the glyph costs the Snap label a third line;
 nothing is clipped, and no glyph small enough to win the line back is still worth drawing, so it is accepted.
 
+Where cyan and orange cut strokes overlap, alternate their colours along the shared
+screen stroke (4px per colour, 2px wide). Keep the cadence fixed while zooming and let
+selection and red invalid-cut highlights take priority. This is a visual overlap cue,
+not a certificate of exact geometric coincidence. It must not intercept pointer events
+or change saved/exported cutting paths.
+
 The canvas fills the whole area under the top bar — full width and height, no three-column grid — and the tool
 rail and the panel **float over it** as white cards with `--shadow-panel`. So does the drawing surface: the SVG
 is the whole canvas area (`inset: 0`), so a zoomed or panned heart carries on under the rail and the panel and

@@ -33,6 +33,7 @@
 	import { BASE_CANVAS_SIZE, CENTER, MAX_GRID_SIZE, MIN_GRID_SIZE, PRECISION_GRID_SIZE, STRIP_WIDTH } from '$lib/constants';
 	import { computeWeaveData } from '$lib/rendering/svgWeave';
 	import HeartWeaveFill from './HeartWeaveFill.svelte';
+	import SharedCutOverlay from './editor/SharedCutOverlay.svelte';
 	import { computeHeartViewBoxFromOverlap } from '$lib/rendering/heartSvg';
 	import { bezierPathBBox, closestPointOnBezier } from '$lib/geometry/curves';
 	import { Point } from '$lib/geometry/point';
@@ -2001,6 +2002,9 @@
 			return `translate(${-panX} ${-panY}) translate(${cx} ${cy}) scale(${userZoom * fitScale}) translate(${-cx} ${-cy})`;
 		});
 
+	// Keep selection and invalid-cut warnings above the two-colour overlap cue.
+	let overlapExcluded = $derived(new Set([...issueFingerIds, ...(selectedFingerId ? [selectedFingerId] : [])]));
+
 	let curveUiScale = $derived.by(() => {
 		const baseScale = viewBoxRect.width / Math.max(1, effectiveSize);
 		return baseScale / (userZoom * fitScale);
@@ -3162,6 +3166,11 @@
 											/>
 										{/if}
 									{/each}
+
+									{#if showCurves}
+										<SharedCutOverlay {fingers} excluded={overlapExcluded} idPrefix={componentId}
+											unitsPerPixel={curveUiScale} bounds={weaveData.overlap} />
+									{/if}
 
 									{#if selectedFinger}
 										{@const segs = fingerToSegments(selectedFinger)}
