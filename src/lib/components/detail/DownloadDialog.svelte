@@ -149,6 +149,7 @@
 				customHeightMm = settings.sheet.heightMm;
 			}
 			previewImage = settings.previewImage;
+			drafts = {};
 			failure = null;
 		});
 	});
@@ -305,9 +306,11 @@
 	});
 
 	const canDownload = $derived(
-		mode === 'printer'
-			? printPlan !== null && printPlan.fits
-			: laserPlan !== null && laserPlan.piecesFit > 0
+		!invalid.width &&
+			(mode === 'printer'
+				? printPlan !== null && printPlan.fits
+				: !invalid.hearts && laserPlan !== null && laserPlan.piecesFit > 0) &&
+			(sheetKind !== 'custom' || (!invalid.sheetWidth && !invalid.sheetHeight))
 	);
 
 	const errorText = $derived.by(() => {
@@ -318,10 +321,31 @@
 	const fileFormat = $derived(mode === 'printer' ? 'PDF' : format.toUpperCase());
 
 	// ---- Inputs ---------------------------------------------------------------
-	// A number field takes what is typed while it is in range and settles on the
-	// nearest allowed value when it is left, as the paint mode's fields do.
+	// A number field follows what is typed at once, clamped to its range and
+	// rounded to a whole millimetre (or heart), so the preview, the line under it
+	// and the button always show what the file will be. Something that is not a
+	// number (or nothing) marks the field and disables the button until it is
+	// fixed; leaving the field then puts the last good value back. The typed text
+	// is kept as it is while the field is being edited ("30" stays "30" and
+	// gives 40 mm), and settles on the value used when the field is left.
 
 	type NumberField = 'width' | 'hearts' | 'sheetWidth' | 'sheetHeight';
+
+	/** What is typed into a field being edited, as the input reports it. */
+	let drafts = $state<Partial<Record<NumberField, string>>>({});
+
+	const parseField = (raw: string): number | null =>
+		raw.trim() && Number.isFinite(Number(raw)) ? Number(raw) : null;
+
+	const invalid = $derived<Record<NumberField, boolean>>({
+		width: drafts.width !== undefined && parseField(drafts.width) === null,
+		hearts: drafts.hearts !== undefined && parseField(drafts.hearts) === null,
+		sheetWidth: drafts.sheetWidth !== undefined && parseField(drafts.sheetWidth) === null,
+		sheetHeight: drafts.sheetHeight !== undefined && parseField(drafts.sheetHeight) === null
+	});
+
+	/** The field's value: the typed text while it is edited, else the setting. */
+	const shown = (field: NumberField): string | number => drafts[field] ?? current(field);
 
 	const LIMITS: Record<NumberField, [number, number]> = {
 		width: [MIN_WIDTH_MM, MAX_WIDTH_MM],
@@ -337,27 +361,24 @@
 	}
 
 	function assign(field: NumberField, value: number): void {
-		if (field === 'width') widthMm = value;
-		else if (field === 'hearts') hearts = Math.round(value);
-		else if (field === 'sheetWidth') customWidthMm = value;
-		else customHeightMm = value;
+		const [lo, hi] = LIMITS[field];
+		const next = Math.round(clamp(value, lo, hi));
+		if (field === 'width') widthMm = next;
+		else if (field === 'hearts') hearts = next;
+		else if (field === 'sheetWidth') customWidthMm = next;
+		else customHeightMm = next;
 	}
 
 	function setNumber(field: NumberField, raw: string): void {
-		const value = Number(raw);
-		const [lo, hi] = LIMITS[field];
-		if (!raw.trim() || !Number.isFinite(value) || value < lo || value > hi) return;
-		assign(field, value);
+		drafts[field] = raw;
+		const value = parseField(raw);
+		if (value !== null) assign(field, value);
 	}
 
 	function commitNumber(field: NumberField, input: HTMLInputElement): void {
-		const [lo, hi] = LIMITS[field];
-		const next = input.value.trim() && Number.isFinite(Number(input.value))
-			? clamp(Number(input.value), lo, hi)
-			: current(field);
-		assign(field, next);
-		// Written back as well: a refused value that clamps onto the current one
-		// changes no state, and the field would keep showing the refused text.
+		delete drafts[field];
+		// Written back as well: the typed text may clamp onto the value already
+		// set, which changes no state, and the field would keep showing it.
 		input.value = String(current(field));
 	}
 
@@ -510,7 +531,8 @@
 						min={MIN_WIDTH_MM}
 						max={MAX_WIDTH_MM}
 						step={WIDTH_STEP_MM}
-						value={widthMm}
+						value={shown('width')}
+						aria-invalid={invalid.width}
 						oninput={(e) => setNumber('width', e.currentTarget.value)}
 						onblur={(e) => commitNumber('width', e.currentTarget)}
 					/>
@@ -529,7 +551,8 @@
 							min={MIN_HEARTS}
 							max={MAX_HEARTS}
 							step="1"
-							value={hearts}
+							value={shown('hearts')}
+							aria-invalid={invalid.hearts}
 							oninput={(e) => setNumber('hearts', e.currentTarget.value)}
 							onblur={(e) => commitNumber('hearts', e.currentTarget)}
 						/>
@@ -562,7 +585,8 @@
 									min={MIN_SHEET_MM}
 									max={MAX_SHEET_MM}
 									step="1"
-									value={customWidthMm}
+									value={shown('sheetWidth')}
+									aria-invalid={invalid.sheetWidth}
 									oninput={(e) => setNumber('sheetWidth', e.currentTarget.value)}
 									onblur={(e) => commitNumber('sheetWidth', e.currentTarget)}
 								/>
@@ -575,7 +599,8 @@
 									min={MIN_SHEET_MM}
 									max={MAX_SHEET_MM}
 									step="1"
-									value={customHeightMm}
+									value={shown('sheetHeight')}
+									aria-invalid={invalid.sheetHeight}
 									oninput={(e) => setNumber('sheetHeight', e.currentTarget.value)}
 									onblur={(e) => commitNumber('sheetHeight', e.currentTarget)}
 								/>
@@ -759,6 +784,12 @@
 
 	.number:focus {
 		border-color: var(--green);
+	}
+
+	/* Not a number: the button waits until it is one. */
+	.number[aria-invalid='true'] {
+		border-color: var(--red);
+		box-shadow: 0 0 0 1px var(--red);
 	}
 
 	.sheet-size {

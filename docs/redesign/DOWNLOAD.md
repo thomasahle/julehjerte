@@ -26,7 +26,8 @@ dialog does today. Settings, top to bottom:
    / **Laserskærer** (`modeLaser`, hint = the existing `laserFormatHint`).
    Default Printer.
 2. **Bredde (mm)** — the existing `laserWidth` control and `laserDerived` line,
-   shared by both modes. Default 80, 40–200, step 5. In Printer mode the derived
+   shared by both modes. Default 80, 40–200, step 1 (5 until QA round 3: any
+   whole millimetre is a fine width). In Printer mode the derived
    line gives the strip width and the **folded** template's height
    (`templateHeight` scaled); in Laser mode the unfolded height, as now.
 3. **Antal hjerter** — existing `laserHearts` and `laserPiecesNote` ("Et hjerte
@@ -83,6 +84,15 @@ then ignore it. (Since QA round 3, 2026-10-18:) they are written when a
 download starts, PDF or laser, and at no other time: opening the dialog
 stores nothing, and Annuller or Escape drops every change, so each opening
 starts from the settings of the last download (or the defaults).
+
+The number fields (width, laser count, custom sheet) follow what is typed at
+once, clamped to their range (40–200 mm, 1–20, 50–2000 mm) and rounded to a
+whole number, so the preview, the derived line and the button always show the
+file the click gives; the typed text stays as it is until the field is left,
+when it shows the value used. A field that holds no number is marked
+(`aria-invalid`, red border) and disables the button; leaving it puts the last
+good value back. (QA round 3; before, an out-of-range value was ignored until
+the field was left, and the file came out at a size the preview never showed.)
 
 ## Printer PDF at a chosen size (`src/lib/pdf/template.ts`)
 

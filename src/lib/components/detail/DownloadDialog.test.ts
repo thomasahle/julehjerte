@@ -131,6 +131,17 @@ async function render(design: HeartDesign | HeartDesign[] = loadHeart('classic-3
 			input.dispatchEvent(new Event('input', { bubbles: true }));
 			input.dispatchEvent(new Event('blur'));
 			await settle();
+		},
+		/** Typed, and the field not left yet. */
+		async typeLive(selector: string, value: string) {
+			const input = q<HTMLInputElement>(selector)!;
+			input.value = value;
+			input.dispatchEvent(new Event('input', { bubbles: true }));
+			await settle();
+		},
+		async leave(selector: string) {
+			q<HTMLInputElement>(selector)!.dispatchEvent(new Event('blur'));
+			await settle();
 		}
 	};
 }
@@ -548,6 +559,101 @@ describe('DownloadDialog', () => {
 		const view = await render();
 		await view.type('#download-width', '500');
 		expect(view.q<HTMLInputElement>('#download-width')!.value).toBe('200');
+	});
+
+	describe('while a number is typed', () => {
+		it('shows and downloads the width clamped to 40–200 mm at once', async () => {
+			const design = loadHeart('classic-3x3');
+			const reference = await render(design);
+			await reference.type('#download-width', '40');
+			const at40 = { derived: reference.derived(), preview: reference.q('.preview-sheet')!.innerHTML };
+			reference.dispose();
+
+			const view = await render(design);
+			await view.typeLive('#download-width', '30');
+			// The field keeps what was typed; everything else is the 40 mm the file gets.
+			expect(view.q<HTMLInputElement>('#download-width')!.value).toBe('30');
+			expect(view.derived()).toBe(at40.derived);
+			expect(view.q('.preview-sheet')!.innerHTML).toBe(at40.preview);
+			expect(view.q('#download-width')!.getAttribute('aria-invalid')).toBe('false');
+			view.button('Hent PDF')!.click();
+			await vi.dynamicImportSettled();
+			await settle();
+			expect(vi.mocked(downloadTemplatesPDF).mock.calls[0]![1].widthMm).toBe(40);
+			await view.leave('#download-width');
+			expect(view.q<HTMLInputElement>('#download-width')!.value).toBe('40');
+			await release();
+
+			// Too wide for A4 the moment 250 is typed (it is 200 mm).
+			await view.typeLive('#download-width', '250');
+			expect(view.note()).toContain('Skabelonen er for stor til arket');
+			expect(view.button('Hent PDF')!.disabled).toBe(true);
+		});
+
+		it('takes any whole millimetre', async () => {
+			const view = await render();
+			const input = view.q<HTMLInputElement>('#download-width')!;
+			expect(input.step).toBe('1');
+			await view.typeLive('#download-width', '47');
+			expect(input.validity.valid).toBe(true);
+			view.button('Hent PDF')!.click();
+			await vi.dynamicImportSettled();
+			await settle();
+			expect(vi.mocked(downloadTemplatesPDF).mock.calls[0]![1].widthMm).toBe(47);
+		});
+
+		it('marks an empty field and waits, then puts the last value back when it is left', async () => {
+			const view = await render();
+			await view.typeLive('#download-width', '60');
+			await view.typeLive('#download-width', '');
+			const input = view.q<HTMLInputElement>('#download-width')!;
+			expect(input.getAttribute('aria-invalid')).toBe('true');
+			expect(view.button('Hent PDF')!.disabled).toBe(true);
+			await view.leave('#download-width');
+			expect(input.value).toBe('60');
+			expect(input.getAttribute('aria-invalid')).toBe('false');
+			expect(view.button('Hent PDF')!.disabled).toBe(false);
+		});
+
+		it('does the same for the laser count, clamped to 1–20', async () => {
+			const view = await render();
+			await view.choose('Laserskærer');
+			await view.typeLive('#download-hearts', '100');
+			expect(view.q<HTMLInputElement>('#download-hearts')!.value).toBe('100');
+			expect(view.note()).toBe('Der er kun plads til 2 af 20 stykker på arket');
+			await view.typeLive('#download-hearts', '0');
+			expect(view.note()).toBeUndefined();
+			view.button('Hent SVG')!.click();
+			await settle();
+			expect(trackLaserDownload).toHaveBeenCalledTimes(1);
+			await release();
+			await view.typeLive('#download-hearts', '');
+			expect(view.q('#download-hearts')!.getAttribute('aria-invalid')).toBe('true');
+			expect(view.button('Hent SVG')!.disabled).toBe(true);
+			await view.leave('#download-hearts');
+			expect(view.q<HTMLInputElement>('#download-hearts')!.value).toBe('1');
+			expect(view.button('Hent SVG')!.disabled).toBe(false);
+		});
+
+		it('does the same for a custom sheet, clamped to 50–2000 mm', async () => {
+			const view = await render();
+			await view.choose('Eget mål');
+			const width = '.sheet-size label:first-child input';
+			await view.typeLive(width, '30');
+			// A 50 mm wide page has no room for an 80 mm template.
+			expect(view.note()).toContain('Skabelonen er for stor til arket');
+			expect(view.button('Hent PDF')!.disabled).toBe(true);
+			await view.typeLive(width, '5000');
+			expect(view.note()).toBe('1 side');
+			view.button('Hent PDF')!.click();
+			await vi.dynamicImportSettled();
+			await settle();
+			expect(vi.mocked(downloadTemplatesPDF).mock.calls[0]![1].sheet).toEqual({ widthMm: 2000, heightMm: 297 });
+			await release();
+			await view.typeLive(width, '');
+			expect(view.q(width)!.getAttribute('aria-invalid')).toBe('true');
+			expect(view.button('Hent PDF')!.disabled).toBe(true);
+		});
 	});
 
 	it('says so, and offers no laser file, for a heart it cannot cut', async () => {

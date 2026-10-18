@@ -26,7 +26,7 @@ export const LASER_MIME: Record<LaserFormat, string> = {
 
 export const MIN_WIDTH_MM = 40;
 export const MAX_WIDTH_MM = 200;
-export const WIDTH_STEP_MM = 5;
+export const WIDTH_STEP_MM = 1;
 export const DEFAULT_WIDTH_MM = 80;
 export const MIN_HEARTS = 1;
 export const MAX_HEARTS = 20;
