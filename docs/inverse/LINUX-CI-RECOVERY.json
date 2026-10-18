@@ -124,7 +124,7 @@
     "A late feature start reserved 450 ms for a polish that could no longer start after assessment. Lending that time to its unfinished refinement improved the source fit without extending the ten-second request.",
     "The Viking continuation repeatedly gave the whole 400 ms repair allowance to hidden-only controls, starving the existing general-control fallback. A local split-budget experiment reduced independent error from 0.01941875 to 0.0186625 without extending the continuation."
   ],
-  "remaining": "Main remains red; no recovery fix has been transferred to main. Latest complete normal-clock Linux replay passed 1108/1124 tests (16 failures), source 999b4072. The near-fit paper-verification fix passes its focused Linux budget regressions (39177180176); a photographic feature replay is running (39177445255). Quality and time limits are unchanged; no full-suite/release pass or NN resumption is claimed.",
+  "remaining": "Main remains red; no recovery fix has been transferred to main. Latest complete normal-clock Linux replay passed 1108/1124 tests (16 failures), source 999b4072. Subsequent paper verification passes 30 focused Linux regressions, and feature priority fixes all three puppy variants on Linux. Focused feature replay 39177873822 still has five failures. Verified-rerouting comparison fix d5c31a98 passes seven local regressions and is running on Linux (39178247328). No full-suite/release pass or NN resumption is claimed.",
   "branchSafety": "codex/ci-inverse-diagnostics replaces the Pages workflow with manual diagnostics. Never merge that entire branch to main. Transfer only verified fixes from codex/solver-initialization.",
   "limitations": [
     "No fresh 22-design Hunodan speed benchmark in this CI recovery pass.",
@@ -1251,8 +1251,40 @@
       "url": "https://github.com/thomasahle/julehjerte/actions/runs/39177873822",
       "diagnosticCommit": "6405762f",
       "mode": "feature-detail",
+      "status": "completed",
+      "job": 117824194798,
+      "conclusion": "failure",
+      "passed": 21,
+      "failed": 5,
+      "log": "/tmp/julehjerte-ci-feature-priority.log",
+      "failures": [
+        "vertical near-miss 1x: local sun outline disagreement 0.04333, required below 0.04",
+        "vertical near-miss 1.5x: incomplete refinement",
+        "negative-diagonal near-miss 1.5x: incomplete refinement",
+        "shifted bird 10 seconds: open eye after local refinement",
+        "shifted bird 180 seconds: valid result exceeded 30 seconds"
+      ]
+    },
+    "linuxFinding": "Original puppy, shifted puppy, and half-resolution puppy all pass on Linux. Original and shifted retain the feature-weighted grid instead of the source-colour-losing ordinary grid. Their solver times are 9.1251 and 9.2603 seconds; shifted opening IoU is 0.73248 and independent image error 0.01350625. Near-miss failures did not enter initialGeometryComparison; its field is null in those saved reports."
+  },
+  "verifiedReroutingComparison": {
+    "sourceCommit": "d5c31a98",
+    "change": "Apply the existing 25-second comparison cap after independently accepted fitted-boundary rerouting. A failed explicitly scheduled simpler comparison does not erase that incumbent; review remaining competitive simpler starts, then finish instead of exhausting larger ordinary fallbacks. All original gates and requested time budgets remain unchanged.",
+    "local": {
+      "passed": 7,
+      "failed": 0,
+      "log": "/tmp/julehjerte-rerouting-comparison-tests.log",
+      "scope": "Actual rerouting, original-image/symmetry guards, fresh shifted bird at 10 and 180 seconds, and maple simpler-layout comparison. Long bird test took 17.9448 seconds including independent exports, below its unchanged 30-second solver assertion."
+    },
+    "linux": {
+      "url": "https://github.com/thomasahle/julehjerte/actions/runs/39178247328",
+      "diagnosticCommit": "26bd56ed",
+      "mode": "feature-detail",
+      "status": "in_progress"
+    },
+    "appChecks": {
       "status": "in_progress",
-      "job": 117824194798
+      "logPrefix": "/tmp/julehjerte-feature-routing-"
     }
   }
 }
