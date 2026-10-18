@@ -11,6 +11,7 @@ import {imageFeatures} from '../../static/inverse/core/image-features.js';
 import {auditFeatureFidelity} from '../../static/inverse/core/feature-shapes.js';
 import {featureImprovingFinalist} from '../../static/inverse/core/direct/feature-finalists.js';
 import {renderExportedWeave} from './export-renderer.mjs';
+import {assertFitError} from './diagnostics/fit-failure.mjs';
 
 test('partial feature improvement preserves represented regions without certifying the missing one',()=>{
   const n=100,cfg=settings(AUTOMATIC_PRESET),coarse=gridModel([2,3]),fine=gridModel([3,3]);coarse.z.fill(0);fine.z.fill(0);
@@ -55,7 +56,7 @@ test('a lower-error finalist that erodes a partially retained region cannot clai
   assert.equal(rejected.change.passed,false);assert.equal(rejected.preferred,false);
   assert.deepEqual(preference.selectedCounts,[4,4]);assert.equal(answer.report.validation.passed,true);assert.equal(answer.report.manufacturing.status,'pass');
   const replay=await renderExportedWeave(answer.files['cut_geometry.json'],source.resolution);
-  assert.ok(mismatch(replay.mask,source.mask)<.04,'The checked-error improvement must survive independent export.');
+  await assertFitError({error:mismatch(replay.mask,source.mask),maximum:.04,answer,source,resolution:source.resolution,context:{case:'feature-finalist-bicycle'}});
   assert.equal(answer.report.templateChecksPassed,false,'A better initial layout does not certify the unresolved bicycle details.');
   assert.deepEqual(source.mask,original);
 });
