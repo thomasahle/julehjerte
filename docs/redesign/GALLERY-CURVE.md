@@ -196,3 +196,76 @@ rowPitch − s, bar + rowIndex × rowPitch)` until level, within 1px, where
 layout position + D; scrolling back to 0 restores the rest state; "Mine
 hjerter" never overlaps a card. Screenshots at rest and when level into
 `gallery-curve-qa/strands-*.png`.
+
+## Amendment 4 (18 Oct 2026): no flicker on load
+
+The owner: "when reloading the page there seems to be a bit of flicker where
+the vertical alignment of the chips and hearts happens." The prerendered page
+painted the gallery flat at the stylesheet's estimate of the pull-up, and once
+the app had hydrated, the measure above moved it into place: the strands
+dropped by up to D (105px at 1440, 155px at 2560) and the chips stepped from
+a flat row onto the curve. Now, on a reload at any desktop width, nothing that
+has painted moves; below 900px nothing changed at all.
+
+**An inline script lays the gallery out before it paints.**
+`$lib/front/strandBootstrap` is plain source text in the style of
+`heroBootstrap`, emitted by `Gallery.svelte` right before the gallery wrap,
+where the hero's scene has been parsed and the gallery has not (the front
+page's load hands it over as `strandScript`; in the browser the `{@html}`
+block claims the prerendered `<script>`). At ≥ 900px it works out what the
+measure will find:
+
+- the width the page will have: `documentElement.clientWidth`, less a classic
+  scrollbar's width (probed) if the page does not have one yet, since the
+  gallery will give it one;
+- the landscape's rect: `min(width, 2000)` wide at 2172 × 724, its bottom 1px
+  below the scene's, whose bottom it reads from the DOM rather than repeating
+  the header's and the hero's heights;
+- `hillTop` over the content column (max-width 1280, 40px padding, centred)
+  and the grid's columns (`auto-fill, minmax(204px, 1fr)`, 16px gap), with the
+  hill maths of `$lib/front/hillLine` ported, mirror included;
+- the chips' span, right-aligned at the column's right edge, from the chip
+  labels and counts measured on a canvas (the site's font is a system stack,
+  so a canvas measures what the page lays out), plus "Mine hjerter" when
+  localStorage has hearts and the download button when `?selected=` names
+  some;
+- `drop_k` per column (+54 under the chips) and D.
+
+It writes them on `<html>` under the names the gallery itself uses:
+`--gallery-pull` (the wrap's margin-top), `--strand-0…n`, `--strand-room`,
+`--gallery-bar-height` (49.6px, the one-row bar), and the classes
+`strands-ready strands-<n>`. The prerendered CSS reads them: the wrap's
+`margin-top: var(--gallery-pull, <old estimate>)`, and in `CategorySection`
+`html.strands-<n> .cat-grid > :nth-child(<n>n + k+1)` gives each gallery card
+`--strand: var(--strand-k)` until Svelte gives it its own. The first hydrated
+measure writes the same numbers on the gallery, and its first strand push
+removes the script's values from `<html>` (`clearStrandBootstrap`), so a
+later resize never meets stale ones. `strandBootstrap.test.ts` runs the very
+string in jsdom and checks it against `hillLine` at widths from 900 to 3200,
+with a scrollbar, and with the extra chips.
+
+**The chips wait, invisible.** Their lifts depend on laid-out text, so the
+chip row (and the download button in it) is `visibility: hidden; opacity: 0`
+on the desktop layout until the gallery has measured (`measured`, class
+`placed` on the row), then fades in on the curve in 150ms (no fade with
+reduced motion). Nothing about the bar's layout changes. Loaded scrolled
+down, the row appears flat in the stuck bar. Without JavaScript, `html.no-js`
+keeps the row visible, flat at the pull-up, as before; the gallery then uses
+the stylesheet's estimate, as before.
+
+**Measured** with Playwright against `vite preview`, sampling every animation
+frame from document start until 2s after the chips were placed (Chromium on
+Slow 4G with 4× CPU throttling; WebKit with its scripts held back 1.5s):
+the first ten cards and the wrap moved 0px after first paint at 1024, 1200,
+1440, 1920 and 2560 in both engines, also with a classic 15px scrollbar,
+"Mine hjerter" and `?selected=`, and no frame showed a chip anywhere but on
+the curve. The live site before this: cards moved 92–155px and the chips
+showed flat for 50–70 frames. The pages at 390, 768 and 899px are
+pixel-identical before and after.
+
+**Left as is:** a visitor who scrolls before the app has hydrated sees the
+strands at rest (the push needs the app) and they jump to their pushed place
+on hydration; a selection or a "Mine hjerter" count that changes the chips'
+span differently from the estimate (a `?selected=` naming hearts this browser
+does not have) moves that column by 54px on hydration; if the app never
+loads, the chips stay hidden on the desktop layout.
