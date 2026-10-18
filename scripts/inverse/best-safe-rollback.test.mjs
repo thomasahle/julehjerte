@@ -43,3 +43,23 @@ for(const selection of ['boundary','mask'])test(`${selection} refinement explore
   assert.ok(fitted.score<=initial.score);
   assert.deepEqual(graph.points,originalPoints);assert.deepEqual(probability,originalProbability);
 });
+
+test('rollback cannot increase a deliberately small repair step',()=>{
+  const target=new CurveGraph(paths(40.5)),probability=Float64Array.from(renderCurves(target,target.points,1,256));
+  const cfg=settings({requireMaterialCore:true,preferMatchingSheets:false,materialResolution:100});
+  const records=[];let auditCalls=0;
+  refineCurves(new CurveGraph(paths(40)),probability,256,1,cfg,{
+    steps:2,checkpointEvery:1,rate:.002,selection:'mask',
+    paperAudit:()=>paper(++auditCalls!==2),
+    onProgress:(record,solution)=>records.push({...record,coordinates:coordinates(solution)})
+  });
+  const rejected=records.filter(r=>r.step===0),resumed=records.find(r=>r.step===1);
+  assert.equal(rejected.length,1);assert.ok(rejected.every(r=>r.geometry&&r.paper==='uncertain'));
+  const restarted=[];
+  refineCurves(new CurveGraph(paths(40)),probability,256,1,cfg,{
+    steps:1,checkpointEvery:1,rate:.002,selection:'mask',paperAudit:()=>paper(true),
+    onProgress:(record,solution)=>{if(record.step===0)restarted.push(coordinates(solution));}
+  });
+  assert.deepEqual(resumed.coordinates,restarted[0],
+    'The usual 0.004 floor must not double a requested 0.002 repair step after rejection.');
+});

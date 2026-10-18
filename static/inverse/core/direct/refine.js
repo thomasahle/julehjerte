@@ -107,6 +107,9 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
   const objective=boundaryObjective(prob,weights),force=objective.target;
   const imageValue=createBoundaryEvaluator(graph,force,n),transposedImageValue=createBoundaryEvaluator(graph,force,n,{transpose:true,rows:193});
   const points=graph.points.slice(),initial=points.slice(),adam=new Adam(points.length,rate*graph.width/100),history=[];
+  // Final paper repairs deliberately use smaller steps than ordinary fitting.
+  // A failed checkpoint must not raise those steps to the usual rollback floor.
+  const minimumRate=Math.min(.004,rate)*graph.width/100;
   // Requested symmetries are constraints, not preferences: both the points and
   // the search direction are projected onto their subspace at every step. A
   // request replaces the identical-sheet projection rather than alternating
@@ -232,7 +235,7 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
         history.at(-1).paperSeparationRetry=paperSeparationRetry;
         lastRollback=null; // The changed force has not completed a rollback cycle yet.
       }
-      points.set(safe);adam.reset();adam.rate=Math.max(.004*graph.width/100,adam.rate*.65);
+      points.set(safe);adam.reset();adam.rate=Math.max(minimumRate,adam.rate*.65);
       // Equal reset coordinates and rate give the same next checkpoint block.
       // Require exact equality and consecutive full checkpoints; a smaller
       // rate, a new safe point or a partial block cannot establish a cycle.
@@ -267,7 +270,7 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
       const displacement=Float64Array.from(points,(v,i)=>v-previous[i]);
       let recovered=applyTies(ties,displacement,previous,{fixed:graph.fixed,tangent:true});
       if(recovered){for(let i=0;i<points.length;i++)points[i]=previous[i]+displacement[i];recovered=clampPoints();}
-      if(!recovered){points.set(previous);adam.reset();adam.rate=Math.max(.004*graph.width/100,adam.rate*.5);}
+      if(!recovered){points.set(previous);adam.reset();adam.rate=Math.max(minimumRate,adam.rate*.5);}
     }
     completed++;
     if(recoveringGeometry)geometryRecoverySteps++;
