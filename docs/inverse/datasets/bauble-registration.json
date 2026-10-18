@@ -1,5 +1,5 @@
 {
-  "status": "Validated crop and early-polishing fitter available on local port 5232. Latest full inverse run: 1081 passes and one outdated routing assertion; the updated five-test scheduling file passes. Browser corpus and independent editable-SVG feature checks pass.",
+  "status": "Validated early-polishing fitter and guarded checker registration available on local port5232. Full inverse suite:1089 passed;874 application tests passed, one existing skip. 89-input crop regression and two browser upload/export workflows pass. Framed crop failures remain open.",
   "photo": "scripts/inverse/fixtures/hard-photos/collage.png",
   "photoSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
   "case": "bauble (R5C4)",
@@ -2948,7 +2948,7 @@
       "next": "Evaluate the existing checker-lattice registration with four-cell hypotheses; its current minimum of five excludes these controls. Photometric acceptance alone must not bypass a physical-outline check."
     },
     "fourCellGridRegistration": {
-      "status": "Production source and browser workflows validated; full inverse suite running. Public preview remains the previous snapshot.",
+      "status": "Full source, build, replay, browser and inverse validation passed; local preview refreshed and checked.",
       "initialPhotometricExperiment": {
         "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/four-cell-lattice-results/results.json",
         "sha256": "c54a1f971892bbc0774f4c744d64a2880221609c047aaa093dd1e6698917eac7"
@@ -3177,17 +3177,100 @@
               "name": "browser",
               "status": "passed",
               "seconds": 18.39010812499997
+            },
+            {
+              "name": "inverse",
+              "status": "passed",
+              "seconds": 1501.0989885
             }
           ],
           "applicationTests": {
             "passed": 874,
             "skipped": 1
           },
-          "inverse": "Running; no result claimed.",
+          "inverse": {
+            "passed": 1089,
+            "failed": 0,
+            "skipped": 0,
+            "durationMs": 1500706.021291,
+            "log": {
+              "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/relative-grid-production/inverse.log",
+              "sha256": "bc4a378a56dea6190c9e10f66af0b3eb4a924e768991a9fb19d7dde5923d1aec"
+            }
+          },
           "stateFile": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/relative-grid-production/state.json",
           "sourcePins": {
             "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/relative-grid-production/source-pins.json",
             "sha256": "b5449624c3137f2fe0aa8f94b15876e9bc14ced53833068b10c20bcf6009a822"
+          },
+          "sourceCommit": "3865cf1",
+          "sourceVerification": "All1109 pinned production/script/src/package files match the validation run; built locator assets match source.",
+          "preview": {
+            "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/relative-grid-production/preview-health.json",
+            "sha256": "a23408831a0b20aac86f871486209ed92a61f7d23649b3441dfad250432f35c3",
+            "time": "2026-10-18T07:59:35.355Z",
+            "origin": "http://localhost:5232",
+            "previewPid": 53514,
+            "previewSession": 26277,
+            "ipv6BridgePid": 72483,
+            "sourceCommit": "3865cf1",
+            "http": [
+              {
+                "host": "localhost",
+                "status": 200
+              },
+              {
+                "host": "127.0.0.1",
+                "status": 200
+              },
+              {
+                "host": "[::1]",
+                "status": 200
+              }
+            ],
+            "assets": [
+              {
+                "name": "locator.js",
+                "sha256": "e56a50ef96ab72b95a45d614f107158c968901e5ec02ee4e11cd7bb381ac8309"
+              },
+              {
+                "name": "grid-refine.js",
+                "sha256": "1c1f3c11f30afb2e887b5f14d894f1d10de26eaf2d0f5f1f305bdca38e0b3553"
+              },
+              {
+                "name": "grid-outline.js",
+                "sha256": "693b9e46cf3d39fabc36335624566cfd8c5bfaaa50ab3c2e22a6c4f3355ef132"
+              }
+            ],
+            "pages": [
+              {
+                "route": "/",
+                "status": 200,
+                "title": "Juleflet: Flettede Julehjerter Skabeloner og Designer",
+                "headings": [
+                  "Juleflet.dk",
+                  "Skabeloner til flettede julehjerter",
+                  "Skabeloner"
+                ],
+                "errors": [],
+                "failed": []
+              },
+              {
+                "route": "/editor/mal/",
+                "status": 200,
+                "title": "Mal et hjerte - Juleflet: Flettede Julehjerter Skabeloner og Designer",
+                "headings": [
+                  "Mal et hjerte",
+                  "V\u00e6rkt\u00f8j",
+                  "Symmetri",
+                  "Kanten",
+                  "Find snit"
+                ],
+                "errors": [],
+                "failed": []
+              }
+            ],
+            "status": "passed"
           }
         },
         "preservedFailures": {

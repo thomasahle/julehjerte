@@ -1,11 +1,12 @@
 # Bauble foreground diagnosis
 
-Current status: the early-polishing fitter and updated cropper are validated and
-available on port 5232. Browser upload/export checks and the 33-case comparison
-pass. The full inverse suite had 1,081 passes and one outdated routing assertion;
-the corrected five-test file passes, including explicit routing fallback coverage.
-All solver and application sources are unchanged from the full run. Earlier
-experiments below preserve the failures and improvements.
+Current status: the early-polishing fitter and guarded checker registration are
+validated and available on port 5232. The full inverse suite passes **1,089 tests**;
+**874 application tests** pass with one existing skip. Typecheck, lint, build,
+the 89-input crop regression and two actual browser upload/export workflows pass.
+The local homepage and Paint editor were checked again after refreshing the
+preview. Framed-motif crop failures remain open. Earlier experiments below
+preserve the failures and improvements.
 
 The automatic R5C4 bauble crop includes background and extrapolates its bottom
 corner below the 1,112-pixel photograph. Earlier experiments with longer scan
@@ -623,3 +624,11 @@ cells are now regular; the error measurements come from the exported geometry,
 not the screenshot. Typecheck, lint, **874 application tests** (one existing skip),
 build, crop replay and browser QA pass. The full inverse suite is still running;
 the public preview is deliberately unchanged until that result is known.
+
+
+Final validation completed with **1,089/1,089 inverse tests passing** in 25.0 minutes.
+All 1,109 pinned source/script/package files remained unchanged throughout the run.
+The local preview now serves the validated `3865cf1` code. Homepage and Paint
+load in Chrome without page errors or failed local requests, and HTTP checks pass
+through `localhost`, IPv4 and IPv6. Served locator asset hashes match the tested
+source. No remote push or deployment was performed.
