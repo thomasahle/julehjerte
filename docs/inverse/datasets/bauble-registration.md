@@ -1,10 +1,11 @@
 # Bauble foreground diagnosis
 
-Current status: the upload workflows and 33-case browser comparison pass. The
-full inverse run recorded 1,081 passes and one offline adapter failure; the
-adapter is corrected and all seven affected tests pass on recheck. Independent
-feature checks on the downloaded editable SVGs also pass. The validated build is
-now available on port 5232. Earlier experiments below preserve the failures and improvements.
+Current status: the early-polishing fitter and updated cropper are validated and
+available on port 5232. Browser upload/export checks and the 33-case comparison
+pass. The full inverse suite had 1,081 passes and one outdated routing assertion;
+the corrected five-test file passes, including explicit routing fallback coverage.
+All solver and application sources are unchanged from the full run. Earlier
+experiments below preserve the failures and improvements.
 
 The automatic R5C4 bauble crop includes background and extrapolates its bottom
 corner below the 1,112-pixel photograph. Earlier experiments with longer scan
@@ -312,3 +313,29 @@ The production copy passes all **three focused regressions** in 90.31 seconds,
 including the nearby-crop case in 35.94 seconds and both late-cleanup budget tests.
 Typecheck, lint, 874 application tests (one existing skip) and build pass. The
 full inverse suite is running against pinned sources before a preview refresh.
+
+
+The production inverse suite completed in **1,424.94 seconds**: **1,081 passes**
+and one outdated scheduling assertion. That test required a MILP after an
+interrupted grid refinement, even though early polishing had already produced an
+accepted fit. All 1,109 source hashes remained unchanged during the run.
+
+The corrected file passes all **five tests** in 42.85 seconds. It now independently
+checks both outcomes: polishing completes the interrupted grid without redundant
+routing (**1.396%** exported-curve error), or an additional interruption exhausts
+the polishing window and routing still finds checked templates (**1.160%** error).
+Both preserve the original source and pass geometry, paper and feature/enclosure
+checks. Reported solve times include the injected interruptions; they are not
+ordinary performance measurements. No solver change was needed for this test fix.
+
+Typecheck and lint pass again. The 874 application tests (one existing skip) and
+build passed in the pinned production run. The full inverse suite was not repeated
+for this test-only correction; `early-polish-production/validated-state.json`
+records the original failure and the successful rechecks explicitly.
+
+The refreshed **5232** preview serves the exact browser-tested early-polishing
+fitter. Chrome loaded the homepage, Danish Paint and English Paint, and opened and
+closed the import dialog without JavaScript errors or failed local requests.
+HTTP checks pass on `localhost`, `127.0.0.1` and `::1`; all 122 built inverse files
+match their sources. The private preflight server was stopped. No push or remote
+deployment was made. The framed-edge study is the next unshipped experiment.

@@ -1140,7 +1140,7 @@
     }
   },
   "earlyPolishExperiment": {
-    "status": "Implemented; focused/check/lint/application/build pass. Full inverse suite running; public preview remains the previous validated fitter.",
+    "status": "adopted and validated; preview refreshed",
     "scope": "Same photo and settings; two automatic crops differ by 15 classified pixels. One fresh process per policy/crop. Five-cut progress coordinates captured in both policies and feature-audited after the timed solve. No saved templates or ground-truth cuts enter fitting.",
     "sourceFilesUnchanged": 1111,
     "rows": [
@@ -1423,7 +1423,7 @@
     ],
     "interpretation": "No published five-cut checkpoint on the perturbed mask passes feature fidelity. Negative phase erases the 5 mm\u00b2 region; positive phase retains 83.75% but loses enclosure. The nearby mask preserves enclosure in positive phase. Control parameters already differ by up to 1.803 mm after grid/clearance preparation, before free refinement, and diverge later. These are parameter differences, not visible-boundary displacement. This is search sensitivity rather than final ranking discarding a passing five-cut checkpoint; coarse initialization, fine-grid fitting and clearance have not yet been separated.",
     "policy": "One bounded full-resolution polish of the first geometry/paper/feature-valid near-threshold candidate, before additional grids. Preserve candidates, acceptance gates and request deadline.",
-    "next": "Actual editable-SVG workflows and strict 33-case browser comparison before adoption.",
+    "next": "Compare the two prepared physical-edge refinement hypotheses on 89 fixed inputs; continue investigating five-cut initialization sensitivity.",
     "record": "tmp/heart-learning/bauble-segmentation-2026-10-18/early-polish-study/results/checkpoint-diagnosis.json",
     "sha256": "2be1a93ae503214a87fad857de9084b66b5f828b672ce91ed018d44371207e4c",
     "browserValidation": {
@@ -1514,8 +1514,62 @@
         "passed": 874,
         "skipped": 1
       },
-      "fullInverse": "running",
-      "publicPreviewRuntime": "47b3d08"
+      "fullInverse": {
+        "tests": 1082,
+        "passed": 1081,
+        "failed": 1,
+        "seconds": 1424.939837416,
+        "sourcePinsUnchanged": 1109,
+        "failure": "The delayed-grid regression still required routing after early polishing already passed all native gates."
+      },
+      "publicPreviewRuntime": "47b3d08",
+      "status": "validated; served locally on port 5232",
+      "schedulingRecheck": {
+        "tests": 5,
+        "passed": 5,
+        "seconds": 42.849677916,
+        "changedFile": "scripts/inverse/deferred-routing.test.mjs",
+        "sourcePinsUnchanged": 1110,
+        "successfulPolish": {
+          "independentError": 0.01395625,
+          "routingAttempted": false,
+          "reportedSecondsIncludingNineSecondInterruption": 13.840243665999996
+        },
+        "expiredPolish": {
+          "independentError": 0.0116,
+          "routingAttempted": true,
+          "reportedSecondsIncludingSixteenSecondInterruption": 32.91149679200001
+        },
+        "checks": [
+          "Independent exported-curve error",
+          "Geometry",
+          "Paper core",
+          "Feature retention and enclosure",
+          "Original source unchanged",
+          "Within requested allowance"
+        ]
+      },
+      "combinedValidation": "tmp/heart-learning/bauble-segmentation-2026-10-18/early-polish-production/validated-state.json",
+      "combinedValidationSha256": "206c24846b227cb5add2014ecdb1e9165b93c6d0cd65f1412cc73b9c2b983056",
+      "qualification": "The full inverse suite was not repeated for this test-only correction. All solver and application sources are unchanged from that full run and the browser corpus comparison. The five updated scheduling tests, typecheck and lint pass; application tests and build passed in the pinned run.",
+      "preview": {
+        "origin": "http://localhost:5232",
+        "runtimeFitSha256": "d1bd28d6752ccd409406677d69638d3c3415666df0d5fab1edddb117b111cc0e",
+        "browserVersion": "145.0.7632.6",
+        "pages": [
+          "/",
+          "/editor/mal/",
+          "/en/editor/paint/"
+        ],
+        "javascriptErrors": 0,
+        "failedLocalRequests": 0,
+        "httpAddresses": [
+          "localhost",
+          "127.0.0.1",
+          "::1"
+        ],
+        "evidence": "tmp/heart-learning/bauble-segmentation-2026-10-18/early-polish-production/preview-live.json"
+      }
     }
   }
 }
