@@ -824,5 +824,22 @@
     "Visual inspection still shows border distortions and extra seams.",
     "The final complete inverse suite and broader browser comparison have not yet run on this change.",
     "This change does not fix the confirmed bauble crop failure."
-  ]
+  ],
+  "fullSuite": {
+    "runtime": "94b53a5",
+    "status": "complete",
+    "tests": 1070,
+    "passed": 1070,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "seconds": 1302.505875416,
+    "sourceFiles": 1046,
+    "sourceHashesMatch": true,
+    "sourceManifestSha256": "1b705610f7c33af7fbf946d3e5f6fd0b00d8ae73c943fdfb45ae98c8f16cbe89",
+    "logSha256": "104422f6cd964aff92deec50f8b092989e315e6edbeec8019f77347a2a2495f0",
+    "summaryPath": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/geometry-reserve-full/summary.json",
+    "summarySha256": "1704dc9e2849f7b62673886494923b84fbb0dcad72a4c23bc0ecc4f98bfbb126",
+    "scope": "Complete npm run test:inverse on the committed runtime, without success-output capture instrumentation. Browser speed and fidelity are checked separately. A passing suite does not waive the independently recorded 2x Viking image-limit failure."
+  }
 }

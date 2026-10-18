@@ -44,8 +44,13 @@ tests** (one existing skip), type checking, lint and build pass. All 1,046 sourc
 hashes remain unchanged through those checks. The final recorded replay uses
 the same runtime hashes.
 
-A new complete inverse run and broader browser checks remain. The stable local
-preview has not been refreshed. The separate bauble investigation still needs
-a crop correction; this scheduling change does not resolve that input defect.
+The complete inverse run also passed: **1,070 tests, zero failures or skips**,
+in 1,302.51 seconds. All 1,046 source hashes matched after the run. This includes
+the previously failing ten-second Viking regression and all eight near-miss
+perturbation checks. It does not erase the separate 2×-clock failure above.
+
+Broader browser speed and fidelity checks are running. The stable local preview
+has not been refreshed. The separate bauble investigation still needs a crop
+correction; this scheduling change does not resolve that input defect.
 
 [Measurements, input identities and evidence hashes](geometry-recovery-budget.json).
