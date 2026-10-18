@@ -327,20 +327,6 @@
     },
     "difficulty": "medium"
   },
-  "ball-95": {
-    "name": "Kugle 95",
-    "names": {
-      "en": "Bauble 95"
-    },
-    "difficulty": "medium"
-  },
-  "ball-95b": {
-    "name": "Kugle 95b",
-    "names": {
-      "en": "Bauble 95b"
-    },
-    "difficulty": "medium"
-  },
   "triple-heart": {
     "name": "Triple Hjerte",
     "names": {
