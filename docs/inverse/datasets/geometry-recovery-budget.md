@@ -49,8 +49,23 @@ in 1,302.51 seconds. All 1,046 source hashes matched after the run. This include
 the previously failing ten-second Viking regression and all eight near-miss
 perturbation checks. It does not erase the separate 2×-clock failure above.
 
-Broader browser speed and fidelity checks are running. The stable local preview
-has not been refreshed. The separate bauble investigation still needs a crop
-correction; this scheduling change does not resolve that input defect.
+The browser run passed all **22 regular Hunodan designs under ten seconds**
+(median 5.60 s, maximum 8.59 s). Native and resized Paint errors were unchanged
+from the previous run, with matching inputs, crops, settings and browser version.
+This single-run comparison does not isolate a causal speed improvement.
+
+Ten further hard-photo/example workflows passed. The remaining sloth case hit
+a stale test assertion: it compared the native 250-pixel solver input with a
+400-pixel Paint checksum. The harness now checks each at its own resolution,
+retaining both frozen identities and all output-quality assertions. A follow-up
+browser run passed **all six sloth variants and the vertical near-miss case**,
+including independent editable geometry and paper checks. The original failed
+run is retained; no production code changed for this test correction.
+
+The bauble investigation still needs a crop correction: none of eight isolated
+lower-edge sampling hypotheses produced a supported outline. Another speed
+opportunity remains in the photographed star: its original, half-resolution
+and JPEG inputs each spend about 12 seconds on rejected coarse MILP routing
+before a successful grid fit. Neither issue is resolved by this change.
 
 [Measurements, input identities and evidence hashes](geometry-recovery-budget.json).

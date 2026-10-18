@@ -207,7 +207,7 @@ try{
        const resizedHashes={'x-plus-1':'3e296fe2d3c49167d74ce59a20654efc12ef37e12fbc2f6cff21ee3cce036ff4','y-minus-1':'2904b2fd0ca28a4ba23f0bf1cd24424f67965f059a22e0f48306615eb46df047',
         'frozen':'d6e5570fdb6c9de2c1c2e738ac0204bb963cab0acc694c3fba3a587dcdb10c09','synthetic-control':'381e0cb708afb03dc18532b4efabba93b58ba889168f0b51a6d6706dcc6df3f8','y-plus-1':'6e7557c0cf8b50ad6c9545a34210dfdbc4e2c184981b60ae7cdeb4f6cc64a5dc'};
        fixture={sourceCase:data.caseId||data.id,quad:null,maskSha256:data.maskSha256,paintImport:{resolution:400,
-        method:'The unchanged 250-pixel upload is resized to the paint canvas at destination-cell centers. This browser target differs from the native-resolution routing diagnostic.',
+        method:'Paint displays a destination-cell-center enlargement to 400 pixels. The unchanged upload keeps its native sampling for the solver; both grids are checked separately.',
         maskSha256:resizedHashes[slothVariant]||'f76e4c8a4a16d227f13d36d1feeee4fb84681b35d128c6ab4b14bb3f775a47b7'}};
        fixedMask=new Uint8Array(data.resolution**2);for(const[start,length]of data.maskRuns)fixedMask.fill(1,start,start+length);
        row.sourceMaskFixture={file,sha256:createHash('sha256').update(bytes).digest('hex'),scope:'Classified pixels only; saved rejected routing proposals are not supplied to the worker.'};
@@ -268,7 +268,7 @@ try{
       const n=Math.sqrt(mask.length),c=createCanvas(n,n),ctx=c.getContext('2d'),pixels=ctx.createImageData(n,n);
       for(let i=0;i<mask.length;i++)pixels.data.set(mask[i]?[185,19,19,255]:[255,255,255,255],4*i);
       ctx.putImageData(pixels,0,0);await fs.writeFile(file,c.toBuffer('image/png'));
-      row.sourcePhoto={id:fixture.sourceCase,sha256:photo?.fileSha256??null,quad:fixture.quad,fixedMaskSha256:fixture.maskSha256,...(fixture.paintImport?{paintImport:fixture.paintImport}:{})};
+      row.sourcePhoto={id:fixture.sourceCase,sha256:photo?.fileSha256??null,quad:fixture.quad,fixedMaskSha256:fixture.maskSha256,nativeResolution:n,...(fixture.paintImport?{paintImport:fixture.paintImport}:{})};
      }else if(webPhoto){
       const data=await catalogue(),entry=data.cases.find(c=>c.id===name.slice(4));assert.ok(entry,`Unknown photograph ${name}`);
       const photo=data.photos.find(p=>p.id===entry.photo),input=await readPhoto(photo),roi=entry.roi||[0,0,input.imageWidth,input.imageHeight],c=createCanvas(roi[2]-roi[0],roi[3]-roi[1]),ctx=c.getContext('2d'),pixels=ctx.createImageData(input.imageWidth,input.imageHeight);
@@ -425,8 +425,8 @@ try{
      assert.ok(row.engineError<.025);
     }
     if(photoMask){
-     assert.equal(createHash('sha256').update(Uint8Array.from(observed.prepared.mask)).digest('hex'),row.sourcePhoto.paintImport?.maskSha256??row.sourcePhoto.fixedMaskSha256);
-     if(row.sourcePhoto.paintImport)assert.equal(observed.prepared.resolution,row.sourcePhoto.paintImport.resolution);
+     assert.equal(createHash('sha256').update(Uint8Array.from(observed.prepared.mask)).digest('hex'),row.sourcePhoto.fixedMaskSha256,'An unchanged mask upload must reach the solver at its original sampling.');
+     assert.equal(observed.prepared.resolution,row.sourcePhoto.nativeResolution);
      if(!engineReference){
       if(name==='near-miss-mask')assert.equal(row.featureInitialization?.coarseRefinement?.accepted,true,'The real worker must exercise the near-miss initialization refinement.');
       if(name==='near-miss-shift-mask')assert.equal(row.featureInitialization?.alternativeRefinement?.accepted,true,'The real worker must reuse the previously discarded three-cut start.');
@@ -632,6 +632,10 @@ try{
     const paintingRendered=resolution===MASK_SIZE?sourceRendered:rasterizeDesign(design,MASK_SIZE).data;
     const paintingFrame={mode:'free',shape:'diamond',size:frameSize};
     row.paintingResolution=MASK_SIZE;row.paintingMaskSha256=createHash('sha256').update(paintingMask).digest('hex');
+    if(photoMask&&row.sourcePhoto.paintImport){
+     assert.equal(row.paintingResolution,row.sourcePhoto.paintImport.resolution);
+     assert.equal(row.paintingMaskSha256,row.sourcePhoto.paintImport.maskSha256,'The Paint enlargement must still match its independently frozen pixels.');
+    }
     row.paintingEditableError=free?frameMismatch(paintingRendered,paintingMask,MASK_SIZE,paintingFrame,paintingValid).inside:maskMismatch(paintingRendered,paintingMask,paintingValid);
     if(name==='maple-leaf-mask'&&!engineReference){
      assert.ok(row.sourceEditableError<.012,'The downloaded maple must retain the improved source fit.');

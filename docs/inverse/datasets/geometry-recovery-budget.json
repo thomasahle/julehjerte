@@ -841,5 +841,134 @@
     "summaryPath": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/geometry-reserve-full/summary.json",
     "summarySha256": "1704dc9e2849f7b62673886494923b84fbb0dcad72a4c23bc0ecc4f98bfbb126",
     "scope": "Complete npm run test:inverse on the committed runtime, without success-output capture instrumentation. Browser speed and fidelity are checked separately. A passing suite does not waive the independently recorded 2x Viking image-limit failure."
+  },
+  "browserQa": {
+    "runtime": "94b53a5",
+    "initialRun": {
+      "path": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/geometry-reserve-browser/comparison.json",
+      "sha256": "66cdb4a5bac31a71f909455ae6dae516df5f69658ab7ff0e839aef4b3ba99d50",
+      "cases": 33,
+      "passed": 32,
+      "failure": "The sloth-x-shift-mask assertion compared the unchanged native250 mask against a frozen400 Paint enlargement. Subsequent editable-output checks were not reached; this is not a measured geometry failure."
+    },
+    "hunodan": {
+      "hunodanWithinTenSeconds": 22,
+      "hunodanSlowerThanTenSeconds": [],
+      "hunodanErrorIncreases": {
+        "engineError": [],
+        "sourceEditableError": [],
+        "paintingEditableError": []
+      },
+      "allHunNativeFidelityAndSpeedTargetsMet": true,
+      "cases": 22,
+      "medianSeconds": 5.603350000143051,
+      "maximumSeconds": 8.585099999904633,
+      "nativeAndPaintingErrorsAllUnchanged": true,
+      "qualification": "One current run versus the historical eaa358a run, with matching inputs, crops, settings and browser version. Not an isolated causal speed comparison."
+    },
+    "harnessCorrection": {
+      "file": "scripts/inverse/paint-browser-test.mjs",
+      "method": "Check unchanged native mask identity and resolution before fitting assertions, then retain the existing frozen Paint checksum at its actual400-pixel grid. All image, feature, geometry and paper assertions retained.",
+      "productionSourceChanged": false
+    },
+    "followup": {
+      "path": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/native-mask-browser/current/results.json",
+      "sha256": "8b93bd31bbbb4297f798af7248d98ab3f1b6a32e8aa1e385ab4a786f9d15b3de",
+      "sourceManifest": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/native-mask-browser/source.json",
+      "sourceManifestSha256": "d8a0736b3e48cfda0fa27b4d7be537a7303f2e88c1f61c6fc13de25590858f44",
+      "sourceHashesUnchanged": true,
+      "passed": 7,
+      "failed": 0,
+      "cases": [
+        {
+          "name": "sloth-routing-mask",
+          "passed": true,
+          "sourceResolution": 250,
+          "paintingResolution": 400,
+          "sourceEditableError": 0.006736,
+          "paintingEditableError": 0.01143125,
+          "clickToReadySeconds": 8.784200000047683,
+          "independentGeometryPassed": true,
+          "independentPaperStatus": "pass"
+        },
+        {
+          "name": "sloth-x-shift-mask",
+          "passed": true,
+          "sourceResolution": 250,
+          "paintingResolution": 400,
+          "sourceEditableError": 0.009568,
+          "paintingEditableError": 0.013525,
+          "clickToReadySeconds": 9.030799999952317,
+          "independentGeometryPassed": true,
+          "independentPaperStatus": "pass"
+        },
+        {
+          "name": "sloth-y-shift-mask",
+          "passed": true,
+          "sourceResolution": 250,
+          "paintingResolution": 400,
+          "sourceEditableError": 0.013088,
+          "paintingEditableError": 0.0162,
+          "clickToReadySeconds": 9.949099999904632,
+          "independentGeometryPassed": true,
+          "independentPaperStatus": "pass"
+        },
+        {
+          "name": "sloth-frozen-mask",
+          "passed": true,
+          "sourceResolution": 250,
+          "paintingResolution": 400,
+          "sourceEditableError": 0.004912,
+          "paintingEditableError": 0.0102,
+          "clickToReadySeconds": 9.843200000047684,
+          "independentGeometryPassed": true,
+          "independentPaperStatus": "pass"
+        },
+        {
+          "name": "sloth-synthetic-mask",
+          "passed": true,
+          "sourceResolution": 250,
+          "paintingResolution": 400,
+          "sourceEditableError": 0.011456,
+          "paintingEditableError": 0.01490625,
+          "clickToReadySeconds": 27.5255,
+          "independentGeometryPassed": true,
+          "independentPaperStatus": "pass"
+        },
+        {
+          "name": "sloth-y-plus-mask",
+          "passed": true,
+          "sourceResolution": 250,
+          "paintingResolution": 400,
+          "sourceEditableError": 0.001456,
+          "paintingEditableError": 0.00596875,
+          "clickToReadySeconds": 12.605,
+          "independentGeometryPassed": true,
+          "independentPaperStatus": "pass"
+        },
+        {
+          "name": "near-miss-y-shift-mask",
+          "passed": true,
+          "sourceResolution": 400,
+          "paintingResolution": 400,
+          "sourceEditableError": 0.01348125,
+          "paintingEditableError": 0.01348125,
+          "clickToReadySeconds": 10.485599999904633,
+          "independentGeometryPassed": true,
+          "independentPaperStatus": "pass"
+        }
+      ]
+    },
+    "visualInspection": [
+      "hunodan-hjcur-04: result and Draw output",
+      "hunodan-hjfig-05: original photograph and result",
+      "star: Draw output",
+      "top-hat-free-small: Draw output"
+    ],
+    "remaining": [
+      "2x-clock Viking replay remains above3% error.",
+      "Bauble crop is wrong; all eight isolated lower-edge sampling hypotheses were unsupported.",
+      "Original,half-resolution andJPEG photographed stars each spend about12 seconds in rejected coarse MILP routing before an accepted grid fit."
+    ]
   }
 }
