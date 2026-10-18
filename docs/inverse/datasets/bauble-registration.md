@@ -166,3 +166,21 @@ image/feature gate and the latter has lower overall error. A bounded experiment
 now tries polishing the feature-complete alternative before discarding it. This
 uses the existing polish eligibility band and retains the original fallback if
 the alternative fails any unchanged final check. It is not yet validated.
+
+
+The initial cleanup comparison recovered the missing region: the six-cut
+candidate fell from 3.169% to **2.807% independent error**, with geometry, paper,
+features and template checks passing. This does not match the earlier five-cut
+candidate's accuracy or solve time; both remain improvement opportunities.
+
+The final implementation preserves the existing fallback's entire cleanup.
+Only when it still fails the combined checks can a long request spend up to
+6.5 seconds of unused allowance polishing one feature-complete alternative.
+The candidate must be within the existing polish eligibility band, and it
+replaces the fallback only after every unchanged acceptance check passes. Short
+requests retain their path, and 1.3 seconds remains reserved for finalization.
+
+All **three focused tests pass**: the new nearby-crop regression independently
+checks the final weave and feature retention; the existing delayed Viking and
+25-second-budget checks still pass. Final browser/corpus/full-suite verification
+is pending. The preview has not yet been refreshed with this fitter change.

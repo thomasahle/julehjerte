@@ -1,5 +1,5 @@
 {
-  "status": "RGB crop fallback committed; browser QA exposed a separate 15-pixel template-fitting sensitivity. Controlled fresh-fit comparison running; full inverse suite pending.",
+  "status": "Crop fallback and feature-complete cleanup implemented; focused regression passes. Broader final verification pending.",
   "photo": "scripts/inverse/fixtures/hard-photos/collage.png",
   "photoSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
   "case": "bauble (R5C4)",
@@ -780,5 +780,56 @@
       "interpretation": "At both fixed setting sets, the earlier mask passes with five cuts and the 15-pixel variant fails with four cuts. Fresh Node application-settings results agree with the browser failure. Runtime-only and settings-only explanations do not account for this pattern; finite-time optimization still contributes to numerical variation."
     },
     "nextProbe": "Try cleanup on the lowest-error geometry/paper-valid, feature-complete candidate within the existing polish eligibility band (maxImageError + 0.01). The failing run already found such a six-cut candidate at 3.17% error. Keep the original fallback unless every unchanged check passes."
+  },
+  "cleanupComparison": {
+    "status": "Implemented; three focused tests pass; browser/corpus/full-suite validation pending",
+    "firstProbe": {
+      "independentError": 0.02806875,
+      "seconds": 108.987264584,
+      "counts": {
+        "left": 6,
+        "right": 6
+      },
+      "templateChecksPassed": true,
+      "featuresPassed": true,
+      "geometryPassed": true,
+      "comparison": {
+        "beforeCounts": [
+          4,
+          4
+        ],
+        "beforeError": 0.01510625,
+        "proposedCounts": [
+          6,
+          6
+        ],
+        "proposedError": 0.03169375,
+        "accepted": true,
+        "finalError": 0.0284375,
+        "featuresPassed": true,
+        "geometryPassed": true,
+        "paperPassed": true
+      }
+    },
+    "productionPolicy": "Retain ordinary fallback cleanup. If no candidate passes all gates, a long request may use up to 6.5 seconds of otherwise unused allowance for the lowest-error feature-complete, paper/geometry-valid alternative within the existing maxImageError+0.01 polishing band. Accept only after all unchanged source/feature/paper/geometry gates pass. Keep the original fallback when the attempt fails. Preserve the 1.3-second finalization reserve and all short-request paths.",
+    "focused": {
+      "passed": 3,
+      "failed": 0,
+      "seconds": 161.740044375,
+      "log": "tmp/heart-learning/bauble-segmentation-2026-10-18/final-cleanup/focused.log",
+      "logSha256": "9b88314ce1ab6b3ec5144f084e9e96dafec2e0e2e09728084f94473ea637074d",
+      "coverage": [
+        "15-pixel photo-crop perturbation fits fresh and independently retains the small region within 3% error",
+        "Late Viking cleanup preserves fidelity across a scheduling interruption",
+        "A 25-second request retains its hard cleanup allowance"
+      ]
+    },
+    "pending": [
+      "typecheck/lint/application/build on final fitter",
+      "actual bauble/window browser workflows",
+      "33-case browser comparison with all 22 Hunodan designs below 10 seconds and no error increase",
+      "full inverse suite",
+      "preview refresh after validation"
+    ]
   }
 }
