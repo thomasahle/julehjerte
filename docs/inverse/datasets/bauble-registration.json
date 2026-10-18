@@ -598,7 +598,7 @@
     ]
   },
   "framedMotifDiagnosis": {
-    "status": "Open; production refinement unchanged",
+    "status": "Lower-line and full-shape diagnosis in progress; three candidate changes rejected, production detector unchanged.",
     "finding": "Initial segmentation lines recover the known tip closely, but colour-gradient refinement moves it inward by roughly 10 pixels. This happens with the background-covariance gradient metric in all four fully observed failures.",
     "rows": [
       {
@@ -828,6 +828,236 @@
       "sha256": "9ba7c7442682a2c12239e410a218aca4d33896900996d0e4c8859f8018c2216b",
       "figure": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/results/corner-comparison.png",
       "next": "A fixed follow-up applies the positive paper-transition weight only when the existing learned background covariance also supplies the colour-edge metric. It is running on the same 89 inputs. No production detector change has been made; no template reconstruction has been run for these proposals."
+    },
+    "backgroundOnlyStudy": {
+      "status": "Completed; rejected as a production replacement",
+      "inputs": 89,
+      "sourcePinsUnchanged": 1108,
+      "summary": {
+        "id": "background-positive-gradient",
+        "changed": [
+          "broad-study/brown-gradient-jpeg-1.1",
+          "targeted-study/01-tinted-checker",
+          "targeted-study/02-tinted-framed-blob",
+          "targeted-study/07-lighter-background-checker",
+          "targeted-study/08-lighter-background-framed-blob",
+          "targeted-study/09-tinted-checker",
+          "targeted-study/10-tinted-framed-blob",
+          "targeted-study/11-lighter-background-checker",
+          "targeted-study/12-lighter-background-framed-blob",
+          "targeted-study/13-tinted-checker",
+          "targeted-study/14-tinted-framed-blob",
+          "shadow-frame-1",
+          "shadow-frame-1.1"
+        ],
+        "lostSupportedInPhotoCrop": [
+          "targeted-study/08-lighter-background-framed-blob",
+          "targeted-study/12-lighter-background-framed-blob"
+        ],
+        "knownErrorIncreaseOverHalfPixel": [
+          "targeted-study/08-lighter-background-framed-blob",
+          "targeted-study/12-lighter-background-framed-blob",
+          "targeted-study/13-tinted-checker"
+        ],
+        "knownErrorDecreaseOverHalfPixel": [
+          "targeted-study/02-tinted-framed-blob",
+          "targeted-study/10-tinted-framed-blob",
+          "targeted-study/11-lighter-background-checker",
+          "targeted-study/14-tinted-framed-blob"
+        ],
+        "clippedButSupportedInPhoto": [],
+        "supportedNegativeControl": [],
+        "knownCompleteSupportedMaximumError": 5.184457077063045
+      },
+      "unchangedRealCollageInstances": 40,
+      "record": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/calibrated-results/results.json",
+      "sha256": "58250c4192ad3b3d92bb0068e5c5ad59a6a4fbeb70abfe2fd7a0ca080d0f0d20",
+      "lineDiagnosis": {
+        "scope": "Four fixed known-geometry controls, two palette fields and both rough-selection treatments. Diagnostic metadata and disabling photographic refinement never replace a source pixel or corner with a known label. No production changes.",
+        "evaluations": 48,
+        "record": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/line-diagnosis.json",
+        "sha256": "1b098e57d0f4ed67fe8d31fa064436a83f225af2a19f0135466ad73742bb9e8c",
+        "selectedRows": [
+          {
+            "id": "08-lighter-background-framed-blob",
+            "variant": "baseline",
+            "palette": "adaptive",
+            "refineSelection": false,
+            "status": "candidate",
+            "supported": true,
+            "maximumCornerError": 8.937659264942228,
+            "initialTip": [
+              191.11997065491892,
+              231.48716113645432
+            ],
+            "refinedTip": [
+              191.66271937771705,
+              221.21836476462545
+            ],
+            "lowerSupport": [
+              0.6666666666666666,
+              0.8333333333333334
+            ],
+            "lobeSupport": [
+              0.6944444444444444,
+              0.6666666666666666
+            ],
+            "capColourLoss": [
+              0.09086171399677584,
+              4.1912228971195826e-06
+            ]
+          },
+          {
+            "id": "08-lighter-background-framed-blob",
+            "variant": "background-positive-gradient",
+            "palette": "adaptive",
+            "refineSelection": false,
+            "status": "needs_review",
+            "supported": false,
+            "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+            "maximumCornerError": 5.817373575239211,
+            "initialTip": [
+              191.11997065491892,
+              231.48716113645432
+            ],
+            "refinedTip": [
+              191.22564961446483,
+              230.8549929698908
+            ],
+            "lowerSupport": [
+              0.4444444444444444,
+              0.625
+            ],
+            "lobeSupport": [
+              0.8055555555555556,
+              0.7222222222222222
+            ],
+            "capColourLoss": [
+              0.09810712482499914,
+              4.274738383134056e-06
+            ]
+          },
+          {
+            "id": "08-lighter-background-framed-blob",
+            "variant": "segmentation-lines",
+            "palette": "adaptive",
+            "refineSelection": false,
+            "status": "candidate",
+            "supported": true,
+            "maximumCornerError": 5.085651618399119,
+            "initialTip": [
+              191.11997065491892,
+              231.48716113645432
+            ],
+            "refinedTip": [
+              191.11997065491892,
+              231.48716113645432
+            ],
+            "lowerSupport": [
+              0.6944444444444444,
+              0.9583333333333334
+            ],
+            "lobeSupport": [
+              0.9722222222222222,
+              0.75
+            ],
+            "capColourLoss": [
+              0.10884145075581944,
+              4.38003505470741e-06
+            ]
+          },
+          {
+            "id": "12-lighter-background-framed-blob",
+            "variant": "baseline",
+            "palette": "adaptive",
+            "refineSelection": false,
+            "status": "needs_review",
+            "supported": true,
+            "maximumCornerError": 11.828856410066837,
+            "initialTip": [
+              191.49682213513546,
+              231.02082420820878
+            ],
+            "refinedTip": [
+              191.79441816933553,
+              221.08986953283397
+            ],
+            "lowerSupport": [
+              0.6666666666666666,
+              0.8055555555555556
+            ],
+            "lobeSupport": [
+              1,
+              0.8888888888888888
+            ],
+            "capColourLoss": [
+              0.10756120447405428,
+              4.2426135532575634e-06
+            ]
+          },
+          {
+            "id": "12-lighter-background-framed-blob",
+            "variant": "background-positive-gradient",
+            "palette": "adaptive",
+            "refineSelection": false,
+            "status": "needs_review",
+            "supported": false,
+            "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+            "maximumCornerError": 7.7242900331427675,
+            "initialTip": [
+              191.49682213513546,
+              231.02082420820878
+            ],
+            "refinedTip": [
+              192.17377284558927,
+              230.19856992068256
+            ],
+            "lowerSupport": [
+              0.4444444444444444,
+              0.5833333333333334
+            ],
+            "lobeSupport": [
+              1,
+              0.9166666666666666
+            ],
+            "capColourLoss": [
+              0.10824465751647949,
+              4.20999733013399e-06
+            ]
+          },
+          {
+            "id": "12-lighter-background-framed-blob",
+            "variant": "segmentation-lines",
+            "palette": "adaptive",
+            "refineSelection": false,
+            "status": "needs_review",
+            "supported": true,
+            "maximumCornerError": 19.4999289991263,
+            "initialTip": [
+              191.49682213513546,
+              231.02082420820878
+            ],
+            "refinedTip": [
+              191.49682213513546,
+              231.02082420820878
+            ],
+            "lowerSupport": [
+              0.6805555555555556,
+              0.9583333333333334
+            ],
+            "lobeSupport": [
+              0.6944444444444444,
+              0.6666666666666666
+            ],
+            "capColourLoss": [
+              0.10167450634972199,
+              4.231892253064245e-06
+            ]
+          }
+        ]
+      },
+      "interpretation": "Limiting the cue to learned-background fields avoids the bauble regression but still loses the supported lighter-background frame proposals. Improved lower-line tips do not ensure correct overlap corners or adequate line support. Disabling photographic refinement also fails to fix the deeper lighter frame. Do not lower the support threshold simply to accept these candidates.",
+      "next": "Inspect the full shape objective and optimizer alternatives: distinguish an objective that favors incorrect upper corners from a search that misses a better supported fit. Keep original pixels, all acceptance checks and independent template validation."
     }
   },
   "fitterSensitivity": {

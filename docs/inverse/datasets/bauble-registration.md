@@ -371,3 +371,27 @@ colour fields. The four original frame failures use the learned background
 covariance. A follow-up therefore limits the soft transition weight to that
 background model and retains the other models' refinement. It is running on the
 same 89 fixed inputs. Both experimental changes remain outside production.
+
+
+The learned-background-only follow-up also completed all **89 inputs**, with all
+source pins unchanged. It preserves the exact coordinates of **all 40 collage
+instances**, including the bauble, and avoids the dim raw-colour regression.
+However, it loses the supported lighter-background framed controls: the automatic
+fallback returns errors of **46.74 px** and **13.75 px**, respectively. It remains
+unshipped. No clipped or negative control is promoted to a supported in-photo crop.
+
+A separate diagnostic evaluates the four original framed failures under both
+background palettes, with and without selection refinement, using the original
+refiner, the weighted refiner and unrefined segmentation lines: **48 evaluations**.
+It preserves rejected proposals as rejected while retaining their line evidence.
+For the ordinary lighter frame, weighted refinement places the tip near
+(191.23, 230.85), versus known (190, 230), yet its maximum corner error is 5.82 px
+and its lower-line support is only 44.4% / 62.5%, below the unchanged 65% gate.
+The detector consequently falls back to a much worse unsupported proposal.
+
+Simply disabling photographic refinement is insufficient too. For the deeper
+lighter frame, its tip stays near (191.50, 231.02), but the complete shape fit has
+**19.50 px** maximum corner error. A nearly correct tip does not establish the
+correct upper overlap corners. The next diagnosis must separate shape-objective
+bias from search failure; lowering support thresholds would not resolve either.
+The production detector and the validated preview remain unchanged by these trials.
