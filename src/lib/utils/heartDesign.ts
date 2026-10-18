@@ -4,6 +4,7 @@ import { clamp, clampInt } from '$lib/utils/math';
 import {
   type BezierSegment,
   parsePathDataToSegments,
+  parsePathDataToSubpaths,
   segmentsToPathData,
   cloneSegments,
   reverseSegments
@@ -527,242 +528,6 @@ export function serializeHeartToSVG(design: HeartDesign): string {
 }
 
 /**
- * Split a path string into subpaths at M/m commands
- */
-function splitPathIntoSubpaths(pathData: string): string[] {
-  // Match M/m commands and split, keeping track of current position for relative commands
-  const commands = pathData.match(/[MmLlHhVvCcSsQqTtAaZz][^MmLlHhVvCcSsQqTtAaZz]*/g) || [];
-
-  const subpaths: string[] = [];
-  let currentSubpath = '';
-  let currentX = 0;
-  let currentY = 0;
-
-  for (const cmd of commands) {
-    const type = cmd[0];
-    if (!type) continue;
-
-    const isRelative = type === type.toLowerCase();
-    const absType = type.toUpperCase();
-
-    if (absType === 'M') {
-      // Start a new subpath
-      if (currentSubpath.trim()) {
-        subpaths.push(currentSubpath.trim());
-      }
-
-      const args = cmd.slice(1).trim().split(/[\s,]+/).filter(Boolean).map(Number);
-      if (isRelative) {
-        currentX += args[0] ?? 0;
-        currentY += args[1] ?? 0;
-      } else {
-        currentX = args[0] ?? 0;
-        currentY = args[1] ?? 0;
-      }
-      // Always write absolute M for the new subpath
-      currentSubpath = `M ${currentX} ${currentY}`;
-
-      // Handle implicit lineto after M
-      for (let i = 2; i < args.length; i += 2) {
-        if (isRelative) {
-          currentX += args[i] ?? 0;
-          currentY += args[i + 1] ?? 0;
-        } else {
-          currentX = args[i] ?? 0;
-          currentY = args[i + 1] ?? 0;
-        }
-        currentSubpath += ` L ${currentX} ${currentY}`;
-      }
-    } else {
-      // Continue current subpath, converting relative to absolute
-      if (isRelative) {
-        // Convert relative command to absolute
-        const args = cmd.slice(1).trim().split(/[\s,]+/).filter(Boolean).map(Number);
-        switch (absType) {
-          case 'L':
-            for (let i = 0; i < args.length; i += 2) {
-              currentX += args[i] ?? 0;
-              currentY += args[i + 1] ?? 0;
-              currentSubpath += ` L ${currentX} ${currentY}`;
-            }
-            break;
-          case 'H':
-            for (const arg of args) {
-              currentX += arg;
-              currentSubpath += ` H ${currentX}`;
-            }
-            break;
-          case 'V':
-            for (const arg of args) {
-              currentY += arg;
-              currentSubpath += ` V ${currentY}`;
-            }
-            break;
-          case 'C':
-            for (let i = 0; i < args.length; i += 6) {
-              const c1x = currentX + (args[i] ?? 0);
-              const c1y = currentY + (args[i + 1] ?? 0);
-              const c2x = currentX + (args[i + 2] ?? 0);
-              const c2y = currentY + (args[i + 3] ?? 0);
-              const endX = currentX + (args[i + 4] ?? 0);
-              const endY = currentY + (args[i + 5] ?? 0);
-              currentSubpath += ` C ${c1x} ${c1y} ${c2x} ${c2y} ${endX} ${endY}`;
-              currentX = endX;
-              currentY = endY;
-            }
-            break;
-          case 'A':
-            // Arc: rx ry x-axis-rotation large-arc-flag sweep-flag x y
-            for (let i = 0; i < args.length; i += 7) {
-              const rx = args[i] ?? 0;
-              const ry = args[i + 1] ?? 0;
-              const rotation = args[i + 2] ?? 0;
-              const largeArc = args[i + 3] ?? 0;
-              const sweep = args[i + 4] ?? 0;
-              const endX = currentX + (args[i + 5] ?? 0);
-              const endY = currentY + (args[i + 6] ?? 0);
-              currentSubpath += ` A ${rx} ${ry} ${rotation} ${largeArc} ${sweep} ${endX} ${endY}`;
-              currentX = endX;
-              currentY = endY;
-            }
-            break;
-          default:
-            // For other commands, just append as-is (may need expansion later)
-            currentSubpath += ' ' + cmd;
-        }
-      } else {
-        // Absolute command - just append and track position
-        currentSubpath += ' ' + cmd;
-        // Update current position based on command type
-        const args = cmd.slice(1).trim().split(/[\s,]+/).filter(Boolean).map(Number);
-        switch (absType) {
-          case 'L':
-            if (args.length >= 2) {
-              currentX = args[args.length - 2] ?? currentX;
-              currentY = args[args.length - 1] ?? currentY;
-            }
-            break;
-          case 'H':
-            currentX = args[args.length - 1] ?? currentX;
-            break;
-          case 'V':
-            currentY = args[args.length - 1] ?? currentY;
-            break;
-          case 'C':
-            if (args.length >= 6) {
-              currentX = args[args.length - 2] ?? currentX;
-              currentY = args[args.length - 1] ?? currentY;
-            }
-            break;
-          case 'A':
-            // Arc: rx ry x-axis-rotation large-arc-flag sweep-flag x y
-            if (args.length >= 7) {
-              currentX = args[args.length - 2] ?? currentX;
-              currentY = args[args.length - 1] ?? currentY;
-            }
-            break;
-        }
-      }
-    }
-  }
-
-  if (currentSubpath.trim()) {
-    subpaths.push(currentSubpath.trim());
-  }
-
-  return subpaths;
-}
-
-/**
- * Join subpaths whose endpoints touch (within tolerance) into continuous paths
- */
-function joinSubpaths(subpaths: string[], tolerance: number = 1): string[] {
-  if (subpaths.length <= 1) return subpaths;
-
-  // Parse each subpath to get start/end points
-  interface SubpathInfo {
-    pathData: string;
-    segments: BezierSegment[];
-    start: Vec;
-    end: Vec;
-    used: boolean;
-  }
-
-  const infos: SubpathInfo[] = subpaths.map(p => {
-    const segments = parsePathDataToSegments(p);
-    return {
-      pathData: p,
-      segments,
-      start: segments.length > 0 ? segments[0].p0 : { x: 0, y: 0 },
-      end: segments.length > 0 ? segments[segments.length - 1].p3 : { x: 0, y: 0 },
-      used: false
-    };
-  }).filter(info => info.segments.length > 0);
-
-  const result: string[] = [];
-
-  while (infos.some(i => !i.used)) {
-    // Find first unused subpath
-    const startIdx = infos.findIndex(i => !i.used);
-    if (startIdx === -1) break;
-
-    let chain: BezierSegment[] = [...infos[startIdx].segments];
-    infos[startIdx].used = true;
-
-    // Try to extend the chain in both directions
-    let extended = true;
-    while (extended) {
-      extended = false;
-      const chainStart = chain[0].p0;
-      const chainEnd = chain[chain.length - 1].p3;
-
-      for (const info of infos) {
-        if (info.used) continue;
-
-        // Check if this subpath connects to the end of our chain
-        if (vecDist(chainEnd, info.start) < tolerance) {
-          chain.push(...info.segments);
-          info.used = true;
-          extended = true;
-          break;
-        }
-        if (vecDist(chainEnd, info.end) < tolerance) {
-          chain.push(...reverseSegments(info.segments));
-          info.used = true;
-          extended = true;
-          break;
-        }
-        // Check if this subpath connects to the start of our chain
-        if (vecDist(chainStart, info.end) < tolerance) {
-          chain = [...info.segments, ...chain];
-          info.used = true;
-          extended = true;
-          break;
-        }
-        if (vecDist(chainStart, info.start) < tolerance) {
-          chain = [...reverseSegments(info.segments), ...chain];
-          info.used = true;
-          extended = true;
-          break;
-        }
-      }
-    }
-
-    result.push(segmentsToPathData(chain));
-  }
-
-  return result;
-}
-
-/**
- * Process a single path element's data: split at M commands and rejoin connected subpaths
- */
-function processPathData(pathData: string): string[] {
-  const subpaths = splitPathIntoSubpaths(pathData);
-  return joinSubpaths(subpaths);
-}
-
-/**
  * Detect lobe from path direction:
  * - Left lobe: horizontal paths (large x span)
  * - Right lobe: vertical paths (large y span)
@@ -777,8 +542,7 @@ function isDegeneratePath(segments: BezierSegment[]): boolean {
   return vecDist(start, end) < 0.01;
 }
 
-function detectLobeFromPath(pathData: string): LobeId | null {
-  const segments = parsePathDataToSegments(pathData);
+function detectLobeFromSegments(segments: BezierSegment[]): LobeId | null {
   if (!segments.length) return null;
 
   const start = segments[0].p0;
@@ -1038,7 +802,249 @@ function resolveUseElements(svg: SVGSVGElement): Array<{ pathEl: SVGPathElement;
   return results;
 }
 
+// ============================================================================
+// SVG import: from drawn paths to strip boundaries
+// ============================================================================
+
+/** What the SVG importer did with a drawing, for the editor's notice and the CLI. */
+export interface SvgImportReport {
+  /**
+   * What the overlap square was taken from: the drawn outline (paths lying on the
+   * bounding box of the cuts' endpoints, then dropped), the viewBox, or neither
+   * (coordinates read as 0–100).
+   */
+  square: 'outline' | 'viewBox' | 'none';
+  /** Sides of the drawn outline that were found and dropped (0–4). */
+  droppedEdges: number;
+  /** Subpaths joined end to end onto another piece of the same cut. */
+  stitchedSubpaths: number;
+  /** Cuts that still do not run from one side of the square to the other. */
+  unjoined: string[];
+  /** Paths with no clear direction (neither horizontal nor vertical), left out. */
+  skipped: string[];
+  /** Interior cuts per half after import (outer edges not counted). */
+  cutsPerHalf: { left: number; right: number };
+}
+
+/** A drawn element in the editor's import coordinates. */
+interface ImportPiece {
+  name: string;
+  subpaths: BezierSegment[][];
+}
+
+/** Path data for the elements the importer reads: <path>, <line> and <polyline>. */
+function elementPathData(el: Element): string | null {
+  const tag = el.localName.toLowerCase();
+  if (tag === 'path') return el.getAttribute('d');
+  if (tag === 'line') {
+    const n = (attr: string) => Number(el.getAttribute(attr) ?? 0) || 0;
+    return `M ${n('x1')} ${n('y1')} L ${n('x2')} ${n('y2')}`;
+  }
+  if (tag === 'polyline') {
+    const nums = (el.getAttribute('points') ?? '').match(/[+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?/g)?.map(Number) ?? [];
+    if (nums.length < 4) return null;
+    let d = `M ${nums[0]} ${nums[1]}`;
+    for (let i = 2; i + 1 < nums.length; i += 2) d += ` L ${nums[i]} ${nums[i + 1]}`;
+    return d;
+  }
+  return null;
+}
+
+/** The name an author sees in Inkscape: the label, else the id, else "path 3". */
+function elementName(el: Element, index: number): string {
+  return (
+    el.getAttribute('inkscape:label') ||
+    el.getAttribute('id') ||
+    `${el.localName.toLowerCase()} ${index + 1}`
+  );
+}
+
+function parseViewBox(attr: string | null): { minX: number; minY: number; width: number; height: number } | null {
+  const parts = (attr ?? '').trim().split(/[\s,]+/).filter(Boolean).map(Number);
+  if (parts.length !== 4 || !parts.every(Number.isFinite) || parts[2]! <= 0 || parts[3]! <= 0) return null;
+  return { minX: parts[0]!, minY: parts[1]!, width: parts[2]!, height: parts[3]! };
+}
+
+type Side = 'top' | 'bottom' | 'left' | 'right';
+interface Box {
+  minX: number;
+  minY: number;
+  maxX: number;
+  maxY: number;
+}
+
+function segmentPoints(seg: BezierSegment): Vec[] {
+  return [seg.p0, seg.p1, seg.p2, seg.p3];
+}
+
+/** The side of `box` that the whole (straight) segment lies on, within `tol`. */
+function sideOfSegment(seg: BezierSegment, box: Box, tol: number): Side | null {
+  const pts = segmentPoints(seg);
+  if (pts.every((p) => Math.abs(p.y - box.minY) <= tol)) return 'top';
+  if (pts.every((p) => Math.abs(p.y - box.maxY) <= tol)) return 'bottom';
+  if (pts.every((p) => Math.abs(p.x - box.minX) <= tol)) return 'left';
+  if (pts.every((p) => Math.abs(p.x - box.maxX) <= tol)) return 'right';
+  return null;
+}
+
+/**
+ * Find the overlap square's outline in a drawing: subpaths every segment of which
+ * lies on a side of the bounding box of all the subpaths' endpoints (within 0.5 % of
+ * its size). It only counts as an outline if the remaining cuts still touch all four
+ * sides of that box — otherwise the outermost cuts of a drawing without an outline
+ * would be mistaken for one. Returns the box (from the outline's own coordinates
+ * where a side was drawn), the outline's subpaths and the number of sides found.
+ */
+function detectOutline(
+  pieces: ImportPiece[]
+): { box: Box; outline: Set<BezierSegment[]>; sides: number } | null {
+  const ends: Vec[] = [];
+  for (const piece of pieces) {
+    for (const sub of piece.subpaths) {
+      if (isDegeneratePath(sub)) continue;
+      ends.push(sub[0]!.p0, sub[sub.length - 1]!.p3);
+    }
+  }
+  if (!ends.length) return null;
+  const bbox: Box = {
+    minX: Math.min(...ends.map((p) => p.x)),
+    minY: Math.min(...ends.map((p) => p.y)),
+    maxX: Math.max(...ends.map((p) => p.x)),
+    maxY: Math.max(...ends.map((p) => p.y))
+  };
+  const w = bbox.maxX - bbox.minX;
+  const h = bbox.maxY - bbox.minY;
+  if (w <= 0 || h <= 0) return null;
+  const tol = Math.max(w, h) * 0.005;
+
+  const outline = new Set<BezierSegment[]>();
+  const sidePoints: Record<Side, number[]> = { top: [], bottom: [], left: [], right: [] };
+  for (const piece of pieces) {
+    for (const sub of piece.subpaths) {
+      const sides = sub.map((seg) => sideOfSegment(seg, bbox, tol));
+      if (sides.some((s) => s === null)) continue;
+      // A subpath along one side must cover a good part of it (not a stray tick).
+      const covered = sub.reduce((sum, seg) => sum + vecDist(seg.p0, seg.p3), 0);
+      if (covered < 0.25 * Math.min(w, h)) continue;
+      outline.add(sub);
+      sub.forEach((seg, i) => {
+        const side = sides[i]!;
+        for (const p of [seg.p0, seg.p3]) sidePoints[side].push(side === 'top' || side === 'bottom' ? p.y : p.x);
+      });
+    }
+  }
+  if (!outline.size) return null;
+
+  // The rest must still reach all four sides of the box.
+  const touched = new Set<Side>();
+  for (const piece of pieces) {
+    for (const sub of piece.subpaths) {
+      if (outline.has(sub) || isDegeneratePath(sub)) continue;
+      for (const p of [sub[0]!.p0, sub[sub.length - 1]!.p3]) {
+        if (Math.abs(p.y - bbox.minY) <= tol) touched.add('top');
+        if (Math.abs(p.y - bbox.maxY) <= tol) touched.add('bottom');
+        if (Math.abs(p.x - bbox.minX) <= tol) touched.add('left');
+        if (Math.abs(p.x - bbox.maxX) <= tol) touched.add('right');
+      }
+    }
+  }
+  if (touched.size < 4) return null;
+
+  const mean = (xs: number[], fallback: number) => (xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : fallback);
+  const box: Box = {
+    minX: mean(sidePoints.left, bbox.minX),
+    maxX: mean(sidePoints.right, bbox.maxX),
+    minY: mean(sidePoints.top, bbox.minY),
+    maxY: mean(sidePoints.bottom, bbox.maxY)
+  };
+  const sides = (Object.keys(sidePoints) as Side[]).filter((s) => sidePoints[s].length).length;
+  return { box, outline, sides };
+}
+
+/** Make a chain of segments continuous: each segment starts where the previous ended. */
+function makeContinuous(segments: BezierSegment[]): BezierSegment[] {
+  return segments.map((seg, i) => (i === 0 ? seg : { ...seg, p0: segments[i - 1]!.p3 }));
+}
+
+/**
+ * Join subpaths whose endpoints touch (within `tolerance`) into continuous chains,
+ * reversing a subpath where that makes it fit. Returns the chains and how many
+ * subpaths were joined onto another.
+ */
+function stitchSubpaths(subpaths: BezierSegment[][], tolerance: number): { chains: BezierSegment[][]; joins: number } {
+  const infos = subpaths.filter((s) => s.length > 0).map((segments) => ({ segments, used: false }));
+  if (infos.length <= 1) return { chains: infos.map((i) => i.segments), joins: 0 };
+
+  const chains: BezierSegment[][] = [];
+  let joins = 0;
+  while (infos.some((i) => !i.used)) {
+    const first = infos.find((i) => !i.used)!;
+    first.used = true;
+    let chain: BezierSegment[] = [...first.segments];
+
+    let extended = true;
+    while (extended) {
+      extended = false;
+      const chainStart = chain[0]!.p0;
+      const chainEnd = chain[chain.length - 1]!.p3;
+      for (const info of infos) {
+        if (info.used) continue;
+        const start = info.segments[0]!.p0;
+        const end = info.segments[info.segments.length - 1]!.p3;
+        if (vecDist(chainEnd, start) < tolerance) chain = [...chain, ...info.segments];
+        else if (vecDist(chainEnd, end) < tolerance) chain = [...chain, ...reverseSegments(info.segments)];
+        else if (vecDist(chainStart, end) < tolerance) chain = [...info.segments, ...chain];
+        else if (vecDist(chainStart, start) < tolerance) chain = [...reverseSegments(info.segments), ...chain];
+        else continue;
+        info.used = true;
+        extended = true;
+        joins++;
+        break;
+      }
+    }
+    chains.push(makeContinuous(chain));
+  }
+  return { chains, joins };
+}
+
+/** Whether a cut (in 0–100 coordinates) runs from one side of the square to the opposite one. */
+function spansEdgeToEdge(segments: BezierSegment[], lobe: LobeId, tol = 5): boolean {
+  const a = segments[0]!.p0;
+  const b = segments[segments.length - 1]!.p3;
+  const [u, v] = lobe === 'left' ? [a.x, b.x] : [a.y, b.y];
+  return Math.min(u, v) <= tol && Math.max(u, v) >= 100 - tol;
+}
+
+/** Whether a point lies more than `tol` inside every side of the 0–100 square. */
+function isInterior(p: Vec, tol = 5): boolean {
+  return p.x > tol && p.x < 100 - tol && p.y > tol && p.y < 100 - tol;
+}
+
 export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesign | null {
+  return parseHeartFromSVGWithReport(svgText, filename).design;
+}
+
+/**
+ * Read a heart from an SVG: a gallery file, an exported one, or a drawing from
+ * Inkscape or another editor. Each <path>, <line> and <polyline> (and paths drawn
+ * through <use>) is read with its transforms; its subpaths are joined end to end into
+ * cuts; a drawn outline of the overlap square is recognised and dropped; and the
+ * square — the outline, else the viewBox — is scaled to the editor's 0–100. Horizontal
+ * cuts go to the left half, vertical ones to the right half. The report says what was
+ * done, for the editor's import notice.
+ */
+export function parseHeartFromSVGWithReport(
+  svgText: string,
+  filename?: string
+): { design: HeartDesign | null; report: SvgImportReport } {
+  const emptyReport = (): SvgImportReport => ({
+    square: 'none',
+    droppedEdges: 0,
+    stitchedSubpaths: 0,
+    unjoined: [],
+    skipped: [],
+    cutsPerHalf: { left: 0, right: 0 }
+  });
   // Parse SVG using DOMParser
   const parser = new DOMParser();
   const doc = parser.parseFromString(svgText, 'image/svg+xml');
@@ -1047,11 +1053,11 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
   const parseError = doc.querySelector('parsererror');
   if (parseError) {
     console.error('SVG parse error:', parseError.textContent);
-    return null;
+    return { design: null, report: emptyReport() };
   }
 
   const svg = doc.querySelector('svg');
-  if (!svg) return null;
+  if (!svg) return { design: null, report: emptyReport() };
 
   // Extract metadata - check both standard SVG elements and Dublin Core (Inkscape) format
   const titleEl = svg.querySelector('title');
@@ -1175,135 +1181,146 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
   // Extract id from filename (remove .svg extension)
   const id = filename ? filename.replace(/\.svg$/i, '') : '';
 
-  // Get all paths from anywhere in the SVG (handles nested groups from Inkscape, etc.)
-  let leftPathData: string[] = [];
-  let rightPathData: string[] = [];
-  const ambiguousPathData: string[] = [];
-  const POSITION_TOLERANCE = 2; // Consider positions within 2 units as the same strip
-
-  // Find all path elements regardless of grouping
-  const allPaths = Array.from(svg.querySelectorAll('path'));
-
-  // Also resolve <use> elements to get paths they reference
-  const usePaths = resolveUseElements(svg as SVGSVGElement);
-  for (const pathEl of allPaths) {
+  // Every drawn element, anywhere in the SVG (nested groups from Inkscape etc.), in
+  // document coordinates: its own and its groups' transforms applied, arcs and the
+  // other commands already turned into cubics, its subpaths kept apart.
+  const rawPieces: ImportPiece[] = [];
+  const drawnElements = Array.from(svg.querySelectorAll('path, line, polyline'));
+  drawnElements.forEach((el, index) => {
+    const pathData = elementPathData(el);
+    if (!pathData) return;
+    const transform = getCumulativeTransform(el, svg);
+    rawPieces.push({
+      name: elementName(el, index),
+      subpaths: parsePathDataToSubpaths(pathData).map((sub) => applyTransformToSegments(sub, transform))
+    });
+  });
+  // Paths drawn through <use> elements
+  for (const { pathEl, useTransform } of resolveUseElements(svg as SVGSVGElement)) {
     const pathData = pathEl.getAttribute('d');
     if (!pathData) continue;
+    // First the path's transform within its parent group, then the <use> element's
+    const combinedTransform = multiplyMatrices(useTransform, getCumulativeTransform(pathEl, svg));
+    rawPieces.push({
+      name: elementName(pathEl, drawnElements.indexOf(pathEl)),
+      subpaths: parsePathDataToSubpaths(pathData).map((sub) => applyTransformToSegments(sub, combinedTransform))
+    });
+  }
 
-    // Get cumulative transform from all parent elements
-    const transform = getCumulativeTransform(pathEl, svg);
-    const hasTransform = transform[0] !== 1 || transform[1] !== 0 || transform[2] !== 0 ||
-                         transform[3] !== 1 || transform[4] !== 0 || transform[5] !== 0;
+  // The overlap square: the drawn outline if there is one (dropped, it is not a cut),
+  // else the viewBox, else the coordinates are already the editor's 0–100.
+  const outline = detectOutline(rawPieces);
+  const viewBox = parseViewBox(svg.getAttribute('viewBox'));
+  const squareBox: Box | null = outline
+    ? outline.box
+    : viewBox
+      ? { minX: viewBox.minX, minY: viewBox.minY, maxX: viewBox.minX + viewBox.width, maxY: viewBox.minY + viewBox.height }
+      : null;
+  const isIdentityBox = (b: Box) => b.minX === 0 && b.minY === 0 && b.maxX === 100 && b.maxY === 100;
+  const toSquare: TransformMatrix =
+    !squareBox || isIdentityBox(squareBox)
+      ? identityMatrix()
+      : (() => {
+          const sx = 100 / (squareBox.maxX - squareBox.minX);
+          const sy = 100 / (squareBox.maxY - squareBox.minY);
+          return [sx, 0, 0, sy, -squareBox.minX * sx, -squareBox.minY * sy];
+        })();
+  const isIdentity = toSquare.every((v, i) => v === identityMatrix()[i]);
 
-    // Apply transform to get actual coordinates
-    let transformedPathData = pathData;
-    if (hasTransform) {
-      const segments = parsePathDataToSegments(pathData);
-      const transformedSegments = applyTransformToSegments(segments, transform);
-      transformedPathData = segmentsToPathData(transformedSegments);
-    }
+  const report: SvgImportReport = {
+    square: outline ? 'outline' : viewBox ? 'viewBox' : 'none',
+    droppedEdges: outline?.sides ?? 0,
+    stitchedSubpaths: 0,
+    unjoined: [],
+    skipped: [],
+    cutsPerHalf: { left: 0, right: 0 }
+  };
 
-    // Split and rejoin subpaths within this path element
-    const joinedPaths = processPathData(transformedPathData);
+  // Join each element's subpaths into cuts (Inkscape often splits one cut into
+  // several pieces): ends that meet within 1 % of the square are joined.
+  const STITCH_TOLERANCE = 1;
+  interface Cut { name: string; segments: BezierSegment[] }
+  const chains: Cut[] = [];
+  for (const piece of rawPieces) {
+    const subpaths = piece.subpaths
+      .filter((sub) => !outline?.outline.has(sub))
+      .map((sub) => (isIdentity ? sub : applyTransformToSegments(sub, toSquare)));
+    const { chains: joined, joins } = stitchSubpaths(subpaths, STITCH_TOLERANCE);
+    report.stitchedSubpaths += joins;
+    joined.forEach((segments, i) => chains.push({ name: joined.length > 1 ? `${piece.name} #${i + 1}` : piece.name, segments }));
+  }
 
-    for (const joinedPath of joinedPaths) {
-      const segments = parsePathDataToSegments(joinedPath);
-      if (isDegeneratePath(segments)) continue;
-
-      // Detect lobe based on whether path is more horizontal or vertical
-      const lobe = detectLobeFromPath(joinedPath);
-      if (lobe === 'left') {
-        leftPathData.push(joinedPath);
-      } else if (lobe === 'right') {
-        rightPathData.push(joinedPath);
-      } else {
-        // No clear direction on its own; it may be the tail of a path drawn as several elements
-        ambiguousPathData.push(joinedPath);
-      }
+  // A cut can also be split across elements. Join a chain that stops inside the
+  // square to another one stopping at the same place.
+  for (let i = 0; i < chains.length; i++) {
+    const a = chains[i]!;
+    if (isDegeneratePath(a.segments)) continue;
+    for (let j = i + 1; j < chains.length; j++) {
+      const b = chains[j]!;
+      if (isDegeneratePath(b.segments)) continue;
+      const aEnds = [a.segments[0]!.p0, a.segments[a.segments.length - 1]!.p3];
+      const bEnds = [b.segments[0]!.p0, b.segments[b.segments.length - 1]!.p3];
+      const meets = aEnds.some((p) => isInterior(p) && bEnds.some((q) => isInterior(q) && vecDist(p, q) < STITCH_TOLERANCE));
+      if (!meets) continue;
+      const { chains: joined } = stitchSubpaths([a.segments, b.segments], STITCH_TOLERANCE);
+      if (joined.length !== 1) continue;
+      a.segments = joined[0]!;
+      chains.splice(j, 1);
+      report.stitchedSubpaths++;
+      j = i; // look again from the start: the longer chain may reach another piece
     }
   }
 
-  // Process paths from <use> elements
-  for (const { pathEl, useTransform } of usePaths) {
-    const pathData = pathEl.getAttribute('d');
-    if (!pathData) continue;
-
-    // Get the path's own transform within its parent group
-    const pathTransform = getCumulativeTransform(pathEl, svg);
-
-    // Combine: first apply the path's transform, then the <use> element's transform
-    const combinedTransform = multiplyMatrices(useTransform, pathTransform);
-    const hasTransform = combinedTransform[0] !== 1 || combinedTransform[1] !== 0 || combinedTransform[2] !== 0 ||
-                         combinedTransform[3] !== 1 || combinedTransform[4] !== 0 || combinedTransform[5] !== 0;
-
-    // Apply transform to get actual coordinates
-    let transformedPathData = pathData;
-    if (hasTransform) {
-      const segments = parsePathDataToSegments(pathData);
-      const transformedSegments = applyTransformToSegments(segments, combinedTransform);
-      transformedPathData = segmentsToPathData(transformedSegments);
-    }
-
-    // Split and rejoin subpaths within this path element
-    const joinedPaths = processPathData(transformedPathData);
-
-    for (const joinedPath of joinedPaths) {
-      const segments = parsePathDataToSegments(joinedPath);
-      if (isDegeneratePath(segments)) continue;
-
-      // Detect lobe based on whether path is more horizontal or vertical
-      const lobe = detectLobeFromPath(joinedPath);
-      if (lobe === 'left') {
-        leftPathData.push(joinedPath);
-      } else if (lobe === 'right') {
-        rightPathData.push(joinedPath);
-      } else {
-        // No clear direction on its own; it may be the tail of a path drawn as several elements
-        ambiguousPathData.push(joinedPath);
-      }
-    }
+  let leftCuts: Cut[] = [];
+  let rightCuts: Cut[] = [];
+  const ambiguousCuts: Cut[] = [];
+  for (const cut of chains) {
+    // Closed or zero-length subpaths (decorative shapes) are never strip boundaries
+    if (isDegeneratePath(cut.segments)) continue;
+    // Horizontal cuts belong to the left half, vertical ones to the right half
+    const lobe = detectLobeFromSegments(cut.segments);
+    if (lobe === 'left') leftCuts.push(cut);
+    else if (lobe === 'right') rightCuts.push(cut);
+    // No clear direction on its own; it may be the tail of a path drawn as several elements
+    else ambiguousCuts.push(cut);
   }
 
   // A strip boundary is sometimes drawn as several <path> elements laid end to end (Inkscape
   // can leave the last short segment of a line as its own element). Such a tail has no clear
   // direction on its own, so attach it to the classified path whose endpoint it touches.
-  const attachTail = (tail: string, paths: string[]): boolean => {
-    for (let i = 0; i < paths.length; i++) {
-      const joined = joinSubpaths([paths[i], tail]);
+  const attachTail = (tail: Cut, cuts: Cut[]): boolean => {
+    for (const cut of cuts) {
+      const { chains: joined } = stitchSubpaths([cut.segments, tail.segments], STITCH_TOLERANCE);
       if (joined.length === 1) {
-        paths[i] = joined[0];
+        cut.segments = joined[0]!;
+        report.stitchedSubpaths++;
         return true;
       }
     }
     return false;
   };
 
-  for (const pathData of ambiguousPathData) {
-    if (attachTail(pathData, leftPathData) || attachTail(pathData, rightPathData)) continue;
-
-    // Path doesn't have a clear horizontal or vertical direction
-    const segments = parsePathDataToSegments(pathData);
-    const start = segments[0].p0;
-    const end = segments[segments.length - 1].p3;
+  for (const tail of ambiguousCuts) {
+    if (attachTail(tail, leftCuts) || attachTail(tail, rightCuts)) continue;
+    const start = tail.segments[0]!.p0;
+    const end = tail.segments[tail.segments.length - 1]!.p3;
+    report.skipped.push(tail.name);
     console.warn(
-      `[parseHeartFromSVG: ${name}] Skipping ambiguous path (neither horizontal nor vertical): ` +
-      `start=(${start.x.toFixed(1)}, ${start.y.toFixed(1)}), end=(${end.x.toFixed(1)}, ${end.y.toFixed(1)}), ` +
-      `path: ${pathData.slice(0, 80)}...`
+      `[parseHeartFromSVG: ${name}] Skipping ambiguous path ${tail.name} (neither horizontal nor vertical): ` +
+      `start=(${start.x.toFixed(1)}, ${start.y.toFixed(1)}), end=(${end.x.toFixed(1)}, ${end.y.toFixed(1)})`
     );
   }
 
   // Normalize paths if they don't span 0-100 (e.g., SVGs exported with non-standard coordinate systems)
   // Find the actual span of path endpoints and normalize to 0-100
-  const normalizePathsToFullSpan = (paths: string[], lobe: LobeId): string[] => {
-    if (paths.length === 0) return paths;
+  const normalizePathsToFullSpan = (cuts: Cut[], lobe: LobeId): Cut[] => {
+    if (cuts.length === 0) return cuts;
 
     // Collect all endpoint coordinates for the spanning dimension
     let minSpan = Infinity, maxSpan = -Infinity;
-    for (const pathData of paths) {
-      const segments = parsePathDataToSegments(pathData);
-      if (!segments.length) continue;
-      const start = segments[0].p0;
-      const end = segments[segments.length - 1].p3;
+    for (const { segments } of cuts) {
+      const start = segments[0]!.p0;
+      const end = segments[segments.length - 1]!.p3;
       // For left lobe (horizontal), spanning dimension is X
       // For right lobe (vertical), spanning dimension is Y
       if (lobe === 'left') {
@@ -1318,107 +1335,81 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
     // Check if paths already span close to 0-100 (within tolerance)
     const EDGE_TOLERANCE = 5;
     const spansFullRange = minSpan < EDGE_TOLERANCE && maxSpan > 100 - EDGE_TOLERANCE;
-    if (spansFullRange || minSpan === Infinity) return paths;
+    if (spansFullRange || minSpan === Infinity) return cuts;
 
     // Normalize paths to span 0-100
     const span = maxSpan - minSpan;
-    if (span < 10) return paths; // Too narrow, skip normalization
+    if (span < 10) return cuts; // Too narrow, skip normalization
 
-    return paths.map(pathData => {
-      const segments = parsePathDataToSegments(pathData);
-      const normalizedSegments = segments.map(seg => {
-        const normalizeCoord = (coord: number) => ((coord - minSpan) / span) * 100;
-        if (lobe === 'left') {
-          // Normalize X coordinates, keep Y as-is
-          return {
-            p0: { x: normalizeCoord(seg.p0.x), y: seg.p0.y },
-            p1: { x: normalizeCoord(seg.p1.x), y: seg.p1.y },
-            p2: { x: normalizeCoord(seg.p2.x), y: seg.p2.y },
-            p3: { x: normalizeCoord(seg.p3.x), y: seg.p3.y }
-          };
-        } else {
-          // Normalize Y coordinates, keep X as-is
-          return {
-            p0: { x: seg.p0.x, y: normalizeCoord(seg.p0.y) },
-            p1: { x: seg.p1.x, y: normalizeCoord(seg.p1.y) },
-            p2: { x: seg.p2.x, y: normalizeCoord(seg.p2.y) },
-            p3: { x: seg.p3.x, y: normalizeCoord(seg.p3.y) }
-          };
-        }
-      });
-      return segmentsToPathData(normalizedSegments);
-    });
+    const normalizeCoord = (coord: number) => ((coord - minSpan) / span) * 100;
+    const normalizePoint = (p: Vec): Vec =>
+      lobe === 'left' ? { x: normalizeCoord(p.x), y: p.y } : { x: p.x, y: normalizeCoord(p.y) };
+    return cuts.map((cut) => ({
+      name: cut.name,
+      segments: cut.segments.map((seg) => ({
+        p0: normalizePoint(seg.p0),
+        p1: normalizePoint(seg.p1),
+        p2: normalizePoint(seg.p2),
+        p3: normalizePoint(seg.p3)
+      }))
+    }));
   };
 
-  leftPathData = normalizePathsToFullSpan(leftPathData, 'left');
-  rightPathData = normalizePathsToFullSpan(rightPathData, 'right');
+  leftCuts = normalizePathsToFullSpan(leftCuts, 'left');
+  rightCuts = normalizePathsToFullSpan(rightCuts, 'right');
+
+  // Cuts that still stop short of a side: imported (their ends are moved to the
+  // sides below, or dropped as a duplicate of another piece at the same place), but named in the report so the author can check them.
+  for (const cut of leftCuts) if (!spansEdgeToEdge(cut.segments, 'left')) report.unjoined.push(cut.name);
+  for (const cut of rightCuts) if (!spansEdgeToEdge(cut.segments, 'right')) report.unjoined.push(cut.name);
 
   // Deduplicate paths that are at the same position (within tolerance)
-  const deduplicatePaths = (paths: string[], lobe: LobeId): string[] => {
+  const POSITION_TOLERANCE = 2; // Consider positions within 2 units as the same strip
+  const deduplicatePaths = (cuts: Cut[], lobe: LobeId): Cut[] => {
     const seen: number[] = [];
-    return paths.filter(pathData => {
-      const segments = parsePathDataToSegments(pathData);
-      if (!segments.length) return false;
+    return cuts.filter(({ segments }) => {
       // Position is the non-spanning coordinate (Y for left lobe, X for right lobe)
-      const position = lobe === 'left' ? segments[0].p0.y : segments[0].p0.x;
+      const position = lobe === 'left' ? segments[0]!.p0.y : segments[0]!.p0.x;
       if (seen.some(p => Math.abs(p - position) < POSITION_TOLERANCE)) return false;
       seen.push(position);
       return true;
     });
   };
 
-  leftPathData = deduplicatePaths(leftPathData, 'left');
-  rightPathData = deduplicatePaths(rightPathData, 'right');
+  leftCuts = deduplicatePaths(leftCuts, 'left');
+  rightCuts = deduplicatePaths(rightCuts, 'right');
 
   // Check if we found any valid paths
-  if (leftPathData.length === 0 && rightPathData.length === 0) {
+  if (leftCuts.length === 0 && rightCuts.length === 0) {
     console.error(
       `[parseHeartFromSVG: ${name}] No valid horizontal or vertical paths found. ` +
       `The SVG may contain complex paths that don't represent a woven heart pattern, ` +
       `or the paths may not span clearly in one direction.`
     );
-    return null;
+    return { design: null, report };
   }
 
-  if (leftPathData.length === 0) {
+  if (leftCuts.length === 0) {
     console.warn(`[parseHeartFromSVG: ${name}] No horizontal paths (left lobe) found`);
   }
-  if (rightPathData.length === 0) {
+  if (rightCuts.length === 0) {
     console.warn(`[parseHeartFromSVG: ${name}] No vertical paths (right lobe) found`);
   }
 
   // Infer grid size from path counts (interior cuts = strips - 1)
   const gridSize: GridSize = {
-    x: clampInt(rightPathData.length + 1, MIN_GRID_SIZE, MAX_GRID_SIZE),
-    y: clampInt(leftPathData.length + 1, MIN_GRID_SIZE, MAX_GRID_SIZE)
+    x: clampInt(rightCuts.length + 1, MIN_GRID_SIZE, MAX_GRID_SIZE),
+    y: clampInt(leftCuts.length + 1, MIN_GRID_SIZE, MAX_GRID_SIZE)
   };
 
   // Convert paths to fingers
   const fingers: Finger[] = [];
-
-  for (let i = 0; i < leftPathData.length; i++) {
-    const jsonSegments = parsePathDataToSegments(leftPathData[i]);
-    if (!jsonSegments.length) continue;
-
-    const pixelSegments = transformSegmentsToPixels(jsonSegments, gridSize);
-    fingers.push({
-      id: `L-tmp-${i}`,
-      lobe: 'left',
-      segments: pixelSegments
-    });
-  }
-
-  for (let i = 0; i < rightPathData.length; i++) {
-    const jsonSegments = parsePathDataToSegments(rightPathData[i]);
-    if (!jsonSegments.length) continue;
-
-    const pixelSegments = transformSegmentsToPixels(jsonSegments, gridSize);
-    fingers.push({
-      id: `R-tmp-${i}`,
-      lobe: 'right',
-      segments: pixelSegments
-    });
-  }
+  leftCuts.forEach((cut, i) => {
+    fingers.push({ id: `L-tmp-${i}`, lobe: 'left', segments: transformSegmentsToPixels(cut.segments, gridSize) });
+  });
+  rightCuts.forEach((cut, i) => {
+    fingers.push({ id: `R-tmp-${i}`, lobe: 'right', segments: transformSegmentsToPixels(cut.segments, gridSize) });
+  });
 
   // Add outer boundaries and canonicalize
   const rect = inferOverlapRectFromFingers(fingers, gridSize);
@@ -1430,21 +1421,28 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
     x: clampInt(finalFingers.filter((f) => f.lobe === 'right').length - 1, MIN_GRID_SIZE, MAX_GRID_SIZE),
     y: clampInt(finalFingers.filter((f) => f.lobe === 'left').length - 1, MIN_GRID_SIZE, MAX_GRID_SIZE)
   };
+  report.cutsPerHalf = {
+    left: finalFingers.filter((f) => f.lobe === 'left').length - 2,
+    right: finalFingers.filter((f) => f.lobe === 'right').length - 2
+  };
 
   return {
-    id,
-    name,
-    author,
-    authorUrl,
-    publisher,
-    publisherUrl,
-    source,
-    date,
-    description,
-    descriptions,
-    weaveParity,
-    colors,
-    gridSize: inferredGrid,
-    fingers: finalFingers
+    design: {
+      id,
+      name,
+      author,
+      authorUrl,
+      publisher,
+      publisherUrl,
+      source,
+      date,
+      description,
+      descriptions,
+      weaveParity,
+      colors,
+      gridSize: inferredGrid,
+      fingers: finalFingers
+    },
+    report
   };
 }
