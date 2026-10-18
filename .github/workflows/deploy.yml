@@ -12,6 +12,7 @@ jobs:
       fail-fast: false
       matrix:
         shard: [1, 2, 3, 4]
+        clock: [1, 0.5]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -20,14 +21,16 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Capture numeric and fresh-fit evidence
-        if: matrix.shard == 1
+        if: matrix.shard == 1 && matrix.clock == 1
         run: node scripts/inverse/ci-diagnostics.mjs
       - name: Replay inverse regressions
-        run: node --test --test-concurrency=1 --test-shard=${{ matrix.shard }}/4 scripts/inverse/*.test.mjs scripts/inverse/datasets/*.test.mjs
+        env:
+          INVERSE_DIAGNOSTIC_CLOCK_RATE: ${{ matrix.clock }}
+        run: node --import ./scripts/inverse/ci-clock.mjs --test --test-concurrency=1 --test-shard=${{ matrix.shard }}/4 scripts/inverse/*.test.mjs scripts/inverse/datasets/*.test.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: inverse-linux-shard-${{ matrix.shard }}
+          name: inverse-linux-clock-${{ matrix.clock }}-shard-${{ matrix.shard }}
           path: |
             tmp/ci-diagnostics
             tmp/inverse-test-failures
