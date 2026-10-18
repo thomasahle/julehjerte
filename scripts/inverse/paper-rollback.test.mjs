@@ -91,3 +91,16 @@ test('finer paper checks preserve the final refinement time reserve',async t=>{
   assert.ok(after.history.some(record=>record.paper==='uncertain'));
   assert.ok(resolutions.length>0&&resolutions.every(r=>r===360));
 });
+
+test('a separate checking tail can certify a checkpoint without extending gradient work',async t=>{
+  const {fit}=await fixture('floral-checker');let clock=0;
+  t.mock.method(performance,'now',()=>clock);
+  const resolutions=[],paperAudit=(solution,cfg)=>{resolutions.push(cfg.materialResolution);return materialAudit(solution,cfg);};
+  const result=fit(true,{deadline:200,paperVerificationDeadline:600,paperAudit,onProgress:record=>{
+    if(record.step>=120)clock=210;
+  }});
+  assert.ok(resolutions.includes(700),'Use the explicit checking allowance before rolling back a useful checkpoint.');
+  assert.ok(result.history.some(record=>record.paperVerification?.resolution===700&&record.paper==='pass'));
+  assert.equal(result.steps,125,'The later audit deadline must not authorize any extra gradient block.');
+  assert.equal(result.paperPassed,true);
+});

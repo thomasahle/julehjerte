@@ -23,7 +23,7 @@ export function repairClearanceInitializer(prepared,input,cfg,{deadline=Infinity
   // A valid starting grid supplies a rollback position. Resolve uncertain
   // paper checkpoints as in the main fit, so that this incumbent does not
   // repeatedly erase a better trajectory. Keep the same refinement work cap.
-  const fitted=refineCurves(graph,objectiveProb,n,phase,{...cfg,preferMatchingSheets:false},{input,weights:objectiveWeights,rate:.05,resolvePaperBeforeRollback:true,deadline:recoverFeatures?until-450:Math.min(started+500,until-450),onProgress});
+  const fitted=refineCurves(graph,objectiveProb,n,phase,{...cfg,preferMatchingSheets:false},{input,weights:objectiveWeights,rate:.05,resolvePaperBeforeRollback:true,paperVerificationDeadline:until,deadline:recoverFeatures?until-450:Math.min(started+500,until-450),onProgress});
   report.steps=fitted.steps;report.history=fitted.history;
   // Optimization has stopped. Its completed checkpoints may still need the
   // source and paper audits before they can continue in the main fit. Charge

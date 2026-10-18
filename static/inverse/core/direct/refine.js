@@ -100,7 +100,7 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12,paperRecovery
   return{loss,gradient,minRadius};
 }
 
-export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=40,deadline=Infinity,geometryRecoveryDeadline=deadline,repairDeadline=deadline,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null,preferCheckpoint=null,skipRepeatedRollbacks=false,finalGeometry=true,resolvePaperBeforeRollback=false,paperVerificationResolution=700,paperVerificationReserve=250,retryPaperSeparation=false,paperSeparationErrorThreshold=null,paperRecovery=null,paperAudit=materialAudit}={}){
+export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=40,deadline=Infinity,geometryRecoveryDeadline=deadline,repairDeadline=deadline,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null,preferCheckpoint=null,skipRepeatedRollbacks=false,finalGeometry=true,resolvePaperBeforeRollback=false,paperVerificationResolution=700,paperVerificationReserve=250,paperVerificationDeadline=deadline,retryPaperSeparation=false,paperSeparationErrorThreshold=null,paperRecovery=null,paperAudit=materialAudit}={}){
   if(!Number.isInteger(checkpointEvery)||checkpointEvery<1)throw new RangeError('Checkpoint interval must be a positive integer.');
   // Compile the weighted force field once, not on every optimization step.
   let penaltySettings=cfg,paperSeparationRetry=null;
@@ -154,7 +154,9 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
       // rollback, and carry the actual finer audit through Stop and export.
       // Without a safe incumbent there is no rollback to prevent: introducing
       // one early can interrupt exploration through provisional paper states.
-      if(resolvePaperBeforeRollback&&safe&&cfg.requireMaterialCore&&paper?.status==='uncertain'&&cfg.materialResolution<paperVerificationResolution&&deadline-performance.now()>paperVerificationReserve){
+      // A caller may fund this verification from its reserved checking tail.
+      // That allowance never changes the deadline for gradient updates.
+      if(resolvePaperBeforeRollback&&safe&&cfg.requireMaterialCore&&paper?.status==='uncertain'&&cfg.materialResolution<paperVerificationResolution&&paperVerificationDeadline-performance.now()>paperVerificationReserve){
         const fine=paperAudit(solution,{...cfg,materialResolution:paperVerificationResolution});
         if(fine.passed){
           value.paperVerification={requestedResolution:cfg.materialResolution,initialStatus:'uncertain',resolution:paperVerificationResolution,status:fine.status,source:'rollback-checkpoint'};
