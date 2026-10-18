@@ -119,7 +119,7 @@
     "A late feature start reserved 450 ms for a polish that could no longer start after assessment. Lending that time to its unfinished refinement improved the source fit without extending the ten-second request.",
     "The Viking continuation repeatedly gave the whole 400 ms repair allowance to hidden-only controls, starving the existing general-control fallback. A local split-budget experiment reduced independent error from 0.01941875 to 0.0186625 without extending the continuation."
   ],
-  "remaining": "Main remains red. Three cold-process Linux shards and the focused cleanup follow-up are still running. The completed cold shard passes the bicycle but fails a late clearance fit; its failure capture is being added. No full-suite or release pass is claimed.",
+  "remaining": "Main remains red. Latest focused real-clock Linux replay passed 33/36 tests. Dense checker image error, vertical sun outline under 1.5x clock stress, and synthetic routing remain under investigation. An exact sparse grid-gradient optimization is being replayed on Linux. No full-suite or release pass is claimed.",
   "branchSafety": "codex/ci-inverse-diagnostics replaces the Pages workflow with manual diagnostics. Never merge that entire branch to main. Transfer only verified fixes from codex/solver-initialization.",
   "limitations": [
     "No fresh 22-design Hunodan speed benchmark in this CI recovery pass.",
@@ -128,7 +128,6 @@
   ],
   "remainingPatterns": [
     "Fresh fits with short deadlines fail their independent image-quality or feature-retention gates on the Linux runner. Do not remove those gates or report the extra-time runs as normal-budget passes.",
-    "The maple simpler-layout comparison currently depends on whether the winning candidate required finer paper verification. Linux retained a valid ordinary-lattice four-cut candidate and never compared the competitive three-cut start.",
     "Some tests insist on a particular internal search route even when an alternative can pass physical and image checks. Change such assertions only after checking the exported outcome.",
     "Late-cleanup continuation may now use an existing cleanup remainder. A faster run can legitimately continue without extending its deadline; tests must check the actual budget instead of requiring an absent continuation."
   ],
@@ -203,7 +202,28 @@
         "viking180IndependentError": 0.0186625,
         "viking25IndependentError": 0.0186,
         "linuxRun": "https://github.com/thomasahle/julehjerte/actions/runs/39166109936",
-        "linuxStatus": "running at record time"
+        "linuxStatus": "success",
+        "linuxPassed": 13,
+        "linuxFailed": 0,
+        "clockRate": 1,
+        "linuxViking180IndependentError": 0.01865625,
+        "linuxViking25IndependentError": 0.02050625
+      }
+    },
+    {
+      "commit": "3324d38a",
+      "change": "Defer optional short-request independent-fit continuation when requested matching remains feasible under the source-error bound. Preserve the independent incumbent and all matching gates.",
+      "verification": {
+        "localMatchingNeighborsPassed": 16,
+        "linuxMatchingRegression": "passed in 39166856202"
+      }
+    },
+    {
+      "commit": "dbc1cd1e",
+      "change": "Use an unfinished clearance repair as an initial fit, without reserving a polish that cannot start. The old reserve could put its refinement deadline in the past.",
+      "verification": {
+        "localPassed": 6,
+        "linuxLateClearanceAndBothStackedCases": "passed in 39166856202"
       }
     }
   ],
@@ -218,22 +238,62 @@
     "rejectedPrototype": "Reusing internal grid-loss scratch arrays matched 128 reference evaluations exactly but saved only about 2% of that calculation locally. The prototype is not included.",
     "sharedRuntimeRun": "https://github.com/thomasahle/julehjerte/actions/runs/39163889462",
     "sharedRuntimeScope": "Diagnostic only: all inverse tests, unchanged assertions and real-time budgets, Node test isolation disabled to reuse the runtime as successive application solves do. No release-test configuration has been changed.",
-    "sharedRuntimeStatus": "Still running when checked at 2026-10-18 21:01 UTC; no pass claimed."
+    "sharedRuntimeStatus": "failure: 1073 passed, 40 failed. Rejected; sharing runtime broke tests that require unloaded kernels and did not cure timed fits. Release test isolation is unchanged.",
+    "sparseGridGradient": {
+      "commit": "46df4bd6",
+      "referenceComparisons": 243,
+      "comparison": "Loss, prediction and full gradient are bit-identical to the previous dense implementation, including weighted images, zero tanh factors, invalid smoothing widths, and absent cut families.",
+      "localNumericalTestsPassed": 13,
+      "localFreshRegressionsPassed": 4,
+      "microbenchmark": {
+        "dense10Plus11CutsEpsilon0008Ratio": 0.764,
+        "dense10Plus11CutsEpsilon0002Ratio": 0.522,
+        "fourPlusFourCutsEpsilon0002Ratio": 0.808,
+        "wideOrSmallWorkloadsRatio": "1.008\u20131.013; retain original dense loop"
+      },
+      "limitation": "These ratios measure gridLoss only on the local machine, not end-to-end solver speed."
+    }
   },
   "coldProcessFollowup": {
     "url": "https://github.com/thomasahle/julehjerte/actions/runs/39165720603",
     "commit": "0a604989",
-    "status": "running at record time",
+    "status": "failure",
     "scope": "All inverse tests in four isolated-process shards, without diagnostic clock instrumentation; no assertion or requested time-budget changes.",
     "completedShards": [
       {
+        "shard": 1,
+        "passed": 250,
+        "failed": 3
+      },
+      {
+        "shard": 2,
+        "passed": 246,
+        "failed": 0
+      },
+      {
         "shard": 3,
         "passed": 288,
-        "failed": 1,
-        "failures": [
-          "late clearance comparison can repair its first usable layout before polishing"
-        ]
+        "failed": 1
+      },
+      {
+        "shard": 4,
+        "passed": 316,
+        "failed": 9
       }
+    ],
+    "passed": 1100,
+    "failed": 13
+  },
+  "focusedRemaining": {
+    "url": "https://github.com/thomasahle/julehjerte/actions/runs/39166856202",
+    "passed": 33,
+    "failed": 3,
+    "clockRate": 1,
+    "scope": "Eight existing test files with unchanged assertions and process isolation. Sun crop stress tests explicitly include their pre-existing 1.5x clock pressure.",
+    "failures": [
+      "vertical near-miss sun local disagreement .0442689 > .04 under 1.5x stress",
+      "dense checker full-image disagreement .03151875 > .03",
+      "synthetic-control routing: both MILP attempts exhaust their windows without an integer candidate"
     ]
   }
 }
