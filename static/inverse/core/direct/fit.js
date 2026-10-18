@@ -58,7 +58,7 @@ export async function fitDirect(input,cfg,onProgress=()=>{},{countSearch=initial
   let matchingSeeds=[];
   const solution=await fitIndependent(input,{...cfg,preferMatchingSheets:false},onProgress,args=>{
     const search=countSearch(args);matchingSeeds=search.seeds;return search;
-  },cornerRecovery);
+  },cornerRecovery,cfg.preferMatchingSheets);
   const selected=finalizeFittedSolution(solution,cfg,{startedAt:start,onProgress,matchingSeeds});
   // numericalBackend describes module loading; these record actual choices
   // for the individual operations, including a faster JavaScript fallback.
@@ -66,7 +66,7 @@ export async function fitDirect(input,cfg,onProgress=()=>{},{countSearch=initial
   selected.report.boundaryKernels=boundaryKernelChoices();
   return selected;
 }
-async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery){
+async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,matchingRequested){
   // Every per-pixel target the search optimizes is the mean over the requested
   // symmetry group, so each mirroring of the drawing enters the loss directly.
   // The original classified mask stays the reference for symmetry evidence,
@@ -1031,8 +1031,16 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery){
     const middle=polished.history.find(h=>h.step>=80&&h.geometry&&h.paper==='pass');
     const continuationStart=performance.now(),hardCleanupDeadline=start+cfg.timeLimit*1000-1300;
     const continuationDeadline=!shortBudget?Math.min(hardCleanupDeadline,Math.max(deadline,continuationStart+4000)):deadline;
-    if(!completedFeatureRepair&&polishAccepted&&polished.imagePassed&&!polished.outlineDetail&&polished.steps===160&&middle&&polished.error<middle.error
-      &&continuationDeadline-continuationStart>=1000){
+    const continueImproving=!completedFeatureRepair&&polishAccepted&&polished.imagePassed&&!polished.outlineDetail&&polished.steps===160&&middle&&polished.error<middle.error
+      &&continuationDeadline-continuationStart>=1000;
+    // The independent fit deliberately disables matching forces. Its optional
+    // extra polish must nevertheless leave the short caller's remaining time
+    // for the requested matching search when the source bound permits it.
+    const reserveMatching=continueImproving&&shortBudget&&matchingRequested&&!symmetryRequested
+      &&matchingEvidence.minimumIdenticalImageError<=candidate.originalImageError+cfg.matchingErrorAllowance
+      &&!matchingSummary(candidate.graph.solution(candidate.points,candidate.phase,input)).identical;
+    if(reserveMatching)cleanupBudget.continuationDeferredForMatching=true;
+    if(continueImproving&&!reserveMatching){
       const addedSeconds=Math.max(0,continuationDeadline-deadline)/1000;
       deadline=continuationDeadline;
       const next=stage('directPolishing',()=>polishCandidate(candidate,polishing.probability,source.resolution,{...cfg,preferMatchingSheets:false},{input,weights:polishing.weights,steps:480,rate:.008,deadline:deadline-250,selection:'mask',identicalSheets:candidate.matching?.identical||false,onProgress:hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directPolishing',counts:candidate.counts,...r},solution):undefined}));
