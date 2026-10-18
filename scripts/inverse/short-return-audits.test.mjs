@@ -6,6 +6,7 @@ import {projectShortReturns} from '../../static/inverse/core/direct/short-return
 import {validate} from '../../static/inverse/core/validate.js';
 import {settings} from '../../static/inverse/core/settings.js';
 import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
+import fs from 'node:fs/promises';
 
 test('resolving a local return still cannot certify a fixed wrong endpoint',()=>{
   const cfg=settings(AUTOMATIC_PRESET),line=(a,b)=>Cubic.line(a,b).p;
@@ -22,5 +23,25 @@ test('resolving a local return still cannot certify a fixed wrong endpoint',()=>
   assert.equal(result.report.rejected,'final_geometry');
   assert.equal(result.report.accepted,false);
   assert.equal(result.points,null);
+  assert.deepEqual(graph.points,before);
+});
+
+test('an immutable return stops hidden-only projection before it moves unrelated shared controls',async()=>{
+  const saved=JSON.parse(await fs.readFile(new URL('./fixtures/final-hidden-return.json',import.meta.url)));
+  const graph=new CurveGraph(saved.paths,saved.settings.width),before=graph.points.slice();
+  const initial=validate(graph.solution(before,saved.phase),saved.settings,{checkImage:false,finalGeometry:true});
+  assert.ok(initial.issues.length>1);assert.ok(initial.issues.every(i=>i.type==='short_self_clearance'));
+  const fixed=initial.issues[0],path=graph.paths[graph.families[fixed.family][fixed.slit]];
+  for(const order of fixed.curves)for(const id of graph.edges[path[order][0]])graph.fixed.fill(1,2*id,2*id+2);
+  const visible=new Set(graph.edges.flatMap((ids,e)=>graph.visible[e]?ids:[]));
+  assert.ok(initial.issues.some(issue=>{
+    const p=graph.paths[graph.families[issue.family][issue.slit]];
+    return issue.curves.some(order=>graph.edges[p[order][0]].some(id=>!visible.has(id)&&(!graph.fixed[2*id]||!graph.fixed[2*id+1])));
+  }),'Other returns still have movable hidden controls.');
+  const result=projectShortReturns(graph,before,saved.phase,{},saved.settings,{initialAudit:initial,hiddenOnly:true,maxIterations:64,maxMilliseconds:Infinity});
+  assert.equal(result.points,null);assert.equal(result.report.accepted,false);
+  assert.equal(result.report.termination,'fixed_witness');assert.equal(result.report.displacements,0);
+  assert.equal(result.report.returnConstraintAudits,0);
+  assert.deepEqual(result.report.fixedWitness,{family:fixed.family,slit:fixed.slit,curves:fixed.curves});
   assert.deepEqual(graph.points,before);
 });

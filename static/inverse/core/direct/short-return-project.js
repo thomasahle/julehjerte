@@ -58,6 +58,19 @@ export function projectShortReturns(graph,original,phase,input,cfg,{deadline=Inf
       if(finalSymmetry.honoured.length!==finalSymmetry.requested.length){report.termination=report.rejected='final_symmetry';break;}
       report.termination='validated';report.accepted=report.attempted;return{points:report.accepted?points:null,report,validation:audit};
     }
+    // Hidden-only motion cannot change a gap between two wholly pinned
+    // cubics. Do not spend its allowance moving other, repairable returns
+    // before discovering that this one still remains. This rejects only
+    // this restricted proposal; the caller can immediately try free controls.
+    const fixedWitness=hiddenOnly&&issues.find(issue=>{
+      const path=graph.paths[graph.families[issue.family][issue.slit]];
+      return issue.curves.every(order=>graph.edges[path[order][0]].every(id=>fixed[2*id]&&fixed[2*id+1]));
+    });
+    if(fixedWitness){
+      report.termination='fixed_witness';
+      report.fixedWitness={family:fixedWitness.family,slit:fixedWitness.slit,curves:fixedWitness.curves.slice()};
+      break;
+    }
     report.attempted=true;report.iterations++;const beforeDisplacements=report.displacements;
     for(const issue of issues){
       // Bernstein weights refer to the cut's direction, which can be opposite
