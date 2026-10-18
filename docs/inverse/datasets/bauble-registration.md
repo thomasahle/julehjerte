@@ -5,8 +5,10 @@ validated and available on port 5232. The full inverse suite passes **1,089 test
 **874 application tests** pass with one existing skip. Typecheck, lint, build,
 the 89-input crop regression and two actual browser upload/export workflows pass.
 The local homepage and Paint editor were checked again after refreshing the
-preview. Framed-motif crop failures remain open. Earlier experiments below
-preserve the failures and improvements.
+preview. An unintegrated conditional outline fallback now has
+[full-pipeline evidence for two framed-motif failures](framed-outline-recovery.md),
+including independent artwork comparison and a separate raster-enclosure
+diagnosis. Earlier experiments below preserve the failures and improvements.
 
 The automatic R5C4 bauble crop includes background and extrapolates its bottom
 corner below the 1,112-pixel photograph. Earlier experiments with longer scan
