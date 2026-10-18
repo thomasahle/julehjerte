@@ -739,6 +739,24 @@ all regions. This proves representation in the ideal planar model, not easy
 physical assembly. Minimum clearance, self-return restrictions, finite cutting
 precision and the unfolded paper-core check remain additional constraints.
 
+The completion has concrete local constraints. Subdivide visible boundaries at
+crossings and where a hidden connector joins them. At an interior vertex, let
+`a` and `b` count incident visible arms assigned to each sheet, and `h` count
+incident shared arms. A legal completion requires
+`a + h` and `b + h` each to be either zero or two. In particular:
+
+- Two visible arms can continue in one sheet without a hidden connector, or
+  change sheet at a junction with exactly one shared arm.
+- Four visible arms require two arms in each sheet and no shared arm.
+- A hidden connector cannot end in a uniform region. Away from visible
+  boundaries, its two arms must continue in both sheets.
+
+These degree conditions are local only. Each resulting sheet must still have
+the prescribed opposite-edge connections, without loops or self-intersections;
+the connector curves must admit a compatible planar embedding. Thus the
+characterization is not, by itself, an efficient complete decision algorithm
+over all possible hidden curves.
+
 This graph formulation agrees with the construction rules in Torben Mogensen's
 ["Braided Christmas Hearts", section 4, printed page 10](https://hjemmesider.diku.dk/~torbenm/hearts.pdf#page=10).
 The proof and consequences below are applied to this codebase's regular model;
@@ -759,6 +777,28 @@ Useful necessary tests follow directly:
 - A nonuniform interior with a completely uniform border is impossible: zero
   edge transitions force zero cuts on both sheets. This is one reason free-border
   completion is useful. Equal nonzero edge counts alone do not prove solvability.
+
+For a simple global counterexample to the border-count and junction tests,
+place a red vertical stripe and a separate red disk on a white square. The
+stripe reaches the top and bottom edges; the disk touches neither the stripe
+nor the border. Top and bottom each have two transitions, left and right each
+have zero, and every interior boundary point has only two arms. Nevertheless,
+the mask is impossible in the regular model: the zero left/right counts force
+the horizontal cut family to be empty. No shared connector is then possible,
+so the disk boundary would have to be a closed cut in the other sheet.
+More generally, when one family has zero cuts, the visible boundary itself
+must consist solely of disjoint paths across the other family's opposite
+edges. An isolated motif is not always impossible; it is the unavailable
+second family that obstructs this example.
+
+Here "exact" refers to the ideal two-colour regions, disregarding the colour
+assigned to the zero-width cut lines themselves. A finite pixel mask, an
+underlying photographed design and a finite polynomial-Bézier representation
+are different targets. For example, a circular arc is a legitimate ideal cut
+but requires approximation by ordinary polynomial cubic Béziers. Passing the
+topological criterion does not eliminate representation error. Conversely,
+small area error is not a topology certificate: a tiny isolated disk can have
+arbitrarily small area while still obstructing the stripe example above.
 
 The ideal four-semicircle junction in the earlier Artésta/Bauhaus source is a
 concrete eight-branch example. Locally, place radius-R half-disks at (-R,0),
