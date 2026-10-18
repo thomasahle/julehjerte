@@ -33,7 +33,7 @@ import {outlineDetailPlan} from './outline-details.js';
 import {repairClearanceInitializer} from './clearance-repair.js';
 import {recoverCornerTopology} from './corner-topology.js';
 import {featureImprovingFinalist} from './feature-finalists.js';
-import {assessCandidate} from './candidate-verification.js';
+import {assessCandidate,assessPolishingAlternative} from './candidate-verification.js';
 
 export {borderEvidence,supportedBorderCounts,gridCountLimit,gridFinalists} from './counts.js';
 const featureSeed=c=>['feature-weighted-grid','feature-preserving-grid','feature-sampling-grid','fitted-boundary-rerouting'].includes(c.seed);
@@ -1057,9 +1057,8 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
     // geometry-valid checkpoint can remain uncertain only because that paper
     // lattice is too coarse. Recheck the retained coordinates before losing
     // them, even when the ordinary polish is already an acceptable fit.
-    if((polished.paperVerification?.resolution??cfg.materialResolution)<700&&polished.paperAlternative&&(!polished.imagePassed||polished.paperAlternative.error<polished.error)){
-      const alternative={...polished,...polished.paperAlternative,paperAlternative:null,paperVerification:null};
-      alternative.imagePassed=assess(alternative);
+    const alternative=assessPolishingAlternative(polished,input,cfg,{deadline:searchDeadline(),sourceFeatures});
+    if(alternative){
       if(alternative.imagePassed&&alternative.originalImageError<candidate.originalImageError&&(!polished.imagePassed||alternative.originalImageError<polished.originalImageError)){
         alternative.paperVerification={...alternative.paperVerification,source:'polishing-alternative',incumbentImageError:polished.originalImageError};
         polished=alternative;

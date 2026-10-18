@@ -42,3 +42,17 @@ export function assessCandidate(c,input,cfg,{deadline=Infinity,sourceFeatures,re
   }
   return c.paperPassed&&c.originalFeatures.passed;
 }
+
+/** Recheck the retained polish coordinates at the next supported lattice.
+ * The incumbent's pass belongs to different coordinates: carry only the
+ * lattice resolution, never its successful paper status, to the alternative.
+ */
+export function assessPolishingAlternative(polished,input,cfg,options={}){
+  const retained=polished.paperAlternative;
+  if(!retained||polished.imagePassed&&retained.error>=polished.error)return null;
+  const resolution=retained.paperVerification?.resolution??polished.paperVerification?.resolution??cfg.materialResolution;
+  const alternative={...polished,...retained,paperAlternative:null,paperPassed:false,
+    paperVerification:{requestedResolution:cfg.materialResolution,initialStatus:retained.paper.status,resolution,status:retained.paper.status}};
+  alternative.imagePassed=assessCandidate(alternative,input,cfg,options);
+  return alternative;
+}

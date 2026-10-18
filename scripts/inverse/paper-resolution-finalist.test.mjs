@@ -3,7 +3,9 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {prepare,design} from '../../static/inverse/core/engine.js';
-import {loadSolutionJSON,solutionJSON} from '../../static/inverse/core/graph.js';
+import {loadSolutionJSON,solutionJSON,curvesOf} from '../../static/inverse/core/graph.js';
+import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
+import {assessPolishingAlternative} from '../../static/inverse/core/direct/candidate-verification.js';
 import {settings} from '../../static/inverse/core/settings.js';
 import {materialAudit} from '../../static/inverse/core/material.js';
 import {finalMaterialAudit} from '../../static/inverse/core/geometric-material.js';
@@ -28,6 +30,32 @@ test('a significant floating coarse core can reconnect at a finer lattice withou
   }
   assert.equal(finalMaterialAudit(solution,{...cfg,materialResolution:1000}).status,'pass');
   assert.deepEqual(solutionJSON(solution),before);
+});
+
+test('cleanup verifies a retained 700-cell polish without inheriting the incumbent paper pass',async()=>{
+  await loadNumericalKernel();
+  const photo=await readHardPhoto(fixture.source),cfg=settings(fixture.configuration);
+  const crop=prepare({...photo,quad:fixture.quad},cfg);
+  const input=prepare({type:'mask',mask:crop.preview.mask,resolution:400,invert:false,removeSpecks:0,fillHoles:0},cfg).target;
+  const saved=loadSolutionJSON(fixture.geometry),before=solutionJSON(saved),source=structuredClone(input.sourceImage);
+  const graph=new CurveGraph(saved.paths.map((family,f)=>family.map((_,i)=>curvesOf(saved,f,i).map(c=>c.p))),cfg.width);
+  const phase=saved.graph.target.phase?-1:1,paper=materialAudit(saved,{...cfg,materialResolution:700});
+  assert.equal(paper.status,'uncertain');
+  const retained={graph,points:graph.points.slice(),phase,error:.01,geometryPassed:true,paperPassed:false,paper:paper.summary};
+  // This is the refiner's retained alternative, not an independently accepted
+  // result. The incoming lattice belongs to the incumbent's verification.
+  const polished={...retained,imagePassed:false,paperVerification:{resolution:700,status:'pass'},paperAlternative:retained};
+  const expired=assessPolishingAlternative(polished,input,cfg,{deadline:0});
+  assert.equal(expired.paperPassed,false);assert.equal(expired.imagePassed,false);
+  assert.equal(expired.paperVerification.resolution,700);assert.equal(expired.paperVerification.status,'uncertain');
+  const wrongImage=assessPolishingAlternative(polished,input,{...cfg,maxImageError:0});
+  assert.equal(wrongImage.imagePassed,false);assert.equal(wrongImage.paperVerification.resolution,700);
+  const checked=assessPolishingAlternative(polished,input,cfg);
+  assert.equal(checked.imagePassed,true);assert.equal(checked.paperVerification.resolution,1000);
+  assert.deepEqual(checked.points,retained.points);
+  assert.equal(finalMaterialAudit(graph.solution(checked.points,phase,input),{...cfg,materialResolution:1000}).status,'pass');
+  assert.deepEqual(solutionJSON(saved),before);assert.deepEqual(input.sourceImage,source);
+  assert.equal(polished.paperAlternative,retained);assert.equal(retained.paperPassed,false);
 });
 
 test('fresh round-checker fitting verifies its accurate finalist before choosing a worse routing',async t=>{
