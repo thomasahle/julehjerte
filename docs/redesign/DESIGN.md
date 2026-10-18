@@ -192,7 +192,9 @@ shows as a paler rectangle over the hero's snow hill. It never collapses. Left t
   1px `--line` border; hover `--cream2`; current (`aria-current="true"`): `--deep` background, white text, the
   border transparent rather than removed so the row does not shift; focus ring 3px `--blue`. The row is
   `flex: 1 1 auto; min-width: 0; overflow-x: auto` with a hidden scrollbar and `scroll-snap-type: x
-  proximity`, so a phone swipes it sideways.
+  proximity`, so a phone swipes it sideways. While it overflows, a 32px `mask-image` fade marks each edge with more
+  chips beyond it (on the desktop layout the start fade begins after the sticky download button); a mask
+  takes no clicks, and a row that fits has none.
 - **"Hent skabeloner (n)"** (docs/redesign/SELECTION.md), only while at least one heart is ticked (a card
   click opens the heart's page; ticking hearts is the exception — docs/redesign/FRONT-SIMPLIFY.md), so there
   is no disabled download button and no "Vælg hjerter først" hint. One opaque red pill (`--red`, hover

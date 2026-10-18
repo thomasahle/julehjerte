@@ -330,12 +330,13 @@ describe('GalleryBar', () => {
 		// 6 − height − L), so `height` has to be the box less the padding L
 		// adds on top, whatever L is: ticking a heart can add a button with a
 		// larger lift than the chips', and the row must not drop with it.
-		let observed: (() => void) | null = null;
+		// Every observer the bar makes (its height, the chip row's fades).
+		const observed: (() => void)[] = [];
 		vi.stubGlobal(
 			'ResizeObserver',
 			class {
 				constructor(callback: () => void) {
-					observed = callback;
+					observed.push(callback);
 				}
 				observe() {}
 				unobserve() {}
@@ -386,7 +387,7 @@ describe('GalleryBar', () => {
 			bar.style.paddingTop = `${10 + room}px`;
 			bar.style.paddingBottom = '10px';
 			placeAt(bar, 300, 49.6 + room);
-			observed?.();
+			for (const callback of observed) callback();
 			await Promise.resolve();
 			flushSync();
 		};
@@ -509,6 +510,33 @@ describe('GalleryBar', () => {
 			const ui = await render({ availableLevels: ALL, lang: 'en' });
 			expect(ui.target.querySelector('[role="group"]')?.getAttribute('aria-label')).toBe('Difficulty');
 			expect(ui.toggles().map((b) => b.textContent?.trim())).toEqual(['Easy', 'Medium', 'Hard', 'Expert']);
+		});
+	});
+
+	describe('overflow fade', () => {
+		/** Gives the chip row a scroll box (jsdom has no layout) and scrolls it. */
+		async function scrollRow(row: HTMLElement, { width, view, left }: { width: number; view: number; left: number }) {
+			Object.defineProperty(row, 'scrollWidth', { configurable: true, value: width });
+			Object.defineProperty(row, 'clientWidth', { configurable: true, value: view });
+			row.scrollLeft = left;
+			row.dispatchEvent(new Event('scroll'));
+			await Promise.resolve();
+			flushSync();
+			await tick();
+		}
+
+		it('fades the edge with more chips beyond it, and neither while the row fits', async () => {
+			const ui = await render();
+			const row = ui.target.querySelector<HTMLElement>('nav.chips')!;
+			const fades = () => ['fade-start', 'fade-end'].filter((c) => row.classList.contains(c));
+			await scrollRow(row, { width: 400, view: 400, left: 0 });
+			expect(fades()).toEqual([]);
+			await scrollRow(row, { width: 600, view: 400, left: 0 });
+			expect(fades()).toEqual(['fade-end']);
+			await scrollRow(row, { width: 600, view: 400, left: 100 });
+			expect(fades()).toEqual(['fade-start', 'fade-end']);
+			await scrollRow(row, { width: 600, view: 400, left: 200 });
+			expect(fades()).toEqual(['fade-start']);
 		});
 	});
 });

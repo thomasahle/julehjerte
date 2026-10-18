@@ -254,6 +254,55 @@
 		};
 	});
 
+	// A soft fade at whichever edge of the chip row has more chips beyond it
+	// (pages-edges QA 4: at 700–830px with a heart ticked the stuck row cut
+	// the last chips off with nothing to say it scrolls). A mask, so it takes
+	// no clicks and nothing is laid over the chips; none while the row fits.
+	// On the desktop layout the download button is sticky at the row's start,
+	// so the start fade begins after it (`fadeSkip`) and never dims it.
+	let fadeStart = $state(false);
+	let fadeEnd = $state(false);
+	let fadeSkip = $state(0);
+
+	$effect(() => {
+		if (!chipRow) return;
+		const row = chipRow;
+		// Re-run (and re-observe the items) when they come and go.
+		void sections.length;
+		void hasSelection;
+		void availableLevels.length;
+		void narrow;
+		let frame = 0;
+		const update = () => {
+			frame = 0;
+			const max = row.scrollWidth - row.clientWidth;
+			const left = row.scrollLeft;
+			fadeStart = max > 1 && left > 1;
+			fadeEnd = max > 1 && left < max - 1;
+			const get = row.querySelector<HTMLElement>(':scope > .get');
+			fadeSkip =
+				fadeStart && get
+					? Math.max(0, get.getBoundingClientRect().right - row.getBoundingClientRect().left + 4)
+					: 0;
+		};
+		const schedule = () => {
+			if (!frame) frame = requestAnimationFrame(update);
+		};
+		update();
+		row.addEventListener('scroll', schedule, { passive: true });
+		// jsdom has no ResizeObserver.
+		const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(schedule) : null;
+		if (observer) {
+			observer.observe(row);
+			for (const item of row.querySelectorAll('[data-hill-chip]')) observer.observe(item);
+		}
+		return () => {
+			row.removeEventListener('scroll', schedule);
+			observer?.disconnect();
+			if (frame) cancelAnimationFrame(frame);
+		};
+	});
+
 	/**
 	 * How close to its sticky top the bar's top counts as there: box tops are
 	 * in layout units (1/64px) and L is rounded to a tenth.
@@ -445,6 +494,9 @@
 		data-hill-chips
 		class:placed={measured}
 		class:ticked={hasSelection}
+		class:fade-start={fadeStart}
+		class:fade-end={fadeEnd}
+		style:--fade-skip={fadeSkip > 0 ? `${fadeSkip}px` : undefined}
 	>
 		{#if hasSelection && !narrow}
 			{@render getButton()}
@@ -549,7 +601,7 @@
 	}
 
 	/* The row scrolls sideways when the chips do not fit (a phone), without a
-	   scrollbar: the cut-off chip at the edge already says there is more. */
+	   scrollbar: a fade at the edge with more beyond it says so. */
 	.chips {
 		/* The chips' offsetParent, for keeping the current one in sight. */
 		position: relative;
@@ -574,6 +626,47 @@
 
 	.chips::-webkit-scrollbar {
 		display: none;
+	}
+
+	/* The overflow fades (see fadeStart/fadeEnd). The mask spans the row's
+	   whole box, the lift room above the chips on the desktop layout too. */
+	.chips.fade-end {
+		-webkit-mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
+		mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
+	}
+
+	.chips.fade-start {
+		-webkit-mask-image: linear-gradient(
+			to right,
+			#000 var(--fade-skip, 0px),
+			transparent var(--fade-skip, 0px),
+			#000 calc(var(--fade-skip, 0px) + 32px)
+		);
+		mask-image: linear-gradient(
+			to right,
+			#000 var(--fade-skip, 0px),
+			transparent var(--fade-skip, 0px),
+			#000 calc(var(--fade-skip, 0px) + 32px)
+		);
+	}
+
+	.chips.fade-start.fade-end {
+		-webkit-mask-image: linear-gradient(
+			to right,
+			#000 var(--fade-skip, 0px),
+			transparent var(--fade-skip, 0px),
+			#000 calc(var(--fade-skip, 0px) + 32px),
+			#000 calc(100% - 32px),
+			transparent
+		);
+		mask-image: linear-gradient(
+			to right,
+			#000 var(--fade-skip, 0px),
+			transparent var(--fade-skip, 0px),
+			#000 calc(var(--fade-skip, 0px) + 32px),
+			#000 calc(100% - 32px),
+			transparent
+		);
 	}
 
 	@media (prefers-reduced-motion: no-preference) {
