@@ -60,6 +60,12 @@
 		 * amendment 3). Unset: no strand.
 		 */
 		strand?: number;
+		/**
+		 * Left out by the front page's difficulty filter: `display: none`, so
+		 * the grid closes up, but kept in the page, since a prerendered heart's
+		 * SVG cannot be drawn again in the browser.
+		 */
+		hidden?: boolean;
 	}
 
 	let {
@@ -72,7 +78,8 @@
 		onClick,
 		onDelete,
 		index = 0,
-		strand = undefined
+		strand = undefined,
+		hidden = false
 	}: Props = $props();
 
 	/** Heart width in px; the card is this plus 120px for the ribbon slack, name and difficulty. */
@@ -106,9 +113,11 @@
 	data-heart-id={heart.id}
 	data-heart-name={heart.name}
 	data-user={heart.isUserCreated ? '' : undefined}
+	data-level={heart.difficulty}
 	aria-labelledby={nameId}
 	style="height: {SIZE + 120}px;"
 	style:--strand={strand === undefined ? undefined : `var(--strand-${strand})`}
+	style:display={hidden ? 'none' : undefined}
 >
 	<a class="card-link" {href} onclick={handleOpen} aria-label={heart.name}></a>
 

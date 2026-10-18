@@ -38,6 +38,15 @@
  * rest follows from the width, `documentElement.clientWidth` less a classic
  * scrollbar the page does not have yet but will once the gallery is in.
  *
+ * The difficulty filter (`?level=`, or the tab's sessionStorage; see
+ * $lib/front/levelFilter) is applied here too, at every width: a `<style
+ * data-level-bootstrap>` hides the cards of other levels and the categories
+ * it empties, gives the first category on show the first one's margin, and
+ * on the desktop layout hangs the cards on show from their columns as laid
+ * out, skipping the hidden ones. The chips' span is then estimated with the
+ * counts the filter leaves. The gallery removes the style once the page has
+ * applied the same filter (`clearLevelBootstrap`).
+ *
  * Plain source text, like $lib/front/heroBootstrap, because it must run inline
  * and before the gallery paints. strandBootstrap.test.ts runs this very string
  * and checks it against $lib/front/hillLine, which the hydrated measure uses.
@@ -56,6 +65,14 @@ export const STRAND_LAYOUT = {
 	trackGap: 16,
 	/** The chips' row (GalleryBar.svelte): 8px apart, 12px padding, 1px border, 6px label gap. */
 	chipGap: 8,
+	/**
+	 * A difficulty toggle's dots (DifficultyDots at 6px: four, 4px apart) and
+	 * their 6px gap, shown from `dotsFrom` px up while nothing is ticked; and the toggles' group's
+	 * extra margin before the category chips.
+	 */
+	dotsWidth: 36,
+	dotsFrom: 1200,
+	groupGap: 8,
 	/** The one-row bar: 10px padding twice around a 13px × 1.2 chip with 6px padding and a border. */
 	barHeight: 49.6,
 	/** `font-family` of the page (`--font-sans` in app.css). */
@@ -64,8 +81,22 @@ export const STRAND_LAYOUT = {
 
 /** What the script needs to know about the chips: label and count, in row order. */
 export interface StrandChips {
-	/** The gallery categories with hearts, in chip order. */
-	categories: { title: string; count: number }[];
+	/**
+	 * The gallery categories with hearts, in chip order, with their section
+	 * id, and each heart's id and difficulty in gallery order (for the
+	 * filter).
+	 */
+	categories: { id?: string; title: string; count: number; levels?: string[]; hearts?: string[] }[];
+	/**
+	 * The difficulty filter's toggles, first in the row after the download
+	 * button: each level's word in `?level=`, its label, and where the tab
+	 * keeps the choice. Absent: no filter.
+	 */
+	filter?: {
+		levels: { level: string; slug: string; label: string }[];
+		param: string;
+		storageKey: string;
+	};
 	/** "Mine hjerter", shown once the visitor has drawn hearts (localStorage). */
 	mine: string;
 	/** "Hent skabeloner", the button shown first while hearts are ticked (`?selected=`). */
@@ -100,10 +131,24 @@ export function strandBootstrapSource(chips: StrandChips): string {
 const SOURCE = `
 try {
 	var root = document.documentElement;
-	if (!window.matchMedia || !window.matchMedia('(min-width: 900px)').matches) return;
+	var shown = filterLevels();
+	var counts = [];
+	for (var c = 0; c < C.chips.categories.length; c++) {
+		var cat = C.chips.categories[c];
+		counts.push(shown ? countShown(cat.levels || [], shown) : cat.count);
+	}
+	var css = shown ? filterRules(shown, counts) : '';
+	var desktop = window.matchMedia && window.matchMedia('(min-width: 900px)').matches;
+	if (!desktop) {
+		writeStyle(css);
+		return;
+	}
 	var land = document.querySelector('[data-scene-land]');
 	var scene = land && land.parentElement;
-	if (!scene) return;
+	if (!scene) {
+		writeStyle(css);
+		return;
+	}
 
 	// The width the page will have once it scrolls: the gallery below makes
 	// it taller than any window, so a classic scrollbar will take its room.
@@ -136,7 +181,7 @@ try {
 	var hillTop = page(hillTopBetween(units(left), units(right)));
 	var pull = round(hillTop - sceneBottom);
 
-	var span = chipSpan(left, right);
+	var span = chipSpan(left, right, counts);
 	var drops = [];
 	var D = 0;
 	for (var k = 0; k < n; k++) {
@@ -153,6 +198,8 @@ try {
 	style.setProperty('--strand-room', D + 'px');
 	for (var d = 0; d < drops.length; d++) style.setProperty('--strand-' + d, drops[d] + 'px');
 	root.classList.add('strands-ready', 'strands-' + n);
+	if (shown) css += strandRules(shown, n);
+	writeStyle(css);
 } catch (err) {
 	// The stylesheet's estimate, as before, beats a broken page.
 }
@@ -164,7 +211,7 @@ function round(px) {
 // The chips' row, right-aligned against the column's right edge (GalleryBar):
 // the download button while hearts are ticked, one chip per category with
 // hearts, "Mine hjerter" once the visitor has drawn any.
-function chipSpan(left, right) {
+function chipSpan(left, right, counts) {
 	var ch = C.chips;
 	var measure = textMeasurer();
 	var chip = function (title, count) {
@@ -178,15 +225,138 @@ function chipSpan(left, right) {
 		// 12px + 8px padding, a 16px icon, 6px gaps, the count's 8px padding.
 		widths.push(Math.round(20 + 16 + 12 + measure(ch.download, 600) + 16 + measure(String(ticked), 600)));
 	}
+	var filter = ch.filter;
+	if (filter) {
+		// The dots and their 6px gap (from 1200px up, and not beside the
+		// download button), and the word, inside a chip's padding and border.
+		var dots =
+			ticked === 0 && window.matchMedia('(min-width: ' + C.dotsFrom + 'px)').matches ? C.dotsWidth + 6 : 0;
+		for (var l = 0; l < filter.levels.length; l++) {
+			widths.push(Math.round(26 + dots + measure(filter.levels[l].label, 600)));
+		}
+	}
 	for (var i = 0; i < ch.categories.length; i++) {
-		widths.push(chip(ch.categories[i].title, ch.categories[i].count));
+		widths.push(chip(ch.categories[i].title, counts[i]));
 	}
 	var mine = myHeartCount();
 	if (mine > 0) widths.push(chip(ch.mine, mine));
-	var total = C.chipGap * (widths.length - 1);
+	var total = C.chipGap * (widths.length - 1) + (filter && filter.levels.length ? C.groupGap : 0);
 	for (var w = 0; w < widths.length; w++) total += widths[w];
 	var start = Math.max(left, right - total);
 	return [start, start + total];
+}
+
+// The difficulty filter: the levels '?level=' names, or else the ones the
+// tab last chose, as an object of level: true; null for none (all shown).
+function filterLevels() {
+	var filter = C.chips.filter;
+	if (!filter) return null;
+	var raw = null;
+	var match = new RegExp('[?&]' + filter.param + '=([^&#]*)').exec(location.search);
+	if (match && match[1]) {
+		try {
+			raw = decodeURIComponent(match[1]);
+		} catch (err) {
+			raw = match[1];
+		}
+	} else {
+		try {
+			raw = sessionStorage.getItem(filter.storageKey);
+		} catch (err) {
+			raw = null;
+		}
+	}
+	if (!raw) return null;
+	var words = raw.toLowerCase().split(',');
+	var shown = null;
+	for (var i = 0; i < words.length; i++) {
+		for (var j = 0; j < filter.levels.length; j++) {
+			if (filter.levels[j].slug === words[i].trim()) {
+				shown = shown || {};
+				shown[filter.levels[j].level] = true;
+			}
+		}
+	}
+	// No filter that hides what the page was entered at (#moenstre from a
+	// breadcrumb, #heart-<id>): the page drops it then too.
+	return shown && hidesAnchor(shown) ? null : shown;
+}
+
+function hidesAnchor(shown) {
+	var anchor = location.hash.slice(1);
+	try {
+		anchor = decodeURIComponent(anchor);
+	} catch (err) {
+		// As it is.
+	}
+	if (!anchor) return false;
+	var cats = C.chips.categories;
+	for (var c = 0; c < cats.length; c++) {
+		var levels = cats[c].levels || [];
+		if (cats[c].id === anchor) return countShown(levels, shown) === 0;
+		var hearts = cats[c].hearts || [];
+		for (var h = 0; h < hearts.length; h++) {
+			if ('heart-' + hearts[h].replace(/[^a-zA-Z0-9_-]/g, '-') === anchor) return !shown[levels[h]];
+		}
+	}
+	return false;
+}
+
+function countShown(levels, shown) {
+	var count = 0;
+	for (var i = 0; i < levels.length; i++) if (shown[levels[i]]) count++;
+	return count;
+}
+
+// What CategorySection and HeartCard will do once the page has the filter:
+// hide the other levels' cards and the categories left empty, and move the
+// first category's margin to the first one on show.
+function filterRules(shown, counts) {
+	var css = '';
+	var levels = C.chips.filter.levels;
+	for (var l = 0; l < levels.length; l++) {
+		if (!shown[levels[l].level]) {
+			css += '#skabeloner .cat:not(.apart) .cat-grid > [data-level="' + levels[l].level + '"]{display:none}';
+		}
+	}
+	var first = -1;
+	for (var c = 0; c < counts.length; c++) {
+		var id = C.chips.categories[c].id;
+		if (!id) continue;
+		if (counts[c] === 0) css += '#skabeloner > #' + id + '{display:none}';
+		else if (first < 0) first = c;
+	}
+	if (first > 0) {
+		var sel = '#skabeloner > #' + C.chips.categories[first].id;
+		css += sel + '{margin-top:8px}';
+		css += '@media (min-width: 900px){' + sel +
+			'{margin-top:calc(6px - var(--gallery-bar-height, 49px) - var(--bar-room, 0px))}}';
+	}
+	return css;
+}
+
+// The strands for the cards on show: CategorySection's nth-child rules count
+// the hidden cards too, so these count only those of the levels shown.
+function strandRules(shown, n) {
+	var of = [];
+	var levels = C.chips.filter.levels;
+	for (var l = 0; l < levels.length; l++) {
+		if (shown[levels[l].level]) of.push('[data-level="' + levels[l].level + '"]');
+	}
+	var css = '';
+	for (var k = 0; k < n; k++) {
+		css += 'html.strands-' + n + ' #skabeloner .cat:not(.apart) .cat-grid > :nth-child(' + n + 'n + ' + (k + 1) +
+			' of ' + of.join(',') + '){--strand:var(--strand-' + k + ')}';
+	}
+	return css;
+}
+
+function writeStyle(css) {
+	if (!css) return;
+	var style = document.createElement('style');
+	style.setAttribute('data-level-bootstrap', '');
+	style.textContent = css;
+	(document.head || root).appendChild(style);
 }
 
 function textMeasurer() {
@@ -305,6 +475,11 @@ function hillTopWithin(x0, x1) {
 	return top;
 }
 `;
+
+/** Undo the script's difficulty filter: the page has applied it itself. */
+export function clearLevelBootstrap(doc: Document = document): void {
+	for (const style of doc.querySelectorAll('style[data-level-bootstrap]')) style.remove();
+}
 
 /** Everything the script leaves on `<html>`, for the gallery to clear once it has measured. */
 export const STRAND_BOOTSTRAP_PROPERTIES = ['--gallery-pull', '--gallery-bar-height', '--strand-room'];

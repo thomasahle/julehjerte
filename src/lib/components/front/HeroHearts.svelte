@@ -44,11 +44,19 @@
 		idPrefix: string;
 		/** Show the layer without waiting for the bootstrap script. */
 		revealed?: boolean;
+		/**
+		 * Called before going to a card, so the page can show it first if the
+		 * difficulty filter hides it (GALLERY-BAR.md, "As built: difficulty
+		 * filter"); the DOM is up to date when it returns. It returns the
+		 * query string the URL is to have then, if that changes.
+		 */
+		onReveal?: (anchorId: string) => string | undefined;
 	}
 
-	let { lang, slots, hearts, idPrefix, revealed = false }: Props = $props();
+	let { lang, slots, hearts, idPrefix, revealed = false, onReveal }: Props = $props();
 
 	function goToCard(event: MouseEvent, anchorId: string) {
+		const revealedSearch = onReveal?.(anchorId);
 		const card = document.getElementById(anchorId);
 		if (!card) return; // let the plain anchor navigation handle it
 		event.preventDefault();
@@ -60,7 +68,8 @@
 		// page.url alone too.) The load reads only params, so it does not rerun.
 		// The scroll waits for the navigation, which would stop a smooth scroll
 		// already under way.
-		const { pathname, search } = window.location;
+		const { pathname } = window.location;
+		const search = revealedSearch ?? window.location.search;
 		goto(`${pathname}${search}#${anchorId}`, { replaceState: true, noScroll: true, keepFocus: true }).then(
 			scroll,
 			scroll
