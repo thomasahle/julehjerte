@@ -422,8 +422,65 @@
     "url": "https://github.com/thomasahle/julehjerte/actions/runs/39173161568",
     "diagnosticCommit": "a4f1fdd8",
     "sourceCommit": "9efa38f5",
-    "status": "running",
-    "scope": "Complete inverse suite in four isolated-process shards. No diagnostic clock imported; original request budgets, image-error and physical acceptance thresholds."
+    "status": "completed",
+    "scope": "Complete inverse suite in four isolated-process shards. No diagnostic clock imported; original request budgets, image-error and physical acceptance thresholds.",
+    "conclusion": "failure",
+    "passed": 1094,
+    "failed": 25,
+    "shards": [
+      {
+        "shard": 1,
+        "passed": 249,
+        "failed": 4,
+        "failures": [
+          "one unobserved corner preserves the significant features of photo-bird",
+          "the main fitter reconstructs the dense binary photo target with legal editable-sized counts",
+          "the common fitter refines the alternative junction routing against the unchanged photograph",
+          "fresh round-checker fitting verifies its accurate finalist before choosing a worse routing"
+        ]
+      },
+      {
+        "shard": 2,
+        "passed": 236,
+        "failed": 11,
+        "failures": [
+          "fresh fitting continues an unfinished verified initializer within the remaining search allowance",
+          "fresh automatic fitting repairs a rejected circular routing before common Bezier refinement",
+          "a fully observed mask refines or replaces corner routing without opening its enclosed regions",
+          "an exhausted corner MILP leaves the remaining caller allowance for fresh coarse routing",
+          "a finer spline recovers a half-resolution opening after all coarse feature starts fail",
+          "early feature routing recovers the frozen puppy opening within a ten-second search",
+          "a one-pixel crop shift cannot discard a feature-preserving fine-grid checkpoint",
+          "a fresh shifted bird fit preserves its eye with a 10-second allowance",
+          "a fresh shifted bird fit preserves its eye with a 180-second allowance",
+          "a late routing candidate uses the repair time already provided by its caller",
+          "a late routing candidate cannot manufacture an unprovided repair allowance"
+        ]
+      },
+      {
+        "shard": 3,
+        "passed": 294,
+        "failed": 0,
+        "failures": []
+      },
+      {
+        "shard": 4,
+        "passed": 315,
+        "failed": 10,
+        "failures": [
+          "fresh fitting retains the stacked motif on the resampled mask",
+          "fresh fitting retains the stacked motif on the original mask",
+          "the vertical near-miss layout produces checked exports within the original short search (1x clock)",
+          "the vertical near-miss layout produces checked exports within the original short search (1.5x clock)",
+          "the negative-diagonal near-miss layout produces checked exports within the original short search (1.5x clock)",
+          "late photo cleanup preserves source fidelity inside a 180-second request (750 ms interruption)",
+          "fresh frozen routing retains time for a valid template without changing the mask",
+          "fresh synthetic-control routing retains time for a valid template without changing the mask",
+          "flettede-stonehenge retains its interior detail in a fresh fit (10s allowance)",
+          "flettede-viking retains its interior detail in a fresh fit (60s allowance)"
+        ]
+      }
+    ]
   },
   "matchingContinuation": {
     "commit": "1cc30d71",
@@ -634,5 +691,56 @@
         ]
       }
     ]
+  },
+  "polishingAlternativeVerification": {
+    "sourceCommit": "ee893009",
+    "scope": "Offer retained 700-cell uncertain polish coordinates to the existing 1000-cell verifier. Keep source-feature, geometry, paper and deadline gates. Do not inherit the incumbent paper pass.",
+    "local": {
+      "passed": 7,
+      "failed": 0,
+      "log": "/tmp/julehjerte-polish-alternative-test.log"
+    },
+    "linux": {
+      "url": "https://github.com/thomasahle/julehjerte/actions/runs/39174125656",
+      "diagnosticCommit": "8f8b8eac",
+      "passed": 8,
+      "failed": 2,
+      "fixedCoordinateRegression": "pass",
+      "freshRoundChecker": "failure: independent disagreement 0.0122 exceeds unchanged limit 0.01215",
+      "otherFailure": "junction routing expectation; captured actual result rather than null-report TypeError"
+    },
+    "releaseReady": false,
+    "appChecks": {
+      "typecheckErrors": 0,
+      "typecheckExistingWarnings": 6,
+      "lintErrors": 0,
+      "lintExistingWarnings": 4,
+      "vitestPassed": 1570,
+      "vitestSkipped": 1,
+      "vitestFiles": 112,
+      "build": "pass"
+    }
+  },
+  "junctionFailureCapture": {
+    "sourceCommit": "6d7ec9f6",
+    "local": {
+      "passed": 2,
+      "failed": 1,
+      "artifact": "tmp/inverse-test-failures/fit-tPSIhl"
+    },
+    "findings": "A retained 4+4 grid passed source/geometry/paper gates with 0.0070625 reported mask error, but bypassed the test-required traced routing and exported 117 curves against the existing <100 complexity assertion. Acceptance assertions remain unchanged."
+  },
+  "denseCoarseningExperiment": {
+    "productionApplied": false,
+    "findings": "Endpoint-Hermite merges with a Bernstein control-distance bound did not merge any post-refinement spans at <=0.2 mm. Fresh initialization shrank 273 to 253 spans at 0.05 mm with source error increasing from 0.0640625 to 0.06413125; this is not an end-to-end quality/speed improvement. No production change."
+  },
+  "finalOffsetFailure": {
+    "artifact": "tmp/heart-learning/post-merge-2026-10-18/outline-full-linux/shard-4/inverse-test-failures/fit-kHLbnD",
+    "case": "flettede-viking",
+    "lattice": "pass at 700",
+    "offset": "fail: two significant floating core pieces, total area 0.7300800716293452 mm\u00b2, family 1",
+    "finalRepairSteps": 5,
+    "finalRepairAccepted": false,
+    "note": "Export correctly reports failed paper checks. This is a real unresolved geometry defect, not merely a timed quality assertion."
   }
 }
