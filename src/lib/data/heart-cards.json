@@ -195,6 +195,10 @@
     "name": "Dag og nat",
     "difficulty": "hard"
   },
+  "ball": {
+    "name": "Kugle",
+    "difficulty": "medium"
+  },
   "triple-heart": {
     "name": "Triple Hjerte",
     "difficulty": "medium"

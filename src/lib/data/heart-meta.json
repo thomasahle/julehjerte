@@ -1158,6 +1158,29 @@
     },
     "photo": null
   },
+  "ball": {
+    "name": "Kugle",
+    "author": "Thomas Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-18",
+    "description": null,
+    "gridSize": {
+      "x": 8,
+      "y": 8
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
   "triple-heart": {
     "name": "Triple Hjerte",
     "author": "Ukendt",
