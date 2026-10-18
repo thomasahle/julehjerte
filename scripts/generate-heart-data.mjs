@@ -2,7 +2,7 @@
 /**
  * Generate the build-time data for the gallery hearts from static/hearts/<id>.svg.
  *
- * For every heart id in src/lib/data/hearts.json this parses the SVG with the same
+ * For every heart id in hearts.json (project root) this parses the SVG with the same
  * parser the site uses (parseHeartFromSVG) and writes:
  *
  *   src/lib/data/heart-designs.json  the parsed HeartDesign per heart (fingers in
@@ -40,7 +40,7 @@ import { Resvg } from '@resvg/resvg-js';
 import { socialCardBuilder } from './social-cards.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const heartsJsonPath = path.join(root, 'src/lib/data/hearts.json');
+const heartsJsonPath = path.join(root, 'hearts.json');
 const metaPath = path.join(root, 'src/lib/data/heart-meta.json');
 const cardsPath = path.join(root, 'src/lib/data/heart-cards.json');
 const designsPath = path.join(root, 'src/lib/data/heart-designs.json');

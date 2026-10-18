@@ -17,7 +17,7 @@
 // `$lib/data/heartIndexJson`): every page imports this module, and the prose
 // belongs in the detail page's lazily loaded chunk, not in the bundle the whole
 // site loads.
-import hearts from '$lib/data/hearts.json?index';
+import hearts from '../../../hearts.json?index';
 import { t, type Language } from '$lib/i18n';
 import type { TranslationKey } from '$lib/i18n/translations';
 

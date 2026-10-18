@@ -1,7 +1,7 @@
 import type { Plugin } from 'vite';
 
 /**
- * `hearts.json?index`: src/lib/data/hearts.json with every heart's
+ * `hearts.json?index`: the project root's hearts.json with every heart's
  * `description` left out, so `$lib/data/categories` (which nearly every page
  * imports) can read the gallery's ids and order without shipping the prose.
  * The prose is read through the plain `hearts.json` import in
@@ -16,7 +16,7 @@ export function heartIndexJson(): Plugin {
 		enforce: 'pre',
 		transform(code, id) {
 			const [file, query = ''] = id.split('?');
-			if (!file.endsWith('/src/lib/data/hearts.json')) return null;
+			if (!/\/hearts\.json$/.test(file) || file.includes('/node_modules/')) return null;
 			if (!new URLSearchParams(query).has('index')) return null;
 			const data = JSON.parse(code) as {
 				categories: { id: string; hearts: { id: string }[] }[];

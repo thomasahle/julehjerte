@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import hearts from './hearts.json';
+import hearts from '../../../hearts.json';
 import {
 	ALL_HEART_IDS,
 	CATEGORIES,

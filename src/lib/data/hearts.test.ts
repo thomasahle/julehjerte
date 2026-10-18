@@ -4,8 +4,8 @@
  * the ids against static/hearts/, the categories and both descriptions.
  */
 import { describe, expect, it } from 'vitest';
-import hearts from './hearts.json';
-import index from '$lib/data/hearts.json?index';
+import hearts from '../../../hearts.json';
+import index from '../../../hearts.json?index';
 import type { CategoryId } from './categories';
 
 const KNOWN_CATEGORIES: CategoryId[] = ['klassiske', 'stjerner', 'moenstre', 'figurer', 'hjerter'];

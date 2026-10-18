@@ -26,7 +26,7 @@
  * Hearts a visitor drew or received by link are not in this map; they keep
  * whatever description their maker typed into the editor.
  */
-import hearts from './hearts.json';
+import hearts from '../../../hearts.json';
 import type { Language } from '$lib/i18n';
 
 /** The same paragraph in both site languages. */

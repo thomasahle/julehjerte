@@ -1,6 +1,6 @@
 # Adding a heart to the gallery
 
-A gallery heart is one SVG and one entry in `src/lib/data/hearts.json`. Everything
+A gallery heart is one SVG and one entry in `hearts.json` in the project root. Everything
 else is generated from those two.
 
 1. **The SVG.** Draw the heart in the editor (`/editor/`) and save it with
@@ -12,7 +12,7 @@ else is generated from those two.
    (`boelgebrud`, `stjerne-ramme`) — it becomes the URL `/hjerte/<id>/`.
 
 2. **The entry.** Add one object to the right category's `hearts` list in
-   `src/lib/data/hearts.json`, at the place it should appear in the gallery:
+   `hearts.json` (project root), at the place it should appear in the gallery:
 
    ```json
    {
@@ -46,5 +46,5 @@ else is generated from those two.
 5. **Preview:** `npx vite preview` and look at the front page and
    `/hjerte/<id>/` and `/en/hjerte/<id>/`.
 
-6. **Commit** `static/hearts/<id>.svg`, `src/lib/data/hearts.json` and the three
+6. **Commit** `static/hearts/<id>.svg`, `hearts.json` and the three
    generated JSON files together.

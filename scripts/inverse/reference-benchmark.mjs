@@ -10,7 +10,7 @@ import { prepare, design, inspectSaved } from '../../static/inverse/core/engine.
 import { GENERAL_PRESET, MATCHING_GRID_PRESET } from '../../src/lib/inverse/presets.js';
 const arg = name => process.argv.find(s => s.startsWith(`--${name}=`))?.split('=').slice(1).join('=');
 const output = arg('output') || `tmp/inverse-reference/${new Date().toISOString().replace(/[:.]/g, '-')}`;
-const ids = arg('ids')?.split(',') || JSON.parse(await fs.readFile('src/lib/data/hearts.json')).categories.flatMap(c => c.hearts.map(h => h.id));
+const ids = arg('ids')?.split(',') || JSON.parse(await fs.readFile('hearts.json')).categories.flatMap(c => c.hearts.map(h => h.id));
 const seconds = Number(arg('seconds') || 5);
 const profiles = { general: GENERAL_PRESET, 'matching-grid': MATCHING_GRID_PRESET };
 const selectedProfiles = arg('profiles')?.split(',') || Object.keys(profiles);
