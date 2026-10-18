@@ -1,4 +1,5 @@
 import {refinePeriodicGrid} from './grid-refine.js';
+import {auditGridOutline} from './grid-outline.js';
 import {makeFields,foregroundBox} from './fields.js';
 import {makePaletteFields} from './palette.js';
 import {makeAnchoredFields} from './anchored.js';
@@ -200,11 +201,28 @@ export function createMotifDetector(image,options={}){checkImage(image);const pr
  const warnings=[];if(lobeRefinement?.accepted)warnings.push('Independent lobe shapes improved the outline fit. Review all four overlap corners.');if(f.anchored)warnings.push('The pale outline was inferred from colours inside the heart. Review all four overlap corners.');if(residuals.some(r=>r>3))warnings.push('Lobe outlines do not closely fit a single flat-heart model.');if(sideSupport.some(x=>x<.65))warnings.push('One or both lower edges have limited support, possibly due to a ribbon or overlapping paper.');if(arcSupport.some(x=>x<.6))warnings.push('Part of a lobe outline is obscured or ambiguous.');if(spread.some(x=>x>6))warnings.push('Several plausible fits disagree on the corner positions.');
  if(quad.some(p=>p[0]<1||p[1]<1||p[0]>image.width-2||p[1]>image.height-2))warnings.push('The heart may be clipped by the image boundary.');
  let gridRefinement=null,finalQuad=quad,finalOutline=outline;
- if(options.refineGrid!==false&&!f.palette&&!f.anchored){gridRefinement=refinePeriodicGrid(image,quad);if(gridRefinement.accepted){finalQuad=gridRefinement.quad;const HH=homography(SQUARE,finalQuad);finalOutline=CONTOURS.map(a=>a.map(p=>project(HH,p)));warnings.push('Corners were refined using a regular checker-lattice hypothesis; review the displayed physical outline.');}}
+ if(options.refineGrid!==false&&!f.anchored&&f.palette?.colourEvidenceUsed!==false&&quad.every(([x,y])=>x>=0&&y>=0&&x<=image.width-1&&y<=image.height-1)){
+  gridRefinement=refinePeriodicGrid(image,quad);
+  if(gridRefinement.accepted){
+   if(f.palette||gridRefinement.n===4){
+    const origin=back([0,0]),bx=back([1,0]).map((v,i)=>v-origin[i]),by=back([0,1]).map((v,i)=>v-origin[i]),det=bx[0]*by[1]-bx[1]*by[0];
+    const workingQuad=gridRefinement.quad.map(p=>{const x=p[0]-origin[0],y=p[1]-origin[1];return[(x*by[1]-y*by[0])/det,(y*bx[0]-x*bx[1])/det];});
+    const audit=auditGridOutline(f,workingQuad,{mode:fit.mode,initialDepths:fit.lobeDepths,scale:work.scale});
+    const {outline:checkedOutline,...evidence}=audit;gridRefinement.physicalOutline=evidence;
+    if(audit.passed){
+     finalQuad=gridRefinement.quad;finalOutline=checkedOutline.map(points=>points.map(back));
+     arcSupport.splice(0,2,...audit.lobeOutlineSupport);sideSupport.splice(0,2,...audit.lowerOutlineSupport);residuals.splice(0,2,...audit.medianLobeResidualPx);
+    }else{gridRefinement={...gridRefinement,accepted:false,quad,reason:audit.reason};}
+   }else{
+    finalQuad=gridRefinement.quad;const HH=homography(SQUARE,finalQuad);finalOutline=CONTOURS.map((a,k)=>a.map(p=>project(HH,k===0?[p[0],p[1]*2*fit.lobeDepths[0]]:k===3?[p[0]*2*fit.lobeDepths[1],p[1]]:p)));
+   }
+   if(gridRefinement.accepted)warnings.push('Corners were refined using a regular checker-lattice hypothesis; review the displayed physical outline.');
+  }
+ }
  const status=warnings.length?'needs_review':'candidate';
  const corners=[[box[0],box[1]],[box[2],box[1]],[box[2],box[3]],[box[0],box[3]]].map(back);
  const heartBox=rotation?[Math.min(...corners.map(p=>p[0])),Math.min(...corners.map(p=>p[1])),Math.max(...corners.map(p=>p[0])),Math.max(...corners.map(p=>p[1]))]:box.map((v,i)=>(v+.5)/work.scale-.5+workROI[i%2]);
- return{version:f.backgroundSegmentation?'0.5.0':lobeRefinement?.accepted?'0.4.0':f.anchored?'0.3.0':f.palette?'0.2.0':'0.1.0',status,quad:finalQuad,shapeQuad:quad,gridRefinement,lobeRefinement,cornerOrder:CORNER_ORDER,outline:finalOutline,roi:inputROI,workingROI:workROI,heartBox,orientation:f.palette?(fit.mode===0?'first-colour-left':'second-colour-left'):fit.mode===0?'red-left-white-right':'white-left-red-right',score:fit.loss,elapsedMs:performance.now()-started,evaluations:fit.evaluations,evidence:{lowerEdgeSupport:sideSupport,...edgeEvidence,...(f.backgroundSegmentation?{backgroundSegmentation:f.backgroundSegmentation,lowerBand:extendLowerBand?'extended':'ordinary'}:{}),lobeOutlineSupport:arcSupport,medianLobeResidualPx:residuals,alternativeSpreadPx:spread,lowerLines:lines,diameterContrast:fit.diameterContrast,workingScale:work.scale,...(rotation?{workingRotation:{degrees,originalSize:[baseFields.w,baseFields.h],rotatedSize:[f.w,f.h],coordinateConvention:'Lower-line coordinates are in the rotated working image; returned corners and outlines are in the original photograph.'}}:{}),lobeDepths:fit.lobeDepths,palette:f.palette||null,anchored:f.anchored||null,capColourLoss:fit.colorLoss},warnings,notes:['Coordinates estimate the physical overlap, not an arbitrary high-contrast interior frame.','Review is required for occlusion, non-planar paper, unusual caps or other paper palettes.']};
+ return{version:f.backgroundSegmentation?'0.5.0':lobeRefinement?.accepted?'0.4.0':f.anchored?'0.3.0':f.palette?'0.2.0':'0.1.0',status,quad:finalQuad,shapeQuad:quad,gridRefinement,lobeRefinement,cornerOrder:CORNER_ORDER,outline:finalOutline,roi:inputROI,workingROI:workROI,heartBox,orientation:f.palette?(fit.mode===0?'first-colour-left':'second-colour-left'):fit.mode===0?'red-left-white-right':'white-left-red-right',score:fit.loss,elapsedMs:performance.now()-started,evaluations:fit.evaluations,evidence:{lowerEdgeSupport:sideSupport,...edgeEvidence,...(f.backgroundSegmentation?{backgroundSegmentation:f.backgroundSegmentation,lowerBand:extendLowerBand?'extended':'ordinary'}:{}),lobeOutlineSupport:arcSupport,medianLobeResidualPx:residuals,alternativeSpreadPx:spread,lowerLines:lines,diameterContrast:fit.diameterContrast,workingScale:work.scale,...(rotation?{workingRotation:{degrees,originalSize:[baseFields.w,baseFields.h],rotatedSize:[f.w,f.h],coordinateConvention:'Lower-line coordinates are in the rotated working image; returned corners and outlines are in the original photograph.'}}:{}),lobeDepths:gridRefinement?.physicalOutline?.passed?gridRefinement.physicalOutline.lobeDepths:fit.lobeDepths,palette:f.palette||null,anchored:f.anchored||null,capColourLoss:gridRefinement?.physicalOutline?.passed?gridRefinement.physicalOutline.capColourLoss:fit.colorLoss,...(gridRefinement?.physicalOutline?.passed?{lowerEdgeSupportMethod:"registered-lattice-paper-outline"}:{})},warnings,notes:['Coordinates estimate the physical overlap, not an arbitrary high-contrast interior frame.','Review is required for occlusion, non-planar paper, unusual caps or other paper palettes.']};
  };
  detector.preparationMs=performance.now()-preparationStart;
  // A pose cannot supply a paper colour missing from the fixed segmentation.

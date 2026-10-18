@@ -2946,6 +2946,97 @@
       },
       "decision": "Bilinear working samples alone improve some checkers but worsen the dim frame (3.18 to 5.06px) and deeper lighter frame (11.83 to 18.74px). Combining bilinear samples with the unshipped mixture policies still fails to recover consistent checker accuracy. Keep production unchanged.",
       "next": "Evaluate the existing checker-lattice registration with four-cell hypotheses; its current minimum of five excludes these controls. Photometric acceptance alone must not bypass a physical-outline check."
+    },
+    "fourCellGridRegistration": {
+      "status": "Implemented in the worktree after focused tests; full production/browser validation pending",
+      "initialPhotometricExperiment": {
+        "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/four-cell-lattice-results/results.json",
+        "sha256": "c54a1f971892bbc0774f4c744d64a2880221609c047aaa093dd1e6698917eac7"
+      },
+      "guardedBroadReplay": {
+        "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/guarded-grid-broad-results/results.json",
+        "sha256": "ca484530598d22060e95afcceef94dd6f243c339e6bac26450541f626654d395",
+        "inputs": 89,
+        "summary": [
+          {
+            "id": "guarded-grid-only",
+            "changed": [
+              "broad-study/standard",
+              "broad-study/lobes-0.66-0.61-false",
+              "broad-study/lobes-0.66-0.61-true",
+              "broad-study/lobes-0.4-0.7-false",
+              "broad-study/lobes-0.4-0.7-true",
+              "broad-study/lobes-0.75-0.4-false",
+              "broad-study/lobes-0.75-0.4-true",
+              "broad-study/rotated-65",
+              "broad-study/rotated-90",
+              "broad-study/rotated-180",
+              "broad-study/rotated-270",
+              "broad-study/white-background-0068bb-ce1471",
+              "broad-study/white-background-b71327-f3f1e8",
+              "broad-study/two-hearts-selection",
+              "broad-study/brown-gradient-jpeg-0.8",
+              "broad-study/brown-gradient-jpeg-1",
+              "broad-study/brown-gradient-jpeg-1.1",
+              "targeted-study/07-lighter-background-checker",
+              "targeted-study/09-tinted-checker",
+              "targeted-study/11-lighter-background-checker"
+            ],
+            "lostSupportedInPhotoCrop": [],
+            "knownErrorIncreaseOverHalfPixel": [],
+            "knownErrorDecreaseOverHalfPixel": [
+              "broad-study/standard",
+              "broad-study/lobes-0.66-0.61-false",
+              "broad-study/lobes-0.66-0.61-true",
+              "broad-study/lobes-0.4-0.7-false",
+              "broad-study/lobes-0.4-0.7-true",
+              "broad-study/lobes-0.75-0.4-false",
+              "broad-study/lobes-0.75-0.4-true",
+              "broad-study/rotated-65",
+              "broad-study/rotated-90",
+              "broad-study/rotated-180",
+              "broad-study/rotated-270",
+              "broad-study/white-background-0068bb-ce1471",
+              "broad-study/white-background-b71327-f3f1e8",
+              "broad-study/two-hearts-selection",
+              "broad-study/brown-gradient-jpeg-0.8",
+              "broad-study/brown-gradient-jpeg-1",
+              "broad-study/brown-gradient-jpeg-1.1",
+              "targeted-study/07-lighter-background-checker",
+              "targeted-study/09-tinted-checker",
+              "targeted-study/11-lighter-background-checker"
+            ],
+            "clippedButSupportedInPhoto": [],
+            "supportedNegativeControl": [],
+            "knownCompleteSupportedMaximumError": 11.828856410066837
+          }
+        ],
+        "realCollageCropsExactlyUnchanged": 40
+      },
+      "implementation": [
+        "static/inverse/locator/grid-refine.js",
+        "static/inverse/locator/grid-outline.js",
+        "static/inverse/locator/locator.js"
+      ],
+      "checks": [
+        "Keep the existing photometric, cell-interior and four-border transition gates.",
+        "For four-cell and palette proposals, require observed support for both lobes and lower edges plus both cap colours. Only cap depths are refitted; the proposed corners remain fixed.",
+        "Do not refine clipped seeds or offline body-only fields that explicitly disable colour evidence.",
+        "Keep independent cap depths in both displayed outlines and diagnostic metadata."
+      ],
+      "focusedValidation": {
+        "tests": 14,
+        "passed": 14,
+        "seconds": 16.661283958,
+        "files": [
+          "scripts/inverse/checker-registration.test.mjs",
+          "scripts/inverse/rgb-background-crop.test.mjs",
+          "scripts/inverse/learning/projective-body.test.mjs"
+        ],
+        "log": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/production-draft/focused.log",
+        "scope": "Five new regressions cover deep four-cell photos, a false checker lacking lobes, non-checker stability and fresh independent template reconstruction below 1% known-design error. Existing RGB/bauble/clipped-tip and body-only adapter tests also pass."
+      },
+      "next": "Recheck the production copy against all 89 recorded proposals, run actual uploads and editable-SVG checks in a private browser, and complete check/lint/application/full-inverse/build validation. Keep public 5232 on its validated previous snapshot until those checks pass."
     }
   },
   "fitterSensitivity": {

@@ -547,3 +547,28 @@ A fixed diagnostic now extends its search to **4–12**, retaining all photometr
 per-cell and boundary-count gates. It starts from recorded production and mixture
 crops without using known corners. This produces only diagnostic proposals;
 physical-outline validation remains required before any integration.
+
+
+The four-cell lattice proposal improves the two deeper checkerboards to
+**0.35–0.37 px** maximum corner error in approximately **0.08 s**. Its photometric
+gates reject the framed controls. Integration now also checks the proposed
+corners against both observed lower edges, both paper lobes and their colours.
+Only the cap depths may move during that check; the overlap corners stay fixed.
+Clipped seeds and offline body-only fields cannot invoke this colour-based pass.
+
+The guarded **89-input replay** improves **20 known-geometry cases by more than
+half a pixel**, with no known regression over that reporting threshold. All
+**40 real collage crops remain exactly unchanged**. No supported in-photo crop
+is lost, and no clipped or negative control is promoted. The framed-motif failures
+remain open; this change does not include the rejected colour/resampling policies.
+
+The production code now includes the guarded registration and preserves independent
+cap depths in the displayed outline. All **14 focused tests pass** in 16.66 s:
+five new registration/reconstruction tests, five existing RGB crop regressions,
+and four body-only adapter tests. A deliberately photographed checker without
+paper lobes passes the image-only grid test but fails the new physical check.
+A fresh template fit from automatic photo corners passes independent geometry,
+paper and feature validation and stays below **1% error against the known design**.
+
+Full production, browser and suite validation are next. The local 5232 preview
+continues serving its previously validated snapshot until those checks finish.

@@ -1,5 +1,5 @@
 import {bilinear,homography,project,convexQuad,nelderMead,clamp} from './math.js';
-/** Optional registration against a strongly supported regular checker lattice.
+/** Optional registration against a strongly supported regular checker lattice, including four-cell designs.
  * This is NOT used for arbitrary motifs. Must pass an >86% photometric gate AND four matching boundary-transition counts.
  * No reference paths, previous quads or case IDs are used.
  */
@@ -7,8 +7,8 @@ export function refinePeriodicGrid(image,quad,{maxIterations=1100}={}){
  const w=image.width,h=image.height,field=new Float32Array(w*h);for(let i=0;i<field.length;i++){const r=image.data[i*4],g=image.data[i*4+1];field[i]=1/(1+Math.exp(-(((r-g)/(r+g+1)-.30)/.045)));}
  const S=[[0,0],[1,0],[1,1],[0,1]],base=quad.flat(),scale=Math.sqrt(((quad[0][0]-quad[2][0])**2+(quad[0][1]-quad[2][1])**2)/2);
  function error(q,n,phase,size=64,hard=false){let H;try{H=homography(S,q);}catch{return 1;}let sum=0;for(let y=0;y<size;y++)for(let x=0;x<size;x++){const u=(x+.5)/size,v=(y+.5)/size,pred=((Math.floor(u*n)+Math.floor(v*n))%2)^phase,p=project(H,[u,v]),value=bilinear(field,w,h,p[0],p[1],.5);sum+=hard?((value>.5)!==Boolean(pred)?1:0):Math.abs(value-pred);}return sum/(size*size);}
- let best={error:1};for(let n=5;n<=12;n++)for(let phase=0;phase<2;phase++){const e=error(quad,n,phase);if(e<best.error)best={error:e,n,phase};}
- if(best.error>.30)return{accepted:false,reason:'No strong dense checker-lattice evidence',initialError:best.error};
+ let best={error:1};for(let n=4;n<=12;n++)for(let phase=0;phase<2;phase++){const e=error(quad,n,phase);if(e<best.error)best={error:e,n,phase};}
+ if(best.error>.30)return{accepted:false,reason:'No strong regular checker-lattice evidence',initialError:best.error};
  let z=Array(8).fill(0),totalEvaluations=0;
  for(const size of [64,96]){
   const f=zz=>{if(zz.some(x=>Math.abs(x)>.15))return 2+zz.reduce((s,x)=>s+x*x,0);const q=quad.map((p,i)=>[p[0]+zz[2*i]*scale,p[1]+zz[2*i+1]*scale]);if(!convexQuad(q))return 2;return error(q,best.n,best.phase,size)+.025*zz.reduce((s,x)=>s+x*x,0);};
