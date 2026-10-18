@@ -1189,7 +1189,7 @@
     "sourceCommit": "148f1b1e",
     "diagnosticCommit": "2b56cb81",
     "scope": "Preserve source, final geometry/report, packet summaries and best actual Stop geometry at each lattice for original puppy, shifted puppy and shifted bird failures. No acceptance or timing assertion changes. Capture runs only after a failed assertion.",
-    "verification": "JavaScript syntax checks and ESLint passed; focused Linux capture run pending.",
+    "verification": "JavaScript syntax checks and ESLint passed; Linux capture completed with nine passes and five failures, with retained evidence.",
     "linux": {
       "url": "https://github.com/thomasahle/julehjerte/actions/runs/39177445255",
       "diagnosticCommit": "2b56cb81",
@@ -1230,5 +1230,29 @@
     },
     "validation": "Both first feasible assignments satisfy both models within 2e-5 residual. Ten local routing/LP/deadline regressions passed, but this does not establish a speed improvement.",
     "log": "/tmp/julehjerte-label-bound-probe.log"
+  },
+  "featureInitializerPriority": {
+    "sourceCommit": "a9df4e2f",
+    "change": "Do not promote an ordinary geometry-valid initializer over a feature-retaining initializer when that ordinary layout already omits source colours. Check retention before and after clearance; keep the ordinary fallback queued.",
+    "local": {
+      "puppyCases": {
+        "passed": 2,
+        "failed": 0,
+        "log": "/tmp/julehjerte-feature-priority-tests.log"
+      },
+      "neighborCases": {
+        "passed": 22,
+        "failed": 0,
+        "log": "/tmp/julehjerte-feature-priority-neighbors.log"
+      },
+      "scope": "Original and one-pixel-shifted puppy plus clearance geometry, near-miss perturbations, and weighted objectives. Original image, opening shape, geometry, and paper assertions unchanged."
+    },
+    "linux": {
+      "url": "https://github.com/thomasahle/julehjerte/actions/runs/39177873822",
+      "diagnosticCommit": "6405762f",
+      "mode": "feature-detail",
+      "status": "in_progress",
+      "job": 117824194798
+    }
   }
 }
