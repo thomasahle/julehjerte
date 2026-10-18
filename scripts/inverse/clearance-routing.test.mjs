@@ -13,6 +13,7 @@ import {finalMaterialAudit} from '../../static/inverse/core/geometric-material.j
 import {rejectedRoutingQuality,repairRejectedRouting} from '../../static/inverse/core/direct/rejected-routing.js';
 import {renderExportedWeave} from './export-renderer.mjs';
 import {captureFitFailure} from './diagnostics/fit-failure.mjs';
+import {loadNumericalKernel} from '../../static/inverse/core/numerical-kernel.js';
 
 const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/sloth-clearance-routing.json'));
 const cfg=settings({...fixture.configuration,invert:false,removeSpecks:0,fillHoles:0});
@@ -39,6 +40,31 @@ for(const entry of fixture.cases){
     const rendered=await renderExportedWeave(solutionJSON(repaired.solution),n);
     assert.ok(rendered.mask.reduce((s,v,i)=>s+Number(v!==mask[i]),0)/mask.length<.02);
     assert.equal(JSON.stringify(solutionJSON(proposal)),before);assert.deepEqual(source.sourceImage.mask,mask);
+  });
+  test(`a late ${entry.id} gradient checkpoint can use its reserved clearance repair`,async t=>{
+    await loadNumericalKernel();
+    const source=input(),proposal=loadSolutionJSON(entry.proposal),before=solutionJSON(proposal);
+    let now=0;t.mock.method(performance,'now',()=>now+=15);
+    const repaired=repairRejectedRouting(proposal,source,cfg,{deadline:1100});
+    t.mock.restoreAll();
+    assert.ok(repaired.report.steps<160,'Exercise an interrupted gradient block.');
+    assert.equal(repaired.report.finalProjection?.accepted,true);
+    const candidate=repaired.solution||repaired.refinementSeed;
+    assert.ok(candidate,repaired.report.reason);
+    if(!repaired.solution){
+      assert.equal(repaired.report.accepted,false);
+      assert.equal(repaired.report.paper.status,'uncertain');
+      assert.equal(repaired.report.reason,'paper_rejected');
+    }
+    // Keeping an uncertain checkpoint does not waive its finer paper audit.
+    const checked={...cfg,materialResolution:700};
+    assert.equal(validate(candidate,checked,{finalGeometry:true}).passed,true);
+    let paper=finalMaterialAudit(candidate,checked);
+    if(paper.status==='uncertain')paper=finalMaterialAudit(candidate,{...checked,materialResolution:1000});
+    assert.equal(paper.status,'pass');
+    const rendered=await renderExportedWeave(solutionJSON(candidate),n);
+    assert.ok(rendered.mask.reduce((sum,v,i)=>sum+Number(v!==mask[i]),0)/mask.length<.02);
+    assert.deepEqual(solutionJSON(proposal),before);assert.deepEqual(source.sourceImage.mask,mask);
   });
   test(`fresh ${entry.id} fitting carries repaired clearance through final export`,async t=>{
     const started=performance.now(),source=input(),answer=await design(source,cfg),report=answer.report;

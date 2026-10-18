@@ -100,8 +100,23 @@ export function repairRejectedRouting(proposal,input,cfg,{deadline=Infinity,qual
   // recovery still has time. Never discard an already valid earlier checkpoint
   // merely because a later rejected update used the end of this small phase.
   if(performance.now()>deadline)return finish('deadline');
-  const solution=graph.solution(fitted.points,phase,input),woven=sampleWeave(solution,source.resolution);
+  let solution=graph.solution(fitted.points,phase,input),woven=sampleWeave(solution,source.resolution);
   report.geometry=validate(solution,cfg);report.imageError=maskDisagreement(source,woven);report.features=auditFeatureFidelity(source,woven,cfg);
+  // A partial gradient block can end just short of the clearance constraint.
+  // Use part of the verification reserve for the common local projection,
+  // keeping the actual required width rather than the larger fitting cushion.
+  // This moves curves; it never excuses the failed geometry or image checks.
+  if(!report.geometry.passed&&report.geometry.issues.every(i=>['short_self_clearance','nonlocal_self_clearance'].includes(i.type))&&report.imageError<=cfg.maxImageError&&report.features.passed&&until-performance.now()>200){
+    const maxMilliseconds=timed?350:Infinity,clearanceMargin=report.geometry.issues.some(i=>i.type==='nonlocal_self_clearance')?cfg.nominalWidth:null;
+    const projected=projectShortReturns(graph,fitted.points,phase,input,cfg,{initialAudit:report.geometry,
+      deadline:Math.min(until-150,performance.now()+maxMilliseconds),maxMilliseconds,maxIterations:64,clearanceMargin});
+    report.finalProjection=projected.report;
+    if(performance.now()>deadline)return finish('deadline');
+    if(projected.points){
+      solution=graph.solution(projected.points,phase,input);woven=sampleWeave(solution,source.resolution);
+      report.geometry=validate(solution,cfg);report.imageError=maskDisagreement(source,woven);report.features=auditFeatureFidelity(source,woven,cfg);
+    }
+  }
   if(!report.geometry.passed||report.imageError>cfg.maxImageError||!report.features.passed)return finish('refinement_rejected');
   report.paper=paperAudit(solution,cfg).summary;
   // Resolve a conservative lattice ambiguity just as the main fitter does.
