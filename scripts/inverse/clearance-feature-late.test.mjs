@@ -4,6 +4,7 @@ import {cfg,resolution,mask,input} from './clearance-feature-fixture.mjs';
 import {design} from '../../static/inverse/core/engine.js';
 import {auditFeatureFidelity} from '../../static/inverse/core/feature-shapes.js';
 import {renderExportedWeave} from './export-renderer.mjs';
+import {captureFitFailure} from './diagnostics/fit-failure.mjs';
 
 test('late clearance comparison can repair its first usable layout before polishing',async t=>{
   const source=input(),original=structuredClone(source.sourceImage);
@@ -20,6 +21,7 @@ test('late clearance comparison can repair its first usable layout before polish
     });
   }finally{now.mock.restore();}
   const report=answer.report,comparison=report.solver.clearanceComparison;
+  try{
   assert.equal(advanced,true);
   assert.ok(comparison?.repair,JSON.stringify({comparison,stages:report.solver.stages}));
   assert.notEqual(comparison.repair.reason,'insufficient_time');
@@ -38,4 +40,5 @@ test('late clearance comparison can repair its first usable layout before polish
   }
   assert.deepEqual(source.sourceImage,original);
   t.diagnostic(JSON.stringify({simulatedDelayMilliseconds:offset,solverSeconds:report.solver.seconds,errors}));
+  }catch(error){t.diagnostic(await captureFitFailure({answer,source:source.sourceImage,context:{case:'late-clearance-feature',simulatedDelayMilliseconds:offset,assertion:error.message}}));throw error;}
 });
