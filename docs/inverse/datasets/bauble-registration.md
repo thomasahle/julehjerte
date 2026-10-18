@@ -523,3 +523,27 @@ two controls, the fitter already works well when supplied the correct physical
 crop. The next investigation is subpixel boundary/coordinate consistency rather
 than additional fitter search. Broader real-photo validation remains required;
 none of these crop experiments has changed production or the local preview.
+
+
+The subpixel sampling experiment evaluates **48 analytic-ramp cases** across
+fractional ROI origins and three scales. Nearest-neighbour samples differ from
+the positions represented by the back transform by up to **0.5 source pixel**.
+Premultiplied bilinear sampling into a float working buffer reduces the ramp
+error below **0.000004 px**. A transparent cyan neighbour changes coverage but
+leaves the observed red paper colour intact. This measures interpolation
+quantization; it does not independently prove the coordinate-map formula wrong.
+
+A **20-input × three-policy** crop replay keeps all physical gates and original
+pixels. Bilinear sampling alone improves some checkers but makes the dim frame
+worse (**3.18 → 5.06 px**) and moves the deeper lighter frame into a much worse
+fit (**11.83 → 18.74 px**). Combining it with the unshipped robust-mixture policies
+still leaves checker errors around 2–3 px. The resampling change is not adopted.
+A more precise local measurement does not by itself fix the complete fitting
+objective and its competing minima.
+
+The existing regular-checker refinement currently searches **5–12 cells per
+side**, excluding these four-cell controls, and is disabled for palette fields.
+A fixed diagnostic now extends its search to **4–12**, retaining all photometric,
+per-cell and boundary-count gates. It starts from recorded production and mixture
+crops without using known corners. This produces only diagnostic proposals;
+physical-outline validation remains required before any integration.

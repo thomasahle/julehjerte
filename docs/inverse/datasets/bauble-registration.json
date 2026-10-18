@@ -2459,6 +2459,493 @@
         "visualInspection": "The experimental crops visibly introduce shifted/slanted cell boundaries; the known-corner exports are nearly regular. Small JPEG-following irregularities remain even with known corners.",
         "conclusion": "The solver follows the imported mask well (0.23\u20130.45% independent error), but automatic crop errors distort the inferred design. Correct known corners reduce final ideal-design error to 0.171\u20130.183%, compared with 2.489\u20132.749% for production crops and 3.972\u20135.418% for these experimental crops."
       }
+    },
+    "subpixelSamplingStudy": {
+      "status": "Coordinate experiment and twenty-input replay complete; not adopted",
+      "sampling": {
+        "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/subpixel-coordinate-diagnosis.json",
+        "sha256": "c498dbb947897a89870d9bf3218bb2311375967b07e965a37f88f0ff05a80f83",
+        "cases": 48,
+        "maximumNearestCoordinateErrorPx": 0.5,
+        "maximumBilinearCoordinateErrorPx": 3.051757815342171e-06,
+        "transparentEdgeSample": [
+          190,
+          20,
+          40,
+          127.5
+        ],
+        "interpretation": "Analytic ramps expose nearest-sample quantization relative to the coordinates of the back transform. This is ordinary interpolation approximation error, not independent proof that the coordinate-map formula is invalid. Premultiplied interpolation prevents hidden RGB leaking into observed paper colours."
+      },
+      "cropReplay": {
+        "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/subpixel-crop-results/results.json",
+        "sha256": "d3fc7e6b637619428b4dc626252a210129c45eef98f34c8527e4f7501204f0d7",
+        "inputs": 20,
+        "variants": 3,
+        "rows": [
+          {
+            "id": "targeted-study/01-tinted-checker",
+            "alternatives": [
+              {
+                "id": "bilinear-only",
+                "errorPx": 1.3279738723631023,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-segmentation",
+                "errorPx": 2.8619038334851186,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-crossing",
+                "errorPx": 2.78702727450783,
+                "supported": true,
+                "withinPhoto": true
+              }
+            ]
+          },
+          {
+            "id": "targeted-study/02-tinted-framed-blob",
+            "alternatives": [
+              {
+                "id": "bilinear-only",
+                "errorPx": 9.24260327801571,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-segmentation",
+                "errorPx": 1.780345479635925,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-crossing",
+                "errorPx": 1.6622693623545388,
+                "supported": true,
+                "withinPhoto": true
+              }
+            ]
+          },
+          {
+            "id": "targeted-study/03-tinted-dim-checker",
+            "alternatives": [
+              {
+                "id": "bilinear-only",
+                "errorPx": 0.48270669074822137,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-segmentation",
+                "errorPx": 0.48270669074822137,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-crossing",
+                "errorPx": 0.48270669074822137,
+                "supported": true,
+                "withinPhoto": true
+              }
+            ]
+          },
+          {
+            "id": "targeted-study/04-tinted-dim-framed-blob",
+            "alternatives": [
+              {
+                "id": "bilinear-only",
+                "errorPx": 5.060926808515848,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-segmentation",
+                "errorPx": 5.060926808515848,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-crossing",
+                "errorPx": 5.060926808515848,
+                "supported": true,
+                "withinPhoto": true
+              }
+            ]
+          },
+          {
+            "id": "targeted-study/05-neutral-checker",
+            "alternatives": [
+              {
+                "id": "bilinear-only",
+                "errorPx": 1.2017766075919718,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-segmentation",
+                "errorPx": 2.1157586214216493,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-crossing",
+                "errorPx": 1.9661347860888894,
+                "supported": true,
+                "withinPhoto": true
+              }
+            ]
+          },
+          {
+            "id": "targeted-study/06-neutral-framed-blob",
+            "alternatives": [
+              {
+                "id": "bilinear-only",
+                "errorPx": 1.3887476544859245,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-segmentation",
+                "errorPx": 1.3887476544859245,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-crossing",
+                "errorPx": 1.3887476544859245,
+                "supported": true,
+                "withinPhoto": true
+              }
+            ]
+          },
+          {
+            "id": "targeted-study/07-lighter-background-checker",
+            "alternatives": [
+              {
+                "id": "bilinear-only",
+                "errorPx": 0.558602968823088,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-segmentation",
+                "errorPx": 3.0431694829563734,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-crossing",
+                "errorPx": 3.0924967543199817,
+                "supported": true,
+                "withinPhoto": true
+              }
+            ]
+          },
+          {
+            "id": "targeted-study/08-lighter-background-framed-blob",
+            "alternatives": [
+              {
+                "id": "bilinear-only",
+                "errorPx": 8.987342472101334,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-segmentation",
+                "errorPx": 1.2330439531015311,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-crossing",
+                "errorPx": 1.1479453989375517,
+                "supported": true,
+                "withinPhoto": true
+              }
+            ]
+          },
+          {
+            "id": "targeted-study/09-tinted-checker",
+            "alternatives": [
+              {
+                "id": "bilinear-only",
+                "errorPx": 1.4338599595607147,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-segmentation",
+                "errorPx": 2.206253950439134,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-crossing",
+                "errorPx": 2.3956248466920087,
+                "supported": true,
+                "withinPhoto": true
+              }
+            ]
+          },
+          {
+            "id": "targeted-study/10-tinted-framed-blob",
+            "alternatives": [
+              {
+                "id": "bilinear-only",
+                "errorPx": 9.385583350579255,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-segmentation",
+                "errorPx": 1.6529024271339112,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-crossing",
+                "errorPx": 1.672763761735949,
+                "supported": true,
+                "withinPhoto": true
+              }
+            ]
+          },
+          {
+            "id": "targeted-study/11-lighter-background-checker",
+            "alternatives": [
+              {
+                "id": "bilinear-only",
+                "errorPx": 1.2384021128976601,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-segmentation",
+                "errorPx": 3.1470264760637674,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-crossing",
+                "errorPx": 2.3910411860289895,
+                "supported": true,
+                "withinPhoto": true
+              }
+            ]
+          },
+          {
+            "id": "targeted-study/12-lighter-background-framed-blob",
+            "alternatives": [
+              {
+                "id": "bilinear-only",
+                "errorPx": 18.742905638159044,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-segmentation",
+                "errorPx": 2.4249566419396857,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-crossing",
+                "errorPx": 3.296537461185715,
+                "supported": true,
+                "withinPhoto": true
+              }
+            ]
+          },
+          {
+            "id": "targeted-study/13-tinted-checker",
+            "alternatives": [
+              {
+                "id": "bilinear-only",
+                "errorPx": 3.958749310711407,
+                "supported": true,
+                "withinPhoto": false
+              },
+              {
+                "id": "bilinear-mixture-segmentation",
+                "errorPx": 4.630885632071252,
+                "supported": true,
+                "withinPhoto": false
+              },
+              {
+                "id": "bilinear-mixture-crossing",
+                "errorPx": 4.555846782804052,
+                "supported": true,
+                "withinPhoto": false
+              }
+            ]
+          },
+          {
+            "id": "targeted-study/14-tinted-framed-blob",
+            "alternatives": [
+              {
+                "id": "bilinear-only",
+                "errorPx": 12.812207722834927,
+                "supported": true,
+                "withinPhoto": false
+              },
+              {
+                "id": "bilinear-mixture-segmentation",
+                "errorPx": 4.974897077118491,
+                "supported": true,
+                "withinPhoto": false
+              },
+              {
+                "id": "bilinear-mixture-crossing",
+                "errorPx": 5.974524318482631,
+                "supported": true,
+                "withinPhoto": false
+              }
+            ]
+          },
+          {
+            "id": "shadow-frame-0.9",
+            "alternatives": [
+              {
+                "id": "bilinear-only",
+                "errorPx": 2.9430562007954157,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-segmentation",
+                "errorPx": 4.105089366802329,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-crossing",
+                "errorPx": 2.885858618808374,
+                "supported": true,
+                "withinPhoto": true
+              }
+            ]
+          },
+          {
+            "id": "shadow-frame-1",
+            "alternatives": [
+              {
+                "id": "bilinear-only",
+                "errorPx": 2.2798943974636035,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-segmentation",
+                "errorPx": 2.5023224054433943,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-crossing",
+                "errorPx": 2.8772010896134255,
+                "supported": true,
+                "withinPhoto": true
+              }
+            ]
+          },
+          {
+            "id": "shadow-frame-1.1",
+            "alternatives": [
+              {
+                "id": "bilinear-only",
+                "errorPx": 2.6769396556140466,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-segmentation",
+                "errorPx": 2.7399665721456716,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-crossing",
+                "errorPx": 2.7814235833970264,
+                "supported": true,
+                "withinPhoto": true
+              }
+            ]
+          },
+          {
+            "id": "dark-channel-shaded-0.9",
+            "alternatives": [
+              {
+                "id": "bilinear-only",
+                "errorPx": 2.5386083467280827,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-segmentation",
+                "errorPx": 2.5386083467280827,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-crossing",
+                "errorPx": 2.5386083467280827,
+                "supported": true,
+                "withinPhoto": true
+              }
+            ]
+          },
+          {
+            "id": "dark-channel-shaded-1",
+            "alternatives": [
+              {
+                "id": "bilinear-only",
+                "errorPx": 3.1637116471394933,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-segmentation",
+                "errorPx": 3.1637116471394933,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-crossing",
+                "errorPx": 3.1637116471394933,
+                "supported": true,
+                "withinPhoto": true
+              }
+            ]
+          },
+          {
+            "id": "dark-channel-shaded-1.1",
+            "alternatives": [
+              {
+                "id": "bilinear-only",
+                "errorPx": 2.2689577226662996,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-segmentation",
+                "errorPx": 2.2689577226662996,
+                "supported": true,
+                "withinPhoto": true
+              },
+              {
+                "id": "bilinear-mixture-crossing",
+                "errorPx": 2.2689577226662996,
+                "supported": true,
+                "withinPhoto": true
+              }
+            ]
+          }
+        ]
+      },
+      "decision": "Bilinear working samples alone improve some checkers but worsen the dim frame (3.18 to 5.06px) and deeper lighter frame (11.83 to 18.74px). Combining bilinear samples with the unshipped mixture policies still fails to recover consistent checker accuracy. Keep production unchanged.",
+      "next": "Evaluate the existing checker-lattice registration with four-cell hypotheses; its current minimum of five excludes these controls. Photometric acceptance alone must not bypass a physical-outline check."
     }
   },
   "fitterSensitivity": {
