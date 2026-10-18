@@ -6,7 +6,7 @@ on:
       mode:
         type: choice
         default: full
-        options: [full, bicycle, comparison, maple]
+        options: [full, bicycle, comparison, maple, profile]
         description: Full diagnostics or focused normal-budget regressions
 permissions:
   contents: read
@@ -43,6 +43,11 @@ jobs:
       - name: Replay maple comparison regression
         if: inputs.mode == 'maple'
         run: node --test scripts/inverse/comparison-search.test.mjs
+      - name: Profile the normal-budget star fit
+        if: inputs.mode == 'profile'
+        run: |
+          mkdir -p tmp/ci-profiles
+          node --cpu-prof --cpu-prof-dir=tmp/ci-profiles --test --test-name-pattern='^hard-bibel-star-outline:' scripts/inverse/deferred-routing.test.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -50,4 +55,5 @@ jobs:
           path: |
             tmp/ci-diagnostics
             tmp/inverse-test-failures
+            tmp/ci-profiles
           retention-days: 3
