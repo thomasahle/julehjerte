@@ -110,6 +110,24 @@ test('ordered-grid image, smoothness and clearance gradients match finite differ
   }
 });
 
+test('narrow grid gradients retain aligned boundaries and weighted partial blocks',()=>{
+  // Five cuts activate the saturated-interval sweep. A flat grid places cuts
+  // on pixel centres, so this also exercises zero tanh factors without division.
+  for(const counts of [[5,5],[4,5]])for(const phase of [-1,1])for(const weighted of [false,true]){
+    const n=15,model=gridModel(counts,4);model.z.fill(0);
+    const target=Float64Array.from({length:n*n},(_,i)=>(Math.sin(i*.13)+1)/2);
+    const weights=weighted?Float64Array.from(target,(_,i)=>i%7?((i%5)+1)/5:0):null;
+    const options={floor:0,smooth:false,weights},epsilon=.002,h=1e-7;
+    const value=gridLoss(model,target,n,phase,epsilon,options);
+    assert.ok(value.gradient.some(v=>Math.abs(v)>1e-4));
+    for(let i=0;i<model.z.length;i+=3){
+      const old=model.z[i];model.z[i]=old+h;const up=gridLoss(model,target,n,phase,epsilon,options).loss;
+      model.z[i]=old-h;const down=gridLoss(model,target,n,phase,epsilon,options).loss;model.z[i]=old;
+      near(value.gradient[i],(up-down)/(2*h),3e-8);
+    }
+  }
+});
+
 test('direct controls preserve phase for equal and unequal sheet counts in exported geometry',async()=>{
   for(const counts of[[2,2],[2,3],[3,2]])for(const phase of[1,-1]){
     const model=gridModel(counts,8,8);model.z.fill(0);const graph=new CurveGraph(gridPaths(model)),n=128,mask=gridMask(model,n,phase),curveMask=renderCurves(graph,graph.points,phase,n,48),solution=graph.solution(graph.points,phase);
