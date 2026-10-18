@@ -257,6 +257,9 @@
 				warn: false
 			};
 		}
+		// No piece at all fits: "room for 0 of 1" says nothing useful; say what
+		// the printer says, and what to do about it.
+		if (laserPlan && laserPlan.piecesFit === 0) return { text: t('pdfTooLarge', lang), warn: true };
 		if (laserPlan && laserPlan.piecesFit < laserPlan.piecesRequested) {
 			let text = t('sheetFit', lang, { n: laserPlan.piecesFit, total: laserPlan.piecesRequested });
 			// With several hearts, say which ones the file will not hold.

@@ -414,6 +414,22 @@ describe('DownloadDialog', () => {
 		expect(view.note()).toBe('Der er kun plads til 2 af 3 stykker på arket');
 	});
 
+	it('says the template is too big when no laser piece fits, in either language', async () => {
+		// The opened-out piece is three widths tall: 300 mm at 100 mm, more than A4's 297.
+		const da = await render();
+		await da.choose('Laserskærer');
+		await da.type('#download-width', '100');
+		expect(da.note()).toBe('Skabelonen er for stor til arket. Vælg en mindre bredde eller et større ark.');
+		expect(da.button('Hent SVG')!.disabled).toBe(true);
+		da.dispose();
+
+		const en = await render([loadHeart('classic-3x3'), loadHeart('jul')], 'en');
+		await en.choose('Laser cutter');
+		await en.type('#download-width', '200');
+		expect(en.note()).toBe('The template is too big for the sheet. Choose a smaller width or a larger sheet.');
+		expect(en.button('Download SVG')!.disabled).toBe(true);
+	});
+
 	it('cuts a heart with two equal halves from one sheet, and says to cut it in each colour', async () => {
 		const view = await render();
 		await view.choose('Laserskærer');
