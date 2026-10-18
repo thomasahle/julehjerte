@@ -139,6 +139,10 @@ test('a stalled preferred grid resumes its expired routing probe within the long
     }
   });
   const solver=answer.report.solver,attempts=solver.featureRecoveryAttempts;
+  if(!solver.deferredFeatureRecovery.attempted)t.diagnostic(JSON.stringify({
+    deferred:solver.deferredFeatureRecovery,seconds:solver.seconds,termination:solver.termination,
+    candidates:solver.candidates,stages:solver.stages,templateChecksPassed:answer.report.templateChecksPassed,imageError:answer.report.imageError
+  }));
   assert.equal(gridDelay,7000);
   assert.equal(solver.finalistPreference.reservesRefinement,true);
   assert.equal(solver.deferredFeatureRecovery.attempted,true);
