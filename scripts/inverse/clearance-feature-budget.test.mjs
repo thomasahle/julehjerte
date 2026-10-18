@@ -23,8 +23,9 @@ test('a simpler seed that never contained the Viking opening leaves time for the
   const answer=await design(input,cfg),report=answer.report,comparison=report.solver.clearanceComparison;
   let exportedError=null;
   try{
-    assert.equal(comparison.alternativeGeometry,true);
-    assert.equal(comparison.alternativeColours,false);
+    assert.equal(comparison.deferred,'missing-source-colours');
+    assert.equal(comparison.preferred,false);
+    assert.equal(comparison.alternativeGeometry,undefined,'The known feature-losing alternative should not consume a clearance preparation.');
     assert.equal(comparison.alternativeColoursBeforeClearance,false);
     assert.equal(comparison.repair,undefined,'A seed missing the opening before clearance needs a new routing, not this short repair.');
     const replay=await renderExportedWeave(answer.files['cut_geometry.json'],source.resolution);

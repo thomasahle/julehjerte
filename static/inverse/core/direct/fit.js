@@ -696,7 +696,15 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
     // constraint; compare the retained ordinary finalist before committing.
     if(i===0&&!clearanceComparison&&!refinePartialFirst&&!weights&&!symmetryRequested&&(!featureSeed(selected)||earlyFeatureInitialization?.trigger==='weak-region')&&deadline-performance.now()>2500){
       const retry=clearanceComparisonSeed(fine.slice(i+1).filter(r=>!featureSeed(r)),selected,clear);
-      if(retry){
+      if(retry&&retainsGridColours(selected)&&!retainsGridColours(retry)){
+        // Do not prepare a simpler grid that already loses source colours
+        // while the primary layout retains them. Keep it in the ordinary
+        // finalist queue; it cannot earn this early comparison on cut count
+        // alone. Clearance cannot justify repairing a never-present feature.
+        clearanceComparison={initialCounts:clear.model.counts,initialGridError:selected.error,initialClearanceError:clear.error,
+          alternativeCounts:retry.model.counts,alternativeGridError:retry.error,alternativeColoursBeforeClearance:false,
+          deferred:'missing-source-colours',preferred:false};
+      }else if(retry){
         const at=performance.now(),alternate=prepareRefinement(retry,deadline-at);
         const solution=alternate.graph.solution(alternate.graph.points,alternate.clear.phase,input);
         const geometry=validate(solution,alternate.refinementCfg,{checkImage:false});
@@ -784,7 +792,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
     // first checked geometry-and-paper checkpoint. Keep finalization and a
     // short polish window; existing geometric checkpoints keep their cutoff.
     const geometryRecoveryDeadline=candidates.some(c=>c.geometryPassed&&c.paperPassed)?end:Math.max(end,deadline-450);
-    let candidate=stage('directRefining',()=>refineCurves(graph,objectiveProb,n,clear.phase,{...refinementCfg,preferMatchingSheets:false},{deadline:end,geometryRecoveryDeadline,input,weights:objectiveWeights,skipRepeatedRollbacks:true,resolvePaperBeforeRollback:true,retryPaperSeparation:true,paperSeparationErrorThreshold:cfg.maxImageError,preferCheckpoint:featureSeed(selected)?(_candidate,solution)=>auditFeatureFidelity(source,sampleWeave(solution,source.resolution),cfg,sourceFeatures).passed:null,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:value=>{
+    let candidate=stage('directRefining',()=>refineCurves(graph,objectiveProb,n,clear.phase,{...refinementCfg,preferMatchingSheets:false},{deadline:end,geometryRecoveryDeadline,input,weights:objectiveWeights,skipRepeatedRollbacks:true,resolvePaperBeforeRollback:true,paperVerificationDeadline:Math.max(end,deadline-450),retryPaperSeparation:true,paperSeparationErrorThreshold:cfg.maxImageError,preferCheckpoint:featureSeed(selected)?(_candidate,solution)=>auditFeatureFidelity(source,sampleWeave(solution,source.resolution),cfg,sourceFeatures).passed:null,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:value=>{
       if(goodEnough(value))return true;
       if(!selected.protectFeatures||!earlyFeatureInitialization?.enclosurePending)return false;
       // Hand a checked colour-retaining fit to local shape refinement as soon
