@@ -14,8 +14,7 @@ import {paperBackend,sameArray,sameCore} from './paper-backend.js';
 const distanceBackend=paperBackend(sameArray),componentBackend=paperBackend(sameCore);
 export const paperKernelChoices=()=>({distanceTransform:distanceBackend.report(),components:componentBackend.report(),clearance:paperClearanceChoices()});
 /** Carry an explicitly verified finer paper lattice through final cleanup and
- * export. Changed audit inputs are checked again; exact repeated chord/fold
- * inputs may reuse a bounded, independently owned family result.
+ * export. Every changed geometry is audited again; no paper result is cached.
  * Physical tolerances and all other requested settings stay unchanged.
  */
 export function verifiedPaperSettings(solution,cfg){
@@ -122,28 +121,7 @@ function materialFamily({lines,foldCuts},k,w,cfg,includeMap,native){
   let map=null;if(includeMap){map=new Uint8Array(nx*ny);for(let i=0;i<map.length;i++){if(!paper[i])continue;if(certain[i])map[i]=c.anchors.has(c.labels[i])?1:3;else if(possible[i])map[i]=2;else map[i]=4;}}
   return{family:k,status,detachedCertainCoreIslands:c.floating.length,detachedPossibleCoreIslands:p.floating.length,detachedPossibleArea:p.floating.reduce((s,x)=>s+x.area,0),foldIntervals:fold,gridSpacing:h,clearanceGuard:guard,resolution:[nx,ny],originY,map,minimumDiameter:cfg.nominalWidth};
 }
-// Retain only four small family results, never raster maps. Rebuilding and
-// comparing every chord and fold endpoint avoids rounded hashes, graph IDs,
-// mutable point aliases or an assumption that a returned candidate is unchanged.
-// Forced backends and map requests always compute afresh for independent checks.
-const recentPaperFamilies=[];
-let reusedPaperFamilies=0,computedPaperFamilies=0;
-export const paperAuditReuseStats=()=>({reused:reusedPaperFamilies,computed:computedPaperFamilies,entries:recentPaperFamilies.length});
-function auditFamily(input,k,w,cfg,includeMap,native,reuse){
-  if(!reuse||includeMap||native!=='auto')return materialFamily(input,k,w,cfg,includeMap,native);
-  const key=[w,cfg.materialResolution,cfg.geometryTolerance,cfg.nominalWidth,cfg.minFeatureArea];
-  const index=recentPaperFamilies.findIndex(entry=>key.every((v,i)=>Object.is(v,entry.key[i]))&&samePaperInput(input,entry.input));
-  if(index>=0){
-    const [entry]=recentPaperFamilies.splice(index,1);recentPaperFamilies.push(entry);reusedPaperFamilies++;
-    return copyFamily(entry.result,k);
-  }
-  const result=materialFamily(input,k,w,cfg,false,native);computedPaperFamilies++;
-  const snapshot={foldCuts:input.foldCuts.slice(),lines:input.lines.map(line=>line.map(point=>point.slice()))};
-  recentPaperFamilies.push({key,input:snapshot,result:copyFamily(result,k)});
-  if(recentPaperFamilies.length>4)recentPaperFamilies.shift();
-  return result;
-}
-export function materialAudit(solution,cfg,{includeMaps=false,native='auto',reuse=true}={}){const start=performance.now(),w=solution.graph.target.width,inputs=[0,1].map(k=>paperInput(solution,k,cfg.geometryTolerance)),first=auditFamily(inputs[0],0,w,cfg,includeMaps,native,reuse),families=[first,samePaperInput(inputs[0],inputs[1])?copyFamily(first,1):auditFamily(inputs[1],1,w,cfg,includeMaps,native,reuse)],status=families.some(f=>f.status==='fail')?'fail':families.some(f=>f.status==='uncertain')?'uncertain':'pass';return{passed:status==='pass',status,families,summary:{status,requiredRemainingWidth:cfg.minWidth,nominalDiameter:cfg.nominalWidth,gridSpacing:families[0].gridSpacing,clearanceGuard:families[0].clearanceGuard,families:families.map(({family,status,detachedCertainCoreIslands,detachedPossibleCoreIslands,detachedPossibleArea,foldIntervals})=>({family,status,detachedCertainCoreIslands,detachedPossibleCoreIslands,detachedPossibleArea,foldIntervals})),method:'Guarded disk-centre lattice on the unfolded capsule. Eight-neighbour certified core and four-neighbour possible core; analytic outline and chord-distance refinement near threshold.',seconds:(performance.now()-start)/1000,limitations:['This replaces the Python GEOS offset implementation; numerical results are not identical.','Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.','Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.','Small tips and features below the explicitly stated area threshold are not certified.']}};}
+export function materialAudit(solution,cfg,{includeMaps=false,native='auto'}={}){const start=performance.now(),w=solution.graph.target.width,inputs=[0,1].map(k=>paperInput(solution,k,cfg.geometryTolerance)),first=materialFamily(inputs[0],0,w,cfg,includeMaps,native),families=[first,samePaperInput(inputs[0],inputs[1])?copyFamily(first,1):materialFamily(inputs[1],1,w,cfg,includeMaps,native)],status=families.some(f=>f.status==='fail')?'fail':families.some(f=>f.status==='uncertain')?'uncertain':'pass';return{passed:status==='pass',status,families,summary:{status,requiredRemainingWidth:cfg.minWidth,nominalDiameter:cfg.nominalWidth,gridSpacing:families[0].gridSpacing,clearanceGuard:families[0].clearanceGuard,families:families.map(({family,status,detachedCertainCoreIslands,detachedPossibleCoreIslands,detachedPossibleArea,foldIntervals})=>({family,status,detachedCertainCoreIslands,detachedPossibleCoreIslands,detachedPossibleArea,foldIntervals})),method:'Guarded disk-centre lattice on the unfolded capsule. Eight-neighbour certified core and four-neighbour possible core; analytic outline and chord-distance refinement near threshold.',seconds:(performance.now()-start)/1000,limitations:['This replaces the Python GEOS offset implementation; numerical results are not identical.','Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.','Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.','Small tips and features below the explicitly stated area threshold are not certified.']}};}
 export function seededRandom(seed=1729){let a=seed>>>0;return()=>{a+=0x6D2B79F5;let t=Math.imul(a^(a>>>15),1|a);t^=t+Math.imul(t^(t>>>7),61|t);return((t^(t>>>14))>>>0)/4294967296;};}
 export function perturbationAudit(solution,cfg,{onProgress=()=>{},resolution=121}={}){
   const w=solution.graph.target.width,baseRings=closedRings(solution,cfg.geometryTolerance),phase=solution.graph.target.phase^(solution.paths[0].length%2)^(solution.paths[1].length%2),baseline=sampleRings(baseRings.flat(),w,phase,resolution),random=seededRandom(cfg.seed),trials=[];let worst=null;
