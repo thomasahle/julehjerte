@@ -86,7 +86,9 @@ test('a short search reserves enough local refinement to close the photographed 
   const answer=await design(prepared.target,{...AUTOMATIC_PRESET,timeLimit:10,trials:0,earlyStop:false});
   const solver=answer.report.solver;
   assert.equal(solver.earlyFeatureInitialization.enclosurePending,true,'The initial colour-retaining grid has an open eye.');
-  assert.equal(solver.featureRecovery.budgetPolicy,'probe_before_grid_refinement');
+  assert.equal(solver.deferredFeatureRecovery.reason,'protected-open-feature');
+  assert.equal(solver.deferredFeatureRecovery.attempted,false,'A successful protected fit needs no speculative tracing.');
+  assert.equal(solver.featureRecovery,null);
   assert.equal(solver.earlyFeatureInitialization.detailHandoff,true);
   assert.equal(solver.featureDetail.applied,true);
   assert.ok(solver.seconds<10);
