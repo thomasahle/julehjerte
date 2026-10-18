@@ -496,6 +496,15 @@ the PDF carry it. Old saved hearts without colours keep rendering in the site-wi
   translations test passing. Danish is the default (no prefix), English under `/en/`.
 - Keep working: selection state in the URL (`?selected=`), the PDF generation and its settings dialog, sharing by
   hash link, user hearts in localStorage, analytics events (never with LaTeX/heart content), OG images, sitemap.
+- Google Analytics (GA4, `src/routes/+layout.svelte`, `src/lib/analytics.ts`): the tag loads after idle with
+  Consent Mode denying all storage (no cookies, no banner). The `config` call sends the first page view and sets
+  `full_referrer`, `referrer_host`, `landing_page` and `ref_tag`, which gtag attaches to every later event of
+  that page load. The stream's enhanced-measurement setting "page changes based on browser history events" is
+  **off**: ticking a heart rewrites `?selected=` through the router (`goto` with `replaceState`), and GA4 counted
+  each tick as a page view. Instead the root layout's `afterNavigate` sends `page_view` (`page_location`,
+  `page_path`, `page_title`, `page_referrer` = the page navigated from) when the pathname changes
+  (`isPageViewNavigation`): not on the first load, not for a search-only change, not for a hash jump; a step
+  back or forward to another path counts. Turning the stream setting back on would double-count path changes.
 - Prefer lucide icons already in the repo; otherwise copy the small stroke icons from the generator's `I` map.
 - Run `npm run check`, `npm run lint`, `npm test` and `npm run build` before you finish; fix what you break.
 - Commit your work on your branch with clear messages. **Never push.**

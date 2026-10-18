@@ -1,7 +1,8 @@
 <script lang="ts">
 	import "../app.css";
-	import { onMount } from "svelte";
+	import { onMount, tick } from "svelte";
 	import { browser, dev } from "$app/environment";
+	import { afterNavigate } from "$app/navigation";
 	import { page } from "$app/stores";
 	import { SITE_NAME, SITE_DESCRIPTION, SITE_DESCRIPTION_EN, SITE_KEYWORDS, SITE_URL, GA_MEASUREMENT_ID } from "$lib/config";
 	import { pageTitle, socialImage } from "$lib/seo";
@@ -9,6 +10,7 @@
 	import { alternatePaths, routeKeyFromPathname } from "$lib/i18n/routes";
 	import PageFooter from "$lib/components/PageFooter.svelte";
 	import { markAppStarted } from "$lib/hydration";
+	import { isPageViewNavigation, trackPageView } from "$lib/analytics";
 	import { getColors, subscribeColors, type HeartColors } from "$lib/stores/colors";
 
 	let { children } = $props();
@@ -81,6 +83,20 @@
 		return subscribeColors(apply);
 	});
 
+	// Page views after the first. The GA4 stream's "page changes based on
+	// browser history events" is switched off: ticking a heart rewrites
+	// ?selected= through the router (goto with replaceState), and GA4 counted
+	// every tick as a page view. So a client-side navigation sends its own
+	// page_view, and only when the pathname changes (isPageViewNavigation); the
+	// first load is the config call's automatic one. After a tick, so the new
+	// page's <title> is in place.
+	afterNavigate(async (navigation) => {
+		const { from, to } = navigation;
+		if (!from || !to || !isPageViewNavigation({ from, to })) return;
+		await tick();
+		trackPageView(to.url, document.title, from.url);
+	});
+
 	// Google Analytics is 170 KB over the wire and nothing on the page waits for
 	// it, so it loads once the browser is idle after the load event instead of
 	// competing with the page's own scripts. Events fired before then queue in
@@ -115,7 +131,11 @@
 	     the config records the full referrer, its host, the landing page with
 	     query string and any ?ref= tag; they are registered on the property as
 	     event-scoped custom dimensions (full_referrer, referrer_host,
-	     landing_page, ref_tag). -->
+	     landing_page, ref_tag); config parameters ride along on every later
+	     event of the page load. The config sends the first page view only:
+	     the stream's history-based page views are off (each ?selected= rewrite
+	     counted as one), and later page views come from afterNavigate above,
+	     one per change of pathname. -->
 	{#if GA_MEASUREMENT_ID && !dev}
 		{@html `<script>
 			window.dataLayer = window.dataLayer || [];

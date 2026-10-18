@@ -13,6 +13,44 @@ function trackEvent(
   window.gtag('event', eventName, params);
 }
 
+/** The two ends of a SvelteKit navigation, as far as page views care. */
+interface NavigationEnds {
+  from: { url: URL } | null;
+  to: { url: URL } | null;
+}
+
+/**
+ * Whether a client-side navigation is a new page for GA4. The stream's
+ * enhanced-measurement "page changes based on browser history events" is off
+ * (ticking a heart rewrites `?selected=` through the router, and each tick was
+ * counted as a page view), so the root layout sends page_view itself — only
+ * when the pathname changes. The first load (`from` is null) is the config
+ * call's own page view; a search-only change (`?selected=`) or a hash jump
+ * stays on the page; a step through history to another path is a new page.
+ */
+export function isPageViewNavigation({ from, to }: NavigationEnds): boolean {
+  if (!from || !to) return false;
+  return from.url.pathname !== to.url.pathname;
+}
+
+/**
+ * Send the page_view for a client-side navigation (see isPageViewNavigation).
+ * The referrer and landing parameters (full_referrer, referrer_host,
+ * landing_page, ref_tag) are set on the config call, which makes gtag attach
+ * them to every event of the page load, this one included; they describe how
+ * the visit arrived and are deliberately not recomputed here. page_referrer is
+ * the in-site page navigated from, as GA4's own history page views report it.
+ */
+export function trackPageView(url: URL, title: string, referrer?: URL) {
+  const params: Record<string, string> = {
+    page_location: `${url.origin}${url.pathname}${url.search}`,
+    page_path: url.pathname,
+    page_title: title,
+  };
+  if (referrer) params.page_referrer = `${referrer.origin}${referrer.pathname}${referrer.search}`;
+  trackEvent('page_view', params);
+}
+
 /**
  * Track when a heart is viewed (clicked from gallery)
  */
