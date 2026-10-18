@@ -680,7 +680,10 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
     // 2.5 seconds remains, a 450 ms tail cannot even start polishing after
     // assessment; use it for the unfinished fit instead. The enclosing
     // final-verification reserve remains outside this deadline.
-    const featurePolishReserve=featureSeed(selected)&&!candidates.some(c=>c.imagePassed)
+    // A clearance repair can also hand back a valid starting shape whose
+    // image still needs refinement. It has not earned a polishing reserve.
+    const unfinishedClearance=preparations.get(selected)?.clearanceContinuation;
+    const featurePolishReserve=(featureSeed(selected)||unfinishedClearance)&&!candidates.some(c=>c.imagePassed)
       ?Math.min(1700,Math.max(0,remaining-2500)):1700;
     const polishingReserve=samplingRetry?(samplingRecovery?.preflight?.preferred?1700:0):featurePolishReserve,end=Math.min(deadline-polishingReserve,performance.now()+allocation);
     const {clear,graph,protectedObjective,objectiveProb,objectiveWeights,refinementCfg,verification}=prepareRefinement(selected,allocation);
@@ -733,7 +736,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
             if(repaired.imagePassed||repair.continuation){
               preferred=true;verifiedAlternative||=repaired.imagePassed;
               const verification=repaired.paperVerification;
-              preparations.set(retry,{...alternate,graph:new CurveGraph(repaired.graph.nested(repaired.points),cfg.width),refinementCfg:verifiedPaperSettings({report:{paperVerification:verification}},alternate.refinementCfg),verification});
+              preparations.set(retry,{...alternate,graph:new CurveGraph(repaired.graph.nested(repaired.points),cfg.width),refinementCfg:verifiedPaperSettings({report:{paperVerification:verification}},alternate.refinementCfg),verification,clearanceContinuation:!!repair.continuation});
             }
           }
         }
