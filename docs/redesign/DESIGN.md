@@ -118,8 +118,9 @@ hearts — jul at left 4% (size 96, ribbon 130), stjerne at right 4% (90, 96), c
 randomised the same way; a starry-sky overlay SVG (viewBox 0 0 420 300, `xMidYMin meet`, absolute top, height
 300, pointer-events none) with 7 gold `<use href="#star">` and 6 white dots (positions in `hero()`);
 then h1 44px (36 below 600), p 15px, both buttons centred and wrapping.
-A scroll hint sits absolutely at `bottom:14px` (mouse outline icon 22×34 + "Scroll for at udforske
-skabeloner", 13px `--muted`, `z-index:1`) linking to `#skabeloner`. Below 600 an extra overlay SVG
+A scroll hint (mouse outline icon 22×34 + "Scroll for at udforske skabeloner", 13px `--muted`) linking to
+`#skabeloner` follows the buttons in flow, centred 18px under them, so it sits in the sky above the landscape
+band (2026-10-18; it was absolute at `bottom:14px`, which put it on the snow under the hills). Below 600 an extra overlay SVG
 (viewBox 0 0 390 230, `xMinYMax meet`, absolute left/bottom, height 230, `z-index:1`) adds two firs in the left
 corner: pine-b at (70,128) h100 fill `#3b5d46`, pine-c at (20,52) h178 width 0.85 fill `#35503f`.
 Give the stacked hero `.hero { display:flex; flex-direction:column }` and the landscape wrapper `order:10`;
@@ -170,7 +171,7 @@ the scroll-spy adds D to their tops, so a chip lands the level row just under th
 `$lib/front/hillLine`; `Gallery.svelte` measures (`[data-scene-land] > svg`, on mount and with a
 ResizeObserver) and hands the bar its chip lifts and the categories the column count. Before hydration the
 wrap's margin is the 1440 estimate `-100vw * 226 / 2172` and the grid is flat. `z-index: 1` stays so the gallery paints over the scene. Below 900
-none of this applies: the landscape is an in-flow band, with the scroll hint on it.
+none of this applies: the landscape is an in-flow band, with the scroll hint just above it.
 
 Gallery bar (`front/GalleryBar.svelte`, docs/redesign/GALLERY-BAR.md; it replaced the toolbar, 2026-10-17):
 sticky top 0, z-index 5, one row (`display: flex; align-items: center; gap: 12px`, padding 10px 0, 8px below

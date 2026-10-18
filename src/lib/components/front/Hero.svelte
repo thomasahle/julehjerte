@@ -91,6 +91,10 @@
 					{t('heroDesignHeart', lang)}
 				</a>
 			</div>
+			<!-- Below 900px only: under the buttons, in the sky above the landscape
+			     band. Inside .hero-text so it takes that column's 12px gap rather
+			     than .hero-inner's 40px one. -->
+			<ScrollHint {lang} />
 		</div>
 
 		<div class="hero-hearts hero-hearts-d">
@@ -118,8 +122,6 @@
 		<Fir x={70} tipY={128} height={100} fill={FIR_FILLS[1]} symbol="pine-b" widthFactor={0.9} />
 		<Fir x={20} tipY={52} height={178} fill={FIR_FILLS[0]} symbol="pine-c" widthFactor={0.85} />
 	</svg>
-
-	<ScrollHint {lang} />
 </Scene>
 
 <style>
