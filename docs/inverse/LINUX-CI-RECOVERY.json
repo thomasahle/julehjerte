@@ -1591,13 +1591,78 @@
       }
     ],
     "linux": {
-      "status": "not yet run on this source"
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/thomasahle/julehjerte/actions/runs/39219394841",
+      "diagnosticCommit": "56410e0a",
+      "passed": 1111,
+      "failed": 16,
+      "shards": [
+        {
+          "shard": 1,
+          "passed": 319,
+          "failed": 8,
+          "failures": [
+            "a small photographic mask perturbation recovers after an intrinsic trace loop",
+            "one unobserved corner preserves the significant features of photo-bird",
+            "an invalid feature proposal cannot consume the partial-photo search without a legal result",
+            "an accepted photo routing retains polishing time when a refinement checkpoint is slow",
+            "a worse colour-retaining grid leaves time for direct photographic routing",
+            "an actual cropped upload recovers its template when one edge hides slit endpoints",
+            "the main fitter reconstructs the dense binary photo target with legal editable-sized counts",
+            "leaf routing tries later border interpretations before expanding an exhausted speculative graph"
+          ]
+        },
+        {
+          "shard": 2,
+          "passed": 225,
+          "failed": 1,
+          "failures": [
+            "fresh fitting continues an unfinished verified initializer within the remaining search allowance"
+          ]
+        },
+        {
+          "shard": 3,
+          "passed": 227,
+          "failed": 0,
+          "failures": []
+        },
+        {
+          "shard": 4,
+          "passed": 340,
+          "failed": 7,
+          "failures": [
+            "fresh fitting retains the stacked motif on the resampled mask",
+            "fresh fitting retains the stacked motif on the original mask",
+            "fresh x-plus-1 fitting carries repaired clearance through final export",
+            "fresh y-minus-1 fitting carries repaired clearance through final export",
+            "the vertical near-miss layout produces checked exports within the original short search (1.5x clock)",
+            "the negative-diagonal near-miss layout produces checked exports within the original short search (1.5x clock)",
+            "late photo cleanup preserves source fidelity inside a 180-second request (750 ms interruption)"
+          ]
+        }
+      ]
     },
     "localCore": {
       "passed": 77,
       "failed": 0,
       "log": "/tmp/julehjerte-path-recovery-core-tests.log",
       "coverage": "Core MILP, reference, fractional relaxation rejection, rejected-routing safety and connector coverage."
-    }
+    },
+    "sourceCommit": "241cc10b",
+    "appChecks": {
+      "passed": true,
+      "sourceCommit": "241cc10b",
+      "check": "zero errors, six existing warnings",
+      "lint": "zero errors, four existing warnings",
+      "vitest": {
+        "files": 112,
+        "passed": 1570,
+        "skipped": 1
+      },
+      "build": "passed",
+      "logPrefix": "/tmp/julehjerte-path-recovery-"
+    },
+    "decision": "Retain the formulation as an explicit experimental solver option and in its benchmark; restore commodity flow for production feature recovery. The six-graph local gain did not generalize to the full Linux run: shifted x-plus-1 routing timed out and additional boundary-recovery tests failed. A valid alternative y-minus-1 route also exposed a test tied to its older paper-resolution requirement; inspect that independently rather than weakening paper checks."
   }
 }
