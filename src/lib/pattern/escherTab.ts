@@ -30,7 +30,7 @@ import {
 } from './editorBridge';
 import { ALL_RULES, canLean, ruleInfo, ruleKey, ruleSymmetry, sameRule, type TileRule } from './rules';
 import { cutCounts, fitLines, type PatternTile, type SideCurve } from './tiling';
-import { isStraightTile, ruleStart, switchRule } from './presets';
+import { isStraightTile, ruleStart, switchRule } from './starts';
 
 export { cutOfFinger, generateEditorFingers, sameRule, specialNodes, weaveParityOf };
 export type { PatternTile, SpecialNode, TileRule };
@@ -72,7 +72,7 @@ export function tileFingers(tile: PatternTile, rect = getCenteredRectParams({ x:
 }
 
 /** Whether the heart a tile makes, its lines fitted (`fitLines`), weaves, by the check the heart's own cuts get. */
-export function tileWeaves(tile: PatternTile): boolean {
+function tileWeaves(tile: PatternTile): boolean {
 	const fitted = fitLines(tile);
 	const made = tileFingers(fitted);
 	return findFingersWithIssues(made, intersectionMarginPx(inferOverlapRect(made, tileGrid(fitted)))).size === 0;

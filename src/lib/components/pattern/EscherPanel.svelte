@@ -32,13 +32,13 @@
 <div class="escher-tab">
 	<RuleTemplates {lang} active={rule} {onChoose} {compact} {disabled} />
 	{#if rule}
-		<div class="pattern-sizes" role="group" aria-label={tr('patternRowSize')}>
+		<div class="pattern-sizes" role="group" aria-label={tr('patternSizes')}>
 			{#each [3, 4, 5, 6, 7] as n (n)}
 				<button type="button" class="pattern-size" class:active={size === n} aria-pressed={size === n} {disabled} onclick={() => onSize(n)}>{n} × {n}</button>
 			{/each}
 		</div>
 		{#if !compact}
-			<p class="pattern-hint">{cornerHint ? `${tr('patternRowHint')} ${tr(cornerHint)}` : tr('patternRowHint')}</p>
+			<p class="pattern-hint">{cornerHint ? `${tr('patternDragHint')} ${tr(cornerHint)}` : tr('patternDragHint')}</p>
 		{/if}
 	{:else}
 		<p class="pattern-hint">{tr('patternTabChoose')}</p>

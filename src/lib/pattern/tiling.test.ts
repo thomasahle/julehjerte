@@ -6,7 +6,7 @@ import { get } from '$lib/paint/mask';
 import { rasterizeDesign } from '$lib/paint/rasterize';
 import { ALL_RULES, freeSides, neighbours, opposite, ruleInfo, ruleKey, stretchSource, type CurveKey } from './rules';
 import { cellOutline, completeHalfTurn, patternCuts, cutCounts, fitLines, patternToDesign, squareToStretch, stretchToSquare, type PatternTile } from './tiling';
-import { ruleStart } from './presets';
+import { ruleStart } from './starts';
 import { EXAMPLES, exampleTile } from './examples';
 
 const close = (a: Vec, b: Vec, eps = 1e-6) => Math.abs(a.x - b.x) < eps && Math.abs(a.y - b.y) < eps;

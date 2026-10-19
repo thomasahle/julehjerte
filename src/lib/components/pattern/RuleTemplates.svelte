@@ -23,7 +23,7 @@
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
 	import { ToggleGroup, ToggleGroupItem, keepChosen } from '$lib/components/ui/toggle-group';
 	import { freeSides, neighbours, ofType, opposite, ruleKey, type TileRule } from '$lib/pattern/rules';
-	import { ruleCode, ruleText } from '$lib/pattern/presets';
+	import { ruleCode, ruleText } from '$lib/pattern/names';
 	import TemplateGlyph from './TemplateGlyph.svelte';
 
 	interface Props {

@@ -122,7 +122,7 @@ export function completeHalfTurn(half: SideCurve): SideCurve {
 }
 
 /** Half a side, from (0, 0) to the side's middle, completed by its mirror image across x = 0.5. */
-export function completeMirror(half: SideCurve): SideCurve {
+function completeMirror(half: SideCurve): SideCurve {
 	const mirrored = reverseSegments(mapCurve(half, (p) => ({ x: 1 - p.x, y: p.y })));
 	return [...half, ...mirrored];
 }
@@ -319,7 +319,7 @@ function snapEnds(chain: BezierSegment[], axis: 'x' | 'y', lo: number, hi: numbe
  * its n − 1 cuts each way keep an even margin from its edges; and moved by the
  * opposite of the tile's `pan`, which moves the pattern within the heart.
  */
-export function patternWindow(tile: PatternTile): Vec {
+function patternWindow(tile: PatternTile): Vec {
 	const o = tileOffset(tile);
 	const pan = tile.pan ?? { x: 0, y: 0 };
 	return { x: o.x / 2 - pan.x, y: o.y / 2 - pan.y };

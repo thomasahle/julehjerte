@@ -3,7 +3,7 @@ import type { Finger } from '$lib/types/heart';
 import { getCenteredRectParams } from '$lib/utils/overlapRect';
 import { ALL_RULES, freeSides, opposite, ruleKey } from './rules';
 import { cutCounts, fitLines, type PatternTile, type SideCurve } from './tiling';
-import { ruleStart } from './presets';
+import { ruleStart } from './starts';
 import { knobTile } from './examples';
 import {
 	cornerHint,

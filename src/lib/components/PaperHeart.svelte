@@ -1789,7 +1789,7 @@
 		const hasLastAnchor = selectedAnchors.includes(segLen);
 		const wholeSelected = hasFirstAnchor && hasLastAnchor && selectedAnchors.length >= 2;
 
-		// The pattern's cuts come in a fixed number; its size is set in the pattern row.
+		// The pattern's cuts come in a fixed number; its size is set in the Escher tab.
 		if (wholeSelected && patternRule !== 'off') return;
 		if (wholeSelected) {
 			// Delete the entire curve if we have enough strips remaining

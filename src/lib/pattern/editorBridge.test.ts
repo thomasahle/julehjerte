@@ -3,13 +3,11 @@ import type { BezierSegment, Finger, Vec } from '$lib/types/heart';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 import { getCenteredRectParams, inferOverlapRect } from '$lib/utils/overlapRect';
 import { splitBezierAt } from '$lib/geometry/bezierSegments';
-import { ALL_RULES, freeSides, halfOf, opposite, ruleRepeat, ruleInfo, ruleKey, stretchSource, type CurveKey } from './rules';
+import { ALL_RULES, freeSides, halfOf, opposite, ruleRepeat, ruleInfo, ruleKey, stretchSource, type CurveKey, type TileRule } from './rules';
 import { cutCounts, firstLine, fitLines, patternCuts, patternToDesign, sourceCurve, straightCurve, type PatternTile, type SideCurve } from './tiling';
-import { ruleStart } from './presets';
+import { ruleStart } from './starts';
 import { EXAMPLES, exampleTile, knobTile } from './examples';
 import {
-	anchorOfCrossing,
-	crossingAt,
 	cutOfFinger,
 	extractTile,
 	fitsTile,
@@ -23,10 +21,21 @@ import {
 	slideCutEnd,
 	specialNodes,
 	stretchesOfCut,
-	straightTile,
 	tileAfterFingerEdit,
 	weaveParityOf
 } from './editorBridge';
+
+/** A tile with straight sides for every curve its rule reads. */
+const straightTile = (rule: TileRule, cuts: number): PatternTile => ({
+	rule,
+	cuts,
+	curves: Object.fromEntries(ruleInfo(rule).curves.map((key) => [key, straightCurve(!!halfOf(rule, key))]))
+});
+/** Whether Tegn's anchor `anchor` of cut `fingerId` is a crossing of the tiling. */
+const isCrossing = (tile: PatternTile, fingerId: string, anchor: number) => {
+	const point = placedPointAt(tile, fingerId, anchor);
+	return !!point && 'crossing' in point;
+};
 
 const near = (a: Vec, b: Vec, eps = 1e-6) => Math.abs(a.x - b.x) < eps && Math.abs(a.y - b.y) < eps;
 const sameCurve = (a: SideCurve, b: SideCurve, eps = 1e-6) =>
@@ -36,7 +45,7 @@ const problems = (tile: PatternTile) => {
 	return [...findFingersWithIssues(design.fingers, intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize)))];
 };
 
-describe('pattern row bridge', () => {
+describe("the bridge between a tile and Tegn's cuts", () => {
 	it('reads finger ids as cuts and leaves the square edges alone', () => {
 		expect(cutOfFinger('R-2', 3)).toEqual({ kind: 'V', index: 2 });
 		expect(cutOfFinger('L-1', 3)).toEqual({ kind: 'H', index: 1 });
@@ -55,7 +64,7 @@ describe('pattern row bridge', () => {
 		expect(near(r1.segments[0]!.p0, { x: rect.left + rect.width / 4, y: rect.bottom })).toBe(true);
 	});
 
-	// The row keeps the crossings on the plain grid, so it reads only the tiles that do.
+	// Reading a tile back from cuts keeps the crossings on the plain grid, so it reads only the tiles that do.
 	const plain = EXAMPLES.filter((p) => !p.offset);
 	it.each(plain.map((p) => [p.id, p] as const))('reads example %s back off the fingers it wrote', (_id, preset) => {
 		const tile = exampleTile(preset);
@@ -88,7 +97,7 @@ describe('pattern row bridge', () => {
 		const fingers = generateEditorFingers(birds, rect);
 		const back = extractTile(fingers, birds.rule, birds.cuts, rect);
 		expect(back === null || !fitsTile(fingers, back, rect)).toBe(true);
-		// one cut of a plain pattern bent by a tool the row does not know about
+		// one cut of a plain pattern bent by a tool the Escher tab does not know about
 		const leaf = exampleTile(EXAMPLES.find((p) => p.id === 'leaf')!);
 		const edited = generateEditorFingers(leaf, rect);
 		const first = edited[0]!;
@@ -129,7 +138,7 @@ describe('pattern row bridge', () => {
 		const raw = stretchesOfCut([], 'H', 2, tile.cuts);
 		expect(raw).toBeNull();
 		// the first inner crossing on the cut, with the handles on either side of it
-		const c = [...Array(before.segments.length).keys()].find((a) => a > 0 && crossingAt(tile, 'L-2', a))!;
+		const c = [...Array(before.segments.length).keys()].find((a) => a > 0 && isCrossing(tile, 'L-2', a))!;
 		const d = { x: 7, y: 5 };
 		const moved: BezierSegment[] = before.segments.map((s, k) => {
 			if (k === c - 1) return { ...s, p2: { x: s.p2.x + d.x, y: s.p2.y + d.y }, p3: { x: s.p3.x + d.x, y: s.p3.y + d.y } };
@@ -182,12 +191,12 @@ describe('pattern row bridge', () => {
 			const tile = exampleTile(EXAMPLES.find((p) => p.id === id)!);
 			const rect = getCenteredRectParams({ x: tile.cuts + 1, y: tile.cuts + 1 });
 			const [anchor] = [...specialNodes(tile, 'R-2').entries()].find(([, kind]) => kind === 'lean')!;
-			const crossing = crossingAt(tile, 'R-2', anchor)!;
+			const crossing = placedPointAt(tile, 'R-2', anchor)!;
 			const was = generateEditorFingers(tile, rect).find((f) => f.id === 'R-2')!.segments[anchor]!.p0;
 			const delta = { x: 6, y: -4 };
 			const next = leanTo(tile, 'R-2', anchor, delta, rect)!;
 			expect(next.offset).toBeDefined();
-			const after = anchorOfCrossing(next, 'R-2', crossing);
+			const after = anchorOfPlacedPoint(next, 'R-2', crossing);
 			expect(after, id).toBeGreaterThan(0);
 			const now = generateEditorFingers(next, rect).find((f) => f.id === 'R-2')!.segments[after]!.p0;
 			expect(near(now, { x: was.x + delta.x, y: was.y + delta.y }, 1e-6), id).toBe(true);

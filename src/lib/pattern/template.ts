@@ -20,7 +20,7 @@ import { edgeClasses, halfOf, ruleInfo, stretchSource, type CurveKey, type Stret
 import { stretchCurve, stretchFrame, toFrame, type PatternTile, type SideCurve } from './tiling';
 
 /** The four sides of the red tile (0, 0), as the template shows them. */
-export const TILE_SIDES: Array<{ side: 'nw' | 'ne' | 'se' | 'sw'; kind: StretchKind; i: number; j: number }> = [
+const TILE_SIDES: Array<{ side: 'nw' | 'ne' | 'se' | 'sw'; kind: StretchKind; i: number; j: number }> = [
 	{ side: 'nw', kind: 'V', i: 0, j: 0 },
 	{ side: 'ne', kind: 'H', i: 0, j: 0 },
 	{ side: 'se', kind: 'V', i: 1, j: 0 },

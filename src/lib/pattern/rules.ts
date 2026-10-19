@@ -18,7 +18,7 @@ export const SIDE_LINKS: SideLink[] = ['move', 'mirror', 'turn'];
 
 /** How the two left sides of the red tile are tied together, and the two right ones (see `TileRule`). */
 export type NeighbourLink = 'mirror' | 'turn' | 'both';
-export const NEIGHBOUR_LINKS: NeighbourLink[] = ['mirror', 'turn', 'both'];
+const NEIGHBOUR_LINKS: NeighbourLink[] = ['mirror', 'turn', 'both'];
 
 /**
  * How the red tile's sides are tied together: three families of rules, by which
@@ -139,19 +139,19 @@ export interface GridMotion {
 
 const gm = (a: number, b: number, c: number, d: number, e: number, f: number): GridMotion => ({ a, b, c, d, e, f });
 /** Moved by (dx, dy). */
-export const shift = (dx: number, dy: number) => gm(1, 0, 0, 1, dx, dy);
+const shift = (dx: number, dy: number) => gm(1, 0, 0, 1, dx, dy);
 /** Turned half round about (cx, cy). */
-export const halfTurn = (cx: number, cy: number) => gm(-1, 0, 0, -1, 2 * cx, 2 * cy);
+const halfTurn = (cx: number, cy: number) => gm(-1, 0, 0, -1, 2 * cx, 2 * cy);
 /** Turned a quarter round about (cx, cy), +x towards +y. */
-export const quarterTurn = (cx: number, cy: number) => gm(0, -1, 1, 0, cx + cy, cy - cx);
+const quarterTurn = (cx: number, cy: number) => gm(0, -1, 1, 0, cx + cy, cy - cx);
 /** Mirrored across the line x = c. */
-export const mirrorX = (c: number) => gm(-1, 0, 0, 1, 2 * c, 0);
+const mirrorX = (c: number) => gm(-1, 0, 0, 1, 2 * c, 0);
 /** Mirrored across the line y = c. */
-export const mirrorY = (c: number) => gm(1, 0, 0, -1, 0, 2 * c);
+const mirrorY = (c: number) => gm(1, 0, 0, -1, 0, 2 * c);
 /** Mirrored across the line x − y = c, which the heart, standing on its corner, shows upright. */
-export const mirrorDiagonal = (c: number) => gm(0, 1, 1, 0, c, -c);
+const mirrorDiagonal = (c: number) => gm(0, 1, 1, 0, c, -c);
 /** Mirrored across the line x + y = c, which the heart shows level. */
-export const mirrorAntidiagonal = (c: number) => gm(0, -1, -1, 0, c, c);
+const mirrorAntidiagonal = (c: number) => gm(0, -1, -1, 0, c, c);
 /** `m`, then `n`. */
 export const andThen = (m: GridMotion, n: GridMotion): GridMotion =>
 	gm(n.a * m.a + n.b * m.c, n.a * m.b + n.b * m.d, n.c * m.a + n.d * m.c, n.c * m.b + n.d * m.d, n.a * m.e + n.b * m.f + n.e, n.c * m.e + n.d * m.f + n.f);
@@ -211,7 +211,6 @@ const TYPE_MOTIONS: Record<TypeNumber, GridMotion[]> = {
 	74: [mirrorDiagonal(0), mirrorAntidiagonal(1), halfTurn(0, 0.5)]
 };
 
-export const TYPE_NUMBERS = Object.keys(TYPE_MOTIONS).map(Number) as TypeNumber[];
 export const ofType = (ih: TypeNumber): TileRule => ({ sides: 'type', ih });
 
 /** The motion a way of tying a pair of opposite sides takes the red tile across its lower-right side (`v`) or lower-left one (`h`) with. */

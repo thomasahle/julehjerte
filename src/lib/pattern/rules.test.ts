@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { BezierSegment, Vec } from '$lib/types/heart';
 import { ALL_RULES, SIDE_LINKS, canLean, freeSides, halfOf, isRedCell, moveBy, neighbours, opposite, ruleInfo, ruleKey, ruleMotions, type SideLink, type TileRule } from './rules';
 import { cellOutline, crossing, type PatternTile, type SideCurve } from './tiling';
-import { ruleStart } from './presets';
+import { ruleStart } from './starts';
 
 // The Escher tab says how the white tile follows from the red one, from which of the red tile's
 // sides belong together and how. These tests hold every answer to its word: the motion it names
@@ -154,6 +154,12 @@ function holds(tile: PatternTile, m: Motion): boolean {
 }
 
 describe('every way of tying the sides does what the Escher tab says', () => {
+	it('has every way of tying the sides, once, and the types a woven heart allows besides', () => {
+		// thirteen ways of tying the sides in three families, and nineteen more of McLean's types
+		expect(ALL_RULES).toHaveLength(32);
+		expect(new Set(ALL_RULES.map(ruleKey)).size).toBe(ALL_RULES.length);
+	});
+
 	it.each(ALL_RULES.map((rule) => [ruleKey(rule), rule] as const))('%s', (_key, rule) => {
 		for (const [what, tile] of [['lopsided', lopsidedTile(rule)], ['start', start(rule)]] as const) {
 			for (const m of claims(rule)) expect(holds(tile, m), `${what}: ${m.name}`).toBe(true);
