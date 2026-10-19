@@ -56,6 +56,23 @@ running totals the butterfly at 45% takes 0.7 s instead of 10.5 s. The board has
 three to six strips per side, four unless the visitor moves the Strimler
 slider.
 
+## The picture before the cuts
+
+Product decision (2026-10-19): the visitor sees the heart at once and the cuts
+follow. A woven heart's picture flips colour across every visible cut, so a
+frame's picture is its board, its frame and its motif laid over each other,
+even-odd (`picture.ts`); the slow part, choosing each cut's sheet and the
+hidden cuts, does not change it. The page draws the picture while the worker
+finds the cuts, and the finished heart replaces it. For the figure in the
+checks the picture is exact: over the star, tree and heart on boards of 3–6
+strips at 50–100%, the finished heart differs from its picture in under 1.5% of
+the square, along the fitted curves, once the generator reports the size it
+kept where the strips could not all be whole at the size asked for. The other
+frames' outer patterns (rays, checks, sunburst, layers, corners, fitted grids,
+wedges) come from their constructions and get pictures next. With an instant
+picture the motif can be dragged: up and down the middle, as far as it keeps its
+size.
+
 ## Sizes that move one way with the sliders
 
 Product decision (2026-10-18): dragging a slider must never make the motif or

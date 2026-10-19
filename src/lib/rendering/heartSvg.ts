@@ -1,6 +1,6 @@
 import type { HeartDesign } from '$lib/types/heart';
 import type { HeartColors } from '$lib/stores/colors';
-import { computeWeaveData } from '$lib/rendering/svgWeave';
+import { buildLobeClipPath, computeWeaveData } from '$lib/rendering/svgWeave';
 import { heartPaintPaths } from './heartPaint';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
 
@@ -214,5 +214,33 @@ export function renderHeartSvgMarkup(
 		`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="${viewBox}" preserveAspectRatio="xMidYMid meet">`,
 		markup,
 		`</svg>`
+	].join('');
+}
+
+/**
+ * A heart drawn from its picture alone (see `$lib/generator/picture`), before
+ * its cuts are found: the same lobes, colours and framing as a woven heart,
+ * with the picture's rings, even-odd in a 0–100 square, where the right sheet
+ * shows.
+ */
+export function renderPictureSvgMarkup(
+	rings: readonly (readonly (readonly [number, number])[])[],
+	colors: HeartColors,
+	opts: { size?: number; idPrefix?: string; paddingRatio?: number } = {}
+): string {
+	const size = opts.size ?? 600, idPrefix = opts.idPrefix ?? 'picture';
+	const overlap = { left: 0, top: 0, right: 100, bottom: 100, width: 100, height: 100 };
+	const { viewBox, overlapCenter } = computeHeartViewBoxFromOverlap(overlap, { paddingRatio: opts.paddingRatio ?? 0.021, square: true });
+	const picture = rings.map(ring => 'M' + ring.map(([x, y]) => `${x.toFixed(2)},${y.toFixed(2)}`).join('L') + 'Z').join('');
+	return [
+		`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="${viewBox}" preserveAspectRatio="xMidYMid meet">`,
+		`<g transform="rotate(45, ${overlapCenter.x}, ${overlapCenter.y})">`,
+		`<defs><clipPath id="${idPrefix}-overlap"><rect x="0" y="0" width="100" height="100" /></clipPath></defs>`,
+		`<path d="${buildLobeClipPath('left', overlap)}" fill="${colors.left}" />`,
+		`<path d="${buildLobeClipPath('right', overlap)}" fill="${colors.right}" />`,
+		`<g clip-path="url(#${idPrefix}-overlap)">`,
+		`<rect x="0" y="0" width="100" height="100" fill="${colors.left}" />`,
+		`<path d="${picture}" fill="${colors.right}" fill-rule="evenodd" />`,
+		`</g></g></svg>`
 	].join('');
 }

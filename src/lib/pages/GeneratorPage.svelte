@@ -23,10 +23,11 @@
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
 	import { href, editorHref, otherLanguage } from '$lib/i18n/routes';
 	import { pageTitle } from '$lib/seo';
-	import { renderHeartSvgMarkup } from '$lib/rendering/heartSvg';
+	import { computeHeartViewBoxFromOverlap, renderHeartSvgMarkup, renderPictureSvgMarkup } from '$lib/rendering/heartSvg';
+	import { picture, type Picture } from '$lib/generator/picture';
 	import { handoffToDraw } from '$lib/editor/handoff';
 	import { saveUserDesign } from '$lib/stores/collection';
-	import { defaults, readGeneratorState, normalizeText, fittedCells, TEXT_LINES, TEXT_LINE_LENGTH, type GeneratorState, frameGap, stripCount, largestScale, SPACED_STYLES, BOARD_STYLES } from '$lib/generator/state';
+	import { defaults, readGeneratorState, normalizeText, fittedCells, TEXT_LINES, TEXT_LINE_LENGTH, type GeneratorState, frameGap, stripCount, stripPlace, PLACE_RANGE, largestScale, SPACED_STYLES, BOARD_STYLES } from '$lib/generator/state';
 	import type {
 		GeneratorResult,
 		GeneratorRequest
@@ -116,13 +117,54 @@
 		downloadBusy = $state(false),
 		loadError = $state(false);
 	let colors = $state<HeartColors>({ ...DEFAULT_COLORS });
+	/** The heart's picture, drawn at once while its cuts are found (see
+	 * `$lib/generator/picture`); frames without one keep the last heart. */
+	let sketch = $state<Picture | null>(null);
 	let preview = $derived(
-		displayed
-			? renderHeartSvgMarkup(displayed.design, colors, {
-					idPrefix: 'generated-preview'
-				})
-			: ''
+		busy && sketch
+			? renderPictureSvgMarkup(sketch.rings, colors, { idPrefix: 'generated-sketch' })
+			: displayed
+				? renderHeartSvgMarkup(displayed.design, colors, {
+						idPrefix: 'generated-preview'
+					})
+				: ''
 	);
+	/** The figure in the checks moves up and down the heart's middle when
+	 * dragged. A picture's square is 100 units wide, and so is every heart's
+	 * in the same framing; on screen the middle is vertical. */
+	let draggable = $derived(config.mode === 'figure' && config.style === 'strips');
+	const PICTURE_SIDE = Number(computeHeartViewBoxFromOverlap({ left: 0, top: 0, width: 100, height: 100 }).viewBox.split(' ')[3]);
+	let dragging = $state<{ pointer: number; y: number; place: number; unitsPerPx: number; range: [number, number] } | null>(null);
+	function startDrag(event: PointerEvent) {
+		if (!draggable || event.button !== 0 || !sketch?.range) return;
+		const art = event.currentTarget as HTMLElement, box = art.getBoundingClientRect();
+		const shown = busy ? sketch.place : displayed?.place ?? sketch.place;
+		// As far as the motif keeps its size, within the range a link may ask for.
+		dragging = { pointer: event.pointerId, y: event.clientY, place: config.place ?? shown ?? 0, unitsPerPx: PICTURE_SIDE / box.height, range: placeRange };
+		art.setPointerCapture(event.pointerId);
+	}
+	function drag(event: PointerEvent) {
+		if (!dragging || event.pointerId !== dragging.pointer) return;
+		const [low, high] = dragging.range, place = dragging.place + (event.clientY - dragging.y) * dragging.unitsPerPx;
+		// Quarter units, so moving back finds the hearts already made.
+		const next = Math.round(Math.max(low, Math.min(high, place)) * 4) / 4;
+		if (next !== config.place && low <= high) config.place = next;
+	}
+	function endDrag(event: PointerEvent) {
+		if (dragging?.pointer === event.pointerId) dragging = null;
+	}
+	/** Where the figure in the checks is shown, and how far it can move. */
+	let shownPlace = $derived(config.place ?? (busy ? sketch?.place : displayed?.place ?? sketch?.place) ?? 0);
+	let placeRange = $derived<[number, number]>(sketch?.range
+		? [Math.ceil(Math.max(-PLACE_RANGE, sketch.range[0]) * 4) / 4, Math.floor(Math.min(PLACE_RANGE, sketch.range[1]) * 4) / 4] : [0, 0]);
+	/** The arrow keys move the figure a unit up or down the middle, five with Shift. */
+	function nudgePlace(event: KeyboardEvent) {
+		const step = event.key === 'ArrowUp' ? -1 : event.key === 'ArrowDown' ? 1 : 0;
+		if (!draggable || !step || !sketch?.range) return;
+		event.preventDefault();
+		const [low, high] = placeRange, place = shownPlace + step * (event.shiftKey ? 5 : 1);
+		if (low <= high) config.place = Math.round(Math.max(low, Math.min(high, place)) * 4) / 4;
+	}
 	const currentDesign = () =>
 		result
 			? {
@@ -237,7 +279,8 @@
 			textFrame: snapshot.textFrame,
 			fittedCells: fittedCells(snapshot),
 			gap: frameGap(snapshot),
-			board: stripCount(snapshot)
+			board: stripCount(snapshot),
+			place: stripPlace(snapshot)
 		};
 		// A motif on a board keeps the choice its default size made.
 		if (snapshot.mode === 'figure' && BOARD_STYLES.includes(snapshot.style))
@@ -315,6 +358,7 @@
 		const token = ++revision;
 		waiting = null;
 		result = null;
+		sketch = null;
 		notice = '';
 		error = '';
 		savedId = null;
@@ -323,27 +367,27 @@
 			busy = false;
 			return;
 		}
-		const cached = cache.get(key);
+		const cached = cache.get(key), failed = cached ? undefined : failures.get(key);
 		if (cached) {
 			result = cached;
 			displayed = cached;
 			busy = false;
-			return;
-		}
-		const failed = failures.get(key);
-		if (failed) {
+		} else if (failed) {
 			displayed = null;
 			error = errorText(failed);
 			busy = false;
-			return;
-		}
-		busy = true;
+		} else busy = true;
+		// The picture shows while the cuts are found, and tells a drag how far
+		// the motif can go.
 		requestFor(snapshot)
 			.then((request) => {
-				if (token === revision) queueJob({ request, key, token });
+				if (token !== revision) return;
+				// Where the default size put the figure in the checks, once made.
+				sketch = picture(request, cache.get(geometryKey({ ...snapshot, scale: defaults.scale, place: undefined }))?.place) ?? null;
+				if (!cached && !failed) queueJob({ request, key, token });
 			})
 			.catch(() => {
-				if (token === revision) {
+				if (token === revision && !cached && !failed) {
 					busy = false;
 					error = t('generatorLoadError', lang);
 					displayed = null;
@@ -362,9 +406,18 @@
 			frameSize: defaults.frameSize,
 			scale: defaults.scale,
 			spacing: defaults.spacing,
-			strips: defaults.strips
+			strips: defaults.strips,
+			place: undefined
 		})
 	);
+	// A place dragged to belongs to its motif and board: another starts at its own.
+	let placeKey: string | null = null;
+	$effect(() => {
+		if (!mounted) return;
+		const key = [config.mode, config.motif, config.style, config.strips].join('|');
+		if (placeKey !== null && key !== placeKey) untrack(() => (config.place = undefined));
+		placeKey = key;
+	});
 	$effect(() => {
 		if (!mounted) return;
 		const snapshot: GeneratorState = JSON.parse(thumbnailState);
@@ -614,7 +667,24 @@
 		>
 			<span class="eyebrow">{t('generatorPreview', lang)}</span>
 			<div class="preview" aria-busy={busy}>
-				{#if preview}<div
+				{#if preview && draggable}<div
+						class="heart-art draggable"
+						class:dragging={!!dragging}
+						role="slider"
+						tabindex="0"
+						aria-orientation="vertical"
+						aria-label={t('generatorPlaceLabel', lang)}
+						aria-valuemin={placeRange[0]}
+						aria-valuemax={placeRange[1]}
+						aria-valuenow={shownPlace}
+						onkeydown={nudgePlace}
+						onpointerdown={startDrag}
+						onpointermove={drag}
+						onpointerup={endDrag}
+						onpointercancel={endDrag}
+					>
+						{@html preview}
+					</div>{:else if preview}<div
 						class="heart-art"
 						role="img"
 						aria-label={t('generatorPreview', lang) +
@@ -637,6 +707,10 @@
 			{#if result?.hardToCut}<div class="warning" role="status">
 					{hardToCutText(result.hardToCut.letters)}
 				</div>{/if}
+			{#if draggable && preview}<p class="drag-hint">
+					{t('generatorDragFigure', lang)}{#if config.place !== undefined}
+						<button class="place-back" onclick={() => (config.place = undefined)}>{t('generatorPlaceBack', lang)}</button>{/if}
+				</p>{/if}
 			{#if displayed}<p class="cut-note">
 					{t('generatorPureWeave', lang)}
 				</p>{/if}
@@ -1011,6 +1085,29 @@
 		width: 100%;
 		height: auto;
 		display: block;
+	}
+	.heart-art.draggable {
+		cursor: grab;
+		touch-action: none;
+		user-select: none;
+	}
+	.heart-art.dragging {
+		cursor: grabbing;
+	}
+	.drag-hint {
+		font-size: 12px;
+		color: #66745e;
+	}
+	.place-back {
+		margin-left: 6px;
+		padding: 0;
+		border: 0;
+		background: none;
+		color: #4c6542;
+		font: inherit;
+		font-weight: 700;
+		text-decoration: underline;
+		cursor: pointer;
 	}
 	.placeholder-heart {
 		font-size: 270px;

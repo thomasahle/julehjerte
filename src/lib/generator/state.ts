@@ -15,6 +15,9 @@ export type GeneratorState = {
 	spacing: number;
 	/** The strips per side of the figure in the checks' board. */
 	strips: number;
+	/** Where the visitor dragged the figure in the checks, how far down the
+	 * heart's middle; absent, its default size chooses. */
+	place?: number;
 };
 /** Text cells: square, so every check around the letters is a square of one
  * size, or fitted to the letters, so they can be larger. Only the frames whose
@@ -46,6 +49,12 @@ export function frameGap(s: GeneratorState): number | undefined {
 /** The strips per side a state asks of the figure in the checks' board. */
 export function stripCount(s: GeneratorState): number | undefined {
 	return s.mode === 'figure' && s.style === 'strips' ? s.strips : undefined;
+}
+/** How far the figure in the checks can be dragged up or down the middle. */
+export const PLACE_RANGE = 30;
+/** Where a state puts the figure in the checks, if the visitor chose. */
+export function stripPlace(s: GeneratorState): number | undefined {
+	return s.mode === 'figure' && s.style === 'strips' ? s.place : undefined;
 }
 /** The generator's choice of cells for a state, or none where it decides. */
 export function fittedCells(s: GeneratorState): boolean | undefined {
@@ -89,6 +98,8 @@ export function readGeneratorState(hash: string): GeneratorState {
 		if (typeof raw.text === 'string') s.text = normalizeText(raw.text);
 		if (typeof raw.motif === 'string' && /^[a-z0-9-]{1,80}$/.test(raw.motif))
 			s.motif = raw.motif;
+		if (typeof raw.place === 'number' && Number.isFinite(raw.place))
+			s.place = Math.round(Math.max(-PLACE_RANGE, Math.min(PLACE_RANGE, raw.place)) * 4) / 4;
 		for (const [k, min, max] of [
 			['frameSize', 50, 80],
 			['scale', 45, largestScale(s.style)],

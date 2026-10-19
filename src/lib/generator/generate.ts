@@ -4,7 +4,7 @@ import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
 import { generateFittedFigure } from './fitted';
 import { sunburstBorder } from './sunburst';
 import { generateTextGrid, squareCellScale } from './textGrid';
-import { NO_WHOLE_STRIPS, stripFigures } from './stripFigure';
+import { NO_WHOLE_STRIPS, STRIPS, slidePlace, stripFigures } from './stripFigure';
 import { generateBranchedText, hasOverlappingTextBranches, fittedBranchedTextFill } from './branchedText';
 import { generateCheckeredGrid, checkeredGridCache, checkeredLayouts } from './checkeredGrid';
 import { generateMixedCheckeredGrid, mixedCheckeredGridCache } from './mixedCheckeredGrid';
@@ -88,6 +88,9 @@ export type GeneratorRequest = {
 	layout?: BoardLayout;
 	/** The strips per side of the board a construction must lie on. */
 	board?: number;
+	/** For the figure in the checks: how far down the heart's middle the
+	 * visitor put the motif; otherwise its default size chooses. */
+	place?: number;
 };
 /** The choice a motif on a board (small motifs, equal squares) made at its
  * default size: which of its `frameAlternatives`, on a board of how many
@@ -104,6 +107,11 @@ export type GeneratorResult = {
 	/** For the small motifs and equal squares: the choice this heart's size
 	 * kept, its default size's (see `withLayout`). */
 	layout?: BoardLayout;
+	/** For the figure in the checks: how far down the heart's middle the
+	 * motif lies, and its size, which is a little off the size asked for
+	 * where its strips could not all be whole at that one. */
+	place?: number;
+	scale?: number;
 };
 /** The frame without a centre panel that a figure request selects, if any. */
 function openFrame(request: GeneratorRequest): OpenFrame | undefined {
@@ -521,9 +529,6 @@ function generateAtSize(request: GeneratorRequest): GeneratorResult {
 	throw last;
 }
 
-/** The strips per side of the figure in the checks unless the request has a
- * `board`: most real hearts whose strips form the figure have four. */
-const STRIPS = 4;
 /** Where each motif's default size placed it in the checks (see `generateStrips`). */
 const stripShifts = new Map<string, number>();
 /** The figure in the checks (see `stripFigures`): the board's squares swap
@@ -547,7 +552,11 @@ function generateStrips(request: GeneratorRequest): GeneratorResult {
 	// nearest size it can have there, a little smaller, else in steps towards
 	// the default size, which has it: the slider then waits rather than the
 	// motif jumping. Only where its place is no use does the motif move.
-	const at = (size: number) => Math.round(size * 1e6) / 1e6, kept = stripShifts.has(key);
+	const at = (size: number) => Math.round(size * 1e6) / 1e6;
+	// The place the visitor chose, kept as it is; else the default size's,
+	// slid towards where the motif fits largest above that size.
+	const chosen = request.place ?? stripShifts.get(key), kept = chosen !== undefined;
+	const placeAt = (size: number) => request.place ?? (chosen === undefined ? undefined : slidePlace(contours, size, chosen));
 	const towards: number[] = [], step = scale > .7 ? -.05 : .05;
 	for (let size = scale + step; step < 0 ? size > .7 + 1e-9 : size < .7 - 1e-9; size += step) towards.push(size);
 	towards.push(scale === .7 ? .6 : .7);
@@ -560,7 +569,7 @@ function generateStrips(request: GeneratorRequest): GeneratorResult {
 	const curveFitter = createExactCurveFitter();
 	for (const { where, sizes } of plans)
 		for (const size of sizes) try {
-			return stripsAt(request, key, at(size), where, curveFitter);
+			return stripsAt(request, key, at(size), where, curveFitter, placeAt(at(size)));
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 			last ??= error;
@@ -575,24 +584,27 @@ function generateStrips(request: GeneratorRequest): GeneratorResult {
 /** The figure in the checks at `scale` (see `generateStrips`), at the places
  * `stripFigures` tries around the one its default size chose. */
 function stripsAt(request: GeneratorRequest, key: string, scale: number,
-	where: Parameters<typeof stripFigures>[5], curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult {
+	where: Parameters<typeof stripFigures>[5], curveFitter: ReturnType<typeof createExactCurveFitter>,
+	keep: number | undefined): GeneratorResult {
 	const contours = request.contours!;
-	const named = (result: GeneratorResult) =>
-		result.hardToCut ? { ...result, hardToCut: { ...result.hardToCut, letters: [] } } : result;
-	let rejected: Parameters<typeof hardToCutResult>[1] = [], places = 0, shift: number | undefined;
+	let shift: number | undefined;
+	const named = (result: GeneratorResult): GeneratorResult => ({
+		...result, place: shift, scale, ...result.hardToCut ? { hardToCut: { ...result.hardToCut, letters: [] } } : {}
+	});
+	let rejected: Parameters<typeof hardToCutResult>[1] = [], places = 0;
 	let last: unknown = new ConstructionError('topology', NO_WHOLE_STRIPS);
-	for (const construction of stripFigures(contours, request.board ?? STRIPS, scale, 4000, stripShifts.get(key), where)) {
+	for (const construction of stripFigures(contours, request.board ?? STRIPS, scale, 4000, keep, where)) {
 		if (construction.shift !== shift) {
 			// Nothing at the last place finished cleanly: as hard to cut, if it
 			// can be, before the next place.
 			const hard = hardToCutResult(request, rejected, curveFitter);
 			if (hard) return named(hard);
 			if (++places > 4) break;
-			if (shift === undefined && scale === .7) stripShifts.set(key, construction.shift);
+			if (shift === undefined && scale === .7 && request.place === undefined) stripShifts.set(key, construction.shift);
 			[shift, rejected] = [construction.shift, []];
 		}
 		try {
-			return finishConstruction(request, construction, 'nested', undefined, curveFitter);
+			return named(finishConstruction(request, construction, 'nested', undefined, curveFitter));
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 			last = error;

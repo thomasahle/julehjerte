@@ -662,7 +662,9 @@ slides along the middle to where it fits largest in the paper's diamond, its out
 it is, so at 100% a heart's point reaches the lowest check, three units from the paper's edge.
 Where its place cannot keep every strip whole at some size, the motif keeps the nearest size its
 place allows, a little smaller, else towards the default size, and only then moves; it never
-refuses. Like the board frames it has no space setting. Outlines that touch are first moved apart by a thousandth of the motif's size.
+refuses. Dragging the heart (or the arrow keys on it) moves the motif up or down the middle, as
+far as it keeps its size; the place goes into the link, and "Sæt den tilbage" returns it to the
+default. Like the board frames it has no space setting. Outlines that touch are first moved apart by a thousandth of the motif's size.
 In the wedge, silhouette and close-fitting
 frames, a symmetric motif gets a symmetric frame: separate extremes that tie (a star's two lower tips, a cat's ears) share a gate
 midway between them, joined to the motif by an invisible coincident cut. That first attempt is

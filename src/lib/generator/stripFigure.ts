@@ -42,6 +42,9 @@ const GAP = 1e-5;
 const APART = 1e-4;
 /** Hidden cuts leave only sides at least this long. */
 const SIDE = .3;
+/** The strips per side of the figure in the checks unless the request has a
+ * `board`: most real hearts whose strips form the figure have four. */
+export const STRIPS = 4;
 /** Why no figure in the checks came out: no sheets keep every strip whole. */
 export const NO_WHOLE_STRIPS = 'No sheet for every cut keeps the strips whole';
 /** The motif keeps this far inside the paper's edges. */
@@ -81,9 +84,6 @@ export function* stripFigures(rings: Ring[], strips: number, scale = .7, budget 
 	rings = untouch(rings);
 	type Choice = { placed: Ring[]; graph: StripGraph; values: Value[]; crowded: number; hidden: number; order: number };
 	const order = shifts(rings, strips, scale), choices: Choice[] = [];
-	// Above the default size the motif slides from the place kept towards the
-	// place it fits largest, which 100% reaches.
-	if (keep !== undefined && scale > .7) keep += (roomiestPlace(rings) - keep) * Math.min(1, (scale - .7) / .3);
 	if (keep !== undefined) order.splice(0, order.length, ...places === 'elsewhere' ? [] : [keep],
 		...places === 'alone' ? [] : order.filter(shift => shift !== keep));
 	const evaluate = (k: number) => {
@@ -109,13 +109,7 @@ export function* stripFigures(rings: Ring[], strips: number, scale = .7, budget 
 	}
 	choices.sort((a, b) => a.crowded - b.crowded || a.hidden - b.hidden || a.order - b.order);
 	const figure = (choice: Choice): StripFigure | undefined => {
-		const edges = choice.graph.draw(choice.values), width = 100 / strips;
-		// The picture: every other square, swapped inside the motif.
-		const artwork: Ring[] = [...choice.placed];
-		for (let i = 0; i < strips; i++)
-			for (let j = 0; j < strips; j++)
-				if ((i + j) % 2 === 0)
-					artwork.push([[i * width, j * width], [(i + 1) * width, j * width], [(i + 1) * width, (j + 1) * width], [i * width, (j + 1) * width]]);
+		const edges = choice.graph.draw(choice.values), artwork = [...choice.placed, ...boardChecks(strips)];
 		if (tangled(edges)) return;
 		try {
 			return { edges, artwork, geometry: compile(edges), domain: [[[0, 0], [100, 0], [100, 100], [0, 100]]], overlapAspectRatio: 1, shift: order[choice.order] };
@@ -307,18 +301,47 @@ export function roomiestPlace(rings: Ring[]): number {
 	return PAPER * (up - down) / (up + down);
 }
 
+/** Where the motif lies at `scale`, its default size having put it at
+ * `place`: there up to the default size, and above it sliding towards where it
+ * fits largest, which 100% reaches. */
+export function slidePlace(rings: Ring[], scale: number, place: number): number {
+	return scale > .7 ? place + (roomiestPlace(rings) - place) * Math.min(1, (scale - .7) / .3) : place;
+}
+
+/** The board's dark squares, every other one: with the motif, whose squares
+ * they swap, the picture's rings. */
+export function boardChecks(strips: number): Ring[] {
+	const width = 100 / strips, checks: Ring[] = [];
+	for (let i = 0; i < strips; i++)
+		for (let j = 0; j < strips; j++)
+			if ((i + j) % 2 === 0)
+				checks.push([[i * width, j * width], [(i + 1) * width, j * width], [(i + 1) * width, (j + 1) * width], [i * width, (j + 1) * width]]);
+	return checks;
+}
+
 /** The motif upright and centred on the paper, moved `shift` down the heart's
  * middle and `nudge` off the board's lines, and kept MARGIN inside the paper.
  * Its box is `scale / .7` of the default fill up to the default size; from
  * there it grows towards the largest that fits the paper, which 100% reaches
  * at the roomiest place. */
 export function placeMotif(rings: Ring[], scale: number, shift = 0, nudge = 0): Ring[] {
-	const { cx, cy, box, down, up } = reaches(rings);
-	const fill = 100 * DEFAULT_FILL, largest = 2 * PAPER / (up + down);
-	const wanted = scale <= .7 ? fill * scale / .7 : fill + (largest - fill) * Math.min(1, (scale - .7) / .3);
-	const size = Math.min(wanted, (PAPER - shift) / down, (PAPER + shift) / up);
+	const reach = reaches(rings), { cx, cy, box, down, up } = reach;
+	const size = Math.min(motifSize(reach, scale), (PAPER - shift) / down, (PAPER + shift) / up);
 	return rings.map(ring => ring.map(([x, y]) =>
 		uprightToSheet([(x - cx) / box * size + nudge, (y - cy) / box * size + shift + nudge * .618])));
+}
+
+/** The motif's box at `scale` wherever it has room (see `placeMotif`). */
+function motifSize({ down, up }: ReturnType<typeof reaches>, scale: number): number {
+	const fill = 100 * DEFAULT_FILL, largest = 2 * PAPER / (up + down);
+	return scale <= .7 ? fill * scale / .7 : fill + (largest - fill) * Math.min(1, (scale - .7) / .3);
+}
+
+/** How far up and down the heart's middle the motif can go at `scale` and
+ * keep its size; further, it would shrink to stay on the paper. */
+export function placeRange(rings: Ring[], scale: number): [number, number] {
+	const reach = reaches(rings), size = motifSize(reach, scale);
+	return [size * reach.up - PAPER, PAPER - size * reach.down];
 }
 
 /** A polyline cut at fractions (increasing, in (0, 1)) of its length. */

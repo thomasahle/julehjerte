@@ -9,7 +9,7 @@ export function geometryKey(s: GeneratorState): string {
 			: s.mode === 'figure'
 				? // Board frames fix the space; the silhouette fills the square;
 					// the frame size is the motif size's base everywhere else.
-					BOARD_STYLES.includes(s.style) ? [s.mode, s.motif, s.scale, s.style, ...s.style === 'strips' ? [s.strips] : []]
+					BOARD_STYLES.includes(s.style) ? [s.mode, s.motif, s.scale, s.style, ...s.style === 'strips' ? [s.strips, s.place] : []]
 					: s.style === 'silhouette' ? [s.mode, s.motif, s.scale, s.spacing, s.style]
 					: [s.mode, s.motif, s.frame, s.frameSize, s.scale, s.style, s.spacing]
 				: [s.mode]

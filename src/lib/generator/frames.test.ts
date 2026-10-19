@@ -5,7 +5,7 @@ import { cutTipCounts } from './cutQuality';
 import { generateFittedFigure } from './fitted';
 import { generateLayeredFigure } from './layers';
 import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
-import { defaults, frameGap, readGeneratorState, stripCount } from './state';
+import { defaults, frameGap, readGeneratorState, stripCount, stripPlace } from './state';
 import { templateVariants } from './templates';
 import { inside, uprightToSheet, distance, WEDGES, type Point, type Ring } from './geometry';
 import { geometryKey } from './cache';
@@ -473,6 +473,15 @@ describe('frames from real hearts', () => {
   expect(readGeneratorState('#make=' + JSON.stringify({ ...state, spacing: 40 })).spacing).toBe(15);
   expect(readGeneratorState('#make=' + JSON.stringify({ ...state, strips: 9 })).strips).toBe(6);
   expect(readGeneratorState('#make=' + JSON.stringify({ ...state, strips: 2 })).strips).toBe(3);
+  // Where the visitor dragged the figure in the checks: kept in links, in
+  // quarter units, and only in that frame's key.
+  const placed = { ...state, style: 'strips' as const, place: 7.6 };
+  expect(readGeneratorState('#make=' + JSON.stringify(placed)).place).toBe(7.5);
+  expect(readGeneratorState('#make=' + JSON.stringify({ ...placed, place: -99 })).place).toBe(-30);
+  expect(readGeneratorState('#make=' + JSON.stringify({ ...state, style: 'strips' })).place).toBeUndefined();
+  expect(geometryKey(placed) !== geometryKey({ ...placed, place: undefined })).toBe(true);
+  expect(geometryKey({ ...placed, style: 'rays' }) === geometryKey({ ...placed, style: 'rays', place: undefined })).toBe(true);
+  expect(stripPlace({ ...placed, style: 'rays' })).toBeUndefined();
  });
  it('draws the circle the space the visitor sets outside the motif, which keeps its size', () => {
   const request = { mode: 'figure' as const, name: 'Star', contours: star.contours as Ring[], colors, style: 'rays' as const };
