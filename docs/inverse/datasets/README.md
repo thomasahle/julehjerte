@@ -48,6 +48,9 @@ and candlestick still lose large paper regions, and printed decoration still
 confuses material classification. The adapted checkpoint has **not** been tested
 in the browser; the frozen-model experiment used WASM, so this is not yet a
 controlled model-to-model runtime comparison or a production release.
+These paired counts use the frozen inverse code from `3762b82c`. Main's later
+return-search optimization passed CI while this experiment ran; the neural
+candidate still needs validation against that current code before integration.
 
 The original [fresh 32-photo evaluation](u2netp-fresh-results.json) freezes the model and
 crop policy before inference. It keeps every existing production crop and adds

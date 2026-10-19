@@ -299,5 +299,11 @@
     "drawingUiAlreadyLive": true,
     "adaptedNetworkEnabled": false,
     "note": "The preceding run 39315255650 was cancelled when the newer main commit replaced it. Current build, four correctness shards, advisory benchmark jobs and deployment all succeeded; advisory job success is not a claim that every timed target passed."
+  },
+  "productionControlScope": {
+    "revision": "3762b82c08294d601577a628d1fbaf549d63dd83",
+    "measurement": "The native and original frozen-model studies use the same pinned inverse engine and production controls. Counts describe that paired experiment, not a fresh replay of the later deployed main revision.",
+    "newerMainChange": "Upstream commits b73b7f47 and 2dadbb1e optimize shared return geometry. They passed main CI, but this candidate has not yet been replayed after those changes.",
+    "releaseRequirement": "Sync current main and validate the candidate/exported geometry before integration. Preserve the original controlled benchmark rather than silently replacing its controls."
   }
 }
