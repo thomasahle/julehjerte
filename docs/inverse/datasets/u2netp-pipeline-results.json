@@ -77,9 +77,9 @@
   "rows": [
     {
       "id": "real-ad2c0c1de36a7815-body-1",
-      "productionOutcome": null,
+      "productionOutcome": "checked-derived-mask",
       "productionOutlineSupported": false,
-      "outcome": null,
+      "outcome": "crop-proposed",
       "cropStatus": "needs_review",
       "cropEvidence": {
         "outlineSupported": true,
@@ -125,9 +125,9 @@
     },
     {
       "id": "real-4097e8fcdc21b6a3-body-1",
-      "productionOutcome": null,
+      "productionOutcome": "crop-unresolved",
       "productionOutlineSupported": false,
-      "outcome": null,
+      "outcome": "crop-unresolved",
       "cropStatus": "not_found",
       "cropEvidence": {
         "outlineSupported": null,
@@ -140,9 +140,9 @@
     },
     {
       "id": "real-358faca3134e290f-body-1",
-      "productionOutcome": null,
+      "productionOutcome": "checked-derived-mask",
       "productionOutlineSupported": false,
-      "outcome": null,
+      "outcome": "crop-unresolved",
       "cropStatus": "needs_review",
       "cropEvidence": {
         "outlineSupported": null,
@@ -155,9 +155,9 @@
     },
     {
       "id": "real-9c8a921d12d8474e-body-1",
-      "productionOutcome": null,
+      "productionOutcome": "checked-derived-mask",
       "productionOutlineSupported": false,
-      "outcome": null,
+      "outcome": "crop-proposed",
       "cropStatus": "needs_review",
       "cropEvidence": {
         "outlineSupported": true,
@@ -203,9 +203,9 @@
     },
     {
       "id": "real-49817b568b7d02a1-body-1",
-      "productionOutcome": null,
+      "productionOutcome": "crop-unresolved",
       "productionOutlineSupported": false,
-      "outcome": null,
+      "outcome": "crop-unresolved",
       "cropStatus": "needs_review",
       "cropEvidence": {
         "outlineSupported": null,
@@ -218,9 +218,9 @@
     },
     {
       "id": "real-5c303ce388328a13-body-1",
-      "productionOutcome": null,
+      "productionOutcome": "crop-unresolved",
       "productionOutlineSupported": false,
-      "outcome": null,
+      "outcome": "crop-unresolved",
       "cropStatus": "needs_review",
       "cropEvidence": {
         "outlineSupported": null,
@@ -233,9 +233,9 @@
     },
     {
       "id": "real-c6b9eeb016808d3b-body-1",
-      "productionOutcome": null,
+      "productionOutcome": "checked-derived-mask",
       "productionOutlineSupported": false,
-      "outcome": null,
+      "outcome": "crop-unresolved",
       "cropStatus": "needs_review",
       "cropEvidence": {
         "outlineSupported": null,
@@ -248,9 +248,9 @@
     },
     {
       "id": "real-8e0056ff18287e45-body-1",
-      "productionOutcome": null,
+      "productionOutcome": "crop-unresolved",
       "productionOutlineSupported": false,
-      "outcome": null,
+      "outcome": "checked-pair",
       "cropStatus": "needs_review",
       "cropEvidence": {
         "outlineSupported": true,
@@ -307,9 +307,9 @@
     },
     {
       "id": "real-38428ac54117e67c-body-1",
-      "productionOutcome": null,
+      "productionOutcome": "crop-unresolved",
       "productionOutlineSupported": false,
-      "outcome": null,
+      "outcome": "review-required",
       "cropStatus": "needs_review",
       "cropEvidence": {
         "outlineSupported": true,
@@ -366,9 +366,9 @@
     },
     {
       "id": "real-56faeb060f60c170-body-1",
-      "productionOutcome": null,
+      "productionOutcome": "crop-unresolved",
       "productionOutlineSupported": false,
-      "outcome": null,
+      "outcome": "crop-unresolved",
       "cropStatus": "not_found",
       "cropEvidence": {
         "outlineSupported": null,
@@ -381,9 +381,9 @@
     },
     {
       "id": "real-56a89a732af12a66-body-1",
-      "productionOutcome": null,
+      "productionOutcome": "checked-derived-mask",
       "productionOutlineSupported": false,
-      "outcome": null,
+      "outcome": "crop-proposed",
       "cropStatus": "needs_review",
       "cropEvidence": {
         "outlineSupported": true,
@@ -429,9 +429,9 @@
     },
     {
       "id": "real-3b92112e8487e279-body-1",
-      "productionOutcome": null,
+      "productionOutcome": "crop-unresolved",
       "productionOutlineSupported": false,
-      "outcome": null,
+      "outcome": "checked-pair",
       "cropStatus": "needs_review",
       "cropEvidence": {
         "outlineSupported": true,
@@ -488,9 +488,9 @@
     },
     {
       "id": "real-fa1ca05594655c8d-body-1",
-      "productionOutcome": null,
+      "productionOutcome": "crop-unresolved",
       "productionOutlineSupported": false,
-      "outcome": null,
+      "outcome": "crop-unresolved",
       "cropStatus": "needs_selection",
       "cropEvidence": {
         "outlineSupported": null,
@@ -503,9 +503,9 @@
     },
     {
       "id": "real-0f8bf87595f587e5-body-1",
-      "productionOutcome": null,
+      "productionOutcome": "checked-derived-mask",
       "productionOutlineSupported": false,
-      "outcome": null,
+      "outcome": "crop-unresolved",
       "cropStatus": "needs_review",
       "cropEvidence": {
         "outlineSupported": null,
@@ -518,9 +518,9 @@
     },
     {
       "id": "real-7f22ab27bb1cd19e-body-1",
-      "productionOutcome": null,
+      "productionOutcome": "crop-unresolved",
       "productionOutlineSupported": false,
-      "outcome": null,
+      "outcome": "crop-unresolved",
       "cropStatus": "needs_review",
       "cropEvidence": {
         "outlineSupported": null,
@@ -533,9 +533,9 @@
     },
     {
       "id": "real-8a9c703f7f29fd14-body-1",
-      "productionOutcome": null,
+      "productionOutcome": "checked-derived-mask",
       "productionOutlineSupported": false,
-      "outcome": null,
+      "outcome": "crop-unresolved",
       "cropStatus": "needs_review",
       "cropEvidence": {
         "outlineSupported": null,

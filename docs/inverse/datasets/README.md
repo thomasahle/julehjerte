@@ -13,11 +13,49 @@ production path.
 | Real-image inventory | 1,254 files; 783 contain assembled-heart photographs; all files and decoded identities audited | File counts are not counts of independent motifs or fully labelled training examples |
 | Sabrina Danholm's Pinterest board | All 225 pins imported; 220 new image files, about 35 MiB | No new corner, material or cutting-path labels; the whole board is QA-reserved |
 | Synthetic geometry | 256 saved witnesses pass the current geometry/paper re-audit across 768 original/subdivided/reflected representations | Limited procedural diversity; recipe holdouts are not topology-disjoint splits |
-| Small learned model | TorchVision ImageNet-pretrained MobileNetV3-Small; offline crop fallback raises checked editable pairs from 7/16 to 9/16 development photos | No unseen generalization or deployment; visible defects remain and strict browser numerical parity missed on one photo |
+| Small learned model | Earlier MobileNetV3-Small fallback raises checked editable pairs from 7/16 to 9/16 on its development cohort; a newer fixed candidate stays at 7/16 on separately selected Sabrina photos | These are different cohorts; no deployment or established source generalization |
+| Pretrained saliency baseline | U2NETP finds two additional checked partial-photo pairs on the newer cohort; browser inputs, crop coordinates and masks match native results exactly | Frozen observed-corner policy still stays at 7/16; partial-photo policy needs prospective testing, and raw probability tolerance fails |
 | Larger segmentation baseline | Official pretrained MobileSAM evaluated offline | A useful body mask alone does not establish correct corners, material boundaries or legal templates |
 | Solver | Current revision passes 1,109/1,109 inverse tests and 34 browser workflows; all 22 regular Hunodan designs finish under ten seconds | Some hard fits retain thin false seams; the earlier 27/31 photo benchmark has not been rerun |
 
 ### Latest solver and browser validation
+
+The drawing improvements (red/white/XOR, full-circle weave icon, brush slider and
+hover outline) and archive are **deployed**. The [19 October release record](oct19-release-qa.json)
+contains live Danish/English and mobile QA, 2,216 application tests and 1,122
+inverse correctness checks. Ten of 77 advisory timed quality targets still miss;
+these are retained separately from correctness. Subsequent main commit
+`3762b82c` also passed [CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39302176699).
+The local preview is at `http://localhost:4173/editor/mal/`.
+
+#### Latest neural experiments
+
+The [fixed material candidate](preserved-candidate-results.json) preserves its
+foreground network exactly but adds no checked recovery on the separately
+selected sixteen Sabrina photographs. Using the foreground only as a
+[rough RGB search region](foreground-region-pipeline-results.json) also adds none.
+
+The new [official pretrained U2NETP baseline](u2netp-pipeline-results.json) uses
+1,131,181 parameters and no heart fine-tuning. Its clearer outlines produce two
+additional checked approximate pairs: stacked hearts and a black/gold grid.
+Their photographed overlap coverage is 99.994% and 99.828%, respectively, but
+their lower tips lie outside the photograph. The frozen rule requiring every
+corner inside the image selects neither, so its result remains **7/16**. These
+partial-photo proposals are a separate development finding, not a retrospectively
+improved held-out score. The third new fit loses small features and is rejected.
+Visible rounding and thin seams remain even in the two checked results.
+
+The [ONNX/browser audit](u2netp-runtime-results.json) verifies identical decoded
+RGB and model input tensors for all sixteen original JPEGs. All six resulting
+crop proposals, corners and classified masks are exactly unchanged. Browser
+inference takes 1.12 seconds plus 0.12 seconds median preprocessing on this
+desktop, excluding model startup and downstream cropping/fitting. The 4.62 MB
+model still misses the strict raw-probability tolerance (maximum difference
+0.000126 versus 0.000020 allowed), with zero threshold-pixel changes; the failed
+numerical check remains recorded alongside the successful pipeline comparison.
+This is not mobile validation, a new unseen cohort, or a production model.
+
+#### Earlier 18 October solver validation
 
 The **18 October validated revision** (`1921279a`) passes type checking, lint,
 build, **874 application tests** (one skipped), and **1,109/1,109 inverse tests**.
@@ -56,10 +94,9 @@ choice remains a candidate cause. The cleaner browser sloth fixture is a
 **different mask**, verified by hashes, and is not evidence of recovery on that
 native input.
 
-The current local preview at `http://localhost:5232/editor/mal/` serves an
-immutable snapshot of the validated build. All changes are committed locally;
-nothing has been pushed or deployed. The neural prototypes remain offline, and
-this QA does not replace the earlier, separately recorded 31-photo benchmark.
+That historical QA does not replace the earlier, separately recorded 31-photo
+benchmark. The neural prototypes remain offline; deployment status is recorded
+above.
 
 ### Earlier solver experiments
 
