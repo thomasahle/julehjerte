@@ -428,12 +428,14 @@ to the site.
 
 ### Preservation archive, 2026-10-19
 
-The [preservation manifest](heart-archive-storage.json) records **147 unique
-original files, 16,507,399 bytes**, including 54 template PDFs (286 pages),
+The [preservation manifest](heart-archive-storage.json) records **237 unique
+original files, 29,657,897 bytes**, including 54 template PDFs (286 pages),
 five editable SVG originals,
 seven recovered Permo images, nineteen Haabet images and source/history/license
-evidence. These are documents and photographs, not 147 independent designs or
-new training labels.
+evidence, plus the 90 [new board originals](conni-board-preservation.json).
+Those board files use hardlinks to the dataset's existing immutable bytes, so
+their durable preservation adds no second copy. These are documents and
+photographs, not 237 independent designs or new training labels.
 [Additional collections](archive-additional.json) record Krümmel,
 Bibelselskabet, Spejderliv and PaperMatrix; the [Permo history](archive-permo.json)
 identifies five circle designs absent from Hunodan, plus an older anchor

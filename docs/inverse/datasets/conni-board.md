@@ -27,6 +27,12 @@ All 87 new files are hardlinked, so adoption adds no second copy of the image
 bytes. The unified catalog now has **1,341 files**, including **811 files with
 assembled-heart photographs**. These remain file counts, not independent motifs.
 
+All 90 board originals are also [retained outside temporary directories](conni-board-preservation.json)
+under `archive-store/heart-preservation/objects/`, using hardlinks to the same
+verified bytes. This consumes no additional image storage. The complete local
+preservation store passes its 237-object checksum audit; these local links are
+not an off-device backup.
+
 All [42 similarity pairs were visually confirmed](conni-board-duplicate-review.json)
 as variants of the same source image or plate and grouped accordingly. Three
 previously unassigned files now join QA; the entire board is QA-reserved. The
