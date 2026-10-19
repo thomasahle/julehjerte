@@ -2071,7 +2071,7 @@
     }
   },
   "clearanceCheckpointInvestigation": {
-    "status": "Local 69 affected tests and all app checks passed; full Linux currently has ten failures, so this revision is not ready to merge",
+    "status": "Full Linux run completed: 1117 passed and 16 failed. This regresses the previous three-failure full run despite passing local and focused Linux checks; not ready to merge.",
     "fixture": "coverage-fits/photo-bauble",
     "evidence": "The fixed 150-step ordered clearance fit produced seven inspected checkpoints. The first five failed inter-slit clearance; the last two passed geometry at 7.06% and 6.99% observed image error. Error-only checkpoint selection nevertheless handed back the earlier invalid 6.14% state. Paper was uncertain on the later grids and still needs independent refinement/verification.",
     "record": "/tmp/julehjerte-partial-clearance-study.json",
@@ -2125,7 +2125,7 @@
       "coverage": "All three remaining full-suite failures, protected puppy openings, near-miss perturbations and the synthetic checkpoint regression."
     },
     "linuxFull": {
-      "status": "in_progress",
+      "status": "completed",
       "url": "https://github.com/thomasahle/julehjerte/actions/runs/39224564133",
       "diagnosticCommit": "90b4b1d0",
       "mode": "cold",
@@ -2137,6 +2137,20 @@
           "failed": 0,
           "failures": [],
           "log": "/tmp/julehjerte-ci-clearance-full-shard1.log"
+        },
+        {
+          "shard": 2,
+          "passed": 234,
+          "failed": 6,
+          "failures": [
+            "fresh fitting continues an unfinished verified initializer within the remaining search allowance",
+            "fresh automatic fitting repairs a rejected circular routing before common Bezier refinement",
+            "an exhausted corner MILP leaves the remaining caller allowance for fresh coarse routing",
+            "hard-bibel-star-outline: refine the retained grid before routing, preserving photographic quality",
+            "hard-bibel-star-outline-jpeg75: refine the retained grid before routing, preserving photographic quality",
+            "a fresh shifted bird fit preserves its eye with a 10-second allowance"
+          ],
+          "log": "/tmp/julehjerte-ci-clearance-full-shard2.log"
         },
         {
           "shard": 3,
@@ -2165,9 +2179,10 @@
           "log": "/tmp/julehjerte-ci-clearance-full-shard4.log"
         }
       ],
-      "pendingShards": [
-        2
-      ]
+      "pendingShards": [],
+      "conclusion": "failure",
+      "passed": 1117,
+      "failed": 16
     },
     "appChecks": {
       "status": "passed",
@@ -2189,7 +2204,8 @@
         "Late stacked-motif test has no clearance comparison, ends with uncertain paper and 3.47% source disagreement. This is a real fit failure, not only an overspecified comparison assertion.",
         "Bicycle export passes geometry and paper but has 4.459% disagreement, above the unchanged 4% test limit.",
         "Additional shard-four failures include resampled stacked motif, two slowed near-miss cases, late routing repair and frozen/synthetic-control scheduling. These were not caught by the nine-test focused run.",
-        "Next investigation: compare costs and selections of the new clearance-checkpoint policy for ordinary versus feature-seeded grids. No production changes made during this investigation."
+        "Next investigation: compare costs and selections of the new clearance-checkpoint policy for ordinary versus feature-seeded grids. No production changes made during this investigation.",
+        "Completed shard two adds initializer handoff, circular routing, exhausted corner MILP fallback, two star fidelity checks and shifted-bird failures. The star errors are 0.726875% versus 0.688125% required and 0.73125% versus 0.72% required. The shorter shifted-bird fit fails while the 180-second fit passes."
       ]
     }
   }
