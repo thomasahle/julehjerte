@@ -16,6 +16,7 @@ import { heartScale } from '$lib/laser/unfold';
 import { layoutSheet, type Placement, type SheetSize } from '$lib/laser/sheet';
 import { lobesShareTemplate, SHARED_TEMPLATE_LOBE } from '$lib/utils/symmetry';
 import { getTemplateData, type TemplateLobe } from '$lib/utils/templateSvg';
+import { templateMarks, type PlacedMark } from '$lib/utils/orientationMarks';
 import { layoutEar, picturePixels, type EarLayout, type MeasureText } from './earLayout';
 
 /**
@@ -55,6 +56,13 @@ export interface TemplatePiece {
 	/** The rounded end's radius: half the width. Its picture and address go inside it (./earLayout.ts). */
 	earRadiusMm: number;
 	stripWidthMm: number;
+	/**
+	 * The orientation mark printed on this copy, in template units
+	 * ($lib/utils/orientationMarks): ⊗ on the left lobe's piece, × on the
+	 * right's, at the corner that meets the other piece at the top of the
+	 * heart. None for a heart whose pieces cannot go in the wrong way.
+	 */
+	marks: PlacedMark[];
 }
 
 /**
@@ -66,7 +74,9 @@ export interface TemplatePiece {
 export function templatePair(design: HeartDesign, widthMm: number): [TemplatePiece, TemplatePiece] {
 	const scale = heartScale(design, widthMm);
 	const shared = lobesShareTemplate(design.fingers, design.gridSize);
-	const piece = (lobe: TemplateLobe): TemplatePiece => {
+	// `use`: the lobe this copy is cut for — the printed lobe's own, or for a
+	// shared template either lobe, so each copy carries its own lobe's mark.
+	const piece = (lobe: TemplateLobe, use: TemplateLobe = lobe): TemplatePiece => {
 		const data = getTemplateData(design, lobe);
 		const stripsAcross = lobe === 'left' ? design.gridSize.y : design.gridSize.x;
 		return {
@@ -77,13 +87,11 @@ export function templatePair(design: HeartDesign, widthMm: number): [TemplatePie
 			widthMm: data.templateWidth * scale,
 			heightMm: data.templateHeight * scale,
 			earRadiusMm: data.earRadius * scale,
-			stripWidthMm: (data.templateWidth * scale) / stripsAcross
+			stripWidthMm: (data.templateWidth * scale) / stripsAcross,
+			marks: templateMarks(design, lobe, [use], scale)
 		};
 	};
-	if (shared) {
-		const one = piece(SHARED_TEMPLATE_LOBE);
-		return [one, one];
-	}
+	if (shared) return [piece(SHARED_TEMPLATE_LOBE, 'left'), piece(SHARED_TEMPLATE_LOBE, 'right')];
 	return [piece('left'), piece('right')];
 }
 

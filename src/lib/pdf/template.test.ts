@@ -13,6 +13,7 @@ import { laserFileName } from '$lib/laser/export';
 import { getGalleryDesign } from '$lib/data/heartDesigns';
 import { generateTemplatesPDF, templatesFilename } from './template';
 import { planTemplatePages, templatePieces } from './plan';
+import { markStrokes } from '$lib/utils/orientationMarks';
 
 // A real 1 × 1 PNG: jsPDF reads its header.
 const PICTURE = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
@@ -92,6 +93,55 @@ describe('generateTemplatesPDF', () => {
 		const labels = texts.filter((t) => t.text.startsWith(jul.name));
 		expect(labels.map((t) => t.text)).toEqual([`${jul.name} (Venstre)`, expect.stringMatching(/\(H.+jre\)$/)]);
 		expect(texts.filter((t) => t.text === 'juleflet.dk/hjerte/jul')).toHaveLength(2);
+	});
+});
+
+describe('orientation marks in the PDF', () => {
+	/** Every straight stroke `x y m x y l` of the page, in mm from the top left; and every subpath start. */
+	function strokes(pdf: jsPDF, sheetHeightMm: number) {
+		const stream = pdf.output();
+		const pt = (x: string, y: string) => ({ x: Number(x) / PT, y: sheetHeightMm - Number(y) / PT });
+		const lines = [...stream.matchAll(/([\d.]+) ([\d.]+) m\s+([\d.]+) ([\d.]+) l/g)].map((m) => [
+			pt(m[1]!, m[2]!),
+			pt(m[3]!, m[4]!)
+		]);
+		const starts = [...stream.matchAll(/([\d.]+) ([\d.]+) m/g)].map((m) => pt(m[1]!, m[2]!));
+		// The marks' 0.2 mm pen: nothing else on the page uses it.
+		const markPens = (stream.match(/0\.566929\d* w/g) ?? []).length;
+		return { lines, starts, markPens };
+	}
+	const near = (a: { x: number; y: number }, b: { x: number; y: number }) => Math.hypot(a.x - b.x, a.y - b.y) < 0.01;
+
+	it('prints ⊗ on the left half and × on the right half of Jul, where the plan puts them', async () => {
+		const jul = loadHeart('jul');
+		const pdf = await generateTemplatesPDF([jul], { widthMm: 80, hearts: 1, sheet: SHEETS.A4, previewImage: false });
+		const pieces = templatePieces([jul], 80, 1);
+		const [placements] = planTemplatePages(pieces, { sheet: SHEETS.A4 }).pages;
+		const { lines, starts, markPens } = strokes(pdf, 297);
+		expect(markPens).toBe(2);
+		for (const { index, x, y } of placements!) {
+			const piece = pieces[index]!;
+			expect(piece.marks).toHaveLength(1);
+			const mark = piece.marks[0]!;
+			expect(mark.kind).toBe(piece.lobe === 'left' ? 'circled' : 'plain');
+			const at = (p: { x: number; y: number }) => ({ x: x + p.x * piece.scale, y: y + 9 + p.y * piece.scale });
+			for (const [a, b] of markStrokes(mark)) {
+				expect(lines.some(([p, q]) => near(p!, at(a)) && near(q!, at(b)))).toBe(true);
+			}
+			// jsPDF starts a circle at its rightmost point.
+			const circleStart = at({ x: mark.x + mark.r, y: mark.y });
+			expect(starts.some((p) => near(p, circleStart))).toBe(mark.kind === 'circled');
+			// On the piece: inside the outline, below the ear base, by the left side.
+			const c = at(mark);
+			expect(c.x - x).toBeGreaterThan(1.5);
+			expect(c.x - x).toBeLessThan(piece.widthMm / 4);
+			expect(c.y - (y + 9)).toBeGreaterThan(piece.earRadiusMm);
+		}
+	});
+
+	it('prints no mark for the classic heart', async () => {
+		const pdf = await generateTemplatesPDF([loadHeart('classic-3x3')], { widthMm: 80, hearts: 1, sheet: SHEETS.A4 });
+		expect(strokes(pdf, 297).markPens).toBe(0);
 	});
 });
 
