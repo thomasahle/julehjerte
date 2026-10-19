@@ -28,11 +28,12 @@ export function polishCandidate(candidate,prob,n,cfg,options={}){
     ?outlineDetailPlan(candidate.graph,candidate.points,candidate.phase,options.input?.sourceImage,polishingCfg):null;
   const graph=local?.graph||detail?.graph||new CurveGraph(candidate.graph.nested(candidate.points),cfg.width);
   // A raster pass can conceal a thin island, particularly across the fold.
-  // Check detailed polishing while there is still time to change the curves.
+  // Check every polishing pass while there is still time to change the curves.
+  // Existing spans can hide the same disconnected cores as subdivided ones.
   // Temporary border locks must not prevent correcting a detected fold defect;
   // the graph's original endpoint constraints remain fixed.
   const paperRecovery={foldFamilies:[],localFamilies:[]};let releasedCoordinates=0;
-  const paperAudit=detail&&cfg.requireMaterialCore?(solution,settings)=>{
+  const paperAudit=cfg.requireMaterialCore?(solution,settings)=>{
     const lattice=materialAudit(solution,settings);
     if(lattice.status==='fail')return lattice;
     const offset=geometricMaterialAudit(solution,settings,{tolerance:.002,probeRadii:false});
@@ -42,7 +43,7 @@ export function polishCandidate(candidate,prob,n,cfg,options={}){
       const fold=floating.some(p=>p.bounds[1]<=w&&p.bounds[3]>=w)||f.foldIntervals.some(i=>i.anchoredCoreLength<=1e-8);
       if(fold&&!paperRecovery.foldFamilies.includes(f.family)){
         paperRecovery.foldFamilies.push(f.family);
-        for(const path of graph.families[f.family])for(const[e]of graph.paths[path])for(const id of graph.edges[e]){
+        if(detail)for(const path of graph.families[f.family])for(const[e]of graph.paths[path])for(const id of graph.edges[e]){
           if(w-graph.points[2*id+1-f.family]>detail.report.fixedBorderMm)continue;
           for(let axis=0;axis<2;axis++){
             const index=2*id+axis;
@@ -62,7 +63,8 @@ export function polishCandidate(candidate,prob,n,cfg,options={}){
     // the fitting forces and physical tolerances retain the incoming settings.
     polished=refineCurves(graph,local?.objective.probability||prob,n,candidate.phase,polishingCfg,{...options,
       ...(polishingCfg.materialResolution===700&&!local?{resolvePaperBeforeRollback:true,paperVerificationResolution:1000,paperVerificationReserve:250}:{}),
-      ...(local?{weights:local.objective.weights,steps:Math.min(options.steps??16,16),checkpointEvery:4}:{}),...(detail?{rate:.035,retryPaperSeparation:true,paperRecovery,paperAudit}:{}),onProgress:(r,solution)=>{
+      ...(local?{weights:local.objective.weights,steps:Math.min(options.steps??16,16),checkpointEvery:4}:{}),...(detail?{rate:.035,retryPaperSeparation:true}:{}),
+      ...(cfg.requireMaterialCore?{paperRecovery,paperAudit}:{}),onProgress:(r,solution)=>{
         const active=r.paperVerification||verification;
         if(active)solution.report={...solution.report,paperVerification:{...active,status:r.paper}};
         options.onProgress?.(r,solution);
