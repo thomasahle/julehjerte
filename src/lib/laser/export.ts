@@ -6,7 +6,8 @@
 import type { HeartDesign } from '$lib/types/heart';
 import { SITE_URL } from '$lib/config';
 import type { Language } from '$lib/i18n';
-import { heartPath, path } from '$lib/i18n/routes';
+import { path } from '$lib/i18n/routes';
+import { heartAddress } from '$lib/data/categories';
 import { lobesShareTemplate, SHARED_TEMPLATE_LOBE } from '$lib/utils/symmetry';
 import { serializeLaserDxf } from './dxf';
 import { layoutSheet, SHEETS, type LaserSheet, type SheetSize } from './sheet';
@@ -149,14 +150,10 @@ export interface LaserFileInfo {
  * link for anyone the file reaches; it, like a sheet of several hearts, gets
  * the site's front page instead.
  */
-export function laserFileUrl(
-	heartIds: readonly string[],
-	lang: Language,
-	inGallery: (id: string) => boolean
-): string {
+export function laserFileUrl(heartIds: readonly string[], lang: Language): string {
 	const [only] = heartIds;
-	if (heartIds.length === 1 && only && inGallery(only)) return `${SITE_URL}${heartPath(only, lang)}`;
-	return `${SITE_URL}${path('home', lang)}`;
+	const page = heartIds.length === 1 && only ? heartAddress(only, lang, { absolute: true }) : null;
+	return page ?? `${SITE_URL}${path('home', lang)}`;
 }
 
 /** The file's text, in the chosen format. */

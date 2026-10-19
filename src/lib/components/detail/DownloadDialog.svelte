@@ -33,7 +33,6 @@
 	import { ToggleGroup, ToggleGroupItem } from '$lib/components/ui/toggle-group';
 	import { CloseIcon, DownloadIcon } from '$lib/components/icons';
 	import { t, type Language } from '$lib/i18n';
-	import { getGalleryDesign } from '$lib/data/heartDesigns';
 	import type { HeartDesign } from '$lib/types/heart';
 	import {
 		trackHeartDownload,
@@ -310,11 +309,7 @@
 	const fileInfo = $derived({
 		heartId,
 		heartName: several ? laserHearts.map((d) => nameIn(d, lang)).join(', ') : heartName,
-		url: laserFileUrl(
-			several ? laserHearts.map((d) => d.id) : [heartId],
-			lang,
-			(id) => getGalleryDesign(id) !== null
-		),
+		url: laserFileUrl(several ? laserHearts.map((d) => d.id) : [heartId], lang),
 		widthMm
 	});
 
