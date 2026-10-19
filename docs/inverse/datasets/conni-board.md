@@ -110,3 +110,9 @@ source links observed in rendered pin controls are included without inferring an
 author; the DNA-post URL found only in a title remains an unresolved research
 lead. Account/board activity and training metadata do not enter the public index.
 No images were downloaded, copied or publicly mirrored for this archive update.
+
+The archive update was [merged and deployed](conni-release-qa.json) at
+`d0b882b5`. Live browser checks pass in Danish and English, including the new
+opaque-pin reference, consolidated source links, pagination, filters, the saved
+original PDF and the 390-pixel layout. The full local suite also passes, including
+all 1,207 inverse tests; CI preserves its separate advisory timing results.
