@@ -1,0 +1,37 @@
+{
+  "schema": "material-encoder-tail-study-plan-1",
+  "status": "predeclared",
+  "hypothesis": "Frozen ImageNet-derived features may limit material and foreground adaptation. Fine-tuning only the final three encoder blocks could improve held-out whole-heart predictions while preserving early features. It may overfit the small real corpus.",
+  "parentTrainingReportSha256": "47b1b5e1f8a50d53152a744d00b3750b7c1e96ca0d88511662fb4e1778122a29",
+  "arms": {
+    "baseline": {
+      "path": "docs/inverse/datasets/material-encoder-tail-baseline-plan.json",
+      "sha256": "a324342c994788622b582cfea51cb78c453302580f54e0b52eafb2f590fd8223"
+    },
+    "tail": {
+      "path": "docs/inverse/datasets/material-encoder-tail-tail-plan.json",
+      "sha256": "4207732d568cc0dfcf337e9d3defb94f3adc5991879139a20428bb977b173f1c"
+    }
+  },
+  "protocol": [
+    "Both arms start from the identical retained synthetic foreground checkpoint, with the same neutral material head, seed, 240 updates, four-image batches, print/reflection/synthetic schedules, nineteen reviewed photos, and two connected source/motif folds.",
+    "One serial CPU thread. No evaluation image or label can enter its own training fold. The synthetic-only control is also retained for both arms.",
+    "The only learning-policy change is allowing blocks 9, 10 and 11 to update at 0.0001 while all other trainable parameters keep 0.001. BatchNorm buffers remain frozen everywhere.",
+    "Use the fixed final update, without early stopping, checkpoint selection, held-out tuning or topology-based candidate selection.",
+    "Independently audit initial/frozen tensors, group exclusion, draw schedule, checkpoint inference and reported metrics. Compare on identical partial observations.",
+    "If material/body metrics or crops show a gain, test the full photo-to-editable-template pipeline and visually inspect changes before claiming useful reconstruction. New lower-error masks alone are insufficient."
+  ],
+  "resourceLimits": {
+    "cpuThreads": 1,
+    "parallelWorkers": 1,
+    "newPhotoDownloads": 0,
+    "minimumFreeGiB": 10,
+    "plannedArtifactLimitMiB": 100
+  },
+  "limitations": [
+    "Repeatedly inspected development photos, nineteen images and two broad source/motif groups; not an unseen test.",
+    "One seed and fixed 240-update budget; a negative outcome does not rule out other adaptation policies.",
+    "Encoder parameter updates can change semantics even though BatchNorm statistics remain frozen.",
+    "No production integration, ONNX deployment, pushing or changes to physical/template acceptance thresholds."
+  ]
+}

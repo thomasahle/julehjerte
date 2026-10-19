@@ -19,7 +19,8 @@ from foreground import load_foreground_run
 from material_transfer import material_from_foreground
 from material_pilot import material_replay, material_tensors, evaluate_materials
 from material_prints import load_printed_replay, print_schedule, printed_batch
-from real_finetune import grouped_folds, freeze_encoder, encoder_hash, schedule, step_batch
+from real_finetune import grouped_folds, encoder_hash, schedule, step_batch
+from material_training_policy import configure_material_training, frozen_state_hash
 from real_materials import build
 from real_materials_learning import load_material_labels, joint_material_loss
 
@@ -42,9 +43,9 @@ def main():
     if plan.get('schema') != 'woven-heart-material-pilot-plan-1':
         raise ValueError('Unexpected material pilot plan')
     protocol = plan['protocol']
-    if protocol['batchSize'] != 4 or protocol['realPerMixedBatch'] != 2 or protocol['device'] != 'cpu' or protocol['threads'] != 2:
+    if protocol['batchSize'] != 4 or protocol['realPerMixedBatch'] != 2 or protocol['device'] != 'cpu' or protocol['threads'] not in [1,2]:
         raise ValueError('Unsupported paired material protocol')
-    torch.set_num_threads(2); torch.set_num_interop_threads(1)
+    torch.set_num_threads(protocol['threads']); torch.set_num_interop_threads(1)
     torch.manual_seed(protocol['seed'])
     manifest = ROOT/plan['sourceManifest']; initial_run = ROOT/plan['initialRun']
     pins = {str(manifest): plan['sourceManifestSha256'],
@@ -61,7 +62,7 @@ def main():
     args.output.mkdir(parents=True, exist_ok=False)
     source = ROOT/'scripts/inverse/learning'
     dependencies = [Path(__file__), Path(__file__).with_name('material_pilot.py'), Path(__file__).with_name('material_prints.py'),
-                    source/'material_metrics.py', source/'material_transfer.py',
+                    source/'material_metrics.py', source/'material_transfer.py', source/'material_training_policy.py',
                     source/'real_materials_learning.py', source/'real_foreground.py',
                     source/'real_finetune.py', source/'foreground.py', source/'model.py', source/'data.py',
                     ROOT/'scripts/inverse/datasets/real_materials.py', ROOT/'scripts/inverse/datasets/real_annotations.py']
@@ -70,7 +71,7 @@ def main():
               'sourceCommit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
               'sourceHashes': source_hashes, 'planSha256': digest(plan_bytes), 'plan': plan,
               'inputPins': pins, 'labelAudits': [], 'runs': {},
-              'runtime': {'python': platform.python_version(), 'torch': torch.__version__, 'device': 'cpu', 'threads': 2},
+              'runtime': {'python': platform.python_version(), 'torch': torch.__version__, 'device': 'cpu', 'threads': protocol['threads']},
               'limitations': ['Previously inspected partial annotations; this is grouped development evaluation, not an unseen test.',
                               'Declared motif/source groups are conservative but not topology-disjoint, and synthetic replay includes checker weaving.',
                               'Unknown boundaries do not receive labels or scores. Body/material scores do not establish correct crops or cutting templates.',
@@ -132,12 +133,16 @@ def main():
         runs = [{'id': 'synthetic-control', 'train': [], 'heldOut': list(by_id)}]+folds
         report['status'] = 'training'; save()
         for run in runs:
-            model = copy.deepcopy(initial); count = freeze_encoder(model)
-            optimizer = torch.optim.AdamW([p for p in model.parameters() if p.requires_grad], lr=protocol['learningRate'], weight_decay=protocol['weightDecay'])
+            model = copy.deepcopy(initial)
+            groups, policy = configure_material_training(model, tail_blocks=protocol.get('encoderTailBlocks',0),
+                decoder_lr=protocol['learningRate'], encoder_lr=protocol.get('encoderLearningRate'))
+            frozen_before = frozen_state_hash(model)
+            optimizer = torch.optim.AdamW(groups, lr=protocol['learningRate'], weight_decay=protocol['weightDecay'])
             real = [by_id[i] for i in run['train']]
             destination = args.output/run['id']; destination.mkdir()
             entry = {'status': 'training', 'trainIds': run['train'], 'heldOutIds': run['heldOut'],
-                     'trainableParameters': count, 'initialEncoderSha256': initial_encoder, 'history': []}
+                     'trainableParameters': policy['trainableParameters'], 'trainingPolicy':policy,
+                     'initialFrozenStateSha256':frozen_before, 'initialEncoderSha256': initial_encoder, 'history': []}
             report['runs'][run['id']] = entry; sampled = []; started = time.perf_counter()
             save()
             for step, draw in enumerate(draws):
@@ -156,12 +161,14 @@ def main():
                 entry['history'].append(float(loss.detach()))
                 if (step+1) % 40 == 0:
                     save(); print(run['id'], step+1, float(loss.detach()), flush=True)
-            if encoder_hash(model) != initial_encoder:
-                raise ValueError('Training changed frozen encoder parameters or statistics')
+            if frozen_state_hash(model) != frozen_before:
+                raise ValueError('Training changed frozen parameters or buffers')
+            if not policy['tailBlocks'] and encoder_hash(model) != initial_encoder:
+                raise ValueError('Training changed the fully frozen encoder')
             held_out = [by_id[i] for i in run['heldOut']]
             probability = predictions(model, held_out)
             entry.update(status='complete', updates=len(draws), seconds=time.perf_counter()-started,
-                         finalEncoderSha256=encoder_hash(model), sampledIds=sampled,
+                         finalEncoderSha256=encoder_hash(model), finalFrozenStateSha256=frozen_state_hash(model), sampledIds=sampled,
                          metrics=evaluate_materials(probability, held_out),
                          selection='Fixed final update. Held-out groups never select parameters, thresholds or checkpoints.')
             torch.save({k: v.detach().cpu() for k, v in model.state_dict().items()}, destination/'model.pt')

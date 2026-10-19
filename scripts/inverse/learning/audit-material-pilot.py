@@ -125,9 +125,10 @@ def gallery(out, items, probabilities, metrics):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--study',type=Path,required=True);parser.add_argument('--output',type=Path,required=True);parser.add_argument('--plan',type=Path,required=True)
-    args=parser.parse_args();torch.set_num_threads(2);torch.set_num_interop_threads(1)
+    args=parser.parse_args();torch.set_num_interop_threads(1)
     raw=(args.study/'report.json').read_bytes();report=json.loads(raw)
     assert report['schema']=='woven-heart-material-pilot-1' and report['status']=='complete'
+    torch.set_num_threads(report['plan']['protocol']['threads'])
     for file,digest in {**report['sourceHashes'],**report['inputPins']}.items(): assert sha(Path(file).read_bytes())==digest,file
     for file,digest in report['artifacts'].items(): assert sha((args.study/file).read_bytes())==digest,file
     assert sha(args.plan.read_bytes())==report['planSha256']
@@ -181,14 +182,25 @@ def main():
         assert batches==entry['sampledIds']
         checkpoint=args.study/name/'model.pt';assert sha(checkpoint.read_bytes())==entry['checkpointSha256']
         state=torch.load(checkpoint,map_location='cpu',weights_only=True)
+        tail=protocol.get('encoderTailBlocks',0)
+        assert type(tail) is int and 0<=tail<len(initial.encoder)
+        parameter_names=set(dict(initial.named_parameters()))
+        allowed={key for key in parameter_names if not key.startswith('encoder.') or int(key.split('.')[1])>=len(initial.encoder)-tail}
+        if 'trainingPolicy' in entry:
+            assert set(entry['trainingPolicy']['trainableNames'])==allowed
+            assert entry['trainingPolicy']['tailBlocks']==tail
+            assert entry['initialFrozenStateSha256']==entry['finalFrozenStateSha256']
         for key,value in initial_state.items():
-            if key.startswith('encoder.'): assert torch.equal(value,state[key]),key
+            if key not in allowed: assert torch.equal(value,state[key]),key
+        encoder_same=all(torch.equal(value,state[key]) for key,value in initial_state.items() if key.startswith('encoder.'))
+        if not tail: assert encoder_same
         model=copy.deepcopy(initial);model.load_state_dict(state,strict=True)
         subset=[by_id[i] for i in held];archived=align(args.study/name/'predictions.npz',held)
         actual=infer(model,subset);np.testing.assert_allclose(actual,archived,rtol=0,atol=1e-7)
         score=independent_metrics(archived,subset);confirm_metrics(score,entry['metrics'])
         checked.append({'run':name,'updates':len(draws),'heldOutIds':held,'sourceSeparationPassed':True,
-            'encoderTensorsIdentical':True,'checkpointPredictionsMaxAbsoluteDifference':float(np.max(abs(actual-archived)))})
+            'encoderTensorsIdentical':encoder_same,'frozenParametersAndAllBuffersIdentical':True,
+            'trainableEncoderTailBlocks':tail,'checkpointPredictionsMaxAbsoluteDifference':float(np.max(abs(actual-archived)))})
         if train: mixed.update(dict(zip(held,archived)))
         else: probabilities[name]=archived
     assert set(mixed)==set(identities)
