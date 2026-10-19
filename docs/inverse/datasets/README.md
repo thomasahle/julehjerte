@@ -19,6 +19,18 @@ production path.
 | Larger segmentation baseline | Official pretrained MobileSAM evaluated offline | A useful body mask alone does not establish correct corners, material boundaries or legal templates |
 | Solver | Current revision passes 1,109/1,109 inverse tests and 34 browser workflows; all 22 regular Hunodan designs finish under ten seconds | Some hard fits retain thin false seams; the earlier 27/31 photo benchmark has not been rerun |
 
+The [complete balanced-epoch follow-up](u2netp-material-complete-epochs-results.json)
+adds 384 updates to the fixed relative-colour head, visiting every synthetic
+view four times. Known-region real training error falls from **5.06% to 2.78%**.
+However, boundary-band error increases on all three synthetic groups: clean
+views **8.25% → 11.15%**, printed views **22.42% → 23.68%**, and scenes
+**21.93% → 22.63%**. Printed/scene interiors improve; clean-view interiors do not.
+All training, worst-synthetic and 32-photo evaluation galleries were inspected.
+Print confusion, lost checker squares and rounded/disconnected joins remain.
+This head is rejected for integration; these are development diagnostics, not
+held-out reconstruction scores. The next comparison changes boundary weighting
+while keeping the starting head, data, schedule and update count fixed.
+
 ### Latest solver and browser validation
 
 The drawing improvements (red/white/XOR, full-circle weave icon, brush slider and

@@ -1,0 +1,183 @@
+{
+  "schema": "u2netp-material-complete-epochs-results-1",
+  "date": "2026-10-20",
+  "status": "rejected-for-integration",
+  "evidence": [
+    {
+      "path": "tmp/heart-learning/u2netp-material-relative-v2/report.json",
+      "sha256": "00f9404cf95fcdcc50d62eb4bc4df395f77bff03dd860e96a7636f5daacc77cf"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-complete-epochs-v1/report.json",
+      "sha256": "8103405f3b8a0a12a3209571fdde18babdaf2a5a1a2bbb04d035ba537b0e3201"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-relative-boundaries-v1/report.json",
+      "sha256": "bfedda186ef91f18dc6eca0ddbdb0aeb97ae370fda0e3ff299cb958b3bc1d30b"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-complete-synthetic-v1/report.json",
+      "sha256": "a9e348af9332c99ac9f0c2323b88c3685b595a2f83ff3b858d40c9fae286c5ae"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-complete-probe-v1/report.json",
+      "sha256": "42d5349ec18a97dd89baa997bb5365f8092331e7313e3163f108224614806f98"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-complete-checks-v1.json",
+      "sha256": "cf54aa1d559e29d92ec881b1464b4a70533d86d246b54be7dbaa13c9290464e6"
+    }
+  ],
+  "protocol": {
+    "parentUpdates": 120,
+    "additionalUpdates": 384,
+    "totalUpdates": 504,
+    "syntheticViews": 96,
+    "syntheticGeometries": 32,
+    "newDrawsPerSyntheticView": 4,
+    "realPhotos": 16,
+    "newDrawsPerRealPhoto": 24,
+    "inputLabelHashesExact": true,
+    "initialMetricsExact": true,
+    "threads": 1,
+    "seconds": 284.786864792,
+    "checkpointSelection": "Final update only. More computation and a fresh AdamW optimizer; not an isolated scheduling ablation."
+  },
+  "realTraining": {
+    "parent": {
+      "bodyIoU": 0.9220370264229887,
+      "bodyPixelError": 0.02772860746760552,
+      "bodyFalseNegative": 0.0284759940848502,
+      "backgroundFalsePositive": 0.019533635632991684,
+      "materialPixelError": 0.05060102394086828,
+      "materialJointError": 0.0826496723633544,
+      "jointRegionPixelError": 0.03957396977519874,
+      "balancedMaterialJointError": 0.07846647204468052
+    },
+    "continued": {
+      "bodyIoU": 0.9220370264229887,
+      "bodyPixelError": 0.02772860746760552,
+      "bodyFalseNegative": 0.0284759940848502,
+      "backgroundFalsePositive": 0.019533635632991684,
+      "materialPixelError": 0.027803890444649454,
+      "materialJointError": 0.059896002280385593,
+      "jointRegionPixelError": 0.03449346293015299,
+      "balancedMaterialJointError": 0.055131529627427414
+    },
+    "qualification": "Partial known training labels; no held-out accuracy claim."
+  },
+  "syntheticTraining": {
+    "boundaryDefinition": "Chebyshev from both pixels of each known-label class transition",
+    "radiusPixels": 2,
+    "qualification": "One global phase assignment per view; fractional coverage retained. Boundary metrics exclude unknown/background interfaces. This is raster disagreement, not a topology certificate.",
+    "groups": {
+      "synthetic-original": {
+        "parent": {
+          "overallError": 0.019122325443838135,
+          "boundaryError": 0.08246078601833201,
+          "interiorError": 0.0012651936565667178
+        },
+        "continued": {
+          "overallError": 0.02543805314153115,
+          "boundaryError": 0.11146147692807648,
+          "interiorError": 0.001893635208863901
+        }
+      },
+      "synthetic-printed": {
+        "parent": {
+          "overallError": 0.11170725483417154,
+          "boundaryError": 0.22416174276237366,
+          "interiorError": 0.08191415805053243
+        },
+        "continued": {
+          "overallError": 0.10436495380443903,
+          "boundaryError": 0.23679545644211075,
+          "interiorError": 0.06907612029902618
+        }
+      },
+      "synthetic-scene": {
+        "parent": {
+          "overallError": 0.07690051700375986,
+          "boundaryError": 0.2193413074289068,
+          "interiorError": 0.04070354115905579
+        },
+        "continued": {
+          "overallError": 0.07059634723040045,
+          "boundaryError": 0.2263423798404944,
+          "interiorError": 0.030674989982514826
+        }
+      }
+    }
+  },
+  "nativeEvaluation": {
+    "photos": 32,
+    "inputTensorsExact": true,
+    "allParentBodiesExact": true,
+    "maximumCachedNormalizedBodyDifference": 1.1920928955078125e-07,
+    "medianInferenceSeconds": 0.2842605835000005,
+    "allEightGalleryPagesReviewed": true
+  },
+  "visualReview": {
+    "trainingPages": 4,
+    "syntheticLargestErrorPages": 2,
+    "evaluationPages": 8,
+    "findings": [
+      "Printed stripes, flowers, letters and trees still produce false material edges.",
+      "Red/gold checker remains mostly one material; green/black motif largely disappears.",
+      "Star, bird and dark/gold checker retain broad silhouettes but round corners, break joins and distort small cells.",
+      "Stacked hearts lose structure; some red/gold motifs gain outlines near lobe boundaries.",
+      "Frozen body still misses house/candlestick paper and includes adjacent hands.",
+      "Scene synthetic failures include neighboring hearts; labels specify the central heart, so failures are not automatically misregistered labels."
+    ]
+  },
+  "conclusion": "Complete balanced training improves real known-region error and printed/scene interiors, but worsens boundary error in all three synthetic groups and both overall/interior error on clean original views. Reject for integration; longer training does not resolve material geometry.",
+  "nextExperiment": "Fixed paired comparison of uniform and boundary-weighted loss, keeping parent, all draws, architecture, input labels and computation budget unchanged. No new template fits or browser export on the rejected head.",
+  "checks": [
+    {
+      "name": "boundary-fixtures",
+      "passed": [
+        "known-boundary-band",
+        "interior-separation",
+        "global-phase-exchange",
+        "unknown-gap-exclusion"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "parent-synthetic",
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "scripts/inverse/learning/probe-material-synthetic.py",
+        "--training=tmp/heart-learning/u2netp-material-relative-v2",
+        "--output=tmp/heart-learning/u2netp-material-relative-boundaries-v1"
+      ],
+      "log": "tmp/heart-learning/u2netp-material-complete-parent-synthetic-v1.log",
+      "exitCode": 0
+    },
+    {
+      "name": "continued-synthetic",
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "scripts/inverse/learning/probe-material-synthetic.py",
+        "--training=tmp/heart-learning/u2netp-material-complete-epochs-v1",
+        "--output=tmp/heart-learning/u2netp-material-complete-synthetic-v1"
+      ],
+      "log": "tmp/heart-learning/u2netp-material-complete-continued-synthetic-v1.log",
+      "exitCode": 0
+    },
+    {
+      "name": "native",
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "scripts/inverse/learning/probe-u2netp-material.py",
+        "--training=tmp/heart-learning/u2netp-material-complete-epochs-v1",
+        "--control=tmp/heart-learning/u2netp-body-adapted-probe-v1",
+        "--reuse=tmp/heart-learning/u2netp-material-relative-probe-v2",
+        "--output=tmp/heart-learning/u2netp-material-complete-probe-v1"
+      ],
+      "log": "tmp/heart-learning/u2netp-material-complete-native-v1.log",
+      "exitCode": 0
+    }
+  ],
+  "productionChanges": false
+}
