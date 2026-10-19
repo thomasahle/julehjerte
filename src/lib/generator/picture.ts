@@ -9,7 +9,7 @@
  * Frames without a picture here return none.
  */
 import type { GeneratorRequest } from './generate';
-import { arc, frameRing, outerFrame, uprightToSheet, BOARD_RADII, FITTED, SILHOUETTE, WEDGES, type Font, type Point, type Ring } from './geometry';
+import { arc, frameRing, outerFrame, ray, uprightToSheet, BOARD_RADII, FITTED, SILHOUETTE, WEDGES, type Font, type Frame, type Point, type Ring } from './geometry';
 import { fillSquare, fitCircle } from './frameFit';
 import { fittedPicture } from './fitted';
 import { normalizeContours } from './contours';
@@ -61,6 +61,7 @@ export function picture(request: GeneratorRequest, known: Known = {}): Picture |
 		// corners its frame turns over with more stripes.
 		if (request.mode === 'figure' && (request.style === 'rays' || request.style === 'check') && (known.board ?? 3) === 3)
 			return circlePicture(request);
+		if (request.mode === 'figure' && request.style === 'sunburst' && (known.board ?? 5) === 5) return sunburstPicture(request);
 		if (request.mode === 'figure' && request.style === 'board') return boardPicture(request, known.circle);
 		if (request.mode === 'figure' && (request.style === 'wedges' || request.style === 'fitted' || request.style === 'silhouette') && request.contours?.length
 			&& (known.board ?? (request.style === 'fitted' ? 5 : 3)) === (request.style === 'fitted' ? 5 : 3)) {
@@ -93,10 +94,16 @@ function checkered(text: string, font: Font, letterScale = 1): Picture {
  * motif in its circle, and the four corners its frame's cuts turn over (see
  * `outerFrame`). A motif that needs panels or a finer board can differ. */
 function circlePicture(request: GeneratorRequest): Picture | undefined {
+	const fitted = fitCircle(request);
+	return raysPicture(request, request.frame ?? 'circle', fitted.frameSize ?? 70, fitted.scale ?? .7, request.style === 'check' ? 'check' : 'rays');
+}
+
+/** The motif at `size` × `scale` in its circle of `size`, with the corners the
+ * frame's cuts turn over. */
+function raysPicture(request: GeneratorRequest, shape: Frame, size: number, scale: number, style: 'rays' | 'check'): Picture | undefined {
 	const contours = normalizeContours(request.contours ?? []);
 	if (!contours.length) return;
-	const fitted = fitCircle(request), size = fitted.frameSize ?? 70, scale = fitted.scale ?? .7;
-	const frame = frameRing(request.frame ?? 'circle', size), style = request.style === 'check' ? 'check' : 'rays';
+	const frame = frameRing(shape, size);
 	const motif = contours.map(r => r.map(([x, y]) => uprightToSheet([x * size * scale, y * size * scale])));
 	const corner = (angle: number): Point => [50 + 50 * Math.sign(Math.cos(angle)), 50 + 50 * Math.sign(Math.sin(angle))];
 	const corners = outerFrame([], frame, [0, 1, 2, 3], style).map(gate =>
@@ -135,6 +142,23 @@ function woven(text: string, font: Font, air: boolean, letterScale = 1): Picture
 		}
 	}
 	return { rings };
+}
+
+/** The sunburst: the rays around the motif at four fifths of the frame, and
+ * the four cuts of its border, each from one edge of the paper around a
+ * quarter of the outer circle to the other, turning the strip beyond it
+ * over (see `sunburstBorder`). */
+function sunburstPicture(request: GeneratorRequest): Picture | undefined {
+	const fitted = fitCircle(request), size = fitted.frameSize ?? 70;
+	const rays = raysPicture(request, 'circle', size * .8, fitted.scale ?? .7, 'rays');
+	if (!rays) return;
+	const circle = frameRing('circle', size), inset = Math.max(4, (100 - size) * .25);
+	const [se, sw, nw, ne] = [1, 3, 5, 7].map(i => ray(circle, [50, 50], i * Math.PI / 4));
+	return { rings: [...rays.rings,
+		[[0, 0], [inset, 0], ...arc(circle, sw, nw).reverse(), [inset, 100], [0, 100]],
+		[[100, 0], [100 - inset, 0], ...arc(circle, ne, se), [100 - inset, 100], [100, 100]],
+		[[0, 0], [0, inset], ...arc(circle, nw, ne), [100, inset], [100, 0]],
+		[[0, 100], [0, 100 - inset], ...arc(circle, se, sw).reverse(), [100, 100 - inset], [100, 100]]] };
 }
 
 /** The circle on a regular board of five strips: the board's checks, cleared
