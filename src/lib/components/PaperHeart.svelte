@@ -99,6 +99,8 @@
 			 * still the ones it makes, Tegn opens on the Escher tab with it.
 			 */
 			initialPattern?: HeartPattern;
+			/** Open on the Escher tab, for a link that asks for it (the design start's Escher card). */
+			initialEscherTab?: boolean;
 			/** Told the cuts after every change, and the Escher tab's tile while the cuts are its own, so the route saves both. */
 			onFingersChange?: (fingers: Finger[], gridSize: GridSize, weaveParity: 0 | 1, pattern: HeartPattern | null) => void;
 		}
@@ -115,6 +117,7 @@
 			panelExtra,
 			notice,
 			initialPattern = undefined,
+			initialEscherTab = false,
 			onFingersChange
 		}: Props = $props();
 
@@ -2952,7 +2955,7 @@
 					takeUpTile(restored);
 					escherTab = true;
 				});
-			}
+			} else if (initialEscherTab) openSymmetryTab('escher');
 		});
 
 	$effect(() => {

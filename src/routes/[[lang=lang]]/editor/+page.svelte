@@ -130,9 +130,10 @@
     fromSession: boolean;
     isEditMode: boolean;
     returnToDetail: boolean;
+    escher: boolean;
   } {
     if (!browser) {
-      return { design: null, fromId: null, fromSession: false, isEditMode: false, returnToDetail: false };
+      return { design: null, fromId: null, fromSession: false, isEditMode: false, returnToDetail: false, escher: false };
     }
     const query = new URLSearchParams(window.location.search);
     const hash = new URLSearchParams(window.location.hash.replace(/^#/, ''));
@@ -151,7 +152,9 @@
       fromId,
       fromSession,
       isEditMode: design !== null && get('edit') === 'true',
-      returnToDetail
+      returnToDetail,
+      // `?tab=escher`: the design start's Escher card opens Tegn on that tab.
+      escher: get('tab') === 'escher'
     };
   }
 
@@ -161,7 +164,8 @@
     fromId: urlFromId,
     fromSession: urlFromSession,
     isEditMode: urlEditMode,
-    returnToDetail: urlReturnToDetail
+    returnToDetail: urlReturnToDetail,
+    escher: urlEscher
   } = getEditorUrlInput();
 
   // The heart Mal found, taken exactly once, before the first render so the
@@ -867,6 +871,7 @@
         initialFingers={currentFingers}
         initialWeaveParity={currentWeaveParity}
         initialPattern={currentPattern}
+        initialEscherTab={urlEscher}
         panelExtra={isNarrow ? undefined : heartPanels}
         notice={pendingDraft ? draftNotice : undefined}
       />

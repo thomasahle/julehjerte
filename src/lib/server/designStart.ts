@@ -26,8 +26,9 @@ const GALLERY = {
 	introStar: 'simple-5star',
 	introHeart: 'nemt-hjerte',
 	figure: 'simple-5star',
-	templateFront: 'classic-3x3',
-	templateBack: 'stjerne',
+	// One tile repeated over the heart, as the Escher tab draws.
+	escherFront: 'drageskael',
+	escherBack: 'puslespil',
 	// Matches the photograph on the same card.
 	picture: '5star'
 } as const;

@@ -97,14 +97,14 @@
 
 	<h2 class="section-line">{t('generatorHaveIdea', lang)}</h2>
 	<div class="others">
-		<a class="choice other" href="{href('home', lang)}#skabeloner">
-			<div class="art templates" aria-hidden="true">
-				{@render heart('templateFront')}{@render heart('templateBack')}
+		<a class="choice other" href="{href('editor', lang)}?tab=escher">
+			<div class="art pair" aria-hidden="true">
+				{@render heart('escherFront')}{@render heart('escherBack')}
 			</div>
 			<div class="body">
 				<div>
-					<h3>{t('generatorTemplate', lang)}</h3>
-					<p>{t('generatorTemplateHint', lang)}</p>
+					<h3>{t('generatorEscher', lang)}</h3>
+					<p>{t('generatorEscherHint', lang)}</p>
 				</div>
 				<span class="arrow"><ArrowRightIcon /></span>
 			</div>
@@ -452,13 +452,13 @@
 		height: 22px;
 		background: transparent;
 	}
-	.templates .heart {
+	.pair .heart {
 		width: 89px;
 		margin-right: -19px;
 		transform: rotate(-12deg);
 		filter: drop-shadow(1px 3px 4px rgb(0 0 0 / 0.07));
 	}
-	.templates .heart:last-child {
+	.pair .heart:last-child {
 		margin: 13px 0 0;
 		transform: rotate(12deg);
 		--paper-right: #3d5b48;
@@ -693,7 +693,7 @@
 		.other .arrow {
 			display: none;
 		}
-		.templates .heart {
+		.pair .heart {
 			width: 72px;
 		}
 		.photo {
