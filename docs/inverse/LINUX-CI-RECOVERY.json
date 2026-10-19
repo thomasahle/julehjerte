@@ -1351,5 +1351,53 @@
       }
     ],
     "sourceMirror": "Production static/inverse, app src, and inverse tests match the primary worktree; only the three diagnostic-only CI helper files differ. Cold mode does not import a diagnostic clock."
+  },
+  "rejectedSparsePreciseTopology": {
+    "sourceCommit": "bfbff162",
+    "scope": "Same synthetic-control source mask and 146-span precise trace, same 2.5-second initializer allowance. Neighbour counts 12, 4, 6, 8, 12, sequentially in one local Node 22 process; first/last baseline expose warmup order. No production change.",
+    "results": [
+      {
+        "neighbors": 12,
+        "accepted": false,
+        "seconds": 2.5236370420000003,
+        "binaryVariables": 5670,
+        "rows": 53753,
+        "termination": "time_limit"
+      },
+      {
+        "neighbors": 4,
+        "accepted": false,
+        "seconds": 2.532410666,
+        "binaryVariables": 2562,
+        "rows": 10985,
+        "termination": "time_limit"
+      },
+      {
+        "neighbors": 6,
+        "accepted": false,
+        "seconds": 2.5053475,
+        "binaryVariables": 3504,
+        "rows": 19414,
+        "termination": "time_limit"
+      },
+      {
+        "neighbors": 8,
+        "accepted": false,
+        "seconds": 2.5391066659999995,
+        "binaryVariables": 4332,
+        "rows": 30148,
+        "termination": "time_limit"
+      },
+      {
+        "neighbors": 12,
+        "accepted": false,
+        "seconds": 2.5047857080000013,
+        "binaryVariables": 5670,
+        "rows": 53753,
+        "termination": "time_limit"
+      }
+    ],
+    "decision": "Reducing precise-trace connector density alone found no integer solution at any tested size. The four-neighbour graph removes most constraints but still times out. Do not adopt a reduced-graph default on the basis of model size.",
+    "log": "/tmp/julehjerte-sparse-topology-probe.log"
   }
 }
