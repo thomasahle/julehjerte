@@ -1,0 +1,686 @@
+{
+  "schema": "conni-board-public-archive-1",
+  "baseRevision": "7e2a464c",
+  "sourceReview": "docs/inverse/datasets/conni-board-duplicate-review.json",
+  "sourceAdoption": "docs/inverse/datasets/conni-board-adoption.json",
+  "scope": "Public source references only. No copied media, public image mirrors, new creator attribution, cleared rights, verified template pairs or solver labels. Same-source-image variants merge only through the 42 reviewed links; motif uniqueness is not asserted.",
+  "counts": {
+    "inventoriedPins": 122,
+    "verifiedSourceFiles": 90,
+    "verifiedSourceBytes": 13150498,
+    "relevantSourceFiles": 87,
+    "excludedSourceFiles": 3,
+    "relevantPins": 119,
+    "excludedPins": 3,
+    "reviewedSameImagePairs": 42,
+    "reviewedMergeGroups": 18,
+    "duplicateRecordIdsMerged": 35,
+    "boardFilesMappedToExistingRecords": 31,
+    "existingRecordsEnriched": 18,
+    "newArchiveRecords": 56,
+    "priorDuplicateRecordsConsolidated": 7,
+    "netAdditionalRecords": 49,
+    "externalRecordsBefore": 1126,
+    "externalRecordsAfter": 1175,
+    "localPublishedHeartsUnchanged": 56,
+    "totalPublicRecordsAfter": 1231,
+    "publicMediaCopies": 0,
+    "newVerifiedTemplatePairs": 0
+  },
+  "excluded": [
+    {
+      "assetId": "real-3545741859f83f94",
+      "reason": "Generic PDF/scissors icon, not a design or template.",
+      "pins": [
+        "https://dk.pinterest.com/pin/504825439482782654/"
+      ]
+    },
+    {
+      "assetId": "real-76129ef26182091e",
+      "reason": "Paper animal ornaments; not woven hearts.",
+      "pins": [
+        "https://dk.pinterest.com/pin/504825439479412972/"
+      ]
+    },
+    {
+      "assetId": "real-3f2032cde2fcfedf",
+      "reason": "Paper star ornament with instructions, not a heart.",
+      "pins": [
+        "https://dk.pinterest.com/pin/504825439465333460/"
+      ]
+    }
+  ],
+  "included": [
+    {
+      "assetId": "real-8dee9008c42ca55a",
+      "archiveRecordId": "source-8dee9008c42ca55a",
+      "contentKind": "template-render",
+      "pinCount": 2,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-f91d71bfdfdb6d02",
+      "archiveRecordId": "source-f91d71bfdfdb6d02",
+      "contentKind": "photo-process",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-36dbf85641eda5c4",
+      "archiveRecordId": "source-36dbf85641eda5c4",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-71c005a02e6963c7",
+      "archiveRecordId": "source-71c005a02e6963c7",
+      "contentKind": "photo",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-8ec1f392c57254bb",
+      "archiveRecordId": "source-8ec1f392c57254bb",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-927ac6f9c92ff088",
+      "archiveRecordId": "source-927ac6f9c92ff088",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-79cf74bfd2b42670",
+      "archiveRecordId": "source-79cf74bfd2b42670",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-fd8e205d79e04fff",
+      "archiveRecordId": "source-fd8e205d79e04fff",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-98df5565b6e22e1d",
+      "archiveRecordId": "source-98df5565b6e22e1d",
+      "contentKind": "photo",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-b34a9cf2d5cec423",
+      "archiveRecordId": "source-b34a9cf2d5cec423",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-852251a5dc97d040",
+      "archiveRecordId": "source-852251a5dc97d040",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-78b3f70c3efd410c",
+      "archiveRecordId": "source-78b3f70c3efd410c",
+      "contentKind": "template-render",
+      "pinCount": 2,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-497adfa20b093bf5",
+      "archiveRecordId": "source-497adfa20b093bf5",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-e604d0729008466e",
+      "archiveRecordId": "source-e604d0729008466e",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-3a619ca380e4d7ef",
+      "archiveRecordId": "source-3a619ca380e4d7ef",
+      "contentKind": "template-render",
+      "pinCount": 2,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-5324a75f506c6fa2",
+      "archiveRecordId": "source-5324a75f506c6fa2",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-8f990a3c2f9b0625",
+      "archiveRecordId": "source-8f990a3c2f9b0625",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-7ce32d90c811c466",
+      "archiveRecordId": "source-7ce32d90c811c466",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-0e8dc16323f514b7",
+      "archiveRecordId": "source-0e8dc16323f514b7",
+      "contentKind": "photo-process",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-5df55781b30e3494",
+      "archiveRecordId": "source-5df55781b30e3494",
+      "contentKind": "photo-multiple",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-519ee71c8519d9e3",
+      "archiveRecordId": "source-a055202166ff0bdd",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-d3f562a4a38f1dcc",
+      "archiveRecordId": "source-7a4e2cf93d71c23e",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-a58f0fe5b717bfac",
+      "archiveRecordId": "source-95eb58b4312cda4d",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-b16b054bc06f6dc1",
+      "archiveRecordId": "source-b16b054bc06f6dc1",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-40e01d91c10d8b75",
+      "archiveRecordId": "source-40e01d91c10d8b75",
+      "contentKind": "mixed-photo-template",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-8abd060fc0d21531",
+      "archiveRecordId": "source-8abd060fc0d21531",
+      "contentKind": "mixed-photo-template",
+      "pinCount": 2,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-d73a88785370d667",
+      "archiveRecordId": "source-d73a88785370d667",
+      "contentKind": "template-render",
+      "pinCount": 2,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-b3bfe1360bf1fe4a",
+      "archiveRecordId": "source-b3bfe1360bf1fe4a",
+      "contentKind": "template-render",
+      "pinCount": 2,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-12aa26eff6a09b6b",
+      "archiveRecordId": "source-71a290452cfd00c8",
+      "contentKind": "template-render",
+      "pinCount": 5,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-c7d5e83cfafedf70",
+      "archiveRecordId": "source-7a4e2cf93d71c23e",
+      "contentKind": "template-render",
+      "pinCount": 4,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-baf1b2c72f46cce7",
+      "archiveRecordId": "source-3550f13c15483964",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-53afe7d33a9ad3f9",
+      "archiveRecordId": "source-53afe7d33a9ad3f9",
+      "contentKind": "mixed-photo-template",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-4835be090cf7eac9",
+      "archiveRecordId": "source-3550f13c15483964",
+      "contentKind": "template-render",
+      "pinCount": 2,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-2c557be09f75eabd",
+      "archiveRecordId": "source-71a290452cfd00c8",
+      "contentKind": "template-render",
+      "pinCount": 2,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-d56582fcd0d134f4",
+      "archiveRecordId": "source-fee6583ba3012cfe",
+      "contentKind": "template-render",
+      "pinCount": 2,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-15a5892040b7a274",
+      "archiveRecordId": "source-15a5892040b7a274",
+      "contentKind": "mixed-photo-template",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-fdb6b852f8c46fa7",
+      "archiveRecordId": "source-3550f13c15483964",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-e022304403634ea6",
+      "archiveRecordId": "source-e022304403634ea6",
+      "contentKind": "mixed-photo-template",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-45bfc09adacae597",
+      "archiveRecordId": "source-45bfc09adacae597",
+      "contentKind": "photo",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-5a12ec655992735a",
+      "archiveRecordId": "source-5a12ec655992735a",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-6599bf9afb0a05e2",
+      "archiveRecordId": "source-f26466c3afb3c5f7",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-10445736ece26760",
+      "archiveRecordId": "source-5004b729f43b4e72",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-dee47a224142d577",
+      "archiveRecordId": "source-63c81e65e8340c2d",
+      "contentKind": "template-render",
+      "pinCount": 3,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-cdd46e737b648380",
+      "archiveRecordId": "source-164378298f6be2e8",
+      "contentKind": "template-render",
+      "pinCount": 2,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-5e9b4816e6aeb6c5",
+      "archiveRecordId": "source-812a9dc206fc08ba",
+      "contentKind": "template-render",
+      "pinCount": 3,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-0ced2e86fb0adcf5",
+      "archiveRecordId": "source-83055bbd92514af9",
+      "contentKind": "template-render",
+      "pinCount": 3,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-743301f4f9f4fbde",
+      "archiveRecordId": "source-c0f1835bf1cf2982",
+      "contentKind": "template-render",
+      "pinCount": 2,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-e9600478525b9218",
+      "archiveRecordId": "source-296731914436783e",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-874e5a5e2cd2e9ce",
+      "archiveRecordId": "source-874e5a5e2cd2e9ce",
+      "contentKind": "template-render",
+      "pinCount": 3,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-d5e458289d4d5b0c",
+      "archiveRecordId": "source-d5e458289d4d5b0c",
+      "contentKind": "mixed-photo-template",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-a0c0c00d1d1b0003",
+      "archiveRecordId": "source-a0c0c00d1d1b0003",
+      "contentKind": "mixed-photo-template",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-beffb4d1385ccba1",
+      "archiveRecordId": "source-beffb4d1385ccba1",
+      "contentKind": "mixed-photo-template",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-f0f4d62732e88cd1",
+      "archiveRecordId": "source-f0f4d62732e88cd1",
+      "contentKind": "mixed-photo-template",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-3a61a1f5a9db57f3",
+      "archiveRecordId": "source-3a61a1f5a9db57f3",
+      "contentKind": "mixed-photo-template",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-539c74349269734d",
+      "archiveRecordId": "source-539c74349269734d",
+      "contentKind": "mixed-photo-template",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-fe924eab1307bfd7",
+      "archiveRecordId": "source-fe924eab1307bfd7",
+      "contentKind": "mixed-photo-template",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-448ab852c2f2eab3",
+      "archiveRecordId": "source-874e5a5e2cd2e9ce",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-2bdc39cab0811250",
+      "archiveRecordId": "source-296731914436783e",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-6e04b96a80fed697",
+      "archiveRecordId": "source-6e04b96a80fed697",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-64b51faaef694431",
+      "archiveRecordId": "source-a055202166ff0bdd",
+      "contentKind": "template-render",
+      "pinCount": 2,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-28e4b59a5a954cca",
+      "archiveRecordId": "source-28e4b59a5a954cca",
+      "contentKind": "mixed-photo-template",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-c23ca989c8b2373e",
+      "archiveRecordId": "source-c23ca989c8b2373e",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-5a064beeec675f78",
+      "archiveRecordId": "source-5a064beeec675f78",
+      "contentKind": "template-render",
+      "pinCount": 2,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-47229e8f6b61a501",
+      "archiveRecordId": "source-47229e8f6b61a501",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-0ad0a2453ee546b0",
+      "archiveRecordId": "source-164378298f6be2e8",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-6b8a2cd8e304ce14",
+      "archiveRecordId": "source-296731914436783e",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-d27121d8a525d3ce",
+      "archiveRecordId": "source-d27121d8a525d3ce",
+      "contentKind": "template-render",
+      "pinCount": 2,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-3862e238633b9a6b",
+      "archiveRecordId": "source-4cfd9b27abdcc1f4",
+      "contentKind": "mixed-photo-template",
+      "pinCount": 2,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-c4f50e2d24a08330",
+      "archiveRecordId": "source-c4f50e2d24a08330",
+      "contentKind": "mixed-photo-template",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-a2eb331cd6d81238",
+      "archiveRecordId": "source-c5d2c4465ca58e36",
+      "contentKind": "mixed-photo-template",
+      "pinCount": 1,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-dddcd94b4401597b",
+      "archiveRecordId": "source-dddcd94b4401597b",
+      "contentKind": "mixed-photo-template",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-e797004e753abcc9",
+      "archiveRecordId": "source-e797004e753abcc9",
+      "contentKind": "mixed-photo-template",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-088e91a070f1c895",
+      "archiveRecordId": "source-088e91a070f1c895",
+      "contentKind": "template-render",
+      "pinCount": 2,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-df80903c09a3464f",
+      "archiveRecordId": "source-df80903c09a3464f",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-1da41808a04b4311",
+      "archiveRecordId": "source-812a9dc206fc08ba",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-3c1824d90fcfad7e",
+      "archiveRecordId": "source-3c1824d90fcfad7e",
+      "contentKind": "photo",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-1864c2c7f582ab29",
+      "archiveRecordId": "source-1864c2c7f582ab29",
+      "contentKind": "mixed-photo-template",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-e674f983cf5d3dd4",
+      "archiveRecordId": "source-e674f983cf5d3dd4",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-a6b3b42fc9fcad03",
+      "archiveRecordId": "source-164378298f6be2e8",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-1a4904dfca64f16a",
+      "archiveRecordId": "source-5004b729f43b4e72",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-876d0e6079b8bb14",
+      "archiveRecordId": "source-63c81e65e8340c2d",
+      "contentKind": "template-render",
+      "pinCount": 2,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-66e8e0cc7aa9e853",
+      "archiveRecordId": "source-eeaf37d2a40af624",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": true
+    },
+    {
+      "assetId": "real-598eef9250b42a65",
+      "archiveRecordId": "source-598eef9250b42a65",
+      "contentKind": "mixed-photo-template",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-842302fff9f96ef4",
+      "archiveRecordId": "source-842302fff9f96ef4",
+      "contentKind": "mixed-photo-template",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-9656088835537b14",
+      "archiveRecordId": "source-9656088835537b14",
+      "contentKind": "mixed-photo-template",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-fc37dbf46c3dbdaa",
+      "archiveRecordId": "source-fc37dbf46c3dbdaa",
+      "contentKind": "template-render",
+      "pinCount": 1,
+      "existingRecord": false
+    },
+    {
+      "assetId": "real-609545009ea5ecc7",
+      "archiveRecordId": "source-609545009ea5ecc7",
+      "contentKind": "mixed-photo-template",
+      "pinCount": 1,
+      "existingRecord": false
+    }
+  ],
+  "additionalSourceLinks": [
+    {
+      "recordId": "source-98df5565b6e22e1d",
+      "url": "https://www.papirfoldning.dk/da/ugensfold/2008-51.html",
+      "evidence": "Observed rendered pin control, recorded in conni-board.md; not an independently retrieved source page."
+    },
+    {
+      "recordId": "source-5a12ec655992735a",
+      "url": "https://frukubikslaekkerier.com/2012/10/flettet-julehjerte-med-blomster-og.html",
+      "evidence": "Observed rendered pin control, recorded in conni-board.md; not an independently retrieved source page."
+    }
+  ],
+  "unresolvedSourceLead": {
+    "assetId": "real-a58f0fe5b717bfac",
+    "url": "https://julehjerter.wordpress.com/2014/12/03/3-december-julehjerte-med-dna-dobbelthelix/",
+    "status": "Literal pin title only. The reviewed identical plate has a different existing source title; retain this lead in research provenance without asserting it as the original publication or creator."
+  },
+  "limitations": [
+    "Historical source titles and filenames are not established publication dates or creator credits.",
+    "Scanned templates, composites, promotional thumbnails and rendered diagrams remain document references; their completeness, physical cuttability and regular two-sheet model compatibility are unverified.",
+    "This update preserves exact public pin/image URLs, including the opaque pin token. Personal board/account URLs and dataset-only metadata stay out of the public index."
+  ]
+}

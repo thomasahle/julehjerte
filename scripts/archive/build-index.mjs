@@ -22,7 +22,7 @@ export function publicUrl(value) {
     if (/^(localhost|127\.|10\.|192\.168\.|169\.254\.|172\.(1[6-9]|2\d|3[01])\.|\[::1\])/.test(u.hostname) || /\.(localhost|local|internal)$/.test(u.hostname)) return null;
     // Only pin permalinks are public archive records, never account/board activity.
     if (/(^|\.)pinterest\.[a-z.]+$/.test(u.hostname)) {
-      const pin = u.pathname.match(/^\/pin\/(\d+)\/?$/);
+      const pin = u.pathname.match(/^\/pin\/([a-z\d_-]+)\/?$/i);
       return pin ? `https://www.pinterest.com/pin/${pin[1]}/` : null;
     }
     for (const key of [...u.searchParams.keys()]) {
@@ -68,7 +68,7 @@ function titleFor(asset, url) {
 }
 
 /** Explicit template associations only. Same-page suggestions stay unverified. */
-export function buildExternalIndex(manifest, hunodan, webPhotos, additions = [], overrides = {}) {
+export function buildExternalIndex(manifest, hunodan, webPhotos, additions = [], overrides = {}, merges = []) {
   const hunodanImages = new Map(hunodan.images.map(p => [imageKey(p.url), p]));
   const knownTemplates = new Map(webPhotos.photos
     .filter(p => p.publisher === 'Bibelselskabet' && p.referenceLinks?.length)
@@ -114,21 +114,40 @@ export function buildExternalIndex(manifest, hunodan, webPhotos, additions = [],
   // These deliberately small, reviewed files contain public fields only. Never spread
   // source/training manifest entries into the public index.
   const enriched = [...records.values()].map(record => ({ ...record, ...overrides[record.id] }));
-  return [...enriched, ...additions].sort((a, b) =>
+  const merged = new Map([...enriched, ...additions].map(record => [record.id, { ...record }]));
+  if (merged.size !== enriched.length + additions.length) throw new Error('Duplicate public archive record ID');
+  const reviewedIds = new Set();
+  // Only explicit same-source-image reviews may merge records. Board membership,
+  // similar titles and training/split groups do not establish image identity.
+  for (const { canonicalId, duplicateIds } of merges) {
+    const ids = [canonicalId, ...duplicateIds];
+    for (const id of ids) {
+      if (!merged.has(id) || reviewedIds.has(id)) throw new Error(`Invalid reviewed source merge: ${id}`);
+      reviewedIds.add(id);
+    }
+    const canonical = merged.get(canonicalId);
+    for (const field of ['sourceUrls', 'imageUrls', 'credits', 'templateUrls', 'relatedTemplateUrls']) {
+      canonical[field] = [...new Set(ids.flatMap(id => merged.get(id)[field]))];
+    }
+    canonical.relatedTemplateUrls = canonical.relatedTemplateUrls.filter(url => !canonical.templateUrls.includes(url));
+    for (const id of duplicateIds) merged.delete(id);
+  }
+  return [...merged.values()].sort((a, b) =>
     a.source.localeCompare(b.source, 'en') || a.title.localeCompare(b.title, 'en') || a.id.localeCompare(b.id)
   );
 }
 
 export async function generate() {
   const read = async path => JSON.parse(await readFile(new URL(path, root), 'utf8'));
-  const [manifest, hunodan, webPhotos, additions, overrides] = await Promise.all([
+  const [manifest, hunodan, webPhotos, additions, overrides, merges] = await Promise.all([
     read('docs/inverse/datasets/real-manifest.json'),
     read('scripts/inverse/fixtures/hunodan/sources.json'),
     read('scripts/inverse/fixtures/web-photos/manifest.json'),
     read('src/lib/archive/source-additions.json'),
-    read('src/lib/archive/source-overrides.json')
+    read('src/lib/archive/source-overrides.json'),
+    read('src/lib/archive/source-merges.json')
   ]);
-  const records = buildExternalIndex(manifest, hunodan, webPhotos, additions, overrides);
+  const records = buildExternalIndex(manifest, hunodan, webPhotos, additions, overrides, merges);
   const output = JSON.stringify(records, null, 2) + '\n';
   await writeFile(new URL('src/lib/archive/external-records.json', root), output);
   console.log(`${records.length} public source records; ${Buffer.byteLength(output)} bytes; no media copied.`);

@@ -84,3 +84,23 @@ The completed adoption used this procedure after the parent's benchmark finished
 5. Do not run the old board importer unchanged: it assumes JPEG and numeric pin IDs. This batch includes PNG/GIF and an opaque card URL. Use the staged manifest or adapt that importer explicitly.
 
 No model has trained on these additions, and the collection does not establish redistribution permission or verified graph ground truth.
+
+## Public archive references
+
+The [archive audit](conni-board-archive.json) maps **87 relevant source files and
+119 pins** into `/all/`. The PDF placeholder and two unrelated paper ornaments
+are excluded. The 42 reviewed image-variant links enrich 18 existing records;
+56 additional records are retained, while seven older duplicate cards are
+consolidated. All pin, image and recorded source links survive those merges,
+including the opaque pin token. The resulting index has **1,175 external records**
+plus the **56 published Juleflet hearts**. These are source records, not distinct
+design counts.
+
+Scans, promotional images, rendered diagrams and photo/template composites remain
+references with unverified template geometry. The existing confirmed Hunodan
+association is retained where image identity was reviewed; this batch creates no
+new verified template pairs. Unknown credits and rights remain unknown. The two
+source links observed in rendered pin controls are included without inferring an
+author; the DNA-post URL found only in a title remains an unresolved research
+lead. Account/board activity and training metadata do not enter the public index.
+No images were downloaded, copied or publicly mirrored for this archive update.

@@ -20,6 +20,21 @@ materials and user uploads without public provenance are omitted. Resized copies
 of the same source image merge, retaining their public source URLs and credits.
 It does not merge merely similar motifs or claim to identify their original maker.
 
+`source-merges.json` records explicit, reviewed same-source-image variants. Each
+group retains one existing record ID and combines all public source/image links
+and recorded credits. The generator rejects missing or repeated merge members.
+Board membership, matching titles, perceptual hashes and training split groups
+do not create archive merges. Pinterest permalinks can contain numeric or opaque
+tokens; both are retained while account and board URLs remain excluded.
+
+The [122-pin board archive audit](../../docs/inverse/datasets/conni-board-archive.json)
+accounts for 87 relevant source files and 119 pin links. It adds 56 reference
+records, enriches 18 existing records and consolidates seven earlier duplicate
+cards, giving 1,175 external records. The generic PDF icon and two unrelated
+ornaments are excluded. Scans, rendered designs and composites remain document
+references without new verified template-pair claims; card titles do not assign
+creators or publication dates. No collected image is copied into public assets.
+
 `source-overrides.json` and `source-additions.json` are small reviewed public
 metadata files. The October 19 additions were checked against
 `docs/inverse/datasets/archive-permo.json` and `archive-additional.json`:
