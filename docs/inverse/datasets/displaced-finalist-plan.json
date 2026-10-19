@@ -1,0 +1,32 @@
+{
+  "schema": "displaced-finalist-plan-1",
+  "date": "2026-10-20",
+  "status": "predeclared",
+  "inputs": [
+    {
+      "path": "tmp/heart-learning/u2netp-material-palette-pipeline-v1/report.json",
+      "sha256": "9eb949c3b9203146e2b8c7a65d4f58366ccd1a41d83448be85a3cea3d2ba062f"
+    },
+    {
+      "path": "scripts/inverse/learning/probe-displaced-finalist.mjs",
+      "sha256": "2b994453b9a33c034675e983421fbf957f2e7f7ceccfd9f76289dbf3a4fce792"
+    }
+  ],
+  "cohort": "All 64 rows of the completed palette pair experiment: 32 previously inspected development photographs, two targets, 25 crops and seven unresolved per method.",
+  "policy": "Keep the existing shortlist. Only if its grids all miss source colours and have error above the normal acceptance limit, and the best coarse grid exceeds twice that limit, refine the first discarded seed from the original top three. At most one extra 150-step fit. No per-case choice and no new cut counts.",
+  "checks": [
+    "Reproduce every saved coarse and fine score exactly with fixed work and no clock deadlines.",
+    "Record colour and enclosure retention separately. A passing grid is not a valid template.",
+    "Retain every unresolved input and every unhelpful extra fit.",
+    "If screening finds a useful candidate, test fresh full solves with the unchanged ten-second budget, then independent exports and editable geometry before any production claim."
+  ],
+  "resources": {
+    "workers": 1,
+    "nice": 15,
+    "minimumFreeGiB": 10,
+    "newPhotoCopies": 0,
+    "newModelWeights": 0,
+    "maxNewArtifactMiB": 10
+  },
+  "scope": "Tests a general scheduling rule motivated by the already inspected nativity failure. This is development selection, not a held-out model benchmark. Production code unchanged."
+}
