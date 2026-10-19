@@ -735,7 +735,8 @@ export const translations = {
     helpSectionSymmetryBullets: [
       '<strong>Inden i kurve:</strong> Gør hver kurve symmetrisk omkring sit midtpunkt',
       '<strong>Inden i lap:</strong> Spejler kurver inden for hver lap',
-      '<strong>Mellem lapper:</strong> Gør begge lapper identiske (kræver samme gitterstørrelse)'
+      '<strong>Mellem lapper:</strong> Gør begge lapper identiske (kræver samme gitterstørrelse)',
+      '<strong>Escher-fanen:</strong> Hele hjertet bliver én flise, gentaget. Vælg en flisetype; når du trækker i et klip, følger alle de stykker med, der er den samme kurve'
     ],
     helpSectionSymmetryNote: '<em>Sym</em> = spejlsymmetri, <em>Anti</em> = punktsymmetri (180° rotation)',
     helpSectionRequirementsTitle: 'Krav for hjerter der kan foldes',
@@ -1662,7 +1663,8 @@ export const translations = {
     helpSectionSymmetryBullets: [
       '<strong>Within curve:</strong> Makes each curve symmetric around its center',
       '<strong>Within lobe:</strong> Mirrors curves within each lobe',
-      '<strong>Between lobes:</strong> Makes both lobes identical (requires equal grid size)'
+      '<strong>Between lobes:</strong> Makes both lobes identical (requires equal grid size)',
+      '<strong>Escher tab:</strong> The whole heart becomes one tile, repeated. Choose a type of tile; when you drag a cut, every piece that is the same curve follows'
     ],
     helpSectionSymmetryNote: '<em>Sym</em> = mirror symmetry, <em>Anti</em> = point symmetry (180° rotation)',
     helpSectionRequirementsTitle: 'Requirements for Foldable Hearts',
