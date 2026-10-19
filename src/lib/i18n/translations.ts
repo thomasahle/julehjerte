@@ -821,6 +821,8 @@ export const translations = {
     madeBy: '©',
     footerColors: 'Farver',
     swapColors: 'Byt farver',
+    colorfulMode: 'Farverig',
+    colorfulModeTitle: 'Giv hvert hjerte sine egne farver',
 
     // Error page
     errorTitle: 'Ups! Noget gik galt',
@@ -1639,6 +1641,8 @@ export const translations = {
     madeBy: '©',
     footerColors: 'Colours',
     swapColors: 'Swap colours',
+    colorfulMode: 'Colourful',
+    colorfulModeTitle: 'Give every heart its own colours',
 
     // Error page
     errorTitle: 'Oops! Something went wrong',

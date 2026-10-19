@@ -152,7 +152,7 @@ The heart itself is the existing `PaperHeartSVG` (read-only render), white + red
 prerender time and handed to the block as `markup` on the front page, where the browser never rebuilds it
 (see `$lib/front/galleryHearts`). A frozen heart cannot repaint itself, so the footer's swatches reach its
 paper through the `--paper-left` / `--paper-right` tokens instead; the ribbon stays a real element and
-follows the colour store as before.
+follows `--paper-right` too (a heart with its own colours keeps its own right-hand colour).
 
 ### Gallery
 `main.gallery` max-width 1280, padding `0 40px 56px` (→ `16px 24px 40px` < 900, `16px 16px 32px` < 600),
@@ -293,6 +293,22 @@ checkbox).
 
 Footer: `--cream2` background, centred wrapping row (gap 28, padding 32px 40px): colour swatches (white, red)
 with a swap button, EN, GitHub, "© Thomas Ahle".
+
+**As built: colourful mode.** After the swap button, a "Farverig" / "Colourful" toggle (lucide Palette, 44px pill,
+`aria-pressed`; filled `--green` when on) gives every heart that follows the site's pair a pair of its own from
+`$lib/utils/palette`: twelve Scandinavian Christmas pairs, lighter paper left, darker right (so the ribbon is the
+strong colour), each ≥ 2.2:1 between its papers; the two whose light paper is nearly the page's `#f9f9f3`
+(classic red/white, ochre/white) get a hairline outline. Gallery hearts take the pair at their position in the
+gallery order, cycling the palette, so no card repeats a neighbour's pair at any of the grid's 2–6 columns; other
+hearts (Mine hjerter, shared) take a hash of their id. A heart with its own colours keeps them. The pair is in the
+markup of every heart (`data-pair`, `--pair-left/right` on HangingHeart's `.hang`; the heart page's thumbnail
+too), and the mode itself is only `html.colorful`, set before first paint by an inline head script from
+`juleflet:colourful`, so reloads never flash red/white; app.css maps the pair onto the heart's `--paper-*` tokens
+and HeartWeaveFill's `paper-l`/`paper-r` paths. The hero's bootstrap copies a card's pair with its heart and, in
+the mode, draws hearts of different pairs. The heart page's big heart and thumbnail use the heart's pair; the
+template previews, the PDF (and its ear picture) and the laser files keep the site's pair. While on, the
+swatches and swap button are dimmed (still the site's pair); picking a colour or swapping turns the mode off.
+GA4 event `color_mode {on}`. Without JavaScript the toggle is hidden.
 
 ## 4. Detail page (`/hjerte/[id]/`)
 
