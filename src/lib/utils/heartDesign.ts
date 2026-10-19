@@ -150,6 +150,19 @@ function serializationRect(design: HeartDesign): OverlapRect {
   return design.overlapAspectRatio === undefined ? getOverlapRect(design.gridSize) : inferOverlapRectFromFingers(design.fingers, design.gridSize);
 }
 
+/**
+ * Whether a heart's woven area has a shape of its own rather than the one its
+ * strip counts give: an explicit shape it was imported with, or a frame its cuts
+ * say is another (a strip added by dragging an edge in, a moved Escher pattern's
+ * extra line: a strip more one way in the same square).
+ */
+function hasOwnShape(design: HeartDesign): boolean {
+  if (design.overlapAspectRatio !== undefined) return true;
+  const own = inferOverlapRectFromFingers(design.fingers, design.gridSize);
+  const strips = getOverlapRect(design.gridSize);
+  return Math.abs(own.width / own.height - strips.width / strips.height) > 1e-6;
+}
+
 function normalizeNodeTypes(
   raw: unknown,
   segmentsLength: number
@@ -495,7 +508,11 @@ export function serializeHeartDesign(design: HeartDesign): HeartDesignJson {
 // ============================================================================
 
 export function serializeHeartToSVG(design: HeartDesign): string {
-  const rect = serializationRect(design);
+  // An SVG is read back by the shape it says it has, its strip counts' unless it
+  // says otherwise, so a heart with a shape of its own is written in its own frame
+  // and says so; JSON reads the frame back off the cuts and needs no such word.
+  const ownShape = hasOwnShape(design);
+  const rect = ownShape ? inferOverlapRectFromFingers(design.fingers, design.gridSize) : serializationRect(design);
   // Sort fingers by position so boundaries are at correct positions, then filter out outer boundaries
   const leftFingers = design.fingers
     .filter((f) => f.lobe === 'left')
@@ -525,7 +542,7 @@ export function serializeHeartToSVG(design: HeartDesign): string {
     'xmlns:dc="http://purl.org/dc/elements/1.1/"',
     `data-weave-parity="${design.weaveParity ?? 0}"`
   ];
-  if (design.overlapAspectRatio !== undefined) attrs.push(`data-overlap-aspect-ratio="${rect.width / rect.height}"`);
+  if (ownShape) attrs.push(`data-overlap-aspect-ratio="${rect.width / rect.height}"`);
   // The Escher tab's tile, when the heart was drawn from one, so the tab takes it up again on import.
   if (design.pattern) attrs.push(`data-pattern="${escapeXml(JSON.stringify(design.pattern))}"`);
   // The heart's own colours, when it has them. Gallery hearts carry none, so an

@@ -239,6 +239,24 @@ describe('heartDesign round trips', () => {
     expect(parseHeartFromSVG(svg, 'grid-test.svg')!.colors).toBeUndefined();
   });
 
+  it('keeps a square heart with a strip more one way square through SVG, as through JSON', () => {
+    // a 3 x 3 heart with one more cut in the right lobe, as dragging its edge in or moving an Escher
+    // pattern makes: 4 x 3 strips in the same square
+    const square = makeGridDesign(3);
+    const rect = getCenteredRectParams({ x: 3, y: 3 });
+    const right = lobeFingers(square.fingers, 'right');
+    const extra: Finger = { ...right[1]!, id: 'R-x', segments: right[1]!.segments.map((s) => ({ p0: { ...s.p0, x: s.p0.x + rect.width / 6 }, p1: { ...s.p1, x: s.p1.x + rect.width / 6 }, p2: { ...s.p2, x: s.p2.x + rect.width / 6 }, p3: { ...s.p3, x: s.p3.x + rect.width / 6 } })) };
+    const design: HeartDesign = { ...square, gridSize: { x: 4, y: 3 }, fingers: [...square.fingers, extra] };
+    expect(inferOverlapRect(design.fingers, design.gridSize).width / inferOverlapRect(design.fingers, design.gridSize).height).toBeCloseTo(1, 9);
+    for (const copy of [normalizeHeartDesign(JSON.parse(JSON.stringify(serializeHeartDesign(design))))!, parseHeartFromSVG(serializeHeartToSVG(design), 'strip.svg')!]) {
+      const frame = inferOverlapRect(copy.fingers, copy.gridSize);
+      expect(copy.gridSize).toEqual({ x: 4, y: 3 });
+      expect(frame.width / frame.height).toBeCloseTo(1, 9);
+    }
+    // a heart in its strip counts' own frame writes no shape of its own
+    expect(serializeHeartToSVG(square)).not.toContain('data-overlap-aspect-ratio');
+  });
+
   it("keeps the Escher tab's tile through JSON and through SVG", () => {
     const pattern = {
       rule: 'opposite:move:mirror',
