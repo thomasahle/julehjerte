@@ -483,8 +483,12 @@ The 8 Spisser template has irregular interior/side-entry cuts and is excluded
 from automatic regular-solver benchmarking. The other two are visual candidates
 for that model, not independently validated templates. Linked previews were not
 retrieved and are not presented as saved photographs.
-The source index now contains **1,126 external records**, alongside the
-**56 published Juleflet hearts**. These batches add no public media mirrors.
+The [Conni board archive audit](conni-board-archive.json) subsequently adds
+56 references, enriches 18 existing records and consolidates seven older
+duplicates using reviewed same-image links. The source index now contains
+**1,175 external records**, alongside the **56 published Juleflet hearts**.
+All 119 relevant pin links are retained; three unrelated pins remain in the
+research inventory only. These batches add no public media mirrors.
 
 Original bytes were moved out of temporary work directories, not copied into
 another full dataset. The private originals live in
