@@ -1325,33 +1325,6 @@
       "logPrefix": "/tmp/julehjerte-protected-open-"
     }
   },
-  "pendingFullReplay": {
-    "url": "https://github.com/thomasahle/julehjerte/actions/runs/39178674097",
-    "sourceCommit": "bfbff162",
-    "diagnosticCommit": "0fe9df48",
-    "mode": "cold",
-    "status": "in_progress",
-    "scope": "Four isolated Linux shards; ordinary wall clock and requested fitting budgets; no diagnostic clock import. Diagnostic workflow never deploys.",
-    "jobs": [
-      {
-        "shard": 1,
-        "job": 117826597776
-      },
-      {
-        "shard": 2,
-        "job": 117826597686
-      },
-      {
-        "shard": 3,
-        "job": 117826597606
-      },
-      {
-        "shard": 4,
-        "job": 117826597744
-      }
-    ],
-    "sourceMirror": "Production static/inverse, app src, and inverse tests match the primary worktree; only the three diagnostic-only CI helper files differ. Cold mode does not import a diagnostic clock."
-  },
   "rejectedSparsePreciseTopology": {
     "sourceCommit": "bfbff162",
     "scope": "Same synthetic-control source mask and 146-span precise trace, same 2.5-second initializer allowance. Neighbour counts 12, 4, 6, 8, 12, sequentially in one local Node 22 process; first/last baseline expose warmup order. No production change.",
@@ -1399,5 +1372,110 @@
     ],
     "decision": "Reducing precise-trace connector density alone found no integer solution at any tested size. The four-neighbour graph removes most constraints but still times out. Do not adopt a reduced-graph default on the basis of model size.",
     "log": "/tmp/julehjerte-sparse-topology-probe.log"
+  },
+  "protectedOpeningFullReplay": {
+    "url": "https://github.com/thomasahle/julehjerte/actions/runs/39178674097",
+    "sourceCommit": "bfbff162",
+    "diagnosticCommit": "0fe9df48",
+    "mode": "cold",
+    "status": "completed",
+    "scope": "Four isolated Linux shards; ordinary wall clock and requested fitting budgets; no diagnostic clock import. Diagnostic workflow never deploys.",
+    "jobs": [
+      {
+        "shard": 1,
+        "job": 117826597776
+      },
+      {
+        "shard": 2,
+        "job": 117826597686
+      },
+      {
+        "shard": 3,
+        "job": 117826597606
+      },
+      {
+        "shard": 4,
+        "job": 117826597744
+      }
+    ],
+    "sourceMirror": "Production static/inverse, app src, and inverse tests match the primary worktree; only the three diagnostic-only CI helper files differ. Cold mode does not import a diagnostic clock.",
+    "conclusion": "failure",
+    "passed": 1108,
+    "failed": 16,
+    "shards": [
+      {
+        "shard": 1,
+        "passed": 246,
+        "failed": 6,
+        "failures": [
+          "one unobserved corner preserves the significant features of photo-bird",
+          "an invalid feature proposal cannot consume the partial-photo search without a legal result",
+          "the main fitter reconstructs the dense binary photo target with legal editable-sized counts",
+          "fresh frozen routing retains time for a valid template without changing the mask",
+          "fresh synthetic-control routing retains time for a valid template without changing the mask",
+          "flettede-stonehenge retains its interior detail in a fresh fit (10s allowance)"
+        ]
+      },
+      {
+        "shard": 2,
+        "passed": 224,
+        "failed": 5,
+        "failures": [
+          "fresh fitting continues an unfinished verified initializer within the remaining search allowance",
+          "a finer spline recovers a half-resolution opening after all coarse feature starts fail",
+          "a fresh shifted bird fit preserves its eye with a 10-second allowance",
+          "a late routing candidate uses the repair time already provided by its caller",
+          "a late routing candidate cannot manufacture an unprovided repair allowance"
+        ]
+      },
+      {
+        "shard": 3,
+        "passed": 240,
+        "failed": 4,
+        "failures": [
+          "a simpler seed that never contained the Viking opening leaves time for the viable routing",
+          "late clearance comparison can repair its first usable layout before polishing",
+          "a lower-error finalist that erodes a partially retained region cannot claim the refinement reserve",
+          "automatic shadowed-frame crop recovers two matching cuts per sheet"
+        ]
+      },
+      {
+        "shard": 4,
+        "passed": 398,
+        "failed": 1,
+        "failures": [
+          "the vertical near-miss layout produces checked exports within the original short search (1.5x clock)"
+        ]
+      }
+    ]
+  },
+  "nearLimitMatchingRecovery": {
+    "sourceCommit": "cddc6382",
+    "rootCause": "The shadow-frame matching proposals reached their fixed 200-step cap with caller time left. The nearest physically valid candidate was about two source pixels above the unchanged one-percent matching allowance.",
+    "change": "After all ordinary proposals have had their turn, continue only the nearest physically valid miss for at most 600 further steps within the existing caller deadline. Recheck source error, features, geometry and paper; never round or relax the acceptance limit.",
+    "local": {
+      "passed": 13,
+      "failed": 0,
+      "log": "/tmp/julehjerte-near-limit-matching-tests.log"
+    },
+    "linux": {
+      "url": "https://github.com/thomasahle/julehjerte/actions/runs/39179746265",
+      "diagnosticCommit": "04784474",
+      "job": 117829774191,
+      "status": "completed",
+      "conclusion": "success",
+      "passed": 13,
+      "failed": 0,
+      "log": "/tmp/julehjerte-ci-matching-recovery.log",
+      "shadowFrameSolverSeconds": 9.520361588,
+      "matchingAdditionalImageError": 0.009989420572916668,
+      "maximumAdditionalImageError": 0.01
+    },
+    "appChecks": {
+      "status": "in_progress",
+      "sourceCommit": "cddc6382",
+      "logPrefix": "/tmp/julehjerte-matching-recovery-"
+    },
+    "releaseReady": false
   }
 }
