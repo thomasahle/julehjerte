@@ -48,8 +48,11 @@ const distance = (a: Point, b: Point) => Math.hypot(a[0] - b[0], a[1] - b[1]);
 const mix = (a: Point, b: Point, t: number): Point => add(mul(a, 1 - t), mul(b, t));
 const clamp = (t: number, a: number, b: number) => Math.max(a, Math.min(b, t));
 function segmentDistance(p: Point, a: Point, b: Point) {
-	const d = sub(b, a);
-	return distance(p, add(a, mul(d, clamp(dot(sub(p, a), d) / (dot(d, d) || 1), 0, 1))));
+	// distance(p, add(a, mul(d, clamp(dot(sub(p, a), d) / (dot(d, d) || 1), 0, 1)))) with d = sub(b, a),
+	// in the same operations without the arrays: flattening calls this for every control point.
+	const dx = b[0] - a[0], dy = b[1] - a[1];
+	const t = clamp(((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / ((dx * dx + dy * dy) || 1), 0, 1);
+	return Math.hypot(p[0] - (a[0] + dx * t), p[1] - (a[1] + dy * t));
 }
 
 /** Only the cubic operations the return search needs. The worker can also pass
@@ -92,7 +95,8 @@ export class ReturnCurve implements ReturnCurveLike {
 		return [new ReturnCurve([this.p[0], a[0], b[0], q]), new ReturnCurve([q, b[1], a[2], this.p[3]])];
 	}
 	flatness() {
-		return Math.max(...this.p.map(p => segmentDistance(p, this.p[0], this.p[3])));
+		const p = this.p;
+		return Math.max(segmentDistance(p[0], p[0], p[3]), segmentDistance(p[1], p[0], p[3]), segmentDistance(p[2], p[0], p[3]), segmentDistance(p[3], p[0], p[3]));
 	}
 	// The editor can reuse a curve object after moving its controls. Keep
 	// flattening local to this call; a persistent cache would become stale.
@@ -175,13 +179,60 @@ function boxDistanceForComparison(a: Box, b: Box, limit: number) {
 	return Math.hypot(x, y);
 }
 
-function* nearbyPairs(items: ReadonlyArray<ReadonlyArray<Point>>, radius = 0): Generator<Pair> {
+/** The pairs of items whose boxes come within `radius` of each other and that `keep` keeps, in the
+ * order a sweep along x finds them: sorted by the left edges of the boxes, each with every later one
+ * whose left edge is within its right edge plus `radius`. The sweep alone compares nearly every pair
+ * of a long cut that runs up and down, so the pairs are found through a grid: each box goes in the
+ * cell of its lower corner, and the cells are wider than `radius` and every box, so two boxes within
+ * `radius` of each other have their corners in the same cell or neighbouring ones. */
+function nearbyPairs(items: ReadonlyArray<ReadonlyArray<Point>>, radius = 0, keep: (i: number, j: number) => boolean = () => true): Pair[] {
 	const boxes = items.map((p, i) => ({ box: bbox(p), i })).sort((a, b) => a.box[0] - b.box[0]);
-	for (let i = 0; i < boxes.length; i++)
-		for (let j = i + 1; j < boxes.length && boxes[j].box[0] <= boxes[i].box[2] + radius; j++) {
-			if (boxDistanceForComparison(boxes[i].box, boxes[j].box, radius) <= radius)
-				yield [boxes[i].i, boxes[j].i];
-		}
+	const n = boxes.length;
+	const sweeps = (i: number, j: number) => boxes[j].box[0] <= boxes[i].box[2] + radius && boxDistanceForComparison(boxes[i].box, boxes[j].box, radius) <= radius;
+	const found: Pair[] = [];
+	let extent = 0, x0 = Infinity, y0 = Infinity;
+	for (const { box } of boxes) {
+		extent = Math.max(extent, box[2] - box[0], box[3] - box[1]);
+		x0 = Math.min(x0, box[0]);
+		y0 = Math.min(y0, box[1]);
+	}
+	const size = (radius + extent) * (1 + 1e-9) + 1e-12;
+	if (!Number.isFinite(size) || !Number.isFinite(x0) || !Number.isFinite(y0)) {
+		for (let i = 0; i < n; i++)
+			for (let j = i + 1; j < n && boxes[j].box[0] <= boxes[i].box[2] + radius; j++)
+				if (keep(boxes[i].i, boxes[j].i) && sweeps(i, j))
+					found.push([i, j]);
+		return found.map(([i, j]) => [boxes[i].i, boxes[j].i]);
+	}
+	// Cells numbered column by column, one empty row and column round them, so the neighbours of
+	// every cell have numbers of their own.
+	const cx = new Int32Array(n), cy = new Int32Array(n);
+	let rows = 0;
+	for (let k = 0; k < n; k++) {
+		cx[k] = Math.floor((boxes[k].box[0] - x0) / size) + 1;
+		cy[k] = Math.floor((boxes[k].box[1] - y0) / size) + 1;
+		rows = Math.max(rows, cy[k]);
+	}
+	const stride = rows + 2;
+	const cells = new Map<number, number[]>();
+	for (let k = 0; k < n; k++) {
+		const cell = cells.get(cx[k] * stride + cy[k]);
+		if (cell)
+			cell.push(k);
+		else
+			cells.set(cx[k] * stride + cy[k], [k]);
+	}
+	for (let i = 0; i < n; i++)
+		for (let dx = -1; dx <= 1; dx++)
+			for (let dy = -1; dy <= 1; dy++) {
+				const cell = cells.get((cx[i] + dx) * stride + cy[i] + dy);
+				if (cell)
+					for (const j of cell)
+						if (j > i && keep(boxes[i].i, boxes[j].i) && sweeps(i, j))
+							found.push([i, j]);
+			}
+	found.sort((p, q) => p[0] - q[0] || p[1] - q[1]);
+	return found.map(([i, j]) => [boxes[i].i, boxes[j].i]);
 }
 
 /** A continuous path whose derivative control vectors fit a right-angle cone
@@ -408,7 +459,12 @@ export function pathReturns(curves: ReadonlyArray<ReturnCurveLike>, { margin, lo
 	});
 	const found = new Set<string>();
 	let reversedCurves: ReturnCurveLike[] | null = null;
-	for (const [i, j] of nearbyPairs(segments.map(s => s.p), margin)) {
+	// Most close pairs are neighbours along the cut; the loop below passes over those, and so may the search.
+	const apart = (i: number, j: number) => {
+		const a = segments[i].arc < segments[j].arc ? segments[i] : segments[j], b = a === segments[i] ? segments[j] : segments[i];
+		return !(b.arc + b.length - a.arc < 2 * margin || b.arc - a.arc - a.length > local);
+	};
+	for (const [i, j] of nearbyPairs(segments.map(s => s.p), margin, apart)) {
 		const [a, b] = segments[i].arc < segments[j].arc ? [segments[i], segments[j]] : [segments[j], segments[i]];
 		if (found.has(`${a.order}:${b.order}`))
 			continue;
