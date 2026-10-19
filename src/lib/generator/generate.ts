@@ -4,6 +4,7 @@ import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
 import { generateFittedFigure } from './fitted';
 import { sunburstBorder } from './sunburst';
 import { generateTextGrid, squareCellScale } from './textGrid';
+import { stripFigures } from './stripFigure';
 import { generateBranchedText, hasOverlappingTextBranches, fittedBranchedTextFill } from './branchedText';
 import { generateCheckeredGrid, checkeredGridCache, checkeredLayouts } from './checkeredGrid';
 import { generateMixedCheckeredGrid, mixedCheckeredGridCache } from './mixedCheckeredGrid';
@@ -449,6 +450,7 @@ function withLayout(request: GeneratorRequest): GeneratorRequest {
 }
 
 export function generate(request: GeneratorRequest): GeneratorResult {
+	if (request.mode === 'figure' && request.style === 'strips') return generateStrips(request);
 	request = withLayout(request);
 	const alternatives = frameAlternatives(request);
 	if (alternatives.length === 1) return generateOnce(alternatives[0].request);
@@ -490,6 +492,53 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		}
 	}
 	throw last;
+}
+
+/** The strips per side of the figure in the checks: most real hearts whose
+ * strips form the figure have four. */
+const STRIPS = 4;
+/** Where each motif's default size placed it in the checks (see `generateStrips`). */
+const stripShifts = new Map<string, number>();
+/** The figure in the checks (see `stripFigures`): the board's squares swap
+ * colour inside the motif, at the size the visitor sets. The motif keeps, at
+ * every size, the place on the board its default size chose, so that it
+ * only grows with the slider: cut cleanly if it can be there, else as hard to
+ * cut. Only where it cannot be built there at all does it move. */
+function generateStrips(request: GeneratorRequest): GeneratorResult {
+	const contours = normalizeContours(request.contours ?? []);
+	if (!contours.length) throw new ConstructionError('empty', 'No contour');
+	request = { ...request, contours };
+	const scale = request.scale ?? .7, key = JSON.stringify(contours);
+	if (!stripShifts.has(key) && scale !== .7) {
+		const chosen = stripFigures(contours, STRIPS, .7).next().value;
+		if (stripShifts.size > 64) stripShifts.clear();
+		if (chosen) stripShifts.set(key, chosen.shift);
+	}
+	const curveFitter = createExactCurveFitter(), named = (result: GeneratorResult) =>
+		result.hardToCut ? { ...result, hardToCut: { ...result.hardToCut, letters: [] } } : result;
+	let rejected: Parameters<typeof hardToCutResult>[1] = [], places = 0, shift: number | undefined;
+	let last: unknown = new ConstructionError('topology', 'No sheet for every cut keeps the strips whole');
+	for (const construction of stripFigures(contours, STRIPS, scale, 4000, stripShifts.get(key))) {
+		if (construction.shift !== shift) {
+			// Nothing at the last place finished cleanly: as hard to cut, if it
+			// can be, before the next place.
+			const hard = hardToCutResult(request, rejected, curveFitter);
+			if (hard) return named(hard);
+			if (++places > 4) break;
+			if (shift === undefined && scale === .7) stripShifts.set(key, construction.shift);
+			[shift, rejected] = [construction.shift, []];
+		}
+		try {
+			return finishConstruction(request, construction, 'nested', undefined, curveFitter);
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			last = error;
+			rejected.push({ construction, recipe: 'nested' });
+		}
+	}
+	const hard = hardToCutResult(request, rejected, curveFitter);
+	if (!hard) throw last;
+	return named(hard);
 }
 
 /** The motif in place of a letter, so that it repeats on the checkerboard:
@@ -1154,7 +1203,7 @@ function retryBranchedText(request: GeneratorRequest, curveFitter: ReturnType<ty
  * contacts only after their established constructions have failed. */
 function retryWideComponentContacts(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
 	if (request.mode !== 'figure' || request.style === 'corners' || request.style === 'layers' || request.style === 'motifs' ||
-		request.style === 'squares' || request.style === 'board') return;
+		request.style === 'squares' || request.style === 'board' || request.style === 'strips') return;
 	const rings = normalizeContours(request.contours ?? []), count = forest(rings).length;
 	if (count < 2 || count > 8) return;
 	const size = request.frameSize ?? 70, scale = request.scale ?? .7,
@@ -1185,7 +1234,7 @@ function retryWideComponentContacts(request: GeneratorRequest, curveFitter: Retu
  * keep its approach clear of the main silhouette, retaining the same frame. */
 function retryFigureIslandPorts(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
 	if (request.mode !== 'figure' || request.style === 'corners' || request.style === 'layers' || request.style === 'motifs' ||
-		request.style === 'squares' || request.style === 'board') return;
+		request.style === 'squares' || request.style === 'board' || request.style === 'strips') return;
 	const rings = normalizeContours(request.contours ?? []);
 	if (forest(rings).length < 2) return;
 	const size = request.frameSize ?? 70, scale = request.scale ?? .7,
@@ -1259,7 +1308,7 @@ function retryFittedSupports(request: GeneratorRequest, curveFitter: ReturnType<
 function retryComponentLanes(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>,
 	rejected: { construction: Construction; recipe: GeneratorResult['recipe'] }[] = []): GeneratorResult | undefined {
 	if (request.mode !== 'figure' || request.style === 'corners' || request.style === 'layers' ||
-		request.style === 'motifs' || request.style === 'squares' || request.style === 'board') return;
+		request.style === 'motifs' || request.style === 'squares' || request.style === 'board' || request.style === 'strips') return;
 	const rings = normalizeContours(request.contours ?? []), size = request.frameSize ?? 70,
 		sunburst = request.style === 'sunburst', open = openFrame(request),
 		frame = open ?? (sunburst ? 'circle' : (request.frame ?? 'circle')),
@@ -1341,7 +1390,7 @@ function retryPanelLayouts(request: GeneratorRequest, curveFitter?: ReturnType<t
 			}));
 	} else {
 		const rings = normalizeContours(request.contours ?? []), size = request.frameSize ?? 70, scale = request.scale ?? .7;
-		if (request.style === 'corners' || request.style === 'motifs' || request.style === 'squares' || request.style === 'board') return;
+		if (request.style === 'corners' || request.style === 'motifs' || request.style === 'squares' || request.style === 'board' || request.style === 'strips') return;
 		if (request.style === 'layers') {
 			recipe = 'nested';
 			recipes.push(() => generateLayeredFigure(rings, size, scale,

@@ -355,7 +355,53 @@ describe('frames from real hearts', () => {
    }
   }
  }, 120000);
- for (const style of ['wedges', 'silhouette', 'motifs', 'squares', 'board'] as const)
+ // The woven picture against the plain board: where the squares swapped colour.
+ const swapped = (design: Parameters<typeof rasterizeDesign>[0], n = 200) => {
+  const mask = rasterizeDesign(design, n).data, cell = n / design.gridSize.x;
+  const plain = (x: number, y: number) => (Math.floor(x / cell) + Math.floor(y / cell)) % 2 ^ mask[2 * n + 2];
+  let area = 0, x0 = n, x1 = 0, y0 = n, y1 = 0;
+  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++)
+   if (mask[y * n + x] !== plain(x, y)) {
+    area++;
+    [x0, x1, y0, y1] = [Math.min(x0, x), Math.max(x1, x), Math.min(y0, y), Math.max(y1, y)];
+   }
+  return { area: area / n / n, centre: [(x0 + x1) / 2 / n * 100, (y0 + y1) / 2 / n * 100], corners: [[2, 2], [n - 3, 2], [2, n - 3], [n - 3, n - 3]].every(([x, y]) => mask[y * n + x] === plain(x, y)) };
+ };
+ it('swaps the squares of a regular four-strip board inside the motif', () => {
+  for (const [name, motif] of Object.entries({ star, tree })) {
+   const { design, hardToCut } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], colors, style: 'strips' });
+   expect(design.gridSize, name).toEqual({ x: 4, y: 4 });
+   expect(hardToCut, name).toBeUndefined();
+   // The board's own checks away from the motif, the motif near the middle.
+   const { area, centre, corners } = swapped(design);
+   expect(corners, name).toBe(true);
+   expect(area, name).toBeGreaterThan(.12);
+   expect(area, name).toBeLessThan(.45);
+   for (const v of centre) expect(Math.abs(v - 50), name).toBeLessThan(10);
+   // Every cut leaves the paper edge along a line of the board.
+   const rect = inferOverlapRect(design.fingers, design.gridSize);
+   for (const { segments } of design.fingers.filter(f => f.id.includes('cut')))
+    for (const { x, y } of [segments[0].p0, segments.at(-1)!.p3]) {
+     const [u, v] = [(x - rect.left) / rect.width * 4, (y - rect.top) / rect.height * 4];
+     expect(Math.min(Math.abs(u - Math.round(u)), Math.abs(v - Math.round(v))), name).toBeLessThan(1e-6);
+    }
+  }
+ }, 30000);
+ it('grows the motif in the checks in its place as the size grows', () => {
+  // The default size's place on the board is kept, so the motif does not jump.
+  const figure = (scale: number) => swapped(generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'strips', scale }).design);
+  const [small, middle, large] = [.6, .7, .8].map(figure);
+  expect(small.area).toBeLessThan(middle.area);
+  expect(middle.area).toBeLessThan(large.area);
+  for (const other of [small, large]) for (const axis of [0, 1]) expect(Math.abs(other.centre[axis] - middle.centre[axis])).toBeLessThan(2);
+ }, 30000);
+ it('weaves outlines that touch into the checks', () => {
+  // The bicycle's wheels touch its frame at single points.
+  const { design } = generate({ mode: 'figure', name: 'Bicycle', contours: bicycle.contours as Ring[], colors, style: 'strips' });
+  expect(design.gridSize).toEqual({ x: 4, y: 4 });
+  expect(swapped(design).corners).toBe(true);
+ }, 30000);
+ for (const style of ['wedges', 'silhouette', 'motifs', 'squares', 'board', 'strips'] as const)
   it(`shares ${style} as one complete frame selection`, () => {
    const state = { ...defaults, mode: 'figure' as const, style };
    expect(readGeneratorState('#make=' + encodeURIComponent(JSON.stringify(state)))).toEqual(state);
@@ -367,7 +413,7 @@ describe('frames from real hearts', () => {
   // around it. The hidden frame size remains the motif size's base in links.
   for (const [style, size, scale, spacing] of [['motifs', false, true, false], ['squares', false, true, false], ['board', true, true, true],
    ['silhouette', false, true, true], ['wedges', true, true, true], ['fitted', true, true, true], ['corners', true, true, true],
-   ['rays', true, true, true], ['sunburst', true, true, true]] as const) {
+   ['rays', true, true, true], ['sunburst', true, true, true], ['strips', false, true, false]] as const) {
    const key = geometryKey({ ...state, style });
    expect(geometryKey({ ...state, style, frameSize: 55 }) !== key).toBe(size);
    expect(geometryKey({ ...state, style, scale: 50 }) !== key).toBe(scale);

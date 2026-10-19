@@ -481,6 +481,21 @@ cell takes the usual padding, else little, and an outer gate that the circle pas
 moves in to midway between the motif's farthest point and the circle, so the legs stay inside it.
 Every straight cut lies on the board (tested). Motifs in several separate parts (the coffee cup,
 the bicycle, the sun, the paw) cannot yet be built on this board.
+**The figure in the checks** (Figur i ternene; a sixth of real figure hearts, the gallery's
+notched stars, clovers and hearts): a regular board of four strips per side whose squares swap
+colour inside the motif, so its outline is cut into the strips. The board's lines and the outline
+are all the visible cuts; where four meet (a junction, or the outline crossing a line) two are in
+each sheet, and which is which is free inside the motif, chosen so that every strip still runs from
+edge to edge. Where no choice works, a hidden cut shared by both sheets crosses one of the motif's
+pieces of board (between two of its sides that do not meet, or to an island: an eye, a dot, a hole)
+and the visible cut beside each of its ends changes sheet there; the fewest are used, inside the
+motif unless the cells it touches give fewer narrow places. Narrow paper is avoided first: cuts
+turning by less than 60°, or one sheet's cuts coming closer than the clearance, are put in
+different sheets where they can be, hidden cuts leave their sides at 60–120°, and the motif moves
+up to ten units along the heart's middle where its outline keeps clearer of the lines and
+junctions. It keeps that place, chosen at the default size, at every size, so it only grows with
+the slider, up to three units from the paper's edge. Like the board frames it has no space
+setting. Outlines that touch are first moved apart by a thousandth of the motif's size.
 In the wedge, silhouette and close-fitting
 frames, a symmetric motif gets a symmetric frame: separate extremes that tie (a star's two lower tips, a cat's ears) share a gate
 midway between them, joined to the motif by an invisible coincident cut. That first attempt is
@@ -500,7 +515,8 @@ size asked for, cut cleanly or else shown as hard to cut, so nothing jumps back 
 moves. Only where nothing at all can be finished there do the frames without a centre panel try
 half the space and then none, and a circle move 4% further out and then keep the frame's own size.
 The two board frames whose squares hold the motif (small motifs, equal squares) fix the space with
-their squares; their size setting scales the motif within its square, 0.6–1.1 times the default.
+their squares, as the figure in the checks does with its board; their size setting scales the
+motif within its square, 0.6–1.1 times the default.
 On them a motif keeps, at every size, the choice its default size made, since another board would
 make it jump in size: the number of small copies, or for equal squares the centre square of a
 three-strip board (the motif up to a tenth larger in it, or with the spacious frame's room around

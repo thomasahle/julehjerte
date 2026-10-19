@@ -21,9 +21,10 @@ export type GeneratorState = {
 export const CELLS = ['square', 'letters'] as const;
 export type Cells = (typeof CELLS)[number];
 export const CELL_FRAMES: readonly TextFrame[] = ['woven', 'air'];
-/** Frames whose squares hold the motif, so they fix the space around it. The
- * circle on a board takes a space within the radii the board allows. */
-export const BOARD_STYLES: readonly FigureStyle[] = ['motifs', 'squares'];
+/** Frames whose squares hold the motif, so they fix the space around it, and
+ * the figure in the checks, which lies on its board. The circle on a board
+ * takes a space within the radii the board allows. */
+export const BOARD_STYLES: readonly FigureStyle[] = ['motifs', 'squares', 'strips'];
 /** The frames whose space around the motif the visitor sets: the circle's
  * distance from it, or the legs' of a frame without a centre panel. */
 export const SPACED_STYLES: readonly FigureStyle[] = FIGURE_STYLES.filter(style => !BOARD_STYLES.includes(style));

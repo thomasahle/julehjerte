@@ -1,5 +1,43 @@
 # Generator robustness results
 
+## The figure in the checks
+
+Product decision (2026-10-18): the twelfth figure frame is the most common real
+heart style the generator lacked, the figure formed by the strips themselves
+(68 of 435 real figure hearts: notched stars, clovers, hearts). A regular board
+of four strips per side swaps colour inside the motif; the board's lines and the
+outline are all the visible cuts, and a search chooses each cut's sheet so that
+every strip runs from edge to edge (`stripFigure.ts`). Without hidden cuts most
+motifs have no such choice (an exhaustive check: the circle on three strips has
+14 locally consistent choices and no whole strips), so a hidden cut shared by
+both sheets may cross one of the motif's pieces of board, where the visible cut
+beside each end changes sheet; by hand the circle on three strips needs one.
+The search is conflict learning over the vertices' rules, with each strip edge
+carrying its line's number through every vertex so it cannot turn back (that
+alone took the alarm clock on three strips from 42,000 learned strips and no
+answer in 10 s to a proof of none in 3 ms), and a closed loop learned when
+found. It then asks for fewest crowded pairs of cuts, then fewest hidden cuts.
+
+Over the 1,100 authored and Tabler motifs on 3–6 strips, before the clearance
+work, 4,086 of 4,400 builds succeeded, median 14 ms; on four strips 1,083 of
+1,100 (median 11 ms). The corpus at the default size, through the converter and
+the editor's spacing check: at first 38 of 51 were hard to cut, from cuts
+turning sharply where the outline crosses a line at a shallow angle, the outline
+passing close to a junction, and short hidden cuts beside other cuts. Pieces
+leaving a vertex at under 60°, or coming closer than the clearance after running
+apart along one cut for twice it (the editor's measure), now go in different
+sheets where possible; hidden cuts leave their sides at 60–120° and keep the
+clearance from other cuts; the motif moves up to ten units down or up the
+heart's middle (keeping a symmetric motif symmetric) to keep its outline off
+the lines and junctions, judged on the clearest six places with both kinds of
+hidden cuts. Outlines that touch (34 of 2,625 motifs) are separated, or
+uncrossed and then separated, by a thousandth of the motif's size. Now **37**
+clean and **14** hard to cut, none refused (the star, tree, heart, angel, bell,
+gift, moon, house and flower clean), median 0.45 s, at most 2.5 s (the cookie).
+The motif keeps its default size's place at every size, so it only grows with
+the slider (the star clean at 45–75%, hard at 80–85%; the tree hard below 70%).
+The fixture has **1,706** entries.
+
 ## Sizes that move one way with the sliders
 
 Product decision (2026-10-18): dragging a slider must never make the motif or
@@ -17,7 +55,8 @@ default size's choice of board at every size. At the defaults: rays and checks
 (snow, coffee), double border 50 and 1 hard (paw), the other open frames 51
 clean each; equal squares 49 clean, 1 hard, 1 refused (paw), 51 s (the bicycle
 28 s); small motifs 41 clean, 3 hard, 7 refused as before. Still jumping: the
-gift on equal squares at 55–65% (its centre square cannot be cut there at all),
+gift on equal squares at 55–65% (none of our constructions builds its centre
+square there; the photo solver does not settle whether any cuts could),
 and a sunburst motif outgrowing the largest circle at 85%. The fixture has
 **1,669** entries.
 

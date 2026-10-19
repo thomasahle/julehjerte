@@ -70,7 +70,8 @@
 		sunburst: 'generatorSunburst',
 		fitted: 'generatorFitted',
 		corners: 'generatorCorners',
-		layers: 'generatorLayers'
+		layers: 'generatorLayers',
+		strips: 'generatorStrips'
 	};
 	const borderLabel = (style: GeneratorState['style']) => t(borderNames[style], lang);
 	const textFrameNames: Record<GeneratorState['textFrame'], TranslationKey> = {

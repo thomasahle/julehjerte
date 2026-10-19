@@ -26,7 +26,7 @@ export const FRAMES = ['circle'] as const;
 export type Frame = (typeof FRAMES)[number];
 /** The frames around a figure, in the order the generator offers them: the
  * default first, then the frames most real figure hearts use. */
-export const FIGURE_STYLES = ['rays', 'wedges', 'corners', 'silhouette', 'motifs', 'squares', 'board', 'fitted', 'sunburst', 'layers', 'check'] as const;
+export const FIGURE_STYLES = ['rays', 'wedges', 'corners', 'silhouette', 'motifs', 'squares', 'board', 'fitted', 'sunburst', 'layers', 'check', 'strips'] as const;
 export type FigureStyle = (typeof FIGURE_STYLES)[number];
 /** A frame without a centre panel joins each outer gate of the motif straight
  * to the two paper edges at its corner of the square. Legs meeting the edges
