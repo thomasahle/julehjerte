@@ -1,0 +1,90 @@
+{
+  "schema": "u2netp-material-training-plan-1",
+  "status": "predeclared",
+  "source": {
+    "path": "tmp/heart-learning/u2netp-source-v1/source.json",
+    "sha256": "f6fe434979abcd0531fede48187b3009d2d7996096fc8c507fcbaf90f428577a"
+  },
+  "checkpoint": {
+    "path": "tmp/heart-learning/u2netp-body-adaptation-v1/model.pt",
+    "sha256": "ff4b56456aa17a40d4b4daed98cd384dc309933d2d5585da5ebeece843dd1e4f"
+  },
+  "sourceManifest": {
+    "path": "docs/inverse/datasets/real-manifest.json",
+    "sha256": "999544ef30b1d71095e1630d7f834e162e2aa6145181df10107a831aa2eda350"
+  },
+  "annotations": {
+    "path": "scripts/inverse/datasets/real-materials-encoder-tail.json",
+    "sha256": "b245c23fb51691a4db2000ca5226f6ab400511c612d8414fbc50ff4ab4e80374"
+  },
+  "evaluation": {
+    "path": "docs/inverse/datasets/u2netp-continuous-selection.json",
+    "sha256": "6d4e0e7550fedf5c13333bdc90db28a98eb5ff9ce2de260f32e2d015f5128f52"
+  },
+  "syntheticParent": {
+    "path": "tmp/heart-learning/foreground-scene-v1/scene-trained/report.json",
+    "sha256": "f3a71ff6de0cb0a00fe8db15051631d131b6cbd71bf607bd607acae5d101929c"
+  },
+  "trainIds": [
+    "real-8c875dd0f298b5a4-body-1",
+    "real-995899fe049540ed-body-1",
+    "real-b87b0b19f12724f3-body-1",
+    "real-cf2d0fcff65d7386-body-1",
+    "real-cdae5c890b6933cd-body-1",
+    "real-68d8f25d8891df62-body-1",
+    "real-5330aa8b62176216-body-1",
+    "real-abf590088db891f9-body-1",
+    "real-990ac34431be87fe-body-1",
+    "real-12ce3c9180f7f317-body-1",
+    "real-d5b0aa8d4d2465ee-body-1",
+    "real-39f3a1ba97852876-body-1",
+    "real-e936e08ac62db19b-body-1",
+    "real-340f5e5b0f447889-body-1",
+    "real-710703159f609111-body-1",
+    "real-a414dfffbd2362ae-body-1"
+  ],
+  "protocol": {
+    "resolution": 320,
+    "skimage": "0.24.0",
+    "threads": 1,
+    "seed": 20261020,
+    "updates": 120,
+    "batchSize": 2,
+    "realPerBatch": 1,
+    "syntheticGeometries": 32,
+    "learningRate": 0.001,
+    "weightDecay": 0.0001,
+    "input": "Unmodified publisher RescaleT(320) and ToTensorLab(flag=0), full original EXIF-oriented RGB. No corner, mask or ROI input.",
+    "target": "Reviewed per-photo paper identity with unknown pixels excluded; synthetic original/scene/printed coverage from the same fixed 32 training geometries. Preserve fractional material coverage and source-pixel annotation uncertainty.",
+    "architecture": "Freeze every parameter and buffer of the adapted U2NETP body. Reuse stage1d/2d/3d features through three 64-to-16 projections; combine with input RGB and frozen body scores in a two-layer 32-channel identity head at half resolution.",
+    "loss": "Existing joint loss with one global A/B exchange per image. Frozen body loss is constant; only identity-head parameters receive gradients.",
+    "augmentation": "Independent horizontal and vertical reflection of input and target together.",
+    "checkpointSelection": "Final update only; no early stopping, held-out loss, alternative hyperparameters or per-photo checkpoint choices.",
+    "inference": "Publisher body preprocessing and min/max normalization unchanged. Material is sigmoid of the second raw logit, with no per-image material min/max normalization.",
+    "evaluation": "Verify unchanged body outputs and inspect all training predictions; then evaluate the fixed final head on the 32 source-separated development photographs. No checkpoint or per-photo winner selection."
+  },
+  "resources": {
+    "minimumFreeGiB": 10,
+    "maxArtifactMiB": 30,
+    "workers": 1,
+    "newSourcePhotoCopies": 0,
+    "newPhotoDownloads": 0
+  },
+  "scope": "Offline paper-identity pilot motivated by printed ink being mistaken for weaving boundaries. Sixteen reviewed real training photos plus 96 original/scene/printed synthetic views; evaluation source groups remain excluded. Training metrics are not generalization evidence. No production model enabled.",
+  "bodyReport": {
+    "path": "tmp/heart-learning/u2netp-body-adaptation-v1/report.json",
+    "sha256": "8957773143a429a0be49093191d65c6c9e5f68f512fd99e352541ee9951ce6e3"
+  },
+  "printedReplay": [
+    {
+      "directory": "tmp/heart-learning/material-prints-v1/source-1",
+      "manifestSha256": "8cb0e3894195861aa9212f2e3de82a013670693add652bb3600aa9cab1e3115a",
+      "parentManifestSha256": "6649301431add7c3a7b7ba2ccb374723bc165fd3a64c9adede0ad11b3a54133d"
+    },
+    {
+      "directory": "tmp/heart-learning/material-prints-v1/source-2",
+      "manifestSha256": "42e5b8af44acf6406d3baa22e7c207648ca86dcea66e0bf9f9c159fb5e1d9499",
+      "parentManifestSha256": "180ecc34ae4294b3e9a70d90009cd2610f918394c0fa531fa64b3aaad0b27732"
+    }
+  ]
+}
