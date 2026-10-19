@@ -2210,7 +2210,7 @@
     }
   },
   "pairedCheckpointInvestigation": {
-    "status": "Paired Linux run completed: both revisions pass 14 and fail the same five selected tests; deferred full-suite run still has real failures",
+    "status": "Paired comparison and fixed-work diagnosis completed; deferred optimization passes local validation but full Linux CI is still failing",
     "oldSourceCommit": "bb667e2b",
     "eagerSourceCommit": "ce6ef218",
     "deferredSourceCommit": "4e021f00",
@@ -2388,6 +2388,60 @@
       "Repeated geometric/feature audits consume refinement time; Linux bicycle uses 365 versus 325 curve iterations while the fixed-work clearance choice is identical, and disagreement rises from 4.09875% to 4.299375%.",
       "Late stacked fitting can miss the existing 2.5-second comparison gate. In the deferred full run it still outputs roughly 6.9% disagreement: this is an actual fitting failure, not merely a test insisting on the alternate route.",
       "Both new and old pipelines fail the same synthetic routing and slowed near-miss cases in the paired run. Those require independent scheduling/routing fixes."
-    ]
+    ],
+    "deferredFullResult": {
+      "status": "completed",
+      "conclusion": "failure",
+      "sourceCommit": "e52c785e",
+      "diagnosticCommit": "c3c6bba3",
+      "passed": 1121,
+      "failed": 13,
+      "shards": [
+        {
+          "shard": 1,
+          "passed": 265,
+          "failed": 0,
+          "failures": [],
+          "log": "/tmp/julehjerte-ci-deferred-full-shard1.log"
+        },
+        {
+          "shard": 2,
+          "passed": 239,
+          "failed": 1,
+          "failures": [
+            "a fresh shifted bird fit preserves its eye with a 10-second allowance"
+          ],
+          "log": "/tmp/julehjerte-ci-deferred-full-shard2.log"
+        },
+        {
+          "shard": 3,
+          "passed": 287,
+          "failed": 4,
+          "failures": [
+            "a simpler seed that never contained the Viking opening leaves time for the viable routing",
+            "late clearance comparison can repair its first usable layout before polishing",
+            "a lower-error finalist that erodes a partially retained region cannot claim the refinement reserve",
+            "the main fitter reconstructs the dense binary photo target with legal editable-sized counts"
+          ],
+          "log": "/tmp/julehjerte-ci-deferred-full-shard3.log"
+        },
+        {
+          "shard": 4,
+          "passed": 330,
+          "failed": 8,
+          "failures": [
+            "fresh fitting retains the stacked motif on the resampled mask",
+            "the original near-miss layout produces checked exports within the original short search (1.5x clock)",
+            "the vertical near-miss layout produces checked exports within the original short search (1.5x clock)",
+            "a late routing candidate uses the repair time already provided by its caller",
+            "a late routing candidate cannot manufacture an unprovided repair allowance",
+            "fresh photographic fitting selects and exports finer-verified refinement",
+            "fresh frozen routing retains time for a valid template without changing the mask",
+            "fresh synthetic-control routing retains time for a valid template without changing the mask"
+          ],
+          "log": "/tmp/julehjerte-ci-deferred-full-shard4.log"
+        }
+      ]
+    }
   }
 }
