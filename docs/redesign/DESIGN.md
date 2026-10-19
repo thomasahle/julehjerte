@@ -178,8 +178,10 @@ var(--strand, 0px)` (the `translate` property, so the card's hover scale stays; 
 hjerter" is not a strand and gets D more top margin; gallery categories' `scroll-margin-top` is D less, and
 the scroll-spy adds D to their tops, so a chip lands the level row just under the bar. The geometry is
 `$lib/front/hillLine`; `Gallery.svelte` measures (`[data-scene-land] > svg`, on mount and with a
-ResizeObserver) and hands the bar its chip lifts and the categories the column count. Before hydration the
-wrap's margin is the 1440 estimate `-100vw * 226 / 2172` and the grid is flat. `z-index: 1` stays so the gallery paints over the scene. Below 900
+ResizeObserver) and hands the bar its chip lifts and the categories the column count. Before hydration an
+inline script (`$lib/front/strandBootstrap`, GALLERY-CURVE.md amendment 4) works out the same pull-up and
+strands from the viewport width and leaves them on `<html>`, so the first paint already hangs the cards from
+the hill; the stylesheet's 1440 estimate `-100vw * 226 / 2172` is only the fallback without script. `z-index: 1` stays so the gallery paints over the scene. Below 900
 none of this applies: the landscape is an in-flow band, with the scroll hint just above it.
 
 Gallery bar (`front/GalleryBar.svelte`, docs/redesign/GALLERY-BAR.md; it replaced the toolbar, 2026-10-17):
@@ -217,7 +219,8 @@ Scroll-spy: the current chip belongs to the last section whose top has reached t
 (1px slack), measured with `getBoundingClientRect()` on scroll (passive, one `requestAnimationFrame` per frame)
 and on resize. At the bottom of the page the last section is current, since the last rows are too short to
 reach the bar; above the first section — and whenever the bar has not yet stuck — none is. The rule is the pure
-`activeSection()` in `$lib/front/scrollSpy`. When the current chip changes, the chip row scrolls just enough to
+`currentSection()` in `$lib/front/scrollSpy` (`activeSection()` plus "none until stuck, then at least the
+first"). When the current chip changes, the chip row scrolls just enough to
 show it (the row only, not `scrollIntoView()`, which may also scroll the window and cut a smooth jump short).
 A chip is a plain anchor (keyboard accessible, the URL hash updates, `?selected=` is kept). For that one jump the
 bar puts `smooth-anchors` on `<html>`, which app.css turns into `scroll-behavior: smooth` under
@@ -231,15 +234,21 @@ The three-step strip (print / cut / weave links to the guide) that used to sit a
 (owner's decision, 2026-10-17; the steps live on the guide page). The "Foreslå et hjerte" link is not in the bar
 (it lives on the Om page).
 
+Difficulty filter (GALLERY-BAR.md, "As built: difficulty filter"; `$lib/front/levelFilter`): toggle chips
+"Let", "Mellem", "Svær", "Ekspert" in the chip row, between the download button and the category chips. Any
+number at once, none shows all; cards of other levels are hidden and the strands count the cards on show, an
+emptied category is hidden and its chip dimmed. The choice lives in `?level=let,mellem` and the tab's
+sessionStorage, and the strand bootstrap applies it before the first paint.
+
 Category section: **no visible heading** (GALLERY-CURVE.md) — the title is an `sr-only` `<h3>`, the chips
 name the rows and carry the counts; sections are `margin-top: 28px` apart (32 below 600), the grid's own
 row-gap; the grid is `align-items: start`.
 "Mine hjerter" keeps its visible heading row (uppercase 15px/600 `--green`, letter-spacing .06em,
 padding-bottom 4, margin-bottom 10, no rule under it). Section ids `klassiske`, `stjerner`,
 `moenstre`, `figurer`, `hjerter` (anchors used by the detail page). Grid
-`repeat(auto-fill, minmax(196px, 1fr))`, column-gap 24, row-gap 40 (2 columns, gaps 14/32 below 600).
+`repeat(auto-fill, minmax(204px, 1fr))`, column-gap 16, row-gap 28 (2 columns, gaps 14/32 below 600).
 
-Card (`article.card`, relative, flex column centred, height size+136 with size 168, radius 14, hover
+Card (`article.card`, relative, flex column centred, height size+120 with size 200, radius 14, hover
 `transform: scale(1.02)`, transition .2s):
 - hanging heart with ribbon length `[26, 54, 38, 66, 44][i % 5]` and sway delay `(i * 0.7) % 5` s;
 - **the whole card is one link** to the heart's page (`<a class="card-link" href={detail url}

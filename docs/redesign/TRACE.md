@@ -14,7 +14,8 @@ this mode first.
 
 ## Entry points
 
-1. `HeartActions.svelte`: a fourth button after Del — class `btn btn-outline`,
+1. `HeartActions.svelte`: a fourth button — as built, second, right after "Hent
+   skabelon" and before the glyph-only Redigér and Del — class `btn btn-outline`,
    label `traceFromScreen` ("Tegn af fra skærmen" / "Trace from the screen"),
    with a tablet icon (add `TabletIcon` to `src/lib/components/icons/index.ts`
    from lucide, like the others; if lucide is not a dependency, copy the small
@@ -62,8 +63,8 @@ at the same size.
   not touch events, so mouse and trackpad work too; wheel zooms on desktop.
 - Toolbar (top, white with a `--line` bottom border; `safe-area-inset-top`
   respected): the lobe control when needed, a size slider, the readout, **Tilpas**
-  (`traceFit`, FitIcon) that fits the template into 90% of the viewport and
-  centres it, **Kalibrér** (`traceCalibrate`), and the primary **Lås skærmen**
+  (`traceFit`, FitIcon) that fits the template into 90% of the free area (the
+  viewport below the toolbar) and centres it, **Kalibrér** (`traceCalibrate`), and the primary **Lås skærmen**
   (`traceLock`). Below 600px the toolbar wraps: the buttons, then the lobe
   control (with the readout beside it) when there is one, then the slider
   across the full width on a row of its own; every target is 44px.
@@ -99,17 +100,23 @@ After calibration the readout drops "ca." (`traceWidthMmExact`). A small
   `tracing` with `overflow: hidden; overscroll-behavior: none`;
 - `navigator.wakeLock?.request('screen')` in try/catch, re-requested on
   `visibilitychange` back to visible (the lock is released when the tab hides);
-- `document.documentElement.requestFullscreen?.()` in try/catch, exited on
-  unlock; browsers without it (iOS Safari) just stay as they are;
+- `document.documentElement.requestFullscreen?.()` in try/catch — as built,
+  on opening the mode and exited on closing it, not on lock/unlock, since going
+  fullscreen moves the page under paper already laid on it; browsers without
+  it (iOS Safari) just stay as they are;
 - the only control is **Lås op** (`traceUnlock`, LockOpen or the close icon)
   in the bottom-right corner (`safe-area-inset` aware), 56 px round, white on
   the dark `--deep` colour, with the hint `traceHoldToUnlock` ("Hold 2 sek. for
   at låse op") under it. It unlocks after a **2000 ms continuous hold**
-  (`pointerdown` → `pointerup`/`pointercancel`/`pointerleave` cancels), drawing
-  a progress ring (SVG circle, `stroke-dashoffset`) during the hold. A short tap
-  does nothing. Escape unlocks on keyboards. An `aria-live="polite"` region
+  (`pointerdown` → `pointerup`/`pointercancel`/`pointerleave`, or a move off the
+  button, cancels), drawing a progress ring (SVG circle, `stroke-dashoffset`)
+  during the hold. A two-second hold of Enter or Space on the button works the
+  same way (released or blurred, it cancels). A short tap does nothing. Escape
+  unlocks on keyboards, and outside the lock it leaves calibration first, then
+  the mode. An `aria-live="polite"` region
   announces `traceLockedAnnouncement` / `traceUnlockedAnnouncement`.
-- The page's own scroll position is restored on unlock/close.
+- The page's own scroll position is restored on close (the page does not
+  scroll while the mode is open: `body` has `overflow: hidden`).
 
 **Close** (`close`, existing key, CloseIcon) in the toolbar's left corner leaves
 the mode when unlocked; it is not available while locked. `onClose` returns
@@ -148,7 +155,7 @@ the English wording as the file's header says. `translations.test.ts` must pass.
 - Everything in docs/redesign/DESIGN.md §8 applies: prerendered static site,
   both languages, keep every existing behaviour, `npm run check`,
   `npm run lint`, `npm test`, `npm run build` green before you finish,
-  commit on this branch (`trace-mode`) with clear messages, **never push**,
+  commit on a branch (this work was `trace-mode`; it is merged into `main`) with clear messages, **never push**,
   work only in this worktree.
 - Use the design tokens and the `.btn` system from `src/app.css`; no new
   colours except pure black/white for the tracing surface itself.
