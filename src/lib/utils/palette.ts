@@ -15,8 +15,9 @@
  *     contrast, so the weave reads;
  *   - a light paper that is almost the page's own snow (#f9f9f3) carries
  *     `edge: true`: the mode draws a faint outline round such a heart, since
- *     its edge would otherwise be its drop shadow alone. The classic red and
- *     white is one of them, kept white because it is the default pair.
+ *     its edge would otherwise be its drop shadow alone (ochre and white).
+ *   - none of them is the site's own red and white: it is too bright beside
+ *     the rest, and the header has a button of its own for it.
  *
  * Which heart gets which, in two steps. First a heart gets a *slot*, fixed in
  * its markup: a gallery heart the slot at its position in the gallery order
@@ -34,7 +35,6 @@
  * markup changing: the permutation is a set of variables on <html>.
  */
 import { ALL_HEART_IDS } from '$lib/data/categories';
-import { DEFAULT_COLORS_HEX } from '$lib/stores/colors';
 import type { HeartColors } from '$lib/types/heart';
 
 export interface PalettePair extends HeartColors {
@@ -42,6 +42,11 @@ export interface PalettePair extends HeartColors {
 	name: string;
 	/** What the header's colour dialog calls it, in both languages. */
 	label: { da: string; en: string };
+	/**
+	 * Its strong paper's colour family, so the colourful button's four cells
+	 * can show four that differ (iconSlots).
+	 */
+	family: 'red' | 'green' | 'blue' | 'gold' | 'purple';
 	/** The light paper is close to the page background: outline the heart. */
 	edge?: boolean;
 }
@@ -60,63 +65,77 @@ export const PAGE_CONTRAST_MIN = 1.15;
  * alternates warm and cool and light and dark.
  */
 export const PALETTE: readonly PalettePair[] = [
+	// Not the site's own red and white, which is too bright beside the rest and
+	// has a button of its own: the same idea, greyed down to sit with them.
 	{
-		name: 'klassisk',
-		label: { da: 'Rød og hvid', en: 'Red and white' },
-		left: DEFAULT_COLORS_HEX.left, right: DEFAULT_COLORS_HEX.right, edge: true
+		name: 'rønnebær',
+		family: 'red',
+		label: { da: 'Rønnebær og hør', en: 'Rowan and linen' },
+		left: '#e7e3dd', right: '#9b3b37'
 	},
 	{
 		name: 'gran',
+		family: 'green',
 		label: { da: 'Gran og creme', en: 'Spruce and cream' },
 		left: '#efe6cf', right: '#2f5d44'
 	},
 	{
 		name: 'nat',
+		family: 'blue',
 		label: { da: 'Nat og guld', en: 'Navy and gold' },
 		left: '#dcb55e', right: '#22385c'
 	},
 	{
 		name: 'bordeaux',
+		family: 'red',
 		label: { da: 'Bordeaux og rosa', en: 'Burgundy and blush' },
 		left: '#f0cbc6', right: '#7c2236'
 	},
 	{
 		name: 'petrol',
+		family: 'green',
 		label: { da: 'Petrol og sand', en: 'Teal and sand' },
 		left: '#e9d7b5', right: '#1f5c61'
 	},
 	{
 		name: 'okker',
+		family: 'gold',
 		label: { da: 'Okker og hvid', en: 'Ochre and white' },
 		left: '#fbf4e6', right: '#b8802a', edge: true
 	},
 	{
 		name: 'skifer',
+		family: 'blue',
 		label: { da: 'Skifer og is', en: 'Slate and ice' },
 		left: '#dde8f0', right: '#3f5c7c'
 	},
 	{
 		name: 'blomme',
+		family: 'purple',
 		label: { da: 'Blomme og rosé', en: 'Plum and rose' },
 		left: '#e8b9c6', right: '#5c2b50'
 	},
 	{
 		name: 'mynte',
+		family: 'green',
 		label: { da: 'Skov og mynte', en: 'Forest and mint' },
 		left: '#cfe3d2', right: '#3f6f55'
 	},
 	{
 		name: 'kanel',
+		family: 'gold',
 		label: { da: 'Kanel og creme', en: 'Cinnamon and cream' },
 		left: '#f3e2cc', right: '#9a4a2a'
 	},
 	{
 		name: 'sort',
+		family: 'red',
 		label: { da: 'Sort og rød', en: 'Black and red' },
 		left: '#c2362b', right: '#1f1d1d'
 	},
 	{
 		name: 'lyng',
+		family: 'purple',
 		label: { da: 'Lyng og lys rosa', en: 'Heather and pale pink' },
 		left: '#efdfe6', right: '#7d5a7e'
 	}
@@ -227,5 +246,26 @@ export function paletteVariables(permutation: Permutation): Record<string, strin
 		vars[`--pal-${slot}-r`] = pair.right;
 		vars[`--pal-${slot}-o`] = pair.edge ? EDGE_COLOR : 'transparent';
 	});
+	iconPairs(permutation).forEach((pairIndex, cell) => {
+		vars[`--pal-icon-${cell}`] = PALETTE[pairIndex].right;
+	});
 	return vars;
+}
+
+/**
+ * The four pairs whose strong papers fill the colourful button's cells: the
+ * first four of the shuffle, in its order, that come from different colour
+ * families, so three greens never stand in for "colourful". The head's inline
+ * script follows the same rule ($lib/stores/colorMode).
+ */
+export function iconPairs(permutation: Permutation): number[] {
+	const picked: number[] = [];
+	const families = new Set<string>();
+	for (const pairIndex of permutation) {
+		if (picked.length === 4) break;
+		if (families.has(PALETTE[pairIndex].family)) continue;
+		families.add(PALETTE[pairIndex].family);
+		picked.push(pairIndex);
+	}
+	return picked;
 }

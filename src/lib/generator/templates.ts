@@ -12,9 +12,9 @@ export const FIGURE_TEMPLATES: FigureTemplate[] = FIGURE_STYLES.map((style) => (
 	style
 }));
 export type TextTemplate = { id: string; textFrame: TextFrame; cells?: Cells };
-/** Each frame whose checks follow the text cells comes as a pair, square cells
- * beside letter-sized ones; in the picker's three columns each pair shares a row. */
-export const TEXT_TEMPLATES: TextTemplate[] = (['woven', 'checkered', 'air', ...FRAMES] as TextFrame[])
+/** The frame whose checks follow the text cells comes as a pair, square cells
+ * beside letter-sized ones, its space around the text set by a slider. */
+export const TEXT_TEMPLATES: TextTemplate[] = (['woven', 'checkered', ...FRAMES] as TextFrame[])
 	.flatMap((textFrame): TextTemplate[] => CELL_FRAMES.includes(textFrame)
 		? CELLS.map((cells) => ({ id: `${textFrame}-${cells}`, textFrame, cells }))
 		: [{ id: textFrame, textFrame }]);

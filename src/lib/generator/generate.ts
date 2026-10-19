@@ -3,9 +3,9 @@ import { generateLayeredFigure } from './layers';
 import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
 import { generateFittedFigure } from './fitted';
 import { sunburstBorder } from './sunburst';
-import { generateTextGrid, squareCellScale } from './textGrid';
+import { generateTextGrid, roomOf, squareCellScale } from './textGrid';
 import { NO_WHOLE_STRIPS, STRIPS, slidePlace, stripFigures } from './stripFigure';
-import { MOTIF, MOTIF_PATTERNS, boardRadius, boardScale } from './boardMotif';
+import { MOTIF, boardRadius, boardScale, motifChoices, squareChoices } from './boardMotif';
 import { CIRCLE_STYLES, fillSquare, fitCircle } from './frameFit';
 export { fillSquare, fitCircle } from './frameFit';
 import { generateBranchedText, hasOverlappingTextBranches, fittedBranchedTextFill } from './branchedText';
@@ -96,7 +96,13 @@ export type GeneratorRequest = {
 	 * size chooses, on the middle. */
 	place?: number;
 	side?: number;
+	/** For woven text: the room around each letter in its cell, as a fraction
+	 * of the letters' height (see `roomOf`); otherwise the frame's own. */
+	room?: number;
 };
+/** The room a text asks around each letter in its cell (see `roomOf`): the
+ * visitor's, else the airy or woven frame's own. */
+const textRoom = (request: GeneratorRequest) => request.room ?? request.textFrame === 'air';
 /** The choice a motif on a board (small motifs, equal squares) made at its
  * default size: which of its `frameAlternatives`, on a board of how many
  * strips per side. */
@@ -424,7 +430,7 @@ const layouts = new Map<string, BoardLayout | undefined>();
 function withLayout(request: GeneratorRequest): GeneratorRequest {
 	if (request.mode !== 'figure' || !BOARD_FRAMES.includes(request.style ?? '') || request.layout || boardScale(request) === 1)
 		return request;
-	const key = request.style + JSON.stringify(request.contours ?? []);
+	const key = `${request.style} ${request.board ?? ''} ${JSON.stringify(request.contours ?? [])}`;
 	if (!layouts.has(key)) {
 		let layout: BoardLayout | undefined;
 		try {
@@ -611,33 +617,25 @@ function frameAlternatives(request: GeneratorRequest): { request: GeneratorReque
 		// then start with fitted cells. Square cells with every recipe remain,
 		// rather than refusing.
 		const square = { request, retries: false }, fitted = { request: { ...request, fittedCells: true }, retries: true };
-		return [...squareCellScale(request.text ?? '', request.font, frame === 'air') >= SQUARE_CELL_SCALE
+		return [...squareCellScale(request.text ?? '', request.font, textRoom(request)) >= SQUARE_CELL_SCALE
 			? [square, fitted] : [fitted, square], { request, retries: true, lastResort: true }];
 	}
 	if (request.style === 'motifs' || request.style === 'squares') {
 		const contours = normalizeContours(request.contours ?? []);
 		if (!contours.length) throw new ConstructionError('empty', 'No contour');
-		const font: Font = { glyphs: { [MOTIF]: { advance: 1, contours } } }, letterScale = boardScale(request);
-		// Equal squares: the motif is the one letter of the woven text frame
-		// with square cells, first in the centre square of a three-strip board,
-		// up to a tenth larger in it (at most what the size setting allows) or
-		// with the spacious frame's room around it, then over several squares
-		// of a finer board; cells fitted to it remain rather than refusing.
-		// Small motifs: the most copies that cut.
-		const squares = (fittedCells: boolean, scale: number, board?: number): GeneratorRequest =>
-			({ mode: 'text', name: request.name, colors: request.colors, text: MOTIF, font, textFrame: 'woven', fittedCells, letterScale: scale, board });
+		const font: Font = { glyphs: { [MOTIF]: { advance: 1, contours }, ' ': { advance: 1, contours: [] } } }, letterScale = boardScale(request);
+		// The motif is the letter of a text frame on a board (see
+		// `motifChoices`, `squareChoices`). Small motifs: the most copies on
+		// the checkerboard that cut. Equal squares: the one letter of the
+		// woven text frame with square cells, in the centre square. Strips the
+		// visitor chose are kept, hard to cut if need be; others only where
+		// they can build nothing at all.
+		const board = request.style === 'squares' ? squareChoices(request.board) : motifChoices(request.board);
 		type Choice = { request: GeneratorRequest; retries: boolean; lastResort?: boolean };
-		const choicesAt = (letterScale: number): Choice[] => {
-			if (request.style !== 'squares') return MOTIF_PATTERNS.map(text => ({ retries: true, request:
-				{ mode: 'text', name: request.name, colors: request.colors, text, font, textFrame: 'checkered', letterScale } }));
-			const centre = [1, 1.05, 1.1].map(larger => squares(false, Math.min(1.1, letterScale * larger), 3)),
-				finer = squares(false, letterScale);
-			// Each first quickly, as woven text tries its recipes before the
-			// slower retries, then with every retry, hard to cut if need be.
-			return [...[...centre, { ...centre[0], textFrame: 'air' as const }, finer].map(request => ({ retries: false, request })),
-				...[centre[0], finer].map(request => ({ retries: true, request })),
-				{ retries: true, lastResort: true, request: squares(true, letterScale) }];
-		};
+		const choicesAt = (letterScale: number): Choice[] => board.map(({ text, board, retries, lastResort, larger = 1, air, fitted }) => ({
+			retries, lastResort, request: { mode: 'text', name: request.name, colors: request.colors, text, font, letterScale: Math.min(request.style === 'squares' ? 1.1 : Infinity, letterScale * larger),
+				...request.style === 'squares' ? { textFrame: air ? 'air' : 'woven', fittedCells: !!fitted, board: fitted ? undefined : board } : { textFrame: 'checkered', board } }
+		}));
 		const choices = choicesAt(letterScale), layout = request.layout, chosen = layout && choices[layout.alternative];
 		if (!layout || !chosen) return choices;
 		// Other sizes keep the default size's choice, on its board. Larger than
@@ -1072,7 +1070,7 @@ function retryTextPanelIslands(request: GeneratorRequest, curveFitter: ReturnTyp
 		for (const padding of [.16, .12]) for (const [columns, slices] of [[1, 2], [2, 1]]) {
 			if (columns * letters + slices * lines.length + 1 > 20) continue;
 			try {
-				const construction = generateTextGrid(text, font, frame === 'air', shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+				const construction = generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
 					padding, frameFill, columns, slices, spread: true, filled: true, adaptivePanels: true,
 					guardSeams: true, practical: true, compound: true, boundaryIslands: true
 				});
@@ -1149,7 +1147,7 @@ function retryGuardedPanels(request: GeneratorRequest, curveFitter: ReturnType<t
 			if (columns * letters + slices * lines.length + 1 > 20) continue;
 			let construction: Construction;
 			try {
-				construction = generateTextGrid(text, font, frame === 'air', shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+				construction = generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
 					padding, frameFill, columns, slices, spread: true, filled: true, adaptivePanels: true,
 					guardSeams: true, practical: true, compound: true, boundaryIslands: true,
 					contourApproaches: true, guardedAttachments: true
@@ -1393,7 +1391,7 @@ function improveTextPanelTips(request: GeneratorRequest, original: GeneratorResu
 	if (strips > Math.min(20, original.design.gridSize.x, original.design.gridSize.y)) return original;
 	try {
 		const shape = frame === 'woven' || frame === 'air' ? undefined : frame;
-		const construction = generateTextGrid(text, font, frame === 'air', shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+		const construction = generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
 			columns: 2, slices: 3, spread: true, filled: true, inkPanels: true,
 			guardSeams: true, practical: true, compound: true, balanced: true,
 			boundaryIslands: true, contourApproaches: true
@@ -1428,7 +1426,7 @@ function retryPanelLayouts(request: GeneratorRequest, curveFitter?: ReturnType<t
 		if (2 * Math.max(...lines.map(line => [...line].length)) + 3 * lines.length + 1 > 20) return;
 		const shape = frame === 'woven' || frame === 'air' ? undefined : frame;
 		for (const adaptivePanels of [false, true]) recipes.push(() =>
-			generateTextGrid(text, font, frame === 'air', shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+			generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
 				columns: 2, slices: 3, filled: true, spread: true,
 				practical: true, compound: true, guardSeams: true, adaptivePanels
 			}));
@@ -1649,22 +1647,22 @@ function generateUsingRecipes(request: GeneratorRequest,
 		const shape = frame === 'woven' || frame === 'air' ? undefined : frame;
 		const size = request.letterScale ?? 1;
 		const recipes: Array<() => ReturnType<typeof generateTextGrid> | ReturnType<typeof generateCheckedText> | undefined> = text.includes('\n') ? [] : [
-			() => generateCheckedText(text, font, frame === 'air', shape, request.fittedCells, size)
+			() => generateCheckedText(text, font, textRoom(request), shape, request.fittedCells, size)
 		];
-		recipes.push(() => generateTextGrid(text, font, frame === 'air', shape, { fittedCells: request.fittedCells, letterScale: size }));
+		recipes.push(() => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: size }));
 		// On the regular board the cells cannot grow, but a letter can be a
 		// little larger inside its cell; its connections then meet it elsewhere.
 		// A figure keeps the size the visitor asked for (see `frameAlternatives`).
 		const regularGrid = !request.fittedCells && (frame === 'woven' || frame === 'air');
 		if (regularGrid && request.letterScale === undefined) for (const letterScale of [1.05 * size, 1.1 * size]) recipes.push(text.includes('\n')
-			? () => generateTextGrid(text, font, frame === 'air', shape, { letterScale })
-			: () => generateCheckedText(text, font, frame === 'air', shape, false, letterScale));
+			? () => generateTextGrid(text, font, textRoom(request), shape, { letterScale })
+			: () => generateCheckedText(text, font, textRoom(request), shape, false, letterScale));
 		// Give difficult counters/shoulders more room, and spread the projections
 		// around the frame. The requested font, frame and text are retained.
-		// The air layout already has this spacing and no decorative frame. On
+		// Text with that much room already has it, and no decorative frame. On
 		// the regular board more room makes a letter smaller in its cell, so a
 		// figure there keeps the size asked for instead.
-		if (frame !== 'air' && !(regularGrid && request.letterScale !== undefined))
+		if (roomOf(textRoom(request)) < .5 && !(regularGrid && request.letterScale !== undefined))
 			recipes.push(() => generateTextGrid(text, font, false, shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
 				padding: .5,
 				spread: true
@@ -1675,27 +1673,27 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// regular checkerboard never take them: they would make uneven squares.
 		const fittedOnly = new Set<(typeof recipes)[number]>();
 		for (const [columns, slices] of [[2, 1], [1, 2], [2, 2], [1, 3]]) {
-			const recipe = () => generateTextGrid(text, font, frame === 'air', shape, { fittedCells: request.fittedCells, letterScale: request.letterScale, columns, slices, spread: true });
+			const recipe = () => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale, columns, slices, spread: true });
 			recipes.push(recipe);
 			if (columns !== slices) fittedOnly.add(recipe);
 		}
 		let usedCompound = false;
 		let crowded = false;
-		recipes.push(() => generateTextGrid(text, font, frame === 'air', shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+		recipes.push(() => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
 			spread: true, practical: true, compound: true, onCompound: () => { usedCompound = true; }, onCrowded: () => { crowded = true; }
 		}));
 		// A locally improved route can still conflict with a neighbouring cell.
 		// Retain the established recipe, but only rerun it if a chord changed.
 		recipes.push(() => usedCompound
-			? generateTextGrid(text, font, frame === 'air', shape, { fittedCells: request.fittedCells, letterScale: request.letterScale, spread: true, practical: true, onCrowded: () => { crowded = true; } })
+			? generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale, spread: true, practical: true, onCrowded: () => { crowded = true; } })
 			: undefined);
-		recipes.push(() => crowded ? generateTextGrid(text, font, frame === 'air', shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+		recipes.push(() => crowded ? generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
 			spread: true, practical: true, compound: true, balanced: true
 		}) : undefined);
 		let gateCrowded = false;
 		const adaptGates = (balanced = false) => {
 			let moved = false;
-			const result = generateTextGrid(text, font, frame === 'air', shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+			const result = generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
 				spread: true, practical: true, compound: true, balanced, adaptGates: true,
 				onGateChange: () => { moved = true; }, onCrowded: () => { gateCrowded = true; }
 			});
@@ -1708,7 +1706,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 		for (const columns of [1, 2]) recipes.push(() => {
 			if (!allRecipes || regularGrid) return undefined;
 			let moved = false;
-			const result = generateTextGrid(text, font, frame === 'air', shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+			const result = generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
 				columns, slices: 3, spread: true, filled: true, onSeamChange: () => { moved = true; }
 			});
 			// The one-column layout was already tried with centred contacts.
@@ -1719,16 +1717,16 @@ function generateUsingRecipes(request: GeneratorRequest,
 		const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n'),
 			letters = Math.max(...lines.map(line => [...line].length));
 		if (2 * letters + 5 * lines.length + 1 <= 20 && allRecipes && !regularGrid)
-			recipes.push(() => generateTextGrid(text, font, frame === 'air', shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+			recipes.push(() => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
 				columns: 2, slices: 5, spread: true, filled: true, inkPanels: true
 			}));
 		// A serif can need a more square approach than a straight shared spoke.
 		// Try bent connections only after the established constructions fail.
-		for (const padding of frame === 'air' ? [undefined] : [undefined, .5]) {
+		for (const padding of roomOf(textRoom(request)) >= .5 ? [undefined] : [undefined, .5]) {
 			let bentCrowded = false;
 			for (const balanced of [false, true]) {
 				const bent = () => !balanced || bentCrowded
-					? generateTextGrid(text, font, frame === 'air', shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+					? generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
 						padding, spread: true, practical: true, compound: true, adaptGates: true,
 						bentSpokes: true, balanced, onCrowded: () => { bentCrowded = true; }
 					}) : undefined;

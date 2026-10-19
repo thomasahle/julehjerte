@@ -183,7 +183,7 @@ describe("the head's inline script", () => {
 			const { left, right } = pair as { left: string; right: string };
 			expect(root().style.getPropertyValue('--paper-left')).toBe(left);
 			expect(root().style.getPropertyValue('--paper-right')).toBe(right);
-			expect([...root().classList].filter((c) => c.startsWith('paper-'))).toEqual(cls ? [cls] : []);
+			expect([...root().classList].filter((c) => c === 'paper-flipped' || c === 'paper-custom')).toEqual(cls ? [cls] : []);
 		}
 	});
 
@@ -192,6 +192,8 @@ describe("the head's inline script", () => {
 		const pairs = [
 			...PALETTE.map((p) => ({ left: p.left, right: p.right })),
 			...PALETTE.map((p) => ({ left: p.right, right: p.left })),
+			{ left: '#ffffff', right: '#b91313' },
+			{ left: '#b91313', right: '#ffffff' },
 			{ left: 'rgb(255, 255, 255)', right: 'rgb(185, 19, 19)' },
 			{ left: '#FFF', right: '#B91313' }
 		];
@@ -201,7 +203,7 @@ describe("the head's inline script", () => {
 			await run();
 			const kind = paperKind(pair);
 			const expected = kind === 'classic' ? [] : [PAPER_KIND_CLASSES[kind]];
-			expect([...root().classList].filter((c) => c.startsWith('paper-')), JSON.stringify(pair)).toEqual(expected);
+			expect([...root().classList].filter((c) => c === 'paper-flipped' || c === 'paper-custom'), JSON.stringify(pair)).toEqual(expected);
 		}
 	});
 
@@ -211,5 +213,28 @@ describe("the head's inline script", () => {
 		await run();
 		expect(root().style.getPropertyValue('--paper-left')).toBe('');
 		expect(root().classList.contains('colorful')).toBe(true);
+	});
+
+	it("puts the visitor's own pair on <html> for the custom button, saved or on show", async () => {
+		window.localStorage.setItem('juleflet:custom-colors', JSON.stringify({ left: '#efdfe6', right: '#7d5a7e' }));
+		window.localStorage.setItem('julehjerte-colors', JSON.stringify({ left: '#ffffff', right: '#b91313' }));
+		await run();
+		expect(root().style.getPropertyValue('--custom-left')).toBe('#efdfe6');
+		expect(root().style.getPropertyValue('--custom-right')).toBe('#7d5a7e');
+		expect(root().classList.contains('paper-has-custom')).toBe(true);
+
+		root().className = '';
+		root().removeAttribute('style');
+		window.localStorage.removeItem('juleflet:custom-colors');
+		window.localStorage.setItem('julehjerte-colors', JSON.stringify({ left: '#123456', right: '#abcdef' }));
+		await run();
+		expect(root().style.getPropertyValue('--custom-left')).toBe('#123456');
+		expect(root().classList.contains('paper-has-custom')).toBe(true);
+
+		root().className = '';
+		root().removeAttribute('style');
+		window.localStorage.setItem('julehjerte-colors', JSON.stringify({ left: '#b91313', right: '#ffffff' }));
+		await run();
+		expect(root().classList.contains('paper-has-custom')).toBe(false);
 	});
 });

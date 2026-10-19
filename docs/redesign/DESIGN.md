@@ -96,33 +96,43 @@ each in a 44px target. The one that is on wears a 2px `--green` ring (outline, 1
 1. **Rød og hvid / Red and white**: a circle split left | right into white and red. A press puts the classic
    pair on and turns the colourful mode off; pressed again while the classic pair is on, it swaps the sides,
    and its split follows. Ring: the classic pair either way round, colourful off.
-2. **Farverig / Colourful**: a plain 2×2 grid of four palette papers (red, spruce, navy, gold), no gaps. Each
-   press reshuffles (below). Ring: colourful on.
-3. **Egne farver / Your own colours**: split into the visitor's own pair when one is on, otherwise a calm conic
-   ring of the palette's pale papers. Ring: a non-classic pair, colourful off. A press opens a dialog (the site's
-   `Modal`: focus inside, Escape and Back close it, focus returns to the button; full width on a phone) with a
-   split-circle preview, the two native colour pickers, a swap button, the palette's twelve pairs as quick picks
-   (named in both languages, the current one ringed) and "Færdig" / "Done". Changes apply live, and any of them
-   turns the colourful mode off.
-The rings and the two pictures that follow the pair come from `html.colorful`, `html.paper-flipped` /
-`html.paper-custom` and the `--paper-*` tokens, all set before first paint by the head's inline script from
-`julehjerte-colors` and `juleflet:colourful` (`colors.paperKind` is the rule), so a reload shows the right
+2. **Farverig / Colourful**: a plain 2×2 grid of four papers, no gaps. Each press reshuffles (below), and the
+   grid with it: in the mode its cells show the strong papers of the first four pairs of the shuffle that
+   come from different colour families (red, green, blue, gold, purple; `palette.iconPairs`, the `--pal-icon-*`
+   variables, fading over 0.4s), with it off the palette's rowan red, spruce, navy and gold. Ring: colourful on.
+3. **Egne farver / Your own colours**: the visitor's own pair, kept apart from the pair on show
+   (`juleflet:custom-colors`, `colors.getCustomColors`; before the first save a custom pair on show counts as
+   it), split like button 1 whenever one exists, otherwise a calm conic ring of the palette's pale papers. Ring:
+   a non-classic pair on show, colourful off. A press opens a dialog (the site's `Modal`: focus inside, Escape
+   and Back close it, focus returns to the button; full width on a phone) on that saved pair (or, before there
+   is one, the pair on show), with a split-circle preview, the two native colour pickers, a swap button, the
+   palette's twelve pairs as quick picks (named in both languages, the dialog's pair ringed) and "Færdig" /
+   "Done". Changes apply live, are saved as the visitor's pair, and turn the colourful mode off. "Færdig" puts
+   the dialog's pair on even with nothing changed, so a visitor can go back to a pair made earlier; Escape,
+   Back and the scrim only close.
+The rings and the pictures come from `html.colorful`, `html.paper-flipped` / `html.paper-custom`,
+`html.paper-has-custom` and the `--paper-*`, `--custom-*` and `--pal-*` variables, all set before first paint
+by the head's inline script from `julehjerte-colors`, `juleflet:custom-colors` and `juleflet:colourful`
+(`colors.paperKind` is the rule), so a reload shows the right
 state, and the hearts in the visitor's pair, from the first frame. `aria-pressed` on the first two;
-`aria-haspopup="dialog"` on the third. GA4: `paper_colors {source: classic | flip | custom | preset}` (a custom
+`aria-haspopup="dialog"` on the third. GA4: `paper_colors {source: classic | flip | custom | preset | saved}` (`saved`: "Færdig" putting the saved pair
+back on) (a custom
 colour is counted on the picker's `change`, not every `input`), and `color_mode` as below. The editor's header
 has none (the editor has its own colour controls in its panel). Without JavaScript the group is hidden.
 
 **As built: colourful mode.** Each press of the colourful button turns the mode on and deals every heart
 that follows the site's pair a new random pair from `$lib/utils/palette`: twelve Scandinavian Christmas pairs,
-lighter paper left, darker right (so the ribbon is the strong colour), each ≥ 2.2:1 between its papers; the two
-whose light paper is nearly the page's `#f9f9f3` (classic red/white, ochre/white) get a hairline outline. Two
+lighter paper left, darker right (so the ribbon is the strong colour), each ≥ 2.2:1 between its papers; the one
+whose light paper is nearly the page's `#f9f9f3` (ochre/white) gets a hairline outline. The site's own red and
+white is not among them (too bright beside the rest; it has its own button): its place is taken by "Rønnebær og
+hør" / "Rowan and linen", `#e7e3dd` / `#9b3b37`, the same idea greyed down. Two
 steps: each heart has a fixed *slot* in its markup (`data-pair` and `--pair-left/-right/-edge` reading
 `var(--pal-<slot>-l/-r/-o, <unshuffled pair>)` on HangingHeart's `.hang` and the heart page's thumbnail), where
 gallery hearts take the slot at their position in the gallery order, cycling the twelve, so no card shares a
 neighbour's slot at any of the grid's 2–6 columns, and other hearts (Mine hjerter, shared) a hash of their id;
 then a press draws a random permutation of the palette (never the one on show) that says which pair each slot
 shows, set as the `--pal-*` variables on `<html>`. Being one-to-one, it keeps the neighbour rule; no slot or
-pair is fixed, so Klassisk 3×3 is not always red/white. The permutation is stored as "3,0,7,…" under
+pair is fixed. The permutation is stored as "3,0,7,…" under
 `juleflet:colourful` (the first version's "1" reads as unshuffled), and an inline head script sets the class and
 the variables before first paint, so a reload shows the last shuffle with no flash. app.css maps the slot's pair
 onto the heart's `--paper-*` tokens and HeartWeaveFill's `paper-l`/`paper-r` paths, cross-fading fills and
@@ -649,7 +659,13 @@ motif at two points, and otherwise repeated the rays or the checks with thinner 
 links open with the rays. The only centre panel is the circle; the diamond, hexagon, oval, soft-diamond and scalloped
 panels were removed (2026-10-17) because none of 435 real figure hearts used them, and old links
 open with the circle. A link pasted into an open generator changes only the hash; the page follows
-it (the page's own address updates use replaceState and never trigger that). Text also has close and spacious letter-cell framing, each with square or letter-sized cells, the checkerboard and the circle.
+it (the page's own address updates use replaceState and never trigger that). Text also has letter-cell framing with square or letter-sized cells, the checkerboard and the circle.
+The letter cells' space around the text is a slider (Luft om teksten), as the figures' space is:
+the room on each side of a letter in percent of its height, 5–35%, at 11% the close framing's
+0.22 of the letter height in all, at 25% the 0.5 of the spacious framing it replaces (older links
+to that frame open there). The board stays the same; only the letters' size in their cells
+changes. The checked-text construction keeps its own, slightly smaller room for the close
+framing (0.16 for 0.22), the same from 0.5 on, in between by the same line.
 Figure frames follow what real hearts use. Next to the circle with rays, checks,
 a sunburst or a double border, and the close-fitting and checked-tip frames, there are four
 frames without a centre panel. **Wedges** (Kiler; a quarter of real figure hearts): from each
@@ -658,14 +674,23 @@ colour. They are the close-fitting frame's construction with its legs tapered to
 and no outer strips. **Large silhouette** (Stor silhuet): the motif is scaled to fill the square
 (the size setting is the fraction of the largest fit) and leaves a small check in each corner.
 **Small motifs** (Små motiver): the motif in place of a letter on the text checkerboard, on every
-square of one colour of a 4×4 board; a motif that cannot be cut that small gets three squares
-across a 3×3 board, then two on 2×2. A clean smaller board is preferred to a hard-to-cut larger
-one. **Equal squares** (Lige store tern): the motif in place of the one letter of the woven text
-frame with square cells, so it takes the centre square of a regular 3×3 board and every square
-around it is equally large, as in Brodal's hearts. Every cut runs a whole square from the paper
-edge to a corner of the motif's square (the circle with checks leaves the middle strip narrower).
-The motif's cell is one square's diagonal wide, so a wide motif is smaller; cells fitted to the
-motif are the last resort, rather than refusing. **The circle on equal squares** (Cirkel · Lige
+square of one colour of a 4×4 board: the colour with the top and bottom squares, else the other,
+whose squares the bell and the angel can stand in where the top and bottom ones cannot; a motif
+that cannot be cut that small gets three squares across a 3×3 board, then two on 2×2. A clean
+smaller board is preferred to a hard-to-cut larger one. The Strimler slider chooses the board
+instead, two to eight strips: every square of one colour there, the one with the top and bottom
+squares first (on three strips three across the middle first). A colour the checkerboard connects
+only through neighbouring junctions (on three, five and seven strips the one with every corner of
+the diamond) is left out. Chosen strips are kept, hard to cut if need be; only where nothing at all
+can be built there do the fewest, largest copies follow, and the page says which strips it shows.
+**Equal squares** (Lige store tern): the motif in place of the one letter of the woven text
+frame with square cells, so it takes the centre square of a regular board of three strips and
+every square around it is equally large, as in Brodal's hearts. The Strimler slider chooses an odd number up to nine; on more strips the motif is
+the middle one of a row of empty square cells, so it is as small as the squares. Every cut runs whole squares from the paper edge to a corner of the
+motif's square (the circle with checks leaves the middle strip narrower). The motif's cell is one
+square's diagonal wide, so a wide motif is smaller. A motif whose sides cannot meet the cells
+beside it (the gift: no four-port construction) has only three strips, which the page then says;
+cells fitted to the motif are the last resort, rather than refusing. **The circle on equal squares** (Cirkel · Lige
 store tern) adds a layer, like the gallery's santa heart (whose lines are not evenly spaced): a
 regular 5×5 board with a circle around the motif. The size setting sizes the circle smoothly and
 the motif fills it up to the space asked for, so both only grow with the setting (tested): from
@@ -732,11 +757,10 @@ half the space and then none, and a circle move 4% further out and then keep the
 The two board frames whose squares hold the motif (small motifs, equal squares) fix the space with
 their squares, as the figure in the checks does with its board; their size setting scales the
 motif within its square, 0.6–1.1 times the default.
-On them a motif keeps, at every size, the choice its default size made, since another board would
-make it jump in size: the number of small copies, or for equal squares the centre square of a
-three-strip board (the motif up to a tenth larger in it, or with the spacious frame's room around
-it), else several squares of a finer board. Each choice is first tried quickly, as woven text tries
-its recipes before the slower retries. The page passes the choice from its default-size heart, so
+On them a motif keeps, at every size, the choice its default size made on its strips, since
+another would make it jump in size: which squares hold the small copies, or for equal squares the
+motif up to a tenth larger in its square, or with the spacious frame's room around it. Each choice
+is first tried quickly, as woven text tries its recipes before the slower retries. The page passes the choice from its default-size heart, so
 other sizes build only that (the cookie's small motifs: 2–4 s instead of 25–37 s); beyond what the
 choice can be cut at, the motif keeps the default size's own size.
 Figure choices are complete templates. Their thumbnails render the actual generated heart in the
@@ -767,7 +791,7 @@ layouts. The paw sunburst uses nine actual strips per sheet and has no cutting
 tips below 45°; its separate material-connectivity audit must also pass.
 
 Framed words keep independent four-port cells for each letter, with a common font baseline.
-In the close and spacious frames, square cells lie on a regular board, as in Brodal's hearts:
+In the letter-cell frame, square cells lie on a regular board, as in Brodal's hearts:
 each cell is one square's diagonal wide and the lines leaving the text block are one square apart,
 so the outer strips are as wide as the inner ones and every check is the same square. A line of k
 characters sits on the middle row of a board of k + 2 strips (JUL on 5×5, like Brodal's), a block

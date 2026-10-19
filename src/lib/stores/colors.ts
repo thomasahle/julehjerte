@@ -118,3 +118,59 @@ export function subscribeColors(fn: (colors: HeartColors) => void) {
   subscribers.add(fn);
   return () => subscribers.delete(fn);
 }
+
+/**
+ * The visitor's own pair, kept apart from the pair on show so the header's
+ * "Egne farver" dialog can bring it back after a spell of red and white or of
+ * the colourful mode (its "Færdig" applies it). Saved whenever the dialog
+ * changes the colours. Before the first save, a custom pair already on show
+ * (stored by an earlier version of the site) counts as it.
+ *
+ * On <html>: `--custom-left` / `--custom-right` and CUSTOM_PAIR_CLASS while
+ * there is one, for the custom button's picture. The head's inline script sets
+ * them from storage before the body paints ($lib/stores/colorMode), the root
+ * layout keeps them in step after.
+ */
+export const CUSTOM_COLORS_STORAGE_KEY = 'juleflet:custom-colors';
+export const CUSTOM_PAIR_CLASS = 'paper-has-custom';
+
+let customColors: HeartColors | null | undefined;
+const customSubscribers = new Set<(colors: HeartColors | null) => void>();
+
+function parsePair(text: string | null): HeartColors | null {
+  if (!text) return null;
+  try {
+    const parsed = JSON.parse(text);
+    if (parsed && typeof parsed.left === 'string' && typeof parsed.right === 'string' && parsed.left && parsed.right) {
+      return { left: parsed.left, right: parsed.right };
+    }
+  } catch {
+    // Ignore an unreadable pair.
+  }
+  return null;
+}
+
+/** The visitor's own pair, or null before they have made one. */
+export function getCustomColors(): HeartColors | null {
+  if (!browser) return null;
+  if (customColors === undefined) {
+    customColors = parsePair(readStorage(CUSTOM_COLORS_STORAGE_KEY));
+    if (!customColors) {
+      const shown = getColors();
+      if (paperKind(shown) === 'custom') customColors = shown;
+    }
+  }
+  return customColors ? { ...customColors } : null;
+}
+
+export function setCustomColors(colors: HeartColors) {
+  customColors = { left: colors.left, right: colors.right };
+  // Blocked or full: kept for this page view only.
+  if (browser) writeStorage(CUSTOM_COLORS_STORAGE_KEY, JSON.stringify(customColors));
+  customSubscribers.forEach((fn) => fn({ ...customColors! }));
+}
+
+export function subscribeCustomColors(fn: (colors: HeartColors | null) => void) {
+  customSubscribers.add(fn);
+  return () => customSubscribers.delete(fn);
+}

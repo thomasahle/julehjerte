@@ -531,7 +531,7 @@ export type Font = {
 export function generateCheckedText(
 	text: string,
 	font: Font,
-	air = false,
+	air: boolean | number = false,
 	frame?: Frame,
 	fittedCells = false,
 	letterScale = 1
@@ -552,16 +552,22 @@ export function generateCheckedText(
 	// Keep the font's baseline, including accents and descenders.
 	const cy =
 		(Math.min(...all.map((p) => p[1])) + Math.max(...all.map((p) => p[1]))) / 2;
+	// The room around each letter, as a fraction of its height (see `roomOf`
+	// in textGrid.ts): these cells keep a little less than the text grid's
+	// cells, 0.16 for the woven frame's 0.22, the same from the airy frame's
+	// 0.5 on.
+	const room = typeof air === 'number' ? air : air ? .5 : .22;
+	const pad = room >= .22 ? .16 + (room - .22) * (.34 / .28) : room * .16 / .22;
 	// Square cells, as wide as the widest letter needs, keep every check of
 	// the weave around the letters square. Cells fitted to each letter are the
 	// fallback when square ones leave too little paper.
 	const fitted = letters.map(({ glyph }) => {
 		if (!glyph.contours.length) return Math.max(glyph.advance, height * 0.35);
 		const xs = glyph.contours.flat().map((p) => p[0]);
-		return Math.max(...xs) - Math.min(...xs) + height * (air ? 0.5 : 0.16);
+		return Math.max(...xs) - Math.min(...xs) + height * pad;
 	});
-	const cellHeight = fittedCells ? height * (air ? 1.5 : 1.16)
-		: Math.max(height * (air ? 1.5 : 1.16), ...fitted.filter((_, i) => letters[i].glyph.contours.length));
+	const cellHeight = fittedCells ? height * (1 + pad)
+		: Math.max(height * (1 + pad), ...fitted.filter((_, i) => letters[i].glyph.contours.length));
 	const widths = fittedCells ? fitted : letters.map(() => cellHeight);
 	const span = widths.reduce((a, b) => a + b, 0);
 	const offset = Math.max(

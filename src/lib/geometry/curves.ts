@@ -84,9 +84,10 @@ function sampleBezier(segment: CubicBezierSegment, steps = 50): Point[] {
 }
 
 /**
- * Find intersections between two Bézier curves
+ * Find intersections between two Bézier curves. `first`: stop at the first point found, all a caller
+ * asking whether they cross at all needs.
  */
-export function intersectBezierCurves(seg1: CubicBezierSegment, seg2: CubicBezierSegment): Point[] {
+export function intersectBezierCurves(seg1: CubicBezierSegment, seg2: CubicBezierSegment, first = false): Point[] {
   // Approximate intersections by polyline sampling.
   const a = isLinearBezier(seg1) ? [seg1.p0, seg1.p3] : sampleBezier(seg1, 80);
   const b = isLinearBezier(seg2) ? [seg2.p0, seg2.p3] : sampleBezier(seg2, 80);
@@ -106,7 +107,10 @@ export function intersectBezierCurves(seg1: CubicBezierSegment, seg2: CubicBezie
   for (let i = 0; i < a.length - 1; i++) {
     for (let j = 0; j < b.length - 1; j++) {
       const p = segIntersect(a[i]!, a[i + 1]!, b[j]!, b[j + 1]!);
-      if (p) points.push(p);
+      if (p) {
+        points.push(p);
+        if (first) return points;
+      }
     }
   }
   return points;
