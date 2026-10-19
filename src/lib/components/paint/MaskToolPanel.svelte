@@ -213,12 +213,7 @@
 							aria-label={tr('paintsWithXor')}
 							title={tr('paintsWithXor')}
 							class="xor-swatch"
-						>
-							<svg width="22" height="22" viewBox="0 0 2 2" aria-hidden="true">
-								<path fill="var(--white)" d="M0 0h2v2H0z" />
-								<path fill="var(--red)" d="M0 0h1v1H0zM1 1h1v1H1z" />
-							</svg>
-						</ToggleGroupItem>
+						/>
 					</ToggleGroup>
 				</div>
 			</div>
@@ -386,7 +381,12 @@
 	}
 
 	.swatches :global(.xor-swatch) {
-		background: var(--cream2);
+		background: conic-gradient(
+			var(--white) 0% 25%,
+			var(--red) 25% 50%,
+			var(--white) 50% 75%,
+			var(--red) 75% 100%
+		);
 	}
 
 	.swatches :global([data-slot='toggle-group']) {
