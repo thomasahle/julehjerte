@@ -9,13 +9,13 @@
     },
     {
       "path": "scripts/inverse/learning/probe-displaced-finalist.mjs",
-      "sha256": "2b994453b9a33c034675e983421fbf957f2e7f7ceccfd9f76289dbf3a4fce792"
+      "sha256": "8bee203c50621a96756a070ddf9fb109cdc0bf88432088ac1c5b9e1c400a18b7"
     }
   ],
   "cohort": "All 64 rows of the completed palette pair experiment: 32 previously inspected development photographs, two targets, 25 crops and seven unresolved per method.",
   "policy": "Keep the existing shortlist. Only if its grids all miss source colours and have error above the normal acceptance limit, and the best coarse grid exceeds twice that limit, refine the first discarded seed from the original top three. At most one extra 150-step fit. No per-case choice and no new cut counts.",
   "checks": [
-    "Reproduce every saved coarse and fine score exactly with fixed work and no clock deadlines.",
+    "Reproduce every saved coarse score and every initial shortlist fine score exactly with fixed work and no clock deadlines. Record later adaptive feature-weighted fits separately; they are outside the count-selection stage being diagnosed.",
     "Record colour and enclosure retention separately. A passing grid is not a valid template.",
     "Retain every unresolved input and every unhelpful extra fit.",
     "If screening finds a useful candidate, test fresh full solves with the unchanged ten-second budget, then independent exports and editable geometry before any production claim."
@@ -28,5 +28,25 @@
     "newModelWeights": 0,
     "maxNewArtifactMiB": 10
   },
-  "scope": "Tests a general scheduling rule motivated by the already inspected nativity failure. This is development selection, not a held-out model benchmark. Production code unchanged."
+  "scope": "Tests a general scheduling rule motivated by the already inspected nativity failure. This is development selection, not a held-out model benchmark. Production code unchanged.",
+  "protocolAmendment": {
+    "reason": "The first screen stopped on the first partially observed crop (159790/160000 pixels). No policy outcome was inferred for omitted rows.",
+    "previousImplementation": {
+      "path": "scripts/inverse/learning/probe-displaced-finalist.mjs",
+      "sha256": "2b994453b9a33c034675e983421fbf957f2e7f7ceccfd9f76289dbf3a4fce792"
+    },
+    "failedRunLog": {
+      "path": "tmp/heart-learning/displaced-finalist-probe-v1.log",
+      "sha256": "4e002f80812348b22afc6becffb05dbc39e4f55364084bc749d71abb99228f3d"
+    },
+    "change": "Replay coverage-weighted initialization and fine fits exactly too. The extra-finalist rule is restricted to the existing unweighted colour-priority branch; partially observed cases retain their existing path. This makes that original production guard explicit, without changing the proposed unweighted policy."
+  },
+  "adaptiveFitClarification": {
+    "reason": "The second run exposed later feature-weighted fits sharing the fine-stage label with initial shortlist fits. These use different seeds/objectives and must not be matched to the initial shortlist.",
+    "failedRun": {
+      "path": "tmp/heart-learning/displaced-finalist-probe-v2.json",
+      "sha256": "a9b71424dd19d679e614b3c36b25fdf1a90a747df032e5dced4f8333f5ea0a08"
+    },
+    "change": "Assert the full ordered initial shortlist prefix and every score exactly. Preserve counts and scores of later adaptive fits as explicitly not replayed. No policy change."
+  }
 }
