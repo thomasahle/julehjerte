@@ -1,0 +1,41 @@
+{
+  "schema": "u2netp-material-palette-pipeline-plan-1",
+  "status": "predeclared",
+  "inputs": {
+    "path": "tmp/heart-learning/u2netp-material-palette-input-v1/manifest.json",
+    "sha256": "0fabe887124c1b522151fcfdd5935fa114acee62c0d847dbbc7d8ccfc306806e"
+  },
+  "crops": {
+    "path": "tmp/heart-learning/u2netp-material-palette-input-v1/crops/report.json",
+    "sha256": "ef4bdccd68f617dd66591d33cd12b09b8ae8e064a98b1959e530c8ae8f89e154"
+  },
+  "calibration": {
+    "path": "tmp/heart-learning/u2netp-material-calibration-v1/report.json",
+    "sha256": "a6344186de6fb7ef62f9a419a7124ca04a144ac05a30aa2522c79d383f5316d0"
+  },
+  "methods": [
+    "learned",
+    "rgb"
+  ],
+  "protocol": {
+    "photos": 32,
+    "fixedCrops": 25,
+    "unresolvedCrops": 7,
+    "target": "Production RGB rectification at the same source-size-limited resolution, then declared illumination-aware palette mixture. At failed calibration retain the frozen neural material field; none failed in this cohort.",
+    "secondsPerFit": 10,
+    "order": "Rotate methods by photo index. One serial nice-15 worker.",
+    "fitter": "Current unchanged production fitter and all geometry/paper constraints; fresh grids, no reference templates.",
+    "validation": "Independent exported render, image and feature checks, then editable conversion and paper/geometry checks. Review every result including failures. Low disagreement with an erroneous mask is not motif recovery."
+  },
+  "historicalContext": {
+    "path": "tmp/heart-learning/u2netp-continuous-weighted-pipeline-v1/report.json",
+    "sha256": "3b253389e6fe69e78f513dd2cf2c417051fcbdfc611f9c004b7be1fa4a789389"
+  },
+  "scope": "Compare only paper palette selection with the same fixed NN-assisted crop cohort. Do not claim fresh crop improvements or attribute timing differences from historical fits to the material head.",
+  "resources": {
+    "workers": 1,
+    "newPhotoCopies": 0,
+    "maxArtifactMiB": 100,
+    "minimumFreeGiB": 10
+  }
+}
