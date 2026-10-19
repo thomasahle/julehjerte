@@ -1,0 +1,49 @@
+{
+  "schema": "u2netp-material-fixed-crop-plan-1",
+  "date": "2026-10-20",
+  "status": "predeclared",
+  "inputs": [
+    {
+      "path": "tmp/heart-learning/u2netp-material-relative-probe-v2/report.json",
+      "sha256": "a20bc494cd8c04fe709f431c7dfd24b165dd2aa37ff8bb3124fad190bf1a2d7c"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-continuous-weighted-pipeline-v1/report.json",
+      "sha256": "3b253389e6fe69e78f513dd2cf2c417051fcbdfc611f9c004b7be1fa4a789389"
+    },
+    {
+      "path": "scripts/inverse/learning/fixed-material-input.mjs",
+      "sha256": "1e2f5604d5b959543f447a0789d0e252b4ba9b32f5b71ad92a23b54da38e0b80"
+    },
+    {
+      "path": "scripts/inverse/learning/replay-material-pair.mjs",
+      "sha256": "c756e5d3b24fe9cd889298507c411e73cbbc2e7a05e5f20b8923ce26827534f6"
+    },
+    {
+      "path": "scripts/inverse/learning/material-target.mjs",
+      "sha256": "11c11af66637afdd24a5e3db8993e435546c5a4a7e299f92d100cbcdf33b5fcd"
+    }
+  ],
+  "cohort": "All 32 photos from the native identity evaluation. Keep all 25 selected fallback crops and all 7 unresolved crops unchanged.",
+  "candidate": "Final relative-colour head from the paired 120-update training experiment; no per-photo alternative or tuned threshold.",
+  "comparison": "Existing RGB targets/exports at exactly the same fallback crops; retained as historical controls, not fresh paired timing results.",
+  "protocol": {
+    "materialThreshold": 0.5,
+    "maskResolution": 400,
+    "secondsPerFit": 10,
+    "trials": 0,
+    "modelResolution": 320,
+    "workers": 1,
+    "fixedCropMethod": "fallback",
+    "maskPreprocessing": "No speck removal or hole filling; preserve only photographed-pixel observation mask."
+  },
+  "checks": [
+    "Input hashes, dimensions and decoded RGB exact",
+    "All crop coordinates and unresolved outcomes fixed",
+    "Independent exported-curve renderer",
+    "Editable SVG conversion, geometry and nominal paper checks",
+    "Review every target against the rectified photo and every exported weave; do not equate self-target agreement with original design fidelity"
+  ],
+  "productionEnabled": false,
+  "browserRuntimeTested": false
+}

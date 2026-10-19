@@ -56,7 +56,7 @@ def main():
                             'page': len(pages)+1, 'row': index+1})
         filename = f'fits-{len(pages)+1}.png'; panel.save(args.output/filename)
         pages.append({'path': filename, 'sha256': sha(args.output/filename)})
-    unresolved = [{'id': r['id'], 'method': r['method'], 'status': r['status'], 'selection': r['selection']}
+    unresolved = [{'id': r['id'], 'method': r['method'], 'status': r['status'], 'selection': r.get('selection')}
                   for r in report['rows'] if not r.get('independentImage')]
     summary = {'schema': 'photo-fallback-gallery-1', 'reportSha256': sha(args.run/'report.json'), 'allAttempts': args.all_attempts,
                'distinctAttempts': records, 'distinctExports': [r for r in records if r['imageError'] is not None],
