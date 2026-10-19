@@ -28,6 +28,7 @@ def main():
     parser.add_argument('--training', type=Path, required=True)
     parser.add_argument('--control', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--reuse', type=Path, help='Hardlink matching fields after fresh inference; retain mismatches.')
     args = parser.parse_args()
     report_bytes = (args.training/'report.json').read_bytes(); training = json.loads(report_bytes)
     if training['schema'] != 'u2netp-material-training-1' or training['status'] != 'complete' or not training['frozenBodyExact']:
@@ -42,6 +43,11 @@ def main():
         raise ValueError('Changed reference cohort')
     if control['fieldOrigin']['checkpointSha256'] != plan['checkpoint']['sha256']:
         raise ValueError('Reference body checkpoint differs')
+    reuse = None
+    if args.reuse:
+        reuse_bytes = (args.reuse/'report.json').read_bytes(); reuse = json.loads(reuse_bytes)
+        if reuse['status'] != 'complete' or reuse['resolution'] != 320 or [r['id'] for r in reuse['rows']] != [r['id'] for r in selected['photos']]:
+            raise ValueError('Changed material-reference cohort')
     if shutil.disk_usage('.').free < 10*1024**3: raise ValueError('Insufficient free disk')
     torch.set_num_threads(1); torch.set_num_interop_threads(1)
     architecture = module(root/'model/u2net.py', 'u2netp_identity_probe_model')
@@ -62,6 +68,8 @@ def main():
               'selection': plan['evaluation'], 'reference': {'path': str(args.control/'manifest.json'), 'sha256': digest(control_bytes)},
               'implementationSha256': digest(Path(__file__).read_bytes()), 'rows': [], 'gallery': [],
               'scope': 'Native development inference on the same inspected source-separated cohort. Original photos and frozen body are unchanged. Conditional paper identity has no complete held-out ground truth; gallery inspection and full pipeline checks are still required. Not a browser release.'}
+    if reuse:
+        report['materialReference'] = {'path': str(args.reuse/'report.json'), 'sha256': digest(reuse_bytes)}
     panels = []
     def save(): (args.output/'report.json').write_text(json.dumps(report, indent=2)+'\n')
     with torch.no_grad():
@@ -79,16 +87,27 @@ def main():
             if not reference_file.is_relative_to(args.control.resolve()) or digest(reference_file.read_bytes()) != asset['sha256']:
                 raise ValueError('Changed reference body field')
             reference = np.fromfile(reference_file, dtype='<f4').reshape(320, 320)
+            previous_material = material_reference = None
+            if reuse:
+                previous = reuse['rows'][index]
+                if previous['photoSha256'] != item['imageSha256'] or previous['inputSha256'] != digest(tensor.numpy().astype('<f4').tobytes()):
+                    raise ValueError('Material reference has a different image input')
+                asset = previous['assets']['material']; material_reference = (args.reuse/asset['path']).resolve()
+                if not material_reference.is_relative_to(args.reuse.resolve()) or digest(material_reference.read_bytes()) != asset['sha256']:
+                    raise ValueError('Changed material-reference field')
+                previous_material = np.fromfile(material_reference, dtype='<f4').reshape(320, 320)
             assets = {}
             for name, values in [('body', body), ('material', material)]:
                 target = args.output/(item['id']+'-'+name+'.f32')
                 if name == 'body' and np.array_equal(values, reference): os.link(reference_file, target)
+                elif name == 'material' and previous_material is not None and np.array_equal(values, previous_material): os.link(material_reference, target)
                 else: target.write_bytes(values.astype('<f4').tobytes())
                 assets[name] = {'path': target.name, 'sha256': digest(target.read_bytes())}
             report['rows'].append({'id': item['id'], 'file': item['file'], 'photoSha256': item['imageSha256'],
                 'dimensions': size, 'decodedRGBSha256': decoded, 'inputSha256': digest(tensor.numpy().astype('<f4').tobytes()),
                 'window': [0, 0, *size], 'assets': assets, 'inferenceSeconds': seconds, 'parentBodyExact': True,
                 'referenceBodyMaximumDifference': float(np.abs(body-reference).max()),
+                'referenceMaterialMaximumDifference': float(np.abs(material-previous_material).max()) if previous_material is not None else None,
                 'materialRange': [float(material.min()), float(material.max())]})
             with Image.open(item['file']) as photo:
                 rgb = ImageOps.exif_transpose(photo).convert('RGB').resize((320, 320), Image.Resampling.BILINEAR)
