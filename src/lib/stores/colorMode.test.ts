@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { IDENTITY, PALETTE, paletteVariables } from '$lib/utils/palette';
 
 // The store only touches storage and the document in the browser.
 vi.mock('$app/environment', () => ({ browser: true }));
@@ -37,50 +38,77 @@ async function freshStore() {
 }
 
 const root = () => document.documentElement;
+const KEY = 'juleflet:colourful';
+
+/** The --pal-* variables on <html>, by name. */
+function rootVariables(): Record<string, string> {
+	const out: Record<string, string> = {};
+	for (let i = 0; i < root().style.length; i++) {
+		const name = root().style.item(i);
+		if (name.startsWith('--pal-')) out[name] = root().style.getPropertyValue(name).trim();
+	}
+	return out;
+}
 
 beforeEach(() => {
 	installStorage(memoryStorage());
 	root().className = '';
+	root().removeAttribute('style');
 });
 
 describe('colourful mode store', () => {
-	it('is off until it has been turned on', async () => {
+	it('is off until the button is pressed', async () => {
 		const store = await freshStore();
 		expect(store.getColorMode()).toBe(false);
+		expect(store.getPermutation()).toBeNull();
 	});
 
-	it('remembers being on, under juleflet:', async () => {
+	it('deals a new shuffle on every press, and remembers the last, under juleflet:', async () => {
 		const store = await freshStore();
-		store.setColorMode(true);
-		expect(store.COLOR_MODE_STORAGE_KEY.startsWith('juleflet:')).toBe(true);
-		expect(window.localStorage.getItem(store.COLOR_MODE_STORAGE_KEY)).toBe('1');
+		expect(store.COLOR_MODE_STORAGE_KEY).toBe(KEY);
+		const first = store.shuffleColorMode();
+		const second = store.shuffleColorMode();
+		expect(second).not.toEqual(first);
+		expect(window.localStorage.getItem(KEY)).toBe(second.join(','));
 		expect(root().classList.contains('colorful')).toBe(true);
+		expect(rootVariables()).toEqual(paletteVariables(second));
 
 		const reloaded = await freshStore();
 		expect(reloaded.getColorMode()).toBe(true);
+		expect(reloaded.getPermutation()).toEqual(second);
 
-		reloaded.setColorMode(false);
-		expect(window.localStorage.getItem(store.COLOR_MODE_STORAGE_KEY)).toBeNull();
+		reloaded.turnOffColorMode();
+		expect(window.localStorage.getItem(KEY)).toBeNull();
 		expect(root().classList.contains('colorful')).toBe(false);
 		expect((await freshStore()).getColorMode()).toBe(false);
+	});
+
+	it('reads the first version\'s "1" as the unshuffled palette, and junk as off', async () => {
+		const store = await freshStore();
+		expect(store.parseStoredPermutation('1')).toEqual(IDENTITY);
+		expect(store.parseStoredPermutation(null)).toBeNull();
+		expect(store.parseStoredPermutation('')).toBeNull();
+		expect(store.parseStoredPermutation('0,1,2')).toBeNull();
+		expect(store.parseStoredPermutation([...IDENTITY.slice(1), 1].join(','))).toBeNull();
+		expect(store.parseStoredPermutation([...IDENTITY].reverse().join(','))).toEqual([...IDENTITY].reverse());
 	});
 
 	it('tells its subscribers, until they leave', async () => {
 		const store = await freshStore();
 		const seen: boolean[] = [];
 		const leave = store.subscribeColorMode((on) => seen.push(on));
-		store.setColorMode(true);
-		store.setColorMode(false);
+		store.shuffleColorMode();
+		store.turnOffColorMode();
 		leave();
-		store.setColorMode(true);
+		store.shuffleColorMode();
 		expect(seen).toEqual([true, false]);
 	});
 
-	it('still switches, for the page view, with storage blocked', async () => {
+	it('still shuffles, for the page view, with storage blocked', async () => {
 		blockLocalStorage();
 		const store = await freshStore();
 		expect(store.getColorMode()).toBe(false);
-		expect(() => store.setColorMode(true)).not.toThrow();
+		expect(() => store.shuffleColorMode()).not.toThrow();
 		expect(store.getColorMode()).toBe(true);
 		expect(root().classList.contains('colorful')).toBe(true);
 	});
@@ -93,18 +121,36 @@ describe("the head's inline script", () => {
 		return store;
 	};
 
-	it('puts the class on <html> when the mode was left on', async () => {
-		window.localStorage.setItem('juleflet:colourful', '1');
-		await run();
-		expect(root().classList.contains('colorful')).toBe(true);
+	it('reproduces the stored shuffle before the body paints', async () => {
+		const store = await freshStore();
+		const permutations = [store.shuffleColorMode(), [...IDENTITY].reverse(), [...IDENTITY]];
+		for (const p of permutations) {
+			root().className = '';
+			root().removeAttribute('style');
+			window.localStorage.setItem(KEY, p.join(','));
+			await run();
+			expect(root().classList.contains('colorful')).toBe(true);
+			expect(rootVariables()).toEqual(paletteVariables(p));
+		}
 	});
 
-	it('leaves it off otherwise', async () => {
+	it('reads "1" as the unshuffled palette', async () => {
+		window.localStorage.setItem(KEY, '1');
 		await run();
-		expect(root().classList.contains('colorful')).toBe(false);
-		window.localStorage.setItem('juleflet:colourful', 'yes');
-		await run();
-		expect(root().classList.contains('colorful')).toBe(false);
+		expect(root().classList.contains('colorful')).toBe(true);
+		expect(rootVariables()).toEqual(paletteVariables(IDENTITY));
+	});
+
+	it('leaves the mode off with nothing, or nothing it can read, stored', async () => {
+		for (const stored of [null, '', 'yes', '0,1,2', [...IDENTITY.slice(1), 1].join(','), [...IDENTITY.slice(1), 99].join(',')]) {
+			root().className = '';
+			root().removeAttribute('style');
+			if (stored === null) window.localStorage.removeItem(KEY);
+			else window.localStorage.setItem(KEY, stored);
+			await run();
+			expect(root().classList.contains('colorful'), String(stored)).toBe(false);
+			expect(rootVariables(), String(stored)).toEqual({});
+		}
 	});
 
 	it('does not throw with storage blocked', async () => {
@@ -113,11 +159,13 @@ describe("the head's inline script", () => {
 		expect(root().classList.contains('colorful')).toBe(false);
 	});
 
-	it('agrees with the store on the key and the class', async () => {
+	it('carries the whole palette', async () => {
 		const store = await freshStore();
-		const script = store.colorModeHeadScript();
-		expect(script).toBe(`<script>${store.colorModeHeadSource()}</script>`);
-		expect(script).toContain(JSON.stringify(store.COLOR_MODE_STORAGE_KEY));
-		expect(script).toContain(JSON.stringify(store.COLOR_MODE_CLASS));
+		const source = store.colorModeHeadSource();
+		for (const pair of PALETTE) {
+			expect(source).toContain(pair.left);
+			expect(source).toContain(pair.right);
+		}
+		expect(store.colorModeHeadScript()).toBe(`<script>${source}</script>`);
 	});
 });

@@ -2,8 +2,9 @@
  * The colourful mode's paper pairs, and which heart gets which —
  * docs/redesign/DESIGN.md §3 "Nav", "As built: colours in the header".
  *
- * With the header's "Farverig" toggle on, every heart that follows the site's
- * paper pair is woven from a pair of its own instead. The pairs are a
+ * With the header's "Farverig" button pressed, every heart that follows the
+ * site's paper pair is woven from a pair of its own instead, and each press
+ * deals the pairs out anew. The pairs are a
  * Scandinavian Christmas set: deep, slightly greyed reds, greens and blues
  * against creams and pale tints, no neon. Each one keeps the site's convention
  * of the lighter paper on the left and the darker one on the right, so the
@@ -17,16 +18,20 @@
  *     its edge would otherwise be its drop shadow alone. The classic red and
  *     white is one of them, kept white because it is the default pair.
  *
- * Which heart gets which: a gallery heart takes the pair at its position in
- * the gallery order (all categories, as hearts.json lists them), cycling
- * through the palette. Two gallery hearts then share a pair only when they
- * are a multiple of PALETTE.length apart in that order, and the gallery grid
- * is at most six columns wide, so a card's neighbours left, right, above,
- * below and diagonally (1, c - 1, c and c + 1 away) never repeat its pair. A
- * hash of the id would leave that to chance: with twelve pairs, about one card
- * in six would match its right-hand neighbour. A heart outside the gallery (a
+ * Which heart gets which, in two steps. First a heart gets a *slot*, fixed in
+ * its markup: a gallery heart the slot at its position in the gallery order
+ * (all categories, as hearts.json lists them), cycling through the twelve. Two
+ * gallery hearts then share a slot only when they are a multiple of
+ * PALETTE.length apart in that order, and the gallery grid is at most six
+ * columns wide, so a card's neighbours left, right, above, below and
+ * diagonally (1, c - 1, c and c + 1 away) never share its slot. A hash of the
+ * id would leave that to chance: with twelve slots, about one card in six
+ * would match its right-hand neighbour. A heart outside the gallery (a
  * visitor's own, a shared one) has no position, so it takes a stable hash of
- * its id instead: the same heart keeps its colours on every page and reload.
+ * its id instead. Then each press of the button draws a random permutation
+ * that says which pair each slot shows. It is one-to-one, so neighbours still
+ * never share a pair, and the hearts all change colour without any of their
+ * markup changing: the permutation is a set of variables on <html>.
  */
 import { ALL_HEART_IDS } from '$lib/data/categories';
 import { DEFAULT_COLORS_HEX } from '$lib/stores/colors';
@@ -104,27 +109,73 @@ export function pairIndex(heartId: string): number {
 
 /**
  * What a heart's element carries so the mode can recolour it with CSS alone:
- * the pair's index (`data-pair`), whether it wants the outline
- * (`data-pair-edge`) and the two papers as custom properties. They are written
+ * its slot (`data-pair`) and the slot's papers and outline as custom
+ * properties, which read the shuffle's `--pal-<slot>-*` variables on <html>
+ * (paletteVariables) and fall back to the unshuffled pair. They are written
  * whether the mode is on or not, into the prerendered HTML too, so turning it
- * on, or reloading with it on, needs no more than the class on <html>
- * (src/app.css, "Colourful mode").
+ * on, reshuffling, or reloading with it on needs no more than the class and
+ * the variables on <html> (src/app.css, "Colourful mode").
  */
-export function pairAttributes(heartId: string): {
-	'data-pair': string;
-	'data-pair-edge': '' | undefined;
-	style: string;
-} {
-	const index = pairIndex(heartId);
-	const pair = PALETTE[index];
-	return {
-		'data-pair': String(index),
-		'data-pair-edge': pair.edge ? '' : undefined,
-		style: pairStyle(pair)
-	};
+export function pairAttributes(heartId: string): { 'data-pair': string; style: string } {
+	const slot = pairIndex(heartId);
+	return { 'data-pair': String(slot), style: slotStyle(slot) };
 }
 
-/** The two custom properties the mode's CSS reads, as an inline style. */
-export function pairStyle(pair: HeartColors): string {
-	return `--pair-left: ${pair.left}; --pair-right: ${pair.right};`;
+/** The custom properties a heart in this slot reads, as an inline style. */
+export function slotStyle(slot: number): string {
+	const pair = PALETTE[slot];
+	return (
+		`--pair-left: var(--pal-${slot}-l, ${pair.left}); ` +
+		`--pair-right: var(--pal-${slot}-r, ${pair.right}); ` +
+		`--pair-edge: var(--pal-${slot}-o, ${pair.edge ? EDGE_COLOR : 'transparent'});`
+	);
+}
+
+/** The hairline round a heart whose light paper is nearly the page (`edge`). */
+export const EDGE_COLOR = 'rgb(28 51 41 / 0.55)';
+
+/**
+ * The colourful mode's shuffle: slot k shows PALETTE[permutation[k]]. Every
+ * reshuffle draws a new permutation; since it is one-to-one, two hearts in
+ * different slots still never share a pair, so the gallery's neighbour rule
+ * holds for any of them.
+ */
+export type Permutation = readonly number[];
+
+/** The unshuffled palette: slot k shows pair k. */
+export const IDENTITY: Permutation = PALETTE.map((_, i) => i);
+
+/** A uniformly random permutation of the palette, never `avoid` (the one on show). */
+export function randomPermutation(random: () => number = Math.random, avoid?: Permutation): number[] {
+	for (;;) {
+		const p = PALETTE.map((_, i) => i);
+		for (let i = p.length - 1; i > 0; i--) {
+			const j = Math.floor(random() * (i + 1));
+			[p[i], p[j]] = [p[j], p[i]];
+		}
+		if (!avoid || p.some((v, i) => v !== avoid[i])) return p;
+	}
+}
+
+/** Whether this is a permutation of the palette's indices. */
+export function isPermutation(p: readonly unknown[]): p is Permutation {
+	if (p.length !== PALETTE.length) return false;
+	const seen = new Set<number>();
+	for (const v of p) {
+		if (typeof v !== 'number' || !Number.isInteger(v) || v < 0 || v >= PALETTE.length || seen.has(v)) return false;
+		seen.add(v);
+	}
+	return true;
+}
+
+/** The `--pal-<slot>-l/-r/-o` variables a shuffle sets on <html>. */
+export function paletteVariables(permutation: Permutation): Record<string, string> {
+	const vars: Record<string, string> = {};
+	permutation.forEach((pairIndex, slot) => {
+		const pair = PALETTE[pairIndex];
+		vars[`--pal-${slot}-l`] = pair.left;
+		vars[`--pal-${slot}-r`] = pair.right;
+		vars[`--pal-${slot}-o`] = pair.edge ? EDGE_COLOR : 'transparent';
+	});
+	return vars;
 }

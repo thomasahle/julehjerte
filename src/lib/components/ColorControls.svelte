@@ -1,7 +1,8 @@
 <!--
   The site's paper colours — docs/redesign/DESIGN.md §3 "Nav", "As built:
   colours in the header": the two paper-colour swatches, the swap button and
-  the colourful-mode toggle ("Farverig" / "Colourful", $lib/stores/colorMode).
+  the colourful-mode button ("Farverig" / "Colourful", $lib/stores/colorMode),
+  a round swatch of its own woven from four of the palette's papers.
 
   PageHeader renders it twice: compact in the bar from 900px up (`bar`), and
   as a labelled row in the burger menu below that (`menu`). Only one of them
@@ -9,17 +10,20 @@
   variant. The editor's header has neither: the editor has its own colour
   controls in its right-hand panel.
 
-  While the colourful mode is on, every heart that follows the site's pair has
-  a pair of its own ($lib/utils/palette). The swatches are dimmed rather than
-  changed then: they still hold the site's pair, which is what comes back when
-  the mode goes off, and picking a colour or swapping turns it off, since that
-  is a visitor asking for one pair everywhere. The pressed look is drawn from
-  the class on <html>, which the head's inline script sets before the body
-  paints, so a reload with the mode on does not show the toggle off until
-  hydration. Without JavaScript the group is hidden: none of it works then.
+  Each press of the colourful button deals every heart that follows the site's
+  pair a new random pair ($lib/utils/palette); it never turns the mode off.
+  While the mode is on, the swatches are dimmed rather than changed: they still
+  hold the site's pair, which is what comes back when the mode goes off, and
+  picking a colour or swapping is what turns it off, since that is a visitor
+  asking for one pair everywhere. The button's "on" ring is drawn from the
+  class on <html>, which the head's inline script sets before the body paints,
+  so a reload with the mode on does not show it off until hydration.
+  `aria-pressed` says the same to a screen reader. Without JavaScript the group
+  is hidden: none of it works then.
 
-  Every control has a 44px hit area; in the bar the visible swatch is a 22px
-  circle and the swap button a 28px square inside it.
+  Every control has a 44px hit area; in the bar the visible swatches and the
+  colourful button are 22px circles and the swap button a 28px square, in the
+  menu the circles are 28px.
 -->
 <script lang="ts">
 	import { onMount } from 'svelte';
@@ -34,9 +38,10 @@
 		subscribeColors,
 		type HeartColors
 	} from '$lib/stores/colors';
-	import { getColorMode, setColorMode, subscribeColorMode } from '$lib/stores/colorMode';
+	import { getColorMode, shuffleColorMode, subscribeColorMode, turnOffColorMode } from '$lib/stores/colorMode';
 	import { trackColorMode } from '$lib/analytics';
-	import { PaletteIcon, SwapIcon } from '$lib/components/icons';
+	import { SwapIcon } from '$lib/components/icons';
+	import { PALETTE } from '$lib/utils/palette';
 	import { toHexColor } from '$lib/utils/heartColors';
 
 	interface Props {
@@ -75,17 +80,34 @@
 		};
 	});
 
-	function changeColorMode(on: boolean) {
-		if (on === getColorMode()) return;
-		setColorMode(on);
-		trackColorMode(on);
+	// The presses in this page view, for the analytics event.
+	let shuffles = 0;
+
+	function shuffle() {
+		shuffleColorMode();
+		shuffles += 1;
+		trackColorMode(true, shuffles);
 	}
 
 	/** A swatch or the swap button: one pair for every heart again. */
 	function pickPair(change: () => void) {
-		changeColorMode(false);
+		if (getColorMode()) {
+			turnOffColorMode();
+			trackColorMode(false);
+		}
 		change();
 	}
+
+	// The button's own picture: a 2×2 weave of four of the palette's papers
+	// (the classic red, the spruce, the navy and the gold), with pale gaps
+	// between the strips, so it reads as woven paper.
+	const pick = (name: string, side: 'left' | 'right') => PALETTE.find((p) => p.name === name)![side];
+	const WEAVE = [
+		{ x: 0, y: 0, fill: pick('klassisk', 'right') },
+		{ x: 12, y: 0, fill: pick('gran', 'right') },
+		{ x: 0, y: 12, fill: pick('nat', 'right') },
+		{ x: 12, y: 12, fill: pick('nat', 'left') }
+	];
 </script>
 
 <div class="colors colors-{variant}" role="group" aria-label={t('paperColors', lang)}>
@@ -135,12 +157,23 @@
 		type="button"
 		class="colorful-toggle"
 		aria-pressed={colorful}
+		aria-label={t('colorfulMode', lang)}
 		title={t('colorfulModeTitle', lang)}
-		onclick={() => changeColorMode(!colorful)}
+		onclick={shuffle}
 	>
-		<span class="toggle-pill">
-			<PaletteIcon size={16} />
-			<span class="toggle-label">{t('colorfulMode', lang)}</span>
+		<span class="dot weave">
+			<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+				<rect width="24" height="24" fill="#f6f1e4" />
+				{#each WEAVE as cell (cell.fill)}
+					<rect x={cell.x + 0.75} y={cell.y + 0.75} width="10.5" height="10.5" fill={cell.fill} />
+				{/each}
+				<!-- Over and under: each cell's strip runs on into the gap on one
+				     side, alternating, as a woven square does. -->
+				<rect x="11" y="3" width="2" height="6" fill={WEAVE[0].fill} />
+				<rect x="15" y="11" width="6" height="2" fill={WEAVE[1].fill} />
+				<rect x="3" y="11" width="6" height="2" fill={WEAVE[2].fill} />
+				<rect x="11" y="15" width="2" height="6" fill={WEAVE[3].fill} />
+			</svg>
 		</span>
 	</button>
 </div>
@@ -212,41 +245,26 @@
 		color: var(--red);
 	}
 
-	/* The header's pill (app.css .pill), with the palette in front. */
-	.toggle-pill {
-		display: inline-flex;
-		align-items: center;
-		gap: 6px;
-		padding: 6px 12px;
-		border: 1.5px solid var(--line);
-		border-radius: 999px;
-		background: var(--white);
-		color: var(--green);
-		font-family: inherit;
-		font-size: 13px;
-		font-weight: 600;
-		line-height: 1;
-		white-space: nowrap;
+	.weave svg {
+		display: block;
+		width: 100%;
+		height: 100%;
 	}
 
-	.colorful-toggle:hover .toggle-pill {
-		background: var(--cream2);
+	.colorful-toggle:hover .weave {
+		border-color: var(--sage-dark);
 	}
 
-	:global(html.colorful) .toggle-pill {
-		border-color: var(--green);
-		background: var(--green);
-		color: var(--white);
-	}
-
-	:global(html.colorful) .colorful-toggle:hover .toggle-pill {
-		border-color: var(--deep);
-		background: var(--deep);
+	/* On: a ring round the button, from the class on <html> so it is right on
+	   the first frame. Pressing again reshuffles; it stays on. */
+	:global(html.colorful) .weave {
+		outline: 2px solid var(--green);
+		outline-offset: 1px;
 	}
 
 	/* Dimmed, not hidden, while each heart has its own pair: they still hold
 	   the site's pair, and picking from them turns the mode off. */
-	:global(html.colorful) .dot,
+	:global(html.colorful) .swatch .dot,
 	:global(html.colorful) .swap-box {
 		opacity: 0.45;
 	}
@@ -254,24 +272,6 @@
 	:global(html.colorful) .swatch:hover .dot,
 	:global(html.colorful) .swap:hover .swap-box {
 		opacity: 1;
-	}
-
-	/* The bar is crowded between 900 and 1100px (wordmark, three links, EN and
-	   GitHub): the toggle keeps its palette and says its name in its title and
-	   to a screen reader only. */
-	@media (max-width: 1099px) {
-		.colors-bar .toggle-label {
-			position: absolute;
-			width: 1px;
-			height: 1px;
-			overflow: hidden;
-			clip: rect(0 0 0 0);
-			white-space: nowrap;
-		}
-
-		.colors-bar .toggle-pill {
-			padding: 6px 8px;
-		}
 	}
 
 	/* The menu's row: the label at the left, the controls at the right, a little
@@ -286,11 +286,6 @@
 	.colors-menu .dot {
 		width: 28px;
 		height: 28px;
-	}
-
-	.colors-menu .toggle-pill {
-		padding: 8px 14px;
-		font-size: 14px;
 	}
 
 	/* The mode and the swatches need the scripts, so without them there is none. */

@@ -145,18 +145,18 @@ function hang(slot, card, prefix) {
 	var cardRibbon = card.querySelector('.ribbon');
 	if (ribbon && cardRibbon) ribbon.style.background = cardRibbon.style.background;
 
-	// The heart's colourful-mode pair travels with it ($lib/utils/palette):
+	// The heart's colourful-mode slot travels with it ($lib/utils/palette):
 	// the slot's block still carries the prerendered stand-in's.
 	var hang = slot.querySelector('.hang');
 	var cardHang = card.querySelector('.hang');
 	if (hang && cardHang) {
-		var names = ['data-pair', 'data-pair-edge'];
+		var names = ['data-pair'];
 		for (var n = 0; n < names.length; n++) {
 			var value = cardHang.getAttribute(names[n]);
 			if (value === null) hang.removeAttribute(names[n]);
 			else hang.setAttribute(names[n], value);
 		}
-		var props = ['--pair-left', '--pair-right'];
+		var props = ['--pair-left', '--pair-right', '--pair-edge'];
 		for (var q = 0; q < props.length; q++) {
 			var v = cardHang.style.getPropertyValue(props[q]);
 			if (v) hang.style.setProperty(props[q], v);

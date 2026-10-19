@@ -77,7 +77,7 @@ describe('PageHeader', () => {
 		expect(target.querySelector('.nav-actions .colors-bar')).not.toBeNull();
 		expect(target.querySelector('.nav-menu .colors-menu')).not.toBeNull();
 		const toggles = target.querySelectorAll('button[aria-pressed]');
-		expect([...toggles].map((b) => b.textContent?.trim())).toEqual(['Farverig', 'Farverig']);
+		expect([...toggles].map((b) => b.getAttribute('aria-label'))).toEqual(['Farverig', 'Farverig']);
 		// Two sets of inputs, so the ids must differ.
 		const ids = [...target.querySelectorAll('input[type="color"]')].map((i) => i.id);
 		expect(new Set(ids).size).toBe(4);

@@ -31,9 +31,10 @@
   instead of being drawn from `design` — see $lib/front/galleryHearts.
 
   A heart that follows the site's pair also carries its pair for the colourful
-  mode ($lib/utils/palette, picked by `heartId`): `data-pair` and two custom
-  properties on .hang, always, so the mode is a class on <html> and a reload
-  with it on paints the right colours first (src/app.css, "Colourful mode").
+  mode ($lib/utils/palette, picked by `heartId`): its slot, `data-pair`, and
+  the custom properties that read the shuffle on <html>, always, so the mode
+  is a class and variables on <html> and a reload with it on paints the right
+  colours first (src/app.css, "Colourful mode").
 
   A heart drawn from `design` needs PaperHeartSVG and the weave renderer under
   it. It is not imported here, because the front page hangs every heart as
@@ -167,7 +168,6 @@
 <div
 	class="hang {className ?? ''}"
 	data-pair={pair?.['data-pair']}
-	data-pair-edge={pair?.['data-pair-edge']}
 	style="width: {size}px; animation-delay: {swayAnimationDelay(delay)};{pair ? ` ${pair.style}` : ''}"
 >
 	<div

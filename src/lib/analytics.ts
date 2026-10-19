@@ -142,11 +142,13 @@ export function trackHeartEdit(heartId: string, heartName: string) {
 }
 
 /**
- * Track the header's colourful mode ("Farverig") being turned on or off — by
- * its toggle, or off by picking a paper colour while it is on.
+ * Track the header's colourful mode ("Farverig"): `{ on: true, shuffle: n }`
+ * for the n-th press of its button in this page view (each press deals the
+ * hearts new colours), `{ on: false }` when picking a paper colour or swapping
+ * turns it off.
  */
-export function trackColorMode(on: boolean) {
-  trackEvent('color_mode', { on });
+export function trackColorMode(on: boolean, shuffle?: number) {
+  trackEvent('color_mode', shuffle === undefined ? { on } : { on, shuffle });
 }
 
 /**

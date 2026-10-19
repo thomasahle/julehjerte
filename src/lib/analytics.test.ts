@@ -80,13 +80,15 @@ describe('trackColorMode', () => {
 		delete (window as { gtag?: unknown }).gtag;
 	});
 
-	it('sends color_mode with whether the mode is now on', () => {
+	it('sends color_mode with the press count, or off', () => {
 		const gtag = vi.fn();
 		window.gtag = gtag;
-		trackColorMode(true);
+		trackColorMode(true, 1);
+		trackColorMode(true, 2);
 		trackColorMode(false);
 		expect(gtag.mock.calls).toEqual([
-			['event', 'color_mode', { on: true }],
+			['event', 'color_mode', { on: true, shuffle: 1 }],
+			['event', 'color_mode', { on: true, shuffle: 2 }],
 			['event', 'color_mode', { on: false }]
 		]);
 	});

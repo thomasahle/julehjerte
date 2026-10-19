@@ -9,7 +9,12 @@ import {
 	PAGE_CONTRAST_MIN,
 	PAIR_CONTRAST_MIN,
 	PALETTE,
+	EDGE_COLOR,
+	IDENTITY,
 	contrastRatio,
+	isPermutation,
+	paletteVariables,
+	randomPermutation,
 	luminance,
 	pairAttributes,
 	pairIndex
@@ -87,7 +92,7 @@ describe('which heart gets which pair', () => {
 		}
 	});
 
-	it('gives the first gallery heart the classic pair', () => {
+	it('puts the first gallery heart in slot 0', () => {
 		expect(pairIndex(CATEGORIES[0].hearts[0])).toBe(0);
 	});
 
@@ -107,7 +112,7 @@ describe('which heart gets which pair', () => {
 
 	// The gallery's grid is `repeat(auto-fill, minmax(204px, 1fr))` in a column
 	// at most 1280px wide: two (phones) to six columns.
-	it.each([2, 3, 4, 5, 6])('never repeats a pair next to a card, %i columns', (columns) => {
+	it.each([2, 3, 4, 5, 6])("never puts a card in a neighbour's slot, %i columns", (columns) => {
 		for (const category of CATEGORIES) {
 			const hearts = category.hearts;
 			for (let i = 0; i < hearts.length; i++) {
@@ -130,13 +135,90 @@ describe('which heart gets which pair', () => {
 		}
 	});
 
-	it('writes the pair into the markup, with the outline flag where it applies', () => {
+	it('writes the slot into the markup, reading the shuffle with the unshuffled pair as fallback', () => {
 		const first = pairAttributes(CATEGORIES[0].hearts[0]);
 		expect(first['data-pair']).toBe('0');
-		expect(first['data-pair-edge']).toBe('');
-		expect(first.style).toBe(`--pair-left: ${PALETTE[0].left}; --pair-right: ${PALETTE[0].right};`);
+		expect(first.style).toBe(
+			`--pair-left: var(--pal-0-l, ${PALETTE[0].left}); --pair-right: var(--pal-0-r, ${PALETTE[0].right}); ` +
+				`--pair-edge: var(--pal-0-o, ${EDGE_COLOR});`
+		);
 		const second = pairAttributes(CATEGORIES[0].hearts[1]);
 		expect(second['data-pair']).toBe('1');
-		expect(second['data-pair-edge']).toBeUndefined();
+		expect(second.style).toContain('--pair-edge: var(--pal-1-o, transparent);');
+	});
+});
+
+/** A seeded generator, so a failing shuffle can be replayed. */
+function mulberry32(seed: number): () => number {
+	return () => {
+		seed = (seed + 0x6d2b79f5) | 0;
+		let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+		t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+		return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+	};
+}
+
+describe('the shuffle', () => {
+	it('is always a permutation of the palette, and never the one it avoids', () => {
+		const random = mulberry32(1);
+		let last: number[] = [...IDENTITY];
+		const seen = new Set<string>();
+		for (let i = 0; i < 500; i++) {
+			const p = randomPermutation(random, last);
+			expect(isPermutation(p)).toBe(true);
+			expect(p).not.toEqual(last);
+			seen.add(p.join(','));
+			last = p;
+		}
+		expect(seen.size).toBeGreaterThan(490);
+	});
+
+	it('moves every pair around: the classic red and white is not stuck in slot 0', () => {
+		const random = mulberry32(2);
+		const slotsOfClassic = new Set(Array.from({ length: 200 }, () => randomPermutation(random).indexOf(0)));
+		expect(slotsOfClassic.size).toBe(PALETTE.length);
+	});
+
+	it('knows a permutation when it sees one', () => {
+		expect(isPermutation([...IDENTITY])).toBe(true);
+		expect(isPermutation(IDENTITY.slice(1))).toBe(false);
+		expect(isPermutation([...IDENTITY.slice(1), 1])).toBe(false);
+		expect(isPermutation([...IDENTITY.slice(1), 12])).toBe(false);
+		expect(isPermutation([...IDENTITY.slice(1), 0.5])).toBe(false);
+	});
+
+	it('keeps the neighbour rule for any shuffle, at 2 to 6 columns', () => {
+		const random = mulberry32(3);
+		for (let round = 0; round < 50; round++) {
+			const p = randomPermutation(random);
+			const shown = (id: string) => p[pairIndex(id)];
+			for (const columns of [2, 3, 4, 5, 6]) {
+				for (const category of CATEGORIES) {
+					const hearts = category.hearts;
+					for (let i = 0; i < hearts.length; i++) {
+						for (const j of [i + 1, i + columns - 1, i + columns, i + columns + 1]) {
+							if (j >= hearts.length) continue;
+							// Same row only for the one to the right; the others are on the next row.
+							const sameRow = Math.floor(i / columns) === Math.floor(j / columns);
+							if (j === i + 1 && !sameRow) continue;
+							if (j !== i + 1 && Math.floor(j / columns) !== Math.floor(i / columns) + 1) continue;
+							expect(shown(hearts[j])).not.toBe(shown(hearts[i]));
+						}
+					}
+				}
+			}
+		}
+	});
+
+	it('sets three variables per slot, from the pair the slot shows', () => {
+		const p = [...IDENTITY].reverse();
+		const vars = paletteVariables(p);
+		expect(Object.keys(vars)).toHaveLength(PALETTE.length * 3);
+		const last = PALETTE.length - 1;
+		expect(vars['--pal-0-l']).toBe(PALETTE[last].left);
+		expect(vars['--pal-0-r']).toBe(PALETTE[last].right);
+		expect(vars[`--pal-${last}-l`]).toBe(PALETTE[0].left);
+		expect(vars[`--pal-${last}-o`]).toBe(EDGE_COLOR);
+		expect(vars['--pal-1-o']).toBe(PALETTE[last - 1].edge ? EDGE_COLOR : 'transparent');
 	});
 });

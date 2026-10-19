@@ -91,26 +91,33 @@ class, not the `hidden` attribute, because Tailwind's preflight makes `[hidden]`
 
 **As built: colours in the header.** The site's paper colours live in the header (`ColorControls.svelte`), not
 the footer: from 900px up a compact group in the right-hand actions before EN and GitHub (two 22px swatch
-circles, a 28px swap button and a "Farverig" / "Colourful" pill with lucide Palette, each inside a 44px
-target; between 900 and 1100px the pill shows only its icon, its name in the title and to screen readers);
-below 900px a labelled row "Farver" / "Colours" in the burger menu, after the nav links. The editor's header
-has none (the editor has its own colour controls in its panel). Without JavaScript the group is hidden.
+circles, a 28px swap button and the 22px colourful button, each inside a 44px target); below 900px a labelled
+row "Farver" / "Colours" in the burger menu, after the nav links, with 28px circles. The editor's header has
+none (the editor has its own colour controls in its panel). Without JavaScript the group is hidden.
 
-**As built: colourful mode.** The "Farverig" / "Colourful" toggle (`aria-pressed`; filled `--green` when on) gives every heart
-that follows the site's pair a pair of its own from
-`$lib/utils/palette`: twelve Scandinavian Christmas pairs, lighter paper left, darker right (so the ribbon is the
-strong colour), each ≥ 2.2:1 between its papers; the two whose light paper is nearly the page's `#f9f9f3`
-(classic red/white, ochre/white) get a hairline outline. Gallery hearts take the pair at their position in the
-gallery order, cycling the palette, so no card repeats a neighbour's pair at any of the grid's 2–6 columns; other
-hearts (Mine hjerter, shared) take a hash of their id. A heart with its own colours keeps them. The pair is in the
-markup of every heart (`data-pair`, `--pair-left/right` on HangingHeart's `.hang`; the heart page's thumbnail
-too), and the mode itself is only `html.colorful`, set before first paint by an inline head script from
-`juleflet:colourful`, so reloads never flash red/white; app.css maps the pair onto the heart's `--paper-*` tokens
-and HeartWeaveFill's `paper-l`/`paper-r` paths. The hero's bootstrap copies a card's pair with its heart and, in
-the mode, draws hearts of different pairs. The heart page's big heart and thumbnail use the heart's pair; the
-template previews, the PDF (and its ear picture) and the laser files keep the site's pair. While on, the
-swatches and swap button are dimmed (still the site's pair); picking a colour or swapping turns the mode off.
-GA4 event `color_mode {on}`. Without JavaScript the toggle is hidden.
+**As built: colourful mode.** The colourful button is a round swatch like the others, filled with a small 2×2
+weave of four palette papers (red, spruce, navy, gold) with pale gaps and over/under tabs; its accessible name is
+"Farverig" / "Colourful" (`aria-label`, `title` says it deals new random colours), `aria-pressed` while the mode
+is on, and a 2px `--green` ring (from `html.colorful`) shows it. Each press turns the mode on and deals every heart
+that follows the site's pair a new random pair from `$lib/utils/palette`: twelve Scandinavian Christmas pairs,
+lighter paper left, darker right (so the ribbon is the strong colour), each ≥ 2.2:1 between its papers; the two
+whose light paper is nearly the page's `#f9f9f3` (classic red/white, ochre/white) get a hairline outline. Two
+steps: each heart has a fixed *slot* in its markup (`data-pair` and `--pair-left/-right/-edge` reading
+`var(--pal-<slot>-l/-r/-o, <unshuffled pair>)` on HangingHeart's `.hang` and the heart page's thumbnail), where
+gallery hearts take the slot at their position in the gallery order, cycling the twelve, so no card shares a
+neighbour's slot at any of the grid's 2–6 columns, and other hearts (Mine hjerter, shared) a hash of their id;
+then a press draws a random permutation of the palette (never the one on show) that says which pair each slot
+shows, set as the `--pal-*` variables on `<html>`. Being one-to-one, it keeps the neighbour rule; no slot or
+pair is fixed, so Klassisk 3×3 is not always red/white. The permutation is stored as "3,0,7,…" under
+`juleflet:colourful` (the first version's "1" reads as unshuffled), and an inline head script sets the class and
+the variables before first paint, so a reload shows the last shuffle with no flash. app.css maps the slot's pair
+onto the heart's `--paper-*` tokens and HeartWeaveFill's `paper-l`/`paper-r` paths, cross-fading fills and
+ribbons over 0.4s unless reduced motion is asked for. A heart with its own colours keeps them. The hero's
+bootstrap copies a card's slot with its heart and, in the mode, draws hearts of different slots. The heart
+page's big heart and thumbnail use the heart's pair; the template previews, the PDF (and its ear picture) and the
+laser files keep the site's pair. While on, the swatches and swap button are dimmed (still the site's pair);
+picking a colour or swapping is what turns the mode off. GA4 event `color_mode`: `{on: true, shuffle: n}` for
+the n-th press in the page view, `{on: false}` when a swatch or swap turns it off.
 
 ### Hero (≥ 900px)
 Grid `minmax(0,1fr) 640px`, gap 40, padding `0 40px 0 80px`, height 660px (600px below 1200px, where the

@@ -349,14 +349,15 @@
 
 /*
  * Colourful mode (docs/redesign/DESIGN.md §3 "Nav", "As built: colours in the
- * header"). The header's toggle puts `colorful` on <html>, and so does the head's
- * inline script on a reload ($lib/stores/colorMode). Every heart that follows
- * the site's pair carries its own pair in its markup, `--pair-left` /
- * `--pair-right` on a `[data-pair]` element ($lib/utils/palette), and the mode
- * makes that pair the heart's --paper-* tokens. Those already reach a frozen
- * heart's fills and every ribbon (HangingHeart); a heart drawn in the browser
- * paints its fills as attributes, so its papers are named (`paper-l` /
- * `paper-r`, HeartWeaveFill) and recoloured here.
+ * header"). The header's button puts `colorful` on <html> along with the
+ * shuffle's `--pal-<slot>-l/-r/-o` variables, and so does the head's inline
+ * script on a reload ($lib/stores/colorMode). Every heart that follows the
+ * site's pair carries its slot in its markup: `--pair-left` / `--pair-right` /
+ * `--pair-edge` on a `[data-pair]` element, which read those variables
+ * ($lib/utils/palette). The mode makes that pair the heart's --paper-* tokens.
+ * Those already reach a frozen heart's fills and every ribbon (HangingHeart);
+ * a heart drawn in the browser paints its fills as attributes, so its papers
+ * are named (`paper-l` / `paper-r`, HeartWeaveFill) and recoloured here.
  */
 html.colorful [data-pair] {
   --paper-left: var(--pair-left);
@@ -372,9 +373,21 @@ html.colorful [data-pair] svg .paper-r {
 }
 
 /* A light paper that is nearly the page's own snow gets a hairline round the
-   heart, under the usual drop shadow. */
-html.colorful [data-pair-edge] .heart > svg {
-  filter: drop-shadow(0 0 0.6px rgb(var(--deep-rgb) / 0.55)) drop-shadow(0 8px 12px var(--shadow-color));
+   heart, under the usual drop shadow; --pair-edge is transparent for the rest. */
+html.colorful [data-pair] .heart > svg {
+  filter: drop-shadow(0 0 0.6px var(--pair-edge)) drop-shadow(0 8px 12px var(--shadow-color));
+}
+
+/* A reshuffle cross-fades the papers and ribbons rather than snapping. */
+@media (prefers-reduced-motion: no-preference) {
+  html.colorful [data-pair] svg .paper-l,
+  html.colorful [data-pair] svg .paper-r {
+    transition: fill 0.4s ease;
+  }
+
+  html.colorful [data-pair] .ribbon {
+    transition: background-color 0.4s ease;
+  }
 }
 
 /*

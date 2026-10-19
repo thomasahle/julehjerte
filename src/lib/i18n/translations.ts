@@ -822,7 +822,7 @@ export const translations = {
     paperColors: 'Farver',
     swapColors: 'Byt farver',
     colorfulMode: 'Farverig',
-    colorfulModeTitle: 'Giv hvert hjerte sine egne farver',
+    colorfulModeTitle: 'Farverig: giv hjerterne nye, tilfældige farver',
 
     // Error page
     errorTitle: 'Ups! Noget gik galt',
@@ -1642,7 +1642,7 @@ export const translations = {
     paperColors: 'Colours',
     swapColors: 'Swap colours',
     colorfulMode: 'Colourful',
-    colorfulModeTitle: 'Give every heart its own colours',
+    colorfulModeTitle: 'Colourful: give the hearts new random colours',
 
     // Error page
     errorTitle: 'Oops! Something went wrong',

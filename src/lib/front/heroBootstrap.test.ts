@@ -12,7 +12,7 @@ const LABEL = 'Gå til {name} i galleriet';
 function page({ cards = 6, userCards = 0, pairs = [] as number[] } = {}) {
 	const slot = (i: number) =>
 		`<div class="slot"><a class="slot-link" href="#" aria-label="placeholder">` +
-		`<div class="hang" data-pair="99" data-pair-edge="" style="--pair-left: #000000; --pair-right: #000000;">` +
+		`<div class="hang" data-pair="99" style="--pair-left: #000000; --pair-right: #000000; --pair-edge: #000000;">` +
 		`<div class="ribbon" style="background: rgb(0, 0, 0);"></div>` +
 		`<div class="heart"><!--[--><!---->${heartSvg(`hero-${i}`)}<!----><!--]--></div>` +
 		`</div></a></div>`;
@@ -22,7 +22,7 @@ function page({ cards = 6, userCards = 0, pairs = [] as number[] } = {}) {
 		const n = pairs[i];
 		if (n === undefined) return '';
 		const hex = n.toString(16).padStart(2, '0');
-		return ` data-pair="${n}" style="--pair-left: #0000${hex}; --pair-right: #${hex}0000;"`;
+		return ` data-pair="${n}" style="--pair-left: #0000${hex}; --pair-right: #${hex}0000; --pair-edge: transparent;"`;
 	};
 
 	const card = (id: string, name: string, user: boolean, i = 0) =>
@@ -156,10 +156,9 @@ describe('the hero bootstrap script', () => {
 			const hang = slot.querySelector<HTMLElement>('.hang')!;
 			const hex = n.toString(16).padStart(2, '0');
 			expect(hang.getAttribute('data-pair')).toBe(String(n));
-			// The stand-in's outline flag goes: these cards have none.
-			expect(hang.hasAttribute('data-pair-edge')).toBe(false);
 			expect(hang.style.getPropertyValue('--pair-left').trim()).toBe(`#0000${hex}`);
 			expect(hang.style.getPropertyValue('--pair-right').trim()).toBe(`#${hex}0000`);
+			expect(hang.style.getPropertyValue('--pair-edge').trim()).toBe('transparent');
 		}
 	});
 
