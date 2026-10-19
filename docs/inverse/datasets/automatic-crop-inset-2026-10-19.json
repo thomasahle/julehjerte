@@ -1,0 +1,3222 @@
+{
+  "status": "complete",
+  "configuration": {
+    "algorithm": "auto",
+    "polygonal": false,
+    "identicalSheets": false,
+    "resolution": 400,
+    "fitTolerance": 0.5,
+    "maxSpan": 15,
+    "smoothRadius": 0,
+    "snapRadius": 1.5,
+    "borderRadius": 3,
+    "gridPortals": false,
+    "neighbors": 16,
+    "connectorVariants": 2,
+    "junctionBalancePenalty": 0,
+    "gridPreference": 0,
+    "sharpPenalty": 50,
+    "acutePenalty": 30,
+    "turnPenalty": 3,
+    "maxTurn": 175,
+    "localNeighborhoodFactor": 8,
+    "roundHidden": false,
+    "timeLimit": 10,
+    "trials": 0
+  },
+  "runtime": "v22.21.1",
+  "priority": 15,
+  "sourceHashes": {
+    "scripts/inverse/fixtures/hunodan/speed-crops.json": "b2a2f8908a54eec466c02dfbd8d0284509b6d482eed1cbdd9f016229e5ba9e1c",
+    "scripts/inverse/fixtures/user-photos-2026-10-17/stacked.json": "9b051d84e63851a2773fc6a9e1bcfc4060dd265bd9c81949e50b2d1160875e43",
+    "scripts/inverse/fixtures/user-photos-2026-10-17/window.json": "a09c2c1bda84fbda792f4219e548ab3f675f8dd50c85eebf17799c649aadfc11",
+    "scripts/inverse/diagnostics/automatic-crop-inset.mjs": "b3b09eb64032768aba64c7b58cdfc4ef2e4b50531d0a9f21a6432fe52dbfed6a",
+    "scripts/inverse/hard-photo-target.mjs": "5a8c1a1611e2d0b11fe14c2221c00795430bf10a2591b42adcdb9f770f81afaa",
+    "scripts/inverse/hard-photo-data.mjs": "84ba890531eab12a9a22e056a2e4a0043414eaca7db3f82b5956718869556d9f",
+    "scripts/inverse/export-renderer.mjs": "fb393f73b9c39780795c3951eb82d864fef7ab40ec63a90a4365aae6041afbbe",
+    "static/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+    "static/inverse/core/chord-distance.js": "6be52281e3056d29ad7093f902b0f768410f3c414f049f164f94e969bd89dd48",
+    "static/inverse/core/complete-self-returns.js": "a5d3f6cbfe1ca037f44f388e3d61d397208ae278407914e96a04a583b00f5c9b",
+    "static/inverse/core/corner-border-seeds.js": "37c9c93bfa2d2533d1811a354edce0f36c308e43a9b9d39252999af713447e4e",
+    "static/inverse/core/crop-inset.js": "a997ae97a84bdd579b00b40990f356d744ac4d49cb7c4c7ec28706b32eb939b8",
+    "static/inverse/core/crop.js": "0502bf7271c6c18a61ba5cfa75f4dbe5eafd718a81f551b1c5445abdba292000",
+    "static/inverse/core/engine.js": "45586071399d15825505269271c0e70831173fa1776efa02548b3e07db077b19",
+    "static/inverse/core/export.js": "539ade663b52985dac0b5d81ad829ba860f9e46726027bd89f54f436caef1013",
+    "static/inverse/core/feature-enclosures.js": "6472711542855f342359b601714e25f7dcacfb273da5ca67489025526771fa13",
+    "static/inverse/core/feature-recovery.js": "2261b2c8cac71d768d7a6c504423b80b63b261e3e4e4a9d871017ce7da8f178b",
+    "static/inverse/core/feature-shapes.js": "8ee1931f44602dc548e6441049e77cb97893a618e3d6c9eeafbeb6ccf85e9701",
+    "static/inverse/core/geometric-material.js": "1ebb7e42f949d2cf1be4624443cb612d325f815a61516bbb67b8405f28186f19",
+    "static/inverse/core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+    "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+    "static/inverse/core/image-features.js": "957dcb5da564d21b2101e1000bbb948c6c47390b74882cd7829edb706a630a73",
+    "static/inverse/core/image-reference.js": "ebb0ccbde29b408ab03bb7993f57d07ffa1de919dbcfaa0a0af5e6ec04ca00b1",
+    "static/inverse/core/input.js": "3c06f87592ca411d719df3d4b432cc969b760cf8e4f4012de0365c372ee0c82e",
+    "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+    "static/inverse/core/kernel-choice.js": "c0383c435836deaa8e97f01f0afb541a50b84869b8a19d870d1058373397a80f",
+    "static/inverse/core/mask-preview.js": "f04a77110cc44a7f37683a5cff48f212201b0639f4ca99784656b3ae5fe3fa1f",
+    "static/inverse/core/material.js": "861c2e3e0b8ba14f5a66d996d29462b110892526ed7ae865dc68ec4783b44bf2",
+    "static/inverse/core/numerical-kernel.js": "120625ea119879d97111690d68bef8ac3036528f52c308620d2135b7f7d82ade",
+    "static/inverse/core/paper-backend.js": "f6112c706022d3aa77bd550f0cc3679739d77c90645580ada56531b6d92408df",
+    "static/inverse/core/paper-clearance.js": "52f03d0ff290c567372c0ec50bcf6715d44c10b455829d04f4275f71040748eb",
+    "static/inverse/core/paper-offset.js": "dee44123310a0b51927998aa2893b79f29410a6ed9a98e7c9f66dfc6557bedd5",
+    "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+    "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+    "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+    "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+    "static/inverse/core/return-search.js": "8290a8d938784cfb56e723e529f7259b5c09170f87a50f6b98626bdab7342931",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+    "static/inverse/core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+    "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+    "static/inverse/core/settings.js": "220d4797a2f96cf409a5cc5f5088e582c216e8ca8e3f0f4d1975edead0357841",
+    "static/inverse/core/solver.js": "d22afc7daa78fc6d0fc77952b6be146d53e1fa46c7e4d7151eb297db601af212",
+    "static/inverse/core/spatial-color.js": "f170ff447ef905fc21121d286ac427a079b184ca077fd178065b0a3e247fb132",
+    "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+    "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+    "static/inverse/core/unmix.js": "345b28faf982372ed03437845f8a02087fd0828507fc63e27187b20ad4431b0b",
+    "static/inverse/core/validate.js": "6476e80b1b34fd6511ba89ae89508e501daed670369ab8c26acdce7109c155db",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+    "static/inverse/core/direct/boundary.js": "bf77844da0994943db90228a2eb230e4b8a3e2fa5f966724a08699c431b36ae4",
+    "static/inverse/core/direct/candidate-verification.js": "5322f118d4ee602168ec5be97aea570f13559f5a5a0b71b090aa2c7705c1d439",
+    "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+    "static/inverse/core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+    "static/inverse/core/direct/clearance-repair.js": "2a0979b4541e8787e95b5da63860177010290991945d2f1a2b290b92e455b24f",
+    "static/inverse/core/direct/clearance-witnesses.js": "a126b2249b85a86fe88a8bcbfc143a9d3c08a0e73cece38f5884fed152aa72f2",
+    "static/inverse/core/direct/corner-topology.js": "659ec20c7514147aac1e1d872cc2d0b322db4619afc2b17a51c0cce698662a12",
+    "static/inverse/core/direct/counts.js": "89b4b782bb1a135fb684d823462310c64e61a892d65a46e42147ccfa6d4266dc",
+    "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+    "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+    "static/inverse/core/direct/feature-details.js": "c6d9cfce65d06233cbbf1885db616cb7f40ed3a605a59dd89659df4eaf7ffd75",
+    "static/inverse/core/direct/feature-finalists.js": "6f65752bbace11a32535858ab80c8295ba262fbba224f1302f36b28ee7d5026e",
+    "static/inverse/core/direct/feature-objective.js": "21fd41539230b3278371e6091f23663ee37defce8f313483955fcad2d7b44ee1",
+    "static/inverse/core/direct/feature-seeds.js": "4bd20580fbab6c9608101833c34c32110978c80726e0d31758e2046e5ba3eb05",
+    "static/inverse/core/direct/final-paper-repair.js": "9e7c21b12668a5d301b52993554fe3f774ebc9a4fb653d793ab669fc8c61e94d",
+    "static/inverse/core/direct/final-return-repair.js": "591521ee1ae435e1bc8b231210de873af18042475c31265a0eca988971f654bb",
+    "static/inverse/core/direct/finalize.js": "2d4176908472951810405b8dbbdd1f32c40db466089402b96ced0cb3601dc98f",
+    "static/inverse/core/direct/fit.js": "c7b31cd917a69aa919c727f8f7bb40497fae9b78981d01f6825c414e54d37475",
+    "static/inverse/core/direct/fold-separation.js": "c2ad885e1ebbd721c7843047849f57e89c5764e4277c64fb27baeee94d4b0bd7",
+    "static/inverse/core/direct/grid-pixels.js": "843b1472d997edcdc8587f49ac84f0982221a10b817a82edd7c7220a669a66d9",
+    "static/inverse/core/direct/grid.js": "4da7a297db62369cc8d56e34ca31b77e3cc6809c5fc470cf1f82cf526dc9ddcf",
+    "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+    "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+    "static/inverse/core/direct/initialize.js": "097ae2b72608930c5337097b253328cd316123e45eaf56e0eaaaa3de3a3ad5d3",
+    "static/inverse/core/direct/interior-counts.js": "ee8445b612247a180a15f04d0a695737fe6313817cf10a6c48d61686247e0746",
+    "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+    "static/inverse/core/direct/linear-controls.js": "d813372611a04cf34eadd9e109264ac2b50c3518dcc62a2227877fa29e87224d",
+    "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/native-grid.js": "b6bf36c43af429c587ce208ff53cd65045a9bbf42d1c298d3354232717c8da38",
+    "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+    "static/inverse/core/direct/outline-details.js": "19d3e41ef30dd377214e75dff3ab986063d7f7ba98c6da3e353f20ca5812ed0f",
+    "static/inverse/core/direct/paper-recovery.js": "00b2cc57c81846c137b7c8ed2546a36685e353f99caf3af72541449bec8eb9f2",
+    "static/inverse/core/direct/polish.js": "bbf902e7edd7fd3adfb39f56a52172d7f1a11f1bc7b04f0ea4681d5ac83d9d42",
+    "static/inverse/core/direct/prefer-matching.js": "025bd006c7a68dc9b4588ba61431904dbf9f2fb636b7c37728512963c023c60a",
+    "static/inverse/core/direct/primitive-selection.js": "fd5852a4a2eca0cf2fa45cd696da9a63802aa77db820be0587e93a049b93f0b3",
+    "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+    "static/inverse/core/direct/refine.js": "a8e62e310d73918704285b145c4218187438909d37c432ca66e53fa6e71aa8f6",
+    "static/inverse/core/direct/rejected-routing.js": "48ff5ba4f7602bc4278b545a063c7a9cdc3e86a34e7a705aad0f61ca81c218ee",
+    "static/inverse/core/direct/reroute.js": "84a8cf2cfb6bcb1101a63004f638d0f3dc398baf3fe15ec1068b20336535d9ed",
+    "static/inverse/core/direct/share.js": "c5586a5341a799ec0da0dc6fac2c83b06b8b8da484085758d34441c93f145c3b",
+    "static/inverse/core/direct/shared-runs.js": "8a849852cf517fd8f8ea89ca37076db41d4a5333cfe04a8051d6b09227262757",
+    "static/inverse/core/direct/shared-shortening.js": "9227ad89be334548bb780eb682d4416944f099aaa7e8e0ef936565b9e2bf663f",
+    "static/inverse/core/direct/shared-simplification.js": "0362f975339ae5030720943c9efd6fc59fcf2718984af9fe0636c029e803e3a0",
+    "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+    "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+    "static/inverse/core/direct/short-return-project.js": "33762d9ad7e529866af3eba2c69237162bbcc85aa18ef2e5c6a6edb2ca14ff0a",
+    "static/inverse/core/direct/short-returns.js": "b329b2ca19cb7fca3493d33b0e65dcd44f32ff7bba507cddad106df7f85321ab",
+    "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+    "static/inverse/core/direct/topology.js": "85deaf85cd82309059d63ce117d24af7638907eb11302c1f55fc6708e28f1296",
+    "static/inverse/core/direct/turn-limit.js": "1f64a27bd008775f01ccc1caec37b50e3b60afb1604b9b073aec42fcbec2fb11",
+    "static/inverse/core/direct/native/PROVENANCE.json": "91caa24e6333b0bb1418e49f0bbfa85691551a454d73d5047d0db05ace261879",
+    "static/inverse/core/direct/native/boundary.c": "dca3601f55800b0aebf0f569ac19f6e923a12c2c2d8892aebe06e189b2fbdf03",
+    "static/inverse/core/direct/native/boundary.wasm": "7395c2e0114615f5fbd3b9bf527eac353724981d3e21c8e096027a0892ae850f",
+    "static/inverse/locator/NOTICE.md": "4a9cc65be6ca309d2b57609d760e584ab78c345dae95c789e351bb69180d5b05",
+    "static/inverse/locator/anchored.js": "92f1ffb68bac38b1bc36f4209820b46200cfa7e6dcfbb746ed94f33beddac536",
+    "static/inverse/locator/background-mixture.js": "cc8ecd35a613cfaf5919db0ad2d74cfb8c0129e4c7a61ba85dab064937ba4fdb",
+    "static/inverse/locator/background.js": "03d1c9b8f8237a97a7e8ed53d1dfa5117d1db079ba4162cac7117a8761f3441f",
+    "static/inverse/locator/chromatic-palette.js": "3a9d89c421341d802e5bda0d92895ec542927d812c13022c0408029d166091c3",
+    "static/inverse/locator/fields.js": "569c2235139acdc3c22f1fee94158ae59406b682e7ef16e822de215fd94b36ea",
+    "static/inverse/locator/grid-outline.js": "693b9e46cf3d39fabc36335624566cfd8c5bfaaa50ab3c2e22a6c4f3355ef132",
+    "static/inverse/locator/grid-refine.js": "1c1f3c11f30afb2e887b5f14d894f1d10de26eaf2d0f5f1f305bdca38e0b3553",
+    "static/inverse/locator/interior-palette.js": "6322efaa9772d488992a40da5b01091b0e71826d30c91fba5976c5b285e027bc",
+    "static/inverse/locator/locator.js": "f81f637eca5e3c5bd69706a0f5aad30cccf38c6c4d6f0bcc280c339c2acda873",
+    "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+    "static/inverse/locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+    "static/inverse/locator/outline-evidence.js": "29a4226f160950cf7877ad4e045a4fdefaa437a269396b02bb43d57b7b882c42",
+    "static/inverse/locator/palette.js": "3d5908da4b191e91181b3b6e9a204e90aeeddd7c8dd851bd141926a3c24cb468",
+    "static/inverse/locator/rgb-background.js": "295f5dc2883eda9ad12b2ca030d3b12a7a2ddc59fe4f3406a5b0e3f8ef0ccf1c",
+    "scripts/inverse/fixtures/hunodan/source/hjfig-01.jpg": "32a7d5c332a2f4262955932c7044991743bdb2b1e8eb1c1c22f6e6d9c315eab6",
+    "scripts/inverse/fixtures/hunodan/source/hjfig-02.jpg": "c5d2c4465ca58e3629abd28b36c6e9e3aed1f5d14b2725459809f5b4ba550276",
+    "scripts/inverse/fixtures/hunodan/source/hjfig-03.jpg": "6f75ea95d5d467f53a8ebfde0bb61bfc74c7c6e6b55a0f6154f4ae273c8c35b2",
+    "scripts/inverse/fixtures/hunodan/source/hjfig-04.jpg": "5ea33117d0208261edaf9e4690757e9711665e434353619bb6859bedb10da244",
+    "scripts/inverse/fixtures/hunodan/source/hjfig-05.jpg": "cc0c4eddf643a41839fadc014400f3353815017883c37a53160a9f4592ec9bd8",
+    "scripts/inverse/fixtures/hunodan/source/hjfla-01.jpg": "4cc2b77e50e1cbedcc14ad962772e22ca9403c274b55f74f49468deadada44c1",
+    "scripts/inverse/fixtures/hunodan/source/hjcur-01.jpg": "4c287c45c503edb0c763d6ce149bd2d475e81391ff8905c89c19d6167349b484",
+    "scripts/inverse/fixtures/hunodan/source/hjcur-02.jpg": "203953eb80e07ef83f467b34f354496e53c9359ff81bc6e5ebd43a51f15ca2c6",
+    "scripts/inverse/fixtures/hunodan/source/hjcur-03.jpg": "bb8390c22770e96257de8dc8d0dc5f7d73ab9bfb1faba028c63fbc1e335779f9",
+    "scripts/inverse/fixtures/hunodan/source/hjcur-04.jpg": "b55c4bd9e33a8b44e7b0a06b75df7dbed932401e3175c2a1920440bdc497e950",
+    "scripts/inverse/fixtures/hunodan/source/hjcur-05.jpg": "fcd46cc3a057f1f826e081932754a86fb970424620eee5eb86dd23eab55eb505",
+    "scripts/inverse/fixtures/hunodan/source/hjhih-01.jpg": "f11704b067941ead5dde1ef74f63d5b70d1f7a50e9c3c7cafb5b852cb0f7d18a",
+    "scripts/inverse/fixtures/hunodan/source/hjhih-02.jpg": "8e1982096d14d9c4db71c782736d56cb711b57e6ee3d482e894022d9fd990b59",
+    "scripts/inverse/fixtures/hunodan/source/hjhih-04.jpg": "0871c106cf029808a27d67dadc2dd623055727c1145421120f7c9fdfdee1e07e",
+    "scripts/inverse/fixtures/hunodan/source/hjstr-01.jpg": "37fd224b8429524eee4488429070256ddc757641c3f40aac2aeaa4875dc59e88",
+    "scripts/inverse/fixtures/hunodan/source/hjstr-02.jpg": "653d4b726cba91d87e4bda99aac9b47e1ac9ce5780b7c44acbd011066ad63a98",
+    "scripts/inverse/fixtures/hunodan/source/hjstr-03.jpg": "902bc6920f02f7d5c25fec20517b50c9e97a719d8509696ae861bb1ed9d12256",
+    "scripts/inverse/fixtures/hunodan/source/hjsta-01.jpg": "a83a175f4d960df6901354a6ea413c519efa2a8b180ca7018b8d09de37583651",
+    "scripts/inverse/fixtures/hunodan/source/hjsta-02.jpg": "02222a5d4b385ed4ea84859bf74df573d786234dd483581771541edabce67e13",
+    "scripts/inverse/fixtures/hunodan/source/hjsta-03.jpg": "9ac7571ed97d991d1d70f7321ae4e3cae0da0dbc91c8a14fa05c0de0b9dfc3b7",
+    "scripts/inverse/fixtures/hunodan/source/hjsta-04.jpg": "5143ab770f070447343a52b1af758b288c310edd6d144effbae1aea9dd2a226d",
+    "scripts/inverse/fixtures/hunodan/source/hjsta-05.jpg": "bde5a6cc6ef440682c90328b8e3830e155a4ddd491d40439f820e5c48df351ea",
+    "scripts/inverse/fixtures/user-photos-2026-10-17/stacked-hearts.png": "c25d43d008c63dba490e4426f972cd347d3b578a510b478edac6874ecfee6ab5",
+    "scripts/inverse/fixtures/user-photos-2026-10-17/window-hearts.jpeg": "b8faf7feb2ef06a78ad2e3abc45eb143bd2f1db869dcfb9bec9cb36999ad5c4f"
+  },
+  "scope": "Automatic physical corners fixed before solving. Compare no inset with 1% per side, alternating order. The import dialog supplies a binary mask to fitting. Common error maps independent exports into the unchanged original photograph interior, excluding 3% on each side; it is not ground truth. Different own-target errors are not directly comparable. Timings exclude detection and external rendering. No model training or reference templates.",
+  "cases": [
+    {
+      "id": "hjfig-01",
+      "cropSeconds": 0.6680245,
+      "cropStatus": "candidate",
+      "arms": [
+        {
+          "fraction": 0,
+          "quad": [
+            [
+              188.65840672286313,
+              50.446388800465265
+            ],
+            [
+              342.05595393044155,
+              195.6523959586842
+            ],
+            [
+              190.76691435038555,
+              347.06851680680785
+            ],
+            [
+              44.80862299146844,
+              199.21246184376056
+            ]
+          ],
+          "maskSha256": "0f602686e418c6e266fa6fc82f0a899b24920770cc69f3c1ce0c4004c8407fb6",
+          "seconds": 3.886466791,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.009799111111111111,
+          "commonInterior": {
+            "pixels": 124609,
+            "errors": 418,
+            "fraction": 0.0033544928536462055
+          }
+        },
+        {
+          "fraction": 0.01,
+          "quad": [
+            [
+              188.67913440942723,
+              53.36233295785831
+            ],
+            [
+              338.93210102826333,
+              195.68980965761264
+            ],
+            [
+              190.7454657855414,
+              344.0511604246405
+            ],
+            [
+              47.636981908579884,
+              199.17858721127942
+            ]
+          ],
+          "maskSha256": "3c4dae4355139f6b62a19511d471f473a78cc63e4f6f8dfd141193996ea07cdb",
+          "seconds": 7.402686708999999,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.0023395555555555557,
+          "commonInterior": {
+            "pixels": 124609,
+            "errors": 368,
+            "fraction": 0.0029532377276119703
+          }
+        }
+      ],
+      "physicalQuad": [
+        [
+          188.65840672286313,
+          50.446388800465265
+        ],
+        [
+          342.05595393044155,
+          195.6523959586842
+        ],
+        [
+          190.76691435038555,
+          347.06851680680785
+        ],
+        [
+          44.80862299146844,
+          199.21246184376056
+        ]
+      ],
+      "insetQuad": [
+        [
+          188.67913440942723,
+          53.36233295785831
+        ],
+        [
+          338.93210102826333,
+          195.68980965761264
+        ],
+        [
+          190.7454657855414,
+          344.0511604246405
+        ],
+        [
+          47.636981908579884,
+          199.17858721127942
+        ]
+      ]
+    },
+    {
+      "id": "hjfig-02",
+      "cropSeconds": 0.6384572499999994,
+      "cropStatus": "candidate",
+      "arms": [
+        {
+          "fraction": 0.01,
+          "quad": [
+            [
+              194.31521509366303,
+              50.71824337870123
+            ],
+            [
+              340.1064161994895,
+              197.12936760016208
+            ],
+            [
+              196.43645832640686,
+              341.63148787304385
+            ],
+            [
+              51.20837368822606,
+              198.82923098328533
+            ]
+          ],
+          "maskSha256": "543d6f96668f43ab36de1ee4db53972449aa81fe44e1522b39ca1c5c907f4a78",
+          "seconds": 3.7756702499999992,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.010247111111111111,
+          "commonInterior": {
+            "pixels": 124609,
+            "errors": 1052,
+            "fraction": 0.008442407851760305
+          }
+        },
+        {
+          "fraction": 0,
+          "quad": [
+            [
+              194.29301979808054,
+              47.67431831120112
+            ],
+            [
+              343.0654428810814,
+              197.11195681723675
+            ],
+            [
+              196.4575674701016,
+              344.5264550253009
+            ],
+            [
+              48.27147998840894,
+              198.84651153671882
+            ]
+          ],
+          "maskSha256": "4c05cb8452628b98627835e73725378d9bb85fb45254a154ddb8905c6e6a2778",
+          "seconds": 4.563398999999998,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.013297777777777778,
+          "commonInterior": {
+            "pixels": 124609,
+            "errors": 944,
+            "fraction": 0.007575696779526358
+          }
+        }
+      ],
+      "physicalQuad": [
+        [
+          194.29301979808054,
+          47.67431831120112
+        ],
+        [
+          343.0654428810814,
+          197.11195681723675
+        ],
+        [
+          196.4575674701016,
+          344.5264550253009
+        ],
+        [
+          48.27147998840894,
+          198.84651153671882
+        ]
+      ],
+      "insetQuad": [
+        [
+          194.31521509366303,
+          50.71824337870123
+        ],
+        [
+          340.1064161994895,
+          197.12936760016208
+        ],
+        [
+          196.43645832640686,
+          341.63148787304385
+        ],
+        [
+          51.20837368822606,
+          198.82923098328533
+        ]
+      ]
+    },
+    {
+      "id": "hjfig-03",
+      "cropSeconds": 0.6097541670000027,
+      "cropStatus": "candidate",
+      "arms": [
+        {
+          "fraction": 0,
+          "quad": [
+            [
+              192.39664758267418,
+              43.535512562511656
+            ],
+            [
+              338.2028175594765,
+              191.88044361475224
+            ],
+            [
+              186.02342195434386,
+              341.728261995053
+            ],
+            [
+              45.18920677619988,
+              194.15081895867112
+            ]
+          ],
+          "maskSha256": "745c42b5e196f2b0fe973d982cf03c11b175a09274e672f451d838e48d9e6af9",
+          "seconds": 7.160001833000002,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.0061155555555555555,
+          "commonInterior": {
+            "pixels": 124609,
+            "errors": 375,
+            "fraction": 0.003009413445256763
+          }
+        },
+        {
+          "fraction": 0.01,
+          "quad": [
+            [
+              192.33257327350984,
+              46.53344414879898
+            ],
+            [
+              335.17221922707887,
+              191.9039257858118
+            ],
+            [
+              186.08681396540663,
+              338.7622540152255
+            ],
+            [
+              48.02217837755758,
+              194.12886807094088
+            ]
+          ],
+          "maskSha256": "9e7c3e32faf6beef1a6cb9305f761ea0e87b329cc506d3d892cd2426e9117e29",
+          "seconds": 4.506694334,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.0025955555555555554,
+          "commonInterior": {
+            "pixels": 124609,
+            "errors": 423,
+            "fraction": 0.003394618366249629
+          }
+        }
+      ],
+      "physicalQuad": [
+        [
+          192.39664758267418,
+          43.535512562511656
+        ],
+        [
+          338.2028175594765,
+          191.88044361475224
+        ],
+        [
+          186.02342195434386,
+          341.728261995053
+        ],
+        [
+          45.18920677619988,
+          194.15081895867112
+        ]
+      ],
+      "insetQuad": [
+        [
+          192.33257327350984,
+          46.53344414879898
+        ],
+        [
+          335.17221922707887,
+          191.9039257858118
+        ],
+        [
+          186.08681396540663,
+          338.7622540152255
+        ],
+        [
+          48.02217837755758,
+          194.12886807094088
+        ]
+      ]
+    },
+    {
+      "id": "hjfig-04",
+      "cropSeconds": 0.5788408329999948,
+      "cropStatus": "candidate",
+      "arms": [
+        {
+          "fraction": 0.01,
+          "quad": [
+            [
+              197.29509998490934,
+              45.839986328371296
+            ],
+            [
+              346.3539372307383,
+              184.71893781826
+            ],
+            [
+              203.67542024585651,
+              335.06152230893395
+            ],
+            [
+              56.57939438110249,
+              192.45459056561725
+            ]
+          ],
+          "maskSha256": "613864392a2a7c0ec27b44ef018e8858dbf30c9fb10a92a214789d39f4f6b2a8",
+          "seconds": 1.9205268339999966,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.010965333333333334,
+          "commonInterior": {
+            "pixels": 124609,
+            "errors": 1448,
+            "fraction": 0.011620348449951448
+          }
+        },
+        {
+          "fraction": 0,
+          "quad": [
+            [
+              197.2316439885614,
+              42.96350991647984
+            ],
+            [
+              349.3532625975257,
+              184.63886957180316
+            ],
+            [
+              203.74221817945812,
+              338.08948958431125
+            ],
+            [
+              53.66434700347705,
+              192.532408975867
+            ]
+          ],
+          "maskSha256": "668167ba630a222f2601c6ace30f79ba1c9d0d88f99b0214904ffbc545c339fb",
+          "seconds": 3.525775416999997,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.01408,
+          "commonInterior": {
+            "pixels": 124609,
+            "errors": 1257,
+            "fraction": 0.01008755386850067
+          }
+        }
+      ],
+      "physicalQuad": [
+        [
+          197.2316439885614,
+          42.96350991647984
+        ],
+        [
+          349.3532625975257,
+          184.63886957180316
+        ],
+        [
+          203.74221817945812,
+          338.08948958431125
+        ],
+        [
+          53.66434700347705,
+          192.532408975867
+        ]
+      ],
+      "insetQuad": [
+        [
+          197.29509998490934,
+          45.839986328371296
+        ],
+        [
+          346.3539372307383,
+          184.71893781826
+        ],
+        [
+          203.67542024585651,
+          335.06152230893395
+        ],
+        [
+          56.57939438110249,
+          192.45459056561725
+        ]
+      ]
+    },
+    {
+      "id": "hjfig-05",
+      "cropSeconds": 0.6690618750000067,
+      "cropStatus": "candidate",
+      "arms": [
+        {
+          "fraction": 0,
+          "quad": [
+            [
+              216.8538757473738,
+              38.328225363387574
+            ],
+            [
+              359.89753198285587,
+              187.87012162871665
+            ],
+            [
+              212.54958628080993,
+              334.34627418104253
+            ],
+            [
+              67.96701146105954,
+              182.82942921221752
+            ]
+          ],
+          "maskSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+          "seconds": 5.8055764999999955,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.007995139518706689,
+          "commonInterior": {
+            "pixels": 100489,
+            "errors": 535,
+            "fraction": 0.0053239658072027785
+          }
+        },
+        {
+          "fraction": 0.01,
+          "quad": [
+            [
+              216.81139006501945,
+              41.25008479940017
+            ],
+            [
+              357.00909576410106,
+              187.82024771174008
+            ],
+            [
+              212.59319362101496,
+              331.34727519133685
+            ],
+            [
+              70.9175121848997,
+              182.88037478172132
+            ]
+          ],
+          "maskSha256": "b14219e1f97abc6653c0406a8c51dc711fe1f0d186e72cab2ee77de9a6d5322a",
+          "seconds": 10.438594291000001,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 6,
+            "right": 5
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.01667708617668554,
+          "commonInterior": {
+            "pixels": 100489,
+            "errors": 1888,
+            "fraction": 0.018788126063549244
+          }
+        }
+      ],
+      "physicalQuad": [
+        [
+          216.8538757473738,
+          38.328225363387574
+        ],
+        [
+          359.89753198285587,
+          187.87012162871665
+        ],
+        [
+          212.54958628080993,
+          334.34627418104253
+        ],
+        [
+          67.96701146105954,
+          182.82942921221752
+        ]
+      ],
+      "insetQuad": [
+        [
+          216.81139006501945,
+          41.25008479940017
+        ],
+        [
+          357.00909576410106,
+          187.82024771174008
+        ],
+        [
+          212.59319362101496,
+          331.34727519133685
+        ],
+        [
+          70.9175121848997,
+          182.88037478172132
+        ]
+      ]
+    },
+    {
+      "id": "hjfla-01",
+      "cropSeconds": 0.6288765419999982,
+      "cropStatus": "candidate",
+      "arms": [
+        {
+          "fraction": 0.01,
+          "quad": [
+            [
+              292.30219790245434,
+              60.675671143321644
+            ],
+            [
+              435.0451550121698,
+              208.8202049384734
+            ],
+            [
+              283.2838991198191,
+              351.67561565662265
+            ],
+            [
+              144.72608385774902,
+              202.07658470112014
+            ]
+          ],
+          "maskSha256": "72f6c1e0a7cf63abc495d3095e962e3206f6d4a43cc045f2fc2f690e6b346885",
+          "seconds": 7.292895166999995,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.004231770833333333,
+          "commonInterior": {
+            "pixels": 129600,
+            "errors": 944,
+            "fraction": 0.0072839506172839505
+          }
+        },
+        {
+          "fraction": 0,
+          "quad": [
+            [
+              292.39323601496517,
+              57.738078773875756
+            ],
+            [
+              438.0941449375487,
+              208.89102780960795
+            ],
+            [
+              283.1908795446907,
+              354.6771453079949
+            ],
+            [
+              141.8477138031669,
+              202.00972504056293
+            ]
+          ],
+          "maskSha256": "f5f772caadf20161dd72c25a4e06acf56e3122ddbd9b530c471121095a344f5d",
+          "seconds": 6.763824208000005,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.006849500868055556,
+          "commonInterior": {
+            "pixels": 129600,
+            "errors": 467,
+            "fraction": 0.003603395061728395
+          }
+        }
+      ],
+      "physicalQuad": [
+        [
+          292.39323601496517,
+          57.738078773875756
+        ],
+        [
+          438.0941449375487,
+          208.89102780960795
+        ],
+        [
+          283.1908795446907,
+          354.6771453079949
+        ],
+        [
+          141.8477138031669,
+          202.00972504056293
+        ]
+      ],
+      "insetQuad": [
+        [
+          292.30219790245434,
+          60.675671143321644
+        ],
+        [
+          435.0451550121698,
+          208.8202049384734
+        ],
+        [
+          283.2838991198191,
+          351.67561565662265
+        ],
+        [
+          144.72608385774902,
+          202.07658470112014
+        ]
+      ]
+    },
+    {
+      "id": "hjcur-01",
+      "cropSeconds": 0.5952916660000046,
+      "cropStatus": "needs_review",
+      "arms": [
+        {
+          "fraction": 0,
+          "quad": [
+            [
+              189.3096608168546,
+              43.709919844428974
+            ],
+            [
+              332.4881934002591,
+              192.81949779926094
+            ],
+            [
+              185.4163085647945,
+              340.0580997580325
+            ],
+            [
+              41.75016952913069,
+              189.06796025783646
+            ]
+          ],
+          "maskSha256": "31fdc1c6e540f367bbfe0030eba717b477959af8b240863b3f45181ede25cc80",
+          "seconds": 5.474779458999998,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.005134222222222222,
+          "commonInterior": {
+            "pixels": 124609,
+            "errors": 409,
+            "fraction": 0.003282266930960043
+          }
+        },
+        {
+          "fraction": 0.01,
+          "quad": [
+            [
+              189.27121175896116,
+              46.6365259125266
+            ],
+            [
+              329.59093775527566,
+              192.78211306652273
+            ],
+            [
+              185.4557325938495,
+              337.057282339285
+            ],
+            [
+              44.667709383811854,
+              189.10560672783618
+            ]
+          ],
+          "maskSha256": "3f5772bdb765ee3d042c14b1c12289d0d40968347c7fba6b5cb66a757c71e18f",
+          "seconds": 7.569326417000004,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.004679111111111111,
+          "commonInterior": {
+            "pixels": 124609,
+            "errors": 756,
+            "fraction": 0.0060669775056376345
+          }
+        }
+      ],
+      "physicalQuad": [
+        [
+          189.3096608168546,
+          43.709919844428974
+        ],
+        [
+          332.4881934002591,
+          192.81949779926094
+        ],
+        [
+          185.4163085647945,
+          340.0580997580325
+        ],
+        [
+          41.75016952913069,
+          189.06796025783646
+        ]
+      ],
+      "insetQuad": [
+        [
+          189.27121175896116,
+          46.6365259125266
+        ],
+        [
+          329.59093775527566,
+          192.78211306652273
+        ],
+        [
+          185.4557325938495,
+          337.057282339285
+        ],
+        [
+          44.667709383811854,
+          189.10560672783618
+        ]
+      ]
+    },
+    {
+      "id": "hjcur-02",
+      "cropSeconds": 0.6572880420000001,
+      "cropStatus": "needs_review",
+      "arms": [
+        {
+          "fraction": 0.01,
+          "quad": [
+            [
+              194.64020851597235,
+              47.198649569370936
+            ],
+            [
+              336.78658127438314,
+              191.02053791886908
+            ],
+            [
+              193.30558269614752,
+              338.6419340012836
+            ],
+            [
+              48.4745940471496,
+              194.43108430088498
+            ]
+          ],
+          "maskSha256": "078e966b06cfe36d07d5f64a69476f044e18dde708ae9f000f54039997f56243",
+          "seconds": 7.101611166000002,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.002176,
+          "commonInterior": {
+            "pixels": 124609,
+            "errors": 431,
+            "fraction": 0.0034588191864151066
+          }
+        },
+        {
+          "fraction": 0,
+          "quad": [
+            [
+              194.65378748297076,
+              44.23339992230309
+            ],
+            [
+              339.67367514119843,
+              190.98638544523556
+            ],
+            [
+              193.29192428448607,
+              341.6245320415693
+            ],
+            [
+              45.47671643716768,
+              194.46654727533422
+            ]
+          ],
+          "maskSha256": "ee27e7b1a962204080c43d064b331286e929ae897f20ff8f5ac082e961caf4de",
+          "seconds": 9.498473750000004,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.0048853333333333335,
+          "commonInterior": {
+            "pixels": 124609,
+            "errors": 265,
+            "fraction": 0.002126652167981446
+          }
+        }
+      ],
+      "physicalQuad": [
+        [
+          194.65378748297076,
+          44.23339992230309
+        ],
+        [
+          339.67367514119843,
+          190.98638544523556
+        ],
+        [
+          193.29192428448607,
+          341.6245320415693
+        ],
+        [
+          45.47671643716768,
+          194.46654727533422
+        ]
+      ],
+      "insetQuad": [
+        [
+          194.64020851597235,
+          47.198649569370936
+        ],
+        [
+          336.78658127438314,
+          191.02053791886908
+        ],
+        [
+          193.30558269614752,
+          338.6419340012836
+        ],
+        [
+          48.4745940471496,
+          194.43108430088498
+        ]
+      ]
+    },
+    {
+      "id": "hjcur-03",
+      "cropSeconds": 1.3506919579999959,
+      "cropStatus": "candidate",
+      "arms": [
+        {
+          "fraction": 0,
+          "quad": [
+            [
+              192.91699437321472,
+              44.50524545817953
+            ],
+            [
+              339.69230667005473,
+              191.74644497178232
+            ],
+            [
+              193.504565619557,
+              339.1119442002352
+            ],
+            [
+              47.907480430688935,
+              190.7899197613935
+            ]
+          ],
+          "maskSha256": "b8f60a17331591b6f27bf7ba9684c6e25383aafef960915a64af88582b00f4cf",
+          "seconds": 9.92475725000001,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.004501333333333334,
+          "commonInterior": {
+            "pixels": 124609,
+            "errors": 332,
+            "fraction": 0.002664334036867321
+          }
+        },
+        {
+          "fraction": 0.01,
+          "quad": [
+            [
+              192.92282740548956,
+              47.429912709753694
+            ],
+            [
+              336.75099365056985,
+              191.7368027978179
+            ],
+            [
+              193.49864691779217,
+              336.1443224885853
+            ],
+            [
+              50.80204925363058,
+              190.7994086991427
+            ]
+          ],
+          "maskSha256": "a6fd09b5952b8bb1c51dd44dc6e9b2312c018818e66836825e08535042fb4b85",
+          "seconds": 7.757582834000001,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.0024675555555555557,
+          "commonInterior": {
+            "pixels": 124609,
+            "errors": 482,
+            "fraction": 0.003868099414970026
+          }
+        }
+      ],
+      "physicalQuad": [
+        [
+          192.91699437321472,
+          44.50524545817953
+        ],
+        [
+          339.69230667005473,
+          191.74644497178232
+        ],
+        [
+          193.504565619557,
+          339.1119442002352
+        ],
+        [
+          47.907480430688935,
+          190.7899197613935
+        ]
+      ],
+      "insetQuad": [
+        [
+          192.92282740548956,
+          47.429912709753694
+        ],
+        [
+          336.75099365056985,
+          191.7368027978179
+        ],
+        [
+          193.49864691779217,
+          336.1443224885853
+        ],
+        [
+          50.80204925363058,
+          190.7994086991427
+        ]
+      ]
+    },
+    {
+      "id": "hjcur-04",
+      "cropSeconds": 0.5496589999999851,
+      "cropStatus": "candidate",
+      "arms": [
+        {
+          "fraction": 0.01,
+          "quad": [
+            [
+              191.178695355707,
+              48.87731941688183
+            ],
+            [
+              338.14374921589103,
+              191.3581699884183
+            ],
+            [
+              196.94791157113036,
+              337.61237723926337
+            ],
+            [
+              50.366652736585394,
+              197.20089813016295
+            ]
+          ],
+          "maskSha256": "523a4289b2730acb512f1fcba81435cc8494478248ef5e0c36742db2fe297a5b",
+          "seconds": 6.520041250000009,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 6,
+            "right": 6
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.003896888888888889,
+          "commonInterior": {
+            "pixels": 124609,
+            "errors": 843,
+            "fraction": 0.006765161424937204
+          }
+        },
+        {
+          "fraction": 0,
+          "quad": [
+            [
+              191.11896416727424,
+              45.88792059701687
+            ],
+            [
+              341.0873159394011,
+              191.2984068580547
+            ],
+            [
+              197.00593204212686,
+              340.5161588661794
+            ],
+            [
+              47.43720035962269,
+              197.26037469745123
+            ]
+          ],
+          "maskSha256": "52ded25560667c41851d3d6a56932079e74d1d448bfa12a3e71172ad3aed5536",
+          "seconds": 6.967000709000015,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 6,
+            "right": 6
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.005447111111111111,
+          "commonInterior": {
+            "pixels": 124609,
+            "errors": 532,
+            "fraction": 0.004269354541004262
+          }
+        }
+      ],
+      "physicalQuad": [
+        [
+          191.11896416727424,
+          45.88792059701687
+        ],
+        [
+          341.0873159394011,
+          191.2984068580547
+        ],
+        [
+          197.00593204212686,
+          340.5161588661794
+        ],
+        [
+          47.43720035962269,
+          197.26037469745123
+        ]
+      ],
+      "insetQuad": [
+        [
+          191.178695355707,
+          48.87731941688183
+        ],
+        [
+          338.14374921589103,
+          191.3581699884183
+        ],
+        [
+          196.94791157113036,
+          337.61237723926337
+        ],
+        [
+          50.366652736585394,
+          197.20089813016295
+        ]
+      ]
+    },
+    {
+      "id": "hjcur-05",
+      "cropSeconds": 0.5573275420000137,
+      "cropStatus": "needs_review",
+      "arms": [
+        {
+          "fraction": 0,
+          "quad": [
+            [
+              191.5718921769267,
+              41.002447759302676
+            ],
+            [
+              343.2169032469649,
+              184.90280502631018
+            ],
+            [
+              198.85140229323983,
+              339.1694570006557
+            ],
+            [
+              47.783414978700904,
+              192.22189834334512
+            ]
+          ],
+          "maskSha256": "c49156ccfdf43c4a11a0947e0b6dc16ca514f534199fc865db2224443ed3be76",
+          "seconds": 4.772508499999996,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.009856,
+          "commonInterior": {
+            "pixels": 124609,
+            "errors": 187,
+            "fraction": 0.0015006941713680392
+          }
+        },
+        {
+          "fraction": 0.01,
+          "quad": [
+            [
+              191.64323650686174,
+              43.924694606023195
+            ],
+            [
+              340.2496501720391,
+              184.976315995828
+            ],
+            [
+              198.7771272237236,
+              336.12716775522637
+            ],
+            [
+              50.724887343967644,
+              192.14902606722953
+            ]
+          ],
+          "maskSha256": "fc4869f2c95d6d06828e0306b7416abfc27a41de4172ad59df7e1d32a6f61d12",
+          "seconds": 8.274250750000007,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.0031075555555555557,
+          "commonInterior": {
+            "pixels": 124609,
+            "errors": 235,
+            "fraction": 0.0018858990923609049
+          }
+        }
+      ],
+      "physicalQuad": [
+        [
+          191.5718921769267,
+          41.002447759302676
+        ],
+        [
+          343.2169032469649,
+          184.90280502631018
+        ],
+        [
+          198.85140229323983,
+          339.1694570006557
+        ],
+        [
+          47.783414978700904,
+          192.22189834334512
+        ]
+      ],
+      "insetQuad": [
+        [
+          191.64323650686174,
+          43.924694606023195
+        ],
+        [
+          340.2496501720391,
+          184.976315995828
+        ],
+        [
+          198.7771272237236,
+          336.12716775522637
+        ],
+        [
+          50.724887343967644,
+          192.14902606722953
+        ]
+      ]
+    },
+    {
+      "id": "hjhih-01",
+      "cropSeconds": 1.6217720839999965,
+      "cropStatus": "candidate",
+      "arms": [
+        {
+          "fraction": 0.01,
+          "quad": [
+            [
+              202.32374423001735,
+              51.557260578084076
+            ],
+            [
+              340.5649775161427,
+              197.0280348961055
+            ],
+            [
+              198.04004603243735,
+              341.73854145950185
+            ],
+            [
+              51.52233493452026,
+              196.18260248500812
+            ]
+          ],
+          "maskSha256": "7038eb8283f9e32e64627b2afaf615f3b9e4adf5d4d4df6401b0586f6b05a8a4",
+          "seconds": 9.317856667000015,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.0035101613466133317,
+          "commonInterior": {
+            "pixels": 131044,
+            "errors": 655,
+            "fraction": 0.004998321174567321
+          }
+        },
+        {
+          "fraction": 0,
+          "quad": [
+            [
+              202.3674368892556,
+              48.59748347940166
+            ],
+            [
+              343.3485875149892,
+              197.0361767885677
+            ],
+            [
+              197.99631627152766,
+              344.7008318562862
+            ],
+            [
+              48.39713363046562,
+              196.17346145844522
+            ]
+          ],
+          "maskSha256": "a02bbceadda3acbc3ae67298e79ecc8e8f0dce4f0c8d61162c58e6e993804346",
+          "seconds": 11.656508166999993,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.005980026309431126,
+          "commonInterior": {
+            "pixels": 131044,
+            "errors": 422,
+            "fraction": 0.0032202924208662737
+          }
+        }
+      ],
+      "physicalQuad": [
+        [
+          202.3674368892556,
+          48.59748347940166
+        ],
+        [
+          343.3485875149892,
+          197.0361767885677
+        ],
+        [
+          197.99631627152766,
+          344.7008318562862
+        ],
+        [
+          48.39713363046562,
+          196.17346145844522
+        ]
+      ],
+      "insetQuad": [
+        [
+          202.32374423001735,
+          51.557260578084076
+        ],
+        [
+          340.5649775161427,
+          197.0280348961055
+        ],
+        [
+          198.04004603243735,
+          341.73854145950185
+        ],
+        [
+          51.52233493452026,
+          196.18260248500812
+        ]
+      ]
+    },
+    {
+      "id": "hjhih-02",
+      "cropSeconds": 2.1085924159999996,
+      "cropStatus": "candidate",
+      "arms": [
+        {
+          "fraction": 0,
+          "quad": [
+            [
+              188.30974117601937,
+              50.96916524073435
+            ],
+            [
+              339.6341931275473,
+              196.09932591960958
+            ],
+            [
+              193.5495451122848,
+              347.13449938438606
+            ],
+            [
+              45.606330547136366,
+              202.17162619262066
+            ]
+          ],
+          "maskSha256": "430f17aa29b1ee5b3018bc5a76c51d02693d43c0136c8b53b4f56543eb8c116a",
+          "seconds": 9.347100250000018,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.0038857719392728835,
+          "commonInterior": {
+            "pixels": 130321,
+            "errors": 292,
+            "fraction": 0.0022406212352575564
+          }
+        },
+        {
+          "fraction": 0.01,
+          "quad": [
+            [
+              188.3622223135054,
+              53.93551547231809
+            ],
+            [
+              336.6262878459827,
+              196.16144555651115
+            ],
+            [
+              193.4972300407957,
+              344.17753557109006
+            ],
+            [
+              48.480487949333245,
+              202.11226873368847
+            ]
+          ],
+          "maskSha256": "603420babbf9fd4b56146eb26f8a00abe89840b3db767c328d01aa23d5f62a8b",
+          "seconds": 7.183408874999993,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.002161034569735972,
+          "commonInterior": {
+            "pixels": 130321,
+            "errors": 313,
+            "fraction": 0.0024017618035466273
+          }
+        }
+      ],
+      "physicalQuad": [
+        [
+          188.30974117601937,
+          50.96916524073435
+        ],
+        [
+          339.6341931275473,
+          196.09932591960958
+        ],
+        [
+          193.5495451122848,
+          347.13449938438606
+        ],
+        [
+          45.606330547136366,
+          202.17162619262066
+        ]
+      ],
+      "insetQuad": [
+        [
+          188.3622223135054,
+          53.93551547231809
+        ],
+        [
+          336.6262878459827,
+          196.16144555651115
+        ],
+        [
+          193.4972300407957,
+          344.17753557109006
+        ],
+        [
+          48.480487949333245,
+          202.11226873368847
+        ]
+      ]
+    },
+    {
+      "id": "hjhih-04",
+      "cropSeconds": 0.7821737500000163,
+      "cropStatus": "needs_review",
+      "arms": [
+        {
+          "fraction": 0.01,
+          "quad": [
+            [
+              200.5473432819736,
+              57.036876408013356
+            ],
+            [
+              340.50902764524074,
+              202.69301721526958
+            ],
+            [
+              193.85859869916607,
+              347.3790390828738
+            ],
+            [
+              50.7438134630997,
+              199.68913781267926
+            ]
+          ],
+          "maskSha256": "45d659ae51da23d0534752904b7274a43be6f427760486d7edd214fa1545a62d",
+          "seconds": 8.48799100000001,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.004027219341012244,
+          "commonInterior": {
+            "pixels": 136161,
+            "errors": 599,
+            "fraction": 0.004399203883637752
+          }
+        },
+        {
+          "fraction": 0,
+          "quad": [
+            [
+              200.61465222970472,
+              54.11515840702254
+            ],
+            [
+              343.4005945195555,
+              202.72299292577537
+            ],
+            [
+              193.7893892931023,
+              350.38325136594614
+            ],
+            [
+              47.72031824020348,
+              199.65779445405863
+            ]
+          ],
+          "maskSha256": "8c86ff1087e3248e8450d6cca93b879ead9373a20e7fd9baddb540f93cad3e11",
+          "seconds": 9.562433500000013,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.0075558922362721674,
+          "commonInterior": {
+            "pixels": 136161,
+            "errors": 488,
+            "fraction": 0.0035839924794911905
+          }
+        }
+      ],
+      "physicalQuad": [
+        [
+          200.61465222970472,
+          54.11515840702254
+        ],
+        [
+          343.4005945195555,
+          202.72299292577537
+        ],
+        [
+          193.7893892931023,
+          350.38325136594614
+        ],
+        [
+          47.72031824020348,
+          199.65779445405863
+        ]
+      ],
+      "insetQuad": [
+        [
+          200.5473432819736,
+          57.036876408013356
+        ],
+        [
+          340.50902764524074,
+          202.69301721526958
+        ],
+        [
+          193.85859869916607,
+          347.3790390828738
+        ],
+        [
+          50.7438134630997,
+          199.68913781267926
+        ]
+      ]
+    },
+    {
+      "id": "hjstr-01",
+      "cropSeconds": 0.5516559579999885,
+      "cropStatus": "needs_review",
+      "arms": [
+        {
+          "fraction": 0,
+          "quad": [
+            [
+              191.35718595247062,
+              103.88262046442289
+            ],
+            [
+              343.85046746261594,
+              250.2169394187539
+            ],
+            [
+              198.4226972120015,
+              405.96812758830697
+            ],
+            [
+              45.21045375375542,
+              257.6144338993603
+            ]
+          ],
+          "maskSha256": "900ba653d4e9765749e3077f96826591e8ba8619daea61146e4b05ae48c9b5e9",
+          "seconds": 7.753317875000008,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.00535267737202141,
+          "commonInterior": {
+            "pixels": 128881,
+            "errors": 283,
+            "fraction": 0.0021958240547481785
+          }
+        },
+        {
+          "fraction": 0.01,
+          "quad": [
+            [
+              191.4269043694627,
+              106.86342717172477
+            ],
+            [
+              340.8773306699637,
+              250.29058582246444
+            ],
+            [
+              198.35109294772292,
+              402.90669159417894
+            ],
+            [
+              48.2101758035667,
+              257.5401289626867
+            ]
+          ],
+          "maskSha256": "5c357ef84b384ab4d7f24cb9ac8e0409820c3a810bc4dfae9a52051b9c9bf4df",
+          "seconds": 6.889938957999984,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.003106895102679094,
+          "commonInterior": {
+            "pixels": 128881,
+            "errors": 363,
+            "fraction": 0.0028165517027335294
+          }
+        }
+      ],
+      "physicalQuad": [
+        [
+          191.35718595247062,
+          103.88262046442289
+        ],
+        [
+          343.85046746261594,
+          250.2169394187539
+        ],
+        [
+          198.4226972120015,
+          405.96812758830697
+        ],
+        [
+          45.21045375375542,
+          257.6144338993603
+        ]
+      ],
+      "insetQuad": [
+        [
+          191.4269043694627,
+          106.86342717172477
+        ],
+        [
+          340.8773306699637,
+          250.29058582246444
+        ],
+        [
+          198.35109294772292,
+          402.90669159417894
+        ],
+        [
+          48.2101758035667,
+          257.5401289626867
+        ]
+      ]
+    },
+    {
+      "id": "hjstr-02",
+      "cropSeconds": 0.7165158750000119,
+      "cropStatus": "candidate",
+      "arms": [
+        {
+          "fraction": 0.01,
+          "quad": [
+            [
+              198.4899952090881,
+              59.83671483110526
+            ],
+            [
+              337.5694483760214,
+              206.36211176859962
+            ],
+            [
+              193.54508791091382,
+              350.09746115374617
+            ],
+            [
+              48.82715978810842,
+              201.33563545908453
+            ]
+          ],
+          "maskSha256": "f2d4c0017c5f628dc67d60af5ff7b0d823a127bedc04cd2bf6b52f89840b7bc1",
+          "seconds": 9.55491545900001,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.0024260355029585797,
+          "commonInterior": {
+            "pixels": 133956,
+            "errors": 423,
+            "fraction": 0.0031577532921257725
+          }
+        },
+        {
+          "fraction": 0,
+          "quad": [
+            [
+              198.53970825883664,
+              56.91861221524674
+            ],
+            [
+              340.401102574917,
+              206.41140570062836
+            ],
+            [
+              193.49387320044173,
+              353.103709640915
+            ],
+            [
+              45.76141964287936,
+              201.28226651792085
+            ]
+          ],
+          "maskSha256": "2ca1f380ea3e9403ff612efaf9d0f44d7e9eca41b4f35b78347dcc8d3f5d66d5",
+          "seconds": 9.31678450000001,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.003984220907297831,
+          "commonInterior": {
+            "pixels": 133956,
+            "errors": 319,
+            "fraction": 0.0023813789602556063
+          }
+        }
+      ],
+      "physicalQuad": [
+        [
+          198.53970825883664,
+          56.91861221524674
+        ],
+        [
+          340.401102574917,
+          206.41140570062836
+        ],
+        [
+          193.49387320044173,
+          353.103709640915
+        ],
+        [
+          45.76141964287936,
+          201.28226651792085
+        ]
+      ],
+      "insetQuad": [
+        [
+          198.4899952090881,
+          59.83671483110526
+        ],
+        [
+          337.5694483760214,
+          206.36211176859962
+        ],
+        [
+          193.54508791091382,
+          350.09746115374617
+        ],
+        [
+          48.82715978810842,
+          201.33563545908453
+        ]
+      ]
+    },
+    {
+      "id": "hjstr-03",
+      "cropSeconds": 2.1558803340000448,
+      "cropStatus": "candidate",
+      "arms": [
+        {
+          "fraction": 0,
+          "quad": [
+            [
+              198.0767384478126,
+              48.83345802423042
+            ],
+            [
+              339.75075854262275,
+              193.76882218562517
+            ],
+            [
+              196.19023395819448,
+              342.00139702165603
+            ],
+            [
+              49.884135008919685,
+              193.13927233494536
+            ]
+          ],
+          "maskSha256": "d9ba414af2b114d628d5a1ee4df9b7c6cc875d31452495e8159a06d1e3021f11",
+          "seconds": 9.606342792000039,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 7,
+            "right": 7
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.01666622382824955,
+          "commonInterior": {
+            "pixels": 132496,
+            "errors": 1649,
+            "fraction": 0.012445658736867529
+          }
+        },
+        {
+          "fraction": 0.01,
+          "quad": [
+            [
+              198.0583659771768,
+              51.68859003172574
+            ],
+            [
+              336.9428770280962,
+              193.76272385886148
+            ],
+            [
+              196.20960464655542,
+              338.9911392592208
+            ],
+            [
+              52.87649062849287,
+              193.14577131371883
+            ]
+          ],
+          "maskSha256": "679d89b87144e25910e4eef482be0c17f0b93aba9d49b71d35b59fcd015e08f7",
+          "seconds": 9.723340874999995,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 7,
+            "right": 7
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.0037198427037942396,
+          "commonInterior": {
+            "pixels": 132496,
+            "errors": 956,
+            "fraction": 0.007215312160367106
+          }
+        }
+      ],
+      "physicalQuad": [
+        [
+          198.0767384478126,
+          48.83345802423042
+        ],
+        [
+          339.75075854262275,
+          193.76882218562517
+        ],
+        [
+          196.19023395819448,
+          342.00139702165603
+        ],
+        [
+          49.884135008919685,
+          193.13927233494536
+        ]
+      ],
+      "insetQuad": [
+        [
+          198.0583659771768,
+          51.68859003172574
+        ],
+        [
+          336.9428770280962,
+          193.76272385886148
+        ],
+        [
+          196.20960464655542,
+          338.9911392592208
+        ],
+        [
+          52.87649062849287,
+          193.14577131371883
+        ]
+      ]
+    },
+    {
+      "id": "hjsta-01",
+      "cropSeconds": 1.156413957999961,
+      "cropStatus": "candidate",
+      "arms": [
+        {
+          "fraction": 0.01,
+          "quad": [
+            [
+              195.06522270202703,
+              50.09077953582779
+            ],
+            [
+              337.7985949628218,
+              192.7079216264448
+            ],
+            [
+              196.15695006309946,
+              341.34588337483376
+            ],
+            [
+              50.06105178973267,
+              194.65301807087275
+            ]
+          ],
+          "maskSha256": "a51f9346ae3a18e0fb223ef7b987dcc9d1ff2615b18304ec713b69ca467e62db",
+          "seconds": 9.993405417000002,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.003677285318559557,
+          "commonInterior": {
+            "pixels": 128164,
+            "errors": 437,
+            "fraction": 0.0034096938297805937
+          }
+        },
+        {
+          "fraction": 0,
+          "quad": [
+            [
+              195.05439485448392,
+              47.20208591783353
+            ],
+            [
+              340.6664953436871,
+              192.6885347130366
+            ],
+            [
+              196.168411462646,
+              344.4035983631109
+            ],
+            [
+              47.055118952907264,
+              194.67333807919917
+            ]
+          ],
+          "maskSha256": "1e64a4a98de31d02ca46a0cea403c50172ba6b472c4167059c699a05acf7bbc2",
+          "seconds": 8.495002624999964,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.00770775623268698,
+          "commonInterior": {
+            "pixels": 128164,
+            "errors": 377,
+            "fraction": 0.0029415436472020225
+          }
+        }
+      ],
+      "physicalQuad": [
+        [
+          195.05439485448392,
+          47.20208591783353
+        ],
+        [
+          340.6664953436871,
+          192.6885347130366
+        ],
+        [
+          196.168411462646,
+          344.4035983631109
+        ],
+        [
+          47.055118952907264,
+          194.67333807919917
+        ]
+      ],
+      "insetQuad": [
+        [
+          195.06522270202703,
+          50.09077953582779
+        ],
+        [
+          337.7985949628218,
+          192.7079216264448
+        ],
+        [
+          196.15695006309946,
+          341.34588337483376
+        ],
+        [
+          50.06105178973267,
+          194.65301807087275
+        ]
+      ]
+    },
+    {
+      "id": "hjsta-02",
+      "cropSeconds": 0.5375806250000024,
+      "cropStatus": "candidate",
+      "arms": [
+        {
+          "fraction": 0,
+          "quad": [
+            [
+              191.16406799843026,
+              48.32364781659089
+            ],
+            [
+              340.02723897564636,
+              188.05970075260046
+            ],
+            [
+              199.97936496176143,
+              342.58204776083375
+            ],
+            [
+              48.44755619555002,
+              198.55438994750548
+            ]
+          ],
+          "maskSha256": "957426bf15cc8cdcc8f813c45de9965f0e08421af8d117da78a54ffe99fed1a6",
+          "seconds": 6.250024499999999,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.003384060329861111,
+          "commonInterior": {
+            "pixels": 129600,
+            "errors": 241,
+            "fraction": 0.001859567901234568
+          }
+        },
+        {
+          "fraction": 0.01,
+          "quad": [
+            [
+              191.24965858382367,
+              51.1806983292303
+            ],
+            [
+              337.16125657194186,
+              188.16285469761536
+            ],
+            [
+              199.8885736938521,
+              339.55139623144754
+            ],
+            [
+              51.41402438928688,
+              198.44761926512112
+            ]
+          ],
+          "maskSha256": "c02dfe6cc699299ff97936f07b65c33bb7f77ffa55131281f600a57c383c1072",
+          "seconds": 8.21787175000005,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.0018717447916666667,
+          "commonInterior": {
+            "pixels": 129600,
+            "errors": 294,
+            "fraction": 0.0022685185185185187
+          }
+        }
+      ],
+      "physicalQuad": [
+        [
+          191.16406799843026,
+          48.32364781659089
+        ],
+        [
+          340.02723897564636,
+          188.05970075260046
+        ],
+        [
+          199.97936496176143,
+          342.58204776083375
+        ],
+        [
+          48.44755619555002,
+          198.55438994750548
+        ]
+      ],
+      "insetQuad": [
+        [
+          191.24965858382367,
+          51.1806983292303
+        ],
+        [
+          337.16125657194186,
+          188.16285469761536
+        ],
+        [
+          199.8885736938521,
+          339.55139623144754
+        ],
+        [
+          51.41402438928688,
+          198.44761926512112
+        ]
+      ]
+    },
+    {
+      "id": "hjsta-03",
+      "cropSeconds": 0.5627107919999981,
+      "cropStatus": "candidate",
+      "arms": [
+        {
+          "fraction": 0.01,
+          "quad": [
+            [
+              193.6550207496701,
+              47.949387075662095
+            ],
+            [
+              339.94847071203895,
+              189.72213441739208
+            ],
+            [
+              193.48218958144693,
+              341.69716997982806
+            ],
+            [
+              48.55626241986138,
+              195.07631395032934
+            ]
+          ],
+          "maskSha256": "06f8bf044ccee268315b508edfcc78b8b32b97e6bcc58176ecdeb65fd0162532",
+          "seconds": 8.494868167000007,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.0070421094969629625,
+          "commonInterior": {
+            "pixels": 130321,
+            "errors": 929,
+            "fraction": 0.007128551806692705
+          }
+        },
+        {
+          "fraction": 0,
+          "quad": [
+            [
+              193.65672679368126,
+              45.04975588659226
+            ],
+            [
+              342.9501305994181,
+              189.66698048576146
+            ],
+            [
+              193.48036649787394,
+              344.79572426897465
+            ],
+            [
+              45.610873631912625,
+              195.13043392991767
+            ]
+          ],
+          "maskSha256": "71928f2d6a8f59fd498bf144aa69020efad39b25bfdb4ed8f4887d2344845cad",
+          "seconds": 7.434021292000019,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.012345847336882793,
+          "commonInterior": {
+            "pixels": 130321,
+            "errors": 905,
+            "fraction": 0.006944391157219481
+          }
+        }
+      ],
+      "physicalQuad": [
+        [
+          193.65672679368126,
+          45.04975588659226
+        ],
+        [
+          342.9501305994181,
+          189.66698048576146
+        ],
+        [
+          193.48036649787394,
+          344.79572426897465
+        ],
+        [
+          45.610873631912625,
+          195.13043392991767
+        ]
+      ],
+      "insetQuad": [
+        [
+          193.6550207496701,
+          47.949387075662095
+        ],
+        [
+          339.94847071203895,
+          189.72213441739208
+        ],
+        [
+          193.48218958144693,
+          341.69716997982806
+        ],
+        [
+          48.55626241986138,
+          195.07631395032934
+        ]
+      ]
+    },
+    {
+      "id": "hjsta-04",
+      "cropSeconds": 0.5107576659999904,
+      "cropStatus": "candidate",
+      "arms": [
+        {
+          "fraction": 0,
+          "quad": [
+            [
+              192.8820949412971,
+              40.64326337448036
+            ],
+            [
+              338.7224272496793,
+              186.46827119242013
+            ],
+            [
+              189.2253365301165,
+              332.48276340072863
+            ],
+            [
+              45.11114873361885,
+              184.1413775871979
+            ]
+          ],
+          "maskSha256": "40ef212bea0c4de0e21632a931e72ccb9c6d3a24c32384555d1d606341e7334d",
+          "seconds": 6.274062999999965,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.005123036869068615,
+          "commonInterior": {
+            "pixels": 126736,
+            "errors": 433,
+            "fraction": 0.003416550940537811
+          }
+        },
+        {
+          "fraction": 0.01,
+          "quad": [
+            [
+              192.84614970176563,
+              43.51199014109572
+            ],
+            [
+              335.7525736088255,
+              186.4447348573029
+            ],
+            [
+              189.2625371231828,
+              329.5138490617422
+            ],
+            [
+              48.0139001683997,
+              184.16438213179606
+            ]
+          ],
+          "maskSha256": "aa379bed72c4de66cfeef0eafd5c9f48e3c181324b2be6d20b519660b8235211",
+          "seconds": 7.67716958300001,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.003345371070238795,
+          "commonInterior": {
+            "pixels": 126736,
+            "errors": 537,
+            "fraction": 0.004237154399697008
+          }
+        }
+      ],
+      "physicalQuad": [
+        [
+          192.8820949412971,
+          40.64326337448036
+        ],
+        [
+          338.7224272496793,
+          186.46827119242013
+        ],
+        [
+          189.2253365301165,
+          332.48276340072863
+        ],
+        [
+          45.11114873361885,
+          184.1413775871979
+        ]
+      ],
+      "insetQuad": [
+        [
+          192.84614970176563,
+          43.51199014109572
+        ],
+        [
+          335.7525736088255,
+          186.4447348573029
+        ],
+        [
+          189.2625371231828,
+          329.5138490617422
+        ],
+        [
+          48.0139001683997,
+          184.16438213179606
+        ]
+      ]
+    },
+    {
+      "id": "hjsta-05",
+      "cropSeconds": 0.5413507080000127,
+      "cropStatus": "candidate",
+      "arms": [
+        {
+          "fraction": 0.01,
+          "quad": [
+            [
+              196.56926811080703,
+              54.46416334679268
+            ],
+            [
+              339.36527010044983,
+              198.87049483945287
+            ],
+            [
+              193.83805377528176,
+              345.03844332225333
+            ],
+            [
+              51.186697471089545,
+              199.64694382452385
+            ]
+          ],
+          "maskSha256": "e4c2db995f6910897aac190946d77d2bf7405af7033b7b4b133c71865e0f8fa3",
+          "seconds": 8.659210332999995,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.00508067330666595,
+          "commonInterior": {
+            "pixels": 131044,
+            "errors": 822,
+            "fraction": 0.006272702298464638
+          }
+        },
+        {
+          "fraction": 0,
+          "quad": [
+            [
+              196.5969474661884,
+              51.51935280757243
+            ],
+            [
+              342.30866035747334,
+              198.8625643664934
+            ],
+            [
+              193.80999274262587,
+              348.0238605607671
+            ],
+            [
+              48.248889692101926,
+              199.65485925642955
+            ]
+          ],
+          "maskSha256": "f6909fa97b2ec2b706ef6f0dd1ae779a6ef7b7aec276a1c1569dc016ce5e98f2",
+          "seconds": 9.243104250000034,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.010241885688206396,
+          "commonInterior": {
+            "pixels": 131044,
+            "errors": 742,
+            "fraction": 0.005662220322944965
+          }
+        }
+      ],
+      "physicalQuad": [
+        [
+          196.5969474661884,
+          51.51935280757243
+        ],
+        [
+          342.30866035747334,
+          198.8625643664934
+        ],
+        [
+          193.80999274262587,
+          348.0238605607671
+        ],
+        [
+          48.248889692101926,
+          199.65485925642955
+        ]
+      ],
+      "insetQuad": [
+        [
+          196.56926811080703,
+          54.46416334679268
+        ],
+        [
+          339.36527010044983,
+          198.87049483945287
+        ],
+        [
+          193.83805377528176,
+          345.03844332225333
+        ],
+        [
+          51.186697471089545,
+          199.64694382452385
+        ]
+      ]
+    },
+    {
+      "id": "stacked-heart-fringe",
+      "cropSeconds": 1.0762728330000537,
+      "cropStatus": "needs_review",
+      "arms": [
+        {
+          "fraction": 0,
+          "quad": [
+            [
+              328.68018835288376,
+              94.2801998068486
+            ],
+            [
+              568.7245969318753,
+              350.390222659565
+            ],
+            [
+              318.3496044147103,
+              597.2237937041144
+            ],
+            [
+              68.74493970200332,
+              338.6891289810733
+            ]
+          ],
+          "maskSha256": "f4ec4215d056758bed572c6648e46cd942350058113993c5f3491151e2b8c2b9",
+          "seconds": 7.456221709000005,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.00706875,
+          "commonInterior": {
+            "pixels": 141376,
+            "errors": 474,
+            "fraction": 0.0033527614305115436
+          }
+        },
+        {
+          "fraction": 0.01,
+          "quad": [
+            [
+              328.5777733646271,
+              99.26626473512536
+            ],
+            [
+              563.9114735245591,
+              350.27758046090594
+            ],
+            [
+              318.45380877528964,
+              592.1506133376222
+            ],
+            [
+              73.93857347199352,
+              338.8106763168412
+            ]
+          ],
+          "maskSha256": "666b3b0bd5b1a0eed8c88790d0ad999f1d6725054d2609e3e76c7f336f9372fd",
+          "seconds": 9.110580000000017,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.0029625,
+          "commonInterior": {
+            "pixels": 141376,
+            "errors": 553,
+            "fraction": 0.003911555002263468
+          }
+        }
+      ],
+      "physicalQuad": [
+        [
+          328.68018835288376,
+          94.2801998068486
+        ],
+        [
+          568.7245969318753,
+          350.390222659565
+        ],
+        [
+          318.3496044147103,
+          597.2237937041144
+        ],
+        [
+          68.74493970200332,
+          338.6891289810733
+        ]
+      ],
+      "insetQuad": [
+        [
+          328.5777733646271,
+          99.26626473512536
+        ],
+        [
+          563.9114735245591,
+          350.27758046090594
+        ],
+        [
+          318.45380877528964,
+          592.1506133376222
+        ],
+        [
+          73.93857347199352,
+          338.8106763168412
+        ]
+      ]
+    },
+    {
+      "id": "window-blue-orange",
+      "cropSeconds": 2.9206435829999973,
+      "cropStatus": "candidate",
+      "arms": [
+        {
+          "fraction": 0.01,
+          "quad": [
+            [
+              200.11669625389186,
+              248.9801554516175
+            ],
+            [
+              347.71746202180486,
+              378.5724796866323
+            ],
+            [
+              219.95828136302822,
+              518.6037961369032
+            ],
+            [
+              67.98003322127084,
+              394.05130235666735
+            ]
+          ],
+          "maskSha256": "154871be39c47a7d3e33c66327cb2250998e5f6b692c1cb0485d5d4fc6c5cf70",
+          "seconds": 8.764988917000009,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.0062375,
+          "commonInterior": {
+            "pixels": 141376,
+            "errors": 668,
+            "fraction": 0.004724988682661838
+          }
+        },
+        {
+          "fraction": 0,
+          "quad": [
+            [
+              199.90684837282853,
+              246.1285712978729
+            ],
+            [
+              350.47608174392565,
+              378.4198358817762
+            ],
+            [
+              220.15362605481909,
+              521.2582991264323
+            ],
+            [
+              65.02636106733729,
+              394.214739075494
+            ]
+          ],
+          "maskSha256": "fcf66c0e6e66008e581880ae39473f66ebc067d3bfe2ae7e78fd199fe86bbf83",
+          "seconds": 8.825779207999993,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.0073125,
+          "commonInterior": {
+            "pixels": 141376,
+            "errors": 417,
+            "fraction": 0.0029495812584880037
+          }
+        }
+      ],
+      "physicalQuad": [
+        [
+          199.90684837282853,
+          246.1285712978729
+        ],
+        [
+          350.47608174392565,
+          378.4198358817762
+        ],
+        [
+          220.15362605481909,
+          521.2582991264323
+        ],
+        [
+          65.02636106733729,
+          394.214739075494
+        ]
+      ],
+      "insetQuad": [
+        [
+          200.11669625389186,
+          248.9801554516175
+        ],
+        [
+          347.71746202180486,
+          378.5724796866323
+        ],
+        [
+          219.95828136302822,
+          518.6037961369032
+        ],
+        [
+          67.98003322127084,
+          394.05130235666735
+        ]
+      ]
+    },
+    {
+      "id": "window-orange-white",
+      "cropSeconds": 5.134244542,
+      "cropStatus": "needs_review",
+      "arms": [
+        {
+          "fraction": 0,
+          "quad": [
+            [
+              511.44477647367864,
+              350.72091631791955
+            ],
+            [
+              645.7239349817286,
+              475.56292459053657
+            ],
+            [
+              565.0823944311398,
+              698.0541620320976
+            ],
+            [
+              367.47172145379466,
+              504.66363696471865
+            ]
+          ],
+          "maskSha256": "655774b5f6869a6dec03a475c27683cf29aa55ba8f5687252b7e3b24f4ae7dab",
+          "seconds": 9.692485667000001,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.01975625,
+          "commonInterior": {
+            "pixels": 141376,
+            "errors": 1300,
+            "fraction": 0.00919533725667723
+          }
+        },
+        {
+          "fraction": 0.01,
+          "quad": [
+            [
+              511.7940162978973,
+              352.9824373603854
+            ],
+            [
+              643.8103275952402,
+              475.7630571876694
+            ],
+            [
+              564.2601541627853,
+              692.7297014754968
+            ],
+            [
+              371.51193931527666,
+              504.24109506855433
+            ]
+          ],
+          "maskSha256": "54adaf7152e6856bcf35206cdbfb99fd30e84f67b14810b2b693c809510b62ca",
+          "seconds": 9.570739250000042,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 3,
+            "right": 5
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.018575,
+          "commonInterior": {
+            "pixels": 141376,
+            "errors": 2569,
+            "fraction": 0.018171401086464464
+          }
+        }
+      ],
+      "physicalQuad": [
+        [
+          511.44477647367864,
+          350.72091631791955
+        ],
+        [
+          645.7239349817286,
+          475.56292459053657
+        ],
+        [
+          565.0823944311398,
+          698.0541620320976
+        ],
+        [
+          367.47172145379466,
+          504.66363696471865
+        ]
+      ],
+      "insetQuad": [
+        [
+          511.7940162978973,
+          352.9824373603854
+        ],
+        [
+          643.8103275952402,
+          475.7630571876694
+        ],
+        [
+          564.2601541627853,
+          692.7297014754968
+        ],
+        [
+          371.51193931527666,
+          504.24109506855433
+        ]
+      ]
+    },
+    {
+      "id": "window-red-white",
+      "cropSeconds": 0.2364955830000108,
+      "cropStatus": "candidate",
+      "arms": [
+        {
+          "fraction": 0.01,
+          "quad": [
+            [
+              225.324803907239,
+              560.8318525368554
+            ],
+            [
+              394.66093120378014,
+              712.0160895677087
+            ],
+            [
+              241.78109924358162,
+              881.8749034347891
+            ],
+            [
+              67.05990912621498,
+              730.4641121577844
+            ]
+          ],
+          "maskSha256": "edf651f521cdadaecbce9eae9711ce1b427fdc4b57a97f3116303ffc69d67809",
+          "seconds": 9.636288499999965,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 4,
+            "right": 3
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.0151,
+          "commonInterior": {
+            "pixels": 141376,
+            "errors": 2184,
+            "fraction": 0.015448166591217746
+          }
+        },
+        {
+          "fraction": 0,
+          "quad": [
+            [
+              225.15743985796485,
+              557.5667759268762
+            ],
+            [
+              397.8951496261698,
+              711.8339627411832
+            ],
+            [
+              241.9495798310296,
+              885.1617623970203
+            ],
+            [
+              63.60470436505767,
+              730.6586832707893
+            ]
+          ],
+          "maskSha256": "29dd36df253d748cc661e8c15cf7abb9ba3840f414d00334da9ec79d04ef97a8",
+          "seconds": 9.331085542000014,
+          "passed": true,
+          "geometry": true,
+          "paper": "pass",
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "missingFeatures": 0,
+          "ownTargetError": 0.00983125,
+          "commonInterior": {
+            "pixels": 141376,
+            "errors": 697,
+            "fraction": 0.004930115436849253
+          }
+        }
+      ],
+      "physicalQuad": [
+        [
+          225.15743985796485,
+          557.5667759268762
+        ],
+        [
+          397.8951496261698,
+          711.8339627411832
+        ],
+        [
+          241.9495798310296,
+          885.1617623970203
+        ],
+        [
+          63.60470436505767,
+          730.6586832707893
+        ]
+      ],
+      "insetQuad": [
+        [
+          225.324803907239,
+          560.8318525368554
+        ],
+        [
+          394.66093120378014,
+          712.0160895677087
+        ],
+        [
+          241.78109924358162,
+          881.8749034347891
+        ],
+        [
+          67.05990912621498,
+          730.4641121577844
+        ]
+      ]
+    }
+  ],
+  "decision": "Do not enable an unconditional default inset. All 26 inputs pass in both arms, but common-interior error worsens on 24/26 cases. Original physical corners remain the production default; the helper and experiment permit further targeted work.",
+  "runtimeNote": "The measured runtime includes the experimental unconditional default adapter, but the experiment reads raw locator corners and applies each arm explicitly. That default adapter was subsequently withheld; its exact measured hash remains in sourceHashes."
+}
