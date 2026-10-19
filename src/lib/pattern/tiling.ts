@@ -209,19 +209,29 @@ function splitAt(s: BezierSegment, t: number): [BezierSegment, BezierSegment] {
 
 const samePoint = (p: Vec, q: Vec) => Math.abs(p.x - q.x) < 1e-6 && Math.abs(p.y - q.y) < 1e-6;
 
+/** Coordinate `axis` of `bezierAt(s, t)`, without the other. */
+const coordAt = (s: BezierSegment, axis: 'x' | 'y', t: number): number => {
+	const u = 1 - t;
+	return u * u * u * s.p0[axis] + 3 * u * u * t * s.p1[axis] + 3 * u * t * t * s.p2[axis] + t * t * t * s.p3[axis];
+};
+
 /** The first parameter at which coordinate `axis` of the segment reaches `v` from below, or null. */
 function firstCrossing(s: BezierSegment, axis: 'x' | 'y', v: number): number | null {
+	const c0 = s.p0[axis], c1 = s.p1[axis], c2 = s.p2[axis], c3 = s.p3[axis];
+	// Its points are weighted means of its control points, so it stays below a `v` they all lie
+	// well below, rounding and all.
+	if (Math.max(c0, c1, c2, c3) + 1e-9 * (1 + Math.abs(c0) + Math.abs(c1) + Math.abs(c2) + Math.abs(c3)) < v) return null;
 	const STEPS = 64;
-	let prev = bezierAt(s, 0)[axis];
+	let prev = coordAt(s, axis, 0);
 	if (prev >= v) return 0;
 	for (let k = 1; k <= STEPS; k++) {
-		const cur = bezierAt(s, k / STEPS)[axis];
+		const cur = coordAt(s, axis, k / STEPS);
 		if (cur >= v) {
 			let lo = (k - 1) / STEPS;
 			let hi = k / STEPS;
 			for (let it = 0; it < 40; it++) {
 				const mid = (lo + hi) / 2;
-				if (bezierAt(s, mid)[axis] >= v) hi = mid;
+				if (coordAt(s, axis, mid) >= v) hi = mid;
 				else lo = mid;
 			}
 			return hi;

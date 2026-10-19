@@ -96,14 +96,22 @@ export interface RuleInfo {
  * each other is one curve (`vertical` for the upper-left and lower-right sides,
  * `horizontal` for the other two); a side that is its own S is drawn as half,
  * completed by a half turn, one that is its own mirror image as half, completed by
- * its mirror image; a mirror line of the tiling is straight.
+ * its mirror image; a mirror line of the tiling is straight. Worked out once a
+ * rule and shared, like `ruleEdges`, so not to be changed.
  */
 export function ruleInfo(rule: TileRule): RuleInfo {
+	const key = ruleKey(rule);
+	const cached = infoByRule.get(key);
+	if (cached) return cached;
 	const classes = edgeClasses(rule);
 	const drawn = classes.filter((c) => c.shape !== 'I');
 	const halves = drawn.flatMap((c): Array<[CurveKey, HalfKind]> => (c.shape === 'S' ? [[c.key, 'turn']] : c.shape === 'U' ? [[c.key, 'mirror']] : []));
-	return { curves: drawn.map((c) => c.key), halves: Object.fromEntries(halves), straight: classes.filter((c) => c.shape === 'I').map((c) => c.key) };
+	const info = { curves: drawn.map((c) => c.key), halves: Object.fromEntries(halves), straight: classes.filter((c) => c.shape === 'I').map((c) => c.key) };
+	infoByRule.set(key, info);
+	return info;
 }
+
+const infoByRule = new Map<string, RuleInfo>();
 
 /** Whether a rule draws curve `key` as half a side, and how the half is completed. */
 export function halfOf(rule: TileRule, key: CurveKey): HalfKind | null {
