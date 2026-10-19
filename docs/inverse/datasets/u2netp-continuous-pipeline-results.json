@@ -1,0 +1,341 @@
+{
+  "schema": "u2netp-continuous-pipeline-results-1",
+  "date": "2026-10-19",
+  "status": "development-comparison-complete-not-released",
+  "scope": "Same previously inspected 32-photo development cohort. Unchanged model/browser fields and classifier. Same pinned production solver; exact production controls reused via hardlinks, four neural-selected crops fit afresh per arm. Original then weighted, one worker, ten-second solve budgets. No speed claim or prospective evaluation.",
+  "evidence": [
+    {
+      "path": "tmp/heart-learning/u2netp-continuous-original-pipeline-v1/report.json",
+      "sha256": "74eabfbed462c394b3852c657cfbf45dbf3883c2a821b673e352f7b46b8cb9b4"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-continuous-original-editable-v1/results.json",
+      "sha256": "292934920d73f6804f2f57200e8bcbd1d8a938447891cc79826fbe2c163afd65"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-continuous-original-gallery-v1/manifest.json",
+      "sha256": "6d25d9ca452c991cf846ed5685519e25eac242ef05f3680074b1764c0871c616"
+    },
+    {
+      "path": "docs/inverse/datasets/u2netp-continuous-original-pipeline-plan.json",
+      "sha256": "62ada9ea0dd720eef91fb7bab91d887e27efd3d95c77b087d294978919193519"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-continuous-weighted-pipeline-v1/report.json",
+      "sha256": "3b253389e6fe69e78f513dd2cf2c417051fcbdfc611f9c004b7be1fa4a789389"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-continuous-weighted-editable-v1/results.json",
+      "sha256": "99953271887688fc8e1ee384c016cad3c47fa5e80d0a145db31986c928cdc2a3"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-continuous-weighted-gallery-v1/manifest.json",
+      "sha256": "09a20e37efbd9aacedd18f9c797eb6b7462ae5f66e1dc6c1152d049f28a1062d"
+    },
+    {
+      "path": "docs/inverse/datasets/u2netp-continuous-weighted-pipeline-plan.json",
+      "sha256": "8703bfd4de9708886ab135deb2939cd95791db67bd060ff3cbd93a049a00e289"
+    },
+    {
+      "path": "docs/inverse/datasets/u2netp-continuous-fields-results.json",
+      "sha256": "89e7d6d3cd560a1b7a0a9e8f573caab628bdbf94d98a15f147ead4003941cca2"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-continuous-count-sensitivity-v1.json",
+      "sha256": "91c33a60cf7f4c2c48c75fe35e6b13f5d0b48863a593d44865ba958a85ef75a5"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-continuous-followup-checks.json",
+      "sha256": "8095250fcdad47598645afa5aa328c43ab689fca4a70f945e32f647e5c1dcaef"
+    }
+  ],
+  "summary": {
+    "original": {
+      "pipeline": {
+        "production": {
+          "attempted": 32,
+          "crops": 21,
+          "supported": 16,
+          "checkedPairs": 9,
+          "neuralSelected": 0,
+          "reusedFits": 32
+        },
+        "fallback": {
+          "attempted": 32,
+          "crops": 25,
+          "supported": 20,
+          "checkedPairs": 12,
+          "neuralSelected": 4,
+          "reusedFits": 28
+        }
+      },
+      "freshEditable": {
+        "exports": 4,
+        "converted": 4,
+        "geometryPassed": 4,
+        "paperPassed": 4,
+        "completeCandidatesPassed": 3
+      },
+      "runtimeNumericalGatePassed": false,
+      "sourceSeparationChecksPassed": true
+    },
+    "weighted": {
+      "pipeline": {
+        "production": {
+          "attempted": 32,
+          "crops": 21,
+          "supported": 16,
+          "checkedPairs": 9,
+          "neuralSelected": 0,
+          "reusedFits": 32
+        },
+        "fallback": {
+          "attempted": 32,
+          "crops": 25,
+          "supported": 20,
+          "checkedPairs": 12,
+          "neuralSelected": 4,
+          "reusedFits": 28
+        }
+      },
+      "freshEditable": {
+        "exports": 4,
+        "converted": 4,
+        "geometryPassed": 4,
+        "paperPassed": 4,
+        "completeCandidatesPassed": 3
+      },
+      "runtimeNumericalGatePassed": false,
+      "sourceSeparationChecksPassed": true
+    }
+  },
+  "unchangedProductionRows": 32,
+  "unchangedFallbackRows": 28,
+  "changedFallbackRows": [
+    {
+      "id": "real-24b5ed49c9411b11-body-1",
+      "maximumCornerDisplacementPixels": 0.049749902122763034,
+      "changedMaskPixels": 61,
+      "totalMaskPixels": 160000,
+      "original": {
+        "status": "checked-derived-mask",
+        "targetMaskSha256": "6847bed06addc8b40a08b8e7a62f6755c489849ed6107376bc2f6fdb258370d5",
+        "selectedCounts": [
+          8,
+          8
+        ],
+        "exportedError": 0.0215375,
+        "editableError": 0.022025,
+        "conversionPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "completeCandidatePassed": true,
+        "solveSeconds": 10.601028583000003
+      },
+      "weighted": {
+        "status": "checked-derived-mask",
+        "targetMaskSha256": "dc033050608515e3b30e95929c9e5ba5fe95ddd09d61f41a7582157c153b93cd",
+        "selectedCounts": [
+          7,
+          3
+        ],
+        "exportedError": 0.0272125,
+        "editableError": 0.02735625,
+        "conversionPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "completeCandidatePassed": true,
+        "solveSeconds": 10.361908917000001
+      }
+    },
+    {
+      "id": "real-dfa7e4b71b43aa86-body-1",
+      "maximumCornerDisplacementPixels": 2.385851320882806,
+      "changedMaskPixels": 6406,
+      "totalMaskPixels": 160000,
+      "original": {
+        "status": "review-required",
+        "targetMaskSha256": "eba4ed59c80f38874341cfb0f566563796200c7284db817689b2ea0433e409ea",
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "exportedError": 0.08631875,
+        "editableError": 0.0867125,
+        "conversionPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "completeCandidatePassed": false,
+        "solveSeconds": 9.980924959
+      },
+      "weighted": {
+        "status": "review-required",
+        "targetMaskSha256": "6447142bb1a527b7b576f1e279d03e4199646346c897898a8fcb7f68f8f59ec5",
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "exportedError": 0.0847875,
+        "editableError": 0.08524375,
+        "conversionPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "completeCandidatePassed": false,
+        "solveSeconds": 10.039933540999998
+      }
+    },
+    {
+      "id": "real-c7d1e0ad5050db71-body-1",
+      "maximumCornerDisplacementPixels": 5.277514643733921,
+      "changedMaskPixels": 2831,
+      "totalMaskPixels": 160000,
+      "original": {
+        "status": "checked-derived-mask",
+        "targetMaskSha256": "48d94e6101ba14d1f47655f00f7a06c2a283a48d6a96b4aa043203a8ecb31a78",
+        "selectedCounts": [
+          5,
+          5
+        ],
+        "exportedError": 0.006838183818381838,
+        "editableError": 0.0069319431943194315,
+        "conversionPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "completeCandidatePassed": true,
+        "solveSeconds": 9.709635000000002
+      },
+      "weighted": {
+        "status": "checked-derived-mask",
+        "targetMaskSha256": "330c79e275c69582d8bc11a88ca1e0453f515d362e499dd1c33fef4428568a7b",
+        "selectedCounts": [
+          5,
+          5
+        ],
+        "exportedError": 0.008282026439978748,
+        "editableError": 0.008250773510016565,
+        "conversionPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "completeCandidatePassed": true,
+        "solveSeconds": 9.661401582999998
+      }
+    },
+    {
+      "id": "real-28a87a8be083f16c-body-1",
+      "maximumCornerDisplacementPixels": 4.839945030459242,
+      "changedMaskPixels": 3041,
+      "totalMaskPixels": 160000,
+      "original": {
+        "status": "checked-derived-mask",
+        "targetMaskSha256": "dcfe82efb52d72f3b841dcca2c57c0a36fa9f63c39053aa4b22d58112b5995c6",
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "exportedError": 0.00464444666700005,
+        "editableError": 0.004556933540031004,
+        "conversionPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "completeCandidatePassed": true,
+        "solveSeconds": 8.925793624999992
+      },
+      "weighted": {
+        "status": "checked-derived-mask",
+        "targetMaskSha256": "57b76dd1df84ef4e4158627fc2b26809158bbaa7234335b49c495dd12a403528",
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "exportedError": 0.00554461634630411,
+        "editableError": 0.00565088295046101,
+        "conversionPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "completeCandidatePassed": true,
+        "solveSeconds": 9.321282082999998
+      }
+    }
+  ],
+  "visualReview": {
+    "reviewer": "assistant",
+    "allEightFreshFitsInspected": true,
+    "pages": [
+      "tmp/heart-learning/u2netp-continuous-original-gallery-v1/fits-1.png",
+      "tmp/heart-learning/u2netp-continuous-weighted-gallery-v1/fits-1.png"
+    ],
+    "observations": [
+      {
+        "id": "real-24b5ed49c9411b11-body-1",
+        "finding": "Both checker-heart reconstructions distort the small internal checker squares. Weighted has more rounded, joined features; its formal <=3% image/feature pass does not establish recovery of the actual cutting pattern."
+      },
+      {
+        "id": "real-dfa7e4b71b43aa86-body-1",
+        "finding": "Both classifiers mistake printed tree and star ink for two-paper weave boundaries. Both reconstruct those printed shapes poorly and remain review-required. A whole-paper body model alone cannot identify the two material layers."
+      },
+      {
+        "id": "real-c7d1e0ad5050db71-body-1",
+        "finding": "Both preserve the large checker, heart and star motifs. Weighted moves the crop by 5.28 source pixels and has modestly greater derived-mask disagreement; neither supplies original cutting-path ground truth."
+      },
+      {
+        "id": "real-28a87a8be083f16c-body-1",
+        "finding": "Both preserve the star and surrounding hearts, with remaining corner/contact distortions. Weighted moves the crop by 4.84 pixels and has slightly higher mask error."
+      }
+    ]
+  },
+  "rootCause": {
+    "caseId": "real-24b5ed49c9411b11-body-1",
+    "diagnostic": {
+      "path": "tmp/heart-learning/u2netp-continuous-count-sensitivity-v1.json",
+      "sha256": "91c33a60cf7f4c2c48c75fe35e6b13f5d0b48863a593d44865ba958a85ef75a5"
+    },
+    "changedPixels": 61,
+    "maskChangeFraction": 0.00038125,
+    "deterministicReplay": "ABBA fixed-round search reproduces every coarse seed score and every 150-step finalist score exactly, plus the original rank order. Thus the count-ranking switch already exists before timed curve refinement.",
+    "originalFirstCounts": [
+      8,
+      8
+    ],
+    "weightedFirstCounts": [
+      7,
+      3
+    ],
+    "simplerSeedMinimumRetention": {
+      "original": 0.35856573705179284,
+      "weighted": 0.6094420600858369
+    },
+    "rankingMechanism": "The 7x3 seed crosses the 60% per-region retention gate after the tiny mask perturbation. Both it and 8x8 now pass; the existing 0.005-per-cut preference puts 7x3 first despite the lower raw image error and stronger region retention of 8x8. The timed runs then refine different routings.",
+    "qualification": "This isolates the upstream deterministic scheduling difference, not every downstream timing effect. It does not prove which cut count is the original template."
+  },
+  "decision": {
+    "weightedPalette": "Retain as a stability candidate: same crop/support decisions, much smaller export-induced corner drift, and same 12/32 formal complete candidates. Do not call it a reconstruction-quality improvement.",
+    "productionNeuralEnablement": false,
+    "reasons": [
+      "Raw browser numerical gates still fail; no tolerances were waived.",
+      "Only 12/32 complete candidates and visually imperfect accepted reconstructions.",
+      "Printed paper remains a material-classification failure.",
+      "Candidate scheduling amplifies small mask perturbations."
+    ],
+    "next": [
+      "Evaluate count-ranking robustness on fixed masks and bounded perturbations; retain competing routings before claiming a cropper quality gain.",
+      "Improve paper-identity supervision rather than using body segmentation to classify printed ink."
+    ]
+  },
+  "resources": {
+    "heavyWorkers": 1,
+    "newOriginalPhotoCopies": 0,
+    "originalAndWeightedControls": "Hardlinks to immutable exact production artifacts",
+    "newModelTraining": false
+  },
+  "validation": {
+    "continuousForegroundTests": 5,
+    "continuousForegroundFailures": 0,
+    "fixedWorkABBAReplays": 4,
+    "exactCoarseAndFineScoreReproduction": true,
+    "editableExportsChecked": 8,
+    "lintErrors": 0,
+    "lintWarnings": 7,
+    "productionChanges": false,
+    "scope": "The complete check/lint/application/inverse/build run and live archive browser QA are recorded in conni-release-qa.json. This follow-up adds a research diagnostic and results only; focused tests, exact replay assertions and lint were rerun without repeating the unchanged production suite."
+  }
+}

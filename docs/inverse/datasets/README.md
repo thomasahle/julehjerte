@@ -80,8 +80,28 @@ Confidence-weighted colour sampling preserves all original crop/support decision
 and reduces maximum export-induced corner drift from 1.94 to 0.19 pixels.
 Distance-only processing worsens it to 7.47 pixels; the combined variant loses
 one existing crop. Both unsuccessful variants are retained. Colour weighting
-also changes some corners by 5–9 pixels relative to the old algorithm, so it
-needs fresh fitting and visual checks before any quality or release claim.
+also changes some corners by 5–9 pixels relative to the old algorithm.
+
+The [fresh original-versus-weighted reconstruction comparison](u2netp-continuous-pipeline-results.json)
+is now complete: both retain **12/32** formally checked pairs. All eight new
+exports pass editable conversion, geometry and nominal paper checks; six pass
+the image/feature checks. All eight were visually inspected. The three accepted
+neural fits have slightly higher mask error with weighting, while the printed
+tree-paper case still fails. Improved numerical stability is therefore **not**
+an established reconstruction-quality improvement, and the NN stays outside
+production.
+
+The red/gold checker heart exposes another source of sensitivity: a **61-pixel
+change out of 160,000** switches the selected counts from 8-by-8 to 7-by-3,
+although the crop moves less than 0.05 source pixels. A fixed-work ABBA replay
+exactly reproduces every initialized and fine-grid score. The simpler candidate's
+worst retained region changes from 35.9% to 60.9%, crossing the 60% scheduling
+gate. The cut-count preference then puts it ahead of the better-fitting 8-by-8
+grid. This upstream change is independent of the later wall-clock refinement;
+both final results still visibly distort the small checker squares. The
+diagnostic is `scripts/inverse/learning/crop-count-sensitivity.mjs`; inputs and
+checksums are in the linked result. Candidate scheduling and printed-paper
+identity remain separate problems to address before release.
 
 The original [fresh 32-photo evaluation](u2netp-fresh-results.json) freezes the model and
 crop policy before inference. It keeps every existing production crop and adds
