@@ -7,17 +7,21 @@ import { rasterizeDesign } from '$lib/paint/rasterize';
 import star from '../../../static/generator/motifs/star.json';
 import heart from '../../../static/generator/motifs/heart.json';
 import tree from '../../../static/generator/motifs/tree.json';
+import nunito from '../../../static/generator/fonts/nunito.json';
+import oswald from '../../../static/generator/fonts/oswald.json';
+import type { Font } from './geometry';
 
 const colors = { left: '#ffffff', right: '#cc0000' };
 
 /** The share of the square where the picture and the finished heart differ. */
 function mismatch(request: GeneratorRequest, n = 100): number {
 	const result = generate(request), mask = rasterizeDesign(result.design, n).data;
-	// The page knows where the default size put the motif once it has made it.
-	const place = request.place !== undefined || (request.scale ?? .7) === .7 ? result.place : generate({ ...request, scale: .7 }).place;
+	// The page knows what the default size chose once it has made it: where
+	// the figure in the checks lies, which pattern the small motifs repeat.
+	const fixed = request.place !== undefined || (request.scale ?? .7) === .7, base = fixed ? result : generate({ ...request, scale: .7 });
 	// Where its strips could not all be whole at the size asked for, the
 	// generator says which it kept.
-	const { rings } = picture({ ...request, scale: result.scale ?? request.scale }, place)!;
+	const { rings } = picture({ ...request, scale: result.scale ?? request.scale, layout: base.layout }, base.place)!;
 	let differ = 0;
 	for (let y = 0; y < n; y++)
 		for (let x = 0; x < n; x++) {
@@ -63,6 +67,17 @@ describe('the picture drawn before the cuts are found', () => {
 		for (const place of [low, (low + high) / 2, high]) expect(height(place)).toBeCloseTo(height(0), 6);
 		expect(height(high + 3)).toBeLessThan(height(0) - 1);
 	});
+
+	it('is the small motifs the cuts make', () => {
+		const request: GeneratorRequest = { mode: 'figure', name: 'Tree', contours: tree.contours as Ring[], colors, style: 'motifs' };
+		expect(mismatch(request)).toBeLessThan(.01);
+	});
+
+	slow('is the letters on the checkerboard the cuts make', () => {
+		for (const [text, font] of [['JUL', nunito], ['GOD\nJUL', oswald]] as const)
+			expect(mismatch({ mode: 'text', name: text, text, font: font as unknown as Font, colors, textFrame: 'checkered' }), text).toBeLessThan(.01);
+		expect(mismatch({ mode: 'figure', name: 'Heart', contours: heart.contours as Ring[], colors, style: 'motifs', scale: .85 })).toBeLessThan(.01);
+	}, 30000);
 
 	it('has none yet for the other frames', () => {
 		expect(picture({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'rays' })).toBeUndefined();

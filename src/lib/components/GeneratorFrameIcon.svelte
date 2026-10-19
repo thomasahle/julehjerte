@@ -3,15 +3,19 @@
 	import { frameRing, type TextFrame } from '$lib/generator/geometry';
 	import type { HeartDesign } from '$lib/types/heart';
 	import type { HeartColors } from '$lib/stores/colors';
-	import { renderHeartSvgMarkup } from '$lib/rendering/heartSvg';
+	import { renderHeartSvgMarkup, renderPictureSvgMarkup } from '$lib/rendering/heartSvg';
+	import type { Ring } from '$lib/generator/geometry';
 	let {
 		frame,
 		design,
+		sketch,
 		colors,
 		unavailable = false
 	}: {
 		frame: TextFrame;
 		design?: HeartDesign;
+		/** The heart's picture, until its cuts are found (see `$lib/generator/picture`). */
+		sketch?: Ring[];
 		colors: HeartColors;
 		unavailable?: boolean;
 	} = $props();
@@ -19,7 +23,9 @@
 	let markup = $derived(
 		design
 			? renderHeartSvgMarkup(design, colors, { idPrefix: `template-${id}` })
-			: ''
+			: sketch && !unavailable
+				? renderPictureSvgMarkup(sketch, colors, { idPrefix: `template-sketch-${id}` })
+				: ''
 	);
 	let outline = $derived(
 		frame === 'woven' || frame === 'air' || frame === 'checkered'
@@ -43,7 +49,7 @@
 <div
 	class="miniature"
 	aria-hidden="true"
-	data-preview={design ? 'ready' : unavailable ? 'unavailable' : 'pending'}
+	data-preview={design ? 'ready' : unavailable ? 'unavailable' : sketch ? 'sketched' : 'pending'}
 >
 	{#key markup}
 		<div class="layer" transition:fade={{ duration }}>

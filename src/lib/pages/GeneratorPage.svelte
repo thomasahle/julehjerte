@@ -58,7 +58,7 @@
 		retry = $state(0);
 	const cache = new GeometryCache();
 	type Failure = { error: string; character?: string };
-	type Thumbnail = { result?: GeneratorResult; failure?: Failure };
+	type Thumbnail = { result?: GeneratorResult; failure?: Failure; sketch?: Ring[] };
 	let thumbnails = $state<Record<string, Thumbnail>>({});
 	const borderNames: Record<GeneratorState['style'], TranslationKey> = {
 		rays: 'generatorRays',
@@ -435,8 +435,27 @@
 		// Small motifs may try several boards; prepare them after the others.
 		pending.sort((a, b) => Number(a.state.style === 'motifs') - Number(b.state.style === 'motifs'));
 		thumbnails = initial;
-		if (busy || snapshot.mode === 'start' || !pending.length) return;
+		if (snapshot.mode === 'start' || !pending.length) return;
 		let live = true;
+		// Frames with a picture show it at once, needing no cuts, rather than
+		// the last motif's heart; the hearts follow as they are made.
+		requestFor(snapshot)
+			.then((request) => {
+				if (!live) return;
+				const sketched = { ...thumbnails };
+				for (const { id, state } of pending) {
+					const rings = picture(variantRequest(request, state))?.rings;
+					if (rings && !sketched[id]?.failure) sketched[id] = { sketch: rings };
+				}
+				thumbnails = sketched;
+			})
+			.catch(() => {
+				/* Foreground reports asset errors. */
+			});
+		if (busy)
+			return () => {
+				live = false;
+			};
 		let background: Worker | null = null;
 		const timer = setTimeout(async () => {
 			try {
@@ -452,16 +471,7 @@
 						background?.terminate();
 						return;
 					}
-					const { state } = pending[index];
-					background!.postMessage({
-						...request,
-						frame: state.frame,
-						style: state.style,
-						textFrame: state.textFrame,
-						fittedCells: fittedCells(state),
-						gap: frameGap(state),
-						board: stripCount(state)
-					});
+					background!.postMessage(variantRequest(request, pending[index].state));
 				};
 				background.onmessage = (e) => {
 					if (!live) return;
@@ -488,6 +498,19 @@
 			background?.terminate();
 		};
 	});
+	/** The request for one frame's thumbnail, the page's request in that frame. */
+	function variantRequest(request: GeneratorRequest, state: GeneratorState): GeneratorRequest {
+		return {
+			...request,
+			frame: state.frame,
+			style: state.style,
+			textFrame: state.textFrame,
+			fittedCells: fittedCells(state),
+			gap: frameGap(state),
+			board: stripCount(state),
+			place: stripPlace(state)
+		};
+	}
 	function chooseMode(mode: GeneratorState['mode']) {
 		config.mode = mode;
 		query = '';
@@ -741,6 +764,7 @@
 							<GeneratorFrameIcon
 								frame={circled(choice.style) || choice.style === 'layers' ? choice.frame : 'checkered'}
 								design={thumbnails[choice.id]?.result?.design}
+								sketch={thumbnails[choice.id]?.sketch}
 								{colors}
 								unavailable={!!thumbnails[choice.id]?.failure}
 							/>
@@ -802,6 +826,7 @@
 							<GeneratorFrameIcon
 								frame={choice.textFrame}
 								design={thumbnails[choice.id]?.result?.design}
+								sketch={thumbnails[choice.id]?.sketch}
 								{colors}
 								unavailable={!!thumbnails[choice.id]?.failure}
 							/>{t(textFrameNames[choice.textFrame], lang)}{#if choice.cells}<small>{t(cellNames[choice.cells], lang)}</small>{/if}
