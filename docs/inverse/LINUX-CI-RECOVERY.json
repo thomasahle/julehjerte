@@ -2208,5 +2208,53 @@
         "Completed shard two adds initializer handoff, circular routing, exhausted corner MILP fallback, two star fidelity checks and shifted-bird failures. The star errors are 0.726875% versus 0.688125% required and 0.73125% versus 0.72% required. The shorter shifted-bird fit fails while the 180-second fit passes."
       ]
     }
+  },
+  "pairedCheckpointInvestigation": {
+    "status": "Paired old/new Linux comparison and deferred-audit full Linux suite running; local paired checks pass",
+    "oldSourceCommit": "bb667e2b",
+    "eagerSourceCommit": "ce6ef218",
+    "deferredSourceCommit": "4e021f00",
+    "method": "Substitute only fit.js and grid.js between revisions; keep tests, masks, other code, budgets and validators fixed. Alternate revision order, use fresh serial processes on one worker, capture all exports including tests failing before their final assertions, and independently render exported cubics with resvg. Replay complete 150-step clearance trajectories to compare priorities on identical coordinates.",
+    "pairedLinux": "https://github.com/thomasahle/julehjerte/actions/runs/39232322117",
+    "deferredFullLinux": "https://github.com/thomasahle/julehjerte/actions/runs/39233004517",
+    "localOldNew": "tmp/checkpoint-policy-study/local-first/summary.json",
+    "localEagerDeferred": "tmp/checkpoint-policy-study/local-deferred/summary.json",
+    "confirmed": [
+      "The bauble baseline returns invalid geometry and uncertain paper at 1.771% independent error. Eager checkpoint priority returns valid geometry and passing paper at 1.888%; this improvement is real.",
+      "The bicycle selects the same fixed-work checkpoint under both policies, and both local exports have 3.202% disagreement. Eager checks nevertheless add approximately 151 ms to preparation.",
+      "The Linux late stacked fit completed only 60 clearance iterations; the full trajectory reaches a legal checkpoint later. The failed run skipped the alternate clearance repair and ended with uncertain paper and excessive image error.",
+      "The two late-routing-repair tests invoke recoverImageFeatures directly and do not execute the changed fitGrid/fitDirect checkpoint policy. Their failures are not causal evidence against that policy.",
+      "Identical source-mask hashes rule out cropping and classification differences within these paired regressions."
+    ],
+    "fix": "Defer costly checkpoint preferences, inspect saved checkpoints in increasing image-error order, and stop when the declared maximum priority is reached. Exact full-work checkpoint selection and gradient trajectory remain unchanged; all final checks and caller limits remain intact.",
+    "localDeferred": {
+      "passed": 10,
+      "failed": 0,
+      "unitTestsPassed": 2,
+      "qualification": "A single paired replay, not a repeatability or Linux release certificate. Bicycle remains an explicitly warned approximation with unresolved source details."
+    },
+    "localPreferenceMilliseconds": {
+      "bicycle": [
+        151,
+        34
+      ],
+      "handoff": [
+        340,
+        114
+      ],
+      "stacked": [
+        322,
+        110
+      ],
+      "bauble": [
+        558,
+        245
+      ],
+      "nearMissTwoCases": [
+        308,
+        224
+      ]
+    },
+    "releaseReady": false
   }
 }
