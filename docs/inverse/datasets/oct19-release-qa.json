@@ -1,0 +1,243 @@
+{
+  "schema": "juleflet-oct19-release-qa-1",
+  "date": "2026-10-19",
+  "status": "deployed-and-live-verified",
+  "pullRequests": [
+    13,
+    14
+  ],
+  "deployedCommit": "dad6abbd894b85ffb4ce0940899ea2f5a0d6f85a",
+  "deployment": {
+    "status": "success",
+    "commit": "dad6abbd894b85ffb4ce0940899ea2f5a0d6f85a",
+    "completedAt": "2026-10-19T18:19:38Z",
+    "url": "https://juleflet.dk/",
+    "livePaintPassed": true,
+    "liveArchivePassed": true,
+    "previewUrl": "http://localhost:4173/"
+  },
+  "ci": {
+    "branchRun": 39295405755,
+    "mainRun": 39300083619,
+    "status": "success",
+    "branchStatus": "success",
+    "branchCorrectness": {
+      "passed": 1123,
+      "failed": 0
+    },
+    "branchTimedQuality": {
+      "passed": 60,
+      "missed": 16,
+      "status": "advisory"
+    },
+    "supersededMainRun": 39296759329,
+    "mainHead": "dad6abbd894b85ffb4ce0940899ea2f5a0d6f85a",
+    "containsReleaseMerge": true,
+    "mainCorrectness": {
+      "passed": 1122,
+      "failed": 0
+    },
+    "mainApplication": {
+      "passed": 2216,
+      "skipped": 142
+    },
+    "mainTimedQuality": {
+      "passed": 67,
+      "missed": 10,
+      "status": "advisory"
+    },
+    "previousFailedMainRun": 39297638196
+  },
+  "localReleaseQa": {
+    "sourceCommit": "6d9a24132cb0264f48cd21e005fa289a903128c7",
+    "applicationTests": {
+      "passed": 2213,
+      "skipped": 142,
+      "filesPassed": 150,
+      "filesSkipped": 2
+    },
+    "typeCheck": {
+      "errors": 0,
+      "warnings": 6
+    },
+    "lint": {
+      "errors": 0,
+      "warnings": 5
+    },
+    "build": "passed",
+    "editableReplay": {
+      "productionChecked": 7,
+      "fallbackChecked": 9,
+      "photos": 16,
+      "exportedMethodCandidates": 20,
+      "geometryAndPaperPasses": 20,
+      "lostChecks": 0,
+      "maxErrorIncrease": 0
+    }
+  },
+  "liveChecks": {
+    "paint": "PASS Paint XOR retracing, two-colour round trip, undo/redo, slider, keyboard, hover geometry, both languages and mobile layout.",
+    "archive": {
+      "passed": true,
+      "results": [
+        {
+          "lang": "da",
+          "pagination": true,
+          "sourceAndAvailabilityFilters": true,
+          "fullIndexSearch": true,
+          "referenceOnlyAdditions": 3,
+          "savedPdfBytes": 181810
+        },
+        {
+          "lang": "en",
+          "pagination": true,
+          "sourceAndAvailabilityFilters": true,
+          "fullIndexSearch": true,
+          "referenceOnlyAdditions": 3,
+          "savedPdfBytes": 181810
+        }
+      ],
+      "mobileWidth": 390,
+      "maximumVisibleRecords": 60,
+      "remoteImageRequests": 0
+    },
+    "recoveredSourceLinks": {
+      "passed": true,
+      "verified": [
+        {
+          "lang": "da",
+          "id": "jhd-darth-vader",
+          "templateLinks": 1,
+          "provenanceLinks": 6
+        },
+        {
+          "lang": "da",
+          "id": "jhd-heart-of-heart",
+          "templateLinks": 1,
+          "provenanceLinks": 6
+        },
+        {
+          "lang": "da",
+          "id": "jhd-node",
+          "templateLinks": 1,
+          "provenanceLinks": 6
+        },
+        {
+          "lang": "da",
+          "id": "jhd-sundays-fourth",
+          "templateLinks": 1,
+          "provenanceLinks": 6
+        },
+        {
+          "lang": "da",
+          "id": "jhd-venus",
+          "templateLinks": 1,
+          "provenanceLinks": 6
+        },
+        {
+          "lang": "da",
+          "id": "haabet-stjerne-af-cirkler",
+          "templateLinks": 1,
+          "provenanceLinks": 4
+        },
+        {
+          "lang": "da",
+          "id": "haabet-eight-points",
+          "templateLinks": 1,
+          "provenanceLinks": 4
+        },
+        {
+          "lang": "da",
+          "id": "haabet-four-quadrilaterals",
+          "templateLinks": 1,
+          "provenanceLinks": 4
+        },
+        {
+          "lang": "en",
+          "id": "jhd-darth-vader",
+          "templateLinks": 1,
+          "provenanceLinks": 6
+        },
+        {
+          "lang": "en",
+          "id": "jhd-heart-of-heart",
+          "templateLinks": 1,
+          "provenanceLinks": 6
+        },
+        {
+          "lang": "en",
+          "id": "jhd-node",
+          "templateLinks": 1,
+          "provenanceLinks": 6
+        },
+        {
+          "lang": "en",
+          "id": "jhd-sundays-fourth",
+          "templateLinks": 1,
+          "provenanceLinks": 6
+        },
+        {
+          "lang": "en",
+          "id": "jhd-venus",
+          "templateLinks": 1,
+          "provenanceLinks": 6
+        },
+        {
+          "lang": "en",
+          "id": "haabet-stjerne-af-cirkler",
+          "templateLinks": 1,
+          "provenanceLinks": 4
+        },
+        {
+          "lang": "en",
+          "id": "haabet-eight-points",
+          "templateLinks": 1,
+          "provenanceLinks": 4
+        },
+        {
+          "lang": "en",
+          "id": "haabet-four-quadrilaterals",
+          "templateLinks": 1,
+          "provenanceLinks": 4
+        }
+      ]
+    }
+  },
+  "visualReview": [
+    "Live English desktop: full-circle 2x2 red/white XOR swatch, continuous slider and brush-radius outline visible; layout fits.",
+    "Live Danish 390px mobile: the three swatches and slider fit without horizontal overflow."
+  ],
+  "evidence": {
+    "results.json": {
+      "path": "tmp/heart-learning/release-oct19/results.json",
+      "sha256": "cc2c6094ae11f1ff9d590d9d68f5658244efde658f30cad564c4a490d7828231"
+    },
+    "final-ci-summary.log": {
+      "path": "tmp/heart-learning/release-oct19/final-ci-summary.log",
+      "sha256": "fd1d2d7df88567cbb7473edd12d4eb712f1ded2764a03f3ddc4b009ddad17acb"
+    },
+    "live-paint.log": {
+      "path": "tmp/heart-learning/release-oct19/live-paint.log",
+      "sha256": "9320ad97d68ef7a7147a3386a348ed46380a6a341d75e7b21a4608c55374b9c8"
+    },
+    "live-archive.log": {
+      "path": "tmp/heart-learning/release-oct19/live-archive.log",
+      "sha256": "63bceae02f6c9931277c479887b1f48adb7151c7225eee9e36ddbd642b2a93aa"
+    },
+    "live-archive-additions.json": {
+      "path": "tmp/heart-learning/release-oct19/live-archive-additions.json",
+      "sha256": "f1a70f153f0f9b36e935554878f18f2eb8859ee668e68b1d48ee698067aef058"
+    },
+    "final-preview-build.log": {
+      "path": "tmp/heart-learning/release-oct19/final-preview-build.log",
+      "sha256": "17e22780da1a9d228efccee9caa8fab0b47bbafd03507e54f908dce03f17e0b7"
+    }
+  },
+  "scope": [
+    "The two releases include drawing controls, solver/paper-check fixes and the source archive.",
+    "Experimental neural weights remain offline. JPEG import parity and other neural research tools do not constitute a deployed model.",
+    "Timed benchmarks retain their original targets. Ten main-run misses are advisory and remain recorded; passing CI does not mean perfect reconstruction.",
+    "The prior failed CI bird output passed independent geometry, paper and two-resolution image/eye checks but missed the 30-second speed target; classification evidence is stored separately.",
+    "Private original images/templates remain in the verified local content-addressed archive store; they are not all published or backed up by Git."
+  ]
+}
