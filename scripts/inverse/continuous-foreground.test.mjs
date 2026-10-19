@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {confidencePalette,subpixelPaperDistance} from './learning/continuous-foreground.mjs';
+import {confidencePalette,subpixelPaperDistance,continuousForeground} from './learning/continuous-foreground.mjs';
+import {foregroundFields} from './learning/foreground-crop.mjs';
 import {close,signedDistance} from '../../static/inverse/locator/fields.js';
 
 const maximumDifference=(a,b)=>a.reduce((m,v,i)=>Math.max(m,Math.abs(v-b[i])),0);
@@ -32,4 +33,14 @@ test('confidence-weighted colour estimates do not jump when one sample crosses 9
 test('subpixel distance rejects malformed or non-finite probability fields',()=>{
  for(const p of [[NaN,0],[Infinity,0],[-.1,0],[1.1,0],[0]])assert.throws(()=>subpixelPaperDistance(Float32Array.from(p),2,1));
  assert.throws(()=>subpixelPaperDistance(new Float32Array(4),2,2,{radius:4}));
+});
+test('continuous post-processing retains original RGB, probabilities and component decisions',()=>{
+ const w=24,h=24,data=new Uint8ClampedArray(w*h*4);
+ for(let i=0;i<w*h;i++)data.set(i%w<w/2?[190,15,15,255]:[245,240,235,255],i*4);
+ const fields=foregroundFields({width:w,height:h,data},new Float32Array(w*h).fill(.999),w,[0,0,w,h]);
+ const before=structuredClone(fields),result=continuousForeground(fields,{palette:true,distance:true});
+ assert.ok(result);assert.deepEqual(fields,before);
+ for(const key of ['r','g','b','paper','mask'])assert.equal(result[key],fields[key]);
+ assert.notEqual(result.pd,fields.pd);assert.notEqual(result.chroma,fields.chroma);
+ assert.deepEqual(continuousForeground(fields),fields);
 });
