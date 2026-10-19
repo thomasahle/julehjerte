@@ -2,57 +2,12 @@
   "schema": "woven-heart-material-pilot-plan-1",
   "scope": "Paired development treatment: nineteen real material instances, adding two reviewed paper scenes and source-verified white-paper labels under printed hearts. Corrected whole-family grouping matches baseline for all seventeen shared images. No held-out tuning, all-data model or deployment.",
   "sourceManifest": "docs/inverse/datasets/real-manifest.json",
-  "sourceManifestSha256": "eac852442cc4fb220ed3a8e8cc7b55397a9006775d38edf685801ea6897f7604",
+  "sourceManifestSha256": "46986981cdbac3fbada54621014a7584a106576688b08807f52753507c8a6ff5",
   "labelSources": [
     {
-      "annotations": "scripts/inverse/datasets/real-materials-motifs.json",
-      "sha256": "5e439770d03347a528746a325ce995fb8f917d096fb480113fb45e4af97ec100",
-      "name": "real-materials-motifs"
-    },
-    {
-      "annotations": "scripts/inverse/datasets/real-materials-pinterest.json",
-      "sha256": "1909f24e8868be1d74458944655009b4e4fdce15fa64e1703a3f2f44bab751ae",
-      "name": "real-materials-pinterest"
-    },
-    {
-      "annotations": "scripts/inverse/datasets/real-materials-printed.json",
-      "sha256": "96368a150b75fc0aa04aa03eda43293b094235cd2741abaa7a55bc4fab0feee2",
-      "name": "real-materials-printed"
-    },
-    {
-      "annotations": "scripts/inverse/datasets/real-materials.json",
-      "sha256": "fae5ef1cf8f1fbf4661776e05454da849be1dcada9f778d88e522d5d29773709",
-      "name": "real-materials"
-    },
-    {
-      "annotations": "scripts/inverse/datasets/real-materials-colors.json",
-      "sha256": "a7567a3a9452d038bb8dcbacbab6117f376b60de268e39c7c636ee2e75c67fe9",
-      "name": "real-materials-colors"
-    },
-    {
-      "annotations": "scripts/inverse/datasets/real-materials-curved.json",
-      "sha256": "2b2dea584e023ac296d603aedb17efd802a7082e54e4fd7f936182461abfad12",
-      "name": "real-materials-curved"
-    },
-    {
-      "annotations": "scripts/inverse/datasets/real-materials-hanging.json",
-      "sha256": "9376385a12d03d5e5e31356f61201912dc40bf037631273cd4a109189cea2727",
-      "name": "real-materials-hanging"
-    },
-    {
-      "annotations": "scripts/inverse/datasets/real-materials-palettes.json",
-      "sha256": "0269eaf9a4ef159b41b4b7e2717afe5254e8fac3b9eeeb5e434cbc81745accba",
-      "name": "real-materials-palettes"
-    },
-    {
-      "annotations": "scripts/inverse/datasets/real-materials-protruding.json",
-      "sha256": "beea1b34e342ee7152d1933e04182c81f1e0fd2d6c110ccdbae2e2c5eac71676",
-      "name": "real-materials-protruding"
-    },
-    {
-      "annotations": "scripts/inverse/datasets/real-materials-paper-scenes.json",
-      "sha256": "c4857fc3cceec4c2150353515dfb679ea8055bf65a30c10a4bd724d0bb118741",
-      "name": "real-materials-paper-scenes"
+      "name": "current-16",
+      "annotations": "scripts/inverse/datasets/real-materials-encoder-tail.json",
+      "sha256": "b245c23fb51691a4db2000ca5226f6ab400511c612d8414fbc50ff4ab4e80374"
     }
   ],
   "initialRun": "tmp/heart-learning/foreground-scene-v1/scene-trained",
@@ -81,9 +36,6 @@
     {
       "id": "framed-motif-family",
       "members": [
-        "real-2044b1d98ed6f262-body-1",
-        "real-3f7b76e1a98e808f-body-1",
-        "real-45744a03afddccb1-body-1",
         "real-5330aa8b62176216-body-1",
         "real-abf590088db891f9-body-1",
         "real-340f5e5b0f447889-body-1"
