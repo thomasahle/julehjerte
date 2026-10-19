@@ -116,6 +116,32 @@ describe('the complete heart archive', () => {
 		}
 	});
 
+	it('links editable SVG originals to existing designs without presenting alternate formats as extra sheets', () => {
+		const originals = [
+			['jhd-darth-vader', 'darth_vader', '20170112161918'],
+			['jhd-heart-of-heart', 'heart_of_heart', '20170114132905'],
+			['jhd-node', 'node', '20170114051312'],
+			['jhd-sundays-fourth', 'sundays_fourth', '20170112181839'],
+			['jhd-venus', 'venus', '20170112163856']
+		];
+		for (const lang of ['da', 'en'] as const) {
+			const records = archiveRecords(lang);
+			for (const [id, stem, capture] of originals) {
+				const matches = records.filter(record => record.id === id);
+				expect(matches).toHaveLength(1);
+				const record = matches[0];
+				const original = `http://julehjertedesign.dk/diagrams/${stem}.svg`;
+				expect(record.sourceUrls).toContain(original);
+				expect(record.sourceUrls).toContain(`https://web.archive.org/web/${capture}id_/${original}`);
+				expect(record.templateUrls).toHaveLength(1);
+				expect(record.templateUrls[0]).toMatch(/\.pdf$/);
+				expect(record.credits).toEqual(['Johan Rosenkilde']);
+				expect(record.license).toBe('unknown');
+				expect(record.preservedTemplates).toBeUndefined();
+			}
+		}
+	});
+
 	it('preserves two further Haabet designs without counting alternate names or photos as designs', () => {
 		const records = archiveRecords('en');
 		const nine = records.find(r => r.id === 'haabet-nine-hearts')!;

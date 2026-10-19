@@ -1511,6 +1511,13 @@
           "retrievedUrl": "https://web.archive.org/web/20170112130334id_/http://julehjertedesign.dk/diagrams/darth_vader.pdf",
           "retrievedAt": "2026-10-19T12:57:26.016446+00:00",
           "archiveCaptureTimestamp": "20170112130334"
+        },
+        {
+          "collection": "jhd-original-svg-1",
+          "originalUrl": "http://julehjertedesign.dk/diagrams/darth_vader.pdf",
+          "retrievedUrl": "https://web.archive.org/web/20170112130334id_/http://julehjertedesign.dk/diagrams/darth_vader.pdf",
+          "retrievedAt": "2026-10-19T12:57:26.016446+00:00",
+          "archiveCaptureTimestamp": "20170112130334"
         }
       ]
     },
@@ -1524,6 +1531,13 @@
       "sources": [
         {
           "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/diagrams/heart_of_heart.pdf",
+          "retrievedUrl": "https://web.archive.org/web/20170114063322id_/http://julehjertedesign.dk/diagrams/heart_of_heart.pdf",
+          "retrievedAt": "2026-10-19T12:57:31.398766+00:00",
+          "archiveCaptureTimestamp": "20170114063322"
+        },
+        {
+          "collection": "jhd-original-svg-1",
           "originalUrl": "http://julehjertedesign.dk/diagrams/heart_of_heart.pdf",
           "retrievedUrl": "https://web.archive.org/web/20170114063322id_/http://julehjertedesign.dk/diagrams/heart_of_heart.pdf",
           "retrievedAt": "2026-10-19T12:57:31.398766+00:00",
@@ -1545,6 +1559,13 @@
           "retrievedUrl": "https://web.archive.org/web/20170114005929id_/http://julehjertedesign.dk/diagrams/node.pdf",
           "retrievedAt": "2026-10-19T12:57:37.316274+00:00",
           "archiveCaptureTimestamp": "20170114005929"
+        },
+        {
+          "collection": "jhd-original-svg-1",
+          "originalUrl": "http://julehjertedesign.dk/diagrams/node.pdf",
+          "retrievedUrl": "https://web.archive.org/web/20170114005929id_/http://julehjertedesign.dk/diagrams/node.pdf",
+          "retrievedAt": "2026-10-19T12:57:37.316274+00:00",
+          "archiveCaptureTimestamp": "20170114005929"
         }
       ]
     },
@@ -1562,6 +1583,13 @@
           "retrievedUrl": "https://web.archive.org/web/20170112122538id_/http://julehjertedesign.dk/diagrams/sundays_fourth.pdf",
           "retrievedAt": "2026-10-19T12:57:42.360118+00:00",
           "archiveCaptureTimestamp": "20170112122538"
+        },
+        {
+          "collection": "jhd-original-svg-1",
+          "originalUrl": "http://julehjertedesign.dk/diagrams/sundays_fourth.pdf",
+          "retrievedUrl": "https://web.archive.org/web/20170112122538id_/http://julehjertedesign.dk/diagrams/sundays_fourth.pdf",
+          "retrievedAt": "2026-10-19T12:57:42.360118+00:00",
+          "archiveCaptureTimestamp": "20170112122538"
         }
       ]
     },
@@ -1575,6 +1603,13 @@
       "sources": [
         {
           "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/diagrams/venus.pdf",
+          "retrievedUrl": "https://web.archive.org/web/20170112121201id_/http://julehjertedesign.dk/diagrams/venus.pdf",
+          "retrievedAt": "2026-10-19T12:57:48.276865+00:00",
+          "archiveCaptureTimestamp": "20170112121201"
+        },
+        {
+          "collection": "jhd-original-svg-1",
           "originalUrl": "http://julehjertedesign.dk/diagrams/venus.pdf",
           "retrievedUrl": "https://web.archive.org/web/20170112121201id_/http://julehjertedesign.dk/diagrams/venus.pdf",
           "retrievedAt": "2026-10-19T12:57:48.276865+00:00",
@@ -1719,6 +1754,13 @@
           "retrievedUrl": "https://web.archive.org/web/20160405032756id_/http://julehjertedesign.dk/darth-vader-julehjerte/",
           "retrievedAt": "2026-10-19T12:57:14.596436+00:00",
           "archiveCaptureTimestamp": "20160405032756"
+        },
+        {
+          "collection": "jhd-original-svg-1",
+          "originalUrl": "http://julehjertedesign.dk/darth-vader-julehjerte/",
+          "retrievedUrl": "https://web.archive.org/web/20160405032756id_/http://julehjertedesign.dk/darth-vader-julehjerte/",
+          "retrievedAt": "2026-10-19T12:57:14.596436+00:00",
+          "archiveCaptureTimestamp": "20160405032756"
         }
       ]
     },
@@ -1732,6 +1774,13 @@
       "sources": [
         {
           "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/fjerde-soendag-i-advent/",
+          "retrievedUrl": "https://web.archive.org/web/20160405032316id_/http://julehjertedesign.dk/fjerde-soendag-i-advent/",
+          "retrievedAt": "2026-10-19T12:57:53.928314+00:00",
+          "archiveCaptureTimestamp": "20160405032316"
+        },
+        {
+          "collection": "jhd-original-svg-1",
           "originalUrl": "http://julehjertedesign.dk/fjerde-soendag-i-advent/",
           "retrievedUrl": "https://web.archive.org/web/20160405032316id_/http://julehjertedesign.dk/fjerde-soendag-i-advent/",
           "retrievedAt": "2026-10-19T12:57:53.928314+00:00",
@@ -1753,6 +1802,13 @@
           "retrievedUrl": "https://web.archive.org/web/20160405033512id_/http://julehjertedesign.dk/julehjertets-hjerte/",
           "retrievedAt": "2026-10-19T12:57:59.936109+00:00",
           "archiveCaptureTimestamp": "20160405033512"
+        },
+        {
+          "collection": "jhd-original-svg-1",
+          "originalUrl": "http://julehjertedesign.dk/julehjertets-hjerte/",
+          "retrievedUrl": "https://web.archive.org/web/20160405033512id_/http://julehjertedesign.dk/julehjertets-hjerte/",
+          "retrievedAt": "2026-10-19T12:57:59.936109+00:00",
+          "archiveCaptureTimestamp": "20160405033512"
         }
       ]
     },
@@ -1766,6 +1822,13 @@
       "sources": [
         {
           "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/node-julehjerte/",
+          "retrievedUrl": "https://web.archive.org/web/20160405033449id_/http://julehjertedesign.dk/node-julehjerte/",
+          "retrievedAt": "2026-10-19T12:58:09.158252+00:00",
+          "archiveCaptureTimestamp": "20160405033449"
+        },
+        {
+          "collection": "jhd-original-svg-1",
           "originalUrl": "http://julehjertedesign.dk/node-julehjerte/",
           "retrievedUrl": "https://web.archive.org/web/20160405033449id_/http://julehjertedesign.dk/node-julehjerte/",
           "retrievedAt": "2026-10-19T12:58:09.158252+00:00",
@@ -1790,6 +1853,13 @@
         },
         {
           "collection": "jhd-geometric-1",
+          "originalUrl": "http://julehjertedesign.dk/om/",
+          "retrievedUrl": "https://web.archive.org/web/20160405091838id_/http://julehjertedesign.dk/om/",
+          "retrievedAt": "2026-10-19T12:58:15.877666+00:00",
+          "archiveCaptureTimestamp": "20160405091838"
+        },
+        {
+          "collection": "jhd-original-svg-1",
           "originalUrl": "http://julehjertedesign.dk/om/",
           "retrievedUrl": "https://web.archive.org/web/20160405091838id_/http://julehjertedesign.dk/om/",
           "retrievedAt": "2026-10-19T12:58:15.877666+00:00",
@@ -1872,6 +1942,13 @@
       "sources": [
         {
           "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/venus-julehjerte/",
+          "retrievedUrl": "https://web.archive.org/web/20161018014112id_/http://julehjertedesign.dk/venus-julehjerte/",
+          "retrievedAt": "2026-10-19T12:59:05.972077+00:00",
+          "archiveCaptureTimestamp": "20161018014112"
+        },
+        {
+          "collection": "jhd-original-svg-1",
           "originalUrl": "http://julehjertedesign.dk/venus-julehjerte/",
           "retrievedUrl": "https://web.archive.org/web/20161018014112id_/http://julehjertedesign.dk/venus-julehjerte/",
           "retrievedAt": "2026-10-19T12:59:05.972077+00:00",
@@ -2291,6 +2368,13 @@
           "retrievedUrl": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json&collapse=urlkey&fl=timestamp,original,mimetype,statuscode,digest,length&limit=200",
           "retrievedAt": "2026-10-19T17:24:33.380650+00:00",
           "archiveCaptureTimestamp": null
+        },
+        {
+          "collection": "jhd-original-svg-1",
+          "originalUrl": null,
+          "retrievedUrl": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json&collapse=urlkey&fl=timestamp,original,mimetype,statuscode,digest,length&limit=200",
+          "retrievedAt": "2026-10-19T17:24:33.380650+00:00",
+          "archiveCaptureTimestamp": null
         }
       ]
     },
@@ -2334,13 +2418,98 @@
           "archiveCaptureTimestamp": null
         }
       ]
+    },
+    {
+      "sha256": "f48e22897748ae197325ddd6bce1ba8e817b9a3011425ff8d851edb32f5d07c0",
+      "bytes": 165782,
+      "path": "archive-store/heart-preservation/objects/f48e22897748ae197325ddd6bce1ba8e817b9a3011425ff8d851edb32f5d07c0.svg",
+      "contentType": "image/svg+xml",
+      "role": "cutting-template-editable-original",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "jhd-original-svg-1",
+          "originalUrl": "http://julehjertedesign.dk/diagrams/darth_vader.svg",
+          "retrievedUrl": "https://web.archive.org/web/20170112161918id_/http://julehjertedesign.dk/diagrams/darth_vader.svg",
+          "retrievedAt": "2026-10-19T17:40:01.479423+00:00",
+          "archiveCaptureTimestamp": "20170112161918"
+        }
+      ]
+    },
+    {
+      "sha256": "815773f75a4c9f7f1743ac55667fcc580c762f21f654785b7434b0ee7a99631f",
+      "bytes": 87628,
+      "path": "archive-store/heart-preservation/objects/815773f75a4c9f7f1743ac55667fcc580c762f21f654785b7434b0ee7a99631f.svg",
+      "contentType": "image/svg+xml",
+      "role": "cutting-template-editable-original",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "jhd-original-svg-1",
+          "originalUrl": "http://julehjertedesign.dk/diagrams/heart_of_heart.svg",
+          "retrievedUrl": "https://web.archive.org/web/20170114132905id_/http://julehjertedesign.dk/diagrams/heart_of_heart.svg",
+          "retrievedAt": "2026-10-19T17:40:05.636089+00:00",
+          "archiveCaptureTimestamp": "20170114132905"
+        }
+      ]
+    },
+    {
+      "sha256": "3ec49a5d82ac13664a4a01f7114d580cc8b7c4f8a32a3fe42996286956a79c7a",
+      "bytes": 52611,
+      "path": "archive-store/heart-preservation/objects/3ec49a5d82ac13664a4a01f7114d580cc8b7c4f8a32a3fe42996286956a79c7a.svg",
+      "contentType": "image/svg+xml",
+      "role": "cutting-template-editable-original",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "jhd-original-svg-1",
+          "originalUrl": "http://julehjertedesign.dk/diagrams/node.svg",
+          "retrievedUrl": "https://web.archive.org/web/20170114051312id_/http://julehjertedesign.dk/diagrams/node.svg",
+          "retrievedAt": "2026-10-19T17:40:08.749922+00:00",
+          "archiveCaptureTimestamp": "20170114051312"
+        }
+      ]
+    },
+    {
+      "sha256": "9a66ba250337e812fabf697fb492b7a355a79a93190b7d3a53d01ba9f4c59323",
+      "bytes": 137219,
+      "path": "archive-store/heart-preservation/objects/9a66ba250337e812fabf697fb492b7a355a79a93190b7d3a53d01ba9f4c59323.svg",
+      "contentType": "image/svg+xml",
+      "role": "cutting-template-editable-original",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "jhd-original-svg-1",
+          "originalUrl": "http://julehjertedesign.dk/diagrams/sundays_fourth.svg",
+          "retrievedUrl": "https://web.archive.org/web/20170112181839id_/http://julehjertedesign.dk/diagrams/sundays_fourth.svg",
+          "retrievedAt": "2026-10-19T17:40:12.076266+00:00",
+          "archiveCaptureTimestamp": "20170112181839"
+        }
+      ]
+    },
+    {
+      "sha256": "c6b5551283544d542394e95500e5ba07a430c5334cfaf6d6b9e5e7d1a8151fab",
+      "bytes": 59717,
+      "path": "archive-store/heart-preservation/objects/c6b5551283544d542394e95500e5ba07a430c5334cfaf6d6b9e5e7d1a8151fab.svg",
+      "contentType": "image/svg+xml",
+      "role": "cutting-template-editable-original",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "jhd-original-svg-1",
+          "originalUrl": "http://julehjertedesign.dk/diagrams/venus.svg",
+          "retrievedUrl": "https://web.archive.org/web/20170112163856id_/http://julehjertedesign.dk/diagrams/venus.svg",
+          "retrievedAt": "2026-10-19T17:40:16.087876+00:00",
+          "archiveCaptureTimestamp": "20170112163856"
+        }
+      ]
     }
   ],
   "counts": {
-    "objects": 133,
-    "originalBytes": 15995754,
+    "objects": 138,
+    "originalBytes": 16498711,
     "publicObjects": 1
   },
   "scope": "Original source documents and evidence, retained once by SHA-256. Public template copies require recorded redistribution terms. Other originals are kept in archive-store, outside tmp and outside Git/public assets. A second off-device backup is still needed.",
-  "updatedAt": "2026-10-19T17:28:51.663711+00:00"
+  "updatedAt": "2026-10-19T17:46:40.716626+00:00"
 }
