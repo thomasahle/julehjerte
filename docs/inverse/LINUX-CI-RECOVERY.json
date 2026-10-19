@@ -1472,10 +1472,20 @@
       "maximumAdditionalImageError": 0.01
     },
     "appChecks": {
-      "status": "in_progress",
+      "status": "passed",
       "sourceCommit": "cddc6382",
+      "check": "passed (six existing warnings)",
+      "lint": "passed (four existing warnings)",
+      "vitest": {
+        "testFiles": 112,
+        "passed": 1570,
+        "skipped": 1,
+        "failed": 0
+      },
+      "build": "passed",
       "logPrefix": "/tmp/julehjerte-matching-recovery-"
     },
-    "releaseReady": false
+    "releaseReady": false,
+    "remainingFailureDiagnosis": "The shifted bird has no enclosed-eye candidate before cleanup: source colours remain but its small opening is connected to the background. Its local-detail attempts encounter same-sheet self-intersections; final cleanup did not create the missing enclosure. Short-budget detailed-grid and late-clearance failures still lose most of the cleanup window to initialization, geometry and paper checks. Full Linux replay remains failed; focused matching success is not release acceptance."
   }
 }
