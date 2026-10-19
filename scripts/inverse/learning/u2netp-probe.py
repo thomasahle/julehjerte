@@ -39,9 +39,13 @@ def main():
     for row in source['files']: checked({'path': str(root/row['path']), 'sha256': row['sha256']})
     checkpoint = checked(plan['checkpoint'])
     selected = json.loads(checked(plan['selection']).read_bytes())
-    control = json.loads(checked(plan['control']).read_bytes())
-    assert control['status'] == 'complete'
-    assert [r['id'] for r in control['rows'] if r['method'] == 'production'] == [r['id'] for r in selected['photos']]
+    if 'control' in plan:
+        control = json.loads(checked(plan['control']).read_bytes())
+        assert control['status'] == 'complete'
+        assert [r['id'] for r in control['rows'] if r['method'] == 'production'] == [r['id'] for r in selected['photos']]
+    else:
+        assert selected['schema'] == 'saliency-validation-selection-1'
+        assert plan['protocol']['pairedControl'] == 'fresh-production'
     torch.set_num_threads(1); torch.set_num_interop_threads(1)
     import skimage
     assert skimage.__version__ == plan['protocol']['skimage']

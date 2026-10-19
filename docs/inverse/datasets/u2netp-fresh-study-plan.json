@@ -1,0 +1,76 @@
+{
+  "schema": "saliency-fresh-study-1",
+  "status": "predeclared",
+  "selection": {
+    "path": "docs/inverse/datasets/u2netp-fresh-selection.json",
+    "sha256": "44cbdfb7babdfc6c606315694562b898c1220b525948c442c179831fc240f8e6"
+  },
+  "checkpoint": {
+    "path": "tmp/heart-learning/u2netp-source-v1/u2netp.pth",
+    "sha256": "e7567cde013fb64813973ce6e1ecc25a80c05c3ca7adbc5a54f3c3d90991b854"
+  },
+  "upstreamSource": {
+    "path": "tmp/heart-learning/u2netp-source-v1/source.json",
+    "sha256": "f6fe434979abcd0531fede48187b3009d2d7996096fc8c507fcbaf90f428577a"
+  },
+  "model": {
+    "path": "tmp/heart-learning/u2netp-onnx-v1/model.onnx",
+    "sha256": "bfe99f0e74eed0df96992a635adc5df1e06364aa8c526a5867575c0f1055c1a6"
+  },
+  "browserRuntime": {
+    "path": "tmp/heart-learning/onnx-web-1.19.2/manifest.json",
+    "sha256": "7a54b46a7f0d7eea202553d1470e0c53ebdfef19b67b8b61ac120b88e131c29d"
+  },
+  "runtimeProtocol": {
+    "threads": 1,
+    "inputShape": [
+      1,
+      3,
+      320,
+      320
+    ],
+    "opset": 17,
+    "onnx": "1.19.1",
+    "onnxruntime": "1.19.2",
+    "inputAtol": 1e-06,
+    "probabilityAtol": 2e-05,
+    "threshold": 0.5,
+    "warmupRuns": 1,
+    "timingRuns": 5
+  },
+  "pipeline": {
+    "policy": "retain-production-reviewed-partial-fallback-v1",
+    "selection": "Keep every production crop. Only if none exists, accept an outline-supported neural proposal with observed rectified overlap >=99% and maximum axis-normalized extrapolation <=5%, always needs_review. Use analytic projective coverage; no mask score or template selects the crop.",
+    "observedFraction": 0.99,
+    "maximumExtrapolation": 0.05,
+    "timeLimitSeconds": 10,
+    "trials": 0,
+    "target": "mask",
+    "methods": [
+      "production",
+      "fallback"
+    ],
+    "classifier": "Unchanged RGB mixture classifier",
+    "fits": "Reuse the exact production fit if the crop is unchanged. Fit new neural proposals independently; retain all failures. Do not change masks, corners, model or thresholds per image.",
+    "validation": "Independent exported weave error <=3%, original feature checks, geometry/paper checks, production editable conversion and independent editable-paper audit. Visual review of all photos/crops and distinct outputs.",
+    "missing": "No manual rescue or result-dependent replacement. Record photo eligibility misclassifications and possible irregular weaving separately without removing them from primary denominators."
+  },
+  "resources": {
+    "workers": 1,
+    "newPhotoDownloads": 0,
+    "newSourcePhotoCopies": 0,
+    "maxTotalArtifactMiB": 140,
+    "probeMiB": 16,
+    "nativeMiB": 72,
+    "browserMiB": 16,
+    "pipelineMiB": 30
+  },
+  "sourcePins": {
+    "scripts/inverse/learning/partial-photo-crop.mjs": "69d3b078258e6c43296f7dec37bd40a875728aa3bd2e4ec2fb50ffcd6ec9c349",
+    "scripts/inverse/learning/u2netp-input.mjs": "b2951a0126331652c747572991a2cfc30b27e0812a21500d140f0c6450db3624",
+    "scripts/inverse/learning/u2netp-probe.py": "8da2d3b9fc77b68d96a56afef76a6eb1bbc74068b2d48b595eeb240a809e88f8",
+    "scripts/inverse/learning/u2netp-export.py": "fc8c3231544eeba57614393f6f1ea280df5914ea4513447ad0d92091e8f32b36",
+    "scripts/inverse/learning/u2netp-browser.mjs": "4e2b54012dee39e357635652d32c6927212bb323f05915d6cc8d1803142b737a"
+  },
+  "scope": "Prospective test of the fixed pretrained saliency model and new review-required partial-photo policy on 32 separately selected photos from five known source groups. This is not proof of new-source or new-motif generalization. No training. Numerical gates retained even if functional outcomes agree."
+}

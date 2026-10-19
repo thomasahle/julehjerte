@@ -2,6 +2,7 @@
 import argparse
 import importlib.util
 import json
+import os
 from pathlib import Path
 import time
 import numpy as np
@@ -54,15 +55,18 @@ def main():
     import skimage
     assert onnx.__version__ == protocol['onnx'] and ort.__version__ == protocol['onnxruntime']
     assert skimage.__version__ == original_plan['protocol']['skimage']
-    model = module(root/'model/u2net.py', 'u2netp_architecture').U2NETP(3, 1).eval()
-    model.load_state_dict(torch.load(checkpoint, map_location='cpu', weights_only=True), strict=True)
     loader = module(root/'data_loader.py', 'u2netp_loader')
     rescale, normalize = loader.RescaleT(320), loader.ToTensorLab(flag=0)
     args.output.mkdir(parents=True, exist_ok=False)
     file = args.output/'model.onnx'
-    with torch.no_grad():
-        torch.onnx.export(Saliency(model).eval(), torch.zeros(1, 3, 320, 320), str(file),
-                          input_names=['rgb'], output_names=['saliency'], opset_version=protocol['opset'], dynamo=False)
+    if 'reuseModel' in plan:
+        os.link(checked(plan['reuseModel']), file)
+    else:
+        model = module(root/'model/u2net.py', 'u2netp_architecture').U2NETP(3, 1).eval()
+        model.load_state_dict(torch.load(checkpoint, map_location='cpu', weights_only=True), strict=True)
+        with torch.no_grad():
+            torch.onnx.export(Saliency(model).eval(), torch.zeros(1, 3, 320, 320), str(file),
+                              input_names=['rgb'], output_names=['saliency'], opset_version=protocol['opset'], dynamo=False)
     graph = onnx.load(file); onnx.checker.check_model(graph, full_check=True)
     assert not any(t.data_location == onnx.TensorProto.EXTERNAL for t in graph.graph.initializer)
     options = ort.SessionOptions(); options.intra_op_num_threads = options.inter_op_num_threads = 1
@@ -72,6 +76,7 @@ def main():
               'sourceSha256': digest(Path(__file__).read_bytes()), 'rows': [],
               'onnx': {'path': file.name, 'sha256': digest(file.read_bytes()), 'bytes': file.stat().st_size},
               'runtime': {'onnx': onnx.__version__, 'onnxruntime': ort.__version__, 'torch': torch.__version__, 'threads': 1}}
+    if 'reuseModel' in plan: result['reusedModel'] = plan['reuseModel']
     def save(): (args.output/'report.json').write_text(json.dumps(result, indent=2)+'\n')
     save()
     try:

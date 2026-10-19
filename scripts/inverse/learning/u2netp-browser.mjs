@@ -46,7 +46,7 @@ function difference(actual,expected,probabilities=false) {
 await fs.mkdir(args.output,{recursive:false});
 const result={schema:'u2netp-browser-1',status:'running',native:{path:args.native,sha256:sha(nativeBytes)},
   nativeGatesPassed:native.passed,implementation,sourceSha256:sha(await fs.readFile(new URL(import.meta.url))),rows:[],errors:[],
-  scope:'All sixteen original JPEGs through production importer and portable skimage-equivalent input. One-thread WASM, no fine-tuning. Failed numerical gates remain visible. Development cohort only.'};
+  scope:'Every selected original JPEG through production importer and portable skimage-equivalent input. One-thread WASM, no fine-tuning. Failed numerical gates remain visible; cohort limitations are inherited from the selection plan.'};
 const manifest=structuredClone(original);manifest.status='running';manifest.fieldOrigin={kind:'frozen-upstream-saliency-browser-wasm',modelSha256:native.onnx.sha256};
 const save=()=>fs.writeFile(path.join(args.output,'report.json'),JSON.stringify(result,null,2)+'\n');
 const server=http.createServer((req,res)=>{const f=files.get(req.url);if(req.method!=='GET'||!f){res.writeHead(404).end();return;}res.writeHead(200,{'Content-Type':f.type,'Cache-Control':'no-store'}).end(f.bytes);});
