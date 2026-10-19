@@ -10,9 +10,11 @@ import {rectifyMaterialPrediction} from './material-target.mjs';
 import {supportedCropOutline} from '../../../static/inverse/core/crop.js';
 import {prepare} from '../../../static/inverse/core/engine.js';
 import {AUTOMATIC_PRESET} from '../../../static/inverse/core/presets.js';
+import {continuousForeground} from './continuous-foreground.mjs';
 
 const args=Object.fromEntries(process.argv.slice(2).map(a=>a.replace(/^--/,'').split('=')));
-assert.ok(args.reference&&args.native&&args.browser&&args.output&&Object.keys(args).every(k=>['reference','native','browser','output'].includes(k)));
+assert.ok(args.reference&&args.native&&args.browser&&args.output&&Object.keys(args).every(k=>['reference','native','browser','output','postprocess'].includes(k)));
+assert.ok(!args.postprocess||['weighted-palette','subpixel-distance','both'].includes(args.postprocess));
 const hash=b=>createHash('sha256').update(b).digest('hex');
 const probes={};
 for(const name of ['reference','native','browser']){
@@ -34,6 +36,7 @@ for(const name of ['reference','native','browser']){
  probes[name]={manifest,sha256:hash(bytes),root:args[name],filename};
 }
 const saliency=probes.reference.manifest.resolution===320;
+assert.ok(!args.postprocess||saliency,'Continuous foreground experiments currently apply to saliency only.');
 if(saliency){
  const browser=JSON.parse(await fs.readFile(path.join(args.browser,'report.json')));
  assert.equal(browser.status,'complete');assert.equal(browser.native.sha256,probes.native.sha256);
@@ -46,10 +49,12 @@ for(const p of Object.values(probes)){
  assert.equal(p.manifest.resolution??256,probes.reference.manifest.resolution??256);
 }
 const result={schema:saliency?'saliency-export-crop-parity-1':'material-export-crop-parity-1',status:'running',rows:[],
+ ...(args.postprocess?{postprocess:args.postprocess}:{}),
  inputs:Object.fromEntries(Object.entries(probes).map(([k,v])=>[k,{path:path.join(v.root,v.filename),sha256:v.sha256}])),
  sourceHashes:{},scope:'Numerical parity only, no solver or new quality measurement. Freeze performance.now during detection so every method can examine the same finite orientation list; this differs from the production two-second orientation deadline. No ROI, annotation corners or templates are supplied.'};
 for(const file of [new URL(import.meta.url).pathname,...(await fs.readdir('static/inverse',{recursive:true})).filter(p=>/^(core|locator)\/.+\.js$/.test(p)).map(p=>'static/inverse/'+p),
- 'scripts/inverse/learning/foreground-crop.mjs','scripts/inverse/learning/material-fields.mjs','scripts/inverse/learning/material-target.mjs'])result.sourceHashes[file]=hash(await fs.readFile(file));
+ 'scripts/inverse/learning/foreground-crop.mjs','scripts/inverse/learning/material-fields.mjs','scripts/inverse/learning/material-target.mjs',
+ 'scripts/inverse/learning/continuous-foreground.mjs'])result.sourceHashes[file]=hash(await fs.readFile(file));
 await fs.mkdir(args.output,{recursive:false});
 const save=()=>fs.writeFile(path.join(args.output,'report.json'),JSON.stringify(result,null,2)+'\n');
 const differing=(a,b)=>a.reduce((s,v,i)=>s+Number(v!==b[i]),0);
@@ -73,7 +78,8 @@ try{
    const assets=saliency?input.assets:input.assets[probe.manifest.methods[0]],body=await field(probe,saliency?assets['probability.f32']:assets.body),material=saliency?undefined:await field(probe,assets.material);
    let detection;const now=performance.now.bind(performance),start=now();
    const clock=mock.method(performance,'now',()=>0);
-   try{detection=await detectForegroundCrop(source,{probability:body,material,resolution,window:input.window});}finally{clock.mock.restore();}
+   try{detection=await detectForegroundCrop(source,{probability:body,material,resolution,window:input.window,
+    ...(args.postprocess?{refineFields:fields=>continuousForeground(fields,{palette:args.postprocess!=='subpixel-distance',distance:args.postprocess!=='weighted-palette'})}:{})});}finally{clock.mock.restore();}
    const crop=detection.candidates[0],record={status:detection.status,crop:!!crop,supported:!!crop&&supportedCropOutline(crop.locator??detection.proposal),
     seconds:((now()-start)/1000),attemptedAngles:detection.attempts.map(r=>r.degrees),quad:crop?.quad??null};
    let target,rgb;
