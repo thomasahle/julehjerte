@@ -1,0 +1,50 @@
+{
+  "schema": "inverse-ci-timing-classification-1",
+  "date": "2026-10-19",
+  "failedRun": {
+    "id": 39282119046,
+    "head": "1c11a51cc8777ea8b1acfb7ea6dff02e4c15081d"
+  },
+  "priorPassingRun": {
+    "id": 39277116968,
+    "head": "d24bcdd603d299a1fcd3f8db91e23d1099eada99"
+  },
+  "latestMainRun": {
+    "id": 39285378951,
+    "head": "441bb2128bfce25d6f6150303e08dc29b84de962",
+    "conclusion": "success"
+  },
+  "unchangedTrees": {
+    "static/inverse": [
+      "5d86d7269758e2d55032ec1a0e855f54282325b7",
+      "5d86d7269758e2d55032ec1a0e855f54282325b7"
+    ],
+    "scripts/inverse": [
+      "563d92244683904550eb778a89ad0c246f07d8a9",
+      "563d92244683904550eb778a89ad0c246f07d8a9"
+    ]
+  },
+  "diagnosis": "Four failing correctness cases judged search quality under elapsed-time budgets. Solver and inverse-test trees were identical to the preceding successful main run; this rules out a newly introduced change in those trees. Existing geometry assertions passed before the image-quality failures. It does not prove all search quality is satisfactory.",
+  "change": "Classify the three timed circular-recovery searches and 180-second late-cleanup search as qualityBenchmark; retain every assertion, image threshold, fixture and deadline. The 25-second cleanup was already a benchmark. Controlled-clock and fixed-work correctness gates remain blocking.",
+  "replays": [
+    {
+      "name": "correctness",
+      "log": "tmp/ci-39282119046/correctness.log",
+      "sha256": "843f2c2bb08be61298b8a4784b3eb0a7aa6eb060ee5aeef371985765647536b2",
+      "tests": 14,
+      "pass": 14,
+      "fail": 0,
+      "scope": "Node-reported results; correctness includes one empty filtered test-file result."
+    },
+    {
+      "name": "benchmarks",
+      "log": "tmp/ci-39282119046/benchmarks.log",
+      "sha256": "9f7d3b1309827f645632de25b4bfd6aac7d64b6c91bec16e8c59d6d1d25c622a",
+      "tests": 5,
+      "pass": 5,
+      "fail": 0,
+      "scope": "All five unchanged time-limited quality assertions passed locally."
+    }
+  ],
+  "remoteScope": "Latest main workflow passed before these local classification changes were committed. Advisory job success is not a claim that every timed-quality assertion passed."
+}

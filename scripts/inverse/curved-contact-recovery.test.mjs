@@ -1,4 +1,5 @@
 import test from 'node:test';
+import {qualityBenchmark} from './quality-benchmark.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import {createHash} from 'node:crypto';
@@ -41,7 +42,7 @@ test('coarse recovery preserves observed pixels and cannot use arbitrary missing
  assert.equal(rejected.graph,undefined);assert.deepEqual(rejected.report.attempts,[]);
 });
 
-test('fresh automatic fitting repairs a rejected circular routing before common Bezier refinement',async t=>{
+qualityBenchmark('fresh automatic fitting repairs a rejected circular routing before common Bezier refinement',async t=>{
  const target=input(),source=target.sourceImage,mask=source.mask.slice(),valid=source.validMask.slice(),weights=source.weights.slice();
  assert.equal(createHash('sha256').update(mask).digest('hex'),'77de47c5de58acf92d0733486f4458530905d7c847f34d6af49557cca0ca7e42');
  assert.equal(valid.reduce((s,v)=>s+v,0),159945);
@@ -61,7 +62,7 @@ test('fresh automatic fitting repairs a rejected circular routing before common 
  }catch(error){t.diagnostic(await captureFitFailure({answer,source,context:{assertion:error.message}}));throw error;}
 });
 
-test('a fully observed mask refines or replaces corner routing without opening its enclosed regions',async t=>{
+qualityBenchmark('a fully observed mask refines or replaces corner routing without opening its enclosed regions',async t=>{
  const extracted=input().sourceImage,mask=extracted.mask.slice();
  // This is the browser's whole-picture variant: its PNG supplies colours for
  // all pixels, including the tiny tip excluded by the screenshot diagnostic.
@@ -90,7 +91,7 @@ test('a fully observed mask refines or replaces corner routing without opening i
  }catch(error){t.diagnostic(await captureFitFailure({answer,source:target.sourceImage,context:{assertion:error.message}}));throw error;}
 });
 
-test('an exhausted corner MILP leaves the remaining caller allowance for fresh coarse routing',async t=>{
+qualityBenchmark('an exhausted corner MILP leaves the remaining caller allowance for fresh coarse routing',async t=>{
  const extracted=input().sourceImage,mask=extracted.mask.slice();
  const target=prepare({type:'mask',mask,resolution:extracted.resolution},raw).target;
  const now=performance.now.bind(performance);let delay=0,calls=0;
