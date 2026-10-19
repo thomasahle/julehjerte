@@ -26,6 +26,14 @@ export const LASER_MIME: Record<LaserFormat, string> = {
 	dxf: 'application/dxf'
 };
 
+/**
+ * The download's width range: the width of the heart's *wider* template
+ * (`heartScale`), the same for the PDF and the laser file. Not the same
+ * measure as the tracing mode's 30–200 mm ($lib/utils/trace), which is the
+ * width of the one template on screen; on a non-square grid the two differ
+ * by a strip, so "80 mm" there is not "80 mm" here. Deliberately left apart
+ * (TRACE.md, "Width").
+ */
 export const MIN_WIDTH_MM = 40;
 export const MAX_WIDTH_MM = 200;
 export const WIDTH_STEP_MM = 1;

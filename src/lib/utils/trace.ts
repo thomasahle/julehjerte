@@ -16,7 +16,13 @@
  */
 import { readStorage, writeStorage } from '$lib/utils/safeStorage';
 
-/** Narrowest and widest template the slider offers, in millimetres. */
+/**
+ * Narrowest and widest template the slider offers, in millimetres: the width
+ * of the template on screen (the lobe shown). Not the same measure as the
+ * download's 40–200 mm ($lib/laser/export), which is the width of the heart's
+ * wider template; on a non-square grid the two differ by a strip, so "80 mm"
+ * here is not "80 mm" in the PDF. Deliberately left apart (TRACE.md, "Width").
+ */
 export const MIN_WIDTH_MM = 30;
 export const MAX_WIDTH_MM = 200;
 

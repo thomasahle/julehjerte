@@ -70,6 +70,13 @@ at the same size.
   across the full width on a row of its own; every target is 44px.
 - The slider sets the template's *width* in millimetres, 30–200 mm, step 1,
   with the readout `traceWidthMm` ("Bredde {mm} mm" / "Width {mm} mm").
+  **Width** is the width of the template on screen, the one lobe shown. The
+  download dialog's width (40–200 mm, DOWNLOAD.md) is a different measure: the
+  width of the heart's *wider* template, which sets the scale of both. On a
+  square grid they agree; on a non-square one the narrower half traced at
+  "80 mm" is not the narrower half of an 80 mm PDF. The two ranges and
+  measures are kept apart on purpose (owner, 2026-10-19); see the comments on
+  `MIN_WIDTH_MM` in `$lib/utils/trace` and `$lib/laser/export`.
   Width in mm = `templateWidth * s / pxPerMm`. Default `pxPerMm = 96 / 25.4`
   (CSS px are not physical, so the readout says "ca." until calibrated).
 - Everything is clamped so the template cannot be lost off-screen (keep at
