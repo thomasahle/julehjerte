@@ -278,8 +278,8 @@ cached neural inference. Nine photos request the neural fallback. Its two
 successful locator attempts take about **0.53–0.55 seconds**, after the ordinary
 search has already spent several seconds. The geometric search is a larger
 latency cost here than the previously measured 67–68 ms neural inference.
-The browser preprocessing follow-up below now reproduces the lossless source
-inputs. Original JPEG decoding and fresh grouped evaluation remain necessary;
+The browser preprocessing follow-ups below now reproduce both lossless source
+inputs and the original JPEG inputs. Fresh grouped evaluation remains necessary;
 the earlier strict WASM numerical tolerance remains failed. The neural fallback
 is still an offline experiment.
 
@@ -299,10 +299,18 @@ In actual Chromium, all **sixteen full-photo RGB inputs, normalized tensors and
 both output fields match exactly**. The final audit hardlinks the identical
 prediction files to avoid duplicating them. Full source photos are reused.
 
+The [original JPEG follow-up](photo-decoding-results.json) invokes the website's
+actual `decodeImageFile` importer, including `createImageBitmap`, in Chromium.
+All **sixteen original photographs and eight independent EXIF orientation
+fixtures** match Pillow's oriented RGB and the portable neural input exactly.
+The photographs include one embedded sRGB profile. The eight tiny fixtures
+and their references occupy under 50 KB; no source photographs are copied.
+
 This preserves the inputs of the earlier fallback experiment; it is not another
-reconstruction gain. Original JPEG orientation/colour-profile handling, mobile
-browsers and a fresh grouped evaluation remain untested. The older WASM-versus-
-Torch numerical tolerance remains failed. No neural model is added to the site.
+reconstruction gain. Wide-gamut profiles, transparent inputs, other formats,
+mobile browsers and a fresh grouped evaluation remain untested. The older
+WASM-versus-Torch numerical tolerance remains failed. No neural model is added
+to the site.
 
 ## Collected assets
 
