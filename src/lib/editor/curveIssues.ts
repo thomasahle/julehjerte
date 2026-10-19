@@ -68,7 +68,7 @@ export function segmentsIntersect(a: BezierSegment[], b: BezierSegment[], opts: 
 		const start = same ? i + (skipAdjacent ? 2 : 1) : 0;
 		for (let j = start; j < b.length; j++) {
 			if (!bboxesOverlap(ba, boxesB[j]!)) continue;
-			if (intersectBezierCurves(sa, b[j]!).length > 0) return true;
+			if (intersectBezierCurves(sa, b[j]!, true).length > 0) return true;
 		}
 	}
 	return false;
