@@ -9426,6 +9426,26 @@
     "license": "unknown"
   },
   {
+    "id": "jhd-hexatriple",
+    "title": "Hexatriple",
+    "kind": "document",
+    "source": "julehjertedesign.dk",
+    "sourceUrls": [
+      "https://web.archive.org/web/20170112121410/http://julehjertedesign.dk/hexatriple-julehjerte/",
+      "http://julehjertedesign.dk/hexatriple-julehjerte/",
+      "https://web.archive.org/web/20160405091838/http://julehjertedesign.dk/om/",
+      "http://julehjertedesign.dk/diagrams/hexatriple.pdf",
+      "http://julehjertedesign.dk/diagrams/hexatriple.svg"
+    ],
+    "imageUrls": [],
+    "credits": [
+      "Johan Rosenkilde"
+    ],
+    "templateUrls": [],
+    "relatedTemplateUrls": [],
+    "license": "unknown"
+  },
+  {
     "id": "jhd-heart-of-heart",
     "title": "Julehjertets Hjerte / Frithængende Hjerte",
     "kind": "document",
@@ -9464,6 +9484,49 @@
     "templateUrls": [
       "https://web.archive.org/web/20170114005929id_/http://julehjertedesign.dk/diagrams/node.pdf"
     ],
+    "relatedTemplateUrls": [],
+    "license": "unknown"
+  },
+  {
+    "id": "jhd-ovalt",
+    "title": "Ovalt Julehjerte",
+    "kind": "document",
+    "source": "julehjertedesign.dk",
+    "sourceUrls": [
+      "https://web.archive.org/web/20170112060010/http://julehjertedesign.dk/ovalt-julehjerte/",
+      "http://julehjertedesign.dk/ovalt-julehjerte/",
+      "https://web.archive.org/web/20160405091838/http://julehjertedesign.dk/om/",
+      "http://julehjertedesign.dk/diagrams/oval.pdf",
+      "http://julehjertedesign.dk/diagrams/oval.svg",
+      "http://julehjertedesign.dk/wp-content/uploads/oval.png"
+    ],
+    "imageUrls": [
+      "https://web.archive.org/web/20161203133004id_/http://julehjertedesign.dk/wp-content/uploads/oval.png"
+    ],
+    "credits": [
+      "Johan Rosenkilde"
+    ],
+    "templateUrls": [],
+    "relatedTemplateUrls": [],
+    "license": "unknown"
+  },
+  {
+    "id": "jhd-square-twist",
+    "title": "Square Twist",
+    "kind": "document",
+    "source": "julehjertedesign.dk",
+    "sourceUrls": [
+      "https://web.archive.org/web/20170112092310/http://julehjertedesign.dk/square-twist/",
+      "http://julehjertedesign.dk/square-twist/",
+      "https://web.archive.org/web/20160405091838/http://julehjertedesign.dk/om/",
+      "http://julehjertedesign.dk/diagrams/inner_square.pdf",
+      "http://julehjertedesign.dk/diagrams/inner_square.svg"
+    ],
+    "imageUrls": [],
+    "credits": [
+      "Johan Rosenkilde"
+    ],
+    "templateUrls": [],
     "relatedTemplateUrls": [],
     "license": "unknown"
   },

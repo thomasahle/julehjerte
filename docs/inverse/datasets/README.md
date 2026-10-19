@@ -204,10 +204,10 @@ alone does not meet that gate.
 
 ### Preservation archive, 2026-10-19
 
-The [preservation manifest](heart-archive-storage.json) records **125 unique
-original files, 15,565,791 bytes**, including 54 template PDFs (286 pages),
+The [preservation manifest](heart-archive-storage.json) records **129 unique
+original files, 15,993,759 bytes**, including 54 template PDFs (286 pages),
 seven recovered Permo images, sixteen Haabet images and source/history/license
-evidence. These are documents and photographs, not 125 independent designs or
+evidence. These are documents and photographs, not 129 independent designs or
 new training labels.
 [Additional collections](archive-additional.json) record Krümmel,
 Bibelselskabet, Spejderliv and PaperMatrix; the [Permo history](archive-permo.json)
@@ -234,8 +234,16 @@ anchor templates are signed Peter Ole Kvint 2001. The dove's designer remains
 unknown: crediting the website's author would not establish motif authorship.
 Original template links, working archive captures and sheet order are retained;
 the preview illustrations are not counted as photographs or extra designs.
-The source index now contains **1,120 external records**, alongside the
-**56 published Juleflet hearts**. This batch adds no public media mirrors.
+A [geometric-pattern follow-up](archive-jhd-geometric-1.json) preserves Johan
+Rosenkilde's **Hexatriple**, **Ovalt Julehjerte** and **Square Twist** articles,
+plus the original Ovalt photograph: **four new files, 427,968 bytes**, reusing
+two existing evidence objects. All six linked PDF/SVG template replays returned
+404, so these are **reference-only records**, not recovered templates or solver
+ground truth. Hexatriple explicitly uses three sheets, outside the current
+two-sheet inverse model. Publication timestamps, advent-calendar appearances,
+variant descriptions and exact failed links remain separate source claims.
+The source index now contains **1,123 external records**, alongside the
+**56 published Juleflet hearts**. These batches add no public media mirrors.
 
 Original bytes were moved out of temporary work directories, not copied into
 another full dataset. The private originals live in

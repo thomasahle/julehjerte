@@ -1,0 +1,373 @@
+{
+  "version": 1,
+  "generatedAt": "2026-10-19T16:59:49.146955+00:00",
+  "scope": "Bounded JulehjerteDesign geometric-pattern follow-up. Three original articles, one original photo, no cutting templates recovered. Only exact links in those pages were followed; no recursive crawling.",
+  "summary": {
+    "designRecords": 3,
+    "recoveredTemplateDesigns": 0,
+    "recoveredTemplateFiles": 0,
+    "recoveredPhotos": 1,
+    "assetBytes": 305305,
+    "evidenceBytes": 122663,
+    "downloadedPayloadBytes": 427968,
+    "uniqueNewPayloadBytes": 427968,
+    "newPayloadLimitBytes": 2000000,
+    "failedRequests": 8
+  },
+  "designs": [
+    {
+      "id": "jhd-hexatriple",
+      "title": "Hexatriple",
+      "collection": "JulehjerteDesign.dk",
+      "sourcePage": "http://julehjertedesign.dk/hexatriple-julehjerte/",
+      "archivedSourcePage": "https://web.archive.org/web/20170112121410/http://julehjertedesign.dk/hexatriple-julehjerte/",
+      "sourceDeclaredPublishedAt": "2014-11-15T14:09:01+00:00",
+      "designer": "Johan Rosenkilde",
+      "creditEvidenceUrls": [
+        "https://web.archive.org/web/20170112121410/http://julehjertedesign.dk/hexatriple-julehjerte/",
+        "https://web.archive.org/web/20160405091838/http://julehjertedesign.dk/om/"
+      ],
+      "creditNote": "Article byline Johan; the previously preserved About page identifies Johan Rosenkilde and presents the site as a collection of his designs. No separate contributor is credited on these three articles.",
+      "templateUrls": [
+        "http://julehjertedesign.dk/diagrams/hexatriple.pdf",
+        "http://julehjertedesign.dk/diagrams/hexatriple.svg"
+      ],
+      "templateAssets": [],
+      "photoAssets": [],
+      "sourceEvidenceAssets": [
+        "04709d93dc4e69deda435520a1fc65965e297a7196f100caeac1778290642766",
+        "8138af5cc46fdc1ff6ba4d4c5480173d9d8d2022def042112acb7451dc8e2b9c"
+      ],
+      "preservationStatus": "article-preserved-template-not-recovered",
+      "failure": "Both linked original cutting-template formats returned HTTP 404 from the requested Wayback replay. No missing template is counted as recovered.",
+      "description": "Three paper sheets use triaxial weaving to form a cube optical illusion. The article explains that weaving order matters.",
+      "modelScope": "Explicitly uses three sheets; outside the current two-sheet inverse model.",
+      "historyNote": "The displayed article timestamp is in 2014; a caption separately identifies this as the 15 December 2015 advent-calendar heart. These are distinct source claims, not one inferred creation date.",
+      "rightsRef": "julehjertedesign-unknown",
+      "calendarAppearance": "2015-12-15"
+    },
+    {
+      "id": "jhd-ovalt",
+      "title": "Ovalt Julehjerte",
+      "collection": "JulehjerteDesign.dk",
+      "sourcePage": "http://julehjertedesign.dk/ovalt-julehjerte/",
+      "archivedSourcePage": "https://web.archive.org/web/20170112060010/http://julehjertedesign.dk/ovalt-julehjerte/",
+      "sourceDeclaredPublishedAt": "2015-11-09T16:07:28+00:00",
+      "designer": "Johan Rosenkilde",
+      "creditEvidenceUrls": [
+        "https://web.archive.org/web/20170112060010/http://julehjertedesign.dk/ovalt-julehjerte/",
+        "https://web.archive.org/web/20160405091838/http://julehjertedesign.dk/om/"
+      ],
+      "creditNote": "Article byline Johan; the previously preserved About page identifies Johan Rosenkilde and presents the site as a collection of his designs. No separate contributor is credited on these three articles.",
+      "templateUrls": [
+        "http://julehjertedesign.dk/diagrams/oval.pdf",
+        "http://julehjertedesign.dk/diagrams/oval.svg"
+      ],
+      "templateAssets": [],
+      "photoAssets": [
+        "503862607b1f6eb671feefdc5b4a5e1f9ddc42909c25b744f59b4dff211a004f"
+      ],
+      "sourceEvidenceAssets": [
+        "e4af64292b10937939d0d5f798a2e04dd8292ad725cbc8c2e8c516b603c8c8a9",
+        "8138af5cc46fdc1ff6ba4d4c5480173d9d8d2022def042112acb7451dc8e2b9c"
+      ],
+      "preservationStatus": "article-preserved-template-not-recovered",
+      "failure": "Both linked original cutting-template formats returned HTTP 404 from the requested Wayback replay. No missing template is counted as recovered.",
+      "description": "Extended curved flaps connect two 3 by 3 woven regions, with parallel weaving around the sides. The article preserves step-by-step weaving instructions.",
+      "modelScope": "Two pieces but with extended side weaving and internal flaps; not asserted to satisfy the regular square-overlap inverse model.",
+      "historyNote": "The article documents a second SVG-layer variant with four side points rather than three. Layer names are Fire sidetakker and Tre sidetakker. The SVG itself was not recovered, so the variant remains a documented lead.",
+      "rightsRef": "julehjertedesign-unknown",
+      "calendarAppearance": "2015-12-22"
+    },
+    {
+      "id": "jhd-square-twist",
+      "title": "Square Twist",
+      "collection": "JulehjerteDesign.dk",
+      "sourcePage": "http://julehjertedesign.dk/square-twist/",
+      "archivedSourcePage": "https://web.archive.org/web/20170112092310/http://julehjertedesign.dk/square-twist/",
+      "sourceDeclaredPublishedAt": "2015-11-01T18:01:22+00:00",
+      "designer": "Johan Rosenkilde",
+      "creditEvidenceUrls": [
+        "https://web.archive.org/web/20170112092310/http://julehjertedesign.dk/square-twist/",
+        "https://web.archive.org/web/20160405091838/http://julehjertedesign.dk/om/"
+      ],
+      "creditNote": "Article byline Johan; the previously preserved About page identifies Johan Rosenkilde and presents the site as a collection of his designs. No separate contributor is credited on these three articles.",
+      "templateUrls": [
+        "http://julehjertedesign.dk/diagrams/inner_square.pdf",
+        "http://julehjertedesign.dk/diagrams/inner_square.svg"
+      ],
+      "templateAssets": [],
+      "photoAssets": [],
+      "sourceEvidenceAssets": [
+        "9e8ba55a5051953d656dcebce1070a3415619c4a0a579d1c313dece5c376cb0f",
+        "8138af5cc46fdc1ff6ba4d4c5480173d9d8d2022def042112acb7451dc8e2b9c"
+      ],
+      "preservationStatus": "article-preserved-template-not-recovered",
+      "failure": "Both linked original cutting-template formats returned HTTP 404 from the requested Wayback replay. No missing template is counted as recovered.",
+      "description": "The article describes a simple rotationally symmetric patterned heart made using a four-flap DesignSelv template.",
+      "modelScope": "Four flaps and rotational symmetry are described; exact geometry cannot be validated without the missing template.",
+      "historyNote": "Template-link labels also call the design Indskrevet Kvadrat.",
+      "rightsRef": "julehjertedesign-unknown"
+    }
+  ],
+  "assets": [
+    {
+      "localFile": "archive-store/heart-preservation/objects/503862607b1f6eb671feefdc5b4a5e1f9ddc42909c25b744f59b4dff211a004f.png",
+      "role": "woven-heart-photo",
+      "sha256": "503862607b1f6eb671feefdc5b4a5e1f9ddc42909c25b744f59b4dff211a004f",
+      "bytes": 305305,
+      "mimeType": "image/png",
+      "originalUrl": "http://julehjertedesign.dk/wp-content/uploads/oval.png",
+      "actualCaptureUrl": "https://web.archive.org/web/20161203133004id_/http://julehjertedesign.dk/wp-content/uploads/oval.png",
+      "archiveCaptureTimestamp": "20161203133004",
+      "requestedUrl": "https://web.archive.org/web/20170112060010id_/http://julehjertedesign.dk/wp-content/uploads/oval.png",
+      "retrievedAt": "2026-10-19T16:58:21.409763+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "imageDimensions": [
+        369,
+        1000
+      ],
+      "review": "Decoded and visually inspected in full: photograph of the assembled red/white Ovalt heart with handle and transparent background. It is not a cutting template."
+    }
+  ],
+  "evidence": [
+    {
+      "localFile": "archive-store/heart-preservation/objects/04709d93dc4e69deda435520a1fc65965e297a7196f100caeac1778290642766.html",
+      "role": "source-evidence",
+      "sha256": "04709d93dc4e69deda435520a1fc65965e297a7196f100caeac1778290642766",
+      "bytes": 40895,
+      "mimeType": "text/html",
+      "originalUrl": "http://julehjertedesign.dk/hexatriple-julehjerte/",
+      "actualCaptureUrl": "https://web.archive.org/web/20170112121410id_/http://julehjertedesign.dk/hexatriple-julehjerte/",
+      "archiveCaptureTimestamp": "20170112121410",
+      "requestedUrl": "https://web.archive.org/web/20170112121410id_/http://julehjertedesign.dk/hexatriple-julehjerte/",
+      "retrievedAt": "2026-10-19T16:55:51.553730+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "review": "Original archived HTML retained without modification. Parsed title, byline, declared date, template links and article instructions. Raw HTML contains third-party scripts and must remain private source evidence."
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/e4af64292b10937939d0d5f798a2e04dd8292ad725cbc8c2e8c516b603c8c8a9.html",
+      "role": "source-evidence",
+      "sha256": "e4af64292b10937939d0d5f798a2e04dd8292ad725cbc8c2e8c516b603c8c8a9",
+      "bytes": 42555,
+      "mimeType": "text/html",
+      "originalUrl": "http://julehjertedesign.dk/ovalt-julehjerte/",
+      "actualCaptureUrl": "https://web.archive.org/web/20170112060010id_/http://julehjertedesign.dk/ovalt-julehjerte/",
+      "archiveCaptureTimestamp": "20170112060010",
+      "requestedUrl": "https://web.archive.org/web/20170112060010id_/http://julehjertedesign.dk/ovalt-julehjerte/",
+      "retrievedAt": "2026-10-19T16:55:54.392556+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "review": "Original archived HTML retained without modification. Parsed title, byline, declared date, template links and article instructions. Raw HTML contains third-party scripts and must remain private source evidence."
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/9e8ba55a5051953d656dcebce1070a3415619c4a0a579d1c313dece5c376cb0f.html",
+      "role": "source-evidence",
+      "sha256": "9e8ba55a5051953d656dcebce1070a3415619c4a0a579d1c313dece5c376cb0f",
+      "bytes": 39213,
+      "mimeType": "text/html",
+      "originalUrl": "http://julehjertedesign.dk/square-twist/",
+      "actualCaptureUrl": "https://web.archive.org/web/20170112092310id_/http://julehjertedesign.dk/square-twist/",
+      "archiveCaptureTimestamp": "20170112092310",
+      "requestedUrl": "https://web.archive.org/web/20170112092310id_/http://julehjertedesign.dk/square-twist/",
+      "retrievedAt": "2026-10-19T16:55:56.973562+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "review": "Original archived HTML retained without modification. Parsed title, byline, declared date, template links and article instructions. Raw HTML contains third-party scripts and must remain private source evidence."
+    }
+  ],
+  "reusedEvidence": [
+    {
+      "localFile": "archive-store/heart-preservation/objects/8138af5cc46fdc1ff6ba4d4c5480173d9d8d2022def042112acb7451dc8e2b9c.html",
+      "role": "source-evidence",
+      "sha256": "8138af5cc46fdc1ff6ba4d4c5480173d9d8d2022def042112acb7451dc8e2b9c",
+      "bytes": 68282,
+      "mimeType": "text/html; charset=UTF-8",
+      "originalUrl": "http://julehjertedesign.dk/om/",
+      "actualCaptureUrl": "https://web.archive.org/web/20160405091838id_/http://julehjertedesign.dk/om/",
+      "archiveCaptureTimestamp": "20160405091838",
+      "requestedUrl": "https://web.archive.org/web/20160405091838id_/http://julehjertedesign.dk/om/",
+      "retrievedAt": "2026-10-19T12:58:15.877666+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/c1322e96ce1fb8fe497a3dc9a4c45713f58750ee4ecd57fb4601d7bb65e38787.json",
+      "role": "source-evidence",
+      "sha256": "c1322e96ce1fb8fe497a3dc9a4c45713f58750ee4ecd57fb4601d7bb65e38787",
+      "bytes": 19044,
+      "mimeType": "application/json",
+      "originalUrl": null,
+      "actualCaptureUrl": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2F*&output=json&filter=statuscode%3A200&collapse=urlkey&fl=timestamp,original,mimetype,digest,length&limit=150",
+      "archiveCaptureTimestamp": null,
+      "requestedUrl": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2F*&output=json&filter=statuscode%3A200&collapse=urlkey&fl=timestamp,original,mimetype,digest,length&limit=150",
+      "retrievedAt": "2026-10-19T12:55:55.946045+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false
+    }
+  ],
+  "rights": [
+    {
+      "id": "julehjertedesign-unknown",
+      "status": "unknown",
+      "redistributionPermission": null,
+      "license": null,
+      "sourceEvidenceUrls": [
+        "https://web.archive.org/web/20160405091838/http://julehjertedesign.dk/om/"
+      ],
+      "observedPermission": "Author explains personal printing/scaling and modifying downloaded SVGs in Inkscape. No public redistribution license found in inspected pages or PDFs.",
+      "publicMirrorEligible": false
+    }
+  ],
+  "failures": [
+    {
+      "url": "https://web.archive.org/web/20170112121410id_/http://julehjertedesign.dk/diagrams/hexatriple.pdf",
+      "retrievedAt": "2026-10-19T16:57:39.594570+00:00",
+      "error": "HTTP Error 404: NOT FOUND"
+    },
+    {
+      "url": "https://web.archive.org/web/20170112121410id_/http://julehjertedesign.dk/diagrams/hexatriple.svg",
+      "retrievedAt": "2026-10-19T16:57:41.603248+00:00",
+      "error": "HTTP Error 404: NOT FOUND"
+    },
+    {
+      "url": "https://web.archive.org/web/20170112060010id_/http://julehjertedesign.dk/diagrams/oval.pdf",
+      "retrievedAt": "2026-10-19T16:57:43.811162+00:00",
+      "error": "HTTP Error 404: NOT FOUND"
+    },
+    {
+      "url": "https://web.archive.org/web/20170112060010id_/http://julehjertedesign.dk/diagrams/oval.svg",
+      "retrievedAt": "2026-10-19T16:57:46.061810+00:00",
+      "error": "HTTP Error 404: NOT FOUND"
+    },
+    {
+      "url": "https://web.archive.org/web/20170112092310id_/http://julehjertedesign.dk/diagrams/inner_square.pdf",
+      "retrievedAt": "2026-10-19T16:57:48.025231+00:00",
+      "error": "HTTP Error 404: NOT FOUND"
+    },
+    {
+      "url": "https://web.archive.org/web/20170112092310id_/http://julehjertedesign.dk/diagrams/inner_square.svg",
+      "retrievedAt": "2026-10-19T16:57:50.242084+00:00",
+      "error": "HTTP Error 404: NOT FOUND"
+    },
+    {
+      "url": "https://web.archive.org/web/20170112121410id_/http://julehjertedesign.dk/wp-content/uploads/hexatriple.png",
+      "retrievedAt": "2026-10-19T16:58:19.462606+00:00",
+      "error": "HTTP Error 404: NOT FOUND"
+    },
+    {
+      "url": "https://web.archive.org/web/20170112092310id_/http://julehjertedesign.dk/wp-content/uploads/inner_square.png",
+      "retrievedAt": "2026-10-19T16:58:27.795263+00:00",
+      "error": "HTTP Error 404: NOT FOUND"
+    }
+  ],
+  "validation": {
+    "sha256AndSize": "All four new originals and both reused evidence objects verified from disk.",
+    "deduplication": "Compared source URLs and SHA256 values against all existing archive-*.json manifests, real-manifest.json and private object filenames; no source URL or byte duplicates found.",
+    "visual": "Ovalt PNG fully decoded and visually inspected. It is an assembled-heart photo, not a template.",
+    "templateLinks": "Six original PDF/SVG URLs verified in their corresponding source HTML. All six returned HTTP 404.",
+    "network": "Serial bounded requests with one second between attempts; no network worker remains running."
+  },
+  "limitations": [
+    "No new cutting template was recovered in this batch. The three designs must remain reference-only, not solver ground truth.",
+    "Page timestamps are source-declared publication metadata, not proven invention dates.",
+    "No permission to publicly redistribute the originals was established. Private preservation and public source links remain separate.",
+    "The linked full-size Hexatriple and Square Twist PNG requests also returned 404. No thumbnail is substituted or treated as a cutting template."
+  ],
+  "howUserCanHelp": [
+    "An original personal download or author-provided copy of hexatriple.pdf/.svg, oval.pdf/.svg, or inner_square.pdf/.svg would fill these specific gaps.",
+    "The editable oval.svg is especially valuable because the article documents an additional hidden four-side-point layer."
+  ],
+  "storage": {
+    "status": "promoted-and-hash-verified",
+    "manifest": "docs/inverse/datasets/heart-archive-storage.json",
+    "newUniqueObjects": 4,
+    "newOriginalBytes": 427968,
+    "reusedEvidenceObjects": 2,
+    "publicMirrorsAdded": 0
+  },
+  "retrievals": [
+    {
+      "url": "https://web.archive.org/web/20170112121410id_/http://julehjertedesign.dk/hexatriple-julehjerte/",
+      "retrievedAt": "2026-10-19T16:55:51.553730+00:00",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "finalUrl": "https://web.archive.org/web/20170112121410id_/http://julehjertedesign.dk/hexatriple-julehjerte/",
+      "file": "archive-store/heart-preservation/objects/04709d93dc4e69deda435520a1fc65965e297a7196f100caeac1778290642766.html",
+      "bytes": 40895,
+      "sha256": "04709d93dc4e69deda435520a1fc65965e297a7196f100caeac1778290642766"
+    },
+    {
+      "url": "https://web.archive.org/web/20170112060010id_/http://julehjertedesign.dk/ovalt-julehjerte/",
+      "retrievedAt": "2026-10-19T16:55:54.392556+00:00",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "finalUrl": "https://web.archive.org/web/20170112060010id_/http://julehjertedesign.dk/ovalt-julehjerte/",
+      "file": "archive-store/heart-preservation/objects/e4af64292b10937939d0d5f798a2e04dd8292ad725cbc8c2e8c516b603c8c8a9.html",
+      "bytes": 42555,
+      "sha256": "e4af64292b10937939d0d5f798a2e04dd8292ad725cbc8c2e8c516b603c8c8a9"
+    },
+    {
+      "url": "https://web.archive.org/web/20170112092310id_/http://julehjertedesign.dk/square-twist/",
+      "retrievedAt": "2026-10-19T16:55:56.973562+00:00",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "finalUrl": "https://web.archive.org/web/20170112092310id_/http://julehjertedesign.dk/square-twist/",
+      "file": "archive-store/heart-preservation/objects/9e8ba55a5051953d656dcebce1070a3415619c4a0a579d1c313dece5c376cb0f.html",
+      "bytes": 39213,
+      "sha256": "9e8ba55a5051953d656dcebce1070a3415619c4a0a579d1c313dece5c376cb0f"
+    },
+    {
+      "url": "https://web.archive.org/web/20170112121410id_/http://julehjertedesign.dk/diagrams/hexatriple.pdf",
+      "retrievedAt": "2026-10-19T16:57:39.594570+00:00",
+      "error": "HTTP Error 404: NOT FOUND"
+    },
+    {
+      "url": "https://web.archive.org/web/20170112121410id_/http://julehjertedesign.dk/diagrams/hexatriple.svg",
+      "retrievedAt": "2026-10-19T16:57:41.603248+00:00",
+      "error": "HTTP Error 404: NOT FOUND"
+    },
+    {
+      "url": "https://web.archive.org/web/20170112060010id_/http://julehjertedesign.dk/diagrams/oval.pdf",
+      "retrievedAt": "2026-10-19T16:57:43.811162+00:00",
+      "error": "HTTP Error 404: NOT FOUND"
+    },
+    {
+      "url": "https://web.archive.org/web/20170112060010id_/http://julehjertedesign.dk/diagrams/oval.svg",
+      "retrievedAt": "2026-10-19T16:57:46.061810+00:00",
+      "error": "HTTP Error 404: NOT FOUND"
+    },
+    {
+      "url": "https://web.archive.org/web/20170112092310id_/http://julehjertedesign.dk/diagrams/inner_square.pdf",
+      "retrievedAt": "2026-10-19T16:57:48.025231+00:00",
+      "error": "HTTP Error 404: NOT FOUND"
+    },
+    {
+      "url": "https://web.archive.org/web/20170112092310id_/http://julehjertedesign.dk/diagrams/inner_square.svg",
+      "retrievedAt": "2026-10-19T16:57:50.242084+00:00",
+      "error": "HTTP Error 404: NOT FOUND"
+    },
+    {
+      "url": "https://web.archive.org/web/20170112121410id_/http://julehjertedesign.dk/wp-content/uploads/hexatriple.png",
+      "retrievedAt": "2026-10-19T16:58:19.462606+00:00",
+      "error": "HTTP Error 404: NOT FOUND"
+    },
+    {
+      "url": "https://web.archive.org/web/20170112060010id_/http://julehjertedesign.dk/wp-content/uploads/oval.png",
+      "retrievedAt": "2026-10-19T16:58:21.409763+00:00",
+      "status": 200,
+      "contentType": "image/png",
+      "finalUrl": "https://web.archive.org/web/20161203133004id_/http://julehjertedesign.dk/wp-content/uploads/oval.png",
+      "file": "archive-store/heart-preservation/objects/503862607b1f6eb671feefdc5b4a5e1f9ddc42909c25b744f59b4dff211a004f.png",
+      "bytes": 305305,
+      "sha256": "503862607b1f6eb671feefdc5b4a5e1f9ddc42909c25b744f59b4dff211a004f"
+    },
+    {
+      "url": "https://web.archive.org/web/20170112092310id_/http://julehjertedesign.dk/wp-content/uploads/inner_square.png",
+      "retrievedAt": "2026-10-19T16:58:27.795263+00:00",
+      "error": "HTTP Error 404: NOT FOUND"
+    }
+  ]
+}

@@ -60,7 +60,9 @@ describe('the complete heart archive', () => {
 
 	it('keeps rescued historical templates distinct from an unrecovered article reference', () => {
 		const records = archiveRecords('en');
-		const historical = records.filter(r => r.id.startsWith('jhd-') || r.id === 'haabet-isbjoern');
+		const rescuedIds = ['jhd-carola-super-nova', 'jhd-darth-vader', 'jhd-heart-of-heart', 'jhd-node',
+			'jhd-sundays-fourth', 'jhd-venus', 'jhd-damernes', 'haabet-isbjoern'];
+		const historical = records.filter(r => rescuedIds.includes(r.id));
 		expect(historical).toHaveLength(8);
 		expect(historical.filter(hasArchiveTemplate)).toHaveLength(7);
 		for (const record of historical) {
@@ -82,6 +84,36 @@ describe('the complete heart archive', () => {
 		// Mirror and Wayback copies of a combined image are alternate sources,
 		// not two different cutting sheets.
 		for (const record of records.filter(r => r.history === 'permo')) expect(record.templateUrls).toHaveLength(1);
+	});
+
+	it('keeps missing geometric templates as references even when the article or photo survives', () => {
+		const ids = ['jhd-hexatriple', 'jhd-ovalt', 'jhd-square-twist'];
+		const stems = ['hexatriple', 'oval', 'inner_square'];
+		for (const lang of ['da', 'en'] as const) {
+			const records = archiveRecords(lang);
+			const references = filterArchive(records, '', 'julehjertedesign.dk', 'references');
+			const templates = filterArchive(records, '', 'julehjertedesign.dk', 'templates');
+			for (const [i, id] of ids.entries()) {
+				const record = records.find(r => r.id === id)!;
+				expect(record).toBeDefined();
+				expect(references).toContain(record);
+				expect(templates).not.toContain(record);
+				expect(hasArchiveTemplate(record)).toBe(false);
+				expect(record.credits).toEqual(['Johan Rosenkilde']);
+				expect(record.templateUrls).toEqual([]);
+				expect(record.relatedTemplateUrls).toEqual([]);
+				expect(record.preservedTemplates).toBeUndefined();
+				expect(record.thumbnail).toBeUndefined();
+				expect(record.license).toBe('unknown');
+				for (const format of ['pdf', 'svg']) {
+					expect(record.sourceUrls).toContain(`http://julehjertedesign.dk/diagrams/${stems[i]}.${format}`);
+				}
+			}
+			expect(records.find(r => r.id === 'jhd-ovalt')?.imageUrls).toEqual([
+				'https://web.archive.org/web/20161203133004id_/http://julehjertedesign.dk/wp-content/uploads/oval.png'
+			]);
+			for (const id of [ids[0], ids[2]]) expect(records.find(r => r.id === id)?.imageUrls).toEqual([]);
+		}
 	});
 
 	it('preserves two further Haabet designs without counting alternate names or photos as designs', () => {

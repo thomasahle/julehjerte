@@ -1647,6 +1647,13 @@
           "retrievedUrl": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2F*&output=json&filter=statuscode%3A200&collapse=urlkey&fl=timestamp,original,mimetype,digest,length&limit=150",
           "retrievedAt": "2026-10-19T12:55:55.946045+00:00",
           "archiveCaptureTimestamp": null
+        },
+        {
+          "collection": "jhd-geometric-1",
+          "originalUrl": null,
+          "retrievedUrl": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2F*&output=json&filter=statuscode%3A200&collapse=urlkey&fl=timestamp,original,mimetype,digest,length&limit=150",
+          "retrievedAt": "2026-10-19T12:55:55.946045+00:00",
+          "archiveCaptureTimestamp": null
         }
       ]
     },
@@ -1776,6 +1783,13 @@
       "sources": [
         {
           "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/om/",
+          "retrievedUrl": "https://web.archive.org/web/20160405091838id_/http://julehjertedesign.dk/om/",
+          "retrievedAt": "2026-10-19T12:58:15.877666+00:00",
+          "archiveCaptureTimestamp": "20160405091838"
+        },
+        {
+          "collection": "jhd-geometric-1",
           "originalUrl": "http://julehjertedesign.dk/om/",
           "retrievedUrl": "https://web.archive.org/web/20160405091838id_/http://julehjertedesign.dk/om/",
           "retrievedAt": "2026-10-19T12:58:15.877666+00:00",
@@ -2170,13 +2184,81 @@
           "archiveCaptureTimestamp": "20151029022652"
         }
       ]
+    },
+    {
+      "sha256": "503862607b1f6eb671feefdc5b4a5e1f9ddc42909c25b744f59b4dff211a004f",
+      "bytes": 305305,
+      "path": "archive-store/heart-preservation/objects/503862607b1f6eb671feefdc5b4a5e1f9ddc42909c25b744f59b4dff211a004f.png",
+      "contentType": "image/png",
+      "role": "woven-heart-photo",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "jhd-geometric-1",
+          "originalUrl": "http://julehjertedesign.dk/wp-content/uploads/oval.png",
+          "retrievedUrl": "https://web.archive.org/web/20161203133004id_/http://julehjertedesign.dk/wp-content/uploads/oval.png",
+          "retrievedAt": "2026-10-19T16:58:21.409763+00:00",
+          "archiveCaptureTimestamp": "20161203133004"
+        }
+      ]
+    },
+    {
+      "sha256": "04709d93dc4e69deda435520a1fc65965e297a7196f100caeac1778290642766",
+      "bytes": 40895,
+      "path": "archive-store/heart-preservation/objects/04709d93dc4e69deda435520a1fc65965e297a7196f100caeac1778290642766.html",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "jhd-geometric-1",
+          "originalUrl": "http://julehjertedesign.dk/hexatriple-julehjerte/",
+          "retrievedUrl": "https://web.archive.org/web/20170112121410id_/http://julehjertedesign.dk/hexatriple-julehjerte/",
+          "retrievedAt": "2026-10-19T16:55:51.553730+00:00",
+          "archiveCaptureTimestamp": "20170112121410"
+        }
+      ]
+    },
+    {
+      "sha256": "e4af64292b10937939d0d5f798a2e04dd8292ad725cbc8c2e8c516b603c8c8a9",
+      "bytes": 42555,
+      "path": "archive-store/heart-preservation/objects/e4af64292b10937939d0d5f798a2e04dd8292ad725cbc8c2e8c516b603c8c8a9.html",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "jhd-geometric-1",
+          "originalUrl": "http://julehjertedesign.dk/ovalt-julehjerte/",
+          "retrievedUrl": "https://web.archive.org/web/20170112060010id_/http://julehjertedesign.dk/ovalt-julehjerte/",
+          "retrievedAt": "2026-10-19T16:55:54.392556+00:00",
+          "archiveCaptureTimestamp": "20170112060010"
+        }
+      ]
+    },
+    {
+      "sha256": "9e8ba55a5051953d656dcebce1070a3415619c4a0a579d1c313dece5c376cb0f",
+      "bytes": 39213,
+      "path": "archive-store/heart-preservation/objects/9e8ba55a5051953d656dcebce1070a3415619c4a0a579d1c313dece5c376cb0f.html",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "jhd-geometric-1",
+          "originalUrl": "http://julehjertedesign.dk/square-twist/",
+          "retrievedUrl": "https://web.archive.org/web/20170112092310id_/http://julehjertedesign.dk/square-twist/",
+          "retrievedAt": "2026-10-19T16:55:56.973562+00:00",
+          "archiveCaptureTimestamp": "20170112092310"
+        }
+      ]
     }
   ],
   "counts": {
-    "objects": 125,
-    "originalBytes": 15565791,
+    "objects": 129,
+    "originalBytes": 15993759,
     "publicObjects": 1
   },
   "scope": "Original source documents and evidence, retained once by SHA-256. Public template copies require recorded redistribution terms. Other originals are kept in archive-store, outside tmp and outside Git/public assets. A second off-device backup is still needed.",
-  "updatedAt": "2026-10-19T16:21:08.204990+00:00"
+  "updatedAt": "2026-10-19T17:03:14.304726+00:00"
 }
