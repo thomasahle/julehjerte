@@ -103,6 +103,30 @@ diagnostic is `scripts/inverse/learning/crop-count-sensitivity.mjs`; inputs and
 checksums are in the linked result. Candidate scheduling and printed-paper
 identity remain separate problems to address before release.
 
+A [fresh cut-count capacity check](u2netp-count-alternative-results.json)
+confirms that the overlooked 8-by-8 layout improves the **same** weighted-crop
+mask from 2.69% to 2.20% exported disagreement. All eight comparison exports
+pass editable geometry and paper checks. Their small squares remain distorted,
+however. Restricting the count search is an oracle experiment, not a new
+automatic selection rule; production scheduling remains unchanged.
+
+The subsequent [paper-identity head pilot](u2netp-material-results.json) adds
+18,193 trainable parameters to the frozen adapted U2NETP. It trains for 120
+updates on 16 real photos and 96 synthetic original/scene/printed views from
+32 geometries, in 106 seconds on one CPU thread. All 32 evaluation input tensors
+and body predictions exactly match the prior native body probe. The saved new
+head is 77 KB; no second body checkpoint is stored.
+
+This material head is **rejected for integration**. Known-region training
+identity error drops from 44.8% to 11.3%, but two non-white training palettes
+still have 46–48% error. All four training and eight evaluation gallery pages
+were inspected: many dark/metallic hearts collapse into one paper class, and
+printed stripes, dots and flowers still appear as weave boundaries. The three
+body-crop gains would lose their motifs. These native results do not justify
+browser export or template-quality claims. Image-relative colour conditioning
+is the next controlled experiment; apparent dependence on absolute brightness
+remains a hypothesis to test.
+
 The original [fresh 32-photo evaluation](u2netp-fresh-results.json) freezes the model and
 crop policy before inference. It keeps every existing production crop and adds
 a review-required neural proposal only where none exists. Crop proposals rise
