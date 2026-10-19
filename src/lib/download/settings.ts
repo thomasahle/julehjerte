@@ -18,11 +18,11 @@ import {
 	MIN_HEARTS,
 	MIN_SHEET_MM,
 	MIN_WIDTH_MM,
-	clamp,
 	parseLaserSettings,
 	type LaserFormat
 } from '$lib/laser/export';
 import type { SheetSize } from '$lib/laser/sheet';
+import { clamp } from '$lib/utils/math';
 import { readStorage, writeStorage } from '$lib/utils/safeStorage';
 
 const DOWNLOAD_STORAGE_KEY = 'juleflet:download';

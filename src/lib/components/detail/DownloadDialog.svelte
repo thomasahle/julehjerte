@@ -51,7 +51,6 @@
 		MIN_WIDTH_MM,
 		WIDTH_STEP_MM,
 		a3FitsAll,
-		clamp,
 		laserFileContent,
 		laserFileName,
 		laserFileUrl,
@@ -60,6 +59,7 @@
 		type LaserPlan
 	} from '$lib/laser/export';
 	import { formatMm } from '$lib/laser/format';
+	import { clamp } from '$lib/utils/math';
 	import { SHEETS, type SheetSize } from '$lib/laser/sheet';
 	import { serializeLaserSvg } from '$lib/laser/svg';
 	import {

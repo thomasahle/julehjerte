@@ -14,6 +14,7 @@ import { serializeLaserSvg } from './svg';
 import { unfoldPiece, type UnfoldedPiece } from './unfold';
 import type { TemplateLobe } from '$lib/utils/templateSvg';
 import { heartFileStem, slugify } from '$lib/utils/slug';
+import { clamp } from '$lib/utils/math';
 
 export type LaserFormat = 'svg' | 'dxf';
 
@@ -74,10 +75,6 @@ export interface LaserPlan extends LaserSheet {
 	heartsOnSheet: LaserHeart[];
 	/** The hearts the sheet had no room for at all. */
 	heartsLeftOut: LaserHeart[];
-}
-
-export function clamp(n: number, min: number, max: number): number {
-	return Math.min(max, Math.max(min, n));
 }
 
 function laserHeart(design: HeartDesign, widthMm: number, lobe: TemplateLobe): LaserHeart {
