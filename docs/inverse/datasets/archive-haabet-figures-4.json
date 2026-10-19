@@ -1,0 +1,357 @@
+{
+  "version": 1,
+  "generatedAt": "2026-10-19T17:57:51.522843+00:00",
+  "scope": "Three missing source entries/templates from the already-preserved Haabet figure index. Source names and signatures retained. Record counts do not assert geometric novelty across all historical publications.",
+  "summary": {
+    "newSourceDesignRecords": 3,
+    "recoveredTemplateFiles": 3,
+    "assetBytes": 4514,
+    "evidenceBytes": 4174,
+    "uniqueNewPayloadBytes": 8688,
+    "payloadLimitBytes": 2097152,
+    "httpRequests": 12,
+    "httpRequestLimit": 12,
+    "redirectResponses": 3,
+    "failedRequests": 0,
+    "existingByteDuplicates": 0
+  },
+  "designs": [
+    {
+      "id": "haabet-stjerne-af-cirkler",
+      "title": "Stjerne, af Cirkler",
+      "collection": "Haabet / Flettede julehjerter",
+      "sourcePage": "http://www.haabet.dk/users/julehjerter/u.html",
+      "archivedSourcePage": "https://web.archive.org/web/20021025100552/http://www.haabet.dk:80/users/julehjerter/u.html",
+      "designer": "Peter Ole Kvint",
+      "creditEvidenceUrls": [
+        "https://web.archive.org/web/20030827010801id_/http://www.haabet.dk/users/julehjerter/u_.gif"
+      ],
+      "creditNote": "The original template is visibly signed PETER OLE KVINT. No separate invention or first-publication date is asserted.",
+      "sourceDeclaredPublishedAt": null,
+      "earliestIndexedPageCapture": "20020829223830",
+      "dateNote": "Earliest capture returned by the bounded successful-response CDX query is evidence of page availability, not a design or publication date. The saved HTML and GIF have separately recorded actual capture timestamps.",
+      "templateAssets": [
+        "7b354a3fe8b7b7ea04420a5a00ea96ba86e17028b26d5c2887296def94220690"
+      ],
+      "previewAssets": [],
+      "sourceEvidenceAssets": [
+        "8a9d983bd7d9c067f2b43204f0e7284b069c4c6cd55f14a4c4d695ea463db9ae",
+        "8baf431753c1af523fb69242991e5f29ca66e01944192b54e3b24ee06fc41656"
+      ],
+      "preservationStatus": "original-template-preserved",
+      "rightsRef": "haabet-personal-printing",
+      "modelScope": "Visual inspection shows two continuous cuts from the folded bottom edge toward the cap, with no detached interior cuts apparent. Candidate for the ordinary two-sheet model; physical assembly and solver compatibility have not been independently tested.",
+      "constructionClassification": "ordinary-two-sheet-candidate",
+      "constructionClassificationBasis": "Visual inspection of the original signed cutting template, not an assembly experiment."
+    },
+    {
+      "id": "haabet-eight-points",
+      "title": "8 Spisser Julehjerte",
+      "collection": "Haabet / Flettede julehjerter",
+      "sourcePage": "http://www.haabet.dk/users/julehjerter/d.html",
+      "archivedSourcePage": "https://web.archive.org/web/20021019225901/http://www.haabet.dk:80/users/julehjerter/d.html",
+      "designer": "Peter Ole Kvint",
+      "creditEvidenceUrls": [
+        "https://web.archive.org/web/20030205022359id_/http://haabet.dk/users/julehjerter/d_.gif"
+      ],
+      "creditNote": "The original template is visibly signed PETER OLE KVINT. No separate invention or first-publication date is asserted.",
+      "sourceDeclaredPublishedAt": null,
+      "earliestIndexedPageCapture": "20010123132700",
+      "dateNote": "Earliest capture returned by the bounded successful-response CDX query is evidence of page availability, not a design or publication date. The saved HTML and GIF have separately recorded actual capture timestamps.",
+      "templateAssets": [
+        "40e3c3f94d6c860771fbc0d46147214f21b4f135ab0d1823d35025194cdca1d7"
+      ],
+      "previewAssets": [],
+      "sourceEvidenceAssets": [
+        "f825508c594044851afb0e989b00e04270a73903a0290fffcdf31e4cf558e6ef",
+        "002b3f88352d8739f044aa3d9866168aeb872ac403e9f529972363ebb661e2b4"
+      ],
+      "preservationStatus": "original-template-preserved",
+      "rightsRef": "haabet-personal-printing",
+      "modelScope": "The template includes a diagonal cut crossing the central cut and other cuts entering side edges and ending inside the paper. This is outside the ordinary nonbranching slit model and must not be automatically added to the regular two-sheet solver benchmark.",
+      "historicalInstructionNote": "The source explicitly cautions about weaving order and links d2.gif as an example of an incorrectly woven result. That illustration was not downloaded in this bounded pass.",
+      "constructionClassification": "irregular-cut-construction",
+      "constructionClassificationBasis": "Visual inspection of the original signed cutting template, not an assembly experiment."
+    },
+    {
+      "id": "haabet-four-quadrilaterals",
+      "title": "4 4kanter Julehjerte",
+      "collection": "Haabet / Flettede julehjerter",
+      "sourcePage": "http://www.haabet.dk/users/julehjerter/f.html",
+      "archivedSourcePage": "https://web.archive.org/web/20021216013859/http://www.haabet.dk:80/users/julehjerter/f.html",
+      "designer": "Peter Ole Kvint",
+      "creditEvidenceUrls": [
+        "https://web.archive.org/web/20030205024425id_/http://haabet.dk/users/julehjerter/f_.gif"
+      ],
+      "creditNote": "The original template is visibly signed PETER OLE KVINT. No separate invention or first-publication date is asserted.",
+      "sourceDeclaredPublishedAt": null,
+      "earliestIndexedPageCapture": "20000616101202",
+      "dateNote": "Earliest capture returned by the bounded successful-response CDX query is evidence of page availability, not a design or publication date. The saved HTML and GIF have separately recorded actual capture timestamps.",
+      "templateAssets": [
+        "3452004827e17194f40240d0cb2c913fa8c6a1572bd430c9ed0440949d75b9cc"
+      ],
+      "previewAssets": [],
+      "sourceEvidenceAssets": [
+        "5164a7da2728972de91de0c66b498e0961a3345be270b29076eca22fcc94e971",
+        "f6969db11012d70b92851db927823ec903b8e3c862b83f78dce0587c14fb4c46"
+      ],
+      "preservationStatus": "original-template-preserved",
+      "rightsRef": "haabet-personal-printing",
+      "modelScope": "Visual inspection shows three continuous zigzag cuts from the folded bottom edge toward the cap, without detached interior cuts. Candidate for the ordinary two-sheet model; physical assembly and solver compatibility have not been independently tested.",
+      "historicalInstructionNote": "The source describes this pattern as easy to make.",
+      "constructionClassification": "ordinary-two-sheet-candidate",
+      "constructionClassificationBasis": "Visual inspection of the original signed cutting template, not an assembly experiment."
+    }
+  ],
+  "assets": [
+    {
+      "localFile": "archive-store/heart-preservation/objects/7b354a3fe8b7b7ea04420a5a00ea96ba86e17028b26d5c2887296def94220690.gif",
+      "sha256": "7b354a3fe8b7b7ea04420a5a00ea96ba86e17028b26d5c2887296def94220690",
+      "bytes": 1353,
+      "mimeType": "image/gif",
+      "role": "cutting-template",
+      "originalUrl": "http://www.haabet.dk/users/julehjerter/u_.gif",
+      "requestedUrl": "https://web.archive.org/web/20021025100552id_/http://www.haabet.dk:80/users/julehjerter/u_.gif",
+      "actualCaptureUrl": "https://web.archive.org/web/20030827010801id_/http://www.haabet.dk/users/julehjerter/u_.gif",
+      "archiveCaptureTimestamp": "20030827010801",
+      "retrievedAt": "2026-10-19T17:55:47.848436+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "imageDimensions": [
+        197,
+        291
+      ],
+      "imageFrames": 1,
+      "review": "Decoded original GIF and visually inspected the entire cutting outline, slit geometry, weaving-order marks and printed PETER OLE KVINT signature. Original raster bytes retained; not retraced or enlarged in preservation storage."
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/40e3c3f94d6c860771fbc0d46147214f21b4f135ab0d1823d35025194cdca1d7.gif",
+      "sha256": "40e3c3f94d6c860771fbc0d46147214f21b4f135ab0d1823d35025194cdca1d7",
+      "bytes": 1525,
+      "mimeType": "image/gif",
+      "role": "cutting-template",
+      "originalUrl": "http://haabet.dk/users/julehjerter/d_.gif",
+      "requestedUrl": "https://web.archive.org/web/20021019225901id_/http://www.haabet.dk:80/users/julehjerter/d_.gif",
+      "actualCaptureUrl": "https://web.archive.org/web/20030205022359id_/http://haabet.dk/users/julehjerter/d_.gif",
+      "archiveCaptureTimestamp": "20030205022359",
+      "retrievedAt": "2026-10-19T17:55:52.241284+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "imageDimensions": [
+        200,
+        304
+      ],
+      "imageFrames": 1,
+      "review": "Decoded original GIF and visually inspected the entire cutting outline, slit geometry, weaving-order marks and printed PETER OLE KVINT signature. Original raster bytes retained; not retraced or enlarged in preservation storage."
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/3452004827e17194f40240d0cb2c913fa8c6a1572bd430c9ed0440949d75b9cc.gif",
+      "sha256": "3452004827e17194f40240d0cb2c913fa8c6a1572bd430c9ed0440949d75b9cc",
+      "bytes": 1636,
+      "mimeType": "image/gif",
+      "role": "cutting-template",
+      "originalUrl": "http://haabet.dk/users/julehjerter/f_.gif",
+      "requestedUrl": "https://web.archive.org/web/20021216013859id_/http://www.haabet.dk:80/users/julehjerter/f_.gif",
+      "actualCaptureUrl": "https://web.archive.org/web/20030205024425id_/http://haabet.dk/users/julehjerter/f_.gif",
+      "archiveCaptureTimestamp": "20030205024425",
+      "retrievedAt": "2026-10-19T17:55:57.987993+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "imageDimensions": [
+        191,
+        286
+      ],
+      "imageFrames": 1,
+      "review": "Decoded original GIF and visually inspected the entire cutting outline, slit geometry, weaving-order marks and printed PETER OLE KVINT signature. Original raster bytes retained; not retraced or enlarged in preservation storage."
+    }
+  ],
+  "evidence": [
+    {
+      "localFile": "archive-store/heart-preservation/objects/8baf431753c1af523fb69242991e5f29ca66e01944192b54e3b24ee06fc41656.json",
+      "sha256": "8baf431753c1af523fb69242991e5f29ca66e01944192b54e3b24ee06fc41656",
+      "bytes": 329,
+      "mimeType": "application/json",
+      "role": "archive-lookup-evidence",
+      "originalUrl": null,
+      "requestedUrl": "https://web.archive.org/cdx/search/cdx?url=www.haabet.dk%2Fusers%2Fjulehjerter%2Fu.html&output=json&filter=statuscode%3A200&collapse=digest&fl=timestamp,original,mimetype,statuscode,digest,length&limit=20",
+      "actualCaptureUrl": "https://web.archive.org/cdx/search/cdx?url=www.haabet.dk%2Fusers%2Fjulehjerter%2Fu.html&output=json&filter=statuscode%3A200&collapse=digest&fl=timestamp,original,mimetype,statuscode,digest,length&limit=20",
+      "archiveCaptureTimestamp": null,
+      "retrievedAt": "2026-10-19T17:54:52.467632+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/002b3f88352d8739f044aa3d9866168aeb872ac403e9f529972363ebb661e2b4.json",
+      "sha256": "002b3f88352d8739f044aa3d9866168aeb872ac403e9f529972363ebb661e2b4",
+      "bytes": 849,
+      "mimeType": "application/json",
+      "role": "archive-lookup-evidence",
+      "originalUrl": null,
+      "requestedUrl": "https://web.archive.org/cdx/search/cdx?url=www.haabet.dk%2Fusers%2Fjulehjerter%2Fd.html&output=json&filter=statuscode%3A200&collapse=digest&fl=timestamp,original,mimetype,statuscode,digest,length&limit=20",
+      "actualCaptureUrl": "https://web.archive.org/cdx/search/cdx?url=www.haabet.dk%2Fusers%2Fjulehjerter%2Fd.html&output=json&filter=statuscode%3A200&collapse=digest&fl=timestamp,original,mimetype,statuscode,digest,length&limit=20",
+      "archiveCaptureTimestamp": null,
+      "retrievedAt": "2026-10-19T17:54:54.455648+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/f6969db11012d70b92851db927823ec903b8e3c862b83f78dce0587c14fb4c46.json",
+      "sha256": "f6969db11012d70b92851db927823ec903b8e3c862b83f78dce0587c14fb4c46",
+      "bytes": 849,
+      "mimeType": "application/json",
+      "role": "archive-lookup-evidence",
+      "originalUrl": null,
+      "requestedUrl": "https://web.archive.org/cdx/search/cdx?url=www.haabet.dk%2Fusers%2Fjulehjerter%2Ff.html&output=json&filter=statuscode%3A200&collapse=digest&fl=timestamp,original,mimetype,statuscode,digest,length&limit=20",
+      "actualCaptureUrl": "https://web.archive.org/cdx/search/cdx?url=www.haabet.dk%2Fusers%2Fjulehjerter%2Ff.html&output=json&filter=statuscode%3A200&collapse=digest&fl=timestamp,original,mimetype,statuscode,digest,length&limit=20",
+      "archiveCaptureTimestamp": null,
+      "retrievedAt": "2026-10-19T17:54:56.745743+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/8a9d983bd7d9c067f2b43204f0e7284b069c4c6cd55f14a4c4d695ea463db9ae.html",
+      "sha256": "8a9d983bd7d9c067f2b43204f0e7284b069c4c6cd55f14a4c4d695ea463db9ae",
+      "bytes": 734,
+      "mimeType": "text/html",
+      "role": "source-evidence",
+      "originalUrl": "http://www.haabet.dk:80/users/julehjerter/u.html",
+      "requestedUrl": "https://web.archive.org/web/20021025100552id_/http://www.haabet.dk:80/users/julehjerter/u.html",
+      "actualCaptureUrl": "https://web.archive.org/web/20021025100552id_/http://www.haabet.dk:80/users/julehjerter/u.html",
+      "archiveCaptureTimestamp": "20021025100552",
+      "retrievedAt": "2026-10-19T17:55:21.536042+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "archiveCdxSha1": "WKVQVK5DADCBJBKEBDXGZ4Q7EL32OI5R",
+      "archiveCdxSha1Verified": true,
+      "review": "Original archived HTML retained. Title, embedded template/preview URLs and instructions inspected; capture digest verified against CDX."
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/f825508c594044851afb0e989b00e04270a73903a0290fffcdf31e4cf558e6ef.html",
+      "sha256": "f825508c594044851afb0e989b00e04270a73903a0290fffcdf31e4cf558e6ef",
+      "bytes": 909,
+      "mimeType": "text/html",
+      "role": "source-evidence",
+      "originalUrl": "http://www.haabet.dk:80/users/julehjerter/d.html",
+      "requestedUrl": "https://web.archive.org/web/20021019225901id_/http://www.haabet.dk:80/users/julehjerter/d.html",
+      "actualCaptureUrl": "https://web.archive.org/web/20021019225901id_/http://www.haabet.dk:80/users/julehjerter/d.html",
+      "archiveCaptureTimestamp": "20021019225901",
+      "retrievedAt": "2026-10-19T17:55:23.631898+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "archiveCdxSha1": "BNILXJSDNOKXIPM5FPVT6XXU63JL3I37",
+      "archiveCdxSha1Verified": true,
+      "review": "Original archived HTML retained. Title, embedded template/preview URLs and instructions inspected; capture digest verified against CDX."
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/5164a7da2728972de91de0c66b498e0961a3345be270b29076eca22fcc94e971.html",
+      "sha256": "5164a7da2728972de91de0c66b498e0961a3345be270b29076eca22fcc94e971",
+      "bytes": 504,
+      "mimeType": "text/html",
+      "role": "source-evidence",
+      "originalUrl": "http://www.haabet.dk:80/users/julehjerter/f.html",
+      "requestedUrl": "https://web.archive.org/web/20021216013859id_/http://www.haabet.dk:80/users/julehjerter/f.html",
+      "actualCaptureUrl": "https://web.archive.org/web/20021216013859id_/http://www.haabet.dk:80/users/julehjerter/f.html",
+      "archiveCaptureTimestamp": "20021216013859",
+      "retrievedAt": "2026-10-19T17:55:25.860150+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "archiveCdxSha1": "6JEHXJ7CTT7KYYPAKOWR33P5MDRFO4ZR",
+      "archiveCdxSha1Verified": true,
+      "review": "Original archived HTML retained. Title, embedded template/preview URLs and instructions inspected; capture digest verified against CDX."
+    }
+  ],
+  "reusedEvidence": [
+    {
+      "localFile": "archive-store/heart-preservation/objects/5088431d744068dae28a07ac8fdc1bdff73d2bb079da7a6e88b31bfebf1eff85.html",
+      "role": "source-evidence",
+      "sha256": "5088431d744068dae28a07ac8fdc1bdff73d2bb079da7a6e88b31bfebf1eff85",
+      "bytes": 2672,
+      "mimeType": "text/html",
+      "originalUrl": "http://www.haabet.dk/users/julehjerter/figure.html",
+      "actualCaptureUrl": "https://web.archive.org/web/20150812154542id_/http://www.haabet.dk/users/julehjerter/figure.html",
+      "archiveCaptureTimestamp": "20150812154542",
+      "requestedUrl": "https://web.archive.org/web/20150101000000id_/http://haabet.dk/users/julehjerter/figure.html",
+      "retrievedAt": "2026-10-19T12:56:57.770256+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/a018d768c3cd79e61cb46d83969a435a9cc6cafdaf029765a19d7436a487acdc.html",
+      "role": "source-evidence",
+      "sha256": "a018d768c3cd79e61cb46d83969a435a9cc6cafdaf029765a19d7436a487acdc",
+      "bytes": 4526,
+      "mimeType": "text/html",
+      "originalUrl": "http://www.haabet.dk/users/julehjerter/index.html",
+      "actualCaptureUrl": "https://web.archive.org/web/20150812154558id_/http://www.haabet.dk/users/julehjerter/index.html",
+      "archiveCaptureTimestamp": "20150812154558",
+      "requestedUrl": "https://web.archive.org/web/20150812154542id_/http://www.haabet.dk/users/julehjerter/index.html",
+      "retrievedAt": "2026-10-19T12:58:57.210230+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false
+    }
+  ],
+  "rights": [
+    {
+      "id": "haabet-personal-printing",
+      "status": "personal-downloading-and-printing-described",
+      "redistributionPermission": null,
+      "license": null,
+      "sourceEvidenceUrls": [
+        "https://web.archive.org/web/20150812154558/http://www.haabet.dk/users/julehjerter/index.html"
+      ],
+      "observedPermission": "Source instructs visitors to save template images and print them at a chosen size. No public redistribution grant found.",
+      "publicMirrorEligible": false
+    }
+  ],
+  "failures": [],
+  "unretrievedLinkedAssets": [
+    {
+      "designId": "haabet-stjerne-af-cirkler",
+      "originalUrl": "http://www.haabet.dk/users/julehjerter/u.gif",
+      "role": "woven-preview",
+      "linkEvidenceSha256": "8a9d983bd7d9c067f2b43204f0e7284b069c4c6cd55f14a4c4d695ea463db9ae",
+      "verificationStatus": "linked-in-source-not-retrieved"
+    },
+    {
+      "designId": "haabet-eight-points",
+      "originalUrl": "http://www.haabet.dk/users/julehjerter/d.gif",
+      "role": "woven-preview",
+      "linkEvidenceSha256": "f825508c594044851afb0e989b00e04270a73903a0290fffcdf31e4cf558e6ef",
+      "verificationStatus": "linked-in-source-not-retrieved"
+    },
+    {
+      "designId": "haabet-four-quadrilaterals",
+      "originalUrl": "http://www.haabet.dk/users/julehjerter/f.gif",
+      "role": "woven-preview",
+      "linkEvidenceSha256": "5164a7da2728972de91de0c66b498e0961a3345be270b29076eca22fcc94e971",
+      "verificationStatus": "linked-in-source-not-retrieved"
+    },
+    {
+      "designId": "haabet-eight-points",
+      "originalUrl": "http://www.haabet.dk/users/julehjerter/d2.gif",
+      "role": "incorrect-weaving-example",
+      "linkEvidenceSha256": "f825508c594044851afb0e989b00e04270a73903a0290fffcdf31e4cf558e6ef",
+      "verificationStatus": "linked-in-source-not-retrieved"
+    }
+  ],
+  "validation": {
+    "integrity": "All nine new originals/evidence bodies checked against SHA256 and size. Three HTML bodies additionally match historical CDX SHA1 digests. Reused index evidence rechecked.",
+    "visual": "All three original GIFs decoded and visually inspected. Each includes a paper outline, cuts and the printed PETER OLE KVINT signature. Review enlargement is separate from originals.",
+    "deduplication": "Compared source URLs and hashes with all existing archive manifests, real-manifest.json and private SHA storage. No source-record or byte duplicates found. Similar motif geometry elsewhere is not ruled out.",
+    "network": "Exactly 12 serial HTTP requests including three redirects; stopped at the request cap. No browser or background network worker remains active.",
+    "publication": "No public redistribution grant established. No tracked/shared files modified, staging, commit, push or deployment performed."
+  },
+  "limitations": [
+    "These are small original raster templates, approximately 200 by 300 pixels, not reconstructed vectors or physical assembly validation.",
+    "Finished-heart previews and the incorrect-weaving illustration remain known links only because the request budget was exhausted.",
+    "Archive capture dates are not invention dates. Original titles retain the source spelling."
+  ],
+  "storage": {
+    "status": "promoted-and-hash-verified",
+    "manifest": "docs/inverse/datasets/heart-archive-storage.json",
+    "newUniqueObjects": 9,
+    "newOriginalBytes": 8688,
+    "reusedEvidenceObjects": 2,
+    "publicMirrorsAdded": 0
+  }
+}

@@ -1,0 +1,560 @@
+{
+  "version": 1,
+  "generatedAt": "2026-10-19T17:42:23.425657+00:00",
+  "scope": "Preserve original editable SVG files for five already catalogued JulehjerteDesign hearts whose PDF templates are already preserved. This adds five source files, not five new designs.",
+  "summary": {
+    "existingDesignsEnriched": 5,
+    "newDesigns": 0,
+    "recoveredSvgOriginals": 5,
+    "httpRequests": 5,
+    "httpRequestLimit": 10,
+    "assetBytes": 502957,
+    "uniqueNewPayloadBytes": 502957,
+    "newPayloadLimitBytes": 2097152,
+    "failedRequests": 0,
+    "existingByteDuplicates": 0
+  },
+  "designs": [
+    {
+      "id": "jhd-darth-vader",
+      "title": "Darth Vader Julehjerte",
+      "collection": "JulehjerteDesign.dk",
+      "sourcePage": "http://julehjertedesign.dk/darth-vader-julehjerte/",
+      "archivedSourcePage": "https://web.archive.org/web/20160405032756/http://julehjertedesign.dk/darth-vader-julehjerte/",
+      "sourceDeclaredPublishedAt": "2015-12-21T12:01:32+00:00",
+      "designer": "Johan Rosenkilde",
+      "creditEvidenceUrls": [
+        "https://web.archive.org/web/20160405032756/http://julehjertedesign.dk/darth-vader-julehjerte/",
+        "https://web.archive.org/web/20160405091838/http://julehjertedesign.dk/om/"
+      ],
+      "creditNote": "Article byline Johan; archived About page identifies Johan Rosenkilde. The site presents these as his designs; separately contributed works retain their own credits.",
+      "templateAssets": [
+        "b12267c57c991798a776f1e5df9dc030bfac7bb9dcc7042f3751180fde91037b",
+        "f48e22897748ae197325ddd6bce1ba8e817b9a3011425ff8d851edb32f5d07c0"
+      ],
+      "preservationStatus": "original-pdf-and-svg-preserved",
+      "rightsRef": "julehjertedesign-unknown",
+      "existingTemplateAssets": [
+        "b12267c57c991798a776f1e5df9dc030bfac7bb9dcc7042f3751180fde91037b"
+      ],
+      "addedTemplateAssets": [
+        "f48e22897748ae197325ddd6bce1ba8e817b9a3011425ff8d851edb32f5d07c0"
+      ],
+      "archiveUpdateKind": "editable-source-added-to-existing-design"
+    },
+    {
+      "id": "jhd-heart-of-heart",
+      "title": "Julehjertets Hjerte / Frithængende Hjerte",
+      "collection": "JulehjerteDesign.dk",
+      "sourcePage": "http://julehjertedesign.dk/julehjertets-hjerte/",
+      "archivedSourcePage": "https://web.archive.org/web/20160405033512/http://julehjertedesign.dk/julehjertets-hjerte/",
+      "sourceDeclaredPublishedAt": "2015-12-24T13:34:46+00:00",
+      "designer": "Johan Rosenkilde",
+      "creditEvidenceUrls": [
+        "https://web.archive.org/web/20160405033512/http://julehjertedesign.dk/julehjertets-hjerte/",
+        "https://web.archive.org/web/20160405091838/http://julehjertedesign.dk/om/"
+      ],
+      "creditNote": "Article byline Johan; archived About page identifies Johan Rosenkilde. The site presents these as his designs; separately contributed works retain their own credits.",
+      "templateAssets": [
+        "b53c957305fec4da92b232bd1d6632e415bd3352ea2ca65df61777493301dc9d",
+        "815773f75a4c9f7f1743ac55667fcc580c762f21f654785b7434b0ee7a99631f"
+      ],
+      "preservationStatus": "original-pdf-and-svg-preserved",
+      "rightsRef": "julehjertedesign-unknown",
+      "existingTemplateAssets": [
+        "b53c957305fec4da92b232bd1d6632e415bd3352ea2ca65df61777493301dc9d"
+      ],
+      "addedTemplateAssets": [
+        "815773f75a4c9f7f1743ac55667fcc580c762f21f654785b7434b0ee7a99631f"
+      ],
+      "archiveUpdateKind": "editable-source-added-to-existing-design"
+    },
+    {
+      "id": "jhd-node",
+      "title": "Node Julehjerte",
+      "collection": "JulehjerteDesign.dk",
+      "sourcePage": "http://julehjertedesign.dk/node-julehjerte/",
+      "archivedSourcePage": "https://web.archive.org/web/20160405033449/http://julehjertedesign.dk/node-julehjerte/",
+      "sourceDeclaredPublishedAt": "2015-12-17T12:00:21+00:00",
+      "designer": "Johan Rosenkilde",
+      "creditEvidenceUrls": [
+        "https://web.archive.org/web/20160405033449/http://julehjertedesign.dk/node-julehjerte/",
+        "https://web.archive.org/web/20160405091838/http://julehjertedesign.dk/om/"
+      ],
+      "creditNote": "Article byline Johan; archived About page identifies Johan Rosenkilde. The site presents these as his designs; separately contributed works retain their own credits.",
+      "templateAssets": [
+        "135d196c820fb1300d5d2dde855d568ca57dfd273b8de6200ac8085e62efd453",
+        "3ec49a5d82ac13664a4a01f7114d580cc8b7c4f8a32a3fe42996286956a79c7a"
+      ],
+      "preservationStatus": "original-pdf-and-svg-preserved",
+      "rightsRef": "julehjertedesign-unknown",
+      "existingTemplateAssets": [
+        "135d196c820fb1300d5d2dde855d568ca57dfd273b8de6200ac8085e62efd453"
+      ],
+      "addedTemplateAssets": [
+        "3ec49a5d82ac13664a4a01f7114d580cc8b7c4f8a32a3fe42996286956a79c7a"
+      ],
+      "archiveUpdateKind": "editable-source-added-to-existing-design"
+    },
+    {
+      "id": "jhd-sundays-fourth",
+      "title": "Fjerde Søndag i Advent",
+      "collection": "JulehjerteDesign.dk",
+      "sourcePage": "http://julehjertedesign.dk/fjerde-soendag-i-advent/",
+      "archivedSourcePage": "https://web.archive.org/web/20160405032316/http://julehjertedesign.dk/fjerde-soendag-i-advent/",
+      "sourceDeclaredPublishedAt": "2015-12-20T16:15:24+00:00",
+      "designer": "Johan Rosenkilde",
+      "creditEvidenceUrls": [
+        "https://web.archive.org/web/20160405032316/http://julehjertedesign.dk/fjerde-soendag-i-advent/",
+        "https://web.archive.org/web/20160405091838/http://julehjertedesign.dk/om/"
+      ],
+      "creditNote": "Article byline Johan; archived About page identifies Johan Rosenkilde. The site presents these as his designs; separately contributed works retain their own credits.",
+      "templateAssets": [
+        "c64bbc3beeb401044b4fe99741feb9eecfc2117e1f56b4f282a9aa476412abb2",
+        "9a66ba250337e812fabf697fb492b7a355a79a93190b7d3a53d01ba9f4c59323"
+      ],
+      "preservationStatus": "original-pdf-and-svg-preserved",
+      "rightsRef": "julehjertedesign-unknown",
+      "existingTemplateAssets": [
+        "c64bbc3beeb401044b4fe99741feb9eecfc2117e1f56b4f282a9aa476412abb2"
+      ],
+      "addedTemplateAssets": [
+        "9a66ba250337e812fabf697fb492b7a355a79a93190b7d3a53d01ba9f4c59323"
+      ],
+      "archiveUpdateKind": "editable-source-added-to-existing-design"
+    },
+    {
+      "id": "jhd-venus",
+      "title": "Venus Julehjerte",
+      "collection": "JulehjerteDesign.dk",
+      "sourcePage": "http://julehjertedesign.dk/venus-julehjerte/",
+      "archivedSourcePage": "https://web.archive.org/web/20161018014112/http://julehjertedesign.dk/venus-julehjerte/",
+      "sourceDeclaredPublishedAt": "2015-12-18T13:08:24+00:00",
+      "designer": "Johan Rosenkilde",
+      "creditEvidenceUrls": [
+        "https://web.archive.org/web/20161018014112/http://julehjertedesign.dk/venus-julehjerte/",
+        "https://web.archive.org/web/20160405091838/http://julehjertedesign.dk/om/"
+      ],
+      "creditNote": "Article byline Johan; archived About page identifies Johan Rosenkilde. The site presents these as his designs; separately contributed works retain their own credits.",
+      "templateAssets": [
+        "2cf8d8ef04d2389146ba30482ebb2bf7642de286487f2c8674ffafb85d4f1406",
+        "c6b5551283544d542394e95500e5ba07a430c5334cfaf6d6b9e5e7d1a8151fab"
+      ],
+      "preservationStatus": "original-pdf-and-svg-preserved",
+      "rightsRef": "julehjertedesign-unknown",
+      "existingTemplateAssets": [
+        "2cf8d8ef04d2389146ba30482ebb2bf7642de286487f2c8674ffafb85d4f1406"
+      ],
+      "addedTemplateAssets": [
+        "c6b5551283544d542394e95500e5ba07a430c5334cfaf6d6b9e5e7d1a8151fab"
+      ],
+      "archiveUpdateKind": "editable-source-added-to-existing-design"
+    }
+  ],
+  "assets": [
+    {
+      "localFile": "archive-store/heart-preservation/objects/f48e22897748ae197325ddd6bce1ba8e817b9a3011425ff8d851edb32f5d07c0.svg",
+      "sha256": "f48e22897748ae197325ddd6bce1ba8e817b9a3011425ff8d851edb32f5d07c0",
+      "bytes": 165782,
+      "mimeType": "image/svg+xml",
+      "role": "cutting-template-editable-original",
+      "originalUrl": "http://julehjertedesign.dk/diagrams/darth_vader.svg",
+      "requestedUrl": "https://web.archive.org/web/20170112161918id_/http://julehjertedesign.dk/diagrams/darth_vader.svg",
+      "actualCaptureUrl": "https://web.archive.org/web/20170112161918id_/http://julehjertedesign.dk/diagrams/darth_vader.svg",
+      "archiveCaptureTimestamp": "20170112161918",
+      "retrievedAt": "2026-10-19T17:40:01.479423+00:00",
+      "archiveCdxSha1": "JYDNS5EQOPFH6L7WXMFNS7VOYWLQ5I6L",
+      "archiveCdxSha1Verified": true,
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "associatedExistingPdfSha256": "b12267c57c991798a776f1e5df9dc030bfac7bb9dcc7042f3751180fde91037b",
+      "associatedExistingDesignId": "jhd-darth-vader",
+      "svgInspection": {
+        "rootNamespace": "http://www.w3.org/2000/svg",
+        "width": "210mm",
+        "height": "297mm",
+        "viewBox": null,
+        "pathCount": 202,
+        "imageCount": 0,
+        "scriptCount": 0,
+        "externalResourceReferenceCount": 0,
+        "layerNames": [
+          "coloring",
+          "Red lines",
+          "Blue lines",
+          "DV backup",
+          "Sum"
+        ],
+        "hiddenLayerNames": [
+          "coloring",
+          "DV backup"
+        ]
+      },
+      "review": "Parsed complete SVG XML and verified its SHA1 against the independent CDX capture digest. Rendered with librsvg at a bounded size and visually inspected: original sheet outlines, cutting paths, small woven preview, labels and JulehjerteDesign.dk credit are present. Original bytes and hidden layers retained unmodified. Not a new physical weaving validation."
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/815773f75a4c9f7f1743ac55667fcc580c762f21f654785b7434b0ee7a99631f.svg",
+      "sha256": "815773f75a4c9f7f1743ac55667fcc580c762f21f654785b7434b0ee7a99631f",
+      "bytes": 87628,
+      "mimeType": "image/svg+xml",
+      "role": "cutting-template-editable-original",
+      "originalUrl": "http://julehjertedesign.dk/diagrams/heart_of_heart.svg",
+      "requestedUrl": "https://web.archive.org/web/20170114132905id_/http://julehjertedesign.dk/diagrams/heart_of_heart.svg",
+      "actualCaptureUrl": "https://web.archive.org/web/20170114132905id_/http://julehjertedesign.dk/diagrams/heart_of_heart.svg",
+      "archiveCaptureTimestamp": "20170114132905",
+      "retrievedAt": "2026-10-19T17:40:05.636089+00:00",
+      "archiveCdxSha1": "6IVU4FZKMUIJKKQKEKM55K52V3JITTXT",
+      "archiveCdxSha1Verified": true,
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "associatedExistingPdfSha256": "b53c957305fec4da92b232bd1d6632e415bd3352ea2ca65df61777493301dc9d",
+      "associatedExistingDesignId": "jhd-heart-of-heart",
+      "svgInspection": {
+        "rootNamespace": "http://www.w3.org/2000/svg",
+        "width": "744.09448",
+        "height": "1052.3622",
+        "viewBox": null,
+        "pathCount": 128,
+        "imageCount": 0,
+        "scriptCount": 0,
+        "externalResourceReferenceCount": 0,
+        "layerNames": [
+          "Guides",
+          "Red lines",
+          "Blue lines",
+          "Sum"
+        ],
+        "hiddenLayerNames": []
+      },
+      "review": "Parsed complete SVG XML and verified its SHA1 against the independent CDX capture digest. Rendered with librsvg at a bounded size and visually inspected: original sheet outlines, cutting paths, small woven preview, labels and JulehjerteDesign.dk credit are present. Original bytes and hidden layers retained unmodified. Not a new physical weaving validation."
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/3ec49a5d82ac13664a4a01f7114d580cc8b7c4f8a32a3fe42996286956a79c7a.svg",
+      "sha256": "3ec49a5d82ac13664a4a01f7114d580cc8b7c4f8a32a3fe42996286956a79c7a",
+      "bytes": 52611,
+      "mimeType": "image/svg+xml",
+      "role": "cutting-template-editable-original",
+      "originalUrl": "http://julehjertedesign.dk/diagrams/node.svg",
+      "requestedUrl": "https://web.archive.org/web/20170114051312id_/http://julehjertedesign.dk/diagrams/node.svg",
+      "actualCaptureUrl": "https://web.archive.org/web/20170114051312id_/http://julehjertedesign.dk/diagrams/node.svg",
+      "archiveCaptureTimestamp": "20170114051312",
+      "retrievedAt": "2026-10-19T17:40:08.749922+00:00",
+      "archiveCdxSha1": "KXR4ZRJQ4FYEJOBG7UQWQS5PHDSZ4E2P",
+      "archiveCdxSha1Verified": true,
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "associatedExistingPdfSha256": "135d196c820fb1300d5d2dde855d568ca57dfd273b8de6200ac8085e62efd453",
+      "associatedExistingDesignId": "jhd-node",
+      "svgInspection": {
+        "rootNamespace": "http://www.w3.org/2000/svg",
+        "width": "744.09448",
+        "height": "1052.3622",
+        "viewBox": null,
+        "pathCount": 71,
+        "imageCount": 0,
+        "scriptCount": 0,
+        "externalResourceReferenceCount": 0,
+        "layerNames": [
+          "Red",
+          "Blue",
+          "Sum"
+        ],
+        "hiddenLayerNames": []
+      },
+      "review": "Parsed complete SVG XML and verified its SHA1 against the independent CDX capture digest. Rendered with librsvg at a bounded size and visually inspected: original sheet outlines, cutting paths, small woven preview, labels and JulehjerteDesign.dk credit are present. Original bytes and hidden layers retained unmodified. Not a new physical weaving validation."
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/9a66ba250337e812fabf697fb492b7a355a79a93190b7d3a53d01ba9f4c59323.svg",
+      "sha256": "9a66ba250337e812fabf697fb492b7a355a79a93190b7d3a53d01ba9f4c59323",
+      "bytes": 137219,
+      "mimeType": "image/svg+xml",
+      "role": "cutting-template-editable-original",
+      "originalUrl": "http://julehjertedesign.dk/diagrams/sundays_fourth.svg",
+      "requestedUrl": "https://web.archive.org/web/20170112181839id_/http://julehjertedesign.dk/diagrams/sundays_fourth.svg",
+      "actualCaptureUrl": "https://web.archive.org/web/20170112181839id_/http://julehjertedesign.dk/diagrams/sundays_fourth.svg",
+      "archiveCaptureTimestamp": "20170112181839",
+      "retrievedAt": "2026-10-19T17:40:12.076266+00:00",
+      "archiveCdxSha1": "3SR5WKOQAG7E6VQOU533JHVU5PELLGXY",
+      "archiveCdxSha1Verified": true,
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "associatedExistingPdfSha256": "c64bbc3beeb401044b4fe99741feb9eecfc2117e1f56b4f282a9aa476412abb2",
+      "associatedExistingDesignId": "jhd-sundays-fourth",
+      "svgInspection": {
+        "rootNamespace": "http://www.w3.org/2000/svg",
+        "width": "744.09448",
+        "height": "1052.3622",
+        "viewBox": null,
+        "pathCount": 181,
+        "imageCount": 0,
+        "scriptCount": 0,
+        "externalResourceReferenceCount": 0,
+        "layerNames": [
+          "Red lines",
+          "Blue lines",
+          "Sum"
+        ],
+        "hiddenLayerNames": []
+      },
+      "review": "Parsed complete SVG XML and verified its SHA1 against the independent CDX capture digest. Rendered with librsvg at a bounded size and visually inspected: original sheet outlines, cutting paths, small woven preview, labels and JulehjerteDesign.dk credit are present. Original bytes and hidden layers retained unmodified. Not a new physical weaving validation."
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/c6b5551283544d542394e95500e5ba07a430c5334cfaf6d6b9e5e7d1a8151fab.svg",
+      "sha256": "c6b5551283544d542394e95500e5ba07a430c5334cfaf6d6b9e5e7d1a8151fab",
+      "bytes": 59717,
+      "mimeType": "image/svg+xml",
+      "role": "cutting-template-editable-original",
+      "originalUrl": "http://julehjertedesign.dk/diagrams/venus.svg",
+      "requestedUrl": "https://web.archive.org/web/20170112163856id_/http://julehjertedesign.dk/diagrams/venus.svg",
+      "actualCaptureUrl": "https://web.archive.org/web/20170112163856id_/http://julehjertedesign.dk/diagrams/venus.svg",
+      "archiveCaptureTimestamp": "20170112163856",
+      "retrievedAt": "2026-10-19T17:40:16.087876+00:00",
+      "archiveCdxSha1": "TH2C3GKTQ2QW4ZDGZAU22UVJE7VR4TNY",
+      "archiveCdxSha1Verified": true,
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "associatedExistingPdfSha256": "2cf8d8ef04d2389146ba30482ebb2bf7642de286487f2c8674ffafb85d4f1406",
+      "associatedExistingDesignId": "jhd-venus",
+      "svgInspection": {
+        "rootNamespace": "http://www.w3.org/2000/svg",
+        "width": "210mm",
+        "height": "297mm",
+        "viewBox": null,
+        "pathCount": 62,
+        "imageCount": 0,
+        "scriptCount": 0,
+        "externalResourceReferenceCount": 0,
+        "layerNames": [
+          "Blue lines",
+          "Sum"
+        ],
+        "hiddenLayerNames": []
+      },
+      "review": "Parsed complete SVG XML and verified its SHA1 against the independent CDX capture digest. Rendered with librsvg at a bounded size and visually inspected: original sheet outlines, cutting paths, small woven preview, labels and JulehjerteDesign.dk credit are present. Original bytes and hidden layers retained unmodified. Not a new physical weaving validation."
+    }
+  ],
+  "reusedAssets": [
+    {
+      "localFile": "archive-store/heart-preservation/objects/b12267c57c991798a776f1e5df9dc030bfac7bb9dcc7042f3751180fde91037b.pdf",
+      "role": "cutting-template",
+      "sha256": "b12267c57c991798a776f1e5df9dc030bfac7bb9dcc7042f3751180fde91037b",
+      "bytes": 43097,
+      "mimeType": "application/pdf",
+      "originalUrl": "http://julehjertedesign.dk/diagrams/darth_vader.pdf",
+      "actualCaptureUrl": "https://web.archive.org/web/20170112130334id_/http://julehjertedesign.dk/diagrams/darth_vader.pdf",
+      "archiveCaptureTimestamp": "20170112130334",
+      "requestedUrl": "https://web.archive.org/web/20170112130334id_/http://julehjertedesign.dk/diagrams/darth_vader.pdf",
+      "retrievedAt": "2026-10-19T12:57:26.016446+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "pdfPages": 1,
+      "review": "Decoded with Poppler, extracted text, and visually inspected complete rendered page. Original template paths, labels and attribution retained; no edits."
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/b53c957305fec4da92b232bd1d6632e415bd3352ea2ca65df61777493301dc9d.pdf",
+      "role": "cutting-template",
+      "sha256": "b53c957305fec4da92b232bd1d6632e415bd3352ea2ca65df61777493301dc9d",
+      "bytes": 42573,
+      "mimeType": "application/pdf",
+      "originalUrl": "http://julehjertedesign.dk/diagrams/heart_of_heart.pdf",
+      "actualCaptureUrl": "https://web.archive.org/web/20170114063322id_/http://julehjertedesign.dk/diagrams/heart_of_heart.pdf",
+      "archiveCaptureTimestamp": "20170114063322",
+      "requestedUrl": "https://web.archive.org/web/20170114063322id_/http://julehjertedesign.dk/diagrams/heart_of_heart.pdf",
+      "retrievedAt": "2026-10-19T12:57:31.398766+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "pdfPages": 1,
+      "review": "Decoded with Poppler, extracted text, and visually inspected complete rendered page. Original template paths, labels and attribution retained; no edits."
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/135d196c820fb1300d5d2dde855d568ca57dfd273b8de6200ac8085e62efd453.pdf",
+      "role": "cutting-template",
+      "sha256": "135d196c820fb1300d5d2dde855d568ca57dfd273b8de6200ac8085e62efd453",
+      "bytes": 32831,
+      "mimeType": "application/pdf",
+      "originalUrl": "http://julehjertedesign.dk/diagrams/node.pdf",
+      "actualCaptureUrl": "https://web.archive.org/web/20170114005929id_/http://julehjertedesign.dk/diagrams/node.pdf",
+      "archiveCaptureTimestamp": "20170114005929",
+      "requestedUrl": "https://web.archive.org/web/20170114005929id_/http://julehjertedesign.dk/diagrams/node.pdf",
+      "retrievedAt": "2026-10-19T12:57:37.316274+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "pdfPages": 1,
+      "review": "Decoded with Poppler, extracted text, and visually inspected complete rendered page. Original template paths, labels and attribution retained; no edits."
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/c64bbc3beeb401044b4fe99741feb9eecfc2117e1f56b4f282a9aa476412abb2.pdf",
+      "role": "cutting-template",
+      "sha256": "c64bbc3beeb401044b4fe99741feb9eecfc2117e1f56b4f282a9aa476412abb2",
+      "bytes": 51243,
+      "mimeType": "application/pdf",
+      "originalUrl": "http://julehjertedesign.dk/diagrams/sundays_fourth.pdf",
+      "actualCaptureUrl": "https://web.archive.org/web/20170112122538id_/http://julehjertedesign.dk/diagrams/sundays_fourth.pdf",
+      "archiveCaptureTimestamp": "20170112122538",
+      "requestedUrl": "https://web.archive.org/web/20170112122538id_/http://julehjertedesign.dk/diagrams/sundays_fourth.pdf",
+      "retrievedAt": "2026-10-19T12:57:42.360118+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "pdfPages": 1,
+      "review": "Decoded with Poppler, extracted text, and visually inspected complete rendered page. Original template paths, labels and attribution retained; no edits."
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/2cf8d8ef04d2389146ba30482ebb2bf7642de286487f2c8674ffafb85d4f1406.pdf",
+      "role": "cutting-template",
+      "sha256": "2cf8d8ef04d2389146ba30482ebb2bf7642de286487f2c8674ffafb85d4f1406",
+      "bytes": 33551,
+      "mimeType": "application/pdf",
+      "originalUrl": "http://julehjertedesign.dk/diagrams/venus.pdf",
+      "actualCaptureUrl": "https://web.archive.org/web/20170112121201id_/http://julehjertedesign.dk/diagrams/venus.pdf",
+      "archiveCaptureTimestamp": "20170112121201",
+      "requestedUrl": "https://web.archive.org/web/20170112121201id_/http://julehjertedesign.dk/diagrams/venus.pdf",
+      "retrievedAt": "2026-10-19T12:57:48.276865+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "pdfPages": 1,
+      "review": "Decoded with Poppler, extracted text, and visually inspected complete rendered page. Original template paths, labels and attribution retained; no edits."
+    }
+  ],
+  "reusedEvidence": [
+    {
+      "localFile": "archive-store/heart-preservation/objects/a2ee66b6971b05f3597e0970781a6b6b93aac68c50aa35708f95ed511980510b.html",
+      "role": "source-evidence",
+      "sha256": "a2ee66b6971b05f3597e0970781a6b6b93aac68c50aa35708f95ed511980510b",
+      "bytes": 48707,
+      "mimeType": "text/html; charset=UTF-8",
+      "originalUrl": "http://julehjertedesign.dk/darth-vader-julehjerte/",
+      "actualCaptureUrl": "https://web.archive.org/web/20160405032756id_/http://julehjertedesign.dk/darth-vader-julehjerte/",
+      "archiveCaptureTimestamp": "20160405032756",
+      "requestedUrl": "https://web.archive.org/web/20160405032756id_/http://julehjertedesign.dk/darth-vader-julehjerte/",
+      "retrievedAt": "2026-10-19T12:57:14.596436+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/08ecf225b77960c4288de4e4ba240b8e169a2f2847143bdc01eb6f1b5d7ab840.html",
+      "role": "source-evidence",
+      "sha256": "08ecf225b77960c4288de4e4ba240b8e169a2f2847143bdc01eb6f1b5d7ab840",
+      "bytes": 41874,
+      "mimeType": "text/html; charset=UTF-8",
+      "originalUrl": "http://julehjertedesign.dk/fjerde-soendag-i-advent/",
+      "actualCaptureUrl": "https://web.archive.org/web/20160405032316id_/http://julehjertedesign.dk/fjerde-soendag-i-advent/",
+      "archiveCaptureTimestamp": "20160405032316",
+      "requestedUrl": "https://web.archive.org/web/20160405032316id_/http://julehjertedesign.dk/fjerde-soendag-i-advent/",
+      "retrievedAt": "2026-10-19T12:57:53.928314+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/b9058f5a2d5ab3e302fd090df1c4bf17fecc92eb6f943460846213302df1eeb8.html",
+      "role": "source-evidence",
+      "sha256": "b9058f5a2d5ab3e302fd090df1c4bf17fecc92eb6f943460846213302df1eeb8",
+      "bytes": 44736,
+      "mimeType": "text/html; charset=UTF-8",
+      "originalUrl": "http://julehjertedesign.dk/julehjertets-hjerte/",
+      "actualCaptureUrl": "https://web.archive.org/web/20160405033512id_/http://julehjertedesign.dk/julehjertets-hjerte/",
+      "archiveCaptureTimestamp": "20160405033512",
+      "requestedUrl": "https://web.archive.org/web/20160405033512id_/http://julehjertedesign.dk/julehjertets-hjerte/",
+      "retrievedAt": "2026-10-19T12:57:59.936109+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/b929495060aeecd7c88af123793460f325d7c4ce7d0cf5158792d1ea973f428f.html",
+      "role": "source-evidence",
+      "sha256": "b929495060aeecd7c88af123793460f325d7c4ce7d0cf5158792d1ea973f428f",
+      "bytes": 39771,
+      "mimeType": "text/html; charset=UTF-8",
+      "originalUrl": "http://julehjertedesign.dk/node-julehjerte/",
+      "actualCaptureUrl": "https://web.archive.org/web/20160405033449id_/http://julehjertedesign.dk/node-julehjerte/",
+      "archiveCaptureTimestamp": "20160405033449",
+      "requestedUrl": "https://web.archive.org/web/20160405033449id_/http://julehjertedesign.dk/node-julehjerte/",
+      "retrievedAt": "2026-10-19T12:58:09.158252+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/8138af5cc46fdc1ff6ba4d4c5480173d9d8d2022def042112acb7451dc8e2b9c.html",
+      "role": "source-evidence",
+      "sha256": "8138af5cc46fdc1ff6ba4d4c5480173d9d8d2022def042112acb7451dc8e2b9c",
+      "bytes": 68282,
+      "mimeType": "text/html; charset=UTF-8",
+      "originalUrl": "http://julehjertedesign.dk/om/",
+      "actualCaptureUrl": "https://web.archive.org/web/20160405091838id_/http://julehjertedesign.dk/om/",
+      "archiveCaptureTimestamp": "20160405091838",
+      "requestedUrl": "https://web.archive.org/web/20160405091838id_/http://julehjertedesign.dk/om/",
+      "retrievedAt": "2026-10-19T12:58:15.877666+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/99f8774b55be6a24b502584cca886399338399c4118be6ffbdd9354bc1f9f3ba.html",
+      "role": "source-evidence",
+      "sha256": "99f8774b55be6a24b502584cca886399338399c4118be6ffbdd9354bc1f9f3ba",
+      "bytes": 40237,
+      "mimeType": "text/html; charset=UTF-8",
+      "originalUrl": "http://julehjertedesign.dk/venus-julehjerte/",
+      "actualCaptureUrl": "https://web.archive.org/web/20161018014112id_/http://julehjertedesign.dk/venus-julehjerte/",
+      "archiveCaptureTimestamp": "20161018014112",
+      "requestedUrl": "https://web.archive.org/web/20170112121201id_/http://julehjertedesign.dk/venus-julehjerte/",
+      "retrievedAt": "2026-10-19T12:59:05.972077+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/4e994b94a2c826382abad108c0067c0b344d25259fb4b2204d33e21db5785822.json",
+      "sha256": "4e994b94a2c826382abad108c0067c0b344d25259fb4b2204d33e21db5785822",
+      "bytes": 1758,
+      "mimeType": "application/json",
+      "role": "archive-lookup-evidence",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "retrievals": [
+        {
+          "number": 2,
+          "label": "cdx-diagrams-inventory",
+          "requestedUrl": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json&collapse=urlkey&fl=timestamp,original,mimetype,statuscode,digest,length&limit=200",
+          "url": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json&collapse=urlkey&fl=timestamp,original,mimetype,statuscode,digest,length&limit=200",
+          "finalUrl": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json&collapse=urlkey&fl=timestamp,original,mimetype,statuscode,digest,length&limit=200",
+          "retrievedAt": "2026-10-19T17:24:33.380650+00:00",
+          "status": 200
+        }
+      ]
+    }
+  ],
+  "rights": [
+    {
+      "id": "julehjertedesign-unknown",
+      "status": "unknown",
+      "redistributionPermission": null,
+      "license": null,
+      "sourceEvidenceUrls": [
+        "https://web.archive.org/web/20160405091838/http://julehjertedesign.dk/om/"
+      ],
+      "observedPermission": "Author explains personal printing/scaling and modifying downloaded SVGs in Inkscape. No public redistribution license found in inspected pages or PDFs.",
+      "publicMirrorEligible": false
+    }
+  ],
+  "failures": [],
+  "validation": {
+    "integrity": "All five original SVG files match their recorded SHA256 and the historical CDX SHA1 digest. All referenced existing PDFs and evidence files rechecked against recorded size/SHA256.",
+    "format": "All five parse as SVG-namespace XML with path geometry and editable Inkscape layers. None is an HTML response, embedded raster substitute or external-resource wrapper.",
+    "visual": "All five rendered serially with librsvg and visually inspected using contact-sheet.png. Sheet outlines, cuts, motif previews and source credits are visible.",
+    "deduplication": "Checked SHA256 values against existing archive manifests and private object filenames. No byte duplicates. Existing design IDs and PDF associations retained.",
+    "budget": "Five serial HTTP requests with one-second spacing; no redirects, browser, concurrent fetches or heavy worker. Network task has finished.",
+    "publication": "No new reuse or redistribution license found. SVGs remain private preservation material; no shared files, staging, commits or deployment performed."
+  },
+  "limitations": [
+    "Visual/structural verification does not prove physical cuttability or equivalence to the current solver model.",
+    "Existing author/source credit is retained; SVG metadata contains no explicit new public redistribution permission.",
+    "Preview PNGs and contact-sheet.png are derived QA files, not archival originals or new dataset designs."
+  ],
+  "storage": {
+    "status": "promoted-and-hash-verified",
+    "manifest": "docs/inverse/datasets/heart-archive-storage.json",
+    "newUniqueObjects": 5,
+    "newOriginalBytes": 502957,
+    "reusedTemplateObjects": 5,
+    "reusedEvidenceObjects": 7,
+    "publicMirrorsAdded": 0
+  }
+}
