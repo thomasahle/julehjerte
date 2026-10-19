@@ -11,6 +11,7 @@ import {
 	cutOfFinger,
 	extractTile,
 	fitsTile,
+	followEdit,
 	generateEditorFingers,
 	anchorOfPlacedPoint,
 	dragPlacedPoint,
@@ -560,5 +561,54 @@ describe('a pattern moved within the heart', () => {
 			// the parity flips exactly when the heart starts an odd number of lines further on
 			expect((firstLine(tile, 'V') + firstLine(tile, 'H') + parity) % 2).toBe(1);
 		}
+	});
+
+	/** On every cut of a moved pattern with a node the tile does not place, the one nearest the middle, nudged with its handles. */
+	function nudges(tile: PatternTile, d: Vec) {
+		const rect = getCenteredRectParams({ x: tile.cuts + 1, y: tile.cuts + 1 });
+		return generateEditorFingers(tile, rect).flatMap((before) => {
+			const special = specialNodes(tile, before.id);
+			const middle = before.segments.length / 2;
+			const free = [...before.segments.keys()].filter((a) => a > 0 && !special.has(a));
+			if (!free.length) return [];
+			const k = free.reduce((best, a) => (Math.abs(a - middle) < Math.abs(best - middle) ? a : best));
+			const segments = before.segments.map((seg, a) => {
+				if (a === k - 1) return { ...seg, p2: { x: seg.p2.x + d.x, y: seg.p2.y + d.y }, p3: { x: seg.p3.x + d.x, y: seg.p3.y + d.y } };
+				if (a === k) return { ...seg, p0: { x: seg.p0.x + d.x, y: seg.p0.y + d.y }, p1: { x: seg.p1.x + d.x, y: seg.p1.y + d.y } };
+				return seg;
+			});
+			const next = tileAfterFingerEdit(tile, { ...before, segments }, rect);
+			const after = generateEditorFingers(next, rect).find((f) => f.id === before.id)!;
+			return [{ id: before.id, k, drawn: segments[k]!.p0, next, nodes: after.segments.map((s) => s.p0) }];
+		});
+	}
+
+	it.each(ALL_RULES.map((rule) => [ruleKey(rule), rule] as const))(
+		'finds a node dragged on the moved %s pattern again, where the edge now cuts off more or less of the curves before it',
+		(_key, rule) => {
+			const d = { x: 1.5, y: -1 };
+			for (const pan of [{ x: 0.37, y: -0.21 }, { x: -0.62, y: 0.44 }, { x: 1.6, y: -1.3 }]) {
+				const tile = fitLines({ ...ruleStart(rule, 4), pan });
+				const dragged = nudges(tile, d);
+				expect(dragged.length, `pan ${pan.x}, ${pan.y}`).toBeGreaterThan(0);
+				for (const { id, k, drawn, next, nodes } of dragged) {
+					const where = `${id} node ${k}, pan ${pan.x}, ${pan.y}`;
+					// The node found again is the one nearest where it was drawn, and there, unless the
+					// type keeps it on a mirror line: then the line took it no further.
+					const at = followEdit(tile, next, id).anchor(k);
+					const off = (a: number) => Math.hypot(nodes[a]!.x - drawn.x, nodes[a]!.y - drawn.y);
+					const nearest = nodes.reduce((best, _p, a) => (off(a) < off(best) ? a : best), 0);
+					expect(at, where).toBe(nearest);
+					expect(off(at), where).toBeLessThan(Math.hypot(d.x, d.y));
+				}
+			}
+		}
+	);
+
+	it('a node dragged where the edge cuts off a node before it is a node further along the cut made again', () => {
+		const tile = fitLines({ ...ruleStart(opposite('turn', 'move'), 4), pan: { x: 0.37, y: -0.21 } });
+		const moved = nudges(tile, { x: 1.5, y: -1 }).filter(({ id, k, next }) => followEdit(tile, next, id).anchor(k) !== k);
+		expect(moved.length).toBeGreaterThan(0);
+		for (const { id, k, drawn, next, nodes } of moved) expect(near(nodes[followEdit(tile, next, id).anchor(k)]!, drawn), `${id} node ${k}`).toBe(true);
 	});
 });

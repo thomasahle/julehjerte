@@ -1,7 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushSync, mount, unmount } from 'svelte';
 import PaperHeart from './PaperHeart.svelte';
-import type { Finger, GridSize, Vec } from '$lib/types/heart';
+import type { Finger, GridSize, HeartPattern, Vec } from '$lib/types/heart';
+import { opposite } from '$lib/pattern/rules';
+import { fitLines } from '$lib/pattern/tiling';
+import { ruleStart } from '$lib/pattern/starts';
+import { savedPattern, tileFingers, tileGrid, weaveParityOf } from '$lib/pattern/escherTab';
+// The Escher tab's panel, which Tegn loads when a heart opens on the tab, loaded ahead.
+import '$lib/components/pattern/EscherPanel.svelte';
 
 const cleanup: (() => Promise<void>)[] = [];
 
@@ -25,7 +31,9 @@ afterEach(async () => {
 	vi.unstubAllGlobals();
 });
 
-function render() {
+type Opened = { initialFingers: Finger[]; initialGridSize: GridSize; initialWeaveParity: 0 | 1; initialPattern: HeartPattern };
+
+function render(opened?: Opened) {
 	const target = document.createElement('div');
 	document.body.appendChild(target);
 	let fingers: Finger[] = [];
@@ -34,6 +42,7 @@ function render() {
 		target,
 		props: {
 			lang: 'en',
+			...opened,
 			onFingersChange(nextFingers, nextGrid) {
 				fingers = nextFingers;
 				gridSize = nextGrid;
@@ -128,5 +137,30 @@ describe('outer edges in the designer', () => {
 		}
 		expect(h.fingers.find((f) => f.id === cut)!.segments).toHaveLength(2);
 		expect(h.handles()).toHaveLength(3);
+	});
+});
+
+describe('the Escher tab', () => {
+	it('drags the same node of a moved pattern on, though the edge cuts a node before it off the cut on the way', async () => {
+		// Dragging node 11 of R-1 lets the edge cut the curve before it short: the cut made again has
+		// the node as node 10.
+		const tile = fitLines({ ...ruleStart(opposite('turn', 'move'), 4), pan: { x: 0.37, y: -0.21 } });
+		const h = render({ initialFingers: tileFingers(tile), initialGridSize: tileGrid(tile), initialWeaveParity: weaveParityOf(tile), initialPattern: savedPattern(tile) });
+		await vi.waitFor(() => expect(h.target.querySelector('.rule-templates')).not.toBeNull());
+		const nodes = () => h.fingers.find((f) => f.id === 'R-1')!.segments.map((s) => s.p0);
+		send(h.path('R-1'), 'pointerdown', nodes()[5]!);
+		send(h.svg, 'pointerup', nodes()[5]!);
+		const start = nodes()[11]!;
+		send(h.handles()[11]!, 'pointerdown', start);
+		let pointer = start;
+		for (let step = 1; step <= 3; step++) {
+			pointer = { x: start.x + 1.5 * step, y: start.y - step };
+			send(h.svg, 'pointermove', pointer);
+			// The dragged node is under the pointer, and still the one selected.
+			const at = nodes().findIndex((p) => Math.hypot(p.x - pointer.x, p.y - pointer.y) < 1e-6);
+			expect(at, `step ${step}`).toBe(10);
+			expect(h.handles()[at]!.getAttribute('fill'), `step ${step}`).toBe('#ffcc00');
+		}
+		send(h.svg, 'pointerup', pointer);
 	});
 });

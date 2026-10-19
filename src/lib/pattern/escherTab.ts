@@ -17,6 +17,7 @@ import {
 	dragPlacedPoint,
 	extractTile,
 	fitsTile,
+	followEdit,
 	generateEditorFingers,
 	locatePlacedPoint,
 	nodeAtCutEnd,
@@ -32,7 +33,7 @@ import { ALL_RULES, canLean, ruleInfo, ruleKey, ruleSymmetry, sameRule, type Til
 import { cutCounts, fitLines, type PatternTile, type SideCurve } from './tiling';
 import { isStraightTile, ruleStart, switchRule } from './starts';
 
-export { cutOfFinger, generateEditorFingers, sameRule, specialNodes, weaveParityOf };
+export { cutOfFinger, followEdit, generateEditorFingers, sameRule, specialNodes, weaveParityOf };
 export type { PatternTile, SpecialNode, TileRule };
 
 /** The heart as the Escher tab finds it: its cuts, edges and all, its grid, and the square they fill. */

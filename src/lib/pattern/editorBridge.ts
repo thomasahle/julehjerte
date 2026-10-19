@@ -363,6 +363,27 @@ export function anchorOfPlacedPoint(tile: PatternTile, fingerId: string, point: 
 	return -1;
 }
 
+/**
+ * Tegn's indices on cut `fingerId` found again after an edit made `after` from
+ * `before` (curves edited, the same lines): a segment is the same segment of the
+ * same stretch, an anchor the start of the same segment, and the cut's ends stay
+ * its ends. The square's edge may now cut off more or less of a curve at the
+ * cut's ends, so the cut can have nodes more or fewer before them. -1 for what
+ * the cut does not show any more.
+ */
+export function followEdit(before: PatternTile, after: PatternTile, fingerId: string): { segment: (s: number) => number; anchor: (a: number) => number } {
+	const was = tracedFinger(before, fingerId)?.pieces ?? [];
+	const now = tracedFinger(after, fingerId)?.pieces ?? [];
+	// Tegn runs every cut the other way: its segment s is the raw segment m − 1 − s.
+	const segment = (s: number) => {
+		const piece = was[was.length - 1 - s];
+		const r = piece ? now.findIndex((p) => sameStretch(p, piece) && p.index === piece.index) : -1;
+		return r < 0 ? -1 : now.length - 1 - r;
+	};
+	const anchor = (a: number) => (a === 0 ? 0 : a === was.length ? now.length : segment(a));
+	return { segment, anchor };
+}
+
 /** A pan brought into one repeat of the tiling, [−repeat / 2, repeat / 2): moving the whole pattern a repeat changes nothing. */
 const withinRepeat = (v: number, repeat: number) => v - repeat * Math.floor((v + repeat / 2) / repeat);
 

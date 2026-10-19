@@ -1117,6 +1117,25 @@
 	}
 
 	/**
+	 * After a drag step in the Escher tab made the tile `before` into the heart's: the square's edge
+	 * may now cut off more or less of a curve at the ends of the dragged cut, so the cut made again can
+	 * have nodes more or fewer before the one dragged. The drag and the selection go on with the same
+	 * nodes and handles (`escher.followEdit`).
+	 */
+	function followTileEdit(before: PatternTile | null) {
+		const target = dragTarget;
+		if (!escher || !before || !patternTile || patternTile === before || target?.kind !== 'control') return;
+		const { anchor, segment } = escher.followEdit(before, patternTile, target.fingerId);
+		const next = { ...target };
+		if (typeof next.anchorIdx === 'number') next.anchorIdx = anchor(next.anchorIdx);
+		if (typeof next.segmentIndex === 'number') next.segmentIndex = segment(next.segmentIndex);
+		dragTarget = next;
+		if (selectedFingerId !== target.fingerId) return;
+		selectedAnchors = selectedAnchors.map(anchor).filter((a) => a >= 0);
+		selectedSegments = selectedSegments.map(segment).filter((s) => s >= 0);
+	}
+
+	/**
 	 * The tile the heart is saved with: the Escher tab's, or the one it was left with while the cuts
 	 * are still the ones it makes, so a look at the Normal tab does not lose it; null otherwise.
 	 */
@@ -2807,14 +2826,16 @@
 				const offset = dragStartOffset ?? { x: 0, y: 0 };
 				// If a single internal junction is dragged, use QP snapping (matches Paper editor diamond).
 				if (anchorsToMove.length === 1) {
-					const finger = getDragBaseFinger(dragTarget.fingerId);
+					const finger = getFingerById(dragTarget.fingerId);
 					const segs = finger ? fingerToSegments(finger) : null;
 					const n = segs?.length ?? 0;
 					if (finger && segs && anchorIdx > 0 && anchorIdx < n) {
 						const raw = vecAdd(p, offset);
 						const desired = snapTargetForAnchor(finger.lobe, raw) ?? raw;
+						const tile = patternTile;
 						const ok = updateSegmentControlPoint(dragTarget.fingerId, anchorIdx, 'junction', desired);
 						if (!ok) return;
+						followTileEdit(tile);
 						dragDirty = true;
 						return;
 					}
@@ -2866,8 +2887,10 @@
 			if (typeof dragTarget.segmentIndex === 'number' && dragTarget.handle) {
 				const offset = dragStartOffset ?? { x: 0, y: 0 };
 				const desired = vecAdd(p, offset);
+				const tile = patternTile;
 				const ok = updateSegmentControlPoint(dragTarget.fingerId, dragTarget.segmentIndex, dragTarget.handle, desired);
 				if (!ok) return;
+				followTileEdit(tile);
 				dragDirty = true;
 				return;
 			}
