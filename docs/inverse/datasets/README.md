@@ -139,15 +139,20 @@ alone does not meet that gate.
 
 ### Preservation archive, 2026-10-19
 
-The [preservation manifest](heart-archive-storage.json) records **86 unique
-original files, 14,885,046 bytes**, including 48 template PDFs (280 pages),
-seven recovered Permo images and source/history/license evidence. These are
-documents and photographs, not 86 independent designs or new training labels.
+The [preservation manifest](heart-archive-storage.json) records **107 unique
+original files, 15,512,093 bytes**, including 54 template PDFs (286 pages),
+seven recovered Permo images, three Haabet images and source/history/license
+evidence. These are documents and photographs, not 107 independent designs or
+new training labels.
 [Additional collections](archive-additional.json) record Krümmel,
 Bibelselskabet, Spejderliv and PaperMatrix; the [Permo history](archive-permo.json)
 identifies five circle designs absent from Hunodan, plus an older anchor
 version and weaving instructions. Drawings and variations are credited to
 Per V. Mortensen, distinct from the earlier, unnamed pattern inventors.
+The [discontinued-site rescue](archive-dead-sites.json) preserves six
+JulehjerteDesign cutting templates and Haabet's polar bear, with primary
+credit evidence for Johan Rosenkilde, Carola Heesemann and Peter Ole Kvint.
+It also records a reference-only design whose template could not be recovered.
 
 Original bytes were moved out of temporary work directories, not copied into
 another full dataset. The private originals live in

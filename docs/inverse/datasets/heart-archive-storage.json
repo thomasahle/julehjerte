@@ -1479,11 +1479,368 @@
           "archiveCaptureTimestamp": null
         }
       ]
+    },
+    {
+      "sha256": "4c3db2d2e93feda4ec60c038d79c199a8bad33d47c8ca35e67eb5d25c1f0ea5c",
+      "bytes": 27070,
+      "path": "archive-store/heart-preservation/objects/4c3db2d2e93feda4ec60c038d79c199a8bad33d47c8ca35e67eb5d25c1f0ea5c.pdf",
+      "contentType": "application/pdf",
+      "role": "cutting-template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/diagrams/contrib/carola_super_nova.pdf",
+          "retrievedUrl": "https://web.archive.org/web/20170112125847id_/http://julehjertedesign.dk/diagrams/contrib/carola_super_nova.pdf",
+          "retrievedAt": "2026-10-19T12:57:20.261568+00:00",
+          "archiveCaptureTimestamp": "20170112125847"
+        }
+      ]
+    },
+    {
+      "sha256": "b12267c57c991798a776f1e5df9dc030bfac7bb9dcc7042f3751180fde91037b",
+      "bytes": 43097,
+      "path": "archive-store/heart-preservation/objects/b12267c57c991798a776f1e5df9dc030bfac7bb9dcc7042f3751180fde91037b.pdf",
+      "contentType": "application/pdf",
+      "role": "cutting-template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/diagrams/darth_vader.pdf",
+          "retrievedUrl": "https://web.archive.org/web/20170112130334id_/http://julehjertedesign.dk/diagrams/darth_vader.pdf",
+          "retrievedAt": "2026-10-19T12:57:26.016446+00:00",
+          "archiveCaptureTimestamp": "20170112130334"
+        }
+      ]
+    },
+    {
+      "sha256": "b53c957305fec4da92b232bd1d6632e415bd3352ea2ca65df61777493301dc9d",
+      "bytes": 42573,
+      "path": "archive-store/heart-preservation/objects/b53c957305fec4da92b232bd1d6632e415bd3352ea2ca65df61777493301dc9d.pdf",
+      "contentType": "application/pdf",
+      "role": "cutting-template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/diagrams/heart_of_heart.pdf",
+          "retrievedUrl": "https://web.archive.org/web/20170114063322id_/http://julehjertedesign.dk/diagrams/heart_of_heart.pdf",
+          "retrievedAt": "2026-10-19T12:57:31.398766+00:00",
+          "archiveCaptureTimestamp": "20170114063322"
+        }
+      ]
+    },
+    {
+      "sha256": "135d196c820fb1300d5d2dde855d568ca57dfd273b8de6200ac8085e62efd453",
+      "bytes": 32831,
+      "path": "archive-store/heart-preservation/objects/135d196c820fb1300d5d2dde855d568ca57dfd273b8de6200ac8085e62efd453.pdf",
+      "contentType": "application/pdf",
+      "role": "cutting-template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/diagrams/node.pdf",
+          "retrievedUrl": "https://web.archive.org/web/20170114005929id_/http://julehjertedesign.dk/diagrams/node.pdf",
+          "retrievedAt": "2026-10-19T12:57:37.316274+00:00",
+          "archiveCaptureTimestamp": "20170114005929"
+        }
+      ]
+    },
+    {
+      "sha256": "c64bbc3beeb401044b4fe99741feb9eecfc2117e1f56b4f282a9aa476412abb2",
+      "bytes": 51243,
+      "path": "archive-store/heart-preservation/objects/c64bbc3beeb401044b4fe99741feb9eecfc2117e1f56b4f282a9aa476412abb2.pdf",
+      "contentType": "application/pdf",
+      "role": "cutting-template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/diagrams/sundays_fourth.pdf",
+          "retrievedUrl": "https://web.archive.org/web/20170112122538id_/http://julehjertedesign.dk/diagrams/sundays_fourth.pdf",
+          "retrievedAt": "2026-10-19T12:57:42.360118+00:00",
+          "archiveCaptureTimestamp": "20170112122538"
+        }
+      ]
+    },
+    {
+      "sha256": "2cf8d8ef04d2389146ba30482ebb2bf7642de286487f2c8674ffafb85d4f1406",
+      "bytes": 33551,
+      "path": "archive-store/heart-preservation/objects/2cf8d8ef04d2389146ba30482ebb2bf7642de286487f2c8674ffafb85d4f1406.pdf",
+      "contentType": "application/pdf",
+      "role": "cutting-template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/diagrams/venus.pdf",
+          "retrievedUrl": "https://web.archive.org/web/20170112121201id_/http://julehjertedesign.dk/diagrams/venus.pdf",
+          "retrievedAt": "2026-10-19T12:57:48.276865+00:00",
+          "archiveCaptureTimestamp": "20170112121201"
+        }
+      ]
+    },
+    {
+      "sha256": "12ac7354491c2f5176d7909d152793e6d424cf4fda37dae9752666a0f7028dc1",
+      "bytes": 2148,
+      "path": "archive-store/heart-preservation/objects/12ac7354491c2f5176d7909d152793e6d424cf4fda37dae9752666a0f7028dc1.gif",
+      "contentType": "image/gif",
+      "role": "woven-design-preview",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/bjoern.gif",
+          "retrievedUrl": "https://web.archive.org/web/20160621202204id_/http://www.haabet.dk/users/julehjerter/bjoern.gif",
+          "retrievedAt": "2026-10-19T12:59:35.896246+00:00",
+          "archiveCaptureTimestamp": "20160621202204"
+        }
+      ]
+    },
+    {
+      "sha256": "8626e2717cfbfcc468f8080b46ea6d0cf9642f5542bc517b085a227d1ecf4e5b",
+      "bytes": 2362,
+      "path": "archive-store/heart-preservation/objects/8626e2717cfbfcc468f8080b46ea6d0cf9642f5542bc517b085a227d1ecf4e5b.gif",
+      "contentType": "image/gif",
+      "role": "cutting-template-white-outer",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://haabet.dk/users/julehjerter/bjoernl.gif",
+          "retrievedUrl": "https://web.archive.org/web/20160515040536id_/http://haabet.dk/users/julehjerter/bjoernl.gif",
+          "retrievedAt": "2026-10-19T12:59:47.057570+00:00",
+          "archiveCaptureTimestamp": "20160515040536"
+        }
+      ]
+    },
+    {
+      "sha256": "c2568c89d5033ff851588707b1787f74ed2d985f94c052ae75b9fdb9090f4a37",
+      "bytes": 1946,
+      "path": "archive-store/heart-preservation/objects/c2568c89d5033ff851588707b1787f74ed2d985f94c052ae75b9fdb9090f4a37.gif",
+      "contentType": "image/gif",
+      "role": "cutting-template-blue-inner",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://haabet.dk/users/julehjerter/bjoernv.gif",
+          "retrievedUrl": "https://web.archive.org/web/20160418074218id_/http://haabet.dk/users/julehjerter/bjoernv.gif",
+          "retrievedAt": "2026-10-19T12:59:56.559502+00:00",
+          "archiveCaptureTimestamp": "20160418074218"
+        }
+      ]
+    },
+    {
+      "sha256": "c1322e96ce1fb8fe497a3dc9a4c45713f58750ee4ecd57fb4601d7bb65e38787",
+      "bytes": 19044,
+      "path": "archive-store/heart-preservation/objects/c1322e96ce1fb8fe497a3dc9a4c45713f58750ee4ecd57fb4601d7bb65e38787.json",
+      "contentType": "application/json",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": null,
+          "retrievedUrl": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2F*&output=json&filter=statuscode%3A200&collapse=urlkey&fl=timestamp,original,mimetype,digest,length&limit=150",
+          "retrievedAt": "2026-10-19T12:55:55.946045+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "5088431d744068dae28a07ac8fdc1bdff73d2bb079da7a6e88b31bfebf1eff85",
+      "bytes": 2672,
+      "path": "archive-store/heart-preservation/objects/5088431d744068dae28a07ac8fdc1bdff73d2bb079da7a6e88b31bfebf1eff85.html",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/figure.html",
+          "retrievedUrl": "https://web.archive.org/web/20150812154542id_/http://www.haabet.dk/users/julehjerter/figure.html",
+          "retrievedAt": "2026-10-19T12:56:57.770256+00:00",
+          "archiveCaptureTimestamp": "20150812154542"
+        }
+      ]
+    },
+    {
+      "sha256": "9e8d1800d030a6680bb5563aa5ee0849c9e970f611c46952392b1f898ada080b",
+      "bytes": 40602,
+      "path": "archive-store/heart-preservation/objects/9e8d1800d030a6680bb5563aa5ee0849c9e970f611c46952392b1f898ada080b.html",
+      "contentType": "text/html; charset=UTF-8",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/damernes-julehjerte/",
+          "retrievedUrl": "https://web.archive.org/web/20170112105628id_/http://julehjertedesign.dk/damernes-julehjerte/",
+          "retrievedAt": "2026-10-19T12:57:08.101089+00:00",
+          "archiveCaptureTimestamp": "20170112105628"
+        }
+      ]
+    },
+    {
+      "sha256": "a2ee66b6971b05f3597e0970781a6b6b93aac68c50aa35708f95ed511980510b",
+      "bytes": 48707,
+      "path": "archive-store/heart-preservation/objects/a2ee66b6971b05f3597e0970781a6b6b93aac68c50aa35708f95ed511980510b.html",
+      "contentType": "text/html; charset=UTF-8",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/darth-vader-julehjerte/",
+          "retrievedUrl": "https://web.archive.org/web/20160405032756id_/http://julehjertedesign.dk/darth-vader-julehjerte/",
+          "retrievedAt": "2026-10-19T12:57:14.596436+00:00",
+          "archiveCaptureTimestamp": "20160405032756"
+        }
+      ]
+    },
+    {
+      "sha256": "08ecf225b77960c4288de4e4ba240b8e169a2f2847143bdc01eb6f1b5d7ab840",
+      "bytes": 41874,
+      "path": "archive-store/heart-preservation/objects/08ecf225b77960c4288de4e4ba240b8e169a2f2847143bdc01eb6f1b5d7ab840.html",
+      "contentType": "text/html; charset=UTF-8",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/fjerde-soendag-i-advent/",
+          "retrievedUrl": "https://web.archive.org/web/20160405032316id_/http://julehjertedesign.dk/fjerde-soendag-i-advent/",
+          "retrievedAt": "2026-10-19T12:57:53.928314+00:00",
+          "archiveCaptureTimestamp": "20160405032316"
+        }
+      ]
+    },
+    {
+      "sha256": "b9058f5a2d5ab3e302fd090df1c4bf17fecc92eb6f943460846213302df1eeb8",
+      "bytes": 44736,
+      "path": "archive-store/heart-preservation/objects/b9058f5a2d5ab3e302fd090df1c4bf17fecc92eb6f943460846213302df1eeb8.html",
+      "contentType": "text/html; charset=UTF-8",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/julehjertets-hjerte/",
+          "retrievedUrl": "https://web.archive.org/web/20160405033512id_/http://julehjertedesign.dk/julehjertets-hjerte/",
+          "retrievedAt": "2026-10-19T12:57:59.936109+00:00",
+          "archiveCaptureTimestamp": "20160405033512"
+        }
+      ]
+    },
+    {
+      "sha256": "b929495060aeecd7c88af123793460f325d7c4ce7d0cf5158792d1ea973f428f",
+      "bytes": 39771,
+      "path": "archive-store/heart-preservation/objects/b929495060aeecd7c88af123793460f325d7c4ce7d0cf5158792d1ea973f428f.html",
+      "contentType": "text/html; charset=UTF-8",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/node-julehjerte/",
+          "retrievedUrl": "https://web.archive.org/web/20160405033449id_/http://julehjertedesign.dk/node-julehjerte/",
+          "retrievedAt": "2026-10-19T12:58:09.158252+00:00",
+          "archiveCaptureTimestamp": "20160405033449"
+        }
+      ]
+    },
+    {
+      "sha256": "8138af5cc46fdc1ff6ba4d4c5480173d9d8d2022def042112acb7451dc8e2b9c",
+      "bytes": 68282,
+      "path": "archive-store/heart-preservation/objects/8138af5cc46fdc1ff6ba4d4c5480173d9d8d2022def042112acb7451dc8e2b9c.html",
+      "contentType": "text/html; charset=UTF-8",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/om/",
+          "retrievedUrl": "https://web.archive.org/web/20160405091838id_/http://julehjertedesign.dk/om/",
+          "retrievedAt": "2026-10-19T12:58:15.877666+00:00",
+          "archiveCaptureTimestamp": "20160405091838"
+        }
+      ]
+    },
+    {
+      "sha256": "77a24eb2a914096963fc9fdeb5b1a0cf8b29c4c582aa7af4b27bb85825394cc5",
+      "bytes": 39044,
+      "path": "archive-store/heart-preservation/objects/77a24eb2a914096963fc9fdeb5b1a0cf8b29c4c582aa7af4b27bb85825394cc5.html",
+      "contentType": "text/html; charset=UTF-8",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/super-nova/",
+          "retrievedUrl": "https://web.archive.org/web/20160405032131id_/http://julehjertedesign.dk/super-nova/",
+          "retrievedAt": "2026-10-19T12:58:22.659099+00:00",
+          "archiveCaptureTimestamp": "20160405032131"
+        }
+      ]
+    },
+    {
+      "sha256": "71a3db0da9ecf36f22a079012bf4ef4a371bdf686ccff6d7b9a25fbf161206ef",
+      "bytes": 731,
+      "path": "archive-store/heart-preservation/objects/71a3db0da9ecf36f22a079012bf4ef4a371bdf686ccff6d7b9a25fbf161206ef.html",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/bjoern.html",
+          "retrievedUrl": "https://web.archive.org/web/20151025194126id_/http://www.haabet.dk/users/julehjerter/bjoern.html",
+          "retrievedAt": "2026-10-19T12:58:45.873890+00:00",
+          "archiveCaptureTimestamp": "20151025194126"
+        }
+      ]
+    },
+    {
+      "sha256": "a018d768c3cd79e61cb46d83969a435a9cc6cafdaf029765a19d7436a487acdc",
+      "bytes": 4526,
+      "path": "archive-store/heart-preservation/objects/a018d768c3cd79e61cb46d83969a435a9cc6cafdaf029765a19d7436a487acdc.html",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/index.html",
+          "retrievedUrl": "https://web.archive.org/web/20150812154558id_/http://www.haabet.dk/users/julehjerter/index.html",
+          "retrievedAt": "2026-10-19T12:58:57.210230+00:00",
+          "archiveCaptureTimestamp": "20150812154558"
+        }
+      ]
+    },
+    {
+      "sha256": "99f8774b55be6a24b502584cca886399338399c4118be6ffbdd9354bc1f9f3ba",
+      "bytes": 40237,
+      "path": "archive-store/heart-preservation/objects/99f8774b55be6a24b502584cca886399338399c4118be6ffbdd9354bc1f9f3ba.html",
+      "contentType": "text/html; charset=UTF-8",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/venus-julehjerte/",
+          "retrievedUrl": "https://web.archive.org/web/20161018014112id_/http://julehjertedesign.dk/venus-julehjerte/",
+          "retrievedAt": "2026-10-19T12:59:05.972077+00:00",
+          "archiveCaptureTimestamp": "20161018014112"
+        }
+      ]
     }
   ],
   "counts": {
-    "objects": 86,
-    "originalBytes": 14885046,
+    "objects": 107,
+    "originalBytes": 15512093,
     "publicObjects": 1
   },
   "scope": "Original source documents and evidence, retained once by SHA-256. Public template copies require recorded redistribution terms. Other originals are kept in archive-store, outside tmp and outside Git/public assets. A second off-device backup is still needed."
