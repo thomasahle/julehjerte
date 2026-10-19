@@ -2,8 +2,28 @@ import type { HeartDesign, Finger, GridSize } from '$lib/types/heart';
 import { fingerToSegments, type BezierSegment } from '$lib/geometry/bezierSegments';
 import { STRIP_WIDTH } from '$lib/constants';
 import { vecSub, vecLength } from '$lib/geometry/vec';
+import type { TranslationKey } from '$lib/i18n/translations';
 
 export type DifficultyLevel = 'easy' | 'medium' | 'hard' | 'expert';
+
+/**
+ * Easiest first: the order of the gallery bar's toggles and of the dots.
+ * The one list of levels; $lib/front/levelFilter and DifficultyDots read it.
+ */
+export const LEVELS: readonly DifficultyLevel[] = ['easy', 'medium', 'hard', 'expert'];
+
+/** Each level's name ("Let", "Mellem", …): the dots' label and the toggles' word. */
+export const LEVEL_LABEL_KEYS: Readonly<Record<DifficultyLevel, TranslationKey>> = {
+  easy: 'difficultyEasy',
+  medium: 'difficultyMedium',
+  hard: 'difficultyHard',
+  expert: 'difficultyExpert'
+};
+
+/** 1 for easy up to 4 for expert (the number of filled dots); 0 for a value that is no level. */
+export function levelRank(level: DifficultyLevel): number {
+  return LEVELS.indexOf(level) + 1;
+}
 
 interface DifficultyResult {
   level: DifficultyLevel;
