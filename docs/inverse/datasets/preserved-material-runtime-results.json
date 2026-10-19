@@ -270,6 +270,10 @@
         "sha256": "0cc66f3284f7ae03fd142920e661238893d98f9aaf91a072f8224727b2d75ea6"
       },
       "freshCompleteReplay": "tmp/heart-learning/preserved-material-crop-parity-v2/report.json"
+    },
+    "siteQA": {
+      "path": "docs/inverse/datasets/preserved-material-site-qa.json",
+      "sha256": "d6b294c64faa70820a11487f9215851b7f9ca90cfd50601dd575712c22ba3738"
     }
   },
   "limitations": [

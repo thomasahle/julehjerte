@@ -240,6 +240,14 @@ dependencies and outputs occupy about **170 MiB**, with no new source-photo copi
 the test browser and its temporary server were closed. Latest observed main CI
 run `39287794295` is green, independently of these unpushed research commits.
 
+The [final site checks](preserved-material-site-qa.json) pass type checking, lint,
+build and **1,599 application tests** (one skipped). Actual Chromium checks cover
+both archive languages, all three newly preserved reference records, pagination,
+filtering, a saved PDF and mobile overflow. The first browser assertion mistakenly
+forbade Ovalt's surviving source-photo link; the corrected check allows that exact
+photo and still forbids unavailable templates. The rebuilt local preview is at
+`http://localhost:4173/`. Nothing was pushed or deployed.
+
 ## Collected assets
 
 ### Preservation archive, 2026-10-19

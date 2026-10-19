@@ -75,6 +75,18 @@ try {
     await page.locator('#jhd-carola-super-nova').waitFor();
     await page.locator('#jhd-damernes').waitFor();
     assert.equal(await page.locator('#jhd-damernes .links a').count(), 0);
+    for (const [id, title] of [['jhd-hexatriple', 'Hexatriple'], ['jhd-ovalt', 'Ovalt Julehjerte'], ['jhd-square-twist', 'Square Twist']]) {
+      await search.fill(title);
+      const record = page.locator('#' + id);
+      await record.waitFor();
+      assert.ok((await record.textContent()).includes('Johan Rosenkilde'));
+      const links = await record.locator('.links a').evaluateAll(nodes => nodes.map(a => ({ href: a.getAttribute('href'), text: a.textContent })));
+      assert.deepEqual(links, id === 'jhd-ovalt' ? [{
+        href: 'https://web.archive.org/web/20161203133004id_/http://julehjertedesign.dk/wp-content/uploads/oval.png',
+        text: lang === 'da' ? 'Se kildebilledet' : 'View source image'
+      }] : [], 'missing templates may offer their surviving reference photograph, not a template');
+      assert.ok(await record.locator('a[href*="web.archive.org/"]').count() > 0);
+    }
     await search.fill('');
     await source.selectOption('hunodan.dk');
     await count(27);
@@ -104,7 +116,7 @@ try {
     assert.equal(bytes.subarray(0, 5).toString(), '%PDF-');
     assert.equal(createHash('sha256').update(bytes).digest('hex'), path.basename(pdfUrl.pathname, '.pdf'));
     await screenshot(`archive-${lang}-desktop.png`);
-    results.push({ lang, pagination: true, sourceAndAvailabilityFilters: true, fullIndexSearch: true, savedPdfBytes: bytes.length });
+    results.push({ lang, pagination: true, sourceAndAvailabilityFilters: true, fullIndexSearch: true, referenceOnlyAdditions: 3, savedPdfBytes: bytes.length });
   }
 
   await page.setViewportSize({ width: 390, height: 844 });
