@@ -82,8 +82,8 @@ describe('the picture drawn before the cuts are found', () => {
 		expect(mismatch({ mode: 'figure', name: 'Heart', contours: heart.contours as Ring[], colors, style: 'motifs', scale: .85 })).toBeLessThan(.01);
 	}, 30000);
 
-	it('is the circle frames the cuts make, rays, checks and sunburst, on their usual boards', () => {
-		for (const style of ['rays', 'check', 'sunburst'] as const)
+	it('is the circle frames the cuts make, rays, checks, sunburst and double border, on their usual boards', () => {
+		for (const style of ['rays', 'check', 'sunburst', 'layers'] as const)
 			expect(mismatch({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style, gap: 3 }), style).toBeLessThan(.01);
 		// A motif that needed a finer board there gets no picture.
 		expect(picture({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'rays' }, { board: 5 })).toBeUndefined();

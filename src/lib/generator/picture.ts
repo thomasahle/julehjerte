@@ -62,6 +62,7 @@ export function picture(request: GeneratorRequest, known: Known = {}): Picture |
 		if (request.mode === 'figure' && (request.style === 'rays' || request.style === 'check') && (known.board ?? 3) === 3)
 			return circlePicture(request);
 		if (request.mode === 'figure' && request.style === 'sunburst' && (known.board ?? 5) === 5) return sunburstPicture(request);
+		if (request.mode === 'figure' && request.style === 'layers' && (known.board ?? 7) === 7) return layersPicture(request);
 		if (request.mode === 'figure' && request.style === 'board') return boardPicture(request, known.circle);
 		if (request.mode === 'figure' && (request.style === 'wedges' || request.style === 'fitted' || request.style === 'silhouette') && request.contours?.length
 			&& (known.board ?? (request.style === 'fitted' ? 5 : 3)) === (request.style === 'fitted' ? 5 : 3)) {
@@ -159,6 +160,21 @@ function sunburstPicture(request: GeneratorRequest): Picture | undefined {
 		[[100, 0], [100 - inset, 0], ...arc(circle, ne, se), [100 - inset, 100], [100, 100]],
 		[[0, 0], [0, inset], ...arc(circle, nw, ne), [100, inset], [100, 0]],
 		[[0, 100], [0, 100 - inset], ...arc(circle, se, sw).reverse(), [100, 100 - inset], [100, 100]]] };
+}
+
+/** The double border: the fitted frame around a medallion, a disc with the
+ * motif in it the other colour, and two more strips each way further out
+ * (see `generateLayeredFigure`). */
+function layersPicture(request: GeneratorRequest): Picture | undefined {
+	const contours = normalizeContours(request.contours ?? []);
+	if (!contours.length) return;
+	const fitted = fitCircle(request), size = fitted.frameSize ?? 70, scale = fitted.scale ?? .7;
+	const disc: Ring = Array.from({ length: 96 }, (_, i) => [.5 * Math.cos(i * Math.PI / 48), .5 * Math.sin(i * Math.PI / 48)]);
+	const rings = fittedPicture([disc, ...contours.map(r => r.map(([x, y]): Point => [x * scale, y * scale]))], size, 1, FITTED);
+	const inset = (100 - size) / 2 - 8;
+	rings.push([[0, 0], [inset, 0], [inset, 100], [0, 100]], [[100 - inset, 0], [100, 0], [100, 100], [100 - inset, 100]],
+		[[0, 0], [100, 0], [100, inset], [0, inset]], [[0, 100 - inset], [100, 100 - inset], [100, 100], [0, 100]]);
+	return { rings };
 }
 
 /** The circle on a regular board of five strips: the board's checks, cleared
