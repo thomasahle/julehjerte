@@ -2,9 +2,8 @@
   Mal's left column (docs/redesign/PAINT.md §2, decision 4): the two things that
   replace the mask wholesale, and the tools that change it in place.
 
-  Farver and Hjertedetaljer stay in Tegn; the two swatches here only say which
-  paper the pen lays down, which is why they are inside "Værktøj" and not a
-  colour panel of their own.
+  Farver and Hjertedetaljer stay in Tegn. The paper swatches and XOR here choose
+  how the tool edits the binary mask; they never change the paper colours.
 -->
 <script lang="ts">
 	import { ToggleGroup, ToggleGroupItem } from '$lib/components/ui/toggle-group';
@@ -25,16 +24,16 @@
 	import type { Component } from 'svelte';
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
 	import type { HeartColors } from '$lib/types/heart';
-	import { BRUSH_SIZES, type BrushSize, type PaintTool } from '$lib/paint/toolset';
+	import { MIN_BRUSH_SIZE, MAX_BRUSH_SIZE, clampBrush, type BrushSize, type PaintTool, type PaintValue } from '$lib/paint/toolset';
 
 	interface Props {
 		tool: PaintTool;
 		onTool: (tool: PaintTool) => void;
 		brushSize: BrushSize;
 		onBrushSize: (size: BrushSize) => void;
-		/** Which paper the pen paints; the eraser always paints the left one. */
-		paintValue: 0 | 1;
-		onPaintValue: (value: 0 | 1) => void;
+		/** Paper colour or XOR action; the eraser always paints the left paper. */
+		paintValue: PaintValue;
+		onPaintValue: (value: PaintValue) => void;
 		colors: HeartColors;
 		canUndo: boolean;
 		canRedo: boolean;
@@ -89,22 +88,10 @@
 	/** The two papers, as the mask numbers them: 0 is the left lobe, 1 the right. */
 	const PAPERS: (0 | 1)[] = [0, 1];
 
-	const BRUSH_LABELS: Record<BrushSize, TranslationKey> = {
-		fine: 'paintBrushFine',
-		medium: 'paintBrushMedium',
-		coarse: 'paintBrushCoarse'
-	};
-
-	// A single-choice ToggleGroup lets a second click on the chosen item clear the
-	// group, and neither of these two controls has an "off": one brush is always
-	// the brush, one paper is always the paper. So an empty answer keeps what was
-	// there, as the symmetry rows do with the same control.
-	function chooseBrush(next: unknown): void {
-		if (BRUSH_SIZES.includes(next as BrushSize)) onBrushSize(next as BrushSize);
-	}
-
+	// Clicking the selected ToggleGroup item cannot leave the painting action unset.
 	function choosePaper(next: unknown): void {
-		if (next === '0' || next === '1') onPaintValue(next === '1' ? 1 : 0);
+		if (next === 'xor') onPaintValue('xor');
+		else if (next === '0' || next === '1') onPaintValue(next === '1' ? 1 : 0);
 	}
 </script>
 
@@ -174,27 +161,23 @@
 			<p class="tool-hint" role="status">{tr('paintSelectionShort')}</p>
 		{/if}
 
-		<!-- Both of these are one choice out of several, which is a radiogroup: one
-		     tab stop, and the arrow keys to move within it. Declaring the role over
-		     plain buttons was worse than the aria-pressed grid above, because it
-		     promised a keyboard behaviour that was not there. The ToggleGroup the
-		     symmetry rows use brings it, and it is the same control on screen. -->
-		<div class="field">
-			<span class="field-label">{tr('paintBrush')}</span>
-			<div class="segmented">
-				<ToggleGroup
-					type="single"
-					role="radiogroup"
-					aria-label={tr('paintBrush')}
-					bind:value={() => brushSize, chooseBrush}
-					{disabled}
-				>
-					{#each BRUSH_SIZES as size (size)}
-						<ToggleGroupItem value={size}>{tr(BRUSH_LABELS[size])}</ToggleGroupItem>
-					{/each}
-				</ToggleGroup>
-			</div>
-		</div>
+		<label class="field brush-field">
+			<span class="field-label brush-label">
+				<span>{tr('paintBrush')}</span>
+				<output>{t('paintBrushRadius', lang, { size: brushSize })}</output>
+			</span>
+			<input
+				type="range"
+				min={MIN_BRUSH_SIZE}
+				max={MAX_BRUSH_SIZE}
+				step="1"
+				value={brushSize}
+				aria-label={tr('paintBrush')}
+				aria-valuetext={t('paintBrushRadius', lang, { size: brushSize })}
+				oninput={(event) => onBrushSize(clampBrush(event.currentTarget.valueAsNumber))}
+				{disabled}
+			/>
+		</label>
 
 		<!-- Fortryd and Gentag share the swatches' row rather than taking a row of
 		     their own: two labelled buttons across the panel cost a line the column
@@ -225,6 +208,14 @@
 								style="background: {value ? colors.right : colors.left}"
 							/>
 						{/each}
+						<ToggleGroupItem
+							value="xor"
+							aria-label={tr('paintsWithXor')}
+							title={tr('paintsWithXor')}
+							class="xor-swatch"
+						>
+							<span aria-hidden="true">XOR</span>
+						</ToggleGroupItem>
 					</ToggleGroup>
 				</div>
 			</div>
@@ -368,55 +359,34 @@
 		color: var(--muted);
 	}
 
-	/* Both groups are the shadcn ToggleGroup restyled, so the rules reach through
-	   :global to the elements bits-ui renders — the same way SymmetryRows dresses
-	   the identical control in the panel opposite. */
-	.segmented :global([data-slot='toggle-group']) {
+	.brush-label {
 		display: flex;
-		gap: 0;
-		padding: 0;
-		border: 1.5px solid var(--line);
-		border-radius: 8px;
-		overflow: hidden;
-		background: var(--white);
+		justify-content: space-between;
+		gap: 8px;
 	}
 
-	.segmented :global([data-slot='toggle-group-item']) {
-		flex: 1 1 0;
-		padding: 6px 8px;
-		border-radius: 0;
-		background: var(--white);
-		color: var(--green);
-		font-family: inherit;
-		font-size: 13px;
-		font-weight: 600;
-		box-shadow: none;
+	.brush-label output {
+		font-weight: 400;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.brush-field input {
+		width: 100%;
+		margin: 0;
+		accent-color: var(--green);
 		cursor: pointer;
 	}
 
-	.segmented :global([data-slot='toggle-group-item']:hover:not(:disabled)) {
-		background: var(--cream2);
-		color: var(--green);
-	}
-
-	.segmented :global([data-slot='toggle-group-item'][data-state='on']) {
-		background: var(--green);
-		color: var(--white);
-	}
-
-	/* The chosen segment keeps its fill under the pointer. Without this the plain
-	   hover rule above outranks `[data-state='on']` — one pseudo-class more — so
-	   resting the pointer on the brush size already chosen made the whole control
-	   show nothing as chosen, which reads as having lost the setting. `.btn-dark`
-	   answers the same question with the same token. */
-	.segmented :global([data-slot='toggle-group-item'][data-state='on']:hover:not(:disabled)) {
-		background: var(--green-hover);
-		color: var(--white);
-	}
-
-	.segmented :global([data-slot='toggle-group-item']:disabled) {
+	.brush-field input:disabled {
 		opacity: 0.35;
 		cursor: not-allowed;
+	}
+
+	.swatches :global(.xor-swatch) {
+		background: var(--cream2);
+		color: var(--green);
+		font-size: 10px;
+		font-weight: 700;
 	}
 
 	.swatches :global([data-slot='toggle-group']) {

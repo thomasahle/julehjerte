@@ -373,12 +373,11 @@ export const translations = {
     paintSelectionCleared: 'Markeringen er ryddet',
     paintSelectionDropped: 'Markeringen er fortrudt',
     paintBrush: 'Pensel',
-    paintBrushFine: 'Fin',
-    paintBrushMedium: 'Mellem',
-    paintBrushCoarse: 'Grov',
+    paintBrushRadius: 'Radius: {size} px',
     paintsWith: 'Maler med',
     paintsWithLeft: 'Venstre laps farve',
     paintsWithRight: 'Højre laps farve',
+    paintsWithXor: 'XOR: byt farven under penslen',
 
     // Mal: "Kanten" — det beskyttede motiv og båndet uden om (PAINT.md §11)
     paintFrame: 'Kanten',
@@ -1151,12 +1150,11 @@ export const translations = {
     paintSelectionCleared: 'The selection is cleared',
     paintSelectionDropped: 'The selection is dropped',
     paintBrush: 'Brush',
-    paintBrushFine: 'Fine',
-    paintBrushMedium: 'Medium',
-    paintBrushCoarse: 'Coarse',
+    paintBrushRadius: 'Radius: {size} px',
     paintsWith: 'Paints with',
     paintsWithLeft: 'The left lobe\'s colour',
     paintsWithRight: 'The right lobe\'s colour',
+    paintsWithXor: 'XOR: swap the colour underneath',
 
     // Paint mode: "Kanten" — the protected motif and the band around it (§11)
     paintFrame: 'Border',

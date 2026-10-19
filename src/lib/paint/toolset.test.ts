@@ -1,19 +1,19 @@
 import { describe, it, expect } from 'vitest';
-import { BRUSH_RADII, BRUSH_SIZES, shortcutFor, stepBrush } from './toolset';
+import { MIN_BRUSH_SIZE, MAX_BRUSH_SIZE, DEFAULT_BRUSH_SIZE, clampBrush, shortcutFor, stepBrush } from './toolset';
 
 describe('brush sizes', () => {
-	it('grows from fine to coarse', () => {
-		const radii = BRUSH_SIZES.map((s) => BRUSH_RADII[s]);
-		expect(radii).toEqual([...radii].sort((a, b) => a - b));
-		expect(new Set(radii).size).toBe(radii.length);
+	it('keeps the medium default and accepts sizes between the old presets', () => {
+		expect(DEFAULT_BRUSH_SIZE).toBe(6);
+		expect(clampBrush(9)).toBe(9);
+		expect(clampBrush(9.7)).toBe(10);
+		expect(clampBrush(NaN)).toBe(DEFAULT_BRUSH_SIZE);
 	});
 
-	it('steps along them and stops at both ends', () => {
-		expect(stepBrush('fine', 1)).toBe('medium');
-		expect(stepBrush('medium', 1)).toBe('coarse');
-		expect(stepBrush('coarse', 1)).toBe('coarse');
-		expect(stepBrush('coarse', -1)).toBe('medium');
-		expect(stepBrush('fine', -1)).toBe('fine');
+	it('steps one cell at a time and stops at both ends', () => {
+		expect(stepBrush(6, 1)).toBe(7);
+		expect(stepBrush(6, -1)).toBe(5);
+		expect(stepBrush(MAX_BRUSH_SIZE, 1)).toBe(MAX_BRUSH_SIZE);
+		expect(stepBrush(MIN_BRUSH_SIZE, -1)).toBe(MIN_BRUSH_SIZE);
 	});
 });
 

@@ -66,10 +66,11 @@
 		type MaskStep
 	} from '$lib/paint/history';
 	import {
-		BRUSH_RADII,
+		DEFAULT_BRUSH_SIZE,
 		stepBrush,
 		type BrushSize,
 		type PaintAction,
+		type PaintValue,
 		type PaintTool
 	} from '$lib/paint/toolset';
 	import { decodeImageFile, maskFromPrepared, type DecodedImage } from '$lib/paint/importImage';
@@ -124,8 +125,8 @@
 	let leftColumnCutTop = $state(false);
 
 	let tool = $state<PaintTool>('pen');
-	let brushSize = $state<BrushSize>('medium');
-	let paintValue = $state<0 | 1>(1);
+	let brushSize = $state<BrushSize>(DEFAULT_BRUSH_SIZE);
+	let paintValue = $state<PaintValue>(1);
 	let panelCollapsed = $state(false);
 	/**
 	 * Below 900px the page stacks: the heart, then the two panels under it. They
@@ -861,7 +862,7 @@
 									{colors}
 									symmetry={session.symmetry}
 									{tool}
-									brush={BRUSH_RADII[brushSize]}
+									brush={brushSize}
 									{paintValue}
 									{revision}
 									frame={session.frame}
@@ -881,7 +882,7 @@
 							{colors}
 							symmetry={session.symmetry}
 							{tool}
-							brush={BRUSH_RADII[brushSize]}
+							brush={brushSize}
 							{paintValue}
 							{revision}
 							frame={session.frame}

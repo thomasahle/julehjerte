@@ -26,7 +26,7 @@ function render(overrides: Partial<Props> = {}) {
 		props: {
 			tool: 'pen',
 			onTool: (tool: PaintTool) => picked.push(tool),
-			brushSize: 'medium',
+			brushSize: 6,
 			onBrushSize: () => {},
 			paintValue: 1,
 			onPaintValue: () => {},
@@ -44,6 +44,7 @@ function render(overrides: Partial<Props> = {}) {
 	flushSync();
 	const buttons = [...target.querySelectorAll<HTMLButtonElement>('.tool-grid button')];
 	return {
+		target,
 		picked,
 		buttons,
 		history,
@@ -57,6 +58,50 @@ function render(overrides: Partial<Props> = {}) {
 }
 
 describe('MaskToolPanel', () => {
+	it('offers both paper colours and XOR as one exclusive painting choice', () => {
+		const chosen: unknown[] = [];
+		const panel = render({ paintValue: 'xor', onPaintValue: value => chosen.push(value) });
+		try {
+			const swatches = [...panel.target.querySelectorAll<HTMLButtonElement>('.swatches button')];
+			expect(swatches).toHaveLength(3);
+			const xor = swatches.find(button => button.textContent?.includes('XOR'))!;
+			expect(xor.getAttribute('data-state')).toBe('on');
+			expect(xor.getAttribute('aria-label')).toContain('byt farven');
+			swatches[0]!.click();
+			flushSync();
+			expect(chosen).toEqual([0]);
+		} finally {
+			panel.cleanup();
+		}
+	});
+
+	it('uses a labelled integer slider and accepts sizes between the old presets', () => {
+		const sizes: number[] = [];
+		const panel = render({ onBrushSize: size => sizes.push(size) });
+		try {
+			const slider = panel.target.querySelector<HTMLInputElement>('input[type="range"]')!;
+			expect(slider.getAttribute('aria-label')).toBe('Pensel');
+			expect(slider.getAttribute('aria-valuetext')).toBe('Radius: 6 px');
+			expect([slider.min, slider.max, slider.step, slider.value]).toEqual(['1', '40', '1', '6']);
+			slider.value = '9';
+			slider.dispatchEvent(new Event('input', { bubbles: true }));
+			flushSync();
+			expect(sizes).toEqual([9]);
+		} finally {
+			panel.cleanup();
+		}
+	});
+
+	it('disables the slider and all three paint choices during a search', () => {
+		const panel = render({ disabled: true });
+		try {
+			expect(panel.target.querySelector<HTMLInputElement>('input[type="range"]')!.disabled).toBe(true);
+			expect([...panel.target.querySelectorAll<HTMLButtonElement>('.swatches button')].every(button => button.disabled)).toBe(true);
+		} finally {
+			panel.cleanup();
+		}
+	});
+
 	it('gives every tool button its own click', () => {
 		const panel = render();
 		try {

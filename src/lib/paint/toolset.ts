@@ -1,5 +1,5 @@
 /**
- * The six painting tools, the three brush sizes, and the keys that pick them.
+ * The six painting tools, brush radius, and the keys that pick them.
  *
  * `tools.ts` says what an operation does to the cells; this says which of them
  * the visitor has chosen and what a keystroke means. It is plain data and one
@@ -9,19 +9,24 @@
 
 export type PaintTool = 'pen' | 'eraser' | 'fill' | 'line' | 'rect' | 'select';
 
-export type BrushSize = 'fine' | 'medium' | 'coarse';
+/** XOR is an editing action; the mask still contains only paper 0 and paper 1. */
+export type PaintValue = 0 | 1 | 'xor';
 
-/** Brush radii in mask cells: a fine line, a finger, and a broad sweep. */
-export const BRUSH_RADII: Record<BrushSize, number> = { fine: 2, medium: 6, coarse: 14 };
+/** Brush radius in mask cells, shared by the slider and keyboard shortcuts. */
+export type BrushSize = number;
+export const MIN_BRUSH_SIZE = 1;
+export const MAX_BRUSH_SIZE = 40;
+export const DEFAULT_BRUSH_SIZE = 6;
 
-/** Smallest first, so `[` and `]` can step along them. */
-export const BRUSH_SIZES: BrushSize[] = ['fine', 'medium', 'coarse'];
+export function clampBrush(size: number): BrushSize {
+	return Number.isFinite(size)
+		? Math.max(MIN_BRUSH_SIZE, Math.min(MAX_BRUSH_SIZE, Math.round(size)))
+		: DEFAULT_BRUSH_SIZE;
+}
 
 /** The brush one step bigger or smaller, stopping at both ends. */
 export function stepBrush(current: BrushSize, delta: number): BrushSize {
-	const at = BRUSH_SIZES.indexOf(current);
-	const next = Math.max(0, Math.min(BRUSH_SIZES.length - 1, at + delta));
-	return BRUSH_SIZES[next]!;
+	return clampBrush(current + delta);
 }
 
 export type PaintAction =
