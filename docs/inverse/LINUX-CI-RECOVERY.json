@@ -2071,7 +2071,7 @@
     }
   },
   "clearanceCheckpointInvestigation": {
-    "status": "enclosure-aware priority passed targeted cases; full local and Linux validation pending",
+    "status": "69 local affected tests and nine focused Linux tests passed; full Linux and app checks in progress",
     "fixture": "coverage-fits/photo-bauble",
     "evidence": "The fixed 150-step ordered clearance fit produced seven inspected checkpoints. The first five failed inter-slit clearance; the last two passed geometry at 7.06% and 6.99% observed image error. Error-only checkpoint selection nevertheless handed back the earlier invalid 6.14% state. Paper was uncertain on the later grids and still needs independent refinement/verification.",
     "record": "/tmp/julehjerte-partial-clearance-study.json",
@@ -2105,6 +2105,36 @@
       "failed": 0,
       "log": "/tmp/julehjerte-clearance-enclosure-tests.log",
       "coverage": "Fresh bauble and frozen/shifted puppy fits; independent exported mask, opening and paper assertions retained."
+    },
+    "sourceCommit": "ce6ef218",
+    "localFinal": {
+      "passed": 69,
+      "failed": 0,
+      "log": "/tmp/julehjerte-clearance-enclosure-full-tests.log",
+      "coverage": "All affected clearance, coverage, late-feature, feature-finalist, count, near-miss, protected-opening, weighted-pipeline, symmetry and short-budget tests, run sequentially with Node 22."
+    },
+    "linuxFocused": {
+      "status": "completed",
+      "conclusion": "success",
+      "passed": 9,
+      "failed": 0,
+      "url": "https://github.com/thomasahle/julehjerte/actions/runs/39224136567",
+      "diagnosticCommit": "90b4b1d0",
+      "mode": "clearance-checkpoints",
+      "log": "/tmp/julehjerte-ci-clearance-checkpoints.log",
+      "coverage": "All three remaining full-suite failures, protected puppy openings, near-miss perturbations and the synthetic checkpoint regression."
+    },
+    "linuxFull": {
+      "status": "in_progress",
+      "url": "https://github.com/thomasahle/julehjerte/actions/runs/39224564133",
+      "diagnosticCommit": "90b4b1d0",
+      "mode": "cold",
+      "note": "All production source and tests match ce6ef218. Four serial-test shards; no diagnostic clock imported in cold mode."
+    },
+    "appChecks": {
+      "status": "in_progress",
+      "sourceCommit": "ce6ef218",
+      "logPrefix": "/tmp/julehjerte-clearance-enclosure-"
     }
   }
 }
