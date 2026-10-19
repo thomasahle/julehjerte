@@ -139,10 +139,32 @@ Several previously lost metallic/coloured motifs reappear, including the star
 and dark/gold checker. The shaded red/gold checker still loses its small squares;
 printed decoration remains confused with cuts. The unchanged body still misses
 parts of the house and candlestick. This native experiment remains **outside
-production** pending fixed-crop reconstruction checks and browser validation.
+production** pending reconstruction checks and browser validation.
 Cached normalized body fields have small cross-process differences (maximum
 1.20e-7, no changes at 0.5); fresh body outputs match their parent exactly in each
 probe. No numerical gate has been relaxed.
+
+The subsequent [fixed-crop reconstruction check](u2netp-material-fixed-crop-results.json)
+keeps all 25 crop selections and seven unresolved cases unchanged. It yields
+**14/32 checked derived-mask pairs**, versus 12 for historical RGB fits at those
+same crops. All 25 exports pass editable geometry; 24 pass the nominal paper
+check. However, inspection of all 32 cases **rejects this as a reconstruction
+improvement**: six newly passing cases include unsuitable crops and simplified
+motifs, while four previous passes regress. Printed ink becomes cut geometry,
+the shaded checker disappears, and narrow joins/grid corners are altered before
+fitting. Original-artwork ground truth is unavailable; neither mask's own fit
+error settles which reconstruction is better.
+
+The fixed-crop audit also corrected a small-photo resolution mismatch and a
+black/white-preview reader in the offline comparison tooling. Only the affected
+229-pixel photo was refitted; 24 unchanged, source-verified exports were reused.
+Every final comparison reproduces the independent renderer's own mask error.
+The retained synthetic diagnostic finds **1.91% paper error on plain views,
+11.17% on printed counterparts**, already in the training pool. The short pilot
+sampled only 23 of 32 printed views; some sampled views fail too. Crowded scenes
+also hurt the frozen body detector. These observations motivate better training
+coverage and preservation of original RGB boundaries, rather than longer fitting
+against an incorrect neural mask.
 
 The original [fresh 32-photo evaluation](u2netp-fresh-results.json) freezes the model and
 crop policy before inference. It keeps every existing production crop and adds
