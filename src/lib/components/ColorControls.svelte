@@ -313,6 +313,16 @@
 		height: 28px;
 	}
 
+	/* Grouped: the 44px targets overlap a little, so the circles sit closer
+	   (10px apart in the bar, 8px in the menu) without shrinking the targets. */
+	.colors-bar .round {
+		margin: 0 -6px;
+	}
+
+	.colors-menu .round {
+		margin: 0 -4px;
+	}
+
 	.round:hover .dot,
 	.preset:hover .dot {
 		border-color: var(--sage-dark);
