@@ -14,6 +14,7 @@
  * `translate(x, y) scale(s)`, so `s` is CSS px per template unit and (x, y) is
  * the template's top-left corner in CSS px from the viewport's top-left.
  */
+import { readStorage, writeStorage } from '$lib/utils/safeStorage';
 
 /** Narrowest and widest template the slider offers, in millimetres. */
 export const MIN_WIDTH_MM = 30;
@@ -280,19 +281,12 @@ function isFiniteNumber(value: unknown): value is number {
 
 /** Both are settings the visitor chose, so no consent question; blocked storage just forgets. */
 export function loadTraceSettings(): TraceSettings {
-	try {
-		return parseTraceSettings(window.localStorage.getItem(STORAGE_KEY));
-	} catch {
-		return {};
-	}
+	return parseTraceSettings(readStorage(STORAGE_KEY));
 }
 
 export function saveTraceSettings(settings: TraceSettings): void {
-	try {
-		window.localStorage.setItem(STORAGE_KEY, serializeTraceSettings(settings));
-	} catch {
-		// Storage full or blocked: the next visit starts from "Tilpas" again.
-	}
+	// Storage full or blocked: the next visit starts from "Tilpas" again.
+	writeStorage(STORAGE_KEY, serializeTraceSettings(settings));
 }
 
 /**

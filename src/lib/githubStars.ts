@@ -1,4 +1,5 @@
 import { browser } from '$app/environment';
+import { readStorage, writeStorage } from '$lib/utils/safeStorage';
 
 /**
  * The repository's star count, fetched at most once a day and cached in
@@ -39,9 +40,9 @@ export function formatStars(n: number): string {
 }
 
 function readCache(repo: string): Cached | null {
+	const raw = readStorage(cacheKey(repo));
+	if (!raw) return null;
 	try {
-		const raw = window.localStorage.getItem(cacheKey(repo));
-		if (!raw) return null;
 		const cached = JSON.parse(raw) as { value?: unknown; ts?: unknown };
 		if (typeof cached.ts !== 'number') return null;
 		const age = Date.now() - cached.ts;
@@ -53,12 +54,9 @@ function readCache(repo: string): Cached | null {
 }
 
 function writeCache(repo: string, value: number | null) {
-	try {
-		const entry: Cached = value === null ? { ts: Date.now() } : { value, ts: Date.now() };
-		window.localStorage.setItem(cacheKey(repo), JSON.stringify(entry));
-	} catch {
-		// Storage full or blocked — the count is a nicety, so ignore it.
-	}
+	const entry: Cached = value === null ? { ts: Date.now() } : { value, ts: Date.now() };
+	// Storage full or blocked — the count is a nicety, so ignore it.
+	writeStorage(cacheKey(repo), JSON.stringify(entry));
 }
 
 export async function loadStarCount(repo: string): Promise<number | null> {

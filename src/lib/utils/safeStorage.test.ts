@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { getLocalStorage, readStorage, removeStorage, writeStorage } from './safeStorage';
+import { getLocalStorage, getSessionStorage, readStorage, removeStorage, writeStorage } from './safeStorage';
 
 /** A Storage whose every method throws, as a full or blocked store does. */
 function throwingStorage(name = 'SecurityError'): Storage {
@@ -76,5 +76,31 @@ describe('safeStorage', () => {
 		expect(readStorage('k')).toBeNull();
 		expect(writeStorage('k', 'v')).toBe(false);
 		expect(removeStorage('k')).toBe(false);
+	});
+
+	it('reaches sessionStorage through the same helpers', () => {
+		const session = memoryStorage();
+		Object.defineProperty(window, 'sessionStorage', { configurable: true, get: () => session });
+		expect(getSessionStorage()).toBe(session);
+		expect(writeStorage('k', 'tab', getSessionStorage())).toBe(true);
+		expect(session.getItem('k')).toBe('tab');
+		// The tab's store is not the browser's.
+		expect(readStorage('k')).toBeNull();
+		expect(readStorage('k', getSessionStorage())).toBe('tab');
+		expect(removeStorage('k', getSessionStorage())).toBe(true);
+		expect(session.getItem('k')).toBeNull();
+	});
+
+	it('degrades when the sessionStorage getter throws', () => {
+		Object.defineProperty(window, 'sessionStorage', {
+			configurable: true,
+			get() {
+				throw new DOMException('Access is denied for this document.', 'SecurityError');
+			}
+		});
+		expect(getSessionStorage()).toBeNull();
+		expect(readStorage('k', getSessionStorage())).toBeNull();
+		expect(writeStorage('k', 'v', getSessionStorage())).toBe(false);
+		expect(removeStorage('k', getSessionStorage())).toBe(false);
 	});
 });

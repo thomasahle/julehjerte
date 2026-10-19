@@ -24,6 +24,7 @@
 
 import type { HeartDesign } from '$lib/types/heart';
 import { normalizeHeartDesign, serializeHeartDesign } from '$lib/utils/heartDesign';
+import { getLocalStorage, readStorage, removeStorage, writeStorage } from '$lib/utils/safeStorage';
 
 /** localStorage key. Holds one JSON object, shaped like `StoredDraft` below. */
 export const DRAFT_KEY = 'paperheart.draft';
@@ -54,26 +55,12 @@ type StoredDraft = {
 	savedAt?: unknown;
 };
 
-/** The browser's own localStorage, or null where there is none or it throws. */
-function defaultStorage(): Storage | null {
-	try {
-		return typeof localStorage === 'undefined' ? null : localStorage;
-	} catch {
-		return null;
-	}
-}
-
 /**
  * The stored draft, or null when there is none, when storage fails, or when
  * what is stored is not a heart we can load.
  */
-export function readDraft(storage: Storage | null = defaultStorage()): EditorDraft | null {
-	let stored: string | null;
-	try {
-		stored = storage?.getItem(DRAFT_KEY) ?? null;
-	} catch {
-		return null;
-	}
+export function readDraft(storage: Storage | null = getLocalStorage()): EditorDraft | null {
+	const stored = readStorage(DRAFT_KEY, storage);
 	if (!stored) return null;
 
 	let raw: unknown;
@@ -98,26 +85,21 @@ export function readDraft(storage: Storage | null = defaultStorage()): EditorDra
 }
 
 /** Replace the draft. A storage failure is ignored: it only costs persistence. */
-export function writeDraft(draft: EditorDraft, storage: Storage | null = defaultStorage()): void {
-	try {
-		storage?.setItem(
-			DRAFT_KEY,
-			JSON.stringify({
-				design: serializeHeartDesign(draft.design),
-				source: draft.source,
-				savedAt: draft.savedAt
-			})
-		);
-	} catch {
-		// Storage unavailable or full: the draft just does not survive a reload.
-	}
+export function writeDraft(draft: EditorDraft, storage: Storage | null = getLocalStorage()): void {
+	// Storage unavailable or full: the draft just does not survive a reload.
+	writeStorage(
+		DRAFT_KEY,
+		JSON.stringify({
+			design: serializeHeartDesign(draft.design),
+			source: draft.source,
+			savedAt: draft.savedAt
+		}),
+		storage
+	);
 }
 
 /** Forget the draft — it was saved, discarded, or replaced by another heart. */
-export function clearDraft(storage: Storage | null = defaultStorage()): void {
-	try {
-		storage?.removeItem(DRAFT_KEY);
-	} catch {
-		// Nothing to do: if it cannot be removed it could not have been written.
-	}
+export function clearDraft(storage: Storage | null = getLocalStorage()): void {
+	// If it cannot be removed it could not have been written.
+	removeStorage(DRAFT_KEY, storage);
 }
