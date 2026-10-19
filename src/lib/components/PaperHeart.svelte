@@ -41,8 +41,7 @@
 	import { detectSymmetryModes } from '$lib/utils/symmetry';
 	import { dev } from '$app/environment';
 	import type { PatternTile, TileRule } from '$lib/pattern/tiling';
-	import * as escher from '$lib/pattern/escherTab';
-	import EscherPanel from '$lib/components/pattern/EscherPanel.svelte';
+	import type { TileDrag } from '$lib/pattern/escherTab';
 	import { ToggleGroup, ToggleGroupItem, keepChosen } from '$lib/components/ui/toggle-group';
 	import {
 		cloneSegments,
@@ -317,8 +316,25 @@
 	let lastEscherTile: PatternTile | null = null;
 	/** The tile behind each set of overrides the Escher tab derived: the heart's once Tegn applies them. */
 	const tileOfOverrides = new WeakMap<Map<string, Finger>, PatternTile>();
-	/** A drag in the Escher tab on a point the tile places (see `escher.TileDrag`). */
-	let leanDrag: escher.TileDrag | null = null;
+	/** A drag in the Escher tab on a point the tile places (see `TileDrag`). */
+	let leanDrag: TileDrag | null = null;
+	/**
+	 * The Escher tab's code ($lib/pattern/escherTab) and its contents (EscherPanel), loaded the first
+	 * time the tab is opened or a heart saved from it is: a tenth of the editor's code, which most
+	 * hearts are drawn without. Everything that uses them runs only once there is a tile, or the tab
+	 * is open.
+	 */
+	let escher = $state.raw<typeof import('$lib/pattern/escherTab') | null>(null);
+	let EscherPanel = $state.raw<typeof import('$lib/components/pattern/EscherPanel.svelte').default | null>(null);
+	let escherLoading: Promise<typeof import('$lib/pattern/escherTab')> | null = null;
+	function loadEscher() {
+		escherLoading ??= Promise.all([import('$lib/pattern/escherTab'), import('$lib/components/pattern/EscherPanel.svelte')]).then(([module, panel]) => {
+			escher = module;
+			EscherPanel = panel.default;
+			return module;
+		});
+		return escherLoading;
+	}
 
 	let symmetryWithinCurve = $derived(withinCurveMode !== 'off');
 	let antiWithinCurve = $derived(withinCurveMode === 'anti');
@@ -1132,7 +1148,7 @@
 	function derivePatternOverrides(primary: Finger): Map<string, Finger> {
 		const overrides = new Map<string, Finger>();
 		overrides.set(primary.id, primary);
-		const edit = patternTile ? escher.editTile(patternTile, primary, getOverlapRect()) : null;
+		const edit = patternTile && escher ? escher.editTile(patternTile, primary, getOverlapRect()) : null;
 		if (!edit) return overrides;
 		for (const f of edit.cuts) overrides.set(f.id, f);
 		tileOfOverrides.set(overrides, edit.tile);
@@ -1144,6 +1160,7 @@
 	 * are still the ones it makes, so a look at the Normal tab does not lose it; null otherwise.
 	 */
 	function savedTile(): HeartPattern | null {
+		if (!escher) return null;
 		const tile = patternTile ?? (lastEscherTile && escher.cutsAre(fingers, escher.generateEditorFingers(lastEscherTile, getOverlapRect())) ? lastEscherTile : null);
 		return tile ? escher.savedPattern(tile) : null;
 	}
@@ -1164,6 +1181,7 @@
 	 * moved to (`weaveParityOf`).
 	 */
 	function showTile(tile: PatternTile) {
+		if (!escher) return;
 		takeUpTile(tile);
 		fingers = escher.tileFingers(tile);
 		gridSize = escher.tileGrid(tile);
@@ -1176,7 +1194,7 @@
 
 	/** A type chosen in the Escher tab (see `escher.tileForRule`). */
 	function chooseEscherRule(rule: TileRule) {
-		if (patternTile && escher.sameRule(rule, patternTile.rule)) return;
+		if (!escher || (patternTile && escher.sameRule(rule, patternTile.rule))) return;
 		const before = snapshotState();
 		showTile(escher.tileForRule(rule, patternTile, { fingers, gridSize, rect: getOverlapRect() }));
 		pushUndo(before);
@@ -1192,8 +1210,12 @@
 		}
 		escherTab = true;
 		if (patternTile) return;
-		const resumed = escher.resumedTile(lastEscherTile, { fingers, gridSize, rect: getOverlapRect() });
-		if (resumed) takeUpTile(resumed);
+		// The tab's code comes with the tab; then the tile it was left with, or that the cuts already are, is taken up.
+		void loadEscher().then((module) => {
+			if (!escherTab || patternTile) return;
+			const resumed = module.resumedTile(lastEscherTile, { fingers, gridSize, rect: getOverlapRect() });
+			if (resumed) takeUpTile(resumed);
+		});
 	}
 
 	/**
@@ -1207,7 +1229,7 @@
 
 	/** The pattern's size: the tile drawn again n × n on the heart's square, if it is not too tight for it. */
 	function setPatternSize(n: number) {
-		if (!patternTile || n === patternSize) return;
+		if (!patternTile || !escher || n === patternSize) return;
 		const next = escher.resizedTile(patternTile, n);
 		if (sizeStopTimer) clearTimeout(sizeStopTimer);
 		sizeStop = null;
@@ -1225,9 +1247,9 @@
 	}
 
 	/** On the selected cut, the nodes the Escher tab treats specially: crossings that lean the tiles, and points that stay put. */
-	let patternNodes = $derived(patternTile && selectedFingerId ? escher.specialNodes(patternTile, selectedFingerId) : null);
+	let patternNodes = $derived(patternTile && selectedFingerId && escher ? escher.specialNodes(patternTile, selectedFingerId) : null);
 	/** What the Escher tab's hint says about the crossings, for the chosen rule. */
-	let escherCornerHint = $derived<TranslationKey | null>(patternTile ? escher.cornerHint(patternTile) : null);
+	let escherCornerHint = $derived<TranslationKey | null>(patternTile && escher ? escher.cornerHint(patternTile) : null);
 
 	function deriveSymmetryOverrides(primary: Finger): Map<string, Finger> {
 		if (patternRule !== 'off') return derivePatternOverrides(primary);
@@ -1388,7 +1410,8 @@
 	/** The first problem among a whole new set of cuts on a grid of its own (see `candidateProblem`). */
 	function fingersProblem(all: Finger[], grid: GridSize): CutProblem | null {
 		for (const f of all) {
-			if (!escher.cutOfFinger(f.id, { V: grid.x - 1, H: grid.y - 1 })) continue;
+			const idx = boundaryIndexFromId(f.id);
+			if (idx < 1 || idx > boundaryCurveCount(grid, f.lobe) - 2) continue;
 			const problem = candidateProblem(f.id, f, undefined, { fingers: all, gridSize: grid });
 			if (problem) return problem;
 		}
@@ -1431,7 +1454,7 @@
 	function applyOverrides(overrides: Map<string, Finger>) {
 		fingers = fingers.map((f) => overrides.get(f.id) ?? f);
 		const tile = tileOfOverrides.get(overrides);
-		if (tile) {
+		if (tile && escher) {
 			patternTile = tile;
 			// A pattern moved past half a cell starts at other lines of the tiling; the drawn tiles stay red.
 			weaveParity = escher.weaveParityOf(tile);
@@ -2649,8 +2672,8 @@
 		selectedSegments = [];
 		lastCurveHit = null;
 		// Escher tab: a point the tile places moves the tiles, or the whole pattern, with it (see SpecialNode).
-		const special = patternTile ? escher.specialNodes(patternTile, fingerId).get(anchorIdx) : undefined;
-		if (patternTile && special) {
+		const special = patternTile && escher ? escher.specialNodes(patternTile, fingerId).get(anchorIdx) : undefined;
+		if (patternTile && escher && special) {
 			selectedAnchors = [anchorIdx];
 			const start = localPointFromClient(e.clientX, e.clientY);
 			if (!start) return;
@@ -2711,7 +2734,7 @@
 		const p = localPointFromClient(e.clientX, e.clientY);
 		if (!p) return;
 
-		if (leanDrag) {
+		if (leanDrag && escher) {
 			// The tiles lean, or the whole pattern moves, so that the dragged point follows the pointer;
 			// or the curve the edge cuts is reshaped so that the cut's end slides with it. The cuts are
 			// made again.
@@ -2961,11 +2984,17 @@
 				prevWithinLobeMode = withinLobeMode;
 				prevBetweenLobesMode = betweenLobesMode;
 			}
-			// A heart saved from the Escher tab opens on it, its tile taken up, if the cuts are still the tile's.
-			const restored = has && initialPattern ? escher.restoredTile(initialPattern, { fingers, gridSize, rect: getOverlapRect() }) : null;
-			if (restored) {
-				takeUpTile(restored);
-				escherTab = true;
+			// A heart saved from the Escher tab opens on it, its tile taken up, if the cuts are still the
+			// tile's; the tab's code comes first.
+			if (has && initialPattern) {
+				const saved = initialPattern;
+				void loadEscher().then((module) => {
+					if (patternTile) return;
+					const restored = module.restoredTile(saved, { fingers, gridSize, rect: getOverlapRect() });
+					if (!restored) return;
+					takeUpTile(restored);
+					escherTab = true;
+				});
 			}
 		});
 
@@ -3055,12 +3084,13 @@
 	// heart's inner cuts are exactly the ones the tile makes. A tool that edits a cut on its own
 	// would break the rule's symmetry; this names the cut in the console.
 	$effect(() => {
-		if (!dev || !patternTile) return;
+		if (!dev || !patternTile || !escher) return;
 		const tile = patternTile;
 		const current = fingers;
+		const module = escher;
 		untrack(() => {
 			const close = (p: Vec, q: Vec) => Math.abs(p.x - q.x) < 1e-3 && Math.abs(p.y - q.y) < 1e-3;
-			for (const g of escher.generateEditorFingers(tile, getOverlapRect())) {
+			for (const g of module.generateEditorFingers(tile, getOverlapRect())) {
 				const f = current.find((x) => x.id === g.id);
 				const segs = f ? fingerToSegments(f) : [];
 				const want = fingerToSegments(g);
@@ -3078,7 +3108,7 @@
 	$effect(() => {
 		const size = gridSize;
 		untrack(() => {
-			if (!patternTile) return;
+			if (!patternTile || !escher) return;
 			const own = escher.tileGrid(patternTile);
 			if (own.x !== size.x || own.y !== size.y) patternTile = null;
 		});
@@ -3857,16 +3887,19 @@
 							</ToggleGroup>
 						</div>
 						{#if escherTab}
-							<EscherPanel
-								{lang}
-								rule={patternRule === 'off' ? null : patternRule}
-								size={patternSize}
-								cornerHint={escherCornerHint}
-								onChoose={chooseEscherRule}
-								onSize={setPatternSize}
-								compact={isMobileLayout}
-								disabled={readonly}
-							/>
+							<!-- The tab's contents come with its code, the first time it is opened. -->
+							{#if EscherPanel}
+								<EscherPanel
+									{lang}
+									rule={patternRule === 'off' ? null : patternRule}
+									size={patternSize}
+									cornerHint={escherCornerHint}
+									onChoose={chooseEscherRule}
+									onSize={setPatternSize}
+									compact={isMobileLayout}
+									disabled={readonly}
+								/>
+							{/if}
 						{:else}
 							<!-- Below 900px this panel leaves the column for a wrapping row
 							     under the drawing, beside narrow cards: the segments keep the
