@@ -2071,7 +2071,7 @@
     }
   },
   "clearanceCheckpointInvestigation": {
-    "status": "69 local affected tests and nine focused Linux tests passed; full Linux and app checks in progress",
+    "status": "Local 69 affected tests and all app checks passed; full Linux currently has ten failures, so this revision is not ready to merge",
     "fixture": "coverage-fits/photo-bauble",
     "evidence": "The fixed 150-step ordered clearance fit produced seven inspected checkpoints. The first five failed inter-slit clearance; the last two passed geometry at 7.06% and 6.99% observed image error. Error-only checkpoint selection nevertheless handed back the earlier invalid 6.14% state. Paper was uncertain on the later grids and still needs independent refinement/verification.",
     "record": "/tmp/julehjerte-partial-clearance-study.json",
@@ -2129,12 +2129,68 @@
       "url": "https://github.com/thomasahle/julehjerte/actions/runs/39224564133",
       "diagnosticCommit": "90b4b1d0",
       "mode": "cold",
-      "note": "All production source and tests match ce6ef218. Four serial-test shards; no diagnostic clock imported in cold mode."
+      "note": "All production source and tests match ce6ef218. Four serial-test shards; no diagnostic clock imported in cold mode.",
+      "shards": [
+        {
+          "shard": 1,
+          "passed": 264,
+          "failed": 0,
+          "failures": [],
+          "log": "/tmp/julehjerte-ci-clearance-full-shard1.log"
+        },
+        {
+          "shard": 3,
+          "passed": 288,
+          "failed": 3,
+          "failures": [
+            "a simpler seed that never contained the Viking opening leaves time for the viable routing",
+            "late clearance comparison can repair its first usable layout before polishing",
+            "a lower-error finalist that erodes a partially retained region cannot claim the refinement reserve"
+          ],
+          "log": "/tmp/julehjerte-ci-clearance-full-shard3.log"
+        },
+        {
+          "shard": 4,
+          "passed": 331,
+          "failed": 7,
+          "failures": [
+            "fresh fitting retains the stacked motif on the resampled mask",
+            "the original near-miss layout produces checked exports within the original short search (1.5x clock)",
+            "the vertical near-miss layout produces checked exports within the original short search (1.5x clock)",
+            "a late routing candidate uses the repair time already provided by its caller",
+            "a late routing candidate cannot manufacture an unprovided repair allowance",
+            "fresh frozen routing retains time for a valid template without changing the mask",
+            "fresh synthetic-control routing retains time for a valid template without changing the mask"
+          ],
+          "log": "/tmp/julehjerte-ci-clearance-full-shard4.log"
+        }
+      ],
+      "pendingShards": [
+        2
+      ]
     },
     "appChecks": {
-      "status": "in_progress",
+      "status": "passed",
       "sourceCommit": "ce6ef218",
+      "check": "zero errors, six existing warnings",
+      "lint": "zero errors, four existing warnings",
+      "vitest": {
+        "files": 112,
+        "passed": 1570,
+        "skipped": 1
+      },
+      "build": "passed",
       "logPrefix": "/tmp/julehjerte-clearance-enclosure-"
+    },
+    "fullRunInvestigation": {
+      "artifacts": "tmp/heart-learning/post-merge-2026-10-18/clearance-full-linux/shard-3/inverse-test-failures",
+      "findings": [
+        "Viking export passes geometry and paper but misses the unchanged 3% image threshold; the final outline pass completed only 20 steps.",
+        "Late stacked-motif test has no clearance comparison, ends with uncertain paper and 3.47% source disagreement. This is a real fit failure, not only an overspecified comparison assertion.",
+        "Bicycle export passes geometry and paper but has 4.459% disagreement, above the unchanged 4% test limit.",
+        "Additional shard-four failures include resampled stacked motif, two slowed near-miss cases, late routing repair and frozen/synthetic-control scheduling. These were not caught by the nine-test focused run.",
+        "Next investigation: compare costs and selections of the new clearance-checkpoint policy for ordinary versus feature-seeded grids. No production changes made during this investigation."
+      ]
     }
   }
 }
