@@ -107,6 +107,29 @@ describe('the complete heart archive', () => {
 		expect(winter.templateUrls[0]).toContain('/20160418065353id_/');
 	});
 
+	it('retains the bell, dove and anchor sources without assigning a page author to an unsigned motif', () => {
+		const records = archiveRecords('en');
+		const bell = records.find(r => r.id === 'haabet-klokke')!;
+		const dove = records.find(r => r.id === 'haabet-freds-due')!;
+		const anchor = records.find(r => r.id === 'haabet-haabets-anker')!;
+		expect([bell.title, dove.title, anchor.title]).toEqual(['Klokke Julehjerte', 'Freds Due', 'Håbets Anker']);
+		expect(bell.credits).toEqual(['Peter Ole Kvint']);
+		expect(anchor.credits).toEqual(['Peter Ole Kvint']);
+		expect(dove.credits).toEqual([]);
+		expect([bell.templateUrls.length, dove.templateUrls.length, anchor.templateUrls.length]).toEqual([1, 2, 2]);
+		for (const record of [bell, dove, anchor]) {
+			expect(records.filter(r => r.id === record.id)).toHaveLength(1);
+			expect(record.imageUrls).toHaveLength(1);
+			expect(record.license).toBe('unknown');
+			expect(record.preservedTemplates).toBeUndefined();
+			expect(record.thumbnail).toBeUndefined();
+			for (const captured of record.templateUrls) {
+				expect(captured).toMatch(/^https:\/\/web\.archive\.org\/web\/\d{14}id_\/http:\/\/.*\.gif$/);
+				expect(record.sourceUrls).toContain(captured.replace(/^https:\/\/web\.archive\.org\/web\/[^/]+\//, ''));
+			}
+		}
+	});
+
 	it('searches recorded credits and combines filters without case or accent surprises', () => {
 		const records = archiveRecords('en');
 		const mortensen = filterArchive(records, 'PER mortensen', '', 'templates');

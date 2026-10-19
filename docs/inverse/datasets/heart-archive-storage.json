@@ -1671,6 +1671,13 @@
           "retrievedUrl": "https://web.archive.org/web/20150812154542id_/http://www.haabet.dk/users/julehjerter/figure.html",
           "retrievedAt": "2026-10-19T12:56:57.770256+00:00",
           "archiveCaptureTimestamp": "20150812154542"
+        },
+        {
+          "collection": "haabet-patterns-3",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/figure.html",
+          "retrievedUrl": "https://web.archive.org/web/20150812154542id_/http://www.haabet.dk/users/julehjerter/figure.html",
+          "retrievedAt": "2026-10-19T12:56:57.770256+00:00",
+          "archiveCaptureTimestamp": "20150812154542"
         }
       ]
     },
@@ -1831,6 +1838,13 @@
           "retrievedUrl": "https://web.archive.org/web/20150812154558id_/http://www.haabet.dk/users/julehjerter/index.html",
           "retrievedAt": "2026-10-19T12:58:57.210230+00:00",
           "archiveCaptureTimestamp": "20150812154558"
+        },
+        {
+          "collection": "haabet-patterns-3",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/index.html",
+          "retrievedUrl": "https://web.archive.org/web/20150812154558id_/http://www.haabet.dk/users/julehjerter/index.html",
+          "retrievedAt": "2026-10-19T12:58:57.210230+00:00",
+          "archiveCaptureTimestamp": "20150812154558"
         }
       ]
     },
@@ -1969,13 +1983,200 @@
           "archiveCaptureTimestamp": "20151029024736"
         }
       ]
+    },
+    {
+      "sha256": "caa0dc206a2ac1f75f36f099017bfda0314c92c3444ce06f911c4092f0dc7f51",
+      "bytes": 1049,
+      "path": "archive-store/heart-preservation/objects/caa0dc206a2ac1f75f36f099017bfda0314c92c3444ce06f911c4092f0dc7f51.gif",
+      "contentType": "image/gif",
+      "role": "woven-design-preview",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-3",
+          "originalUrl": "http://haabet.dk/users/julehjerter/klokke.gif",
+          "retrievedUrl": "https://web.archive.org/web/20160518070125id_/http://haabet.dk/users/julehjerter/klokke.gif",
+          "retrievedAt": "2026-10-19T16:17:15.462908+00:00",
+          "archiveCaptureTimestamp": "20160518070125"
+        }
+      ]
+    },
+    {
+      "sha256": "a480c3257ce43f6933f6a36f0920e434567daa8cd254d2eaac5c7ba93da7b845",
+      "bytes": 3027,
+      "path": "archive-store/heart-preservation/objects/a480c3257ce43f6933f6a36f0920e434567daa8cd254d2eaac5c7ba93da7b845.gif",
+      "contentType": "image/gif",
+      "role": "cutting-template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-3",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/klokke_.gif",
+          "retrievedUrl": "https://web.archive.org/web/20130530135656id_/http://www.haabet.dk/users/julehjerter/klokke_.gif",
+          "retrievedAt": "2026-10-19T16:17:19.959151+00:00",
+          "archiveCaptureTimestamp": "20130530135656"
+        }
+      ]
+    },
+    {
+      "sha256": "c33a08576227ded8bc949d02ced3e462a2d488fd090e0175132569f0fe39169c",
+      "bytes": 1321,
+      "path": "archive-store/heart-preservation/objects/c33a08576227ded8bc949d02ced3e462a2d488fd090e0175132569f0fe39169c.gif",
+      "contentType": "image/gif",
+      "role": "woven-design-preview",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-3",
+          "originalUrl": "http://haabet.dk/users/julehjerter/due.gif",
+          "retrievedUrl": "https://web.archive.org/web/20160518141252id_/http://haabet.dk/users/julehjerter/due.gif",
+          "retrievedAt": "2026-10-19T16:17:24.772529+00:00",
+          "archiveCaptureTimestamp": "20160518141252"
+        }
+      ]
+    },
+    {
+      "sha256": "bc77a62e13f12ef2492580a23ec513dc11e457d1f85a9c28c7c74f4d7fb68fc9",
+      "bytes": 1822,
+      "path": "archive-store/heart-preservation/objects/bc77a62e13f12ef2492580a23ec513dc11e457d1f85a9c28c7c74f4d7fb68fc9.gif",
+      "contentType": "image/gif",
+      "role": "cutting-template-white-outer",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-3",
+          "originalUrl": "http://haabet.dk/users/julehjerter/due1.gif",
+          "retrievedUrl": "https://web.archive.org/web/20160515090304id_/http://haabet.dk/users/julehjerter/due1.gif",
+          "retrievedAt": "2026-10-19T16:17:38.194759+00:00",
+          "archiveCaptureTimestamp": "20160515090304"
+        }
+      ]
+    },
+    {
+      "sha256": "fa40c516d9807fd99ff4cccbe7e91069e40fc3707dd5a6600cb0c114fa5412b4",
+      "bytes": 2053,
+      "path": "archive-store/heart-preservation/objects/fa40c516d9807fd99ff4cccbe7e91069e40fc3707dd5a6600cb0c114fa5412b4.gif",
+      "contentType": "image/gif",
+      "role": "cutting-template-inner",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-3",
+          "originalUrl": "http://haabet.dk/users/julehjerter/due2.gif",
+          "retrievedUrl": "https://web.archive.org/web/20160515043212id_/http://haabet.dk/users/julehjerter/due2.gif",
+          "retrievedAt": "2026-10-19T16:17:30.067958+00:00",
+          "archiveCaptureTimestamp": "20160515043212"
+        }
+      ]
+    },
+    {
+      "sha256": "49d9e260ace92f237323180ae82c545dd6d7f922bd643d5ddae39e2776208b74",
+      "bytes": 2058,
+      "path": "archive-store/heart-preservation/objects/49d9e260ace92f237323180ae82c545dd6d7f922bd643d5ddae39e2776208b74.gif",
+      "contentType": "image/gif",
+      "role": "woven-design-preview",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-3",
+          "originalUrl": "http://haabet.dk/users/julehjerter/anker.gif",
+          "retrievedUrl": "https://web.archive.org/web/20160519061422id_/http://haabet.dk/users/julehjerter/anker.gif",
+          "retrievedAt": "2026-10-19T16:17:44.840302+00:00",
+          "archiveCaptureTimestamp": "20160519061422"
+        }
+      ]
+    },
+    {
+      "sha256": "b8ca9bd41faa7df8a9034c642474b9a0df8c1aef91a05ea74d04ff543f392f4b",
+      "bytes": 2640,
+      "path": "archive-store/heart-preservation/objects/b8ca9bd41faa7df8a9034c642474b9a0df8c1aef91a05ea74d04ff543f392f4b.gif",
+      "contentType": "image/gif",
+      "role": "cutting-template-sheet-1",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-3",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/anker_a.gif",
+          "retrievedUrl": "https://web.archive.org/web/20130530181046id_/http://www.haabet.dk/users/julehjerter/anker_a.gif",
+          "retrievedAt": "2026-10-19T16:17:48.572868+00:00",
+          "archiveCaptureTimestamp": "20130530181046"
+        }
+      ]
+    },
+    {
+      "sha256": "d43f985bf34cde214e417171c3bec48d7ec31dd553b6163942444bcbd753a42d",
+      "bytes": 1971,
+      "path": "archive-store/heart-preservation/objects/d43f985bf34cde214e417171c3bec48d7ec31dd553b6163942444bcbd753a42d.gif",
+      "contentType": "image/gif",
+      "role": "cutting-template-sheet-2",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-3",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/anker_b.gif",
+          "retrievedUrl": "https://web.archive.org/web/20130530171401id_/http://www.haabet.dk/users/julehjerter/anker_b.gif",
+          "retrievedAt": "2026-10-19T16:17:53.166587+00:00",
+          "archiveCaptureTimestamp": "20130530171401"
+        }
+      ]
+    },
+    {
+      "sha256": "dbd2d679a469e5ef91b49c7dd6a5821103fe3a5162161cdbdadb32a389de2400",
+      "bytes": 533,
+      "path": "archive-store/heart-preservation/objects/dbd2d679a469e5ef91b49c7dd6a5821103fe3a5162161cdbdadb32a389de2400.html",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-3",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/klokke.html",
+          "retrievedUrl": "https://web.archive.org/web/20151025194235id_/http://www.haabet.dk/users/julehjerter/klokke.html",
+          "retrievedAt": "2026-10-19T16:16:27.562753+00:00",
+          "archiveCaptureTimestamp": "20151025194235"
+        }
+      ]
+    },
+    {
+      "sha256": "0b8f06a2dd56f0b3cd60cf9209f94b3f8b6fc64bb128857d05bcaccba2cded1f",
+      "bytes": 920,
+      "path": "archive-store/heart-preservation/objects/0b8f06a2dd56f0b3cd60cf9209f94b3f8b6fc64bb128857d05bcaccba2cded1f.html",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-3",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/due.html",
+          "retrievedUrl": "https://web.archive.org/web/20151025194146id_/http://www.haabet.dk/users/julehjerter/due.html",
+          "retrievedAt": "2026-10-19T16:16:37.942889+00:00",
+          "archiveCaptureTimestamp": "20151025194146"
+        }
+      ]
+    },
+    {
+      "sha256": "fa590c82f983c5b0d9cddf0ad7943f1938ce1f8c8d442557954a8a2ad20b057b",
+      "bytes": 734,
+      "path": "archive-store/heart-preservation/objects/fa590c82f983c5b0d9cddf0ad7943f1938ce1f8c8d442557954a8a2ad20b057b.html",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-3",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/anker.html",
+          "retrievedUrl": "https://web.archive.org/web/20151029022652id_/http://www.haabet.dk/users/julehjerter/anker.html",
+          "retrievedAt": "2026-10-19T16:16:41.255371+00:00",
+          "archiveCaptureTimestamp": "20151029022652"
+        }
+      ]
     }
   ],
   "counts": {
-    "objects": 114,
-    "originalBytes": 15547663,
+    "objects": 125,
+    "originalBytes": 15565791,
     "publicObjects": 1
   },
   "scope": "Original source documents and evidence, retained once by SHA-256. Public template copies require recorded redistribution terms. Other originals are kept in archive-store, outside tmp and outside Git/public assets. A second off-device backup is still needed.",
-  "updatedAt": "2026-10-19T13:55:56.714592+00:00"
+  "updatedAt": "2026-10-19T16:21:08.204990+00:00"
 }

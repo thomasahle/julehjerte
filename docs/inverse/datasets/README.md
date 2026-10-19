@@ -147,10 +147,10 @@ alone does not meet that gate.
 
 ### Preservation archive, 2026-10-19
 
-The [preservation manifest](heart-archive-storage.json) records **114 unique
-original files, 15,547,663 bytes**, including 54 template PDFs (286 pages),
-seven recovered Permo images, eight Haabet images and source/history/license
-evidence. These are documents and photographs, not 114 independent designs or
+The [preservation manifest](heart-archive-storage.json) records **125 unique
+original files, 15,565,791 bytes**, including 54 template PDFs (286 pages),
+seven recovered Permo images, sixteen Haabet images and source/history/license
+evidence. These are documents and photographs, not 125 independent designs or
 new training labels.
 [Additional collections](archive-additional.json) record Krümmel,
 Bibelselskabet, Spejderliv and PaperMatrix; the [Permo history](archive-permo.json)
@@ -170,6 +170,15 @@ creator signatures and source history are retained. The year 2001 printed on
 Vintersol's template is not treated as a verified first-publication date.
 The attempted Damernes SVG replay also returned 404, so that design remains
 reference-only. None of this batch is mirrored as a public image.
+A [third Haabet batch](archive-haabet-patterns-3.json) adds **Klokke Julehjerte**,
+**Freds Due** and **Håbets Anker**. Eight original GIFs and three source pages
+add **18,128 bytes**, with two existing evidence objects reused. The bell and
+anchor templates are signed Peter Ole Kvint 2001. The dove's designer remains
+unknown: crediting the website's author would not establish motif authorship.
+Original template links, working archive captures and sheet order are retained;
+the preview illustrations are not counted as photographs or extra designs.
+The source index now contains **1,120 external records**, alongside the
+**56 published Juleflet hearts**. This batch adds no public media mirrors.
 
 Original bytes were moved out of temporary work directories, not copied into
 another full dataset. The private originals live in

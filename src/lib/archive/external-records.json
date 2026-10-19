@@ -8267,6 +8267,58 @@
     "license": "unknown"
   },
   {
+    "id": "haabet-freds-due",
+    "title": "Freds Due",
+    "kind": "document",
+    "source": "haabet.dk",
+    "sourceUrls": [
+      "https://web.archive.org/web/20151025194146/http://www.haabet.dk/users/julehjerter/due.html",
+      "http://www.haabet.dk/users/julehjerter/due.html",
+      "https://web.archive.org/web/20160515090304id_/http://haabet.dk/users/julehjerter/due1.gif",
+      "https://web.archive.org/web/20160515043212id_/http://haabet.dk/users/julehjerter/due2.gif",
+      "http://haabet.dk/users/julehjerter/due1.gif",
+      "http://haabet.dk/users/julehjerter/due2.gif",
+      "http://haabet.dk/users/julehjerter/due.gif"
+    ],
+    "imageUrls": [
+      "https://web.archive.org/web/20160518141252id_/http://haabet.dk/users/julehjerter/due.gif"
+    ],
+    "credits": [],
+    "templateUrls": [
+      "https://web.archive.org/web/20160515090304id_/http://haabet.dk/users/julehjerter/due1.gif",
+      "https://web.archive.org/web/20160515043212id_/http://haabet.dk/users/julehjerter/due2.gif"
+    ],
+    "relatedTemplateUrls": [],
+    "license": "unknown"
+  },
+  {
+    "id": "haabet-haabets-anker",
+    "title": "Håbets Anker",
+    "kind": "document",
+    "source": "haabet.dk",
+    "sourceUrls": [
+      "https://web.archive.org/web/20151029022652/http://www.haabet.dk/users/julehjerter/anker.html",
+      "http://www.haabet.dk/users/julehjerter/anker.html",
+      "https://web.archive.org/web/20130530181046id_/http://www.haabet.dk/users/julehjerter/anker_a.gif",
+      "https://web.archive.org/web/20130530171401id_/http://www.haabet.dk/users/julehjerter/anker_b.gif",
+      "http://www.haabet.dk/users/julehjerter/anker_a.gif",
+      "http://www.haabet.dk/users/julehjerter/anker_b.gif",
+      "http://haabet.dk/users/julehjerter/anker.gif"
+    ],
+    "imageUrls": [
+      "https://web.archive.org/web/20160519061422id_/http://haabet.dk/users/julehjerter/anker.gif"
+    ],
+    "credits": [
+      "Peter Ole Kvint"
+    ],
+    "templateUrls": [
+      "https://web.archive.org/web/20130530181046id_/http://www.haabet.dk/users/julehjerter/anker_a.gif",
+      "https://web.archive.org/web/20130530171401id_/http://www.haabet.dk/users/julehjerter/anker_b.gif"
+    ],
+    "relatedTemplateUrls": [],
+    "license": "unknown"
+  },
+  {
     "id": "haabet-isbjoern",
     "title": "Isbjørn",
     "kind": "document",
@@ -8288,6 +8340,30 @@
     "templateUrls": [
       "https://web.archive.org/web/20160515040536id_/http://haabet.dk/users/julehjerter/bjoernl.gif",
       "https://web.archive.org/web/20160418074218id_/http://haabet.dk/users/julehjerter/bjoernv.gif"
+    ],
+    "relatedTemplateUrls": [],
+    "license": "unknown"
+  },
+  {
+    "id": "haabet-klokke",
+    "title": "Klokke Julehjerte",
+    "kind": "document",
+    "source": "haabet.dk",
+    "sourceUrls": [
+      "https://web.archive.org/web/20151025194235/http://www.haabet.dk/users/julehjerter/klokke.html",
+      "http://www.haabet.dk/users/julehjerter/klokke.html",
+      "https://web.archive.org/web/20130530135656id_/http://www.haabet.dk/users/julehjerter/klokke_.gif",
+      "http://www.haabet.dk/users/julehjerter/klokke_.gif",
+      "http://haabet.dk/users/julehjerter/klokke.gif"
+    ],
+    "imageUrls": [
+      "https://web.archive.org/web/20160518070125id_/http://haabet.dk/users/julehjerter/klokke.gif"
+    ],
+    "credits": [
+      "Peter Ole Kvint"
+    ],
+    "templateUrls": [
+      "https://web.archive.org/web/20130530135656id_/http://www.haabet.dk/users/julehjerter/klokke_.gif"
     ],
     "relatedTemplateUrls": [],
     "license": "unknown"
