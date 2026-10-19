@@ -1,0 +1,35 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import {finish} from '../../static/inverse/core/engine.js';
+import {loadSolutionJSON,solutionJSON} from '../../static/inverse/core/graph.js';
+import {validate} from '../../static/inverse/core/validate.js';
+import {finalMaterialAudit} from '../../static/inverse/core/geometric-material.js';
+import {loadNumericalKernel} from '../../static/inverse/core/numerical-kernel.js';
+
+test('a lattice-passing Viking with detached offset cores cannot be certified at an expired deadline',async t=>{
+  const fixture=JSON.parse(await fs.readFile(new URL('./fixtures/rejected-viking-paper.json',import.meta.url)));
+  await loadNumericalKernel();
+  const solution=loadSolutionJSON(fixture.geometry),before=solutionJSON(solution),cfg=fixture.settings;
+  const image=JSON.parse(await fs.readFile(new URL('./fixtures/photographic-viking-cleanup.json',import.meta.url)));
+  const mask=new Uint8Array(image.resolution**2);
+  for(const[start,length]of image.maskRuns)mask.fill(1,start,start+length);
+  solution.graph.target.sourceImage={resolution:image.resolution,mask,probability:Float32Array.from(mask)};
+  assert.equal(validate(solution,cfg,{checkImage:false,finalGeometry:true}).passed,true);
+  const material=finalMaterialAudit(solution,cfg);
+  assert.equal(material.summary.latticeStatus,'pass');
+  assert.equal(material.offset.status,'fail');
+  assert.ok(material.offset.families.some(f=>f.significantFloatingArea>cfg.minFeatureArea));
+  t.mock.method(performance,'now',()=>1000);
+  const answer=finish(solution,cfg,()=>{},{refine:false,deadline:1000});
+  assert.equal(answer.report.finalPaperRepair.rejected,'deadline');
+  assert.equal(answer.report.manufacturing.latticeStatus,'pass');
+  assert.equal(answer.report.manufacturing.offset.status,'fail');
+  assert.equal(answer.report.manufacturing.status,'fail');
+  assert.equal(answer.report.templateChecksPassed,false);
+  assert.equal(answer.report.imageFidelity.passed,true,'Good image agreement must not waive the paper failure.');
+  assert.ok(answer.report.warnings.some(w=>w.includes('paper-core test is fail')));
+  assert.deepEqual(solutionJSON(solution),before);
+  const exported=loadSolutionJSON(answer.files['cut_geometry.json']);
+  assert.equal(finalMaterialAudit(exported,cfg).status,'fail','Export cannot hide the rejected core.');
+});
