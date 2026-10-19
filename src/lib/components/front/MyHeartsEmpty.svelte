@@ -2,7 +2,8 @@
   The empty state of "Mine hjerter" — docs/redesign/DESIGN.md §3.
 
   A dashed box explaining that hearts drawn in the editor are kept in this
-  browser, with a pencil tile and a way into the editor. It is what the
+  browser, with a pencil tile and a way to /design (the easier start; the
+  editor is one choice there). It is what the
   prerendered HTML contains; hearts read from localStorage replace it on mount.
 -->
 <script lang="ts">
@@ -20,7 +21,7 @@
 <div class="mine-box">
 	<span class="mine-icon" aria-hidden="true"><PencilIcon size={22} /></span>
 	<span class="mine-text">{t('myHeartsEmpty', lang)}</span>
-	<a class="btn btn-outline" href={routeHref('editor', lang)}>{t('createNewHeart', lang)}</a>
+	<a class="btn btn-outline" href={routeHref('generator', lang)}>{t('createNewHeart', lang)}</a>
 </div>
 
 <style>
