@@ -1,0 +1,31 @@
+{
+  "schema": "saliency-crop-drift-plan-1",
+  "status": "predeclared-diagnostic-interventions",
+  "baseline": {
+    "path": "tmp/heart-learning/u2netp-body-adapted-crop-parity-v1/report.json",
+    "sha256": "0684b0bb7717ebc705462bdb8c211445f496d2bed9f217f5681dfc88ceb20489"
+  },
+  "cases": [
+    "real-dfa7e4b71b43aa86-body-1",
+    "real-702942779385436c-body-1"
+  ],
+  "interventions": {
+    "componentMask": [
+      "mask"
+    ],
+    "paperDistance": [
+      "pd"
+    ],
+    "colourDistances": [
+      "rd",
+      "wd"
+    ]
+  },
+  "scope": "Diagnose the two already-observed numerical crop differences. First reproduce all three measured crops exactly. Then replace specified native-ONNX working fields with the PyTorch-reference fields, preserving the original photograph, the remaining native fields and all crop gates. Freeze the clock to use the same finite orientation list as the prior diagnostic. These are causal interventions, not deployable predictions or new quality evidence. Keep all failed export gates unchanged. Follow-up splits the foreground component mask from its paper-distance field, without changing any threshold or prediction.",
+  "resources": {
+    "workers": 1,
+    "newPhotoBytes": 0,
+    "maximumArtifactMiB": 1
+  },
+  "execution": "Run after the completed repository and browser checks, one low-priority worker."
+}

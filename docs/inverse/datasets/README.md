@@ -68,6 +68,15 @@ their classified masks. Other crop outputs, including the three gains, agree
 exactly. The numerical gates remain failed. These remain development results on an
 already inspected cohort, not a production release.
 
+The [causal crop-drift diagnostic](u2netp-crop-drift-results.json) reproduces
+those two differences before substituting individual intermediate fields.
+In one photo, a single resampled sample crosses the 95% palette cutoff;
+replacing only the resulting chroma field restores the reference crop exactly.
+In the other, one foreground pixel changes 589 paper-distance samples;
+replacing only that distance field restores the reference crop. Component-mask
+and colour-field substitutions do not. Continuous palette weighting and subpixel
+distance geometry are the next experiments; these causes are diagnosed, not fixed.
+
 The original [fresh 32-photo evaluation](u2netp-fresh-results.json) freezes the model and
 crop policy before inference. It keeps every existing production crop and adds
 a review-required neural proposal only where none exists. Crop proposals rise

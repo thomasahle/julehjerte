@@ -1,0 +1,79 @@
+{
+  "schema": "conni-release-qa-1",
+  "date": "2026-10-19",
+  "branchReleaseCommit": "cc79e22f04dfac466df53f8528d9265da33ea300",
+  "mergeCommit": "d0b882b5e450de9a5a8f112975a266e9ba580043",
+  "pullRequest": "https://github.com/thomasahle/julehjerte/pull/15",
+  "branchCi": {
+    "url": "https://github.com/thomasahle/julehjerte/actions/runs/39323388805",
+    "conclusion": "success",
+    "correctnessShardsPassed": 4,
+    "buildPassed": true,
+    "timedQuality": {
+      "passed": 58,
+      "total": 77,
+      "missedOriginalTargets": 19,
+      "advisory": true
+    }
+  },
+  "mergedReleaseWorkflow": {
+    "url": "https://github.com/thomasahle/julehjerte/actions/runs/39324904486",
+    "lastObserved": "Build and all four correctness shards passed; one advisory benchmark shard remains running. Deployment is not yet verified."
+  },
+  "local": {
+    "commands": {
+      "check": 0,
+      "lint": 0,
+      "test": 0,
+      "build": 0
+    },
+    "applicationSummary": [
+      "Test Files  154 passed | 2 skipped (156)",
+      "Tests  2371 passed | 141 skipped (2512)"
+    ],
+    "inverseTests": 1207,
+    "inverseFailures": 0,
+    "inverseIncludesOriginalTimingBenchmarks": true,
+    "postArchiveApplicationTests": 12,
+    "archiveMetadataTests": 6,
+    "offlineCollectorTests": 23,
+    "allSourceFilesAudited": 1341,
+    "preservedObjectsVerified": 237,
+    "sourceScope": "Serial application tests began before the archive metadata commit. The changed archive application tests were rerun separately; complete branch CI covers the final archive. Inverse implementation remained unchanged throughout the local suite. Final static build includes the archive."
+  },
+  "browser": {
+    "url": "http://localhost:4173",
+    "report": {
+      "path": "tmp/heart-learning/conni-archive-browser-qa-final.log",
+      "sha256": "90c55cdcbf3e054ca3d35d133d9e45fdf5032e2b74a9eeb90c9858180231e8a8"
+    },
+    "results": {
+      "passed": true,
+      "results": [
+        {
+          "lang": "da",
+          "pagination": true,
+          "sourceAndAvailabilityFilters": true,
+          "fullIndexSearch": true,
+          "reviewedBoardReferences": true,
+          "referenceOnlyAdditions": 3,
+          "savedPdfBytes": 181810
+        },
+        {
+          "lang": "en",
+          "pagination": true,
+          "sourceAndAvailabilityFilters": true,
+          "fullIndexSearch": true,
+          "reviewedBoardReferences": true,
+          "referenceOnlyAdditions": 3,
+          "savedPdfBytes": 181810
+        }
+      ],
+      "mobileWidth": 390,
+      "maximumVisibleRecords": 60,
+      "remoteImageRequests": 0
+    },
+    "initialFailure": "The old preview process retained old HTML after rebuilding, causing 404s for obsolete script hashes. Preserved in conni-archive-browser-qa-diagnostic.log; restarting the owned preview restored hydration and all checks passed. Browser QA now exposes runtime/network errors on failure."
+  },
+  "neuralModelInProduction": false
+}

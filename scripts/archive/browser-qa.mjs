@@ -69,6 +69,18 @@ try {
     await page.getByRole('button', { name: labels.previous, exact: true }).first().click();
     await page.waitForFunction(id => document.querySelector('article.record')?.id === id, initialId);
 
+    await search.fill('Christmas Danish woven heart');
+    const opaque = page.locator('#source-1864c2c7f582ab29');
+    await opaque.waitFor();
+    assert.equal(await opaque.locator('h2 a').getAttribute('href'),
+      'https://www.pinterest.com/pin/Ac9nHdxgZcEw4UAUhwMaRJTEbunjwUcXHeQEGHYE_uYBC-FLumUf9z4/');
+    assert.equal(await opaque.locator('.availability.available').count(), 0);
+    await search.fill('skabelon flettet julehjerte med klokker');
+    const merged = page.locator('#source-a055202166ff0bdd');
+    await merged.waitFor();
+    assert.equal(await merged.locator('.source-links a').count(), 4);
+    assert.equal(await page.locator('#source-519ee71c8519d9e3, #source-64b51faaef694431').count(), 0);
+
     // These later source entries must be found even though their cards were
     // never mounted on the first page. The failed PDF stays reference-only.
     await search.fill('Carola Heesemann');
@@ -116,7 +128,7 @@ try {
     assert.equal(bytes.subarray(0, 5).toString(), '%PDF-');
     assert.equal(createHash('sha256').update(bytes).digest('hex'), path.basename(pdfUrl.pathname, '.pdf'));
     await screenshot(`archive-${lang}-desktop.png`);
-    results.push({ lang, pagination: true, sourceAndAvailabilityFilters: true, fullIndexSearch: true, referenceOnlyAdditions: 3, savedPdfBytes: bytes.length });
+    results.push({ lang, pagination: true, sourceAndAvailabilityFilters: true, fullIndexSearch: true, reviewedBoardReferences: true, referenceOnlyAdditions: 3, savedPdfBytes: bytes.length });
   }
 
   await page.setViewportSize({ width: 390, height: 844 });
@@ -131,6 +143,9 @@ try {
   assert.deepEqual(pageErrors, [], 'no browser runtime errors');
   assert.deepEqual(failedLocalResponses, [], 'local thumbnails, scripts and styles must be available');
   console.log(JSON.stringify({ passed: true, results, mobileWidth: 390, maximumVisibleRecords: 60, remoteImageRequests: 0 }, null, 2));
+} catch (error) {
+  console.error(JSON.stringify({ passed: false, error: String(error), pageErrors, failedLocalResponses, remoteImages }, null, 2));
+  throw error;
 } finally {
   await browser.close();
 }
