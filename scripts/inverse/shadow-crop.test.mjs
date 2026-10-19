@@ -9,6 +9,7 @@ import {prepare,design} from '../../static/inverse/core/engine.js';
 import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
 import {renderExportedWeave} from './export-renderer.mjs';
 import {labelsForCrop} from './learning/photo-labels.mjs';
+import {captureFitFailure} from './diagnostics/fit-failure.mjs';
 
 test('background colour metric prefers a paper hue edge over a stronger shadow step',()=>{
   const background=[.45,.25,.50],samples=Array.from({length:400},(_,i)=>background.map(v=>v*(1+.2*Math.sin(i*.7))));
@@ -39,12 +40,20 @@ test('a cast shadow does not move the physical corners across exposure changes',
   }
 });
 
-test('automatic shadowed-frame crop recovers two matching cuts per sheet',async()=>{
+test('automatic shadowed-frame crop recovers two matching cuts per sheet',async t=>{
   const image=await decode('shadow-frame.jpg',labels.photoSha256),source={type:'pixels',imageWidth:image.width,imageHeight:image.height,rgba:image.data};
   const candidate=detectHeartCrops(source).candidates[0],cfg={...AUTOMATIC_PRESET,timeLimit:10,trials:0,resolution:384};
   const prepared=prepare({...source,quad:candidate.quad},cfg),answer=await design(prepared.target,cfg);
+  try{
   assert.equal(answer.report.templateChecksPassed,true);assert.equal(answer.report.manufacturing.status,'pass');
   assert.deepEqual(answer.report.slits,{left:2,right:2});assert.equal(answer.report.solver.matchingPreference.identical,true);
+  const matching=answer.report.solver.matchingPreference;
+  assert.equal(matching.maximumAdditionalImageError,.01);assert.ok(matching.additionalImageError<=.01);
+  for(const attempt of matching.attempts)if(attempt.nearLimitRecovery){
+    assert.ok(attempt.previousImageError>matching.maximumMatchingImageError,'An unfinished near miss is never an accepted template.');
+    assert.ok(attempt.steps<=attempt.maximumSteps&&attempt.maximumSteps<=600);
+    assert.ok(attempt.withinAllowance&&attempt.featuresPassed&&attempt.geometryPassed&&attempt.paperPassed);
+  }
   assert.deepEqual(answer.report.input.sourceImage.cropCorners,candidate.quad);
   const rendered=await renderExportedWeave(answer.files['cut_geometry.json'],384);
   let sourceWrong=0;for(let i=0;i<rendered.mask.length;i++)sourceWrong+=rendered.mask[i]!==prepared.preview.mask[i];
@@ -54,4 +63,8 @@ test('automatic shadowed-frame crop recovers two matching cuts per sheet',async(
   const canonical=await decode('shadow-frame-artwork.png',labels.artworkSha256),reference=labelsForCrop(labels,candidate.quad,canonical,384,image.width,image.height);
   let wrong=0,count=0;for(let i=0;i<rendered.mask.length;i++)if(reference.valid[i]){count++;wrong+=rendered.mask[i]!==reference.target[i];}
   assert.ok(Math.min(wrong,count-wrong)/count<.01,`${wrong}/${count} pixels disagree with the original artwork.`);
+  t.diagnostic(JSON.stringify({solverSeconds:answer.report.solver.seconds,imageError:sourceWrong/rendered.mask.length,cleanupBudget:answer.report.solver.cleanupBudget,matchingPreference:answer.report.solver.matchingPreference}));
+  }catch(error){
+    t.diagnostic(await captureFitFailure({answer,source:prepared.target.sourceImage,context:{fixture:'shadow-frame',detectedQuad:candidate.quad,assertion:error.message}}));throw error;
+  }
 });

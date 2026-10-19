@@ -88,6 +88,7 @@ export function preferMatchingSolution(solution,cfg,{deadline=Infinity,steps=200
     proposals.push({name:'matching-grid',graph,candidate,phase:seed.phase,counts:model.counts,error:score(sampleWeave(candidate,source.resolution))});
   }
   const finalists=proposals.sort((a,b)=>a.error-b.error).slice(0,3);
+  let nearLimit=null;
   for(let i=0;i<finalists.length&&performance.now()<deadline-80;i++){
     const p=finalists[i],remaining=deadline-performance.now(),end=performance.now()+remaining/(finalists.length-i);
     const c=refineCurves(p.graph,Float64Array.from(source.mask),source.resolution,p.phase,{...cfg,preferMatchingSheets:false},
@@ -110,6 +111,24 @@ export function preferMatchingSolution(solution,cfg,{deadline=Infinity,steps=200
       }
       return finish(candidate,'matched');
     }
+    // Keep the closest physically valid miss after every ordinary start has
+    // had its exploration slice. A fixed step cap is not convergence: a
+    // nearly matching template may still improve with unused caller time.
+    if(c.geometryPassed&&c.paperPassed&&attempt.imageError>limit&&attempt.imageError-limit<=report.maximumAdditionalImageError*.25
+      &&(!nearLimit||attempt.imageError<nearLimit.attempt.imageError))nearLimit={proposal:p,refined:c,attempt};
+  }
+  if(nearLimit&&steps>0&&performance.now()<deadline-600){
+    const {proposal:p,refined:c,attempt:previous}=nearLimit,graph=new CurveGraph(c.graph.nested(c.points),cfg.width);
+    // Only one near-limit candidate receives this bounded tail. Keep the
+    // original hard deadline and recheck the exact same source allowance,
+    // feature preservation, geometry and paper before replacing either sheet.
+    const maximumSteps=Math.min(600,3*steps);
+    const refined=refineCurves(graph,Float64Array.from(source.mask),source.resolution,p.phase,{...cfg,preferMatchingSheets:false},
+      {input,identicalSheets:true,steps:maximumSteps,rate:.012,deadline:deadline-80,selection:'mask',weights:sourceWeights(source)});
+    const candidate=refined.graph.solution(refined.points,p.phase,input),attempt={proposal:p.name,...(p.counts?{counts:p.counts,phase:p.phase}:{}),
+      refined:true,nearLimitRecovery:true,explorationSteps:c.steps,maximumSteps,steps:refined.steps,previousImageError:previous.imageError};
+    report.attempts.push(attempt);
+    if(inspect(candidate,attempt))return finish(candidate,'matched');
   }
   return finish(solution,performance.now()>=deadline-80?'matching_budget_exhausted':'no_valid_matching_candidate');
 }
