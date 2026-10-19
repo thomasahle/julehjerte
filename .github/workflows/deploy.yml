@@ -66,7 +66,8 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - name: Geometry, paper, exports and functional regressions
-        run: node --test --test-concurrency=1 --test-shard=${{ matrix.shard }}/4 --test-skip-pattern=^benchmark: scripts/inverse/*.test.mjs scripts/inverse/datasets/*.test.mjs
+        run: |
+          node --test --test-concurrency=1 --test-shard=${{ matrix.shard }}/4 --test-skip-pattern=^benchmark: scripts/inverse/*.test.mjs scripts/inverse/datasets/*.test.mjs
       - name: Preserve failed fits
         if: failure()
         uses: actions/upload-artifact@v4
