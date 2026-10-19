@@ -38,7 +38,7 @@ export function picture(request: GeneratorRequest, known: Known = {}): Picture |
 		if (request.mode === 'text' && request.textFrame === 'checkered' && request.font)
 			return checkered(request.text ?? '', request.font, request.letterScale);
 		if (request.mode === 'text' && (request.textFrame === 'woven' || request.textFrame === 'air') && request.font && request.fittedCells === false)
-			return woven(request.text ?? '', request.font, request.textFrame === 'air');
+			return woven(request.text ?? '', request.font, request.room ?? request.textFrame === 'air');
 		if (request.mode === 'figure' && (request.style === 'motifs' || request.style === 'squares') && request.contours?.length) {
 			// The motif as the letter of a text frame on its board: in a pattern
 			// on the checkerboard, or alone in the centre square of the woven
@@ -114,7 +114,7 @@ function raysPicture(request: GeneratorRequest, shape: Frame, size: number, scal
  * frames (see `generateTextGrid`): a board of columns + rows + 1 strips,
  * every cell a diamond around one of its squares that reaches the centres of
  * the four beside it, the checks cleared inside it and its letter drawn. */
-function woven(text: string, font: Font, air: boolean, letterScale = 1): Picture {
+function woven(text: string, font: Font, air: boolean | number, letterScale = 1): Picture {
 	const { matrix, rows, cols, cy, cellHeight, widths, span, fullHeight, scale } = measureTextGrid(text, font, air, undefined, { fittedCells: false });
 	const n = cols + rows + 1, side = 100 / n, rings: Ring[] = [];
 	const square = (i: number, j: number): Ring => [[i * side, j * side], [(i + 1) * side, j * side], [(i + 1) * side, (j + 1) * side], [i * side, (j + 1) * side]];

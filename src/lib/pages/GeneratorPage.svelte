@@ -27,7 +27,7 @@
 	import { picture, type Picture } from '$lib/generator/picture';
 	import { handoffToDraw } from '$lib/editor/handoff';
 	import { saveUserDesign } from '$lib/stores/collection';
-	import { defaults, readGeneratorState, normalizeText, fittedCells, TEXT_LINES, TEXT_LINE_LENGTH, type GeneratorState, frameGap, stripCount, stripPlace, stripSide, largestScale, SPACED_STYLES, BOARD_STYLES } from '$lib/generator/state';
+	import { defaults, readGeneratorState, normalizeText, fittedCells, TEXT_LINES, TEXT_LINE_LENGTH, type GeneratorState, frameGap, stripCount, stripPlace, stripSide, textRoom, ROOM_RANGE, CELL_FRAMES, largestScale, SPACED_STYLES, BOARD_STYLES } from '$lib/generator/state';
 	import { clampPlace } from '$lib/generator/stripFigure';
 	import { BOARD_STRIPS, type BoardStyle } from '$lib/generator/boardMotif';
 	import type {
@@ -304,7 +304,8 @@
 			gap: frameGap(snapshot),
 			board: stripCount(snapshot),
 			place: stripPlace(snapshot),
-			side: stripSide(snapshot)
+			side: stripSide(snapshot),
+			room: textRoom(snapshot)
 		};
 		// A motif on a board keeps the choice its default size made.
 		if (snapshot.mode === 'figure' && BOARD_STYLES.includes(snapshot.style))
@@ -431,6 +432,7 @@
 			frameSize: defaults.frameSize,
 			scale: defaults.scale,
 			spacing: defaults.spacing,
+			room: defaults.room,
 			strips: defaults.strips,
 			board: undefined,
 			place: undefined,
@@ -536,7 +538,8 @@
 			gap: frameGap(state),
 			board: stripCount(state),
 			place: stripPlace(state),
-			side: stripSide(state)
+			side: stripSide(state),
+			room: textRoom(state)
 		};
 	}
 	function chooseMode(mode: GeneratorState['mode']) {
@@ -850,7 +853,6 @@
 				<div class="frame-options">
 					{#each TEXT_TEMPLATES as choice (choice.id)}
 						<button
-							aria-label={choice.cells ? `${t(textFrameNames[choice.textFrame], lang)} · ${t(cellNames[choice.cells], lang)}` : undefined}
 							aria-pressed={config.textFrame === choice.textFrame && (!choice.cells || config.cells === choice.cells)}
 							onclick={() => {
 								config.textFrame = choice.textFrame;
@@ -863,10 +865,22 @@
 								sketch={thumbnails[choice.id]?.sketch}
 								{colors}
 								unavailable={!!thumbnails[choice.id]?.failure}
-							/>{t(textFrameNames[choice.textFrame], lang)}{#if choice.cells}<small>{t(cellNames[choice.cells], lang)}</small>{/if}
+							/>{choice.cells ? t(cellNames[choice.cells], lang) : t(textFrameNames[choice.textFrame], lang)}
 						</button>
 					{/each}
 				</div>
+				{#if CELL_FRAMES.includes(config.textFrame)}
+					<label class="range-label" for="text-room"
+						>{t('generatorTextSpacing', lang)}<output>{config.room}%</output></label
+					><input
+						id="text-room"
+						type="range"
+						min={ROOM_RANGE[0]}
+						max={ROOM_RANGE[1]}
+						step="1"
+						bind:value={config.room}
+					/>
+				{/if}
 				{#if config.textFrame === 'checkered'}<p class="hint">{t('generatorCheckeredHint', lang)}</p>{/if}
 			{/if}
 			<div class="actions">

@@ -649,7 +649,13 @@ motif at two points, and otherwise repeated the rays or the checks with thinner 
 links open with the rays. The only centre panel is the circle; the diamond, hexagon, oval, soft-diamond and scalloped
 panels were removed (2026-10-17) because none of 435 real figure hearts used them, and old links
 open with the circle. A link pasted into an open generator changes only the hash; the page follows
-it (the page's own address updates use replaceState and never trigger that). Text also has close and spacious letter-cell framing, each with square or letter-sized cells, the checkerboard and the circle.
+it (the page's own address updates use replaceState and never trigger that). Text also has letter-cell framing with square or letter-sized cells, the checkerboard and the circle.
+The letter cells' space around the text is a slider (Luft om teksten), as the figures' space is:
+the room on each side of a letter in percent of its height, 5–35%, at 11% the close framing's
+0.22 of the letter height in all, at 25% the 0.5 of the spacious framing it replaces (older links
+to that frame open there). The board stays the same; only the letters' size in their cells
+changes. The checked-text construction keeps its own, slightly smaller room for the close
+framing (0.16 for 0.22), the same from 0.5 on, in between by the same line.
 Figure frames follow what real hearts use. Next to the circle with rays, checks,
 a sunburst or a double border, and the close-fitting and checked-tip frames, there are four
 frames without a centre panel. **Wedges** (Kiler; a quarter of real figure hearts): from each
@@ -775,7 +781,7 @@ layouts. The paw sunburst uses nine actual strips per sheet and has no cutting
 tips below 45°; its separate material-connectivity audit must also pass.
 
 Framed words keep independent four-port cells for each letter, with a common font baseline.
-In the close and spacious frames, square cells lie on a regular board, as in Brodal's hearts:
+In the letter-cell frame, square cells lie on a regular board, as in Brodal's hearts:
 each cell is one square's diagonal wide and the lines leaving the text block are one square apart,
 so the outer strips are as wide as the inner ones and every check is the same square. A line of k
 characters sits on the middle row of a board of k + 2 strips (JUL on 5×5, like Brodal's), a block

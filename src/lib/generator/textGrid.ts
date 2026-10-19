@@ -22,17 +22,22 @@ import { gridClearance } from '$lib/geometry/clearance';
 import { contoursWithinBoundary } from './contours';
 import { clipContours, stitch, filledSeamGate, panelDividers, panelSeamGuard } from './panels';
 
+/** The room around each letter in its cell, as a fraction of the letters'
+ * height: a number the visitor set, else the airy frame's or the woven
+ * frame's own. */
+export const roomOf = (air: boolean | number) => typeof air === 'number' ? air : air ? .5 : .22;
+
 /** How large the letters are with square cells, relative to cells fitted to
  * the letters: the text block's width plus height, which the frame's size
  * divides, for each kind of cell. Narrow letters such as i, l and j make
  * square cells much wider than they need. */
-export function squareCellScale(text: string, font: Font, air = false): number {
+export function squareCellScale(text: string, font: Font, air: boolean | number = false): number {
 	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n').map(line => [...line]);
 	const cols = Math.max(...lines.map(line => line.length)), rows = lines.length;
 	const glyphs = lines.flat().flatMap(char => font.glyphs[char] ? [font.glyphs[char]] : []);
 	const ys = glyphs.flatMap(glyph => glyph.contours.flat().map(p => p[1]));
 	if (!ys.length) return 1;
-	const height = Math.max(...ys) - Math.min(...ys), padding = height * (air ? .5 : .22);
+	const height = Math.max(...ys) - Math.min(...ys), padding = height * roomOf(air);
 	const ink = (char: string) => {
 		const xs = (font.glyphs[char]?.contours ?? []).flat().map(p => p[0]);
 		return xs.length ? Math.max(...xs) - Math.min(...xs) : 0;
@@ -53,7 +58,7 @@ export function squareCellScale(text: string, font: Font, air = false): number {
 export function measureTextGrid(
 	text: string,
 	font: Font,
-	air = false,
+	air: boolean | number = false,
 	frame?: Frame,
 	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; junction?: Point; circle?: number; scale?: number } = {}
 ) {
@@ -76,7 +81,7 @@ export function measureTextGrid(
 		maxY = Math.max(...points.map((p) => p[1]));
 	const height = maxY - minY,
 		cy = (minY + maxY) / 2;
-	const padding = height * (layout.padding ?? (air ? 0.5 : 0.22));
+	const padding = height * (layout.padding ?? roomOf(air));
 	// Square cells, as wide as the widest letter needs, keep every check of
 	// the weave around and between the letters square.
 	const ink = (glyph: Font['glyphs'][string]) => {
@@ -122,7 +127,7 @@ export function measureTextGrid(
 export function generateTextGrid(
 	text: string,
 	font: Font,
-	air = false,
+	air: boolean | number = false,
 	frame?: Frame,
 	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; junction?: Point; circle?: number; scale?: number } = {}
 ) {

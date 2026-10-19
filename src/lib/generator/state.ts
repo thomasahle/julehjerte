@@ -14,6 +14,9 @@ export type GeneratorState = {
 	/** The space between the motif and the frame around it, in percent of the
 	 * square: to the circle, the wedges' tips, the corner checks. */
 	spacing: number;
+	/** The space around each letter in its cell, beside and above it, in
+	 * percent of the letters' height (see `textRoom`). */
+	room: number;
 	/** The strips per side of the figure in the checks' board. */
 	strips: number;
 	/** The strips per side the visitor chose for the small motifs or the
@@ -71,6 +74,15 @@ export function stripPlace(s: GeneratorState): number | undefined {
 export function stripSide(s: GeneratorState): number | undefined {
 	return s.mode === 'figure' && s.style === 'strips' ? s.side : undefined;
 }
+/** The room a state asks around each letter in its cell, as a fraction of
+ * the letters' height (see `roomOf`), where its frame's checks follow the
+ * cells: the woven frame's own 0.22 at 11%, what the airy frame had, 0.5, at
+ * 25%. */
+export function textRoom(s: GeneratorState): number | undefined {
+	return s.mode === 'text' && CELL_FRAMES.includes(s.textFrame) ? s.room / 50 : undefined;
+}
+/** The space around the text the slider offers. */
+export const ROOM_RANGE = [5, 35] as const;
 /** The generator's choice of cells for a state, or none where it decides. */
 export function fittedCells(s: GeneratorState): boolean | undefined {
 	return s.mode === 'text' && CELL_FRAMES.includes(s.textFrame) ? s.cells === 'letters' : undefined;
@@ -87,6 +99,7 @@ export const defaults: GeneratorState = {
 	textFrame: 'woven',
 	cells: 'square',
 	spacing: 3,
+	room: 11,
 	strips: 4
 };
 export function readGeneratorState(hash: string): GeneratorState {
@@ -98,6 +111,11 @@ export function readGeneratorState(hash: string): GeneratorState {
 		// Older links name the checkerboard by its former repeating layout,
 		// and text panels by centre shapes the generator no longer draws.
 		if (raw.textFrame === 'repeat-check') raw.textFrame = 'checkered';
+		// The airy frame became the woven frame with more space around the text.
+		if (raw.textFrame === 'air') {
+			raw.textFrame = 'woven';
+			raw.room ??= 25;
+		}
 		if (['diamond', 'hexagon', 'oval', 'rounded', 'scalloped'].includes(raw.textFrame)) raw.textFrame = 'circle';
 		// The circle with a plain edge was removed: it mostly repeated the rays or the checks.
 		if (raw.style === 'plain') raw.style = 'rays';
@@ -121,6 +139,7 @@ export function readGeneratorState(hash: string): GeneratorState {
 			['frameSize', 50, 80],
 			['scale', 45, largestScale(s.style)],
 			['spacing', 0, 15],
+			['room', ...ROOM_RANGE],
 			['strips', 3, 6],
 			['board', 2, 9]
 		] as const)

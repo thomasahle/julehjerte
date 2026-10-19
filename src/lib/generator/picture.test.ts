@@ -109,10 +109,10 @@ describe('the picture drawn before the cuts are found', () => {
 		expect(picture({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'rays' }, { board: 5 })).toBeUndefined();
 	});
 
-	it('is the woven and airy letters the cuts make', () => {
-		for (const textFrame of ['woven', 'air'] as const)
+	it('is the woven letters the cuts make, with the space around them the visitor sets', () => {
+		for (const room of [undefined, .35, .5])
 			for (const text of ['KIM', 'GOD\nJUL'])
-				expect(mismatch({ mode: 'text', name: text, text, font: oswald as unknown as Font, colors, textFrame, fittedCells: false }), `${textFrame} ${text}`).toBeLessThan(.01);
+				expect(mismatch({ mode: 'text', name: text, text, font: oswald as unknown as Font, colors, textFrame: 'woven', fittedCells: false, room }), `${room} ${text}`).toBeLessThan(.01);
 	});
 
 	slow('is the woven letters the cuts make, whatever the number of columns', () => {
