@@ -564,17 +564,10 @@
 <PageHeader
 	{lang}
 	variant={config.mode === 'start' ? 'site' : 'editor'}
-	backHref={href('generator', lang)}
 	languageUrl={href('generator', otherLanguage(lang)) +
 		(config.mode === 'start'
 			? ''
 			: '#make=' + encodeURIComponent(JSON.stringify(config)))}
-	onBack={config.mode === 'start'
-		? undefined
-		: (e) => {
-				e.preventDefault();
-				chooseMode('start');
-			}}
 ></PageHeader>
 {#if config.mode === 'start'}
 	<DesignStart {lang} {art} onchoose={chooseMode} />

@@ -615,20 +615,11 @@
     pendingDraft = null;
     savesToCollection = true;
 
-    // Back where the visitor came from. Arriving from a heart's page via
-    // "Rediger i editor" (?returnTo=detail), "Tilbage" returns to that heart —
-    // so "Gem" must not throw them out to the front page instead.
+    // Back where the visitor came from: arriving from a heart's page via
+    // "Rediger i editor" (?returnTo=detail), "Gem" returns to that heart
+    // rather than to the front page.
     const backId = returnToDetail ? getBackDetailId() : null;
     goto(backId ? heartHref(backId, lang) : homeAnchorHref(makeHeartAnchorId(design.id), lang));
-  }
-
-  function handleEditorBack(event: MouseEvent) {
-    if (!returnToDetail) return;
-    event.preventDefault();
-    flushAutosave();
-    const backId = getBackDetailId();
-    if (!backId) return;
-    goto(heartHref(backId, lang));
   }
 
   function handleImport(event: Event) {
@@ -816,11 +807,11 @@
 {/snippet}
 
 <div class="editor" bind:this={editorEl}>
-  <!-- variant="editor" is the back-link + logo bar; the site nav links and the
+  <!-- variant="editor" is the logo bar; the site nav links and the
        EN/GitHub pills belong on content pages, not in the full-screen tool. The
        `mode` switch is the other half of PAINT.md §2's ask of Tegn: with the
        paint route landed, the header carries the way back and forth. -->
-  <PageHeader bind:ref={headerEl} {lang} variant="editor" mode={{ current: 'draw' }} onBack={returnToDetail ? handleEditorBack : undefined} backHref={returnToDetail ? (getBackDetailId() ? heartHref(getBackDetailId()!, lang) : undefined) : undefined}>
+  <PageHeader bind:ref={headerEl} {lang} variant="editor" mode={{ current: 'draw' }}>
     <button
       type="button"
       class="btn btn-sm btn-ghost btn-icon icon-button"

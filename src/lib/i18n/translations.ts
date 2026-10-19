@@ -944,7 +944,6 @@ export const translations = {
     guideLabelFoldLine: 'stiplet linje på folden',
     guideLabelFromFold: 'fra folden',
     switchLanguage: 'Switch to English',
-    back: 'Tilbage',
 
     // "Om" / "About" page
     aboutTitle: 'Om Juleflet.dk',
@@ -1914,7 +1913,6 @@ export const translations = {
     guideLabelFoldLine: 'dashed line on the fold',
     guideLabelFromFold: 'from the fold',
     switchLanguage: 'Skift til dansk',
-    back: 'Back',
 
     // "Om" / "About" page
     aboutTitle: 'About Juleflet.dk',
