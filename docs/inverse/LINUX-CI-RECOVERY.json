@@ -2210,7 +2210,7 @@
     }
   },
   "pairedCheckpointInvestigation": {
-    "status": "Paired old/new Linux comparison and deferred-audit full Linux suite running; local paired checks pass",
+    "status": "Paired Linux run completed: both revisions pass 14 and fail the same five selected tests; deferred full-suite run still has real failures",
     "oldSourceCommit": "bb667e2b",
     "eagerSourceCommit": "ce6ef218",
     "deferredSourceCommit": "4e021f00",
@@ -2255,6 +2255,139 @@
         224
       ]
     },
-    "releaseReady": false
+    "releaseReady": false,
+    "report": "docs/inverse/CHECKPOINT-POLICY-COMPARISON.json",
+    "pairedLinuxResult": {
+      "baseline": {
+        "passed": 14,
+        "failed": 5
+      },
+      "candidate": {
+        "passed": 14,
+        "failed": 5
+      }
+    },
+    "equalWorkRefinement": [
+      {
+        "case": "stacked",
+        "counts": [
+          3,
+          5
+        ],
+        "results": [
+          {
+            "policy": "old",
+            "steps": 320,
+            "error": 0.0332875,
+            "geometry": true,
+            "paper": "uncertain",
+            "features": true
+          },
+          {
+            "policy": "new",
+            "steps": 320,
+            "error": 0.017525,
+            "geometry": true,
+            "paper": "pass",
+            "features": true
+          }
+        ]
+      },
+      {
+        "case": "viking",
+        "counts": [
+          6,
+          6
+        ],
+        "results": [
+          {
+            "policy": "old",
+            "steps": 320,
+            "error": 0.027,
+            "geometry": true,
+            "paper": "pass",
+            "features": true
+          },
+          {
+            "policy": "new",
+            "steps": 320,
+            "error": 0.0252875,
+            "geometry": true,
+            "paper": "pass",
+            "features": true
+          }
+        ]
+      },
+      {
+        "case": "bauble",
+        "counts": [
+          4,
+          6
+        ],
+        "results": [
+          {
+            "policy": "old",
+            "steps": 320,
+            "error": 0.021703461100422743,
+            "geometry": false,
+            "paper": "uncertain",
+            "features": true
+          },
+          {
+            "policy": "new",
+            "steps": 320,
+            "error": 0.01734089168859748,
+            "geometry": true,
+            "paper": "pass",
+            "features": true
+          }
+        ]
+      },
+      {
+        "case": "puppy",
+        "counts": [
+          5,
+          3
+        ],
+        "results": [
+          {
+            "policy": "old",
+            "steps": 320,
+            "error": 0.02043125,
+            "geometry": true,
+            "paper": "pass",
+            "features": true
+          },
+          {
+            "policy": "new",
+            "steps": 320,
+            "error": 0.01911875,
+            "geometry": true,
+            "paper": "pass",
+            "features": true
+          }
+        ]
+      }
+    ],
+    "deferredSelections": {
+      "trajectories": 16,
+      "matched": 16,
+      "log": "/tmp/julehjerte-deferred-selection-proof.log"
+    },
+    "appChecks": {
+      "sourceCommit": "e52c785e",
+      "passed": true,
+      "vitestPassed": 1570,
+      "vitestSkipped": 1,
+      "typecheck": "0 errors, 6 pre-existing warnings",
+      "lint": "0 errors, 4 pre-existing warnings",
+      "build": "passed",
+      "logPrefix": "/tmp/julehjerte-deferred-checkpoint-"
+    },
+    "additionalRootCauses": [
+      "Repeated geometric/feature audits consume refinement time; Linux bicycle uses 365 versus 325 curve iterations while the fixed-work clearance choice is identical, and disagreement rises from 4.09875% to 4.299375%.",
+      "Late stacked fitting can miss the existing 2.5-second comparison gate. In the deferred full run it still outputs roughly 6.9% disagreement: this is an actual fitting failure, not merely a test insisting on the alternate route.",
+      "Both new and old pipelines fail the same synthetic routing and slowed near-miss cases in the paired run. Those require independent scheduling/routing fixes."
+    ]
   }
 }

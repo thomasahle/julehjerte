@@ -1,0 +1,1077 @@
+{
+  "schema": "checkpoint-policy-comparison-1",
+  "baseline": "bb667e2b",
+  "candidate": "ce6ef218",
+  "sameRunnerLinuxRun": "https://github.com/thomasahle/julehjerte/actions/runs/39232322117",
+  "totals": {
+    "baseline": {
+      "passed": 14,
+      "failed": 5
+    },
+    "candidate": {
+      "passed": 14,
+      "failed": 5
+    }
+  },
+  "identicalSerializedSources": true,
+  "rounds": 1,
+  "rows": [
+    {
+      "case": "handoff",
+      "variant": "baseline",
+      "testsPassed": 1,
+      "testsFailed": 0,
+      "exports": [
+        {
+          "index": 0,
+          "sourceSha256": "88a77851c564c157375f2c319f9a62b49799a7dfc710d7dde256afcb0d095ce7",
+          "error": 0.01628125,
+          "geometry": true,
+          "paper": "pass",
+          "features": true,
+          "solverSeconds": 9.046289817
+        }
+      ],
+      "clearance": [
+        {
+          "counts": [
+            3,
+            5
+          ],
+          "steps": 150,
+          "milliseconds": 292.12563000000046,
+          "preferenceMilliseconds": 0.007601000001159264,
+          "sameFixedWorkChoice": false
+        },
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "steps": 150,
+          "milliseconds": 275.10311399999955,
+          "preferenceMilliseconds": 0.0065999999997075065,
+          "sameFixedWorkChoice": true
+        }
+      ]
+    },
+    {
+      "case": "handoff",
+      "variant": "candidate",
+      "testsPassed": 1,
+      "testsFailed": 0,
+      "exports": [
+        {
+          "index": 0,
+          "sourceSha256": "88a77851c564c157375f2c319f9a62b49799a7dfc710d7dde256afcb0d095ce7",
+          "error": 0.016575,
+          "geometry": true,
+          "paper": "pass",
+          "features": true,
+          "solverSeconds": 9.05633884
+        }
+      ],
+      "clearance": [
+        {
+          "counts": [
+            3,
+            5
+          ],
+          "steps": 120,
+          "milliseconds": 506.6067430000003,
+          "preferenceMilliseconds": 241.53370300000006,
+          "sameFixedWorkChoice": false
+        },
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "steps": 140,
+          "milliseconds": 430.02950800000053,
+          "preferenceMilliseconds": 174.54773300000215,
+          "sameFixedWorkChoice": true
+        }
+      ]
+    },
+    {
+      "case": "stacked",
+      "variant": "candidate",
+      "testsPassed": 1,
+      "testsFailed": 0,
+      "exports": [
+        {
+          "index": 0,
+          "sourceSha256": "88a77851c564c157375f2c319f9a62b49799a7dfc710d7dde256afcb0d095ce7",
+          "error": 0.01605625,
+          "geometry": true,
+          "paper": "pass",
+          "features": true,
+          "solverSeconds": 9.049670279
+        }
+      ],
+      "clearance": [
+        {
+          "counts": [
+            3,
+            5
+          ],
+          "steps": 150,
+          "milliseconds": 557.5975710000002,
+          "preferenceMilliseconds": 261.1361349999979,
+          "sameFixedWorkChoice": false
+        },
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "steps": 150,
+          "milliseconds": 448.95528900000045,
+          "preferenceMilliseconds": 185.18925399999898,
+          "sameFixedWorkChoice": true
+        }
+      ]
+    },
+    {
+      "case": "stacked",
+      "variant": "baseline",
+      "testsPassed": 1,
+      "testsFailed": 0,
+      "exports": [
+        {
+          "index": 0,
+          "sourceSha256": "88a77851c564c157375f2c319f9a62b49799a7dfc710d7dde256afcb0d095ce7",
+          "error": 0.01494375,
+          "geometry": true,
+          "paper": "pass",
+          "features": true,
+          "solverSeconds": 9.116965797
+        }
+      ],
+      "clearance": [
+        {
+          "counts": [
+            3,
+            5
+          ],
+          "steps": 150,
+          "milliseconds": 292.5371070000001,
+          "preferenceMilliseconds": 0.00596899999800371,
+          "sameFixedWorkChoice": false
+        },
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "steps": 150,
+          "milliseconds": 262.2657140000001,
+          "preferenceMilliseconds": 0.006318999999166408,
+          "sameFixedWorkChoice": true
+        }
+      ]
+    },
+    {
+      "case": "late-stacked",
+      "variant": "baseline",
+      "testsPassed": 1,
+      "testsFailed": 0,
+      "exports": [
+        {
+          "index": 0,
+          "sourceSha256": "88a77851c564c157375f2c319f9a62b49799a7dfc710d7dde256afcb0d095ce7",
+          "error": 0.01570625,
+          "geometry": true,
+          "paper": "pass",
+          "features": true,
+          "solverSeconds": 9.117243558
+        }
+      ],
+      "clearance": [
+        {
+          "counts": [
+            3,
+            5
+          ],
+          "steps": 150,
+          "milliseconds": 287.1924170000002,
+          "preferenceMilliseconds": 0.007351999999627878,
+          "sameFixedWorkChoice": false
+        },
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "steps": 150,
+          "milliseconds": 267.331913,
+          "preferenceMilliseconds": 0.005447000000458502,
+          "sameFixedWorkChoice": true
+        }
+      ]
+    },
+    {
+      "case": "late-stacked",
+      "variant": "candidate",
+      "testsPassed": 1,
+      "testsFailed": 0,
+      "exports": [
+        {
+          "index": 0,
+          "sourceSha256": "88a77851c564c157375f2c319f9a62b49799a7dfc710d7dde256afcb0d095ce7",
+          "error": 0.01754375,
+          "geometry": true,
+          "paper": "pass",
+          "features": true,
+          "solverSeconds": 9.05133378
+        }
+      ],
+      "clearance": [
+        {
+          "counts": [
+            3,
+            5
+          ],
+          "steps": 140,
+          "milliseconds": 523.9418610000002,
+          "preferenceMilliseconds": 242.58557699999983,
+          "sameFixedWorkChoice": false
+        },
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "steps": 130,
+          "milliseconds": 411.3018750000001,
+          "preferenceMilliseconds": 172.08516900000086,
+          "sameFixedWorkChoice": true
+        }
+      ]
+    },
+    {
+      "case": "viking",
+      "variant": "candidate",
+      "testsPassed": 1,
+      "testsFailed": 0,
+      "exports": [
+        {
+          "index": 0,
+          "sourceSha256": "7791de154fdbc94b618ece0bf018522573d57c231c46bc0385d24a9e2b9a9bb8",
+          "error": 0.023925,
+          "geometry": true,
+          "paper": "pass",
+          "features": true,
+          "solverSeconds": 9.240899659
+        }
+      ],
+      "clearance": [
+        {
+          "counts": [
+            6,
+            6
+          ],
+          "steps": 150,
+          "milliseconds": 631.435872,
+          "preferenceMilliseconds": 299.65385999999944,
+          "sameFixedWorkChoice": false
+        }
+      ]
+    },
+    {
+      "case": "viking",
+      "variant": "baseline",
+      "testsPassed": 1,
+      "testsFailed": 0,
+      "exports": [
+        {
+          "index": 0,
+          "sourceSha256": "7791de154fdbc94b618ece0bf018522573d57c231c46bc0385d24a9e2b9a9bb8",
+          "error": 0.0228125,
+          "geometry": true,
+          "paper": "pass",
+          "features": true,
+          "solverSeconds": 9.090329516
+        }
+      ],
+      "clearance": [
+        {
+          "counts": [
+            6,
+            6
+          ],
+          "steps": 150,
+          "milliseconds": 326.44121799999994,
+          "preferenceMilliseconds": 0.006980000000112341,
+          "sameFixedWorkChoice": false
+        }
+      ]
+    },
+    {
+      "case": "bicycle",
+      "variant": "baseline",
+      "testsPassed": 0,
+      "testsFailed": 1,
+      "exports": [
+        {
+          "index": 0,
+          "sourceSha256": "fda73fbf16c07497783fce75e35fe0cb8d02c3cf347957bcc2380dfa5016b591",
+          "error": 0.0409875,
+          "geometry": true,
+          "paper": "pass",
+          "features": false,
+          "solverSeconds": 9.308656769
+        }
+      ],
+      "clearance": [
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "steps": 150,
+          "milliseconds": 283.86637699999983,
+          "preferenceMilliseconds": 0.0080630000002202,
+          "sameFixedWorkChoice": true
+        }
+      ]
+    },
+    {
+      "case": "bicycle",
+      "variant": "candidate",
+      "testsPassed": 0,
+      "testsFailed": 1,
+      "exports": [
+        {
+          "index": 0,
+          "sourceSha256": "fda73fbf16c07497783fce75e35fe0cb8d02c3cf347957bcc2380dfa5016b591",
+          "error": 0.04299375,
+          "geometry": true,
+          "paper": "pass",
+          "features": false,
+          "solverSeconds": 9.212988413000001
+        }
+      ],
+      "clearance": [
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "steps": 150,
+          "milliseconds": 501.0500670000001,
+          "preferenceMilliseconds": 215.8236840000004,
+          "sameFixedWorkChoice": true
+        }
+      ]
+    },
+    {
+      "case": "circles",
+      "variant": "candidate",
+      "testsPassed": 2,
+      "testsFailed": 0,
+      "exports": [
+        {
+          "index": 0,
+          "sourceSha256": "77de47c5de58acf92d0733486f4458530905d7c847f34d6af49557cca0ca7e42",
+          "error": 0.006295914220513302,
+          "geometry": true,
+          "paper": "pass",
+          "features": true,
+          "solverSeconds": 27.997443189000002
+        },
+        {
+          "index": 1,
+          "sourceSha256": "77de47c5de58acf92d0733486f4458530905d7c847f34d6af49557cca0ca7e42",
+          "error": 0.0089125,
+          "geometry": true,
+          "paper": "pass",
+          "features": true,
+          "solverSeconds": 22.740104497
+        }
+      ],
+      "clearance": [
+        {
+          "counts": [
+            8,
+            2
+          ],
+          "steps": 150,
+          "milliseconds": 606.2433270000001,
+          "preferenceMilliseconds": 278.68201300000146,
+          "sameFixedWorkChoice": true
+        }
+      ]
+    },
+    {
+      "case": "circles",
+      "variant": "baseline",
+      "testsPassed": 2,
+      "testsFailed": 0,
+      "exports": [
+        {
+          "index": 0,
+          "sourceSha256": "77de47c5de58acf92d0733486f4458530905d7c847f34d6af49557cca0ca7e42",
+          "error": 0.006420957204038889,
+          "geometry": true,
+          "paper": "pass",
+          "features": true,
+          "solverSeconds": 27.451939316
+        },
+        {
+          "index": 1,
+          "sourceSha256": "77de47c5de58acf92d0733486f4458530905d7c847f34d6af49557cca0ca7e42",
+          "error": 0.01119375,
+          "geometry": true,
+          "paper": "pass",
+          "features": true,
+          "solverSeconds": 22.675547272999996
+        }
+      ],
+      "clearance": [
+        {
+          "counts": [
+            8,
+            2
+          ],
+          "steps": 150,
+          "milliseconds": 324.6620350000012,
+          "preferenceMilliseconds": 0.007600000000820728,
+          "sameFixedWorkChoice": true
+        }
+      ]
+    },
+    {
+      "case": "stars",
+      "variant": "baseline",
+      "testsPassed": 2,
+      "testsFailed": 0,
+      "exports": [
+        {
+          "index": 0,
+          "sourceSha256": "069c4d534547341c69dc2233d6e210d5607f284d2d81b0d18623b06c148d4fe4",
+          "error": 0.0067375,
+          "geometry": true,
+          "paper": "pass",
+          "features": true,
+          "solverSeconds": 11.032764098000001
+        },
+        {
+          "index": 1,
+          "sourceSha256": "8a80f192fca54bd8205a22c335572b8acfd4a5a2f4c4042a804cbf85f08a196e",
+          "error": 0.0068125,
+          "geometry": true,
+          "paper": "pass",
+          "features": true,
+          "solverSeconds": 12.117826819000001
+        }
+      ],
+      "clearance": [
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "steps": 150,
+          "milliseconds": 275.96751099999983,
+          "preferenceMilliseconds": 0.007283000000370521,
+          "sameFixedWorkChoice": true
+        },
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "steps": 150,
+          "milliseconds": 261.76010099999985,
+          "preferenceMilliseconds": 0.008784000001469394,
+          "sameFixedWorkChoice": true
+        }
+      ]
+    },
+    {
+      "case": "stars",
+      "variant": "candidate",
+      "testsPassed": 2,
+      "testsFailed": 0,
+      "exports": [
+        {
+          "index": 0,
+          "sourceSha256": "069c4d534547341c69dc2233d6e210d5607f284d2d81b0d18623b06c148d4fe4",
+          "error": 0.0067375,
+          "geometry": true,
+          "paper": "pass",
+          "features": true,
+          "solverSeconds": 11.463112361000002
+        },
+        {
+          "index": 1,
+          "sourceSha256": "8a80f192fca54bd8205a22c335572b8acfd4a5a2f4c4042a804cbf85f08a196e",
+          "error": 0.0068125,
+          "geometry": true,
+          "paper": "pass",
+          "features": true,
+          "solverSeconds": 12.654892058999998
+        }
+      ],
+      "clearance": [
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "steps": 150,
+          "milliseconds": 567.4740819999997,
+          "preferenceMilliseconds": 275.41674199999943,
+          "sameFixedWorkChoice": true
+        },
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "steps": 150,
+          "milliseconds": 444.0435529999995,
+          "preferenceMilliseconds": 181.68705000000045,
+          "sameFixedWorkChoice": true
+        }
+      ]
+    },
+    {
+      "case": "bird",
+      "variant": "candidate",
+      "testsPassed": 1,
+      "testsFailed": 0,
+      "exports": [
+        {
+          "index": 0,
+          "sourceSha256": "bc122e4659773ece5abab69eae4934c528c8eba8feda8c0aa92d5e6ba86afe91",
+          "error": 0.02523125,
+          "geometry": true,
+          "paper": "pass",
+          "features": true,
+          "solverSeconds": 9.135639604999998
+        }
+      ],
+      "clearance": [
+        {
+          "counts": [
+            5,
+            5
+          ],
+          "steps": 150,
+          "milliseconds": 736.708012,
+          "preferenceMilliseconds": 366.4701500000001,
+          "sameFixedWorkChoice": true
+        }
+      ]
+    },
+    {
+      "case": "bird",
+      "variant": "baseline",
+      "testsPassed": 1,
+      "testsFailed": 0,
+      "exports": [
+        {
+          "index": 0,
+          "sourceSha256": "bc122e4659773ece5abab69eae4934c528c8eba8feda8c0aa92d5e6ba86afe91",
+          "error": 0.02523125,
+          "geometry": true,
+          "paper": "pass",
+          "features": true,
+          "solverSeconds": 9.073241379999999
+        }
+      ],
+      "clearance": [
+        {
+          "counts": [
+            5,
+            5
+          ],
+          "steps": 150,
+          "milliseconds": 357.38686499999994,
+          "preferenceMilliseconds": 4.213003000000299,
+          "sameFixedWorkChoice": true
+        }
+      ]
+    },
+    {
+      "case": "near-miss",
+      "variant": "baseline",
+      "testsPassed": 0,
+      "testsFailed": 2,
+      "exports": [
+        {
+          "index": 0,
+          "sourceSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+          "error": 0.0311375,
+          "geometry": true,
+          "paper": "pass",
+          "features": true,
+          "solverSeconds": 9.125791551
+        },
+        {
+          "index": 1,
+          "sourceSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+          "error": 0.01890625,
+          "geometry": true,
+          "paper": "pass",
+          "features": true,
+          "solverSeconds": 9.134711471999998
+        }
+      ],
+      "clearance": [
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "steps": 150,
+          "milliseconds": 263.1161860000002,
+          "preferenceMilliseconds": 3.8609809999998106,
+          "sameFixedWorkChoice": true
+        },
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "steps": 150,
+          "milliseconds": 244.34920500000044,
+          "preferenceMilliseconds": 3.7233390000001236,
+          "sameFixedWorkChoice": true
+        },
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "steps": 150,
+          "milliseconds": 239.37918200000058,
+          "preferenceMilliseconds": 3.7138919999997597,
+          "sameFixedWorkChoice": true
+        }
+      ]
+    },
+    {
+      "case": "near-miss",
+      "variant": "candidate",
+      "testsPassed": 0,
+      "testsFailed": 2,
+      "exports": [
+        {
+          "index": 0,
+          "sourceSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+          "error": 0.032325,
+          "geometry": true,
+          "paper": "pass",
+          "features": true,
+          "solverSeconds": 9.056177913
+        },
+        {
+          "index": 1,
+          "sourceSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+          "error": 0.01831875,
+          "geometry": true,
+          "paper": "pass",
+          "features": true,
+          "solverSeconds": 9.134732010000002
+        }
+      ],
+      "clearance": [
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "steps": 150,
+          "milliseconds": 430.42563999999993,
+          "preferenceMilliseconds": 168.76961200000005,
+          "sameFixedWorkChoice": true
+        },
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "steps": 150,
+          "milliseconds": 347.0339960000001,
+          "preferenceMilliseconds": 111.28532799999994,
+          "sameFixedWorkChoice": true
+        },
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "steps": 150,
+          "milliseconds": 321.4424770000005,
+          "preferenceMilliseconds": 91.98476900000242,
+          "sameFixedWorkChoice": true
+        }
+      ]
+    },
+    {
+      "case": "late-routing",
+      "variant": "candidate",
+      "testsPassed": 2,
+      "testsFailed": 0,
+      "exports": [],
+      "clearance": []
+    },
+    {
+      "case": "late-routing",
+      "variant": "baseline",
+      "testsPassed": 2,
+      "testsFailed": 0,
+      "exports": [],
+      "clearance": []
+    },
+    {
+      "case": "routing",
+      "variant": "baseline",
+      "testsPassed": 1,
+      "testsFailed": 1,
+      "exports": [
+        {
+          "index": 0,
+          "sourceSha256": "a8982a2283b5456498b52de1ec512872810276a52fc944e40acf550a4265ddfc",
+          "error": 0.009536,
+          "geometry": true,
+          "paper": "pass",
+          "features": true,
+          "solverSeconds": 8.940749651
+        },
+        {
+          "index": 1,
+          "sourceSha256": "9d4accdee263a24380ff50f12f1739f29044b582e057c2835fe1b3461a6e62d3",
+          "error": 0.053472,
+          "geometry": false,
+          "paper": "fail",
+          "features": false,
+          "solverSeconds": 9.026047179999999
+        }
+      ],
+      "clearance": [
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "steps": 40,
+          "milliseconds": 86.34445199999755,
+          "preferenceMilliseconds": 0.003294999998615822,
+          "sameFixedWorkChoice": false
+        }
+      ]
+    },
+    {
+      "case": "routing",
+      "variant": "candidate",
+      "testsPassed": 1,
+      "testsFailed": 1,
+      "exports": [
+        {
+          "index": 0,
+          "sourceSha256": "a8982a2283b5456498b52de1ec512872810276a52fc944e40acf550a4265ddfc",
+          "error": 0.009536,
+          "geometry": true,
+          "paper": "pass",
+          "features": true,
+          "solverSeconds": 8.958297227000001
+        },
+        {
+          "index": 1,
+          "sourceSha256": "9d4accdee263a24380ff50f12f1739f29044b582e057c2835fe1b3461a6e62d3",
+          "error": 0.053472,
+          "geometry": false,
+          "paper": "fail",
+          "features": false,
+          "solverSeconds": 9.008650957000002
+        }
+      ],
+      "clearance": [
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "steps": 10,
+          "milliseconds": 90.24690700000065,
+          "preferenceMilliseconds": 54.77823999999964,
+          "sameFixedWorkChoice": false
+        }
+      ]
+    },
+    {
+      "case": "bauble",
+      "variant": "candidate",
+      "testsPassed": 0,
+      "testsFailed": 1,
+      "exports": [
+        {
+          "index": 0,
+          "sourceSha256": "00b9ea58bb82c87c687e9ea7595f89ec9baadf597ca2663f9845f58093876ce2",
+          "error": 0.022887403241685058,
+          "geometry": false,
+          "paper": "uncertain",
+          "features": true,
+          "solverSeconds": 9.174679134
+        }
+      ],
+      "clearance": [
+        {
+          "counts": [
+            4,
+            6
+          ],
+          "steps": 100,
+          "milliseconds": 874.4851069999995,
+          "preferenceMilliseconds": 581.8463040000006,
+          "sameFixedWorkChoice": false
+        }
+      ]
+    },
+    {
+      "case": "bauble",
+      "variant": "baseline",
+      "testsPassed": 0,
+      "testsFailed": 1,
+      "exports": [
+        {
+          "index": 0,
+          "sourceSha256": "00b9ea58bb82c87c687e9ea7595f89ec9baadf597ca2663f9845f58093876ce2",
+          "error": 0.021272351733767444,
+          "geometry": false,
+          "paper": "uncertain",
+          "features": true,
+          "solverSeconds": 9.10509246
+        }
+      ],
+      "clearance": [
+        {
+          "counts": [
+            4,
+            6
+          ],
+          "steps": 150,
+          "milliseconds": 437.46182,
+          "preferenceMilliseconds": 62.13659699999971,
+          "sameFixedWorkChoice": false
+        }
+      ]
+    },
+    {
+      "case": "puppy",
+      "variant": "baseline",
+      "testsPassed": 2,
+      "testsFailed": 0,
+      "exports": [
+        {
+          "index": 0,
+          "sourceSha256": "45bb41ffbb961e933cb29f4effbe47239533035ab522c7e654b7d9c1de1a0dad",
+          "error": 0.012825,
+          "geometry": true,
+          "paper": "pass",
+          "features": true,
+          "solverSeconds": 9.118826602
+        },
+        {
+          "index": 1,
+          "sourceSha256": "19f2c14b8e5e09abdeda442284bb1187e80369331482ab6db0d935ef8335fd91",
+          "error": 0.01321875,
+          "geometry": true,
+          "paper": "pass",
+          "features": true,
+          "solverSeconds": 9.157651865
+        }
+      ],
+      "clearance": [
+        {
+          "counts": [
+            5,
+            3
+          ],
+          "steps": 150,
+          "milliseconds": 283.6835850000002,
+          "preferenceMilliseconds": 3.869227000000137,
+          "sameFixedWorkChoice": false
+        },
+        {
+          "counts": [
+            5,
+            3
+          ],
+          "steps": 150,
+          "milliseconds": 268.97155199999906,
+          "preferenceMilliseconds": 4.06253000000288,
+          "sameFixedWorkChoice": true
+        }
+      ]
+    },
+    {
+      "case": "puppy",
+      "variant": "candidate",
+      "testsPassed": 2,
+      "testsFailed": 0,
+      "exports": [
+        {
+          "index": 0,
+          "sourceSha256": "45bb41ffbb961e933cb29f4effbe47239533035ab522c7e654b7d9c1de1a0dad",
+          "error": 0.01244375,
+          "geometry": true,
+          "paper": "pass",
+          "features": true,
+          "solverSeconds": 9.196700080000001
+        },
+        {
+          "index": 1,
+          "sourceSha256": "19f2c14b8e5e09abdeda442284bb1187e80369331482ab6db0d935ef8335fd91",
+          "error": 0.01321875,
+          "geometry": true,
+          "paper": "pass",
+          "features": true,
+          "solverSeconds": 9.166899981999999
+        }
+      ],
+      "clearance": [
+        {
+          "counts": [
+            5,
+            3
+          ],
+          "steps": 150,
+          "milliseconds": 524.0698649999999,
+          "preferenceMilliseconds": 240.93421900000067,
+          "sameFixedWorkChoice": false
+        },
+        {
+          "counts": [
+            5,
+            3
+          ],
+          "steps": 150,
+          "milliseconds": 435.90381100000013,
+          "preferenceMilliseconds": 170.83418899999924,
+          "sameFixedWorkChoice": true
+        }
+      ]
+    }
+  ],
+  "equalWorkRefinement": [
+    {
+      "case": "stacked",
+      "counts": [
+        3,
+        5
+      ],
+      "results": [
+        {
+          "policy": "old",
+          "steps": 320,
+          "error": 0.0332875,
+          "geometry": true,
+          "paper": "uncertain",
+          "features": true
+        },
+        {
+          "policy": "new",
+          "steps": 320,
+          "error": 0.017525,
+          "geometry": true,
+          "paper": "pass",
+          "features": true
+        }
+      ]
+    },
+    {
+      "case": "viking",
+      "counts": [
+        6,
+        6
+      ],
+      "results": [
+        {
+          "policy": "old",
+          "steps": 320,
+          "error": 0.027,
+          "geometry": true,
+          "paper": "pass",
+          "features": true
+        },
+        {
+          "policy": "new",
+          "steps": 320,
+          "error": 0.0252875,
+          "geometry": true,
+          "paper": "pass",
+          "features": true
+        }
+      ]
+    },
+    {
+      "case": "bauble",
+      "counts": [
+        4,
+        6
+      ],
+      "results": [
+        {
+          "policy": "old",
+          "steps": 320,
+          "error": 0.021703461100422743,
+          "geometry": false,
+          "paper": "uncertain",
+          "features": true
+        },
+        {
+          "policy": "new",
+          "steps": 320,
+          "error": 0.01734089168859748,
+          "geometry": true,
+          "paper": "pass",
+          "features": true
+        }
+      ]
+    },
+    {
+      "case": "puppy",
+      "counts": [
+        5,
+        3
+      ],
+      "results": [
+        {
+          "policy": "old",
+          "steps": 320,
+          "error": 0.02043125,
+          "geometry": true,
+          "paper": "pass",
+          "features": true
+        },
+        {
+          "policy": "new",
+          "steps": 320,
+          "error": 0.01911875,
+          "geometry": true,
+          "paper": "pass",
+          "features": true
+        }
+      ]
+    }
+  ],
+  "deferredFix": "4e021f00",
+  "deferredExactSelections": {
+    "trajectories": 16,
+    "allMatched": true
+  },
+  "limitations": [
+    "The paired run is one observation per case and revision; it does not measure a runtime or error distribution.",
+    "Masks and probabilities are frozen photographic observations, not original cutting-path ground truth.",
+    "Fixed refinement uses captured starts and 320 curve steps to isolate checkpoint choice; it is not an end-to-end performance certificate.",
+    "The new policy has real checking overhead; both revisions retain pre-existing timed fitting failures.",
+    "The deferred optimization preserves full-work selection, but does not make the whole CI suite green."
+  ],
+  "visualComparison": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/checkpoint-policy-study/linux-comparison.png"
+}
