@@ -13,7 +13,7 @@ production path.
 | Real-image inventory | 1,254 files; 783 contain assembled-heart photographs; all files and decoded identities audited | File counts are not counts of independent motifs or fully labelled training examples |
 | Sabrina Danholm's Pinterest board | All 225 pins imported; 220 new image files, about 35 MiB | No new corner, material or cutting-path labels; the whole board is QA-reserved |
 | Synthetic geometry | 256 saved witnesses pass the current geometry/paper re-audit across 768 original/subdivided/reflected representations | Limited procedural diversity; recipe holdouts are not topology-disjoint splits |
-| Small learned model | TorchVision ImageNet-pretrained MobileNetV3-Small; native ONNX and desktop WASM evaluated offline | No demonstrated overall reconstruction advantage or deployment; strict browser numerical parity missed on one photo |
+| Small learned model | TorchVision ImageNet-pretrained MobileNetV3-Small; offline crop fallback raises checked editable pairs from 7/16 to 9/16 development photos | No unseen generalization or deployment; visible defects remain and strict browser numerical parity missed on one photo |
 | Larger segmentation baseline | Official pretrained MobileSAM evaluated offline | A useful body mask alone does not establish correct corners, material boundaries or legal templates |
 | Solver | Current revision passes 1,109/1,109 inverse tests and 34 browser workflows; all 22 regular Hunodan designs finish under ten seconds | Some hard fits retain thin false seams; the earlier 27/31 photo benchmark has not been rerun |
 
@@ -247,6 +247,40 @@ filtering, a saved PDF and mobile overflow. The first browser assertion mistaken
 forbade Ovalt's surviving source-photo link; the corrected check allows that exact
 photo and still forbids unavailable templates. The rebuilt local preview is at
 `http://localhost:4173/`. Nothing was pushed or deployed.
+
+### Production-first neural crop fallback
+
+The [fixed-policy experiment](photo-crop-fallback-results.json) keeps a supported
+production crop, otherwise tries the held-out WASM neural fields through the
+existing locator. A neural replacement must pass the original outline checks
+and have all four corners inside the photograph. Both arms use the existing RGB
+classifier and ten-second fitting allowance; no fitted error or annotation
+selects the crop.
+
+On the same sixteen development photographs, supported crops rise from **7 to 9**
+and checked editable template pairs from **7 to 9**. The two recovered checker
+photos have **1.19% and 0.72%** disagreement with their respective classified
+masks after editable SVG conversion. All twenty method-labelled exports pass
+geometry and paper checks; these represent eleven distinct pairs because fourteen
+unchanged selections share their production fit. This isolates the policy from
+timed-search variation and avoids duplicate computation. It is not a repeated
+timing benchmark or an unseen evaluation.
+
+All eleven distinct exports were visually reviewed. The recoveries retain the
+checker structure, but uneven contacts and small seams remain. Other numerical
+passes include distorted printed-heart decorations and contaminated borders.
+The bicycle retains a plausible target mask but loses major detail during
+fitting; it correctly remains review-required. The result therefore establishes
+two additional checked approximations, not exact original-artwork recovery.
+
+Crop detection takes **5.52 seconds median, 8.83 seconds maximum**, excluding
+cached neural inference. Nine photos request the neural fallback. Its two
+successful locator attempts take about **0.53–0.55 seconds**, after the ordinary
+search has already spent several seconds. The geometric search is a larger
+latency cost here than the previously measured 67–68 ms neural inference.
+Full-photo browser preprocessing and fresh grouped evaluation remain necessary;
+the earlier strict WASM numerical tolerance remains failed. No app change or
+deployment is included.
 
 ## Collected assets
 
