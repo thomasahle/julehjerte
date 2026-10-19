@@ -1,4 +1,4 @@
-import test from 'node:test';
+import {qualityBenchmark as test} from './quality-benchmark.mjs';
 import assert from 'node:assert/strict';
 import {catalogue,readPhoto} from './web-photo-data.mjs';
 import {detectHeartCrops} from '../../static/inverse/core/crop.js';

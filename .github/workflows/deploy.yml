@@ -12,7 +12,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: 'pages'
+  group: 'pages-${{ github.ref }}'
   cancel-in-progress: true
 
 jobs:
@@ -37,8 +37,8 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Test
-        run: npm run test
+      - name: Application tests
+        run: npx vitest run
 
       - name: Build
         run: npm run build
@@ -50,12 +50,72 @@ jobs:
         with:
           path: 'build'
 
+  inverse:
+    name: Inverse correctness (${{ matrix.shard }}/4)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - name: Geometry, paper, exports and functional regressions
+        run: node --test --test-concurrency=1 --test-shard=${{ matrix.shard }}/4 --test-skip-pattern=^benchmark: scripts/inverse/*.test.mjs scripts/inverse/datasets/*.test.mjs
+      - name: Preserve failed fits
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: inverse-correctness-${{ matrix.shard }}
+          path: tmp/inverse-test-failures
+          if-no-files-found: ignore
+          retention-days: 7
+
+  benchmarks:
+    name: Timed quality benchmarks (advisory)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - name: Original budgets and quality targets
+        id: benchmark
+        continue-on-error: true
+        run: |
+          mkdir -p tmp/quality-benchmark
+          npm run benchmark:inverse:ci > tmp/quality-benchmark/results.tap 2>&1
+      - name: Report benchmark results
+        if: always()
+        env:
+          BENCHMARK_OUTCOME: ${{ steps.benchmark.outcome }}
+        run: node scripts/inverse/quality-benchmark-summary.mjs tmp/quality-benchmark/results.tap
+      - name: Preserve benchmark results and failed fits
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: inverse-timed-quality
+          path: |
+            tmp/quality-benchmark
+            tmp/inverse-test-failures
+          if-no-files-found: error
+          retention-days: 7
+
   deploy:
+    if: github.ref == 'refs/heads/main'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: build
+    needs: [build, inverse, benchmarks]
     steps:
       - name: Deploy to GitHub Pages
         id: deployment

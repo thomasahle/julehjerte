@@ -1,3 +1,4 @@
+import {qualityBenchmark} from './quality-benchmark.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -81,7 +82,7 @@ test('the full fitter retains the bird eye through clearance, refinement and ind
   assert.deepEqual(source.mask,prepared.preview.mask);
 });
 
-test('a short search reserves enough local refinement to close the photographed bird eye',async()=>{
+qualityBenchmark('a short search reserves enough local refinement to close the photographed bird eye',async()=>{
   const prepared=await bird(),source=prepared.target.sourceImage,mask=source.mask.slice(),probability=source.probability.slice();
   const answer=await design(prepared.target,{...AUTOMATIC_PRESET,timeLimit:10,trials:0,earlyStop:false});
   const solver=answer.report.solver;
@@ -124,7 +125,7 @@ test('additional layouts can retain a remote opening without editing the image o
   assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
 });
 
-test('a finer spline recovers a half-resolution opening after all coarse feature starts fail',async t=>{
+qualityBenchmark('a finer spline recovers a half-resolution opening after all coarse feature starts fail',async t=>{
   const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-puppy-fit.json'));
   const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue));
   const photo=await readHardPhoto(catalogue.cases.find(c=>c.id===fixture.sourceCase));
@@ -163,7 +164,7 @@ test('a finer spline recovers a half-resolution opening after all coarse feature
   }
 });
 
-test('a horizontal crop shift keeps its enclosed opening through finer refinement',async()=>{
+qualityBenchmark('a horizontal crop shift keeps its enclosed opening through finer refinement',async()=>{
   const imported=await puppy(0,1),cfg={...AUTOMATIC_PRESET,timeLimit:25,trials:0,earlyStop:false};
   assert.equal(createHash('sha256').update(imported.preview.mask).digest('hex'),'a96eea21b65604e2a7b9b93d6823cdd58937bebd66fceeb80e9a1f5c2812c1cc');
   const prepared=prepare({type:'mask',mask:imported.preview.mask,resolution:400},cfg),source=prepared.target.sourceImage;
@@ -214,7 +215,7 @@ test('a crop-edge fragment still counts in fidelity but cannot drive an extra cu
   assert.ok(mismatch(replay.mask,source.mask)<.01,'Do not replace the close star with the 1.8% seam-producing fit');
 });
 
-test('early feature routing recovers the frozen puppy opening within a ten-second search',async t=>{
+qualityBenchmark('early feature routing recovers the frozen puppy opening within a ten-second search',async t=>{
   const imported=await puppy(),cfg={...AUTOMATIC_PRESET,timeLimit:10,trials:0,earlyStop:false};
   const prepared=prepare({type:'mask',mask:imported.preview.mask,resolution:400},cfg),source=prepared.target.sourceImage;
   const checkpoints=[];
@@ -264,7 +265,7 @@ test('early feature routing recovers the frozen puppy opening within a ten-secon
   }
 });
 
-test('a one-pixel crop shift cannot discard a feature-preserving fine-grid checkpoint',async t=>{
+qualityBenchmark('a one-pixel crop shift cannot discard a feature-preserving fine-grid checkpoint',async t=>{
   const imported=await puppy(1),cfg=settings({...AUTOMATIC_PRESET,timeLimit:10,trials:0,earlyStop:false});
   assert.equal(createHash('sha256').update(imported.preview.mask).digest('hex'),'19f2c14b8e5e09abdeda442284bb1187e80369331482ab6db0d935ef8335fd91');
   const prepared=prepare({type:'mask',mask:imported.preview.mask,resolution:400},cfg),source=prepared.target.sourceImage,features=imageFeatures(source);

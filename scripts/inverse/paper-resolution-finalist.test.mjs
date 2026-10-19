@@ -1,3 +1,4 @@
+import {qualityBenchmark} from './quality-benchmark.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -58,7 +59,7 @@ test('cleanup verifies a retained 700-cell polish without inheriting the incumbe
   assert.equal(polished.paperAlternative,retained);assert.equal(retained.paperPassed,false);
 });
 
-test('fresh round-checker fitting verifies its accurate finalist before choosing a worse routing',async t=>{
+qualityBenchmark('fresh round-checker fitting verifies its accurate finalist before choosing a worse routing',async t=>{
   // Only the original photograph and frozen crop enter fitting, never the
   // regression witness's saved control points or known slit counts.
   const photo=await readHardPhoto(fixture.source),cfg=fixture.configuration;

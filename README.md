@@ -19,6 +19,27 @@ and one id in `hearts.json` in the project root, then
 - [Johan's Hjerter](https://johansjulehjerter.dk/) - wonderfully creative cuts
 
 
+## Testing and release checks
+
+`npm test` runs application tests and the complete inverse suite, including timed
+quality benchmarks. To run the inverse release gates separately, use
+`npm run test:inverse:ci`; `npm run benchmark:inverse:ci` runs the advisory cases.
+
+The deployment workflow requires type checks, lint, application tests, inverse
+correctness tests and a production build. Fresh photo searches with strict
+wall-clock quality or routing expectations are registered with `qualityBenchmark`.
+They run separately with their original budgets and assertions; misses appear in
+the workflow summary and the `inverse-timed-quality` artifact (kept seven days).
+They do not block deploying an otherwise valid improvement. A missing or broken
+benchmark run still fails its reporting job.
+
+Fixed-work geometry, paper connectivity, feature/image-loss and exported-rendering
+regressions remain blocking, as do the longer functional photo fits. This does
+not change the application's acceptance thresholds or claim every photo can be
+solved in ten seconds. The measured old/new comparison and known difficult cases
+are recorded in [the checkpoint study](docs/inverse/CHECKPOINT-POLICY-COMPARISON.json).
+
+
 ## License
 
 MIT

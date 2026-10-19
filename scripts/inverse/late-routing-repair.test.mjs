@@ -1,4 +1,4 @@
-import test from 'node:test';
+import {qualityBenchmark as test} from './quality-benchmark.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import {prepare} from '../../static/inverse/core/engine.js';

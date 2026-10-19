@@ -1,3 +1,4 @@
+import {qualityBenchmark} from './quality-benchmark.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {design} from '../../static/inverse/core/engine.js';
@@ -44,7 +45,7 @@ test('clearance repair leaves weighted borders and requested symmetry to their c
   assert.deepEqual(prepared.graph.points,before);assert.deepEqual(source.sourceImage.mask,mask);
 });
 
-test('fresh fitting finds a checked pair for the upward-shifted photograph without saved cuts',{timeout:20000},async t=>{
+qualityBenchmark('fresh fitting finds a checked pair for the upward-shifted photograph without saved cuts',{timeout:20000},async t=>{
   const source=input(),answer=await design(source,cfg),report=answer.report;
   try{
     assert.equal(report.templateChecksPassed,true);

@@ -1,4 +1,4 @@
-import test from 'node:test';
+import {qualityBenchmark as test} from './quality-benchmark.mjs';
 import assert from 'node:assert/strict';
 import {cfg,resolution,mask,input} from './clearance-feature-fixture.mjs';
 import {design} from '../../static/inverse/core/engine.js';

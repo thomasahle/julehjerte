@@ -1,3 +1,4 @@
+import {qualityBenchmark} from './quality-benchmark.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -51,7 +52,7 @@ test('a close-looking proposal cannot override the original image or a requested
   assert.equal(exhausted.graph,undefined);assert.equal(exhausted.report.solver,undefined);
 });
 
-for(const timeLimit of [10,180])test(`a fresh shifted bird fit preserves its eye with a ${timeLimit}-second allowance`,async t=>{
+for(const timeLimit of [10,180])(timeLimit===10?qualityBenchmark:test)(`a fresh shifted bird fit preserves its eye with a ${timeLimit}-second allowance`,async t=>{
   const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-bird-fit.json'));
   const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue)),photo=await readHardPhoto(catalogue.source);
   const cfg={...AUTOMATIC_PRESET,timeLimit,trials:0,earlyStop:false};

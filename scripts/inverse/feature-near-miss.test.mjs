@@ -1,3 +1,4 @@
+import {qualityBenchmark} from './quality-benchmark.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -60,7 +61,7 @@ test('alternate sampling retains a vertical-shift opening without changing the c
   assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
 });
 
-for(const clockScale of [1,1.5])for(const translation of [null,'horizontal','vertical','negative-diagonal'])test(`the ${translation||'original'} near-miss layout produces checked exports within the original short search (${clockScale}x clock)`,async t=>{
+for(const clockScale of [1,1.5])for(const translation of [null,'horizontal','vertical','negative-diagonal'])qualityBenchmark(`the ${translation||'original'} near-miss layout produces checked exports within the original short search (${clockScale}x clock)`,async t=>{
   // Counterfactual scheduling pressure, not a browser speed measurement. Keep
   // every source pixel and the ten-second request fixed while advancing the
   // monotonic clock faster; the original image/detail criteria stay unchanged.

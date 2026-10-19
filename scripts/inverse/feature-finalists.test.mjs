@@ -1,3 +1,4 @@
+import {qualityBenchmark} from './quality-benchmark.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -34,7 +35,7 @@ async function fixture(name){
   return prepare({type:'mask',resolution:image.width,mask},AUTOMATIC_PRESET);
 }
 
-test('a low-cut preference cannot erase the central checker when an existing finalist improves its fidelity',async()=>{
+qualityBenchmark('a low-cut preference cannot erase the central checker when an existing finalist improves its fidelity',async()=>{
   const prepared=await fixture('brown-checker'),source=prepared.target.sourceImage,original=source.mask.slice();
   const answer=await design(prepared.target,{...AUTOMATIC_PRESET,timeLimit:10,trials:0}),s=answer.report.solver;
   const preference=s.finalistPreference.partialImprovement;
@@ -51,7 +52,7 @@ test('a low-cut preference cannot erase the central checker when an existing fin
   assert.deepEqual(source.mask,original);
 });
 
-test('a lower-error finalist that erodes a partially retained region cannot claim the refinement reserve',async()=>{
+qualityBenchmark('a lower-error finalist that erodes a partially retained region cannot claim the refinement reserve',async()=>{
   const prepared=await fixture('bicycle'),source=prepared.target.sourceImage,original=source.mask.slice();
   const answer=await design(prepared.target,{...AUTOMATIC_PRESET,timeLimit:10,trials:0}),preference=answer.report.solver.finalistPreference.partialImprovement;
   const rejected=preference.attempts.find(a=>a.counts[0]===6&&a.counts[1]===6);

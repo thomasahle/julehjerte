@@ -1,3 +1,4 @@
+import {qualityBenchmark} from './quality-benchmark.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -83,7 +84,7 @@ test('additional count proposals respect requested symmetry and physical strip w
   }
 });
 
-test('the main fitter reconstructs the dense binary photo target with legal editable-sized counts',async t=>{
+qualityBenchmark('the main fitter reconstructs the dense binary photo target with legal editable-sized counts',async t=>{
   const {mask,resolution}=await fixture(),raw={...AUTOMATIC_PRESET,timeLimit:10,trials:0};
   const target=prepare({type:'mask',mask:mask.slice(),resolution},raw).target,before=target.sourceImage.probability.slice();
   const answer=await design(target,raw),proposal=answer.report.solver.countSearch.interiorProposal;

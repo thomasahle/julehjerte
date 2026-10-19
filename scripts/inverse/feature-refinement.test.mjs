@@ -1,3 +1,4 @@
+import {qualityBenchmark} from './quality-benchmark.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -59,7 +60,7 @@ test('poor grid agreement recovers tree branches without relying on a spurious e
   assert.deepEqual(source.mask,before);assert.deepEqual(source.probability,probability);
 });
 
-test('an accepted photo routing retains polishing time when a refinement checkpoint is slow',async t=>{
+qualityBenchmark('an accepted photo routing retains polishing time when a refinement checkpoint is slow',async t=>{
   const catalog=JSON.parse(await fs.readFile('scripts/inverse/fixtures/hunodan/speed-crops.json'));
   const entry=catalog.cases.find(r=>r.id==='hjfig-05'),im=await loadImage(entry.source),[x,y,x1,y1]=entry.photoROI;
   const canvas=createCanvas(x1-x,y1-y),context=canvas.getContext('2d');context.drawImage(im,-x,-y);
@@ -82,7 +83,7 @@ test('an accepted photo routing retains polishing time when a refinement checkpo
   assert.ok(answer.report.solver.seconds<cfg.timeLimit);
 });
 
-test('a worse colour-retaining grid leaves time for direct photographic routing',async t=>{
+qualityBenchmark('a worse colour-retaining grid leaves time for direct photographic routing',async t=>{
   const catalog=JSON.parse(await fs.readFile('scripts/inverse/fixtures/hunodan/speed-crops.json'));
   const entry=catalog.cases.find(r=>r.id==='hjfig-05'),im=await loadImage(entry.source),[x,y,x1,y1]=entry.photoROI;
   const canvas=createCanvas(x1-x,y1-y),context=canvas.getContext('2d');context.drawImage(im,-x,-y);
@@ -114,7 +115,7 @@ test('a worse colour-retaining grid leaves time for direct photographic routing'
   assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
 });
 
-test('a delayed preferred grid keeps checked progress or resumes routing within the longer budget',async t=>{
+qualityBenchmark('a delayed preferred grid keeps checked progress or resumes routing within the longer budget',async t=>{
   const fixtures=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-short-budget-fits.json'));
   const fixture=fixtures.cases.find(r=>r.sourceCase==='flettede-viking');
   const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue||fixtures.sourceCatalogue));
