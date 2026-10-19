@@ -4,16 +4,14 @@
   Two variants:
     site   (default) logo · Skabeloner / Sådan gør du / Om · EN pill · GitHub pill,
            collapsing to a 44px burger with a drop-down menu under 900px.
-    editor logo with a back link at the left and the page's own buttons
-           (passed as children) at the right — no nav links, no pills.
+    editor logo at the left and the page's own buttons (passed as
+           children) at the right — no nav links, no pills, no back link:
+           the logo leads home, and the browser's own back button works.
 
   Every page mounts this component, so keep the prop names stable:
     lang      the page language
     active    which nav link is current: 'templates' | 'howto' | 'about'
     variant   'site' | 'editor'
-    backHref  editor variant: where the back link goes (default: the gallery)
-    onBack    editor variant: intercept the back click (the editor returns to
-              the detail page it came from)
     mode      editor variant: which of the editor's two modes this page is, and
               with it the Tegn / Mal switch in the middle of the bar
     children  right-hand slot, rendered in both variants
@@ -25,7 +23,7 @@
 	import { afterNavigate } from '$app/navigation';
 	import { t, type Language } from '$lib/i18n';
 	import { href as routeHref, otherLanguageUrl } from '$lib/i18n/routes';
-	import { ArrowLeftIcon, ImageIcon, MenuIcon, CloseIcon, PencilIcon } from '$lib/components/icons';
+	import { ImageIcon, MenuIcon, CloseIcon, PencilIcon } from '$lib/components/icons';
 	import GitHubLink from '$lib/components/GitHubLink.svelte';
 
 	type NavSection = 'templates' | 'howto' | 'about';
@@ -40,8 +38,6 @@
 		lang: Language;
 		active?: NavSection;
 		variant?: 'site' | 'editor';
-		backHref?: string;
-		onBack?: (event: MouseEvent) => void;
 		/** Override for tools whose current inputs live in a shallow URL hash. */
 		languageUrl?: string;
 		/**
@@ -62,8 +58,6 @@
 		lang,
 		active = undefined,
 		variant = 'site',
-		backHref = undefined,
-		onBack = undefined,
 		languageUrl = undefined,
 		mode = undefined,
 		ref = $bindable(null),
@@ -113,16 +107,6 @@
 		menuOpen = false;
 	});
 
-	function handleBack(e: MouseEvent) {
-		if (onBack) {
-			onBack(e);
-			return;
-		}
-		if (browser && window.history.length > 1 && document.referrer.startsWith(window.location.origin)) {
-			e.preventDefault();
-			window.history.back();
-		}
-	}
 
 	function onKeydown(e: KeyboardEvent) {
 		if (e.key !== 'Escape' || !menuOpen) return;
@@ -154,19 +138,6 @@
 		/>
 	{/if}
 	<div class="nav-start">
-		{#if variant === 'editor'}
-			<!-- The label is a span so the editor bar can drop it on a phone, where
-			     the mode switch takes the middle and the arrow still says "back". -->
-			<a
-				class="back-link"
-				href={backHref ?? homeHref}
-				onclick={handleBack}
-				aria-label={t('back', lang)}
-			>
-				<ArrowLeftIcon size={16} />
-				<span>{t('back', lang)}</span>
-			</a>
-		{/if}
 		<a class="nav-logo" href={homeHref}>{t('siteWordmark', lang)}</a>
 	</div>
 
@@ -318,17 +289,6 @@
 
 	.nav-logo:hover {
 		color: var(--green);
-	}
-
-	.back-link {
-		display: inline-flex;
-		align-items: center;
-		gap: 6px;
-		text-decoration: none;
-		color: var(--green);
-		font-size: 14px;
-		font-weight: 500;
-		white-space: nowrap;
 	}
 
 	.nav-links {
@@ -560,8 +520,5 @@
 			display: none;
 		}
 
-		.editor:has(.mode-switch) .back-link span {
-			display: none;
-		}
 	}
 </style>
