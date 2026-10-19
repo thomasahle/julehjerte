@@ -671,7 +671,17 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
     const verification=protectedObjective?{requestedResolution:cfg.materialResolution,resolution:refinementCfg.materialResolution,source:'feature-preserving-refinement'}:null;
     // Clearance grids need to retain colours; free refinement may still close
     // an opening. Enclosure is mandatory only for the accepted template.
-    const clear=stage('directClearance',()=>fitGrid(clearanceProb,n,selected.model.counts,selected.phase,{k:selected.model.k,optimizationTarget:protectedObjective?null:gridTarget,optimizationObjective:protectedObjective?null:gridObjective,weights:clearanceWeights,steps:150,initial:refloor(selected,floor),floor,clearance:floor+.0015,deadline:performance.now()+Math.min(800,allocation*.15),preferCheckpoint:featureSeed(selected)?retainsGridColours:null}));
+    // Clearance fitting can reduce strip collisions while increasing image
+    // error. Do not hand free refinement an earlier, narrower checkpoint just
+    // because it matches more pixels. Within each geometry class, retain the
+    // existing preference for source colours, then compare image error.
+    const clearancePreference=checkpoint=>{
+      const checkedGraph=new CurveGraph(gridPaths(checkpoint.model,cfg.width,checkpoint.floor),cfg.width);
+      const valid=validate(checkedGraph.solution(checkedGraph.points,checkpoint.phase,input),refinementCfg,{checkImage:false,finalGeometry:true}).passed;
+      const retained=!featureSeed(selected)||retainsGridColours(checkpoint);
+      return 2*Number(valid)+Number(retained);
+    };
+    const clear=stage('directClearance',()=>fitGrid(clearanceProb,n,selected.model.counts,selected.phase,{k:selected.model.k,optimizationTarget:protectedObjective?null:gridTarget,optimizationObjective:protectedObjective?null:gridObjective,weights:clearanceWeights,steps:150,initial:refloor(selected,floor),floor,clearance:floor+.0015,deadline:performance.now()+Math.min(800,allocation*.15),preferCheckpoint:clearancePreference}));
     attempts.push({stage:'clearance',counts:clear.model.counts,controlPoints:clear.model.k,phase:clear.phase,error:protectedObjective?mismatch(gridMask(clear.model,n,clear.phase,clear.floor),prob,fitWeights):clear.error,steps:clear.steps,refinementResolution,...(protectedObjective?{weightedError:clear.error}:{})});
     const graph=new CurveGraph(gridPaths(clear.model,cfg.width,clear.floor),cfg.width);
     const prepared={clear,graph,protectedObjective,objectiveProb,objectiveWeights,refinementResolution,refinementCfg,verification};

@@ -2009,10 +2009,49 @@
       "diagnosis": "Feature-weighted 4+6 grid enters free-curve refinement with invalid spacing; no valid checkpoint is retained before the deadline. Later curve motion creates a local self-crossing and short self-clearances. Final sharing rejects changes and does not cause the original defect."
     },
     "appChecks": {
-      "status": "pending on the new kernel source"
+      "status": "passed",
+      "sourceCommit": "bb667e2b",
+      "check": "zero errors, six existing warnings",
+      "lint": "zero errors, four existing warnings",
+      "vitest": {
+        "files": 112,
+        "passed": 1570,
+        "skipped": 1
+      },
+      "build": "passed",
+      "logPrefix": "/tmp/julehjerte-grid-loss-recovery-"
     },
     "linux": {
-      "status": "not yet run on the new kernel source"
+      "status": "in_progress",
+      "url": "https://github.com/thomasahle/julehjerte/actions/runs/39221825743",
+      "diagnosticCommit": "0c330917",
+      "mode": "cold",
+      "note": "Source matches bb667e2b; only three diagnostic helper scripts differ, and cold mode imports no diagnostic clock."
+    },
+    "sourceCommit": "bb667e2b",
+    "correctedRoutingTest": {
+      "passed": 7,
+      "failed": 0,
+      "log": "/tmp/julehjerte-alternate-paper-tests.log"
+    }
+  },
+  "clearanceCheckpointInvestigation": {
+    "status": "local focused tests passed; broader validation pending",
+    "fixture": "coverage-fits/photo-bauble",
+    "evidence": "The fixed 150-step ordered clearance fit produced seven inspected checkpoints. The first five failed inter-slit clearance; the last two passed geometry at 7.06% and 6.99% observed image error. Error-only checkpoint selection nevertheless handed back the earlier invalid 6.14% state. Paper was uncertain on the later grids and still needs independent refinement/verification.",
+    "record": "/tmp/julehjerte-partial-clearance-study.json",
+    "proposal": "Use ordered checkpoint preferences: valid geometry first, then retained source colours, then mask disagreement. Retain the gradient trajectory and original deadline.",
+    "firstFreshReplay": {
+      "passed": 1,
+      "failed": 0,
+      "log": "/tmp/julehjerte-clearance-priority-bauble.log",
+      "criterion": "The original fresh bauble test now passes geometry, exported paper and less than 5% disagreement without relaxing its requirements."
+    },
+    "localFocused": {
+      "passed": 22,
+      "failed": 0,
+      "log": "/tmp/julehjerte-clearance-priority-tests.log",
+      "coverage": "Synthetic legal-spacing rollback, partial-photo coverage including the bauble, Viking and late-clearance fits, stacked motifs, bicycle finalist and dense counts."
     }
   }
 }
