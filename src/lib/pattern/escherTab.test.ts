@@ -4,7 +4,23 @@ import { getCenteredRectParams } from '$lib/utils/overlapRect';
 import { ALL_RULES, cutCounts, fitLines, freeSides, opposite, ruleKey, type PatternTile, type SideCurve } from './tiling';
 import { ruleStart } from './presets';
 import { knobTile } from './examples';
-import { cornerHint, cutsAre, dragTile, editTile, followedPoint, resizedTile, resumedTile, specialNodes, startTileDrag, tileFingers, tileForRule, tileGrid } from './escherTab';
+import {
+	cornerHint,
+	cutsAre,
+	dragTile,
+	editTile,
+	followedPoint,
+	resizedTile,
+	restoredTile,
+	resumedTile,
+	savedPattern,
+	specialNodes,
+	startTileDrag,
+	tileFingers,
+	tileForRule,
+	tileGrid,
+	tileOfPattern
+} from './escherTab';
 
 /** Whether two tiles' curves are the same, to a millionth of a cell: a tile read back off its cuts comes back with rounding. */
 const sameCurves = (a: PatternTile['curves'], b: PatternTile['curves']) =>
@@ -119,5 +135,27 @@ describe("Tegn's Escher tab", () => {
 		const at = followedPoint(drag, next, pointer, rect)!;
 		const p = tileFingers(next, rect).find((f) => f.id === at.fingerId)!.segments[at.anchor]!.p0;
 		expect(Math.hypot(p.x - pointer.x, p.y - pointer.y)).toBeLessThan(1e-6);
+	});
+
+	it('keeps a moved, leaning tile through saving and reading back, the lines it cuts with it', () => {
+		const tile = fitLines({ ...ruleStart(freeSides(), 2), offset: { x: 0.1, y: -0.05 }, pan: { x: 0.4, y: 0.1 } });
+		expect(tile.lines).toBeDefined();
+		const saved = JSON.parse(JSON.stringify(savedPattern(tile)));
+		expect(saved.rule).toBe('free');
+		expect(tileOfPattern(saved)).toEqual(tile);
+	});
+
+	it('opens a saved heart on its tile only while the cuts are still its own', () => {
+		const tile = fitLines({ ...ruleStart(opposite('move', 'move'), 3), pan: { x: 0.4, y: 0 } });
+		const heart = heartOf(tile);
+		const saved = savedPattern(tile);
+		expect(restoredTile(saved, heart)).toEqual(tile);
+		// a cut changed since, or a tile of no type of ours, or more lines than a moved pattern cuts
+		const bent = heart.fingers.map((f): Finger =>
+			f.id === 'R-2' ? { ...f, segments: f.segments.map((s, k) => (k === 1 ? { ...s, p3: { x: s.p3.x + 5, y: s.p3.y } } : s)) } : f
+		);
+		expect(restoredTile(saved, { ...heart, fingers: bent })).toBeNull();
+		expect(restoredTile({ ...saved, rule: 'ih99' }, heart)).toBeNull();
+		expect(tileOfPattern({ ...saved, lines: { V: [0, 9], H: [1, 3] } })).toBeNull();
 	});
 });

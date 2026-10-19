@@ -83,7 +83,28 @@ export interface HeartDesign {
   // hearts and on everything saved before the editor could set them, and those
   // follow the site-wide colour store instead ($lib/stores/colors).
   colors?: HeartColors;
+  // The tile the heart was drawn from in Tegn's Escher tab, when it was: the tab
+  // takes it up again when the heart is opened, as long as the cuts are still
+  // the ones it makes. Absent on every other heart.
+  pattern?: HeartPattern;
   fingers: Finger[];
+}
+
+/**
+ * A tile of Tegn's Escher tab as a heart keeps it ($lib/pattern/escherTab
+ * reads and writes it): the type by its key ('opposite:move:mirror', 'ih42', …),
+ * the size, the curves — each segment eight numbers, p0 to p3, in its side's own
+ * frame — how far the tiles lean (`offset`) and the pattern has moved (`pan`),
+ * and the lines of the tiling a moved pattern's heart cuts (`lines`, first and
+ * how many, each way).
+ */
+export interface HeartPattern {
+  rule: string;
+  cuts: number;
+  curves: Record<string, number[][]>;
+  offset?: [number, number];
+  pan?: [number, number];
+  lines?: { V: [number, number]; H: [number, number] };
 }
 
 // On-disk format for gallery hearts and shared designs.

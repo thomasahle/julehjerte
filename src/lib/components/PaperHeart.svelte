@@ -27,7 +27,7 @@
 
 	import { NARROW_QUERY } from '$lib/breakpoints';
 	import { readPanelCollapsed, writePanelCollapsed } from '$lib/editor/panelState';
-	import type { Finger, GridSize, Vec, LobeId, NodeType } from '$lib/types/heart';
+	import type { Finger, GridSize, HeartPattern, Vec, LobeId, NodeType } from '$lib/types/heart';
 	import { clamp, clampInt } from '$lib/utils/math';
 	import { inferOverlapRect } from '$lib/utils/overlapRect';
 	import { BASE_CANVAS_SIZE, CENTER, MAX_GRID_SIZE, MIN_GRID_SIZE, PRECISION_GRID_SIZE, STRIP_WIDTH } from '$lib/constants';
@@ -104,7 +104,13 @@
 			initialColors?: HeartColors;
 			/** Told what the visitor picked, so the route saves and shares it. */
 			onColorsChange?: (colors: HeartColors) => void;
-			onFingersChange?: (fingers: Finger[], gridSize: GridSize, weaveParity: 0 | 1) => void;
+			/**
+			 * The Escher tab's tile the heart was saved with (`HeartDesign.pattern`): if the cuts are
+			 * still the ones it makes, Tegn opens on the Escher tab with it.
+			 */
+			initialPattern?: HeartPattern;
+			/** Told the cuts after every change, and the Escher tab's tile while the cuts are its own, so the route saves both. */
+			onFingersChange?: (fingers: Finger[], gridSize: GridSize, weaveParity: 0 | 1, pattern: HeartPattern | null) => void;
 		}
 
 	let {
@@ -120,6 +126,7 @@
 			notice,
 			initialColors = undefined,
 			onColorsChange,
+			initialPattern = undefined,
 			onFingersChange
 		}: Props = $props();
 
@@ -1130,6 +1137,15 @@
 		for (const f of edit.cuts) overrides.set(f.id, f);
 		tileOfOverrides.set(overrides, edit.tile);
 		return overrides;
+	}
+
+	/**
+	 * The tile the heart is saved with: the Escher tab's, or the one it was left with while the cuts
+	 * are still the ones it makes, so a look at the Normal tab does not lose it; null otherwise.
+	 */
+	function savedTile(): HeartPattern | null {
+		const tile = patternTile ?? (lastEscherTile && escher.cutsAre(fingers, escher.generateEditorFingers(lastEscherTile, getOverlapRect())) ? lastEscherTile : null);
+		return tile ? escher.savedPattern(tile) : null;
 	}
 
 	/** The three rows off: they map whole cuts onto each other and would fight the tile. */
@@ -2945,6 +2961,12 @@
 				prevWithinLobeMode = withinLobeMode;
 				prevBetweenLobesMode = betweenLobesMode;
 			}
+			// A heart saved from the Escher tab opens on it, its tile taken up, if the cuts are still the tile's.
+			const restored = has && initialPattern ? escher.restoredTile(initialPattern, { fingers, gridSize, rect: getOverlapRect() }) : null;
+			if (restored) {
+				takeUpTile(restored);
+				escherTab = true;
+			}
 		});
 
 	$effect(() => {
@@ -3064,7 +3086,7 @@
 
 		$effect(() => {
 			if (!didInit) return;
-			if (onFingersChange) onFingersChange(fingers, gridSize, weaveParity);
+			if (onFingersChange) onFingersChange(fingers, gridSize, weaveParity, savedTile());
 		});
 
 	function isEditableTarget(target: EventTarget | null): boolean {

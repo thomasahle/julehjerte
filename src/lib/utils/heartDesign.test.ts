@@ -239,6 +239,46 @@ describe('heartDesign round trips', () => {
     expect(parseHeartFromSVG(svg, 'grid-test.svg')!.colors).toBeUndefined();
   });
 
+  it("keeps the Escher tab's tile through JSON and through SVG", () => {
+    const pattern = {
+      rule: 'opposite:move:mirror',
+      cuts: 2,
+      curves: { vertical: [[0, 0, 0, 0, 0.4, 0.12, 0.4, 0.12], [0.4, 0.12, 0.4, 0.12, 1, 0, 1, 0]] },
+      pan: [0.4, 0] as [number, number],
+      lines: { V: [0, 3] as [number, number], H: [1, 2] as [number, number] }
+    };
+    const design: HeartDesign = { ...makeGridDesign(3), pattern };
+    const json = serializeHeartDesign(design);
+    expect(json.pattern).toEqual(pattern);
+    expect(normalizeHeartDesign(JSON.parse(JSON.stringify(json)) as unknown)!.pattern).toEqual(pattern);
+    const svg = serializeHeartToSVG(design);
+    expect(svg).toContain('data-pattern="{&quot;rule&quot;:&quot;opposite:move:mirror&quot;');
+    expect(parseHeartFromSVG(svg, 'grid-test.svg')!.pattern).toEqual(pattern);
+    // and a heart drawn without the tab has none
+    expect(normalizeHeartDesign(serializeHeartDesign(makeGridDesign(3)))!.pattern).toBeUndefined();
+  });
+
+  it('drops a tile a hand-edited link cannot have produced', () => {
+    const json = serializeHeartDesign(makeGridDesign(3));
+    const good = { rule: 'free', cuts: 2, curves: { nw: [[0, 0, 0, 0, 1, 0, 1, 0]] } };
+    for (const bad of [
+      'free',
+      { ...good, rule: 3 },
+      { ...good, cuts: 0 },
+      { ...good, cuts: 2.5 },
+      { ...good, curves: [] },
+      { ...good, curves: { nw: [[0, 0, 1]] } },
+      { ...good, curves: { nw: [[0, 0, 0, 0, 1, 0, 1, Infinity]] } },
+      { ...good, pan: [1] },
+      { ...good, lines: { V: [0.5, 2], H: [1, 2] } }
+    ]) {
+      expect(normalizeHeartDesign({ ...json, pattern: bad })!.pattern, JSON.stringify(bad)).toBeUndefined();
+    }
+    expect(normalizeHeartDesign({ ...json, pattern: good })!.pattern).toEqual(good);
+    const svg = serializeHeartToSVG(makeGridDesign(3)).replace('<svg ', '<svg data-pattern="{not json" ');
+    expect(parseHeartFromSVG(svg, 'grid-test.svg')!.pattern).toBeUndefined();
+  });
+
   it('drops colours a hand-edited link cannot have produced', () => {
     const json = serializeHeartDesign(makeGridDesign(3));
     for (const bad of [

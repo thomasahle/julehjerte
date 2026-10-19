@@ -8,7 +8,7 @@
  */
 
 import type { TranslationKey } from '$lib/i18n';
-import type { Finger, GridSize, Vec } from '$lib/types/heart';
+import type { Finger, GridSize, HeartPattern, Vec } from '$lib/types/heart';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 import { fingerToSegments } from '$lib/geometry/bezierSegments';
 import { getCenteredRectParams, inferOverlapRect, type OverlapRect } from '$lib/utils/overlapRect';
@@ -28,7 +28,7 @@ import {
 	type PlacedPoint,
 	type SpecialNode
 } from './editorBridge';
-import { ALL_RULES, canLean, cutCounts, fitLines, ruleSymmetry, sameRule, type PatternTile, type TileRule } from './tiling';
+import { ALL_RULES, canLean, cutCounts, fitLines, ruleInfo, ruleKey, ruleSymmetry, sameRule, type PatternTile, type SideCurve, type TileRule } from './tiling';
 import { isStraightTile, ruleStart, switchRule } from './presets';
 
 export { cutOfFinger, generateEditorFingers, sameRule, specialNodes, weaveParityOf };
@@ -195,4 +195,57 @@ export function dragTile(drag: TileDrag, delta: Vec, rect: OverlapRect): Pattern
 export function followedPoint(drag: TileDrag & { mode: 'corner' }, next: PatternTile, pointer: Vec, rect: OverlapRect): { fingerId: string; anchor: number } | null {
 	const kind = cutOfFinger(drag.fingerId, cutCounts(drag.base))?.kind;
 	return kind && drag.point ? locatePlacedPoint(next, drag.point, kind, pointer, rect) : null;
+}
+
+const RULE_BY_KEY = new Map(ALL_RULES.map((rule) => [ruleKey(rule), rule]));
+
+/** The tile as a heart keeps it (`HeartPattern`): plain numbers, the type by its key. */
+export function savedPattern(tile: PatternTile): HeartPattern {
+	const pair = (v: Vec): [number, number] => [v.x, v.y];
+	const numbers = (curve: SideCurve) => curve.map((s) => [s.p0.x, s.p0.y, s.p1.x, s.p1.y, s.p2.x, s.p2.y, s.p3.x, s.p3.y]);
+	return {
+		rule: ruleKey(tile.rule),
+		cuts: tile.cuts,
+		curves: Object.fromEntries(Object.entries(tile.curves).map(([key, curve]) => [key, numbers(curve!)])),
+		...(tile.offset ? { offset: pair(tile.offset) } : {}),
+		...(tile.pan ? { pan: pair(tile.pan) } : {}),
+		...(tile.lines ? { lines: { V: [tile.lines.V.first, tile.lines.V.count], H: [tile.lines.H.first, tile.lines.H.count] } } : {})
+	};
+}
+
+/**
+ * The tile a heart kept, or null where it cannot be one of ours: a type we do not
+ * have, a move past any repeat, or more lines cut than a moved pattern ever has.
+ * Curves its type does not read are left behind.
+ */
+export function tileOfPattern(saved: HeartPattern): PatternTile | null {
+	const rule = RULE_BY_KEY.get(saved.rule);
+	if (!rule) return null;
+	if (saved.pan && saved.pan.some((v) => Math.abs(v) > 4)) return null;
+	if (saved.lines && [saved.lines.V[1], saved.lines.H[1]].some((count) => count < saved.cuts || count > saved.cuts + 1)) return null;
+	const reads = new Set<string>(ruleInfo(rule).curves);
+	const vec = (x: number, y: number) => ({ x, y });
+	const curve = (segments: number[][]): SideCurve => segments.map((n) => ({ p0: vec(n[0]!, n[1]!), p1: vec(n[2]!, n[3]!), p2: vec(n[4]!, n[5]!), p3: vec(n[6]!, n[7]!) }));
+	return {
+		rule,
+		cuts: saved.cuts,
+		curves: Object.fromEntries(Object.entries(saved.curves).filter(([key]) => reads.has(key)).map(([key, segments]) => [key, curve(segments)])),
+		...(saved.offset ? { offset: vec(...saved.offset) } : {}),
+		...(saved.pan ? { pan: vec(...saved.pan) } : {}),
+		...(saved.lines ? { lines: { V: { first: saved.lines.V[0], count: saved.lines.V[1] }, H: { first: saved.lines.H[0], count: saved.lines.H[1] } } } : {})
+	};
+}
+
+/**
+ * The tile a heart was saved with, if its cuts are still the ones it makes, to a
+ * thousandth of a pixel: then the Escher tab opens on it. Null for a tile that is
+ * none of ours (`tileOfPattern`), or where the cuts have changed since, in the
+ * Normal tab or anywhere else.
+ */
+export function restoredTile(saved: HeartPattern, heart: EscherHeart): PatternTile | null {
+	const tile = tileOfPattern(saved);
+	if (!tile) return null;
+	const grid = tileGrid(tile);
+	if (grid.x !== heart.gridSize.x || grid.y !== heart.gridSize.y) return null;
+	return cutsAre(heart.fingers, generateEditorFingers(tile, heart.rect), 1e-3) ? tile : null;
 }

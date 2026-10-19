@@ -505,7 +505,10 @@ the pattern would leave an edge strip wider than a cell; there the heart cuts th
 if all of that cut keeps 0.15 of a cell (and twice the paper's clearance) from the edge, so the pattern fills
 the heart like a window onto an endless tiling. The heart then has a strip more that way (a 3 × 3 pattern makes
 a 4 × 3 or 4 × 4 heart, and the strip count says so); no line it cut before is dropped, and the size buttons
-still set the size of the tiles. An end of a cut slides along the edge. Below 900px the picker shows its glyphs alone, five to a row, as Symmetri's rows do. In both
+still set the size of the tiles. An end of a cut slides along the edge. A heart drawn in the tab keeps its tile
+(`HeartDesign.pattern`, plain numbers) wherever the heart goes — the draft, "Mine hjerter", a shared link, an
+exported SVG (`data-pattern`) — and opens on the Escher tab with it, its type chosen, as long as its cuts are
+still the tile's; once they have been changed in the Normal tab, it opens as any other heart. Below 900px the picker shows its glyphs alone, five to a row, as Symmetri's rows do. In both
 tabs, a drag that cannot go where the pointer is stops at the last place that weaves, and a line above the heart
 says why: two cuts would cross, a curve would cross itself, or it would leave the woven square.
 

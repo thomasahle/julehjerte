@@ -16,7 +16,7 @@
     type DraftSource,
     type EditorDraft
   } from '$lib/editor/draft';
-  import type { Finger, GridSize, HeartDesign } from '$lib/types/heart';
+  import type { Finger, GridSize, HeartDesign, HeartPattern } from '$lib/types/heart';
   import { normalizeHeartDesign, parseHeartFromSVGWithReport } from '$lib/utils/heartDesign';
   import { heartName as nameIn } from '$lib/utils/heartName';
   import { importSummary } from '$lib/utils/svgImportSummary';
@@ -191,6 +191,8 @@
   let currentFingers: Finger[] = $state(urlDesign?.fingers ?? []);
   let currentGridSize: GridSize = $state(urlDesign?.gridSize ?? { x: 3, y: 3 });
   let currentWeaveParity: 0 | 1 = $state((urlDesign?.weaveParity ?? 0) as 0 | 1);
+  // The Escher tab's tile, while the cuts are its own (HeartDesign.pattern).
+  let currentPattern: HeartPattern | undefined = $state(urlDesign?.pattern);
 
   // Form fields - initialize with URL design if available
   let heartName = $state('');
@@ -334,10 +336,12 @@
     scheduleAutosave();
   }
 
-  function handleFingersChange(fingers: Finger[], gridSize: GridSize, weaveParity: 0 | 1) {
+  function handleFingersChange(fingers: Finger[], gridSize: GridSize, weaveParity: 0 | 1, pattern: HeartPattern | null) {
     currentFingers = fingers;
     currentGridSize = gridSize;
     currentWeaveParity = weaveParity;
+    // The tile alone is not an edit: it comes and goes with the tab, and is saved with the next change.
+    currentPattern = pattern ?? undefined;
     // PaperHeart emits once on mount (with reconciled boundary curves). That is not a
     // user edit, so only autosave once the design actually differs from that baseline.
     if (!hasDesignEdits) {
@@ -369,6 +373,7 @@
     currentFingers = design.fingers;
     currentGridSize = design.gridSize;
     currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
+    currentPattern = design.pattern;
     designColors = design.colors ?? null;
     heartName = `${nameIn(design, lang)} ${t('copy', lang)}`;
     authorName = design.author ?? '';
@@ -503,6 +508,7 @@
       colors: designColors ?? undefined,
       gridSize: currentGridSize,
       overlapAspectRatio: initialDesign?.overlapAspectRatio,
+      pattern: currentPattern,
       fingers: currentFingers
     };
   }
@@ -555,6 +561,7 @@
     currentFingers = design.fingers;
     currentGridSize = design.gridSize;
     currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
+    currentPattern = design.pattern;
     designColors = design.colors ?? null;
     heartName = design.name;
     authorName = design.author ?? '';
@@ -655,6 +662,7 @@
         currentFingers = design.fingers;
         currentGridSize = design.gridSize;
         currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
+        currentPattern = design.pattern;
         designColors = design.colors ?? null;
         heartName = design.name || t('importedHeart', lang);
         authorName = design.author || '';
@@ -873,6 +881,7 @@
         initialFingers={currentFingers}
         initialWeaveParity={currentWeaveParity}
         initialColors={designColors ?? undefined}
+        initialPattern={currentPattern}
         panelExtra={isNarrow ? undefined : heartPanels}
         notice={pendingDraft ? draftNotice : undefined}
       />
