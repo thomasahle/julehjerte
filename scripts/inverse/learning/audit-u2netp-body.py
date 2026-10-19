@@ -1,0 +1,85 @@
+"""Reload the adapted checkpoint and verify immutable state and saved predictions."""
+import argparse
+import importlib.util
+import json
+from pathlib import Path
+
+import numpy as np
+import torch
+
+from data import digest
+from preserved_candidate import pinned
+from real_foreground import known_region_metrics
+from u2netp_adaptation import freeze_encoder, frozen_hash, normalize_scores, real_training
+
+
+def module(file, name):
+    spec = importlib.util.spec_from_file_location(name, file)
+    result = importlib.util.module_from_spec(spec); spec.loader.exec_module(result)
+    return result
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--run', type=Path, required=True)
+    parser.add_argument('--output', type=Path, required=True)
+    args = parser.parse_args(); raw = (args.run/'report.json').read_bytes(); report = json.loads(raw)
+    if report['schema'] != 'u2netp-body-adaptation-1' or report['status'] != 'complete':
+        raise ValueError('Require completed body adaptation')
+    plan = json.loads(pinned(report['plan']).read_bytes())
+    for name, expected in report['sourceHashes'].items(): pinned({'path': name, 'sha256': expected})
+    for name, expected in report['artifacts'].items(): pinned({'path': str(args.run/name), 'sha256': expected})
+    source_file = pinned(plan['source']); root = source_file.parent
+    for row in json.loads(source_file.read_bytes())['files']:
+        pinned({'path': str(root/row['path']), 'sha256': row['sha256']})
+    torch.set_num_threads(1); torch.set_num_interop_threads(1)
+    architecture = module(root/'model/u2net.py', 'audit_u2netp_model')
+    loader = module(root/'data_loader.py', 'audit_u2netp_loader')
+    real, separation = real_training(plan, loader.RescaleT(320), loader.ToTensorLab(flag=0))
+    if separation != report['sourceSeparation']: raise ValueError('Source separation changed')
+    for item, recorded in zip(real, report['trainingInputs']):
+        if {'id': item['id'], **item['evidence'], 'inputTensorSha256': digest(item['input'].numpy().tobytes())} != recorded:
+            raise ValueError('Real input/target changed')
+    for item in report['trainingInputs']:
+        pinned({'path': item['photo'], 'sha256': item['photoSha256']})
+    real_ids = [i['id'] for i in real]; synthetic_ids = [i['id'] for i in report['trainingInputs'][len(real):]]
+    rng = np.random.default_rng(plan['protocol']['seed']); draws = []
+    for _ in range(plan['protocol']['updates']):
+        draws.append({'synthetic': int(rng.integers(len(synthetic_ids))), 'real': int(rng.integers(len(real))),
+                      'flips': (rng.random(2) < .5).tolist()})
+    expected_ids = [[synthetic_ids[d['synthetic']], real_ids[d['real']]] for d in draws]
+    if draws != report['draws'] or expected_ids != report['sampledIds'] or len(report['history']) != len(draws):
+        raise ValueError('Training draws or update count differ')
+    model = architecture.U2NETP(3, 1); freeze_encoder(model)
+    initial = torch.load(pinned(plan['checkpoint']), map_location='cpu', weights_only=True)
+    final = torch.load(pinned({'path': str(args.run/'model.pt'), 'sha256': report['checkpointSha256']}), map_location='cpu', weights_only=True)
+    model.load_state_dict(initial, strict=True); before = frozen_hash(model)
+    model.load_state_dict(final, strict=True)
+    if frozen_hash(model) != before or before != report['initialFrozenStateSha256']:
+        raise ValueError('Encoder weights or normalization buffers changed')
+    changed = [n for n in initial if not torch.equal(initial[n], final[n])]
+    if not changed: raise ValueError('Unchanged adapted checkpoint')
+    metrics_items = [{'id': i['id'], 'target': (i['labels'] == 1).astype(np.float32),
+                     'weight': (i['labels'] != 255).astype(np.float32)} for i in real]
+    saved = np.load(args.run/'training-predictions.npz', allow_pickle=False)
+    if saved['ids'].tolist() != real_ids: raise ValueError('Prediction identities differ')
+    maximum = {}; metrics = {}
+    for name, state in [('initial', initial), ('final', final)]:
+        model.load_state_dict(state, strict=True)
+        with torch.no_grad():
+            values = np.stack([normalize_scores(model(i['input'][None])[0])[0, 0].numpy() for i in real])
+        maximum[name] = float(np.abs(values-saved[name]).max())
+        if not np.array_equal(values, saved[name]): raise ValueError('Saved predictions do not replay exactly: '+name)
+        metrics[name] = known_region_metrics(values, metrics_items)
+        if metrics[name] != report['trainingMetrics'][name]: raise ValueError('Saved metrics differ')
+    result = {'schema': 'u2netp-body-audit-1', 'passed': True,
+              'report': {'path': str(args.run/'report.json'), 'sha256': digest(raw)},
+              'sourceSeparation': separation, 'updates': len(draws), 'sourcePhotosRechecked': len(report['trainingInputs']),
+              'immutableStateMatchesInitial': True, 'changedTensors': len(changed),
+              'predictionMaximumDifference': maximum, 'trainingMetrics': metrics,
+              'scope': 'Independent checkpoint reload, frozen weights/buffers, draw schedule, source identities, input/label hashes, predictions and metrics. Not a second full optimization replay or held-out quality result.'}
+    with args.output.open('x') as file: file.write(json.dumps(result, indent=2)+'\n')
+    print(json.dumps({'passed': True, 'changedTensors': len(changed), 'predictionMaximumDifference': maximum}))
+
+
+if __name__ == '__main__': main()

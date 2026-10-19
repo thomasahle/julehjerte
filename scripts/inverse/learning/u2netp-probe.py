@@ -1,8 +1,8 @@
-"""Frozen upstream saliency baseline on an existing, fixed photo cohort.
+"""Pinned upstream or whole-paper-adapted saliency on a fixed photo cohort.
 
-Use the publisher's own input transforms and checkpoint. No heart fine-tuning,
-per-photo prompts or threshold selection; scores are saliency, not calibrated
-paper probabilities. This native experiment is not a browser release.
+Use the publisher's input transforms and output normalization. An adapted
+checkpoint must come from a completed, pinned training run on separate sources.
+No per-photo prompts or threshold selection. This is not a browser release.
 """
 import argparse
 import importlib.util
@@ -39,6 +39,16 @@ def main():
     for row in source['files']: checked({'path': str(root/row['path']), 'sha256': row['sha256']})
     checkpoint = checked(plan['checkpoint'])
     selected = json.loads(checked(plan['selection']).read_bytes())
+    origin = {'kind': 'frozen-upstream-saliency', 'checkpointSha256': plan['checkpoint']['sha256']}
+    if 'adaptation' in plan:
+        adaptation = json.loads(checked(plan['adaptation']).read_bytes())
+        assert adaptation['schema'] == 'u2netp-body-adaptation-1' and adaptation['status'] == 'complete'
+        assert adaptation['checkpointSha256'] == plan['checkpoint']['sha256']
+        assert adaptation['frozenStateUnchanged'] and adaptation['sourceSeparation']['sourceAndDuplicateSeparationPassed']
+        training = json.loads(checked(adaptation['plan']).read_bytes())
+        assert training['evaluation'] == plan['selection'] and training['source'] == plan['source']
+        origin.update(kind='whole-paper-adapted-saliency', adaptation=plan['adaptation'],
+                      initialCheckpointSha256=training['checkpoint']['sha256'])
     if 'control' in plan:
         control = json.loads(checked(plan['control']).read_bytes())
         assert control['status'] == 'complete'
@@ -63,7 +73,7 @@ def main():
               'runtime': {'torch': torch.__version__, 'skimage': skimage.__version__, 'threads': 1},
               'rows': [], 'scope': plan['scope']}
     probe = {'schema': 'woven-heart-foreground-probe-1', 'status': 'running', 'resolution': resolution,
-             'fieldOrigin': {'kind': 'frozen-upstream-saliency', 'checkpointSha256': plan['checkpoint']['sha256']},
+             'fieldOrigin': origin,
              'rows': [], 'scope': plan['scope']}
     def save():
         (args.output/'report.json').write_text(json.dumps(result, indent=2)+'\n')

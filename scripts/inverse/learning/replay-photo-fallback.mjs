@@ -29,10 +29,27 @@ assert.equal(manifest.status,'complete');if(training)assert.equal(training.statu
 if(saliency){
  const study=await pinned(plan.study),selection=await pinned(study.selection),catalog=await pinned(selection.sourceManifest);
  assert.equal(study.schema,'saliency-fresh-study-1');assert.deepEqual(plan.protocol,study.pipeline);
- assert.equal(runtime.schema,'u2netp-browser-1');assert.equal(runtime.status,'complete');
- assert.ok(runtime.checks.allPhotos&&runtime.checks.sourceRgbExact&&runtime.checks.inputParity);
+ assert.ok(['u2netp-browser-1','u2netp-probe-result-1'].includes(runtime.schema));assert.equal(runtime.status,'complete');
  assert.equal(runtime.artifacts['manifest.json'],plan.probe.sha256);assert.equal(manifest.resolution,320);
- const native=await pinned(runtime.native);assert.equal(native.onnx.sha256,study.model.sha256);
+ if(runtime.schema==='u2netp-browser-1'){
+  assert.ok(runtime.checks.allPhotos&&runtime.checks.sourceRgbExact&&runtime.checks.inputParity);
+  const native=await pinned(runtime.native);assert.equal(native.onnx.sha256,study.model.sha256);
+ }else{
+  // Native adaptation is a development gate before spending time on export.
+  // It must never be reported as verified browser numerical parity.
+  assert.equal(plan.runtimeStage,'native-development');
+  assert.equal(manifest.fieldOrigin.kind,'whole-paper-adapted-saliency');
+  const adaptation=await pinned(manifest.fieldOrigin.adaptation),training=await pinned(adaptation.plan);
+  const audit=await pinned(plan.adaptationAudit);assert.equal(audit.schema,'u2netp-body-audit-1');assert.ok(audit.passed);
+  assert.deepEqual(audit.report,manifest.fieldOrigin.adaptation);
+  assert.equal(adaptation.schema,'u2netp-body-adaptation-1');assert.equal(adaptation.status,'complete');
+  assert.ok(adaptation.frozenStateUnchanged&&adaptation.sourceSeparation.sourceAndDuplicateSeparationPassed);
+  assert.deepEqual(training.evaluation,study.selection);
+  assert.equal(runtime.checkpointSha256,adaptation.checkpointSha256);
+  assert.equal(runtime.checkpointSha256,study.model.sha256);
+  const nativePlan=await pinned(runtime.plan);assert.deepEqual(nativePlan.selection,study.selection);
+  assert.deepEqual(runtime.rows.map(r=>r.id),plan.ids);
+ }
  const assets=new Map(catalog.assets.map(r=>[r.id,r]));
  assert.deepEqual(plan.ids,selection.photos.map(r=>r.id));assert.deepEqual(manifest.rows.map(r=>r.id),plan.ids);
  for(const [file,digest] of Object.entries(study.sourcePins))assert.equal(hash(await fs.readFile(file)),digest,file);
@@ -92,7 +109,10 @@ assert.ok(['learned-fields','foreground-region-rgb'].includes(cropStrategy));
 const control=plan.controlRun?await pinned(plan.controlRun):null;
 if(control){
  assert.equal(control.schema,'material-pair-pipeline-1');assert.equal(control.status,'complete');
- assert.equal(control.probeManifestSha256,plan.probe.sha256);assert.deepEqual(control.configuration,configuration);
+ // Production controls depend on the source photographs and production code,
+ // not the learned checkpoint. Source hashes are checked again in reuseControl.
+ if(!saliency)assert.equal(control.probeManifestSha256,plan.probe.sha256);
+ assert.deepEqual(control.configuration,configuration);
  assert.deepEqual(control.rows.filter(r=>r.method==='production').map(r=>r.id),plan.ids);
  // Research adapters may change, but the original production fit implementation must match.
  for(const [file,digest] of Object.entries(control.sourceHashes))
@@ -101,7 +121,8 @@ if(control){
 }
 const report={schema:'material-pair-pipeline-1',status:'running',configuration,methods:['production','fallback'],targetMode:'rgb',
  plan:{path:args.plan,sha256:hash(await fs.readFile(args.plan))},probeManifestSha256:plan.probe.sha256,rows:[],sourceHashes:{},
- scope:plan.purpose,comparisonProtocol:plan.protocol,sourceSeparationChecksPassed:true,runtimeNumericalGatePassed:runtime.passed,
+ scope:plan.purpose,comparisonProtocol:plan.protocol,sourceSeparationChecksPassed:true,runtimeNumericalGatePassed:runtime.passed??null,
+ runtimeStage:plan.runtimeStage??'browser',
  ...(control?{reusedProductionRun:plan.controlRun}:{})};
 for(const file of [new URL(import.meta.url).pathname,'scripts/inverse/learning/photo-crop-fallback.mjs','scripts/inverse/learning/partial-photo-crop.mjs','scripts/inverse/learning/foreground-crop.mjs',
  'scripts/inverse/learning/foreground-region.mjs','scripts/inverse/learning/locator-field-source.mjs','scripts/inverse/learning/material-fields.mjs','scripts/inverse/hard-photo-target.mjs','scripts/inverse/export-renderer.mjs',
@@ -185,7 +206,7 @@ try{
   }});
   const selection={...selected.decision,cropStrategy,...(region?{region}:{}),productionDetectionReused:!!control,
    combinedDetectionSeconds:(performance.now()-started)/1000,neuralDetectionSeconds:neuralSeconds,
-   inference:'Cached actual evaluation WASM output; inference excluded from timings. Cached production detection, when present, is also excluded.'};
+   inference:`Cached ${runtime.schema==='u2netp-probe-result-1'?'native development':'actual evaluation WASM'} output; inference excluded from timings. Cached production detection, when present, is also excluded.`};
   if(learnedDetection){
    const name=input.id+'-neural-detection.json',bytes=JSON.stringify(learnedDetection,null,2)+'\n';
    await fs.writeFile(path.join(args.output,name),bytes);selection.learnedDetectionAsset={path:name,sha256:hash(bytes)};
