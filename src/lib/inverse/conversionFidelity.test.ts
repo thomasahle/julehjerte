@@ -49,9 +49,9 @@ describe('conversion preserves the combined weave', () => {
     const result = convertValidatedCutGeometry(geometry, { name: 'house', reference: { mask: target, weights } });
     expect(mismatch(result.design)).toBeLessThanOrEqual(mismatch(original));
     expect(result.editorValidation?.tolerance).toBeLessThan(0.1);
-    expect(result.editorValidation?.fidelity.passed).toBe(true);
-    expect(result.editorValidation?.fidelity.weaveDrift).toHaveLength(2);
-    expect(result.editorValidation?.fidelity.weaveDrift.every(row => row.mismatch <= MAXIMUM_WEAVE_DRIFT)).toBe(true);
+    expect(result.editorValidation?.fidelity?.passed).toBe(true);
+    expect(result.editorValidation?.fidelity?.weaveDrift).toHaveLength(2);
+    expect(result.editorValidation?.fidelity?.weaveDrift.every(row => row.mismatch <= MAXIMUM_WEAVE_DRIFT)).toBe(true);
     const selectedCoverage = coverageError(result.design);
     expect(selectedCoverage).toBeLessThanOrEqual(coverageError(original) + 0.00001);
     expect(coverageError(coarse) - selectedCoverage).toBeGreaterThan(0.003);

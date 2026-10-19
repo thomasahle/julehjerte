@@ -23,10 +23,11 @@ const SELF_ENDPOINT_TOLERANCE = 2;
 
 type BBox = { x: number; y: number; width: number; height: number };
 
-/** The margin in internal pixels for an overlap rectangle of the given size. */
-export function intersectionMarginPx(overlap: { width: number; height: number }): number {
+/** The margin in internal pixels for an overlap rectangle of the given size,
+ * optionally scaled for grid density. */
+export function intersectionMarginPx(overlap: { width: number; height: number }, clearanceScale = 1): number {
 	const unit = (overlap.width + overlap.height) / 200;
-	return INTERSECTION_MARGIN_UNITS * unit;
+	return INTERSECTION_MARGIN_UNITS * unit * clearanceScale;
 }
 
 function bboxesOverlap(a: BBox, b: BBox): boolean {
@@ -338,8 +339,10 @@ function segmentsHaveIssues(
  * Whether a curve would ruin the heart: it loops back on itself, or it crosses, touches or
  * comes within `minDistance` (internal px, see intersectionMarginPx) of another curve in the
  * same lobe — anywhere along the curves, including where they meet the fold line.
+ * `resolution` is the smallest feature a cut can have: loops and kinks shorter than it are
+ * part of one cut. It defaults to `minDistance`; a narrower spacing check keeps the usual one.
  */
-export function fingerHasIntersectionIssues(finger: Finger, fingers: Finger[], minDistance: number): boolean {
+export function fingerHasIntersectionIssues(finger: Finger, fingers: Finger[], minDistance: number, resolution = minDistance): boolean {
 	const segs = fingerToSegments(finger);
 	const n = segs.length;
 	if (!n) return false;
@@ -351,12 +354,12 @@ export function fingerHasIntersectionIssues(finger: Finger, fingers: Finger[], m
 	// Loops smaller than the margin are slivers below the physical resolution; ignore them.
 	for (const seg of segs) {
 		const loopSize = cubicSelfIntersectionLoopSize(seg);
-		if (loopSize != null && loopSize >= minDistance) return true;
+		if (loopSize != null && loopSize >= resolution) return true;
 	}
 
 	for (let i = 0; i < n - 1; i++) {
 		const join = segs[i]!.p3;
-		if (hasAdjacentIntersection(segs[i]!, segs[i + 1]!, join, minDistance)) return true;
+		if (hasAdjacentIntersection(segs[i]!, segs[i + 1]!, join, resolution)) return true;
 	}
 
 	if (hasSelfReturn(segs, minDistance)) return true;
@@ -366,7 +369,7 @@ export function fingerHasIntersectionIssues(finger: Finger, fingers: Finger[], m
 			minDistance,
 			endpointTolerance: SELF_ENDPOINT_TOLERANCE,
 			skipAdjacent: true,
-			intersectionLoopThreshold: minDistance
+			intersectionLoopThreshold: resolution
 		})
 	) {
 		return true;
@@ -395,11 +398,23 @@ export function fingerHasIntersectionIssues(finger: Finger, fingers: Finger[], m
 	return false;
 }
 
+/** Check just the interaction of two distinct cuts on one paper sheet.
+ * Callers may reuse a cut's separate self-check when comparing new neighbours. */
+export function fingerPairHasIntersectionIssues(finger: Finger, other: Finger, minDistance: number): boolean {
+	if (finger.id === other.id || finger.lobe !== other.lobe) return false;
+	const segs = fingerToSegments(finger), otherSegs = fingerToSegments(other);
+	if (!segs.length || !otherSegs.length) return false;
+	// No endpoint exemption between different curves, as in `fingerHasIntersectionIssues`.
+	return segmentsHaveIssues(segs, segs.map(bezierBBox), { start: segs[0]!.p0, end: segs.at(-1)!.p3 },
+		otherSegs, otherSegs.map(bezierBBox), { start: otherSegs[0]!.p0, end: otherSegs.at(-1)!.p3 },
+		{ minDistance, endpointTolerance: 0 });
+}
+
 /** Ids of every curve that has an intersection issue with itself or another curve in its lobe. */
-export function findFingersWithIssues(fingers: Finger[], minDistance: number): Set<string> {
+export function findFingersWithIssues(fingers: Finger[], minDistance: number, resolution = minDistance): Set<string> {
 	const set = new Set<string>();
 	for (const finger of fingers) {
-		if (fingerHasIntersectionIssues(finger, fingers, minDistance)) set.add(finger.id);
+		if (fingerHasIntersectionIssues(finger, fingers, minDistance, resolution)) set.add(finger.id);
 	}
 	return set;
 }

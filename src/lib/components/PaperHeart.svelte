@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { gridClearanceScale } from '$lib/geometry/clearance';
 	import { onMount, tick, untrack, type Component, type Snippet } from 'svelte';
 	import type { IconProps } from '$lib/components/icons/types';
 	import { Separator } from '$lib/components/ui/separator';
@@ -10,7 +11,6 @@
 		OutlineIcon,
 		RedoIcon,
 		SnapIcon,
-		SwapIcon,
 		TrashIcon,
 		UndoIcon
 	} from '$lib/components/icons';
@@ -62,12 +62,10 @@
 	import { wheelZoomFactor } from '$lib/editor/wheelZoom';
 	import {
 		DEFAULT_COLORS,
-		DEFAULT_COLORS_HEX,
 		getColors,
 		subscribeColors,
 		type HeartColors
 	} from '$lib/stores/colors';
-	import { parseHexColor, toHexColors } from '$lib/utils/heartColors';
 	import { stripsLabel as formatStrips, t as translate, type Language, type TranslationKey } from '$lib/i18n';
 
 		interface Props {
@@ -97,14 +95,6 @@
 			 */
 			notice?: Snippet;
 			/**
-			 * The heart's own colours, if it has any (`HeartDesign.colors`). Without
-			 * them the canvas follows the site-wide colour store, and the first pick
-			 * in the Farver section starts from that pair.
-			 */
-			initialColors?: HeartColors;
-			/** Told what the visitor picked, so the route saves and shares it. */
-			onColorsChange?: (colors: HeartColors) => void;
-			/**
 			 * The Escher tab's tile the heart was saved with (`HeartDesign.pattern`): if the cuts are
 			 * still the ones it makes, Tegn opens on the Escher tab with it.
 			 */
@@ -124,8 +114,6 @@
 			fullPage = false,
 			panelExtra,
 			notice,
-			initialColors = undefined,
-			onColorsChange,
 			initialPattern = undefined,
 			onFingersChange
 		}: Props = $props();
@@ -155,23 +143,6 @@
 	function normalizeWeaveParity(raw: unknown): 0 | 1 {
 		const v = typeof raw === 'number' && Number.isFinite(raw) ? Math.round(raw) : 0;
 		return v % 2 === 1 ? 1 : 0;
-	}
-
-	// Touching the Farver section gives the heart colours of its own: from here on
-	// it keeps them wherever it is shown, instead of following the site-wide pair.
-	function setHeartColors(next: HeartColors) {
-		designColors = next;
-		onColorsChange?.(next);
-	}
-
-	function setLobeColor(lobe: LobeId, value: string) {
-		const hex = parseHexColor(value);
-		if (!hex) return;
-		setHeartColors({ ...colorInputs, [lobe]: hex });
-	}
-
-	function flipLobeColors() {
-		setHeartColors({ left: colorInputs.right, right: colorInputs.left });
 	}
 
 	function isHandleCollapsed(handle: Vec, anchor: Vec): boolean {
@@ -276,22 +247,8 @@
 		}
 
 	// State
-	// The site-wide pair, the heart's own (once it has any), and what is painted.
-	let storeColors = $state<HeartColors>({ ...DEFAULT_COLORS });
-	// Set once from `initialColors` in the init effect below, like the geometry props.
-	let designColors = $state<HeartColors | null>(null);
-	let heartColors = $derived(designColors ?? storeColors);
-	// The two <input type="color"> only speak #rrggbb; the store's red is rgb().
-	let colorInputs = $derived(toHexColors(heartColors, DEFAULT_COLORS_HEX));
-	// The inputs carry static default values, as PageFooter's do: a dynamic `value`
-	// attribute is stripped by Svelte during hydration, and Chrome warns about a
-	// colour input momentarily holding "". The heart's own pair is applied here.
-	let leftColorInput = $state<HTMLInputElement | null>(null);
-	let rightColorInput = $state<HTMLInputElement | null>(null);
-	$effect(() => {
-		if (leftColorInput) leftColorInput.value = colorInputs.left;
-		if (rightColorInput) rightColorInput.value = colorInputs.right;
-	});
+	// Paper colours follow the shared footer; changing them does not edit cuts.
+	let heartColors = $state<HeartColors>({ ...DEFAULT_COLORS });
 	let gridSize = $state<GridSize>({ x: 3, y: 3 });
 	let weaveParity = $state<0 | 1>(0);
 	let fingers = $state<Finger[]>([]);
@@ -1313,7 +1270,7 @@
 	// (Uses inferOverlapRect directly: weaveData is declared further down, which matters for SSR.)
 	let issueFingerIds = $derived.by(() => {
 		if (readonly || !showCurves) return new Set<string>();
-		return findFingersWithIssues(fingers, intersectionMarginPx(inferOverlapRect(fingers, gridSize)));
+		return findFingersWithIssues(fingers, intersectionMarginPx(inferOverlapRect(fingers, gridSize), gridClearanceScale(gridSize.x, gridSize.y)));
 	});
 
 	/**
@@ -2970,7 +2927,6 @@
 			didInit = true;
 			gridSize = normalizeGridSize(initialGridSize);
 			weaveParity = normalizeWeaveParity(initialWeaveParity);
-			designColors = initialColors ? { ...initialColors } : null;
 			const has = initialFingers && initialFingers.length > 0;
 			fingers = has ? initialFingers!.map(cloneFinger) : createDefaultFingers(gridSize);
 			// Always include the four outer boundary curves (legacy designs omitted them),
@@ -3159,8 +3115,8 @@
 	}
 
 	onMount(() => {
-		storeColors = getColors();
-		const unsub = subscribeColors((c) => (storeColors = c));
+		heartColors = getColors();
+		const unsub = subscribeColors((c) => (heartColors = c));
 		if (!readonly && typeof window !== 'undefined') {
 			window.addEventListener('keydown', handleKeyDown);
 			try {
@@ -3935,40 +3891,6 @@
 						</label>
 					</section>
 
-					<!-- The two swatches are real colour inputs: the round label is the
-					     swatch, and the input inside it is blown up so its own swatch fills
-					     the circle. The visible name is the label's, so both are reachable
-					     and named from the keyboard. -->
-					<section class="editor-panel">
-						<h2 class="panel-title">{tr('editorColors')}</h2>
-						<div class="colors-row">
-							<label class="swatch" title={tr('leftColor')}>
-								<span class="sr-only">{tr('leftColor')}</span>
-								<input
-									type="color"
-									name="heart-color-left"
-									value="#ffffff"
-									bind:this={leftColorInput}
-									oninput={(e) => setLobeColor('left', e.currentTarget.value)}
-								/>
-							</label>
-							<label class="swatch" title={tr('rightColor')}>
-								<span class="sr-only">{tr('rightColor')}</span>
-								<input
-									type="color"
-									name="heart-color-right"
-									value="#b91313"
-									bind:this={rightColorInput}
-									oninput={(e) => setLobeColor('right', e.currentTarget.value)}
-								/>
-							</label>
-							<button type="button" class="panel-button" onclick={flipLobeColors} title={tr('editorFlipLobeColors')}>
-								<SwapIcon size={14} />
-								{tr('editorSwap')}
-							</button>
-						</div>
-					</section>
-
 					{#if panelExtra}{@render panelExtra()}{/if}
 				</div>
 
@@ -4403,43 +4325,6 @@
 			border-left: 2px solid var(--white);
 			border-bottom: 2px solid var(--white);
 			transform: rotate(-45deg);
-		}
-
-		.colors-row {
-			display: flex;
-			align-items: center;
-			gap: 12px;
-		}
-
-		.swatch {
-			display: inline-flex;
-			width: 34px;
-			height: 34px;
-			flex: none;
-			padding: 0;
-			border: 1.5px solid var(--line);
-			border-radius: 50%;
-			overflow: hidden;
-			cursor: pointer;
-		}
-
-		/* A colour input paints its swatch inside its own padding box, so it is
-		   blown up and clipped by the round label to fill it edge to edge. */
-		.swatch input {
-			width: 150%;
-			height: 150%;
-			margin: -25%;
-			padding: 0;
-			border: 0;
-			background: none;
-			cursor: pointer;
-		}
-
-		/* The input itself is invisible inside the circle, so the ring goes on the
-		   label — otherwise a keyboard visitor cannot see which swatch is focused. */
-		.swatch:focus-within {
-			outline: 2px solid var(--green);
-			outline-offset: 2px;
 		}
 
 		.tooltip-wrapper {

@@ -93,7 +93,7 @@
 
 	<div class="actions">
 		<a class="btn btn-primary" href={href('home', lang)}><ArrowRightIcon size={18} />{t('heroSeeTemplates', lang)}</a>
-		<a class="btn btn-outline" href={href('editor', lang)}><PencilIcon size={18} />{t('heroDesignHeart', lang)}</a>
+		<a class="btn btn-outline" href={href('generator', lang)}><PencilIcon size={18} />{t('heroDesignHeart', lang)}</a>
 	</div>
 </main>
 

@@ -137,23 +137,31 @@ function checkSelfIntersection(segments: BezierSegment[], samplesPerSegment: num
     });
   });
 
-  // Check for intersections between non-adjacent line segments
-  for (let i = 0; i < allPoints.length - 1; i++) {
-    const p1 = allPoints[i];
-    const p2 = allPoints[i + 1];
-
-    // Skip checking adjacent segments (they share endpoints)
-    for (let j = i + 3; j < allPoints.length - 1; j++) {
-      const p3 = allPoints[j];
-      const p4 = allPoints[j + 1];
-
-      if (lineSegmentsIntersect(p1.point, p2.point, p3.point, p4.point)) {
-        warnings.push(`Self-intersection detected between segment ${p1.segIdx} and segment ${p3.segIdx}`);
-        // Only report once per pair of segments
-        break;
-      }
+  // Long repeated patterns contain thousands of samples. Compare only lines
+  // whose bounding boxes overlap, retaining the same exact crossing predicate
+  // and first warning for each original sample as the former pairwise scan.
+  const lines = allPoints.slice(0, -1).map((p, index) => {
+    const q = allPoints[index + 1];
+    return {
+      index, a: p.point, b: q.point,
+      minX: Math.min(p.point.x, q.point.x), maxX: Math.max(p.point.x, q.point.x),
+      minY: Math.min(p.point.y, q.point.y), maxY: Math.max(p.point.y, q.point.y)
+    };
+  }).sort((a, b) => a.minX - b.minX);
+  const first = new Map<number, number>();
+  for (let i = 0; i < lines.length; i++) {
+    const a = lines[i];
+    for (let j = i + 1; j < lines.length; j++) {
+      const b = lines[j];
+      if (b.minX > a.maxX) break;
+      if (b.minY > a.maxY || a.minY > b.maxY) continue;
+      const from = Math.min(a.index, b.index), to = Math.max(a.index, b.index);
+      if (to - from < 3 || to >= (first.get(from) ?? Infinity)) continue;
+      if (lineSegmentsIntersect(a.a, a.b, b.a, b.b)) first.set(from, to);
     }
   }
+  for (const [i, j] of [...first].sort(([a], [b]) => a - b))
+    warnings.push(`Self-intersection detected between segment ${allPoints[i].segIdx} and segment ${allPoints[j].segIdx}`);
 
   // Deduplicate warnings
   return [...new Set(warnings)];

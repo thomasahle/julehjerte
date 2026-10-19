@@ -1,0 +1,585 @@
+{
+  "physicalAssemblyTested": false,
+  "runs": [
+    {
+      "group": "initial",
+      "date": "2026-10-13T12:00:11.108Z",
+      "settings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "timeLimit": 12,
+        "trials": 0,
+        "width": 100,
+        "minWidth": 2,
+        "preferMatchingSheets": false
+      },
+      "resolution": 256,
+      "physicalAssemblyTested": false,
+      "rows": [
+        {
+          "id": "checker-control",
+          "label": "Classic checker — control",
+          "targetHash": "5c7c207f866e3284a8de8d67563877ccc69190a4c5f59b229333715bed194a48",
+          "checks": true,
+          "geometry": true,
+          "paper": "pass",
+          "featureCheck": true,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "error": {
+            "whole": 0,
+            "motif": 0,
+            "frame": 0
+          },
+          "reportedError": 0,
+          "warnings": [],
+          "nominalWidth": 2.50501002004008,
+          "editor": {
+            "passed": true,
+            "error": {
+              "whole": 0,
+              "motif": 0,
+              "frame": 0
+            }
+          },
+          "seconds": 1.4098225420000001
+        },
+        {
+          "id": "tree-diamond-check",
+          "label": "tree · diamond · check",
+          "targetHash": "f124b80a0e78fa61a98b4a6addbf6a9d8b604b1788246e9846233514066199e5",
+          "checks": true,
+          "geometry": true,
+          "paper": "pass",
+          "featureCheck": true,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "error": {
+            "whole": 0.0006561279296875,
+            "motif": 0.001598750743604997,
+            "frame": 0
+          },
+          "reportedError": 0.00054931640625,
+          "warnings": [],
+          "nominalWidth": 2.50501002004008,
+          "editor": {
+            "passed": true,
+            "error": {
+              "whole": 0.000579833984375,
+              "motif": 0.001412849494348602,
+              "frame": 0
+            }
+          },
+          "seconds": 2.0830072080000006
+        },
+        {
+          "id": "tree-circle-check",
+          "label": "tree · circle · check",
+          "targetHash": "e26f901753777d74dd14d15a2d7a61e7f2d7fae4b040591484101f4f1321ac17",
+          "checks": true,
+          "geometry": true,
+          "paper": "pass",
+          "featureCheck": true,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "error": {
+            "whole": 0.0011138916015625,
+            "motif": 0.00237146651489281,
+            "frame": 0.0005174120399532079
+          },
+          "reportedError": 0.0010223388671875,
+          "warnings": [],
+          "nominalWidth": 2.50501002004008,
+          "editor": {
+            "passed": true,
+            "error": {
+              "whole": 0.0013275146484375,
+              "motif": 0.002418895845190666,
+              "frame": 0.0008098623234050211
+            }
+          },
+          "seconds": 2.3003746670000003
+        },
+        {
+          "id": "tree-circle-rays",
+          "label": "tree · circle · rays",
+          "targetHash": "7775df4c4544d5937c29c3804bc332aba2085726500e44673a00cd59db641359",
+          "checks": false,
+          "geometry": true,
+          "paper": "pass",
+          "featureCheck": true,
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "error": {
+            "whole": 0.07086181640625,
+            "motif": 0.06687535571997723,
+            "frame": 0.07275263205255107
+          },
+          "reportedError": 0.0703277587890625,
+          "warnings": [
+            "The exported weave differs from the original classified artwork by 7.03%, above the 3.00% limit. This limit measures image fidelity, not similarity to unknown original cutting paths."
+          ],
+          "nominalWidth": 2.50501002004008,
+          "editor": {
+            "passed": true,
+            "error": {
+              "whole": 0.0716400146484375,
+              "motif": 0.06687535571997723,
+              "frame": 0.07389993701070818
+            }
+          },
+          "seconds": 12.484136208
+        },
+        {
+          "id": "tree-hexagon-check",
+          "label": "tree · hexagon · check",
+          "targetHash": "00c50ac16b58133b25502df09239e57977d03e60cbf0e6f474681020b85f94a7",
+          "checks": true,
+          "geometry": true,
+          "paper": "pass",
+          "featureCheck": true,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "error": {
+            "whole": 0.00128173828125,
+            "motif": 0.004504987664914727,
+            "frame": 0
+          },
+          "reportedError": 0.001190185546875,
+          "warnings": [],
+          "nominalWidth": 2.50501002004008,
+          "editor": {
+            "passed": true,
+            "error": {
+              "whole": 0.001220703125,
+              "motif": 0.00429046444277593,
+              "frame": 0
+            }
+          },
+          "seconds": 1.8762483330000033
+        },
+        {
+          "id": "star-circle-rays",
+          "label": "star · circle · rays",
+          "targetHash": "fa93bb5f0c3c43ca2f9a919a5b7ae605adfe62c301b363e1e8c192b2e26b42e2",
+          "checks": false,
+          "geometry": true,
+          "paper": "pass",
+          "featureCheck": true,
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "error": {
+            "whole": 0.061859130859375,
+            "motif": 0.04372984253462341,
+            "frame": 0.07045802213623684
+          },
+          "reportedError": 0.06256103515625,
+          "warnings": [
+            "The exported weave differs from the original classified artwork by 6.26%, above the 3.00% limit. This limit measures image fidelity, not similarity to unknown original cutting paths."
+          ],
+          "nominalWidth": 2.50501002004008,
+          "editor": {
+            "passed": true,
+            "error": {
+              "whole": 0.0635833740234375,
+              "motif": 0.046291026370707644,
+              "frame": 0.07178529649959507
+            }
+          },
+          "seconds": 12.649868999999999
+        },
+        {
+          "id": "heart-circle-check",
+          "label": "heart · circle · check",
+          "targetHash": "4b03967116a43164ac31c78f9a4bfda83ebcbe38aadc3a02f92bcea0a0aa334f",
+          "checks": false,
+          "geometry": true,
+          "paper": "pass",
+          "featureCheck": false,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "error": {
+            "whole": 0.0198516845703125,
+            "motif": 0.04548472775564409,
+            "frame": 0.007693692072347701
+          },
+          "reportedError": 0.0198516845703125,
+          "warnings": [
+            "2 substantial interior artwork region(s) lost most of their colour. Inspect the original mask and comparison."
+          ],
+          "nominalWidth": 2.50501002004008,
+          "editor": {
+            "passed": true,
+            "error": {
+              "whole": 0.021484375,
+              "motif": 0.048140770252324036,
+              "frame": 0.008840997030504814
+            }
+          },
+          "seconds": 12.415522790999995
+        },
+        {
+          "id": "cat-circle-check",
+          "label": "cat · circle · check",
+          "targetHash": "b5b206d60b7251f77b7e3138abd679311b8d3026e1b758485916ca27023f6df7",
+          "checks": false,
+          "geometry": true,
+          "paper": "pass",
+          "featureCheck": false,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "error": {
+            "whole": 0.0347442626953125,
+            "motif": 0.09206033010813887,
+            "frame": 0.007558715018446864
+          },
+          "reportedError": 0.03485107421875,
+          "warnings": [
+            "7 substantial interior artwork region(s) lost most of their colour. Inspect the original mask and comparison.",
+            "The exported weave differs from the original classified artwork by 3.49%, above the 3.00% limit. This limit measures image fidelity, not similarity to unknown original cutting paths."
+          ],
+          "nominalWidth": 2.50501002004008,
+          "editor": {
+            "passed": true,
+            "error": {
+              "whole": 0.036224365234375,
+              "motif": 0.09424207930184025,
+              "frame": 0.008706019976603977
+            }
+          },
+          "seconds": 11.019114332999997
+        },
+        {
+          "id": "tree-circle-plain",
+          "label": "tree · circle · plain",
+          "targetHash": "6c84d86563e43a02ed6c06d83ebfd7f81f9ab3cf9c32c01e85a3536924ed4bda",
+          "checks": false,
+          "geometry": true,
+          "paper": "pass",
+          "featureCheck": false,
+          "slits": {
+            "left": 1,
+            "right": 1
+          },
+          "error": {
+            "whole": 0.0386810302734375,
+            "motif": 0.06208499335989376,
+            "frame": 0.027580311347070997
+          },
+          "reportedError": 0.03887939453125,
+          "warnings": [
+            "1 substantial interior artwork region(s) lost most of their colour. Inspect the original mask and comparison.",
+            "The exported weave differs from the original classified artwork by 3.89%, above the 3.00% limit. This limit measures image fidelity, not similarity to unknown original cutting paths."
+          ],
+          "nominalWidth": 2.50501002004008,
+          "editor": {
+            "passed": true,
+            "error": {
+              "whole": 0.0399017333984375,
+              "motif": 0.06317586795674444,
+              "frame": 0.028862593359128948
+            }
+          },
+          "seconds": 10.680036541000002
+        }
+      ]
+    },
+    {
+      "group": "text",
+      "date": "2026-10-13T12:04:26.041Z",
+      "settings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "timeLimit": 15,
+        "trials": 0,
+        "width": 100,
+        "minWidth": 2,
+        "preferMatchingSheets": false
+      },
+      "resolution": 256,
+      "physicalAssemblyTested": false,
+      "rows": [
+        {
+          "id": "text-StudyNunito-air",
+          "label": "ANNA · StudyNunito · open field",
+          "targetHash": "21219f16ea60ee156b76f157c7eb05c0c21cb8566f5a1a5ac134ce354a26bad8",
+          "checks": false,
+          "geometry": true,
+          "paper": "pass",
+          "featureCheck": false,
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "error": {
+            "whole": 0.103515625,
+            "motif": 0.09187410764169097,
+            "frame": 0.11477279548592352
+          },
+          "reportedError": 0.1042633056640625,
+          "warnings": [
+            "3 substantial interior artwork region(s) lost most of their colour. Inspect the original mask and comparison.",
+            "The exported weave differs from the original classified artwork by 10.43%, above the 3.00% limit. This limit measures image fidelity, not similarity to unknown original cutting paths."
+          ],
+          "nominalWidth": 2.50501002004008,
+          "editor": {
+            "passed": true,
+            "error": {
+              "whole": 0.1045074462890625,
+              "motif": 0.09358122788503322,
+              "frame": 0.11507293354943274
+            }
+          },
+          "seconds": 16.058148584
+        },
+        {
+          "id": "text-StudyNunito-woven",
+          "label": "ANNA · StudyNunito · dense weave",
+          "targetHash": "7482d8f20e78b4526ec1c64c818b68d3050f27e2d8c651386e0c46dbdcf7308d",
+          "checks": false,
+          "geometry": true,
+          "paper": "pass",
+          "featureCheck": false,
+          "slits": {
+            "left": 7,
+            "right": 7
+          },
+          "error": {
+            "whole": 0.0393218994140625,
+            "motif": 0.07998634303805326,
+            "frame": 0
+          },
+          "reportedError": 0.038970947265625,
+          "warnings": [
+            "2 substantial interior artwork region(s) lost most of their colour. Inspect the original mask and comparison.",
+            "The exported weave differs from the original classified artwork by 3.90%, above the 3.00% limit. This limit measures image fidelity, not similarity to unknown original cutting paths."
+          ],
+          "nominalWidth": 2.50501002004008,
+          "editor": {
+            "passed": true,
+            "error": {
+              "whole": 0.0392913818359375,
+              "motif": 0.07983115028865852,
+              "frame": 0.00009004141905276428
+            }
+          },
+          "seconds": 15.534968041999997
+        },
+        {
+          "id": "text-StudyDancing-woven",
+          "label": "Anna · StudyDancing · dense weave",
+          "targetHash": "6bad2d3355ef3493227beeabee46e291d7a90c1650a92d894e9e2c08b87c5850",
+          "checks": false,
+          "geometry": true,
+          "paper": "pass",
+          "featureCheck": false,
+          "slits": {
+            "left": 7,
+            "right": 7
+          },
+          "error": {
+            "whole": 0.0232391357421875,
+            "motif": 0.04702340306660873,
+            "frame": 0.0002401104508073714
+          },
+          "reportedError": 0.023040771484375,
+          "warnings": [
+            "1 substantial interior artwork region(s) lost most of their colour. Inspect the original mask and comparison."
+          ],
+          "nominalWidth": 2.50501002004008,
+          "editor": {
+            "passed": true,
+            "error": {
+              "whole": 0.0236053466796875,
+              "motif": 0.04752001986467192,
+              "frame": 0.0004802209016147428
+            }
+          },
+          "seconds": 15.893146167000006
+        }
+      ]
+    },
+    {
+      "group": "retry",
+      "date": "2026-10-13T12:06:18.877Z",
+      "settings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "timeLimit": 30,
+        "trials": 0,
+        "width": 100,
+        "minWidth": 2,
+        "preferMatchingSheets": false
+      },
+      "resolution": 256,
+      "physicalAssemblyTested": false,
+      "rows": [
+        {
+          "id": "tree-circle-rays-8",
+          "label": "tree · circle · 8 radial sectors",
+          "targetHash": "ae1d9203ee1c556a2b28e8f70d42bb484578079f3dc02544e69040bda1b6db7b",
+          "checks": true,
+          "geometry": true,
+          "paper": "pass",
+          "featureCheck": true,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "error": {
+            "whole": 0.00164794921875,
+            "motif": 0.0035571997723392148,
+            "frame": 0.0007423737964546027
+          },
+          "reportedError": 0.001617431640625,
+          "warnings": [],
+          "nominalWidth": 2.50501002004008,
+          "editor": {
+            "passed": true,
+            "error": {
+              "whole": 0.001708984375,
+              "motif": 0.004031493075317777,
+              "frame": 0.0006073967425537658
+            }
+          },
+          "seconds": 3.3848000000000003
+        },
+        {
+          "id": "tree-circle-rays",
+          "label": "tree · circle · rays",
+          "targetHash": "7775df4c4544d5937c29c3804bc332aba2085726500e44673a00cd59db641359",
+          "checks": false,
+          "geometry": true,
+          "paper": "pass",
+          "featureCheck": true,
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "error": {
+            "whole": 0.067169189453125,
+            "motif": 0.06383987858091444,
+            "frame": 0.06874831278682624
+          },
+          "reportedError": 0.0680694580078125,
+          "warnings": [
+            "The exported weave differs from the original classified artwork by 6.81%, above the 3.00% limit. This limit measures image fidelity, not similarity to unknown original cutting paths."
+          ],
+          "nominalWidth": 2.50501002004008,
+          "editor": {
+            "passed": true,
+            "error": {
+              "whole": 0.0685882568359375,
+              "motif": 0.06407702523240372,
+              "frame": 0.07072797624403851
+            }
+          },
+          "seconds": 27.769274792
+        },
+        {
+          "id": "cat-circle-check",
+          "label": "cat · circle · check",
+          "targetHash": "b5b206d60b7251f77b7e3138abd679311b8d3026e1b758485916ca27023f6df7",
+          "checks": false,
+          "geometry": true,
+          "paper": "pass",
+          "featureCheck": false,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "error": {
+            "whole": 0.0347442626953125,
+            "motif": 0.09206033010813887,
+            "frame": 0.007558715018446864
+          },
+          "reportedError": 0.03485107421875,
+          "warnings": [
+            "7 substantial interior artwork region(s) lost most of their colour. Inspect the original mask and comparison.",
+            "The exported weave differs from the original classified artwork by 3.49%, above the 3.00% limit. This limit measures image fidelity, not similarity to unknown original cutting paths."
+          ],
+          "nominalWidth": 2.50501002004008,
+          "editor": {
+            "passed": true,
+            "error": {
+              "whole": 0.036224365234375,
+              "motif": 0.09424207930184025,
+              "frame": 0.008706019976603977
+            }
+          },
+          "seconds": 22.381009416999994
+        }
+      ]
+    }
+  ]
+}

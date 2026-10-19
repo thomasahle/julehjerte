@@ -116,7 +116,8 @@ export function templateAddress(design: HeartDesign, lang: Language): string {
  * for a heart whose two halves differ, which half this is ("Jul (Venstre)").
  */
 export function templateLabel(piece: Pick<TemplatePiece, 'design' | 'lobe' | 'shared'>, lang: Language): string {
-	const name = heartName(piece.design, lang);
+	// A name of several lines (generated text) prints on one.
+	const name = heartName(piece.design, lang).replace(/\r?\n/g, ' / ');
 	if (piece.shared) return name;
 	return `${name} (${t(piece.lobe === 'left' ? 'lobeLeft' : 'lobeRight', lang)})`;
 }

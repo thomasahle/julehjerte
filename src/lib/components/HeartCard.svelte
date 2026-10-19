@@ -126,7 +126,6 @@
 			{design}
 			{markup}
 			loadPaper={loadPaperHeart}
-			colors={heart.colors}
 			size={SIZE}
 			{ribbon}
 			delay={swayDelay}

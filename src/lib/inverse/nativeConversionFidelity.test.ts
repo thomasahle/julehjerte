@@ -23,7 +23,7 @@ describe('conversion of unchanged imported masks', () => {
     const paintOnly = { size: mask.size, data: mask.data };
     const prior = convertValidatedCutGeometry(geometry, { name: 'puppy', reference: { mask: paintOnly } });
     const nativeCheck = conversionFidelity(original, { mask: mask.sourceRaster! });
-    expect(prior.editorValidation?.fidelity.passed).toBe(true);
+    expect(prior.editorValidation?.fidelity?.passed).toBe(true);
     // The old guard missed six additional errors on the original 390px mask.
     const priorNative = nativeCheck(prior.design);
     expect(priorNative.passed).toBe(false);
@@ -31,7 +31,7 @@ describe('conversion of unchanged imported masks', () => {
 
     const result = convertValidatedCutGeometry(geometry, { name: 'puppy', reference: { mask } });
     expect(nativeCheck(result.design).passed).toBe(true);
-    expect(result.editorValidation?.fidelity.nativeRaster?.passed).toBe(true);
+    expect(result.editorValidation?.fidelity?.nativeRaster?.passed).toBe(true);
     const exported = parseHeartFromSVG(serializeHeartToSVG(result.design), 'puppy.svg')!;
     for (const design of [result.design, exported]) {
       expect(conversionFidelity(original, { mask })(design).passed).toBe(true);

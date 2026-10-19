@@ -2,7 +2,7 @@
   Mal's left column (docs/redesign/PAINT.md §2, decision 4): the two things that
   replace the mask wholesale, and the tools that change it in place.
 
-  Farver and Hjertedetaljer stay in Tegn; the two swatches here only say which
+  Paper colours live in the shared footer; the two swatches here only say which
   paper the pen lays down, which is why they are inside "Værktøj" and not a
   colour panel of their own.
 -->

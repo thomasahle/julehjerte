@@ -450,7 +450,7 @@ Keep every existing tool (undo/redo, insert/delete node, corner/smooth/symmetric
 44px icon buttons with tooltips — nothing removed, no labels under icons. Apply the palette: page background,
 panels white with 1px `--line` and radius 12, section titles 12px uppercase `--muted`, green accents, red
 primary. Top bar: back link + logo at the left; Help (icon), **Hent PDF** (primary red) and **Gem** (dark
-green) at the right. Right panel 340px: Symmetri (segmented Fra / Sym / Anti), Tegning, Farver, Hjertedetaljer,
+green) at the right. Right panel 340px: Symmetri (segmented Fra / Sym / Anti), Tegning, Hjertedetaljer,
 Handlinger. A **"Skjul panel"** control collapses the panel so the canvas fills the width; a slim tab at the
 right edge ("Vis panel") brings it back; remember the choice in localStorage. Add a "Snap til modsat side"
 checkbox and a one-line hint above the canvas. The mobile editor keeps its existing stacked panels.
@@ -470,11 +470,11 @@ Tegn passes `compact` and its segments keep the glyph alone (172px for
 the three) with the word left in the DOM as their accessible name and repeated in the tooltip; Mal's panel
 stays in the flow of a page that scrolls, passes nothing, and keeps its words down to 390px. A compact row puts
 the name back beside its control, and wraps below it again where even that does not fit — one line in Tegn's
-full-width phone panel, two in the 235px one it gets beside Farver at 760px. The two Tegning checkboxes take
+full-width phone panel, two in the narrower one it gets at 760px. The two Tegning checkboxes take
 the same treatment — the woven square for "Vis omrids", two points pulling together for "Snap til den anden
 laps punkter" — drawn in the canvas's own cut colours, cyan for the left lobe and orange for the right
 ($lib/editor/outlineColors, which the canvas reads too), because the colours are half of what those two icons
-say. In the 149px column those two share with Farver on a phone the glyph costs the Snap label a third line;
+say. Where a narrow phone column costs the Snap label a third line for the glyph,
 nothing is clipped, and no glyph small enough to win the line back is still worth drawing, so it is accepted.
 
 Where cyan and orange cut strokes overlap, alternate their colours along the shared
@@ -519,7 +519,7 @@ out to the window edges. Clipping it at their edges was the one thing that gave 
 
 Below 900px nothing floats over the drawing: there was no room for it, and on a phone the cards squeezed the
 heart to a sliver and covered the canvas notices. The rail becomes a row above the canvas, the canvas keeps
-`max(55dvh, 280px)`, and the Symmetri, Tegning and Farver cards follow it in the page's flow (then
+`max(55dvh, 280px)`, and the Symmetri and Tegning cards follow it in the page's flow (then
 Hjertedetaljer and Handlinger), so the page scrolls instead of the heart shrinking. The canvas notices sit
 above any card (z-index 27 against the cards' 26) on every width.
 
@@ -551,10 +551,637 @@ debounced path autosave uses. Open the editor as a new heart with a draft waitin
 canvas notice — "Du har en kladde fra sidst. Fortsæt hvor du slap?", *Fortsæt* / *Start forfra* — read after
 mount, never during render. Saving the heart, discarding the draft, or starting another one clears it.
 
-Colours belong to the heart, not to the browser: a design may carry `colors: { left, right }` (two hex values),
-and the Farver section edits them with two real colour inputs plus "Byt". Gallery hearts carry none and follow
-the site-wide colour store as before; a heart the visitor draws stores what was picked, and saving, sharing and
-the PDF carry it. Old saved hearts without colours keep rendering in the site-wide pair.
+Paper colours are a site-wide viewing preference, controlled by the shared footer on every page,
+including the generator, vector editor and paint editor. The footer offers two colour inputs, swap,
+and five presets. Changing colours repaints previews without regenerating cuts or scheduling an
+editor autosave. Saved/exported designs may retain a `colors` appearance snapshot; live previews
+always follow the footer. Desktop canvases account for the footer's measured height.
+
+The generator's start screen (`/design/`) follows view 1 of the clickable mockup in `docs/design-start/`:
+two featured cards (*Vælg en figur*, *Skriv et navn*), four smaller ways in (template, picture, paint,
+draw), the three steps and a link to the guide, over a faded strip of the winter landscape. Its drawings
+are real and prerendered by `$lib/server/designStart`: gallery hearts, the heart *Skriv et navn* opens
+with (the generator's default text and frame), and six catalogue motifs. They paint with
+`--paper-left`/`--paper-right`, so the footer's colours apply; a few set their own `--paper-right` to
+show other colours. The browser downloads neither the gallery data, the catalogue nor the generator to
+show the start screen.
+
+The figure and text generators use contour topology, never the image solver. Visible outlines belong
+to one sheet; invisible connecting cuts use exactly the same path in both sheets. Enclosed regions
+and detached components must be woven using these shared cuts: no cut-out fields, preview overlays
+or grey areas to remove from a PDF. In a four-port cell, a pair of interior connections brackets one
+external port, preserving the open path pairings. Nested contours recurse, and sibling holes may
+share a chain. The compiler rejects branches, closed cycles and paths ending on the wrong edge;
+geometric clearance and artwork fidelity are checked before a result can be saved or downloaded.
+Fine serifs and narrow gaps can need more paper than the clearance allows, even with exact
+outlines: each terminal narrower than the clearance needs its own gate connection at its tip,
+and a four-port cell has only four. Never refuse a heart whose weave and picture can be made.
+When every construction fails clearance, recheck the completed constructions with cuts at least
+10%, then 3%, then 1% of the clearance apart, so cuts on one sheet never cross or touch, and keep
+exact outlines, frame, topology and fidelity checks. Bends and loops shorter than the full
+clearance remain part of one cut at every spacing, so tiny glyph edges are not mistaken for
+paper. Choose the widest spacing kept, then the fewest strips with narrow paper, then the
+fewest sharp tips. Show the result
+with a warning that names the letters next to the narrow paper ("tricky because of “F”") so the
+visitor can decide whether to change them. Earlier clean results never take this path; the
+robustness corpus reports these results as hard, not accepted.
+Imported figure walks are split at exactly repeated vertices, and collapsed
+loops are removed without changing the even-odd fill or moving any outline.
+Classify nested contours using bounds and a point off the parent's boundary;
+a shared starting vertex must not turn a separate component into a hole.
+If a newer local attachment route fails after cells are joined or the full
+sheet is validated, try the original route too. Skip this extra attempt when
+the local construction itself failed; keep all clearance and fidelity checks.
+For a counter already touching its parent outline, a final figure fallback may
+use that existing junction as one connection and retain an invisible bridge on
+the other side of an external port. The two connections must still bracket that
+port and preserve open strip pairings. Do not move the outline, merge away the
+counter, or create a zero-length cutting segment. Skip this fallback when the
+contour forest has no counter contact.
+The circle with a plain edge (Enkel) was removed too (2026-10-18): it joined a simple solid
+motif at two points, and otherwise repeated the rays or the checks with thinner spokes; old
+links open with the rays. The only centre panel is the circle; the diamond, hexagon, oval, soft-diamond and scalloped
+panels were removed (2026-10-17) because none of 435 real figure hearts used them, and old links
+open with the circle. A link pasted into an open generator changes only the hash; the page follows
+it (the page's own address updates use replaceState and never trigger that). Text also has close and spacious letter-cell framing, each with square or letter-sized cells, the checkerboard and the circle.
+Figure frames follow what real hearts use. Next to the circle with rays, checks,
+a sunburst or a double border, and the close-fitting and checked-tip frames, there are four
+frames without a centre panel. **Wedges** (Kiler; a quarter of real figure hearts): from each
+corner of the square a kite points at the motif and stops a small gap short of it, in the motif's
+colour. They are the close-fitting frame's construction with its legs tapered toward the corner
+and no outer strips. **Large silhouette** (Stor silhuet): the motif is scaled to fill the square
+(the size setting is the fraction of the largest fit) and leaves a small check in each corner.
+**Small motifs** (Små motiver): the motif in place of a letter on the text checkerboard, on every
+square of one colour of a 4×4 board; a motif that cannot be cut that small gets three squares
+across a 3×3 board, then two on 2×2. A clean smaller board is preferred to a hard-to-cut larger
+one. **Equal squares** (Lige store tern): the motif in place of the one letter of the woven text
+frame with square cells, so it takes the centre square of a regular 3×3 board and every square
+around it is equally large, as in Brodal's hearts. Every cut runs a whole square from the paper
+edge to a corner of the motif's square (the circle with checks leaves the middle strip narrower).
+The motif's cell is one square's diagonal wide, so a wide motif is smaller; cells fitted to the
+motif are the last resort, rather than refusing. **The circle on equal squares** (Cirkel · Lige
+store tern) adds a layer, like the gallery's santa heart (whose lines are not evenly spaced): a
+regular 5×5 board with a circle around the motif. The size setting sizes the circle smoothly and
+the motif fills it up to the space asked for, so both only grow with the setting (tested): from
+five units clear of the centre square's corners (radius 19) to the circle that touches the outer
+ring of squares at their eight inner corners (31.6) at the default 70%, then on into that ring
+almost to the junctions at its corners (42). Up to the touching circle only the two middle lines of
+each sheet end on the circle and the undivided motif meets them like a letter in the circle frame;
+the outer lines cross the paper whole, and once the circle reaches them they follow it, so beside
+each corner of the ring it is left uncut rather than leaving a sliver, a slightly flattened circle.
+At the touching circle the lines end at the junctions on it. Beyond it, like the gallery's santa,
+the circle meets every line, and the motif, divided like a letter into four panels, meets the
+lines' ends in pairs. The eight ends form two cycles, upper left to lower right and upper right to
+lower left, which must cross inside the circle: the panels meet at the motif's centre, or else at
+a point of background near it with paper in every panel around it (a star's lower notch, a cat's
+eye), so their invisible seams cross its paper but not each other. That is the one change of
+construction, between 70% and 71%. Whether a motif can be built each way is decided once, so a
+convex motif (the heart, the bell), which cannot be divided so, stays at the touching circle above
+70%, and one that cannot be kept whole (the gift) takes the large circle's smallest size below it.
+Sizes that cannot be cut cleanly keep their size and are shown as hard to cut (the star at 72–76%,
+the cat beyond the touching circle) rather than jumping smaller; only where nothing at all can be
+finished at a size does the motif shrink a little, and then the circle grow a little. The motif's
+cell takes the usual padding, else little, and an outer gate that the circle passes inside of
+moves in to midway between the motif's farthest point and the circle, so the legs stay inside it.
+Every straight cut lies on the board (tested). Motifs in several separate parts (the coffee cup,
+the bicycle, the sun, the paw) cannot yet be built on this board.
+**The figure in the checks** (Figur i ternene; a sixth of real figure hearts, the gallery's
+notched stars, clovers and hearts): a regular board of four strips per side whose squares swap
+colour inside the motif, so its outline is cut into the strips. The board's lines and the outline
+are all the visible cuts; where four meet (a junction, or the outline crossing a line) two are in
+each sheet, and which is which is free inside the motif, chosen so that every strip still runs from
+edge to edge. Where no choice works, a hidden cut shared by both sheets crosses one of the motif's
+pieces of board (between two of its sides that do not meet, or to an island: an eye, a dot, a hole)
+and the visible cut beside each of its ends changes sheet there; the fewest are used, inside the
+motif unless the cells it touches give fewer narrow places. Narrow paper is avoided first: cuts
+turning by less than 60°, or one sheet's cuts coming closer than the clearance, are put in
+different sheets where they can be, hidden cuts leave their sides at 60–120°, and the motif moves
+up to ten units along the heart's middle where its outline keeps clearer of the lines and
+junctions. It keeps that place, chosen at the default size, at every size, so it only grows with
+the slider, up to three units from the paper's edge. Like the board frames it has no space
+setting. Outlines that touch are first moved apart by a thousandth of the motif's size.
+In the wedge, silhouette and close-fitting
+frames, a symmetric motif gets a symmetric frame: separate extremes that tie (a star's two lower tips, a cat's ears) share a gate
+midway between them, joined to the motif by an invisible coincident cut. That first attempt is
+kept only when it leaves no needle-sharp paper; otherwise every construction uses the motif's own
+extreme points as before. Multi-part motifs that no single cell or panel grid can connect (the
+bicycle, the coffee cup) end in three lanes above and below the motif, with the frame's legs
+from there, after the close-fitting retries. Every figure frame has the same two controls (2026-10-18): the motif's size, and the
+**space around the figure** (Luft om figuren, 0–15% of the square, 3% by default). The former
+frame-size slider is gone: in most frames it only scaled the motif a second time. A circle frame
+draws its circle that far outside the motif's outline (the sunburst's circle is four fifths of its
+frame), within the 50–80 frame sizes its outer strips have room for, and the motif keeps its size.
+The wedges stop that far short of the motif; the silhouette's and the checked tips' corner checks
+move that far toward the paper's corners (the gallery's simple five-point star is the silhouette at
+about 65% size and 9% space); the close-fitting frame keeps its lines on the motif and moves its
+outer strips out. **Sizes move one way with the sliders** (2026-10-18): a frame keeps the space and
+size asked for, cut cleanly or else shown as hard to cut, so nothing jumps back while a slider
+moves. Only where nothing at all can be finished there do the frames without a centre panel try
+half the space and then none, and a circle move 4% further out and then keep the frame's own size.
+The two board frames whose squares hold the motif (small motifs, equal squares) fix the space with
+their squares, as the figure in the checks does with its board; their size setting scales the
+motif within its square, 0.6–1.1 times the default.
+On them a motif keeps, at every size, the choice its default size made, since another board would
+make it jump in size: the number of small copies, or for equal squares the centre square of a
+three-strip board (the motif up to a tenth larger in it, or with the spacious frame's room around
+it), else several squares of a finer board. Each choice is first tried quickly, as woven text tries
+its recipes before the slower retries. The page passes the choice from its default-size heart, so
+other sizes build only that (the cookie's small motifs: 2–4 s instead of 25–37 s); beyond what the
+choice can be cut at, the motif keeps the default size's own size.
+Figure choices are complete templates. Their thumbnails render the actual generated heart in the
+current colours, with unique SVG IDs, at the default size and space, so moving those sliders or
+choosing a frame leaves them alone. Each keeps its last heart until the new one is ready, which then
+fades in (unless motion is reduced); a neutral outline appears only before the first. They are
+prepared once typing pauses and the main preview is done, by a cancellable sequential background
+worker, so the main preview has priority. While a slider moves,
+the preview worker keeps its current job, only the newest value waits, and a job for a value already
+left is abandoned after 400 ms; every finished result is cached, and a nearby one shows until the
+newest is ready, so the heart follows the slider. A circular sunburst
+adds four open outer strips around a smaller central field, creating eight rays without adding cuts
+through the figure. Templates that fail validation remain explicitly unavailable.
+If the sunburst's inner panel projections graze the outer circle's diagonal
+corners, a final fallback may use axial projections with two horizontal or
+vertical panels. Keep both circles and the motif fixed. Include the outer
+band's two extra strips per sheet in local routing clearance, and use the
+clipped component's phase at each shared seam. Require 10% extra clearance on
+the complete fitted sheets; prefer fewer sharp tips. Earlier successful
+sunburst layouts keep their cuts.
+If a wider component grid still crosses the outer ring, its final fallback may
+detour the inner frame's paper-edge leads around cuts on the same sheet. Keep
+both circles, all artwork contours and the paper-edge endpoints fixed. A/B
+crossings are allowed; coincident cuts obstruct both sheets. Use the existing
+bounded visibility routing with 20% construction reserve, then require 10%
+clearance on the completed, rounded sheets. Do not change successful earlier
+layouts. The paw sunburst uses nine actual strips per sheet and has no cutting
+tips below 45°; its separate material-connectivity audit must also pass.
+
+Framed words keep independent four-port cells for each letter, with a common font baseline.
+In the close and spacious frames, square cells lie on a regular board, as in Brodal's hearts:
+each cell is one square's diagonal wide and the lines leaving the text block are one square apart,
+so the outer strips are as wide as the inner ones and every check is the same square. A line of k
+characters sits on the middle row of a board of k + 2 strips (JUL on 5×5, like Brodal's), a block
+of rows × columns cells on one of columns + rows + 1. The cells share one row height, which holds
+descenders and accents; spaces keep their square; and only recipes that keep cells whole or split
+them into square panels run, since unevenly split panels, moved gates or bent spokes would make
+uneven squares. When the cells as they are fail, the letters may be 5% and then 10% larger inside
+their unchanged cells, so their connections meet them elsewhere (Cinzel BO, Nunito ÆØÅ in the
+spacious frame and Oswald juleman became clean this way). Cells fitted to each letter make larger letters: without a frame they fill the
+heart like the regular board (a single letter as large as on its 3-strip board), but their checks
+come in several sizes, and uneven columns turn them into slanted rectangles (J / UL / L). Which
+looks better depends on the word: narrow letters leave square cells gappy (William's letters are
+54% of their fitted size, JUL's 69%). The picker therefore offers both as a pair of frames
+("Lige store tern" and "Store bogstaver"), square by default; the chosen kind gets every recipe it
+allows, retry and the hard-to-cut fallback, and the other kind runs only if that gives not even a
+hard-to-cut heart. The circle has no such pair, since its outer checks follow the ring. It keeps
+the automatic choice: square cells when they keep at least 85% of the fitted letter size, first
+as a quick attempt with only the recipes that keep every cell square, without the slow attachment
+searches (moved gates, bent spokes) or panels that split letters unevenly, and with the
+severe-pinch precheck that skips hopeless curve fits; otherwise, and when that is not clean,
+fitted cells with every recipe; square cells with every recipe only as the last resort.
+Text entry accepts six lines of ten characters. Multiline layouts
+connect a matrix of letter cells; shorter rows are centred on the grid and empty positions continue
+the ordinary weave. Counters use shared bridges in every row. North/south connections get separate frame gates rather than routing
+an entire word through two long cuts. Complicated figures first try neighbouring panels; paired
+clipped boundaries cancel or become shared cuts, preserving every visible detail. Prefer more
+manageable strips over fewer cuts, while retaining the full clearance and fidelity checks. Two-dimensional
+panels separate the gift's bow and box pieces into a 5×5 grid.
+If uniform panel seams graze a tip, one final three-panel layout may shift its
+dividers into wider gaps between contour coordinates. Keep each shift within a
+quarter of the nominal panel width, so neighbouring panels cannot become narrow.
+Only the invisible partitions move; the motif, frame and clearance stay intact.
+The close-fitting figure template can also use panels. Its outer gates land on
+each panel's silhouette, while internal gates keep their shared seams. The
+surrounding grid reaches the figure directly, with no added circular frame.
+For a layered circular medallion that cannot fit in one cell, divide the whole
+circle and motif together. Project outer panel gates inward from each panel's
+side instead of attaching two neighbours at the same silhouette extremum.
+Internal gates may move into the widest filled interval of their shared seam,
+avoiding counters. Keep both complete outer bands and validate the joined cuts.
+General framed figures can also use filled seam intervals after their existing
+layouts fail. Try bounded 2×2 and spread 5×2 panel layouts; both neighbours must
+agree on each shared gate. Keep the selected frame and the motif's visible shape.
+When clipping creates an even-degree junction at touching contours, extract
+closed walks at each repeated vertex instead of rejecting the shared point or
+returning one self-touching outline. Retain the same boundary edges and even-odd
+fill, including counters and separate islands. Reject unpaired or open boundaries,
+and keep the complete paper-path and artwork checks after stitching.
+If those layouts fail, separate islands may occupy their own cells. Try two
+columns first, then three and four. Keep counters with their parent island;
+repeatedly split the largest island until every row is full. Track each piece's
+original island so adjacent pieces meet inside their common filled seam. Stitch
+all artificial seams after routing. This construction handles two to eight
+original islands and retains the artwork, selected frame and grid clearance.
+A wider grid can give four toes separate cells while dividing the larger paw pad
+beneath them; do not merge or reposition the components to fit the grid.
+The close-fitting template may use this component layout after its earlier
+recipes fail. Put its exterior gates on the convex envelope of the complete
+motif, then project them to the paper edges without drawing a new frame outline.
+The average of the envelope vertices supplies an interior origin for those
+projections. Check fidelity over the entire envelope, including the empty spaces
+between islands; clipping the validation domain to individual cells is insufficient.
+If an envelope gate itself grazes another island, a final fitted-only fallback
+may offset the convex envelope outward by two or three local clearance units.
+Offset supporting lines, rather than scaling from the centre, so flat sides get
+the same room as corners. This moves invisible joins only and draws no new frame
+outline. Try normal shared-cut approaches with handles of 10% or 20% of the
+connection length. Keep the motif fixed, validate the whole expanded envelope,
+require 10% extra clearance after fitting, and stop at zero narrow tips. Earlier
+successful layouts retain their original gates and curves. The fitted paw uses
+seven strips per sheet and must pass the independent material-connectivity audit.
+If the component layouts also fail, a whole-motif fitted construction may move
+its four silhouette support gates outward by two or three five-strip clearance
+units. A gate lying directly on the main outline can otherwise force an island's
+shared connection to return to the same point. The offset makes room to attach
+elsewhere without moving the artwork or adding a visible frame outline. Keep
+five strips per sheet, validate the expanded fitted region and the complete cut
+paths, require 10% clearance reserve, and prefer fewer sharp tips. Stop at zero
+narrow tips; earlier successful layouts and their iteration cost stay unchanged.
+Neighbouring cells share a gate between their nearest boundaries. If a third
+island occupies that gate, move it into the surrounding space. Shared A/B cuts
+can then detour around other cuts using a bounded geometric visibility graph:
+at most 240 offset vertices inside the connection’s bounding box expanded by
+seven clearances.
+Keep every endpoint and visible outline fixed. Reject crossings and overlapping
+segments while routing, then apply the full topology, spacing and fidelity checks.
+If no detour exists, the unchanged connection must still pass those checks.
+These are final fallback constructions, so established successful layouts retain
+their cuts. No raster image solve or detached cutout is involved.
+A figure layout that compiles but fails the complete sheet checks may reuse the
+same shared-cut detours after every established recipe has failed. Keep these
+completed layouts only for the current request. Skip an unchanged connection
+set, recompile changed edges, and run all original validation again. Apply this
+to checked-tip and layered frames as well as ordinary framed figures; preserve
+their domains, counters, frame geometry and earlier successful constructions.
+The checked-tip figure frame retains its three lanes and two outer cuts. When
+its original contour chain fails, each occupied lane may use practical two-port
+routing, including shared counter bridges and shoulder relief. A final island
+layout assigns off-centre components to the side lanes sooner and approaches
+them at their own heights, continuing outside the whole motif rather than
+diagonally through a different component. Skip another fit if this leaves the
+lanes and connections unchanged.
+Large motifs may need the same frame's outside routes fitted into the available
+border space. Place each outer band at most halfway between the artwork and the
+paper edge, retaining at least the six-strip clearance. Clamp the corner bypass
+inside those bands and shorten its vertical range accordingly; preserve the
+selected motif size, the checked tips and the six-strip layout. These are final
+fallbacks after the established constructions, with the same full-sheet topology,
+spacing and artwork checks.
+Checked-tip lanes may also use short bent approaches to the motif outline after
+the straight connections fail. General framed figures use the same option on
+their initial panel and four-port layouts, after their established recipes fail.
+For two to eight separate components, a final checked-tip fallback can join
+each lane's contours at their nearest boundary points. This avoids leaving a
+thin return beside a bridge that misses a near contact. Compare nearby facing
+outline segments across all lanes and assign them to opposite sheets, retaining
+the closest preferences in a contact forest. Reversing a two-terminal contour's
+A/B arcs preserves both open paths and the visible motif. Try two small ordering
+tilts and the two complementary assignments; keep the three lanes, six strips,
+counter bridges and frame. Require full-sheet validation and a 10% clearance
+reserve after curve fitting and tip improvement. Earlier successful layouts
+return before this fallback.
+For one connected silhouette, the checked-tip frame may instead divide the
+artwork vertically among its three existing lanes. First try quarter-width
+side pieces with approaches at each piece's own height, then equal thirds with
+the ordinary contour chain. Clip the complete even-odd artwork, including every
+counter, and stitch the artificial dividers after routing. Keep both checked
+tips, the outer bands and six actual strips per sheet. Validate the complete
+cut paths and artwork; coincident joins may use 20% or 40% normal-approach handles
+if the straight construction fails. Require 10% clearance reserve after fitting,
+prefer fewer sharp tips, and stop at zero. Usually existing successful layouts
+return before this bounded fallback. When one silhouette has exactly three separate,
+unnested counters, one entirely inside each quarter/half/quarter lane, try this
+recipe first. Detect that topology from the contours, never from an icon ID.
+If it fails, continue the established recipes without repeating the same retry.
+For a plain oval containing separate solid marks above one wider, counter-bearing
+body, try horizontal nearest-contact lanes first. Detect this arrangement from
+the contour forest and bounds, never an icon ID. Change only the partition axis:
+restore the original motif coordinates before constructing cuts, and retain the
+oval boundary and four actual strips. Compare two ordering tilts with direct or
+aligned approaches, keeping the result with fewer narrow tips and a 10% clearance
+reserve. If all four fail, continue the established constructions. This avoids
+exhausting unsuitable vertical layouts during interactive editing.
+
+“Tern” is a text frame, not a separate mode or control. It places the typed letters
+once on the classical checkerboard, one character per square. The heart shows the board turned
+45°, so each typed line is one horizontal row of the diamond: its squares touch at their corners
+and share a colour, and the next line's squares sit between them. A line is centred where its
+row allows, otherwise half a square to the left (to the right only if that is what connects).
+The lines first pack into the diamond, with the fewest empty squares beside them in their rows,
+so J / JU / JUL / JULE fills the top half of a 4×4 board and JUL / ul / b the bottom tip of 3×3. The heart is
+mirror symmetric, so the placement then keeps the most lines centred; then the block sits as near
+the widest row as it can; then the first line gets the wider row, else the higher one. When every junction choice of that placement leaves narrow paper, the next placement
+is tried before a hard-to-cut heart (a lone Bree Serif Å then sits beside the centre). The board
+is the smallest that fits and connects: abc is 3×3 with abc across the
+middle row, abc / de puts de below it on the same board, abc / def needs 4×4 with abc half a
+square left, a / bc / d is 2×2, ANNA 4×4, JUL 3×3, GOD JUL 7×7, J / UL / JUL / UL / J fills all
+nine squares of 3×3, JUL / JU / L fills the lower five, and a single letter takes the top square
+of a 2×2 board. Spaces stay plain squares. Nothing repeats: a visitor who wants a pattern types
+it. Letters stay upright, all at one size: the widest, at the full height of the text, fills
+its square, and narrower letters keep that size, centred, rather than growing to fill theirs (an
+I as tall as the H beside it). When no layout weaves cleanly, the first is tried with all letters
+5% and then 10% larger before a hard-to-cut heart (only the standard size's rejected cuts go to
+that fallback), and a result with narrow paper tips is compared, as exported, with the first
+layout 5% larger: a letter that shrank to match a wider one can then route without them. Every letter contrasts with its square; counters keep the square's
+background colour. It is actual cutting geometry, with no preview overlays or cutouts.
+
+Each lettered square connects through paired shared bridges to one grid junction at one of its
+corners, shared with the other three squares around that junction. At each bridge the visible
+grid changes sheet, preserving open strips and the checkerboard. A group changes only the pieces
+of its four grid edges between the junction and its connections, and from outside it passes one
+cut of each sheet straight through, like a plain crossing. So two junctions may share a grid edge
+when each keeps its connections in its own half of it: connections up to a quarter square out
+stay put, farther ones are pulled into the junction's half. A 3×3 board needs this: its four
+junctions are the corners of the centre square, and each tip square touches only one of them, so
+JUL / JU / L and the full diamond J / UL / JUL / UL / J only connect with neighbouring junctions.
+Because they crowd the connections, neighbouring junctions are used only on a board that cannot
+connect without them, and the next board without them follows as a fallback. Choose junctions for
+the fewest lettered squares that lie between two junctions, then the fewest junctions and pairs
+of neighbours. Squares outside every group are the ordinary
+checkerboard. An empty square in a group keeps the group's two-port pairing with one coincident
+cut between its two connections. A lettered square between two junctions at opposite corners
+carries its letter in one group and, in the other, a short coincident cut across that corner
+(10% and 25% along its edges); the next square of that group connects inside the cut. Links to
+the former repeating frames open the woven frame, or this one for “Gentag med tern”.
+If the established checkerboard routes fail, move each failed letter's two
+connections independently along its cell edges. The start stays before the
+midpoint and the end after it, preserving neighbouring connection order. Try at
+most nine offset pairs, retaining the same outline, invisible-cut construction
+and clearance checks. Share the letter cache across construction passes and
+reuse locally clear cells, including those completed by the wider attachment
+search. Do not refit the full design when none of its local routes changed.
+
+Some checkerboard glyphs need four external connections rather than two. After
+all earlier layouts and repairs fail, each 2×2 letter group may select a mixed
+two-/four-port topology. Keep existing successful cuts: the mixed construction
+can leave more sharp tips than a previously valid two-port repair. Interleave the
+neighbours' connections along their shared grid edge; two connections surround
+a two-port neighbour's single connection. Exchange paper families only according
+to the group's open-path pairing. The group retains one cut between each pair
+of opposite boundary edges, so these groups compose into the original grid with
+the same letter field and checker colours. Reuse the earlier two-port geometry
+where positions match, cache local failures, and reroute only four-port cells in
+the balanced retry. Validate the complete fitted result and both editor handoffs.
+
+When established checkerboard connections fail, consider the individual stroke
+tips facing each gate. Local maxima of the outline's projection find ends that
+the global support point misses, such as the separate legs of lowercase m.
+Keep the same bounded attachment budget and exact outline. Reuse clear existing
+cells, and give the alternate candidate set its own cache entries. This is a
+final fallback for the checkerboard; successful earlier constructions keep
+their cuts. Every completed sheet still needs the full spacing, topology and
+artwork checks. Routing around the outside of a letter is not part of this
+fallback: the tested detours left narrow gaps beside the unchanged grid lines.
+
+For the checkerboard construction, compare a bounded set of invisible-cut
+routes before choosing one. After a valid layout exists, one additional pair of
+connections near the cell midpoint can remove further sharp paper tips. Accept
+it only if the exported paths have fewer narrow tips and still pass the complete
+spacing and artwork checks. Stop when there are no tips below 45°, and reject
+worse raw candidates before curve fitting. After the uniform-spacing passes,
+combine their already-cached letter cells when choosing connections individually
+reduces narrow tips. Include each connection's join to both grid directions in
+the local score, keep connection order along shared edges, and retain the earlier
+valid design unless the complete fitted export improves too. Do not start another
+routing search for this pass. Prefer counter joins at natural corners and avoid
+short sharp steps and hairpin turns; an extra coincident chord may split a
+fragile tongue between the sheets. Keep the glyph outline unchanged. If these
+routes cannot pass spacing validation, retain the original contour construction
+for that letter.
+Framed text may also use this ranking as a final construction when the ordinary
+letter-cell and panel layouts fail. In a 2×2 checkerboard field, one additional
+spacing of the shared grid attachments can provide a clear route to detached
+accents; the letter outline stays unchanged.
+When a framed letter has several difficult shoulders, the final routing pass
+may combine two invisible relief chords. Bound this to 128 local pairs and
+retain the original port pairings, artwork and full-sheet spacing checks.
+If a compound route fails after joining neighbouring cells, keep the earlier
+recipe available. Do not rerun it when no compound route was used.
+If difficult counters exhaust the attachment choices, a final pass may spread
+the same 256-candidate budget across more outer attachments, considering at most
+four valid internal bridge variants per attachment. Retain existing successful
+recipes. Framed and checkerboard text only repeat this search when the earlier
+pass actually considered a fifth internal variant at some attachment; otherwise
+the extra pass cannot help. Failed figure layouts may use the wider search on
+their initial panel and four-port constructions, retaining the selected frame.
+For framed text that still fails, try moving a whole letter's opposite contacts
+together along their cell edges, by at most 20% of the cell width or height.
+The nine position pairs retain cyclic gate order and visible glyph contours.
+Use this only for whole-letter cells, since clipped neighbouring panels must
+agree on their seam contacts. Identical letters reuse both the chosen routes and
+their shifted gates. Keep the full-sheet spacing check; skip it if no contacts
+moved, and only widen the attachment search when its earlier budget was crowded.
+If those constructions still fail, shared connections may approach the glyph
+along its outward normal (the outward angle bisector at a corner). Place a short
+bend at most twice the grid clearance from the outline and at most 35% of the
+gate distance away. This avoids grazing a serif without moving its visible
+boundary. Precompute these bends for the fixed attachment candidates; retain
+all contour-crossing, open-path, fidelity and full-sheet clearance checks.
+Framed text combines this with the existing bounded contact shifts. These are
+fallback constructions, preserving earlier successes.
+Framed text may combine these bends with the air layout's wider letter-cell
+padding as a final fallback. Keep the selected frame and exact font outlines.
+Only repeat the wider attachment pass when its earlier budget was crowded; the
+air layout already has this padding and must not repeat an identical recipe.
+If those whole-letter routes still fail, divide letters into three horizontal
+panels, with either one or two columns. Place each internal contact in the
+widest solid interval of its seam, so it cannot land inside a counter; both
+neighbours must choose the same point. These final layouts keep the font
+outline, frame and spacing checks. Skip the repeated full-sheet fit for the
+one-column layout when no seam contact moved.
+A final 2×5 letter division places its internal seams over the ink dimensions,
+excluding the cell padding. Keep the outside gates and the ordinary margin;
+extra cuts must divide useful parts of the letter instead of creating empty
+outer panels. Both clipping and stitching use the same seam positions. Only
+attempt this layout when its resulting grid remains within the 20-strip limit.
+Identical glyphs in the same position within a four-cell group reuse their cuts.
+This frame uses an n×n cut grid with a square physical overlap, up to the shared
+20-strip limit. Its thumbnail, shared link, editor and PDF use the same design.
+
+Spacing follows grid density: use 1.5 normalized units for grids up to 4×4, then scale the gap
+by 4 / max(columns, rows). This retains the construction assumption of about 25 mm per strip
+without selecting a paper size. The generator and editor use this same rule. Generated designs
+carry no print-size preference and use the site's normal PDF layouts. There is no paper-width
+slider, automatic enlargement or multi-page tiling in the generator.
+
+The searchable motif library contains the authored motifs, 1,525 filled Phosphor icons and 1,088
+filled Tabler icons. The initial list is a curated set of Christmas motifs that generate successfully
+with default settings. Search still covers the full catalogue; browsing everything is explicit.
+Source SVGs, licenses and rebuild inputs are local, and asset URLs are versioned when they change.
+
+The generator keeps its last valid preview visible while calculating a new choice. Export actions
+wait for the latest result. A bounded per-visit cache makes revisiting recent choices immediate;
+colours and print size are excluded from geometry dependencies. Reuse idle workers, cancel obsolete
+work, and share letter routing between identical glyphs. Do not add a fading or blocking loading
+animation for routine edits. Local contour construction reuses integer point identities and
+adjacency slots across its routing candidates, with the existing coordinate precision and exact
+output points. Reset adjacency between candidates and sheets; still reject branches, wrong endpoint
+pairings and detached cycles. These digital checks do not replace testing actual paper assembly.
+A final close-fitting figure fallback may vary the four support directions by ±0.15 and ±0.3
+radians within their original quadrants. Attach to actual silhouette vertices, preserving the
+motif and outer bands. Try the bounded rotation/reflection patterns, skip identical completed
+constructions, and select by sharp-tip counts after full validation and shared-join rounding.
+Do not add a substitute enclosing shape or change existing successful layouts.
+If those whole-silhouette supports fail, the close-fitting frame may divide it
+into two horizontal panels and vary only the outer support directions by ±0.15.
+Keep internal seams and their agreed contacts fixed.
+
+A disconnected dot, accent or motif part may finally retry the next nearest
+active gates after the established constructions fail. Keep the nearest-gate
+rule unchanged for existing paths. Figures retain
+their requested frame; do not map corner checks or layered frames to another
+style. Compare new valid alternatives after rounding by sharp-tip counts, and
+retain the 10% full-sheet clearance reserve. Stop at zero sharp tips.
+
+Framed text may separate a connected stem from three branches whose
+serif ends overlap vertically. Clip only the stem at heights between the branch
+attachments; retain each complete branch in its own cell. Neighbouring glyphs
+use ordinary panels, adding columns for disconnected pieces. Keep inter-letter
+joins inside the common vertical interval rather than at the nearest corner.
+Stitch only agreed seam contacts and preserve every glyph contour. This bounded
+construction compares three stem divisions, retains at most 20 actual strips
+per sheet, and requires 10% extra clearance after shared-tip rounding. Detect
+overlapping branch extents in the original glyph and use this construction
+first for that topology; cache the detector per immutable font and glyph.
+Other topologies try it only after earlier recipes fail. Empty panels and
+unsupported topologies continue through the established recipes; they must
+never be silently replaced with different lettering.
+
+If the original branch layouts fail, neighbouring strokes may use at most two
+centred columns with aligned boundaries across all three rows. Try row divisions
+at 20%/40%, then 25%/45% of each unbranched glyph's height, keeping junctions
+above a filled V-shaped tip where possible. The existing stem/branch split stays
+intact. Compare 90% and 84% of the frame width, preserving all glyph proportions
+and their relative positions; the full frame and artwork checks still apply. A component
+owning fixed seam gates takes priority as the main contour. In this recipe,
+constrain extra attachments to the actual clipped segments, allowing an external
+gate on a divider's extension beyond the piece. Keep agreed contacts on those
+segments and stitch every artificial seam. Try straight joins, then 20% and 40%
+shared-curve handles, requiring 10% clearance reserve after fitting. Prefer fewer
+sharp tips and stop at zero. Earlier successful branch layouts return first.
+Only the original overlapping-branch detector enables these four extra layouts;
+there are no font-name or word-specific exceptions.
+
+If those layouts also fail, keep extra attachments a full clearance reserve away
+from the actual clipped segments and their endpoints, retaining the agreed seam
+gates. A clipped quadrilateral may have no usable vertices: replace blocked fan
+choices with the nearest allowed quarter-, half- or three-quarter point along
+an unchanged outline edge. Keep the same eight-choice fan and routing budget.
+For branched text, try higher neighbouring row divisions at 20%/35% and 15%/30%.
+For upper rows with two separated components, keep their vertical divider
+inside the common horizontal gap; retain the centre if it already fits.
+This avoids shaving a serif and places the last junction above a narrowing fork.
+Keep the previous successful branch layouts before considering this fallback.
+Reject a new guarded layout if any complete letter-outline segment extends
+outside the frame. Check intervals between frame intersections as well as
+vertices, so narrow concave scallops cannot crop a letter between sample points.
+
+If these guarded branch layouts cannot keep the complete lettering inside a
+concave frame, a final pair of row profiles may shrink the whole unchanged
+letter group to fit. Find the largest contained scale no wider than 84%, using
+20 bisection steps about the frame centre, then retain 94% of that scale to
+leave space for the outside joins. Skip this retry when the 84% layout already
+fits. Preserve all glyph proportions, counters and the frame; keep the 10%
+full-sheet clearance reserve and select fewer sharp tips after fitting.
+Earlier successful layouts return first.
+
+Other text may use the same guarded attachments after all established
+recipes fail, including multiline layouts. Compare the existing two-panel row
+and column arrangements, with padding 16%/12% and frame fill 88%/94% (88% without
+a frame). Aim their connections towards the actual clipped contours. Retain the
+20-strip cap, exact artwork, frame and counters; compare straight and 20%/40%
+shared-curve handles, require 10% full-sheet clearance reserve and prefer fewer
+sharp tips. Apply the same complete-outline frame-containment check. Every
+finished construction still needs full topology and export checks.
+
+If a sunburst figure still fails after the existing recipes and shared-cut
+repairs, its four-port medallion may retry using the complete five-strip grid:
+the outer border adds two strips per sheet to the inner three-strip design.
+This changes local connection selection only; the completed heart must pass the
+same spacing, topology and artwork checks. Existing valid layouts return first.
+
+Working checkerboard text may split remaining sharp corners in solid glyphs
+with one additional coincident chord per cached cell. Retain the cell's existing
+outer connections and exact outline. Rank at most 128 local chords by actual
+paper-tip angles, then validate open paths and clearance. Keep counter and
+detached-component routing unchanged. Cache both improvements and unsuccessful
+attempts; compare completed, rounded hearts before accepting a change. One extra
+contact pair at 20%/80% of the cell edges can expose a better route. Preserve the
+original complete heart whenever the new arrangement fails validation or does
+not improve its exported cuts; additional cuts require 10% extra full-sheet
+clearance after rounding. Nunito ANNA's checkerboard must have no cutting tips
+narrower than 45°.
+
+A final layered-frame retry may place a 2×2 panel junction at the median centres
+of the motif's counters. Keep the circle, motif and both border bands unchanged.
+When clipping leaves a small separate filled component on a seam, give it the
+seam gate, enter the component owning that gate first, and use its exact boundary
+contact. Alternate its A/B outline phase with the side of the panel so stitching
+cannot turn the counter into a closed cut. The completed heart still needs the
+normal whole-sheet checks; existing successful layouts return before this retry.
+
+Disconnected figures may finally retry component grids with wider shared
+contacts. A closest-point midpoint can sit in a pinched gap between two parts.
+When it lacks clearance, choose the shortest nearby vertex-to-edge midpoint
+that clears both participating outlines and all other islands. Preserve the
+agreed seam when two panels belong to the same original component. Try at most
+the 4-, 3- and 2-column arrangements with the existing two routing modes, keep
+the selected frame, and require 10% extra full-sheet clearance after fitting and
+rounding. Compare valid candidates by sharp-tip count and stop at zero tips.
+
+Shared-cut visibility checks may skip an obstacle only when its bounding box,
+padded by the complete clearance distance, is disjoint from the candidate
+segment's box. Precompute those bounds for the connection's routing candidates.
+Keep exact crossing, distance and endpoint checks for nearby obstacles; the
+optimisation must preserve the selected cutting geometry.
+
+Local motif crossing checks also reuse the unchanged outline's segment bounds
+across candidate attachments and relief chords. Include the exact intersection
+rule's endpoint tolerance in those bounds; nearby segments retain the original
+test. Scope the prepared validator to one immutable motif construction rather
+than caching mutable contours globally. This pruning changes neither candidate
+order nor acceptance, and does not replace the final paper-path spacing check.
+
+Framed text may finally reuse the boundary-component routing for clipped glyphs:
+enter the component owning the seam gate and retain the panel's alternating
+A/B phase. Try two panels per glyph, horizontally or vertically, with padding
+ratios 0.16 and 0.12 and the existing adaptive seams. Preserve every outline,
+counter and requested frame. The complete result needs 10% extra clearance
+after fitting and shared-join rounding. Choose fewer sharp exported tips among
+the four bounded alternatives, with the existing 20-strip cap. Earlier valid
+layouts return unchanged; checkerboard text uses its own routes.
+If all four fail inside a shaped frame, they may retry using 94% of its available
+envelope instead of 88%. Keep the frame boundary and exact glyph proportions,
+and require the same extra clearance for the outside connections as for the
+letters. Stop at the original fit whenever it works; unframed text has no such
+retry.
+Keep completed panels that pass nominal spacing but miss the extra reserve until
+all established constructions have failed. Those panels may retry coincident
+connections with normal-approach handles of 20% or 40% of their length. Refit and
+validate the complete design, retain the original outlines and attachments, and
+require the same 10% reserve. Deduplicate completed geometries and prefer fewer
+sharp tips. A successful existing layout returns before this final repair.
+
+An accepted ordinary text recipe or panel retry with remaining sharp tips may
+try one 2-column, 3-row construction per glyph. Aim its attachment fans towards
+the mean of the clipped outline points instead of the cell axes. Keep the ink
+panels, agreed seam contacts, counters and coincident-cut rules. Skip this trial
+when its predicted strip count exceeds either existing sheet or the 20-strip
+cap; the checkerboard and tip-free results do not need it. Accept only fewer sharp
+tips (prioritising tips below 30 degrees), no added strips, the full topology and
+fidelity checks, and 10% clearance reserve after shared-join improvement. Compare
+the old and new woven images at 240 samples and allow at most 0.2% disagreement,
+so a different letter spacing or border composition cannot replace the original.
+Otherwise retain the existing result. This is one optional routing trial, not
+a deformation of the glyph or an inverse solve.
+
+Relief-cut construction may cache geometric queries for one unchanged outline,
+routing mode and allowed external ports: notch ray targets, outline-edge positions,
+and the ordered chord choices for the same attachment ports. Compute the chord
+ranking once, then filter it against the current shared endpoints. Each candidate
+must still check its current shared endpoints and external port pairings.
+Keep this cache local to the contour construction, with a fresh endpoint lookup
+for each edge set. Candidate order, exact cut coordinates and validation rules
+must remain identical; no cache may survive into an edited or different motif.
 
 ## 8. Constraints and process
 

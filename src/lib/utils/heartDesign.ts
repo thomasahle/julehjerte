@@ -1448,15 +1448,27 @@ export function parseHeartFromSVGWithReport(
   for (const cut of leftCuts) if (!spansEdgeToEdge(cut.segments, 'left')) report.unjoined.push(cut.name);
   for (const cut of rightCuts) if (!spansEdgeToEdge(cut.segments, 'right')) report.unjoined.push(cut.name);
 
-  // Deduplicate paths that are at the same position (within tolerance)
-  const POSITION_TOLERANCE = 2; // Consider positions within 2 units as the same strip
+  // A path drawn twice is one cut. Pieces of one strip that were not joined
+  // into a whole cut count once per position (within 2 units); whole cuts all
+  // stay, since dense generated patterns can have distinct cuts less than two
+  // normalized units apart at the paper edge.
+  const POSITION_TOLERANCE = 2;
   const deduplicatePaths = (cuts: Cut[], lobe: LobeId): Cut[] => {
-    const seen: number[] = [];
+    const kept: BezierSegment[][] = [];
+    const matches = (a: BezierSegment[], b: BezierSegment[]) =>
+      a.length === b.length && a.every((segment, i) =>
+        (['p0', 'p1', 'p2', 'p3'] as const).every(key =>
+          Math.hypot(segment[key].x - b[i]![key].x, segment[key].y - b[i]![key].y) < 1e-6
+        )
+      );
+    // Position is the non-spanning coordinate (Y for left lobe, X for right lobe)
+    const position = (segments: BezierSegment[]) => lobe === 'left' ? segments[0]!.p0.y : segments[0]!.p0.x;
     return cuts.filter(({ segments }) => {
-      // Position is the non-spanning coordinate (Y for left lobe, X for right lobe)
-      const position = lobe === 'left' ? segments[0]!.p0.y : segments[0]!.p0.x;
-      if (seen.some(p => Math.abs(p - position) < POSITION_TOLERANCE)) return false;
-      seen.push(position);
+      if (!segments.length) return false;
+      if (kept.some(prior => matches(prior, segments) || matches(reverseSegments(prior), segments))) return false;
+      if (!spansEdgeToEdge(segments, lobe) &&
+        kept.some(prior => Math.abs(position(prior) - position(segments)) < POSITION_TOLERANCE)) return false;
+      kept.push(segments);
       return true;
     });
   };
