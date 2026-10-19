@@ -1,0 +1,129 @@
+{
+  "schema": "inverse-ci-bird-timing-classification-1",
+  "date": "2026-10-19",
+  "failedRun": {
+    "id": 39297638196,
+    "head": "6972a11da439555590465a4a4835be8ba4d5ac79",
+    "job": 118214888695
+  },
+  "passingRun": {
+    "id": 39295405755,
+    "head": "6d9a24132cb0264f48cd21e005fa289a903128c7"
+  },
+  "unchangedTrees": {
+    "static/inverse": "382b482a8b27fb33f7a3689d5d748981e620fe9f",
+    "scripts/inverse": "404896a49843e9a1c8a833b4c09dd3dfc2fc6c7a"
+  },
+  "diagnosis": "The only blocking failure was the elapsed-time target for a fresh shifted-bird search: 30.293 seconds versus a 30-second target, within the requested 180 seconds. The solver and inverse test trees are identical to the passing branch run. Independently replayed saved curves pass all remaining output geometry, paper, two-resolution image and eye retention checks. The timing miss remains a real benchmark miss, not evidence of omitted initialization.",
+  "change": "Classify both the 10- and 180-second fresh bird searches as quality benchmarks. Keep every latency, geometry, image, eye-retention assertion and deadline unchanged; deterministic rerouting and controlled-clock refinement tests remain blocking.",
+  "failedArtifactReplay": {
+    "solverSeconds": 30.293192803,
+    "latencyTargetSeconds": 30,
+    "requestedSeconds": 180,
+    "geometry": true,
+    "paper": "pass",
+    "selectedInitialization": "fitted-boundary-rerouting",
+    "rows": [
+      {
+        "resolution": 400,
+        "error": 0.02483125,
+        "eye": {
+          "centerMm": [
+            23.10141509433962,
+            46.09198113207547
+          ],
+          "sourceAreaMm2": 3.3125,
+          "intersectionPixels": 52,
+          "retention": 0.9811320754716981,
+          "predictedComponentAreaMm2": 3.25,
+          "touchesBorder": false,
+          "componentIoU": 0.9811320754716981
+        }
+      },
+      {
+        "resolution": 800,
+        "error": 0.0259828125,
+        "eye": {
+          "centerMm": [
+            23.10141509433962,
+            46.09198113207547
+          ],
+          "sourceAreaMm2": 3.3125,
+          "intersectionPixels": 200,
+          "retention": 0.9433962264150944,
+          "predictedComponentAreaMm2": 3.25,
+          "touchesBorder": false,
+          "componentIoU": 0.9090909090909091
+        }
+      }
+    ]
+  },
+  "evidence": {
+    "log": {
+      "path": "tmp/heart-learning/release-oct19/main-inverse-3.log",
+      "sha256": "be1a4877301bb6837ac46df7596dd22b7fb91204a58b6edfd5c1a7ebeca7d365"
+    },
+    "checksums": {
+      "path": "tmp/heart-learning/release-oct19/ci-failed-fit/fit-QwB7mX/checksums.json",
+      "sha256": "ae6c07a1b28e4fb0559aee470a61047bf06b996c33cf3eeeded85e43bd902c27"
+    },
+    "replay": {
+      "path": "tmp/heart-learning/release-oct19/ci-failed-fit/replay.json",
+      "sha256": "4cb6360055e2b59eab8bffc8ed9b0eb43b280deab6ef34196a66acb89baf5772"
+    },
+    "correctness": {
+      "path": "tmp/heart-learning/release-oct19/ci-timing-correctness.log",
+      "sha256": "633eb540be617847f9174d24346c70844c5ad0e90adb07ab1d533e8dae8588ce"
+    },
+    "policy": {
+      "path": "tmp/heart-learning/release-oct19/ci-timing-policy.log",
+      "sha256": "d0cdb1d96383f75bd58a0acd793a25559b63485144a4ee72aea125bf616b21cc"
+    },
+    "benchmarks": {
+      "path": "tmp/heart-learning/release-oct19/ci-timing-benchmarks.log",
+      "sha256": "e9118cf450c8792fd23411feacbe8601c10569dc08849bca2f036af0a3fc3e83"
+    }
+  },
+  "localChecks": {
+    "deterministicReroutingAndRefinement": {
+      "passed": 4,
+      "failed": 0
+    },
+    "eslint": "passed",
+    "benchmarkReplay": {
+      "passed": 0,
+      "failedTargets": 2,
+      "unexpectedCrashes": 0,
+      "rows": [
+        {
+          "timeLimit": 10,
+          "failure": "Expected values to be strictly equal:\n\nfalse !== true\n",
+          "solverSeconds": 9.402262833,
+          "templateChecksPassed": false,
+          "geometryPassed": true,
+          "paper": "pass",
+          "maskError": 0.05619375,
+          "artifact": "tmp/inverse-test-failures/fit-Q7mOT6"
+        },
+        {
+          "timeLimit": 180,
+          "failure": "A longer allowance must not omit the useful fast initialization.",
+          "solverSeconds": 132.81038566700002,
+          "templateChecksPassed": false,
+          "geometryPassed": true,
+          "paper": "pass",
+          "maskError": 0.0121625,
+          "artifact": "tmp/inverse-test-failures/fit-tmp7Bq"
+        }
+      ]
+    },
+    "benchmarkPolicy": {
+      "passed": 2,
+      "failed": 0
+    }
+  },
+  "limitations": [
+    "The captured CI result passes the independent replay but misses its original 30-second speed target.",
+    "Local unchanged 10-second and 180-second search targets also miss under current machine conditions; their failures are retained. This classification does not fix search speed or recovery quality."
+  ]
+}
