@@ -211,3 +211,86 @@ describe('closestPointsBetweenBeziers', () => {
 		expect(hit.distance).toBeLessThanOrEqual(brute + 1e-3);
 	});
 });
+
+/** Deterministic noise: the same curves on every machine and every run. */
+function mulberry32(seed: number): () => number {
+	let a = seed >>> 0;
+	return () => {
+		a = (a + 0x6d2b79f5) | 0;
+		let t = Math.imul(a ^ (a >>> 15), 1 | a);
+		t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+		return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+	};
+}
+
+/** `intersectBezierCurves` trying every piece of one curve against every piece of the other. */
+function everyPieceCrossing(seg1: CubicBezierSegment, seg2: CubicBezierSegment): Point[] {
+	const polyline = (seg: CubicBezierSegment) => (isLinearBezier(seg) ? [seg.p0, seg.p3] : Array.from({ length: 81 }, (_, i) => cubicPointAt(seg, i / 80)));
+	const a = polyline(seg1), b = polyline(seg2);
+	const points: Point[] = [];
+	for (let i = 0; i < a.length - 1; i++)
+		for (let j = 0; j < b.length - 1; j++) {
+			const p1 = a[i]!, p2 = a[i + 1]!, p3 = b[j]!, p4 = b[j + 1]!;
+			const den = (p4.y - p3.y) * (p2.x - p1.x) - (p4.x - p3.x) * (p2.y - p1.y);
+			if (Math.abs(den) < 1e-12) continue;
+			const ua = ((p4.x - p3.x) * (p1.y - p3.y) - (p4.y - p3.y) * (p1.x - p3.x)) / den;
+			const ub = ((p2.x - p1.x) * (p1.y - p3.y) - (p2.y - p1.y) * (p1.x - p3.x)) / den;
+			if (ua < 0 || ua > 1 || ub < 0 || ub > 1) continue;
+			points.push({ x: p1.x + ua * (p2.x - p1.x), y: p1.y + ua * (p2.y - p1.y) });
+		}
+	return points;
+}
+
+describe('intersectBezierCurves', () => {
+	it('finds the crossings, in order, that trying every pair of pieces finds, where rounding is hardest', () => {
+		const random = mulberry32(5);
+		const r = (lo: number, hi: number) => lo + (hi - lo) * random();
+		const P = (x: number, y: number): Point => ({ x, y });
+		const pairs: [CubicBezierSegment, CubicBezierSegment][] = [];
+		for (const S of [0.01, 1, 100, 400, 1e4])
+			for (let k = 0; k < 60; k++) {
+				// Two curves along nearly one line, shifted along it by a gap or an overlap and off it by a hair.
+				const angle = r(0, Math.PI), dx = Math.cos(angle), dy = Math.sin(angle);
+				const at = (s: number, off = 0) => P(S * (0.3 + s * dx - off * dy), S * (0.7 + s * dy + off * dx));
+				const length = r(0.05, 1), shift = length * r(0.5, 1.5), hair = [0, 1e-15, 1e-12, 1e-9][k % 4]!;
+				pairs.push([
+					{ p0: at(0), p1: at(length * r(0.05, 0.6)), p2: at(length * r(0.4, 0.95)), p3: at(length) },
+					{ p0: at(shift, hair), p1: at(shift + length * r(0.05, 0.6), hair), p2: at(shift + length * r(0.4, 0.95), hair), p3: at(shift + length, hair) }
+				]);
+				// Nearly parallel neighbours, as the cuts of a pattern run.
+				const off = S * [1e-9, 1e-6, 1e-3, 0.02][k % 4]!;
+				const a = { p0: P(0, 0), p1: P(S * r(0.2, 0.4), S * r(-0.2, 0.2)), p2: P(S * r(0.6, 0.8), S * r(-0.2, 0.2)), p3: P(S, 0) };
+				pairs.push([a, { p0: P(0, off), p1: P(a.p1.x, a.p1.y + off), p2: P(a.p2.x, a.p2.y + off), p3: P(S, off) }]);
+				// Neighbouring segments of a cut, which share an end; any curve and a straight line.
+				const c = () => P(r(0, S), r(0, S));
+				const m = c();
+				pairs.push([{ p0: c(), p1: c(), p2: c(), p3: m }, { p0: m, p1: c(), p2: c(), p3: c() }]);
+				pairs.push([{ p0: c(), p1: c(), p2: c(), p3: c() }, lineBezier(c(), c())]);
+			}
+		let crossing = 0;
+		for (const [a, b] of pairs) {
+			const all = everyPieceCrossing(a, b);
+			if (all.length) crossing++;
+			expect(intersectBezierCurves(a, b)).toStrictEqual(all);
+			expect(intersectBezierCurves(a, b, true)).toStrictEqual(all.slice(0, 1));
+			expect(intersectBezierCurves(b, a)).toStrictEqual(everyPieceCrossing(b, a));
+		}
+		expect(crossing).toBeGreaterThan(pairs.length / 4);
+	});
+
+	it('keeps what rounding finds where no distance is sure: pieces 150 long, and points that are not numbers', () => {
+		const P = (x: number, y: number): Point => ({ x, y });
+		// Two curves along one line, overlapping. One of the 11 crossings is between pieces 840 apart:
+		// rounding puts it at the start of both.
+		const a = { p0: P(3000, 7000), p1: P(3616.041465905792, 7367.944606689053), p2: P(8399.190679955173, 10224.787942243986), p3: P(11568.033264936246, 12117.45037345878) };
+		const b = { p0: P(8139.635501433433, 10069.762780204172), p1: P(11456.898213229171, 12051.072466852114), p2: P(15029.814433568143, 14185.076955482758), p3: P(16707.668766369676, 15187.213153662953) };
+		expect(everyPieceCrossing(a, b)).toHaveLength(11);
+		expect(intersectBezierCurves(a, b)).toStrictEqual(everyPieceCrossing(a, b));
+		// A curve with a point that is not a number crosses every piece of the other.
+		for (const bad of [NaN, Infinity]) {
+			const c = { p0: P(67, 81), p1: P(bad, 89), p2: P(93, 2), p3: P(92, 70) };
+			const d = { p0: P(7, 76), p1: P(16, 83), p2: P(2, 26), p3: P(6, 50) };
+			expect(intersectBezierCurves(c, d)).toStrictEqual(everyPieceCrossing(c, d));
+		}
+	});
+});

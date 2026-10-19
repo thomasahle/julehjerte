@@ -84,6 +84,53 @@ function sampleBezier(segment: CubicBezierSegment, steps = 50): Point[] {
 }
 
 /**
+ * How far apart the boxes of two pieces, neither longer than `longest`, must be before the test in
+ * `intersectBezierCurves` cannot report a crossing between them; Infinity when no distance is sure.
+ * The test computes with rounding, so a crossing it reports can lie off both pieces, the more so the
+ * nearer they are to parallel. Down to |den| = 1e-12, where it stops, the reported crossing is never
+ * farther from both than 2L(1.51K + 1.01u)/(1 − K), with L = `longest`, u = 2⁻⁵³ and
+ * K = 16.04uL²/(1e-12 − 8.02uL²). This allows four times that.
+ */
+function sureGap(longest: number): number {
+  const u = 2 ** -53, l2 = longest * longest;
+  const den = 1e-12 - 8.02 * u * l2, k = (16.04 * u * l2) / den;
+  return den > 0 && k < 0.5 ? (8 * longest * (1.51 * k + 1.01 * u)) / (1 - k) : Infinity;
+}
+
+/** Pieces in a run, whose box `intersectBezierCurves` looks at before the pieces'. */
+const RUN = 8;
+
+/**
+ * Each piece's box of a polyline (min x, min y, max x, max y), each run of RUN pieces' box, and a
+ * length no piece is longer than (NaN when a point is).
+ */
+function pieceBoxes(points: Point[]) {
+  const n = points.length - 1, runs = Math.ceil(n / RUN);
+  const piece = new Float64Array(4 * n), run = new Float64Array(4 * runs);
+  let longest = 0;
+  for (let i = 0; i < n; i++) {
+    const p = points[i]!, q = points[i + 1]!;
+    const x0 = Math.min(p.x, q.x), y0 = Math.min(p.y, q.y), x1 = Math.max(p.x, q.x), y1 = Math.max(p.y, q.y);
+    piece[4 * i] = x0;
+    piece[4 * i + 1] = y0;
+    piece[4 * i + 2] = x1;
+    piece[4 * i + 3] = y1;
+    longest = Math.max(longest, x1 - x0 + (y1 - y0));
+    const r = 4 * ((i / RUN) | 0), opens = i % RUN === 0;
+    run[r] = opens ? x0 : Math.min(run[r]!, x0);
+    run[r + 1] = opens ? y0 : Math.min(run[r + 1]!, y0);
+    run[r + 2] = opens ? x1 : Math.max(run[r + 2]!, x1);
+    run[r + 3] = opens ? y1 : Math.max(run[r + 3]!, y1);
+  }
+  return { piece, run, runs, longest };
+}
+
+/** True when box `i` of `a` and box `j` of `b` (offsets into pieceBoxes' arrays) are more than `gap` apart. */
+function apart(a: Float64Array, i: number, b: Float64Array, j: number, gap: number): boolean {
+  return b[j]! - a[i + 2]! > gap || a[i]! - b[j + 2]! > gap || b[j + 1]! - a[i + 3]! > gap || a[i + 1]! - b[j + 3]! > gap;
+}
+
+/**
  * Find intersections between two Bézier curves. `first`: stop at the first point found, all a caller
  * asking whether they cross at all needs.
  */
@@ -104,12 +151,24 @@ export function intersectBezierCurves(seg1: CubicBezierSegment, seg2: CubicBezie
     return { x: p1.x + ua * (p2.x - p1.x), y: p1.y + ua * (p2.y - p1.y) };
   };
 
+  // Pieces whose boxes are far apart cannot cross (see `sureGap`), so only the others are tried, in
+  // the same order.
+  const boxesA = pieceBoxes(a), boxesB = pieceBoxes(b);
+  const gap = sureGap(Math.max(boxesA.longest, boxesB.longest));
+  const near = new Uint8Array(boxesA.runs * boxesB.runs);
+  for (let r = 0; r < boxesA.runs; r++)
+    for (let s = 0; s < boxesB.runs; s++) near[r * boxesB.runs + s] = apart(boxesA.run, 4 * r, boxesB.run, 4 * s, gap) ? 0 : 1;
   for (let i = 0; i < a.length - 1; i++) {
-    for (let j = 0; j < b.length - 1; j++) {
-      const p = segIntersect(a[i]!, a[i + 1]!, b[j]!, b[j + 1]!);
-      if (p) {
-        points.push(p);
-        if (first) return points;
+    const row = ((i / RUN) | 0) * boxesB.runs;
+    for (let s = 0; s < boxesB.runs; s++) {
+      if (!near[row + s]) continue;
+      for (let j = s * RUN, end = Math.min(b.length - 1, j + RUN); j < end; j++) {
+        if (apart(boxesA.piece, 4 * i, boxesB.piece, 4 * j, gap)) continue;
+        const p = segIntersect(a[i]!, a[i + 1]!, b[j]!, b[j + 1]!);
+        if (p) {
+          points.push(p);
+          if (first) return points;
+        }
       }
     }
   }
