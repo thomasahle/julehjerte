@@ -79,11 +79,11 @@ export function generateStripFigure(rings: Ring[], strips: number, scale = .7, b
  * A shift to `keep` comes before them all, or is the only place tried
  * (`alone`), or is left out (`elsewhere`). */
 export function* stripFigures(rings: Ring[], strips: number, scale = .7, budget = 4000, keep?: number,
-	places: 'first' | 'alone' | 'elsewhere' = 'first'): Generator<StripFigure> {
+	places: 'first' | 'alone' | 'elsewhere' = 'first', side = 0): Generator<StripFigure> {
 	if (!rings.flat().length) throw new ConstructionError('empty', 'No contour');
 	rings = untouch(rings);
 	type Choice = { placed: Ring[]; graph: StripGraph; values: Value[]; crowded: number; hidden: number; order: number };
-	const order = shifts(rings, strips, scale), choices: Choice[] = [];
+	const order = shifts(rings, strips, scale, side), choices: Choice[] = [];
 	if (keep !== undefined) order.splice(0, order.length, ...places === 'elsewhere' ? [] : [keep],
 		...places === 'alone' ? [] : order.filter(shift => shift !== keep));
 	const evaluate = (k: number) => {
@@ -91,7 +91,7 @@ export function* stripFigures(rings: Ring[], strips: number, scale = .7, budget 
 		// A line through a vertex of the outline, or a junction on it, would
 		// make one vertex of more than four cuts: move the motif a hair off it.
 		for (const nudge of [0, 1e-3, 2.3e-3, 4.1e-3, 7.7e-3]) {
-			const placed = placeMotif(rings, scale, order[k], nudge);
+			const placed = placeMotif(rings, scale, order[k], nudge, side);
 			const graphs = (['motif', 'near'] as const).map(reach => arrangement(placed, strips, reach));
 			if (graphs.some(graph => graph === 'degenerate')) continue;
 			for (const graph of graphs as StripGraph[]) {
@@ -217,9 +217,9 @@ export function untouch(rings: Ring[]): Ring[] {
 }
 
 /** The motif's shifts down the heart's middle, the clearest first. */
-export function shifts(rings: Ring[], strips: number, scale: number): number[] {
+export function shifts(rings: Ring[], strips: number, scale: number, side = 0): number[] {
 	return Array.from({ length: 27 }, (_, k) => (k % 2 ? 1 : -1) * Math.ceil(k / 2) * .75)
-		.map(shift => ({ shift, score: crowding(placeMotif(rings, scale, shift), strips) + 1.5 * Math.abs(shift) }))
+		.map(shift => ({ shift, score: crowding(placeMotif(rings, scale, shift, 0, side), strips) + 1.5 * Math.abs(shift) }))
 		.sort((a, b) => a.score - b.score).map(({ shift }) => shift);
 }
 
@@ -287,12 +287,20 @@ function reaches(rings: Ring[]) {
 	const points = rings.flat(), xs = points.map(p => p[0]), ys = points.map(p => p[1]);
 	const cx = (Math.min(...xs) + Math.max(...xs)) / 2, cy = (Math.min(...ys) + Math.max(...ys)) / 2;
 	const box = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
-	let down = 0, up = 0;
+	// Towards each side of the paper's diamond: lower right, lower left,
+	// upper right, upper left.
+	let rd = 0, ld = 0, ru = 0, lu = 0;
 	for (const [x, y] of points) {
-		down = Math.max(down, (Math.abs(x - cx) + y - cy) / box);
-		up = Math.max(up, (Math.abs(x - cx) - y + cy) / box);
+		const u = (x - cx) / box, v = (y - cy) / box;
+		[rd, ld, ru, lu] = [Math.max(rd, u + v), Math.max(ld, v - u), Math.max(ru, u - v), Math.max(lu, -u - v)];
 	}
-	return { cx, cy, box, down, up };
+	return { cx, cy, box, rd, ld, ru, lu, down: Math.max(rd, ld), up: Math.max(ru, lu) };
+}
+
+/** How large the motif can be moved `shift` down the heart's middle and
+ * `side` across it (see `reaches`). */
+function fits({ rd, ld, ru, lu }: ReturnType<typeof reaches>, shift: number, side: number): number {
+	return Math.min((PAPER - side - shift) / rd, (PAPER + side - shift) / ld, (PAPER - side + shift) / ru, (PAPER + side + shift) / lu);
 }
 
 /** How far down the heart's middle the motif fits largest. */
@@ -319,16 +327,16 @@ export function boardChecks(strips: number): Ring[] {
 	return checks;
 }
 
-/** The motif upright and centred on the paper, moved `shift` down the heart's
- * middle and `nudge` off the board's lines, and kept MARGIN inside the paper.
- * Its box is `scale / .7` of the default fill up to the default size; from
- * there it grows towards the largest that fits the paper, which 100% reaches
- * at the roomiest place. */
-export function placeMotif(rings: Ring[], scale: number, shift = 0, nudge = 0): Ring[] {
-	const reach = reaches(rings), { cx, cy, box, down, up } = reach;
-	const size = Math.min(motifSize(reach, scale), (PAPER - shift) / down, (PAPER + shift) / up);
+/** The motif upright on the paper, moved `shift` down the heart's middle,
+ * `side` across it and `nudge` off the board's lines, and kept MARGIN inside
+ * the paper. Its box is `scale / .7` of the default fill up to the default
+ * size; from there it grows towards the largest that fits the paper, which
+ * 100% reaches at the roomiest place. */
+export function placeMotif(rings: Ring[], scale: number, shift = 0, nudge = 0, side = 0): Ring[] {
+	const reach = reaches(rings), { cx, cy, box } = reach;
+	const size = Math.min(motifSize(reach, scale), fits(reach, shift, side));
 	return rings.map(ring => ring.map(([x, y]) =>
-		uprightToSheet([(x - cx) / box * size + nudge, (y - cy) / box * size + shift + nudge * .618])));
+		uprightToSheet([(x - cx) / box * size + side + nudge, (y - cy) / box * size + shift + nudge * .618])));
 }
 
 /** The motif's box at `scale` wherever it has room (see `placeMotif`). */
@@ -337,11 +345,25 @@ function motifSize({ down, up }: ReturnType<typeof reaches>, scale: number): num
 	return scale <= .7 ? fill * scale / .7 : fill + (largest - fill) * Math.min(1, (scale - .7) / .3);
 }
 
-/** How far up and down the heart's middle the motif can go at `scale` and
- * keep its size; further, it would shrink to stay on the paper. */
-export function placeRange(rings: Ring[], scale: number): [number, number] {
+/** Where the motif can go at `scale` and keep its size; further, it would
+ * shrink to stay on the paper. On the paper the bounds are a rectangle: of
+ * its place and side added (along the paper's x) and of its place less its
+ * side (along the paper's y). */
+export type PlaceBounds = { sum: [number, number]; difference: [number, number] };
+export function placeBounds(rings: Ring[], scale: number): PlaceBounds {
 	const reach = reaches(rings), size = motifSize(reach, scale);
-	return [size * reach.up - PAPER, PAPER - size * reach.down];
+	return { sum: [size * reach.lu - PAPER, PAPER - size * reach.rd], difference: [size * reach.ru - PAPER, PAPER - size * reach.ld] };
+}
+
+/** The nearest place and side within the bounds; with a `step`, in steps
+ * along the paper's sides wherever the bounds have room for one. */
+export function clampPlace({ sum, difference }: PlaceBounds, place: number, side: number, step = 0): [number, number] {
+	const near = (value: number, [low, high]: [number, number]) => {
+		const [a, b] = step ? [Math.ceil(low / step) * step, Math.floor(high / step) * step] : [low, high];
+		return a <= b ? Math.max(a, Math.min(b, step ? Math.round(value / step) * step : value)) : (low + high) / 2;
+	};
+	const a = near(place + side, sum), b = near(place - side, difference);
+	return [(a + b) / 2, (a - b) / 2];
 }
 
 /** A polyline cut at fractions (increasing, in (0, 1)) of its length. */
