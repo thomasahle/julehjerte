@@ -7,6 +7,7 @@ import {requestedSymmetry} from '../settings.js';
 import {outlineDetailPlan} from './outline-details.js';
 import {featurePolishPlan} from './feature-details.js';
 import {imageFeatures} from '../image-features.js';
+import {paperRecoveryFamilies} from './paper-recovery.js';
 
 export function polishCandidate(candidate,prob,n,cfg,options={}){
   const verification=candidate.paperVerification;
@@ -37,22 +38,20 @@ export function polishCandidate(candidate,prob,n,cfg,options={}){
     const lattice=materialAudit(solution,settings);
     if(lattice.status==='fail')return lattice;
     const offset=geometricMaterialAudit(solution,settings,{tolerance:.002,probeRadii:false});
-    for(const f of offset.families){
-      if(f.status==='pass')continue;
-      const floating=f.parts.filter(p=>!p.anchored&&p.significant),w=cfg.width;
-      const fold=floating.some(p=>p.bounds[1]<=w&&p.bounds[3]>=w)||f.foldIntervals.some(i=>i.anchoredCoreLength<=1e-8);
-      if(fold&&!paperRecovery.foldFamilies.includes(f.family)){
-        paperRecovery.foldFamilies.push(f.family);
-        if(detail)for(const path of graph.families[f.family])for(const[e]of graph.paths[path])for(const id of graph.edges[e]){
-          if(w-graph.points[2*id+1-f.family]>detail.report.fixedBorderMm)continue;
+    const recovery=paperRecoveryFamilies(offset,cfg.width);
+    for(const family of recovery.foldFamilies){
+      if(!paperRecovery.foldFamilies.includes(family)){
+        paperRecovery.foldFamilies.push(family);
+        if(detail)for(const path of graph.families[family])for(const[e]of graph.paths[path])for(const id of graph.edges[e]){
+          if(cfg.width-graph.points[2*id+1-family]>detail.report.fixedBorderMm)continue;
           for(let axis=0;axis<2;axis++){
             const index=2*id+axis;
             if(graph.fixed[index]&&!detail.originalFixed[index]){graph.fixed[index]=0;releasedCoordinates++;}
           }
         }
       }
-      if(floating.some(p=>p.bounds[3]<w||p.bounds[1]>w)&&!paperRecovery.localFamilies.includes(f.family))paperRecovery.localFamilies.push(f.family);
     }
+    for(const family of recovery.localFamilies)if(!paperRecovery.localFamilies.includes(family))paperRecovery.localFamilies.push(family);
     const status=offset.status==='fail'?'fail':offset.status==='uncertain'?'uncertain':lattice.status;
     return{...lattice,status,passed:status==='pass',summary:{...lattice.summary,status,offset:offset.summary}};
   }:materialAudit;
