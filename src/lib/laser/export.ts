@@ -89,7 +89,7 @@ export interface LaserPlan extends LaserSheet {
 function laserHeart(design: HeartDesign, widthMm: number, lobe: TemplateLobe): LaserHeart {
 	const shared = lobesShareTemplate(design.fingers, design.gridSize);
 	if (shared) {
-		const one = unfoldPiece(design, SHARED_TEMPLATE_LOBE, widthMm);
+		const one = unfoldPiece(design, SHARED_TEMPLATE_LOBE, widthMm, ['left', 'right']);
 		return { design, pair: [one, one], shared, lobe: SHARED_TEMPLATE_LOBE };
 	}
 	return { design, pair: [unfoldPiece(design, 'left', widthMm), unfoldPiece(design, 'right', widthMm)], shared, lobe };

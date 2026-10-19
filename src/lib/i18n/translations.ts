@@ -188,6 +188,7 @@ export const translations = {
     laserFormatHint: 'SVG læses af alle laserprogrammer. DXF til xTool, LightBurn og CAD.',
     laserFailed: 'Filen kunne ikke laves. Prøv en anden bredde, eller hent PDF-skabelonen.',
     laserLegend: 'Alle linjer skæres · 0,01 mm streg',
+    laserLegendMarked: 'Røde linjer skæres · 0,01 mm streg. Det blå kryds viser, hvordan stykket vender: gravér det, eller slå laget fra.',
     /** {format} = PDF, SVG or DXF */
     downloadFile: 'Hent {format}',
 
@@ -1006,6 +1007,7 @@ export const translations = {
     laserFormatHint: 'SVG is read by every laser program. DXF for xTool, LightBurn and CAD.',
     laserFailed: 'The file could not be made. Try another width, or download the PDF template.',
     laserLegend: 'Every line is cut · 0.01 mm stroke',
+    laserLegendMarked: 'Red lines are cut · 0.01 mm stroke. The blue cross shows which way the piece goes: engrave it, or switch that layer off.',
     /** {format} = PDF, SVG or DXF */
     downloadFile: 'Download {format}',
 

@@ -7,6 +7,9 @@
  * group, at a 0.01 mm hairline, which they read as "vector, not engrave". The
  * fold is not drawn at all (DOWNLOAD.md, round 2): paper folds without a
  * score, and a fold line left at cutting power would cut the piece in two.
+ * The one exception to "every line is a cut": a heart whose pieces can go in
+ * the wrong way round gets its orientation marks in a second group,
+ * `<g id="mark">`, blue — to engrave, score lightly or switch off, never cut.
  * No fills, no text and no transforms — the pieces' offsets are baked into the
  * coordinates, because a transform is the one thing every importer handles
  * slightly differently.
@@ -16,6 +19,7 @@ import { coord } from './format';
 import type { LaserSheet } from './sheet';
 import type { LaserPath } from './unfold';
 import { escapeXml } from '$lib/utils/xml';
+import { markPathData } from '$lib/utils/orientationMarks';
 
 export interface LaserSvgOptions {
 	/** The heart's name, for `<title>`. */
@@ -31,6 +35,8 @@ export interface LaserSvgOptions {
 }
 
 const CUT_COLOUR = '#ff0000';
+/** The orientation marks: not a cut. Blue, the colour laser programs take for engraving or scoring. */
+export const MARK_COLOUR = '#0000ff';
 const HAIRLINE = '0.01';
 
 /** Path data with the piece's offset added to every point. */
@@ -78,6 +84,24 @@ export function serializeLaserSvg(layout: LaserSheet, options: LaserSvgOptions):
 		for (const cut of piece.cuts) lines.push(pathEl(pathData(cut, x, y)));
 	}
 	lines.push('  </g>');
+
+	// The orientation marks ($lib/utils/orientationMarks), in a group of their
+	// own so they are never cut: blue, to engrave or score lightly, or to switch
+	// off — the pieces are right without them, only easier to lay.
+	const marked = layout.pieces.filter(({ piece }) => piece.marks.length);
+	if (marked.length) {
+		lines.push(
+			preview
+				? '  <g class="mark" fill="none">'
+				: `  <g id="mark" fill="none" stroke="${MARK_COLOUR}" stroke-width="${HAIRLINE}">`
+		);
+		for (const { piece, x, y } of marked) {
+			for (const mark of piece.marks) {
+				lines.push(pathEl(markPathData(mark, (p) => ({ x: p.x + x, y: p.y + y }))));
+			}
+		}
+		lines.push('  </g>');
+	}
 	lines.push('</svg>');
 	return lines.join('\n');
 }
