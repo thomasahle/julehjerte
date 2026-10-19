@@ -116,6 +116,32 @@ describe('the complete heart archive', () => {
 		}
 	});
 
+	it('links editable SVG originals to existing designs without presenting alternate formats as extra sheets', () => {
+		const originals = [
+			['jhd-darth-vader', 'darth_vader', '20170112161918'],
+			['jhd-heart-of-heart', 'heart_of_heart', '20170114132905'],
+			['jhd-node', 'node', '20170114051312'],
+			['jhd-sundays-fourth', 'sundays_fourth', '20170112181839'],
+			['jhd-venus', 'venus', '20170112163856']
+		];
+		for (const lang of ['da', 'en'] as const) {
+			const records = archiveRecords(lang);
+			for (const [id, stem, capture] of originals) {
+				const matches = records.filter(record => record.id === id);
+				expect(matches).toHaveLength(1);
+				const record = matches[0];
+				const original = `http://julehjertedesign.dk/diagrams/${stem}.svg`;
+				expect(record.sourceUrls).toContain(original);
+				expect(record.sourceUrls).toContain(`https://web.archive.org/web/${capture}id_/${original}`);
+				expect(record.templateUrls).toHaveLength(1);
+				expect(record.templateUrls[0]).toMatch(/\.pdf$/);
+				expect(record.credits).toEqual(['Johan Rosenkilde']);
+				expect(record.license).toBe('unknown');
+				expect(record.preservedTemplates).toBeUndefined();
+			}
+		}
+	});
+
 	it('preserves two further Haabet designs without counting alternate names or photos as designs', () => {
 		const records = archiveRecords('en');
 		const nine = records.find(r => r.id === 'haabet-nine-hearts')!;
@@ -171,6 +197,34 @@ describe('the complete heart archive', () => {
 		expect(filterArchive(records, 'krummel', 'krymmel.dk', 'templates').length).toBeGreaterThan(25);
 		expect(filterArchive(records, 'nonexistentzzzyyy', '', 'all')).toEqual([]);
 		expect(filterArchive(records, '', '', 'juleflet')).toHaveLength(ALL_HEART_IDS.length);
+	});
+
+	it('publishes three signed Haabet templates without inventing photo previews or publication dates', () => {
+		const expected = [
+			['haabet-stjerne-af-cirkler', 'Stjerne, af Cirkler', '20030827010801'],
+			['haabet-eight-points', '8 Spisser Julehjerte', '20030205022359'],
+			['haabet-four-quadrilaterals', '4 4kanter Julehjerte', '20030205024425']
+		];
+		for (const lang of ['da', 'en'] as const) {
+			const records = archiveRecords(lang);
+			const templates = filterArchive(records, 'Peter Ole Kvint', 'haabet.dk', 'templates');
+			for (const [id, title, capture] of expected) {
+				const matches = records.filter(record => record.id === id);
+				expect(matches).toHaveLength(1);
+				const record = matches[0];
+				expect(record.title).toBe(title);
+				expect(templates).toContain(record);
+				expect(record.credits).toEqual(['Peter Ole Kvint']);
+				expect(record.templateUrls).toHaveLength(1);
+				expect(record.templateUrls[0]).toContain(`/web/${capture}id_/`);
+				expect(record.sourceUrls).toContain(record.templateUrls[0].replace(/^https:\/\/web\.archive\.org\/web\/[^/]+\//, ''));
+				expect(record.imageUrls).toEqual([]);
+				expect(record.date).toBeUndefined();
+				expect(record.thumbnail).toBeUndefined();
+				expect(record.preservedTemplates).toBeUndefined();
+				expect(record.license).toBe('unknown');
+			}
+		}
 	});
 
 	it('only turns public web catalog metadata into source links', () => {

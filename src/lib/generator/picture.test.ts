@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { slow } from './slow.test-helpers';
 import { generate, type GeneratorRequest } from './generate';
 import { picture } from './picture';
+import { clampPlace } from './stripFigure';
 import { inside, type Ring } from './geometry';
 import { rasterizeDesign } from '$lib/paint/rasterize';
 import star from '../../../static/generator/motifs/star.json';
@@ -47,6 +48,7 @@ describe('the picture drawn before the cuts are found', () => {
 		const request: GeneratorRequest = { mode: 'figure', name: 'Heart', contours: heart.contours as Ring[], colors, style: 'strips', board: 3 };
 		expect(mismatch(request)).toBeLessThan(.01);
 		expect(mismatch({ ...request, place: -8 })).toBeLessThan(.01);
+		expect(mismatch({ ...request, place: -4, side: 6 })).toBeLessThan(.01);
 	});
 
 	slow('is the figure in the checks the cuts make on every board and size', () => {
@@ -56,19 +58,33 @@ describe('the picture drawn before the cuts are found', () => {
 					expect(mismatch({ mode: 'figure', name, contours, colors, style: 'strips', board, scale }), `${name} ${board} ${scale}`).toBeLessThan(.015);
 	}, 120000);
 
-	it('tells a drag how far the figure in the checks keeps its size', () => {
+	it('tells a drag how far the figure in the checks keeps its size, along the middle and across it', () => {
 		const request: GeneratorRequest = { mode: 'figure', name: 'Heart', contours: heart.contours as Ring[], colors, style: 'strips', scale: .8 };
-		const { range } = picture(request)!, [low, high] = range!;
-		const height = (place: number) => {
-			const motif = picture({ ...request, place })!.rings.slice(0, heart.contours.length).flat();
-			const v = motif.map(([x, y]) => (x + y - 100) / Math.SQRT2);
-			return Math.max(...v) - Math.min(...v);
+		const bounds = picture(request)!.bounds!, { sum, difference } = bounds;
+		// The motif's height, and its middle across the heart.
+		const box = (place: number, side = 0) => {
+			const motif = picture({ ...request, place, side })!.rings.slice(0, heart.contours.length).flat();
+			const u = motif.map(([x, y]) => (x - y) / Math.SQRT2), v = motif.map(([x, y]) => (x + y - 100) / Math.SQRT2);
+			return { height: Math.max(...v) - Math.min(...v), middle: (Math.max(...u) + Math.min(...u)) / 2 };
 		};
-		// The heart's wide lobes stop it sooner going up than its point going down.
+		const { height } = box(0);
+		// On the middle the heart's wide lobes stop it sooner going up than its point going down.
+		const low = Math.max(sum[0], difference[0]), high = Math.min(sum[1], difference[1]);
 		expect(low).toBeLessThan(0);
 		expect(high).toBeGreaterThan(-low);
-		for (const place of [low, (low + high) / 2, high]) expect(height(place)).toBeCloseTo(height(0), 6);
-		expect(height(high + 3)).toBeLessThan(height(0) - 1);
+		for (const place of [low, (low + high) / 2, high]) expect(box(place).height).toBeCloseTo(height, 6);
+		expect(box(high + 3).height).toBeLessThan(height - 1);
+		// Across, as far as the paper's sides let it, which a drag further keeps it at.
+		const [place, side] = clampPlace(bounds, 0, 40);
+		expect(side).toBeGreaterThan(5);
+		expect(box(place, side).height).toBeCloseTo(height, 6);
+		expect(box(place, side).middle).toBeCloseTo(box(place).middle + side, 6);
+		expect(box(place, side + 3).height).toBeLessThan(height - 1);
+		expect(clampPlace(bounds, place, side + 3)).toEqual([place, side].map(n => expect.closeTo(n, 9)));
+		// A drag's steps keep it within them, so it keeps its size there too.
+		const [stepped, across] = clampPlace(bounds, 0, 40, .25);
+		expect(box(stepped, across).height).toBeCloseTo(height, 6);
+		expect(across).toBeGreaterThan(side - .25);
 	});
 
 	it('is the small motifs the cuts make', () => {

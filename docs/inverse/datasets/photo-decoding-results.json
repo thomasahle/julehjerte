@@ -1,0 +1,63 @@
+{
+  "schema": "photo-decoding-study-1",
+  "date": "2026-10-19",
+  "status": "complete",
+  "evidence": {
+    "path": "tmp/heart-learning/photo-decoding-v1/report.json",
+    "sha256": "bd1f454a8befc2066f4428311e65649ed9ccfb18e4071496f08d3917eb36620e"
+  },
+  "summary": {
+    "cases": 24,
+    "photos": 16,
+    "orientationFixtures": 8,
+    "exactSource": 24,
+    "exactInputs": 24,
+    "maxInputChannelDifference": 0
+  },
+  "browser": "145.0.7632.6",
+  "implementation": {
+    "scripts/inverse/learning/photo-input.mjs": "f1f2af7eb8c4c1847897e8cc5ebf8d934843ad39bd24788d0b4144d369aa356f",
+    "src/lib/paint/importImage.ts": "cafe9ded492a7ebd0d8ee51a07d547d07e5819e206b75219687a47b2b2dd996d",
+    "src/lib/paint/mask.ts": "ae587693654a376154658e9beebbf73ae2b6e3abbca6f5ed71151cbf20418b5f"
+  },
+  "inputs": {
+    "probe": {
+      "path": "tmp/heart-learning/preserved-material-browser-v1/probe/manifest.json",
+      "sha256": "74b2c0fa0b1c0380c0e920a88fdc5883723bfa5b06daf4871ccdf3538957cd91"
+    },
+    "catalog": {
+      "path": "docs/inverse/datasets/real-manifest.json",
+      "sha256": "46986981cdbac3fbada54621014a7584a106576688b08807f52753507c8a6ff5"
+    },
+    "fixtures": {
+      "path": "tmp/heart-learning/photo-decoding-fixtures-v1/manifest.json",
+      "sha256": "49499798d28ee5ad0cbdc3f58a27ece52f7e8c697502720bcc79102f69554a05"
+    }
+  },
+  "embeddedProfiles": [
+    {
+      "id": "real-995899fe049540ed-body-1",
+      "bytes": 672,
+      "description": "GIMP built-in sRGB"
+    }
+  ],
+  "fixtureBytes": 45533,
+  "checks": [
+    "All source JPEG and lossless-reference file hashes match before testing.",
+    "The actual production decodeImageFile TypeScript module is transpiled, served locally and invoked with File objects in Chromium. No substitute decoder.",
+    "All 16 original photos and all eight EXIF orientations have exactly matching oriented dimensions and RGB hashes versus Pillow references.",
+    "Portable neural input bytes also match in all 24 cases. Object URLs are revoked, image bitmaps and the browser are closed."
+  ],
+  "resources": {
+    "browsers": 1,
+    "newSourcePhotoCopies": 0,
+    "inferenceRuns": 0,
+    "solverRuns": 0
+  },
+  "limitations": [
+    "The sixteen photographs are the same development cases, not unseen model evaluation.",
+    "One sRGB ICC-bearing photograph is covered. Wide-gamut/non-sRGB, unusual JPEG variants, transparent images, WebP and mobile browser decoding are not covered.",
+    "No new inference or solver replay: equal input bytes preserve the recorded results, not an additional reconstruction gain.",
+    "The earlier strict WASM-versus-Torch numerical tolerance still fails on one photograph; the model remains offline."
+  ]
+}

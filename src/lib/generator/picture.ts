@@ -13,7 +13,7 @@ import { arc, frameRing, outerFrame, ray, uprightToSheet, BOARD_RADII, FITTED, S
 import { fillSquare, fitCircle } from './frameFit';
 import { fittedPicture } from './fitted';
 import { normalizeContours } from './contours';
-import { STRIPS, boardChecks, placeMotif, placeRange, shifts, slidePlace } from './stripFigure';
+import { STRIPS, boardChecks, placeBounds, placeMotif, shifts, slidePlace, type PlaceBounds } from './stripFigure';
 import { checkeredLayout, checkeredLetters } from './checkeredGrid';
 import { measureTextGrid } from './textGrid';
 import { MOTIF, MOTIF_PATTERNS, boardRadius, boardScale } from './boardMotif';
@@ -24,7 +24,7 @@ const clearest = new WeakMap<Ring[], Map<number, number>>();
 
 /** A heart's picture; for the figure in the checks, where it puts the motif
  * down the heart's middle, and how far the motif can move and keep its size. */
-export type Picture = { rings: Ring[]; place?: number; range?: [number, number] };
+export type Picture = { rings: Ring[]; place?: number; bounds?: PlaceBounds };
 
 /** What a heart already made of the motif in this frame, at its default size,
  * tells the next picture: where the figure in the checks lay, and the board's
@@ -260,5 +260,5 @@ function stripsPicture(request: GeneratorRequest, place?: number): Picture | und
 	if (!guesses) clearest.set(request.contours, guesses = new Map());
 	if (place === undefined && request.place === undefined && !guesses.has(strips)) guesses.set(strips, shifts(rings, strips, .7)[0]);
 	const at = request.place ?? slidePlace(rings, scale, place ?? guesses.get(strips)!);
-	return { rings: [...placeMotif(rings, scale, at), ...boardChecks(strips)], place: at, range: placeRange(rings, scale) };
+	return { rings: [...placeMotif(rings, scale, at, 0, request.side ?? 0), ...boardChecks(strips)], place: at, bounds: placeBounds(rings, scale) };
 }

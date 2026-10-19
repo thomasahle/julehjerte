@@ -566,5 +566,19 @@
       "docs/inverse/datasets/archive-permo.json",
       "docs/inverse/datasets/archive-additional.json"
     ]
-  }
+  },
+  "preservationUpdates": [
+    {
+      "manifest": "docs/inverse/datasets/archive-jhd-original-svg-1.json",
+      "existingDesignIds": [
+        "jhd-darth-vader",
+        "jhd-heart-of-heart",
+        "jhd-node",
+        "jhd-sundays-fourth",
+        "jhd-venus"
+      ],
+      "newDesigns": 0,
+      "summary": "Five original editable SVG alternatives are privately preserved alongside the existing PDF templates. This does not add designs, public mirrors or new physical/model validation."
+    }
+  ]
 }

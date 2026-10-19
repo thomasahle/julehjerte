@@ -851,7 +851,9 @@
       "https://web.archive.org/web/20160405032756/http://julehjertedesign.dk/darth-vader-julehjerte/",
       "http://julehjertedesign.dk/darth-vader-julehjerte/",
       "https://web.archive.org/web/20160405091838/http://julehjertedesign.dk/om/",
-      "http://julehjertedesign.dk/diagrams/darth_vader.pdf"
+      "http://julehjertedesign.dk/diagrams/darth_vader.pdf",
+      "https://web.archive.org/web/20170112161918id_/http://julehjertedesign.dk/diagrams/darth_vader.svg",
+      "http://julehjertedesign.dk/diagrams/darth_vader.svg"
     ],
     "imageUrls": [],
     "credits": [
@@ -872,7 +874,9 @@
       "https://web.archive.org/web/20160405033512/http://julehjertedesign.dk/julehjertets-hjerte/",
       "http://julehjertedesign.dk/julehjertets-hjerte/",
       "https://web.archive.org/web/20160405091838/http://julehjertedesign.dk/om/",
-      "http://julehjertedesign.dk/diagrams/heart_of_heart.pdf"
+      "http://julehjertedesign.dk/diagrams/heart_of_heart.pdf",
+      "https://web.archive.org/web/20170114132905id_/http://julehjertedesign.dk/diagrams/heart_of_heart.svg",
+      "http://julehjertedesign.dk/diagrams/heart_of_heart.svg"
     ],
     "imageUrls": [],
     "credits": [
@@ -893,7 +897,9 @@
       "https://web.archive.org/web/20160405033449/http://julehjertedesign.dk/node-julehjerte/",
       "http://julehjertedesign.dk/node-julehjerte/",
       "https://web.archive.org/web/20160405091838/http://julehjertedesign.dk/om/",
-      "http://julehjertedesign.dk/diagrams/node.pdf"
+      "http://julehjertedesign.dk/diagrams/node.pdf",
+      "https://web.archive.org/web/20170114051312id_/http://julehjertedesign.dk/diagrams/node.svg",
+      "http://julehjertedesign.dk/diagrams/node.svg"
     ],
     "imageUrls": [],
     "credits": [
@@ -914,7 +920,9 @@
       "https://web.archive.org/web/20160405032316/http://julehjertedesign.dk/fjerde-soendag-i-advent/",
       "http://julehjertedesign.dk/fjerde-soendag-i-advent/",
       "https://web.archive.org/web/20160405091838/http://julehjertedesign.dk/om/",
-      "http://julehjertedesign.dk/diagrams/sundays_fourth.pdf"
+      "http://julehjertedesign.dk/diagrams/sundays_fourth.pdf",
+      "https://web.archive.org/web/20170112181839id_/http://julehjertedesign.dk/diagrams/sundays_fourth.svg",
+      "http://julehjertedesign.dk/diagrams/sundays_fourth.svg"
     ],
     "imageUrls": [],
     "credits": [
@@ -935,7 +943,9 @@
       "https://web.archive.org/web/20161018014112/http://julehjertedesign.dk/venus-julehjerte/",
       "http://julehjertedesign.dk/venus-julehjerte/",
       "https://web.archive.org/web/20160405091838/http://julehjertedesign.dk/om/",
-      "http://julehjertedesign.dk/diagrams/venus.pdf"
+      "http://julehjertedesign.dk/diagrams/venus.pdf",
+      "https://web.archive.org/web/20170112163856id_/http://julehjertedesign.dk/diagrams/venus.svg",
+      "http://julehjertedesign.dk/diagrams/venus.svg"
     ],
     "imageUrls": [],
     "credits": [
@@ -1176,6 +1186,69 @@
       "Johan Rosenkilde"
     ],
     "templateUrls": [],
+    "relatedTemplateUrls": [],
+    "license": "unknown"
+  },
+  {
+    "id": "haabet-stjerne-af-cirkler",
+    "title": "Stjerne, af Cirkler",
+    "kind": "document",
+    "source": "haabet.dk",
+    "sourceUrls": [
+      "https://web.archive.org/web/20021025100552/http://www.haabet.dk:80/users/julehjerter/u.html",
+      "http://www.haabet.dk/users/julehjerter/u.html",
+      "https://web.archive.org/web/20030827010801id_/http://www.haabet.dk/users/julehjerter/u_.gif",
+      "http://www.haabet.dk/users/julehjerter/u_.gif"
+    ],
+    "imageUrls": [],
+    "credits": [
+      "Peter Ole Kvint"
+    ],
+    "templateUrls": [
+      "https://web.archive.org/web/20030827010801id_/http://www.haabet.dk/users/julehjerter/u_.gif"
+    ],
+    "relatedTemplateUrls": [],
+    "license": "unknown"
+  },
+  {
+    "id": "haabet-eight-points",
+    "title": "8 Spisser Julehjerte",
+    "kind": "document",
+    "source": "haabet.dk",
+    "sourceUrls": [
+      "https://web.archive.org/web/20021019225901/http://www.haabet.dk:80/users/julehjerter/d.html",
+      "http://www.haabet.dk/users/julehjerter/d.html",
+      "https://web.archive.org/web/20030205022359id_/http://haabet.dk/users/julehjerter/d_.gif",
+      "http://haabet.dk/users/julehjerter/d_.gif"
+    ],
+    "imageUrls": [],
+    "credits": [
+      "Peter Ole Kvint"
+    ],
+    "templateUrls": [
+      "https://web.archive.org/web/20030205022359id_/http://haabet.dk/users/julehjerter/d_.gif"
+    ],
+    "relatedTemplateUrls": [],
+    "license": "unknown"
+  },
+  {
+    "id": "haabet-four-quadrilaterals",
+    "title": "4 4kanter Julehjerte",
+    "kind": "document",
+    "source": "haabet.dk",
+    "sourceUrls": [
+      "https://web.archive.org/web/20021216013859/http://www.haabet.dk:80/users/julehjerter/f.html",
+      "http://www.haabet.dk/users/julehjerter/f.html",
+      "https://web.archive.org/web/20030205024425id_/http://haabet.dk/users/julehjerter/f_.gif",
+      "http://haabet.dk/users/julehjerter/f_.gif"
+    ],
+    "imageUrls": [],
+    "credits": [
+      "Peter Ole Kvint"
+    ],
+    "templateUrls": [
+      "https://web.archive.org/web/20030205024425id_/http://haabet.dk/users/julehjerter/f_.gif"
+    ],
     "relatedTemplateUrls": [],
     "license": "unknown"
   }
