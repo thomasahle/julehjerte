@@ -26,7 +26,7 @@ type Point = readonly [x: number, y: number];
 type Segment = readonly [Point, Point, Point, Point];
 
 /** HILL_PATH as cubic segments: one move-to followed by absolute `C`s only. */
-export function parseHillPath(d: string): Segment[] {
+function parseHillPath(d: string): Segment[] {
 	const numbers = d.match(/-?\d+(?:\.\d+)?/g)?.map(Number) ?? [];
 	if (!/^M[\d\s.-]+(C[\d\s.-]+)+$/.test(d.trim()) || (numbers.length - 2) % 6 !== 0) {
 		throw new Error(`Not a move-to followed by cubic curves: ${d}`);
@@ -149,7 +149,7 @@ export interface LandRect {
 }
 
 /** Page px per drawing unit. */
-export function landScale(land: LandRect): number {
+function landScale(land: LandRect): number {
 	return land.width / LANDSCAPE_WIDTH;
 }
 

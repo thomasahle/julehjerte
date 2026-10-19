@@ -7,7 +7,7 @@
  */
 import { describe, expect, it } from 'vitest';
 import { SHEETS, type SheetSize } from '$lib/laser/sheet';
-import { loadHeart } from '$lib/laser/testHearts';
+import { loadHeart } from '$lib/laser/testHearts.test-helpers';
 import { planTemplatePages, templateLabel, templatePair, templatePieces, type TemplatePagePlan } from './plan';
 import { serializeTemplatePageSvg } from './preview';
 

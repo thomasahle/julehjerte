@@ -24,7 +24,7 @@ import {
 } from '$lib/laser/export';
 import type { SheetSize } from '$lib/laser/sheet';
 
-export const DOWNLOAD_STORAGE_KEY = 'juleflet:download';
+const DOWNLOAD_STORAGE_KEY = 'juleflet:download';
 
 export type DownloadMode = 'printer' | 'laser';
 

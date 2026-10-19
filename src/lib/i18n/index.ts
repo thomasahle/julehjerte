@@ -1,6 +1,6 @@
 import { translations, type Language, type TranslationKey } from './translations';
 
-// Simple reactive state using Svelte 5 runes pattern with module-level state
+// The language `t` and `tArray` use when they are not given one.
 const currentLang: Language = 'da';
 
 export function langFromPathname(pathname: string, basePath = ''): Language {

@@ -10,7 +10,7 @@ import {
 } from './export';
 import { coord, formatMm } from './format';
 import { SHEETS } from './sheet';
-import { loadHeart } from './testHearts';
+import { loadHeart } from './testHearts.test-helpers';
 import { getGalleryDesign } from '$lib/data/heartDesigns';
 import { templatePair } from '$lib/pdf/plan';
 import { SHARED_TEMPLATE_LOBE } from '$lib/utils/symmetry';

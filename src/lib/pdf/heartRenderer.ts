@@ -7,7 +7,7 @@ const DEFAULT_CANVAS_SIZE = 300;
 /**
  * Renders a heart design to a canvas and returns it as a data URL
  */
-export async function renderHeartToDataURL(
+async function renderHeartToDataURL(
   design: HeartDesign,
   options: { size?: number; colors?: HeartColors } = {}
 ): Promise<string> {

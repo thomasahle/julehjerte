@@ -372,22 +372,3 @@ export function detectSymmetryModes(fingers: Finger[]): {
     betweenLobesMode: betweenSym ? 'sym' : betweenAnti ? 'anti' : 'off'
   };
 }
-
-export function getSymmetryDescription(info: SymmetryInfo, t: (key: string) => string): string {
-  if (info.isClassic) {
-    return t('classic');
-  }
-
-  const parts: string[] = [];
-  if (info.mirrorSymmetry) {
-    parts.push(t('mirrorSymmetry'));
-  }
-  if (info.lobeSymmetry && !info.mirrorSymmetry) {
-    parts.push(t('symmetricLobes'));
-  }
-  if (info.curveSymmetry && !info.mirrorSymmetry) {
-    parts.push(t('symmetricCurves'));
-  }
-
-  return parts.length > 0 ? parts.join(', ') : t('noSymmetry');
-}

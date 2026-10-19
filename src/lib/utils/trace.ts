@@ -36,14 +36,14 @@ export const CARD_CORNER_MM = 3.18;
  * 7 and old desktop monitors near 3; anything far outside is a corrupt stored
  * value, not a screen, and is ignored.
  */
-export const MIN_PX_PER_MM = 1.5;
-export const MAX_PX_PER_MM = 12;
+const MIN_PX_PER_MM = 1.5;
+const MAX_PX_PER_MM = 12;
 
 /** How much of the template must stay on screen, so it can always be grabbed back. */
 export const MIN_VISIBLE_PX = 40;
 
 /** "Tilpas" fills this share of the free area, leaving a margin to grab. */
-export const FIT_FRACTION = 0.9;
+const FIT_FRACTION = 0.9;
 
 /** How long the unlock button has to be held. */
 export const HOLD_MS = 2000;
@@ -84,7 +84,7 @@ export function scaleFromWidthMm(templateWidth: number, widthMm: number, pxPerMm
 	return (widthMm * pxPerMm) / templateWidth;
 }
 
-export function clampWidthMm(widthMm: number): number {
+function clampWidthMm(widthMm: number): number {
 	return Math.min(MAX_WIDTH_MM, Math.max(MIN_WIDTH_MM, widthMm));
 }
 

@@ -36,7 +36,7 @@ export const SNOW_CAP_FILL = '#fbfcfa';
 export const STAR_FILL = '#e0b75a';
 
 /** Height in user units of `pine-a`/`pine-b`/`pine-c` at scale 1. */
-export const PINE_BASE_HEIGHT = 202;
+const PINE_BASE_HEIGHT = 202;
 
 export type PineSymbol = 'pine-a' | 'pine-b' | 'pine-c';
 

@@ -482,7 +482,7 @@ export function clearLevelBootstrap(doc: Document = document): void {
 }
 
 /** Everything the script leaves on `<html>`, for the gallery to clear once it has measured. */
-export const STRAND_BOOTSTRAP_PROPERTIES = ['--gallery-pull', '--gallery-bar-height', '--strand-room'];
+const STRAND_BOOTSTRAP_PROPERTIES = ['--gallery-pull', '--gallery-bar-height', '--strand-room'];
 
 /** Undo the script: the gallery has measured and set its own values. */
 export function clearStrandBootstrap(root: HTMLElement = document.documentElement): void {

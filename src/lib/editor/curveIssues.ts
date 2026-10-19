@@ -29,7 +29,7 @@ export function intersectionMarginPx(overlap: { width: number; height: number })
 	return INTERSECTION_MARGIN_UNITS * unit;
 }
 
-export function bboxesOverlap(a: BBox, b: BBox): boolean {
+function bboxesOverlap(a: BBox, b: BBox): boolean {
 	return a.x <= b.x + b.width && a.x + a.width >= b.x && a.y <= b.y + b.height && a.y + a.height >= b.y;
 }
 

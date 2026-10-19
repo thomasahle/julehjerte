@@ -3,7 +3,7 @@ import type { HeartDesign, Vec } from '$lib/types/heart';
 import { getTemplateData } from '$lib/utils/templateSvg';
 import { LaserExportError, reversePath, unfoldPiece, type LaserPath, type LaserSegment } from './unfold';
 import heartDesigns from '$lib/data/heart-designs.json';
-import { gallerySvgs, loadHeart } from './testHearts';
+import { gallerySvgs, loadHeart } from './testHearts.test-helpers';
 
 const WIDTH = 80;
 const EPS = 1e-9;

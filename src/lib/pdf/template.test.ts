@@ -8,7 +8,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { jsPDF } from 'jspdf';
 import { SHEETS } from '$lib/laser/sheet';
-import { loadHeart } from '$lib/laser/testHearts';
+import { loadHeart } from '$lib/laser/testHearts.test-helpers';
 import { laserFileName } from '$lib/laser/export';
 import { getGalleryDesign } from '$lib/data/heartDesigns';
 import { generateTemplatesPDF, templatesFilename } from './template';

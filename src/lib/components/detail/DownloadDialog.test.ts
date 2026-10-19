@@ -17,7 +17,7 @@ import {
 } from '$lib/analytics';
 import { downloadTemplatesPDF } from '$lib/pdf/template';
 import { prerenderHeartImages } from '$lib/pdf/heartRenderer';
-import { loadHeart } from '$lib/laser/testHearts';
+import { loadHeart } from '$lib/laser/testHearts.test-helpers';
 
 vi.mock('$lib/analytics', () => ({
 	trackHeartDownload: vi.fn(),

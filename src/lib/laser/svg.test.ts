@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { SHEETS } from './sheet';
 import { planLaserSheet } from './export';
 import { serializeLaserSvg } from './svg';
-import { loadHeart } from './testHearts';
+import { loadHeart } from './testHearts.test-helpers';
 
 function parse(text: string): Document {
 	const doc = new DOMParser().parseFromString(text, 'image/svg+xml');
