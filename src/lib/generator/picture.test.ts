@@ -21,7 +21,7 @@ function mismatch(request: GeneratorRequest, n = 100): number {
 	const fixed = request.place !== undefined || (request.scale ?? .7) === .7, base = fixed ? result : generate({ ...request, scale: .7 });
 	// Where its strips could not all be whole at the size asked for, the
 	// generator says which it kept.
-	const { rings } = picture({ ...request, scale: result.scale ?? request.scale, layout: base.layout }, base.place)!;
+	const { rings } = picture({ ...request, scale: result.scale ?? request.scale, layout: base.layout }, { place: base.place })!;
 	let differ = 0;
 	for (let y = 0; y < n; y++)
 		for (let x = 0; x < n; x++) {
@@ -79,7 +79,26 @@ describe('the picture drawn before the cuts are found', () => {
 		expect(mismatch({ mode: 'figure', name: 'Heart', contours: heart.contours as Ring[], colors, style: 'motifs', scale: .85 })).toBeLessThan(.01);
 	}, 30000);
 
+	it('is the circle frames the cuts make, on their usual board of three strips', () => {
+		for (const style of ['rays', 'check'] as const)
+			expect(mismatch({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style, gap: 3 }), style).toBeLessThan(.01);
+		// A motif that needed a finer board there gets no picture.
+		expect(picture({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'rays' }, { board: 5 })).toBeUndefined();
+	});
+
+	it('is the woven and airy letters the cuts make', () => {
+		for (const textFrame of ['woven', 'air'] as const)
+			for (const text of ['KIM', 'GOD\nJUL'])
+				expect(mismatch({ mode: 'text', name: text, text, font: oswald as unknown as Font, colors, textFrame, fittedCells: false }), `${textFrame} ${text}`).toBeLessThan(.01);
+	});
+
+	slow('is the woven letters the cuts make, whatever the number of columns', () => {
+		// The board's checks turn with the columns' parity: every cell lies on a dark square.
+		for (const text of ['JUL', 'ANNA', 'Thomas'])
+			expect(mismatch({ mode: 'text', name: text, text, font: nunito as unknown as Font, colors, textFrame: 'woven', fittedCells: false }), text).toBeLessThan(.015);
+	}, 30000);
+
 	it('has none yet for the other frames', () => {
-		expect(picture({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'rays' })).toBeUndefined();
+		expect(picture({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'corners' })).toBeUndefined();
 	});
 });

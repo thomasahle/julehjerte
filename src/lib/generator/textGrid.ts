@@ -48,7 +48,9 @@ export function squareCellScale(text: string, font: Font, air = false): number {
 	return fitted / ((cols + rows) * cell);
 }
 
-export function generateTextGrid(
+/** The text grid's cells and the letters' scale, before anything is routed:
+ * shared by `generateTextGrid` and the picture drawn before its cuts. */
+export function measureTextGrid(
 	text: string,
 	font: Font,
 	air = false,
@@ -114,6 +116,18 @@ export function generateTextGrid(
 					((layout.frameFill ?? 0.88) * distance(hit.point, [50, 50])) / Math.hypot(x, y)
 				);
 			}
+	return { matrix, rows, cols, height, cy, padding, cellHeight, widths, inkWidths, span, fullHeight, regular, scale, boundary, points };
+}
+
+export function generateTextGrid(
+	text: string,
+	font: Font,
+	air = false,
+	frame?: Frame,
+	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; junction?: Point; circle?: number; scale?: number } = {}
+) {
+	const { matrix, rows, cols, height, cy, padding, cellHeight, widths, inkWidths, span, fullHeight, scale, boundary, points } =
+		measureTextGrid(text, font, air, frame, layout);
 	let edges: Edge[] = [];
 	const slices = layout.slices ?? 1;
 	const columns = layout.columns ?? 1;

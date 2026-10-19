@@ -382,8 +382,9 @@
 		requestFor(snapshot)
 			.then((request) => {
 				if (token !== revision) return;
-				// Where the default size put the figure in the checks, once made.
-				sketch = picture(request, cache.get(geometryKey({ ...snapshot, scale: defaults.scale, place: undefined }))?.place) ?? null;
+				// What the default size's heart, once made, tells the picture.
+				const made = cache.get(geometryKey({ ...snapshot, scale: defaults.scale, place: undefined }));
+				sketch = picture(request, { place: made?.place, board: made?.design.gridSize.x }) ?? null;
 				if (!cached && !failed) queueJob({ request, key, token });
 			})
 			.catch(() => {

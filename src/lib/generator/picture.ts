@@ -9,10 +9,12 @@
  * Frames without a picture here return none.
  */
 import type { GeneratorRequest } from './generate';
-import type { Font, Ring } from './geometry';
+import { arc, frameRing, outerFrame, uprightToSheet, type Font, type Point, type Ring } from './geometry';
+import { fitCircle } from './frameFit';
 import { normalizeContours } from './contours';
 import { STRIPS, boardChecks, placeMotif, placeRange, shifts, slidePlace } from './stripFigure';
 import { checkeredLayout, checkeredLetters } from './checkeredGrid';
+import { measureTextGrid } from './textGrid';
 import { MOTIF, MOTIF_PATTERNS, boardScale } from './boardMotif';
 
 /** The clearest place for each motif and board, where the search starts when
@@ -23,12 +25,19 @@ const clearest = new WeakMap<Ring[], Map<number, number>>();
  * down the heart's middle, and how far the motif can move and keep its size. */
 export type Picture = { rings: Ring[]; place?: number; range?: [number, number] };
 
-/** The picture for a request. `place` is where the figure in the checks lay
- * at its default size, when that heart has been made. */
-export function picture(request: GeneratorRequest, place?: number): Picture | undefined {
+/** What a heart already made of the motif in this frame, at its default size,
+ * tells the next picture: where the figure in the checks lay, and the board's
+ * strips per side. */
+export type Known = { place?: number; board?: number };
+
+/** The picture for a request, or none where this frame has none yet, or the
+ * generator is known to build this motif differently. */
+export function picture(request: GeneratorRequest, known: Known = {}): Picture | undefined {
 	try {
 		if (request.mode === 'text' && request.textFrame === 'checkered' && request.font)
 			return checkered(request.text ?? '', request.font, request.letterScale);
+		if (request.mode === 'text' && (request.textFrame === 'woven' || request.textFrame === 'air') && request.font && request.fittedCells === false)
+			return woven(request.text ?? '', request.font, request.textFrame === 'air');
 		if (request.mode === 'figure' && request.style === 'motifs' && request.contours?.length) {
 			// The motif as the one letter of a pattern on the checkerboard,
 			// the one its default size chose once that heart is made.
@@ -37,7 +46,11 @@ export function picture(request: GeneratorRequest, place?: number): Picture | un
 			const font: Font = { glyphs: { [MOTIF]: { advance: 1, contours } } };
 			return checkered(MOTIF_PATTERNS[request.layout?.alternative ?? 0], font, boardScale(request));
 		}
-		if (request.mode === 'figure' && request.style === 'strips') return stripsPicture(request, place);
+		if (request.mode === 'figure' && request.style === 'strips') return stripsPicture(request, known.place);
+		// A motif that needs panels gets a finer board, which crosses the
+		// corners its frame turns over with more stripes.
+		if (request.mode === 'figure' && (request.style === 'rays' || request.style === 'check') && (known.board ?? 3) === 3)
+			return circlePicture(request);
 	} catch {
 		// A character the font lacks, say: the generator reports it.
 	}
@@ -54,6 +67,54 @@ function checkered(text: string, font: Font, letterScale = 1): Picture {
 			const char = matrix[row][col];
 			if (char !== undefined) rings.push(...letter(char, row, col));
 		}
+	return { rings };
+}
+
+/** A circle frame with rays or checks on its usual board of three strips: the
+ * motif in its circle, and the four corners its frame's cuts turn over (see
+ * `outerFrame`). A motif that needs panels or a finer board can differ. */
+function circlePicture(request: GeneratorRequest): Picture | undefined {
+	const contours = normalizeContours(request.contours ?? []);
+	if (!contours.length) return;
+	const fitted = fitCircle(request), size = fitted.frameSize ?? 70, scale = fitted.scale ?? .7;
+	const frame = frameRing(request.frame ?? 'circle', size), style = request.style === 'check' ? 'check' : 'rays';
+	const motif = contours.map(r => r.map(([x, y]) => uprightToSheet([x * size * scale, y * size * scale])));
+	const corner = (angle: number): Point => [50 + 50 * Math.sign(Math.cos(angle)), 50 + 50 * Math.sign(Math.sin(angle))];
+	const corners = outerFrame([], frame, [0, 1, 2, 3], style).map(gate =>
+		[gate.lp, ...arc(frame, gate.low, gate.high), gate.hp, corner(gate.angle)]);
+	return { rings: [...motif, ...corners] };
+}
+
+/** Letters in square cells on the regular checkerboard of the woven and airy
+ * frames (see `generateTextGrid`): a board of columns + rows + 1 strips,
+ * every cell a diamond around one of its squares that reaches the centres of
+ * the four beside it, the checks cleared inside it and its letter drawn. */
+function woven(text: string, font: Font, air: boolean): Picture {
+	const { matrix, rows, cols, cy, cellHeight, widths, span, fullHeight, scale } = measureTextGrid(text, font, air, undefined, { fittedCells: false });
+	const n = cols + rows + 1, side = 100 / n, rings: Ring[] = [];
+	const square = (i: number, j: number): Ring => [[i * side, j * side], [(i + 1) * side, j * side], [(i + 1) * side, (j + 1) * side], [i * side, (j + 1) * side]];
+	// Every cell lies on a square of one parity, which is dark.
+	const dark = (i: number, j: number) => (i + j + cols + 1) % 2 === 0;
+	for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) if (dark(i, j)) rings.push(square(i, j));
+	for (let row = 0; row < rows; row++) {
+		let cursor = -span / 2;
+		for (let col = 0; col < cols; col++) {
+			const { glyph } = matrix[row][col];
+			const x = (cursor + widths[col] / 2) * scale, y = (-fullHeight / 2 + (row + .5) * cellHeight) * scale;
+			cursor += widths[col];
+			if (!glyph.contours.length) continue;
+			const [cx0, cy0] = uprightToSheet([x, y]), i = Math.floor(cx0 / side), j = Math.floor(cy0 / side);
+			// The dark parts of the cell turn back: its own square, or the four
+			// quarters of the squares beside it.
+			if (dark(i, j)) rings.push(square(i, j));
+			else for (const [dx, dy] of [[1, 0], [0, 1], [-1, 0], [0, -1]]) {
+				const mid: Point = [cx0 + dx * side / 2, cy0 + dy * side / 2];
+				rings.push([[mid[0] - dy * side / 2, mid[1] - dx * side / 2], [mid[0] + dy * side / 2, mid[1] + dx * side / 2], [cx0 + dx * side, cy0 + dy * side]]);
+			}
+			const xs = glyph.contours.flat().map(p => p[0]), cx = (Math.min(...xs) + Math.max(...xs)) / 2;
+			rings.push(...glyph.contours.map(ring => ring.map(([px, py]) => uprightToSheet([x + (px - cx) * scale, y + (py - cy) * scale]))));
+		}
+	}
 	return { rings };
 }
 
