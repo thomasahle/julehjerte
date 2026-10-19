@@ -1,0 +1,263 @@
+{
+  "schema": "preserved-candidate-results-1",
+  "date": "2026-10-19",
+  "decision": "Do not integrate or deploy these candidate weights. The frozen fallback adds no recovered cases, and the new cohort exposes material and foreground generalization failures.",
+  "evidence": {
+    "training": {
+      "path": "tmp/heart-learning/preserved-candidate-v1/training/report.json",
+      "sha256": "21cf36f53afc3365b1fb0d48732a3e3f27db5c9315ba5b09fcf8e2e2a4d2d7a5"
+    },
+    "independentAudit": {
+      "path": "tmp/heart-learning/preserved-candidate-v1/audit.json",
+      "sha256": "90c41158b06ac71cbd64f4a1c49d8ade517637998522efc99ef131e9229c5338"
+    },
+    "nativeRuntime": {
+      "path": "tmp/heart-learning/preserved-candidate-v1/native/report.json",
+      "sha256": "3a2d4297127ea97e00619ef07cd1d837da105862ec4bd6b4c44e9f9641a0393a"
+    },
+    "browserRuntime": {
+      "path": "tmp/heart-learning/preserved-candidate-v1/browser/report.json",
+      "sha256": "0807590ada5646a7793e9617510ea35f3150d719494dc513942476f12f21de42"
+    },
+    "pipeline": {
+      "path": "tmp/heart-learning/preserved-candidate-v1/pipeline/report.json",
+      "sha256": "6da26a6b57f61d9a731ee6338b0308b1646ee44b679fe3ccd2b15a1c3c63118b"
+    },
+    "editable": {
+      "path": "tmp/heart-learning/preserved-candidate-v1/editable/results.json",
+      "sha256": "33c7b6288837048d630de97ef0223f044fd9b4b76dca0d9e385aae139c3723d7"
+    },
+    "colorAblation": {
+      "path": "tmp/heart-learning/preserved-candidate-v1/color-ablation/report.json",
+      "sha256": "cb5ac86ba51591ec0be7930052e91dceed71e053b1b3a96668f4e42ed4e1a301"
+    },
+    "gallery": {
+      "path": "tmp/heart-learning/preserved-candidate-v1/gallery/manifest.json",
+      "sha256": "cb21998f16aafc391639faf9ab273d715c39affc23f4576061267bac039ce3df"
+    }
+  },
+  "selection": {
+    "path": "docs/inverse/datasets/preserved-material-heldout-plan.json",
+    "sha256": "10554c9c6e175c95619101813a6c08cc0907ea8bf7fcd00bf08e46a2b773f64a"
+  },
+  "training": {
+    "photos": 16,
+    "sourceGroups": 14,
+    "syntheticGeometries": 32,
+    "updates": 240,
+    "seconds": 78.387216125,
+    "parameters": 1570395,
+    "checkpointSha256": "715b50a282423ca51c9e0b4c7ad7e25cc1f5f26436df1cec554ebc94a81d94bb",
+    "immutableTensorsChecked": 281,
+    "savedPredictionsExact": true,
+    "foregroundPredictionsExact": true,
+    "trainingMaterialError": 0.018019566756095326,
+    "metricScope": "Partial annotated training pixels only; not held-out accuracy."
+  },
+  "runtime": {
+    "modelBytes": 6578836,
+    "originalPhotoInputsExact": 16,
+    "nativeChecks": {
+      "allPhotos": true,
+      "foregroundExact": true,
+      "probabilityParity": true,
+      "halfThresholdParity": false
+    },
+    "browserChecks": {
+      "allPhotos": true,
+      "noBrowserErrors": true,
+      "sourceRgbExact": true,
+      "inputRgbExact": true,
+      "probabilityParity": false,
+      "halfThresholdParity": false
+    },
+    "wasmWarmInference": {
+      "runs": 20,
+      "medianMilliseconds": 69.34999990463257,
+      "p90Milliseconds": 70.5
+    },
+    "wasmMaxAbsoluteProbabilityDifference": 3.2842159271240234e-05,
+    "wasmThresholdChanges": {
+      "body": 1,
+      "material": 4
+    },
+    "qualification": "The four changed material pixels have foreground probabilities below 0.024. One body pixel also crosses 0.5. Strict 2e-5 and exact-threshold gates remain failed; neither tolerance nor checkpoint was changed to pass."
+  },
+  "pipeline": {
+    "summary": {
+      "production": {
+        "attempted": 16,
+        "crops": 7,
+        "supported": 6,
+        "checkedPairs": 7,
+        "neuralSelected": 0,
+        "reusedFits": 0
+      },
+      "fallback": {
+        "attempted": 16,
+        "crops": 7,
+        "supported": 6,
+        "checkedPairs": 7,
+        "neuralSelected": 0,
+        "reusedFits": 16
+      }
+    },
+    "uniqueFits": 7,
+    "methodLabelledEditablePairs": 14,
+    "editableChecksPassed": 14,
+    "editableErrorRange": [
+      0.0035313382834570865,
+      0.024258793969849247
+    ],
+    "solverSeconds": {
+      "median": 9.023614499999999,
+      "max": 9.761245708
+    },
+    "qualification": "Seven checked pairs are not seven exact artwork recoveries. All fallback selections were identical to production, so the exact same fit is shared. One retained production proposal lacks supported-outline status. Source-group diversity is one; no original cutting-template ground truth."
+  },
+  "colorAblation": {
+    "summary": {
+      "learned-material": {
+        "supported": 0,
+        "eligible": 0,
+        "extraFallbacks": []
+      },
+      "foreground-rgb": {
+        "supported": 2,
+        "eligible": 1,
+        "extraFallbacks": []
+      }
+    },
+    "rejections": {
+      "learned-material": {
+        "The two-colour foreground does not clearly support both heart lobes and lower edges.": 11,
+        "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 4,
+        "No nondegenerate heart-shape fit": 1
+      },
+      "foreground-rgb": {
+        "The two-colour foreground does not clearly support both heart lobes and lower edges.": 8,
+        "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 4,
+        "supported": 2,
+        "No two distinct paper colours on a sufficiently plain background": 1,
+        "No nondegenerate heart-shape fit": 1
+      }
+    },
+    "scope": "Exploratory ablation on the already evaluated cohort; not a new held-out evaluation. Both methods use the same saved WASM foreground and unchanged locator. Alternate execution order, retain the existing two-second orientation deadline and all failures. No solver or manual ROI. Timing can change the examined orientations.",
+    "conclusion": "Material collapse is visible but not the only failure. RGB colors with the same predicted foreground yield no extra eligible fallback; lower-edge and lobe evidence still fail."
+  },
+  "visualReview": {
+    "sourcePhotosInspected": 16,
+    "fieldPanelsInspected": 4,
+    "distinctFitPanelsInspected": 2,
+    "distinctFitsInspected": 7,
+    "notes": [
+      {
+        "id": "real-ad2c0c1de36a7815-body-1",
+        "description": "pinecone-frame",
+        "observations": "Both paper identities largely collapse into one class. Foreground has a weak lower tip. Export retains the central motif but adds large frame distortions and thin false seams."
+      },
+      {
+        "id": "real-4097e8fcdc21b6a3-body-1",
+        "description": "snowflake",
+        "observations": "Foreground prediction loses much of the lower patterned overlap. Both color sources fail to identify both lower edges; no crop or fitted pair."
+      },
+      {
+        "id": "real-358faca3134e290f-body-1",
+        "description": "rotated-horse",
+        "observations": "Foreground largely recognizes the rotated heart, but learned paper identities collapse. Production crop and fit preserve the horse; small strip-boundary distortions remain."
+      },
+      {
+        "id": "real-9c8a921d12d8474e-body-1",
+        "description": "gold-red-bottom-grid",
+        "observations": "Predicted paper identities collapse across the lobes. Production fit preserves the curved grid but adds tiny isolated cutouts and changes some contacts."
+      },
+      {
+        "id": "real-49817b568b7d02a1-body-1",
+        "description": "green-white-curved-grid",
+        "observations": "Learned material patches do not follow the visible papers. Predicted outline and cap evidence fail support checks with both color sources; no fitted pair."
+      },
+      {
+        "id": "real-5c303ce388328a13-body-1",
+        "description": "pineapple-frame",
+        "observations": "Body outline is broad and soft; learned paper regions omit most of the motif. Neither color-source ablation obtains a supported crop."
+      },
+      {
+        "id": "real-c6b9eeb016808d3b-body-1",
+        "description": "red-green-heart",
+        "observations": "Learned material field loses large portions of the visible pattern. Production reconstruction is close, with minor boundary rounding."
+      },
+      {
+        "id": "real-8e0056ff18287e45-body-1",
+        "description": "stacked-hearts",
+        "observations": "Body silhouette is recognizable, but learned colors break up and merge parts of the motif. Both ablations fail crop support."
+      },
+      {
+        "id": "real-38428ac54117e67c-body-1",
+        "description": "gold-white-many-hearts",
+        "observations": "RGB inside predicted foreground obtains a supported shape only with extrapolated corners outside the photo; policy correctly rejects replacement. The source bottom tip is clipped."
+      },
+      {
+        "id": "real-56faeb060f60c170-body-1",
+        "description": "dark-green-blue-pinwheel",
+        "observations": "Low contrast between papers; learned material regions do not consistently follow either paper. No supported crop with either field source."
+      },
+      {
+        "id": "real-56a89a732af12a66-body-1",
+        "description": "blue-gold-perspective-grid",
+        "observations": "Learned material head is almost uniform. Foreground-plus-RGB supports the crop, which production already finds. Export distorts several narrow grid contacts."
+      },
+      {
+        "id": "real-3b92112e8487e279-body-1",
+        "description": "gold-black-long-grid",
+        "observations": "Learned material field is almost uniform; foreground has a thin unstable bottom region. Neither ablation supports a crop."
+      },
+      {
+        "id": "real-fa1ca05594655c8d-body-1",
+        "description": "silver-gold-reflections",
+        "observations": "Strong reflections and shading; learned materials are almost uniform. Body silhouette alone does not yield a supported crop."
+      },
+      {
+        "id": "real-0f8bf87595f587e5-body-1",
+        "description": "red-white-framed-heart",
+        "observations": "Central motif remains recognizable in the learned field but surrounding papers do not separate consistently. Fitted frame contains conspicuous false gaps and distortions despite 2.41% derived-mask disagreement."
+      },
+      {
+        "id": "real-7f22ab27bb1cd19e-body-1",
+        "description": "rotated-gold-white-clover",
+        "observations": "Foreground misses a substantial pale region and separates off a patch near the lower edge. Neither method supports a crop."
+      },
+      {
+        "id": "real-8a9c703f7f29fd14-body-1",
+        "description": "red-white-flower",
+        "observations": "Learned field recovers much of the flower but not consistent paper identities across the lobes. Production retains an unsupported editable crop proposal; its resulting flower fit is visually close and passes geometry checks."
+      }
+    ]
+  },
+  "nextExperiment": "Use the frozen foreground as a rough search-region proposal; recover precise paper boundaries from original RGB. Keep current support checks, compare to the saved production baseline, and treat this already inspected cohort as development data. A subsequent source-held-out cohort is required for a release decision.",
+  "validation": {
+    "pythonTests": 7,
+    "javascriptTests": 20,
+    "failedTests": 0,
+    "cliRuns": [
+      "independent audit",
+      "native ONNX inference on all 16",
+      "actual production JPEG import and WASM inference on all 16",
+      "paired full pipeline",
+      "14 editable exports",
+      "32 color-ablation crops"
+    ],
+    "unchangedDeployedTrees": {
+      "src": "11a64f0b70d4e88ede01957041fbec96b5286c46",
+      "static": "9128a8013444e3fd329e1aef9f0be36930e8fe4b"
+    },
+    "deployedReference": "dad6abbd894b85ffb4ce0940899ea2f5a0d6f85a",
+    "siteValidation": "No src or static changes since the deployed, green-CI release; use its full app checks and live drawing QA rather than repeating heavy unchanged tests."
+  },
+  "resources": {
+    "newSourcePhotoCopies": 0,
+    "newPhotoDownloads": 0,
+    "workers": 1,
+    "retainedUniqueFileBytes": 57872264,
+    "note": "Small derived previews, fields and checkpoints; original JPEGs are reused in place. Editable audit inputs are hardlinked."
+  }
+}
