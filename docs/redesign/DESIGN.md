@@ -658,14 +658,23 @@ colour. They are the close-fitting frame's construction with its legs tapered to
 and no outer strips. **Large silhouette** (Stor silhuet): the motif is scaled to fill the square
 (the size setting is the fraction of the largest fit) and leaves a small check in each corner.
 **Small motifs** (Små motiver): the motif in place of a letter on the text checkerboard, on every
-square of one colour of a 4×4 board; a motif that cannot be cut that small gets three squares
-across a 3×3 board, then two on 2×2. A clean smaller board is preferred to a hard-to-cut larger
-one. **Equal squares** (Lige store tern): the motif in place of the one letter of the woven text
-frame with square cells, so it takes the centre square of a regular 3×3 board and every square
-around it is equally large, as in Brodal's hearts. Every cut runs a whole square from the paper
-edge to a corner of the motif's square (the circle with checks leaves the middle strip narrower).
-The motif's cell is one square's diagonal wide, so a wide motif is smaller; cells fitted to the
-motif are the last resort, rather than refusing. **The circle on equal squares** (Cirkel · Lige
+square of one colour of a 4×4 board: the colour with the top and bottom squares, else the other,
+whose squares the bell and the angel can stand in where the top and bottom ones cannot; a motif
+that cannot be cut that small gets three squares across a 3×3 board, then two on 2×2. A clean
+smaller board is preferred to a hard-to-cut larger one. The Strimler slider chooses the board
+instead, two to eight strips: every square of one colour there, the one with the top and bottom
+squares first (on three strips three across the middle first). A colour the checkerboard connects
+only through neighbouring junctions (on three, five and seven strips the one with every corner of
+the diamond) is left out. Chosen strips are kept, hard to cut if need be; only where nothing at all
+can be built there do the fewest, largest copies follow, and the page says which strips it shows.
+**Equal squares** (Lige store tern): the motif in place of the one letter of the woven text
+frame with square cells, so it takes the centre square of a regular board of three strips and
+every square around it is equally large, as in Brodal's hearts. The Strimler slider chooses an odd number up to nine; on more strips the motif is
+the middle one of a row of empty square cells, so it is as small as the squares. Every cut runs whole squares from the paper edge to a corner of the
+motif's square (the circle with checks leaves the middle strip narrower). The motif's cell is one
+square's diagonal wide, so a wide motif is smaller. A motif whose sides cannot meet the cells
+beside it (the gift: no four-port construction) has only three strips, which the page then says;
+cells fitted to the motif are the last resort, rather than refusing. **The circle on equal squares** (Cirkel · Lige
 store tern) adds a layer, like the gallery's santa heart (whose lines are not evenly spaced): a
 regular 5×5 board with a circle around the motif. The size setting sizes the circle smoothly and
 the motif fills it up to the space asked for, so both only grow with the setting (tested): from
@@ -732,11 +741,10 @@ half the space and then none, and a circle move 4% further out and then keep the
 The two board frames whose squares hold the motif (small motifs, equal squares) fix the space with
 their squares, as the figure in the checks does with its board; their size setting scales the
 motif within its square, 0.6–1.1 times the default.
-On them a motif keeps, at every size, the choice its default size made, since another board would
-make it jump in size: the number of small copies, or for equal squares the centre square of a
-three-strip board (the motif up to a tenth larger in it, or with the spacious frame's room around
-it), else several squares of a finer board. Each choice is first tried quickly, as woven text tries
-its recipes before the slower retries. The page passes the choice from its default-size heart, so
+On them a motif keeps, at every size, the choice its default size made on its strips, since
+another would make it jump in size: which squares hold the small copies, or for equal squares the
+motif up to a tenth larger in its square, or with the spacious frame's room around it. Each choice
+is first tried quickly, as woven text tries its recipes before the slower retries. The page passes the choice from its default-size heart, so
 other sizes build only that (the cookie's small motifs: 2–4 s instead of 25–37 s); beyond what the
 choice can be cut at, the motif keeps the default size's own size.
 Figure choices are complete templates. Their thumbnails render the actual generated heart in the

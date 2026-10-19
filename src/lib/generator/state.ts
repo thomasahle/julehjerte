@@ -1,4 +1,5 @@
 import { FIGURE_STYLES, FRAMES, type FigureStyle, type Frame, type TextFrame } from './geometry';
+import { BOARD_STRIPS, type BoardStyle } from './boardMotif';
 export type GeneratorState = {
 	mode: 'start' | 'figure' | 'text';
 	motif: string;
@@ -15,6 +16,9 @@ export type GeneratorState = {
 	spacing: number;
 	/** The strips per side of the figure in the checks' board. */
 	strips: number;
+	/** The strips per side the visitor chose for the small motifs or the
+	 * equal squares; absent, the frame chooses (see `stripCount`). */
+	board?: number;
 	/** Where the visitor dragged the figure in the checks: how far down the
 	 * heart's middle, and how far across it; absent, its default size
 	 * chooses, on the middle. */
@@ -48,9 +52,14 @@ export const largestScale = (style: FigureStyle) => FULL_SIZE.includes(style) ? 
 export function frameGap(s: GeneratorState): number | undefined {
 	return s.mode === 'figure' && SPACED_STYLES.includes(s.style) ? s.spacing : undefined;
 }
-/** The strips per side a state asks of the figure in the checks' board. */
+/** The strips per side a state asks of a frame on a board, the nearest the
+ * frame offers below it (see `BOARD_STRIPS`); none for other frames, or
+ * where the frame chooses. */
 export function stripCount(s: GeneratorState): number | undefined {
-	return s.mode === 'figure' && s.style === 'strips' ? s.strips : undefined;
+	const strips = s.style === 'strips' ? s.strips : s.board;
+	if (s.mode !== 'figure' || !(s.style in BOARD_STRIPS) || strips === undefined) return;
+	const { min, max, step } = BOARD_STRIPS[s.style as BoardStyle];
+	return Math.max(min, Math.min(max, min + step * Math.floor((strips - min) / step)));
 }
 /** No place or side of the figure in the checks lies farther out than the
  * paper reaches. */
@@ -112,7 +121,8 @@ export function readGeneratorState(hash: string): GeneratorState {
 			['frameSize', 50, 80],
 			['scale', 45, largestScale(s.style)],
 			['spacing', 0, 15],
-			['strips', 3, 6]
+			['strips', 3, 6],
+			['board', 2, 9]
 		] as const)
 			if (typeof raw[k] === 'number' && Number.isFinite(raw[k]))
 				Object.assign(s, {

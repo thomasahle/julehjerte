@@ -29,6 +29,7 @@
 	import { saveUserDesign } from '$lib/stores/collection';
 	import { defaults, readGeneratorState, normalizeText, fittedCells, TEXT_LINES, TEXT_LINE_LENGTH, type GeneratorState, frameGap, stripCount, stripPlace, stripSide, largestScale, SPACED_STYLES, BOARD_STYLES } from '$lib/generator/state';
 	import { clampPlace } from '$lib/generator/stripFigure';
+	import { BOARD_STRIPS, type BoardStyle } from '$lib/generator/boardMotif';
 	import type {
 		GeneratorResult,
 		GeneratorRequest
@@ -134,6 +135,10 @@
 	 * dragged. A picture's square is 100 units wide, and so is every heart's
 	 * in the same framing; on screen the middle is vertical. */
 	let draggable = $derived(config.mode === 'figure' && config.style === 'strips');
+	/** The strips the frame on a board offers, if it is one, and the strips of
+	 * the heart shown for these settings. */
+	let boardStrips = $derived(config.mode === 'figure' && config.style in BOARD_STRIPS ? BOARD_STRIPS[config.style as BoardStyle] : undefined);
+	let shownBoard = $derived(!busy && result ? result.design.gridSize.x : undefined);
 	const PICTURE_SIDE = Number(computeHeartViewBoxFromOverlap({ left: 0, top: 0, width: 100, height: 100 }).viewBox.split(' ')[3]);
 	let dragging = $state<{ pointer: number; x: number; y: number; place: number; side: number; unitsPerPx: number } | null>(null);
 	function startDrag(event: PointerEvent) {
@@ -427,6 +432,7 @@
 			scale: defaults.scale,
 			spacing: defaults.spacing,
 			strips: defaults.strips,
+			board: undefined,
 			place: undefined,
 			side: undefined
 		})
@@ -770,6 +776,8 @@
 								? t('generatorTemplateUnavailable', lang)
 								: undefined}
 							onclick={() => {
+								// The small motifs and equal squares choose their own boards again.
+								if (choice.style !== config.style) config.board = undefined;
 								config.frame = choice.frame;
 								config.style = choice.style;
 								config.scale = Math.min(config.scale, largestScale(choice.style));
@@ -805,17 +813,25 @@
 				{#if result?.scale !== undefined && Math.round(result.scale * 100) !== config.scale}<p class="hint" role="status">
 						{t('generatorSizeKept', lang, { asked: String(config.scale), kept: String(Math.round(result.scale * 100)) })}
 					</p>{/if}
-				{#if config.style === 'strips'}
+				{#if boardStrips}{@const asked = stripCount(config)}{@const strips = asked ?? shownBoard ?? boardStrips.initial}
 					<label class="range-label" for="board-strips"
-						>{t('generatorStripCount', lang)}<output>{config.strips} × {config.strips}</output></label
+						>{t('generatorStripCount', lang)}<output>{strips} × {strips}</output></label
 					><input
 						id="board-strips"
 						type="range"
-						min="3"
-						max="6"
-						step="1"
-						bind:value={config.strips}
+						min={boardStrips.min}
+						max={boardStrips.max}
+						step={boardStrips.step}
+						value={strips}
+						oninput={(event) => {
+							const value = Number(event.currentTarget.value);
+							if (config.style === 'strips') config.strips = value;
+							else config.board = value;
+						}}
 					/>
+					{#if asked !== undefined && shownBoard !== undefined && shownBoard !== asked}<p class="hint" role="status">
+							{t('generatorStripsKept', lang, { asked: String(asked), kept: String(shownBoard) })}
+						</p>{/if}
 				{/if}
 				{#if SPACED_STYLES.includes(config.style)}
 					<label class="range-label" for="frame-spacing"

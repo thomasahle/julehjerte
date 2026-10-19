@@ -5,12 +5,89 @@
  */
 import type { GeneratorRequest } from './generate';
 import { BOARD_RADII } from './geometry';
+import { checkeredLayouts } from './checkeredGrid';
 
-/** The motif in place of a letter, so that it repeats on the checkerboard:
- * on every square of one colour of a 4×4 board, else three across the middle
- * of a 3×3 board, else two above each other on a 2×2 board. Each line is one
- * row of the heart's diamond, as in the text frame. */
-export const MOTIF = '*', MOTIF_PATTERNS = ['*\n  \n***\n    \n***\n  \n*', '***', '*\n  \n*'];
+/** The motif in place of a letter: repeated on the checkerboard by the small
+ * motifs, alone in a row of square cells by the equal squares. */
+export const MOTIF = '*';
+
+/** The strips per side the visitor can choose for each frame on a board, and
+ * the one it starts at: the figure in the checks, the small motifs, and the
+ * equal squares, whose motif lies in the centre square of an odd number. The
+ * small motifs and equal squares choose for themselves until the visitor does
+ * (see `motifChoices`, `squareChoices`). */
+export const BOARD_STRIPS = {
+	strips: { min: 3, max: 6, step: 1, initial: 4 },
+	motifs: { min: 2, max: 8, step: 1, initial: 4 },
+	squares: { min: 3, max: 9, step: 2, initial: 3 }
+} as const;
+export type BoardStyle = keyof typeof BOARD_STRIPS;
+
+/** One way a frame on a board lays its motif out, as the text of a text
+ * frame: on the checkerboard for the small motifs, in a row of square cells
+ * for the equal squares, there up to a tenth `larger` in its square, with the
+ * airy frame's room around it, or in cells `fitted` to it. Tried in turn (see
+ * `frameAlternatives`): without `retries` quickly, a `lastResort` only where
+ * no other can be built at all. */
+export type BoardChoice = { text: string; board: number; retries: boolean; lastResort?: boolean; larger?: number; air?: boolean; fitted?: boolean };
+
+/** The small motifs on a board of `n` strips, the most copies first: on every
+ * square of one colour, the rows of the heart's diamond taking turns (each
+ * line is one row, as in the text frame), the colour with the top and bottom
+ * squares first where both have as many; on three strips, though, first
+ * three across the middle, the frame's own choice there (see
+ * `motifChoices`). A colour whose squares the checkerboard can only connect
+ * on its board through neighbouring junctions, else on a larger one (with
+ * every corner of the diamond, say), is left out. */
+export function motifPatterns(n: number): string[] {
+	const colour = (first: number) => Array.from({ length: 2 * n - 1 }, (_, row) =>
+		(row % 2 === first ? MOTIF : ' ').repeat(Math.min(row + 1, 2 * n - 1 - row))).join('\n');
+	const copies = (text: string) => [...text].filter(c => c === MOTIF).length;
+	const onBoard = (text: string) => {
+		try {
+			return checkeredLayouts(text).every(layout => layout.matrix.length === n);
+		} catch {
+			return false;
+		}
+	};
+	return [...n === 3 ? [MOTIF.repeat(3)] : [], ...[colour(0), colour(1)].filter(onBoard).sort((a, b) => copies(b) - copies(a))];
+}
+
+/** The small motifs' choices: on the `n` strips the visitor chose, its
+ * patterns, and only where none can be built at all, the fewest and largest
+ * copies, on the smallest boards. Until the visitor chooses, the most copies
+ * that cut cleanly, a clean smaller board before a hard-to-cut larger one:
+ * on four strips, then three across a 3×3 board, then two on 2×2. */
+export function motifChoices(n?: number): BoardChoice[] {
+	const fewest: [number, string][] = [[3, MOTIF.repeat(3)], ...motifPatterns(2).map(text => [2, text] as [number, string])];
+	if (n === undefined) return [...motifPatterns(4).map(text => [4, text] as [number, string]), ...fewest.slice(0, 2)]
+		.map(([board, text]) => ({ text, board, retries: true }));
+	const own = motifPatterns(n);
+	return [...own.map(text => ({ text, board: n, retries: true })),
+		...fewest.filter(([, text]) => !own.includes(text)).map(([board, text]) => ({ text, board, retries: true, lastResort: true }))];
+}
+
+/** The motif alone in the centre square of a board of `n` strips, an odd
+ * number: the middle one of a row of n − 2 square cells (see
+ * `generateTextGrid`). */
+export function centredMotif(n: number): string {
+	const beside = ' '.repeat((n - 3) / 2);
+	return beside + MOTIF + beside;
+}
+
+/** The equal squares' choices on `n` strips, three until the visitor
+ * chooses: the motif in the centre square, up to a tenth larger in it or with
+ * the airy frame's room around it, each first quickly, then with every retry.
+ * Only where none can be built at all, three strips' choices, then cells
+ * fitted to the motif rather than refusing. A motif whose sides cannot meet
+ * the cells beside it (four ports, see `generateCheckedText`) has only three
+ * strips; one that three cannot hold never fit five in the corpus either. */
+export function squareChoices(n = 3): BoardChoice[] {
+	const on = (board: number, lastResort = false): BoardChoice[] =>
+		[...[1, 1.05, 1.1].map(larger => ({ larger })), { air: true }, ...lastResort ? [] : [{ retries: true }]]
+			.map(choice => ({ text: centredMotif(board), board, retries: false, lastResort, ...choice }));
+	return [...on(n), ...n === 3 ? [] : on(3, true), { text: MOTIF, board: 3, retries: true, lastResort: true, fitted: true }];
+}
 
 /** A motif on a board fills its square or circle at the visitor's size,
  * relative to the default 70%, within what its cell can hold. */

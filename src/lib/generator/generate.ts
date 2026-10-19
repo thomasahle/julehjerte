@@ -5,7 +5,7 @@ import { generateFittedFigure } from './fitted';
 import { sunburstBorder } from './sunburst';
 import { generateTextGrid, squareCellScale } from './textGrid';
 import { NO_WHOLE_STRIPS, STRIPS, slidePlace, stripFigures } from './stripFigure';
-import { MOTIF, MOTIF_PATTERNS, boardRadius, boardScale } from './boardMotif';
+import { MOTIF, boardRadius, boardScale, motifChoices, squareChoices } from './boardMotif';
 import { CIRCLE_STYLES, fillSquare, fitCircle } from './frameFit';
 export { fillSquare, fitCircle } from './frameFit';
 import { generateBranchedText, hasOverlappingTextBranches, fittedBranchedTextFill } from './branchedText';
@@ -424,7 +424,7 @@ const layouts = new Map<string, BoardLayout | undefined>();
 function withLayout(request: GeneratorRequest): GeneratorRequest {
 	if (request.mode !== 'figure' || !BOARD_FRAMES.includes(request.style ?? '') || request.layout || boardScale(request) === 1)
 		return request;
-	const key = request.style + JSON.stringify(request.contours ?? []);
+	const key = `${request.style} ${request.board ?? ''} ${JSON.stringify(request.contours ?? [])}`;
 	if (!layouts.has(key)) {
 		let layout: BoardLayout | undefined;
 		try {
@@ -617,27 +617,19 @@ function frameAlternatives(request: GeneratorRequest): { request: GeneratorReque
 	if (request.style === 'motifs' || request.style === 'squares') {
 		const contours = normalizeContours(request.contours ?? []);
 		if (!contours.length) throw new ConstructionError('empty', 'No contour');
-		const font: Font = { glyphs: { [MOTIF]: { advance: 1, contours } } }, letterScale = boardScale(request);
-		// Equal squares: the motif is the one letter of the woven text frame
-		// with square cells, first in the centre square of a three-strip board,
-		// up to a tenth larger in it (at most what the size setting allows) or
-		// with the spacious frame's room around it, then over several squares
-		// of a finer board; cells fitted to it remain rather than refusing.
-		// Small motifs: the most copies that cut.
-		const squares = (fittedCells: boolean, scale: number, board?: number): GeneratorRequest =>
-			({ mode: 'text', name: request.name, colors: request.colors, text: MOTIF, font, textFrame: 'woven', fittedCells, letterScale: scale, board });
+		const font: Font = { glyphs: { [MOTIF]: { advance: 1, contours }, ' ': { advance: 1, contours: [] } } }, letterScale = boardScale(request);
+		// The motif is the letter of a text frame on a board (see
+		// `motifChoices`, `squareChoices`). Small motifs: the most copies on
+		// the checkerboard that cut. Equal squares: the one letter of the
+		// woven text frame with square cells, in the centre square. Strips the
+		// visitor chose are kept, hard to cut if need be; others only where
+		// they can build nothing at all.
+		const board = request.style === 'squares' ? squareChoices(request.board) : motifChoices(request.board);
 		type Choice = { request: GeneratorRequest; retries: boolean; lastResort?: boolean };
-		const choicesAt = (letterScale: number): Choice[] => {
-			if (request.style !== 'squares') return MOTIF_PATTERNS.map(text => ({ retries: true, request:
-				{ mode: 'text', name: request.name, colors: request.colors, text, font, textFrame: 'checkered', letterScale } }));
-			const centre = [1, 1.05, 1.1].map(larger => squares(false, Math.min(1.1, letterScale * larger), 3)),
-				finer = squares(false, letterScale);
-			// Each first quickly, as woven text tries its recipes before the
-			// slower retries, then with every retry, hard to cut if need be.
-			return [...[...centre, { ...centre[0], textFrame: 'air' as const }, finer].map(request => ({ retries: false, request })),
-				...[centre[0], finer].map(request => ({ retries: true, request })),
-				{ retries: true, lastResort: true, request: squares(true, letterScale) }];
-		};
+		const choicesAt = (letterScale: number): Choice[] => board.map(({ text, board, retries, lastResort, larger = 1, air, fitted }) => ({
+			retries, lastResort, request: { mode: 'text', name: request.name, colors: request.colors, text, font, letterScale: Math.min(request.style === 'squares' ? 1.1 : Infinity, letterScale * larger),
+				...request.style === 'squares' ? { textFrame: air ? 'air' : 'woven', fittedCells: !!fitted, board: fitted ? undefined : board } : { textFrame: 'checkered', board } }
+		}));
 		const choices = choicesAt(letterScale), layout = request.layout, chosen = layout && choices[layout.alternative];
 		if (!layout || !chosen) return choices;
 		// Other sizes keep the default size's choice, on its board. Larger than

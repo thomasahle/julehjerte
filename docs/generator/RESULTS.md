@@ -73,6 +73,30 @@ wedges) come from their constructions and get pictures next. With an instant
 picture the motif can be dragged: up and down the middle, as far as it keeps its
 size.
 
+## Strips for the small motifs and equal squares
+
+Product decision (2026-10-19): the Strimler slider of the figure in the checks
+also chooses the board of the small motifs (two to eight strips) and the equal
+squares (three to nine, odd: the motif in the centre square, the middle one of
+a row of empty cells). Over the corpus, the pattern that tops the small motifs'
+four strips, the colour with the top and bottom squares, cannot hold the bell
+or the angel, while the other colour's eight squares can; it is now tried
+before fewer copies. Kept at four strips whatever the motif, the small motifs
+were 24 clean, 20 hard to cut and 7 refused (51 motifs), against 41, 3 and 7
+when a clean smaller board comes before a hard-to-cut larger one, so the frame
+keeps choosing until the visitor does: 41 clean, 3 hard, 7 refused, as before,
+27 on four strips, 6 on three, 11 on two, median 3.4 s. Strips the visitor
+chooses are kept, hard to cut if need be: the star, tree, heart, angel and bell
+are clean on every board from two to eight (at most 6 s), the gift and the
+horse hard from three on (up to 14 s). Equal squares: 49 clean, 1 hard, 1
+refused (the Tabler paw), as before, 62 s for all; on five, seven and nine
+strips the star, tree, heart, angel, bell, horse and snowflake are clean in
+under 0.1 s, while the gift, whose sides cannot meet the cells beside it,
+keeps three strips and the page says so. Five-strip attempts before the cells
+fitted to the motif never helped a motif that three could not hold (84 s
+instead of 51 s), and the former finer board, whose checks came in two sizes,
+is gone.
+
 ## Sizes that move one way with the sliders
 
 Product decision (2026-10-18): dragging a slider must never make the motif or

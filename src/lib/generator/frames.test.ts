@@ -9,6 +9,7 @@ import { defaults, frameGap, readGeneratorState, stripCount, stripPlace, stripSi
 import { templateVariants } from './templates';
 import { inside, uprightToSheet, distance, WEDGES, type Point, type Ring } from './geometry';
 import { geometryKey } from './cache';
+import { motifChoices, motifPatterns, squareChoices } from './boardMotif';
 import { normalizeContours } from './contours';
 import { rasterizeDesign } from '$lib/paint/rasterize';
 import { serializeHeartDesign, normalizeHeartDesign, serializeHeartToSVG, parseHeartFromSVG } from '$lib/utils/heartDesign';
@@ -266,13 +267,25 @@ describe('frames from real hearts', () => {
    expect(centre).toBe(1);
   }
  }, 20000);
- it('gives a motif that cannot be cut that small fewer, larger squares', () => {
-  const { design, hardToCut } = generate({ mode: 'figure', name: 'Bell', contours: bell.contours as Ring[], colors, style: 'motifs' });
-  expect(design.gridSize).toEqual({ x: 3, y: 3 });
+ it('lays small motifs on the other colour of four strips where the first cannot be cut', () => {
+  // The bell cannot stand in the top and bottom squares of four strips; the
+  // other colour's eight squares hold it, before fewer copies on a smaller board.
+  const { design, hardToCut, layout } = generate({ mode: 'figure', name: 'Bell', contours: bell.contours as Ring[], colors, style: 'motifs' });
+  expect(design.gridSize).toEqual({ x: 4, y: 4 });
   expect(hardToCut).toBeUndefined();
+  expect(motifChoices()[layout!.alternative].text).toBe(motifPatterns(4)[1]);
   const restored = parseHeartFromSVG(serializeHeartToSVG(design));
   expect(rasterizeDesign(restored!, 240).data).toEqual(rasterizeDesign(design, 240).data);
  }, 30000);
+ it('lays as many small motifs as the strips the visitor chose hold', () => {
+  for (const board of [2, 6, 8]) {
+   const { design, hardToCut, layout } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'motifs', board });
+   expect(design.gridSize.x, `${board}`).toBe(board);
+   expect(hardToCut, `${board}`).toBeUndefined();
+   // Every square of one colour, where it can be: 2, 18 and 32 stars.
+   expect([...motifChoices(board)[layout!.alternative].text].filter(c => c === '*').length, `${board}`).toBe([2, 18, 32][[2, 6, 8].indexOf(board)]);
+  }
+ });
  it('lays the motif in the centre square of a regular board, with equal squares around it', () => {
   for (const [name, motif] of Object.entries({ star, tree, gift, cat })) {
    const { design, hardToCut } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], colors, style: 'squares' });
@@ -287,6 +300,23 @@ describe('frames from real hearts', () => {
      for (const v of [...board(p0), ...board(p3)]) expect(Math.abs(v - Math.round(v)), name).toBeLessThan(1e-6);
   }
  }, 30000);
+ it('lays the motif alone in the centre square of the strips the visitor chose, every square equal', () => {
+  for (const board of [5, 7]) {
+   const { design, hardToCut } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'squares', board });
+   expect(design.gridSize, `${board}`).toEqual({ x: board, y: board });
+   expect(hardToCut, `${board}`).toBeUndefined();
+   const rect = inferOverlapRect(design.fingers, design.gridSize);
+   const square = ({ x, y }: { x: number; y: number }) => [(x - rect.left) / rect.width * board, (y - rect.top) / rect.height * board];
+   for (const { segments } of design.fingers.filter(f => f.segments.length > 1))
+    for (const { p0, p3 } of [segments[0], segments[segments.length - 1]])
+     for (const v of [...square(p0), ...square(p3)]) expect(Math.abs(v - Math.round(v)), `${board}`).toBeLessThan(1e-6);
+  }
+ });
+ slow('keeps a motif whose sides cannot meet the cells beside it on three strips', () => {
+  const { design, layout } = generate({ mode: 'figure', name: 'Gift', contours: gift.contours as Ring[], colors, style: 'squares', board: 5 });
+  expect(design.gridSize).toEqual({ x: 3, y: 3 });
+  expect(squareChoices(5)[layout!.alternative].board).toBe(3);
+ });
  slow('lays the circle on a regular five-strip board, every square outside it equal', () => {
   for (const [name, motif] of Object.entries({ star, tree, cat, gift })) {
    const { design, hardToCut } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], colors, style: 'board' });
@@ -474,13 +504,23 @@ describe('frames from real hearts', () => {
    expect(geometryKey({ ...state, style, scale: 50 }) !== key).toBe(scale);
    expect(geometryKey({ ...state, style, spacing: 9 }) !== key, style).toBe(spacing);
    expect(frameGap({ ...state, style, spacing: 9 }), style).toBe(spacing ? 9 : undefined);
-   // Only the figure in the checks has a number of strips to choose.
-   expect(geometryKey({ ...state, style, strips: 5 }) !== key, style).toBe(style === 'strips');
-   expect(stripCount({ ...state, style, strips: 5 }), style).toBe(style === 'strips' ? 5 : undefined);
+   // The frames on a board have a number of strips to choose: the figure in
+   // the checks its own, the small motifs and equal squares the visitor's.
+   const field = style === 'strips' ? 'strips' : 'board', board = ['strips', 'motifs', 'squares'].includes(style);
+   expect(geometryKey({ ...state, style, [field]: 5 }) !== key, style).toBe(board);
+   expect(stripCount({ ...state, style, [field]: 5 }), style).toBe(board ? 5 : undefined);
   }
   expect(readGeneratorState('#make=' + JSON.stringify({ ...state, spacing: 40 })).spacing).toBe(15);
-  expect(readGeneratorState('#make=' + JSON.stringify({ ...state, strips: 9 })).strips).toBe(6);
-  expect(readGeneratorState('#make=' + JSON.stringify({ ...state, strips: 2 })).strips).toBe(3);
+  // Each takes the strips it offers, the nearest below: the equal squares an
+  // odd number.
+  const strips = (style: 'strips' | 'motifs' | 'squares', n: number) =>
+   stripCount(readGeneratorState('#make=' + JSON.stringify({ ...state, style, [style === 'strips' ? 'strips' : 'board']: n })));
+  expect([strips('strips', 9), strips('strips', 2), strips('motifs', 1), strips('motifs', 12), strips('squares', 4), strips('squares', 8)])
+   .toEqual([6, 3, 2, 8, 3, 7]);
+  // Until the visitor chooses, the small motifs and equal squares choose
+  // their own; the strips in every older link are the figure in the checks'.
+  expect(stripCount({ ...state, style: 'motifs', strips: 6 })).toBeUndefined();
+  expect(geometryKey({ ...state, style: 'squares', strips: 6 })).toBe(geometryKey({ ...state, style: 'squares' }));
   // Where the visitor dragged the figure in the checks: kept in links, in
   // eighths, on the paper, and only in that frame's key.
   const placed = { ...state, style: 'strips' as const, place: 7.6 };

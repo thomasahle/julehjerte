@@ -8,6 +8,7 @@ import { rasterizeDesign } from '$lib/paint/rasterize';
 import star from '../../../static/generator/motifs/star.json';
 import heart from '../../../static/generator/motifs/heart.json';
 import tree from '../../../static/generator/motifs/tree.json';
+import bell from '../../../static/generator/motifs/bell.json';
 import nunito from '../../../static/generator/fonts/nunito.json';
 import oswald from '../../../static/generator/fonts/oswald.json';
 import type { Font } from './geometry';
@@ -87,9 +88,12 @@ describe('the picture drawn before the cuts are found', () => {
 		expect(across).toBeGreaterThan(side - .25);
 	});
 
-	it('is the small motifs the cuts make', () => {
+	it('is the small motifs the cuts make, on the strips they choose or the visitor chooses', () => {
 		const request: GeneratorRequest = { mode: 'figure', name: 'Tree', contours: tree.contours as Ring[], colors, style: 'motifs' };
 		expect(mismatch(request)).toBeLessThan(.01);
+		expect(mismatch({ ...request, board: 6 })).toBeLessThan(.01);
+		// The bell on the other colour of four strips, as its heart says.
+		expect(mismatch({ ...request, name: 'Bell', contours: bell.contours as Ring[] })).toBeLessThan(.01);
 	});
 
 	slow('is the letters on the checkerboard the cuts make', () => {
@@ -122,8 +126,11 @@ describe('the picture drawn before the cuts are found', () => {
 			expect(mismatch({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style }), style).toBeLessThan(.01);
 	});
 
-	it('is the motif in the centre square the cuts make', () => {
-		expect(mismatch({ mode: 'figure', name: 'Tree', contours: tree.contours as Ring[], colors, style: 'squares' })).toBeLessThan(.01);
+	it('is the motif in the centre square the cuts make, on the strips it chooses or the visitor chooses', () => {
+		const request: GeneratorRequest = { mode: 'figure', name: 'Tree', contours: tree.contours as Ring[], colors, style: 'squares' };
+		expect(mismatch(request)).toBeLessThan(.01);
+		expect(mismatch({ ...request, board: 5 })).toBeLessThan(.01);
+		expect(mismatch({ ...request, name: 'Star', contours: star.contours as Ring[], board: 9, scale: .8 })).toBeLessThan(.01);
 	});
 
 	it('is the circle on a board the cuts make, small, large or kept', () => {
