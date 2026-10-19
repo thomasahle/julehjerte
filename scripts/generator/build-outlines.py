@@ -72,7 +72,8 @@ class Pen(BasePen):
 
 def build_fonts():
     fonts={}
-    for name,weight in [('nunito',800),('breeserif',400),('oswald',600),('kalam',700),('cinzel',900),('righteous',400)]:
+    for name,weight in [('nunito',800),('breeserif',400),('oswald',600),('kalam',700),('cinzel',900),('righteous',400),
+                        ('josefinsans',700),('alfaslabone',400),('bungee',400)]:
         f=TTFont(ROOT/f'docs/design-start/assets/fonts/{name}.ttf')
         if 'fvar' in f:f=instantiateVariableFont(f,{'wght':weight})
         gs=f.getGlyphSet();cmap=f.getBestCmap();em=f['head'].unitsPerEm;glyphs={}

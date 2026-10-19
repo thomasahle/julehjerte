@@ -107,3 +107,14 @@ it('lays square cells on a regular board, as in Brodal’s hearts', () => {
 	// Letter-sized cells are larger instead, and their board is not regular.
 	expect(() => onBoard(generateCheckedText('William', font, false, undefined, true))).toThrow();
 });
+
+it('weaves the geometric, poster and block fonts, with every letter the generator takes', async () => {
+	const colors = { left: '#fffdf5', right: '#b72f2b' };
+	for (const id of ['josefinsans', 'alfaslabone', 'bungee']) {
+		const added = (await import(`../../../static/generator/fonts/${id}.json`)).default as Font;
+		for (const char of 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzÆØÅæøå0123456789+-&.! ')
+			expect(added.glyphs[char], `${id} ${char}`).toBeDefined();
+		const { hardToCut } = generate({ mode: 'text', name: 'JUL', text: 'JUL', font: added, colors, textFrame: 'woven', fittedCells: false });
+		expect(hardToCut, id).toBeUndefined();
+	}
+});

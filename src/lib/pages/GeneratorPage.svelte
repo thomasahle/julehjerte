@@ -48,7 +48,10 @@
 		['oswald', 'generatorFontOswald'],
 		['kalam', 'generatorFontHandwriting'],
 		['cinzel', 'generatorFontCinzel'],
-		['righteous', 'generatorFontRighteous']
+		['righteous', 'generatorFontRighteous'],
+		['josefinsans', 'generatorFontJosefin'],
+		['alfaslabone', 'generatorFontSlab'],
+		['bungee', 'generatorFontBlock']
 	] as const;
 
 	let config = $state<GeneratorState>({ ...defaults });
