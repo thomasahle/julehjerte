@@ -1,4 +1,5 @@
 import { FIGURE_STYLES, FRAMES, type FigureStyle, type Frame, type TextFrame } from './geometry';
+import { BOARD_STRIPS, type BoardStyle } from './boardMotif';
 export type GeneratorState = {
 	mode: 'start' | 'figure' | 'text';
 	motif: string;
@@ -13,8 +14,14 @@ export type GeneratorState = {
 	/** The space between the motif and the frame around it, in percent of the
 	 * square: to the circle, the wedges' tips, the corner checks. */
 	spacing: number;
+	/** The space around each letter in its cell, beside and above it, in
+	 * percent of the letters' height (see `textRoom`). */
+	room: number;
 	/** The strips per side of the figure in the checks' board. */
 	strips: number;
+	/** The strips per side the visitor chose for the small motifs or the
+	 * equal squares; absent, the frame chooses (see `stripCount`). */
+	board?: number;
 	/** Where the visitor dragged the figure in the checks: how far down the
 	 * heart's middle, and how far across it; absent, its default size
 	 * chooses, on the middle. */
@@ -48,9 +55,14 @@ export const largestScale = (style: FigureStyle) => FULL_SIZE.includes(style) ? 
 export function frameGap(s: GeneratorState): number | undefined {
 	return s.mode === 'figure' && SPACED_STYLES.includes(s.style) ? s.spacing : undefined;
 }
-/** The strips per side a state asks of the figure in the checks' board. */
+/** The strips per side a state asks of a frame on a board, the nearest the
+ * frame offers below it (see `BOARD_STRIPS`); none for other frames, or
+ * where the frame chooses. */
 export function stripCount(s: GeneratorState): number | undefined {
-	return s.mode === 'figure' && s.style === 'strips' ? s.strips : undefined;
+	const strips = s.style === 'strips' ? s.strips : s.board;
+	if (s.mode !== 'figure' || !(s.style in BOARD_STRIPS) || strips === undefined) return;
+	const { min, max, step } = BOARD_STRIPS[s.style as BoardStyle];
+	return Math.max(min, Math.min(max, min + step * Math.floor((strips - min) / step)));
 }
 /** No place or side of the figure in the checks lies farther out than the
  * paper reaches. */
@@ -62,6 +74,15 @@ export function stripPlace(s: GeneratorState): number | undefined {
 export function stripSide(s: GeneratorState): number | undefined {
 	return s.mode === 'figure' && s.style === 'strips' ? s.side : undefined;
 }
+/** The room a state asks around each letter in its cell, as a fraction of
+ * the letters' height (see `roomOf`), where its frame's checks follow the
+ * cells: the woven frame's own 0.22 at 11%, what the airy frame had, 0.5, at
+ * 25%. */
+export function textRoom(s: GeneratorState): number | undefined {
+	return s.mode === 'text' && CELL_FRAMES.includes(s.textFrame) ? s.room / 50 : undefined;
+}
+/** The space around the text the slider offers. */
+export const ROOM_RANGE = [5, 35] as const;
 /** The generator's choice of cells for a state, or none where it decides. */
 export function fittedCells(s: GeneratorState): boolean | undefined {
 	return s.mode === 'text' && CELL_FRAMES.includes(s.textFrame) ? s.cells === 'letters' : undefined;
@@ -78,6 +99,7 @@ export const defaults: GeneratorState = {
 	textFrame: 'woven',
 	cells: 'square',
 	spacing: 3,
+	room: 11,
 	strips: 4
 };
 export function readGeneratorState(hash: string): GeneratorState {
@@ -89,6 +111,11 @@ export function readGeneratorState(hash: string): GeneratorState {
 		// Older links name the checkerboard by its former repeating layout,
 		// and text panels by centre shapes the generator no longer draws.
 		if (raw.textFrame === 'repeat-check') raw.textFrame = 'checkered';
+		// The airy frame became the woven frame with more space around the text.
+		if (raw.textFrame === 'air') {
+			raw.textFrame = 'woven';
+			raw.room ??= 25;
+		}
 		if (['diamond', 'hexagon', 'oval', 'rounded', 'scalloped'].includes(raw.textFrame)) raw.textFrame = 'circle';
 		// The circle with a plain edge was removed: it mostly repeated the rays or the checks.
 		if (raw.style === 'plain') raw.style = 'rays';
@@ -112,7 +139,9 @@ export function readGeneratorState(hash: string): GeneratorState {
 			['frameSize', 50, 80],
 			['scale', 45, largestScale(s.style)],
 			['spacing', 0, 15],
-			['strips', 3, 6]
+			['room', ...ROOM_RANGE],
+			['strips', 3, 6],
+			['board', 2, 9]
 		] as const)
 			if (typeof raw[k] === 'number' && Number.isFinite(raw[k]))
 				Object.assign(s, {

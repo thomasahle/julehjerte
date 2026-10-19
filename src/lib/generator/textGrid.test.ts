@@ -1,8 +1,8 @@
 import { it, expect } from 'vitest';
 import { generateTextGrid, squareCellScale } from './textGrid';
 import { generateCheckedText, type Font } from './geometry';
-import { generate } from './generate';
-import { defaults, fittedCells, readGeneratorState } from './state';
+import { generate, type GeneratorRequest } from './generate';
+import { defaults, fittedCells, readGeneratorState, textRoom } from './state';
 import { TEXT_TEMPLATES, templateVariants } from './templates';
 import { geometryKey } from './cache';
 import nunito from '../../../static/generator/fonts/nunito.json';
@@ -40,9 +40,8 @@ it('measures how much smaller square cells make narrow letters', () => {
 	expect(squareCellScale('JUL', font)).toBeLessThan(.85);
 });
 
-it('offers square and letter-sized cells as a pair for the woven and spacious frames', () => {
-	expect(TEXT_TEMPLATES.map(t => t.id)).toEqual(
-		['woven-square', 'woven-letters', 'checkered', 'air-square', 'air-letters', 'circle']);
+it('offers square and letter-sized cells as a pair, with a slider for the space around the text', () => {
+	expect(TEXT_TEMPLATES.map(t => t.id)).toEqual(['woven-square', 'woven-letters', 'checkered', 'circle']);
 	const state = { ...defaults, mode: 'text' as const };
 	expect(state.cells).toBe('square');
 	expect(readGeneratorState('#make=' + JSON.stringify({ ...state, cells: 'letters' })).cells).toBe('letters');
@@ -54,6 +53,27 @@ it('offers square and letter-sized cells as a pair for the woven and spacious fr
 		expect(fittedCells({ ...state, textFrame })).toBeUndefined();
 	}
 	expect(templateVariants(state).find(v => v.id === 'woven-letters')?.state).toEqual({ ...state, cells: 'letters' });
+	// The space around the letters: the woven frame's own by default, the
+	// former airy frame's in its older links.
+	expect(textRoom(state)).toBeCloseTo(.22, 9);
+	const { room: _, ...older } = state;
+	const airy = readGeneratorState('#make=' + JSON.stringify({ ...older, textFrame: 'air' }));
+	expect([airy.textFrame, textRoom(airy)]).toEqual(['woven', .5]);
+	expect(readGeneratorState('#make=' + JSON.stringify({ ...state, room: 90 })).room).toBe(35);
+	expect(geometryKey({ ...state, room: 20 })).not.toBe(geometryKey(state));
+	for (const textFrame of ['circle', 'checkered'] as const) {
+		expect(geometryKey({ ...state, textFrame, room: 20 })).toBe(geometryKey({ ...state, textFrame }));
+		expect(textRoom({ ...state, textFrame })).toBeUndefined();
+	}
+});
+
+it('weaves the space around the text the visitor sets, the former airy frame at 25%', () => {
+	const colors = { left: '#fffdf5', right: '#b72f2b' };
+	const cuts = (request: Partial<GeneratorRequest>) => JSON.stringify(generate({
+		mode: 'text', name: 'KIM', text: 'KIM', font, colors, textFrame: 'woven', fittedCells: false, ...request }).design.fingers);
+	expect(cuts({ room: .5 })).toBe(cuts({ textFrame: 'air' }));
+	expect(cuts({ room: .22 })).toBe(cuts({}));
+	expect(cuts({ room: .35 })).not.toBe(cuts({}));
 });
 
 it('weaves the chosen kind of cells, even where the automatic choice differs', () => {

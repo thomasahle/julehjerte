@@ -16,7 +16,7 @@ import { normalizeContours } from './contours';
 import { STRIPS, boardChecks, placeBounds, placeMotif, shifts, slidePlace, type PlaceBounds } from './stripFigure';
 import { checkeredLayout, checkeredLetters } from './checkeredGrid';
 import { measureTextGrid } from './textGrid';
-import { MOTIF, MOTIF_PATTERNS, boardRadius, boardScale } from './boardMotif';
+import { MOTIF, boardRadius, boardScale, motifChoices, squareChoices } from './boardMotif';
 
 /** The clearest place for each motif and board, where the search starts when
  * its default size's place is not known yet. */
@@ -38,23 +38,20 @@ export function picture(request: GeneratorRequest, known: Known = {}): Picture |
 		if (request.mode === 'text' && request.textFrame === 'checkered' && request.font)
 			return checkered(request.text ?? '', request.font, request.letterScale);
 		if (request.mode === 'text' && (request.textFrame === 'woven' || request.textFrame === 'air') && request.font && request.fittedCells === false)
-			return woven(request.text ?? '', request.font, request.textFrame === 'air');
-		if (request.mode === 'figure' && request.style === 'motifs' && request.contours?.length) {
-			// The motif as the one letter of a pattern on the checkerboard,
-			// the one its default size chose once that heart is made.
+			return woven(request.text ?? '', request.font, request.room ?? request.textFrame === 'air');
+		if (request.mode === 'figure' && (request.style === 'motifs' || request.style === 'squares') && request.contours?.length) {
+			// The motif as the letter of a text frame on its board: in a pattern
+			// on the checkerboard, or alone in the centre square of the woven
+			// frame, up to a tenth larger there or in the airy frame. The choice
+			// its default size made, once that heart is made, else the first
+			// (see `motifChoices`, `squareChoices`); cells fitted to it have none.
 			const contours = normalizeContours(request.contours);
 			if (!contours.length) return;
-			const font: Font = { glyphs: { [MOTIF]: { advance: 1, contours } } };
-			return checkered(MOTIF_PATTERNS[request.layout?.alternative ?? 0], font, boardScale(request));
-		}
-		if (request.mode === 'figure' && request.style === 'squares' && request.contours?.length && (known.board ?? 3) === 3) {
-			// The motif as the one letter of the woven frame, in the centre square
-			// of a board of three strips: as the default size chose, up to a
-			// tenth larger in it, or in the airy frame (see `frameAlternatives`).
-			const contours = normalizeContours(request.contours), alternative = request.layout?.alternative ?? 0;
-			if (!contours.length || alternative > 3) return;
-			const font: Font = { glyphs: { [MOTIF]: { advance: 1, contours } } };
-			return woven(MOTIF, font, alternative === 3, Math.min(1.1, boardScale(request) * [1, 1.05, 1.1, 1][alternative]));
+			const font: Font = { glyphs: { [MOTIF]: { advance: 1, contours }, ' ': { advance: 1, contours: [] } } };
+			const choice = (request.style === 'squares' ? squareChoices(request.board) : motifChoices(request.board))[request.layout?.alternative ?? 0];
+			if (!choice || choice.fitted) return;
+			return request.style === 'squares' ? woven(choice.text, font, !!choice.air, Math.min(1.1, boardScale(request) * (choice.larger ?? 1)))
+				: checkered(choice.text, font, boardScale(request));
 		}
 		if (request.mode === 'figure' && request.style === 'strips') return stripsPicture(request, known.place);
 		// A motif that needs panels gets a finer board, which crosses the
@@ -117,7 +114,7 @@ function raysPicture(request: GeneratorRequest, shape: Frame, size: number, scal
  * frames (see `generateTextGrid`): a board of columns + rows + 1 strips,
  * every cell a diamond around one of its squares that reaches the centres of
  * the four beside it, the checks cleared inside it and its letter drawn. */
-function woven(text: string, font: Font, air: boolean, letterScale = 1): Picture {
+function woven(text: string, font: Font, air: boolean | number, letterScale = 1): Picture {
 	const { matrix, rows, cols, cy, cellHeight, widths, span, fullHeight, scale } = measureTextGrid(text, font, air, undefined, { fittedCells: false });
 	const n = cols + rows + 1, side = 100 / n, rings: Ring[] = [];
 	const square = (i: number, j: number): Ring => [[i * side, j * side], [(i + 1) * side, j * side], [(i + 1) * side, (j + 1) * side], [i * side, (j + 1) * side]];
