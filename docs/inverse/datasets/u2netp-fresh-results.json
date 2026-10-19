@@ -1,0 +1,192 @@
+{
+  "schema": "u2netp-fresh-results-1",
+  "status": "complete-offline-experiment",
+  "date": "2026-10-19",
+  "evidence": [
+    {
+      "path": "docs/inverse/datasets/u2netp-fresh-selection.json",
+      "sha256": "44cbdfb7babdfc6c606315694562b898c1220b525948c442c179831fc240f8e6"
+    },
+    {
+      "path": "docs/inverse/datasets/u2netp-fresh-study-plan.json",
+      "sha256": "d7c165057ec9c14a4f9a89ec54f578efc988a3128c2f881ab845dbcfdebfda12"
+    },
+    {
+      "path": "docs/inverse/datasets/u2netp-fresh-pipeline-plan.json",
+      "sha256": "601f0e9a19b0e56d1ef358d6b7bf20a9aa14c81f16ffaba6650c2680609522b6"
+    },
+    {
+      "path": "docs/inverse/datasets/u2netp-fresh-source-review.json",
+      "sha256": "7f24efdba9bdf8db54fce1875482d5a50029747ee2579fb29cd534d399395fc6"
+    },
+    {
+      "path": "docs/inverse/datasets/u2netp-fresh-output-review.json",
+      "sha256": "42431aa4a854fa79a6ef2178760ad0a2dafb89c6bb540db7e55020c79ead4d54"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-fresh-probe-v1/report.json",
+      "sha256": "88bceca5742561b4638f57e02cfde6aac6ee722932d2ec7d0276967a227f3482"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-fresh-onnx-v1/report.json",
+      "sha256": "6a5bca46fc54ee20ded810bc070d558a9da2d9ecb5a9238cc0a2f90e8819a11a"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-fresh-browser-v1/report.json",
+      "sha256": "0fce059f9c6ce7362e94dd5e00841560e7074cf4fd437a14cf58236ad5b9fc96"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-fresh-pipeline-v1/report.json",
+      "sha256": "f03afacdb06559719b6afb233e1d251a37e2e496a02bb29211ee43aa095d0c75"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-fresh-editor-input-v1/results.json",
+      "sha256": "b3facb64797151e60066b68dc4a9e94531415fc8568e2932069687fdfd71a5ab"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-fresh-editable-v1/results.json",
+      "sha256": "fa0e3f90bf9e5d16740283d4869dfa80217b123f0c12394c15378f36c60aa855"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-fresh-gallery-v1/manifest.json",
+      "sha256": "756097c4cc6f24e904557e0f2232e371bfe745179651085c811a3dc7e0680a80"
+    }
+  ],
+  "finding": "A predeclared review-required saliency fallback increases checked derived-mask pairs from 10/32 to 12/32. One added checker-heart fit still has conspicuous seams; low image error and valid geometry do not establish recovery of original cutting paths.",
+  "primary": {
+    "production": {
+      "attempted": 32,
+      "crops": 21,
+      "supported": 16,
+      "checkedPairs": 10,
+      "neuralSelected": 0,
+      "reusedFits": 0
+    },
+    "fallback": {
+      "attempted": 32,
+      "crops": 24,
+      "supported": 19,
+      "checkedPairs": 12,
+      "neuralSelected": 3,
+      "reusedFits": 29
+    }
+  },
+  "editableAudit": {
+    "distinctExports": 24,
+    "conversionPassed": 24,
+    "geometryPassed": 24,
+    "nominalPaperPassed": 22,
+    "completeCandidatePassed": 12,
+    "physicalAssemblyTested": false
+  },
+  "additionalProposals": [
+    {
+      "id": "real-24b5ed49c9411b11-body-1",
+      "coverage": {
+        "observedFraction": 1,
+        "maximumExtrapolation": 0
+      },
+      "requiresReview": true,
+      "checkedPair": true,
+      "independentImageError": 0.02928125
+    },
+    {
+      "id": "real-dfa7e4b71b43aa86-body-1",
+      "coverage": {
+        "observedFraction": 1,
+        "maximumExtrapolation": 0
+      },
+      "requiresReview": true,
+      "checkedPair": false,
+      "independentImageError": 0.08334375
+    },
+    {
+      "id": "real-28a87a8be083f16c-body-1",
+      "coverage": {
+        "observedFraction": 0.9997817919481427,
+        "maximumExtrapolation": 0.007229626715179702
+      },
+      "requiresReview": true,
+      "checkedPair": true,
+      "independentImageError": 0.004801110256746873
+    }
+  ],
+  "runtime": {
+    "modelBytes": 4615895,
+    "modelSha256": "bfe99f0e74eed0df96992a635adc5df1e06364aa8c526a5867575c0f1055c1a6",
+    "browserChecks": {
+      "allPhotos": true,
+      "noBrowserErrors": true,
+      "sourceRgbExact": true,
+      "inputParity": true,
+      "probabilityParity": false,
+      "halfThresholdParity": false
+    },
+    "all32InputTensorsIdentical": true,
+    "browserVsTorch": {
+      "maximumAbsoluteDifference": 0.00014460086822509766,
+      "changedHalfThresholdPixels": 4,
+      "affectedImages": 4
+    },
+    "browserVsNative": {
+      "maximumAbsoluteDifference": 1.913309097290039e-05,
+      "changedHalfThresholdPixels": 1,
+      "affectedImages": 1
+    },
+    "nativeVsTorch": {
+      "maximumAbsoluteDifference": 0.00014525651931762695,
+      "changedHalfThresholdPixels": 5,
+      "affectedImages": 4
+    },
+    "warmInference": {
+      "runs": 5,
+      "medianMilliseconds": 1037.9000000953674,
+      "p90Milliseconds": 1042.7999999523163
+    },
+    "threads": 1,
+    "strictNumericalGatePassed": false,
+    "scope": "Actual desktop Chromium WASM fields feed the crop/fitting comparison. Cached inference is excluded from paired pipeline timings. No phone, cold-start end-to-end, or production integration benchmark."
+  },
+  "limits": [
+    "Selection is new to recorded pipeline fitting experiments, not a new-source or unseen-motif test. Prior contact sheets may include these photos.",
+    "Five connected source groups; Sabrina, Flettede and DanishThings each contribute ten photos. Cases 23 and 32 appear to share a motif/photo despite separate catalog near-duplicate groups.",
+    "All 32 remain in the denominator, including an open basket and possible irregular designs. No proof of model impossibility without original templates.",
+    "Every existing production crop is retained by policy, including five weak outlines; unchanged fits are reused exactly. This establishes preservation by construction, not independent paired timing evidence.",
+    "Printed-paper boundaries are a major classification failure. Case 29 passes mask and paper checks but traces printed art rather than recovering the original physical weave.",
+    "Partial-photo proposals always require crop review. Unobserved padding is excluded from independent image-error measurement.",
+    "Both raw-probability and exact half-threshold numerical gates fail on fresh photos. Failures are retained, not waived.",
+    "No neural network has been enabled in production."
+  ],
+  "nextInvestigations": [
+    "Compare crop geometry from Torch/native/browser for the four photos with threshold changes before considering any numerical tolerance change.",
+    "Explore model proposals for the five weak existing production crops as a separate post-hoc ablation.",
+    "Inspect published templates for clean-mask fitter failures before attributing them to cut count, geometry limits or unsupported cuts.",
+    "Improve paper-identity estimation for printed sheets; use the successfully separated blue/red printed case as a control."
+  ],
+  "deployment": {
+    "mainRevision": "7c6e232a45214502d9fd26ff89c594f4245c86b3",
+    "ci": "https://github.com/thomasahle/julehjerte/actions/runs/39309081068",
+    "status": "success",
+    "drawingUiAlreadyLive": true,
+    "productionAlgorithmChangedByThisExperiment": false
+  },
+  "verification": {
+    "focusedTests": {
+      "passed": 19,
+      "failed": 0,
+      "evidence": {
+        "path": "tmp/heart-learning/u2netp-fresh-focused-tests.log",
+        "sha256": "92ff711ce705aa94a7bbdd910771f3ec233f293257366594dfd3122716cac831"
+      }
+    },
+    "modifiedJavascriptLint": {
+      "errors": 0,
+      "evidence": {
+        "path": "tmp/heart-learning/u2netp-fresh-script-lint.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "galleryReplay": "All nine regenerated pages, corrected metadata and HTML match the inspected gallery exactly; temporary replay removed. 35 attempts, 24 exports.",
+    "fullApplicationValidation": "Production code unchanged since the complete app/check/lint/build validation in u2netp-runtime-results.json and green upstream CI. Full inverse suite not redundantly rerun for offline adapter/report changes."
+  }
+}

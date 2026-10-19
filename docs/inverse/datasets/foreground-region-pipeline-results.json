@@ -1,0 +1,322 @@
+{
+  "schema": "foreground-region-pipeline-results-1",
+  "status": "complete-no-recovery-gain",
+  "report": {
+    "path": "tmp/heart-learning/foreground-region-v1/report.json",
+    "sha256": "e3076d1cbf4a7250a095c47be63f28cd728caecb263261c6d3927019c8e4dbb3"
+  },
+  "sourceCommit": "b340336f",
+  "summary": {
+    "production": {
+      "attempted": 16,
+      "crops": 7,
+      "supported": 6,
+      "checkedPairs": 7,
+      "neuralSelected": 0,
+      "reusedFits": 16
+    },
+    "fallback": {
+      "attempted": 16,
+      "crops": 7,
+      "supported": 6,
+      "checkedPairs": 7,
+      "neuralSelected": 0,
+      "reusedFits": 16
+    }
+  },
+  "unchangedProductionFitsVerified": true,
+  "newFits": 0,
+  "newEditableExports": 0,
+  "validation": "The exact previous seven production fits, their target masks and independent checks are reused. No new geometry was generated; prior editable and visual audits remain applicable.",
+  "priorRelatedExperiment": "docs/inverse/datasets/foreground-roi-results.json",
+  "scope": "Exploratory fixed-policy comparison on the already inspected sixteen-photo cohort. No threshold sweep or release claim. Uses four-connected components, 5% maximum-extent padding and a multiple-substantial-component refusal; differs from the older eight-connected 10% ROI experiment.",
+  "finding": "This new cohort also shows no verified gain from using the foreground as a rough RGB search region. Avoid further padding sweeps; inspect whole-outline quality and compare a saliency-pretrained foreground model. Some photos visibly clip paper or corners, so an observed-corner requirement also limits automatic recovery.",
+  "rows": [
+    {
+      "id": "real-ad2c0c1de36a7815-body-1",
+      "selected": "production",
+      "region": null,
+      "seconds": 0
+    },
+    {
+      "id": "real-4097e8fcdc21b6a3-body-1",
+      "selected": "production",
+      "region": {
+        "status": "proposal",
+        "roi": [
+          0,
+          290.24921875,
+          1000,
+          1054.17265625
+        ],
+        "componentPixels": 16561,
+        "components": 2,
+        "bounds": [
+          31.01562499999997,
+          338.7109375,
+          1000.25,
+          1005.7109375
+        ],
+        "paddingFraction": 0.05,
+        "threshold": 0.5,
+        "scope": "Rough search region only; no final crop corners or mask."
+      },
+      "seconds": 3.7709866250000004
+    },
+    {
+      "id": "real-358faca3134e290f-body-1",
+      "selected": "production",
+      "region": null,
+      "seconds": 0
+    },
+    {
+      "id": "real-9c8a921d12d8474e-body-1",
+      "selected": "production",
+      "region": null,
+      "seconds": 0
+    },
+    {
+      "id": "real-49817b568b7d02a1-body-1",
+      "selected": "production",
+      "region": {
+        "status": "proposal",
+        "roi": [
+          0,
+          190.19921875,
+          1000,
+          1274.07421875
+        ],
+        "componentPixels": 24563,
+        "components": 1,
+        "bounds": [
+          4.960937499999972,
+          239.703125,
+          995.0390625,
+          1224.5703125
+        ],
+        "paddingFraction": 0.05,
+        "threshold": 0.5,
+        "scope": "Rough search region only; no final crop corners or mask."
+      },
+      "seconds": 4.176563417
+    },
+    {
+      "id": "real-5c303ce388328a13-body-1",
+      "selected": "production",
+      "region": {
+        "status": "proposal",
+        "roi": [
+          0,
+          708.2625,
+          2448,
+          3091.2375
+        ],
+        "componentPixels": 23237,
+        "components": 1,
+        "bounds": [
+          38.25,
+          828.75,
+          2448,
+          2970.75
+        ],
+        "paddingFraction": 0.05,
+        "threshold": 0.5,
+        "scope": "Rough search region only; no final crop corners or mask."
+      },
+      "seconds": 6.996482333
+    },
+    {
+      "id": "real-c6b9eeb016808d3b-body-1",
+      "selected": "production",
+      "region": null,
+      "seconds": 0
+    },
+    {
+      "id": "real-8e0056ff18287e45-body-1",
+      "selected": "production",
+      "region": {
+        "status": "proposal",
+        "roi": [
+          0,
+          394.207421875,
+          1000,
+          1334
+        ],
+        "componentPixels": 20419,
+        "components": 1,
+        "bounds": [
+          10.171874999999972,
+          442.9296875,
+          984.6171875,
+          1302.734375
+        ],
+        "paddingFraction": 0.05,
+        "threshold": 0.5,
+        "scope": "Rough search region only; no final crop corners or mask."
+      },
+      "seconds": 2.801100875
+    },
+    {
+      "id": "real-38428ac54117e67c-body-1",
+      "selected": "production",
+      "region": {
+        "status": "proposal",
+        "roi": [
+          0,
+          431.205078125,
+          1000,
+          1334
+        ],
+        "componentPixels": 19871,
+        "components": 1,
+        "bounds": [
+          20.59374999999997,
+          479.40625,
+          984.6171875,
+          1334
+        ],
+        "paddingFraction": 0.05,
+        "threshold": 0.5,
+        "scope": "Rough search region only; no final crop corners or mask."
+      },
+      "seconds": 5.575773708000001
+    },
+    {
+      "id": "real-56faeb060f60c170-body-1",
+      "selected": "production",
+      "region": {
+        "status": "proposal",
+        "roi": [
+          0,
+          273.834765625,
+          1000,
+          1334
+        ],
+        "componentPixels": 25251,
+        "components": 1,
+        "bounds": [
+          15.382812499999972,
+          323.078125,
+          1000.25,
+          1307.9453125
+        ],
+        "paddingFraction": 0.05,
+        "threshold": 0.5,
+        "scope": "Rough search region only; no final crop corners or mask."
+      },
+      "seconds": 4.361764833999998
+    },
+    {
+      "id": "real-56a89a732af12a66-body-1",
+      "selected": "production",
+      "region": null,
+      "seconds": 0
+    },
+    {
+      "id": "real-3b92112e8487e279-body-1",
+      "selected": "production",
+      "region": {
+        "status": "proposal",
+        "roi": [
+          0,
+          341.055859375,
+          1000,
+          1331.655078125
+        ],
+        "componentPixels": 22121,
+        "components": 1,
+        "bounds": [
+          4.960937499999972,
+          390.8203125,
+          1000.25,
+          1281.890625
+        ],
+        "paddingFraction": 0.05,
+        "threshold": 0.5,
+        "scope": "Rough search region only; no final crop corners or mask."
+      },
+      "seconds": 1.1996204160000015
+    },
+    {
+      "id": "real-fa1ca05594655c8d-body-1",
+      "selected": "production",
+      "region": {
+        "status": "proposal",
+        "roi": [
+          0,
+          219.9015625,
+          1000,
+          1334
+        ],
+        "componentPixels": 24849,
+        "components": 1,
+        "bounds": [
+          4.960937499999972,
+          270.96875,
+          995.0390625,
+          1292.3125
+        ],
+        "paddingFraction": 0.05,
+        "threshold": 0.5,
+        "scope": "Rough search region only; no final crop corners or mask."
+      },
+      "seconds": 4.170109166999999
+    },
+    {
+      "id": "real-0f8bf87595f587e5-body-1",
+      "selected": "production",
+      "region": null,
+      "seconds": 0
+    },
+    {
+      "id": "real-7f22ab27bb1cd19e-body-1",
+      "selected": "production",
+      "region": {
+        "status": "proposal",
+        "roi": [
+          61.489062499999996,
+          0,
+          1095.3390625,
+          1000
+        ],
+        "componentPixels": 21875,
+        "components": 1,
+        "bounds": [
+          109.4296875,
+          10.171874999999972,
+          1047.3984375,
+          968.984375
+        ],
+        "paddingFraction": 0.05,
+        "threshold": 0.5,
+        "scope": "Rough search region only; no final crop corners or mask."
+      },
+      "seconds": 2.874135792000001
+    },
+    {
+      "id": "real-8a9c703f7f29fd14-body-1",
+      "selected": "production",
+      "region": {
+        "status": "proposal",
+        "roi": [
+          0,
+          289.988671875,
+          1000,
+          1314.980078125
+        ],
+        "componentPixels": 23707,
+        "components": 1,
+        "bounds": [
+          10.171874999999972,
+          338.7109375,
+          984.6171875,
+          1266.2578125
+        ],
+        "paddingFraction": 0.05,
+        "threshold": 0.5,
+        "scope": "Rough search region only; no final crop corners or mask."
+      },
+      "seconds": 6.019829833000004
+    }
+  ]
+}

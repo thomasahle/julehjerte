@@ -1,0 +1,26 @@
+{
+  "schema": "weak-crop-saliency-diagnostic-1",
+  "purpose": "Post-hoc diagnosis of every unsupported existing production proposal in the fresh32 cohort. Primary retain-production result is unchanged. No template fitting or manual corner adjustments.",
+  "control": {
+    "path": "tmp/heart-learning/u2netp-fresh-pipeline-v1/report.json",
+    "sha256": "f03afacdb06559719b6afb233e1d251a37e2e496a02bb29211ee43aa095d0c75"
+  },
+  "probe": {
+    "path": "tmp/heart-learning/u2netp-fresh-browser-v1/manifest.json",
+    "sha256": "1b7a0ab645e61e8ab1b96740be92b4627b9f55ab5017650d87b192dcbbb71a65"
+  },
+  "ids": [
+    "real-f6e5e128449e3cb9-body-1",
+    "real-55704c6e2911bebc-body-1",
+    "real-fe7fb089d1cd86b4-body-1",
+    "real-b5317080eec610dc-body-1",
+    "real-03bddab9c8f384c4-body-1"
+  ],
+  "methods": [
+    "learned"
+  ],
+  "refinement": "none",
+  "target": "mask",
+  "solveIds": [],
+  "resourceBudgetMiB": 8
+}

@@ -1,0 +1,550 @@
+{
+  "schema": "u2netp-pipeline-results-1",
+  "status": "complete-experimental",
+  "implementationCommit": "bbc680d2",
+  "assets": [
+    {
+      "path": "docs/inverse/datasets/u2netp-probe-plan.json",
+      "sha256": "7848925f6635f9fc7e142d7b4aa880efb5f769862083964201adc72a5e4e1aa3"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-source-v1/source.json",
+      "sha256": "f6fe434979abcd0531fede48187b3009d2d7996096fc8c507fcbaf90f428577a"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-source-v1/checkpoint.json",
+      "sha256": "2428fa066b0a2d2aa2a9b88bdbb464e39a845c99c293efb702b988a196f672aa"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-probe-v1/report.json",
+      "sha256": "91a04933b3dbe55d50ac66ad5261659d54fd5aecc69733a350df93cc8861f87e"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-probe-v1/manifest.json",
+      "sha256": "b14d56e1ad685069ecd1cb1d072ef2190530a3ab8fda70720d1923627cba27d8"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-probe-v1/pipeline-command.json",
+      "sha256": "e62eb311e5548e0cd5637797d6acc5834af29225a35b79fc76fb0fb03aee785d"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-pipeline-v1/report.json",
+      "sha256": "bf510f56144519cdf7df25ce514888dc3f459203f0e0f43f184eb5aae8c72296"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-editor-input-v1/coverage.json",
+      "sha256": "368adb192481910f2a1a22e9aaea48a844976143a70fbac11bd7bdecb872b7e6"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-editable-v1/results.json",
+      "sha256": "537458cd91a3a533aa4e8fe72d43085b309ffc921ac5b2e3f6e6d5d2c2e84e5f"
+    }
+  ],
+  "upstream": {
+    "repository": "https://github.com/xuebinqin/U-2-Net",
+    "commit": "ac7e1c817ecab7c7dff5ce6b1abba61cd213ff29"
+  },
+  "parameters": 1131181,
+  "checkpointSha256": "e7567cde013fb64813973ce6e1ecc25a80c05c3ca7adbc5a54f3c3d90991b854",
+  "medianNativeInferenceSeconds": 0.29043904150000044,
+  "summary": {
+    "photos": 16,
+    "supportedProductionCropsRetained": 6,
+    "productionCheckedPairs": 7,
+    "frozenPolicyCheckedPairs": 7,
+    "newNeuralSelectionsUnderFrozenPolicy": 0,
+    "saliencyCropProposals": 6,
+    "partialPhotoProposals": 6,
+    "previouslyUnresolvedFits": 3,
+    "additionalCheckedPartialPhotoPairs": 2,
+    "rejectedFeatureFits": 1
+  },
+  "finding": "The pretrained saliency model improves several whole-heart outlines. Two additional unresolved photos yield checked approximate pairs, but their lower tips are outside the photo. The frozen all-corners-observed fallback selects neither. Existing production already allows some partially observed proposals; a review-required partial-photo fallback is a separate development policy to test prospectively.",
+  "scoring": "Observed-area errors exclude unseen pixels. Older foreground-replay whole-square errors, which included padding, are retained beside them. Exact saved geometry was reused and source/target hashes verified; there was no refit during editable QA.",
+  "visualReview": {
+    "fields": "All sixteen RGB/body comparisons inspected in four sheets; whole-heart silhouettes often improve. Cream paper on pale background, reflective silver/gold, and some green/white designs still fail. Handles are sometimes included.",
+    "exports": "All three source/crop/mask/export comparisons inspected. See per-case notes. Small derived-mask errors do not certify intended artwork or original cutting paths.",
+    "sheet": "tmp/heart-learning/u2netp-pipeline-v1/export-contact-sheet.png"
+  },
+  "limitations": [
+    "This sixteen-photo cohort has already been inspected; these are development results, not a fresh held-out test.",
+    "Photos come from a single board/source group; motif novelty is unverified.",
+    "Upstream pretraining overlap with public photos is unknown.",
+    "Native CPU only. Publisher skimage preprocessing has not yet been validated in browser inference.",
+    "Saliency scores are per-image normalized, not calibrated paper probabilities.",
+    "Two partial-photo pairs meet computational checks but were not physically cut or assembled."
+  ],
+  "rows": [
+    {
+      "id": "real-ad2c0c1de36a7815-body-1",
+      "productionOutcome": "checked-derived-mask",
+      "productionOutlineSupported": false,
+      "outcome": "crop-proposed",
+      "cropStatus": "needs_review",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": false,
+        "outOfFrameCorners": [
+          2
+        ],
+        "lowerEdgeSupport": [
+          1,
+          0.7086092715231788
+        ],
+        "lobeOutlineSupport": [
+          0.75,
+          0.9166666666666666
+        ],
+        "capColourLoss": [
+          5.9118956254186924e-05,
+          2.1322566205091615e-05
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cropSeconds": 1.382468625,
+      "inferenceSeconds": 0.6791513340000002,
+      "observedFraction": 0.9927625,
+      "quad": [
+        [
+          494.1149266482316,
+          546.2061860801509
+        ],
+        [
+          878.0406647574478,
+          1017.7172724138567
+        ],
+        [
+          499.0640942889038,
+          1382.0160434301863
+        ],
+        [
+          79.34172670548014,
+          920.8644564389954
+        ]
+      ]
+    },
+    {
+      "id": "real-4097e8fcdc21b6a3-body-1",
+      "productionOutcome": "crop-unresolved",
+      "productionOutlineSupported": false,
+      "outcome": "crop-unresolved",
+      "cropStatus": "not_found",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cropSeconds": 0.11437237499999992,
+      "inferenceSeconds": 0.36454570799999964
+    },
+    {
+      "id": "real-358faca3134e290f-body-1",
+      "productionOutcome": "checked-derived-mask",
+      "productionOutlineSupported": false,
+      "outcome": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cropSeconds": 2.6991813340000004,
+      "inferenceSeconds": 0.32696537500000034
+    },
+    {
+      "id": "real-9c8a921d12d8474e-body-1",
+      "productionOutcome": "checked-derived-mask",
+      "productionOutlineSupported": false,
+      "outcome": "crop-proposed",
+      "cropStatus": "needs_review",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": false,
+        "outOfFrameCorners": [
+          2
+        ],
+        "lowerEdgeSupport": [
+          0.9876543209876543,
+          0.8333333333333334
+        ],
+        "lobeOutlineSupport": [
+          0.9166666666666666,
+          0.8333333333333334
+        ],
+        "capColourLoss": [
+          6.242749639798515e-05,
+          2.0822718694493395e-05
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cropSeconds": 0.7054309590000003,
+      "inferenceSeconds": 0.29885062500000004,
+      "observedFraction": 0.99986875,
+      "quad": [
+        [
+          485.0837075185543,
+          463.92473058417585
+        ],
+        [
+          880.6808928492275,
+          939.1760423144514
+        ],
+        [
+          472.01058906965585,
+          1340.1300701430912
+        ],
+        [
+          77.70077573347518,
+          896.6371910887675
+        ]
+      ]
+    },
+    {
+      "id": "real-49817b568b7d02a1-body-1",
+      "productionOutcome": "crop-unresolved",
+      "productionOutlineSupported": false,
+      "outcome": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cropSeconds": 2.569916833,
+      "inferenceSeconds": 0.34628862500000057
+    },
+    {
+      "id": "real-5c303ce388328a13-body-1",
+      "productionOutcome": "crop-unresolved",
+      "productionOutlineSupported": false,
+      "outcome": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cropSeconds": 2.757477374999999,
+      "inferenceSeconds": 0.5022889999999993
+    },
+    {
+      "id": "real-c6b9eeb016808d3b-body-1",
+      "productionOutcome": "checked-derived-mask",
+      "productionOutlineSupported": false,
+      "outcome": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cropSeconds": 2.6748552500000007,
+      "inferenceSeconds": 0.3734229579999999
+    },
+    {
+      "id": "real-8e0056ff18287e45-body-1",
+      "productionOutcome": "crop-unresolved",
+      "productionOutlineSupported": false,
+      "outcome": "checked-pair",
+      "cropStatus": "needs_review",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": false,
+        "outOfFrameCorners": [
+          2
+        ],
+        "lowerEdgeSupport": [
+          1,
+          0.8243243243243243
+        ],
+        "lobeOutlineSupport": [
+          0.9444444444444444,
+          0.8333333333333334
+        ],
+        "capColourLoss": [
+          2.69881821610264e-05,
+          5.042333952129077e-05
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cropSeconds": 0.6197623750000002,
+      "inferenceSeconds": 0.28945612500000006,
+      "observedFraction": 0.99994375,
+      "quad": [
+        [
+          486.7267390406377,
+          541.9583979722863
+        ],
+        [
+          896.5676921750262,
+          947.8199700581231
+        ],
+        [
+          493.07531877835896,
+          1337.8114623885247
+        ],
+        [
+          110.03352649334876,
+          914.6498182336185
+        ]
+      ],
+      "solveSeconds": 9.619529917,
+      "originalIncludingPaddingError": 0.01121875,
+      "observedIndependentError": 0.011163127925945834,
+      "editableError": 0.011156877574363558,
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "missingFeatures": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "geometrySha256": "cd08d113990ce1a131ee9dfd68c3521c6caef670bc945adbd1f769a3f4f56537",
+      "visualReview": "Stacked hearts are recognizable and almost all photographed area is observed. Some narrow false seams and rounded checker contacts remain; not exact design recovery."
+    },
+    {
+      "id": "real-38428ac54117e67c-body-1",
+      "productionOutcome": "crop-unresolved",
+      "productionOutlineSupported": false,
+      "outcome": "review-required",
+      "cropStatus": "needs_review",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": false,
+        "outOfFrameCorners": [
+          2
+        ],
+        "lowerEdgeSupport": [
+          0.8936170212765957,
+          0.8723404255319149
+        ],
+        "lobeOutlineSupport": [
+          0.75,
+          0.6666666666666666
+        ],
+        "capColourLoss": [
+          2.1820265895465694e-05,
+          0.0002914446994024174
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cropSeconds": 0.6923705829999999,
+      "inferenceSeconds": 0.2730360419999993,
+      "observedFraction": 0.9954125,
+      "quad": [
+        [
+          508.70352516272396,
+          581.6373810320351
+        ],
+        [
+          901.519482505819,
+          967.3383622364491
+        ],
+        [
+          503.4108047984568,
+          1375.8464508589227
+        ],
+        [
+          127.26845209809862,
+          945.386644128375
+        ]
+      ],
+      "solveSeconds": 9.774262375,
+      "originalIncludingPaddingError": 0.0148625,
+      "observedIndependentError": 0.010881167355242173,
+      "editableError": 0.010699082038853239,
+      "conversionPassed": true,
+      "completeCandidatePassed": false,
+      "missingFeatures": 2,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "geometrySha256": "89097491c251064e2b358b2a164fdab6752da93b43d7a0edf45daecd4db709c1",
+      "visualReview": "Many-heart motif remains recognizable, but two small target features disappear and one heart region joins a border region. Rejected despite low pixel error. Pale paper and crop uncertainty remain confounders."
+    },
+    {
+      "id": "real-56faeb060f60c170-body-1",
+      "productionOutcome": "crop-unresolved",
+      "productionOutlineSupported": false,
+      "outcome": "crop-unresolved",
+      "cropStatus": "not_found",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cropSeconds": 0.3430438329999961,
+      "inferenceSeconds": 0.2807041659999996
+    },
+    {
+      "id": "real-56a89a732af12a66-body-1",
+      "productionOutcome": "checked-derived-mask",
+      "productionOutlineSupported": false,
+      "outcome": "crop-proposed",
+      "cropStatus": "needs_review",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": false,
+        "outOfFrameCorners": [
+          2
+        ],
+        "lowerEdgeSupport": [
+          0.7905405405405406,
+          1
+        ],
+        "lobeOutlineSupport": [
+          0.9722222222222222,
+          0.7777777777777778
+        ],
+        "capColourLoss": [
+          4.967764954066922e-05,
+          7.32291041439052e-05
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cropSeconds": 0.7333486249999988,
+      "inferenceSeconds": 0.2762688329999996,
+      "observedFraction": 1,
+      "quad": [
+        [
+          453.8423548904764,
+          502.3213906771209
+        ],
+        [
+          908.141102106323,
+          858.2789805435335
+        ],
+        [
+          552.6216520646342,
+          1334.5457338158017
+        ],
+        [
+          88.31862646234394,
+          936.3890778962018
+        ]
+      ]
+    },
+    {
+      "id": "real-3b92112e8487e279-body-1",
+      "productionOutcome": "crop-unresolved",
+      "productionOutlineSupported": false,
+      "outcome": "checked-pair",
+      "cropStatus": "needs_review",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": false,
+        "outOfFrameCorners": [
+          2
+        ],
+        "lowerEdgeSupport": [
+          1,
+          0.99375
+        ],
+        "lobeOutlineSupport": [
+          0.75,
+          0.6666666666666666
+        ],
+        "capColourLoss": [
+          2.9685998557997067e-05,
+          2.101407406081125e-05
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cropSeconds": 0.6632301670000015,
+      "inferenceSeconds": 0.2778588749999997,
+      "observedFraction": 0.998275,
+      "quad": [
+        [
+          497.2642873680137,
+          492.2870977636856
+        ],
+        [
+          941.9971047570705,
+          887.8206005038322
+        ],
+        [
+          520.8698669082241,
+          1359.1368277565148
+        ],
+        [
+          139.22867206686163,
+          950.9237897366345
+        ]
+      ],
+      "solveSeconds": 5.812538250000005,
+      "originalIncludingPaddingError": 0.0213,
+      "observedIndependentError": 0.021336805990333326,
+      "editableError": 0.0211865467932183,
+      "conversionPassed": true,
+      "completeCandidatePassed": true,
+      "missingFeatures": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "geometrySha256": "c05130dbdb4b1f39deb54d39903dc05ab300dcd94416445d50255153c3fc5327",
+      "visualReview": "Main elongated grid is recognizable. Slightly bowed grid edges, rounded contacts and thin seams remain; not an exact straight-line reconstruction."
+    },
+    {
+      "id": "real-fa1ca05594655c8d-body-1",
+      "productionOutcome": "crop-unresolved",
+      "productionOutlineSupported": false,
+      "outcome": "crop-unresolved",
+      "cropStatus": "needs_selection",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cropSeconds": 2.361320458000002,
+      "inferenceSeconds": 0.2723331249999994
+    },
+    {
+      "id": "real-0f8bf87595f587e5-body-1",
+      "productionOutcome": "checked-derived-mask",
+      "productionOutlineSupported": false,
+      "outcome": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cropSeconds": 2.7824828340000023,
+      "inferenceSeconds": 0.2914219580000008
+    },
+    {
+      "id": "real-7f22ab27bb1cd19e-body-1",
+      "productionOutcome": "crop-unresolved",
+      "productionOutlineSupported": false,
+      "outcome": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cropSeconds": 2.5733093750000045,
+      "inferenceSeconds": 0.28577879200000034
+    },
+    {
+      "id": "real-8a9c703f7f29fd14-body-1",
+      "productionOutcome": "checked-derived-mask",
+      "productionOutlineSupported": false,
+      "outcome": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "cropSeconds": 2.694034749999999,
+      "inferenceSeconds": 0.27484325
+    }
+  ]
+}

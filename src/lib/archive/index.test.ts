@@ -15,7 +15,7 @@ describe('the complete heart archive', () => {
 			expect(url.username).toBe('');
 			expect(url.password).toBe('');
 			expect(url.hostname).not.toMatch(/^(localhost|127\.|10\.|192\.168\.|169\.254\.|172\.(1[6-9]|2\d|3[01])\.|\[::1\])|\.(localhost|local|internal)$/);
-			if (/(^|\.)pinterest\.[a-z.]+$/.test(url.hostname)) expect(url.pathname).toMatch(/^\/pin\/\d+\/$/);
+			if (/(^|\.)pinterest\.[a-z.]+$/.test(url.hostname)) expect(url.pathname).toMatch(/^\/pin\/[a-z\d_-]+\/$/i);
 		};
 		for (const record of records) {
 			for (const key of Object.keys(record)) expect(allowed.has(key), `${record.id}: unexpected field ${key}`).toBe(true);
@@ -42,6 +42,25 @@ describe('the complete heart archive', () => {
 			expect(records.filter(r => r.kind === 'juleflet').map(r => r.heartId)).toEqual(ALL_HEART_IDS);
 			expect(new Set(records.map(r => r.id)).size).toBe(records.length);
 			expect(records.filter(r => r.history === 'permo')).toHaveLength(32);
+		}
+	});
+
+	it('retains the opaque pin and consolidates reviewed variants without publishing board activity', () => {
+		for (const lang of ['da', 'en'] as const) {
+			const records = archiveRecords(lang);
+			const opaque = records.find(record => record.id === 'source-1864c2c7f582ab29')!;
+			expect(opaque.sourceUrls).toContain('https://www.pinterest.com/pin/Ac9nHdxgZcEw4UAUhwMaRJTEbunjwUcXHeQEGHYE_uYBC-FLumUf9z4/');
+			expect(opaque.credits).toEqual([]);
+			expect(opaque.license).toBe('unknown');
+			expect(hasArchiveTemplate(opaque)).toBe(false);
+			const bells = records.find(record => record.id === 'source-a055202166ff0bdd')!;
+			expect(bells.imageUrls.length).toBeGreaterThan(1);
+			expect(bells.sourceUrls.some(url => url.startsWith('https://www.pinterest.com/pin/'))).toBe(true);
+			for (const id of ['source-519ee71c8519d9e3', 'source-64b51faaef694431',
+				'source-3545741859f83f94', 'source-76129ef26182091e', 'source-3f2032cde2fcfedf']) {
+				expect(records.some(record => record.id === id)).toBe(false);
+			}
+			expect(JSON.stringify(records)).not.toMatch(/0wt3lqxkvukjlwc|flettet-julehjerte-skabelon|boardIndex/);
 		}
 	});
 

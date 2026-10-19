@@ -1,0 +1,512 @@
+{
+  "schema": "saliency-fresh-output-review-1",
+  "pipeline": {
+    "path": "tmp/heart-learning/u2netp-fresh-pipeline-v1/report.json",
+    "sha256": "f03afacdb06559719b6afb233e1d251a37e2e496a02bb29211ee43aa095d0c75"
+  },
+  "gallery": {
+    "path": "tmp/heart-learning/u2netp-fresh-gallery-v1/manifest.json",
+    "sha256": "756097c4cc6f24e904557e0f2232e371bfe745179651085c811a3dc7e0680a80"
+  },
+  "scope": "All nine gallery pages and all four original-photo sheets inspected. Observations identify visible stage failures and hypotheses, not ground-truth cutting paths. No case removed, relabelled as success or replaced after inspection.",
+  "distinctAttempts": 35,
+  "distinctExports": 24,
+  "observations": [
+    {
+      "case": 1,
+      "id": "real-1bcc922200edde26-body-1",
+      "category": "unresolved",
+      "observation": "Several strong colors in a tiny photograph or illustration; no crop from either method.",
+      "productionCheckedPair": false,
+      "fallbackCheckedPair": false,
+      "neuralSelected": false,
+      "independentImageError": null,
+      "editable": null
+    },
+    {
+      "case": 2,
+      "id": "real-80a649a21ea938ae-body-1",
+      "category": "unresolved",
+      "observation": "Black/pale slanted checker pattern; neither detector proposes a supported crop.",
+      "productionCheckedPair": false,
+      "fallbackCheckedPair": false,
+      "neuralSelected": false,
+      "independentImageError": null,
+      "editable": null
+    },
+    {
+      "case": 3,
+      "id": "real-f6e5e128449e3cb9-body-1",
+      "category": "source-model",
+      "observation": "Open basket and sweets enter the proposed overlap. This is not a reliable planar photograph; editable paper audit also fails.",
+      "productionCheckedPair": false,
+      "fallbackCheckedPair": false,
+      "neuralSelected": false,
+      "independentImageError": 0.0334125,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "geometryPassed": true,
+        "paperStatus": "fail",
+        "missingFeatures": 9
+      }
+    },
+    {
+      "case": 4,
+      "id": "real-fcbcc23efea92b93-body-1",
+      "category": "fitter",
+      "observation": "Cat and flower are recognizable in the target mask, but the fit loses substantial motif detail. Crop improvement alone will not fix this.",
+      "productionCheckedPair": false,
+      "fallbackCheckedPair": false,
+      "neuralSelected": false,
+      "independentImageError": 0.05697831849125684,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 0
+      }
+    },
+    {
+      "case": 5,
+      "id": "real-55704c6e2911bebc-body-1",
+      "category": "material",
+      "observation": "Crop is plausible, but dots and diagonal printed stripes become cutting boundaries in the mask.",
+      "productionCheckedPair": false,
+      "fallbackCheckedPair": false,
+      "neuralSelected": false,
+      "independentImageError": 0.12011875,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 7
+      }
+    },
+    {
+      "case": 6,
+      "id": "real-24b5ed49c9411b11-body-1",
+      "category": "approximate",
+      "observation": "New neural crop recovers four checker hearts. Thin blue source border enters the right edge; fitted checker contacts round off and false seams remain despite passing numerical checks.",
+      "productionCheckedPair": false,
+      "fallbackCheckedPair": true,
+      "neuralSelected": true,
+      "independentImageError": 0.02928125,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 0
+      }
+    },
+    {
+      "case": 7,
+      "id": "real-589f606a9d9899f2-body-1",
+      "category": "fitter",
+      "observation": "Crop and target retain the girl and butterflies. The fit loses butterflies and deforms the main figure.",
+      "productionCheckedPair": false,
+      "fallbackCheckedPair": false,
+      "neuralSelected": false,
+      "independentImageError": 0.07155,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 3
+      }
+    },
+    {
+      "case": 8,
+      "id": "real-dfa7e4b71b43aa86-body-1",
+      "category": "material",
+      "observation": "Neural body crop is plausible; classifier follows printed trees/stars. The derived-mask fit fails image and feature checks.",
+      "productionCheckedPair": false,
+      "fallbackCheckedPair": false,
+      "neuralSelected": true,
+      "independentImageError": 0.08334375,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 16
+      }
+    },
+    {
+      "case": 9,
+      "id": "real-2b0550dd86d23b40-body-1",
+      "category": "unresolved",
+      "observation": "Sideways green/silver star with clipped tip; neither method accepts a crop.",
+      "productionCheckedPair": false,
+      "fallbackCheckedPair": false,
+      "neuralSelected": false,
+      "independentImageError": null,
+      "editable": null
+    },
+    {
+      "case": 10,
+      "id": "real-2502cdec0720f4ea-body-1",
+      "category": "fitter",
+      "observation": "Nativity crop and target are recognizable; thin figure/animal details disappear. Low total area error does not compensate for a missing feature.",
+      "productionCheckedPair": false,
+      "fallbackCheckedPair": false,
+      "neuralSelected": false,
+      "independentImageError": 0.01959375,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 1
+      }
+    },
+    {
+      "case": 11,
+      "id": "real-d3f063052599e167-body-1",
+      "category": "uncertain-model-or-fitter",
+      "observation": "Raised flower petals suggest possible interior flaps, but no cutting template was inspected. Fit distorts petals and adds false holes; do not declare the design impossible.",
+      "productionCheckedPair": false,
+      "fallbackCheckedPair": false,
+      "neuralSelected": false,
+      "independentImageError": 0.04733125,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 0
+      }
+    },
+    {
+      "case": 12,
+      "id": "real-a126ed5d62adfd92-body-1",
+      "category": "approximate",
+      "observation": "Crescent is recognizable despite clipped sideways tip; boundary rounding remains.",
+      "productionCheckedPair": true,
+      "fallbackCheckedPair": true,
+      "neuralSelected": false,
+      "independentImageError": 0.011890606420927468,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 0
+      }
+    },
+    {
+      "case": 13,
+      "id": "real-5088a58018c3aa28-body-1",
+      "category": "approximate",
+      "observation": "Red/gold cat is recognizable; tail and body corners are rounded.",
+      "productionCheckedPair": true,
+      "fallbackCheckedPair": true,
+      "neuralSelected": false,
+      "independentImageError": 0.01657562158580947,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 0
+      }
+    },
+    {
+      "case": 14,
+      "id": "real-1a7cfc6be8b164b5-body-1",
+      "category": "approximate",
+      "observation": "Blue/red printed papers are successfully separated by their different base colors. Correct simple grid; useful control for printed-paper failures.",
+      "productionCheckedPair": true,
+      "fallbackCheckedPair": true,
+      "neuralSelected": false,
+      "independentImageError": 0.0051,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 0
+      }
+    },
+    {
+      "case": 15,
+      "id": "real-fe7fb089d1cd86b4-body-1",
+      "category": "crop",
+      "observation": "Production proposal covers only the left portion of the house and cuts the building in half. Policy retains this weak proposal without trying the model.",
+      "productionCheckedPair": false,
+      "fallbackCheckedPair": false,
+      "neuralSelected": false,
+      "independentImageError": 0.06229375,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 5
+      }
+    },
+    {
+      "case": 16,
+      "id": "real-8b91ecf546833a3f-body-1",
+      "category": "approximate",
+      "observation": "Dinosaur silhouette is recognizable; minor boundary artifacts.",
+      "productionCheckedPair": true,
+      "fallbackCheckedPair": true,
+      "neuralSelected": false,
+      "independentImageError": 0.00920625,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 0
+      }
+    },
+    {
+      "case": 17,
+      "id": "real-b5317080eec610dc-body-1",
+      "category": "material",
+      "observation": "Both sheets are mainly pale with red printing. The mask follows dots and HOHO lettering instead of paper identity.",
+      "productionCheckedPair": false,
+      "fallbackCheckedPair": false,
+      "neuralSelected": false,
+      "independentImageError": 0.1511,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 62
+      }
+    },
+    {
+      "case": 18,
+      "id": "real-c7d1e0ad5050db71-body-1",
+      "category": "unresolved",
+      "observation": "Gold/dark checker and suit/heart motif with folds; no crop.",
+      "productionCheckedPair": false,
+      "fallbackCheckedPair": false,
+      "neuralSelected": false,
+      "independentImageError": null,
+      "editable": null
+    },
+    {
+      "case": 19,
+      "id": "real-45ad148d9ec045be-body-1",
+      "category": "paper",
+      "observation": "Fox crop/target and main silhouette are reasonable. Editable geometry passes, but nominal paper-core audit fails. Low image error alone is insufficient.",
+      "productionCheckedPair": false,
+      "fallbackCheckedPair": false,
+      "neuralSelected": false,
+      "independentImageError": 0.01536875,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "geometryPassed": true,
+        "paperStatus": "fail",
+        "missingFeatures": 0
+      }
+    },
+    {
+      "case": 20,
+      "id": "real-702942779385436c-body-1",
+      "category": "material",
+      "observation": "Purple floral ink on the lighter sheet is mistaken for the purple sheet. Crop alone cannot resolve this.",
+      "productionCheckedPair": false,
+      "fallbackCheckedPair": false,
+      "neuralSelected": false,
+      "independentImageError": 0.0798625,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 29
+      }
+    },
+    {
+      "case": 21,
+      "id": "real-03bddab9c8f384c4-body-1",
+      "category": "crop",
+      "observation": "Wood triangle enters the bottom-right of the crop, creating a false border region. Fitted candlestick and frame remain warped.",
+      "productionCheckedPair": false,
+      "fallbackCheckedPair": false,
+      "neuralSelected": false,
+      "independentImageError": 0.03425192315076734,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 1
+      }
+    },
+    {
+      "case": 22,
+      "id": "real-eb60ff94dfc6e2f8-body-1",
+      "category": "approximate",
+      "observation": "Dragonfly preserved, with some limits in fine antennae and gaps.",
+      "productionCheckedPair": true,
+      "fallbackCheckedPair": true,
+      "neuralSelected": false,
+      "independentImageError": 0.00641875,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 0
+      }
+    },
+    {
+      "case": 23,
+      "id": "real-af21a4ef38355dfa-body-1",
+      "category": "approximate",
+      "observation": "Two-heart/checker motif preserved; cell contacts rounded. Appears to share a motif/photo with case 32.",
+      "productionCheckedPair": true,
+      "fallbackCheckedPair": true,
+      "neuralSelected": false,
+      "independentImageError": 0.01093125,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 0
+      }
+    },
+    {
+      "case": 24,
+      "id": "real-f4bd8d13fc7e68d0-body-1",
+      "category": "unresolved",
+      "observation": "Gold/dark bell on textured wall; no crop.",
+      "productionCheckedPair": false,
+      "fallbackCheckedPair": false,
+      "neuralSelected": false,
+      "independentImageError": null,
+      "editable": null
+    },
+    {
+      "case": 25,
+      "id": "real-f05cf91c134daea9-body-1",
+      "category": "unresolved",
+      "observation": "Green/black octopus with fine curls and glare; no crop.",
+      "productionCheckedPair": false,
+      "fallbackCheckedPair": false,
+      "neuralSelected": false,
+      "independentImageError": null,
+      "editable": null
+    },
+    {
+      "case": 26,
+      "id": "real-12f272f48ed09d51-body-1",
+      "category": "source-model",
+      "observation": "Irregular tree-bottom silhouette on printed blue paper, partly covered by a hand. No crop; retained in the primary denominator.",
+      "productionCheckedPair": false,
+      "fallbackCheckedPair": false,
+      "neuralSelected": false,
+      "independentImageError": null,
+      "editable": null
+    },
+    {
+      "case": 27,
+      "id": "real-28a87a8be083f16c-body-1",
+      "category": "approximate",
+      "observation": "New neural crop preserves outlined star, small hearts and frame. Minor edge artifacts and rounding; tiny extrapolation beyond the photographed tip.",
+      "productionCheckedPair": false,
+      "fallbackCheckedPair": true,
+      "neuralSelected": true,
+      "independentImageError": 0.004801110256746873,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 0
+      }
+    },
+    {
+      "case": 28,
+      "id": "real-ce66f9634c2c613b-body-1",
+      "category": "approximate",
+      "observation": "Girl and bird are recognizable; small edge protrusions, seams and narrow-arm rounding remain.",
+      "productionCheckedPair": true,
+      "fallbackCheckedPair": true,
+      "neuralSelected": false,
+      "independentImageError": 0.01720625,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 0
+      }
+    },
+    {
+      "case": 29,
+      "id": "real-52e732b98f9b14f1-body-1",
+      "category": "material-despite-checks",
+      "observation": "Mask and fitted weave treat a printed multicolor rosette as a cutting motif. Numerical checks pass, but this does not recover the photographed sheets original cutting pattern.",
+      "productionCheckedPair": true,
+      "fallbackCheckedPair": true,
+      "neuralSelected": false,
+      "independentImageError": 0.0214375,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 0
+      }
+    },
+    {
+      "case": 30,
+      "id": "real-7e9f6f83ae43ec2a-body-1",
+      "category": "unresolved",
+      "observation": "Long, slender red/gold checker with folds/curling; no crop.",
+      "productionCheckedPair": false,
+      "fallbackCheckedPair": false,
+      "neuralSelected": false,
+      "independentImageError": null,
+      "editable": null
+    },
+    {
+      "case": 31,
+      "id": "real-d4f6e3c76cf08ea8-body-1",
+      "category": "approximate",
+      "observation": "Hummingbird silhouette and thin beak mostly preserved; minor rounding.",
+      "productionCheckedPair": true,
+      "fallbackCheckedPair": true,
+      "neuralSelected": false,
+      "independentImageError": 0.0046,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 0
+      }
+    },
+    {
+      "case": 32,
+      "id": "real-41b7c3e0b79f1265-body-1",
+      "category": "approximate",
+      "observation": "Same apparent two-heart photograph/motif as case 23 with different framing. Rounded checker contacts remain.",
+      "productionCheckedPair": true,
+      "fallbackCheckedPair": true,
+      "neuralSelected": false,
+      "independentImageError": 0.01151875,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 0
+      }
+    }
+  ]
+}

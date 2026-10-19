@@ -20,6 +20,29 @@ pinterest=module('pinterest','real-pinterest.py')
 
 
 class CollectionTests(unittest.TestCase):
+    def test_shared_board_does_not_pair_unrelated_photos_and_templates(self):
+        board='https://dk.pinterest.com/user/hearts/'
+        def row(id,kind,*pages):return {'id':id,'kind':kind,'origins':[{'sourcePages':list(pages)}]}
+        rows=[row('photo','photo',board,'https://dk.pinterest.com/pin/1/'),
+              row('unrelated','template-render',board,'https://dk.pinterest.com/pin/2/'),
+              row('same-pin','template-render',board,'https://dk.pinterest.com/pin/1/'),
+              row('publisher-photo','photo','https://artist.example/design'),
+              row('publisher-template','template-render','https://artist.example/design')]
+        links=collector.template_page_links(rows)
+        self.assertEqual(links['photo'],['same-pin'])
+        self.assertEqual(links['publisher-photo'],['publisher-template'])
+
+    def test_pin_inventory_keeps_opaque_cards_and_merges_numeric_locale_urls(self):
+        runs=[{'path':'one','pins':[
+            {'url':'https://dk.pinterest.com/pin/123/','status':'downloaded'},
+            {'url':'https://dk.pinterest.com/pin/AaBbOpaque/','status':'downloaded'}]},
+            {'path':'two','pins':[{'url':'https://www.pinterest.com/pin/123/','status':'downloaded'}]}]
+        with patch.object(collector,'pinterest_runs',return_value=runs):
+            pins=collector.pinterest_inventory()['pins']
+        self.assertEqual(len(pins),2)
+        self.assertEqual(pins[0]['runReferences'],['one','two'])
+        self.assertEqual(pins[1]['url'],'https://dk.pinterest.com/pin/AaBbOpaque/')
+
     def test_collected_sources_used_by_photographic_regressions_are_reserved(self):
         root = Path(__file__).resolve().parents[3]
         assets = json.loads((root/'docs/inverse/datasets/real-manifest.json').read_text())['assets']

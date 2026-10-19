@@ -1,0 +1,16 @@
+{
+  "schema": "conni-board-durable-preservation-1",
+  "sourceManifest": "docs/inverse/datasets/conni-board-staged-manifest.json",
+  "verifiedBoardFiles": 90,
+  "newStoreObjects": 90,
+  "additionalImageBytes": 0,
+  "storageMethod": "Hardlinks to verified immutable originals; no copied image bytes. All 90 files are also retained outside tmp.",
+  "manifestPath": "docs/inverse/datasets/heart-archive-storage.json",
+  "manifestSha256": "7df232c6dbc2aa86d56d5651cf82d4ad0307ab43d9e5143d0e40da713f8fa515",
+  "counts": {
+    "objects": 237,
+    "originalBytes": 29657897,
+    "publicObjects": 1
+  },
+  "scope": "Private preservation only. Source images include scans and unrelated negative examples. No additional publication, template-pair validation or training. This is not an off-device backup."
+}

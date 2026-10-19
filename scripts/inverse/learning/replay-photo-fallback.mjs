@@ -5,8 +5,10 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {createCanvas,loadImage} from 'canvas';
 import {selectPhotoCrop} from './photo-crop-fallback.mjs';
+import {selectReviewedPhotoCrop} from './partial-photo-crop.mjs';
 import {detectForegroundCrop} from './foreground-crop.mjs';
-import {supportedCropOutline} from '../../../static/inverse/core/crop.js';
+import {detectHeartCrops,supportedCropOutline} from '../../../static/inverse/core/crop.js';
+import {foregroundRegion} from './foreground-region.mjs';
 import {prepare,design} from '../../../static/inverse/core/engine.js';
 import {AUTOMATIC_PRESET} from '../../../static/inverse/core/presets.js';
 import {referenceError} from '../../../static/inverse/core/image-reference.js';
@@ -19,9 +21,46 @@ assert.ok(args.plan&&args.output&&Object.keys(args).every(k=>['plan','output'].i
 const hash=b=>createHash('sha256').update(b).digest('hex');
 const read=async p=>JSON.parse(await fs.readFile(p));
 const pinned=async asset=>{const bytes=await fs.readFile(asset.path);assert.equal(hash(bytes),asset.sha256,asset.path);return JSON.parse(bytes);};
-const plan=await read(args.plan);assert.equal(plan.schema,'photo-crop-fallback-plan-1');
-const manifest=await pinned(plan.probe),training=await pinned(plan.training),runtime=await pinned(plan.runtimeEvidence);
-assert.equal(manifest.status,'complete');assert.equal(training.status,'complete');
+const plan=await read(args.plan);
+assert.ok(['photo-crop-fallback-plan-1','candidate-photo-crop-fallback-plan-1','saliency-photo-crop-fallback-plan-1'].includes(plan.schema));
+const saliency=plan.schema==='saliency-photo-crop-fallback-plan-1';
+const manifest=await pinned(plan.probe),training=saliency?null:await pinned(plan.training),runtime=await pinned(plan.runtimeEvidence);
+assert.equal(manifest.status,'complete');if(training)assert.equal(training.status,'complete');
+if(saliency){
+ const study=await pinned(plan.study),selection=await pinned(study.selection),catalog=await pinned(selection.sourceManifest);
+ assert.equal(study.schema,'saliency-fresh-study-1');assert.deepEqual(plan.protocol,study.pipeline);
+ assert.ok(['u2netp-browser-1','u2netp-probe-result-1'].includes(runtime.schema));assert.equal(runtime.status,'complete');
+ assert.equal(runtime.artifacts['manifest.json'],plan.probe.sha256);assert.equal(manifest.resolution,320);
+ if(runtime.schema==='u2netp-browser-1'){
+  assert.ok(runtime.checks.allPhotos&&runtime.checks.sourceRgbExact&&runtime.checks.inputParity);
+  const native=await pinned(runtime.native);assert.equal(native.onnx.sha256,study.model.sha256);
+ }else{
+  // Native adaptation is a development gate before spending time on export.
+  // It must never be reported as verified browser numerical parity.
+  assert.equal(plan.runtimeStage,'native-development');
+  assert.equal(manifest.fieldOrigin.kind,'whole-paper-adapted-saliency');
+  const adaptation=await pinned(manifest.fieldOrigin.adaptation),training=await pinned(adaptation.plan);
+  const audit=await pinned(plan.adaptationAudit);assert.equal(audit.schema,'u2netp-body-audit-1');assert.ok(audit.passed);
+  assert.deepEqual(audit.report,manifest.fieldOrigin.adaptation);
+  assert.equal(adaptation.schema,'u2netp-body-adaptation-1');assert.equal(adaptation.status,'complete');
+  assert.ok(adaptation.frozenStateUnchanged&&adaptation.sourceSeparation.sourceAndDuplicateSeparationPassed);
+  assert.deepEqual(training.evaluation,study.selection);
+  assert.equal(runtime.checkpointSha256,adaptation.checkpointSha256);
+  assert.equal(runtime.checkpointSha256,study.model.sha256);
+  const nativePlan=await pinned(runtime.plan);assert.deepEqual(nativePlan.selection,study.selection);
+  assert.deepEqual(runtime.rows.map(r=>r.id),plan.ids);
+ }
+ const assets=new Map(catalog.assets.map(r=>[r.id,r]));
+ assert.deepEqual(plan.ids,selection.photos.map(r=>r.id));assert.deepEqual(manifest.rows.map(r=>r.id),plan.ids);
+ for(const [file,digest] of Object.entries(study.sourcePins))assert.equal(hash(await fs.readFile(file)),digest,file);
+ for(const [index,row] of manifest.rows.entries()){
+  const expected=selection.photos[index],asset=assets.get(expected.assetId);
+  assert.equal(asset.splitStatus,'qa-reserved');assert.equal(asset.sha256,expected.imageSha256);
+  assert.equal(row.photoSha256,expected.imageSha256);assert.equal(row.file,expected.file);
+  assert.deepEqual(row.dimensions,expected.dimensions);assert.equal(row.decodedRGBSha256,expected.decodedRGBSha256);
+ }
+ assert.equal(plan.protocol.timeLimitSeconds,10);assert.equal(plan.protocol.trials,0);
+}else if(plan.schema==='photo-crop-fallback-plan-1'){
 assert.ok(runtime.checks.allPhotos&&runtime.checks.inputRgbExact&&runtime.checks.archivedHalfThresholdParity);
 assert.equal(runtime.artifacts['probe/manifest.json'],plan.probe.sha256);
 const catalog=await pinned(plan.sourceManifest),assets=new Map(catalog.assets.map(r=>[r.id,r]));
@@ -38,19 +77,78 @@ for(const id of plan.ids){
  const fold=training.folds.filter(f=>f.heldOut.includes(id));assert.equal(fold.length,1);
  assert.ok(!fold[0].train.includes(id));assert.equal(runtime.photos.find(r=>r.id===id).fold,fold[0].id);
 }
+}else{
+ assert.equal(training.schema,'preserved-material-candidate-1');
+ assert.equal(runtime.schema,'preserved-candidate-browser-1');assert.equal(runtime.status,'complete');
+ // Failed numeric gates remain diagnostic, but mismatched image inputs cannot be compared.
+ assert.ok(runtime.checks.allPhotos&&runtime.checks.sourceRgbExact&&runtime.checks.inputRgbExact);
+ assert.equal(runtime.artifacts['probe/manifest.json'],plan.probe.sha256);
+ const native=await pinned(runtime.native),protocol=await pinned(training.plan),evaluation=await pinned(protocol.evaluation);
+ assert.equal(native.training.sha256,plan.training.sha256);assert.equal(native.evaluation.sha256,protocol.evaluation.sha256);
+ assert.equal(protocol.sourceManifest.sha256,plan.sourceManifest.sha256);
+ const audit=await pinned(plan.audit);assert.ok(audit.passed);assert.equal(audit.candidateReport.sha256,plan.training.sha256);
+ assert.equal(audit.checkpointSha256,training.checkpointSha256);
+ const labels=await pinned(protocol.labelCatalog),catalog=await pinned(plan.sourceManifest),assets=new Map(catalog.assets.map(r=>[r.id,r]));
+ const reserved=new Set(catalog.assets.filter(r=>r.splitStatus==='qa-reserved').map(r=>r.splitGroupId));
+ const train=labels.instances.map(r=>{const asset=assets.get(r.assetId);assert.equal(asset.sha256,r.imageSha256);assert.equal(asset.splitStatus,'unassigned');assert.ok(!reserved.has(asset.splitGroupId));return asset;});
+ assert.deepEqual(manifest.rows.map(r=>r.id),evaluation.photos.map(r=>r.id));assert.deepEqual(plan.ids,evaluation.photos.map(r=>r.id));
+ assert.equal(new Set(plan.ids).size,plan.ids.length);
+ for(const row of manifest.rows){
+  const expected=evaluation.photos.find(r=>r.id===row.id),asset=assets.get(expected.assetId);
+  assert.equal(asset.splitStatus,'qa-reserved');assert.equal(asset.sha256,expected.imageSha256);
+  for(const field of ['id','sha256','nearDuplicateGroup','splitGroupId'])assert.ok(!train.some(a=>a[field]===asset[field]));
+  assert.ok(!train.some(a=>a.sourceGroups.some(g=>asset.sourceGroups.includes(g))));
+  assert.equal(row.photoSha256,expected.imageSha256);assert.equal(row.file,expected.file);
+  assert.deepEqual(row.dimensions,expected.dimensions);assert.equal(row.decodedRGBSha256,expected.decodedRGBSha256);
+ }
+ assert.equal(plan.protocol.timeLimitSeconds,10);assert.equal(plan.protocol.trials,0);
+}
 const configuration={...AUTOMATIC_PRESET,timeLimit:plan.protocol.timeLimitSeconds,trials:plan.protocol.trials};
+const cropStrategy=plan.protocol.cropStrategy??'learned-fields';
+assert.ok(['learned-fields','foreground-region-rgb'].includes(cropStrategy));
+const control=plan.controlRun?await pinned(plan.controlRun):null;
+if(control){
+ assert.equal(control.schema,'material-pair-pipeline-1');assert.equal(control.status,'complete');
+ // Production controls depend on the source photographs and production code,
+ // not the learned checkpoint. Source hashes are checked again in reuseControl.
+ if(!saliency)assert.equal(control.probeManifestSha256,plan.probe.sha256);
+ assert.deepEqual(control.configuration,configuration);
+ assert.deepEqual(control.rows.filter(r=>r.method==='production').map(r=>r.id),plan.ids);
+ // Research adapters may change, but the original production fit implementation must match.
+ for(const [file,digest] of Object.entries(control.sourceHashes))
+  if(file.startsWith('static/inverse/')||['scripts/inverse/hard-photo-target.mjs','scripts/inverse/export-renderer.mjs'].includes(file))
+   assert.equal(hash(await fs.readFile(file)),digest,file);
+}
 const report={schema:'material-pair-pipeline-1',status:'running',configuration,methods:['production','fallback'],targetMode:'rgb',
  plan:{path:args.plan,sha256:hash(await fs.readFile(args.plan))},probeManifestSha256:plan.probe.sha256,rows:[],sourceHashes:{},
- scope:plan.purpose,comparisonProtocol:plan.protocol,sourceFoldChecksPassed:true,runtimeNumericalGatePassed:runtime.passed};
-for(const file of [new URL(import.meta.url).pathname,'scripts/inverse/learning/photo-crop-fallback.mjs','scripts/inverse/learning/foreground-crop.mjs',
- 'scripts/inverse/learning/locator-field-source.mjs','scripts/inverse/learning/material-fields.mjs','scripts/inverse/hard-photo-target.mjs','scripts/inverse/export-renderer.mjs',
+ scope:plan.purpose,comparisonProtocol:plan.protocol,sourceSeparationChecksPassed:true,runtimeNumericalGatePassed:runtime.passed??null,
+ runtimeStage:plan.runtimeStage??'browser',
+ ...(control?{reusedProductionRun:plan.controlRun}:{})};
+for(const file of [new URL(import.meta.url).pathname,'scripts/inverse/learning/photo-crop-fallback.mjs','scripts/inverse/learning/partial-photo-crop.mjs','scripts/inverse/learning/foreground-crop.mjs',
+ 'scripts/inverse/learning/foreground-region.mjs','scripts/inverse/learning/locator-field-source.mjs','scripts/inverse/learning/material-fields.mjs','scripts/inverse/hard-photo-target.mjs','scripts/inverse/export-renderer.mjs',
  ...(await fs.readdir('static/inverse',{recursive:true})).filter(p=>/^(core|locator|vendor)\/.+\.(js|mjs|wasm)$/.test(p)).map(p=>'static/inverse/'+p)])report.sourceHashes[file]=hash(await fs.readFile(file));
 await fs.mkdir(args.output,{recursive:false});
 const save=()=>fs.writeFile(path.join(args.output,'report.json'),JSON.stringify(report,null,2)+'\n');
 async function field(asset){
  const root=path.dirname(plan.probe.path),file=path.resolve(root,asset.path);assert.ok(file.startsWith(path.resolve(root)+path.sep));
- const bytes=await fs.readFile(file);assert.equal(hash(bytes),asset.sha256);assert.equal(bytes.length,256**2*4);
- return Float32Array.from({length:256**2},(_,i)=>bytes.readFloatLE(i*4));
+ const resolution=manifest.resolution??256;
+ const bytes=await fs.readFile(file);assert.equal(hash(bytes),asset.sha256);assert.equal(bytes.length,resolution**2*4);
+ return Float32Array.from({length:resolution**2},(_,i)=>bytes.readFloatLE(i*4));
+}
+async function controlAsset(asset){
+ const root=path.resolve(path.dirname(plan.controlRun.path)),file=path.resolve(root,asset.path);
+ assert.ok(file.startsWith(root+path.sep));const bytes=await fs.readFile(file);assert.equal(hash(bytes),asset.sha256);
+ return{file,bytes};
+}
+async function reuseControl(input,selection){
+ const original=control.rows.find(r=>r.id===input.id&&r.method==='production');assert.equal(original.sourceSha256,input.photoSha256);
+ const row={...structuredClone(original),selection,reusedFitFrom:{report:plan.controlRun,id:input.id,method:'production'},assets:{}};
+ const folder=path.join(args.output,input.id+'-production');await fs.mkdir(folder);
+ for(const [name,asset] of Object.entries(original.assets)){
+  const {file}=await controlAsset(asset),target=path.join(folder,name);assert.equal(path.basename(name),name);
+  await fs.link(file,target);row.assets[name]={path:path.relative(args.output,target),sha256:asset.sha256};
+ }
+ report.rows.push(row);await save();return row;
 }
 function png(values,n,rgb=false){
  const c=createCanvas(n,n),ctx=c.getContext('2d'),pixels=ctx.createImageData(n,n);
@@ -91,13 +189,34 @@ try{
   const rgba=ctx.getImageData(0,0,image.width,image.height).data,rgb=Buffer.alloc(image.width*image.height*3);
   for(let i=0;i<image.width*image.height;i++)for(let c=0;c<3;c++)rgb[3*i+c]=rgba[4*i+c];assert.equal(hash(rgb),input.decodedRGBSha256);
   const source={type:'pixels',rgba,imageWidth:image.width,imageHeight:image.height};
-  const started=performance.now();let neuralSeconds=0;
-  const selected=await selectPhotoCrop(source,{learnedCrop:async()=>{
-   const fields=input.assets[manifest.methods[0]],body=await field(fields.body),material=await field(fields.material),start=performance.now();
-   const detected=await detectForegroundCrop(source,{probability:body,material,resolution:256,window:input.window});
-   neuralSeconds=(performance.now()-start)/1000;return detected;
+  const started=performance.now();let neuralSeconds=0,region=null,learnedDetection=null;
+  const production=control?JSON.parse((await controlAsset(control.rows.find(r=>r.id===input.id&&r.method==='production').assets['detection.json'])).bytes):null;
+  const selected=await (saliency?selectReviewedPhotoCrop:selectPhotoCrop)(source,{...(production?{productionCrop:()=>production}:{}),learnedCrop:async()=>{
+   const fields=saliency?null:input.assets[manifest.methods[0]],body=await field(saliency?input.assets['probability.f32']:fields.body),start=performance.now();let detected;
+   if(saliency){
+    detected=await detectForegroundCrop(source,{probability:body,resolution:manifest.resolution,window:input.window});
+   }else if(cropStrategy==='foreground-region-rgb'){
+    region=foregroundRegion({probability:body,resolution:256,window:input.window,imageWidth:source.imageWidth,imageHeight:source.imageHeight});
+    detected=region.roi?await detectHeartCrops(source,{roi:region.roi}):{status:'not_found',reason:region.reason,candidates:[]};
+   }else{
+    const material=await field(fields.material);
+    detected=await detectForegroundCrop(source,{probability:body,material,resolution:256,window:input.window});
+   }
+   neuralSeconds=(performance.now()-start)/1000;learnedDetection=detected;return detected;
   }});
-  const selection={...selected.decision,combinedDetectionSeconds:(performance.now()-started)/1000,neuralDetectionSeconds:neuralSeconds,inference:'Cached actual held-out WASM output; inference excluded from timings.'};
+  const selection={...selected.decision,cropStrategy,...(region?{region}:{}),productionDetectionReused:!!control,
+   combinedDetectionSeconds:(performance.now()-started)/1000,neuralDetectionSeconds:neuralSeconds,
+   inference:`Cached ${runtime.schema==='u2netp-probe-result-1'?'native development':'actual evaluation WASM'} output; inference excluded from timings. Cached production detection, when present, is also excluded.`};
+  if(learnedDetection){
+   const name=input.id+'-neural-detection.json',bytes=JSON.stringify(learnedDetection,null,2)+'\n';
+   await fs.writeFile(path.join(args.output,name),bytes);selection.learnedDetectionAsset={path:name,sha256:hash(bytes)};
+  }
+  if(control){
+   const reference=await reuseControl(input,selection);
+   if(selected.detection===selected.production){report.rows.push({...reference,method:'fallback'});await save();}
+   else await fit(input,source,selected.detection,'fallback',selection);
+   continue;
+  }
   if(selected.detection===selected.production){
    const control=await fit(input,source,selected.production,'production',selection);
    // Identical source/crop/configuration: intentionally share the fit and files.

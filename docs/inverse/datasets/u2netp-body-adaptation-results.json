@@ -1,0 +1,310 @@
+{
+  "schema": "u2netp-body-adaptation-results-1",
+  "status": "native-study-complete-browser-followup-recorded",
+  "date": "2026-10-19",
+  "evidence": [
+    {
+      "path": "docs/inverse/datasets/u2netp-body-adaptation-plan.json",
+      "sha256": "488a318debdf2be64fe3570668ef0661385108b96b06a8d3b03c4c7408f9b704"
+    },
+    {
+      "path": "docs/inverse/datasets/u2netp-body-adapted-probe-plan.json",
+      "sha256": "1927759e06f5d9b7c13eb87b24f6be0001a78443e6e780bc733eab409df8d55d"
+    },
+    {
+      "path": "docs/inverse/datasets/u2netp-body-adapted-study-plan.json",
+      "sha256": "5f6a9f6287cc4ae2fe0f67063e20933220d2107648d1b7af640be5101d05e481"
+    },
+    {
+      "path": "docs/inverse/datasets/u2netp-body-adapted-pipeline-plan.json",
+      "sha256": "1efca43f0b94cb7cd83c9869c0fd2610e70ab0af4c6e58a6111d3eb565d46afa"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-body-adaptation-v1/report.json",
+      "sha256": "8957773143a429a0be49093191d65c6c9e5f68f512fd99e352541ee9951ce6e3"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-body-adaptation-v1/audit-diagnostic.json",
+      "sha256": "0b1653a8ab0814782684fbfbc7174feb6635fc037271a98bcccdc7e66ec9679c"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-body-adaptation-v1/audit.json",
+      "sha256": "17c41815cb650034ce1bf85a33e8325ca72137acd5d319e8b330875d55020afb"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-body-adapted-probe-v1/report.json",
+      "sha256": "e2195b1c9f644cd13875e2fe7fda778c860484ba2d37f18377f5f242f5a60095"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-body-adapted-pipeline-v1/report.json",
+      "sha256": "41046b3c625cdad9d18a20c6f28eef6c3d35c2b94353cd7e727e2f4dad88d86c"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-body-adapted-editor-input-v1/results.json",
+      "sha256": "fb00d2dcddd4143952b2f606f7f37a3bf9499ccd0a5a9bf5c41efe6cda5c8902"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-body-adapted-editable-v1/results.json",
+      "sha256": "b208c5b52fbacf72ee27305b01310605d3708c1da415c929e26ad28207234c28"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-body-adapted-gallery-v1/manifest.json",
+      "sha256": "ebce5e99eda366e57d481fa942efc359a7dd0d30312293cac4a87bf65bb7e8ff"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-body-adapted-weak-crops-v1/report.json",
+      "sha256": "062d6aa5a2a78e8ae87bbf9846b33da6a871686f595b601cc44372497f7c0aa5"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-body-adapted-field-review-v1/manifest.json",
+      "sha256": "376c9c78f272363b12c0b7c01d7ed6b1fc40afd9e049cb8de72443dc938fae48"
+    }
+  ],
+  "finding": "Whole-paper decoder adaptation adds one recognizable checked photo beyond the frozen-model experiment: 13/32 versus production 10/32 and frozen-model 12/32. This is native development evidence on an already inspected cohort; subsequent adapted-model browser validation is recorded separately in u2netp-body-adapted-browser-results.json.",
+  "training": {
+    "realPhotos": 16,
+    "realSourceGroups": 14,
+    "syntheticOriginals": 32,
+    "syntheticSceneCounterparts": 32,
+    "parameters": 1131181,
+    "trainableParameters": 636397,
+    "updates": 120,
+    "seconds": 368.603914292,
+    "threads": 1,
+    "knownRegionTrainingMetrics": {
+      "initial": {
+        "knownRegionIoU": 0.885990658375592,
+        "knownRegionPixelError": 0.040948770266391196,
+        "knownPaperFalseNegative": 0.03342658693891575,
+        "knownBackgroundFalsePositive": 0.03432385123576956
+      },
+      "final": {
+        "knownRegionIoU": 0.9220370264229887,
+        "knownRegionPixelError": 0.02772860746760552,
+        "knownPaperFalseNegative": 0.0284759940848502,
+        "knownBackgroundFalsePositive": 0.019533635632991684
+      }
+    },
+    "checkpointSha256": "ff4b56456aa17a40d4b4daed98cd384dc309933d2d5585da5ebeece843dd1e4f",
+    "artifactBytes": 16504416,
+    "sourceSeparation": {
+      "trainPhotos": 16,
+      "evaluationPhotos": 32,
+      "trainSourceGroups": 14,
+      "evaluationSourceGroups": 5,
+      "sourceAndDuplicateSeparationPassed": true
+    },
+    "selection": "Fixed final checkpoint; no evaluation image used in training or checkpoint selection."
+  },
+  "checkpointAudit": {
+    "immutableStateMatchesInitial": true,
+    "changedTensors": 222,
+    "predictionComparisons": {
+      "initial": {
+        "exact": false,
+        "maximumAbsoluteDifference": 1.1920928955078125e-07,
+        "absoluteTolerance": 1.1920928955078125e-07,
+        "changedHalfThresholdPixels": 0,
+        "passed": true,
+        "metricsExact": true
+      },
+      "final": {
+        "exact": false,
+        "maximumAbsoluteDifference": 1.1920928955078125e-07,
+        "absoluteTolerance": 1.1920928955078125e-07,
+        "changedHalfThresholdPixels": 0,
+        "passed": true,
+        "metricsExact": true
+      }
+    },
+    "scope": "Initial bitwise audit failed. Maximum normalized probability discrepancy is one float32 epsilon, with identical binary masks and metrics. The explicitly revised diagnostic gate permits that epsilon only; original failure retained. Precise backend origin of the bit-level difference is not established. This is not an ONNX/browser gate."
+  },
+  "pipeline": {
+    "production": {
+      "attempted": 32,
+      "crops": 21,
+      "supported": 16,
+      "checkedPairs": 10,
+      "neuralSelected": 0,
+      "reusedFits": 32
+    },
+    "fallback": {
+      "attempted": 32,
+      "crops": 25,
+      "supported": 20,
+      "checkedPairs": 13,
+      "neuralSelected": 4,
+      "reusedFits": 28
+    }
+  },
+  "newExports": [
+    {
+      "id": "real-24b5ed49c9411b11-body-1",
+      "engineImageError": 0.0219125,
+      "editableImageError": 0.0226,
+      "checkedPair": true,
+      "conversionPassed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "completeCandidatePassed": true,
+      "coverage": {
+        "observedFraction": 1,
+        "maximumExtrapolation": 0
+      },
+      "slits": {
+        "left": 8,
+        "right": 8
+      },
+      "visualReview": "Four checker hearts recognizable. Many rounded grid contacts and thin false seams remain. This is a useful approximation, not recovery of exact cutting paths. Its target differs from the frozen-model crop, so smaller image error alone is not a common-target improvement."
+    },
+    {
+      "id": "real-dfa7e4b71b43aa86-body-1",
+      "engineImageError": 0.085525,
+      "editableImageError": 0.0858,
+      "checkedPair": false,
+      "conversionPassed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "completeCandidatePassed": false,
+      "coverage": {
+        "observedFraction": 1,
+        "maximumExtrapolation": 0
+      },
+      "slits": {
+        "left": 4,
+        "right": 4
+      },
+      "visualReview": "Crop remains plausible, but the RGB classifier follows printed trees and stars instead of sheet identity. Reconstruction fails the original image/feature checks."
+    },
+    {
+      "id": "real-c7d1e0ad5050db71-body-1",
+      "engineImageError": 0.006863186318631863,
+      "editableImageError": 0.00695069506950695,
+      "checkedPair": true,
+      "conversionPassed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "completeCandidatePassed": true,
+      "coverage": {
+        "observedFraction": 0.9999040344164654,
+        "maximumExtrapolation": 0.004603747325548269
+      },
+      "slits": {
+        "left": 5,
+        "right": 5
+      },
+      "visualReview": "New crop includes the checker, heart and small silhouette motifs. Export is recognizable, with some rounded contacts, thin diagonal seams and small edge irregularities. Tiny extrapolation at the lower tip remains review-required."
+    },
+    {
+      "id": "real-28a87a8be083f16c-body-1",
+      "engineImageError": 0.004638195729359404,
+      "editableImageError": 0.004563184477671651,
+      "checkedPair": true,
+      "conversionPassed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "completeCandidatePassed": true,
+      "coverage": {
+        "observedFraction": 0.999866508842929,
+        "maximumExtrapolation": 0.00562413927378395
+      },
+      "slits": {
+        "left": 4,
+        "right": 4
+      },
+      "visualReview": "Outlined star and corner hearts are preserved. Minor edge protrusions and rounding remain. The very slightly clipped tip requires crop review."
+    }
+  ],
+  "visualReview": {
+    "complete": true,
+    "scope": "All four training sheets, all four new exported pairs, and six selected original/frozen/adapted body comparisons inspected. Existing production fits are reused byte-for-byte and were visually audited in u2netp-fresh-output-review.json. No claim that all 32 adapted body maps were visually reviewed.",
+    "trainingObservations": [
+      "Most improvements suppress hands, greenery or decorations. Unwanted handles and sweets remain in some training predictions.",
+      "The difficult metallic blue/gold training heart still misses 40.19% of known paper after adaptation, down from 47.50%.",
+      "Some tips regress: sloth known-paper false negatives rise from 0.00% to 0.23%, and the protruding bird from 0.23% to 1.02%. Mean training improvement is not uniform."
+    ],
+    "bodyComparisonObservations": [
+      "The house still emphasizes the building and omits most surrounding paper. The candlestick still misses substantial red-paper area. Decoder adaptation does not resolve these failures.",
+      "The newly cropped dark/gold checker-and-silhouette heart has changed probability/calibration fields, not an independently verified improvement in outline accuracy. The accepted crop and exported weave were checked against RGB.",
+      "On the HO HO photo, adaptation downweights the hand, but lobe-color assumptions and material classification remain unresolved."
+    ],
+    "weakCropDiagnostic": [
+      {
+        "id": "real-f6e5e128449e3cb9-body-1",
+        "status": "crop-unresolved",
+        "outlineSupported": null
+      },
+      {
+        "id": "real-55704c6e2911bebc-body-1",
+        "status": "crop-proposed",
+        "outlineSupported": true
+      },
+      {
+        "id": "real-fe7fb089d1cd86b4-body-1",
+        "status": "crop-unresolved",
+        "outlineSupported": null
+      },
+      {
+        "id": "real-b5317080eec610dc-body-1",
+        "status": "crop-unresolved",
+        "outlineSupported": null
+      },
+      {
+        "id": "real-03bddab9c8f384c4-body-1",
+        "status": "crop-unresolved",
+        "outlineSupported": null
+      }
+    ]
+  },
+  "limitations": [
+    "32 photos from five source groups, already inspected after the original experiment; at least one apparent repeated photo/motif. This is not a new prospective or independent-motif validation.",
+    "All production candidates are kept, including five weak crops. No existing fit was reoptimized; native learned fields were only used where production returned no crop.",
+    "The frozen-model result used browser WASM fields; this adapted result uses native PyTorch. A causal model-to-model comparison requires the same runtime and actual browser replay before promotion.",
+    "Mask agreement is not original cutting-path ground truth; printed art can produce numerically checked but physically incorrect interpretations.",
+    "Three new accepted crops remain review-required; two have slightly unobserved tips, excluded from independent mask error.",
+    "No neural network enabled in production; no physical assembly test."
+  ],
+  "nextSteps": [
+    "Export and run the adapted checkpoint through the existing original-JPEG browser harness; verify inputs and downstream proposals before treating the additional recovery as deployment evidence.",
+    "Test whether carefully adapting encoder features helps the unresolved motif-versus-paper cases, with unchanged normalization statistics and the same separated training/evaluation sources.",
+    "Improve material identity for printed sheets independently of whole-paper detection."
+  ],
+  "verification": {
+    "learningTests": {
+      "passed": 7,
+      "failed": 0,
+      "evidence": {
+        "path": "tmp/heart-learning/u2netp-body-adaptation-tests.log",
+        "sha256": "22b18a5373a5ba8a47e2d63e5c84d34e7d7048faba9891323d74e022b38d1ae5"
+      }
+    },
+    "modifiedJavascriptLint": {
+      "errors": 0,
+      "evidence": {
+        "path": "tmp/heart-learning/u2netp-body-adaptation-lint-final.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "reuseIntegrity": {
+      "path": "tmp/heart-learning/u2netp-body-adapted-reuse-guards.json",
+      "sha256": "6132363c55f114206fd0fc225687876c87a42d9722978bf7d1859ad3180e827d"
+    },
+    "all32EvaluationInputTensorsMatchOriginalNativeProbe": true,
+    "fullApplicationValidation": "No production application or inverse algorithm files changed in this experiment; existing complete validation and current upstream CI retained. Offline end-to-end experiments, editable audits and focused new tests were run."
+  },
+  "deployment": {
+    "mainRevision": "db9f5187d3ff7cb690d0280330df580142886b7f",
+    "ci": "https://github.com/thomasahle/julehjerte/actions/runs/39315805355",
+    "status": "success",
+    "drawingUiAlreadyLive": true,
+    "adaptedNetworkEnabled": false,
+    "note": "The preceding run 39315255650 was cancelled when the newer main commit replaced it. Current build, four correctness shards, advisory benchmark jobs and deployment all succeeded; advisory job success is not a claim that every timed target passed."
+  },
+  "productionControlScope": {
+    "revision": "3762b82c08294d601577a628d1fbaf549d63dd83",
+    "measurement": "The native and original frozen-model studies use the same pinned inverse engine and production controls. Counts describe that paired experiment, not a fresh replay of the later deployed main revision.",
+    "newerMainChange": "Upstream commits b73b7f47 and 2dadbb1e optimize shared return geometry. They passed main CI, but this candidate has not yet been replayed after those changes.",
+    "releaseRequirement": "Sync current main and validate the candidate/exported geometry before integration. Preserve the original controlled benchmark rather than silently replacing its controls."
+  },
+  "browserFollowup": "docs/inverse/datasets/u2netp-body-adapted-browser-results.json"
+}

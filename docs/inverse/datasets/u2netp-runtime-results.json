@@ -1,0 +1,246 @@
+{
+  "schema": "u2netp-runtime-results-1",
+  "status": "complete-experimental",
+  "assets": [
+    {
+      "path": "docs/inverse/datasets/u2netp-runtime-plan.json",
+      "sha256": "b1e9b35b6332af5a6ed5ef0f6975cedf94fdb7a9707537e5afa823b141e941cb"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-onnx-v1/report.json",
+      "sha256": "3a3e50e9c716c610d50f9ff47adcb4d230f7966f22d436780dedbac20f885ae4"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-browser-v1/report.json",
+      "sha256": "3922f28f71913a025e6012aa3a9c4611f5b2ad5928d3c2500226786a7d001143"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-pipeline-v1/report.json",
+      "sha256": "bf510f56144519cdf7df25ce514888dc3f459203f0e0f43f184eb5aae8c72296"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-browser-crops-v1/report.json",
+      "sha256": "1609d89e5083143a7f0c473c540ced62f81f8c10d2051f322e6afea87fe8b20d"
+    }
+  ],
+  "model": {
+    "path": "model.onnx",
+    "sha256": "bfe99f0e74eed0df96992a635adc5df1e06364aa8c526a5867575c0f1055c1a6",
+    "bytes": 4615895
+  },
+  "browser": "145.0.7632.6",
+  "nativeNumericalChecks": {
+    "probabilityParity": false,
+    "halfThresholdParity": true
+  },
+  "browserNumericalChecks": {
+    "allPhotos": true,
+    "noBrowserErrors": true,
+    "sourceRgbExact": true,
+    "inputParity": true,
+    "probabilityParity": false,
+    "halfThresholdParity": true
+  },
+  "strictNumericalGatePassed": false,
+  "inputTensorExactPhotos": 16,
+  "sourceRgbExactPhotos": 16,
+  "maximumProbabilityDifferenceVsTorch": 0.0001258254051208496,
+  "changedHalfThresholdPixels": 0,
+  "browserTiming": {
+    "modelStartupMilliseconds": 294.90000009536743,
+    "medianPhotoPreprocessingMilliseconds": 122.79999995231628,
+    "warmInference": {
+      "runs": 5,
+      "medianMilliseconds": 1124.3999998569489,
+      "p90Milliseconds": 1146.5999999046326
+    }
+  },
+  "pipelineComparison": {
+    "photos": 16,
+    "cropProposals": 6,
+    "allCropOutcomesSame": true,
+    "cornerCoordinatesExact": true,
+    "outlineDecisionsExact": true,
+    "maximumCapColourLossDifference": 1.334276661379974e-07,
+    "preparedAndTargetMasksExact": true,
+    "sourceHashesExact": true,
+    "freshFits": 0,
+    "reasonForReusingFits": "Exact crop coordinates and fitting masks are unchanged. The previously independently checked and editable-audited saved geometry remains applicable; no new solver timing claim."
+  },
+  "interpretation": "Browser inputs match all native tensors bit for bit. Different convolution arithmetic produces at most 0.00012583 probability difference: strict 2e-5 diagnostic fails, while the binary fields, downstream crop coordinates and fitting masks remain identical. Cap-colour support scores differ slightly but no acceptance decisions change. Do not label the numerical gate passed or confuse it with a reconstruction regression.",
+  "preprocessing": "Independent portable implementation of publisher/skimage 0.24 constant-padding Gaussian antialiasing, linear resize, source-range clipping, image-maximum scaling and channel normalization. Fourteen tests include independent skimage reference tensors, up/downsampling, borders, positive-valued images, extreme aspect ratios and explicit all-black refusal. No browser canvas resizing.",
+  "scope": "Single desktop Chromium/WASM implementation, one thread, sixteen already inspected development photos. Not a fresh source-held-out result, phone benchmark or production neural integration. Frozen fallback still selects zero proposals because every proposed lower tip is outside the photograph; two partial-photo fits remain separately documented experimental candidates.",
+  "resources": {
+    "newPhotoDownloads": 0,
+    "newSourcePhotoCopies": 0,
+    "onnxExperimentBytes": 30840643,
+    "browserProbabilityBytes": 6567342,
+    "workers": 1
+  },
+  "rows": [
+    {
+      "id": "real-ad2c0c1de36a7815-body-1",
+      "cropProposed": true,
+      "outlineDecisionsExact": true,
+      "maxCornerShiftPixels": 0.0,
+      "preparedMaskExact": true,
+      "targetMaskExact": true,
+      "targetMaskSha256": "705f0035a44507d2daa429d8d16820095109a89beb588a16ac958e79fa5d912d",
+      "maximumCapColourLossDifference": 1.9748792015294834e-08
+    },
+    {
+      "id": "real-4097e8fcdc21b6a3-body-1",
+      "cropProposed": false,
+      "outlineDecisionsExact": true
+    },
+    {
+      "id": "real-358faca3134e290f-body-1",
+      "cropProposed": false,
+      "outlineDecisionsExact": true
+    },
+    {
+      "id": "real-9c8a921d12d8474e-body-1",
+      "cropProposed": true,
+      "outlineDecisionsExact": true,
+      "maxCornerShiftPixels": 0.0,
+      "preparedMaskExact": true,
+      "targetMaskExact": true,
+      "targetMaskSha256": "1ad74f1c7ac52e9bdeb7a78ad06be4cf480781b842bbc413ecda8d54ed812f4c",
+      "maximumCapColourLossDifference": 2.325432297352499e-09
+    },
+    {
+      "id": "real-49817b568b7d02a1-body-1",
+      "cropProposed": false,
+      "outlineDecisionsExact": true
+    },
+    {
+      "id": "real-5c303ce388328a13-body-1",
+      "cropProposed": false,
+      "outlineDecisionsExact": true
+    },
+    {
+      "id": "real-c6b9eeb016808d3b-body-1",
+      "cropProposed": false,
+      "outlineDecisionsExact": true
+    },
+    {
+      "id": "real-8e0056ff18287e45-body-1",
+      "cropProposed": true,
+      "outlineDecisionsExact": true,
+      "maxCornerShiftPixels": 0.0,
+      "preparedMaskExact": true,
+      "targetMaskExact": true,
+      "targetMaskSha256": "9ceeb161d3ccf551b897ebf476bbfeb20e3a49b4c5a468d7772c29a322c25ae3",
+      "maximumCapColourLossDifference": 3.175753447868856e-08
+    },
+    {
+      "id": "real-38428ac54117e67c-body-1",
+      "cropProposed": true,
+      "outlineDecisionsExact": true,
+      "maxCornerShiftPixels": 0.0,
+      "preparedMaskExact": true,
+      "targetMaskExact": true,
+      "targetMaskSha256": "4c46491921b0938b1cc424dcdac33de8d015680a543c73065eac1bf58f98348f",
+      "maximumCapColourLossDifference": 1.2276058572149629e-07
+    },
+    {
+      "id": "real-56faeb060f60c170-body-1",
+      "cropProposed": false,
+      "outlineDecisionsExact": true
+    },
+    {
+      "id": "real-56a89a732af12a66-body-1",
+      "cropProposed": true,
+      "outlineDecisionsExact": true,
+      "maxCornerShiftPixels": 0.0,
+      "preparedMaskExact": true,
+      "targetMaskExact": true,
+      "targetMaskSha256": "bc590742d5ac32eb00e841194f3e001753fdb1fafa984b510b7eb122ddb9bfb7",
+      "maximumCapColourLossDifference": 1.334276661379974e-07
+    },
+    {
+      "id": "real-3b92112e8487e279-body-1",
+      "cropProposed": true,
+      "outlineDecisionsExact": true,
+      "maxCornerShiftPixels": 0.0,
+      "preparedMaskExact": true,
+      "targetMaskExact": true,
+      "targetMaskSha256": "3bb914ba7bf5b5f10e20ee322093e78c04a092f55b924dc0ad0547a140e53eca",
+      "maximumCapColourLossDifference": 1.7594397358796753e-08
+    },
+    {
+      "id": "real-fa1ca05594655c8d-body-1",
+      "cropProposed": false,
+      "outlineDecisionsExact": true
+    },
+    {
+      "id": "real-0f8bf87595f587e5-body-1",
+      "cropProposed": false,
+      "outlineDecisionsExact": true
+    },
+    {
+      "id": "real-7f22ab27bb1cd19e-body-1",
+      "cropProposed": false,
+      "outlineDecisionsExact": true
+    },
+    {
+      "id": "real-8a9c703f7f29fd14-body-1",
+      "cropProposed": false,
+      "outlineDecisionsExact": true
+    }
+  ],
+  "validation": {
+    "testedCommit": "d3c23dd396363d48c5df7c960797df0642e86340",
+    "typeCheck": {
+      "errors": 0,
+      "existingWarnings": 6
+    },
+    "lint": {
+      "errors": 0,
+      "existingWarnings": 7
+    },
+    "application": {
+      "passed": 2359,
+      "skipped": 142,
+      "filesPassed": 154,
+      "filesSkipped": 2
+    },
+    "focusedInverseTests": {
+      "passed": 19,
+      "failed": 0,
+      "scope": "Fourteen saliency preprocessing checks and five ROI proposal checks."
+    },
+    "build": "pass",
+    "logs": [
+      {
+        "path": "tmp/heart-learning/u2netp-app-check.log",
+        "sha256": "db20055932e27d213414b63bc08b7d8e6cfc75e4ea9069e96544faa664b373f3"
+      },
+      {
+        "path": "tmp/heart-learning/u2netp-app-lint.log",
+        "sha256": "54fae54bd2183ee8ca5def3f57632b38b5c261aa21b3773e9f375e48756d1ed2"
+      },
+      {
+        "path": "tmp/heart-learning/u2netp-app-tests.log",
+        "sha256": "9853c1a4af648e4fd51aeea85e158a077d2fecf6032dfe99e455be0b871a5bcf"
+      },
+      {
+        "path": "tmp/heart-learning/u2netp-app-build.log",
+        "sha256": "2ba6b17b6b976759ae317ff5a7d82f189528b30afc51ff984b0f66d47577d6d0"
+      },
+      {
+        "path": "tmp/heart-learning/u2netp-focused-tests.log",
+        "sha256": "c65d5da239ab1434c5c5caf07fc1f6575b474759a1db66c0fa1f465da2311d41"
+      }
+    ],
+    "inverseProductionTree": "382b482a8b27fb33f7a3689d5d748981e620fe9f",
+    "unchangedInverseProductionReference": {
+      "commit": "3762b82c08294d601577a628d1fbaf549d63dd83",
+      "ciRun": 39302176699,
+      "status": "success"
+    },
+    "fullInverseSuite": "Not repeated locally: production inverse code is identical to the green deployed reference, with new research tests checked separately.",
+    "preview": "http://localhost:4173/editor/mal/",
+    "previewScope": "Built from tested research branch at d3c23dd3, including main through 3762b82c. Newer generator commits on main are outside this local validation."
+  }
+}

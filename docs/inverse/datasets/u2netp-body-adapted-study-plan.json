@@ -1,0 +1,57 @@
+{
+  "schema": "saliency-fresh-study-1",
+  "status": "predeclared-development-followup",
+  "selection": {
+    "path": "docs/inverse/datasets/u2netp-fresh-selection.json",
+    "sha256": "44cbdfb7babdfc6c606315694562b898c1220b525948c442c179831fc240f8e6"
+  },
+  "checkpoint": {
+    "path": "tmp/heart-learning/u2netp-body-adaptation-v1/model.pt",
+    "sha256": "ff4b56456aa17a40d4b4daed98cd384dc309933d2d5585da5ebeece843dd1e4f"
+  },
+  "upstreamSource": {
+    "path": "tmp/heart-learning/u2netp-source-v1/source.json",
+    "sha256": "f6fe434979abcd0531fede48187b3009d2d7996096fc8c507fcbaf90f428577a"
+  },
+  "model": {
+    "path": "tmp/heart-learning/u2netp-body-adaptation-v1/model.pt",
+    "sha256": "ff4b56456aa17a40d4b4daed98cd384dc309933d2d5585da5ebeece843dd1e4f"
+  },
+  "runtimeProtocol": {
+    "stage": "native-development",
+    "inputParity": "All 32 input tensor hashes equal the original native frozen probe. No browser/ONNX parity inferred."
+  },
+  "pipeline": {
+    "policy": "retain-production-reviewed-partial-fallback-v1",
+    "selection": "Keep every production crop. Only if none exists, accept an outline-supported neural proposal with observed rectified overlap >=99% and maximum axis-normalized extrapolation <=5%, always needs_review. Use analytic projective coverage; no mask score or template selects the crop.",
+    "observedFraction": 0.99,
+    "maximumExtrapolation": 0.05,
+    "timeLimitSeconds": 10,
+    "trials": 0,
+    "target": "mask",
+    "methods": [
+      "production",
+      "fallback"
+    ],
+    "classifier": "Unchanged RGB mixture classifier",
+    "fits": "Reuse the exact production fit if the crop is unchanged. Fit new neural proposals independently; retain all failures. Do not change masks, corners, model or thresholds per image.",
+    "validation": "Independent exported weave error <=3%, original feature checks, geometry/paper checks, production editable conversion and independent editable-paper audit. Visual review of all photos/crops and distinct outputs.",
+    "missing": "No manual rescue or result-dependent replacement. Record photo eligibility misclassifications and possible irregular weaving separately without removing them from primary denominators."
+  },
+  "resources": {
+    "workers": 1,
+    "newPhotoDownloads": 0,
+    "newSourcePhotoCopies": 0,
+    "maxTotalArtifactMiB": 140,
+    "probeMiB": 16,
+    "nativeMiB": 72,
+    "browserMiB": 16,
+    "pipelineMiB": 30
+  },
+  "sourcePins": {
+    "scripts/inverse/learning/partial-photo-crop.mjs": "69d3b078258e6c43296f7dec37bd40a875728aa3bd2e4ec2fb50ffcd6ec9c349",
+    "scripts/inverse/learning/u2netp-probe.py": "300c7c3c43188528eac7b96f06bdf124b4336e0215f94204c96318d8d4903a6d",
+    "scripts/inverse/learning/replay-photo-fallback.mjs": "0a4f8025d606f5a49921cf4a5015c3d877fd20347c906fd02751772f00ccfbf7"
+  },
+  "scope": "Previously inspected 32-photo cohort, source-separated from the 16 reviewed training photos. Fixed final checkpoint and unchanged crop/fitting policy. Reuse exact production controls. Native development result only; do not compare runtime as a causal speedup or call this a fresh prospective evaluation."
+}

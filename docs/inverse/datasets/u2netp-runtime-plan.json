@@ -1,0 +1,45 @@
+{
+  "schema": "u2netp-runtime-plan-1",
+  "status": "predeclared",
+  "probe": {
+    "path": "tmp/heart-learning/u2netp-probe-v1/report.json",
+    "sha256": "91a04933b3dbe55d50ac66ad5261659d54fd5aecc69733a350df93cc8861f87e"
+  },
+  "probeManifest": {
+    "path": "tmp/heart-learning/u2netp-probe-v1/manifest.json",
+    "sha256": "b14d56e1ad685069ecd1cb1d072ef2190530a3ab8fda70720d1923627cba27d8"
+  },
+  "runtime": {
+    "path": "tmp/heart-learning/onnx-web-1.19.2/manifest.json",
+    "sha256": "7a54b46a7f0d7eea202553d1470e0c53ebdfef19b67b8b61ac120b88e131c29d"
+  },
+  "protocol": {
+    "threads": 1,
+    "inputShape": [
+      1,
+      3,
+      320,
+      320
+    ],
+    "opset": 17,
+    "onnx": "1.19.1",
+    "onnxruntime": "1.19.2",
+    "inputAtol": 1e-06,
+    "probabilityAtol": 2e-05,
+    "threshold": 0.5,
+    "warmupRuns": 1,
+    "timingRuns": 5
+  },
+  "resources": {
+    "nativeMaxArtifactMiB": 40,
+    "browserMaxArtifactMiB": 8,
+    "workers": 1,
+    "newPhotoDownloads": 0,
+    "newSourcePhotoCopies": 0
+  },
+  "scope": "Port frozen U2NETP and publisher/skimage preprocessing to original-JPEG browser inference on all sixteen existing photos. Preserve all discrepancies and failed gates. No training or result-based selection; development cohort only.",
+  "sourcePins": {
+    "scripts/inverse/learning/u2netp-input.mjs": "b2951a0126331652c747572991a2cfc30b27e0812a21500d140f0c6450db3624",
+    "scripts/inverse/learning/u2netp-export.py": "acd1a7afa32408c655f0b625fcdb77f8126aadf395e69b8c8c1c1e5ac53008b0"
+  }
+}

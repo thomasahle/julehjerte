@@ -1,7 +1,7 @@
 # Data for learned heart reconstruction
 
 Neural release status reviewed on **2026-10-19**; dataset counts last audited on
-**2026-10-17**. **No neural network is ready for production or
+**2026-10-19**. **No neural network is ready for production or
 included in the website.** The collection, synthetic generator and learned
 prototypes are research tools; the existing geometric solver remains the
 production path.
@@ -10,14 +10,127 @@ production path.
 
 | Area | Verified evidence | Remaining limitation |
 | --- | --- | --- |
-| Real-image inventory | 1,254 files; 783 contain assembled-heart photographs; all files and decoded identities audited | File counts are not counts of independent motifs or fully labelled training examples |
+| Real-image inventory | 1,341 files; 811 contain assembled-heart photographs; all files and decoded identities audited | File counts are not counts of independent motifs or fully labelled training examples |
 | Sabrina Danholm's Pinterest board | All 225 pins imported; 220 new image files, about 35 MiB | No new corner, material or cutting-path labels; the whole board is QA-reserved |
+| Conni’s heart-template board | [All 122 pins preserved](conni-board.md); 90 distinct files, 87 new, 12.5 MiB downloaded; 23 photo/template composites | Whole board QA-reserved; 42 visual duplicate links grouped; creators and cutting geometry mostly unverified |
 | Synthetic geometry | 256 saved witnesses pass the current geometry/paper re-audit across 768 original/subdivided/reflected representations | Limited procedural diversity; recipe holdouts are not topology-disjoint splits |
-| Small learned model | TorchVision ImageNet-pretrained MobileNetV3-Small; offline crop fallback raises checked editable pairs from 7/16 to 9/16 development photos | No unseen generalization or deployment; visible defects remain and strict browser numerical parity missed on one photo |
+| Small learned model | Earlier MobileNetV3-Small fallback raises checked editable pairs from 7/16 to 9/16 on its development cohort; a newer fixed candidate stays at 7/16 on separately selected Sabrina photos | These are different cohorts; no deployment or established source generalization |
+| Saliency models | Frozen U2NETP raises checked derived-mask pairs from 10/32 to 12/32; adapted browser model adds three checked pairs over fresh current-main controls (9/32 to 12/32) | Raw numerical parity still fails; printed paper, missing body regions, timed-search variation and false seams remain; no production integration |
 | Larger segmentation baseline | Official pretrained MobileSAM evaluated offline | A useful body mask alone does not establish correct corners, material boundaries or legal templates |
 | Solver | Current revision passes 1,109/1,109 inverse tests and 34 browser workflows; all 22 regular Hunodan designs finish under ten seconds | Some hard fits retain thin false seams; the earlier 27/31 photo benchmark has not been rerun |
 
 ### Latest solver and browser validation
+
+The drawing improvements (red/white/XOR, full-circle weave icon, brush slider and
+hover outline) and archive are **deployed**. The [19 October release record](oct19-release-qa.json)
+contains live Danish/English and mobile QA, 2,216 application tests and 1,122
+inverse correctness checks. Ten of 77 advisory timed quality targets still miss;
+these are retained separately from correctness. Subsequent main commit
+`7c6e232a` also passed [CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39309081068).
+The local preview is at `http://localhost:4173/editor/mal/`.
+
+#### Latest neural experiments
+
+The [whole-paper adaptation](u2netp-body-adaptation-results.json) trains the
+U2NETP decoder for 120 updates on 16 reviewed photos from 14 separate source
+groups, mixed with 64 existing synthetic views. The encoder and normalization
+statistics stay fixed. Training takes about six minutes on one low-priority CPU
+thread; model size and architecture remain unchanged. Known-pixel training error
+falls from 4.09% to 2.77%, with regressions on some tips. This is training evidence,
+not a generalization score.
+
+On the same, now-inspected 32-photo evaluation cohort, the native adapted model
+produces **13 checked pairs**, versus production's 10 and the frozen-model
+experiment's 12. The additional dark/gold checker-and-silhouette heart survives
+editable export at 0.695% derived-mask error. All four new exports pass geometry
+and paper checks; three pass all reconstruction checks. Visual review confirms
+recognizable motifs but retains the false seams in the checker hearts. The house
+and candlestick still lose large paper regions, and printed decoration still
+confuses material classification. These historical native counts use inverse
+code from `3762b82c`.
+
+The [adapted browser follow-up](u2netp-body-adapted-browser-results.json) uses
+actual WASM fields and fresh controls after merging main at `8f22315d`. It adds
+the same three recognizable checked pairs: **12/32 versus 9/32**, with 25 crop
+proposals versus 21. All 25 distinct exports pass conversion and geometry;
+24 pass nominal paper checks and 12 pass all reconstruction checks. All nine
+comparison pages were inspected. The lower control count comes from a timed
+solve of the same nested-heart mask: the earlier two-cut candidate was not
+reached, and disagreement rises from 1.15% to 3.90%. That loss affects both
+methods equally; its timing and implementation causes still need isolation.
+
+The adapted ONNX model is 4.62 MB and warm one-thread browser inference has a
+1.18-second median on this desktop. All 32 input tensors match exactly. Raw
+probability parity still fails (maximum difference 0.000143; four threshold
+pixels change across three photos). A deterministic crop replay retains every crop-presence and support decision,
+but two printed-paper images shift corners by up to 1.94 pixels and change
+their classified masks. Other crop outputs, including the three gains, agree
+exactly. The numerical gates remain failed. These remain development results on an
+already inspected cohort, not a production release.
+
+The original [fresh 32-photo evaluation](u2netp-fresh-results.json) freezes the model and
+crop policy before inference. It keeps every existing production crop and adds
+a review-required neural proposal only where none exists. Crop proposals rise
+from **21 to 24**, and checked pairs from **10 to 12**. The new checker-heart and
+outlined-star fits have 2.93% and 0.48% independent derived-mask error. All 24
+distinct exports pass conversion and geometry checks; 22 pass nominal paper
+checks, and 12 pass all reconstruction checks. These are approximate templates,
+not comparisons with original cutting paths or physical assembly tests.
+
+[Visual review of every case](u2netp-fresh-output-review.json) finds conspicuous
+seams in the gained checker-heart fit, printed ink mistaken for sheet boundaries,
+and fine details lost despite reasonable crops and masks. One numerically checked
+printed-rosette result is therefore not evidence of recovering its original
+physical weave. Five weak existing crops are preserved by policy, including a
+house cropped in half. No failure was removed from the denominator. The cohort
+is new to recorded pipeline experiments, but has only five source groups and at
+least one apparent repeated motif/photo.
+
+All 32 browser input tensors match the independent Python inputs exactly.
+Single-thread warm WASM inference has a 1.04-second median on this desktop.
+The strict output gates still fail: browser-versus-PyTorch probability difference
+reaches 0.000145, and four photos each change one threshold pixel. Actual browser
+fields feed the reported crop/fitting results. Downstream consequences of those
+small numerical differences need checking before any tolerance change.
+
+A [separate diagnostic of all five weak production crops](u2netp-weak-crop-results.json)
+finds only one additional neural crop, whose mask still traces printed dots and
+stripes. On the house and candlestick, generic saliency emphasizes the interior
+motif and misses surrounding paper. On the printed HO HO heart, the body mask
+looks reasonable but the locator's lobe-color assumptions reject it. This
+separates whole-paper recognition, geometric cropping and paper identity as
+distinct problems; switching to the network on every weak crop is insufficient.
+No new templates were fitted in this diagnostic.
+
+Earlier experiments remain recorded below with their original policies and
+denominators.
+
+The [fixed material candidate](preserved-candidate-results.json) preserves its
+foreground network exactly but adds no checked recovery on the separately
+selected sixteen Sabrina photographs. Using the foreground only as a
+[rough RGB search region](foreground-region-pipeline-results.json) also adds none.
+
+The new [official pretrained U2NETP baseline](u2netp-pipeline-results.json) uses
+1,131,181 parameters and no heart fine-tuning. Its clearer outlines produce two
+additional checked approximate pairs: stacked hearts and a black/gold grid.
+Their photographed overlap coverage is 99.994% and 99.828%, respectively, but
+their lower tips lie outside the photograph. The frozen rule requiring every
+corner inside the image selects neither, so its result remains **7/16**. These
+partial-photo proposals are a separate development finding, not a retrospectively
+improved held-out score. The third new fit loses small features and is rejected.
+Visible rounding and thin seams remain even in the two checked results.
+
+The [ONNX/browser audit](u2netp-runtime-results.json) verifies identical decoded
+RGB and model input tensors for all sixteen original JPEGs. All six resulting
+crop proposals, corners and classified masks are exactly unchanged. Browser
+inference takes 1.12 seconds plus 0.12 seconds median preprocessing on this
+desktop, excluding model startup and downstream cropping/fitting. The 4.62 MB
+model still misses the strict raw-probability tolerance (maximum difference
+0.000126 versus 0.000020 allowed), with zero threshold-pixel changes; the failed
+numerical check remains recorded alongside the successful pipeline comparison.
+This is not mobile validation, a new unseen cohort, or a production model.
+
+#### Earlier 18 October solver validation
 
 The **18 October validated revision** (`1921279a`) passes type checking, lint,
 build, **874 application tests** (one skipped), and **1,109/1,109 inverse tests**.
@@ -56,10 +169,9 @@ choice remains a candidate cause. The cleaner browser sloth fixture is a
 **different mask**, verified by hashes, and is not evidence of recovery on that
 native input.
 
-The current local preview at `http://localhost:5232/editor/mal/` serves an
-immutable snapshot of the validated build. All changes are committed locally;
-nothing has been pushed or deployed. The neural prototypes remain offline, and
-this QA does not replace the earlier, separately recorded 31-photo benchmark.
+That historical QA does not replace the earlier, separately recorded 31-photo
+benchmark. The neural prototypes remain offline; deployment status is recorded
+above.
 
 ### Earlier solver experiments
 
@@ -316,12 +428,14 @@ to the site.
 
 ### Preservation archive, 2026-10-19
 
-The [preservation manifest](heart-archive-storage.json) records **147 unique
-original files, 16,507,399 bytes**, including 54 template PDFs (286 pages),
+The [preservation manifest](heart-archive-storage.json) records **237 unique
+original files, 29,657,897 bytes**, including 54 template PDFs (286 pages),
 five editable SVG originals,
 seven recovered Permo images, nineteen Haabet images and source/history/license
-evidence. These are documents and photographs, not 147 independent designs or
-new training labels.
+evidence, plus the 90 [new board originals](conni-board-preservation.json).
+Those board files use hardlinks to the dataset's existing immutable bytes, so
+their durable preservation adds no second copy. These are documents and
+photographs, not 237 independent designs or new training labels.
 [Additional collections](archive-additional.json) record Krümmel,
 Bibelselskabet, Spejderliv and PaperMatrix; the [Permo history](archive-permo.json)
 identifies five circle designs absent from Hunodan, plus an older anchor
@@ -371,8 +485,12 @@ The 8 Spisser template has irregular interior/side-entry cuts and is excluded
 from automatic regular-solver benchmarking. The other two are visual candidates
 for that model, not independently validated templates. Linked previews were not
 retrieved and are not presented as saved photographs.
-The source index now contains **1,126 external records**, alongside the
-**56 published Juleflet hearts**. These batches add no public media mirrors.
+The [Conni board archive audit](conni-board-archive.json) subsequently adds
+56 references, enriches 18 existing records and consolidates seven older
+duplicates using reviewed same-image links. The source index now contains
+**1,175 external records**, alongside the **56 published Juleflet hearts**.
+All 119 relevant pin links are retained; three unrelated pins remain in the
+research inventory only. These batches add no public media mirrors.
 
 Original bytes were moved out of temporary work directories, not copied into
 another full dataset. The private originals live in

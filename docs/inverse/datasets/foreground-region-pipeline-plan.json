@@ -1,0 +1,69 @@
+{
+  "schema": "candidate-photo-crop-fallback-plan-1",
+  "status": "predeclared",
+  "purpose": "Exploratory fixed ROI policy on the already inspected sixteen-photo cohort. Reuse every exact production fit. Use the original frozen foreground only to bound a rough search region, with 5% context; unchanged production RGB locator determines actual corners. No learned material field, per-case manual ROI, threshold sweep or mask-based crop selection. This is development, not a new held-out score.",
+  "probe": {
+    "path": "tmp/heart-learning/preserved-candidate-v1/browser/probe/manifest.json",
+    "sha256": "1ca0ce1cda7ee1a7b32771e091d58dd4207586f6629505edd6833c306872953f"
+  },
+  "runtimeEvidence": {
+    "path": "tmp/heart-learning/preserved-candidate-v1/browser/report.json",
+    "sha256": "0807590ada5646a7793e9617510ea35f3150d719494dc513942476f12f21de42"
+  },
+  "training": {
+    "path": "tmp/heart-learning/preserved-candidate-v1/training/report.json",
+    "sha256": "21cf36f53afc3365b1fb0d48732a3e3f27db5c9315ba5b09fcf8e2e2a4d2d7a5"
+  },
+  "audit": {
+    "path": "tmp/heart-learning/preserved-candidate-v1/audit.json",
+    "sha256": "90c41158b06ac71cbd64f4a1c49d8ade517637998522efc99ef131e9229c5338"
+  },
+  "sourceManifest": {
+    "path": "docs/inverse/datasets/real-manifest.json",
+    "sha256": "46986981cdbac3fbada54621014a7584a106576688b08807f52753507c8a6ff5"
+  },
+  "ids": [
+    "real-ad2c0c1de36a7815-body-1",
+    "real-4097e8fcdc21b6a3-body-1",
+    "real-358faca3134e290f-body-1",
+    "real-9c8a921d12d8474e-body-1",
+    "real-49817b568b7d02a1-body-1",
+    "real-5c303ce388328a13-body-1",
+    "real-c6b9eeb016808d3b-body-1",
+    "real-8e0056ff18287e45-body-1",
+    "real-38428ac54117e67c-body-1",
+    "real-56faeb060f60c170-body-1",
+    "real-56a89a732af12a66-body-1",
+    "real-3b92112e8487e279-body-1",
+    "real-fa1ca05594655c8d-body-1",
+    "real-0f8bf87595f587e5-body-1",
+    "real-7f22ab27bb1cd19e-body-1",
+    "real-8a9c703f7f29fd14-body-1"
+  ],
+  "protocol": {
+    "timeLimitSeconds": 10,
+    "trials": 0,
+    "policy": {
+      "methods": [
+        "production",
+        "supported-production-first-candidate-fallback"
+      ],
+      "classifier": "Existing RGB mixture classifier for both methods",
+      "solver": "Unchanged automatic configuration, 10 seconds, no uncertainty trials",
+      "selection": "Keep supported production crop; otherwise use candidate fields through unchanged locator only if outline-supported and all four corners observed. No per-image winning fit selection.",
+      "identicalCropPolicy": "Reuse the exact production fit when selection is unchanged; refit both arms for changed crops. Compare final editable exports and visual photo fidelity; derived-mask agreement is not artwork ground truth.",
+      "missingCropPolicy": "Record failures; no manual rescue or case replacement.",
+      "visualReview": "Inspect all selected source photos and all distinct crop/mask/export pairs; record false gaps, lost motifs and crop contamination independently of acceptance."
+    },
+    "cropStrategy": "foreground-region-rgb"
+  },
+  "resources": {
+    "artifactBudgetMiB": 12,
+    "workers": 1,
+    "newSourcePhotoCopies": 0
+  },
+  "controlRun": {
+    "path": "tmp/heart-learning/preserved-candidate-v1/pipeline/report.json",
+    "sha256": "6da26a6b57f61d9a731ee6338b0308b1646ee44b679fe3ccd2b15a1c3c63118b"
+  }
+}
