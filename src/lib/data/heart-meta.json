@@ -221,11 +221,11 @@
     "names": {
       "en": "Sun"
     },
-    "author": "Klassisk",
+    "author": "Per V. Mortensen",
     "authorUrl": null,
     "publisher": null,
     "publisherUrl": null,
-    "source": "juleflet.dk",
+    "source": "https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm",
     "date": null,
     "description": "To yin-yang symboler der sammen giver en roterende sol",
     "gridSize": {
@@ -245,6 +245,32 @@
       "width": 900,
       "height": 1200
     }
+  },
+  "permo-sol": {
+    "name": "Solstråler",
+    "names": {
+      "en": "Sunbeams"
+    },
+    "author": "Per V. Mortensen",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm",
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 3,
+      "y": 3
+    },
+    "difficulty": "easy",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
   },
   "explosion": {
     "name": "Eksplosion",
@@ -1096,6 +1122,84 @@
       "curveSymmetry": false,
       "lobeSymmetry": true,
       "mirrorSymmetry": false,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "permo-kroge": {
+    "name": "Kroge",
+    "names": {
+      "en": "Hooks"
+    },
+    "author": "Per V. Mortensen",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm",
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 4,
+      "y": 4
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": false,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "permo-draaber": {
+    "name": "Dråber",
+    "names": {
+      "en": "Drops"
+    },
+    "author": "Per V. Mortensen",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm",
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 4,
+      "y": 4
+    },
+    "difficulty": "expert",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "permo-cirkler": {
+    "name": "Cirkler",
+    "names": {
+      "en": "Circles"
+    },
+    "author": "Per V. Mortensen",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm",
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 4,
+      "y": 4
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
       "sharedTemplate": true
     },
     "photo": null

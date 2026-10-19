@@ -1,0 +1,19 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" data-weave-parity="1">
+  <title>Solstråler</title>
+  <title xml:lang="en">Sunbeams</title>
+  <desc xml:lang="da">En sol: en rund skive med stråler, der går ud til alle sider. Tre striber i hver halvdel, den midterste bredest, og de to klip er skrå, lige linjer, der løber sammen mod midten som et X og bøjer uden om en cirkel. Begge halvdele klippes efter samme skabelon, og sværhedsgraden er let. Klip de lige stykker langs en lineal og cirklen i ét træk. Fra Per V. Mortensens [Circles in Hearts](https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm).</desc>
+  <desc xml:lang="en">A sun: a round disc with rays reaching out on every side. Three strips in each half, the middle one the widest, and the two cuts are slanting straight lines that run together towards the middle like an X and swerve round a circle. Both halves are cut from the same template, and the difficulty is easy. Cut the straight parts along a ruler and the circle in one stroke. From Per V. Mortensen's [Circles in Hearts](https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm).</desc>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:title>Solstråler</dc:title>
+        <dc:creator><cc:Agent><dc:title>Per V. Mortensen</dc:title></cc:Agent></dc:creator>
+        <dc:source>https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm</dc:source>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path d="M 0 30 C 8.9294 33.5717 17.8587 37.1435 26.7881 40.7152 C 30.5847 31.2238 39.7774 25 50 25 C 60.2226 25 69.4153 31.2238 73.2119 40.7152 C 82.1413 37.1435 91.0706 33.5717 100 30" stroke="orange" fill="none"/>
+  <path d="M 0 70 C 8.9294 66.4283 17.8587 62.8565 26.7881 59.2848 C 30.5847 68.7762 39.7774 75 50 75 C 60.2226 75 69.4153 68.7762 73.2119 59.2848 C 82.1413 62.8565 91.0706 66.4283 100 70" stroke="orange" fill="none"/>
+  <path d="M 30 0 C 33.5717 8.9294 37.1435 17.8587 40.7152 26.7881 C 31.2238 30.5847 25 39.7774 25 50 C 25 60.2226 31.2238 69.4153 40.7152 73.2119 C 37.1435 82.1413 33.5717 91.0706 30 100" stroke="green" fill="none"/>
+  <path d="M 70 0 C 66.4283 8.9294 62.8565 17.8587 59.2848 26.7881 C 68.7762 30.5847 75 39.7774 75 50 C 75 60.2226 68.7762 69.4153 59.2848 73.2119 C 62.8565 82.1413 66.4283 91.0706 70 100" stroke="green" fill="none"/>
+</svg>

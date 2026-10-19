@@ -1,0 +1,21 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" data-weave-parity="0">
+  <title>Cirkler</title>
+  <title xml:lang="en">Circles</title>
+  <desc xml:lang="da">Et gitter af runde cirkler i hjertets midte. Fire striber i hver halvdel, og alle tre klip er bølger af cirkelbuer, så hver stribe skiftevis svulmer og snævres ind. Begge halvdele klippes efter samme skabelon, og sværhedsgraden er mellem. Buerne mødes i små knæk; klip hen til hvert knæk og begynd forfra derfra, så cirklerne bliver runde. Fra Per V. Mortensens [Circles in Hearts](https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm).</desc>
+  <desc xml:lang="en">A grid of round circles in the middle of the heart. Four strips in each half, and all three cuts are waves of circular arcs, so each strip swells and narrows in turn. Both halves are cut from the same template, and the difficulty is medium. The arcs meet in small corners; cut up to each corner and start afresh from there so the circles stay round. From Per V. Mortensen's [Circles in Hearts](https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm).</desc>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:title>Cirkler</dc:title>
+        <dc:creator><cc:Agent><dc:title>Per V. Mortensen</dc:title></cc:Agent></dc:creator>
+        <dc:source>https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm</dc:source>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path d="M 0 74.675 C 5.9389 80.9084 15.48 82.0166 22.6896 77.3104 C 25.2784 73.3445 29.3366 70.5695 33.9714 69.5958 C 38.6062 68.6221 43.438 69.5294 47.4039 72.1182 C 52.7948 80.3766 63.8597 82.7013 72.1182 77.3104 C 75.1004 72.7418 80.0077 69.7871 85.4407 69.2889 C 90.8738 68.7907 96.2365 70.8035 100 74.7536" stroke="orange" fill="none"/>
+  <path d="M 0 50.0393 C 5.9389 43.8059 15.48 42.6977 22.6896 47.4039 C 28.0805 55.6623 39.1454 57.987 47.4039 52.5961 C 49.9927 48.6303 54.0509 45.8552 58.6857 44.8815 C 63.3205 43.9078 68.1523 44.8151 72.1182 47.4039 C 75.1004 51.9725 80.0077 54.9272 85.4407 55.4254 C 90.8738 55.9236 96.2365 53.9108 100 49.9607" stroke="orange" fill="none"/>
+  <path d="M 0 25.2464 C 5.9389 31.4798 15.48 32.588 22.6896 27.8818 C 25.2784 23.916 29.3366 21.1409 33.9714 20.1672 C 38.6062 19.1935 43.438 20.1008 47.4039 22.6896 C 52.7948 30.9481 63.8597 33.2727 72.1182 27.8818 C 75.1004 23.3132 80.0077 20.3586 85.4407 19.8603 C 90.8738 19.3621 96.2365 21.375 100 25.325" stroke="orange" fill="none"/>
+  <path d="M 74.675 0 C 80.9084 5.9389 82.0166 15.48 77.3104 22.6896 C 73.3445 25.2784 70.5695 29.3366 69.5958 33.9714 C 68.6221 38.6062 69.5294 43.438 72.1182 47.4039 C 80.3766 52.7948 82.7013 63.8597 77.3104 72.1182 C 72.7418 75.1004 69.7871 80.0077 69.2889 85.4407 C 68.7907 90.8738 70.8035 96.2365 74.7536 100" stroke="green" fill="none"/>
+  <path d="M 50.0393 0 C 43.8059 5.9389 42.6977 15.48 47.4039 22.6896 C 55.6623 28.0805 57.987 39.1454 52.5961 47.4039 C 48.6303 49.9927 45.8552 54.0509 44.8815 58.6857 C 43.9078 63.3205 44.8151 68.1523 47.4039 72.1182 C 51.9725 75.1004 54.9272 80.0077 55.4254 85.4407 C 55.9236 90.8738 53.9108 96.2365 49.9607 100" stroke="green" fill="none"/>
+  <path d="M 25.2464 0 C 31.4798 5.9389 32.588 15.48 27.8818 22.6896 C 23.916 25.2784 21.1409 29.3366 20.1672 33.9714 C 19.1935 38.6062 20.1008 43.438 22.6896 47.4039 C 30.9481 52.7948 33.2727 63.8597 27.8818 72.1182 C 23.3132 75.1004 20.3586 80.0077 19.8603 85.4407 C 19.3621 90.8738 21.375 96.2365 25.325 100" stroke="green" fill="none"/>
+</svg>

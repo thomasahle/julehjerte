@@ -1,0 +1,21 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" data-weave-parity="0">
+  <title>Kroge</title>
+  <title xml:lang="en">Hooks</title>
+  <desc xml:lang="da">Kroge, der griber ind i hinanden og drejer om midten som en hvirvel. Fire lige brede striber i hver halvdel, og alle tre klip er bølger af halvcirkler, der skifter side. Begge halvdele klippes efter samme skabelon, og sværhedsgraden er svær. Mønsteret drejer i stedet for at være spejlvendt, så læg de to halvdele som på billedet, før du fletter, og drej papiret frem for saksen i buerne. Fra Per V. Mortensens [Circles in Hearts](https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm).</desc>
+  <desc xml:lang="en">Hooks that grip one another and turn about the centre like a whirl. Four strips of equal width in each half, and all three cuts are waves of semicircles that switch sides. Both halves are cut from the same template, and the difficulty is hard. The pattern turns rather than mirrors, so lay the two halves as in the picture before weaving, and turn the paper rather than the scissors in the curves. From Per V. Mortensen's [Circles in Hearts](https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm).</desc>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:title>Kroge</dc:title>
+        <dc:creator><cc:Agent><dc:title>Per V. Mortensen</dc:title></cc:Agent></dc:creator>
+        <dc:source>https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm</dc:source>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path d="M 0 75 C 0 68.0964 5.5964 62.5 12.5 62.5 C 19.4036 62.5 25 68.0964 25 75 C 25 81.9036 30.5964 87.5 37.5 87.5 C 44.4036 87.5 50 81.9036 50 75 C 50 68.0964 55.5964 62.5 62.5 62.5 C 69.4036 62.5 75 68.0964 75 75 C 75 81.9036 80.5964 87.5 87.5 87.5 C 94.4036 87.5 100 81.9036 100 75" stroke="orange" fill="none"/>
+  <path d="M 0 50 C 0 43.0964 5.5964 37.5 12.5 37.5 C 19.4036 37.5 25 43.0964 25 50 C 25 56.9036 30.5964 62.5 37.5 62.5 C 44.4036 62.5 50 56.9036 50 50 C 50 43.0964 55.5964 37.5 62.5 37.5 C 69.4036 37.5 75 43.0964 75 50 C 75 56.9036 80.5964 62.5 87.5 62.5 C 94.4036 62.5 100 56.9036 100 50" stroke="orange" fill="none"/>
+  <path d="M 0 25 C 0 18.0964 5.5964 12.5 12.5 12.5 C 19.4036 12.5 25 18.0964 25 25 C 25 31.9036 30.5964 37.5 37.5 37.5 C 44.4036 37.5 50 31.9036 50 25 C 50 18.0964 55.5964 12.5 62.5 12.5 C 69.4036 12.5 75 18.0964 75 25 C 75 31.9036 80.5964 37.5 87.5 37.5 C 94.4036 37.5 100 31.9036 100 25" stroke="orange" fill="none"/>
+  <path d="M 25 0 C 31.9036 0 37.5 5.5964 37.5 12.5 C 37.5 19.4036 31.9036 25 25 25 C 18.0964 25 12.5 30.5964 12.5 37.5 C 12.5 44.4036 18.0964 50 25 50 C 31.9036 50 37.5 55.5964 37.5 62.5 C 37.5 69.4036 31.9036 75 25 75 C 18.0964 75 12.5 80.5964 12.5 87.5 C 12.5 94.4036 18.0964 100 25 100" stroke="green" fill="none"/>
+  <path d="M 50 0 C 56.9036 0 62.5 5.5964 62.5 12.5 C 62.5 19.4036 56.9036 25 50 25 C 43.0964 25 37.5 30.5964 37.5 37.5 C 37.5 44.4036 43.0964 50 50 50 C 56.9036 50 62.5 55.5964 62.5 62.5 C 62.5 69.4036 56.9036 75 50 75 C 43.0964 75 37.5 80.5964 37.5 87.5 C 37.5 94.4036 43.0964 100 50 100" stroke="green" fill="none"/>
+  <path d="M 75 0 C 81.9036 0 87.5 5.5964 87.5 12.5 C 87.5 19.4036 81.9036 25 75 25 C 68.0964 25 62.5 30.5964 62.5 37.5 C 62.5 44.4036 68.0964 50 75 50 C 81.9036 50 87.5 55.5964 87.5 62.5 C 87.5 69.4036 81.9036 75 75 75 C 68.0964 75 62.5 80.5964 62.5 87.5 C 62.5 94.4036 68.0964 100 75 100" stroke="green" fill="none"/>
+</svg>

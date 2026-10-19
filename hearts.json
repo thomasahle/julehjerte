@@ -17,6 +17,7 @@
         "5star",
         "simple-5star",
         "sun",
+        "permo-sol",
         "explosion",
         "nihon",
         "davidsstjerne-circ",
@@ -54,7 +55,10 @@
         "tragt",
         "boelgebrud",
         "glaskuppel",
-        "hvirvel"
+        "hvirvel",
+        "permo-kroge",
+        "permo-draaber",
+        "permo-cirkler"
       ]
     },
     {
