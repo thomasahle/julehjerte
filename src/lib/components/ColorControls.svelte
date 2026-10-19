@@ -165,7 +165,8 @@
 			<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
 				<rect width="24" height="24" fill="#f6f1e4" />
 				{#each WEAVE as cell (cell.fill)}
-					<rect x={cell.x + 0.75} y={cell.y + 0.75} width="10.5" height="10.5" fill={cell.fill} />
+					<!-- Out to the circle's edge; only the gaps between cells stay light. -->
+					<rect x={cell.x === 0 ? 0 : 12.75} y={cell.y === 0 ? 0 : 12.75} width="11.25" height="11.25" fill={cell.fill} />
 				{/each}
 				<!-- Over and under: each cell's strip runs on into the gap on one
 				     side, alternating, as a woven square does. -->
