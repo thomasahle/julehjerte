@@ -1,25 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { BezierSegment, Vec } from '$lib/types/heart';
-import {
-	ALL_RULES,
-	SIDE_LINKS,
-	canLean,
-	cellOutline,
-	crossing,
-	freeSides,
-	halfOf,
-	isRedCell,
-	moveBy,
-	neighbours,
-	opposite,
-	ruleInfo,
-	ruleKey,
-	ruleMotions,
-	type PatternTile,
-	type SideCurve,
-	type SideLink,
-	type TileRule
-} from './tiling';
+import { ALL_RULES, SIDE_LINKS, canLean, freeSides, halfOf, isRedCell, moveBy, neighbours, opposite, ruleInfo, ruleKey, ruleMotions, type SideLink, type TileRule } from './rules';
+import { cellOutline, crossing, type PatternTile, type SideCurve } from './tiling';
 import { ruleStart } from './presets';
 
 // The Escher tab says how the white tile follows from the red one, from which of the red tile's

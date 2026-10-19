@@ -1,20 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
-import {
-	ALL_RULES,
-	SIDE_LINKS,
-	freeSides,
-	halfOf,
-	neighbours,
-	opposite,
-	patternToDesign,
-	ruleInfo,
-	ruleKey,
-	sameRule,
-	straightCurve,
-	type PatternTile
-} from './tiling';
+import { ALL_RULES, SIDE_LINKS, freeSides, halfOf, neighbours, opposite, ruleInfo, ruleKey, sameRule } from './rules';
+import { patternToDesign, straightCurve, type PatternTile } from './tiling';
 import { carryCurves, isStraightTile, ruleCode, ruleStart, ruleText, switchRule } from './presets';
 import { EXAMPLES, exampleTile, knobTile } from './examples';
 

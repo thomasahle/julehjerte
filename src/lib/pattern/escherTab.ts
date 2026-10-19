@@ -28,7 +28,8 @@ import {
 	type PlacedPoint,
 	type SpecialNode
 } from './editorBridge';
-import { ALL_RULES, canLean, cutCounts, fitLines, ruleInfo, ruleKey, ruleSymmetry, sameRule, type PatternTile, type SideCurve, type TileRule } from './tiling';
+import { ALL_RULES, canLean, ruleInfo, ruleKey, ruleSymmetry, sameRule, type TileRule } from './rules';
+import { cutCounts, fitLines, type PatternTile, type SideCurve } from './tiling';
 import { isStraightTile, ruleStart, switchRule } from './presets';
 
 export { cutOfFinger, generateEditorFingers, sameRule, specialNodes, weaveParityOf };

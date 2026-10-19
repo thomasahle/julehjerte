@@ -3,26 +3,8 @@ import type { BezierSegment, Finger, Vec } from '$lib/types/heart';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 import { getCenteredRectParams, inferOverlapRect } from '$lib/utils/overlapRect';
 import { splitBezierAt } from '$lib/geometry/bezierSegments';
-import {
-	ALL_RULES,
-	cutCounts,
-	firstLine,
-	fitLines,
-	freeSides,
-	halfOf,
-	opposite,
-	patternCuts,
-	patternToDesign,
-	ruleRepeat,
-	ruleInfo,
-	ruleKey,
-	sourceCurve,
-	straightCurve,
-	stretchSource,
-	type CurveKey,
-	type PatternTile,
-	type SideCurve
-} from './tiling';
+import { ALL_RULES, freeSides, halfOf, opposite, ruleRepeat, ruleInfo, ruleKey, stretchSource, type CurveKey } from './rules';
+import { cutCounts, firstLine, fitLines, patternCuts, patternToDesign, sourceCurve, straightCurve, type PatternTile, type SideCurve } from './tiling';
 import { ruleStart } from './presets';
 import { EXAMPLES, exampleTile, knobTile } from './examples';
 import {

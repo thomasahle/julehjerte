@@ -40,7 +40,8 @@
 	import { snapSequentialQP, snapSequentialQPBezierControl, snapSequentialQPBezierJunction } from '$lib/algorithms/snapBezierControl';
 	import { detectSymmetryModes } from '$lib/utils/symmetry';
 	import { dev } from '$app/environment';
-	import type { PatternTile, TileRule } from '$lib/pattern/tiling';
+	import type { TileRule } from '$lib/pattern/rules';
+	import type { PatternTile } from '$lib/pattern/tiling';
 	import type { TileDrag } from '$lib/pattern/escherTab';
 	import { ToggleGroup, ToggleGroupItem, keepChosen } from '$lib/components/ui/toggle-group';
 	import {

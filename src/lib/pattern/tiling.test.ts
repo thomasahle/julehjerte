@@ -4,25 +4,8 @@ import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIs
 import { inferOverlapRect } from '$lib/utils/overlapRect';
 import { get } from '$lib/paint/mask';
 import { rasterizeDesign } from '$lib/paint/rasterize';
-import {
-	ALL_RULES,
-	cellOutline,
-	completeHalfTurn,
-	freeSides,
-	neighbours,
-	opposite,
-	patternCuts,
-	cutCounts,
-	fitLines,
-	patternToDesign,
-	ruleInfo,
-	ruleKey,
-	squareToStretch,
-	stretchSource,
-	stretchToSquare,
-	type CurveKey,
-	type PatternTile
-} from './tiling';
+import { ALL_RULES, freeSides, neighbours, opposite, ruleInfo, ruleKey, stretchSource, type CurveKey } from './rules';
+import { cellOutline, completeHalfTurn, patternCuts, cutCounts, fitLines, patternToDesign, squareToStretch, stretchToSquare, type PatternTile } from './tiling';
 import { ruleStart } from './presets';
 import { EXAMPLES, exampleTile } from './examples';
 

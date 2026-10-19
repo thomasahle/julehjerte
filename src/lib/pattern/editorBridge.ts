@@ -20,35 +20,8 @@
 import type { BezierSegment, Finger, NodeType, Vec } from '$lib/types/heart';
 import { reverseSegments, splitBezierAt } from '$lib/geometry/bezierSegments';
 import type { OverlapRect } from '$lib/utils/overlapRect';
-import {
-	canLean,
-	crossing,
-	cutCounts,
-	firstLine,
-	fitLines,
-	heartLines,
-	ruleRepeat,
-	fromFrame,
-	halfOf,
-	patternCuts,
-	ruleInfo,
-	rawToCells,
-	squareToStretch,
-	straightCurve,
-	stretchCurve,
-	stretchFrame,
-	stretchSource,
-	tileOffset,
-	toFrame,
-	tracedCut,
-	type CurveKey,
-	type CutPiece,
-	type PatternTile,
-	type SideCurve,
-	type StretchKind,
-	type StretchSource,
-	type TileRule
-} from './tiling';
+import { canLean, ruleRepeat, halfOf, ruleInfo, stretchSource, type CurveKey, type StretchKind, type StretchSource, type TileRule } from './rules';
+import { crossing, cutCounts, firstLine, fitLines, heartLines, fromFrame, patternCuts, rawToCells, squareToStretch, straightCurve, stretchCurve, stretchFrame, tileOffset, toFrame, tracedCut, type CutPiece, type PatternTile, type SideCurve } from './tiling';
 
 const mapSegs = (segs: BezierSegment[], f: (p: Vec) => Vec): BezierSegment[] =>
 	segs.map((s) => ({ p0: f(s.p0), p1: f(s.p1), p2: f(s.p2), p3: f(s.p3) }));

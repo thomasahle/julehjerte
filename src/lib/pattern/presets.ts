@@ -7,7 +7,8 @@
 
 import type { TranslationKey } from '$lib/i18n';
 import type { BezierSegment, Vec } from '$lib/types/heart';
-import { canLean, halfOf, ruleInfo, type NeighbourLink, type PatternTile, type SideCurve, type SideLink, type TileRule, type TypeNumber } from './tiling';
+import { canLean, halfOf, ruleInfo, type NeighbourLink, type SideLink, type TileRule, type TypeNumber } from './rules';
+import { type PatternTile, type SideCurve } from './tiling';
 
 const LETTER: Record<SideLink, string> = { move: 'T', mirror: 'G', turn: 'C' };
 

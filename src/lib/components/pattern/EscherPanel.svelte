@@ -9,7 +9,7 @@
 -->
 <script lang="ts">
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
-	import type { TileRule } from '$lib/pattern/tiling';
+	import type { TileRule } from '$lib/pattern/rules';
 	import RuleTemplates from './RuleTemplates.svelte';
 
 	interface Props {
