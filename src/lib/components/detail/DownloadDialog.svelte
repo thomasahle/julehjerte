@@ -60,6 +60,7 @@
 	} from '$lib/laser/export';
 	import { formatMm } from '$lib/laser/format';
 	import { clamp } from '$lib/utils/math';
+	import { downloadBlob } from '$lib/utils/download';
 	import { SHEETS, type SheetSize } from '$lib/laser/sheet';
 	import { serializeLaserSvg } from '$lib/laser/svg';
 	import {
@@ -461,22 +462,13 @@
 		if (!laserPlan) return;
 		try {
 			const content = laserFileContent(laserPlan, format, fileInfo);
-			const blob = new Blob([content], { type: LASER_MIME[format] });
-			const url = URL.createObjectURL(blob);
-			const link = document.createElement('a');
-			link.href = url;
-			link.download = laserFileName(
+			const name = laserFileName(
 				several ? t('laserMultiFilename', lang, { n: laserHearts.length }) : heartId,
 				widthMm,
 				format,
 				laserPlan.shared ? undefined : lobeName(laserPlan.lobe)
 			);
-			document.body.appendChild(link);
-			link.click();
-			link.remove();
-			// Some browsers start the download only after the click returns, so the
-			// URL has to outlive it for a moment.
-			setTimeout(() => URL.revokeObjectURL(url), 1000);
+			downloadBlob(new Blob([content], { type: LASER_MIME[format] }), name);
 			failure = null;
 			// The hearts with a piece on the sheet, as the file name counts them.
 			if (several) trackMultiLaserDownload(laserHearts.map((d) => ({ id: d.id, name: nameIn(d, lang) })), format, widthMm);

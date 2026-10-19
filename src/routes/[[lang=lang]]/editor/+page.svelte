@@ -17,14 +17,11 @@
     type EditorDraft
   } from '$lib/editor/draft';
   import type { Finger, GridSize, HeartDesign } from '$lib/types/heart';
-  import { normalizeHeartDesign, serializeHeartToSVG, parseHeartFromSVGWithReport } from '$lib/utils/heartDesign';
+  import { normalizeHeartDesign, parseHeartFromSVGWithReport } from '$lib/utils/heartDesign';
   import { heartName as nameIn } from '$lib/utils/heartName';
   import { importSummary } from '$lib/utils/svgImportSummary';
-  import { detectSymmetry } from '$lib/utils/symmetry';
-  import { serializeTemplateToSVG, type TemplateLobe } from '$lib/utils/templateSvg';
-  import { renderHeartSvgInline } from '$lib/rendering/heartSvg';
+  import { downloadHeartSvg, downloadTemplateSvg } from '$lib/editor/svgDownloads';
   import { sanitizeHtml } from '$lib/utils';
-  import { slugify } from '$lib/utils/slug';
   import { trackImportError } from '$lib/analytics';
   import CanvasBackdrop from '$lib/components/editor/CanvasBackdrop.svelte';
   import Modal from '$lib/components/Modal.svelte';
@@ -578,42 +575,11 @@
   }
 
   function downloadSVG() {
-    const design = createHeartDesign();
-    const svg = serializeHeartToSVG(design);
-    const blob = new Blob([svg], { type: 'image/svg+xml' });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${slugify(design.name)}.svg`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    downloadHeartSvg(createHeartDesign());
   }
 
-  async function downloadTemplateSVG() {
-    const design = createHeartDesign();
-    const isSymmetric =
-      design.gridSize.x === design.gridSize.y && detectSymmetry(design.fingers).mirrorSymmetry;
-    const lobes: TemplateLobe[] = isSymmetric ? ['left'] : ['left', 'right'];
-    const previewSvgs = lobes.map((lobe, index) =>
-      renderHeartSvgInline(design, colors, {
-        idPrefix: `template-preview-${design.id}-${lobe}-${index}`,
-        outline: { color: '#111' }
-      })
-    );
-    const svg = serializeTemplateToSVG(design, lobes, { previewSvgs });
-    const blob = new Blob([svg], { type: 'image/svg+xml' });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${slugify(design.name)}-template.svg`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+  function downloadTemplateSVG() {
+    downloadTemplateSvg(createHeartDesign(), colors);
   }
 
   // Top bar: the A4 template as a PDF, the same generator the gallery and detail pages use.
