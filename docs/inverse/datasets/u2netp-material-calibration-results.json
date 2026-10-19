@@ -1,7 +1,7 @@
 {
   "schema": "u2netp-material-calibration-results-1",
   "date": "2026-10-20",
-  "status": "native-calibration-complete-pipeline-pending",
+  "status": "complete-not-approved-for-integration",
   "evidence": [
     {
       "path": "tmp/heart-learning/u2netp-material-calibration-v1/report.json",
@@ -94,7 +94,8 @@
     "newCheckpoints": 0,
     "review": "Both palette methods restore the stacked-heart structure, shaded red/gold checker, fine web joins, nativity figures, dragonfly wings and sharper star rays. RGB clustering also recovers the blue/red printed-tree checker that neural-selected colours classify by ink. Other printed stripes/dots/flowers still become false cuts. RGB clustering loses the blue printed heart held in a hand by separating the hand instead of its papers. Neither fixes frozen body omissions on the house and candlestick."
   },
-  "interpretation": "Colour calibration improves boundary localization on training synthetic views and visible native motifs. The learned palette is not consistently better than the RGB-cluster control. Printed interiors worsen despite sharper edges. No full boundary ground truth exists for this 32-photo cohort, and crop/template checks are pending.",
-  "next": "Fit both declared palette methods at identical fixed crops and budgets, including all seven unresolved crops; audit exported editable geometry and inspect the reconstructions. Historical RGB fits are context, not a fresh causal control.",
-  "productionChanges": false
+  "interpretation": "Colour calibration sharpens boundaries compared with raw neural fields, but learned palette selection does not beat the RGB-cluster control consistently. The fixed-crop pipeline gives 11/32 checked derived-mask pairs for learned palettes versus 13/32 for RGB, with no learned-only checked gains. Printed interiors remain confused, fixed crop failures remain, and small mask changes can alter count scheduling. No full boundary ground truth exists for this development cohort.",
+  "next": "Improve count-shortlist stability and body localization before more material-head training. Do not deploy this candidate or interpret agreement with its own mask as original-artwork recovery.",
+  "productionChanges": false,
+  "pipelineResults": "docs/inverse/datasets/u2netp-material-palette-pipeline-results.json"
 }

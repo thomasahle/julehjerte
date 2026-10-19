@@ -16,8 +16,28 @@ production path.
 | Synthetic geometry | 256 saved witnesses pass the current geometry/paper re-audit across 768 original/subdivided/reflected representations | Limited procedural diversity; recipe holdouts are not topology-disjoint splits |
 | Small learned model | Earlier MobileNetV3-Small fallback raises checked editable pairs from 7/16 to 9/16 on its development cohort; a newer fixed candidate stays at 7/16 on separately selected Sabrina photos | These are different cohorts; no deployment or established source generalization |
 | Saliency models | Frozen U2NETP raises checked derived-mask pairs from 10/32 to 12/32; adapted browser model adds three checked pairs over fresh current-main controls (9/32 to 12/32) | Raw numerical parity still fails; printed paper, missing body regions, timed-search variation and false seams remain; no production integration |
+| Paper-colour calibration | Original-resolution colour mixtures restore detail lost by raw neural masks; fresh fixed-crop comparison gives 11/32 checked pairs with learned palettes versus 13/32 with RGB clustering | No learned-only checked gain; print confusion and unsuitable crops remain; these are derived-mask checks, not artwork ground truth |
 | Larger segmentation baseline | Official pretrained MobileSAM evaluated offline | A useful body mask alone does not establish correct corners, material boundaries or legal templates |
-| Solver | Current revision passes 1,109/1,109 inverse tests and 34 browser workflows; all 22 regular Hunodan designs finish under ten seconds | Some hard fits retain thin false seams; the earlier 27/31 photo benchmark has not been rerun |
+| Solver | Latest full release QA passes 1,207 inverse tests; earlier dedicated runs solve all 22 regular Hunodan designs under ten seconds | Some hard fits retain thin false seams; 19/77 CI timing targets miss; the earlier 27/31 photo benchmark has not been rerun |
+
+The [latest palette-to-template comparison](u2netp-material-palette-pipeline-results.json)
+holds all 25 crops fixed and retains seven unresolved inputs. Both colour methods
+use original photograph pixels, then the unchanged fitter with a ten-second search
+allowance. All 50 exported candidates pass editable conversion and geometry;
+48 pass nominal paper checks and two remain uncertain. The learned palette loses
+the shaded checker and printed-tree designs relative to RGB clustering and adds
+no checked pair. All eight comparison pages were reviewed. Neither method fixes
+bad crops, and both still mistake some printed ink for paper boundaries.
+
+The nativity case exposes a separate deterministic search problem: **59 of
+160,000 mask pixels change**, yet the three-slot shortlist drops the six-cut
+grid for a four-cut grid. Replaying fixed initialization and gradient steps in
+ABBA order exactly reproduces the divergence. The omitted six-cut grid still
+preserves the source regions' colours on both targets; the remaining grids do
+not. This isolates a scheduling weakness before timed curve refinement, without
+claiming the omitted grid is a valid template or the original cutting design.
+No production code or acceptance limit changes in this experiment. The diagnostic
+now accepts `--reference-method` and `--candidate-method` for paired runs.
 
 The [complete balanced-epoch follow-up](u2netp-material-complete-epochs-results.json)
 adds 384 updates to the fixed relative-colour head, visiting every synthetic
@@ -45,12 +65,13 @@ older models' stored predictions exactly.
 ### Latest solver and browser validation
 
 The drawing improvements (red/white/XOR, full-circle weave icon, brush slider and
-hover outline) and archive are **deployed**. The [19 October release record](oct19-release-qa.json)
-contains live Danish/English and mobile QA, 2,216 application tests and 1,122
-inverse correctness checks. Ten of 77 advisory timed quality targets still miss;
-these are retained separately from correctness. Subsequent main commit
-`7c6e232a` also passed [CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39309081068).
-The local preview is at `http://localhost:4173/editor/mal/`.
+hover outline) and archive are **deployed**. The [latest release record](conni-release-qa.json)
+contains live Danish/English and mobile QA, 2,371 application tests and 1,207
+inverse checks. Nineteen of 77 advisory timed quality targets still miss;
+these are retained separately from correctness. Main commit `d0b882b5` passed
+[CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39324904486),
+rechecked on 20 October. Later material-learning experiments change offline tools
+and reports only; no neural network has been deployed.
 
 #### Latest neural experiments
 
