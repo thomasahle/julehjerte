@@ -254,7 +254,9 @@
 	let heartColors = $state<HeartColors>({ ...DEFAULT_COLORS });
 	let gridSize = $state<GridSize>({ x: 3, y: 3 });
 	let weaveParity = $state<0 | 1>(0);
-	let fingers = $state<Finger[]>([]);
+	// Raw: every edit makes new fingers (no finger or segment is changed in place), and the checks a
+	// drag runs read their coordinates thousands of times, which deep state would proxy and track.
+	let fingers = $state.raw<Finger[]>([]);
 	let didInit = false;
 
 	type SymmetryMode = 'off' | 'sym' | 'anti';

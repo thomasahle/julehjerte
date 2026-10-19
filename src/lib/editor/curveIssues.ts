@@ -59,15 +59,16 @@ function bboxDistanceSq(a: BBox, b: BBox): number {
 export function segmentsIntersect(a: BezierSegment[], b: BezierSegment[], opts: { skipAdjacent?: boolean } = {}): boolean {
 	const same = a === b;
 	const skipAdjacent = opts.skipAdjacent ?? false;
+	// Each segment's box once, not once per pair.
+	const boxesB = b.map(bezierBBox);
+	const boxesA = same ? boxesB : a.map(bezierBBox);
 	for (let i = 0; i < a.length; i++) {
 		const sa = a[i]!;
-		const ba = bezierBBox(sa);
+		const ba = boxesA[i]!;
 		const start = same ? i + (skipAdjacent ? 2 : 1) : 0;
 		for (let j = start; j < b.length; j++) {
-			const sb = b[j]!;
-			const bb = bezierBBox(sb);
-			if (!bboxesOverlap(ba, bb)) continue;
-			if (intersectBezierCurves(sa, sb).length > 0) return true;
+			if (!bboxesOverlap(ba, boxesB[j]!)) continue;
+			if (intersectBezierCurves(sa, b[j]!).length > 0) return true;
 		}
 	}
 	return false;
