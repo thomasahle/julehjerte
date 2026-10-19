@@ -72,10 +72,7 @@ export const translations = {
     difficultyHard: 'Svær',
     difficultyExpert: 'Ekspert',
     symmetry: 'Symmetri',
-    symmetricCurves: 'Symmetriske kurver',
-    symmetricLobes: 'Symmetriske lapper',
     mirrorSymmetry: 'Spejlsymmetri',
-    noSymmetry: 'Ingen symmetri',
     classic: 'Klassisk',
     pdfFailed: 'PDF-skabelonen kunne ikke laves. Prøv igen.',
     /** Filename (without .pdf) of a multi-heart download; {n} = number of hearts. */
@@ -893,10 +890,7 @@ export const translations = {
     difficultyHard: 'Hard',
     difficultyExpert: 'Expert',
     symmetry: 'Symmetry',
-    symmetricCurves: 'Symmetric curves',
-    symmetricLobes: 'Symmetric lobes',
     mirrorSymmetry: 'Mirror symmetry',
-    noSymmetry: 'No symmetry',
     classic: 'Classic',
     pdfFailed: 'The PDF template could not be generated. Please try again.',
     /** Filename (without .pdf) of a multi-heart download; {n} = number of hearts. */
