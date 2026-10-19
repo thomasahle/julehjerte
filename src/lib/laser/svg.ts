@@ -15,6 +15,7 @@ import type { Vec } from '$lib/types/heart';
 import { coord } from './format';
 import type { LaserSheet } from './sheet';
 import type { LaserPath } from './unfold';
+import { escapeXml } from '$lib/utils/xml';
 
 export interface LaserSvgOptions {
 	/** The heart's name, for `<title>`. */
@@ -31,14 +32,6 @@ export interface LaserSvgOptions {
 
 const CUT_COLOUR = '#ff0000';
 const HAIRLINE = '0.01';
-
-function escapeXml(text: string): string {
-	return text
-		.replace(/&/g, '&amp;')
-		.replace(/</g, '&lt;')
-		.replace(/>/g, '&gt;')
-		.replace(/"/g, '&quot;');
-}
 
 /** Path data with the piece's offset added to every point. */
 export function pathData(path: LaserPath, dx: number, dy: number): string {

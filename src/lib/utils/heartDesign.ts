@@ -14,6 +14,7 @@ import { parseHeartColors } from '$lib/utils/heartColors';
 import { validateRawFingers } from '$lib/utils/validatePaths';
 import { SITE_DOMAIN } from '$lib/config';
 import { vecDist } from '$lib/geometry/vec';
+import { escapeXml } from '$lib/utils/xml';
 
 type RawFinger = { id?: unknown; lobe?: unknown; pathData?: unknown; nodeTypes?: unknown };
 type RawDesign = Omit<Partial<HeartDesignJson>, 'gridSize' | 'fingers' | 'colors'> & {
@@ -444,14 +445,6 @@ export function serializeHeartDesign(design: HeartDesign): HeartDesignJson {
 // ============================================================================
 // SVG Serialization / Parsing
 // ============================================================================
-
-function escapeXml(str: string): string {
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
 
 export function serializeHeartToSVG(design: HeartDesign): string {
   const rect = serializationRect(design);

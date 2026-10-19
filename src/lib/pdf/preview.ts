@@ -26,6 +26,7 @@ import {
 	type TemplatePagePlan,
 	type TemplatePiece
 } from './plan';
+import { escapeXml } from '$lib/utils/xml';
 
 export interface TemplatePreviewOptions {
 	page: number;
@@ -39,10 +40,6 @@ export interface TemplatePreviewOptions {
 	 */
 	images?: ReadonlyMap<string, string>;
 	title: string;
-}
-
-function escapeXml(text: string): string {
-	return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
 export function serializeTemplatePageSvg(

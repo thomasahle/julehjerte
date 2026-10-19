@@ -1,6 +1,7 @@
 import type { Finger, HeartDesign } from '$lib/types/heart';
 import { segmentsToPathData } from '$lib/geometry/bezierSegments';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
+import { escapeXml } from '$lib/utils/xml';
 
 export type TemplateLobe = 'left' | 'right';
 
@@ -26,14 +27,6 @@ const DEFAULT_STROKE_WIDTH = 1.5;
 const DEFAULT_DASH = '8 4';
 const DEFAULT_PADDING = 20;
 const DEFAULT_GAP = 24;
-
-function escapeXml(str: string): string {
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
 
 function arcPath(cx: number, cy: number, r: number, startAngle: number, endAngle: number): string {
   const startX = cx + r * Math.cos(startAngle);
