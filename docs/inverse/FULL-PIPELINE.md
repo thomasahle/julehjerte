@@ -37,6 +37,20 @@ stages under variable machine load and remained a feature failure in both.
 The fixed-work regressions establish the local improvements; broader timed
 benchmark misses remain recorded rather than relaxed.
 
+The October 19 full inverse run passed 1,140 of 1,150 tests, including the new
+fixed-work paper and shared-junction regressions. Seven time-limited benchmark
+assertions missed their existing thresholds (border-fragment routing, stacked
+motif retention, two feature-finalist cases, smoother photograph retry,
+photographed checker, and synthetic-control routing). Two real-clock admission
+tests subsequently passed an isolated five-test replay. The remaining failure
+was an old physical-crop assertion while the experimental inset default was
+enabled; that default was withheld and all 12 focused original-crop/helper
+checks pass. The [paired crop study](datasets/photo-edge-inset-study.md) records
+the reason. No benchmark thresholds were loosened and this is not a claim that
+the entire timed benchmark suite is green. Final application checks pass
+1,596 tests with one existing skip; type checking, lint, static build and the
+new Paint/archive Chromium workflows pass.
+
 Reproduce the focused geometry and paper checks with:
 
 ```sh
