@@ -130,7 +130,7 @@ export function gridPaths(model,width=100,floor=.008){
     return xs.map((x,k)=>(f?[ys[k],x]:[x,ys[k]]).map(v=>v*width));
   })));
 }
-export function fitGrid(prob,size,counts,phase,{steps=280,k=16,initial=null,seed=0,floor=.008,clearance=0,resolution=96,optimizationTarget=null,optimizationObjective=null,weights=null,deadline=Infinity,onProgress=()=>{},preferCheckpoint=null}={}){
+export function fitGrid(prob,size,counts,phase,{steps=280,k=16,initial=null,seed=0,floor=.008,clearance=0,resolution=96,optimizationTarget=null,optimizationObjective=null,weights=null,deadline=Infinity,onProgress=()=>{},preferCheckpoint=null,maximumCheckpointPriority=null}={}){
   if(optimizationTarget&&optimizationObjective)throw new Error('Supply only one grid optimization objective.');
   if(optimizationObjective){
     if(optimizationObjective.probability?.length!==resolution*resolution)throw new Error('Optimization objective must match the grid resolution.');
@@ -145,17 +145,38 @@ export function fitGrid(prob,size,counts,phase,{steps=280,k=16,initial=null,seed
   // A caller may supply a boolean preference or an ordered finite priority.
   // Keep the lowest image error within the highest attained class; gradients
   // and deadlines do not change. Final curves still require independent checks.
-  const preferred=()=>{
-    const value=preferCheckpoint?preferCheckpoint({model,phase,floor}):true;
+  const deferred=maximumCheckpointPriority!==null;
+  if(deferred&&(!preferCheckpoint||!Number.isFinite(maximumCheckpointPriority)))throw new Error('Deferred grid selection requires a preference and a finite priority bound.');
+  const preferred=(candidate=model)=>{
+    const value=preferCheckpoint?preferCheckpoint({model:candidate,phase,floor}):true;
     if(typeof value==='number'&&!Number.isFinite(value))throw new Error('Grid checkpoint priority must be finite.');
+    if(deferred&&Number(value)>maximumCheckpointPriority)throw new Error('Grid checkpoint priority exceeds its declared bound.');
     return Number(value);
   };
-  let best={z:model.z.slice(),error:mismatch(gridMask(model,size,phase,floor),prob,weights),step:-1,preferred:preferred()},completed=0;
+  let best={z:model.z.slice(),error:mismatch(gridMask(model,size,phase,floor),prob,weights),step:-1,preferred:deferred?0:preferred()},completed=0;
+  const checkpoints=deferred?[best]:null;
   for(let step=0;step<steps;step++){
     if(step%10===0&&performance.now()>deadline)break;
     const progress=step/Math.max(1,steps-1),epsilon=initial?.length?(.012*(1-progress)**2+.003):(.035*(1-progress)**2+.004);
     const value=gridLoss(model,target,resolution,phase,epsilon,{floor,clearance,weights:resized?.weights});adam.update(model.z,value.gradient,3);completed++;
-    if(step%30===0||step===steps-1){const error=mismatch(gridMask(model,size,phase,floor),prob,weights);const retained=preferred();if(retained>best.preferred||retained===best.preferred&&error<best.error)best={z:model.z.slice(),error,step,preferred:retained};onProgress({step,error,loss:value.loss});}
+    if(step%30===0||step===steps-1){
+      const error=mismatch(gridMask(model,size,phase,floor),prob,weights);
+      if(deferred)checkpoints.push({z:model.z.slice(),error,step});
+      else{const retained=preferred();if(retained>best.preferred||retained===best.preferred&&error<best.error)best={z:model.z.slice(),error,step,preferred:retained};}
+      onProgress({step,error,loss:value.loss});
+    }
+  }
+  if(deferred){
+    // Check the most accurate saved iterate first. Once it earns the highest
+    // possible class, no later (higher-error) iterate can displace it. This
+    // is the same lexicographic selection as eager checks on a full trajectory,
+    // but repeated geometry audits no longer interrupt the gradient allowance.
+    best=null;
+    for(const checkpoint of checkpoints.sort((a,b)=>a.error-b.error||a.step-b.step)){
+      checkpoint.preferred=preferred({...model,z:checkpoint.z});
+      if(!best||checkpoint.preferred>best.preferred)best=checkpoint;
+      if(checkpoint.preferred===maximumCheckpointPriority)break;
+    }
   }
   model.z=best.z;return{model,phase,floor,error:best.error,steps:completed};
 }
