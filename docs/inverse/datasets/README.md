@@ -13,7 +13,7 @@ production path.
 | Real-image inventory | 1,254 files; 783 contain assembled-heart photographs; all files and decoded identities audited | File counts are not counts of independent motifs or fully labelled training examples |
 | Sabrina Danholm's Pinterest board | All 225 pins imported; 220 new image files, about 35 MiB | No new corner, material or cutting-path labels; the whole board is QA-reserved |
 | Synthetic geometry | 256 saved witnesses pass the current geometry/paper re-audit across 768 original/subdivided/reflected representations | Limited procedural diversity; recipe holdouts are not topology-disjoint splits |
-| Small learned model | TorchVision ImageNet-pretrained MobileNetV3-Small with task-specific heads; offline experiments exist | No demonstrated overall reconstruction advantage, ONNX/browser validation or deployment |
+| Small learned model | TorchVision ImageNet-pretrained MobileNetV3-Small; native ONNX and desktop WASM evaluated offline | No demonstrated overall reconstruction advantage or deployment; strict browser numerical parity missed on one photo |
 | Larger segmentation baseline | Official pretrained MobileSAM evaluated offline | A useful body mask alone does not establish correct corners, material boundaries or legal templates |
 | Solver | Current revision passes 1,109/1,109 inverse tests and 34 browser workflows; all 22 regular Hunodan designs finish under ten seconds | Some hard fits retain thin false seams; the earlier 27/31 photo benchmark has not been rerun |
 
@@ -196,9 +196,49 @@ source photographs were reused, and editable inputs use hard links.
 
 The next deployment gate is improvement in complete photo-to-editable-template
 recovery on properly grouped real images, including feature retention and
-physical validity. Python/ONNX agreement, download/startup cost, memory and
-browser inference latency still need measurement. A better segmentation score
-alone does not meet that gate.
+physical validity. The following experiment measures export and desktop inference;
+full-resolution browser preprocessing, download cost, mobile latency and memory
+still need validation. A better segmentation score alone does not meet that gate.
+
+### Preserving foreground during adaptation and exporting to ONNX
+
+The [runtime study](preserved-material-runtime-results.json) packages the two
+previously audited held-out models with an immutable foreground branch. Both
+branches share the first nine encoder blocks; only the material tail and decoder
+can train. Unit tests verify that optimization changes material predictions while
+foreground output and all frozen parameters/buffers remain exact. All **141 tests
+in 26 offline learning modules** pass.
+
+Each combined graph has **1.57 million parameters** and exports to **6.58 MB**.
+Native ONNX inference takes **36–37 ms** per 256-pixel input on one CPU thread,
+versus **57–58 ms** for the two separate Torch networks in the same experiment.
+Both held-out models reproduce the archived classification on all sixteen photos;
+the largest native probability difference is **0.00000754**.
+
+Actual Chromium/WASM inference takes **67–68 ms**, also on one thread; the first
+local session takes about **257 ms** to initialize. Browser-decoded RGB and
+normalized input tensors are byte-identical to Python's. The largest output
+difference is **0.0000312**, exceeding the predeclared **0.00002** tolerance on
+one photograph. That numerical check remains **failed**, although no pixel changes
+class at the original prediction resolution. The threshold was not relaxed.
+
+A paired crop replay controls the finite orientation search independently of
+machine speed. Native ONNX reproduces all corners and rectified masks exactly.
+WASM retains the same five crop proposals across the sixteen photos, but moves
+one corner by **0.00087 source pixels**. Across the five 400-pixel learned targets,
+four mask pixels change; the corresponding RGB classifier targets change by two
+pixels. Observation coverage and crop support decisions remain unchanged. This
+does not establish downstream topology stability: fitting was not rerun for this
+numerical comparison.
+
+These are **two evaluation checkpoints**, not one production model. Packaging
+preserves the earlier model's successes and failures; it does not fix the material
+head's rounded checker contacts or establish a useful automatic fallback policy.
+Browser validation starts from the exact prefiltered RGB inputs and does not yet
+cover full-photo browser resizing. Models remain outside the website. Runtime
+dependencies and outputs occupy about **170 MiB**, with no new source-photo copies;
+the test browser and its temporary server were closed. Latest observed main CI
+run `39287794295` is green, independently of these unpushed research commits.
 
 ## Collected assets
 
