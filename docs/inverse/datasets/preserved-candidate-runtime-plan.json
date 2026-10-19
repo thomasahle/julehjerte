@@ -1,0 +1,35 @@
+{
+  "schema": "preserved-candidate-runtime-plan-1",
+  "status": "predeclared",
+  "audit": {
+    "path": "tmp/heart-learning/preserved-candidate-v1/audit.json",
+    "sha256": "90c41158b06ac71cbd64f4a1c49d8ade517637998522efc99ef131e9229c5338"
+  },
+  "runtime": {
+    "path": "tmp/heart-learning/onnx-web-1.19.2/manifest.json",
+    "sha256": "7a54b46a7f0d7eea202553d1470e0c53ebdfef19b67b8b61ac120b88e131c29d"
+  },
+  "protocol": {
+    "threads": 1,
+    "inputShape": [
+      1,
+      3,
+      256,
+      256
+    ],
+    "opset": 17,
+    "onnx": "1.19.1",
+    "onnxruntime": "1.19.2",
+    "probabilityAtol": 2e-05,
+    "threshold": 0.5,
+    "warmupRuns": 3,
+    "timingRuns": 20
+  },
+  "resources": {
+    "nativeMaxArtifactMiB": 26,
+    "browserMaxArtifactMiB": 10,
+    "newSourcePhotoCopies": 0,
+    "workers": 1
+  },
+  "policy": "Original photo bytes through production decodeImageFile and audited portable preprocessing. Report every probability and threshold change, with unchanged 2e-5 gate; no output-dependent retries or photo selection."
+}

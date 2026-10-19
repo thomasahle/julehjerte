@@ -19,9 +19,11 @@ assert.ok(args.plan&&args.output&&Object.keys(args).every(k=>['plan','output'].i
 const hash=b=>createHash('sha256').update(b).digest('hex');
 const read=async p=>JSON.parse(await fs.readFile(p));
 const pinned=async asset=>{const bytes=await fs.readFile(asset.path);assert.equal(hash(bytes),asset.sha256,asset.path);return JSON.parse(bytes);};
-const plan=await read(args.plan);assert.equal(plan.schema,'photo-crop-fallback-plan-1');
+const plan=await read(args.plan);
+assert.ok(['photo-crop-fallback-plan-1','candidate-photo-crop-fallback-plan-1'].includes(plan.schema));
 const manifest=await pinned(plan.probe),training=await pinned(plan.training),runtime=await pinned(plan.runtimeEvidence);
 assert.equal(manifest.status,'complete');assert.equal(training.status,'complete');
+if(plan.schema==='photo-crop-fallback-plan-1'){
 assert.ok(runtime.checks.allPhotos&&runtime.checks.inputRgbExact&&runtime.checks.archivedHalfThresholdParity);
 assert.equal(runtime.artifacts['probe/manifest.json'],plan.probe.sha256);
 const catalog=await pinned(plan.sourceManifest),assets=new Map(catalog.assets.map(r=>[r.id,r]));
@@ -38,10 +40,36 @@ for(const id of plan.ids){
  const fold=training.folds.filter(f=>f.heldOut.includes(id));assert.equal(fold.length,1);
  assert.ok(!fold[0].train.includes(id));assert.equal(runtime.photos.find(r=>r.id===id).fold,fold[0].id);
 }
+}else{
+ assert.equal(training.schema,'preserved-material-candidate-1');
+ assert.equal(runtime.schema,'preserved-candidate-browser-1');assert.equal(runtime.status,'complete');
+ // Failed numeric gates remain diagnostic, but mismatched image inputs cannot be compared.
+ assert.ok(runtime.checks.allPhotos&&runtime.checks.sourceRgbExact&&runtime.checks.inputRgbExact);
+ assert.equal(runtime.artifacts['probe/manifest.json'],plan.probe.sha256);
+ const native=await pinned(runtime.native),protocol=await pinned(training.plan),evaluation=await pinned(protocol.evaluation);
+ assert.equal(native.training.sha256,plan.training.sha256);assert.equal(native.evaluation.sha256,protocol.evaluation.sha256);
+ assert.equal(protocol.sourceManifest.sha256,plan.sourceManifest.sha256);
+ const audit=await pinned(plan.audit);assert.ok(audit.passed);assert.equal(audit.candidateReport.sha256,plan.training.sha256);
+ assert.equal(audit.checkpointSha256,training.checkpointSha256);
+ const labels=await pinned(protocol.labelCatalog),catalog=await pinned(plan.sourceManifest),assets=new Map(catalog.assets.map(r=>[r.id,r]));
+ const reserved=new Set(catalog.assets.filter(r=>r.splitStatus==='qa-reserved').map(r=>r.splitGroupId));
+ const train=labels.instances.map(r=>{const asset=assets.get(r.assetId);assert.equal(asset.sha256,r.imageSha256);assert.equal(asset.splitStatus,'unassigned');assert.ok(!reserved.has(asset.splitGroupId));return asset;});
+ assert.deepEqual(manifest.rows.map(r=>r.id),evaluation.photos.map(r=>r.id));assert.deepEqual(plan.ids,evaluation.photos.map(r=>r.id));
+ assert.equal(new Set(plan.ids).size,plan.ids.length);
+ for(const row of manifest.rows){
+  const expected=evaluation.photos.find(r=>r.id===row.id),asset=assets.get(expected.assetId);
+  assert.equal(asset.splitStatus,'qa-reserved');assert.equal(asset.sha256,expected.imageSha256);
+  for(const field of ['id','sha256','nearDuplicateGroup','splitGroupId'])assert.ok(!train.some(a=>a[field]===asset[field]));
+  assert.ok(!train.some(a=>a.sourceGroups.some(g=>asset.sourceGroups.includes(g))));
+  assert.equal(row.photoSha256,expected.imageSha256);assert.equal(row.file,expected.file);
+  assert.deepEqual(row.dimensions,expected.dimensions);assert.equal(row.decodedRGBSha256,expected.decodedRGBSha256);
+ }
+ assert.equal(plan.protocol.timeLimitSeconds,10);assert.equal(plan.protocol.trials,0);
+}
 const configuration={...AUTOMATIC_PRESET,timeLimit:plan.protocol.timeLimitSeconds,trials:plan.protocol.trials};
 const report={schema:'material-pair-pipeline-1',status:'running',configuration,methods:['production','fallback'],targetMode:'rgb',
  plan:{path:args.plan,sha256:hash(await fs.readFile(args.plan))},probeManifestSha256:plan.probe.sha256,rows:[],sourceHashes:{},
- scope:plan.purpose,comparisonProtocol:plan.protocol,sourceFoldChecksPassed:true,runtimeNumericalGatePassed:runtime.passed};
+ scope:plan.purpose,comparisonProtocol:plan.protocol,sourceSeparationChecksPassed:true,runtimeNumericalGatePassed:runtime.passed};
 for(const file of [new URL(import.meta.url).pathname,'scripts/inverse/learning/photo-crop-fallback.mjs','scripts/inverse/learning/foreground-crop.mjs',
  'scripts/inverse/learning/locator-field-source.mjs','scripts/inverse/learning/material-fields.mjs','scripts/inverse/hard-photo-target.mjs','scripts/inverse/export-renderer.mjs',
  ...(await fs.readdir('static/inverse',{recursive:true})).filter(p=>/^(core|locator|vendor)\/.+\.(js|mjs|wasm)$/.test(p)).map(p=>'static/inverse/'+p)])report.sourceHashes[file]=hash(await fs.readFile(file));
@@ -97,7 +125,7 @@ try{
    const detected=await detectForegroundCrop(source,{probability:body,material,resolution:256,window:input.window});
    neuralSeconds=(performance.now()-start)/1000;return detected;
   }});
-  const selection={...selected.decision,combinedDetectionSeconds:(performance.now()-started)/1000,neuralDetectionSeconds:neuralSeconds,inference:'Cached actual held-out WASM output; inference excluded from timings.'};
+  const selection={...selected.decision,combinedDetectionSeconds:(performance.now()-started)/1000,neuralDetectionSeconds:neuralSeconds,inference:'Cached actual evaluation WASM output; inference excluded from timings.'};
   if(selected.detection===selected.production){
    const control=await fit(input,source,selected.production,'production',selection);
    // Identical source/crop/configuration: intentionally share the fit and files.
