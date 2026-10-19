@@ -14,7 +14,7 @@ production path.
 | Sabrina Danholm's Pinterest board | All 225 pins imported; 220 new image files, about 35 MiB | No new corner, material or cutting-path labels; the whole board is QA-reserved |
 | Synthetic geometry | 256 saved witnesses pass the current geometry/paper re-audit across 768 original/subdivided/reflected representations | Limited procedural diversity; recipe holdouts are not topology-disjoint splits |
 | Small learned model | Earlier MobileNetV3-Small fallback raises checked editable pairs from 7/16 to 9/16 on its development cohort; a newer fixed candidate stays at 7/16 on separately selected Sabrina photos | These are different cohorts; no deployment or established source generalization |
-| Saliency models | Frozen U2NETP raises checked derived-mask pairs from 10/32 to 12/32; whole-paper decoder adaptation reaches 13/32 in a native follow-up | Adapted model has no browser validation yet; printed paper, missing body regions and false seams remain; no production integration |
+| Saliency models | Frozen U2NETP raises checked derived-mask pairs from 10/32 to 12/32; adapted browser model adds three checked pairs over fresh current-main controls (9/32 to 12/32) | Raw numerical parity still fails; printed paper, missing body regions, timed-search variation and false seams remain; no production integration |
 | Larger segmentation baseline | Official pretrained MobileSAM evaluated offline | A useful body mask alone does not establish correct corners, material boundaries or legal templates |
 | Solver | Current revision passes 1,109/1,109 inverse tests and 34 browser workflows; all 22 regular Hunodan designs finish under ten seconds | Some hard fits retain thin false seams; the earlier 27/31 photo benchmark has not been rerun |
 
@@ -45,12 +45,27 @@ editable export at 0.695% derived-mask error. All four new exports pass geometry
 and paper checks; three pass all reconstruction checks. Visual review confirms
 recognizable motifs but retains the false seams in the checker hearts. The house
 and candlestick still lose large paper regions, and printed decoration still
-confuses material classification. The adapted checkpoint has **not** been tested
-in the browser; the frozen-model experiment used WASM, so this is not yet a
-controlled model-to-model runtime comparison or a production release.
-These paired counts use the frozen inverse code from `3762b82c`. Main's later
-return-search optimization passed CI while this experiment ran; the neural
-candidate still needs validation against that current code before integration.
+confuses material classification. These historical native counts use inverse
+code from `3762b82c`.
+
+The [adapted browser follow-up](u2netp-body-adapted-browser-results.json) uses
+actual WASM fields and fresh controls after merging main at `8f22315d`. It adds
+the same three recognizable checked pairs: **12/32 versus 9/32**, with 25 crop
+proposals versus 21. All 25 distinct exports pass conversion and geometry;
+24 pass nominal paper checks and 12 pass all reconstruction checks. All nine
+comparison pages were inspected. The lower control count comes from a timed
+solve of the same nested-heart mask: the earlier two-cut candidate was not
+reached, and disagreement rises from 1.15% to 3.90%. That loss affects both
+methods equally; its timing and implementation causes still need isolation.
+
+The adapted ONNX model is 4.62 MB and warm one-thread browser inference has a
+1.18-second median on this desktop. All 32 input tensors match exactly. Raw
+probability parity still fails (maximum difference 0.000143; four threshold
+pixels change across three photos). A deterministic crop replay retains every crop-presence and support decision,
+but two printed-paper images shift corners by up to 1.94 pixels and change
+their classified masks. Other crop outputs, including the three gains, agree
+exactly. The numerical gates remain failed. These remain development results on an
+already inspected cohort, not a production release.
 
 The original [fresh 32-photo evaluation](u2netp-fresh-results.json) freezes the model and
 crop policy before inference. It keeps every existing production crop and adds

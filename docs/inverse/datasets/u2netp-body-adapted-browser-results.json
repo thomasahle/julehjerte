@@ -1,0 +1,169 @@
+{
+  "schema": "u2netp-body-adapted-browser-results-1",
+  "date": "2026-10-19",
+  "status": "development-browser-validation-complete-not-released",
+  "scope": "Development follow-up on the previously inspected 32-photo cohort, source-separated from training. Actual browser WASM model fields with fresh current-main production controls and fresh 10-second fits; no historical fit reuse across engine changes. All numerical gate failures remain recorded. Not a new prospective evaluation.",
+  "implementationRevision": "8f22315d",
+  "evidence": [
+    {
+      "path": "docs/inverse/datasets/u2netp-body-adapted-browser-pipeline-plan.json",
+      "sha256": "4f0bab3b7a56661451e1550d7c311a98efc81a958bcdce0db11bc77ca42499a6"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-body-adapted-browser-pipeline-v1/report.json",
+      "sha256": "e8c711d1c44db311a5f8e9aae0500f9e0b2bced4ca8bfc8c2d522df12ec8709a"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+      "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-body-adapted-browser-gallery-v1/manifest.json",
+      "sha256": "ed89399260d193df43fcdaeb8ce32e94897c2f66749f011babe64df5a45d0a9e"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-body-adapted-browser-v1/report.json",
+      "sha256": "3cd032d25dc15df72e899c3a22da8dd03baf673edbc79c062a23bf21e2ac493b"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-body-adapted-onnx-v1/report.json",
+      "sha256": "52b4852b049922db014abbbfec5cf4caa7e248f79967f36533f9b27a02fbe3b2"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-body-adapted-crop-parity-v1/report.json",
+      "sha256": "0684b0bb7717ebc705462bdb8c211445f496d2bed9f217f5681dfc88ceb20489"
+    }
+  ],
+  "pipeline": {
+    "production": {
+      "attempted": 32,
+      "crops": 21,
+      "supported": 16,
+      "checkedPairs": 9,
+      "neuralSelected": 0,
+      "reusedFits": 0
+    },
+    "fallback": {
+      "attempted": 32,
+      "crops": 25,
+      "supported": 20,
+      "checkedPairs": 12,
+      "neuralSelected": 4,
+      "reusedFits": 28
+    }
+  },
+  "editable": {
+    "exports": 25,
+    "converted": 25,
+    "geometryPassed": 25,
+    "paperPassed": 24,
+    "completeCandidatesPassed": 12
+  },
+  "runtime": {
+    "checks": {
+      "allPhotos": true,
+      "noBrowserErrors": true,
+      "sourceRgbExact": true,
+      "inputParity": true,
+      "probabilityParity": false,
+      "halfThresholdParity": false
+    },
+    "warmInference": {
+      "runs": 5,
+      "medianMilliseconds": 1182.9000000953674,
+      "p90Milliseconds": 1195.3999998569489
+    },
+    "maximumBrowserVsTorchDifference": 0.0001430511474609375,
+    "thresholdChanges": [
+      {
+        "id": "real-fe7fb089d1cd86b4-body-1",
+        "pixels": 2
+      },
+      {
+        "id": "real-c7d1e0ad5050db71-body-1",
+        "pixels": 1
+      },
+      {
+        "id": "real-03bddab9c8f384c4-body-1",
+        "pixels": 1
+      }
+    ]
+  },
+  "visualReview": {
+    "reviewer": "assistant",
+    "allNinePagesInspected": true,
+    "distinctAttempts": 36,
+    "findings": [
+      "All three neural gains are recognizable: four checker hearts, dark/gold checker with hearts and small silhouettes, outlined star with corner hearts. Rounded contacts and thin false seams remain.",
+      "The newly proposed printed-paper crop follows ink instead of sheet identity and fails reconstruction; it is not counted as a gain.",
+      "The retained house crop is badly foreshortened and omits half the motif. Open basket contains contents/background; candlestick includes border/background. These are production crops retained by the fixed policy.",
+      "Cat/gift and girl/butterflies have plausible crops and masks but lose motif detail during fitting. Nativity misses features despite low aggregate disagreement. Fox fails paper validation.",
+      "The printed rosette passes numerical checks against a derived ink silhouette; this does not recover the original physical weave.",
+      "The final simple nested-heart case visibly degrades versus its earlier fit; this is a production solve shared by both methods, not a neural crop change."
+    ]
+  },
+  "controlVariation": {
+    "id": "real-41b7c3e0b79f1265-body-1",
+    "previousChecked": true,
+    "currentChecked": false,
+    "previousError": 0.01151875,
+    "currentError": 0.03903125,
+    "targetMaskUnchanged": true,
+    "initialFinalistCountsAndErrorsUnchanged": true,
+    "previousSelectedCounts": [
+      2,
+      2
+    ],
+    "currentSelectedCounts": [
+      4,
+      4
+    ],
+    "observation": "The fresh timed search did not reach the previous two-cut candidate. The same 150-step grid stages took roughly three times longer, leaving less cleanup time and fewer refinement candidates. Both implementation revision and system timing changed; their individual effects have not yet been isolated. No claim that the network caused this loss."
+  },
+  "release": {
+    "productionEnabled": false,
+    "remaining": [
+      "Investigate the two printed-photo crop shifts under tiny exported probability changes; raw and exact functional parity remain failed.",
+      "Isolate the timed-search regression on the unchanged nested-heart mask.",
+      "End-to-end app integration, loading and latency QA before a production NN release."
+    ]
+  },
+  "numericalCropDiagnostic": {
+    "summary": {
+      "native": {
+        "crops": 21,
+        "samePresenceAndSupport": true,
+        "maxCornerDisplacementPixels": 1.9363415417426384,
+        "changedRgbPixels": 6083,
+        "sameCoverage": true
+      },
+      "browser": {
+        "crops": 21,
+        "samePresenceAndSupport": true,
+        "maxCornerDisplacementPixels": 1.9363415417426384,
+        "changedRgbPixels": 6083,
+        "sameCoverage": true
+      }
+    },
+    "scope": "Numerical parity only, no solver or new quality measurement. Freeze performance.now during detection so every method can examine the same finite orientation list; this differs from the production two-second orientation deadline. No ROI, annotation corners or templates are supplied.",
+    "changedCases": [
+      {
+        "id": "real-dfa7e4b71b43aa86-body-1",
+        "sameCropPresence": true,
+        "sameSupport": true,
+        "maxCornerDisplacementPixels": 1.9363415417426384,
+        "changedRgbPixels": 3427,
+        "sameCoverage": true
+      },
+      {
+        "id": "real-702942779385436c-body-1",
+        "sameCropPresence": true,
+        "sameSupport": true,
+        "maxCornerDisplacementPixels": 0.9442962906082347,
+        "changedRgbPixels": 2656,
+        "sameCoverage": true
+      }
+    ],
+    "finding": "All crop-presence and support decisions agree. Two printed-paper photos change corners and derived RGB masks, so functional output is not exact despite the small raw probability drift. All other photo crop outputs agree exactly, including the three neural gains. This does not relax the failed numerical gates."
+  }
+}

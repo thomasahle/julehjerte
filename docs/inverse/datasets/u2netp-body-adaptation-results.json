@@ -1,6 +1,6 @@
 {
   "schema": "u2netp-body-adaptation-results-1",
-  "status": "native-study-complete-browser-validation-pending",
+  "status": "native-study-complete-browser-followup-recorded",
   "date": "2026-10-19",
   "evidence": [
     {
@@ -60,7 +60,7 @@
       "sha256": "376c9c78f272363b12c0b7c01d7ed6b1fc40afd9e049cb8de72443dc938fae48"
     }
   ],
-  "finding": "Whole-paper decoder adaptation adds one recognizable checked photo beyond the frozen-model experiment: 13/32 versus production 10/32 and frozen-model 12/32. This is native development evidence on an already inspected cohort; actual adapted-model browser inference has not been tested.",
+  "finding": "Whole-paper decoder adaptation adds one recognizable checked photo beyond the frozen-model experiment: 13/32 versus production 10/32 and frozen-model 12/32. This is native development evidence on an already inspected cohort; subsequent adapted-model browser validation is recorded separately in u2netp-body-adapted-browser-results.json.",
   "training": {
     "realPhotos": 16,
     "realSourceGroups": 14,
@@ -305,5 +305,6 @@
     "measurement": "The native and original frozen-model studies use the same pinned inverse engine and production controls. Counts describe that paired experiment, not a fresh replay of the later deployed main revision.",
     "newerMainChange": "Upstream commits b73b7f47 and 2dadbb1e optimize shared return geometry. They passed main CI, but this candidate has not yet been replayed after those changes.",
     "releaseRequirement": "Sync current main and validate the candidate/exported geometry before integration. Preserve the original controlled benchmark rather than silently replacing its controls."
-  }
+  },
+  "browserFollowup": "docs/inverse/datasets/u2netp-body-adapted-browser-results.json"
 }
