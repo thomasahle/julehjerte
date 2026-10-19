@@ -142,6 +142,14 @@ export function trackHeartEdit(heartId: string, heartName: string) {
 }
 
 /**
+ * Track the footer's colourful mode ("Farverig") being turned on or off — by
+ * its toggle, or off by picking a paper colour while it is on.
+ */
+export function trackColorMode(on: boolean) {
+  trackEvent('color_mode', { on });
+}
+
+/**
  * Track when a heart's tracing mode ("Tegn af fra skærmen") is opened
  */
 export function trackHeartTrace(heartId: string, heartName: string) {

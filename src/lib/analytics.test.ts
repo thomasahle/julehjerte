@@ -7,7 +7,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('$app/environment', () => ({ browser: true, dev: false }));
 
-const { isPageViewNavigation, trackPageView } = await import('./analytics');
+const { isPageViewNavigation, trackColorMode, trackPageView } = await import('./analytics');
 
 const nav = (from: string | null, to: string) => ({
 	from: from === null ? null : { url: new URL(from, 'https://juleflet.dk') },
@@ -72,5 +72,22 @@ describe('trackPageView', () => {
 			page_title: 'Jul',
 			page_referrer: 'https://juleflet.dk/?selected=jul'
 		});
+	});
+});
+
+describe('trackColorMode', () => {
+	afterEach(() => {
+		delete (window as { gtag?: unknown }).gtag;
+	});
+
+	it('sends color_mode with whether the mode is now on', () => {
+		const gtag = vi.fn();
+		window.gtag = gtag;
+		trackColorMode(true);
+		trackColorMode(false);
+		expect(gtag.mock.calls).toEqual([
+			['event', 'color_mode', { on: true }],
+			['event', 'color_mode', { on: false }]
+		]);
 	});
 });
