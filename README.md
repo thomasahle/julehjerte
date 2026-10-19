@@ -29,7 +29,7 @@ The deployment workflow requires type checks, lint, application tests, inverse
 correctness tests and a production build. Fresh image searches with strict
 wall-clock quality or routing expectations are registered with `qualityBenchmark`.
 They run separately with their original budgets and assertions; misses appear in
-the workflow summary and the `inverse-timed-quality` artifact (kept seven days).
+the workflow summary and the `inverse-timed-quality-1` / `-2` artifacts (kept seven days).
 They do not block deploying an otherwise valid improvement. A missing or broken
 benchmark run still fails its reporting job.
 

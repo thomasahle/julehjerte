@@ -12,11 +12,12 @@ const completed=/^# duration_ms /m.test(tap);
 // failures, including when Node catches them inside a benchmark callback.
 const valid=completed&&results.length>0&&unexpected.length===0;
 const outcome=process.env.BENCHMARK_OUTCOME;
+const artifact=process.env.BENCHMARK_ARTIFACT||'inverse-timed-quality';
 const status=valid?`${results.length-failures.length}/${results.length} passed; ${failures.length} missed their original targets.`:'Benchmark did not complete normally.';
 const lines=['## Timed inverse quality (advisory)','',status,'',
   'These fresh searches keep their original budgets, masks and assertions. Results depend on runner speed. They are tracked separately from the blocking geometry, paper, export and functional tests.',
   '',...failures.map(line=>`- ${line.replace(/^not ok \d+ - benchmark: /,'')}`),
-  '',`Full TAP output and available failed-fit captures: artifact \`inverse-timed-quality\`.`,
+  '',`Full TAP output and available failed-fit captures: artifact \`${artifact}\`.`,
   ...(unexpected.length?['','Unexpected test-process failures:',...unexpected.map(line=>`- ${line}`)]:[])];
 console.log(lines.join('\n'));
 if(process.env.GITHUB_STEP_SUMMARY)await fs.appendFile(process.env.GITHUB_STEP_SUMMARY,lines.join('\n')+'\n');
