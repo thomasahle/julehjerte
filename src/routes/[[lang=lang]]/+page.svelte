@@ -24,7 +24,7 @@
   import { deleteUserDesign, getUserCollection } from "$lib/stores/collection";
   import { toGalleryHeart, type GalleryHeart, type HeroHeart } from "$lib/front/galleryHearts";
   import { SITE_TITLE, SITE_TITLE_EN } from "$lib/config";
-  import { t, type Language } from "$lib/i18n";
+  import { langFromParam, t, type Language } from "$lib/i18n";
   import { heartAnchorFromHash, sectionAnchorToLand } from "$lib/utils/heartAnchors";
   import { focusSectionHeading } from "$lib/front/deleteFocus";
   import { MY_HEARTS_CATEGORY_ID } from "$lib/data/categories";
@@ -61,7 +61,7 @@
   let levels = $state.raw<Set<DifficultyLevel>>(new Set());
   /** `levels` has been read from the URL or the tab's storage (onMount). */
   let levelsRestored = $state(false);
-  let lang = $derived(($page.params.lang === "en" ? "en" : "da") as Language);
+  let lang = $derived(langFromParam($page.params.lang));
   let metaTitle = $derived(lang === "en" ? SITE_TITLE_EN : SITE_TITLE);
   let pendingAnchorId = $state<string | null>(null);
   /**

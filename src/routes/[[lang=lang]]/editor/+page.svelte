@@ -5,7 +5,7 @@
   import { onMount, tick } from 'svelte';
   import PaperHeart from '$lib/components/PaperHeart.svelte';
   import { pageTitle } from '$lib/seo';
-  import { t, tArray, type Language } from '$lib/i18n';
+  import { langFromParam, t, tArray } from '$lib/i18n';
   import { DEFAULT_COLORS, getColors, subscribeColors, type HeartColors } from '$lib/stores/colors';
   import { getUserCollection, loadStaticHeartById, saveUserDesign } from '$lib/stores/collection';
   import {
@@ -196,7 +196,7 @@
   let heartName = $state('');
   let authorName = $state(urlDesign?.author ?? '');
   let description = $state(urlDesign?.description ?? '');
-  let lang = $derived(($page.params.lang === 'en' ? 'en' : 'da') as Language);
+  let lang = $derived(langFromParam($page.params.lang));
   // The site-wide pair, the colours this heart carries once the visitor has picked
   // any (docs/redesign/DESIGN.md §7), and what the heart is actually drawn in.
   let siteColors = $state<HeartColors>({ ...DEFAULT_COLORS });

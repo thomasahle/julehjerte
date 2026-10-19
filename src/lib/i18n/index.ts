@@ -3,6 +3,14 @@ import { translations, type Language, type TranslationKey } from './translations
 // The language `t` and `tArray` use when they are not given one.
 const currentLang: Language = 'da';
 
+/**
+ * The language a route's optional `[[lang=lang]]` segment names: `'en'` for
+ * /en/…, Danish otherwise (the segment is absent on the Danish pages).
+ */
+export function langFromParam(param: string | undefined): Language {
+  return param === 'en' ? 'en' : 'da';
+}
+
 export function langFromPathname(pathname: string, basePath = ''): Language {
   let path = pathname;
   if (basePath && path.startsWith(basePath)) {

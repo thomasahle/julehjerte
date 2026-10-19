@@ -5,6 +5,7 @@ import type { DifficultyLevel } from '$lib/utils/difficulty';
 import type { HeartDesign, HeartNames } from '$lib/types/heart';
 import { heartName } from '$lib/utils/heartName';
 import { SHARED_HEART_ID } from '$lib/utils/shareDesign';
+import { langFromParam } from '$lib/i18n';
 
 export const prerender = true;
 
@@ -71,7 +72,7 @@ export const load: PageLoad = async ({ params }) => {
 	// belong in that chunk, not in the bundle every page of the site loads.
 	const { heartDescription } = await import('$lib/data/heartDescriptions');
 
-	const lang = params.lang === 'en' ? 'en' : 'da';
+	const lang = langFromParam(params.lang);
 	const category = categoryOfHeart(params.id);
 	const related: RelatedHeart[] = [];
 	for (const id of siblingHeartIds(params.id)) {
