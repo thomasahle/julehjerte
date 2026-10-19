@@ -1290,10 +1290,39 @@
 		return overrides;
 	}
 
+	// The cuts the red highlight below was last worked out for. Checking every cut takes tens of
+	// milliseconds for a big Escher pattern whose cuts have many nodes, too slow for every move of a
+	// drag: while one goes on, the cuts are checked at its first move, then at most every
+	// ISSUE_CHECK_MS, once more after the last move, and at once when the drag ends.
+	const ISSUE_CHECK_MS = 150;
+	let checkedCuts = $state.raw<{ fingers: Finger[]; gridSize: GridSize }>({ fingers: [], gridSize: { x: 3, y: 3 } });
+	let checkedAt = 0;
+	/** The drag (by the snapshot it started from) the cuts were last checked in, or null. */
+	let checkedIn: HistorySnapshot | null = null;
+	$effect.pre(() => {
+		const now = { fingers, gridSize: { x: gridSize.x, y: gridSize.y } };
+		const last = checkedCuts;
+		if (now.fingers === last.fingers && now.gridSize.x === last.gridSize.x && now.gridSize.y === last.gridSize.y) return;
+		const drag = dragTarget ? dragSnapshot : null;
+		const take = () => {
+			checkedCuts = now;
+			checkedAt = performance.now();
+			checkedIn = drag;
+		};
+		const wait = drag && drag === checkedIn ? checkedAt + ISSUE_CHECK_MS - performance.now() : 0;
+		if (wait <= 0) {
+			take();
+			return;
+		}
+		const timer = setTimeout(take, wait);
+		return () => clearTimeout(timer);
+	});
+
 	// Curves that cross, touch or come within the physical margin of another curve in their lobe.
 	// (Uses inferOverlapRect directly: weaveData is declared further down, which matters for SSR.)
 	let issueFingerIds = $derived.by(() => {
 		if (readonly || !showCurves) return new Set<string>();
+		const { fingers, gridSize } = checkedCuts;
 		return findFingersWithIssues(fingers, intersectionMarginPx(inferOverlapRect(fingers, gridSize), gridClearanceScale(gridSize.x, gridSize.y)));
 	});
 

@@ -164,3 +164,28 @@ describe('the Escher tab', () => {
 		send(h.svg, 'pointerup', pointer);
 	});
 });
+
+describe('the red cuts', () => {
+	it('mark a cut dragged too close to the next one at the first move, and are right again the moment the drag ends', () => {
+		const h = render();
+		const red = () => h.target.querySelectorAll('path[stroke="#ff0000"]').length;
+		expect(red()).toBe(0);
+		// A node in the middle of R-1, put by a double-click.
+		const at = midpoint(h.fingers.find((f) => f.id === 'R-1')!);
+		for (let i = 0; i < 2; i++) {
+			send(h.path('R-1'), 'pointerdown', at);
+			send(h.svg, 'pointerup', at);
+		}
+		// Dragged to a pixel short of R-2: no crossing, so the drag goes there, but far too close.
+		const next = h.fingers.find((f) => f.id === 'R-2')!.segments[0]!.p0.x;
+		const node = h.fingers.find((f) => f.id === 'R-1')!.segments[1]!.p0;
+		send(h.handles()[1]!, 'pointerdown', node);
+		send(h.svg, 'pointermove', { x: next - 1, y: node.y });
+		expect(h.fingers.find((f) => f.id === 'R-1')!.segments[1]!.p0.x).toBeCloseTo(next - 1);
+		expect(red()).toBeGreaterThan(0);
+		// Straight back and let go: during a drag the check may wait a moment, but not past its end.
+		send(h.svg, 'pointermove', node);
+		send(h.svg, 'pointerup', node);
+		expect(red()).toBe(0);
+	});
+});
