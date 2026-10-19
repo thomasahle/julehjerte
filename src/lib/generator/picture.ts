@@ -9,14 +9,14 @@
  * Frames without a picture here return none.
  */
 import type { GeneratorRequest } from './generate';
-import { arc, frameRing, outerFrame, uprightToSheet, FITTED, SILHOUETTE, WEDGES, type Font, type Point, type Ring } from './geometry';
+import { arc, frameRing, outerFrame, uprightToSheet, BOARD_RADII, FITTED, SILHOUETTE, WEDGES, type Font, type Point, type Ring } from './geometry';
 import { fillSquare, fitCircle } from './frameFit';
 import { fittedPicture } from './fitted';
 import { normalizeContours } from './contours';
 import { STRIPS, boardChecks, placeMotif, placeRange, shifts, slidePlace } from './stripFigure';
 import { checkeredLayout, checkeredLetters } from './checkeredGrid';
 import { measureTextGrid } from './textGrid';
-import { MOTIF, MOTIF_PATTERNS, boardScale } from './boardMotif';
+import { MOTIF, MOTIF_PATTERNS, boardRadius, boardScale } from './boardMotif';
 
 /** The clearest place for each motif and board, where the search starts when
  * its default size's place is not known yet. */
@@ -29,7 +29,7 @@ export type Picture = { rings: Ring[]; place?: number; range?: [number, number] 
 /** What a heart already made of the motif in this frame, at its default size,
  * tells the next picture: where the figure in the checks lay, and the board's
  * strips per side. */
-export type Known = { place?: number; board?: number };
+export type Known = { place?: number; board?: number; circle?: 'small' | 'large' };
 
 /** The picture for a request, or none where this frame has none yet, or the
  * generator is known to build this motif differently. */
@@ -61,6 +61,7 @@ export function picture(request: GeneratorRequest, known: Known = {}): Picture |
 		// corners its frame turns over with more stripes.
 		if (request.mode === 'figure' && (request.style === 'rays' || request.style === 'check') && (known.board ?? 3) === 3)
 			return circlePicture(request);
+		if (request.mode === 'figure' && request.style === 'board') return boardPicture(request, known.circle);
 		if (request.mode === 'figure' && (request.style === 'wedges' || request.style === 'fitted' || request.style === 'silhouette') && request.contours?.length
 			&& (known.board ?? (request.style === 'fitted' ? 5 : 3)) === (request.style === 'fitted' ? 5 : 3)) {
 			// The open frames' legs, as their first construction draws them, on
@@ -134,6 +135,60 @@ function woven(text: string, font: Font, air: boolean, letterScale = 1): Picture
 		}
 	}
 	return { rings };
+}
+
+/** The circle on a regular board of five strips: the board's checks, cleared
+ * inside the circle, and the motif filling the circle up to the space asked
+ * for (see `generate`). Above 70% the circle reaches into the outer ring of
+ * squares, its checks woven the other way round. A motif that one of the two
+ * constructions cannot build keeps the other's nearest circle whatever its
+ * size, as `circle` says once a heart of it has reported a size it kept. */
+function boardPicture(request: GeneratorRequest, circle?: 'small' | 'large'): Picture | undefined {
+	const contours = normalizeContours(request.contours ?? []);
+	if (!contours.length) return;
+	let { radius } = boardRadius(request.scale ?? .7);
+	const [small, large] = BOARD_RADII;
+	if (radius > small[1] && circle === 'small') radius = small[1];
+	if (radius <= small[1] && circle === 'large') radius = large[0] + .6;
+	const outer = radius > small[1] ? 1 : 0;
+	const xs = contours.flat().map(p => p[0]), ys = contours.flat().map(p => p[1]);
+	const cx = (Math.min(...xs) + Math.max(...xs)) / 2, cy = (Math.min(...ys) + Math.max(...ys)) / 2;
+	const box = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
+	const reach = Math.max(...contours.flat().map(([x, y]) => Math.hypot(x - cx, y - cy))) / box;
+	const scale = (radius - Math.max(request.gap ?? 3, 1.5)) / reach / box;
+	const disc = frameRing('circle', 2 * radius), side = 20, rings: Ring[] = [];
+	for (let i = 0; i < 5; i++)
+		for (let j = 0; j < 5; j++) {
+			if ((i + j + outer) % 2) continue;
+			const square: Ring = [[i * side, j * side], [(i + 1) * side, j * side], [(i + 1) * side, (j + 1) * side], [i * side, (j + 1) * side]];
+			rings.push(square);
+			// Its part inside the circle turns back.
+			const inside = clipConvex(square, disc);
+			if (inside.length >= 3) rings.push(inside);
+		}
+	rings.push(...contours.map(ring => ring.map(([x, y]) => uprightToSheet([(x - cx) * scale, (y - cy) * scale]))));
+	return { rings };
+}
+
+/** The part of a polygon inside a convex one, anticlockwise or not. */
+function clipConvex(subject: Ring, clip: Ring): Ring {
+	const area = clip.reduce((sum, p, i) => sum + p[0] * clip[(i + 1) % clip.length][1] - clip[(i + 1) % clip.length][0] * p[1], 0);
+	const side = (a: Point, b: Point, p: Point) => Math.sign(area) * ((b[0] - a[0]) * (p[1] - a[1]) - (b[1] - a[1]) * (p[0] - a[0])) >= 0;
+	let out: Ring = subject;
+	for (let i = 0; i < clip.length && out.length; i++) {
+		const a = clip[i], b = clip[(i + 1) % clip.length], input = out;
+		out = [];
+		for (let k = 0; k < input.length; k++) {
+			const p = input[k], q = input[(k + 1) % input.length], pin = side(a, b, p), qin = side(a, b, q);
+			if (pin) out.push(p);
+			if (pin !== qin) {
+				const d = (b[0] - a[0]) * (q[1] - p[1]) - (b[1] - a[1]) * (q[0] - p[0]);
+				const t = ((b[0] - a[0]) * (a[1] - p[1]) - (b[1] - a[1]) * (a[0] - p[0])) / d;
+				out.push([p[0] + t * (q[0] - p[0]), p[1] + t * (q[1] - p[1])]);
+			}
+		}
+	}
+	return out;
 }
 
 /** The figure in the checks: its board, and the motif at its place. */

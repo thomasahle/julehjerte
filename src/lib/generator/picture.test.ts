@@ -20,8 +20,11 @@ function mismatch(request: GeneratorRequest, n = 100): number {
 	// the figure in the checks lies, which pattern the small motifs repeat.
 	const fixed = request.place !== undefined || (request.scale ?? .7) === .7, base = fixed ? result : generate({ ...request, scale: .7 });
 	// Where its strips could not all be whole at the size asked for, the
-	// generator says which it kept.
-	const { rings } = picture({ ...request, scale: result.scale ?? request.scale, layout: base.layout }, { place: base.place })!;
+	// generator says which it kept; a board circle's kept size says which
+	// circle the motif keeps.
+	const board = request.mode === 'figure' && request.style === 'board';
+	const circle = board && result.scale !== undefined ? (request.scale ?? .7) > .7 ? 'small' as const : 'large' as const : undefined;
+	const { rings } = picture({ ...request, scale: board ? request.scale : result.scale ?? request.scale, layout: base.layout }, { place: base.place, circle })!;
 	let differ = 0;
 	for (let y = 0; y < n; y++)
 		for (let x = 0; x < n; x++) {
@@ -105,6 +108,15 @@ describe('the picture drawn before the cuts are found', () => {
 
 	it('is the motif in the centre square the cuts make', () => {
 		expect(mismatch({ mode: 'figure', name: 'Tree', contours: tree.contours as Ring[], colors, style: 'squares' })).toBeLessThan(.01);
+	});
+
+	it('is the circle on a board the cuts make, small, large or kept', () => {
+		const request: GeneratorRequest = { mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', gap: 3 };
+		expect(mismatch({ ...request, scale: .6 })).toBeLessThan(.01);
+		// Reaching into the outer ring, the checks are woven the other way round.
+		expect(mismatch({ ...request, scale: .8 })).toBeLessThan(.01);
+		// A solid tree keeps the touching circle, as its heart says.
+		expect(mismatch({ ...request, name: 'Tree', contours: tree.contours as Ring[], scale: .8 })).toBeLessThan(.01);
 	});
 
 	it('has none yet for the other frames', () => {

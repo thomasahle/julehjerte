@@ -5,7 +5,7 @@ import { generateFittedFigure } from './fitted';
 import { sunburstBorder } from './sunburst';
 import { generateTextGrid, squareCellScale } from './textGrid';
 import { NO_WHOLE_STRIPS, STRIPS, slidePlace, stripFigures } from './stripFigure';
-import { MOTIF, MOTIF_PATTERNS, boardScale } from './boardMotif';
+import { MOTIF, MOTIF_PATTERNS, boardRadius, boardScale } from './boardMotif';
 import { CIRCLE_STYLES, fillSquare, fitCircle } from './frameFit';
 export { fillSquare, fitCircle } from './frameFit';
 import { generateBranchedText, hasOverlappingTextBranches, fittedBranchedTextFill } from './branchedText';
@@ -1791,18 +1791,9 @@ function generateUsingRecipes(request: GeneratorRequest,
 		const box = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
 		const reach = Math.max(...contours.flat().map(p => distance(p, centre))) / box;
 		const gap = request.gap ?? 3, compound = { practical: true, compound: true };
-		// The size setting sizes the circle smoothly from the smallest radius
-		// the board allows to the largest, with the touching circle at the
-		// default 70%, where the one change of construction lies. It passes the
-		// outer lines' tangent slightly beyond it, and just beyond the touching
-		// circle it touches, the corners there being too close to cut. The motif
-		// fills the circle up to the space asked for.
-		const [small, large] = BOARD_RADII, setting = Math.max(.45, Math.min(.85, request.scale ?? .7));
-		let radius = setting <= .7 ? small[0] + (setting - .45) / .25 * (small[1] - small[0])
-			: large[0] + (setting - .7) / .15 * (large[1] - large[0]);
-		if (Math.abs(radius - 30) < .1) radius = 30.1;
-		if (radius > large[0] && radius < large[0] + .6) radius = large[0];
-		const range = radius <= small[1] ? small : large;
+		// The size setting sizes the circle (see `boardRadius`); the motif fills
+		// the circle up to the space asked for.
+		const [small, large] = BOARD_RADII, { radius, range } = boardRadius(request.scale ?? .7);
 		// The slower compound routing only where the panels meet at the centre.
 		const four = [{ columns: 2, slices: 2 }, { ...compound, columns: 2, slices: 2 },
 			...backgroundJunctions(contours).map((p): Point => [p[0] - centre[0], p[1] - centre[1]])

@@ -175,7 +175,14 @@
 	/** The preview worker's job and the newest one waiting for it. While a
 	 * slider moves, only its latest value waits, and every finished result is
 	 * kept, for moving back; a long job for a value already left is abandoned. */
-	type Job = { request: GeneratorRequest; key: string; token: number };
+	type Job = { request: GeneratorRequest; key: string; token: number; motif?: string };
+	/** What the board circle's hearts said of each motif: a size kept above 70%
+	 * means it keeps the touching circle, one at or below means the larger. */
+	const boardCircles = new Map<string, 'small' | 'large'>();
+	function learn(job: Job, result: GeneratorResult) {
+		if (job.motif && job.request.mode === 'figure' && job.request.style === 'board' && result.scale !== undefined)
+			boardCircles.set(job.motif, (job.request.scale ?? .7) > .7 ? 'small' : 'large');
+	}
 	let running: (Job & { started: number }) | null = null,
 		waiting: Job | null = null;
 	let worker: Worker | null = null,
@@ -206,8 +213,10 @@
 		const job = running;
 		running = null;
 		if (job) {
-			if (data.result) cache.set(job.key, data.result);
-			else failures.set(job.key, data as Failure);
+			if (data.result) {
+				cache.set(job.key, data.result);
+				learn(job, data.result);
+			} else failures.set(job.key, data as Failure);
 			if (job.token === revision) {
 				busy = false;
 				if (data.result) {
@@ -384,8 +393,8 @@
 				if (token !== revision) return;
 				// What the default size's heart, once made, tells the picture.
 				const made = cache.get(geometryKey({ ...snapshot, scale: defaults.scale, place: undefined }));
-				sketch = picture(request, { place: made?.place, board: made?.design.gridSize.x }) ?? null;
-				if (!cached && !failed) queueJob({ request, key, token });
+				sketch = picture(request, { place: made?.place, board: made?.design.gridSize.x, circle: boardCircles.get(snapshot.motif) }) ?? null;
+				if (!cached && !failed) queueJob({ request, key, token, motif: snapshot.motif });
 			})
 			.catch(() => {
 				if (token === revision && !cached && !failed) {
