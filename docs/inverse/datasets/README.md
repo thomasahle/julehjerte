@@ -278,9 +278,10 @@ cached neural inference. Nine photos request the neural fallback. Its two
 successful locator attempts take about **0.53–0.55 seconds**, after the ordinary
 search has already spent several seconds. The geometric search is a larger
 latency cost here than the previously measured 67–68 ms neural inference.
-Full-photo browser preprocessing and fresh grouped evaluation remain necessary;
-the earlier strict WASM numerical tolerance remains failed. No app change or
-deployment is included.
+The browser preprocessing follow-up below now reproduces the lossless source
+inputs. Original JPEG decoding and fresh grouped evaluation remain necessary;
+the earlier strict WASM numerical tolerance remains failed. The neural fallback
+is still an offline experiment.
 
 ### Matching photo preprocessing in the browser
 
@@ -307,10 +308,11 @@ Torch numerical tolerance remains failed. No neural model is added to the site.
 
 ### Preservation archive, 2026-10-19
 
-The [preservation manifest](heart-archive-storage.json) records **133 unique
-original files, 15,995,754 bytes**, including 54 template PDFs (286 pages),
+The [preservation manifest](heart-archive-storage.json) records **138 unique
+original files, 16,498,711 bytes**, including 54 template PDFs (286 pages),
+five editable SVG originals,
 seven recovered Permo images, sixteen Haabet images and source/history/license
-evidence. These are documents and photographs, not 129 independent designs or
+evidence. These are documents and photographs, not 138 independent designs or
 new training labels.
 [Additional collections](archive-additional.json) record Krümmel,
 Bibelselskabet, Spejderliv and PaperMatrix; the [Permo history](archive-permo.json)
@@ -345,6 +347,13 @@ two existing evidence objects. All six linked PDF/SVG template replays returned
 ground truth. Hexatriple explicitly uses three sheets, outside the current
 two-sheet inverse model. Publication timestamps, advent-calendar appearances,
 variant descriptions and exact failed links remain separate source claims.
+An [editable-source recovery](archive-jhd-original-svg-1.json) preserves the
+original SVGs for **Darth Vader**, **Julehjertets Hjerte**, **Node**, **Fjerde
+Søndag i Advent** and **Venus**, whose PDFs were already preserved. Five files
+add **502,957 bytes** and no additional designs. Their original layers remain
+intact; SHA-256 checks and historical archive digests identify the source bytes.
+The public records gain working source links while keeping one PDF template
+action, so the editable original does not appear to be another cutting sheet.
 The source index now contains **1,123 external records**, alongside the
 **56 published Juleflet hearts**. These batches add no public media mirrors.
 
