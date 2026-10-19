@@ -9,15 +9,26 @@
 <script lang="ts">
   import type { HeartDesign } from '$lib/types/heart';
   import { getTemplateData } from '$lib/utils/templateSvg';
+  import { markPathData, shownTemplateMarks } from '$lib/utils/orientationMarks';
+  import { heartScale } from '$lib/laser/unfold';
 
   interface Props {
     design: HeartDesign;
     lobe: 'left' | 'right';
     size?: number;
     label?: string;
+    /**
+     * Draw the orientation marks ($lib/utils/orientationMarks), sized as on
+     * a template printed at the download's default width. The stage's 104 px
+     * thumbnails leave them out: a cross of a pixel or two reads as dirt.
+     */
+    marks?: boolean;
   }
 
-  let { design, lobe, size = 300, label }: Props = $props();
+  let { design, lobe, size = 300, label, marks = true }: Props = $props();
+
+  /** The download dialog's default width (DEFAULT_WIDTH_MM in $lib/laser/export, not imported to keep the laser writers off this page). */
+  const PRINT_WIDTH_MM = 80;
 
   const templateData = $derived(getTemplateData(design, lobe));
   const earRadius = $derived(templateData.earRadius);
@@ -32,6 +43,9 @@
   const offsetY = $derived((size - scaledHeight) / 2);
   const earPath = $derived(templateData.earPath);
   const transformedPaths = $derived(templateData.cutPaths);
+  const orientationMarks = $derived(
+    marks ? shownTemplateMarks(design, lobe, heartScale(design, PRINT_WIDTH_MM)) : []
+  );
 </script>
 
 <div class="template-preview">
@@ -90,6 +104,18 @@
           fill="none"
           stroke="#333"
           stroke-width={1.5 / scale}
+        />
+      {/each}
+
+      <!-- Orientation marks: where this piece meets the other at the top of the heart -->
+      {#each orientationMarks as mark, i (i)}
+        <path
+          class="mark"
+          data-mark={mark.kind}
+          d={markPathData(mark)}
+          fill="none"
+          stroke="#333"
+          stroke-width={1 / scale}
         />
       {/each}
     </g>

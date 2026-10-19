@@ -112,7 +112,7 @@
 				{:else if v.id === 'photo' && photo}
 					<img class="thumb-photo" src={photo.src} alt="" loading="lazy" decoding="async" />
 				{:else if design}
-					<TemplatePreview {design} lobe={v.id === 'right' ? 'right' : 'left'} size={200} />
+					<TemplatePreview {design} lobe={v.id === 'right' ? 'right' : 'left'} size={200} marks={false} />
 				{/if}
 			</span>
 			<span class="thumb-label">{v.label}</span>
