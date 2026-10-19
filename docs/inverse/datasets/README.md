@@ -14,7 +14,7 @@ production path.
 | Sabrina Danholm's Pinterest board | All 225 pins imported; 220 new image files, about 35 MiB | No new corner, material or cutting-path labels; the whole board is QA-reserved |
 | Synthetic geometry | 256 saved witnesses pass the current geometry/paper re-audit across 768 original/subdivided/reflected representations | Limited procedural diversity; recipe holdouts are not topology-disjoint splits |
 | Small learned model | Earlier MobileNetV3-Small fallback raises checked editable pairs from 7/16 to 9/16 on its development cohort; a newer fixed candidate stays at 7/16 on separately selected Sabrina photos | These are different cohorts; no deployment or established source generalization |
-| Pretrained saliency baseline | A predeclared U2NETP fallback raises checked derived-mask pairs from 10/32 to 12/32 on a fresh pipeline cohort; all 24 distinct exports pass editable geometry checks | Printed paper and fine motifs still fail; one added fit retains visible seams; numerical parity gates fail; no production integration |
+| Saliency models | Frozen U2NETP raises checked derived-mask pairs from 10/32 to 12/32; whole-paper decoder adaptation reaches 13/32 in a native follow-up | Adapted model has no browser validation yet; printed paper, missing body regions and false seams remain; no production integration |
 | Larger segmentation baseline | Official pretrained MobileSAM evaluated offline | A useful body mask alone does not establish correct corners, material boundaries or legal templates |
 | Solver | Current revision passes 1,109/1,109 inverse tests and 34 browser workflows; all 22 regular Hunodan designs finish under ten seconds | Some hard fits retain thin false seams; the earlier 27/31 photo benchmark has not been rerun |
 
@@ -30,7 +30,26 @@ The local preview is at `http://localhost:4173/editor/mal/`.
 
 #### Latest neural experiments
 
-The [fresh 32-photo evaluation](u2netp-fresh-results.json) freezes the model and
+The [whole-paper adaptation](u2netp-body-adaptation-results.json) trains the
+U2NETP decoder for 120 updates on 16 reviewed photos from 14 separate source
+groups, mixed with 64 existing synthetic views. The encoder and normalization
+statistics stay fixed. Training takes about six minutes on one low-priority CPU
+thread; model size and architecture remain unchanged. Known-pixel training error
+falls from 4.09% to 2.77%, with regressions on some tips. This is training evidence,
+not a generalization score.
+
+On the same, now-inspected 32-photo evaluation cohort, the native adapted model
+produces **13 checked pairs**, versus production's 10 and the frozen-model
+experiment's 12. The additional dark/gold checker-and-silhouette heart survives
+editable export at 0.695% derived-mask error. All four new exports pass geometry
+and paper checks; three pass all reconstruction checks. Visual review confirms
+recognizable motifs but retains the false seams in the checker hearts. The house
+and candlestick still lose large paper regions, and printed decoration still
+confuses material classification. The adapted checkpoint has **not** been tested
+in the browser; the frozen-model experiment used WASM, so this is not yet a
+controlled model-to-model runtime comparison or a production release.
+
+The original [fresh 32-photo evaluation](u2netp-fresh-results.json) freezes the model and
 crop policy before inference. It keeps every existing production crop and adds
 a review-required neural proposal only where none exists. Crop proposals rise
 from **21 to 24**, and checked pairs from **10 to 12**. The new checker-heart and
