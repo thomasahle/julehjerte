@@ -2022,11 +2022,46 @@
       "logPrefix": "/tmp/julehjerte-grid-loss-recovery-"
     },
     "linux": {
-      "status": "in_progress",
+      "status": "completed",
       "url": "https://github.com/thomasahle/julehjerte/actions/runs/39221825743",
       "diagnosticCommit": "0c330917",
       "mode": "cold",
-      "note": "Source matches bb667e2b; only three diagnostic helper scripts differ, and cold mode imports no diagnostic clock."
+      "note": "Source matches bb667e2b; only three diagnostic helper scripts differ, and cold mode imports no diagnostic clock.",
+      "conclusion": "failure",
+      "passed": 1129,
+      "failed": 3,
+      "shards": [
+        {
+          "shard": 1,
+          "passed": 294,
+          "failed": 1,
+          "failures": [
+            "an invalid feature proposal cannot consume the partial-photo search without a legal result"
+          ]
+        },
+        {
+          "shard": 2,
+          "passed": 272,
+          "failed": 0,
+          "failures": []
+        },
+        {
+          "shard": 3,
+          "passed": 244,
+          "failed": 1,
+          "failures": [
+            "fresh synthetic-control routing retains time for a valid template without changing the mask"
+          ]
+        },
+        {
+          "shard": 4,
+          "passed": 319,
+          "failed": 1,
+          "failures": [
+            "the vertical near-miss layout produces checked exports within the original short search (1.5x clock)"
+          ]
+        }
+      ]
     },
     "sourceCommit": "bb667e2b",
     "correctedRoutingTest": {
@@ -2036,11 +2071,11 @@
     }
   },
   "clearanceCheckpointInvestigation": {
-    "status": "local focused tests passed; broader validation pending",
+    "status": "enclosure-aware priority passed targeted cases; full local and Linux validation pending",
     "fixture": "coverage-fits/photo-bauble",
     "evidence": "The fixed 150-step ordered clearance fit produced seven inspected checkpoints. The first five failed inter-slit clearance; the last two passed geometry at 7.06% and 6.99% observed image error. Error-only checkpoint selection nevertheless handed back the earlier invalid 6.14% state. Paper was uncertain on the later grids and still needs independent refinement/verification.",
     "record": "/tmp/julehjerte-partial-clearance-study.json",
-    "proposal": "Use ordered checkpoint preferences: valid geometry first, then retained source colours, then mask disagreement. Retain the gradient trajectory and original deadline.",
+    "proposal": "Prefer already-enclosed source features, then retained source colours, then valid geometry, then mask disagreement. These are checkpoint preferences, not acceptance certificates; gradients, limits and final independent gates remain unchanged.",
     "firstFreshReplay": {
       "passed": 1,
       "failed": 0,
@@ -2052,6 +2087,24 @@
       "failed": 0,
       "log": "/tmp/julehjerte-clearance-priority-tests.log",
       "coverage": "Synthetic legal-spacing rollback, partial-photo coverage including the bauble, Viking and late-clearance fits, stacked motifs, bicycle finalist and dense counts."
+    },
+    "broaderInitialPolicy": {
+      "passed": 43,
+      "failed": 4,
+      "log": "/tmp/julehjerte-clearance-priority-broader-tests.log",
+      "diagnosis": "Two negative-diagonal fits were valid and below 1.6% disagreement; tests wrongly required their initial clearance geometry to remain invalid. The two puppy fits genuinely lost an opening because geometry priority displaced a source-colour-preserving checkpoint."
+    },
+    "colourOnlyRevision": {
+      "passed": 4,
+      "failed": 1,
+      "log": "/tmp/julehjerte-clearance-retention-tests.log",
+      "diagnosis": "Colour retention alone still let a legal grid open the frozen puppy enclosure. The shifted puppy and bauble passed. Preserve the existing full feature-fidelity audit as a higher checkpoint class when available."
+    },
+    "enclosureRevision": {
+      "passed": 3,
+      "failed": 0,
+      "log": "/tmp/julehjerte-clearance-enclosure-tests.log",
+      "coverage": "Fresh bauble and frozen/shifted puppy fits; independent exported mask, opening and paper assertions retained."
     }
   }
 }
