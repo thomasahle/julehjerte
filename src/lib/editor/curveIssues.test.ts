@@ -79,6 +79,17 @@ describe('fingerHasIntersectionIssues', () => {
 		expect(segmentsIntersect(fingers[0]!.segments, fingers[1]!.segments)).toBe(true);
 	});
 
+	it('sees a curve bent in place after it was checked', () => {
+		const fingers = [straightLeft('L-1', mid), bowedLeft('L-2', mid - 30, 20)];
+		expect(segmentsIntersect(fingers[0]!.segments, fingers[1]!.segments)).toBe(false);
+		expect(findFingersWithIssues(fingers, margin).size).toBe(0);
+		// The same objects, bowed on across L-1.
+		const bowed = fingers[1]!.segments[0]!;
+		bowed.p1.y = bowed.p2.y = mid - 30 + 60 * (4 / 3);
+		expect(segmentsIntersect(fingers[0]!.segments, fingers[1]!.segments)).toBe(true);
+		expect(findFingersWithIssues(fingers, margin)).toEqual(new Set(['L-1', 'L-2']));
+	});
+
 	it('flags curves that share or nearly share a start point on the fold line', () => {
 		// Same start on the right edge, diverging towards the left edge.
 		const shared = [straightLeft('L-1', mid, mid - 40), straightLeft('L-2', mid, mid + 40)];

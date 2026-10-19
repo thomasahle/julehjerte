@@ -131,13 +131,40 @@ function apart(a: Float64Array, i: number, b: Float64Array, j: number, gap: numb
 }
 
 /**
+ * `f`, kept for each segment with the coordinates it was worked out from: a segment met again costs
+ * a lookup, and one whose coordinates have changed is worked out again. What `f` returns is shared,
+ * so read only.
+ */
+export function perSegment<T>(f: (seg: CubicBezierSegment) => T): (seg: CubicBezierSegment) => T {
+  const kept = new WeakMap<CubicBezierSegment, { at: number[]; value: T }>();
+  return (seg) => {
+    const { p0, p1, p2, p3 } = seg;
+    const k = kept.get(seg);
+    if (k) {
+      const a = k.at;
+      if (Object.is(a[0], p0.x) && Object.is(a[1], p0.y) && Object.is(a[2], p1.x) && Object.is(a[3], p1.y) &&
+          Object.is(a[4], p2.x) && Object.is(a[5], p2.y) && Object.is(a[6], p3.x) && Object.is(a[7], p3.y)) return k.value;
+    }
+    const value = f(seg);
+    kept.set(seg, { at: [p0.x, p0.y, p1.x, p1.y, p2.x, p2.y, p3.x, p3.y], value });
+    return value;
+  };
+}
+
+/** A curve as `intersectBezierCurves` tries it: its two ends when straight, else 80 pieces; and their boxes. */
+const crossingPolyline = perSegment((seg) => {
+  const points = isLinearBezier(seg) ? [seg.p0, seg.p3] : sampleBezier(seg, 80);
+  return { points, boxes: pieceBoxes(points) };
+});
+
+/**
  * Find intersections between two Bézier curves. `first`: stop at the first point found, all a caller
  * asking whether they cross at all needs.
  */
 export function intersectBezierCurves(seg1: CubicBezierSegment, seg2: CubicBezierSegment, first = false): Point[] {
   // Approximate intersections by polyline sampling.
-  const a = isLinearBezier(seg1) ? [seg1.p0, seg1.p3] : sampleBezier(seg1, 80);
-  const b = isLinearBezier(seg2) ? [seg2.p0, seg2.p3] : sampleBezier(seg2, 80);
+  const { points: a, boxes: boxesA } = crossingPolyline(seg1);
+  const { points: b, boxes: boxesB } = crossingPolyline(seg2);
 
   const points: Point[] = [];
   const segIntersect = (p1: Point, p2: Point, p3: Point, p4: Point): Point | null => {
@@ -153,7 +180,6 @@ export function intersectBezierCurves(seg1: CubicBezierSegment, seg2: CubicBezie
 
   // Pieces whose boxes are far apart cannot cross (see `sureGap`), so only the others are tried, in
   // the same order.
-  const boxesA = pieceBoxes(a), boxesB = pieceBoxes(b);
   const gap = sureGap(Math.max(boxesA.longest, boxesB.longest));
   const near = new Uint8Array(boxesA.runs * boxesB.runs);
   for (let r = 0; r < boxesA.runs; r++)
