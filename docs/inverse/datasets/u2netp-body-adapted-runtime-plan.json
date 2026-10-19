@@ -1,0 +1,56 @@
+{
+  "schema": "u2netp-runtime-plan-1",
+  "status": "predeclared-protocol-instantiated",
+  "study": {
+    "path": "docs/inverse/datasets/u2netp-body-adapted-study-plan.json",
+    "sha256": "5f6a9f6287cc4ae2fe0f67063e20933220d2107648d1b7af640be5101d05e481"
+  },
+  "probe": {
+    "path": "tmp/heart-learning/u2netp-body-adapted-probe-v1/report.json",
+    "sha256": "e2195b1c9f644cd13875e2fe7fda778c860484ba2d37f18377f5f242f5a60095"
+  },
+  "probeManifest": {
+    "path": "tmp/heart-learning/u2netp-body-adapted-probe-v1/manifest.json",
+    "sha256": "4182374506f9f48bf5f93dfcfd22fb502174966e9f96aedd6733c3bb5cd9c481"
+  },
+  "runtime": {
+    "path": "tmp/heart-learning/onnx-web-1.19.2/manifest.json",
+    "sha256": "7a54b46a7f0d7eea202553d1470e0c53ebdfef19b67b8b61ac120b88e131c29d"
+  },
+  "protocol": {
+    "threads": 1,
+    "inputShape": [
+      1,
+      3,
+      320,
+      320
+    ],
+    "opset": 17,
+    "onnx": "1.19.1",
+    "onnxruntime": "1.19.2",
+    "inputAtol": 1e-06,
+    "probabilityAtol": 2e-05,
+    "threshold": 0.5,
+    "warmupRuns": 1,
+    "timingRuns": 5
+  },
+  "resources": {
+    "nativeMaxArtifactMiB": 72,
+    "browserMaxArtifactMiB": 16,
+    "workers": 1,
+    "newPhotoDownloads": 0,
+    "newSourcePhotoCopies": 0
+  },
+  "sourcePins": {
+    "scripts/inverse/learning/partial-photo-crop.mjs": "69d3b078258e6c43296f7dec37bd40a875728aa3bd2e4ec2fb50ffcd6ec9c349",
+    "scripts/inverse/learning/u2netp-input.mjs": "b2951a0126331652c747572991a2cfc30b27e0812a21500d140f0c6450db3624",
+    "scripts/inverse/learning/u2netp-probe.py": "300c7c3c43188528eac7b96f06bdf124b4336e0215f94204c96318d8d4903a6d",
+    "scripts/inverse/learning/u2netp-export.py": "4395e496f1cf5a77aec11341029ffde1fd8e012bb4b73a1817b2a5b41c2afcb2",
+    "scripts/inverse/learning/u2netp-browser.mjs": "c991c7982d781dc95f78037e4917bf18544764292b93fc103504c173194f346d"
+  },
+  "scope": "Export and original-JPEG browser replay of the fixed final whole-paper adapted checkpoint. Same 32 source-separated development photos, unchanged original numerical gates. Existing input tensors are hardlinked only after exact equality with newly computed upstream preprocessing; no model or probability fields are reused.",
+  "reuseInputs": {
+    "path": "tmp/heart-learning/u2netp-fresh-onnx-v1/report.json",
+    "sha256": "6a5bca46fc54ee20ded810bc070d558a9da2d9ecb5a9238cc0a2f90e8819a11a"
+  }
+}

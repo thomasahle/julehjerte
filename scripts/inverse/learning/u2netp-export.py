@@ -1,4 +1,4 @@
-"""Export the fixed saliency baseline and compare against its saved native fields."""
+"""Export a pinned saliency model and compare against its saved native fields."""
 import argparse
 import importlib.util
 import json
@@ -48,6 +48,11 @@ def main():
     manifest_file = checked(plan['probeManifest']); manifest = json.loads(manifest_file.read_bytes())
     assert manifest['status'] == 'complete'
     assert [r['id'] for r in probe['rows']] == [r['id'] for r in manifest['rows']]
+    reused_inputs = None
+    if 'reuseInputs' in plan:
+        reused_file = checked(plan['reuseInputs']); reused_inputs = json.loads(reused_file.read_bytes())
+        assert reused_inputs['schema'] == 'u2netp-export-1' and reused_inputs['status'] == 'complete'
+        assert [r['id'] for r in reused_inputs['rows']] == [r['id'] for r in manifest['rows']]
     protocol = plan['protocol']; assert protocol['threads'] == 1 and protocol['inputShape'] == [1, 3, 320, 320]
     torch.set_num_threads(1); torch.set_num_interop_threads(1)
     import onnx
@@ -74,9 +79,11 @@ def main():
     result = {'schema': 'u2netp-export-1', 'status': 'running',
               'plan': {'path': str(args.plan), 'sha256': digest(args.plan.read_bytes())},
               'sourceSha256': digest(Path(__file__).read_bytes()), 'rows': [],
+              'fieldOrigin': manifest['fieldOrigin'],
               'onnx': {'path': file.name, 'sha256': digest(file.read_bytes()), 'bytes': file.stat().st_size},
               'runtime': {'onnx': onnx.__version__, 'onnxruntime': ort.__version__, 'torch': torch.__version__, 'threads': 1}}
     if 'reuseModel' in plan: result['reusedModel'] = plan['reuseModel']
+    if reused_inputs: result['reusedInputReport'] = plan['reuseInputs']
     def save(): (args.output/'report.json').write_text(json.dumps(result, indent=2)+'\n')
     save()
     try:
@@ -93,7 +100,15 @@ def main():
             assert actual.shape == expected.shape and np.isfinite(actual).all() and ((actual >= 0) & (actual <= 1)).all()
             assets = {}
             for suffix, value in [('input', tensor), ('saliency', actual)]:
-                target = args.output/(row['id']+'-'+suffix+'.f32'); target.write_bytes(value.astype('<f4').tobytes())
+                target = args.output/(row['id']+'-'+suffix+'.f32'); binary = value.astype('<f4').tobytes()
+                if suffix == 'input' and reused_inputs:
+                    asset = next(r for r in reused_inputs['rows'] if r['id'] == row['id'])['assets']['input']
+                    original = (reused_file.parent/asset['path']).resolve()
+                    assert original.is_relative_to(reused_file.parent.resolve())
+                    assert digest(binary) == asset['sha256']
+                    os.link(checked({'path': str(original), 'sha256': asset['sha256']}), target)
+                else:
+                    target.write_bytes(binary)
                 assets[suffix] = {'path': target.name, 'sha256': digest(target.read_bytes())}
             difference = {'maxAbsoluteDifference': float(np.max(np.abs(actual-expected))),
                           'changedHalfThresholdPixels': int(np.count_nonzero((actual > .5) != (expected > .5)))}
