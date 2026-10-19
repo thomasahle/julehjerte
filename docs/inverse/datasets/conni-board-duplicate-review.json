@@ -1,0 +1,1591 @@
+{
+  "schema": "conni-board-duplicate-review-1",
+  "reviewedAt": "2026-10-19",
+  "scope": "Bounded visual review of all 42 precomputed candidate pairs using existing original bytes only. No downloads, no changes to manifests, source assets, or split assignments.",
+  "inputFiles": {
+    "candidates": {
+      "path": "docs/inverse/datasets/conni-board-near-duplicate-candidates.json",
+      "sha256": "304edbb5b8e0ad6e74475af3ebbb7b2acd433a0e89b1b9437aa809fbfab7b840"
+    },
+    "stagedManifest": {
+      "path": "docs/inverse/datasets/conni-board-staged-manifest.json",
+      "sha256": "2cfa41fe8a42add0f0c0ec93a54243f2919d03f6f57d0b1fccf7a374bd94da30"
+    },
+    "existingManifest": {
+      "path": "docs/inverse/datasets/real-manifest.json",
+      "sha256": "46986981cdbac3fbada54621014a7584a106576688b08807f52753507c8a6ff5"
+    },
+    "trainingPlan": {
+      "path": "docs/inverse/datasets/u2netp-body-adaptation-plan.json",
+      "sha256": "488a318debdf2be64fe3570668ef0661385108b96b06a8d3b03c4c7408f9b704"
+    }
+  },
+  "method": "Three paired contact sheets were reviewed in full. The three previously unassigned pairs also received a larger dedicated sheet; the existing original for pair 31 was opened separately. Checksums of both endpoints of every pair were independently rechecked. Differences were judged from the actual motif, framing, template geometry, annotations, page layout and (when present) photographic texture, not from perceptual-hash distance alone.",
+  "relationshipDefinitions": {
+    "same-source-image-variant": "Same underlying photograph, scan or rendered plate, with resized/re-encoded or minor framing variants. Not byte identity. Suitable for confirmed near-duplicate grouping.",
+    "same-motif-different-photo-or-render": "Same design observed in a different photograph or materially different rendering/plate; should share motif/family separation, not necessarily a near-duplicate image group.",
+    "false-similarity": "Different design/image despite similar coarse hash. Do not add an image/motif edge on this evidence."
+  },
+  "counts": {
+    "reviewedPairs": 42,
+    "distinctStagedFiles": 31,
+    "sameSourceImageVariant": 42,
+    "sameMotifDifferentPhotoOrRender": 0,
+    "falseSimilarity": 0,
+    "uncertain": 0,
+    "previouslyUnassignedPairs": 3
+  },
+  "pairs": [
+    {
+      "stagedId": "real-519ee71c8519d9e3",
+      "existingId": "real-a055202166ff0bdd",
+      "hammingDistance": 6,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 1,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "519ee71c8519d9e355f56ddb9f564303251294657d31e2fd4a25b60ec0c4f0cb",
+      "existingSha256": "a055202166ff0bdd98f57a4aa854f2639c4b9deac75f3d8aededc1c8ed3c6436",
+      "stagedDimensions": [
+        848,
+        619
+      ],
+      "existingDimensions": [
+        848,
+        619
+      ],
+      "existingNearDuplicateGroup": "real-a055202166ff0bdd",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-01.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-d3f562a4a38f1dcc",
+      "existingId": "real-7a4e2cf93d71c23e",
+      "hammingDistance": 1,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 2,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "d3f562a4a38f1dcced5b5596d6500b5cbdc81ea76a745dc15444aac11f94c16a",
+      "existingSha256": "7a4e2cf93d71c23ebd9e93799d0943afad75f01546187a76ed4f20d690843e5b",
+      "stagedDimensions": [
+        872,
+        658
+      ],
+      "existingDimensions": [
+        872,
+        658
+      ],
+      "existingNearDuplicateGroup": "real-7a4e2cf93d71c23e",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-01.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-a58f0fe5b717bfac",
+      "existingId": "real-95eb58b4312cda4d",
+      "hammingDistance": 7,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 3,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "a58f0fe5b717bfac59c5511ae43d459522e8d64aa8678d812459e49a553c764e",
+      "existingSha256": "95eb58b4312cda4d78b787be7ac692770feca5908ec61462e8993ed724d3b71c",
+      "stagedDimensions": [
+        564,
+        398
+      ],
+      "existingDimensions": [
+        870,
+        614
+      ],
+      "existingNearDuplicateGroup": "real-95eb58b4312cda4d",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-01.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-12aa26eff6a09b6b",
+      "existingId": "real-71a290452cfd00c8",
+      "hammingDistance": 1,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 4,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "12aa26eff6a09b6b9db93bb3116f00e57b6d53348f78d8fa5590dbcb5c4c6c1a",
+      "existingSha256": "71a290452cfd00c8413c18e95be86033ca0a9524dfbc93a4e809ec819156d5a2",
+      "stagedDimensions": [
+        650,
+        460
+      ],
+      "existingDimensions": [
+        854,
+        604
+      ],
+      "existingNearDuplicateGroup": "real-71a290452cfd00c8",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-01.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-12aa26eff6a09b6b",
+      "existingId": "real-2694dd4fe8ff1230",
+      "hammingDistance": 4,
+      "existingSourceGroups": [
+        "pinterest-pin-732679433115974275"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 5,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "12aa26eff6a09b6b9db93bb3116f00e57b6d53348f78d8fa5590dbcb5c4c6c1a",
+      "existingSha256": "2694dd4fe8ff12308ab48d806835e89836d4a44a6a79338ac9f4f05f91b7b122",
+      "stagedDimensions": [
+        650,
+        460
+      ],
+      "existingDimensions": [
+        564,
+        399
+      ],
+      "existingNearDuplicateGroup": "real-71a290452cfd00c8",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-01.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-c7d5e83cfafedf70",
+      "existingId": "real-7a4e2cf93d71c23e",
+      "hammingDistance": 6,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 6,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "c7d5e83cfafedf70a39acf4f5cad05979215ac4045c445b2c46a2899b45d20de",
+      "existingSha256": "7a4e2cf93d71c23ebd9e93799d0943afad75f01546187a76ed4f20d690843e5b",
+      "stagedDimensions": [
+        650,
+        490
+      ],
+      "existingDimensions": [
+        872,
+        658
+      ],
+      "existingNearDuplicateGroup": "real-7a4e2cf93d71c23e",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-01.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-baf1b2c72f46cce7",
+      "existingId": "real-3550f13c15483964",
+      "hammingDistance": 2,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 7,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "baf1b2c72f46cce7deb2564b335f39232101c22bc1546c96dc17b098cce98c49",
+      "existingSha256": "3550f13c154839646f44ba284e603400dec4d2f0d5aa8eeba2a526ad406b0e0d",
+      "stagedDimensions": [
+        848,
+        620
+      ],
+      "existingDimensions": [
+        848,
+        620
+      ],
+      "existingNearDuplicateGroup": "real-3550f13c15483964",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-01.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-4835be090cf7eac9",
+      "existingId": "real-3550f13c15483964",
+      "hammingDistance": 2,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 8,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "4835be090cf7eac91f4e1b1b024578718a26bc31e2adb80a39be5d5e0af5bb78",
+      "existingSha256": "3550f13c154839646f44ba284e603400dec4d2f0d5aa8eeba2a526ad406b0e0d",
+      "stagedDimensions": [
+        650,
+        475
+      ],
+      "existingDimensions": [
+        848,
+        620
+      ],
+      "existingNearDuplicateGroup": "real-3550f13c15483964",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-01.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-2c557be09f75eabd",
+      "existingId": "real-71a290452cfd00c8",
+      "hammingDistance": 1,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 9,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "2c557be09f75eabd5bc7ca159afdd07aff595ffd3b5756de4875450a5be5ebc2",
+      "existingSha256": "71a290452cfd00c8413c18e95be86033ca0a9524dfbc93a4e809ec819156d5a2",
+      "stagedDimensions": [
+        650,
+        460
+      ],
+      "existingDimensions": [
+        854,
+        604
+      ],
+      "existingNearDuplicateGroup": "real-71a290452cfd00c8",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-01.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-2c557be09f75eabd",
+      "existingId": "real-2694dd4fe8ff1230",
+      "hammingDistance": 4,
+      "existingSourceGroups": [
+        "pinterest-pin-732679433115974275"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 10,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "2c557be09f75eabd5bc7ca159afdd07aff595ffd3b5756de4875450a5be5ebc2",
+      "existingSha256": "2694dd4fe8ff12308ab48d806835e89836d4a44a6a79338ac9f4f05f91b7b122",
+      "stagedDimensions": [
+        650,
+        460
+      ],
+      "existingDimensions": [
+        564,
+        399
+      ],
+      "existingNearDuplicateGroup": "real-71a290452cfd00c8",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-01.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-d56582fcd0d134f4",
+      "existingId": "real-fee6583ba3012cfe",
+      "hammingDistance": 7,
+      "existingSourceGroups": [
+        "pinterest-pin-23714335526663130",
+        "pinterest-pin-428616089516901119"
+      ],
+      "existingSplitGroupId": "real-split-0cdb638c56f5daec",
+      "existingSplitStatus": "unassigned",
+      "status": "visually-reviewed",
+      "pairIndex": 11,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same 27-template collage in the same three-column, nine-row arrangement, including identical small red woven previews and line paths. Scale/compression differ.",
+      "stagedSha256": "d56582fcd0d134f47b7a3174adc244d2d2c0ef7fbdcea91c42a11b86389fe378",
+      "existingSha256": "fee6583ba3012cfe36516202c14aeae554a31c924fd5d4661de7756912ff8ed2",
+      "stagedDimensions": [
+        561,
+        1641
+      ],
+      "existingDimensions": [
+        561,
+        1641
+      ],
+      "existingNearDuplicateGroup": "real-fee6583ba3012cfe",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-01.jpg",
+      "additionalReviewImage": "tmp/pinterest-skabelon/pair-review/unassigned.jpg"
+    },
+    {
+      "stagedId": "real-fdb6b852f8c46fa7",
+      "existingId": "real-3550f13c15483964",
+      "hammingDistance": 2,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 12,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "fdb6b852f8c46fa7b07a43f889a04c6bba2d93f2c327db7f33e3ed4723a1df7b",
+      "existingSha256": "3550f13c154839646f44ba284e603400dec4d2f0d5aa8eeba2a526ad406b0e0d",
+      "stagedDimensions": [
+        650,
+        475
+      ],
+      "existingDimensions": [
+        848,
+        620
+      ],
+      "existingNearDuplicateGroup": "real-3550f13c15483964",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-01.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-6599bf9afb0a05e2",
+      "existingId": "real-f26466c3afb3c5f7",
+      "hammingDistance": 12,
+      "existingSourceGroups": [
+        "pinterest-pin-573997915027838269",
+        "publisher:alt.dk"
+      ],
+      "existingSplitGroupId": "real-split-6659576e7cd45da1",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 13,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same printed FLETTEDE HJERTER sheet, with identical headings, text positions, shaped templates and line details. Raster size/compression differ.",
+      "stagedSha256": "6599bf9afb0a05e2888978c3277f69a24f31b999cb663a3dd7b6661c76255ad9",
+      "existingSha256": "f26466c3afb3c5f7096654e98d21516ddd5fd304648df47b8233e153437f3aba",
+      "stagedDimensions": [
+        255,
+        380
+      ],
+      "existingDimensions": [
+        236,
+        351
+      ],
+      "existingNearDuplicateGroup": "real-6599bf9afb0a05e2",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-01.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-6599bf9afb0a05e2",
+      "existingId": "real-9cea22df8118056d",
+      "hammingDistance": 8,
+      "existingSourceGroups": [
+        "pinterest-pin-433330795405447769"
+      ],
+      "existingSplitGroupId": "real-split-6659576e7cd45da1",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 14,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same printed FLETTEDE HJERTER sheet, with identical headings, text positions, shaped templates and line details. Raster size/compression differ.",
+      "stagedSha256": "6599bf9afb0a05e2888978c3277f69a24f31b999cb663a3dd7b6661c76255ad9",
+      "existingSha256": "9cea22df8118056df63388601f5f49699c73bc5140ee90dba8ce5d8dfb205c00",
+      "stagedDimensions": [
+        255,
+        380
+      ],
+      "existingDimensions": [
+        255,
+        380
+      ],
+      "existingNearDuplicateGroup": "real-6599bf9afb0a05e2",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-01.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-10445736ece26760",
+      "existingId": "real-5004b729f43b4e72",
+      "hammingDistance": 4,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 15,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "10445736ece267601bfcc3b1654e3621dc29f03911333aa758f1e5e7c767e379",
+      "existingSha256": "5004b729f43b4e720802ed17555749e99aeee4dc82654ea6669a361c5880540a",
+      "stagedDimensions": [
+        650,
+        477
+      ],
+      "existingDimensions": [
+        918,
+        674
+      ],
+      "existingNearDuplicateGroup": "real-5004b729f43b4e72",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-15.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-dee47a224142d577",
+      "existingId": "real-63c81e65e8340c2d",
+      "hammingDistance": 4,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 16,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "dee47a224142d577bd0d332b3a12b9a0dac27ae51da01bb162de4088762fcbae",
+      "existingSha256": "63c81e65e8340c2dac74f0e06b2f4f88221221148870809a73e4829863863d46",
+      "stagedDimensions": [
+        650,
+        478
+      ],
+      "existingDimensions": [
+        828,
+        609
+      ],
+      "existingNearDuplicateGroup": "real-63c81e65e8340c2d",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-15.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-cdd46e737b648380",
+      "existingId": "real-164378298f6be2e8",
+      "hammingDistance": 4,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 17,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "cdd46e737b648380d3a8a31aa7b798463eb313018ea5a28122fd5f7d5bbd188d",
+      "existingSha256": "164378298f6be2e887bfc9b20cc646c7ebaf8adedaee47e8621782507189c706",
+      "stagedDimensions": [
+        650,
+        457
+      ],
+      "existingDimensions": [
+        831,
+        584
+      ],
+      "existingNearDuplicateGroup": "real-164378298f6be2e8",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-15.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-5e9b4816e6aeb6c5",
+      "existingId": "real-812a9dc206fc08ba",
+      "hammingDistance": 3,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 18,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "5e9b4816e6aeb6c5e640229dc3f8a7cabceae77ebbd9cd9088c0e74221053189",
+      "existingSha256": "812a9dc206fc08ba5f5d081e02a32c667a6b172acab8109e817792445d05d678",
+      "stagedDimensions": [
+        650,
+        454
+      ],
+      "existingDimensions": [
+        826,
+        577
+      ],
+      "existingNearDuplicateGroup": "real-812a9dc206fc08ba",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-15.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-5e9b4816e6aeb6c5",
+      "existingId": "real-88db0e5bcd68a5b1",
+      "hammingDistance": 2,
+      "existingSourceGroups": [
+        "pinterest-pin-24558760454214654",
+        "publisher:julehjerter.wordpress.com"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 19,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "5e9b4816e6aeb6c5e640229dc3f8a7cabceae77ebbd9cd9088c0e74221053189",
+      "existingSha256": "88db0e5bcd68a5b14fbf9300ded742dbfb60f32953d1fa0ad76c5b5adf8d295d",
+      "stagedDimensions": [
+        650,
+        454
+      ],
+      "existingDimensions": [
+        826,
+        577
+      ],
+      "existingNearDuplicateGroup": "real-88db0e5bcd68a5b1",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-15.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-0ced2e86fb0adcf5",
+      "existingId": "real-83055bbd92514af9",
+      "hammingDistance": 1,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 20,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "0ced2e86fb0adcf5108558f1767894a243ecc19a02f9794310e49de411836f95",
+      "existingSha256": "83055bbd92514af9946a0b87c702bb9f35f689744485d8d2d6916fd4d074b4b8",
+      "stagedDimensions": [
+        650,
+        467
+      ],
+      "existingDimensions": [
+        845,
+        607
+      ],
+      "existingNearDuplicateGroup": "real-83055bbd92514af9",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-15.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-743301f4f9f4fbde",
+      "existingId": "real-c0f1835bf1cf2982",
+      "hammingDistance": 3,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 21,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "743301f4f9f4fbdefdd942b0171e4699abe46e2b28ab55ada46015cf5da5b42a",
+      "existingSha256": "c0f1835bf1cf2982700ed5b96dd494cb0001499ea229c61bd495cc2c92bfa58e",
+      "stagedDimensions": [
+        650,
+        468
+      ],
+      "existingDimensions": [
+        859,
+        618
+      ],
+      "existingNearDuplicateGroup": "real-c0f1835bf1cf2982",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-15.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-e9600478525b9218",
+      "existingId": "real-296731914436783e",
+      "hammingDistance": 7,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 22,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "e9600478525b9218dc880ce8fc8021714ab62a2b36314cd751de1e9034d75225",
+      "existingSha256": "296731914436783eb7269009e04c2e976e9a2ca1433dc00ec44b087e4830f9bd",
+      "stagedDimensions": [
+        839,
+        611
+      ],
+      "existingDimensions": [
+        839,
+        611
+      ],
+      "existingNearDuplicateGroup": "real-296731914436783e",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-15.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-e9600478525b9218",
+      "existingId": "real-d418c93a07bd4ea0",
+      "hammingDistance": 2,
+      "existingSourceGroups": [
+        "pinterest-pin-411023903506038042"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 23,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "e9600478525b9218dc880ce8fc8021714ab62a2b36314cd751de1e9034d75225",
+      "existingSha256": "d418c93a07bd4ea0954d353b7a10cd4805ceeb1e19f3fac81323f3e9fdd9a99b",
+      "stagedDimensions": [
+        839,
+        611
+      ],
+      "existingDimensions": [
+        839,
+        611
+      ],
+      "existingNearDuplicateGroup": "real-296731914436783e",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-15.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-874e5a5e2cd2e9ce",
+      "existingId": "real-9d5dd0b8c0d61312",
+      "hammingDistance": 3,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 24,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "874e5a5e2cd2e9ce126f9969ddcb5830248224b84ec36b0940c03c14f2856074",
+      "existingSha256": "9d5dd0b8c0d61312e25d0172ebcbfe213629d41af384f9b0d3b2afb3251733e2",
+      "stagedDimensions": [
+        650,
+        476
+      ],
+      "existingDimensions": [
+        864,
+        633
+      ],
+      "existingNearDuplicateGroup": "real-9d5dd0b8c0d61312",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-15.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-448ab852c2f2eab3",
+      "existingId": "real-9d5dd0b8c0d61312",
+      "hammingDistance": 3,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 25,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "448ab852c2f2eab3ec7f5bbba59fe0c0fa7dc7e355bf8a710547565f3dbd4be9",
+      "existingSha256": "9d5dd0b8c0d61312e25d0172ebcbfe213629d41af384f9b0d3b2afb3251733e2",
+      "stagedDimensions": [
+        650,
+        476
+      ],
+      "existingDimensions": [
+        864,
+        633
+      ],
+      "existingNearDuplicateGroup": "real-9d5dd0b8c0d61312",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-15.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-448ab852c2f2eab3",
+      "existingId": "real-874e5a5e2cd2e9ce",
+      "hammingDistance": 0,
+      "existingSourceGroups": [
+        "pinterest-pin-365847169744171622",
+        "publisher:julehjerter.wordpress.com"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 26,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "448ab852c2f2eab3ec7f5bbba59fe0c0fa7dc7e355bf8a710547565f3dbd4be9",
+      "existingSha256": "874e5a5e2cd2e9ce126f9969ddcb5830248224b84ec36b0940c03c14f2856074",
+      "stagedDimensions": [
+        650,
+        476
+      ],
+      "existingDimensions": [
+        650,
+        476
+      ],
+      "existingNearDuplicateGroup": "real-874e5a5e2cd2e9ce",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-15.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-2bdc39cab0811250",
+      "existingId": "real-296731914436783e",
+      "hammingDistance": 2,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 27,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "2bdc39cab0811250f62eac3aa7fd6d7e8a1b66d9cf75fb978782b02acbcf22be",
+      "existingSha256": "296731914436783eb7269009e04c2e976e9a2ca1433dc00ec44b087e4830f9bd",
+      "stagedDimensions": [
+        650,
+        473
+      ],
+      "existingDimensions": [
+        839,
+        611
+      ],
+      "existingNearDuplicateGroup": "real-296731914436783e",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-15.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-2bdc39cab0811250",
+      "existingId": "real-e9600478525b9218",
+      "hammingDistance": 5,
+      "existingSourceGroups": [
+        "pinterest-pin-520025088203706380",
+        "publisher:julehjerter.wordpress.com"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 28,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "2bdc39cab0811250f62eac3aa7fd6d7e8a1b66d9cf75fb978782b02acbcf22be",
+      "existingSha256": "e9600478525b9218dc880ce8fc8021714ab62a2b36314cd751de1e9034d75225",
+      "stagedDimensions": [
+        650,
+        473
+      ],
+      "existingDimensions": [
+        839,
+        611
+      ],
+      "existingNearDuplicateGroup": "real-296731914436783e",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-15.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-2bdc39cab0811250",
+      "existingId": "real-d418c93a07bd4ea0",
+      "hammingDistance": 5,
+      "existingSourceGroups": [
+        "pinterest-pin-411023903506038042"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 29,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "2bdc39cab0811250f62eac3aa7fd6d7e8a1b66d9cf75fb978782b02acbcf22be",
+      "existingSha256": "d418c93a07bd4ea0954d353b7a10cd4805ceeb1e19f3fac81323f3e9fdd9a99b",
+      "stagedDimensions": [
+        650,
+        473
+      ],
+      "existingDimensions": [
+        839,
+        611
+      ],
+      "existingNearDuplicateGroup": "real-296731914436783e",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-29.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-64b51faaef694431",
+      "existingId": "real-a055202166ff0bdd",
+      "hammingDistance": 5,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 30,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "64b51faaef694431139f6c775bc2aa8f48da3e6efee56bc0426519fed4a70fdd",
+      "existingSha256": "a055202166ff0bdd98f57a4aa854f2639c4b9deac75f3d8aededc1c8ed3c6436",
+      "stagedDimensions": [
+        650,
+        474
+      ],
+      "existingDimensions": [
+        848,
+        619
+      ],
+      "existingNearDuplicateGroup": "real-a055202166ff0bdd",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-29.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-0ad0a2453ee546b0",
+      "existingId": "real-164378298f6be2e8",
+      "hammingDistance": 3,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 31,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "0ad0a2453ee546b07b8a07a812088ddf44ccfc6ef0b2aa52913965c4848e3b6e",
+      "existingSha256": "164378298f6be2e887bfc9b20cc646c7ebaf8adedaee47e8621782507189c706",
+      "stagedDimensions": [
+        705,
+        495
+      ],
+      "existingDimensions": [
+        831,
+        584
+      ],
+      "existingNearDuplicateGroup": "real-164378298f6be2e8",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-29.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-6b8a2cd8e304ce14",
+      "existingId": "real-296731914436783e",
+      "hammingDistance": 2,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 32,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "6b8a2cd8e304ce14e303a5751a76e1e83a2364ac695a15546aba0d4f442f8704",
+      "existingSha256": "296731914436783eb7269009e04c2e976e9a2ca1433dc00ec44b087e4830f9bd",
+      "stagedDimensions": [
+        650,
+        473
+      ],
+      "existingDimensions": [
+        839,
+        611
+      ],
+      "existingNearDuplicateGroup": "real-296731914436783e",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-29.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-6b8a2cd8e304ce14",
+      "existingId": "real-e9600478525b9218",
+      "hammingDistance": 5,
+      "existingSourceGroups": [
+        "pinterest-pin-520025088203706380",
+        "publisher:julehjerter.wordpress.com"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 33,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "6b8a2cd8e304ce14e303a5751a76e1e83a2364ac695a15546aba0d4f442f8704",
+      "existingSha256": "e9600478525b9218dc880ce8fc8021714ab62a2b36314cd751de1e9034d75225",
+      "stagedDimensions": [
+        650,
+        473
+      ],
+      "existingDimensions": [
+        839,
+        611
+      ],
+      "existingNearDuplicateGroup": "real-296731914436783e",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-29.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-6b8a2cd8e304ce14",
+      "existingId": "real-d418c93a07bd4ea0",
+      "hammingDistance": 5,
+      "existingSourceGroups": [
+        "pinterest-pin-411023903506038042"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 34,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "6b8a2cd8e304ce14e303a5751a76e1e83a2364ac695a15546aba0d4f442f8704",
+      "existingSha256": "d418c93a07bd4ea0954d353b7a10cd4805ceeb1e19f3fac81323f3e9fdd9a99b",
+      "stagedDimensions": [
+        650,
+        473
+      ],
+      "existingDimensions": [
+        839,
+        611
+      ],
+      "existingNearDuplicateGroup": "real-296731914436783e",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-29.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-3862e238633b9a6b",
+      "existingId": "real-4cfd9b27abdcc1f4",
+      "hammingDistance": 4,
+      "existingSourceGroups": [
+        "pinterest-pin-1688918605876592",
+        "pinterest-pin-474848354475676621"
+      ],
+      "existingSplitGroupId": "real-split-10806802c577d8f8",
+      "existingSplitStatus": "unassigned",
+      "status": "visually-reviewed",
+      "pairIndex": 35,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same numbered 3 composite: identical photographed red/white five-point-star heart, inset position, and single cutting-template outline. Compression/scale differ.",
+      "stagedSha256": "3862e238633b9a6b6ccf08d436b19c4afcf0f4bcdc2432bce6d3e4335a06a929",
+      "existingSha256": "4cfd9b27abdcc1f4c512d1891594e0f91f3ffb6dc8d805b43fb3b7320b68b3e2",
+      "stagedDimensions": [
+        504,
+        500
+      ],
+      "existingDimensions": [
+        504,
+        500
+      ],
+      "existingNearDuplicateGroup": "real-4cfd9b27abdcc1f4",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-29.jpg",
+      "additionalReviewImage": "tmp/pinterest-skabelon/pair-review/unassigned.jpg"
+    },
+    {
+      "stagedId": "real-a2eb331cd6d81238",
+      "existingId": "real-c5d2c4465ca58e36",
+      "hammingDistance": 5,
+      "existingSourceGroups": [
+        "hunodan",
+        "publisher:hunodan.dk"
+      ],
+      "existingSplitGroupId": "real-split-7dd12a3dfc6e997a",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 36,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same green/dark Christmas-tree heart photograph and adjacent cutting outline. Paper texture, placement, contour imperfections and crop agree; this is not a newly photographed object.",
+      "stagedSha256": "a2eb331cd6d8123877b17397afbb219f6684c08108e55cfaefc3b319f5af63ad",
+      "existingSha256": "c5d2c4465ca58e3629abd28b36c6e9e3aed1f5d14b2725459809f5b4ba550276",
+      "stagedDimensions": [
+        600,
+        375
+      ],
+      "existingDimensions": [
+        600,
+        375
+      ],
+      "existingNearDuplicateGroup": "real-c5d2c4465ca58e36",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-29.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-1da41808a04b4311",
+      "existingId": "real-812a9dc206fc08ba",
+      "hammingDistance": 4,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 37,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "1da41808a04b4311a26199e3489963d5f2cb8eebc069278aada2dd875c3c564c",
+      "existingSha256": "812a9dc206fc08ba5f5d081e02a32c667a6b172acab8109e817792445d05d678",
+      "stagedDimensions": [
+        650,
+        454
+      ],
+      "existingDimensions": [
+        826,
+        577
+      ],
+      "existingNearDuplicateGroup": "real-812a9dc206fc08ba",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-29.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-1da41808a04b4311",
+      "existingId": "real-88db0e5bcd68a5b1",
+      "hammingDistance": 3,
+      "existingSourceGroups": [
+        "pinterest-pin-24558760454214654",
+        "publisher:julehjerter.wordpress.com"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 38,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "1da41808a04b4311a26199e3489963d5f2cb8eebc069278aada2dd875c3c564c",
+      "existingSha256": "88db0e5bcd68a5b14fbf9300ded742dbfb60f32953d1fa0ad76c5b5adf8d295d",
+      "stagedDimensions": [
+        650,
+        454
+      ],
+      "existingDimensions": [
+        826,
+        577
+      ],
+      "existingNearDuplicateGroup": "real-88db0e5bcd68a5b1",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-29.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-a6b3b42fc9fcad03",
+      "existingId": "real-164378298f6be2e8",
+      "hammingDistance": 2,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 39,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "a6b3b42fc9fcad03e0749a1503cc99f6f2f0d20edbbd1f4875b5c99b3d748965",
+      "existingSha256": "164378298f6be2e887bfc9b20cc646c7ebaf8adedaee47e8621782507189c706",
+      "stagedDimensions": [
+        831,
+        584
+      ],
+      "existingDimensions": [
+        831,
+        584
+      ],
+      "existingNearDuplicateGroup": "real-164378298f6be2e8",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-29.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-1a4904dfca64f16a",
+      "existingId": "real-5004b729f43b4e72",
+      "hammingDistance": 4,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 40,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "1a4904dfca64f16ad0b1cf92c7bb35f06579fc79103f0fa4a66be2b88d2e67e4",
+      "existingSha256": "5004b729f43b4e720802ed17555749e99aeee4dc82654ea6669a361c5880540a",
+      "stagedDimensions": [
+        650,
+        477
+      ],
+      "existingDimensions": [
+        918,
+        674
+      ],
+      "existingNearDuplicateGroup": "real-5004b729f43b4e72",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-29.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-876d0e6079b8bb14",
+      "existingId": "real-63c81e65e8340c2d",
+      "hammingDistance": 4,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "visually-reviewed",
+      "pairIndex": 41,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same rendered plate: woven preview, two cutting-template outlines, layout, framing, and any colored annotations agree. Differences are consistent with resampling/re-encoding rather than a different motif or independently photographed object.",
+      "stagedSha256": "876d0e6079b8bb146e12093cafc2e124ab58f4edb43a30faf362f2f712d74dd4",
+      "existingSha256": "63c81e65e8340c2dac74f0e06b2f4f88221221148870809a73e4829863863d46",
+      "stagedDimensions": [
+        650,
+        478
+      ],
+      "existingDimensions": [
+        828,
+        609
+      ],
+      "existingNearDuplicateGroup": "real-63c81e65e8340c2d",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-29.jpg",
+      "additionalReviewImage": null
+    },
+    {
+      "stagedId": "real-66e8e0cc7aa9e853",
+      "existingId": "real-eeaf37d2a40af624",
+      "hammingDistance": 6,
+      "existingSourceGroups": [
+        "pinterest-pin-515169644915183703",
+        "publisher:theiff.org"
+      ],
+      "existingSplitGroupId": "real-split-af3fe4d54cd4976a",
+      "existingSplitStatus": "unassigned",
+      "status": "visually-reviewed",
+      "pairIndex": 42,
+      "relationship": "same-source-image-variant",
+      "confirmedNearDuplicate": true,
+      "confidence": "high",
+      "reason": "Same printed sheet, page 34, containing numbered designs 43, 44 and 45 in the same positions. Matching cutting geometry, numbered previews and layout; existing copy has lower resolution.",
+      "stagedSha256": "66e8e0cc7aa9e8539c325cd9984571797df3b4f166f7b38379c1f2ca98e30c3e",
+      "existingSha256": "eeaf37d2a40af62436c510be2717f6ced5bd834d009a897e5fc5ee4209b66a67",
+      "stagedDimensions": [
+        960,
+        719
+      ],
+      "existingDimensions": [
+        300,
+        224
+      ],
+      "existingNearDuplicateGroup": "real-eeaf37d2a40af624",
+      "reviewImage": "tmp/pinterest-skabelon/pair-review/pairs-29.jpg",
+      "additionalReviewImage": "tmp/pinterest-skabelon/pair-review/unassigned.jpg"
+    }
+  ],
+  "existingExactMatches": [
+    "real-6599bf9afb0a05e2",
+    "real-e9600478525b9218",
+    "real-874e5a5e2cd2e9ce"
+  ],
+  "recommendedNewQaReservations": [
+    {
+      "splitGroupId": "real-split-0cdb638c56f5daec",
+      "members": [
+        {
+          "id": "real-fee6583ba3012cfe",
+          "nearDuplicateGroup": "real-fee6583ba3012cfe",
+          "splitStatus": "unassigned",
+          "sourceGroups": [
+            "pinterest-pin-23714335526663130",
+            "pinterest-pin-428616089516901119"
+          ]
+        }
+      ]
+    },
+    {
+      "splitGroupId": "real-split-10806802c577d8f8",
+      "members": [
+        {
+          "id": "real-4cfd9b27abdcc1f4",
+          "nearDuplicateGroup": "real-4cfd9b27abdcc1f4",
+          "splitStatus": "unassigned",
+          "sourceGroups": [
+            "pinterest-pin-1688918605876592",
+            "pinterest-pin-474848354475676621"
+          ]
+        }
+      ]
+    },
+    {
+      "splitGroupId": "real-split-af3fe4d54cd4976a",
+      "members": [
+        {
+          "id": "real-eeaf37d2a40af624",
+          "nearDuplicateGroup": "real-eeaf37d2a40af624",
+          "splitStatus": "unassigned",
+          "sourceGroups": [
+            "pinterest-pin-515169644915183703",
+            "publisher:theiff.org"
+          ]
+        }
+      ]
+    }
+  ],
+  "trainingConnectionAudit": {
+    "plan": "docs/inverse/datasets/u2netp-body-adaptation-plan.json",
+    "trainingPhotos": 16,
+    "trainingRows": [
+      {
+        "id": "real-8c875dd0f298b5a4",
+        "sha256": "8c875dd0f298b5a406a9d6047b0ffc33746fe6f288bc8672b9a467a7c9df063f",
+        "splitGroupId": "real-split-79fb92ea84d04dc8",
+        "nearDuplicateGroup": "real-8c875dd0f298b5a4",
+        "sourceGroups": [
+          "pinterest-pin-52284045669157402",
+          "publisher:auntannie.com"
+        ]
+      },
+      {
+        "id": "real-995899fe049540ed",
+        "sha256": "995899fe049540eddee6f7bdd90e0a65f839059ac404346642c904617875ca8e",
+        "splitGroupId": "real-split-837aa89750c4379e",
+        "nearDuplicateGroup": "real-995899fe049540ed",
+        "sourceGroups": [
+          "carina",
+          "publisher:carinascraftblog.com"
+        ]
+      },
+      {
+        "id": "real-b87b0b19f12724f3",
+        "sha256": "b87b0b19f12724f37b816b22afe3dc5f59aa57531bdaf18d8c678f074d4eafd3",
+        "splitGroupId": "real-split-b0658dffd8a94416",
+        "nearDuplicateGroup": "real-b87b0b19f12724f3",
+        "sourceGroups": [
+          "doodlecraft",
+          "publisher:doodlecraftblog.com"
+        ]
+      },
+      {
+        "id": "real-cf2d0fcff65d7386",
+        "sha256": "cf2d0fcff65d7386a7295376e03a6b3f027645b74c361e0035bcc46220a6a6d9",
+        "splitGroupId": "real-split-561720ec89d3174d",
+        "nearDuplicateGroup": "real-cf2d0fcff65d7386",
+        "sourceGroups": [
+          "pinterest-pin-300052393899641682",
+          "publisher:whoswhoandnew.blogspot.com.au"
+        ]
+      },
+      {
+        "id": "real-cdae5c890b6933cd",
+        "sha256": "cdae5c890b6933cdbdf4182133239e0cfd3e965bf289617aea32a74266e59c51",
+        "splitGroupId": "real-split-e15997e1ba929b7f",
+        "nearDuplicateGroup": "real-cdae5c890b6933cd",
+        "sourceGroups": [
+          "pinterest-pin-557883472610157651",
+          "publisher:kommerduihag.se"
+        ]
+      },
+      {
+        "id": "real-68d8f25d8891df62",
+        "sha256": "68d8f25d8891df62c4ac48949b0552e95ce0a73a07c0be99b9dfc0a1dcdcbfd4",
+        "splitGroupId": "real-split-6459d28c6c10b90f",
+        "nearDuplicateGroup": "real-68d8f25d8891df62",
+        "sourceGroups": [
+          "pinterest-pin-480196379013097231",
+          "publisher:isabellas.dk"
+        ]
+      },
+      {
+        "id": "real-5330aa8b62176216",
+        "sha256": "5330aa8b621762167ded8a0c2662e38947ee3422d7b06f669b18e6db43f0779d",
+        "splitGroupId": "real-split-66587aa0e20b89c8",
+        "nearDuplicateGroup": "real-5330aa8b62176216",
+        "sourceGroups": [
+          "krymmel",
+          "publisher:krymmel.dk"
+        ]
+      },
+      {
+        "id": "real-abf590088db891f9",
+        "sha256": "abf590088db891f98c7e082a3fd9b60cf72dd969fb31ab0d18e963a5297a1971",
+        "splitGroupId": "real-split-66587aa0e20b89c8",
+        "nearDuplicateGroup": "real-abf590088db891f9",
+        "sourceGroups": [
+          "krymmel",
+          "publisher:krymmel.dk"
+        ]
+      },
+      {
+        "id": "real-990ac34431be87fe",
+        "sha256": "990ac34431be87fea4d2b41050c1f1ccc6b12ca7dcb4a54f50bde137d6dffbbc",
+        "splitGroupId": "real-split-4cb27dd0236bd215",
+        "nearDuplicateGroup": "real-990ac34431be87fe",
+        "sourceGroups": [
+          "pinterest-pin-45669383709241593",
+          "publisher:etsy.com"
+        ]
+      },
+      {
+        "id": "real-12ce3c9180f7f317",
+        "sha256": "12ce3c9180f7f31796ac378fc8cbdf3f2ebc7fee0eae9199d7266608df9e7966",
+        "splitGroupId": "real-split-1c907ad4f70d8815",
+        "nearDuplicateGroup": "real-12ce3c9180f7f317",
+        "sourceGroups": [
+          "commons",
+          "publisher:commons.wikimedia.org"
+        ]
+      },
+      {
+        "id": "real-d5b0aa8d4d2465ee",
+        "sha256": "d5b0aa8d4d2465eeee9b25ff43d919d584705256523c711f545d04bae4bde3a6",
+        "splitGroupId": "real-split-4cd39a54715c7740",
+        "nearDuplicateGroup": "real-d5b0aa8d4d2465ee",
+        "sourceGroups": [
+          "publisher:rosemarywashington.wordpress.com",
+          "rosemary"
+        ]
+      },
+      {
+        "id": "real-39f3a1ba97852876",
+        "sha256": "39f3a1ba97852876b9c62d3fbff392a8f23b84d3bd0b53010cd6378ebc29a079",
+        "splitGroupId": "real-split-0ce4ada523ddc171",
+        "nearDuplicateGroup": "real-39f3a1ba97852876",
+        "sourceGroups": [
+          "northpole",
+          "publisher:northpole.com"
+        ]
+      },
+      {
+        "id": "real-e936e08ac62db19b",
+        "sha256": "e936e08ac62db19b9b12cf9ce4e1a0b10fbb50023316daaee6f36747beae5643",
+        "splitGroupId": "real-split-0fe657e07ffc37c9",
+        "nearDuplicateGroup": "real-e936e08ac62db19b",
+        "sourceGroups": [
+          "pinterest-pin-581175526900721056",
+          "publisher:youtu.be",
+          "publisher:youtube.com"
+        ]
+      },
+      {
+        "id": "real-340f5e5b0f447889",
+        "sha256": "340f5e5b0f447889be78bcba0be828f90452b19d1ba1370f8eeafc79ceda6f8e",
+        "splitGroupId": "real-split-66587aa0e20b89c8",
+        "nearDuplicateGroup": "real-340f5e5b0f447889",
+        "sourceGroups": [
+          "pinterest-pin-302656037474215486",
+          "publisher:krymmel.dk"
+        ]
+      },
+      {
+        "id": "real-710703159f609111",
+        "sha256": "710703159f60911143f7ff114e8f33e0e59996aa86e22d1de98840d071c4e8c8",
+        "splitGroupId": "real-split-81569cae44356567",
+        "nearDuplicateGroup": "real-710703159f609111",
+        "sourceGroups": [
+          "pinterest-pin-169518373445733009",
+          "publisher:fintogdejlig.blogspot.ca"
+        ]
+      },
+      {
+        "id": "real-a414dfffbd2362ae",
+        "sha256": "a414dfffbd2362aeefd731a1eff42092e47dcd3955acc72cb8aec426d1200d99",
+        "splitGroupId": "real-split-79137bb425b64798",
+        "nearDuplicateGroup": "real-a414dfffbd2362ae",
+        "sourceGroups": [
+          "pinterest-pin-476185360580329153",
+          "publisher:nurturestore.co.uk"
+        ]
+      }
+    ],
+    "confirmedConnectedExistingAssetIds": [
+      "real-164378298f6be2e8",
+      "real-2694dd4fe8ff1230",
+      "real-296731914436783e",
+      "real-3550f13c15483964",
+      "real-4cfd9b27abdcc1f4",
+      "real-5004b729f43b4e72",
+      "real-63c81e65e8340c2d",
+      "real-6599bf9afb0a05e2",
+      "real-71a290452cfd00c8",
+      "real-7a4e2cf93d71c23e",
+      "real-812a9dc206fc08ba",
+      "real-83055bbd92514af9",
+      "real-874e5a5e2cd2e9ce",
+      "real-88db0e5bcd68a5b1",
+      "real-95eb58b4312cda4d",
+      "real-9cea22df8118056d",
+      "real-9d5dd0b8c0d61312",
+      "real-a055202166ff0bdd",
+      "real-c0f1835bf1cf2982",
+      "real-c5d2c4465ca58e36",
+      "real-d418c93a07bd4ea0",
+      "real-e9600478525b9218",
+      "real-eeaf37d2a40af624",
+      "real-f26466c3afb3c5f7",
+      "real-fee6583ba3012cfe"
+    ],
+    "confirmedConnectedExistingSplitGroups": [
+      "real-split-03b70ea1e7075716",
+      "real-split-0cdb638c56f5daec",
+      "real-split-10806802c577d8f8",
+      "real-split-6659576e7cd45da1",
+      "real-split-7dd12a3dfc6e997a",
+      "real-split-af3fe4d54cd4976a"
+    ],
+    "confirmedConnectedSourceGroups": [
+      "flettede",
+      "hunodan",
+      "pinterest-pin-1688918605876592",
+      "pinterest-pin-23714335526663130",
+      "pinterest-pin-24558760454214654",
+      "pinterest-pin-365847169744171622",
+      "pinterest-pin-411023903506038042",
+      "pinterest-pin-428616089516901119",
+      "pinterest-pin-433330795405447769",
+      "pinterest-pin-474848354475676621",
+      "pinterest-pin-507569820520936919",
+      "pinterest-pin-515169644915183703",
+      "pinterest-pin-520025088203706380",
+      "pinterest-pin-573997915027838269",
+      "pinterest-pin-732679433115974275",
+      "publisher:alt.dk",
+      "publisher:flettedehjerter.dk",
+      "publisher:hunodan.dk",
+      "publisher:julehjerter.wordpress.com",
+      "publisher:theiff.org"
+    ],
+    "directTrainingAssetMatches": [],
+    "sharedTrainingSplitGroups": [],
+    "sharedTrainingSourceGroups": [],
+    "conclusion": "No new connection into the 16-photo U2NETP adaptation training set is established by these 42 reviewed links, the three exact matches, or their existing conservative source/split groups. All three newly reached unassigned groups contain template/composite images, not an adaptation training photo.",
+    "limits": "This is a scoped image/source-graph audit, not proof that every motif in all 90 staged files is unrelated to every training motif. Hash candidates can miss differently cropped/scanned copies, and motif-family annotations remain incomplete. Do not describe the board as independent training data."
+  },
+  "importRecommendation": "Add all 42 confirmed pairs as near-duplicate relations, propagate the board’s existing QA reservation through the three newly connected groups, then rerun the complete grouping and asset audit. Preserve all original source and pin provenance; do not collapse byte variants into a single file or treat the 31 staged files as independent motifs.",
+  "artifacts": {
+    "tmp/pinterest-skabelon/pair-review/pairs-01.jpg": {
+      "sha256": "5959c3a113bc42b290b9a886600ce230109ee26dc00c84993c9cf69dd6a5f2bc",
+      "bytes": 514173
+    },
+    "tmp/pinterest-skabelon/pair-review/pairs-15.jpg": {
+      "sha256": "8b72cd040c2a490f6615ffe9f57a1b8f3640a0a2955675252ee1f22caada3ba3",
+      "bytes": 529804
+    },
+    "tmp/pinterest-skabelon/pair-review/pairs-29.jpg": {
+      "sha256": "ced09acd350c317d4a57c1c95210b1b54e55ea3f0d5c47651470230cb638696f",
+      "bytes": 529491
+    },
+    "tmp/pinterest-skabelon/pair-review/unassigned.jpg": {
+      "sha256": "8175de88ff1c5a4239a5ebe52229d453c111cbb9de5e3c94e794a1c41fbee6c7",
+      "bytes": 231749
+    }
+  }
+}
