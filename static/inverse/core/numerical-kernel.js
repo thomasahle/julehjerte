@@ -10,8 +10,8 @@ export function loadNumericalKernel(){
       const bytes=typeof process!=='undefined'&&process.versions?.node
         ?await(await import('node:fs/promises')).readFile(url)
         :await(await fetch(url)).arrayBuffer();
-      runtime=(await WebAssembly.instantiate(bytes,{})).instance.exports;
-      return{backend:'wasm',method:'Float64 boundary, row-initialization and guarded-lattice kernels; no fast-math'};
+      runtime=(await WebAssembly.instantiate(bytes,{math:{tanh:Math.tanh}})).instance.exports;
+      return{backend:'wasm',method:'Float64 boundary, grid initialization/loss and guarded-lattice kernels; no fast-math'};
     }catch(error){return{backend:'javascript',reason:error.message};}
   })();
 }

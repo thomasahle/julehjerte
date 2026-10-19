@@ -1,5 +1,5 @@
 /* Continuous boundary gradient, row initialization and paper-lattice operations.
- * Match the JavaScript arithmetic and tie order. No libc, imports or fast-math. */
+ * Match the JavaScript arithmetic and tie order. No libc or fast-math; tanh uses the same JavaScript Math.tanh as the reference. */
 static double clamp(double x, double lo, double hi) {
   return x < lo ? lo : x > hi ? hi : x;
 }
@@ -262,4 +262,62 @@ int paper_masks(const double *xs, int nx, const double *ys, int ny,
     }
   }
   return pending;
+}
+
+__attribute__((import_module("math"),import_name("tanh"))) extern double js_tanh(double);
+/* Ordered-grid pixel loss. Preserve operation and accumulation order,
+ * including zero tanh factors and weighted partial pooling cells. */
+static void grid_products(const double *samples,int count,int n,double epsilon,int sweep,
+    double *product,double *derivative,int *begin,int *end,double *values,double *prefix){
+  for(int y=0;y<n;y++){
+    int lo=0,hi=0;
+    for(int x=0;x<n;x++){
+      const int index=y*n+x;const double position=((double)x+.5)/n;
+      if(sweep){
+        while(lo<count&&(position-samples[y*count+lo])/epsilon>19)lo++;
+        if(hi<lo)hi=lo;
+        while(hi<count&&(position-samples[y*count+hi])/epsilon>=-19)hi++;
+      }else{lo=0;hi=count;}
+      begin[index]=lo;end[index]=hi;prefix[lo]=1;
+      for(int i=lo;i<hi;i++){
+        const double q=(position-samples[y*count+i])/epsilon;
+        values[i]=q>19?1:q< -19?-1:js_tanh(q);prefix[i+1]=prefix[i]*values[i];
+      }
+      double suffix=(count-hi)%2?-1:1;product[index]=prefix[hi]*suffix;
+      for(int i=hi-1;i>=lo;i--){derivative[index*count+i]=-prefix[i]*suffix*(1-values[i]*values[i])/epsilon;suffix*=values[i];}
+    }
+  }
+}
+double grid_loss(const double *a,const double *b,int ca,int cb,int n,int phase,double epsilon,int sweep_a,int sweep_b,
+    const double *target,const double *weights,double mass,double coarse_weight,double *pa,double *pb,
+    double *da,double *db,int *fa,int *la,int *fb,int *lb,double *scratch,
+    double *prediction,double *d_pred,double *coarse,int *counts,double *coarse_mass,double *ga,double *gb){
+  grid_products(a,ca,n,epsilon,sweep_a,pa,da,fa,la,scratch,scratch+ca+cb+1);
+  grid_products(b,cb,n,epsilon,sweep_b,pb,db,fb,lb,scratch,scratch+ca+cb+1);
+  const int pool=8,m=(n+pool-1)/pool,cells=m*m;
+  for(int i=0;i<cells;i++){coarse[i]=0;counts[i]=0;coarse_mass[i]=0;}
+  for(int i=0;i<n*ca;i++)ga[i]=0;
+  for(int i=0;i<n*cb;i++)gb[i]=0;
+  double loss=0;
+  for(int y=0;y<n;y++)for(int x=0;x<n;x++){
+    const int i=y*n+x,j=x*n+y,cell=(y/pool)*m+x/pool;
+    const double p=(1-(double)phase*pa[i]*pb[j])/2,d=p-target[i];
+    prediction[i]=p;counts[cell]++;
+    if(weights){const double w=weights[i];d_pred[i]=2*w*d/mass;loss+=w*d*d/mass;coarse[cell]+=w*d;coarse_mass[cell]+=w;}
+    else{d_pred[i]=2*d/(n*n);loss+=d*d/(n*n);coarse[cell]+=d;}
+  }
+  double pooled_mass=0;
+  if(weights)for(int i=0;i<cells;i++)pooled_mass+=coarse_mass[i]/counts[i];
+  for(int i=0;i<cells;i++){
+    if(weights){if(!coarse_mass[i])continue;coarse[i]/=coarse_mass[i];loss+=coarse_weight*(coarse_mass[i]/counts[i])*coarse[i]*coarse[i]/pooled_mass;}
+    else{coarse[i]/=counts[i];loss+=coarse_weight*coarse[i]*coarse[i]/cells;}
+  }
+  for(int y=0;y<n;y++)for(int x=0;x<n;x++){
+    const int i=y*n+x,j=x*n+y,cell=(y/pool)*m+x/pool;
+    const double g=d_pred[i]+(weights?2*coarse_weight*coarse[cell]*weights[i]/(pooled_mass*counts[cell]):2*coarse_weight*coarse[cell]/(cells*counts[cell]));
+    const double aa=-(double)phase*.5*g*pb[j],bb=-(double)phase*.5*g*pa[i];
+    for(int k=fa[i];k<la[i];k++)ga[y*ca+k]+=aa*da[i*ca+k];
+    for(int k=fb[j];k<lb[j];k++)gb[x*cb+k]+=bb*db[j*cb+k];
+  }
+  return loss;
 }
