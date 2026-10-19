@@ -129,6 +129,14 @@ a derived mask is not agreement with unavailable original artwork. The
 [MobileSAM foreground experiment](mobilesam-foreground-results.json) retain
 separate results and limitations.
 
+The October 19 [frozen-model resolution comparison](material-inference-scale.md)
+replays those nineteen held-out predictions exactly, then tests the same weights
+at 512 instead of 256 pixels. Mean body IoU falls from 80.68% to 64.24% and
+supported crop proposals fall from three to one. This higher-resolution inference
+change is rejected; source photos and checkpoints are reused, with no retraining
+or website change. The failure begins in foreground/material prediction before
+template search, and does not establish the outcome of multiscale training.
+
 The next deployment gate is improvement in complete photo-to-editable-template
 recovery on properly grouped real images, including feature retention and
 physical validity. Python/ONNX agreement, download/startup cost, memory and
