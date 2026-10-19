@@ -518,31 +518,29 @@ describe('a pattern moved within the heart', () => {
 		for (const rule of ALL_RULES) expect(fitLines(ruleStart(rule, 4)), ruleKey(rule)).toEqual(ruleStart(rule, 4));
 	});
 
-	it('moves without end when a point the rule fixes is dragged, the point staying under the pointer', () => {
+	it.each(['hearts', 'leaf', 'windmill'])('moves the %s pattern without end when a point the rule fixes is dragged, the point staying under the pointer', (id) => {
 		// on the way, the heart gains a strip where an edge strip grows wide, and loses it again
 		let reshaped = false;
-		for (const id of ['hearts', 'leaf', 'windmill']) {
-			const tile = { ...exampleTile(EXAMPLES.find((p) => p.id === id)!), cuts: 5 };
-			const rect = getCenteredRectParams({ x: tile.cuts + 1, y: tile.cuts + 1 });
-			const cell = rect.width / (tile.cuts + 1);
-			// a point the rule fixes on the middle cut, away from its ends
-			const middle = [...specialNodes(tile, 'R-3').entries()].filter(([, k]) => k === 'pan').map(([a]) => a);
-			const anchor = middle[Math.floor(middle.length / 2)]!;
-			const point = placedPointAt(tile, 'R-3', anchor)!;
-			const was = generateEditorFingers(tile, rect).find((f) => f.id === 'R-3')!.segments[anchor]!.p0;
-			for (let step = 1; step <= 12; step++) {
-				const delta = { x: step * 0.2 * cell, y: -step * 0.1 * cell };
-				const next = dragPlacedPoint(tile, 'R-3', anchor, delta, rect)!;
-				const where = `${id} moved ${step * 0.2} cells`;
-				reshaped ||= cutCounts(next).V !== tile.cuts || cutCounts(next).H !== tile.cuts;
-				expect(Math.abs(next.pan!.x), where).toBeLessThanOrEqual(1);
-				expect(problems(next), where).toEqual([]);
-				const pointer = { x: was.x + delta.x, y: was.y + delta.y };
-				const at = locatePlacedPoint(next, point, 'V', pointer, rect)!;
-				expect(at, where).not.toBeNull();
-				const segs = generateEditorFingers(next, rect).find((f) => f.id === at.fingerId)!.segments;
-				expect(near(segs[at.anchor]!.p0, pointer, 1e-6), where).toBe(true);
-			}
+		const tile = { ...exampleTile(EXAMPLES.find((p) => p.id === id)!), cuts: 5 };
+		const rect = getCenteredRectParams({ x: tile.cuts + 1, y: tile.cuts + 1 });
+		const cell = rect.width / (tile.cuts + 1);
+		// a point the rule fixes on the middle cut, away from its ends
+		const middle = [...specialNodes(tile, 'R-3').entries()].filter(([, k]) => k === 'pan').map(([a]) => a);
+		const anchor = middle[Math.floor(middle.length / 2)]!;
+		const point = placedPointAt(tile, 'R-3', anchor)!;
+		const was = generateEditorFingers(tile, rect).find((f) => f.id === 'R-3')!.segments[anchor]!.p0;
+		for (let step = 1; step <= 12; step++) {
+			const delta = { x: step * 0.2 * cell, y: -step * 0.1 * cell };
+			const next = dragPlacedPoint(tile, 'R-3', anchor, delta, rect)!;
+			const where = `${id} moved ${step * 0.2} cells`;
+			reshaped ||= cutCounts(next).V !== tile.cuts || cutCounts(next).H !== tile.cuts;
+			expect(Math.abs(next.pan!.x), where).toBeLessThanOrEqual(1);
+			expect(problems(next), where).toEqual([]);
+			const pointer = { x: was.x + delta.x, y: was.y + delta.y };
+			const at = locatePlacedPoint(next, point, 'V', pointer, rect)!;
+			expect(at, where).not.toBeNull();
+			const segs = generateEditorFingers(next, rect).find((f) => f.id === at.fingerId)!.segments;
+			expect(near(segs[at.anchor]!.p0, pointer, 1e-6), where).toBe(true);
 		}
 		expect(reshaped).toBe(true);
 	});
