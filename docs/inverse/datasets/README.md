@@ -123,9 +123,26 @@ still have 46–48% error. All four training and eight evaluation gallery pages
 were inspected: many dark/metallic hearts collapse into one paper class, and
 printed stripes, dots and flowers still appear as weave boundaries. The three
 body-crop gains would lose their motifs. These native results do not justify
-browser export or template-quality claims. Image-relative colour conditioning
-is the next controlled experiment; apparent dependence on absolute brightness
-remains a hypothesis to test.
+browser export or template-quality claims.
+
+The [paired relative-colour experiment](u2netp-relative-material-results.json)
+keeps the body, head size, initial weights, training inputs, sampling order and
+120-update budget identical. Its fresh raw control exactly reproduces the
+earlier head checkpoint, training losses and all 32 evaluation fields. Centring
+RGB on the predicted heart and using one common colour scale reduces known-region
+training error from **11.26% to 5.06%**. Under a fixed contrast-compression
+intervention, errors are **23.73% versus 5.41%**. These are training-photo
+diagnostics, not held-out accuracy.
+
+All 16 training and 32 separate-source evaluation photos were visually reviewed.
+Several previously lost metallic/coloured motifs reappear, including the star
+and dark/gold checker. The shaded red/gold checker still loses its small squares;
+printed decoration remains confused with cuts. The unchanged body still misses
+parts of the house and candlestick. This native experiment remains **outside
+production** pending fixed-crop reconstruction checks and browser validation.
+Cached normalized body fields have small cross-process differences (maximum
+1.20e-7, no changes at 0.5); fresh body outputs match their parent exactly in each
+probe. No numerical gate has been relaxed.
 
 The original [fresh 32-photo evaluation](u2netp-fresh-results.json) freezes the model and
 crop policy before inference. It keeps every existing production crop and adds

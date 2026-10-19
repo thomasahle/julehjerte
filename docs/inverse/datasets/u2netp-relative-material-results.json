@@ -1,0 +1,326 @@
+{
+  "schema": "u2netp-relative-material-results-1",
+  "date": "2026-10-20",
+  "status": "native-paired-experiment-complete-not-production",
+  "evidence": [
+    {
+      "path": "docs/inverse/datasets/u2netp-material-raw-plan.json",
+      "sha256": "32c5ff94528adeced2c557b5055a3f709dc55b9d4e6723f42d996275d6c5f2eb"
+    },
+    {
+      "path": "docs/inverse/datasets/u2netp-material-relative-plan.json",
+      "sha256": "27b8d5de9597da0d094224f0ca3c2f3a79cb759169b076d964fc83fe1b732611"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-raw-v2/report.json",
+      "sha256": "9a98b038f4f9a753623fc398ff3180731f24ce6041092a826d5bea86c395d214"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-relative-v2/report.json",
+      "sha256": "00f9404cf95fcdcc50d62eb4bc4df395f77bff03dd860e96a7636f5daacc77cf"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-raw-probe-v2/report.json",
+      "sha256": "c9b5645bffcdf37d3677f2e0273aa3fd55f3052aa1e3f9648935d496c2ef2cbf"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-relative-probe-v2/report.json",
+      "sha256": "a20bc494cd8c04fe709f431c7dfd24b165dd2aa37ff8bb3124fad190bf1a2d7c"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-colour-stress-v2/report.json",
+      "sha256": "758095d6998db776306133907ee9d3dd1ac1e4e09c4c0fa72c9eb400a4395716"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-paired-checks-v2.json",
+      "sha256": "cf28ce58569070caec7d3e0e9cd72265fa77b67bddeaafcf56a8d21579288dce"
+    }
+  ],
+  "experiment": {
+    "control": "raw publisher-normalized RGB",
+    "treatment": "Predicted-body-weighted, centred RGB with one common RMS scale; same head architecture.",
+    "pairedInvariants": {
+      "initialHeadSha256": true,
+      "initialFrozenStateSha256": true,
+      "trainingInputs": true,
+      "draws": true
+    },
+    "rawReproducesPriorPilot": {
+      "history": true,
+      "trainingMetrics": true,
+      "checkpointSha256": true
+    },
+    "frozenBodyExactInTraining": true,
+    "trainingPhotos": 16,
+    "trainingSourceGroups": 14,
+    "syntheticViews": 96,
+    "syntheticGeometries": 32,
+    "updatesPerArm": 120,
+    "trainableParameters": 18193,
+    "trainingSeconds": {
+      "raw": 102.250876542,
+      "relative": 109.81795108400001
+    },
+    "threads": 1,
+    "checkpointSelection": "Final update only; no evaluation-photo winner selection."
+  },
+  "training": {
+    "scope": "Macro-average error on partial known paper labels; these photos were used for training, not held-out performance.",
+    "raw": {
+      "bodyIoU": 0.9220370264229887,
+      "bodyPixelError": 0.02772860746760552,
+      "bodyFalseNegative": 0.0284759940848502,
+      "backgroundFalsePositive": 0.019533635632991684,
+      "materialPixelError": 0.11264163767971465,
+      "materialJointError": 0.13953287820067173,
+      "jointRegionPixelError": 0.050551089572054946,
+      "balancedMaterialJointError": 0.13860516113692725
+    },
+    "relative": {
+      "bodyIoU": 0.9220370264229887,
+      "bodyPixelError": 0.02772860746760552,
+      "bodyFalseNegative": 0.0284759940848502,
+      "backgroundFalsePositive": 0.019533635632991684,
+      "materialPixelError": 0.05060102394086828,
+      "materialJointError": 0.0826496723633544,
+      "jointRegionPixelError": 0.03957396977519874,
+      "balancedMaterialJointError": 0.07846647204468052
+    },
+    "rows": [
+      {
+        "id": "real-8c875dd0f298b5a4-body-1",
+        "rawMaterialPixelError": 0.09407325758860438,
+        "relativeMaterialPixelError": 0.09199593013396642
+      },
+      {
+        "id": "real-995899fe049540ed-body-1",
+        "rawMaterialPixelError": 0.2507713404182379,
+        "relativeMaterialPixelError": 0.21878642440863902
+      },
+      {
+        "id": "real-b87b0b19f12724f3-body-1",
+        "rawMaterialPixelError": 0.2130047578382335,
+        "relativeMaterialPixelError": 0.2411857996828108
+      },
+      {
+        "id": "real-cf2d0fcff65d7386-body-1",
+        "rawMaterialPixelError": 0.04545054687270914,
+        "relativeMaterialPixelError": 0.0
+      },
+      {
+        "id": "real-cdae5c890b6933cd-body-1",
+        "rawMaterialPixelError": 0.04863852278049107,
+        "relativeMaterialPixelError": 0.0086304944135947
+      },
+      {
+        "id": "real-68d8f25d8891df62-body-1",
+        "rawMaterialPixelError": 0.17674017783696971,
+        "relativeMaterialPixelError": 0.13341689842923735
+      },
+      {
+        "id": "real-5330aa8b62176216-body-1",
+        "rawMaterialPixelError": 0.0,
+        "relativeMaterialPixelError": 0.0
+      },
+      {
+        "id": "real-abf590088db891f9-body-1",
+        "rawMaterialPixelError": 0.0,
+        "relativeMaterialPixelError": 0.0
+      },
+      {
+        "id": "real-990ac34431be87fe-body-1",
+        "rawMaterialPixelError": 0.0,
+        "relativeMaterialPixelError": 0.0
+      },
+      {
+        "id": "real-12ce3c9180f7f317-body-1",
+        "rawMaterialPixelError": 0.46021681325424424,
+        "relativeMaterialPixelError": 0.0
+      },
+      {
+        "id": "real-d5b0aa8d4d2465ee-body-1",
+        "rawMaterialPixelError": 0.0,
+        "relativeMaterialPixelError": 0.0
+      },
+      {
+        "id": "real-39f3a1ba97852876-body-1",
+        "rawMaterialPixelError": 0.0,
+        "relativeMaterialPixelError": 0.0
+      },
+      {
+        "id": "real-e936e08ac62db19b-body-1",
+        "rawMaterialPixelError": 0.0,
+        "relativeMaterialPixelError": 0.0
+      },
+      {
+        "id": "real-340f5e5b0f447889-body-1",
+        "rawMaterialPixelError": 0.0,
+        "relativeMaterialPixelError": 0.0
+      },
+      {
+        "id": "real-710703159f609111-body-1",
+        "rawMaterialPixelError": 0.4751552795031056,
+        "relativeMaterialPixelError": 0.05703681260415089
+      },
+      {
+        "id": "real-a414dfffbd2362ae-body-1",
+        "rawMaterialPixelError": 0.038215506782838866,
+        "relativeMaterialPixelError": 0.05856402338149333
+      }
+    ]
+  },
+  "colourStress": {
+    "scope": "Compare fixed heads under declared, label-preserving sRGB interventions.\n\nThese are synthetic colour perturbations of already used training photographs,\nnot held-out accuracy or a calibrated camera model. No source file is changed.",
+    "allPairedBodyOutputsExact": true,
+    "variants": [
+      {
+        "name": "original",
+        "raw": {
+          "bodyIoU": 0.9220370264229887,
+          "bodyPixelError": 0.02772860746760552,
+          "bodyFalseNegative": 0.0284759940848502,
+          "backgroundFalsePositive": 0.019533635632991684,
+          "materialPixelError": 0.11264163767971465,
+          "materialJointError": 0.13953287820067173,
+          "jointRegionPixelError": 0.050551089572054946,
+          "balancedMaterialJointError": 0.13860516113692725
+        },
+        "relative": {
+          "bodyIoU": 0.9220370264229887,
+          "bodyPixelError": 0.02772860746760552,
+          "bodyFalseNegative": 0.0284759940848502,
+          "backgroundFalsePositive": 0.019533635632991684,
+          "materialPixelError": 0.05060102394086828,
+          "materialJointError": 0.0826496723633544,
+          "jointRegionPixelError": 0.03957396977519874,
+          "balancedMaterialJointError": 0.07846647204468052
+        }
+      },
+      {
+        "name": "compressed-contrast",
+        "raw": {
+          "bodyIoU": 0.8868140081823724,
+          "bodyPixelError": 0.041034796895046716,
+          "bodyFalseNegative": 0.04579713904175559,
+          "backgroundFalsePositive": 0.02598374224792457,
+          "materialPixelError": 0.2372996751241964,
+          "materialJointError": 0.2786008418534156,
+          "jointRegionPixelError": 0.08656735583325756,
+          "balancedMaterialJointError": 0.280693435513746
+        },
+        "relative": {
+          "bodyIoU": 0.8868140081823724,
+          "bodyPixelError": 0.041034796895046716,
+          "bodyFalseNegative": 0.04579713904175559,
+          "backgroundFalsePositive": 0.02598374224792457,
+          "materialPixelError": 0.054079164161040943,
+          "materialJointError": 0.0943527972759644,
+          "jointRegionPixelError": 0.049257533058542365,
+          "balancedMaterialJointError": 0.08989437782359531
+        }
+      },
+      {
+        "name": "warm-cast",
+        "raw": {
+          "bodyIoU": 0.9184494997547576,
+          "bodyPixelError": 0.030120565137855028,
+          "bodyFalseNegative": 0.01745200838472486,
+          "backgroundFalsePositive": 0.03010411061592288,
+          "materialPixelError": 0.11020338107700511,
+          "materialJointError": 0.12347738547174636,
+          "jointRegionPixelError": 0.05266435757303148,
+          "balancedMaterialJointError": 0.12643982818475485
+        },
+        "relative": {
+          "bodyIoU": 0.9184494997547576,
+          "bodyPixelError": 0.030120565137855028,
+          "bodyFalseNegative": 0.01745200838472486,
+          "backgroundFalsePositive": 0.03010411061592288,
+          "materialPixelError": 0.054005910567764555,
+          "materialJointError": 0.06950836349414741,
+          "jointRegionPixelError": 0.04337849597503695,
+          "balancedMaterialJointError": 0.06830025145300785
+        }
+      },
+      {
+        "name": "cool-cast",
+        "raw": {
+          "bodyIoU": 0.9050425237404058,
+          "bodyPixelError": 0.03464635809024855,
+          "bodyFalseNegative": 0.04326537690145313,
+          "backgroundFalsePositive": 0.01961819546902227,
+          "materialPixelError": 0.1179788242839675,
+          "materialJointError": 0.15468895699923763,
+          "jointRegionPixelError": 0.05363669730959539,
+          "balancedMaterialJointError": 0.16103002928623544
+        },
+        "relative": {
+          "bodyIoU": 0.9050425237404058,
+          "bodyPixelError": 0.03464635809024855,
+          "bodyFalseNegative": 0.04326537690145313,
+          "backgroundFalsePositive": 0.01961819546902227,
+          "materialPixelError": 0.05229931245475459,
+          "materialJointError": 0.09255730928680826,
+          "jointRegionPixelError": 0.04352254863122883,
+          "balancedMaterialJointError": 0.08873336533985768
+        }
+      }
+    ],
+    "interpretation": "With matched initialization, data, draws and budget, relative colour conditioning reduces sensitivity to the declared contrast/cast interventions. This is not complete illumination invariance or held-out accuracy."
+  },
+  "evaluation": {
+    "photos": 32,
+    "sourceGroups": 5,
+    "alreadyInspectedDevelopmentCohort": true,
+    "allInputTensorsExact": true,
+    "allInProcessParentBodiesExact": true,
+    "rawProbeReproducesAllPreviousFieldsExactly": true,
+    "relativeCachedBodyComparison": {
+      "maximumAbsoluteDifference": 1.1920928955078125e-07,
+      "differentFloatValues": 1247,
+      "threshold05Differences": 0,
+      "qualification": "All fresh raw body sigmoids exactly match their independently evaluated parent within each probe. Relative normalized cached fields differ slightly across processes; not claimed byte-exact and not used to relax browser numerical gates."
+    },
+    "medianNativeInferenceSeconds": {
+      "raw": 0.2787493544999995,
+      "relative": 0.2844696459999989
+    },
+    "completePaperGroundTruthAvailable": false,
+    "fullReconstructionRun": false,
+    "browserExportTested": false
+  },
+  "visualReview": {
+    "reviewer": "assistant",
+    "relativeTrainingPagesInspected": 4,
+    "relativeEvaluationPagesInspected": 8,
+    "rawReview": "Fresh fields exactly reproduce the previously inspected v1 pilot.",
+    "improvements": [
+      "Turquoise/yellow training checker no longer collapses; red/green training checker mostly separates.",
+      "Several blue/gold, silver/blue and green/metallic evaluation motifs become recognizable, including the star and dark/gold checker previously gained by body-only crop fallback."
+    ],
+    "remainingFailures": [
+      "Shaded red/gold checker still loses nearly all central checkers at the fixed 0.5 threshold.",
+      "Printed stripes, dots, trees and flowers remain false weave boundaries.",
+      "Shadows and metallic reflections change some paper identities; the pink/red training case worsens.",
+      "Missing body regions on the house and candlestick remain, as the body detector is frozen.",
+      "Thin motif details and small squares are blurred or merge; a recognizable silhouette does not establish correct templates."
+    ]
+  },
+  "validation": {
+    "relativeFeatureTests": 4,
+    "materialModelAndLabelTests": 4,
+    "allFivePairedCheckJobsPassed": true,
+    "productionCodeChanged": false,
+    "unchangedApplicationReleaseChecks": "docs/inverse/datasets/conni-release-qa.json"
+  },
+  "decision": {
+    "productionEnabled": false,
+    "nextStep": "Hold existing crop coordinates fixed and evaluate new material targets through the independent template/paper checks, retaining wrong-mask cases and comparing to the photographs. Do not tune the crop or choose per-photo heads using evaluation results."
+  },
+  "resources": {
+    "newOriginalPhotoCopies": 0,
+    "newBodyCheckpoints": 0,
+    "rawProbeFields": "All body and material fields hardlinked after exact fresh inference; relative mismatches retained.",
+    "heavyWorkers": 1
+  }
+}
