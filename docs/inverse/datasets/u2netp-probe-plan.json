@@ -1,0 +1,36 @@
+{
+  "schema": "u2netp-probe-plan-1",
+  "status": "predeclared",
+  "source": {
+    "path": "tmp/heart-learning/u2netp-source-v1/source.json",
+    "sha256": "f6fe434979abcd0531fede48187b3009d2d7996096fc8c507fcbaf90f428577a"
+  },
+  "checkpoint": {
+    "path": "tmp/heart-learning/u2netp-source-v1/u2netp.pth",
+    "sha256": "e7567cde013fb64813973ce6e1ecc25a80c05c3ca7adbc5a54f3c3d90991b854"
+  },
+  "selection": {
+    "path": "docs/inverse/datasets/preserved-material-heldout-plan.json",
+    "sha256": "10554c9c6e175c95619101813a6c08cc0907ea8bf7fcd00bf08e46a2b773f64a"
+  },
+  "control": {
+    "path": "tmp/heart-learning/preserved-candidate-v1/pipeline/report.json",
+    "sha256": "6da26a6b57f61d9a731ee6338b0308b1646ee44b679fe3ccd2b15a1c3c63118b"
+  },
+  "protocol": {
+    "resolution": 320,
+    "skimage": "0.24.0",
+    "threads": 1,
+    "input": "Unmodified publisher RescaleT(320) and ToTensorLab(flag=0): stretch the complete RGB image, image-maximum scaling and ImageNet channel normalization. EXIF orientation applied before source hash checks.",
+    "output": "Publisher fused saliency head with per-image minimum/maximum normalization, threshold .5 for locator; constant field becomes zero.",
+    "pipeline": "Same RGB classifier, locator support gates and 10-second fitter. Preserve every supported production crop and require observed corners before fallback replacement.",
+    "selection": "All sixteen existing development photos. No manual prompts, result-dependent case selection, model training or checkpoint selection."
+  },
+  "resources": {
+    "maxProbeMiB": 10,
+    "workers": 1,
+    "newSourcePhotoCopies": 0,
+    "newPhotoDownloads": 0
+  },
+  "scope": "Exploratory frozen pretrained saliency baseline on the already inspected cohort. U2NETP checkpoint from the author-linked Google Drive, code at pinned official Git commit. No heart fine-tuning. Upstream pretraining overlap with public photos is unknown. Not a deployable or browser-validated model."
+}
