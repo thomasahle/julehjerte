@@ -669,17 +669,19 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
     const objectiveProb=sourceResolution?fullProb:clearanceProb,objectiveWeights=sourceResolution?fullWeights:clearanceWeights;
     const refinementCfg=protectedObjective?{...cfg,materialResolution:Math.max(cfg.materialResolution,700)}:cfg;
     const verification=protectedObjective?{requestedResolution:cfg.materialResolution,resolution:refinementCfg.materialResolution,source:'feature-preserving-refinement'}:null;
-    // Clearance grids need to retain colours; free refinement may still close
-    // an opening. Enclosure is mandatory only for the accepted template.
+    // Prefer an already-enclosed feature when available. An open initializer
+    // remains eligible for later repair; acceptance still requires enclosure.
     // Clearance fitting can reduce strip collisions while increasing image
     // error. Do not hand free refinement an earlier, narrower checkpoint just
-    // because it matches more pixels. Within each geometry class, retain the
-    // existing preference for source colours, then compare image error.
+    // because it matches more pixels. Preserve enclosed source features and
+    // their colours first; within that class prefer legal spacing, then error.
     const clearancePreference=checkpoint=>{
       const checkedGraph=new CurveGraph(gridPaths(checkpoint.model,cfg.width,checkpoint.floor),cfg.width);
       const valid=validate(checkedGraph.solution(checkedGraph.points,checkpoint.phase,input),refinementCfg,{checkImage:false,finalGeometry:true}).passed;
-      const retained=!featureSeed(selected)||retainsGridColours(checkpoint);
-      return 2*Number(valid)+Number(retained);
+      if(!featureSeed(selected))return 6+Number(valid);
+      const fidelity=auditFeatureFidelity(source,gridMask(checkpoint.model,source.resolution,checkpoint.phase,checkpoint.floor),cfg,sourceFeatures);
+      const retained=fidelity.regions.every(r=>r.retainedFraction>=fidelity.minimumRetention);
+      return 4*Number(fidelity.passed)+2*Number(retained)+Number(valid);
     };
     const clear=stage('directClearance',()=>fitGrid(clearanceProb,n,selected.model.counts,selected.phase,{k:selected.model.k,optimizationTarget:protectedObjective?null:gridTarget,optimizationObjective:protectedObjective?null:gridObjective,weights:clearanceWeights,steps:150,initial:refloor(selected,floor),floor,clearance:floor+.0015,deadline:performance.now()+Math.min(800,allocation*.15),preferCheckpoint:clearancePreference}));
     attempts.push({stage:'clearance',counts:clear.model.counts,controlPoints:clear.model.k,phase:clear.phase,error:protectedObjective?mismatch(gridMask(clear.model,n,clear.phase,clear.floor),prob,fitWeights):clear.error,steps:clear.steps,refinementResolution,...(protectedObjective?{weightedError:clear.error}:{})});

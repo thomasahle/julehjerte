@@ -6,7 +6,7 @@ on:
       mode:
         type: choice
         default: full
-        options: [full, cold, resources, matching-recovery, feature-detail, retained-grid, source-resolution, return-repair, paper-finalists, paper-repair, budgets, remaining, bicycle, comparison, maple, polish, late-clearance, profile, shared-runtime]
+        options: [full, cold, resources, clearance-checkpoints, matching-recovery, feature-detail, retained-grid, source-resolution, return-repair, paper-finalists, paper-repair, budgets, remaining, bicycle, comparison, maple, polish, late-clearance, profile, shared-runtime]
         description: Full diagnostics or focused normal-budget regressions
 permissions:
   contents: read
@@ -37,6 +37,9 @@ jobs:
       - name: Capture frozen and shifted photographic feature fits
         if: inputs.mode == 'feature-detail'
         run: node --test --test-concurrency=1 scripts/inverse/feature-seeds.test.mjs scripts/inverse/fitted-rerouting.test.mjs scripts/inverse/feature-near-miss.test.mjs scripts/inverse/clearance-feature-geometry.test.mjs
+      - name: Verify remaining failures and clearance checkpoint retention
+        if: inputs.mode == 'clearance-checkpoints'
+        run: node --test --test-concurrency=1 --test-name-pattern='^an invalid feature proposal|^fresh synthetic-control routing|1.5x clock|^early feature routing recovers|^a one-pixel crop shift|^clearance fitting' scripts/inverse/grid-clearance-checkpoint.test.mjs scripts/inverse/coverage-recovery.test.mjs scripts/inverse/search-scheduling.test.mjs scripts/inverse/feature-near-miss.test.mjs scripts/inverse/feature-seeds.test.mjs
       - name: Verify matching continuation and unchanged acceptance allowance
         if: inputs.mode == 'matching-recovery'
         run: node --test --test-concurrency=1 scripts/inverse/shadow-crop.test.mjs scripts/inverse/automatic.test.mjs scripts/inverse/matching-seeds.test.mjs

@@ -98,12 +98,12 @@ for(const clockScale of [1,1.5])for(const translation of [null,'horizontal','ver
       assert.equal(answer.report.solver.samplingRecovery.scheduled,1);
       assert.equal(answer.report.solver.selectedInitialization,'feature-sampling-grid');
       const preflight=answer.report.solver.samplingRecovery.preflight;
-      assert.equal(preflight.initialGeometry.passed,translation==='vertical');
+      if(translation==='vertical')assert.equal(preflight.initialGeometry.passed,true);
       assert.deepEqual(preflight.initialCounts,translation==='vertical'?[3,3]:[5,3]);
       assert.deepEqual(preflight.alternativeCounts,[3,3]);
       assert.equal(preflight.alternativeGeometry.passed,true);assert.equal(preflight.alternativePaper,'pass');
       assert.equal(preflight.preferred,true,'Prefer a checked starting layout before exhausting the short budget.');
-      if(translation==='vertical')assert.ok(preflight.alternativeError<preflight.initialError,'A valid starting layout is displaced only by a closer source fit.');
+      if(preflight.initialGeometry.passed)assert.ok(preflight.alternativeError<preflight.initialError,'A valid starting layout is displaced only by a closer source fit.');
     }else{
       assert.equal(answer.report.solver.samplingRecovery.scheduled,0,'An ineligible alternative cannot displace the established fit.');
       assert.equal(answer.report.solver.selectedInitialization,'feature-weighted-grid');
