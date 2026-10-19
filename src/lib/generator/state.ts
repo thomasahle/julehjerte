@@ -28,6 +28,9 @@ export const BOARD_STYLES: readonly FigureStyle[] = ['motifs', 'squares', 'strip
 /** The frames whose space around the motif the visitor sets: the circle's
  * distance from it, or the legs' of a frame without a centre panel. */
 export const SPACED_STYLES: readonly FigureStyle[] = FIGURE_STYLES.filter(style => !BOARD_STYLES.includes(style));
+/** The largest size a frame takes the motif to: the figure in the checks
+ * stops only at the paper's edge, the other frames leave room for theirs. */
+export const largestScale = (style: FigureStyle) => style === 'strips' ? 100 : 85;
 /** The space a state asks between the motif and its frame, where it has one. */
 export function frameGap(s: GeneratorState): number | undefined {
 	return s.mode === 'figure' && SPACED_STYLES.includes(s.style) ? s.spacing : undefined;
@@ -75,7 +78,7 @@ export function readGeneratorState(hash: string): GeneratorState {
 			s.motif = raw.motif;
 		for (const [k, min, max] of [
 			['frameSize', 50, 80],
-			['scale', 45, 85],
+			['scale', 45, largestScale(s.style)],
 			['spacing', 0, 15]
 		] as const)
 			if (typeof raw[k] === 'number' && Number.isFinite(raw[k]))

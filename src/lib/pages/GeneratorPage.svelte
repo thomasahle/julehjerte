@@ -26,7 +26,7 @@
 	import { renderHeartSvgMarkup } from '$lib/rendering/heartSvg';
 	import { handoffToDraw } from '$lib/editor/handoff';
 	import { saveUserDesign } from '$lib/stores/collection';
-	import { defaults, readGeneratorState, normalizeText, fittedCells, TEXT_LINES, TEXT_LINE_LENGTH, type GeneratorState, frameGap, SPACED_STYLES, BOARD_STYLES } from '$lib/generator/state';
+	import { defaults, readGeneratorState, normalizeText, fittedCells, TEXT_LINES, TEXT_LINE_LENGTH, type GeneratorState, frameGap, largestScale, SPACED_STYLES, BOARD_STYLES } from '$lib/generator/state';
 	import type {
 		GeneratorResult,
 		GeneratorRequest
@@ -656,6 +656,7 @@
 							onclick={() => {
 								config.frame = choice.frame;
 								config.style = choice.style;
+								config.scale = Math.min(config.scale, largestScale(choice.style));
 							}}
 						>
 							<!-- Until the thumbnail is ready, frames without a circle show a square. -->
@@ -673,14 +674,14 @@
 						</button>
 					{/each}
 				</div>
-				<!-- Every frame takes the motif's size, and all but the board frames, whose squares hold the motif, the space around it. -->
+				<!-- Every frame takes the motif's size, the figure in the checks up to the paper's edge, and all but the board frames, whose squares hold the motif, the space around it. -->
 				<label class="range-label" for="motif-size"
 					>{t('generatorSize', lang)}<output>{config.scale}%</output></label
 				><input
 					id="motif-size"
 					type="range"
 					min="45"
-					max="85"
+					max={largestScale(config.style)}
 					step="1"
 					bind:value={config.scale}
 				/>

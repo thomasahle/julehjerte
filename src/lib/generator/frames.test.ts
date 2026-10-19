@@ -395,6 +395,14 @@ describe('frames from real hearts', () => {
   expect(middle.area).toBeLessThan(large.area);
   for (const other of [small, large]) for (const axis of [0, 1]) expect(Math.abs(other.centre[axis] - middle.centre[axis])).toBeLessThan(2);
  }, 30000);
+ it('lets the figure in the checks grow to the paper\'s edge, unlike the other frames', () => {
+  const state = { ...defaults, mode: 'figure' as const, style: 'strips' as const, scale: 100 };
+  const link = (s: typeof state | (Omit<typeof state, 'style'> & { style: 'rays' })) => '#make=' + encodeURIComponent(JSON.stringify(s));
+  expect(readGeneratorState(link(state)).scale).toBe(100);
+  expect(readGeneratorState(link({ ...state, style: 'rays' })).scale).toBe(85);
+  const area = (scale: number) => swapped(generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'strips', scale }).design).area;
+  expect(area(1)).toBeGreaterThan(area(.85));
+ }, 30000);
  it('weaves outlines that touch into the checks', () => {
   // The bicycle's wheels touch its frame at single points.
   const { design } = generate({ mode: 'figure', name: 'Bicycle', contours: bicycle.contours as Ring[], colors, style: 'strips' });
