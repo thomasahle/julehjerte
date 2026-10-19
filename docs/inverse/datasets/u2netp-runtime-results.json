@@ -188,5 +188,59 @@
       "cropProposed": false,
       "outlineDecisionsExact": true
     }
-  ]
+  ],
+  "validation": {
+    "testedCommit": "d3c23dd396363d48c5df7c960797df0642e86340",
+    "typeCheck": {
+      "errors": 0,
+      "existingWarnings": 6
+    },
+    "lint": {
+      "errors": 0,
+      "existingWarnings": 7
+    },
+    "application": {
+      "passed": 2359,
+      "skipped": 142,
+      "filesPassed": 154,
+      "filesSkipped": 2
+    },
+    "focusedInverseTests": {
+      "passed": 19,
+      "failed": 0,
+      "scope": "Fourteen saliency preprocessing checks and five ROI proposal checks."
+    },
+    "build": "pass",
+    "logs": [
+      {
+        "path": "tmp/heart-learning/u2netp-app-check.log",
+        "sha256": "db20055932e27d213414b63bc08b7d8e6cfc75e4ea9069e96544faa664b373f3"
+      },
+      {
+        "path": "tmp/heart-learning/u2netp-app-lint.log",
+        "sha256": "54fae54bd2183ee8ca5def3f57632b38b5c261aa21b3773e9f375e48756d1ed2"
+      },
+      {
+        "path": "tmp/heart-learning/u2netp-app-tests.log",
+        "sha256": "9853c1a4af648e4fd51aeea85e158a077d2fecf6032dfe99e455be0b871a5bcf"
+      },
+      {
+        "path": "tmp/heart-learning/u2netp-app-build.log",
+        "sha256": "2ba6b17b6b976759ae317ff5a7d82f189528b30afc51ff984b0f66d47577d6d0"
+      },
+      {
+        "path": "tmp/heart-learning/u2netp-focused-tests.log",
+        "sha256": "c65d5da239ab1434c5c5caf07fc1f6575b474759a1db66c0fa1f465da2311d41"
+      }
+    ],
+    "inverseProductionTree": "382b482a8b27fb33f7a3689d5d748981e620fe9f",
+    "unchangedInverseProductionReference": {
+      "commit": "3762b82c08294d601577a628d1fbaf549d63dd83",
+      "ciRun": 39302176699,
+      "status": "success"
+    },
+    "fullInverseSuite": "Not repeated locally: production inverse code is identical to the green deployed reference, with new research tests checked separately.",
+    "preview": "http://localhost:4173/editor/mal/",
+    "previewScope": "Built from tested research branch at d3c23dd3, including main through 3762b82c. Newer generator commits on main are outside this local validation."
+  }
 }
