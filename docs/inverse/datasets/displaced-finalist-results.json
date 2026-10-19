@@ -1,0 +1,476 @@
+{
+  "schema": "displaced-finalist-results-1",
+  "date": "2026-10-20",
+  "status": "complete-development-only",
+  "evidence": [
+    {
+      "path": "docs/inverse/datasets/displaced-finalist-plan.json",
+      "sha256": "718450d876a5271794e7a1cd2c13fcb40fdf6e50975e97cf20ead5fb96d7a246"
+    },
+    {
+      "path": "tmp/heart-learning/displaced-finalist-probe-v3.json",
+      "sha256": "01eaa413ce73742b9f49fa34b22fb8d17ff82b4d18349715a201b4ef56a4dcd5"
+    },
+    {
+      "path": "docs/inverse/datasets/displaced-finalist-replay-plan.json",
+      "sha256": "66854c283597226db398a9e9c7d722704c1c37f985529987de872640688ec98f"
+    },
+    {
+      "path": "tmp/heart-learning/displaced-finalist-replay-v1/report.json",
+      "sha256": "9320ac670ea1537ad99f9de5d1c04f2b036515bf7962f7963fdaf0b3b1169ded"
+    },
+    {
+      "path": "tmp/heart-learning/displaced-finalist-comparison-v1/report.json",
+      "sha256": "34b2f688ce172f0d4f17c865dd6d6ad54a2127e3c71b208e472cdf2ef59f0eb4"
+    },
+    {
+      "path": "tmp/heart-learning/displaced-finalist-editable-v1/results.json",
+      "sha256": "1186d859b50bdafdbd5c6e95f9eb06107df9d715d5802716adaec7c7c7087bb4"
+    },
+    {
+      "path": "tmp/heart-learning/displaced-finalist-checks-v1.json",
+      "sha256": "7b97e7af6d0424b5a6660689d6d61e8acb7fece5803c93ad6f0a952fde3cb0ea"
+    },
+    {
+      "path": "scripts/inverse/datasets/real-materials-encoder-tail.json",
+      "sha256": "b245c23fb51691a4db2000ca5226f6ab400511c612d8414fbc50ff4ab4e80374"
+    }
+  ],
+  "screen": {
+    "photos": 32,
+    "targetMethods": 2,
+    "croppedTargets": 50,
+    "unresolvedTargets": 14,
+    "coarseScoresReproduced": 968,
+    "initialFineScoresReproduced": 150,
+    "laterAdaptiveFitsExplicitlyNotReplayed": 4,
+    "reasons": {
+      "crop-unresolved": 14,
+      "extra-grid-still-loses-colours": 13,
+      "existing-finalist-retains-colours": 18,
+      "no-discarded-top-three-seed": 5,
+      "recovered-colour-retention": 1,
+      "observation-weighted-path-unchanged": 10,
+      "existing-grid-near-enough": 3
+    },
+    "summary": {
+      "learned": {
+        "inputs": 32,
+        "coarseReplayed": 25,
+        "fineReplayed": 25,
+        "extraFits": 8,
+        "colourRetentionRecovered": [
+          "real-2502cdec0720f4ea-body-1"
+        ],
+        "shapeRetentionRecovered": [],
+        "extraFitSeconds": 1.0295507509999957
+      },
+      "rgb": {
+        "inputs": 32,
+        "coarseReplayed": 25,
+        "fineReplayed": 25,
+        "extraFits": 6,
+        "colourRetentionRecovered": [],
+        "shapeRetentionRecovered": [],
+        "extraFitSeconds": 0.8545376669999954
+      }
+    },
+    "interpretation": "One discarded grid restores all colour-retention tests, but no extra grid passes every shape/enclosure check. Neither a valid template nor an original-artwork recovery has been established by this screening."
+  },
+  "harnessCorrections": [
+    "The first attempt assumed all crops were fully observed and stopped before scoring the first partial crop. The final run preserves coverage, source masks and the weighted baseline path.",
+    "The second attempt treated later adaptive feature-weighted fits as members of the initial shortlist. The final run exactly asserts the initial ordered shortlist and scores, and explicitly records four later fits outside this diagnostic scope."
+  ],
+  "next": "For the NN, improve training coverage and review body/material labels instead of retraining the same colour head again. The current model trains on only 16 reviewed real material/body instances; just six have approximate overlap-corner references. A direct corner head would first need better supervision. Any further solver policy should preserve enclosures and be tested on unaffected cases and perturbations before release.",
+  "productionChanges": false,
+  "fullPipeline": {
+    "photos": 8,
+    "targets": 14,
+    "freshFits": 28,
+    "sameMasksAndCoordinates": true,
+    "tenSecondSearchBudgetUnchanged": true,
+    "summary": {
+      "baseline": {
+        "attempts": 14,
+        "checkedPairs": 0,
+        "editableConversionsPassed": 14,
+        "editableGeometryPassed": 14,
+        "editableFidelityPassed": 14,
+        "editablePaperPassed": 13,
+        "editablePaperUncertain": [
+          "real-55704c6e2911bebc-body-1-rgb-baseline"
+        ],
+        "completeEditableCandidates": 0,
+        "solveSeconds": {
+          "median": 9.75793522899999,
+          "max": 10.102103582999996,
+          "sum": 131.79807387599996
+        }
+      },
+      "candidate": {
+        "attempts": 14,
+        "checkedPairs": 0,
+        "editableConversionsPassed": 14,
+        "editableGeometryPassed": 14,
+        "editableFidelityPassed": 14,
+        "editablePaperPassed": 12,
+        "editablePaperUncertain": [
+          "real-55704c6e2911bebc-body-1-learned-candidate",
+          "real-55704c6e2911bebc-body-1-rgb-candidate"
+        ],
+        "completeEditableCandidates": 0,
+        "solveSeconds": {
+          "median": 9.680575812499999,
+          "max": 10.107714292000004,
+          "sum": 131.695396499
+        }
+      }
+    },
+    "lowerMaskError": 7,
+    "higherMaskError": 2,
+    "sameMaskError": 5,
+    "qualification": "Single rotating-order fits on all triggering development targets, not repeated timing trials. Final export work can take the recorded solve duration slightly above ten seconds. Unaffected cases have not received fresh full solves under the proposal."
+  },
+  "nativity": {
+    "originalId": "real-2502cdec0720f4ea-body-1",
+    "targetMethod": "learned",
+    "maskSha256": "0d13516f3cb951d2b86ad5260f5ccbeabd70b93080f56e274d7ff0fff1c7aefb",
+    "baseline": {
+      "counts": {
+        "left": 3,
+        "right": 3
+      },
+      "error": 0.06885,
+      "missingRegions": 5
+    },
+    "candidate": {
+      "counts": {
+        "left": 6,
+        "right": 6
+      },
+      "error": 0.02845625,
+      "missingRegions": 2,
+      "openedEnclosures": 2
+    },
+    "interpretation": "The discarded six-cut grid can preserve a recognizable star and figures after normal curve refinement, whereas the baseline three-cut fit erases them. Two small source openings still join the exterior; the complete reconstruction check therefore remains failed. Six cuts are not asserted to be original ground truth."
+  },
+  "visualReview": {
+    "allFourPagesInspected": true,
+    "allFourteenTargetPairsInspected": true,
+    "directory": "tmp/heart-learning/displaced-finalist-comparison-v1",
+    "findings": [
+      "The nativity is substantially more recognizable, but false thin joins and border defects remain.",
+      "The blue/gold figure and central printed flower remain erased or heavily simplified; the extra candidate does not repair them.",
+      "Better fits of printed stripes and tree artwork still trace ink rather than separate paper identities. Lower disagreement is not better weaving recovery.",
+      "Both candy-basket masks and both rotated-house masks come from unsuitable crops. One house target improves its pixel score while the other regresses from 5.05% to 6.94%; neither is a faithful design.",
+      "The proposal adds no newly checked pair. Two proposed printed-stripe templates have uncertain paper support, versus one control."
+    ]
+  },
+  "validation": {
+    "screenExactCoarseScores": 968,
+    "screenExactInitialFineScores": 150,
+    "laterAdaptiveFitsExcluded": 4,
+    "independentComparisonAndEditableDrivers": [
+      {
+        "name": "comparison",
+        "command": [
+          "/usr/bin/python3",
+          "scripts/inverse/learning/material-fixed-comparison.py",
+          "--reference=tmp/heart-learning/displaced-finalist-replay-v1",
+          "--candidate=tmp/heart-learning/displaced-finalist-replay-v1",
+          "--reference-method=baseline",
+          "--candidate-method=candidate",
+          "--reference-label=Baseline",
+          "--candidate-label=Extra finalist",
+          "--output=tmp/heart-learning/displaced-finalist-comparison-v1"
+        ],
+        "log": "tmp/heart-learning/displaced-finalist-comparison-v1.log",
+        "exitCode": 0
+      },
+      {
+        "name": "editor-input",
+        "command": [
+          "/opt/homebrew/opt/node@22/bin/node",
+          "scripts/inverse/learning/material-pair-editor-input.mjs",
+          "--run=tmp/heart-learning/displaced-finalist-replay-v1",
+          "--output=tmp/heart-learning/displaced-finalist-editor-input-v1"
+        ],
+        "log": "tmp/heart-learning/displaced-finalist-editor-input-v1.log",
+        "exitCode": 0
+      },
+      {
+        "name": "editable",
+        "command": [
+          "/opt/homebrew/opt/node@22/bin/node",
+          "scripts/inverse/hard-photo-editor-replay.mjs",
+          "--run=tmp/heart-learning/displaced-finalist-editor-input-v1",
+          "--output=tmp/heart-learning/displaced-finalist-editable-v1"
+        ],
+        "log": "tmp/heart-learning/displaced-finalist-editable-v1.log",
+        "exitCode": 0
+      }
+    ],
+    "changedToolsLintExitCode": 0,
+    "fullApplicationSuite": "Not rerun: production sources are byte-verified unchanged before and after full fitting. The previous complete application check/lint/test/build and deployed CI remain recorded in conni-release-qa.json.",
+    "temporaryModule": "Only a separate temporary fit module changes scheduling; every imported production dependency stays pinned.",
+    "physicalAssemblyTested": false
+  },
+  "decision": "Keep this as an experimental scheduling proposal. The motivating failure improves but does not pass full image checks; most extra grids add work without recovering missing shapes, and two targets regress. Do not enable by default or deploy it on the strength of mask-error reductions alone.",
+  "rows": [
+    {
+      "id": "real-f6e5e128449e3cb9-body-1-learned",
+      "referenceStatus": "review-required",
+      "candidateStatus": "review-required",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": 0.04524375,
+      "candidateOwnMaskError": 0.042375,
+      "targetsDisagreement": {
+        "fraction": 0.0,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.042375,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-f6e5e128449e3cb9-body-1-rgb",
+      "referenceStatus": "review-required",
+      "candidateStatus": "review-required",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": 0.0444875,
+      "candidateOwnMaskError": 0.0422,
+      "targetsDisagreement": {
+        "fraction": 0.0,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.0422,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-55704c6e2911bebc-body-1-learned",
+      "referenceStatus": "review-required",
+      "candidateStatus": "review-required",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": 0.11655,
+      "candidateOwnMaskError": 0.08505625,
+      "targetsDisagreement": {
+        "fraction": 0.0,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.08505625,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-55704c6e2911bebc-body-1-rgb",
+      "referenceStatus": "review-required",
+      "candidateStatus": "review-required",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": 0.11986875,
+      "candidateOwnMaskError": 0.11986875,
+      "targetsDisagreement": {
+        "fraction": 0.0,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.11986875,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-589f606a9d9899f2-body-1-learned",
+      "referenceStatus": "review-required",
+      "candidateStatus": "review-required",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": 0.07024375,
+      "candidateOwnMaskError": 0.07024375,
+      "targetsDisagreement": {
+        "fraction": 0.0,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.07024375,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-589f606a9d9899f2-body-1-rgb",
+      "referenceStatus": "review-required",
+      "candidateStatus": "review-required",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": 0.07025,
+      "candidateOwnMaskError": 0.07025,
+      "targetsDisagreement": {
+        "fraction": 0.0,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.07025,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-dfa7e4b71b43aa86-body-1-rgb",
+      "referenceStatus": "review-required",
+      "candidateStatus": "review-required",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": 0.0849,
+      "candidateOwnMaskError": 0.0855125,
+      "targetsDisagreement": {
+        "fraction": 0.0,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.0855125,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-dfa7e4b71b43aa86-body-1-learned",
+      "referenceStatus": "review-required",
+      "candidateStatus": "review-required",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": 0.0881,
+      "candidateOwnMaskError": 0.0794125,
+      "targetsDisagreement": {
+        "fraction": 0.0,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.0794125,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-2502cdec0720f4ea-body-1-learned",
+      "referenceStatus": "review-required",
+      "candidateStatus": "review-required",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": 0.06885,
+      "candidateOwnMaskError": 0.02845625,
+      "targetsDisagreement": {
+        "fraction": 0.0,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.02845625,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-1a7cfc6be8b164b5-body-1-learned",
+      "referenceStatus": "review-required",
+      "candidateStatus": "review-required",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": 0.03178125,
+      "candidateOwnMaskError": 0.0237125,
+      "targetsDisagreement": {
+        "fraction": 0.0,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.0237125,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-fe7fb089d1cd86b4-body-1-learned",
+      "referenceStatus": "review-required",
+      "candidateStatus": "review-required",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": 0.05051875,
+      "candidateOwnMaskError": 0.069375,
+      "targetsDisagreement": {
+        "fraction": 0.0,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.069375,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-fe7fb089d1cd86b4-body-1-rgb",
+      "referenceStatus": "review-required",
+      "candidateStatus": "review-required",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": 0.0774375,
+      "candidateOwnMaskError": 0.056725,
+      "targetsDisagreement": {
+        "fraction": 0.0,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.056725,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-52e732b98f9b14f1-body-1-learned",
+      "referenceStatus": "review-required",
+      "candidateStatus": "review-required",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": 0.06896875,
+      "candidateOwnMaskError": 0.06896875,
+      "targetsDisagreement": {
+        "fraction": 0.0,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.06896875,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-52e732b98f9b14f1-body-1-rgb",
+      "referenceStatus": "review-required",
+      "candidateStatus": "review-required",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": 0.068425,
+      "candidateOwnMaskError": 0.068425,
+      "targetsDisagreement": {
+        "fraction": 0.0,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.068425,
+        "phaseExchanged": false
+      }
+    }
+  ],
+  "supervisionAudit": {
+    "trainingAnnotationSet": {
+      "path": "scripts/inverse/datasets/real-materials-encoder-tail.json",
+      "sha256": "b245c23fb51691a4db2000ca5226f6ab400511c612d8414fbc50ff4ab4e80374"
+    },
+    "realTrainingInstances": 16,
+    "withApproximateOverlapCorners": [
+      "real-8c875dd0f298b5a4-body-1",
+      "real-5330aa8b62176216-body-1",
+      "real-abf590088db891f9-body-1",
+      "real-995899fe049540ed-body-1",
+      "real-12ce3c9180f7f317-body-1",
+      "real-d5b0aa8d4d2465ee-body-1"
+    ],
+    "bodyAnnotationPinsVerified": 7,
+    "qualification": "Counts describe the current model training subset, not all available photos or all body annotations. Corner references have stated uncertainty and are not exact cutting-geometry labels."
+  }
+}

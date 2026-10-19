@@ -39,6 +39,23 @@ claiming the omitted grid is a valid template or the original cutting design.
 No production code or acceptance limit changes in this experiment. The diagnostic
 now accepts `--reference-method` and `--candidate-method` for paired runs.
 
+The [discarded-grid follow-up](displaced-finalist-results.json) exactly replays
+968 coarse scores and 150 initial fine-grid scores across all 50 targets, including
+the ten partially observed crops. A bounded extra-grid rule triggers on 14 targets.
+Fresh baseline/proposal fits improve the nativity from **6.89% to 2.85%** mask
+disagreement and restore recognizable figures, but two small openings still join
+the exterior. Seven targets get lower error, two get higher error, five are
+unchanged, and **neither arm produces a fully checked pair on these 14 targets**.
+All 28 exports pass conversion and geometry; three paper-support results remain
+uncertain. Every comparison was inspected. This stays an isolated experiment,
+with no production scheduling change or added disagreement allowance.
+
+The current U2NETP training subset contains only **16 reviewed real instances**.
+Six have approximate overlap-corner references; the others have none. The large
+photo inventory is not a correspondingly large supervised training set. More
+reviewed body/material labels and better corner references are needed before a
+direct learned corner proposal can be evaluated responsibly.
+
 The [complete balanced-epoch follow-up](u2netp-material-complete-epochs-results.json)
 adds 384 updates to the fixed relative-colour head, visiting every synthetic
 view four times. Known-region real training error falls from **5.06% to 2.78%**.
