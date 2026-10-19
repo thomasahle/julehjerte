@@ -11,7 +11,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageOps
 import torch
 
-from u2netp_material import U2NetPaperIdentity
+from u2netp_relative_material import identity_model
 from u2netp_material_training import material_training
 from u2netp_adaptation import frozen_hash, normalize_scores
 from preserved_candidate import pinned
@@ -72,7 +72,7 @@ def main():
     architecture = module(upstream/'model/u2net.py', 'u2netp_identity_model')
     body = architecture.U2NETP(3, 1).eval()
     body.load_state_dict(torch.load(pinned(plan['checkpoint']), map_location='cpu', weights_only=True), strict=True)
-    model = U2NetPaperIdentity(body).train(); frozen = frozen_hash(model)
+    model = identity_model(body, p.get('materialInput', 'raw')).train(); frozen = frozen_hash(model)
     real, synthetic, separation = material_training(plan, loader.RescaleT(320), loader.ToTensorLab(flag=0))
     initial = predict(model, real)
     with torch.no_grad():
@@ -80,7 +80,7 @@ def main():
             expected = normalize_scores(body(item['input'][None])[0])[0, 0].numpy()
             if not np.array_equal(expected, prediction[0]): raise ValueError('Wrapper changed parent body prediction')
     del body
-    sources = [Path(__file__)]+[Path(__file__).parent/name for name in ['u2netp_material.py', 'u2netp_material_training.py',
+    sources = [Path(__file__)]+[Path(__file__).parent/name for name in ['u2netp_material.py', 'u2netp_relative_material.py', 'u2netp_material_training.py',
         'u2netp_adaptation.py', 'real_materials_learning.py', 'material_pilot.py', 'material_metrics.py',
         'preserved_candidate.py', 'real_foreground.py', 'foreground.py', 'data.py']]
     sources += [Path(__file__).parent.parent/'datasets'/name for name in ['real_annotations.py', 'real_materials.py']]
@@ -92,6 +92,8 @@ def main():
               'plan': {'path': str(args.plan), 'sha256': digest(plan_bytes)}, 'sourceHashes': hashes,
               'sourceCommit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
               'sourceSeparation': separation, 'initialFrozenStateSha256': frozen,
+              'materialInput': p.get('materialInput', 'raw'),
+              'initialHeadSha256': digest(b''.join(k.encode()+v.detach().numpy().tobytes() for k, v in sorted(model.state_dict().items()) if not k.startswith('body.'))),
               'parameters': sum(x.numel() for x in model.parameters()),
               'trainableParameters': sum(x.numel() for x in model.parameters() if x.requires_grad),
               'trainingInputs': [{'id': i['id'], **i['evidence'], 'inputTensorSha256': digest(i['input'].numpy().tobytes())}

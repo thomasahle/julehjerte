@@ -11,7 +11,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageOps
 import torch
 
-from u2netp_material import U2NetPaperIdentity
+from u2netp_relative_material import identity_model
 from u2netp_adaptation import input_tensor, frozen_hash
 from preserved_candidate import pinned
 from data import digest
@@ -48,7 +48,7 @@ def main():
     loader = module(root/'data_loader.py', 'u2netp_identity_probe_input')
     parent = architecture.U2NETP(3, 1).eval()
     parent.load_state_dict(torch.load(pinned(plan['checkpoint']), map_location='cpu', weights_only=True), strict=True)
-    model = U2NetPaperIdentity(parent).eval()
+    model = identity_model(parent, plan['protocol'].get('materialInput', 'raw')).eval()
     checkpoint = pinned({'path': str(args.training/'identity.pt'), 'sha256': training['checkpointSha256']})
     head = torch.load(checkpoint, map_location='cpu', weights_only=True)
     state = model.state_dict(); expected = {k for k in state if not k.startswith('body.')}
