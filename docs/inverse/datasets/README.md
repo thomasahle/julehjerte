@@ -1,6 +1,6 @@
 # Data for learned heart reconstruction
 
-Release status reviewed on **2026-10-18**; dataset counts last audited on
+Neural release status reviewed on **2026-10-19**; dataset counts last audited on
 **2026-10-17**. **No neural network is ready for production or
 included in the website.** The collection, synthetic generator and learned
 prototypes are research tools; the existing geometric solver remains the
@@ -136,6 +136,63 @@ supported crop proposals fall from three to one. This higher-resolution inferenc
 change is rejected; source photos and checkpoints are reused, with no retraining
 or website change. The failure begins in foreground/material prediction before
 template search, and does not establish the outcome of multiscale training.
+
+The [context/detail follow-up](material-context-detail-results.json) retains
+256-pixel whole-heart features while using finer RGB detail. It avoids the large
+foreground regression, but supported crops still fall from three to one. Better
+average pixel scores do not compensate for losing crop support at the paper edges.
+
+### Encoder adaptation and separating crop errors from mask errors
+
+The [October 19 controlled study](material-encoder-tail-results.json) trains a
+fresh frozen-encoder control and a model with the last three MobileNet blocks
+unfrozen. Both use the same initialization, draws, 240 updates and two connected
+source/motif folds. Three historical photos now belong to the QA-reserved Sabrina
+group and were excluded before training; the remaining **16 development photos**
+are not directly comparable with the earlier nineteen-photo percentages.
+Independent audits reproduce every saved prediction exactly and verify that
+the frozen parameters and all BatchNorm statistics remain unchanged.
+
+Fine-tuning reduces observed paper-label error from **18.47% to 15.02%**, but
+both joint-training runs lose foreground accuracy relative to their starting
+model: body IoU falls from **85.11%** to **74.86% / 74.57%**. Two subsequent
+stage-isolation experiments retain the candidate material predictions while
+restoring the original foreground, then hold those crops fixed and replace
+the learned mask with the existing RGB classifier.
+
+| Method on the same 16 photos | Crop proposals | Checked editable pairs |
+| --- | ---: | ---: |
+| Existing production pipeline | 9 (7 supported) | 7 |
+| Fresh frozen-encoder control | 1 | 1 |
+| Fine-tuned encoder tail | 2 | 2 |
+| Original foreground + fine-tuned material | 5 | 3 |
+| Same five crops + production RGB classification | 5 | 5 |
+
+All **22 exported candidates** pass editable SVG conversion, editor geometry
+and physical paper checks. Four fail image/feature requirements and remain
+review-required. All field images and exported fits were visually inspected.
+The five-crop RGB comparison recovers recognizable sloth and curved-checker
+detail and sharper checker contacts. Learned checker masks can score perfectly
+on partial interior labels yet introduce rounded corners and false gaps at
+unlabelled junctions. The solver then reproduces those defects. Conversely,
+the production bicycle has a plausible mask but still loses features during
+fitting, so the remaining problems are not exclusively upstream.
+
+These are derived-mask checks on repeatedly inspected development photos, not
+exact artwork recovery or a measured automatic fallback policy. Crop/target
+changes prevent interpreting lower fitting error as a direct accuracy gain.
+The useful next direction is to preserve foreground predictions and test
+NN-assisted cropping with RGB classification on fresh grouped photos, while
+adding boundary/junction supervision. No model is integrated into the app.
+
+Type checking, lint, the static build, **1,598 application tests** (one skipped)
+and **10 focused material/export tests** pass. The full inverse suite was not
+repeated for these offline tools. Remote main's CI run `39277116968` completed
+successfully; its advisory timed tests still record 17 quality misses. That run
+does not validate these unpushed research commits. Training and evaluation used
+one serial low-priority worker. This study retains about **127 MiB**, exceeding
+its initial 100 MiB estimate after the extra ablations and audit figures;
+source photographs were reused, and editable inputs use hard links.
 
 The next deployment gate is improvement in complete photo-to-editable-template
 recovery on properly grouped real images, including feature retention and
