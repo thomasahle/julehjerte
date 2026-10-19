@@ -4,7 +4,7 @@ import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
 import { generateFittedFigure } from './fitted';
 import { sunburstBorder } from './sunburst';
 import { generateTextGrid, squareCellScale } from './textGrid';
-import { stripFigures } from './stripFigure';
+import { NO_WHOLE_STRIPS, stripFigures } from './stripFigure';
 import { generateBranchedText, hasOverlappingTextBranches, fittedBranchedTextFill } from './branchedText';
 import { generateCheckeredGrid, checkeredGridCache, checkeredLayouts } from './checkeredGrid';
 import { generateMixedCheckeredGrid, mixedCheckeredGridCache } from './mixedCheckeredGrid';
@@ -501,8 +501,8 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 	throw last;
 }
 
-/** The strips per side of the figure in the checks: most real hearts whose
- * strips form the figure have four. */
+/** The strips per side of the figure in the checks unless the request has a
+ * `board`: most real hearts whose strips form the figure have four. */
 const STRIPS = 4;
 /** Where each motif's default size placed it in the checks (see `generateStrips`). */
 const stripShifts = new Map<string, number>();
@@ -515,17 +515,53 @@ function generateStrips(request: GeneratorRequest): GeneratorResult {
 	const contours = normalizeContours(request.contours ?? []);
 	if (!contours.length) throw new ConstructionError('empty', 'No contour');
 	request = { ...request, contours };
-	const scale = request.scale ?? .7, key = JSON.stringify(contours);
+	const scale = request.scale ?? .7, strips = request.board ?? STRIPS, key = strips + JSON.stringify(contours);
 	if (!stripShifts.has(key) && scale !== .7) {
-		const chosen = stripFigures(contours, STRIPS, .7).next().value;
+		const chosen = stripFigures(contours, strips, .7).next().value;
 		if (stripShifts.size > 64) stripShifts.clear();
 		if (chosen) stripShifts.set(key, chosen.shift);
 	}
-	const curveFitter = createExactCurveFitter(), named = (result: GeneratorResult) =>
+	// At some sizes of an intricate motif no sheets keep every strip whole at
+	// its place, a snowflake's arms crossing the lines just so, or a crown's
+	// fine points on a small board. There the motif keeps its place at the
+	// nearest size it can have there, a little smaller, else in steps towards
+	// the default size, which has it: the slider then waits rather than the
+	// motif jumping. Only where its place is no use does the motif move.
+	const at = (size: number) => Math.round(size * 1e6) / 1e6, kept = stripShifts.has(key);
+	const towards: number[] = [], step = scale > .7 ? -.05 : .05;
+	for (let size = scale + step; step < 0 ? size > .7 + 1e-9 : size < .7 - 1e-9; size += step) towards.push(size);
+	towards.push(scale === .7 ? .6 : .7);
+	const plans = [
+		{ where: 'alone', sizes: kept ? [scale, scale - .01, scale - .02, scale - .03, ...towards] : [] },
+		{ where: kept ? 'elsewhere' : 'first', sizes: [scale, scale - .02, scale - .05] },
+		{ where: 'first', sizes: towards }
+	] as const;
+	let last: unknown;
+	const curveFitter = createExactCurveFitter();
+	for (const { where, sizes } of plans)
+		for (const size of sizes) try {
+			return stripsAt(request, key, at(size), where, curveFitter);
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			last ??= error;
+			// Past the place's own sizes only while nothing at all could be
+			// built there, which is quickly known, unlike cuts that failed to
+			// finish: those are the place's answer.
+			if (where === 'alone' && error.message !== NO_WHOLE_STRIPS) break;
+		}
+	throw last;
+}
+
+/** The figure in the checks at `scale` (see `generateStrips`), at the places
+ * `stripFigures` tries around the one its default size chose. */
+function stripsAt(request: GeneratorRequest, key: string, scale: number,
+	where: Parameters<typeof stripFigures>[5], curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult {
+	const contours = request.contours!;
+	const named = (result: GeneratorResult) =>
 		result.hardToCut ? { ...result, hardToCut: { ...result.hardToCut, letters: [] } } : result;
 	let rejected: Parameters<typeof hardToCutResult>[1] = [], places = 0, shift: number | undefined;
-	let last: unknown = new ConstructionError('topology', 'No sheet for every cut keeps the strips whole');
-	for (const construction of stripFigures(contours, STRIPS, scale, 4000, stripShifts.get(key))) {
+	let last: unknown = new ConstructionError('topology', NO_WHOLE_STRIPS);
+	for (const construction of stripFigures(contours, request.board ?? STRIPS, scale, 4000, stripShifts.get(key), where)) {
 		if (construction.shift !== shift) {
 			// Nothing at the last place finished cleanly: as hard to cut, if it
 			// can be, before the next place.

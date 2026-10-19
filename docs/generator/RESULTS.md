@@ -34,9 +34,27 @@ hidden cuts. Outlines that touch (34 of 2,625 motifs) are separated, or
 uncrossed and then separated, by a thousandth of the motif's size. Now **37**
 clean and **14** hard to cut, none refused (the star, tree, heart, angel, bell,
 gift, moon, house and flower clean), median 0.45 s, at most 2.5 s (the cookie).
-The motif keeps its default size's place at every size, so it only grows with
-the slider (the star clean at 45–75%, hard at 80–85%; the tree hard below 70%).
 The fixture has **1,706** entries.
+
+Sizes (2026-10-19). Up to the default size the motif keeps its place, so it
+only grows with the slider. The fit to the paper measured the motif's reach
+from its box's centre the same way up as down, so a heart's point never got
+below 35 units down the middle (the lowest check starts at 35.4), and the star,
+tree and angel did not grow at all from 85% to 100%. The fit now takes the
+outline as it is, and above the default size the motif slides from its place to
+where it fits largest, which 100% reaches: the heart's point reaches 66.5. At
+some sizes no sheets keep every strip whole at the motif's place (both
+snowflakes at 74–76%, the crown below 70%, the rabbit at 45%), and those were
+refused; the motif now keeps the nearest size its place allows, a little
+smaller, else in steps towards the default size, and only then moves. Over the
+corpus at eleven sizes from 45% to 100% (561 hearts): none refused, 221 clean
+and 340 hard to cut, ten moves of more than six units between neighbouring
+sizes (there were dozens) and five shrinks (the sailboat from 90% to 95%; the
+cat, crown, anchor and Tabler gift a little), at most 3.1 s. Separating touching
+outlines measured the length along a ring afresh for every pair of points; with
+running totals the butterfly at 45% takes 0.7 s instead of 10.5 s. The board has
+three to six strips per side, four unless the visitor moves the Strimler
+slider.
 
 ## Sizes that move one way with the sliders
 

@@ -5,7 +5,7 @@ import { cutTipCounts } from './cutQuality';
 import { generateFittedFigure } from './fitted';
 import { generateLayeredFigure } from './layers';
 import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
-import { defaults, frameGap, readGeneratorState } from './state';
+import { defaults, frameGap, readGeneratorState, stripCount } from './state';
 import { templateVariants } from './templates';
 import { inside, uprightToSheet, distance, WEDGES, type Point, type Ring } from './geometry';
 import { geometryKey } from './cache';
@@ -36,6 +36,7 @@ import butterfly from '../../../static/generator/motifs/ph-butterfly.json';
 import paw from '../../../static/generator/motifs/tb-paw.json';
 import crown from '../../../static/generator/motifs/ph-crown.json';
 import bell from '../../../static/generator/motifs/bell.json';
+import heart from '../../../static/generator/motifs/heart.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
@@ -361,13 +362,16 @@ describe('frames from real hearts', () => {
  const swapped = (design: Parameters<typeof rasterizeDesign>[0], n = 200) => {
   const mask = rasterizeDesign(design, n).data, cell = n / design.gridSize.x;
   const plain = (x: number, y: number) => (Math.floor(x / cell) + Math.floor(y / cell)) % 2 ^ mask[2 * n + 2];
-  let area = 0, x0 = n, x1 = 0, y0 = n, y1 = 0;
+  let area = 0, x0 = n, x1 = 0, y0 = n, y1 = 0, point = 0;
   for (let y = 0; y < n; y++) for (let x = 0; x < n; x++)
    if (mask[y * n + x] !== plain(x, y)) {
     area++;
     [x0, x1, y0, y1] = [Math.min(x0, x), Math.max(x1, x), Math.min(y0, y), Math.max(y1, y)];
+    point = Math.max(point, (x + y) / n * 100);
    }
-  return { area: area / n / n, centre: [(x0 + x1) / 2 / n * 100, (y0 + y1) / 2 / n * 100], corners: [[2, 2], [n - 3, 2], [2, n - 3], [n - 3, n - 3]].every(([x, y]) => mask[y * n + x] === plain(x, y)) };
+  // `point`: how far towards the heart's point the motif reaches, as x + y in
+  // the paper's square; the lowest check starts at 150, the point is 200.
+  return { area: area / n / n, centre: [(x0 + x1) / 2 / n * 100, (y0 + y1) / 2 / n * 100], point, corners: [[2, 2], [n - 3, 2], [2, n - 3], [n - 3, n - 3]].every(([x, y]) => mask[y * n + x] === plain(x, y)) };
  };
  it('swaps the squares of a regular four-strip board inside the motif', () => {
   for (const [name, motif] of Object.entries({ star, tree })) {
@@ -389,13 +393,38 @@ describe('frames from real hearts', () => {
     }
   }
  }, 30000);
- it('grows the motif in the checks in its place as the size grows', () => {
-  // The default size's place on the board is kept, so the motif does not jump.
+ it('grows the motif in the checks in its place, and above the default size slides it along the middle', () => {
+  // The default size's place on the board is kept below it, so the motif does
+  // not jump; above it the motif slides on along the heart's middle, x = y.
   const figure = (scale: number) => swapped(generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'strips', scale }).design);
   const [small, middle, large] = [.6, .7, .8].map(figure);
   expect(small.area).toBeLessThan(middle.area);
   expect(middle.area).toBeLessThan(large.area);
-  for (const other of [small, large]) for (const axis of [0, 1]) expect(Math.abs(other.centre[axis] - middle.centre[axis])).toBeLessThan(2);
+  for (const axis of [0, 1]) expect(Math.abs(small.centre[axis] - middle.centre[axis])).toBeLessThan(2);
+  expect(Math.abs(large.centre[0] - large.centre[1])).toBeLessThan(1);
+  expect(Math.abs(large.centre[0] - middle.centre[0])).toBeLessThan(6);
+ }, 30000);
+ it('drops a heart\'s point into the lowest check at full size', () => {
+  // Fitted to the paper's diamond as it is, the heart moves down to where it
+  // fits largest, rather than staying as high as its widest part allows.
+  const reach = (scale: number) => swapped(generate({ mode: 'figure', name: 'Heart', contours: heart.contours as Ring[], colors, style: 'strips', scale }).design);
+  const [middle, full] = [.7, 1].map(reach);
+  expect(middle.point).toBeLessThan(150);
+  expect(full.point).toBeGreaterThan(180);
+  expect(full.area).toBeGreaterThan(middle.area);
+ }, 30000);
+ it('lays the figure in the checks on boards of three to six strips', () => {
+  for (const strips of [3, 5, 6]) {
+   const { design } = generate({ mode: 'figure', name: 'Heart', contours: heart.contours as Ring[], colors, style: 'strips', board: strips });
+   expect(design.gridSize, `${strips}`).toEqual({ x: strips, y: strips });
+   expect(swapped(design).corners, `${strips}`).toBe(true);
+  }
+ }, 30000);
+ slow('keeps a snowflake in the checks at a size its strips can have, rather than refusing', () => {
+  // At 75% no sheets keep every strip whole at the snowflake's place; it
+  // keeps a size a little below that it can have there.
+  const area = (scale: number) => swapped(generate({ mode: 'figure', name: 'Snow', contours: snow.contours as Ring[], colors, style: 'strips', scale }).design).area;
+  expect(area(.75)).toBeGreaterThanOrEqual(area(.7));
  }, 30000);
  slow('lets the figure in the checks grow to the paper\'s edge, unlike the other frames', () => {
   const state = { ...defaults, mode: 'figure' as const, style: 'strips' as const, scale: 100 };
@@ -429,8 +458,13 @@ describe('frames from real hearts', () => {
    expect(geometryKey({ ...state, style, scale: 50 }) !== key).toBe(scale);
    expect(geometryKey({ ...state, style, spacing: 9 }) !== key, style).toBe(spacing);
    expect(frameGap({ ...state, style, spacing: 9 }), style).toBe(spacing ? 9 : undefined);
+   // Only the figure in the checks has a number of strips to choose.
+   expect(geometryKey({ ...state, style, strips: 5 }) !== key, style).toBe(style === 'strips');
+   expect(stripCount({ ...state, style, strips: 5 }), style).toBe(style === 'strips' ? 5 : undefined);
   }
   expect(readGeneratorState('#make=' + JSON.stringify({ ...state, spacing: 40 })).spacing).toBe(15);
+  expect(readGeneratorState('#make=' + JSON.stringify({ ...state, strips: 9 })).strips).toBe(6);
+  expect(readGeneratorState('#make=' + JSON.stringify({ ...state, strips: 2 })).strips).toBe(3);
  });
  it('draws the circle the space the visitor sets outside the motif, which keeps its size', () => {
   const request = { mode: 'figure' as const, name: 'Star', contours: star.contours as Ring[], colors, style: 'rays' as const };

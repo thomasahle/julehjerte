@@ -26,7 +26,7 @@
 	import { renderHeartSvgMarkup } from '$lib/rendering/heartSvg';
 	import { handoffToDraw } from '$lib/editor/handoff';
 	import { saveUserDesign } from '$lib/stores/collection';
-	import { defaults, readGeneratorState, normalizeText, fittedCells, TEXT_LINES, TEXT_LINE_LENGTH, type GeneratorState, frameGap, largestScale, SPACED_STYLES, BOARD_STYLES } from '$lib/generator/state';
+	import { defaults, readGeneratorState, normalizeText, fittedCells, TEXT_LINES, TEXT_LINE_LENGTH, type GeneratorState, frameGap, stripCount, largestScale, SPACED_STYLES, BOARD_STYLES } from '$lib/generator/state';
 	import type {
 		GeneratorResult,
 		GeneratorRequest
@@ -236,7 +236,8 @@
 			style: snapshot.style,
 			textFrame: snapshot.textFrame,
 			fittedCells: fittedCells(snapshot),
-			gap: frameGap(snapshot)
+			gap: frameGap(snapshot),
+			board: stripCount(snapshot)
 		};
 		// A motif on a board keeps the choice its default size made.
 		if (snapshot.mode === 'figure' && BOARD_STYLES.includes(snapshot.style))
@@ -349,8 +350,9 @@
 				}
 			});
 	});
-	// The thumbnails show every frame at the default size and space around the
-	// figure, so moving those sliders (or choosing a frame) leaves them alone.
+	// The thumbnails show every frame at the default size, space around the
+	// figure and strips, so moving those sliders (or choosing a frame) leaves
+	// them alone.
 	let thumbnailState = $derived(
 		JSON.stringify({
 			...config,
@@ -359,7 +361,8 @@
 			textFrame: defaults.textFrame,
 			frameSize: defaults.frameSize,
 			scale: defaults.scale,
-			spacing: defaults.spacing
+			spacing: defaults.spacing,
+			strips: defaults.strips
 		})
 	);
 	$effect(() => {
@@ -403,7 +406,8 @@
 						style: state.style,
 						textFrame: state.textFrame,
 						fittedCells: fittedCells(state),
-						gap: frameGap(state)
+						gap: frameGap(state),
+						board: stripCount(state)
 					});
 				};
 				background.onmessage = (e) => {
@@ -685,6 +689,18 @@
 					step="1"
 					bind:value={config.scale}
 				/>
+				{#if config.style === 'strips'}
+					<label class="range-label" for="board-strips"
+						>{t('generatorStripCount', lang)}<output>{config.strips} × {config.strips}</output></label
+					><input
+						id="board-strips"
+						type="range"
+						min="3"
+						max="6"
+						step="1"
+						bind:value={config.strips}
+					/>
+				{/if}
 				{#if SPACED_STYLES.includes(config.style)}
 					<label class="range-label" for="frame-spacing"
 						>{t('generatorSpacing', lang)}<output>{config.spacing}%</output></label

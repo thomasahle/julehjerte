@@ -13,6 +13,8 @@ export type GeneratorState = {
 	/** The space between the motif and the frame around it, in percent of the
 	 * square: to the circle, the wedges' tips, the corner checks. */
 	spacing: number;
+	/** The strips per side of the figure in the checks' board. */
+	strips: number;
 };
 /** Text cells: square, so every check around the letters is a square of one
  * size, or fitted to the letters, so they can be larger. Only the frames whose
@@ -35,6 +37,10 @@ export const largestScale = (style: FigureStyle) => style === 'strips' ? 100 : 8
 export function frameGap(s: GeneratorState): number | undefined {
 	return s.mode === 'figure' && SPACED_STYLES.includes(s.style) ? s.spacing : undefined;
 }
+/** The strips per side a state asks of the figure in the checks' board. */
+export function stripCount(s: GeneratorState): number | undefined {
+	return s.mode === 'figure' && s.style === 'strips' ? s.strips : undefined;
+}
 /** The generator's choice of cells for a state, or none where it decides. */
 export function fittedCells(s: GeneratorState): boolean | undefined {
 	return s.mode === 'text' && CELL_FRAMES.includes(s.textFrame) ? s.cells === 'letters' : undefined;
@@ -50,7 +56,8 @@ export const defaults: GeneratorState = {
 	style: 'rays',
 	textFrame: 'woven',
 	cells: 'square',
-	spacing: 3
+	spacing: 3,
+	strips: 4
 };
 export function readGeneratorState(hash: string): GeneratorState {
 	const s = { ...defaults };
@@ -79,7 +86,8 @@ export function readGeneratorState(hash: string): GeneratorState {
 		for (const [k, min, max] of [
 			['frameSize', 50, 80],
 			['scale', 45, largestScale(s.style)],
-			['spacing', 0, 15]
+			['spacing', 0, 15],
+			['strips', 3, 6]
 		] as const)
 			if (typeof raw[k] === 'number' && Number.isFinite(raw[k]))
 				Object.assign(s, {

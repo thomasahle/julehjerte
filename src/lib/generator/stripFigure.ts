@@ -42,8 +42,13 @@ const GAP = 1e-5;
 const APART = 1e-4;
 /** Hidden cuts leave only sides at least this long. */
 const SIDE = .3;
+/** Why no figure in the checks came out: no sheets keep every strip whole. */
+export const NO_WHOLE_STRIPS = 'No sheet for every cut keeps the strips whole';
 /** The motif keeps this far inside the paper's edges. */
 const MARGIN = 3;
+/** The paper upright is |x| + |y| ≤ 50√2 about its centre; the motif keeps
+ * within |x| + |y| ≤ PAPER. */
+const PAPER = (50 - MARGIN) * Math.SQRT2;
 
 export type StripFigure = {
 	edges: Edge[];
@@ -60,7 +65,7 @@ export type StripFigure = {
  * `stripFigures`. */
 export function generateStripFigure(rings: Ring[], strips: number, scale = .7, budget = 4000): StripFigure {
 	for (const figure of stripFigures(rings, strips, scale, budget)) return figure;
-	throw new ConstructionError('topology', 'No sheet for every cut keeps the strips whole');
+	throw new ConstructionError('topology', NO_WHOLE_STRIPS);
 }
 
 /** The figure in the checks at the places it can go, the best first: the
@@ -68,13 +73,19 @@ export function generateStripFigure(rings: Ring[], strips: number, scale = .7, b
  * clearer of the board's lines. Of the clearest few places, those whose
  * sheets leave the fewest cuts of one sheet too close, then the fewest hidden
  * cuts, come first; the further places follow, should none of those finish.
- * A shift to `keep` comes before them all. */
-export function* stripFigures(rings: Ring[], strips: number, scale = .7, budget = 4000, keep?: number): Generator<StripFigure> {
+ * A shift to `keep` comes before them all, or is the only place tried
+ * (`alone`), or is left out (`elsewhere`). */
+export function* stripFigures(rings: Ring[], strips: number, scale = .7, budget = 4000, keep?: number,
+	places: 'first' | 'alone' | 'elsewhere' = 'first'): Generator<StripFigure> {
 	if (!rings.flat().length) throw new ConstructionError('empty', 'No contour');
 	rings = untouch(rings);
 	type Choice = { placed: Ring[]; graph: StripGraph; values: Value[]; crowded: number; hidden: number; order: number };
 	const order = shifts(rings, strips, scale), choices: Choice[] = [];
-	if (keep !== undefined) order.splice(0, order.length, keep, ...order.filter(shift => shift !== keep));
+	// Above the default size the motif slides from the place kept towards the
+	// place it fits largest, which 100% reaches.
+	if (keep !== undefined && scale > .7) keep += (roomiestPlace(rings) - keep) * Math.min(1, (scale - .7) / .3);
+	if (keep !== undefined) order.splice(0, order.length, ...places === 'elsewhere' ? [] : [keep],
+		...places === 'alone' ? [] : order.filter(shift => shift !== keep));
 	const evaluate = (k: number) => {
 		const found: Choice[] = [];
 		// A line through a vertex of the outline, or a junction on it, would
@@ -150,29 +161,32 @@ export function untouch(rings: Ring[]): Ring[] {
 	const close = size * 2e-5, cut = size * 1e-3;
 	let out = rings.map(ring => ring.map(p => [...p] as Point));
 	const near = (p: Point, q: Point) => Math.hypot(p[0] - q[0], p[1] - q[1]) < close;
-	// How far apart along a ring two of its corners are, the shorter way.
-	const apart = (ring: Point[], i: number, j: number) => {
-		let forward = 0, total = 0;
-		for (let k = 0; k < ring.length; k++) {
-			const l = Math.hypot(ring[(k + 1) % ring.length][0] - ring[k][0], ring[(k + 1) % ring.length][1] - ring[k][1]);
-			total += l;
-			if (k >= Math.min(i, j) && k < Math.max(i, j)) forward += l;
-		}
-		return Math.min(forward, total - forward);
+	// How far apart along ring r two of its corners are, the shorter way, from
+	// the lengths along each ring up to each corner.
+	let along: number[][] = [];
+	const apart = (r: number, i: number, j: number) => {
+		const lengths = along[r], forward = Math.abs(lengths[j] - lengths[i]);
+		return Math.min(forward, lengths[lengths.length - 1] - forward);
 	};
 	const boxes = () => out.map(ring => [0, 1].map(axis => [Math.min(...ring.map(p => p[axis])) - close, Math.max(...ring.map(p => p[axis])) + close]));
 	const contact = (): [number, number, number, number] | undefined => {
 		const box = boxes();
+		along = out.map(ring => {
+			const lengths = [0];
+			for (let k = 0; k < ring.length; k++)
+				lengths.push(lengths[k] + Math.hypot(ring[(k + 1) % ring.length][0] - ring[k][0], ring[(k + 1) % ring.length][1] - ring[k][1]));
+			return lengths;
+		});
 		for (let a = 0; a < out.length; a++)
 			for (let b = a; b < out.length; b++) {
 				if (box[a].some(([lo, hi], axis) => lo > box[b][axis][1] || hi < box[b][axis][0])) continue;
 				for (let i = 0; i < out[a].length; i++)
 					for (let j = 0; j < out[b].length; j++) {
 						const k = (j + 1) % out[b].length, self = a === b;
-						if (self && (j === i || apart(out[a], i, j) < 50 * cut)) continue;
+						if (self && (j === i || apart(a, i, j) < 50 * cut)) continue;
 						if ((!self || j > i) && near(out[a][i], out[b][j])) return [a, i, b, j];
 						// A corner on the other's side: make it a corner of that side too.
-						if (self && (k === i || apart(out[a], i, k) < 50 * cut)) continue;
+						if (self && (k === i || apart(a, i, k) < 50 * cut)) continue;
 						if (!near(out[a][i], out[b][j]) && !near(out[a][i], out[b][k]) && distanceTo(out[a][i], out[b][j], out[b][k]) < close) {
 							out[b].splice(j + 1, 0, [...out[a][i]] as Point);
 							return contact();
@@ -271,16 +285,38 @@ export type StripGraph = {
 	draw: (values: Value[]) => Edge[];
 };
 
-/** The motif upright and centred on the paper, its box `scale / .7` of the
- * default fill, but kept MARGIN inside the paper, moved `shift` down the
- * heart's middle and `nudge` off the board's lines. */
-export function placeMotif(rings: Ring[], scale: number, shift = 0, nudge = 0): Ring[] {
+/** The motif's box, and how far the motif reaches from the box's centre, in
+ * boxes, towards the paper's lower sides (`down`) and upper sides (`up`): of
+ * size s and moved t down the heart's middle, it fits while
+ * s · down ≤ PAPER − t and s · up ≤ PAPER + t. */
+function reaches(rings: Ring[]) {
 	const points = rings.flat(), xs = points.map(p => p[0]), ys = points.map(p => p[1]);
 	const cx = (Math.min(...xs) + Math.max(...xs)) / 2, cy = (Math.min(...ys) + Math.max(...ys)) / 2;
 	const box = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
-	// The paper is |x| + |y| ≤ 50√2 about its centre, upright.
-	const reach = Math.max(...points.map(([x, y]) => Math.abs(x - cx) + Math.abs(y - cy))) / box;
-	const size = Math.min(100 * DEFAULT_FILL * scale / .7, ((50 - MARGIN) * Math.SQRT2 - Math.abs(shift)) / reach);
+	let down = 0, up = 0;
+	for (const [x, y] of points) {
+		down = Math.max(down, (Math.abs(x - cx) + y - cy) / box);
+		up = Math.max(up, (Math.abs(x - cx) - y + cy) / box);
+	}
+	return { cx, cy, box, down, up };
+}
+
+/** How far down the heart's middle the motif fits largest. */
+export function roomiestPlace(rings: Ring[]): number {
+	const { down, up } = reaches(rings);
+	return PAPER * (up - down) / (up + down);
+}
+
+/** The motif upright and centred on the paper, moved `shift` down the heart's
+ * middle and `nudge` off the board's lines, and kept MARGIN inside the paper.
+ * Its box is `scale / .7` of the default fill up to the default size; from
+ * there it grows towards the largest that fits the paper, which 100% reaches
+ * at the roomiest place. */
+export function placeMotif(rings: Ring[], scale: number, shift = 0, nudge = 0): Ring[] {
+	const { cx, cy, box, down, up } = reaches(rings);
+	const fill = 100 * DEFAULT_FILL, largest = 2 * PAPER / (up + down);
+	const wanted = scale <= .7 ? fill * scale / .7 : fill + (largest - fill) * Math.min(1, (scale - .7) / .3);
+	const size = Math.min(wanted, (PAPER - shift) / down, (PAPER + shift) / up);
 	return rings.map(ring => ring.map(([x, y]) =>
 		uprightToSheet([(x - cx) / box * size + nudge, (y - cy) / box * size + shift + nudge * .618])));
 }

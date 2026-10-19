@@ -646,8 +646,8 @@ moves in to midway between the motif's farthest point and the circle, so the leg
 Every straight cut lies on the board (tested). Motifs in several separate parts (the coffee cup,
 the bicycle, the sun, the paw) cannot yet be built on this board.
 **The figure in the checks** (Figur i ternene; a sixth of real figure hearts, the gallery's
-notched stars, clovers and hearts): a regular board of four strips per side whose squares swap
-colour inside the motif, so its outline is cut into the strips. The board's lines and the outline
+notched stars, clovers and hearts): a regular board of four strips per side (three to six with the
+Strimler slider) whose squares swap colour inside the motif, so its outline is cut into the strips. The board's lines and the outline
 are all the visible cuts; where four meet (a junction, or the outline crossing a line) two are in
 each sheet, and which is which is free inside the motif, chosen so that every strip still runs from
 edge to edge. Where no choice works, a hidden cut shared by both sheets crosses one of the motif's
@@ -657,9 +657,12 @@ motif unless the cells it touches give fewer narrow places. Narrow paper is avoi
 turning by less than 60°, or one sheet's cuts coming closer than the clearance, are put in
 different sheets where they can be, hidden cuts leave their sides at 60–120°, and the motif moves
 up to ten units along the heart's middle where its outline keeps clearer of the lines and
-junctions. It keeps that place, chosen at the default size, at every size, so it only grows with
-the slider, up to three units from the paper's edge. Like the board frames it has no space
-setting. Outlines that touch are first moved apart by a thousandth of the motif's size.
+junctions. It keeps that place, chosen at the default size, up to that size; above it the motif
+slides along the middle to where it fits largest in the paper's diamond, its outline measured as
+it is, so at 100% a heart's point reaches the lowest check, three units from the paper's edge.
+Where its place cannot keep every strip whole at some size, the motif keeps the nearest size its
+place allows, a little smaller, else towards the default size, and only then moves; it never
+refuses. Like the board frames it has no space setting. Outlines that touch are first moved apart by a thousandth of the motif's size.
 In the wedge, silhouette and close-fitting
 frames, a symmetric motif gets a symmetric frame: separate extremes that tie (a star's two lower tips, a cat's ears) share a gate
 midway between them, joined to the motif by an invisible coincident cut. That first attempt is
