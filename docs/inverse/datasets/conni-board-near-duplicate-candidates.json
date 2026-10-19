@@ -1,0 +1,505 @@
+{
+  "threshold": 12,
+  "metric": "256-bit difference hash Hamming distance",
+  "interpretation": "Unreviewed similarity candidates, not duplicate claims. Group connections must be audited conservatively before training.",
+  "pairs": [
+    {
+      "stagedId": "real-519ee71c8519d9e3",
+      "existingId": "real-a055202166ff0bdd",
+      "hammingDistance": 6,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-d3f562a4a38f1dcc",
+      "existingId": "real-7a4e2cf93d71c23e",
+      "hammingDistance": 1,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-a58f0fe5b717bfac",
+      "existingId": "real-95eb58b4312cda4d",
+      "hammingDistance": 7,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-12aa26eff6a09b6b",
+      "existingId": "real-71a290452cfd00c8",
+      "hammingDistance": 1,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-12aa26eff6a09b6b",
+      "existingId": "real-2694dd4fe8ff1230",
+      "hammingDistance": 4,
+      "existingSourceGroups": [
+        "pinterest-pin-732679433115974275"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-c7d5e83cfafedf70",
+      "existingId": "real-7a4e2cf93d71c23e",
+      "hammingDistance": 6,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-baf1b2c72f46cce7",
+      "existingId": "real-3550f13c15483964",
+      "hammingDistance": 2,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-4835be090cf7eac9",
+      "existingId": "real-3550f13c15483964",
+      "hammingDistance": 2,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-2c557be09f75eabd",
+      "existingId": "real-71a290452cfd00c8",
+      "hammingDistance": 1,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-2c557be09f75eabd",
+      "existingId": "real-2694dd4fe8ff1230",
+      "hammingDistance": 4,
+      "existingSourceGroups": [
+        "pinterest-pin-732679433115974275"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-d56582fcd0d134f4",
+      "existingId": "real-fee6583ba3012cfe",
+      "hammingDistance": 7,
+      "existingSourceGroups": [
+        "pinterest-pin-23714335526663130",
+        "pinterest-pin-428616089516901119"
+      ],
+      "existingSplitGroupId": "real-split-0cdb638c56f5daec",
+      "existingSplitStatus": "unassigned",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-fdb6b852f8c46fa7",
+      "existingId": "real-3550f13c15483964",
+      "hammingDistance": 2,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-6599bf9afb0a05e2",
+      "existingId": "real-f26466c3afb3c5f7",
+      "hammingDistance": 12,
+      "existingSourceGroups": [
+        "pinterest-pin-573997915027838269",
+        "publisher:alt.dk"
+      ],
+      "existingSplitGroupId": "real-split-6659576e7cd45da1",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-6599bf9afb0a05e2",
+      "existingId": "real-9cea22df8118056d",
+      "hammingDistance": 8,
+      "existingSourceGroups": [
+        "pinterest-pin-433330795405447769"
+      ],
+      "existingSplitGroupId": "real-split-6659576e7cd45da1",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-10445736ece26760",
+      "existingId": "real-5004b729f43b4e72",
+      "hammingDistance": 4,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-dee47a224142d577",
+      "existingId": "real-63c81e65e8340c2d",
+      "hammingDistance": 4,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-cdd46e737b648380",
+      "existingId": "real-164378298f6be2e8",
+      "hammingDistance": 4,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-5e9b4816e6aeb6c5",
+      "existingId": "real-812a9dc206fc08ba",
+      "hammingDistance": 3,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-5e9b4816e6aeb6c5",
+      "existingId": "real-88db0e5bcd68a5b1",
+      "hammingDistance": 2,
+      "existingSourceGroups": [
+        "pinterest-pin-24558760454214654",
+        "publisher:julehjerter.wordpress.com"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-0ced2e86fb0adcf5",
+      "existingId": "real-83055bbd92514af9",
+      "hammingDistance": 1,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-743301f4f9f4fbde",
+      "existingId": "real-c0f1835bf1cf2982",
+      "hammingDistance": 3,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-e9600478525b9218",
+      "existingId": "real-296731914436783e",
+      "hammingDistance": 7,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-e9600478525b9218",
+      "existingId": "real-d418c93a07bd4ea0",
+      "hammingDistance": 2,
+      "existingSourceGroups": [
+        "pinterest-pin-411023903506038042"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-874e5a5e2cd2e9ce",
+      "existingId": "real-9d5dd0b8c0d61312",
+      "hammingDistance": 3,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-448ab852c2f2eab3",
+      "existingId": "real-9d5dd0b8c0d61312",
+      "hammingDistance": 3,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-448ab852c2f2eab3",
+      "existingId": "real-874e5a5e2cd2e9ce",
+      "hammingDistance": 0,
+      "existingSourceGroups": [
+        "pinterest-pin-365847169744171622",
+        "publisher:julehjerter.wordpress.com"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-2bdc39cab0811250",
+      "existingId": "real-296731914436783e",
+      "hammingDistance": 2,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-2bdc39cab0811250",
+      "existingId": "real-e9600478525b9218",
+      "hammingDistance": 5,
+      "existingSourceGroups": [
+        "pinterest-pin-520025088203706380",
+        "publisher:julehjerter.wordpress.com"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-2bdc39cab0811250",
+      "existingId": "real-d418c93a07bd4ea0",
+      "hammingDistance": 5,
+      "existingSourceGroups": [
+        "pinterest-pin-411023903506038042"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-64b51faaef694431",
+      "existingId": "real-a055202166ff0bdd",
+      "hammingDistance": 5,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-0ad0a2453ee546b0",
+      "existingId": "real-164378298f6be2e8",
+      "hammingDistance": 3,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-6b8a2cd8e304ce14",
+      "existingId": "real-296731914436783e",
+      "hammingDistance": 2,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-6b8a2cd8e304ce14",
+      "existingId": "real-e9600478525b9218",
+      "hammingDistance": 5,
+      "existingSourceGroups": [
+        "pinterest-pin-520025088203706380",
+        "publisher:julehjerter.wordpress.com"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-6b8a2cd8e304ce14",
+      "existingId": "real-d418c93a07bd4ea0",
+      "hammingDistance": 5,
+      "existingSourceGroups": [
+        "pinterest-pin-411023903506038042"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-3862e238633b9a6b",
+      "existingId": "real-4cfd9b27abdcc1f4",
+      "hammingDistance": 4,
+      "existingSourceGroups": [
+        "pinterest-pin-1688918605876592",
+        "pinterest-pin-474848354475676621"
+      ],
+      "existingSplitGroupId": "real-split-10806802c577d8f8",
+      "existingSplitStatus": "unassigned",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-a2eb331cd6d81238",
+      "existingId": "real-c5d2c4465ca58e36",
+      "hammingDistance": 5,
+      "existingSourceGroups": [
+        "hunodan",
+        "publisher:hunodan.dk"
+      ],
+      "existingSplitGroupId": "real-split-7dd12a3dfc6e997a",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-1da41808a04b4311",
+      "existingId": "real-812a9dc206fc08ba",
+      "hammingDistance": 4,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-1da41808a04b4311",
+      "existingId": "real-88db0e5bcd68a5b1",
+      "hammingDistance": 3,
+      "existingSourceGroups": [
+        "pinterest-pin-24558760454214654",
+        "publisher:julehjerter.wordpress.com"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-a6b3b42fc9fcad03",
+      "existingId": "real-164378298f6be2e8",
+      "hammingDistance": 2,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-1a4904dfca64f16a",
+      "existingId": "real-5004b729f43b4e72",
+      "hammingDistance": 4,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-876d0e6079b8bb14",
+      "existingId": "real-63c81e65e8340c2d",
+      "hammingDistance": 4,
+      "existingSourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-66e8e0cc7aa9e853",
+      "existingId": "real-eeaf37d2a40af624",
+      "hammingDistance": 6,
+      "existingSourceGroups": [
+        "pinterest-pin-515169644915183703",
+        "publisher:theiff.org"
+      ],
+      "existingSplitGroupId": "real-split-af3fe4d54cd4976a",
+      "existingSplitStatus": "unassigned",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    }
+  ]
+}

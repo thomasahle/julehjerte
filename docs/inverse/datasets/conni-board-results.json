@@ -1,0 +1,157 @@
+{
+  "schema": "conni-board-acquisition-audit-1",
+  "boardUrl": "https://dk.pinterest.com/0wt3lqxkvukjlwc/flettet-julehjerte-skabelon/",
+  "observedAt": "2026-10-19",
+  "reportedPins": 122,
+  "inventoriedPins": 122,
+  "missingPins": 0,
+  "downloadedPins": 122,
+  "advertisedImageUrls": 91,
+  "distinctFileHashes": 90,
+  "exactExistingFiles": 3,
+  "newFileHashes": 87,
+  "decodedPixelMatchesBeyondExact": 0,
+  "perceptualCandidateLinks": 42,
+  "perceptualCandidateAssets": 31,
+  "downloadedNewImageBytes": 13111446,
+  "retainedNewAssetBytes": 13086556,
+  "maximumNewImageBytes": 20971520,
+  "kinds": {
+    "template-render": 57,
+    "photo-process": 2,
+    "unrelated": 1,
+    "photo": 4,
+    "photo-other-material": 2,
+    "photo-multiple": 1,
+    "mixed-photo-template": 23
+  },
+  "exactExistingConnections": [
+    {
+      "id": "real-6599bf9afb0a05e2",
+      "existingAssetId": "real-6599bf9afb0a05e2",
+      "existingSourceGroups": [
+        "pinterest-pin-507569820520936919"
+      ],
+      "existingSplitGroupId": "real-split-6659576e7cd45da1",
+      "existingSplitStatus": "qa-reserved",
+      "existingNearDuplicateGroup": "real-6599bf9afb0a05e2"
+    },
+    {
+      "id": "real-e9600478525b9218",
+      "existingAssetId": "real-e9600478525b9218",
+      "existingSourceGroups": [
+        "pinterest-pin-520025088203706380",
+        "publisher:julehjerter.wordpress.com"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "existingNearDuplicateGroup": "real-296731914436783e"
+    },
+    {
+      "id": "real-874e5a5e2cd2e9ce",
+      "existingAssetId": "real-874e5a5e2cd2e9ce",
+      "existingSourceGroups": [
+        "pinterest-pin-365847169744171622",
+        "publisher:julehjerter.wordpress.com"
+      ],
+      "existingSplitGroupId": "real-split-03b70ea1e7075716",
+      "existingSplitStatus": "qa-reserved",
+      "existingNearDuplicateGroup": "real-874e5a5e2cd2e9ce"
+    }
+  ],
+  "possibleNewQaConnections": [
+    {
+      "stagedId": "real-d56582fcd0d134f4",
+      "existingId": "real-fee6583ba3012cfe",
+      "hammingDistance": 7,
+      "existingSourceGroups": [
+        "pinterest-pin-23714335526663130",
+        "pinterest-pin-428616089516901119"
+      ],
+      "existingSplitGroupId": "real-split-0cdb638c56f5daec",
+      "existingSplitStatus": "unassigned",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-3862e238633b9a6b",
+      "existingId": "real-4cfd9b27abdcc1f4",
+      "hammingDistance": 4,
+      "existingSourceGroups": [
+        "pinterest-pin-1688918605876592",
+        "pinterest-pin-474848354475676621"
+      ],
+      "existingSplitGroupId": "real-split-10806802c577d8f8",
+      "existingSplitStatus": "unassigned",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    },
+    {
+      "stagedId": "real-66e8e0cc7aa9e853",
+      "existingId": "real-eeaf37d2a40af624",
+      "hammingDistance": 6,
+      "existingSourceGroups": [
+        "pinterest-pin-515169644915183703",
+        "publisher:theiff.org"
+      ],
+      "existingSplitGroupId": "real-split-af3fe4d54cd4976a",
+      "existingSplitStatus": "unassigned",
+      "status": "candidate-only-not-a-duplicate-assertion"
+    }
+  ],
+  "splitDecision": "Quarantine the entire staged board for QA. Three exact files already have QA reservation. Audit the 42 perceptual links before merging source groups; three links reach currently unassigned files, so byte novelty cannot establish training independence. No existing split or pinned manifest was changed.",
+  "verification": {
+    "byteFiles": 90,
+    "decodedPixelFiles": 90,
+    "verifiedHardlinks": 3,
+    "offlineResume": "All 122 records replayed without network requests or new image bytes.",
+    "offlineTestsPassed": 21,
+    "applicationChecks": "Not rerun: no application or production algorithm change; isolated sparse data/tooling-only branch."
+  },
+  "storageWorktree": "/Users/ahle/repos/julehjerte-pinterest-skabelon",
+  "storageRoot": "tmp/pinterest-skabelon/staging",
+  "files": {
+    "scripts/inverse/datasets/real-conni-board.json": {
+      "sha256": "02fe394e988f3d6a25e704d70223007666196a4e05280145022470cbaffb8309",
+      "bytes": 34308
+    },
+    "scripts/inverse/datasets/real-board-stage.py": {
+      "sha256": "b02da3db0a8629e7482384c78597270a2fdd8650184b6ae940c3c981d5a214fb",
+      "bytes": 11062
+    },
+    "docs/inverse/datasets/conni-board-staged-manifest.json": {
+      "sha256": "2cfa41fe8a42add0f0c0ec93a54243f2919d03f6f57d0b1fccf7a374bd94da30",
+      "bytes": 224181
+    },
+    "docs/inverse/datasets/conni-board-near-duplicate-candidates.json": {
+      "sha256": "304edbb5b8e0ad6e74475af3ebbb7b2acd433a0e89b1b9437aa809fbfab7b840",
+      "bytes": 16873
+    },
+    "tmp/pinterest-skabelon/staging/imports.json": {
+      "sha256": "3bb91820ed5aeb2f8b98b53477db6921237e5e55521201fc4d1b3a7110208901",
+      "bytes": 120511
+    },
+    "tmp/pinterest-skabelon/board.html": {
+      "sha256": "864d7d5c3e11e51e15596b6901c47d6b139816cc6a996c5f6526f1af00865161",
+      "bytes": 1456572
+    },
+    "scripts/inverse/datasets/real-board-stage.test.py": {
+      "sha256": "29e453f5b82341d7b2b2e58879e3d8649783a62e6803d555af0f9d92f7be0456",
+      "bytes": 5674
+    },
+    "docs/inverse/datasets/conni-board.md": {
+      "sha256": "914aec50793f5669a3e19fb6d8a67c247e5fc21dc777f76505a5c1547812e02d",
+      "bytes": 6539
+    },
+    "tmp/pinterest-skabelon/staging/review/contact-01.jpg": {
+      "sha256": "1e3aa91d74a1c20a57fc473bf946e5327df63e5fed1eb35b2c75914feda0af32",
+      "bytes": 412323
+    },
+    "tmp/pinterest-skabelon/staging/review/contact-31.jpg": {
+      "sha256": "b1d6e157db012354cdc4454db68f069f71f95177ddac97145626f15ee051bd86",
+      "bytes": 351119
+    },
+    "tmp/pinterest-skabelon/staging/review/contact-61.jpg": {
+      "sha256": "f9eca60c135d06558024e74ed3c84930ccde6dce4cbbc1268ce7a510fd93d7a7",
+      "bytes": 355622
+    }
+  }
+}
