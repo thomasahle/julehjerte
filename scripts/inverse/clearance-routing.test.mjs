@@ -86,11 +86,18 @@ for(const entry of fixture.cases){
     const observed=attempt.rejectedCandidates.find(r=>r.reason==='repair_attempted');
     assert.equal(observed.integerCandidateSeconds,attempt.continuousRepair.integerCandidateSeconds);
     assert.ok(observed.repairBudgetSeconds>0);
-    assert.ok(report.settings.materialResolution>=entry.expectedPaperResolution&&report.settings.materialResolution<=1000);
+    assert.ok(report.settings.materialResolution>=cfg.materialResolution&&report.settings.materialResolution<=1000);
     if(report.settings.materialResolution>cfg.materialResolution)assert.equal(report.solver.paperVerification.resolution,report.settings.materialResolution);
     const exported=loadSolutionJSON(answer.files['cut_geometry.json']);
     assert.equal(validate(exported,report.settings,{checkImage:false,finalGeometry:true}).passed,true);
     assert.equal(finalMaterialAudit(exported,report.settings).status,'pass');
+    // A fresh solve can find different, wider cuts than the saved failed
+    // routing. Its old required lattice is not a lower bound on the new
+    // solver setting. Independently verify any lower-resolution result on
+    // that finer lattice too, without lending this time to the solve.
+    if(report.settings.materialResolution<entry.expectedPaperResolution){
+      assert.equal(finalMaterialAudit(exported,{...report.settings,materialResolution:entry.expectedPaperResolution}).status,'pass');
+    }
     const rendered=await renderExportedWeave(answer.files['cut_geometry.json'],n);
     exportedError=rendered.mask.reduce((s,v,i)=>s+Number(v!==mask[i]),0)/mask.length;
     assert.ok(exportedError<.02);
