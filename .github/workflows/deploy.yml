@@ -6,7 +6,7 @@ on:
       mode:
         type: choice
         default: full
-        options: [full, cold, resources, clearance-checkpoints, matching-recovery, feature-detail, retained-grid, source-resolution, return-repair, paper-finalists, paper-repair, budgets, remaining, bicycle, comparison, maple, polish, late-clearance, profile, shared-runtime]
+        options: [full, cold, checkpoint-policy, resources, clearance-checkpoints, matching-recovery, feature-detail, retained-grid, source-resolution, return-repair, paper-finalists, paper-repair, budgets, remaining, bicycle, comparison, maple, polish, late-clearance, profile, shared-runtime]
         description: Full diagnostics or focused normal-budget regressions
 permissions:
   contents: read
@@ -21,11 +21,16 @@ jobs:
         clock: ${{ fromJSON(inputs.mode == 'full' && '[1,0.5]' || '[1]') }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: npm
       - run: npm ci
+      - name: Compare checkpoint policies on the same runner
+        if: inputs.mode == 'checkpoint-policy'
+        run: node scripts/inverse/checkpoint-policy-benchmark.mjs --baseline 0c330917 --candidate 90b4b1d0 --output tmp/checkpoint-policy-study/linux-paired
       - name: Capture numeric and fresh-fit evidence
         if: inputs.mode == 'full' && matrix.shard == 1 && matrix.clock == 1
         run: node scripts/inverse/ci-diagnostics.mjs
@@ -101,4 +106,5 @@ jobs:
             tmp/ci-diagnostics
             tmp/inverse-test-failures
             tmp/ci-profiles
+            tmp/checkpoint-policy-study
           retention-days: 3
