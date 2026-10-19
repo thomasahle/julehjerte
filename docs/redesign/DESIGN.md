@@ -96,33 +96,43 @@ each in a 44px target. The one that is on wears a 2px `--green` ring (outline, 1
 1. **Rød og hvid / Red and white**: a circle split left | right into white and red. A press puts the classic
    pair on and turns the colourful mode off; pressed again while the classic pair is on, it swaps the sides,
    and its split follows. Ring: the classic pair either way round, colourful off.
-2. **Farverig / Colourful**: a plain 2×2 grid of four palette papers (red, spruce, navy, gold), no gaps. Each
-   press reshuffles (below). Ring: colourful on.
-3. **Egne farver / Your own colours**: split into the visitor's own pair when one is on, otherwise a calm conic
-   ring of the palette's pale papers. Ring: a non-classic pair, colourful off. A press opens a dialog (the site's
-   `Modal`: focus inside, Escape and Back close it, focus returns to the button; full width on a phone) with a
-   split-circle preview, the two native colour pickers, a swap button, the palette's twelve pairs as quick picks
-   (named in both languages, the current one ringed) and "Færdig" / "Done". Changes apply live, and any of them
-   turns the colourful mode off.
-The rings and the two pictures that follow the pair come from `html.colorful`, `html.paper-flipped` /
-`html.paper-custom` and the `--paper-*` tokens, all set before first paint by the head's inline script from
-`julehjerte-colors` and `juleflet:colourful` (`colors.paperKind` is the rule), so a reload shows the right
+2. **Farverig / Colourful**: a plain 2×2 grid of four papers, no gaps. Each press reshuffles (below), and the
+   grid with it: in the mode its cells show the strong papers of the first four pairs of the shuffle that
+   come from different colour families (red, green, blue, gold, purple; `palette.iconPairs`, the `--pal-icon-*`
+   variables, fading over 0.4s), with it off the palette's rowan red, spruce, navy and gold. Ring: colourful on.
+3. **Egne farver / Your own colours**: the visitor's own pair, kept apart from the pair on show
+   (`juleflet:custom-colors`, `colors.getCustomColors`; before the first save a custom pair on show counts as
+   it), split like button 1 whenever one exists, otherwise a calm conic ring of the palette's pale papers. Ring:
+   a non-classic pair on show, colourful off. A press opens a dialog (the site's `Modal`: focus inside, Escape
+   and Back close it, focus returns to the button; full width on a phone) on that saved pair (or, before there
+   is one, the pair on show), with a split-circle preview, the two native colour pickers, a swap button, the
+   palette's twelve pairs as quick picks (named in both languages, the dialog's pair ringed) and "Færdig" /
+   "Done". Changes apply live, are saved as the visitor's pair, and turn the colourful mode off. "Færdig" puts
+   the dialog's pair on even with nothing changed, so a visitor can go back to a pair made earlier; Escape,
+   Back and the scrim only close.
+The rings and the pictures come from `html.colorful`, `html.paper-flipped` / `html.paper-custom`,
+`html.paper-has-custom` and the `--paper-*`, `--custom-*` and `--pal-*` variables, all set before first paint
+by the head's inline script from `julehjerte-colors`, `juleflet:custom-colors` and `juleflet:colourful`
+(`colors.paperKind` is the rule), so a reload shows the right
 state, and the hearts in the visitor's pair, from the first frame. `aria-pressed` on the first two;
-`aria-haspopup="dialog"` on the third. GA4: `paper_colors {source: classic | flip | custom | preset}` (a custom
+`aria-haspopup="dialog"` on the third. GA4: `paper_colors {source: classic | flip | custom | preset | saved}` (`saved`: "Færdig" putting the saved pair
+back on) (a custom
 colour is counted on the picker's `change`, not every `input`), and `color_mode` as below. The editor's header
 has none (the editor has its own colour controls in its panel). Without JavaScript the group is hidden.
 
 **As built: colourful mode.** Each press of the colourful button turns the mode on and deals every heart
 that follows the site's pair a new random pair from `$lib/utils/palette`: twelve Scandinavian Christmas pairs,
-lighter paper left, darker right (so the ribbon is the strong colour), each ≥ 2.2:1 between its papers; the two
-whose light paper is nearly the page's `#f9f9f3` (classic red/white, ochre/white) get a hairline outline. Two
+lighter paper left, darker right (so the ribbon is the strong colour), each ≥ 2.2:1 between its papers; the one
+whose light paper is nearly the page's `#f9f9f3` (ochre/white) gets a hairline outline. The site's own red and
+white is not among them (too bright beside the rest; it has its own button): its place is taken by "Rønnebær og
+hør" / "Rowan and linen", `#e7e3dd` / `#9b3b37`, the same idea greyed down. Two
 steps: each heart has a fixed *slot* in its markup (`data-pair` and `--pair-left/-right/-edge` reading
 `var(--pal-<slot>-l/-r/-o, <unshuffled pair>)` on HangingHeart's `.hang` and the heart page's thumbnail), where
 gallery hearts take the slot at their position in the gallery order, cycling the twelve, so no card shares a
 neighbour's slot at any of the grid's 2–6 columns, and other hearts (Mine hjerter, shared) a hash of their id;
 then a press draws a random permutation of the palette (never the one on show) that says which pair each slot
 shows, set as the `--pal-*` variables on `<html>`. Being one-to-one, it keeps the neighbour rule; no slot or
-pair is fixed, so Klassisk 3×3 is not always red/white. The permutation is stored as "3,0,7,…" under
+pair is fixed. The permutation is stored as "3,0,7,…" under
 `juleflet:colourful` (the first version's "1" reads as unshuffled), and an inline head script sets the class and
 the variables before first paint, so a reload shows the last shuffle with no flash. app.css maps the slot's pair
 onto the heart's `--paper-*` tokens and HeartWeaveFill's `paper-l`/`paper-r` paths, cross-fading fills and

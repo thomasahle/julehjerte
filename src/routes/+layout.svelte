@@ -11,7 +11,16 @@
 	import PageFooter from "$lib/components/PageFooter.svelte";
 	import { markAppStarted } from "$lib/hydration";
 	import { isPageViewNavigation, trackPageView } from "$lib/analytics";
-	import { PAPER_KIND_CLASSES, getColors, paperKind, subscribeColors, type HeartColors } from "$lib/stores/colors";
+	import {
+		CUSTOM_PAIR_CLASS,
+		PAPER_KIND_CLASSES,
+		getColors,
+		getCustomColors,
+		paperKind,
+		subscribeColors,
+		subscribeCustomColors,
+		type HeartColors
+	} from "$lib/stores/colors";
 	import { colorModeHeadScript } from "$lib/stores/colorMode";
 
 	let { children } = $props();
@@ -88,7 +97,21 @@
 			root.classList.toggle(PAPER_KIND_CLASSES.custom, kind === "custom");
 		};
 		apply(getColors());
-		return subscribeColors(apply);
+		const applyCustom = (custom: HeartColors | null) => {
+			const root = document.documentElement;
+			if (custom) {
+				root.style.setProperty("--custom-left", custom.left);
+				root.style.setProperty("--custom-right", custom.right);
+			}
+			root.classList.toggle(CUSTOM_PAIR_CLASS, custom !== null);
+		};
+		applyCustom(getCustomColors());
+		const offCustom = subscribeCustomColors(applyCustom);
+		const offColors = subscribeColors(apply);
+		return () => {
+			offCustom();
+			offColors();
+		};
 	});
 
 	// Page views after the first. The GA4 stream's "page changes based on

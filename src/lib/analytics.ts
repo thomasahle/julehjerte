@@ -155,9 +155,10 @@ export function trackColorMode(on: boolean, shuffle?: number) {
  * Track the site's paper pair being chosen with the header's colour buttons:
  * `classic` (the red and white button), `flip` (pressing it again, or the
  * dialog's swap), `custom` (a colour picked in the dialog), `preset` (one of
- * the dialog's ready-made pairs).
+ * the dialog's ready-made pairs), `saved` ("Færdig" putting the visitor's
+ * saved pair back on).
  */
-export function trackPaperColors(source: 'classic' | 'flip' | 'custom' | 'preset') {
+export function trackPaperColors(source: 'classic' | 'flip' | 'custom' | 'preset' | 'saved') {
   trackEvent('paper_colors', { source });
 }
 

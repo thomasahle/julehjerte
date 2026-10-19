@@ -12,6 +12,7 @@ import {
 	EDGE_COLOR,
 	IDENTITY,
 	contrastRatio,
+	iconPairs,
 	isPermutation,
 	paletteVariables,
 	randomPermutation,
@@ -48,8 +49,13 @@ describe('the palette', () => {
 		expect(new Set(PALETTE.map((p) => p.name)).size).toBe(PALETTE.length);
 	});
 
-	it('starts with the classic red and white, the site default', () => {
-		expect({ left: PALETTE[0].left, right: PALETTE[0].right }).toEqual(DEFAULT_COLORS_HEX);
+	it("leaves out the site's own red and white, either way round: it has its own button", () => {
+		for (const pair of PALETTE) {
+			const sides = [pair.left, pair.right].sort();
+			expect(sides, pair.name).not.toEqual([DEFAULT_COLORS_HEX.left, DEFAULT_COLORS_HEX.right].sort());
+			expect(pair.left, pair.name).not.toBe(DEFAULT_COLORS_HEX.right);
+			expect(pair.right, pair.name).not.toBe(DEFAULT_COLORS_HEX.right);
+		}
 	});
 
 	it.each(PALETTE.map((p) => [p.name, p] as const))('%s: the weave reads', (_, pair) => {
@@ -74,7 +80,7 @@ describe('the palette', () => {
 		}
 	);
 
-	// The classic red (#b91313, 0.65) is the most vivid paper of the set; a
+	// The site's classic red (#b91313, 0.65) is the cap; a
 	// neon green is 1.
 	it('has no neon: no paper more vivid than the classic red', () => {
 		for (const pair of PALETTE) {
@@ -140,7 +146,7 @@ describe('which heart gets which pair', () => {
 		expect(first['data-pair']).toBe('0');
 		expect(first.style).toBe(
 			`--pair-left: var(--pal-0-l, ${PALETTE[0].left}); --pair-right: var(--pal-0-r, ${PALETTE[0].right}); ` +
-				`--pair-edge: var(--pal-0-o, ${EDGE_COLOR});`
+				`--pair-edge: var(--pal-0-o, ${PALETTE[0].edge ? EDGE_COLOR : 'transparent'});`
 		);
 		const second = pairAttributes(CATEGORIES[0].hearts[1]);
 		expect(second['data-pair']).toBe('1');
@@ -173,7 +179,7 @@ describe('the shuffle', () => {
 		expect(seen.size).toBeGreaterThan(490);
 	});
 
-	it('moves every pair around: the classic red and white is not stuck in slot 0', () => {
+	it('moves every pair around: none is stuck in slot 0', () => {
 		const random = mulberry32(2);
 		const slotsOfClassic = new Set(Array.from({ length: 200 }, () => randomPermutation(random).indexOf(0)));
 		expect(slotsOfClassic.size).toBe(PALETTE.length);
@@ -213,12 +219,31 @@ describe('the shuffle', () => {
 	it('sets three variables per slot, from the pair the slot shows', () => {
 		const p = [...IDENTITY].reverse();
 		const vars = paletteVariables(p);
-		expect(Object.keys(vars)).toHaveLength(PALETTE.length * 3);
+		expect(Object.keys(vars)).toHaveLength(PALETTE.length * 3 + 4);
 		const last = PALETTE.length - 1;
 		expect(vars['--pal-0-l']).toBe(PALETTE[last].left);
 		expect(vars['--pal-0-r']).toBe(PALETTE[last].right);
 		expect(vars[`--pal-${last}-l`]).toBe(PALETTE[0].left);
-		expect(vars[`--pal-${last}-o`]).toBe(EDGE_COLOR);
+		expect(vars[`--pal-${last}-o`]).toBe(PALETTE[0].edge ? EDGE_COLOR : 'transparent');
 		expect(vars['--pal-1-o']).toBe(PALETTE[last - 1].edge ? EDGE_COLOR : 'transparent');
+	});
+
+	it("picks the colourful button's four cells from four colour families, in shuffle order", () => {
+		const random = mulberry32(4);
+		for (let round = 0; round < 200; round++) {
+			const p = randomPermutation(random);
+			const picked = iconPairs(p);
+			expect(picked).toHaveLength(4);
+			expect(new Set(picked.map((i) => PALETTE[i].family)).size).toBe(4);
+			// In shuffle order, and each the first of its family.
+			const positions = picked.map((i) => p.indexOf(i));
+			expect([...positions].sort((a, b) => a - b)).toEqual(positions);
+			for (const i of picked) {
+				const first = p.find((j) => PALETTE[j].family === PALETTE[i].family);
+				expect(first).toBe(i);
+			}
+			const vars = paletteVariables(p);
+			expect([0, 1, 2, 3].map((k) => vars[`--pal-icon-${k}`])).toEqual(picked.map((i) => PALETTE[i].right));
+		}
 	});
 });

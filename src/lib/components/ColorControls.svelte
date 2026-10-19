@@ -6,15 +6,24 @@
        red. A press puts the classic pair on and turns the colourful mode off;
        pressed again while the classic pair is already on, it swaps the sides,
        and its picture follows (`html.paper-flipped`).
-    2. Colourful ("Farverig", $lib/stores/colorMode): four of the palette's
-       papers in a plain 2×2 grid. Each press deals every heart that follows
-       the site's pair a new random pair ($lib/utils/palette).
-    3. Your own colours ("Egne farver"): split into the visitor's own pair when
-       one is on (`html.paper-custom`), a calm ring of the palette's pale
-       papers otherwise. A press opens the colour dialog: a preview, the two
-       colour pickers, a swap button, the palette's twelve pairs as quick picks
-       and "Færdig". Changes apply as they are made, and any of them turns the
-       colourful mode off.
+    2. Colourful ("Farverig", $lib/stores/colorMode): four papers in a plain
+       2×2 grid. Each press deals every heart that follows the site's pair a
+       new random pair ($lib/utils/palette), and the grid deals itself anew
+       with them: it shows the strong papers of the first four pairs of the
+       shuffle that differ in colour family (palette.iconPairs, the
+       `--pal-icon-*` variables on <html>), or rowan red, spruce, navy and gold
+       while the mode is off.
+    3. Your own colours ("Egne farver"): split into the visitor's own pair,
+       which is saved apart from the pair on show ($lib/stores/colors,
+       getCustomColors), whenever there is one (`html.paper-has-custom`), a
+       calm ring of the palette's pale papers before. A press opens the colour
+       dialog on that pair (or, before there is one, on the pair on show): a
+       preview, the two colour pickers, a swap button, the palette's twelve
+       pairs as quick picks and "Færdig". Changes apply as they are made, are
+       saved as the visitor's own pair, and turn the colourful mode off.
+       "Færdig" puts the dialog's pair on even with nothing changed, so the
+       visitor can go back to a pair made earlier; Escape, Back and the scrim
+       just close it.
 
   Whichever of the three is on wears a 2px --green ring. The ring and the two
   pictures that follow the pair are drawn from the classes and the --paper-*
@@ -40,10 +49,10 @@
 		DEFAULT_COLORS_HEX,
 		getColors,
 		setColors,
-		setLeftColor,
-		setRightColor,
 		flipColors,
+		getCustomColors,
 		paperKind,
+		setCustomColors,
 		subscribeColors,
 		type HeartColors
 	} from '$lib/stores/colors';
@@ -108,10 +117,12 @@
 		trackColorMode(true, shuffles);
 	}
 
-	// The colourful button's picture: four of the palette's papers, plain.
+	// The colourful button's picture with the mode off: four of the palette's
+	// papers, plain. With it on, the stylesheet fills cell k from the
+	// shuffle's slot k instead.
 	const pick = (name: string, side: 'left' | 'right') => PALETTE.find((p) => p.name === name)![side];
 	const GRID = [
-		{ x: 0, y: 0, fill: pick('klassisk', 'right') },
+		{ x: 0, y: 0, fill: pick('rønnebær', 'right') },
 		{ x: 12, y: 0, fill: pick('gran', 'right') },
 		{ x: 0, y: 12, fill: pick('nat', 'right') },
 		{ x: 12, y: 12, fill: pick('nat', 'left') }
@@ -125,13 +136,23 @@
 	let rightInput = $state<HTMLInputElement | null>(null);
 	const titleId = $derived(`paper-dialog-title-${variant}`);
 
+	// The pair the dialog shows and edits: the visitor's own, or before they
+	// have one, the pair on show.
+	let draft = $state<HeartColors>({ ...DEFAULT_COLORS });
+
 	// The inputs are given their value here rather than by attribute: a dynamic
 	// `value` on <input type="color"> momentarily holds "" while Svelte sets it.
 	$effect(() => {
-		if (leftInput) leftInput.value = toHexColor(colors.left, DEFAULT_COLORS_HEX.left);
-		if (rightInput) rightInput.value = toHexColor(colors.right, DEFAULT_COLORS_HEX.right);
+		if (leftInput) leftInput.value = toHexColor(draft.left, DEFAULT_COLORS_HEX.left);
+		if (rightInput) rightInput.value = toHexColor(draft.right, DEFAULT_COLORS_HEX.right);
 	});
 
+	function openDialog() {
+		draft = getCustomColors() ?? getColors();
+		dialogOpen = true;
+	}
+
+	/** Escape, Back, the scrim: just close. Changes made are already on. */
 	function closeDialog() {
 		if (!dialogOpen) return;
 		dialogOpen = false;
@@ -139,28 +160,42 @@
 		tick().then(() => customButton?.focus());
 	}
 
-	function pickSide(side: 'left' | 'right', value: string) {
+	/** "Færdig": the dialog's pair goes on, changed or not. */
+	function done() {
+		const shown = getColors();
+		if (getColorMode() || shown.left !== draft.left || shown.right !== draft.right) {
+			leaveColorful();
+			setColors({ ...draft });
+			trackPaperColors('saved');
+		}
+		setCustomColors(draft);
+		closeDialog();
+	}
+
+	/** A change in the dialog: on at once, and saved as the visitor's own pair. */
+	function applyDraft(next: HeartColors) {
+		draft = { ...next };
 		leaveColorful();
-		if (side === 'left') setLeftColor(value);
-		else setRightColor(value);
+		setColors({ ...next });
+		setCustomColors(next);
+	}
+
+	function pickSide(side: 'left' | 'right', value: string) {
+		applyDraft(side === 'left' ? { ...draft, left: value } : { ...draft, right: value });
 	}
 
 	function swapInDialog() {
-		leaveColorful();
-		flipColors();
+		applyDraft({ left: draft.right, right: draft.left });
 		trackPaperColors('flip');
 	}
 
 	function preset(pair: HeartColors) {
-		leaveColorful();
-		setColors({ left: pair.left, right: pair.right });
+		applyDraft({ left: pair.left, right: pair.right });
 		trackPaperColors('preset');
 	}
 
 	const isCurrent = (pair: HeartColors) =>
-		!colorful &&
-		toHexColor(colors.left, '') === pair.left &&
-		toHexColor(colors.right, '') === pair.right;
+		toHexColor(draft.left, '') === pair.left && toHexColor(draft.right, '') === pair.right;
 </script>
 
 <div class="colors colors-{variant}" role="group" aria-label={t('paperColors', lang)}>
@@ -187,8 +222,8 @@
 	>
 		<span class="dot colorful-dot">
 			<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-				{#each GRID as cell (cell.fill)}
-					<rect x={cell.x} y={cell.y} width="12" height="12" fill={cell.fill} />
+				{#each GRID as cell, i (cell.fill)}
+					<rect class="cell-{i}" x={cell.x} y={cell.y} width="12" height="12" fill={cell.fill} />
 				{/each}
 			</svg>
 		</span>
@@ -201,7 +236,7 @@
 		aria-expanded={dialogOpen}
 		aria-label={t('paperCustom', lang)}
 		title={t('paperCustomTitle', lang)}
-		onclick={() => (dialogOpen = true)}
+		onclick={openDialog}
 	>
 		<span class="dot custom-dot"></span>
 	</button>
@@ -215,7 +250,7 @@
 			<span
 				class="preview"
 				aria-hidden="true"
-				style="--l: {colors.left}; --r: {colors.right};"
+				style="--l: {draft.left}; --r: {draft.right};"
 			></span>
 			<div class="pickers">
 				<label class="picker">
@@ -264,7 +299,7 @@
 		</div>
 
 		<div class="actions">
-			<button type="button" class="done" bind:this={doneButton} onclick={closeDialog}>
+			<button type="button" class="done" bind:this={doneButton} onclick={done}>
 				{t('paperDone', lang)}
 			</button>
 		</div>
@@ -355,10 +390,35 @@
 		background: conic-gradient(#f0cbc6, #efe6cf, #cfe3d2, #dde8f0, #efdfe6, #f0cbc6);
 	}
 
-	:global(html.paper-custom) .custom-dot {
-		--l: var(--paper-left);
-		--r: var(--paper-right);
+	/* The visitor's own pair, on show or not (the ring says whether it is). */
+	:global(html.paper-has-custom) .custom-dot {
+		--l: var(--custom-left);
+		--r: var(--custom-right);
 		background: linear-gradient(90deg, var(--l) 50%, var(--r) 50%);
+	}
+
+	/* In the colourful mode the grid shows four of the shuffle's strong papers,
+	   from different colour families (palette.iconPairs). */
+	:global(html.colorful) .colorful-dot .cell-0 {
+		fill: var(--pal-icon-0);
+	}
+
+	:global(html.colorful) .colorful-dot .cell-1 {
+		fill: var(--pal-icon-1);
+	}
+
+	:global(html.colorful) .colorful-dot .cell-2 {
+		fill: var(--pal-icon-2);
+	}
+
+	:global(html.colorful) .colorful-dot .cell-3 {
+		fill: var(--pal-icon-3);
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.colorful-dot rect {
+			transition: fill 0.4s ease;
+		}
 	}
 
 	/* The one that is on wears the ring: from the classes on <html>, so it is

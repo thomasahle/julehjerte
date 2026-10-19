@@ -101,3 +101,29 @@ describe('paperKind', () => {
 		expect(paperKind({ left: '#dcb55e', right: '#22385c' })).toBe('custom');
 	});
 });
+
+describe("the visitor's own pair", () => {
+	it('is kept apart from the pair on show, and remembered', async () => {
+		const store = await freshStore();
+		expect(store.getCustomColors()).toBeNull();
+		store.setCustomColors({ left: '#efdfe6', right: '#7d5a7e' });
+		store.setColors({ ...store.DEFAULT_COLORS });
+		store.flipColors();
+		expect(store.getCustomColors()).toEqual({ left: '#efdfe6', right: '#7d5a7e' });
+		const reloaded = await freshStore();
+		expect(reloaded.getCustomColors()).toEqual({ left: '#efdfe6', right: '#7d5a7e' });
+		expect(JSON.parse(window.localStorage.getItem('juleflet:custom-colors')!)).toEqual({ left: '#efdfe6', right: '#7d5a7e' });
+	});
+
+	it('is, before one is saved, a custom pair already on show', async () => {
+		window.localStorage.setItem('julehjerte-colors', JSON.stringify({ left: '#123456', right: '#abcdef' }));
+		const store = await freshStore();
+		expect(store.getCustomColors()).toEqual({ left: '#123456', right: '#abcdef' });
+	});
+
+	it('is none while red and white is on and nothing was saved', async () => {
+		window.localStorage.setItem('julehjerte-colors', JSON.stringify({ left: '#b91313', right: '#ffffff' }));
+		const store = await freshStore();
+		expect(store.getCustomColors()).toBeNull();
+	});
+});

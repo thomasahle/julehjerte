@@ -142,4 +142,69 @@ describe('ColorControls', () => {
 		expect(document.querySelector('[role="dialog"]')).toBeNull();
 		expect(document.activeElement).toBe(button('Egne farver'));
 	});
+
+	it("custom: the visitor's pair is kept through red and white and the colourful mode, and Færdig puts it back", async () => {
+		const { colors, mode, button, click, events } = await render();
+		await click(button('Egne farver'));
+		let dialog = document.querySelector<HTMLElement>('[role="dialog"]')!;
+		await click(dialog.querySelector<HTMLButtonElement>('button[aria-label="Lyng og lys rosa"]')!);
+		const done = () => [...document.querySelectorAll<HTMLButtonElement>('[role="dialog"] button')].find((b) => b.textContent?.trim() === 'Færdig')!;
+		await click(done());
+		const mine = { left: '#efdfe6', right: '#7d5a7e' };
+		expect(colors.getCustomColors()).toEqual(mine);
+
+		// Away to red and white, then the colourful mode: the saved pair stays.
+		await click(button('Rød og hvid'));
+		expect(colors.paperKind(colors.getColors())).toBe('classic');
+		await click(button('Farverig'));
+		expect(mode.getColorMode()).toBe(true);
+		expect(colors.getCustomColors()).toEqual(mine);
+
+		// The dialog opens on the saved pair, not on what is on show ...
+		await click(button('Egne farver'));
+		dialog = document.querySelector<HTMLElement>('[role="dialog"]')!;
+		expect(dialog.querySelector('button[aria-label="Lyng og lys rosa"]')!.getAttribute('aria-pressed')).toBe('true');
+		expect(dialog.querySelector<HTMLInputElement>('input[type="color"]')!.value).toBe('#efdfe6');
+		// ... and Færdig, with nothing changed, puts it on.
+		await click(done());
+		expect(document.querySelector('[role="dialog"]')).toBeNull();
+		expect(mode.getColorMode()).toBe(false);
+		expect(colors.getColors()).toEqual(mine);
+		expect(events()).toContainEqual(['paper_colors', { source: 'saved' }]);
+	});
+
+	it('custom: Escape with nothing changed leaves the pair on show alone', async () => {
+		const { colors, mode, button, click, flushSync, tick } = await render();
+		colors.setCustomColors({ left: '#dcb55e', right: '#22385c' });
+		mode.shuffleColorMode();
+		await click(button('Egne farver'));
+		const dialog = document.querySelector<HTMLElement>('[role="dialog"]')!;
+		dialog.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+		flushSync();
+		await tick();
+		expect(document.querySelector('[role="dialog"]')).toBeNull();
+		expect(mode.getColorMode()).toBe(true);
+		expect(colors.paperKind(colors.getColors())).toBe('classic');
+	});
+
+	it('custom: before there is a saved pair, the dialog starts from the pair on show', async () => {
+		const { colors, button, click } = await render();
+		expect(colors.getCustomColors()).toBeNull();
+		colors.flipColors();
+		await click(button('Egne farver'));
+		const input = document.querySelector<HTMLInputElement>('[role="dialog"] input[type="color"]')!;
+		expect(input.value).toBe('#b91313');
+	});
+
+	it("colourful: the button's four cells follow the shuffle", async () => {
+		const { target, mode, button, click } = await render();
+		const { PALETTE, iconPairs } = await import('$lib/utils/palette');
+		const cells = [...target.querySelectorAll('button[aria-label="Farverig"] rect')];
+		expect(cells.map((c) => c.getAttribute('class')!.split(' ')[0])).toEqual(['cell-0', 'cell-1', 'cell-2', 'cell-3']);
+		const shown = () => [0, 1, 2, 3].map((k) => document.documentElement.style.getPropertyValue(`--pal-icon-${k}`));
+		await click(button('Farverig'));
+		expect(shown()).toEqual(iconPairs(mode.getPermutation()!).map((i) => PALETTE[i].right));
+		await click(button('Farverig'));
+		expect(shown()).toEqual(iconPairs(mode.getPermutation()!).map((i) => PALETTE[i].right));
+	});
 });
