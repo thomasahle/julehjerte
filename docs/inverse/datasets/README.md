@@ -1,6 +1,6 @@
 # Data for learned heart reconstruction
 
-Neural release status reviewed on **2026-10-19**; dataset counts last audited on
+Neural release status reviewed on **2026-10-20**; dataset counts last audited on
 **2026-10-19**. **No neural network is ready for production or
 included in the website.** The collection, synthetic generator and learned
 prototypes are research tools; the existing geometric solver remains the
@@ -28,8 +28,19 @@ views **8.25% → 11.15%**, printed views **22.42% → 23.68%**, and scenes
 All training, worst-synthetic and 32-photo evaluation galleries were inspected.
 Print confusion, lost checker squares and rounded/disconnected joins remain.
 This head is rejected for integration; these are development diagnostics, not
-held-out reconstruction scores. The next comparison changes boundary weighting
-while keeping the starting head, data, schedule and update count fixed.
+held-out reconstruction scores.
+
+The [paired boundary-weighted continuation](u2netp-material-boundary-results.json)
+keeps those inputs, initial weights and all 384 draws fixed, giving known paper
+boundaries four times the loss weight. Boundary error improves to **9.38%** on
+clean views, **21.54%** on printed views and **19.55%** in scenes. Scene interiors
+and real partial training error regress; the shorter 120-update parent still
+has lower clean-view boundary error. All 32 real evaluation photos were reviewed:
+print confusion, lost shaded checker squares and near-erasure of the stacked-heart
+motif remain. These full-photo material failures precede cropping and fitting.
+No new template fits, browser export or production changes were justified.
+Fifteen focused tests pass, and historical checkpoint reloads reproduce both
+older models' stored predictions exactly.
 
 ### Latest solver and browser validation
 
@@ -632,8 +643,8 @@ The [manifest](real-manifest.json) and [independent audit](real-validation.json)
 record source URLs, hashes, decoded identities, dimensions, image kinds and
 groups. Image bytes remain under `tmp/heart-training-real/`, outside Git.
 
-Current inventory: **783 photo-containing files**, **670 near-duplicate photo
-groups**, **748 QA-reserved files**, and **695 downloaded / 712 selected
+Current inventory: **811 photo-containing files**, **697 near-duplicate photo
+groups**, **838 QA-reserved files**, and **817 downloaded / 834 selected
 Pinterest pins**. Near-duplicate groups are not verified motif families.
 A collage remains one file until its individual hearts are annotated.
 

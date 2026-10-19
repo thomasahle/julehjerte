@@ -1,0 +1,193 @@
+{
+  "schema": "u2netp-material-boundary-results-1",
+  "date": "2026-10-20",
+  "status": "native-paired-experiment-complete-not-production",
+  "evidence": [
+    {
+      "path": "tmp/heart-learning/u2netp-material-complete-epochs-v1/report.json",
+      "sha256": "8103405f3b8a0a12a3209571fdde18babdaf2a5a1a2bbb04d035ba537b0e3201"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-boundary-v1/report.json",
+      "sha256": "1012c443ab49fdd58260f32ece4166fe521f98716e1495179e6527db0dd00520"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-relative-boundaries-v1/report.json",
+      "sha256": "bfedda186ef91f18dc6eca0ddbdb0aeb97ae370fda0e3ff299cb958b3bc1d30b"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-complete-synthetic-v1/report.json",
+      "sha256": "a9e348af9332c99ac9f0c2323b88c3685b595a2f83ff3b858d40c9fae286c5ae"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-boundary-synthetic-v1/report.json",
+      "sha256": "7cbe7390863b3197d0afbe310124040015d4d782764181d2696f02ead4aff43e"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-boundary-probe-v1/report.json",
+      "sha256": "6cd1ee8d843d529172698b2a2b1652bd2f816cc3a1cbb8c0ac44fd0ff13e5044"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-boundary-preflight-v1.json",
+      "sha256": "0ff1b55cc0bc1310041592c32a9901ccf68513ce558fd6e0f1ef483efc9633cf"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-boundary-checks-v1.json",
+      "sha256": "aafcc10cceb552b3b01d9203e3e550552c0823c1903eae05e6b06d3a967a8efc"
+    }
+  ],
+  "protocol": {
+    "sameInitialWeightsDataAndDraws": {
+      "initialHeadSha256": true,
+      "initialHeadCheckpointSha256": true,
+      "initialFrozenStateSha256": true,
+      "trainingInputs": true,
+      "draws": true,
+      "parentTraining": true,
+      "runtime": true,
+      "optimizer": true
+    },
+    "initialMetricsExact": true,
+    "reusedUniformControl": true,
+    "additionalUpdatesEach": 384,
+    "parentUpdates": 120,
+    "totalUpdatesEach": 504,
+    "objectiveChange": "Four-times BCE weight within a two-pixel known material boundary band; weights normalized per image before one global A/B assignment. Unknown/background interfaces excluded; half-coverage samples handled symmetrically.",
+    "boundaryFactor": 4,
+    "radiusPixels": 2,
+    "trainingRealPhotos": 16,
+    "trainingSyntheticViews": 96,
+    "trainingSyntheticGeometries": 32,
+    "trainableParameters": 18193,
+    "threads": 1,
+    "trainingSeconds": 294.331247458,
+    "checkpointSelection": "Final update only; no per-photo winners or evaluation-based checkpoint selection."
+  },
+  "realTraining": {
+    "scope": "Known partial training labels, not held-out accuracy.",
+    "uniform": {
+      "bodyIoU": 0.9220370264229887,
+      "bodyPixelError": 0.02772860746760552,
+      "bodyFalseNegative": 0.0284759940848502,
+      "backgroundFalsePositive": 0.019533635632991684,
+      "materialPixelError": 0.027803890444649454,
+      "materialJointError": 0.059896002280385593,
+      "jointRegionPixelError": 0.03449346293015299,
+      "balancedMaterialJointError": 0.055131529627427414
+    },
+    "weighted": {
+      "bodyIoU": 0.9220370264229887,
+      "bodyPixelError": 0.02772860746760552,
+      "bodyFalseNegative": 0.0284759940848502,
+      "backgroundFalsePositive": 0.019533635632991684,
+      "materialPixelError": 0.03000523653956784,
+      "materialJointError": 0.0621974364593375,
+      "jointRegionPixelError": 0.034581195250369165,
+      "balancedMaterialJointError": 0.0572972391369613
+    }
+  },
+  "syntheticTraining": {
+    "scope": "All training views; original, printed and scene variants share 32 geometries. Independent raster boundary diagnostic with the same global phase as overall error. Not a topology certificate.",
+    "groups": {
+      "synthetic-original": {
+        "parent": {
+          "overallError": 0.019122325443838135,
+          "boundaryError": 0.08246078601833201,
+          "interiorError": 0.0012651936565667178
+        },
+        "uniform": {
+          "overallError": 0.02543805314153115,
+          "boundaryError": 0.11146147692807648,
+          "interiorError": 0.001893635208863901
+        },
+        "weighted": {
+          "overallError": 0.02123436002029799,
+          "boundaryError": 0.09383699066953238,
+          "interiorError": 0.0009818836802269232
+        }
+      },
+      "synthetic-printed": {
+        "parent": {
+          "overallError": 0.11170725483417154,
+          "boundaryError": 0.22416174276237366,
+          "interiorError": 0.08191415805053243
+        },
+        "uniform": {
+          "overallError": 0.10436495380443903,
+          "boundaryError": 0.23679545644211075,
+          "interiorError": 0.06907612029902618
+        },
+        "weighted": {
+          "overallError": 0.09248590689129747,
+          "boundaryError": 0.21544177615969873,
+          "interiorError": 0.06003817297298356
+        }
+      },
+      "synthetic-scene": {
+        "parent": {
+          "overallError": 0.07690051700375986,
+          "boundaryError": 0.2193413074289068,
+          "interiorError": 0.04070354115905579
+        },
+        "uniform": {
+          "overallError": 0.07059634723040045,
+          "boundaryError": 0.2263423798404944,
+          "interiorError": 0.030674989982514826
+        },
+        "weighted": {
+          "overallError": 0.06988160718908262,
+          "boundaryError": 0.19554255337727183,
+          "interiorError": 0.036297352297486665
+        }
+      }
+    }
+  },
+  "nativeEvaluation": {
+    "photos": 32,
+    "sourceSeparatedButAlreadyInspectedDevelopmentCohort": true,
+    "allInputTensorsExact": true,
+    "allParentBodiesExact": true,
+    "maximumCachedNormalizedBodyDifference": 1.1920928955078125e-07,
+    "medianInferenceSeconds": 0.2772009579999999,
+    "allEightGalleryPagesReviewed": true
+  },
+  "visualReview": {
+    "realTrainingPages": 4,
+    "syntheticLargestErrorPages": 2,
+    "nativePages": 8,
+    "findings": [
+      "Star, green/silver web and dark/gold checker retain recognizable major structures; small joins and cells remain distorted.",
+      "Printed stripes, flowers, letters and trees still become false material boundaries.",
+      "Both stacked-heart photographs lose most intended structure; the wide stacked-heart image is nearly a single paper class.",
+      "The shaded red/gold checker and green/black motif still lose most of their interiors.",
+      "Some red/gold motifs acquire outlines and false islands following shading.",
+      "Frozen body errors still exclude house/candlestick regions and include adjacent hands.",
+      "Two neighboring-heart scene training views have large whole-region failures despite improved group boundary averages."
+    ]
+  },
+  "conclusion": "Boundary weighting improves average synthetic boundary error in all three groups versus the equal-compute uniform control. Printed and clean interiors also improve, while scene interiors and real partial training error regress. The shorter 120-update parent still has lower clean boundary error. Real-photo visual failures prevent integration; no new full template fits or browser export were justified.",
+  "rootCauseEvidence": {
+    "supported": [
+      "More complete sampling/updates alone did not remove material failures.",
+      "Changing only boundary weighting improves synthetic edge fit, showing the uniform objective contributes to those errors.",
+      "Observed real-photo failures precede corner selection and template fitting: the full-photo material field already erases or invents motif boundaries.",
+      "Body-region omissions remain a separate frozen-model limitation."
+    ],
+    "notEstablished": [
+      "The exact share of edge error attributable to 160-pixel feature resolution versus model capacity.",
+      "Whether RGB calibration from neural seeds repairs the real-photo identity failures.",
+      "Generalization to new photographs or improved cutting-template recovery."
+    ]
+  },
+  "next": "Diagnose neural material confidence and compare full-resolution RGB mixture calibration from learned paper seeds against unchanged-body RGB clustering. Use a fixed procedure and all same photos; inspect printed and shaded cases separately. Retain boundary weighting as an offline training option, not a release.",
+  "validation": {
+    "focusedTests": 15,
+    "historicalCheckpointReloadsExact": 2,
+    "trainingExitCode": 0,
+    "syntheticProbeExitCode": 0,
+    "nativeProbeExitCode": 0,
+    "productionCodeChanged": false,
+    "fullApplicationSuiteRepeated": false,
+    "applicationScope": "Only offline Python tools, experiment plans and reports changed; last application/inverse/build validation remains conni-release-qa.json."
+  }
+}
