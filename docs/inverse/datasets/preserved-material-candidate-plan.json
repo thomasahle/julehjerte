@@ -1,0 +1,86 @@
+{
+  "schema": "preserved-material-candidate-plan-1",
+  "status": "predeclared",
+  "purpose": "One candidate trained on all sixteen currently eligible development photos with immutable original foreground. It must subsequently beat the production pipeline on the separately frozen source-held-out board sample before any integration.",
+  "sourceManifest": {
+    "path": "docs/inverse/datasets/real-manifest.json",
+    "sha256": "46986981cdbac3fbada54621014a7584a106576688b08807f52753507c8a6ff5"
+  },
+  "annotations": {
+    "path": "scripts/inverse/datasets/real-materials-encoder-tail.json",
+    "sha256": "b245c23fb51691a4db2000ca5226f6ab400511c612d8414fbc50ff4ab4e80374"
+  },
+  "labelCatalog": {
+    "path": "tmp/heart-learning/material-encoder-tail-v1/tail/labels/current-16/manifest.json",
+    "sha256": "6f027ca6656a2d85fb7b699dbffaf31fc3211024273499b0b9aa77a8ac340b60"
+  },
+  "foregroundReport": {
+    "path": "tmp/heart-learning/foreground-scene-v1/scene-trained/report.json",
+    "sha256": "f3a71ff6de0cb0a00fe8db15051631d131b6cbd71bf607bd607acae5d101929c"
+  },
+  "foregroundCheckpoint": {
+    "path": "tmp/heart-learning/foreground-scene-v1/scene-trained/model.pt",
+    "sha256": "3e94244975ee6641626b5b93c3948974bfa33609f461aae828e40bdf0a889fe6"
+  },
+  "evaluation": {
+    "path": "docs/inverse/datasets/preserved-material-heldout-plan.json",
+    "sha256": "10554c9c6e175c95619101813a6c08cc0907ea8bf7fcd00bf08e46a2b773f64a"
+  },
+  "trainIds": [
+    "real-8c875dd0f298b5a4-body-1",
+    "real-995899fe049540ed-body-1",
+    "real-b87b0b19f12724f3-body-1",
+    "real-cf2d0fcff65d7386-body-1",
+    "real-cdae5c890b6933cd-body-1",
+    "real-68d8f25d8891df62-body-1",
+    "real-5330aa8b62176216-body-1",
+    "real-abf590088db891f9-body-1",
+    "real-990ac34431be87fe-body-1",
+    "real-12ce3c9180f7f317-body-1",
+    "real-d5b0aa8d4d2465ee-body-1",
+    "real-39f3a1ba97852876-body-1",
+    "real-e936e08ac62db19b-body-1",
+    "real-340f5e5b0f447889-body-1",
+    "real-710703159f609111-body-1",
+    "real-a414dfffbd2362ae-body-1"
+  ],
+  "protocol": {
+    "updates": 240,
+    "seed": 20261015,
+    "batchSize": 4,
+    "realPerMixedBatch": 2,
+    "threads": 1,
+    "decoderLearningRate": 0.001,
+    "encoderLearningRate": 0.0001,
+    "weightDecay": 0.0001,
+    "syntheticReplayGeometries": 32,
+    "printedReplay": [
+      {
+        "directory": "tmp/heart-learning/material-prints-v1/source-1",
+        "manifestSha256": "8cb0e3894195861aa9212f2e3de82a013670693add652bb3600aa9cab1e3115a",
+        "parentManifestSha256": "6649301431add7c3a7b7ba2ccb374723bc165fd3a64c9adede0ad11b3a54133d"
+      },
+      {
+        "directory": "tmp/heart-learning/material-prints-v1/source-2",
+        "manifestSha256": "42e5b8af44acf6406d3baa22e7c207648ca86dcea66e0bf9f9c159fb5e1d9499",
+        "parentManifestSha256": "180ecc34ae4294b3e9a70d90009cd2610f918394c0fa531fa64b3aaad0b27732"
+      }
+    ],
+    "architecture": "Shared original blocks 0\u20138, immutable original body tail/decoder, trainable separate material blocks 9\u201311 and decoder; all BatchNorm statistics fixed.",
+    "checkpointSelection": "Fixed final update; no evaluation image, metric, threshold tuning or early stopping.",
+    "objective": "Existing image-wide phase-exchangeable material supervision; the foreground loss is constant with respect to trainable parameters."
+  },
+  "resources": {
+    "minimumFreeGiB": 10,
+    "maxArtifactMiB": 32,
+    "workers": 1,
+    "newPhotoCopies": 0,
+    "newPhotoDownloads": 0
+  },
+  "releaseGate": [
+    "Independent replay proves source separation, unchanged frozen tensors and body output, and saved model predictions.",
+    "Export and actual browser inference must be audited on the new single model, not inferred from the older two-fold models.",
+    "Complete paired photo-to-editable-template replay with independent geometry, paper, mask and visual checks on the predeclared evaluation sample.",
+    "No deterioration of supported production cases under the fallback policy; any new supported crop must be checked against the photograph."
+  ]
+}

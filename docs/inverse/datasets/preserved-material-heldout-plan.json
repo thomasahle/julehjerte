@@ -1,0 +1,263 @@
+{
+  "schema": "preserved-material-heldout-plan-1",
+  "status": "predeclared",
+  "sourceManifest": {
+    "path": "docs/inverse/datasets/real-manifest.json",
+    "sha256": "46986981cdbac3fbada54621014a7584a106576688b08807f52753507c8a6ff5"
+  },
+  "importLedger": {
+    "path": "tmp/heart-training-real/sabrina-board/imports.json",
+    "sha256": "b464aa02d27c9301364a331e67ec9a68b03e462daf9216ad44693d8f0054d915"
+  },
+  "selector": {
+    "seed": "preserved-material-candidate-v1",
+    "rank": "SHA256(seed + colon + source SHA256), ascending; first image per near-duplicate group",
+    "eligibility": "Newly downloaded (not reused) assembled-heart photos from the entire QA-reserved Sabrina board, within the application 24-megapixel limit. No model output, crop or solver result enters selection.",
+    "eligiblePhotos": 218,
+    "selectedPhotos": 16
+  },
+  "photos": [
+    {
+      "id": "real-ad2c0c1de36a7815-body-1",
+      "assetId": "real-ad2c0c1de36a7815",
+      "imageSha256": "ad2c0c1de36a7815ce7c17d6bffd93b42156c33cbe61d56a7ac1502be9cf8e7e",
+      "file": "tmp/heart-training-real/assets/ad2c0c1de36a7815ce7c17d6bffd93b42156c33cbe61d56a7ac1502be9cf8e7e.jpg",
+      "dimensions": [
+        1000,
+        1334
+      ],
+      "decodedRGBSha256": "08f5958027541bfa76cca69140e8ea73b11682c754524776295df5294973d480",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "nearDuplicateGroup": "real-ad2c0c1de36a7815",
+      "selectionRank": "01a01ab390aea9730dc548823a8edefdd5ccf797ab9211141c182077612cc1d3"
+    },
+    {
+      "id": "real-4097e8fcdc21b6a3-body-1",
+      "assetId": "real-4097e8fcdc21b6a3",
+      "imageSha256": "4097e8fcdc21b6a33ea59e1810f0f89efa368b904d247adebf80b081be317de0",
+      "file": "tmp/heart-training-real/assets/4097e8fcdc21b6a33ea59e1810f0f89efa368b904d247adebf80b081be317de0.jpg",
+      "dimensions": [
+        1000,
+        1334
+      ],
+      "decodedRGBSha256": "6a36e74645f4fd0f2cf6040d3f00b29e65c1965d188ae6f4605fac1edba786fb",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "nearDuplicateGroup": "real-4097e8fcdc21b6a3",
+      "selectionRank": "0446dd0e6fb49d5f478f29593c0d3dfd003b76c310adbecb75820d248c6a6f88"
+    },
+    {
+      "id": "real-358faca3134e290f-body-1",
+      "assetId": "real-358faca3134e290f",
+      "imageSha256": "358faca3134e290f91b0d79094c337d0837d6cb24bec47128dfd2dac2c7e6f24",
+      "file": "tmp/heart-training-real/assets/358faca3134e290f91b0d79094c337d0837d6cb24bec47128dfd2dac2c7e6f24.jpg",
+      "dimensions": [
+        1334,
+        1000
+      ],
+      "decodedRGBSha256": "6a5a46696afe95dbc19a819309c1445767eadb21a7f89f43398ce443eb488f89",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "nearDuplicateGroup": "real-358faca3134e290f",
+      "selectionRank": "053dd31b21dc35c1b371599fb1cd57fac81be24b797ef5a04733deb62ecab246"
+    },
+    {
+      "id": "real-9c8a921d12d8474e-body-1",
+      "assetId": "real-9c8a921d12d8474e",
+      "imageSha256": "9c8a921d12d8474e785e06b6ce1dd103c9f9656228a4d2ba3c6455e8f07c67d6",
+      "file": "tmp/heart-training-real/assets/9c8a921d12d8474e785e06b6ce1dd103c9f9656228a4d2ba3c6455e8f07c67d6.jpg",
+      "dimensions": [
+        1000,
+        1334
+      ],
+      "decodedRGBSha256": "b171b9a29da85975a9023a1e1b3a2207be42ce2d4a7dc29576c41ced89037996",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "nearDuplicateGroup": "real-9c8a921d12d8474e",
+      "selectionRank": "057975262ef986de44c1510a8d84ca2af37bc0934c827728f2c27ab8241d7e87"
+    },
+    {
+      "id": "real-49817b568b7d02a1-body-1",
+      "assetId": "real-49817b568b7d02a1",
+      "imageSha256": "49817b568b7d02a1dd4b1c4102db5d6517f061022344393629d39f3d0e8bc1cb",
+      "file": "tmp/heart-training-real/assets/49817b568b7d02a1dd4b1c4102db5d6517f061022344393629d39f3d0e8bc1cb.jpg",
+      "dimensions": [
+        1000,
+        1334
+      ],
+      "decodedRGBSha256": "e5d9ee6b5a0ed4bfcc26dc5f5548e2a39e5b3d0f5c15df77041b6ac1239af39f",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "nearDuplicateGroup": "real-49817b568b7d02a1",
+      "selectionRank": "061ae8a3c96feea25764f7e95eb495e16295592b0f6ab2a8aa324f6df0368dcb"
+    },
+    {
+      "id": "real-5c303ce388328a13-body-1",
+      "assetId": "real-5c303ce388328a13",
+      "imageSha256": "5c303ce388328a13ff1c36d5bca099cf3a3a9e9eebd2cc170a7d7ce71be12cfc",
+      "file": "tmp/heart-training-real/assets/5c303ce388328a13ff1c36d5bca099cf3a3a9e9eebd2cc170a7d7ce71be12cfc.jpg",
+      "dimensions": [
+        2448,
+        3264
+      ],
+      "decodedRGBSha256": "7f99911e68944327d1aa92737f82dd56ef7a837851a738fa24eb095439a2c25a",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "nearDuplicateGroup": "real-5c303ce388328a13",
+      "selectionRank": "08bbc637f915b665dcf0e30f9064c094cc92f304713194c7c9d2d1f6fa369073"
+    },
+    {
+      "id": "real-c6b9eeb016808d3b-body-1",
+      "assetId": "real-c6b9eeb016808d3b",
+      "imageSha256": "c6b9eeb016808d3b54836a0736ecd080e3e308b6abd64c7e5d768a9ac31269f9",
+      "file": "tmp/heart-training-real/assets/c6b9eeb016808d3b54836a0736ecd080e3e308b6abd64c7e5d768a9ac31269f9.jpg",
+      "dimensions": [
+        1000,
+        1334
+      ],
+      "decodedRGBSha256": "cefc29ee05c603760b25f017224d67e166205589f8d168de1bb7f5aa52c05b42",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "nearDuplicateGroup": "real-c6b9eeb016808d3b",
+      "selectionRank": "0acf29053bbc5c471c8bff355d7fa8532c0fd30295ad2cebbfea4067b3c2585e"
+    },
+    {
+      "id": "real-8e0056ff18287e45-body-1",
+      "assetId": "real-8e0056ff18287e45",
+      "imageSha256": "8e0056ff18287e45b5ecc48a58cbc89bdbdd6ad75384efe027a09d6c991fe1b4",
+      "file": "tmp/heart-training-real/assets/8e0056ff18287e45b5ecc48a58cbc89bdbdd6ad75384efe027a09d6c991fe1b4.jpg",
+      "dimensions": [
+        1000,
+        1334
+      ],
+      "decodedRGBSha256": "afa364f1d391605595279f95c97cb0a8faa034bc02d48d7faf786252a4b516a3",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "nearDuplicateGroup": "real-8e0056ff18287e45",
+      "selectionRank": "0c2a352756db500e39b40f0d47f750a76edc641b12cce62d9f879ce24ee4353a"
+    },
+    {
+      "id": "real-38428ac54117e67c-body-1",
+      "assetId": "real-38428ac54117e67c",
+      "imageSha256": "38428ac54117e67c0c5ae6d8e7c049d57cf6c64345027edbb423582578dee1bd",
+      "file": "tmp/heart-training-real/assets/38428ac54117e67c0c5ae6d8e7c049d57cf6c64345027edbb423582578dee1bd.jpg",
+      "dimensions": [
+        1000,
+        1334
+      ],
+      "decodedRGBSha256": "b8bf898d45658393f7b645a52b698222bec4b6a14d98b00e30ca97228406d3e8",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "nearDuplicateGroup": "real-38428ac54117e67c",
+      "selectionRank": "0c536625807eec352741a1afe4616cdd10f1e3097021bf586c01dc0944836ddf"
+    },
+    {
+      "id": "real-56faeb060f60c170-body-1",
+      "assetId": "real-56faeb060f60c170",
+      "imageSha256": "56faeb060f60c17096fb21479d1713fdf5e1d4e53fdc9bb697c7b8f08e6794ac",
+      "file": "tmp/heart-training-real/assets/56faeb060f60c17096fb21479d1713fdf5e1d4e53fdc9bb697c7b8f08e6794ac.jpg",
+      "dimensions": [
+        1000,
+        1334
+      ],
+      "decodedRGBSha256": "a562235ed9931fc35e9d1f80186c50d56be852f8bd850888c31b173db60e281f",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "nearDuplicateGroup": "real-56faeb060f60c170",
+      "selectionRank": "0f49ce1effbd9158ce34fb4b0fb2be8a3bd855c29818eafa38eb066773564eee"
+    },
+    {
+      "id": "real-56a89a732af12a66-body-1",
+      "assetId": "real-56a89a732af12a66",
+      "imageSha256": "56a89a732af12a664b3bac9b397408584649b22c10966933a5ba0401a4f163e8",
+      "file": "tmp/heart-training-real/assets/56a89a732af12a664b3bac9b397408584649b22c10966933a5ba0401a4f163e8.jpg",
+      "dimensions": [
+        1000,
+        1334
+      ],
+      "decodedRGBSha256": "10c7e7bef388b4d3cc458865cfe496e62e8c63431d6500882f669d5360a86c98",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "nearDuplicateGroup": "real-56a89a732af12a66",
+      "selectionRank": "10d91249ba304e4ac2e234d558fad27f0264128c1cbb726f9a6d3ef48e507be0"
+    },
+    {
+      "id": "real-3b92112e8487e279-body-1",
+      "assetId": "real-3b92112e8487e279",
+      "imageSha256": "3b92112e8487e279196a5f3bb432c6dfd2e9d52adcb62dde34981ce6a1a7b9eb",
+      "file": "tmp/heart-training-real/assets/3b92112e8487e279196a5f3bb432c6dfd2e9d52adcb62dde34981ce6a1a7b9eb.jpg",
+      "dimensions": [
+        1000,
+        1334
+      ],
+      "decodedRGBSha256": "0d720b8f1591e4e371aae01d7c5c6e66c2b1d798a1bb12bce2099ef0541fc7aa",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "nearDuplicateGroup": "real-3b92112e8487e279",
+      "selectionRank": "10f3399b527c33b94c8ab8a33655386b2ab9058ba6690a513ab9cd36f0935d84"
+    },
+    {
+      "id": "real-fa1ca05594655c8d-body-1",
+      "assetId": "real-fa1ca05594655c8d",
+      "imageSha256": "fa1ca05594655c8d92e8b15dbc55574d86d7606ad9af3a31d23d5ea1029bccc9",
+      "file": "tmp/heart-training-real/assets/fa1ca05594655c8d92e8b15dbc55574d86d7606ad9af3a31d23d5ea1029bccc9.jpg",
+      "dimensions": [
+        1000,
+        1334
+      ],
+      "decodedRGBSha256": "3668e466af8d3697207efe60f23a3d09abaf0b25fe81fb98da62d8ed5dac4660",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "nearDuplicateGroup": "real-fa1ca05594655c8d",
+      "selectionRank": "113ff48ac56958fc8ce00410c3db8719d40a96b3b314f17bb117f24799639ff2"
+    },
+    {
+      "id": "real-0f8bf87595f587e5-body-1",
+      "assetId": "real-0f8bf87595f587e5",
+      "imageSha256": "0f8bf87595f587e5e9277afb455ac82719d6dbc4ddd73e407b0679ce771e7d56",
+      "file": "tmp/heart-training-real/assets/0f8bf87595f587e5e9277afb455ac82719d6dbc4ddd73e407b0679ce771e7d56.jpg",
+      "dimensions": [
+        1000,
+        1334
+      ],
+      "decodedRGBSha256": "3088d6ec880b0e3a4e6847c1638093683bea7cd89e823763b0446011d803f0d7",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "nearDuplicateGroup": "real-0f8bf87595f587e5",
+      "selectionRank": "121ddedab769b0395479f0d636d3e3e2370bb8b33d92aed0da1e4fb8853656fa"
+    },
+    {
+      "id": "real-7f22ab27bb1cd19e-body-1",
+      "assetId": "real-7f22ab27bb1cd19e",
+      "imageSha256": "7f22ab27bb1cd19e87ad0d04a1b1dce6098202f9d1acac18bfe5322660a3b945",
+      "file": "tmp/heart-training-real/assets/7f22ab27bb1cd19e87ad0d04a1b1dce6098202f9d1acac18bfe5322660a3b945.jpg",
+      "dimensions": [
+        1334,
+        1000
+      ],
+      "decodedRGBSha256": "9d5b005bda341d0e16542d8a1115b4a7be8140a6ff8d8b4996a6adce858f2b38",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "nearDuplicateGroup": "real-7f22ab27bb1cd19e",
+      "selectionRank": "13eaa4e121980b4dbd57d50bbceb3d0f261fea4b2abc6236ab8beff242c67671"
+    },
+    {
+      "id": "real-8a9c703f7f29fd14-body-1",
+      "assetId": "real-8a9c703f7f29fd14",
+      "imageSha256": "8a9c703f7f29fd143095ec9981b4e82ba72ea18afad90e02439430e1377b80d9",
+      "file": "tmp/heart-training-real/assets/8a9c703f7f29fd143095ec9981b4e82ba72ea18afad90e02439430e1377b80d9.jpg",
+      "dimensions": [
+        1000,
+        1334
+      ],
+      "decodedRGBSha256": "000e77373ad5b1f4821dcf555c7b0a82927b8f9dc40f8958028b71af07d6145c",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "nearDuplicateGroup": "real-8a9c703f7f29fd14",
+      "selectionRank": "13f86ef0e3456200f5163586a06d2848806073df7711d611ca5866e547bab6f8"
+    }
+  ],
+  "evaluation": {
+    "methods": [
+      "production",
+      "supported-production-first-candidate-fallback"
+    ],
+    "classifier": "Existing RGB mixture classifier for both methods",
+    "solver": "Unchanged automatic configuration, 10 seconds, no uncertainty trials",
+    "selection": "Keep supported production crop; otherwise use candidate fields through unchanged locator only if outline-supported and all four corners observed. No per-image winning fit selection.",
+    "identicalCropPolicy": "Reuse the exact production fit when selection is unchanged; refit both arms for changed crops. Compare final editable exports and visual photo fidelity; derived-mask agreement is not artwork ground truth.",
+    "missingCropPolicy": "Record failures; no manual rescue or case replacement.",
+    "visualReview": "Inspect all selected source photos and all distinct crop/mask/export pairs; record false gaps, lost motifs and crop contamination independently of acceptance."
+  },
+  "limitations": [
+    "One held-out source group, not sixteen independent sources. Motif-family novelty is unverified.",
+    "Photos were previously seen in collection contact sheets but are newly selected for this candidate evaluation. Reused historical QA files are excluded.",
+    "No original cutting templates or full ground-truth material masks are available; this is a measured pipeline comparison, not exact artwork recovery.",
+    "No automatic deployment based on a training or derived-mask score alone."
+  ]
+}
