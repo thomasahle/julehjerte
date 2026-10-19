@@ -8,6 +8,7 @@ import { truncateAtSentence, truncateAtWord } from '$lib/utils/text';
 export function pageTitle(route: RouteKey | null, lang: Language): string {
 	if (route === 'howTo') return `${t('howToBrowserTitle', lang)} | ${SITE_NAME}`;
 	if (route === 'noPrinter') return `${t('noPrinterTitle', lang)} | ${SITE_NAME}`;
+	if (route === 'archive') return `${t('archiveTitle', lang)} | ${SITE_NAME}`;
 	if (route === 'about') return `${t('aboutTitle', lang)} | ${SITE_NAME}`;
 	if (route === 'editor') return `${t('heroDesignHeart', lang)} | ${SITE_NAME}`;
 	if (route === 'paint') return `${t('paintPageTitle', lang)} | ${SITE_NAME}`;

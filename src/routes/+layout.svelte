@@ -34,7 +34,9 @@
 	// <meta name="description"> — two of them would be an SEO smell.
 	let routeKey = $derived(routeKeyFromPathname(pathname));
 	let metaDescription = $derived(
-		routeKey === "noPrinter"
+		routeKey === "archive"
+			? t("archiveMetaDescription", lang)
+			: routeKey === "noPrinter"
 			? t("noPrinterMetaDescription", lang)
 			: routeKey === "howTo"
 			? t("howToMetaDescription", lang)
