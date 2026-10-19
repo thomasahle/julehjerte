@@ -1455,6 +1455,29 @@
 		return overridesProblem(overrides) === null;
 	}
 
+	/** An edit a drag tries: the cuts it makes, and the first problem among them, or null. */
+	type JudgedEdit = { overrides: Map<string, Finger>; problem: CutProblem | null };
+
+	/**
+	 * Judges the edits a drag's search tries, by where they take the dragged point, each once: the
+	 * search starts every round from where the last one got to, the pointer's own place is judged
+	 * again to tell why the drag stopped, and the place the search got to is the edit made.
+	 */
+	function judgeOnce(overridesAt: (at: Vec) => Map<string, Finger>): (at: Vec) => JudgedEdit {
+		const judged = new Map<string, JudgedEdit>();
+		return (at) => {
+			const key = `${at.x} ${at.y}`;
+			let edit = judged.get(key);
+			if (!edit) {
+				// A plain point: the search's own may end up in the cuts.
+				const overrides = overridesAt({ x: at.x, y: at.y });
+				edit = { overrides, problem: overridesProblem(overrides) };
+				judged.set(key, edit);
+			}
+			return edit;
+		};
+	}
+
 	/**
 	 * Why the drag in progress stopped short of the pointer, told above the heart in one line, as
 	 * tiled.art says "Outline may not cross itself". `problem` is what was wrong where the pointer
@@ -1545,7 +1568,7 @@
 		movedAnchors: number[],
 		draggedAnchorIdx: number,
 		desiredDelta: Vec
-	): Vec | null {
+	): JudgedEdit | null {
 		const n = segments.length;
 		if (!n) return null;
 		// Only handle internal-anchor moves here. Endpoint anchors include projection onto
@@ -1567,10 +1590,7 @@
 			}
 			return updateFingerSegments(finger, segs);
 		};
-
-		const isValidCandidate = (candidate: Finger) => overridesAreValid(deriveSymmetryOverrides(candidate));
-		const stoppedShort = (got: Vec) =>
-			vecDist(got, desiredDelta) > STOP_SLOP ? overridesProblem(deriveSymmetryOverrides(buildCandidateAt(desiredDelta))) : null;
+		const judge = judgeOnce((delta) => deriveSymmetryOverrides(buildCandidateAt(delta)));
 
 		const tSamples = buildGlobalCurveSamples(20);
 		const sampler = (g: number) => {
@@ -1594,10 +1614,10 @@
 		};
 
 		const out = snapSequentialQP(
-			(pos: Point) => buildCandidateAt({ x: pos.x, y: pos.y }),
+			(pos: Point) => pos,
 			from,
 			desired,
-			isValidCandidate,
+			(pos: Point) => judge(pos).problem === null,
 			sampler,
 			obstacles,
 			square,
@@ -1607,8 +1627,8 @@
 		);
 
 		const got = { x: out.point.x, y: out.point.y };
-		noteDragStop(stoppedShort(got));
-		return got;
+		noteDragStop(vecDist(got, desiredDelta) > STOP_SLOP ? judge(desiredDelta).problem : null);
+		return judge(got);
 	}
 
 	/** How far short of the pointer, in the overlap square's units, a snapped drag may stop before it counts as stopped. */
@@ -1725,18 +1745,18 @@
 			return updateFingerSegments(finger, segs);
 		};
 
-		const problemOf = (candidate: Finger) => {
-			if (!symmetryWithinCurve) return overridesProblem(deriveSymmetryOverrides(candidate));
+		const overridesOf = (candidate: Finger) => {
+			if (!symmetryWithinCurve) return deriveSymmetryOverrides(candidate);
 			const segs = cloneSegments(fingerToSegments(candidate));
 			if (isP1 || isP2) {
 				applyWithinCurveSymmetryForControlInSegments(segs, segmentIndex, isP1 ? 'p1' : 'p2');
 			} else {
 				applyWithinCurveSymmetryForMovedAnchors(finger, segs, [segmentIndex], segmentIndex);
 			}
-			const symCandidate = updateFingerSegments(candidate, segs);
-			return overridesProblem(deriveSymmetryOverrides(symCandidate));
+			return deriveSymmetryOverrides(updateFingerSegments(candidate, segs));
 		};
-		const isValidCandidate = (candidate: Finger) => problemOf(candidate) === null;
+		const judge = judgeOnce((pos) => overridesOf(buildCandidateAt(pos)));
+		const isValidAt = (pos: Point) => judge(pos).problem === null;
 
 		const from = toPoint(basePos);
 		const desired = toPoint(newPos);
@@ -1752,10 +1772,10 @@
 			const p3 = toPoint(seg.p3);
 			const other = toPoint(isP1 ? seg.p2 : seg.p1);
 			const out = snapSequentialQPBezierControl(
-				(pos: Point) => buildCandidateAt({ x: pos.x, y: pos.y }),
+				(pos: Point) => pos,
 				from,
 				desired,
-				isValidCandidate,
+				isValidAt,
 				isP1 ? 'p1' : 'p2',
 				p0,
 				other,
@@ -1769,10 +1789,10 @@
 			const prevSeg = segments[segmentIndex - 1]!;
 			const nextSeg = segments[segmentIndex]!;
 			const out = snapSequentialQPBezierJunction(
-				(pos: Point) => buildCandidateAt({ x: pos.x, y: pos.y }),
+				(pos: Point) => pos,
 				from,
 				desired,
-				isValidCandidate,
+				isValidAt,
 				toPoint(prevSeg.p0),
 				toPoint(prevSeg.p1),
 				toPoint(prevSeg.p2),
@@ -1785,22 +1805,10 @@
 			snapped = { x: out.point.x, y: out.point.y };
 		}
 
-		noteDragStop(vecDist(snapped, newPos) > STOP_SLOP ? problemOf(buildCandidateAt(newPos)) : null);
+		noteDragStop(vecDist(snapped, newPos) > STOP_SLOP ? judge(newPos).problem : null);
 
-		const snappedCandidate = buildCandidateAt(snapped);
-		const committedSegs = cloneSegments(fingerToSegments(snappedCandidate));
-
-		if (symmetryWithinCurve) {
-			if (isP1 || isP2) {
-				applyWithinCurveSymmetryForControlInSegments(committedSegs, segmentIndex, isP1 ? 'p1' : 'p2');
-			} else {
-				applyWithinCurveSymmetryForMovedAnchors(finger, committedSegs, [segmentIndex], segmentIndex);
-			}
-		}
-
-		const committed = updateFingerSegments(finger, committedSegs);
-		const overrides = deriveSymmetryOverrides(committed);
-		if (!overridesAreValid(overrides)) return false;
+		const { overrides, problem } = judge(snapped);
+		if (problem) return false;
 		applyOverrides(overrides);
 		return true;
 	}
@@ -2899,17 +2907,10 @@
 				const finger = getDragBaseFinger(dragTarget.fingerId);
 				const baseSegs = finger ? fingerToSegments(finger) : null;
 				if (finger && baseSegs && baseSegs.length) {
-					const snappedDelta = snapAnchorDeltaQP(finger, baseSegs, anchorsToMove, anchorIdx, delta);
-					if (snappedDelta) {
-						const segs = cloneSegments(baseSegs);
-						applyDeltaToAnchorsInSegments(finger, segs, anchorsToMove, snappedDelta);
-						if (symmetryWithinCurve) {
-							applyWithinCurveSymmetryForMovedAnchors(finger, segs, anchorsToMove, anchorIdx);
-						}
-						const candidate = updateFingerSegments(finger, segs);
-						const overrides = deriveSymmetryOverrides(candidate);
-						if (!overridesAreValid(overrides)) return;
-						applyOverrides(overrides);
+					const snapped = snapAnchorDeltaQP(finger, baseSegs, anchorsToMove, anchorIdx, delta);
+					if (snapped) {
+						if (snapped.problem) return;
+						applyOverrides(snapped.overrides);
 						dragDirty = true;
 						return;
 					}
