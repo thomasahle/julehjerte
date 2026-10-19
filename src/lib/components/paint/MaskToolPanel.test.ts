@@ -64,7 +64,7 @@ describe('MaskToolPanel', () => {
 		try {
 			const swatches = [...panel.target.querySelectorAll<HTMLButtonElement>('.swatches button')];
 			expect(swatches).toHaveLength(3);
-			const xor = swatches.find(button => button.textContent?.includes('XOR'))!;
+			const xor = swatches.find(button => button.getAttribute('aria-label')?.includes('XOR'))!;
 			expect(xor.getAttribute('data-state')).toBe('on');
 			expect(xor.getAttribute('aria-label')).toContain('byt farven');
 			swatches[0]!.click();
