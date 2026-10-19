@@ -787,6 +787,9 @@
 					step="1"
 					bind:value={config.scale}
 				/>
+				{#if result?.scale !== undefined && Math.round(result.scale * 100) !== config.scale}<p class="hint" role="status">
+						{t('generatorSizeKept', lang, { asked: String(config.scale), kept: String(Math.round(result.scale * 100)) })}
+					</p>{/if}
 				{#if config.style === 'strips'}
 					<label class="range-label" for="board-strips"
 						>{t('generatorStripCount', lang)}<output>{config.strips} × {config.strips}</output></label

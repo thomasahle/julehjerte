@@ -414,6 +414,14 @@ describe('frames from real hearts', () => {
   expect(full.point).toBeGreaterThan(180);
   expect(full.area).toBeGreaterThan(middle.area);
  }, 30000);
+ it('says when the board circle keeps a motif at 70%, its large circle being out of reach', () => {
+  // A solid motif has no background point for four panels to meet at, so it
+  // keeps the touching circle; the star's points leave one.
+  const board = (motif: { contours: unknown }, scale: number) => generate({ mode: 'figure', name: 'Motif', contours: motif.contours as Ring[], colors, style: 'board', scale });
+  expect(board(tree, .8).scale).toBe(.7);
+  expect(board(star, .8).scale).toBeUndefined();
+  expect(board(tree, .6).scale).toBeUndefined();
+ });
  it('lays the figure in the checks on boards of three to six strips', () => {
   for (const strips of [3, 5, 6]) {
    const { design } = generate({ mode: 'figure', name: 'Heart', contours: heart.contours as Ring[], colors, style: 'strips', board: strips });

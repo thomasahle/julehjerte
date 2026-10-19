@@ -109,9 +109,12 @@ export type GeneratorResult = {
 	 * kept, its default size's (see `withLayout`). */
 	layout?: BoardLayout;
 	/** For the figure in the checks: how far down the heart's middle the
-	 * motif lies, and its size, which is a little off the size asked for
-	 * where its strips could not all be whole at that one. */
+	 * motif lies. */
 	place?: number;
+	/** The size the motif was built at, where the frame could not build the
+	 * one asked for: a little smaller in the figure in the checks, where its
+	 * strips could not all be whole; 70% on a board circle that cannot take a
+	 * larger circle around this motif. */
 	scale?: number;
 };
 /** The frame without a centre panel that a figure request selects, if any. */
@@ -1860,6 +1863,9 @@ function generateUsingRecipes(request: GeneratorRequest,
 				}
 			}));
 		const [mode, size] = buildable(range) ? [range, radius] : range === small ? [large, large[0] + .6] : [small, small[1]];
+		// The size setting the other construction's circle stands for.
+		const kept = (result: GeneratorResult): GeneratorResult => mode === range ? result : { ...result,
+			scale: mode === small ? .45 + (size - small[0]) / (small[1] - small[0]) * .25 : .7 + (size - large[0]) / (large[1] - large[0]) * .15 };
 		// The circle and the motif keep the sizes the setting gives them, so
 		// both only grow with it: cut cleanly if they can be, else as hard to
 		// cut. Only where nothing at all can be finished at those sizes does the
@@ -1873,13 +1879,13 @@ function generateUsingRecipes(request: GeneratorRequest,
 			for (const attempt of attempts) try {
 				const construction = build(attempt);
 				rejected.push({ construction, recipe: 'nested' });
-				return finish(construction, 'nested');
+				return kept(finish(construction, 'nested'));
 			} catch (error) {
 				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 				last = error;
 			}
 			const hard = hardToCutResult(request, rejected, curveFitter);
-			if (hard) return hard;
+			if (hard) return kept(hard);
 		}
 		throw last;
 	}
