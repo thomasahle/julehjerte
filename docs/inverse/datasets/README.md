@@ -55,6 +55,15 @@ reaches 0.000145, and four photos each change one threshold pixel. Actual browse
 fields feed the reported crop/fitting results. Downstream consequences of those
 small numerical differences need checking before any tolerance change.
 
+A [separate diagnostic of all five weak production crops](u2netp-weak-crop-results.json)
+finds only one additional neural crop, whose mask still traces printed dots and
+stripes. On the house and candlestick, generic saliency emphasizes the interior
+motif and misses surrounding paper. On the printed HO HO heart, the body mask
+looks reasonable but the locator's lobe-color assumptions reject it. This
+separates whole-paper recognition, geometric cropping and paper identity as
+distinct problems; switching to the network on every weak crop is insufficient.
+No new templates were fitted in this diagnostic.
+
 Earlier experiments remain recorded below with their original policies and
 denominators.
 

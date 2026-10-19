@@ -1,0 +1,99 @@
+{
+  "schema": "weak-crop-saliency-results-1",
+  "status": "complete-diagnostic",
+  "plan": {
+    "path": "docs/inverse/datasets/u2netp-weak-crop-plan.json",
+    "sha256": "25fee6af4a27b67d9963bca59276c349289fcf5fe468e87d7efc50798e33e44d"
+  },
+  "report": {
+    "path": "tmp/heart-learning/u2netp-weak-crops-v1/report.json",
+    "sha256": "7aded67f4e228698aa69f610121ed4bf090bd9768c074491e21a6a0c55de35b7"
+  },
+  "visualComparison": {
+    "path": "tmp/heart-learning/u2netp-weak-crops-v1/comparison.png",
+    "sha256": "8112e33978f60ab190fab50b6620e80ef1d5ec1c1266697a9120991f3dd5ea42"
+  },
+  "scope": "Post-hoc inspection of all five weak production crop proposals in the fresh32 study. Original primary result and every existing crop remain unchanged. All five source/crop/body/mask rows inspected. No training, threshold changes, manual crop rescue or template fitting.",
+  "summary": {
+    "photos": 5,
+    "learnedCropProposals": 1,
+    "supportedProposals": 1,
+    "newFits": 0,
+    "retainedBytes": 2773779,
+    "originalPhotoCopies": 0
+  },
+  "finding": "Switching to saliency on every weak production crop is insufficient. Saliency sometimes selects the interior motif rather than the paper body; the locator also assumes each exposed lobe is a coherent paper color, which printed sheets violate. The one gained proposal still has a poor material mask.",
+  "observations": [
+    {
+      "id": "real-f6e5e128449e3cb9-body-1",
+      "status": "crop-unresolved",
+      "outlineSupported": null,
+      "locatorReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+      "evidence": {},
+      "visualObservation": "Open basket and contents do not form a planar square; neural saliency includes contents and hand. No crop."
+    },
+    {
+      "id": "real-55704c6e2911bebc-body-1",
+      "status": "crop-proposed",
+      "outlineSupported": true,
+      "locatorReason": null,
+      "evidence": {
+        "lowerEdgeSupport": [
+          0.9147286821705426,
+          1
+        ],
+        "lobeOutlineSupport": [
+          0.8888888888888888,
+          0.7222222222222222
+        ],
+        "capColourLoss": [
+          0.2266903942931194,
+          1.7266918598762222e-05
+        ]
+      },
+      "visualObservation": "The neural field covers the whole heart and ribbon, and produces a supported crop. Rectified classification still follows dots and printed stripes, so improved body detection does not resolve sheet identity. No new fit was run."
+    },
+    {
+      "id": "real-fe7fb089d1cd86b4-body-1",
+      "status": "crop-unresolved",
+      "outlineSupported": null,
+      "locatorReason": "Crowded frame: select one heart with a rough rectangle",
+      "evidence": {},
+      "visualObservation": "The pretrained saliency map emphasizes the house motif while omitting most surrounding white/gold paper. The locator reports a crowded frame, but this is a learned-foreground failure on a single heart, not evidence of multiple hearts in the original photograph."
+    },
+    {
+      "id": "real-b5317080eec610dc-body-1",
+      "status": "crop-unresolved",
+      "outlineSupported": null,
+      "locatorReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "evidence": {
+        "lobeOutlineSupport": [
+          0.3055555555555556,
+          0.2222222222222222
+        ],
+        "lowerEdgeSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.4736789627351123,
+          0.11795485705432414
+        ]
+      },
+      "visualObservation": "The neural field visibly covers the whole HO HO heart, but the color-dependent lobe model rejects it. The sheets have similar pale base colors and contrasting printing. Removing the lobe gate would not fix the downstream material mask."
+    },
+    {
+      "id": "real-03bddab9c8f384c4-body-1",
+      "status": "crop-unresolved",
+      "outlineSupported": null,
+      "locatorReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+      "evidence": {},
+      "visualObservation": "The neural field includes lobes but underweights much of the red body around the candlestick. Lower-edge identification fails; simply replacing the weak production proposal with this detector gives no crop."
+    }
+  ],
+  "nextWork": [
+    "Use reviewed whole-paper supervision, with source-group separation, if adapting the pretrained network; generic foreground is not equivalent to the heart paper body.",
+    "Diagnose outline-only geometry for correctly segmented printed-paper bodies separately from material reconstruction. Do not count a good crop as a solved heart.",
+    "Explore lobe-conditioned material/texture identity so dots, stripes and lettering are not mistaken for cutting boundaries. Keep the blue/red printed example as a control."
+  ]
+}
