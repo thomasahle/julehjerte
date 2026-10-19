@@ -15,7 +15,8 @@ import {hardPhotoTarget} from '../hard-photo-target.mjs';
 import {renderExportedWeave} from '../export-renderer.mjs';
 
 const args=Object.fromEntries(process.argv.slice(2).map(s=>s.replace(/^--/,'').split('=')));
-assert.ok(args.probe&&args.output&&Object.keys(args).every(k=>['probe','output','seconds','methods'].includes(k)));
+assert.ok(args.probe&&args.output&&Object.keys(args).every(k=>['probe','output','seconds','methods','target','crops'].includes(k)));
+const targetMode=args.target??'material';assert.ok(['material','rgb'].includes(targetMode));
 const seconds=Number(args.seconds??10);assert.ok(Number.isFinite(seconds)&&seconds>0&&seconds<=60);
 const probe=path.resolve(args.probe),output=path.resolve(args.output),hash=b=>createHash('sha256').update(b).digest('hex');
 const bytes=await fs.readFile(path.join(probe,'manifest.json')),manifest=JSON.parse(bytes);
@@ -23,8 +24,15 @@ assert.equal(manifest.schema,'woven-heart-material-probe-1');assert.equal(manife
 assert.ok(Array.isArray(manifest.methods)&&manifest.methods.length&&manifest.methods.every(m=>/^[a-z]+(?:-[a-z]+)*$/.test(m)));
 const methods=args.methods?args.methods.split(','):['production',...manifest.methods];
 assert.ok(methods.length&&new Set(methods).size===methods.length&&methods.every(m=>m==='production'||manifest.methods.includes(m)));
+let cropReplay,cropReplayBytes;
+if(args.crops){
+ cropReplayBytes=await fs.readFile(path.join(args.crops,'report.json'));cropReplay=JSON.parse(cropReplayBytes);
+ assert.equal(cropReplay.status,'complete');assert.equal(cropReplay.probeManifestSha256,hash(bytes));
+ for(const method of methods)assert.deepEqual(cropReplay.rows.filter(r=>r.method===method).map(r=>r.id),manifest.rows.map(r=>r.id));
+}
 const configuration={...AUTOMATIC_PRESET,timeLimit:seconds,trials:0};
-const report={schema:'material-pair-pipeline-1',status:'running',configuration,methods,probeManifestSha256:hash(bytes),rows:[],sourceHashes:{},
+const report={schema:'material-pair-pipeline-1',status:'running',configuration,methods,targetMode,probeManifestSha256:hash(bytes),rows:[],sourceHashes:{},
+ ...(cropReplay?{cropReplay:{path:args.crops,sha256:hash(cropReplayBytes)}}:{}),
  scope:'All declared development photos, same full RGB source, no ROI/annotations/reference templates. Fresh crop-to-template attempts for every declared method. Only observed photograph pixels score. Derived-mask agreement does not establish full artwork recovery.',
  order:'Rotate declared methods by photo index; original geometric, feature and paper checks. Search allowance excludes crop detection and final export audit.'};
 for(const file of [new URL(import.meta.url).pathname,'scripts/inverse/learning/foreground-crop.mjs','scripts/inverse/learning/locator-field-source.mjs','scripts/inverse/learning/material-target.mjs','scripts/inverse/learning/material-fields.mjs','scripts/inverse/export-renderer.mjs','scripts/inverse/hard-photo-target.mjs',
@@ -53,19 +61,25 @@ try{
   const order=[...methods.slice(index%methods.length),...methods.slice(0,index%methods.length)];
   for(const method of order){
    const folder=path.join(output,input.id+'-'+method);await fs.mkdir(folder);
-   const row={id:input.id,method,source:input.file,sourceSha256:input.photoSha256,assets:{}};report.rows.push(row);
+   const row={id:input.id,method,targetMode:method==='production'?'rgb':targetMode,source:input.file,sourceSha256:input.photoSha256,assets:{}};report.rows.push(row);
    const store=async(name,data)=>{await fs.writeFile(path.join(folder,name),data);row.assets[name]={path:path.relative(output,path.join(folder,name)),sha256:hash(data)};};
    try{
     let body,material;
-    if(method!=='production'){body=await field(input.assets[method].body);material=await field(input.assets[method].material);}
+    if(method!=='production'&&(!cropReplay||targetMode==='material')){body=await field(input.assets[method].body);material=await field(input.assets[method].material);}
     const began=performance.now();
-    const detected=method==='production'?detectHeartCrops(source):await detectForegroundCrop(source,{probability:body,material,resolution:manifest.resolution,window:input.window});
+    let detected;
+    if(cropReplay){
+     const prior=cropReplay.rows.find(r=>r.id===input.id&&r.method===method);assert.equal(prior.sourceSha256,input.photoSha256);
+     const asset=prior.assets['detection.json'],file=path.resolve(args.crops,asset.path);assert.ok(file.startsWith(path.resolve(args.crops)+path.sep));
+     const raw=await fs.readFile(file);assert.equal(hash(raw),asset.sha256);detected=JSON.parse(raw);
+     assert.deepEqual(detected.candidates[0]??null,prior.selectedCrop??null);row.cropReused=true;row.originalCropSeconds=prior.cropSeconds;
+    }else detected=method==='production'?detectHeartCrops(source):await detectForegroundCrop(source,{probability:body,material,resolution:manifest.resolution,window:input.window});
     row.cropSeconds=(performance.now()-began)/1000;row.cropStatus=detected.status;
     const crop=detected.candidates[0];row.supported=!!crop&&supportedCropOutline(crop.locator??detected.proposal);
     await store('detection.json',JSON.stringify(detected,null,2));
     if(!crop){row.status='crop-unresolved';continue;}row.selectedCrop=crop;
     let target,preview;
-    if(method==='production'){
+    if(row.targetMode==='rgb'){
      const imported=prepare({...source,quad:crop.quad,cropProvenance:crop.provenance},configuration);
      preview=imported.preview;target=hardPhotoTarget(imported,'mask',configuration);
     }else{

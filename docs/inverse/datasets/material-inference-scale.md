@@ -98,3 +98,28 @@ existing warnings; the static build passes. All recorded experiment artifacts,
 input hashes and runtime-source hashes were checked again afterward. The full
 inverse benchmark was not repeated: this batch changes offline evaluation and
 archive metadata, not the production solver.
+
+## Follow-up: keep the encoder at its trained scale
+
+The [context/detail follow-up](material-context-detail-results.json) keeps the
+encoder and its whole-heart feature maps at 256 pixels, while feeding 512-pixel
+RGB to the shallow detail branch and final head. It uses the same nineteen
+historical development photos, original held-out checkpoints and unchanged
+crop checks. All nineteen control predictions reproduce exactly. Three focused
+tests check equal-resolution equivalence, branch input sizes and invalid inputs.
+
+This avoids the large foreground regression: body IoU is **80.77%**, compared
+with **80.68%** for the control. Observed material error changes only from
+**17.62% to 17.54%**. Nevertheless, supported crops again fall from **3/19 to
+1/19**. The rabbit and outdoor checker lose their proposals; only the blue/yellow
+checker remains. Its imperfect cell boundaries remain visible. All nineteen
+field comparisons and four resulting crop masks were inspected; fine lines,
+printed papers and background leakage remain unresolved.
+
+The experiment isolates a useful cause of the native-512 regression: retaining
+whole-image feature scale preserves foreground predictions. It also shows why
+mean pixel scores are insufficient for accepting a cropper change. Small changes
+near the lower paper edges and colored lobes can flip the geometric support
+checks. Those checks were not relaxed. This inference variant remains offline
+and is rejected for deployment; the subsequent encoder-tail study uses a new
+sixteen-photo training-eligible subset and must be assessed separately.
