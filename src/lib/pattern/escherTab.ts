@@ -28,7 +28,7 @@ import {
 	type PlacedPoint,
 	type SpecialNode
 } from './editorBridge';
-import { ALL_RULES, canLean, cutCounts, fitLines, sameRule, type PatternTile, type TileRule } from './tiling';
+import { ALL_RULES, canLean, cutCounts, fitLines, ruleSymmetry, sameRule, type PatternTile, type TileRule } from './tiling';
 import { isStraightTile, ruleStart, switchRule } from './presets';
 
 export { cutOfFinger, generateEditorFingers, sameRule, specialNodes, weaveParityOf };
@@ -107,19 +107,24 @@ export function tileForRule(rule: TileRule, current: PatternTile | null, heart: 
 	return fitLines(ruleStart(rule, n - 1));
 }
 
+/** The types from the most symmetric down (see `ruleSymmetry`): cuts that fit several are of the first. */
+const BY_SYMMETRY = [...ALL_RULES].sort((a, b) => ruleSymmetry(b) - ruleSymmetry(a));
+
 /**
  * The tile the Escher tab takes up when it is opened again: the one it was left
  * with, if the cuts are still the ones it makes (a moved pattern's heart can have
- * a strip more one way); else, on a square grid, a tile of some type the cuts
- * already are (a heart drawn in the tab and saved, say), unchanged. A plain
- * chequerboard fits every type, so it waits for one to be chosen; null then.
+ * a strip more one way); else, on a square grid, a tile the cuts already are (a
+ * heart drawn in the tab and saved, say), unchanged, of the most symmetric type
+ * that fits: two shapes fit every tile, a moved tile is also a mirrored one's
+ * equal only by chance. A plain chequerboard fits every type, so it waits for
+ * one to be chosen; null then.
  */
 export function resumedTile(last: PatternTile | null, heart: EscherHeart): PatternTile | null {
 	const { fingers, gridSize, rect } = heart;
 	const grid = last ? tileGrid(last) : null;
 	if (last && grid && grid.x === gridSize.x && grid.y === gridSize.y && cutsAre(fingers, generateEditorFingers(last, rect))) return last;
 	if (gridSize.x !== gridSize.y) return null;
-	for (const rule of ALL_RULES) {
+	for (const rule of BY_SYMMETRY) {
 		const found = extractTile(fingers, rule, gridSize.x - 1, rect);
 		if (found && !isStraightTile(found) && fitsTile(fingers, found, rect)) return found;
 	}

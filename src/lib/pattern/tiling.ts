@@ -434,7 +434,34 @@ function ruleEdges(rule: TileRule): RuleEdges {
 /** A rule's classes of sides (see `ruleEdges`). */
 export const edgeClasses = (rule: TileRule): EdgeClass[] => ruleEdges(rule).classes;
 
-const repeatByRule = new Map<string, Vec>();
+const motionKey = (m: GridMotion) => [m.a, m.b, m.c, m.d, mod4(m.e), mod4(m.f)].join(',');
+const groupByRule = new Map<string, Set<string>>();
+
+/**
+ * Every motion that takes a rule's tiling onto itself, each once, its move taken
+ * modulo four cells (every tiling of squares here repeats within four), as keys.
+ */
+function motionGroup(rule: TileRule): Set<string> {
+	const cached = groupByRule.get(ruleKey(rule));
+	if (cached) return cached;
+	const motions = ruleMotions(rule);
+	const all = [...motions, ...motions.map(inverse)];
+	const seen = new Set([motionKey(shift(0, 0))]);
+	const queue = [shift(0, 0)];
+	while (queue.length) {
+		const m = queue.shift()!;
+		for (const g of all) {
+			const n = andThen(m, g);
+			const reduced = { ...n, e: mod4(n.e), f: mod4(n.f) };
+			if (!seen.has(motionKey(reduced))) {
+				seen.add(motionKey(reduced));
+				queue.push(reduced);
+			}
+		}
+	}
+	groupByRule.set(ruleKey(rule), seen);
+	return seen;
+}
 
 /**
  * How far a rule's tiling repeats along each axis, in cells: the shortest moves
@@ -442,29 +469,18 @@ const repeatByRule = new Map<string, Vec>();
  * of squares here repeats within four.
  */
 export function ruleRepeat(rule: TileRule): Vec {
-	const cached = repeatByRule.get(ruleKey(rule));
-	if (cached) return cached;
-	const motions = ruleMotions(rule);
-	const all = [...motions, ...motions.map(inverse)];
-	const key = (m: GridMotion) => [m.a, m.b, m.c, m.d, mod4(m.e), mod4(m.f)].join(',');
-	const seen = new Set([key(shift(0, 0))]);
-	const queue = [shift(0, 0)];
-	while (queue.length) {
-		const m = queue.shift()!;
-		for (const g of all) {
-			const n = andThen(m, g);
-			const reduced = { ...n, e: mod4(n.e), f: mod4(n.f) };
-			if (!seen.has(key(reduced))) {
-				seen.add(key(reduced));
-				queue.push(reduced);
-			}
-		}
-	}
-	const along = (dx: number, dy: number) => [1, 2].find((k) => seen.has(key(shift(dx * k, dy * k)))) ?? 4;
-	const repeat = { x: along(1, 0), y: along(0, 1) };
-	repeatByRule.set(ruleKey(rule), repeat);
-	return repeat;
+	const group = motionGroup(rule);
+	const along = (dx: number, dy: number) => [1, 2].find((k) => group.has(motionKey(shift(dx * k, dy * k)))) ?? 4;
+	return { x: along(1, 0), y: along(0, 1) };
 }
+
+/**
+ * How symmetric a rule's tiling is: how many motions take it onto itself within
+ * the four cells every tiling here repeats in. Cuts that are a tile of several
+ * rules are most truly a tile of the one with the most: each rule's motions are
+ * what its tiles keep to, and a drawing keeps to all of them only on purpose.
+ */
+export const ruleSymmetry = (rule: TileRule): number => motionGroup(rule).size;
 
 /** Which curve stretch `kind (i, j)` carries, `V(k = i, d = j)` or `H(c = i, k = j)`, and which way round, from the rule's motions (see `ruleEdges`). */
 export function stretchSource(rule: TileRule, kind: StretchKind, i: number, j: number): StretchSource {
@@ -785,8 +801,9 @@ function lineFits(tile: PatternTile, kind: StretchKind, line: number): boolean {
 	const axis = kind === 'V' ? 'x' : 'y';
 	for (const s of traceLine(tile, kind, line).segments) {
 		for (let k = 0; k <= 12; k++) {
+			// A cut exactly at the margin fits, whichever way the rounding falls.
 			const v = bezierAt(s, k / 12)[axis];
-			if (v < margin || v > 100 - margin) return false;
+			if (v < margin - 1e-6 || v > 100 - margin + 1e-6) return false;
 		}
 	}
 	return true;

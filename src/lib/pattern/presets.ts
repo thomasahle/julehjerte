@@ -80,8 +80,13 @@ export function ruleCode(rule: TileRule): string | null {
 
 const v = (x: number, y: number): Vec => ({ x, y });
 
-/** Where each of a rule's (up to four) curves has its peak: along the side, and how far to which side of it. */
-const PEAKS: Vec[] = [v(0.4, 0.12), v(0.6, -0.12), v(0.3, -0.09), v(0.7, 0.09)];
+/**
+ * Where each of a rule's (up to four) curves has its peak: along the side, and
+ * how far to which side of it. No peak is another turned half round, mirrored
+ * across the middle of the side or flipped over it, so no two curves are copies
+ * of each other in any way a tile could be, by accident.
+ */
+const PEAKS: Vec[] = [v(0.4, 0.12), v(0.66, -0.08), v(0.28, -0.1), v(0.58, 0.07)];
 
 /** A straight piece of side as Tegn draws one: its handles on its ends, so a dragged end keeps it straight. */
 const straight = (a: Vec, b: Vec): BezierSegment => ({ p0: a, p1: a, p2: b, p3: b });

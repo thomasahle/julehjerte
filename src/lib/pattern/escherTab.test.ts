@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { Finger } from '$lib/types/heart';
 import { getCenteredRectParams } from '$lib/utils/overlapRect';
-import { cutCounts, fitLines, freeSides, opposite, ruleKey, type PatternTile, type SideCurve } from './tiling';
+import { ALL_RULES, cutCounts, fitLines, freeSides, opposite, ruleKey, type PatternTile, type SideCurve } from './tiling';
 import { ruleStart } from './presets';
 import { knobTile } from './examples';
 import { cornerHint, cutsAre, dragTile, editTile, followedPoint, resizedTile, resumedTile, specialNodes, startTileDrag, tileFingers, tileForRule, tileGrid } from './escherTab';
@@ -61,6 +61,15 @@ describe("Tegn's Escher tab", () => {
 		);
 		expect(cutsAre(bent, tileFingers(tile))).toBe(false);
 		expect(resumedTile(tile, { ...heart, fingers: bent })).toBeNull();
+		// left with no tile, cuts drawn from one are read back into it, of its own type and not two shapes,
+		// which fit every tile
+		const back = resumedTile(null, heart)!;
+		expect(ruleKey(back.rule)).toBe('opposite:move:move');
+		expect(sameCurves(back.curves, tile.curves)).toBe(true);
+	});
+
+	it.each(ALL_RULES.map((rule) => [ruleKey(rule), rule] as const))('reads the %s start back as that type: it is a tile of no more symmetric one', (_key, rule) => {
+		for (const cuts of [2, 4]) expect(ruleKey(resumedTile(null, heartOf(ruleStart(rule, cuts)))!.rule), `${cuts} cuts`).toBe(ruleKey(rule));
 	});
 
 	it('refuses a size the pattern is too tight for: the paper between two cuts keeps its width in the heart', () => {
