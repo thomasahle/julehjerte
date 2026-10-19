@@ -1,0 +1,51 @@
+{
+  "schema": "photo-browser-preprocessing-plan-1",
+  "status": "predeclared",
+  "inputs": {
+    "native": {
+      "path": "tmp/heart-learning/preserved-material-onnx-v1/report.json",
+      "sha256": "989acc1085d8ad05114be10e87fac3138ce091483f9eb91e401d5701875aa1c9"
+    },
+    "reference": {
+      "path": "tmp/heart-learning/preserved-material-browser-v1/report.json",
+      "sha256": "1312cb2c65b00c01c2f820723d240b6982430f63393a51af9d1e0814e5491e26"
+    },
+    "probe": {
+      "path": "tmp/heart-learning/preserved-material-browser-v1/probe/manifest.json",
+      "sha256": "74b2c0fa0b1c0380c0e920a88fdc5883723bfa5b06daf4871ccdf3538957cd91"
+    },
+    "runtime": {
+      "path": "tmp/heart-learning/onnx-web-1.19.2/manifest.json",
+      "sha256": "7a54b46a7f0d7eea202553d1470e0c53ebdfef19b67b8b61ac120b88e131c29d"
+    }
+  },
+  "protocol": {
+    "resolution": 256,
+    "threads": 1,
+    "threshold": 0.5,
+    "smoothing": "high",
+    "fillRGB": [
+      127,
+      127,
+      127
+    ],
+    "prefilter": "Portable JavaScript triangle prefilter and continuous bilinear letterbox with Pillow-compatible byte rounding; matches the training transform.",
+    "geometry": "Whole photograph; scale=256/max(width,height), centered padding. No annotation, template or fitted error enters preprocessing.",
+    "comparison": "The same held-out model and actual WASM session processes the archived Python RGB and full photo through portable JavaScript. Require exact source, RGB input, normalized tensor and output replay.",
+    "scope": "Sixteen development photographs stored as full-size lossless PNGs, reused in place. Original JPEG/EXIF decoding and UI integration remain outside this experiment.",
+    "gate": "All sixteen input RGB arrays and inference outputs must match the Python-prefiltered WASM reference byte for byte. No image-dependent parameters.",
+    "inputMethod": "portable-pillow"
+  },
+  "resources": {
+    "browsers": 1,
+    "workers": 1,
+    "nice": 15,
+    "maxArtifactBytes": 16777216,
+    "newSourcePhotoCopies": 0
+  },
+  "releaseStatus": "Diagnostic only; no website integration or deployment.",
+  "preprocessing": {
+    "path": "scripts/inverse/learning/photo-input.mjs",
+    "sha256": "f1f2af7eb8c4c1847897e8cc5ebf8d934843ad39bd24788d0b4144d369aa356f"
+  }
+}

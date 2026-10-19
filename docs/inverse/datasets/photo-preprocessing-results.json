@@ -1,0 +1,117 @@
+{
+  "schema": "photo-preprocessing-results-1",
+  "status": "complete",
+  "date": "2026-10-19",
+  "scope": "Browser decoding of existing full-size lossless photo PNGs, resizing, normalization and two held-out ONNX models. Research-only; no website model integration.",
+  "implementation": {
+    "path": "scripts/inverse/learning/photo-input.mjs",
+    "sha256": "f1f2af7eb8c4c1847897e8cc5ebf8d934843ad39bd24788d0b4144d369aa356f"
+  },
+  "referenceImplementation": {
+    "path": "scripts/inverse/datasets/real_annotations.py",
+    "sha256": "b505fb723dc45b644cb95a058ddf45317f6afb700c61fb88cb3d93571fb9e33c"
+  },
+  "referencePillowVersion": "11.1.0",
+  "runs": [
+    {
+      "name": "photo-browser-preprocessing-v1",
+      "evidence": {
+        "path": "tmp/heart-learning/photo-browser-preprocessing-v1/report.json",
+        "sha256": "cd747c092a77c6548a4499bc6c9d2f701c9f6d88204164a72a7a263399795e0f"
+      },
+      "summary": {
+        "photos": 16,
+        "exactRgbInputs": 0,
+        "heads": [
+          {
+            "head": "body",
+            "changedHalfThresholdPixels": 6581,
+            "maxAbsoluteDifference": 0.5900291800498962
+          },
+          {
+            "head": "material",
+            "changedHalfThresholdPixels": 17787,
+            "maxAbsoluteDifference": 0.4419195353984833
+          }
+        ]
+      },
+      "browser": "145.0.7632.6",
+      "referenceReplayExact": true,
+      "preprocessingMilliseconds": {
+        "median": 1.7499998807907104,
+        "max": 10.599999904632568
+      },
+      "artifactLogicalBytes": 10050147,
+      "sourceCopies": 0
+    },
+    {
+      "name": "photo-portable-preprocessing-v2",
+      "evidence": {
+        "path": "tmp/heart-learning/photo-portable-preprocessing-v2/report.json",
+        "sha256": "fff02a8f29ded069a0801c0c2a04178b222853d350d9642d1747196347a2c715"
+      },
+      "summary": {
+        "photos": 16,
+        "exactRgbInputs": 16,
+        "heads": [
+          {
+            "head": "body",
+            "changedHalfThresholdPixels": 0,
+            "maxAbsoluteDifference": 0
+          },
+          {
+            "head": "material",
+            "changedHalfThresholdPixels": 0,
+            "maxAbsoluteDifference": 0
+          }
+        ]
+      },
+      "browser": "145.0.7632.6",
+      "referenceReplayExact": true,
+      "preprocessingMilliseconds": {
+        "median": 7.5,
+        "max": 104.79999995231628
+      },
+      "artifactLogicalBytes": 9991839,
+      "sourceCopies": 0
+    }
+  ],
+  "finding": "Canvas high-quality resampling does not implement the same triangle prefilter and continuous bilinear letterbox as training. Less than one RGB level of average channel difference can alter neural predictions substantially. This is isolated preprocessing drift: the archived input/output replays exactly in the same WASM session.",
+  "canvasMeanAbsoluteRgbDifference": 0.9210275014241537,
+  "fix": "Portable JavaScript implements the training prefilter, intermediate byte rounding, continuous pixel-edge transform, edge sampling and neutral padding. It receives decoded opaque RGB and does not depend on Canvas resize kernels.",
+  "checks": {
+    "realPhotos": 16,
+    "exactRgbInputs": 16,
+    "exactNormalizedInputs": 16,
+    "exactProbabilityFieldPairs": 16,
+    "independentPillowFixtures": 12,
+    "unitTests": 14,
+    "originalSourcePhotosReused": true,
+    "finalProbabilityFieldsHardlinkedAfterByteEquality": 32,
+    "browsersClosed": true
+  },
+  "limitations": [
+    "These are the same sixteen inspected development photographs, not a new generalization test.",
+    "PNG source decode parity is tested. Original JPEG/EXIF/ICC decoding and mobile browsers remain untested.",
+    "Exactness is relative to the existing Python-prefiltered WASM outputs. The older WASM-versus-Torch numerical tolerance still fails on one photograph.",
+    "No new solver replay: final probability bytes are identical to the inputs of the recorded 9/16 fallback experiment. This is preprocessing parity, not an additional recovery gain.",
+    "Final rendering and visual defects in the earlier fallback report remain. Two evaluation models still need replacement with a separately evaluated production candidate."
+  ],
+  "qa": {
+    "nodeTests": "14/14 new preprocessing regressions; 4/4 fallback policy tests",
+    "ci": {
+      "run": 39292660466,
+      "head": "a16e7308dfbc261fd6d82f960c78d459f8e5bf3e",
+      "conclusion": "success",
+      "scope": "Remote main correctness, build, advisory suites and deployment; independent of these local research commits."
+    }
+  },
+  "archiveUpdate": {
+    "commit": "d3c1da63",
+    "templatesRecovered": 0,
+    "requests": 8,
+    "uniqueEvidenceBytes": 1995,
+    "storeObjects": 133,
+    "storeBytes": 15995754
+  }
+}

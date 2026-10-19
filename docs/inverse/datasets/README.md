@@ -282,12 +282,33 @@ Full-photo browser preprocessing and fresh grouped evaluation remain necessary;
 the earlier strict WASM numerical tolerance remains failed. No app change or
 deployment is included.
 
+### Matching photo preprocessing in the browser
+
+The [full-photo preprocessing audit](photo-preprocessing-results.json) found
+that Canvas high-quality resizing does not match the Python training transform.
+Across sixteen photos, the average difference is only **0.92 RGB levels per
+channel**, but **6,581 foreground pixels and 17,787 material pixels** change
+classification. The old Python-prefiltered input and its WASM output replay
+exactly in the same browser session, isolating this discrepancy to preprocessing.
+
+A small portable JavaScript implementation now reproduces the antialiased
+triangle prefilter, byte rounding and continuous letterbox transform. It passes
+**twelve independent Pillow fixtures** plus padding/input-validation regressions.
+In actual Chromium, all **sixteen full-photo RGB inputs, normalized tensors and
+both output fields match exactly**. The final audit hardlinks the identical
+prediction files to avoid duplicating them. Full source photos are reused.
+
+This preserves the inputs of the earlier fallback experiment; it is not another
+reconstruction gain. Original JPEG orientation/colour-profile handling, mobile
+browsers and a fresh grouped evaluation remain untested. The older WASM-versus-
+Torch numerical tolerance remains failed. No neural model is added to the site.
+
 ## Collected assets
 
 ### Preservation archive, 2026-10-19
 
-The [preservation manifest](heart-archive-storage.json) records **129 unique
-original files, 15,993,759 bytes**, including 54 template PDFs (286 pages),
+The [preservation manifest](heart-archive-storage.json) records **133 unique
+original files, 15,995,754 bytes**, including 54 template PDFs (286 pages),
 seven recovered Permo images, sixteen Haabet images and source/history/license
 evidence. These are documents and photographs, not 129 independent designs or
 new training labels.
