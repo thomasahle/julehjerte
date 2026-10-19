@@ -1,0 +1,50 @@
+{
+  "schema": "material-inference-scale-plan-1",
+  "study": "tmp/heart-learning/material-corrected-scenes-v1/candidate",
+  "probe": "tmp/heart-learning/material-corrected-scenes-v1/probe",
+  "trainingReportSha256": "47b1b5e1f8a50d53152a744d00b3750b7c1e96ca0d88511662fb4e1778122a29",
+  "probeManifestSha256": "276db507f6a4ebcf94ec74b80347d450713249205b8cf36509e350cab0f940f5",
+  "ids": [
+    "real-2044b1d98ed6f262-body-1",
+    "real-45744a03afddccb1-body-1",
+    "real-8c875dd0f298b5a4-body-1",
+    "real-3f7b76e1a98e808f-body-1",
+    "real-995899fe049540ed-body-1",
+    "real-b87b0b19f12724f3-body-1",
+    "real-cf2d0fcff65d7386-body-1",
+    "real-cdae5c890b6933cd-body-1",
+    "real-68d8f25d8891df62-body-1",
+    "real-5330aa8b62176216-body-1",
+    "real-abf590088db891f9-body-1",
+    "real-990ac34431be87fe-body-1",
+    "real-12ce3c9180f7f317-body-1",
+    "real-d5b0aa8d4d2465ee-body-1",
+    "real-39f3a1ba97852876-body-1",
+    "real-e936e08ac62db19b-body-1",
+    "real-340f5e5b0f447889-body-1",
+    "real-710703159f609111-body-1",
+    "real-a414dfffbd2362ae-body-1"
+  ],
+  "sizes": [
+    256,
+    512
+  ],
+  "threads": 1,
+  "maxOutputBytes": 47185920,
+  "hypothesis": "Keeping encoder features at the training scale while decoding high-resolution local RGB may preserve whole-heart segmentation and recover boundary detail; the unchanged decoder may still be resolution-sensitive.",
+  "protocol": [
+    "Reuse the exact original held-out checkpoints and photograph windows from the preceding inference-scale experiment. No training, threshold choice, model selection or new photos.",
+    "At both output sizes encode the original, byte-identical 256px RGB through the pretrained feature pyramid. Interpolate these same features to the output grid; evaluate the shallow RGB detail branch and final decoder on 256px or 512px source pixels. At 256px the computation must reproduce the original model exactly.",
+    "Score both arms on the identical existing 256px partial labels: sample 512px probabilities at those continuous label centres. One global A/B exchange; missing body remains an error.",
+    "Inspect all 19 field comparisons. Body/material scores alone do not establish boundary or template quality.",
+    "Run the same current geometric crop adapter on all nineteen photos, with both fields at their output size and unchanged support gates. If new supported crops appear, evaluate new and retained proposals through independent template fitting and editable export before any production claim.",
+    "No deployment from this diagnostic, no new photos/checkpoints, no bulk duplicate artifacts."
+  ],
+  "limitations": [
+    "Previously inspected development photos with two broad source/motif folds; no unseen-generalization claim.",
+    "Partial labels omit many uncertain edges and junctions. More pixels do not provide cutting-path ground truth.",
+    "This isolates encoder/context scale from local RGB/decoder scale. The frozen decoder and GroupNorm still see a different spatial grid; no claim of scale-invariant behavior or higher-resolution training.",
+    "One low-priority CPU thread; inference timings exclude startup, decoding and crop/fitting."
+  ],
+  "fineMode": "context-detail"
+}

@@ -1,0 +1,99 @@
+{
+  "schema": "material-encoder-tail-study-plan-1",
+  "status": "predeclared",
+  "hypothesis": "Frozen ImageNet-derived features may limit material and foreground adaptation. Fine-tuning only the final three encoder blocks could improve held-out whole-heart predictions while preserving early features. It may overfit the small real corpus.",
+  "parentTrainingReportSha256": "47b1b5e1f8a50d53152a744d00b3750b7c1e96ca0d88511662fb4e1778122a29",
+  "arms": {
+    "baseline": {
+      "path": "docs/inverse/datasets/material-encoder-tail-baseline-plan.json",
+      "sha256": "a71ed457ddfa8a1686de7aa1c9faa76c92411ef02d3d4e9f451ce6025c10d7eb"
+    },
+    "tail": {
+      "path": "docs/inverse/datasets/material-encoder-tail-tail-plan.json",
+      "sha256": "da12e635c40c322467bd1c7de3a8379d9974f75ebd00586d108db4b30c26d0c4"
+    }
+  },
+  "protocol": [
+    "Both arms start from the identical retained synthetic foreground checkpoint, with the same neutral material head, seed, 240 updates, four-image batches, print/reflection/synthetic schedules, sixteen currently eligible reviewed photos, and two connected source/motif folds.",
+    "One serial CPU thread. No evaluation image or label can enter its own training fold. The synthetic-only control is also retained for both arms.",
+    "The only learning-policy change is allowing blocks 9, 10 and 11 to update at 0.0001 while all other trainable parameters keep 0.001. BatchNorm buffers remain frozen everywhere.",
+    "Use the fixed final update, without early stopping, checkpoint selection, held-out tuning or topology-based candidate selection.",
+    "Independently audit initial/frozen tensors, group exclusion, draw schedule, checkpoint inference and reported metrics. Compare on identical partial observations.",
+    "If material/body metrics or crops show a gain, test the full photo-to-editable-template pipeline and visually inspect changes before claiming useful reconstruction. New lower-error masks alone are insufficient."
+  ],
+  "resourceLimits": {
+    "cpuThreads": 1,
+    "parallelWorkers": 1,
+    "newPhotoDownloads": 0,
+    "minimumFreeGiB": 10,
+    "plannedArtifactLimitMiB": 100
+  },
+  "limitations": [
+    "Repeatedly inspected development photos, sixteen images and two broad source/motif groups; not an unseen test.",
+    "One seed and fixed 240-update budget; a negative outcome does not rule out other adaptation policies.",
+    "Encoder parameter updates can change semantics even though BatchNorm statistics remain frozen.",
+    "No production integration, ONNX deployment, pushing or changes to physical/template acceptance thresholds."
+  ],
+  "preflightRevision": {
+    "reason": "The historical nineteen-photo manifest is superseded. The current Sabrina-board source grouping reserves three former training candidates; two other unassigned groups have new identities. No training ran before this revision.",
+    "excluded": [
+      {
+        "id": "real-2044b1d98ed6f262-body-1",
+        "assetId": "real-2044b1d98ed6f262",
+        "reason": "Current source group is QA-reserved",
+        "oldGroup": "real-split-43d9db9ff4061e07",
+        "currentGroup": "real-split-955b42a7b8c97d7b"
+      },
+      {
+        "id": "real-45744a03afddccb1-body-1",
+        "assetId": "real-45744a03afddccb1",
+        "reason": "Current source group is QA-reserved",
+        "oldGroup": "real-split-8e4db6249b2748c6",
+        "currentGroup": "real-split-955b42a7b8c97d7b"
+      },
+      {
+        "id": "real-3f7b76e1a98e808f-body-1",
+        "assetId": "real-3f7b76e1a98e808f",
+        "reason": "Current source group is QA-reserved",
+        "oldGroup": "real-split-fa81b0c40b1f06c4",
+        "currentGroup": "real-split-955b42a7b8c97d7b"
+      }
+    ],
+    "changedUnassignedGroups": [
+      {
+        "id": "real-e936e08ac62db19b-body-1",
+        "oldGroup": "real-split-72d2783b2c260682",
+        "currentGroup": "real-split-0fe657e07ffc37c9"
+      },
+      {
+        "id": "real-a414dfffbd2362ae-body-1",
+        "oldGroup": "real-split-dd8b4add0daf5a6d",
+        "currentGroup": "real-split-79137bb425b64798"
+      }
+    ],
+    "eligible": [
+      "real-12ce3c9180f7f317-body-1",
+      "real-340f5e5b0f447889-body-1",
+      "real-39f3a1ba97852876-body-1",
+      "real-5330aa8b62176216-body-1",
+      "real-68d8f25d8891df62-body-1",
+      "real-710703159f609111-body-1",
+      "real-8c875dd0f298b5a4-body-1",
+      "real-990ac34431be87fe-body-1",
+      "real-995899fe049540ed-body-1",
+      "real-a414dfffbd2362ae-body-1",
+      "real-abf590088db891f9-body-1",
+      "real-b87b0b19f12724f3-body-1",
+      "real-cdae5c890b6933cd-body-1",
+      "real-cf2d0fcff65d7386-body-1",
+      "real-d5b0aa8d4d2465ee-body-1",
+      "real-e936e08ac62db19b-body-1"
+    ],
+    "foldSizes": [
+      3,
+      13
+    ],
+    "failedPreflightLog": "tmp/heart-learning/material-encoder-tail-v1/baseline.log",
+    "comparison": "Fresh baseline and candidate on the same eligible sixteen photos. Do not compare their aggregate directly with historical nineteen-photo percentages."
+  }
+}

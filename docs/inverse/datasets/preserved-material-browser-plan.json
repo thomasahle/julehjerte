@@ -1,0 +1,41 @@
+{
+  "schema": "preserved-material-browser-plan-1",
+  "status": "predeclared",
+  "parent": {
+    "path": "tmp/heart-learning/preserved-material-onnx-v1/report.json",
+    "sha256": "989acc1085d8ad05114be10e87fac3138ce091483f9eb91e401d5701875aa1c9"
+  },
+  "runtime": {
+    "path": "tmp/heart-learning/onnx-web-1.19.2/manifest.json",
+    "sha256": "7a54b46a7f0d7eea202553d1470e0c53ebdfef19b67b8b61ac120b88e131c29d"
+  },
+  "referenceProbe": {
+    "path": "tmp/heart-learning/material-encoder-tail-v1/preserved-probe/manifest.json",
+    "sha256": "89af6dea100150dc70a1eb8c55314416b3a60cdac4e11977a4fd4864fb2974b6"
+  },
+  "protocol": {
+    "executionProviders": [
+      "wasm"
+    ],
+    "threads": 1,
+    "proxy": false,
+    "warmupRuns": 3,
+    "timingRuns": 20,
+    "probabilityAtol": 2e-05,
+    "threshold": 0.5,
+    "scope": "Both exported held-out models, all sixteen development photos, exact already-prefiltered RGB inputs. Browser executes PNG decoding, NCHW normalization and WASM inference. Full-resolution photograph preprocessing and UI integration are not tested."
+  },
+  "resources": {
+    "browsers": 1,
+    "parallelWorkers": 1,
+    "newSourcePhotoCopies": 0,
+    "maxArtifactBytes": 12582912
+  },
+  "requirements": [
+    "Pin runtime package integrity and the exact exported models.",
+    "Compare both probability heads to native ONNX and archived Torch outputs; report all threshold changes.",
+    "Verify decoded RGB hashes against the original training inputs.",
+    "Close the browser and ephemeral local server even if a check fails.",
+    "Do not silently select only successful photographs."
+  ]
+}

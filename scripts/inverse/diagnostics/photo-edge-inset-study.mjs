@@ -6,7 +6,7 @@ import {createHash} from 'node:crypto';
 import {getPriority} from 'node:os';
 import {createCanvas} from 'canvas';
 import {readHardPhoto,hardPhotoCatalogCases} from '../hard-photo-data.mjs';
-import {detectHeartCrops} from '../../../static/inverse/core/crop.js';
+import {detectHeartCrops,pixelCentresToEdges} from '../../../static/inverse/core/crop.js';
 import {prepare,design} from '../../../static/inverse/core/engine.js';
 import {AUTOMATIC_PRESET} from '../../../static/inverse/core/presets.js';
 import {homography,project} from '../../../static/inverse/locator/math.js';
@@ -31,7 +31,10 @@ const verify=async()=>{for(const [file,digest] of Object.entries(pins))assert.eq
 // A full-image selection is the same upload used by the import dialog; an
 // explicit rough ROI is only needed when a photograph contains several hearts.
 const entire=[0,0,input.imageWidth,input.imageHeight],roi=entry.roi.every((v,i)=>v===entire[i])?undefined:entry.roi;
-const started=performance.now(),detection=detectHeartCrops(input,{roi}),crop=detection.candidates[0];
+const started=performance.now(),detection=detectHeartCrops(input,{roi}),candidate=detection.candidates[0];
+// Start every treatment at the physical outline, including after the app's
+// default automatic inset. Otherwise the "1%" arm would silently become 2%.
+const crop=candidate?{...candidate,quad:pixelCentresToEdges(candidate.locator.quad)}:null;
 await fs.mkdir(path.dirname(output),{recursive:true});await fs.mkdir(output);
 const ledger={status:'running',case:entry.id,source:catalog.source,sourceHashes:pins,priority:getPriority(),detection,cropSeconds:(performance.now()-started)/1000,config,
  scope:'Fresh production photo-to-binary-mask-to-template comparisons. The initial automatic corners are fixed before any solve. Insets are fractions of each rectified side before classification. Ignoring a band changes importance, not target colors. No cutting paths, known slit counts or solve-selected crop coordinates are inputs. Timing is offline solve/validation/export, not browser latency. A low error against a changed mask is not evidence of improvement on the original photo.',rows:[]};

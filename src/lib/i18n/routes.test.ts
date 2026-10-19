@@ -40,6 +40,8 @@ describe('route table', () => {
 	});
 
 	it('resolves paths and hrefs', () => {
+		expect(path('archive', 'da')).toBe('/all/');
+		expect(path('archive', 'en')).toBe('/en/all/');
 		expect(path('howTo', 'da')).toBe('/saadan-goer-du/');
 		expect(path('howTo', 'en')).toBe('/en/how-to/');
 		expect(href('about', 'da')).toBe('/om/');
@@ -104,6 +106,8 @@ describe('language mirroring', () => {
 	});
 
 	it('recognises which page a path belongs to', () => {
+		expect(routeKeyFromPathname('/all/')).toBe('archive');
+		expect(routeKeyFromPathname('/en/all/')).toBe('archive');
 		expect(routeKeyFromPathname('/saadan-goer-du/')).toBe('howTo');
 		expect(routeKeyFromPathname('/en/about/')).toBe('about');
 		expect(routeKeyFromPathname('/hjerte/stjerne/')).toBe(null);

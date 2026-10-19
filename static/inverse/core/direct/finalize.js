@@ -4,6 +4,7 @@ import {finalizeShared} from './share.js';
 import {finalizeShortReturns} from './short-returns.js';
 import {finalizePrimitives} from './primitive-selection.js';
 import {finalizeSharedSimplification} from './shared-simplification.js';
+import {finalizeSharedShortening} from './shared-shortening.js';
 import {verifiedPaperSettings} from '../material.js';
 import {recoverClampedFeatures} from './clamped-features.js';
 
@@ -34,10 +35,15 @@ export function finalizeFittedSolution(solution,cfg,{startedAt=performance.now()
   // geometry, using what remains of the original two-second sharing budget.
   const aligned=primitives===shared?primitives:finalizeShared(primitives,cfg,{deadline:Math.min(completionDeadline,performance.now()+sharingRemaining),onProgress,reportKey:'finalSharingAfterPrimitives'});
   const simplified=finalizeSharedSimplification(aligned,cfg,{deadline:Math.min(completionDeadline,performance.now()+500),onProgress});
+  // Moving both ends of a shared run can shorten an invisible cut while
+  // retaining the visible outline. This optional checked search uses only
+  // otherwise unused caller time; preserve the ordinary export reserve.
+  const shorteningStart=performance.now();
+  const shortened=completionDeadline-shorteningStart>2000?finalizeSharedShortening(simplified,cfg,{deadline:Math.min(completionDeadline,shorteningStart+2000),onProgress}):simplified;
   // Successful fits keep their existing path. A close fit can still lose a
   // small source region to the optimizer's extra margin; spend at most half
   // the final reserve on a checked correction, preserving time for export.
-  const result=simplified.report.refinementFeaturesPassed===false?recoverClampedFeatures(simplified,cfg,{deadline:Math.min(startedAt+timeLimit*1000-500,performance.now()+500),onProgress}):simplified;
+  const result=shortened.report.refinementFeaturesPassed===false?recoverClampedFeatures(shortened,cfg,{deadline:Math.min(startedAt+timeLimit*1000-500,performance.now()+500),onProgress}):shortened;
   result.report.seconds=(performance.now()-startedAt)/1000;
   return result;
 }

@@ -6,6 +6,10 @@
 retain failures alongside successes. No neural model or new inset policy is
 enabled in the website.
 
+The expanded October 19 comparison below also keeps the blanket inset out of
+the production default: removing the fringe is useful, but it does not reliably
+improve reconstruction of the unchanged interior.
+
 ## The reported fringe
 
 The user's exact 650 × 652 screenshot reproduces the thin white fringe in the
@@ -82,3 +86,46 @@ The script checks source identities, pins runtime files, fixes corners before
 solving and uses a common physical region when scoring different crops. Failed
 solves are recorded rather than dropped. The five catalogue/handoff tests pass;
 the previous full release checks cover the unchanged production source.
+
+## Automatic-crop paired comparison, 2026-10-19
+
+[Complete paired results and runtime/input hashes](automatic-crop-inset-2026-10-19.json)
+cover all 22 regular Hunodan photographs, the reported stacked-heart fringe,
+and three window hearts. Every case starts with fresh automatic corner detection;
+the physical corners stay fixed during both fits. Each arm gets a ten-second
+allowance, with order alternated between cases. No reference cutting template
+enters fitting. One low-priority worker ran the cases serially.
+
+| Inputs | Passed template checks, physical / inset | Mean common-interior error, physical / inset | Median solve/check/export, physical / inset |
+| --- | --- | --- | --- |
+| 22 regular Hunodan photographs | 22 / 22 | 0.426% / 0.558% | 7.30 / 7.72 s |
+| Four user-photo cases | 4 / 4 | 0.511% / 1.056% | 9.08 / 9.34 s |
+
+The common domain is the unchanged central 94% square of the original classified
+photograph, with independently rendered exports mapped through source coordinates.
+It is an estimated photographic mask, not verified design ground truth. The
+fringe example's common error changes from 0.335% to 0.391%, despite removal of
+the thin outer seam. The Hunodan anchor changes from 0.532% to 1.879%; the third
+star improves from 1.245% to 0.722%. Overall, two of 26 common-interior errors
+improve and 24 worsen. Individual time-limited solves cannot isolate the cause
+of each difference or establish a speed change.
+
+**Decision:** do not enable a uniform 1% inset as the default. All nominal checks
+still pass, but that alone does not justify the broad interior-error regression.
+Keep the projective inset helper and paired experiment for further work on
+detecting actual edge contamination. Automatic handles continue to identify the
+physical crop; manual corner adjustments remain exact sampling instructions.
+An experimental adapter that inset handles once passed 96 crop regressions,
+including repeated detection and manual edits, but was withheld after this
+full-pipeline comparison. Its measured hash is retained in the result file.
+
+```sh
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 \
+  nice -n 15 node scripts/inverse/diagnostics/automatic-crop-inset.mjs \
+  --output=tmp/automatic-inset-new-run
+```
+
+The diagnostic uses raw locator corners explicitly, so it tests the same pair
+with or without an automatic inset adapter. It saves compact metrics, two fringe
+geometries and a photo/mask/export comparison, and checks that all pinned sources
+remain unchanged during the run. No NN was trained or enabled in this experiment.

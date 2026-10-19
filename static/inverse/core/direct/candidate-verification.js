@@ -30,6 +30,9 @@ export function assessCandidate(c,input,cfg,{deadline=Infinity,sourceFeatures,re
  * certifies image fidelity or makes that candidate an accepted result. */
 export function verifyCandidatePaper(c,input,cfg,{deadline=Infinity,recheckFailed=false}={}){
   if(!c.geometryPassed)return false;
+  // Finer raster sampling can resolve lattice uncertainty, but cannot repair
+  // a disconnected polygon-offset core at these unchanged coordinates.
+  if(c.paper?.offset&&c.paper.offset.status!=='pass'){c.paperPassed=false;return false;}
   if(c.paperPassed)return true;
   if(!(c.paper?.status==='uncertain'||recheckFailed&&c.paper?.status==='fail'))return false;
   const s=c.graph.solution(c.points,c.phase,input);

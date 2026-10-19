@@ -24,8 +24,9 @@
 	import { LOBE_OUTLINE_COLORS } from '$lib/editor/outlineColors';
 	import { inferOverlapRect } from '$lib/utils/overlapRect';
 	import type { HeartColors, HeartDesign } from '$lib/types/heart';
-	import { clampBox, emptyBox, isEmptyBox, unionBox, type Box, type Mask } from '$lib/paint/mask';
+	import { cloneMask, clampBox, emptyBox, isEmptyBox, unionBox, type Box, type Mask } from '$lib/paint/mask';
 	import { applySymmetric, applySymmetricEdit, floodFill, rect, stroke } from '$lib/paint/tools';
+	import { createXorGesture } from '$lib/paint/xorGesture';
 	import {
 		GRAB_PX,
 		HANDLES,
@@ -61,7 +62,7 @@
 		type Frame,
 		type FrameAxis
 	} from '$lib/paint/frame';
-	import { shortcutFor, type PaintAction, type PaintTool } from '$lib/paint/toolset';
+	import { shortcutFor, type PaintAction, type PaintTool, type PaintValue } from '$lib/paint/toolset';
 
 	interface Props {
 		mask: Mask | null;
@@ -71,7 +72,7 @@
 		/** Brush radius in mask cells. */
 		brush: number;
 		/** Which paper the pen lays down; the eraser always lays down 0. */
-		paintValue: 0 | 1;
+		paintValue: PaintValue;
 		/** Bumped by the page when the mask changed other than by painting. */
 		revision: number;
 		/**
@@ -186,6 +187,13 @@
 	// The gesture in progress. `preview` is the line or rectangle being dragged,
 	// drawn over the mask until the pointer comes up and it is committed.
 	let pointerId: number | null = null;
+	let xorGesture: ReturnType<typeof createXorGesture> | null = null;
+	/** Local CSS pixels, shared with the existing screen-to-mask transform. */
+	let hover = $state<Pt | null>(null);
+	let hoverVisible = $derived(!!hover && !!mask && !disabled && !keyboardBusy &&
+		(tool === 'pen' || tool === 'eraser' || tool === 'line') &&
+		insideSquare(toMask(layout, mask.size, hover.x, hover.y), mask.size));
+	let hoverRadius = $derived(mask ? brush * layout.scale / mask.size : 0);
 	let last: Pt | null = null;
 	let start: Pt | null = null;
 	let preview: { from: Pt; to: Pt } | null = null;
@@ -281,7 +289,7 @@
 
 	/** The value the current tool lays down. */
 	function toolValue(): 0 | 1 {
-		return tool === 'eraser' ? 0 : paintValue;
+		return tool === 'eraser' || paintValue === 'xor' ? 0 : paintValue;
 	}
 
 	function paint(): void {
@@ -495,6 +503,10 @@
 	/** The line or rectangle under the pointer, before it is committed. */
 	function drawPreview(ctx: CanvasRenderingContext2D): void {
 		if (!preview || !mask) return;
+		if (paintValue === 'xor') {
+			drawXorPreview(ctx);
+			return;
+		}
 		const from = { x: preview.from.x / mask.size, y: preview.from.y / mask.size };
 		const to = { x: preview.to.x / mask.size, y: preview.to.y / mask.size };
 		const colour = toolValue() ? colors.right : colors.left;
@@ -512,6 +524,28 @@
 			ctx.lineTo(to.x, to.y);
 			ctx.stroke();
 		}
+		ctx.restore();
+	}
+
+	/** Preview the actual two papers, including custom colours, without editing them. */
+	function drawXorPreview(ctx: CanvasRenderingContext2D): void {
+		if (!preview || !mask) return;
+		const proposed = cloneMask(mask);
+		const edit = createXorGesture(proposed, transforms);
+		if (tool === 'rect') edit.rect(preview.from, preview.to);
+		else edit.stroke(preview.from, preview.to, brush);
+		const image = new ImageData(mask.size, mask.size);
+		for (let i = 0; i < mask.data.length; i++) {
+			if (proposed.data[i] === mask.data[i]) continue;
+			const colour = paper[proposed.data[i]!]!;
+			image.data.set(colour, 4 * i);
+		}
+		const overlay = document.createElement('canvas');
+		overlay.width = overlay.height = mask.size;
+		overlay.getContext('2d')?.putImageData(image, 0, 0);
+		ctx.save();
+		ctx.imageSmoothingEnabled = false;
+		ctx.drawImage(overlay, 0, 0, 1, 1);
 		ctx.restore();
 	}
 
@@ -934,8 +968,26 @@
 		return nearest;
 	}
 
+	/** The outline is separate DOM: moving it does not redraw the whole heart. */
+	function updateHover(event: PointerEvent): void {
+		if (!canvasEl || disabled || keyboardBusy || frameAxis ||
+			(event.pointerType === 'touch' && pointerId !== event.pointerId) || handleAt(event)) {
+			hover = null;
+			return;
+		}
+		const bounds = canvasEl.getBoundingClientRect();
+		hover = { x: event.clientX - bounds.left, y: event.clientY - bounds.top };
+	}
+
+	function repaintXor(box: Box): void {
+		if (isEmptyBox(box)) return;
+		syncOffscreen(box);
+		schedule();
+	}
+
 	function onPointerDown(event: PointerEvent): void {
 		if (disabled || !mask || pointerId !== null || event.button !== 0) return;
+		updateHover(event);
 		// A handle takes the gesture before the brush does: the handles sit on the
 		// square, so a drag that starts on one is a resize and not a stroke.
 		const grabbed = handleAt(event);
@@ -956,9 +1008,12 @@
 		pointerId = event.pointerId;
 		canvasEl?.setPointerCapture(event.pointerId);
 		onEditStart();
+		xorGesture = paintValue === 'xor' && tool !== 'eraser' ? createXorGesture(mask, transforms) : null;
+		updateHover(event);
 		const value = toolValue();
 		if (tool === 'fill') {
-			commit(floodFill(mask, point.x, point.y, value), value);
+			if (xorGesture) repaintXor(xorGesture.fill(point.x, point.y));
+			else commit(floodFill(mask, point.x, point.y, value), value);
 			finish();
 			return;
 		}
@@ -969,10 +1024,12 @@
 			return;
 		}
 		last = point;
-		commit(stroke(mask, point, point, { radius: brush, value }), value);
+		if (xorGesture) repaintXor(xorGesture.stroke(point, point, brush));
+		else commit(stroke(mask, point, point, { radius: brush, value }), value);
 	}
 
 	function onPointerMove(event: PointerEvent): void {
+		updateHover(event);
 		if (pointerId !== event.pointerId || !mask) return;
 		// The frame handle first, in the order pointer down took them: a gesture
 		// that began on a handle is a resize whatever the tool says.
@@ -1003,13 +1060,18 @@
 		for (const step of steps) {
 			const point = pointAt(step);
 			if (!point) continue;
-			if (last) changed = unionBox(changed, stroke(mask, last, point, { radius: brush, value }));
+			if (last) changed = unionBox(changed, xorGesture
+				? xorGesture.stroke(last, point, brush)
+				: stroke(mask, last, point, { radius: brush, value }));
 			last = point;
 		}
-		commit(changed, value);
+		if (xorGesture) repaintXor(changed);
+		else commit(changed, value);
 	}
 
 	function onPointerUp(event: PointerEvent): void {
+		if (event.pointerType === 'touch') hover = null;
+		else updateHover(event);
 		if (pointerId !== event.pointerId || !mask) return;
 		if (frameAxis) {
 			finish();
@@ -1023,17 +1085,29 @@
 			const point = pointAt(event) ?? start;
 			const value = toolValue();
 			preview = null;
-			commit(
+			if (xorGesture) repaintXor(tool === 'rect'
+				? xorGesture.rect(start, point)
+				: xorGesture.stroke(start, point, brush));
+			else commit(
 				tool === 'rect'
 					? rect(mask, start, point, value)
 					: stroke(mask, start, point, { radius: brush, value }),
 				value
 			);
+		} else if (last) {
+			// The release can carry a newer position than the last move event.
+			const point = pointAt(event) ?? last;
+			if (xorGesture) repaintXor(xorGesture.stroke(last, point, brush));
+			else {
+				const value = toolValue();
+				commit(stroke(mask, last, point, { radius: brush, value }), value);
+			}
 		}
 		finish();
 	}
 
 	function onPointerCancel(event: PointerEvent): void {
+		hover = null;
 		// A cancelled drag drops its preview; anything already painted stays, and
 		// the visitor undoes it if they did not want it.
 		if (pointerId !== event.pointerId) return;
@@ -1051,10 +1125,12 @@
 
 	/** Give the pointer back and forget the gesture, without ending an edit. */
 	function releasePointer(): void {
-		if (pointerId !== null && canvasEl?.hasPointerCapture(pointerId)) {
-			canvasEl.releasePointerCapture(pointerId);
-		}
+		const released = pointerId;
 		pointerId = null;
+		if (released !== null && canvasEl?.hasPointerCapture(released)) {
+			canvasEl.releasePointerCapture(released);
+		}
+		xorGesture = null;
 		frameAxis = null;
 		start = null;
 		last = null;
@@ -1183,6 +1259,9 @@
 		const action = shortcutFor(event);
 		if (!action) return;
 		event.preventDefault();
+		// A gesture owns its XOR snapshot until it ends. In particular, Undo must
+		// not replace the mask while a held pointer can still write to that snapshot.
+		if (pointerId !== null && tool !== 'select') finish();
 		onShortcut(action);
 	}
 
@@ -1302,13 +1381,35 @@
 		onpointermove={onPointerMove}
 		onpointerup={onPointerUp}
 		onpointercancel={onPointerCancel}
+		onlostpointercapture={(event) => { if (pointerId === event.pointerId) onPointerCancel(event); }}
+		onpointerleave={() => (hover = null)}
 	></canvas>
+	{#if hoverVisible && hover}
+		<div
+			class="brush-outline"
+			aria-hidden="true"
+			style:left="{hover.x}px"
+			style:top="{hover.y}px"
+			style:width="{hoverRadius * 2}px"
+			style:height="{hoverRadius * 2}px"
+		></div>
+	{/if}
 </div>
 <!-- Outside the box on purpose: role="img" is a leaf, so anything inside it is
      hidden from the very readers this line is for. -->
 <p class="sr-only" role="status">{selectionNote}</p>
 
 <style>
+	.brush-outline {
+		position: absolute;
+		pointer-events: none;
+		border: 1px solid white;
+		box-shadow: 0 0 0 1px black;
+		border-radius: 50%;
+		transform: translate(-50%, -50%);
+		box-sizing: border-box;
+	}
+
 	.mask-canvas {
 		position: absolute;
 		inset: 0;

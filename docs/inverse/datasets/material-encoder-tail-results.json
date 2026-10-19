@@ -1,0 +1,3666 @@
+{
+  "schema": "material-encoder-tail-results-1",
+  "status": "complete-offline-study-not-deployed",
+  "sourceCommit": "fcb8c81b",
+  "scope": "Sixteen repeatedly inspected development photographs in two connected source/motif folds (13 and 3). Not an unseen test. All source groups excluded from their own training fold. Source corners and original cutting paths are not ground truth.",
+  "plans": {
+    "docs/inverse/datasets/material-encoder-tail-plan.json": "8d5a002feb752e63fed3a3990cf105e2f9e3e7f89bfb23fd5149f2f0d53e7c83",
+    "docs/inverse/datasets/material-body-preservation-plan.json": "6e36d66e0ef523edf89ae5cd7a1aa2b8afaadc0760d71223583a9d2509a12145",
+    "docs/inverse/datasets/material-crop-rgb-plan.json": "510d8a66a91038a024ddadea79a48a35420a1ebe3543852abba0f5120b260a4d"
+  },
+  "trainingComparison": {
+    "initialization": {
+      "parentReportSha256": "f3a71ff6de0cb0a00fe8db15051631d131b6cbd71bf607bd607acae5d101929c",
+      "parentCheckpointSha256": "3e94244975ee6641626b5b93c3948974bfa33609f461aae828e40bdf0a889fe6",
+      "encoder": {
+        "name": "imagenet",
+        "torchvision": "0.23.0",
+        "url": "https://download.pytorch.org/models/mobilenet_v3_small-047dcff4.pth",
+        "sha256": "047dcff4addef86ea5bc2eff13c9614dc11f47ab1160d0a71a25e7db994f4e1f",
+        "bytes": 10306551,
+        "weights": "TorchVision MobileNet_V3_Small_Weights.IMAGENET1K_V1",
+        "note": "Different checkpoint from the researched timm LAMB weights; TorchVision is already installed."
+      },
+      "materialHead": "Zero logits; retained foreground output",
+      "encoderSha256": "b1cf55565050946ed39b0ade833321736a6c34fc053fa6a3ed5c4a9090675481"
+    },
+    "folds": [
+      {
+        "id": "fold-dd50f2256463",
+        "heldOut": [
+          "real-12ce3c9180f7f317-body-1",
+          "real-39f3a1ba97852876-body-1",
+          "real-68d8f25d8891df62-body-1",
+          "real-710703159f609111-body-1",
+          "real-8c875dd0f298b5a4-body-1",
+          "real-990ac34431be87fe-body-1",
+          "real-995899fe049540ed-body-1",
+          "real-a414dfffbd2362ae-body-1",
+          "real-b87b0b19f12724f3-body-1",
+          "real-cdae5c890b6933cd-body-1",
+          "real-cf2d0fcff65d7386-body-1",
+          "real-d5b0aa8d4d2465ee-body-1",
+          "real-e936e08ac62db19b-body-1"
+        ],
+        "train": [
+          "real-340f5e5b0f447889-body-1",
+          "real-5330aa8b62176216-body-1",
+          "real-abf590088db891f9-body-1"
+        ],
+        "groups": [
+          "checker-family"
+        ]
+      },
+      {
+        "id": "fold-6fd50470fcff",
+        "heldOut": [
+          "real-340f5e5b0f447889-body-1",
+          "real-5330aa8b62176216-body-1",
+          "real-abf590088db891f9-body-1"
+        ],
+        "train": [
+          "real-12ce3c9180f7f317-body-1",
+          "real-39f3a1ba97852876-body-1",
+          "real-68d8f25d8891df62-body-1",
+          "real-710703159f609111-body-1",
+          "real-8c875dd0f298b5a4-body-1",
+          "real-990ac34431be87fe-body-1",
+          "real-995899fe049540ed-body-1",
+          "real-a414dfffbd2362ae-body-1",
+          "real-b87b0b19f12724f3-body-1",
+          "real-cdae5c890b6933cd-body-1",
+          "real-cf2d0fcff65d7386-body-1",
+          "real-d5b0aa8d4d2465ee-body-1",
+          "real-e936e08ac62db19b-body-1"
+        ],
+        "groups": [
+          "framed-motif-family"
+        ]
+      }
+    ],
+    "metrics": {
+      "baseline": {
+        "instances": 16,
+        "threshold": 0.5,
+        "phasePolicy": "One A/B exchange per image, selected from all known material pixels independently of predicted body; retained for joint scoring.",
+        "scope": "Partial known regions only. Unlabelled material is excluded from joint class scoring but remains in the separate body score. Missing body counts as a material joint error. Fractional labels score expected hard-classification disagreement. No complete-boundary, crop or cutting-template accuracy claim.",
+        "macroMean": {
+          "bodyIoU": 0.7486198327336664,
+          "bodyPixelError": 0.11330514513056567,
+          "bodyFalseNegative": 0.02698425570221835,
+          "backgroundFalsePositive": 0.14411637300584298,
+          "materialPixelError": 0.18473530736996924,
+          "materialJointError": 0.19964643541040455,
+          "jointRegionPixelError": 0.16104210654504258,
+          "balancedMaterialJointError": 0.19986415114971562
+        },
+        "contributingInstances": {
+          "bodyIoU": 16,
+          "bodyPixelError": 16,
+          "bodyFalseNegative": 16,
+          "backgroundFalsePositive": 16,
+          "materialPixelError": 16,
+          "materialJointError": 16,
+          "jointRegionPixelError": 16,
+          "balancedMaterialJointError": 16
+        },
+        "rows": [
+          {
+            "id": "real-8c875dd0f298b5a4-body-1",
+            "knownBodyPixels": 62862,
+            "knownMaterialPixels": 15062,
+            "knownBackgroundPixels": 37026,
+            "knownBodyWithoutMaterialPixels": 10774,
+            "unknownBodyPixels": 2674,
+            "bodyIoU": 0.6941615841371342,
+            "bodyPixelError": 0.18107918933536954,
+            "bodyFalseNegative": 0.0,
+            "backgroundFalsePositive": 0.30743261491924595,
+            "materialPhaseExchanged": false,
+            "materialPixelError": 0.40339928296374983,
+            "materialJointError": 0.40339928296374983,
+            "jointRegionPixelError": 0.3351827676240209,
+            "jointKnownPixels": 52088,
+            "perMaterial": {
+              "A": {
+                "observedMass": 7522.0,
+                "materialError": 0.0003988300983780909,
+                "jointError": 0.0003988300983780909
+              },
+              "B": {
+                "observedMass": 7540.0,
+                "materialError": 0.8054376657824933,
+                "jointError": 0.8054376657824933
+              }
+            },
+            "balancedMaterialJointError": 0.4029182479404357
+          },
+          {
+            "id": "real-995899fe049540ed-body-1",
+            "knownBodyPixels": 53791,
+            "knownMaterialPixels": 15731,
+            "knownBackgroundPixels": 28584,
+            "knownBodyWithoutMaterialPixels": 9476,
+            "unknownBodyPixels": 11745,
+            "bodyIoU": 0.9571643576583182,
+            "bodyPixelError": 0.020635422282537973,
+            "bodyFalseNegative": 0.016027294005633356,
+            "backgroundFalsePositive": 0.024699132381752028,
+            "materialPhaseExchanged": true,
+            "materialPixelError": 0.1141059055368381,
+            "materialJointError": 0.1165850867713432,
+            "jointRegionPixelError": 0.05731693557486178,
+            "jointKnownPixels": 44315,
+            "perMaterial": {
+              "A": {
+                "observedMass": 7196.0,
+                "materialError": 0.009171762090050028,
+                "jointError": 0.009171762090050028
+              },
+              "B": {
+                "observedMass": 8535.0,
+                "materialError": 0.2025776215582894,
+                "jointError": 0.20714704159343877
+              }
+            },
+            "balancedMaterialJointError": 0.1081594018417444
+          },
+          {
+            "id": "real-b87b0b19f12724f3-body-1",
+            "knownBodyPixels": 42635,
+            "knownMaterialPixels": 3508,
+            "knownBackgroundPixels": 35305,
+            "knownBodyWithoutMaterialPixels": 3822,
+            "unknownBodyPixels": 22901,
+            "bodyIoU": 0.5534743202416919,
+            "bodyPixelError": 0.13866541573824323,
+            "bodyFalseNegative": 0.00027285129604365623,
+            "backgroundFalsePositive": 0.16739838549780484,
+            "materialPhaseExchanged": false,
+            "materialPixelError": 0.10262257696693272,
+            "materialJointError": 0.10262257696693272,
+            "jointRegionPixelError": 0.16154381264009482,
+            "jointKnownPixels": 38813,
+            "perMaterial": {
+              "A": {
+                "observedMass": 1854.0,
+                "materialError": 0.0,
+                "jointError": 0.0
+              },
+              "B": {
+                "observedMass": 1654.0,
+                "materialError": 0.21765417170495768,
+                "jointError": 0.21765417170495768
+              }
+            },
+            "balancedMaterialJointError": 0.10882708585247884
+          },
+          {
+            "id": "real-cf2d0fcff65d7386-body-1",
+            "knownBodyPixels": 54061,
+            "knownMaterialPixels": 18704,
+            "knownBackgroundPixels": 26390,
+            "knownBodyWithoutMaterialPixels": 8967,
+            "unknownBodyPixels": 11475,
+            "bodyIoU": 0.9776415562327262,
+            "bodyPixelError": 0.011672000147980985,
+            "bodyFalseNegative": 0.0028911134400636043,
+            "backgroundFalsePositive": 0.020879120879120878,
+            "materialPhaseExchanged": true,
+            "materialPixelError": 0.0,
+            "materialJointError": 0.0,
+            "jointRegionPixelError": 0.01221892047722535,
+            "jointKnownPixels": 45094,
+            "perMaterial": {
+              "A": {
+                "observedMass": 9548.0,
+                "materialError": 0.0,
+                "jointError": 0.0
+              },
+              "B": {
+                "observedMass": 9156.0,
+                "materialError": 0.0,
+                "jointError": 0.0
+              }
+            },
+            "balancedMaterialJointError": 0.0
+          },
+          {
+            "id": "real-cdae5c890b6933cd-body-1",
+            "knownBodyPixels": 39406,
+            "knownMaterialPixels": 6051,
+            "knownBackgroundPixels": 30624,
+            "knownBodyWithoutMaterialPixels": 2731,
+            "unknownBodyPixels": 26130,
+            "bodyIoU": 0.753582663404404,
+            "bodyPixelError": 0.07156270618687509,
+            "bodyFalseNegative": 0.017991345934866773,
+            "backgroundFalsePositive": 0.08692528735632184,
+            "materialPhaseExchanged": false,
+            "materialPixelError": 0.45744505040489175,
+            "materialJointError": 0.4663691951743513,
+            "jointRegionPixelError": 0.14952965235173823,
+            "jointKnownPixels": 36675,
+            "perMaterial": {
+              "A": {
+                "observedMass": 2822.0,
+                "materialError": 0.9808646350106307,
+                "jointError": 1.0
+              },
+              "B": {
+                "observedMass": 3229.0,
+                "materialError": 0.0,
+                "jointError": 0.0
+              }
+            },
+            "balancedMaterialJointError": 0.5
+          },
+          {
+            "id": "real-68d8f25d8891df62-body-1",
+            "knownBodyPixels": 46548,
+            "knownMaterialPixels": 12626,
+            "knownBackgroundPixels": 24337,
+            "knownBodyWithoutMaterialPixels": 9585,
+            "unknownBodyPixels": 18988,
+            "bodyIoU": 0.7495229371803679,
+            "bodyPixelError": 0.14099424250236314,
+            "bodyFalseNegative": 0.11579847823150691,
+            "backgroundFalsePositive": 0.16398898796071826,
+            "materialPhaseExchanged": true,
+            "materialPixelError": 0.000792016473942658,
+            "materialJointError": 0.11634722002217646,
+            "jointRegionPixelError": 0.147715282850418,
+            "jointKnownPixels": 36963,
+            "perMaterial": {
+              "A": {
+                "observedMass": 5055.0,
+                "materialError": 0.0,
+                "jointError": 0.0
+              },
+              "B": {
+                "observedMass": 7571.0,
+                "materialError": 0.001320829480914014,
+                "jointError": 0.19402985074626866
+              }
+            },
+            "balancedMaterialJointError": 0.09701492537313433
+          },
+          {
+            "id": "real-5330aa8b62176216-body-1",
+            "knownBodyPixels": 61149,
+            "knownMaterialPixels": 8137,
+            "knownBackgroundPixels": 28647,
+            "knownBodyWithoutMaterialPixels": 24365,
+            "unknownBodyPixels": 4387,
+            "bodyIoU": 0.9352107491257132,
+            "bodyPixelError": 0.03453858607663249,
+            "bodyFalseNegative": 0.06202695218755769,
+            "backgroundFalsePositive": 0.003351136244632946,
+            "materialPhaseExchanged": true,
+            "materialPixelError": 0.23485313997787882,
+            "materialJointError": 0.23485313997787882,
+            "jointRegionPixelError": 0.05456176598521096,
+            "jointKnownPixels": 36784,
+            "perMaterial": {
+              "A": {
+                "observedMass": 4130.0,
+                "materialError": 0.007506053268765133,
+                "jointError": 0.007506053268765133
+              },
+              "B": {
+                "observedMass": 4007.0,
+                "materialError": 0.4691789368604941,
+                "jointError": 0.4691789368604941
+              }
+            },
+            "balancedMaterialJointError": 0.23834249506462962
+          },
+          {
+            "id": "real-abf590088db891f9-body-1",
+            "knownBodyPixels": 61162,
+            "knownMaterialPixels": 11135,
+            "knownBackgroundPixels": 29071,
+            "knownBodyWithoutMaterialPixels": 20956,
+            "unknownBodyPixels": 4374,
+            "bodyIoU": 0.9703671491582282,
+            "bodyPixelError": 0.01559792027729636,
+            "bodyFalseNegative": 0.026518338474961826,
+            "backgroundFalsePositive": 0.0035430497746895533,
+            "materialPhaseExchanged": false,
+            "materialPixelError": 0.1417153120790301,
+            "materialJointError": 0.1417153120790301,
+            "jointRegionPixelError": 0.04180968014724171,
+            "jointKnownPixels": 40206,
+            "perMaterial": {
+              "A": {
+                "observedMass": 7372.0,
+                "materialError": 0.17539338035811178,
+                "jointError": 0.17539338035811178
+              },
+              "B": {
+                "observedMass": 3763.0,
+                "materialError": 0.07573744352909913,
+                "jointError": 0.07573744352909913
+              }
+            },
+            "balancedMaterialJointError": 0.12556541194360546
+          },
+          {
+            "id": "real-990ac34431be87fe-body-1",
+            "knownBodyPixels": 48358,
+            "knownMaterialPixels": 3000,
+            "knownBackgroundPixels": 39084,
+            "knownBodyWithoutMaterialPixels": 6274,
+            "unknownBodyPixels": 17178,
+            "bodyIoU": 0.5968346253229975,
+            "bodyPixelError": 0.1290582737085901,
+            "bodyFalseNegative": 0.0037739918050463664,
+            "backgroundFalsePositive": 0.15878620407327806,
+            "materialPhaseExchanged": false,
+            "materialPixelError": 0.0,
+            "materialJointError": 0.011666666666666667,
+            "jointRegionPixelError": 0.14829864081361088,
+            "jointKnownPixels": 42084,
+            "perMaterial": {
+              "A": {
+                "observedMass": 1466.0,
+                "materialError": 0.0,
+                "jointError": 0.023874488403819918
+              },
+              "B": {
+                "observedMass": 1534.0,
+                "materialError": 0.0,
+                "jointError": 0.0
+              }
+            },
+            "balancedMaterialJointError": 0.011937244201909959
+          },
+          {
+            "id": "real-12ce3c9180f7f317-body-1",
+            "knownBodyPixels": 62394,
+            "knownMaterialPixels": 9116,
+            "knownBackgroundPixels": 33733,
+            "knownBodyWithoutMaterialPixels": 19545,
+            "unknownBodyPixels": 3142,
+            "bodyIoU": 0.9608532423208191,
+            "bodyPixelError": 0.018383177869666954,
+            "bodyFalseNegative": 0.017724433899724366,
+            "backgroundFalsePositive": 0.018942874929594167,
+            "materialPhaseExchanged": false,
+            "materialPixelError": 0.013053971039929793,
+            "materialJointError": 0.013053971039929793,
+            "jointRegionPixelError": 0.017690027771943336,
+            "jointKnownPixels": 42849,
+            "perMaterial": {
+              "A": {
+                "observedMass": 4188.0,
+                "materialError": 0.028414517669531996,
+                "jointError": 0.028414517669531996
+              },
+              "B": {
+                "observedMass": 4928.0,
+                "materialError": 0.0,
+                "jointError": 0.0
+              }
+            },
+            "balancedMaterialJointError": 0.014207258834765998
+          },
+          {
+            "id": "real-d5b0aa8d4d2465ee-body-1",
+            "knownBodyPixels": 42469,
+            "knownMaterialPixels": 4055,
+            "knownBackgroundPixels": 29909,
+            "knownBodyWithoutMaterialPixels": 8505,
+            "unknownBodyPixels": 23067,
+            "bodyIoU": 0.5458259093477033,
+            "bodyPixelError": 0.24608537992418,
+            "bodyFalseNegative": 0.0,
+            "backgroundFalsePositive": 0.3494265940018055,
+            "materialPhaseExchanged": false,
+            "materialPixelError": 0.17361282367447595,
+            "materialJointError": 0.17361282367447595,
+            "jointRegionPixelError": 0.32843599104934634,
+            "jointKnownPixels": 33964,
+            "perMaterial": {
+              "A": {
+                "observedMass": 1682.0,
+                "materialError": 0.0,
+                "jointError": 0.0
+              },
+              "B": {
+                "observedMass": 2373.0,
+                "materialError": 0.2966708807416772,
+                "jointError": 0.2966708807416772
+              }
+            },
+            "balancedMaterialJointError": 0.1483354403708386
+          },
+          {
+            "id": "real-39f3a1ba97852876-body-1",
+            "knownBodyPixels": 41367,
+            "knownMaterialPixels": 2057,
+            "knownBackgroundPixels": 32025,
+            "knownBodyWithoutMaterialPixels": 7285,
+            "unknownBodyPixels": 24169,
+            "bodyIoU": 0.35750382848392037,
+            "bodyPixelError": 0.40568569149321926,
+            "bodyFalseNegative": 0.00042817383857846286,
+            "backgroundFalsePositive": 0.5239032006245121,
+            "materialPhaseExchanged": false,
+            "materialPixelError": 0.3859990277102577,
+            "materialJointError": 0.3859990277102577,
+            "jointRegionPixelError": 0.5155800715920427,
+            "jointKnownPixels": 34082,
+            "perMaterial": {
+              "A": {
+                "observedMass": 1169.0,
+                "materialError": 0.0,
+                "jointError": 0.0
+              },
+              "B": {
+                "observedMass": 888.0,
+                "materialError": 0.8941441441441441,
+                "jointError": 0.8941441441441441
+              }
+            },
+            "balancedMaterialJointError": 0.44707207207207206
+          },
+          {
+            "id": "real-e936e08ac62db19b-body-1",
+            "knownBodyPixels": 35652,
+            "knownMaterialPixels": 5879,
+            "knownBackgroundPixels": 25907,
+            "knownBodyWithoutMaterialPixels": 3866,
+            "unknownBodyPixels": 29884,
+            "bodyIoU": 0.6502049318013842,
+            "bodyPixelError": 0.14602266352518792,
+            "bodyFalseNegative": 0.006977937403796819,
+            "backgroundFalsePositive": 0.19832477708727372,
+            "materialPhaseExchanged": false,
+            "materialPixelError": 0.47984351080115667,
+            "materialJointError": 0.47984351080115667,
+            "jointRegionPixelError": 0.25039325489209086,
+            "jointKnownPixels": 31786,
+            "perMaterial": {
+              "A": {
+                "observedMass": 2856.0,
+                "materialError": 0.0,
+                "jointError": 0.0
+              },
+              "B": {
+                "observedMass": 3023.0,
+                "materialError": 0.9331789612967251,
+                "jointError": 0.9331789612967251
+              }
+            },
+            "balancedMaterialJointError": 0.46658948064836253
+          },
+          {
+            "id": "real-340f5e5b0f447889-body-1",
+            "knownBodyPixels": 44003,
+            "knownMaterialPixels": 6363,
+            "knownBackgroundPixels": 31527,
+            "knownBodyWithoutMaterialPixels": 6113,
+            "unknownBodyPixels": 21533,
+            "bodyIoU": 0.6791892589723728,
+            "bodyPixelError": 0.11294684453332728,
+            "bodyFalseNegative": 0.15662071176659187,
+            "backgroundFalsePositive": 0.09566403400260094,
+            "materialPhaseExchanged": true,
+            "materialPixelError": 0.0022002200220022,
+            "materialJointError": 0.10215307245010215,
+            "jointRegionPixelError": 0.09675376088677752,
+            "jointKnownPixels": 37890,
+            "perMaterial": {
+              "A": {
+                "observedMass": 3609.0,
+                "materialError": 0.0038791909116098642,
+                "jointError": 0.15849265724577447
+              },
+              "B": {
+                "observedMass": 2754.0,
+                "materialError": 0.0,
+                "jointError": 0.02832244008714597
+              }
+            },
+            "balancedMaterialJointError": 0.09340754866646021
+          },
+          {
+            "id": "real-710703159f609111-body-1",
+            "knownBodyPixels": 42979,
+            "knownMaterialPixels": 5645,
+            "knownBackgroundPixels": 33714,
+            "knownBodyWithoutMaterialPixels": 3620,
+            "unknownBodyPixels": 22557,
+            "bodyIoU": 0.6383491801019705,
+            "bodyPixelError": 0.12212941203843737,
+            "bodyFalseNegative": 0.0,
+            "backgroundFalsePositive": 0.15569199738980838,
+            "materialPhaseExchanged": false,
+            "materialPixelError": 0.0,
+            "materialJointError": 0.0,
+            "jointRegionPixelError": 0.13336212810284814,
+            "jointKnownPixels": 39359,
+            "perMaterial": {
+              "A": {
+                "observedMass": 2959.0,
+                "materialError": 0.0,
+                "jointError": 0.0
+              },
+              "B": {
+                "observedMass": 2686.0,
+                "materialError": 0.0,
+                "jointError": 0.0
+              }
+            },
+            "balancedMaterialJointError": 0.0
+          },
+          {
+            "id": "real-a414dfffbd2362ae-body-1",
+            "knownBodyPixels": 42187,
+            "knownMaterialPixels": 7749,
+            "knownBackgroundPixels": 24940,
+            "knownBodyWithoutMaterialPixels": 9498,
+            "unknownBodyPixels": 23349,
+            "bodyIoU": 0.9580310302489117,
+            "bodyPixelError": 0.0178253964491431,
+            "bodyFalseNegative": 0.004696468951121934,
+            "backgroundFalsePositive": 0.02690457097032879,
+            "materialPhaseExchanged": false,
+            "materialPixelError": 0.4461220802684217,
+            "materialJointError": 0.4461220802684217,
+            "jointRegionPixelError": 0.1262810119612102,
+            "jointKnownPixels": 32689,
+            "perMaterial": {
+              "A": {
+                "observedMass": 4920.0,
+                "materialError": 0.475,
+                "jointError": 0.475
+              },
+              "B": {
+                "observedMass": 2829.0,
+                "materialError": 0.39589961117002476,
+                "jointError": 0.39589961117002476
+              }
+            },
+            "balancedMaterialJointError": 0.43544980558501234
+          }
+        ]
+      },
+      "candidate": {
+        "instances": 16,
+        "threshold": 0.5,
+        "phasePolicy": "One A/B exchange per image, selected from all known material pixels independently of predicted body; retained for joint scoring.",
+        "scope": "Partial known regions only. Unlabelled material is excluded from joint class scoring but remains in the separate body score. Missing body counts as a material joint error. Fractional labels score expected hard-classification disagreement. No complete-boundary, crop or cutting-template accuracy claim.",
+        "macroMean": {
+          "bodyIoU": 0.7457361665840682,
+          "bodyPixelError": 0.11352359764825452,
+          "bodyFalseNegative": 0.029781618334037318,
+          "backgroundFalsePositive": 0.13866654620182148,
+          "materialPixelError": 0.1502459549718919,
+          "materialJointError": 0.16545684097499092,
+          "jointRegionPixelError": 0.15392864847582288,
+          "balancedMaterialJointError": 0.165143902125283
+        },
+        "contributingInstances": {
+          "bodyIoU": 16,
+          "bodyPixelError": 16,
+          "bodyFalseNegative": 16,
+          "backgroundFalsePositive": 16,
+          "materialPixelError": 16,
+          "materialJointError": 16,
+          "jointRegionPixelError": 16,
+          "balancedMaterialJointError": 16
+        },
+        "rows": [
+          {
+            "id": "real-8c875dd0f298b5a4-body-1",
+            "knownBodyPixels": 62862,
+            "knownMaterialPixels": 15062,
+            "knownBackgroundPixels": 37026,
+            "knownBodyWithoutMaterialPixels": 10774,
+            "unknownBodyPixels": 2674,
+            "bodyIoU": 0.9330597123347377,
+            "bodyPixelError": 0.02931818904902803,
+            "bodyFalseNegative": 0.00568973525313516,
+            "backgroundFalsePositive": 0.04580565008372495,
+            "materialPhaseExchanged": false,
+            "materialPixelError": 0.4885805337936529,
+            "materialJointError": 0.4885805337936529,
+            "jointRegionPixelError": 0.17384042389801874,
+            "jointKnownPixels": 52088,
+            "perMaterial": {
+              "A": {
+                "observedMass": 7522.0,
+                "materialError": 0.00013294336612603032,
+                "jointError": 0.00013294336612603032
+              },
+              "B": {
+                "observedMass": 7540.0,
+                "materialError": 0.9758620689655172,
+                "jointError": 0.9758620689655172
+              }
+            },
+            "balancedMaterialJointError": 0.4879975061658216
+          },
+          {
+            "id": "real-995899fe049540ed-body-1",
+            "knownBodyPixels": 53791,
+            "knownMaterialPixels": 15731,
+            "knownBackgroundPixels": 28584,
+            "knownBodyWithoutMaterialPixels": 9476,
+            "unknownBodyPixels": 11745,
+            "bodyIoU": 0.955436788680406,
+            "bodyPixelError": 0.021546355338253612,
+            "bodyFalseNegative": 0.014202404094100845,
+            "backgroundFalsePositive": 0.028022670025188916,
+            "materialPhaseExchanged": true,
+            "materialPixelError": 0.10654122433411735,
+            "materialJointError": 0.11156315555273028,
+            "jointRegionPixelError": 0.05767798713753808,
+            "jointKnownPixels": 44315,
+            "perMaterial": {
+              "A": {
+                "observedMass": 7196.0,
+                "materialError": 0.031545302946081155,
+                "jointError": 0.031545302946081155
+              },
+              "B": {
+                "observedMass": 8535.0,
+                "materialError": 0.16977152899824252,
+                "jointError": 0.17902753368482718
+              }
+            },
+            "balancedMaterialJointError": 0.10528641831545417
+          },
+          {
+            "id": "real-b87b0b19f12724f3-body-1",
+            "knownBodyPixels": 42635,
+            "knownMaterialPixels": 3508,
+            "knownBackgroundPixels": 35305,
+            "knownBodyWithoutMaterialPixels": 3822,
+            "unknownBodyPixels": 22901,
+            "bodyIoU": 0.40589506343841764,
+            "bodyPixelError": 0.251506977835112,
+            "bodyFalseNegative": 0.0005457025920873125,
+            "backgroundFalsePositive": 0.30361138648916586,
+            "materialPhaseExchanged": false,
+            "materialPixelError": 0.27052451539338657,
+            "materialJointError": 0.27052451539338657,
+            "jointRegionPixelError": 0.3006209259784093,
+            "jointKnownPixels": 38813,
+            "perMaterial": {
+              "A": {
+                "observedMass": 1854.0,
+                "materialError": 0.0,
+                "jointError": 0.0
+              },
+              "B": {
+                "observedMass": 1654.0,
+                "materialError": 0.5737605804111245,
+                "jointError": 0.5737605804111245
+              }
+            },
+            "balancedMaterialJointError": 0.28688029020556227
+          },
+          {
+            "id": "real-cf2d0fcff65d7386-body-1",
+            "knownBodyPixels": 54061,
+            "knownMaterialPixels": 18704,
+            "knownBackgroundPixels": 26390,
+            "knownBodyWithoutMaterialPixels": 8967,
+            "unknownBodyPixels": 11475,
+            "bodyIoU": 0.9827672506256704,
+            "bodyPixelError": 0.008915854312720815,
+            "bodyFalseNegative": 0.0066134219941454955,
+            "backgroundFalsePositive": 0.011330049261083743,
+            "materialPhaseExchanged": true,
+            "materialPixelError": 0.0,
+            "materialJointError": 0.000213857998289136,
+            "jointRegionPixelError": 0.0067192974675123075,
+            "jointKnownPixels": 45094,
+            "perMaterial": {
+              "A": {
+                "observedMass": 9548.0,
+                "materialError": 0.0,
+                "jointError": 0.0
+              },
+              "B": {
+                "observedMass": 9156.0,
+                "materialError": 0.0,
+                "jointError": 0.00043687199650502403
+              }
+            },
+            "balancedMaterialJointError": 0.00021843599825251202
+          },
+          {
+            "id": "real-cdae5c890b6933cd-body-1",
+            "knownBodyPixels": 39406,
+            "knownMaterialPixels": 6051,
+            "knownBackgroundPixels": 30624,
+            "knownBodyWithoutMaterialPixels": 2731,
+            "unknownBodyPixels": 26130,
+            "bodyIoU": 0.7619678502031443,
+            "bodyPixelError": 0.06839060041618028,
+            "bodyFalseNegative": 0.017649738100660443,
+            "backgroundFalsePositive": 0.08294148380355276,
+            "materialPhaseExchanged": false,
+            "materialPixelError": 0.46174186084944635,
+            "materialJointError": 0.46554288547347544,
+            "jointRegionPixelError": 0.14606680299931835,
+            "jointKnownPixels": 36675,
+            "perMaterial": {
+              "A": {
+                "observedMass": 2822.0,
+                "materialError": 0.9900779588944011,
+                "jointError": 0.9982282069454288
+              },
+              "B": {
+                "observedMass": 3229.0,
+                "materialError": 0.0,
+                "jointError": 0.0
+              }
+            },
+            "balancedMaterialJointError": 0.4991141034727144
+          },
+          {
+            "id": "real-68d8f25d8891df62-body-1",
+            "knownBodyPixels": 46548,
+            "knownMaterialPixels": 12626,
+            "knownBackgroundPixels": 24337,
+            "knownBodyWithoutMaterialPixels": 9585,
+            "unknownBodyPixels": 18988,
+            "bodyIoU": 0.7593728436709346,
+            "bodyPixelError": 0.1348500472630403,
+            "bodyFalseNegative": 0.10814461302957994,
+            "backgroundFalsePositive": 0.15922258289846736,
+            "materialPhaseExchanged": true,
+            "materialPixelError": 0.0,
+            "materialJointError": 0.10319974655472834,
+            "jointRegionPixelError": 0.14008603197792388,
+            "jointKnownPixels": 36963,
+            "perMaterial": {
+              "A": {
+                "observedMass": 5055.0,
+                "materialError": 0.0,
+                "jointError": 0.0
+              },
+              "B": {
+                "observedMass": 7571.0,
+                "materialError": 0.0,
+                "jointError": 0.17210408136309602
+              }
+            },
+            "balancedMaterialJointError": 0.08605204068154801
+          },
+          {
+            "id": "real-5330aa8b62176216-body-1",
+            "knownBodyPixels": 61149,
+            "knownMaterialPixels": 8137,
+            "knownBackgroundPixels": 28647,
+            "knownBodyWithoutMaterialPixels": 24365,
+            "unknownBodyPixels": 4387,
+            "bodyIoU": 0.9368514766378093,
+            "bodyPixelError": 0.03363914373088685,
+            "bodyFalseNegative": 0.061073164728324414,
+            "backgroundFalsePositive": 0.0025133521834747093,
+            "materialPhaseExchanged": true,
+            "materialPixelError": 0.11576748187292614,
+            "materialJointError": 0.11576748187292614,
+            "jointRegionPixelError": 0.027566333188342756,
+            "jointKnownPixels": 36784,
+            "perMaterial": {
+              "A": {
+                "observedMass": 4130.0,
+                "materialError": 0.004116222760290557,
+                "jointError": 0.004116222760290557
+              },
+              "B": {
+                "observedMass": 4007.0,
+                "materialError": 0.2308460194659346,
+                "jointError": 0.2308460194659346
+              }
+            },
+            "balancedMaterialJointError": 0.11748112111311258
+          },
+          {
+            "id": "real-abf590088db891f9-body-1",
+            "knownBodyPixels": 61162,
+            "knownMaterialPixels": 11135,
+            "knownBackgroundPixels": 29071,
+            "knownBodyWithoutMaterialPixels": 20956,
+            "unknownBodyPixels": 4374,
+            "bodyIoU": 0.9694618428842978,
+            "bodyPixelError": 0.016023020829927077,
+            "bodyFalseNegative": 0.030538157115702222,
+            "backgroundFalsePositive": 0.0,
+            "materialPhaseExchanged": false,
+            "materialPixelError": 0.09941625505163898,
+            "materialJointError": 0.09995509654243377,
+            "jointRegionPixelError": 0.02768243545739442,
+            "jointKnownPixels": 40206,
+            "perMaterial": {
+              "A": {
+                "observedMass": 7372.0,
+                "materialError": 0.1101465002712968,
+                "jointError": 0.1101465002712968
+              },
+              "B": {
+                "observedMass": 3763.0,
+                "materialError": 0.07839489768801489,
+                "jointError": 0.07998937018336434
+              }
+            },
+            "balancedMaterialJointError": 0.09506793522733056
+          },
+          {
+            "id": "real-990ac34431be87fe-body-1",
+            "knownBodyPixels": 48358,
+            "knownMaterialPixels": 3000,
+            "knownBackgroundPixels": 39084,
+            "knownBodyWithoutMaterialPixels": 6274,
+            "unknownBodyPixels": 17178,
+            "bodyIoU": 0.5790919877599451,
+            "bodyPixelError": 0.13937714545680135,
+            "bodyFalseNegative": 0.00010782833728703904,
+            "backgroundFalsePositive": 0.1724234981066421,
+            "materialPhaseExchanged": false,
+            "materialPixelError": 0.0,
+            "materialJointError": 0.0,
+            "jointRegionPixelError": 0.16013211671894306,
+            "jointKnownPixels": 42084,
+            "perMaterial": {
+              "A": {
+                "observedMass": 1466.0,
+                "materialError": 0.0,
+                "jointError": 0.0
+              },
+              "B": {
+                "observedMass": 1534.0,
+                "materialError": 0.0,
+                "jointError": 0.0
+              }
+            },
+            "balancedMaterialJointError": 0.0
+          },
+          {
+            "id": "real-12ce3c9180f7f317-body-1",
+            "knownBodyPixels": 62394,
+            "knownMaterialPixels": 9116,
+            "knownBackgroundPixels": 33733,
+            "knownBodyWithoutMaterialPixels": 19545,
+            "unknownBodyPixels": 3142,
+            "bodyIoU": 0.9725767506036564,
+            "bodyPixelError": 0.012741609770170208,
+            "bodyFalseNegative": 0.016259027947384947,
+            "backgroundFalsePositive": 0.009753060800996057,
+            "materialPhaseExchanged": false,
+            "materialPixelError": 0.0,
+            "materialJointError": 0.0,
+            "jointRegionPixelError": 0.007678125510513664,
+            "jointKnownPixels": 42849,
+            "perMaterial": {
+              "A": {
+                "observedMass": 4188.0,
+                "materialError": 0.0,
+                "jointError": 0.0
+              },
+              "B": {
+                "observedMass": 4928.0,
+                "materialError": 0.0,
+                "jointError": 0.0
+              }
+            },
+            "balancedMaterialJointError": 0.0
+          },
+          {
+            "id": "real-d5b0aa8d4d2465ee-body-1",
+            "knownBodyPixels": 42469,
+            "knownMaterialPixels": 4055,
+            "knownBackgroundPixels": 29909,
+            "knownBodyWithoutMaterialPixels": 8505,
+            "unknownBodyPixels": 23067,
+            "bodyIoU": 0.567837605678376,
+            "bodyPixelError": 0.22508182438955474,
+            "bodyFalseNegative": 0.0,
+            "backgroundFalsePositive": 0.319602795145274,
+            "materialPhaseExchanged": false,
+            "materialPixelError": 0.0,
+            "materialJointError": 0.0,
+            "jointRegionPixelError": 0.28144505947473797,
+            "jointKnownPixels": 33964,
+            "perMaterial": {
+              "A": {
+                "observedMass": 1682.0,
+                "materialError": 0.0,
+                "jointError": 0.0
+              },
+              "B": {
+                "observedMass": 2373.0,
+                "materialError": 0.0,
+                "jointError": 0.0
+              }
+            },
+            "balancedMaterialJointError": 0.0
+          },
+          {
+            "id": "real-39f3a1ba97852876-body-1",
+            "knownBodyPixels": 41367,
+            "knownMaterialPixels": 2057,
+            "knownBackgroundPixels": 32025,
+            "knownBodyWithoutMaterialPixels": 7285,
+            "unknownBodyPixels": 24169,
+            "bodyIoU": 0.39926489443542185,
+            "bodyPixelError": 0.33978775352333984,
+            "bodyFalseNegative": 0.0,
+            "backgroundFalsePositive": 0.4389071038251366,
+            "materialPhaseExchanged": false,
+            "materialPixelError": 0.06903257170636849,
+            "materialJointError": 0.06903257170636849,
+            "jointRegionPixelError": 0.41658353383017427,
+            "jointKnownPixels": 34082,
+            "perMaterial": {
+              "A": {
+                "observedMass": 1169.0,
+                "materialError": 0.0,
+                "jointError": 0.0
+              },
+              "B": {
+                "observedMass": 888.0,
+                "materialError": 0.15990990990990991,
+                "jointError": 0.15990990990990991
+              }
+            },
+            "balancedMaterialJointError": 0.07995495495495496
+          },
+          {
+            "id": "real-e936e08ac62db19b-body-1",
+            "knownBodyPixels": 35652,
+            "knownMaterialPixels": 5879,
+            "knownBackgroundPixels": 25907,
+            "knownBodyWithoutMaterialPixels": 3866,
+            "unknownBodyPixels": 29884,
+            "bodyIoU": 0.5422167293972249,
+            "bodyPixelError": 0.2285706271737911,
+            "bodyFalseNegative": 0.009543355566957413,
+            "backgroundFalsePositive": 0.31095842822403214,
+            "materialPhaseExchanged": true,
+            "materialPixelError": 0.49991495152236776,
+            "materialJointError": 0.49991495152236776,
+            "jointRegionPixelError": 0.34590700308311834,
+            "jointKnownPixels": 31786,
+            "perMaterial": {
+              "A": {
+                "observedMass": 2856.0,
+                "materialError": 1.0,
+                "jointError": 1.0
+              },
+              "B": {
+                "observedMass": 3023.0,
+                "materialError": 0.027456169368177307,
+                "jointError": 0.027456169368177307
+              }
+            },
+            "balancedMaterialJointError": 0.5137280846840887
+          },
+          {
+            "id": "real-340f5e5b0f447889-body-1",
+            "knownBodyPixels": 44003,
+            "knownMaterialPixels": 6363,
+            "knownBackgroundPixels": 31527,
+            "knownBodyWithoutMaterialPixels": 6113,
+            "unknownBodyPixels": 21533,
+            "bodyIoU": 0.6286874325953181,
+            "bodyPixelError": 0.13301365815967092,
+            "bodyFalseNegative": 0.20567489579993586,
+            "backgroundFalsePositive": 0.1042598407714023,
+            "materialPhaseExchanged": true,
+            "materialPixelError": 0.006443501493006444,
+            "materialJointError": 0.13704227565613705,
+            "jointRegionPixelError": 0.10976510952757984,
+            "jointKnownPixels": 37890,
+            "perMaterial": {
+              "A": {
+                "observedMass": 3609.0,
+                "materialError": 0.011360487669714602,
+                "jointError": 0.17373233582709893
+              },
+              "B": {
+                "observedMass": 2754.0,
+                "materialError": 0.0,
+                "jointError": 0.08896151053013798
+              }
+            },
+            "balancedMaterialJointError": 0.13134692317861846
+          },
+          {
+            "id": "real-710703159f609111-body-1",
+            "knownBodyPixels": 42979,
+            "knownMaterialPixels": 5645,
+            "knownBackgroundPixels": 33714,
+            "knownBodyWithoutMaterialPixels": 3620,
+            "unknownBodyPixels": 22557,
+            "bodyIoU": 0.5838059231253938,
+            "bodyPixelError": 0.15367970404150863,
+            "bodyFalseNegative": 0.0,
+            "backgroundFalsePositive": 0.1959126772260782,
+            "materialPhaseExchanged": false,
+            "materialPixelError": 0.0,
+            "materialJointError": 0.0,
+            "jointRegionPixelError": 0.16781422292233034,
+            "jointKnownPixels": 39359,
+            "perMaterial": {
+              "A": {
+                "observedMass": 2959.0,
+                "materialError": 0.0,
+                "jointError": 0.0
+              },
+              "B": {
+                "observedMass": 2686.0,
+                "materialError": 0.0,
+                "jointError": 0.0
+              }
+            },
+            "balancedMaterialJointError": 0.0
+          },
+          {
+            "id": "real-a414dfffbd2362ae-body-1",
+            "knownBodyPixels": 42187,
+            "knownMaterialPixels": 7749,
+            "knownBackgroundPixels": 24940,
+            "knownBodyWithoutMaterialPixels": 9498,
+            "unknownBodyPixels": 23349,
+            "bodyIoU": 0.9534845132743363,
+            "bodyPixelError": 0.0199350510820869,
+            "bodyFalseNegative": 0.0004638487852959935,
+            "backgroundFalsePositive": 0.03340016038492382,
+            "materialPhaseExchanged": false,
+            "materialPixelError": 0.28597238353335913,
+            "materialJointError": 0.28597238353335913,
+            "jointRegionPixelError": 0.09327296644131053,
+            "jointKnownPixels": 32689,
+            "perMaterial": {
+              "A": {
+                "observedMass": 4920.0,
+                "materialError": 0.41260162601626016,
+                "jointError": 0.41260162601626016
+              },
+              "B": {
+                "observedMass": 2829.0,
+                "materialError": 0.06574761399787911,
+                "jointError": 0.06574761399787911
+              }
+            },
+            "balancedMaterialJointError": 0.23917462000706963
+          }
+        ]
+      }
+    },
+    "originalForeground": {
+      "bodyIoU": 0.851129964094129,
+      "bodyPixelError": 0.05262164159222914,
+      "bodyFalseNegative": 0.0425429951302813,
+      "backgroundFalsePositive": 0.04744024267322653,
+      "materialPixelError": 0.4480661828740682,
+      "materialJointError": 0.4625343710326567,
+      "jointRegionPixelError": 0.1377521119564264,
+      "balancedMaterialJointError": 0.5125089004628542
+    },
+    "auditRuns": {
+      "baseline": [
+        {
+          "run": "synthetic-control",
+          "updates": 240,
+          "heldOutIds": [
+            "real-8c875dd0f298b5a4-body-1",
+            "real-995899fe049540ed-body-1",
+            "real-b87b0b19f12724f3-body-1",
+            "real-cf2d0fcff65d7386-body-1",
+            "real-cdae5c890b6933cd-body-1",
+            "real-68d8f25d8891df62-body-1",
+            "real-5330aa8b62176216-body-1",
+            "real-abf590088db891f9-body-1",
+            "real-990ac34431be87fe-body-1",
+            "real-12ce3c9180f7f317-body-1",
+            "real-d5b0aa8d4d2465ee-body-1",
+            "real-39f3a1ba97852876-body-1",
+            "real-e936e08ac62db19b-body-1",
+            "real-340f5e5b0f447889-body-1",
+            "real-710703159f609111-body-1",
+            "real-a414dfffbd2362ae-body-1"
+          ],
+          "sourceSeparationPassed": true,
+          "encoderTensorsIdentical": true,
+          "frozenParametersAndAllBuffersIdentical": true,
+          "trainableEncoderTailBlocks": 0,
+          "checkpointPredictionsMaxAbsoluteDifference": 0.0
+        },
+        {
+          "run": "fold-dd50f2256463",
+          "updates": 240,
+          "heldOutIds": [
+            "real-12ce3c9180f7f317-body-1",
+            "real-39f3a1ba97852876-body-1",
+            "real-68d8f25d8891df62-body-1",
+            "real-710703159f609111-body-1",
+            "real-8c875dd0f298b5a4-body-1",
+            "real-990ac34431be87fe-body-1",
+            "real-995899fe049540ed-body-1",
+            "real-a414dfffbd2362ae-body-1",
+            "real-b87b0b19f12724f3-body-1",
+            "real-cdae5c890b6933cd-body-1",
+            "real-cf2d0fcff65d7386-body-1",
+            "real-d5b0aa8d4d2465ee-body-1",
+            "real-e936e08ac62db19b-body-1"
+          ],
+          "sourceSeparationPassed": true,
+          "encoderTensorsIdentical": true,
+          "frozenParametersAndAllBuffersIdentical": true,
+          "trainableEncoderTailBlocks": 0,
+          "checkpointPredictionsMaxAbsoluteDifference": 0.0
+        },
+        {
+          "run": "fold-6fd50470fcff",
+          "updates": 240,
+          "heldOutIds": [
+            "real-340f5e5b0f447889-body-1",
+            "real-5330aa8b62176216-body-1",
+            "real-abf590088db891f9-body-1"
+          ],
+          "sourceSeparationPassed": true,
+          "encoderTensorsIdentical": true,
+          "frozenParametersAndAllBuffersIdentical": true,
+          "trainableEncoderTailBlocks": 0,
+          "checkpointPredictionsMaxAbsoluteDifference": 0.0
+        }
+      ],
+      "candidate": [
+        {
+          "run": "synthetic-control",
+          "updates": 240,
+          "heldOutIds": [
+            "real-8c875dd0f298b5a4-body-1",
+            "real-995899fe049540ed-body-1",
+            "real-b87b0b19f12724f3-body-1",
+            "real-cf2d0fcff65d7386-body-1",
+            "real-cdae5c890b6933cd-body-1",
+            "real-68d8f25d8891df62-body-1",
+            "real-5330aa8b62176216-body-1",
+            "real-abf590088db891f9-body-1",
+            "real-990ac34431be87fe-body-1",
+            "real-12ce3c9180f7f317-body-1",
+            "real-d5b0aa8d4d2465ee-body-1",
+            "real-39f3a1ba97852876-body-1",
+            "real-e936e08ac62db19b-body-1",
+            "real-340f5e5b0f447889-body-1",
+            "real-710703159f609111-body-1",
+            "real-a414dfffbd2362ae-body-1"
+          ],
+          "sourceSeparationPassed": true,
+          "encoderTensorsIdentical": false,
+          "frozenParametersAndAllBuffersIdentical": true,
+          "trainableEncoderTailBlocks": 3,
+          "checkpointPredictionsMaxAbsoluteDifference": 0.0
+        },
+        {
+          "run": "fold-dd50f2256463",
+          "updates": 240,
+          "heldOutIds": [
+            "real-12ce3c9180f7f317-body-1",
+            "real-39f3a1ba97852876-body-1",
+            "real-68d8f25d8891df62-body-1",
+            "real-710703159f609111-body-1",
+            "real-8c875dd0f298b5a4-body-1",
+            "real-990ac34431be87fe-body-1",
+            "real-995899fe049540ed-body-1",
+            "real-a414dfffbd2362ae-body-1",
+            "real-b87b0b19f12724f3-body-1",
+            "real-cdae5c890b6933cd-body-1",
+            "real-cf2d0fcff65d7386-body-1",
+            "real-d5b0aa8d4d2465ee-body-1",
+            "real-e936e08ac62db19b-body-1"
+          ],
+          "sourceSeparationPassed": true,
+          "encoderTensorsIdentical": false,
+          "frozenParametersAndAllBuffersIdentical": true,
+          "trainableEncoderTailBlocks": 3,
+          "checkpointPredictionsMaxAbsoluteDifference": 0.0
+        },
+        {
+          "run": "fold-6fd50470fcff",
+          "updates": 240,
+          "heldOutIds": [
+            "real-340f5e5b0f447889-body-1",
+            "real-5330aa8b62176216-body-1",
+            "real-abf590088db891f9-body-1"
+          ],
+          "sourceSeparationPassed": true,
+          "encoderTensorsIdentical": false,
+          "frozenParametersAndAllBuffersIdentical": true,
+          "trainableEncoderTailBlocks": 3,
+          "checkpointPredictionsMaxAbsoluteDifference": 0.0
+        }
+      ]
+    }
+  },
+  "pipelineSummary": {
+    "paired": {
+      "production": {
+        "attempted": 16,
+        "crops": 9,
+        "supported": 7,
+        "checkedPairs": 7,
+        "editableConversions": 9,
+        "checkedEditable": 7
+      },
+      "baseline": {
+        "attempted": 16,
+        "crops": 1,
+        "supported": 1,
+        "checkedPairs": 1,
+        "editableConversions": 1,
+        "checkedEditable": 1
+      },
+      "candidate": {
+        "attempted": 16,
+        "crops": 2,
+        "supported": 2,
+        "checkedPairs": 2,
+        "editableConversions": 2,
+        "checkedEditable": 2
+      }
+    },
+    "preserved-body": {
+      "preserved-body": {
+        "attempted": 16,
+        "crops": 5,
+        "supported": 5,
+        "checkedPairs": 3,
+        "editableConversions": 5,
+        "checkedEditable": 3
+      }
+    },
+    "rgb-on-fixed-crops": {
+      "preserved-body": {
+        "attempted": 16,
+        "crops": 5,
+        "supported": 5,
+        "checkedPairs": 5,
+        "editableConversions": 5,
+        "checkedEditable": 5
+      }
+    }
+  },
+  "rows": [
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "method": "production",
+      "status": "checked-derived-mask",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 7.006403167,
+      "solveSeconds": 9.860537832999999,
+      "targetMaskSha256": "b805854844d2bebac7c86355dfed863761938ca7481074402f7f6f6afcabacec",
+      "observedPixels": 160000,
+      "resolution": 400,
+      "independentImage": {
+        "mismatchPixels": 2085,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.01303125
+      },
+      "checkedPair": true,
+      "experiment": "paired",
+      "quad": [
+        [
+          224.45495119156305,
+          137.4128323064443
+        ],
+        [
+          370.0538169672117,
+          285.445582877683
+        ],
+        [
+          226.87815678887938,
+          438.7762878539664
+        ],
+        [
+          73.0066796516785,
+          283.5499960477391
+        ]
+      ],
+      "cropReason": null,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "editableError": 0.0131875,
+        "missingFeatures": 0,
+        "editorIssues": [],
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "method": "baseline",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.1740948339999995,
+      "experiment": "paired",
+      "cropReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "method": "candidate",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 1.9432736250000016,
+      "experiment": "paired",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.5555555555555556,
+          0.75
+        ],
+        "capColourLoss": [
+          0.08028513030518572,
+          0.8268509783908696
+        ],
+        "lowerEdgeSupport": [
+          0.5565217391304348,
+          0.7391304347826086
+        ]
+      }
+    },
+    {
+      "id": "real-995899fe049540ed-body-1",
+      "method": "baseline",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.6403598330000024,
+      "experiment": "paired",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.6388888888888888,
+          0.8055555555555556
+        ],
+        "capColourLoss": [
+          0.363682746999077,
+          0.11253241791546083
+        ],
+        "lowerEdgeSupport": [
+          0.711764705882353,
+          0.6470588235294118
+        ]
+      }
+    },
+    {
+      "id": "real-995899fe049540ed-body-1",
+      "method": "candidate",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.5951314170000006,
+      "experiment": "paired",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.8333333333333334,
+          0.9722222222222222
+        ],
+        "capColourLoss": [
+          0.32117621400140633,
+          0.09315203244423478
+        ],
+        "lowerEdgeSupport": [
+          0.8235294117647058,
+          0.5529411764705883
+        ]
+      }
+    },
+    {
+      "id": "real-995899fe049540ed-body-1",
+      "method": "production",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_selection",
+      "supported": false,
+      "cropSeconds": 5.706126333999997,
+      "experiment": "paired",
+      "cropReason": "Crowded frame: select one heart with a rough rectangle"
+    },
+    {
+      "id": "real-b87b0b19f12724f3-body-1",
+      "method": "candidate",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.181699458999996,
+      "experiment": "paired",
+      "cropReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-b87b0b19f12724f3-body-1",
+      "method": "production",
+      "status": "checked-derived-mask",
+      "cropStatus": "needs_review",
+      "supported": true,
+      "cropSeconds": 0.6856398750000008,
+      "solveSeconds": 6.058872000000003,
+      "targetMaskSha256": "7927f64f7fe34bf8a032a74033ac0d8c461d342a291ed084a7b1006da3482327",
+      "observedPixels": 160000,
+      "resolution": 400,
+      "independentImage": {
+        "mismatchPixels": 701,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.00438125
+      },
+      "checkedPair": true,
+      "experiment": "paired",
+      "quad": [
+        [
+          259.5347172811974,
+          132.1654881930686
+        ],
+        [
+          392.3723299168315,
+          204.61306586222383
+        ],
+        [
+          295.3334686327696,
+          366.36309155299807
+        ],
+        [
+          176.62154371657877,
+          270.74989478409066
+        ]
+      ],
+      "cropReason": null,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "editableError": 0.0041875,
+        "missingFeatures": 0,
+        "editorIssues": [],
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "real-b87b0b19f12724f3-body-1",
+      "method": "baseline",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.3751027079999987,
+      "experiment": "paired",
+      "cropReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-cf2d0fcff65d7386-body-1",
+      "method": "production",
+      "status": "checked-derived-mask",
+      "cropStatus": "needs_review",
+      "supported": true,
+      "cropSeconds": 1.5308202079999973,
+      "solveSeconds": 9.553791291000001,
+      "targetMaskSha256": "29f55a740950c82da7b07cfda258e958f298f0bea923fa373a3b8244fd571f33",
+      "observedPixels": 159867,
+      "resolution": 400,
+      "independentImage": {
+        "mismatchPixels": 2358,
+        "observedPixels": 159867,
+        "observedFraction": 0.99916875,
+        "mismatchFraction": 0.014749760738613973,
+        "weightMass": 159867,
+        "mismatchWeight": 2358,
+        "wholeMismatchFraction": 0.014749760738613973,
+        "protectedPixels": 159867,
+        "protectedMismatchFraction": 0.014749760738613973,
+        "editablePixels": 0,
+        "editableChangeFraction": null
+      },
+      "checkedPair": true,
+      "experiment": "paired",
+      "quad": [
+        [
+          266.49549768022433,
+          94.01529671551302
+        ],
+        [
+          520.154319222353,
+          243.01178263286027
+        ],
+        [
+          350.72945602307533,
+          524.609026678625
+        ],
+        [
+          85.88778965600073,
+          321.0547414773106
+        ]
+      ],
+      "cropReason": null,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "editableError": 0.014799802335691543,
+        "missingFeatures": 0,
+        "editorIssues": [],
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "real-cf2d0fcff65d7386-body-1",
+      "method": "baseline",
+      "status": "checked-derived-mask",
+      "cropStatus": "needs_review",
+      "supported": true,
+      "cropSeconds": 0.40719366699999954,
+      "solveSeconds": 9.805608166000006,
+      "targetMaskSha256": "87f02b493ed9d32878071ea8e784bf4339938a44e9814d016a18a9d22109d0b1",
+      "observedPixels": 159999,
+      "resolution": 400,
+      "independentImage": {
+        "mismatchPixels": 1459,
+        "observedPixels": 159999,
+        "observedFraction": 0.99999375,
+        "mismatchFraction": 0.009118806992543704,
+        "weightMass": 159999,
+        "mismatchWeight": 1459,
+        "wholeMismatchFraction": 0.009118806992543704,
+        "protectedPixels": 159999,
+        "protectedMismatchFraction": 0.009118806992543704,
+        "editablePixels": 0,
+        "editableChangeFraction": null
+      },
+      "checkedPair": true,
+      "experiment": "paired",
+      "quad": [
+        [
+          273.37842509204245,
+          87.12228559976523
+        ],
+        [
+          522.3255740080765,
+          249.61949772194424
+        ],
+        [
+          331.03391315749536,
+          514.1802280531657
+        ],
+        [
+          91.7554381025493,
+          323.3739981778577
+        ]
+      ],
+      "cropReason": null,
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.6944444444444444,
+          1
+        ],
+        "capColourLoss": [
+          0.07393539325798422,
+          0.04789639374860795
+        ],
+        "lowerEdgeSupport": [
+          0.7,
+          1
+        ]
+      },
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "editableError": 0.009193807461296633,
+        "missingFeatures": 0,
+        "editorIssues": [],
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "real-cf2d0fcff65d7386-body-1",
+      "method": "candidate",
+      "status": "checked-derived-mask",
+      "cropStatus": "candidate",
+      "supported": true,
+      "cropSeconds": 0.7560282920000027,
+      "solveSeconds": 9.537545125000005,
+      "targetMaskSha256": "413a7cc9e7a031fb66f7c5e27e5f3021144d4a563c5775c014b476bc40d075e1",
+      "observedPixels": 160000,
+      "resolution": 400,
+      "independentImage": {
+        "mismatchPixels": 1098,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.0068625
+      },
+      "checkedPair": true,
+      "experiment": "paired",
+      "quad": [
+        [
+          273.65475159619496,
+          89.33965321144129
+        ],
+        [
+          519.4926030076535,
+          253.3877006883346
+        ],
+        [
+          332.643054704558,
+          512.4036374295263
+        ],
+        [
+          90.24685732182398,
+          323.00652796513094
+        ]
+      ],
+      "cropReason": null,
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.6666666666666666,
+          1
+        ],
+        "capColourLoss": [
+          0.037155906306723274,
+          0.039996343348946244
+        ],
+        "lowerEdgeSupport": [
+          0.7531645569620253,
+          0.8037974683544303
+        ]
+      },
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "editableError": 0.0069375,
+        "missingFeatures": 0,
+        "editorIssues": [],
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "real-cdae5c890b6933cd-body-1",
+      "method": "baseline",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.467475166999997,
+      "experiment": "paired",
+      "cropReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-cdae5c890b6933cd-body-1",
+      "method": "candidate",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.1786473750000006,
+      "experiment": "paired",
+      "cropReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-cdae5c890b6933cd-body-1",
+      "method": "production",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_selection",
+      "supported": false,
+      "cropSeconds": 3.501439958000003,
+      "experiment": "paired",
+      "cropReason": "Multiple substantial foreground components"
+    },
+    {
+      "id": "real-68d8f25d8891df62-body-1",
+      "method": "candidate",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.122770417000007,
+      "experiment": "paired",
+      "cropReason": "No nondegenerate heart-shape fit"
+    },
+    {
+      "id": "real-68d8f25d8891df62-body-1",
+      "method": "production",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_selection",
+      "supported": false,
+      "cropSeconds": 3.832502290999997,
+      "experiment": "paired",
+      "cropReason": "Multiple substantial foreground components"
+    },
+    {
+      "id": "real-68d8f25d8891df62-body-1",
+      "method": "baseline",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.1844813339999964,
+      "experiment": "paired",
+      "cropReason": "No nondegenerate heart-shape fit"
+    },
+    {
+      "id": "real-5330aa8b62176216-body-1",
+      "method": "production",
+      "status": "review-required",
+      "cropStatus": "candidate",
+      "supported": true,
+      "cropSeconds": 0.6501873329999944,
+      "solveSeconds": 9.83718645899999,
+      "targetMaskSha256": "1361a7d28851c8cd28e8f86a7b8b33d96520f16c077a0e5f3c7677028cf2b629",
+      "observedPixels": 62500,
+      "resolution": 250,
+      "independentImage": {
+        "mismatchPixels": 4805,
+        "observedPixels": 62500,
+        "observedFraction": 1,
+        "mismatchFraction": 0.07688
+      },
+      "checkedPair": false,
+      "experiment": "paired",
+      "quad": [
+        [
+          122.85579696132206,
+          46.10765998193559
+        ],
+        [
+          220.67567611993528,
+          141.2125664282521
+        ],
+        [
+          126.16487777892095,
+          240.3998813202532
+        ],
+        [
+          28.82138251936412,
+          141.69303913177407
+        ]
+      ],
+      "cropReason": null,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "editableError": 0.07688,
+        "missingFeatures": 3,
+        "editorIssues": [],
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "real-5330aa8b62176216-body-1",
+      "method": "baseline",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 1.296233500000002,
+      "experiment": "paired",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.3888888888888889,
+          0.6388888888888888
+        ],
+        "capColourLoss": [
+          0.19285699582497642,
+          0.39635526085451916
+        ],
+        "lowerEdgeSupport": [
+          0.8059701492537313,
+          0.44776119402985076
+        ]
+      }
+    },
+    {
+      "id": "real-5330aa8b62176216-body-1",
+      "method": "candidate",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 1.2511008750000037,
+      "experiment": "paired",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.6666666666666666,
+          0.5555555555555556
+        ],
+        "capColourLoss": [
+          0.057114651552606026,
+          0.41875644083437474
+        ],
+        "lowerEdgeSupport": [
+          0.6323529411764706,
+          0.5441176470588235
+        ]
+      }
+    },
+    {
+      "id": "real-abf590088db891f9-body-1",
+      "method": "baseline",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 1.0250104169999976,
+      "experiment": "paired",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.6388888888888888,
+          0.5277777777777778
+        ],
+        "capColourLoss": [
+          0.22791132348618495,
+          0.27972580405142217
+        ],
+        "lowerEdgeSupport": [
+          0.9855072463768116,
+          1
+        ]
+      }
+    },
+    {
+      "id": "real-abf590088db891f9-body-1",
+      "method": "candidate",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 1.2177038750000064,
+      "experiment": "paired",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.4722222222222222,
+          0.8611111111111112
+        ],
+        "capColourLoss": [
+          0.194122212351591,
+          0.2013582979297952
+        ],
+        "lowerEdgeSupport": [
+          1,
+          0.6521739130434783
+        ]
+      }
+    },
+    {
+      "id": "real-abf590088db891f9-body-1",
+      "method": "production",
+      "status": "checked-derived-mask",
+      "cropStatus": "candidate",
+      "supported": true,
+      "cropSeconds": 0.8812684169999994,
+      "solveSeconds": 10.04348937499999,
+      "targetMaskSha256": "f47bb73d7a6160b172fe52fc900f440b6eff0bd5926be035932184b19fc02911",
+      "observedPixels": 62500,
+      "resolution": 250,
+      "independentImage": {
+        "mismatchPixels": 1010,
+        "observedPixels": 62500,
+        "observedFraction": 1,
+        "mismatchFraction": 0.01616
+      },
+      "checkedPair": true,
+      "experiment": "paired",
+      "quad": [
+        [
+          129.76747370233852,
+          48.416218763402895
+        ],
+        [
+          223.3330856204667,
+          143.24308790133017
+        ],
+        [
+          125.66989036557463,
+          241.33063045166665
+        ],
+        [
+          31.72441582928019,
+          142.85900945450135
+        ]
+      ],
+      "cropReason": null,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "editableError": 0.016416,
+        "missingFeatures": 0,
+        "editorIssues": [],
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "real-990ac34431be87fe-body-1",
+      "method": "candidate",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.5831374579999973,
+      "experiment": "paired",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.5277777777777778,
+          0.5833333333333334
+        ],
+        "capColourLoss": [
+          0.09631295037963532,
+          0.09496647897609062
+        ],
+        "lowerEdgeSupport": [
+          0.5984251968503937,
+          0.7165354330708661
+        ]
+      }
+    },
+    {
+      "id": "real-990ac34431be87fe-body-1",
+      "method": "production",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_selection",
+      "supported": false,
+      "cropSeconds": 5.251511832999997,
+      "experiment": "paired",
+      "cropReason": "Crowded frame: select one heart with a rough rectangle"
+    },
+    {
+      "id": "real-990ac34431be87fe-body-1",
+      "method": "baseline",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.532521791999985,
+      "experiment": "paired",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.5555555555555556,
+          0.6111111111111112
+        ],
+        "capColourLoss": [
+          0.14533011332195206,
+          0.22521306130326288
+        ],
+        "lowerEdgeSupport": [
+          0.6666666666666666,
+          0.7364341085271318
+        ]
+      }
+    },
+    {
+      "id": "real-12ce3c9180f7f317-body-1",
+      "method": "production",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 8.474672374999995,
+      "experiment": "paired",
+      "cropReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-12ce3c9180f7f317-body-1",
+      "method": "baseline",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.5584784999999974,
+      "experiment": "paired",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.3055555555555556,
+          0.5833333333333334
+        ],
+        "capColourLoss": [
+          0.1799435186696233,
+          0.4554398365440344
+        ],
+        "lowerEdgeSupport": [
+          0.8636363636363636,
+          0.5056818181818182
+        ]
+      }
+    },
+    {
+      "id": "real-12ce3c9180f7f317-body-1",
+      "method": "candidate",
+      "status": "checked-derived-mask",
+      "cropStatus": "needs_review",
+      "supported": true,
+      "cropSeconds": 1.2787356670000007,
+      "solveSeconds": 7.758530958999996,
+      "targetMaskSha256": "0adadd77f9f180ae1d77e8095d83c59c00ac2527a78a30bc5ea8705acc8f16c1",
+      "observedPixels": 160000,
+      "resolution": 400,
+      "independentImage": {
+        "mismatchPixels": 791,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.00494375
+      },
+      "checkedPair": true,
+      "experiment": "paired",
+      "quad": [
+        [
+          1480.0505560157067,
+          560.6363935964247
+        ],
+        [
+          2654.3443062220977,
+          1616.7051538881374
+        ],
+        [
+          1525.4702703662474,
+          2799.4643177161224
+        ],
+        [
+          365.48418819286155,
+          1539.1096831890388
+        ]
+      ],
+      "cropReason": null,
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          1,
+          0.8611111111111112
+        ],
+        "capColourLoss": [
+          0.06404885964472637,
+          0.21669386204554256
+        ],
+        "lowerEdgeSupport": [
+          0.8742857142857143,
+          0.7828571428571428
+        ]
+      },
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "editableError": 0.00476875,
+        "missingFeatures": 0,
+        "editorIssues": [],
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1",
+      "method": "baseline",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.5128222499999975,
+      "experiment": "paired",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.6111111111111112,
+          0.9166666666666666
+        ],
+        "capColourLoss": [
+          0.3640089797443153,
+          0.09778926874915979
+        ],
+        "lowerEdgeSupport": [
+          0.3776223776223776,
+          0.7762237762237763
+        ]
+      }
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1",
+      "method": "candidate",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.5405341670000054,
+      "experiment": "paired",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.5555555555555556,
+          0.8611111111111112
+        ],
+        "capColourLoss": [
+          0.18478474588663885,
+          0.11297247911183396
+        ],
+        "lowerEdgeSupport": [
+          0.8671328671328671,
+          0.8811188811188811
+        ]
+      }
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1",
+      "method": "production",
+      "status": "checked-derived-mask",
+      "cropStatus": "needs_review",
+      "supported": true,
+      "cropSeconds": 2.1536449999999894,
+      "solveSeconds": 9.03044425,
+      "targetMaskSha256": "deae24613f4041c7ad484d533576d9e73c1c0c03fefd3808b9becb7d90ee5827",
+      "observedPixels": 160000,
+      "resolution": 400,
+      "independentImage": {
+        "mismatchPixels": 988,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.006175
+      },
+      "checkedPair": true,
+      "experiment": "paired",
+      "quad": [
+        [
+          424.7541740668146,
+          115.90888531579895
+        ],
+        [
+          548.6016928485965,
+          319.30358060039185
+        ],
+        [
+          348.17035722215616,
+          454.10556953764524
+        ],
+        [
+          217.9040322129936,
+          242.69983471692734
+        ]
+      ],
+      "cropReason": null,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "editableError": 0.006025,
+        "missingFeatures": 0,
+        "editorIssues": [],
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "real-39f3a1ba97852876-body-1",
+      "method": "candidate",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_selection",
+      "supported": false,
+      "cropSeconds": 2.149845708000008,
+      "experiment": "paired",
+      "cropReason": "Crowded frame: select one heart with a rough rectangle"
+    },
+    {
+      "id": "real-39f3a1ba97852876-body-1",
+      "method": "production",
+      "status": "checked-derived-mask",
+      "cropStatus": "candidate",
+      "supported": true,
+      "cropSeconds": 0.12923879200001828,
+      "solveSeconds": 4.89623324999999,
+      "targetMaskSha256": "9cef83d4f73da09396ddbba584e85e4f5092629246d910941ccf0778b3183c79",
+      "observedPixels": 90000,
+      "resolution": 300,
+      "independentImage": {
+        "mismatchPixels": 390,
+        "observedPixels": 90000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.004333333333333333
+      },
+      "checkedPair": true,
+      "experiment": "paired",
+      "quad": [
+        [
+          263.2317333125022,
+          82.40899361020158
+        ],
+        [
+          356.0846515305569,
+          192.7350877033472
+        ],
+        [
+          266.8492071100115,
+          281.2594747596661
+        ],
+        [
+          181.6008253817439,
+          177.92720313212607
+        ]
+      ],
+      "cropReason": null,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "editableError": 0.004111111111111111,
+        "missingFeatures": 0,
+        "editorIssues": [],
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "real-39f3a1ba97852876-body-1",
+      "method": "baseline",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_selection",
+      "supported": false,
+      "cropSeconds": 2.24917074999999,
+      "experiment": "paired",
+      "cropReason": "Crowded frame: select one heart with a rough rectangle"
+    },
+    {
+      "id": "real-e936e08ac62db19b-body-1",
+      "method": "production",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_selection",
+      "supported": false,
+      "cropSeconds": 4.5600650000000025,
+      "experiment": "paired",
+      "cropReason": "Crowded frame: select one heart with a rough rectangle"
+    },
+    {
+      "id": "real-e936e08ac62db19b-body-1",
+      "method": "baseline",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.3652527919999846,
+      "experiment": "paired",
+      "cropReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-e936e08ac62db19b-body-1",
+      "method": "candidate",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_selection",
+      "supported": false,
+      "cropSeconds": 2.2207255000000004,
+      "experiment": "paired",
+      "cropReason": "Crowded frame: select one heart with a rough rectangle"
+    },
+    {
+      "id": "real-340f5e5b0f447889-body-1",
+      "method": "baseline",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.5332439580000066,
+      "experiment": "paired",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.3055555555555556,
+          0.3888888888888889
+        ],
+        "capColourLoss": [
+          0.08944085683938055,
+          0.2387049121028165
+        ],
+        "lowerEdgeSupport": [
+          1,
+          0.6388888888888888
+        ]
+      }
+    },
+    {
+      "id": "real-340f5e5b0f447889-body-1",
+      "method": "candidate",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.3625583750000225,
+      "experiment": "paired",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.4722222222222222,
+          0.3611111111111111
+        ],
+        "capColourLoss": [
+          0.08900951665518164,
+          0.3540375013583719
+        ],
+        "lowerEdgeSupport": [
+          0.746268656716418,
+          0.5373134328358209
+        ]
+      }
+    },
+    {
+      "id": "real-340f5e5b0f447889-body-1",
+      "method": "production",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_selection",
+      "supported": false,
+      "cropSeconds": 5.11278566600001,
+      "experiment": "paired",
+      "cropReason": "Crowded frame: select one heart with a rough rectangle"
+    },
+    {
+      "id": "real-710703159f609111-body-1",
+      "method": "candidate",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.148944166000001,
+      "experiment": "paired",
+      "cropReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-710703159f609111-body-1",
+      "method": "production",
+      "status": "checked-derived-mask",
+      "cropStatus": "needs_review",
+      "supported": true,
+      "cropSeconds": 2.5323264170000037,
+      "solveSeconds": 3.983556332999986,
+      "targetMaskSha256": "575e0a87ee9c093484ebbff763e640b0d3c82d821cb543ed4d0654e4d52c388d",
+      "observedPixels": 160000,
+      "resolution": 400,
+      "independentImage": {
+        "mismatchPixels": 527,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.00329375
+      },
+      "checkedPair": true,
+      "experiment": "paired",
+      "quad": [
+        [
+          441.1966621407958,
+          253.2019289207681
+        ],
+        [
+          691.4534081300576,
+          350.8374624665766
+        ],
+        [
+          587.7489587369562,
+          585.0031439495884
+        ],
+        [
+          335.5386878257196,
+          486.35327305106335
+        ]
+      ],
+      "cropReason": null,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "editableError": 0.0030875,
+        "missingFeatures": 0,
+        "editorIssues": [],
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "real-710703159f609111-body-1",
+      "method": "baseline",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.500957583999989,
+      "experiment": "paired",
+      "cropReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-a414dfffbd2362ae-body-1",
+      "method": "production",
+      "status": "review-required",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 4.938264708000003,
+      "solveSeconds": 9.529394165999983,
+      "targetMaskSha256": "cfc806f5bd057d8a3e133350b6cdf05ef656195d2dd332b24d32a248c20a345d",
+      "observedPixels": 159715,
+      "resolution": 400,
+      "independentImage": {
+        "mismatchPixels": 3180,
+        "observedPixels": 159715,
+        "observedFraction": 0.99821875,
+        "mismatchFraction": 0.019910465516701625,
+        "weightMass": 159715,
+        "mismatchWeight": 3180,
+        "wholeMismatchFraction": 0.019910465516701625,
+        "protectedPixels": 159715,
+        "protectedMismatchFraction": 0.019910465516701625,
+        "editablePixels": 0,
+        "editableChangeFraction": null
+      },
+      "checkedPair": false,
+      "experiment": "paired",
+      "quad": [
+        [
+          309.9421993804789,
+          122.47425169171159
+        ],
+        [
+          476.75738138445735,
+          228.6893671219716
+        ],
+        [
+          449.81001540568803,
+          408.9959631027438
+        ],
+        [
+          177.25164654096056,
+          287.90180331141516
+        ]
+      ],
+      "cropReason": null,
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "editableError": 0.019935510127414457,
+        "missingFeatures": 3,
+        "editorIssues": [],
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "real-a414dfffbd2362ae-body-1",
+      "method": "baseline",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.1537943749999977,
+      "experiment": "paired",
+      "cropReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-a414dfffbd2362ae-body-1",
+      "method": "candidate",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.1575622499999882,
+      "experiment": "paired",
+      "cropReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "method": "preserved-body",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.2731303339999998,
+      "experiment": "preserved-body",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          1,
+          0.7777777777777778
+        ],
+        "capColourLoss": [
+          0.05873648721271506,
+          0.8182600013501239
+        ],
+        "lowerEdgeSupport": [
+          0.8363636363636363,
+          1
+        ]
+      }
+    },
+    {
+      "id": "real-995899fe049540ed-body-1",
+      "method": "preserved-body",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.5094743329999996,
+      "experiment": "preserved-body",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.3055555555555556,
+          0.3333333333333333
+        ],
+        "capColourLoss": [
+          0.398675027528258,
+          0.3520632539126675
+        ],
+        "lowerEdgeSupport": [
+          0.3888888888888889,
+          0.4382716049382716
+        ]
+      }
+    },
+    {
+      "id": "real-b87b0b19f12724f3-body-1",
+      "method": "preserved-body",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.3420909170000006,
+      "experiment": "preserved-body",
+      "cropReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-cf2d0fcff65d7386-body-1",
+      "method": "preserved-body",
+      "status": "checked-derived-mask",
+      "cropStatus": "candidate",
+      "supported": true,
+      "cropSeconds": 0.4844297079999997,
+      "solveSeconds": 9.384549958,
+      "targetMaskSha256": "9885b0069d06e2f501b727a574784f577d7658f787eb309b0d2acf73781a9df5",
+      "observedPixels": 160000,
+      "resolution": 400,
+      "independentImage": {
+        "mismatchPixels": 1037,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.00648125
+      },
+      "checkedPair": true,
+      "experiment": "preserved-body",
+      "quad": [
+        [
+          272.1882809262602,
+          92.69577005886265
+        ],
+        [
+          514.9316869278151,
+          244.83510427705983
+        ],
+        [
+          310.58110446156803,
+          511.5662224178864
+        ],
+        [
+          93.32882237287166,
+          319.1018610351699
+        ]
+      ],
+      "cropReason": null,
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.8611111111111112,
+          1
+        ],
+        "capColourLoss": [
+          0.035472209645753955,
+          0.06068091635348097
+        ],
+        "lowerEdgeSupport": [
+          0.7628205128205128,
+          0.7564102564102564
+        ]
+      },
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "editableError": 0.00628125,
+        "missingFeatures": 0,
+        "editorIssues": [],
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "real-cdae5c890b6933cd-body-1",
+      "method": "preserved-body",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.2088911249999983,
+      "experiment": "preserved-body",
+      "cropReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-68d8f25d8891df62-body-1",
+      "method": "preserved-body",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.2308276250000016,
+      "experiment": "preserved-body",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.4444444444444444,
+          0.2222222222222222
+        ],
+        "capColourLoss": [
+          0.035481167306444086,
+          0.12791587327130668
+        ],
+        "lowerEdgeSupport": [
+          0.9230769230769231,
+          0.38461538461538464
+        ]
+      }
+    },
+    {
+      "id": "real-5330aa8b62176216-body-1",
+      "method": "preserved-body",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 1.271804250000001,
+      "experiment": "preserved-body",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.6944444444444444,
+          0.6944444444444444
+        ],
+        "capColourLoss": [
+          0.12131002008943598,
+          0.3906448951398036
+        ],
+        "lowerEdgeSupport": [
+          0.7313432835820896,
+          0.5223880597014925
+        ]
+      }
+    },
+    {
+      "id": "real-abf590088db891f9-body-1",
+      "method": "preserved-body",
+      "status": "review-required",
+      "cropStatus": "candidate",
+      "supported": true,
+      "cropSeconds": 0.2430917920000029,
+      "solveSeconds": 9.834464874999998,
+      "targetMaskSha256": "8bb7babcab3b2bb4a3cf8d4ceda896a2b97358a112949b7030bd47f43ef56ea0",
+      "observedPixels": 160000,
+      "resolution": 400,
+      "independentImage": {
+        "mismatchPixels": 1439,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.00899375
+      },
+      "checkedPair": false,
+      "experiment": "preserved-body",
+      "quad": [
+        [
+          132.09210390466026,
+          49.22383860214459
+        ],
+        [
+          224.60473070470186,
+          143.06237129772967
+        ],
+        [
+          124.80942445630347,
+          240.71114704075163
+        ],
+        [
+          30.433062289850085,
+          140.6738045393147
+        ]
+      ],
+      "cropReason": null,
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.7222222222222222,
+          0.8055555555555556
+        ],
+        "capColourLoss": [
+          0.17351392217884193,
+          0.21295427439020742
+        ],
+        "lowerEdgeSupport": [
+          1,
+          0.7246376811594203
+        ]
+      },
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "editableError": 0.00915625,
+        "missingFeatures": 1,
+        "editorIssues": [],
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "real-990ac34431be87fe-body-1",
+      "method": "preserved-body",
+      "status": "checked-derived-mask",
+      "cropStatus": "needs_review",
+      "supported": true,
+      "cropSeconds": 0.5569912499999992,
+      "solveSeconds": 9.450936666000002,
+      "targetMaskSha256": "ad72c99e68c8fc16cd08607c27bc4f62854926f3189b25c85588184b7357a1e3",
+      "observedPixels": 160000,
+      "resolution": 400,
+      "independentImage": {
+        "mismatchPixels": 969,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.00605625
+      },
+      "checkedPair": true,
+      "experiment": "preserved-body",
+      "quad": [
+        [
+          289.86660444643604,
+          151.26513868667647
+        ],
+        [
+          411.5169555259042,
+          271.61666846769356
+        ],
+        [
+          286.7939035395565,
+          421.1302288622267
+        ],
+        [
+          153.05791183908545,
+          277.2172227384103
+        ]
+      ],
+      "cropReason": null,
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.6944444444444444,
+          0.7222222222222222
+        ],
+        "capColourLoss": [
+          0.12276282558899047,
+          0.09061064011732307
+        ],
+        "lowerEdgeSupport": [
+          0.9893617021276596,
+          0.9893617021276596
+        ]
+      },
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "editableError": 0.00624375,
+        "missingFeatures": 0,
+        "editorIssues": [],
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "real-12ce3c9180f7f317-body-1",
+      "method": "preserved-body",
+      "status": "checked-derived-mask",
+      "cropStatus": "needs_review",
+      "supported": true,
+      "cropSeconds": 0.530615208000003,
+      "solveSeconds": 9.513724792000001,
+      "targetMaskSha256": "ea327a7f47125df19f09248380776f4ad3a3126fa2eac7760d9c21cfada3c52c",
+      "observedPixels": 160000,
+      "resolution": 400,
+      "independentImage": {
+        "mismatchPixels": 772,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.004825
+      },
+      "checkedPair": true,
+      "experiment": "preserved-body",
+      "quad": [
+        [
+          1494.8756321585442,
+          552.246774127418
+        ],
+        [
+          2645.7312500503185,
+          1624.6762744008465
+        ],
+        [
+          1526.237706156667,
+          2801.0760238879834
+        ],
+        [
+          361.12815632654565,
+          1533.9916733273208
+        ]
+      ],
+      "cropReason": null,
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.9722222222222222,
+          0.9722222222222222
+        ],
+        "capColourLoss": [
+          0.06976599644226705,
+          0.183664847305994
+        ],
+        "lowerEdgeSupport": [
+          0.8160919540229885,
+          0.8850574712643678
+        ]
+      },
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "editableError": 0.004775,
+        "missingFeatures": 0,
+        "editorIssues": [],
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1",
+      "method": "preserved-body",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.4662937919999965,
+      "experiment": "preserved-body",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.5,
+          0.8055555555555556
+        ],
+        "capColourLoss": [
+          0.17068333848033135,
+          0.016214738963162667
+        ],
+        "lowerEdgeSupport": [
+          0.9918032786885246,
+          0.8278688524590164
+        ]
+      }
+    },
+    {
+      "id": "real-39f3a1ba97852876-body-1",
+      "method": "preserved-body",
+      "status": "review-required",
+      "cropStatus": "needs_review",
+      "supported": true,
+      "cropSeconds": 0.319976416999998,
+      "solveSeconds": 9.440481959000005,
+      "targetMaskSha256": "8b59d54edb4da0b3fe8d4a9df435ceb2a2aaf1dece721786607eeb0861559a74",
+      "observedPixels": 160000,
+      "resolution": 400,
+      "independentImage": {
+        "mismatchPixels": 1912,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.01195
+      },
+      "checkedPair": false,
+      "experiment": "preserved-body",
+      "quad": [
+        [
+          259.43751742543077,
+          84.38087862207152
+        ],
+        [
+          360.35386204420206,
+          188.97847654859524
+        ],
+        [
+          265.4401788988431,
+          281.60808751155184
+        ],
+        [
+          182.2138173108995,
+          178.25878441536844
+        ]
+      ],
+      "cropReason": null,
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.8333333333333334,
+          0.75
+        ],
+        "capColourLoss": [
+          0.014483662401004885,
+          0.22357894453655972
+        ],
+        "lowerEdgeSupport": [
+          0.974025974025974,
+          0.8701298701298701
+        ]
+      },
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "editableError": 0.0121,
+        "missingFeatures": 2,
+        "editorIssues": [],
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "real-e936e08ac62db19b-body-1",
+      "method": "preserved-body",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.677781958000007,
+      "experiment": "preserved-body",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.3611111111111111,
+          0.25
+        ],
+        "capColourLoss": [
+          0.7838395570464136,
+          0.16656371381034044
+        ],
+        "lowerEdgeSupport": [
+          0.6964285714285714,
+          0.625
+        ]
+      }
+    },
+    {
+      "id": "real-340f5e5b0f447889-body-1",
+      "method": "preserved-body",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.2933154169999908,
+      "experiment": "preserved-body",
+      "cropReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-710703159f609111-body-1",
+      "method": "preserved-body",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.224152124999993,
+      "experiment": "preserved-body",
+      "cropReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-a414dfffbd2362ae-body-1",
+      "method": "preserved-body",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 2.1981655000000027,
+      "experiment": "preserved-body",
+      "cropReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "method": "preserved-body",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 0.00045708300000001144,
+      "targetMode": "rgb",
+      "cropReused": true,
+      "experiment": "rgb-on-fixed-crops",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          1,
+          0.7777777777777778
+        ],
+        "capColourLoss": [
+          0.05873648721271506,
+          0.8182600013501239
+        ],
+        "lowerEdgeSupport": [
+          0.8363636363636363,
+          1
+        ]
+      }
+    },
+    {
+      "id": "real-995899fe049540ed-body-1",
+      "method": "preserved-body",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 0.0024980419999999413,
+      "targetMode": "rgb",
+      "cropReused": true,
+      "experiment": "rgb-on-fixed-crops",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.3055555555555556,
+          0.3333333333333333
+        ],
+        "capColourLoss": [
+          0.398675027528258,
+          0.3520632539126675
+        ],
+        "lowerEdgeSupport": [
+          0.3888888888888889,
+          0.4382716049382716
+        ]
+      }
+    },
+    {
+      "id": "real-b87b0b19f12724f3-body-1",
+      "method": "preserved-body",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 0.002622582999999963,
+      "targetMode": "rgb",
+      "cropReused": true,
+      "experiment": "rgb-on-fixed-crops",
+      "cropReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-cf2d0fcff65d7386-body-1",
+      "method": "preserved-body",
+      "status": "checked-derived-mask",
+      "cropStatus": "candidate",
+      "supported": true,
+      "cropSeconds": 0.004523958000000107,
+      "solveSeconds": 9.563319791999998,
+      "targetMaskSha256": "bab967a3965b480aa9665092e22f87feec71f010fdc08bba3bd63364ac61172a",
+      "observedPixels": 160000,
+      "resolution": 400,
+      "independentImage": {
+        "mismatchPixels": 740,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.004625
+      },
+      "checkedPair": true,
+      "targetMode": "rgb",
+      "cropReused": true,
+      "experiment": "rgb-on-fixed-crops",
+      "quad": [
+        [
+          272.1882809262602,
+          92.69577005886265
+        ],
+        [
+          514.9316869278151,
+          244.83510427705983
+        ],
+        [
+          310.58110446156803,
+          511.5662224178864
+        ],
+        [
+          93.32882237287166,
+          319.1018610351699
+        ]
+      ],
+      "cropReason": null,
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.8611111111111112,
+          1
+        ],
+        "capColourLoss": [
+          0.035472209645753955,
+          0.06068091635348097
+        ],
+        "lowerEdgeSupport": [
+          0.7628205128205128,
+          0.7564102564102564
+        ]
+      },
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "editableError": 0.0045,
+        "missingFeatures": 0,
+        "editorIssues": [],
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "real-cdae5c890b6933cd-body-1",
+      "method": "preserved-body",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 0.000909125000000131,
+      "targetMode": "rgb",
+      "cropReused": true,
+      "experiment": "rgb-on-fixed-crops",
+      "cropReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-68d8f25d8891df62-body-1",
+      "method": "preserved-body",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 0.0012803339999991295,
+      "targetMode": "rgb",
+      "cropReused": true,
+      "experiment": "rgb-on-fixed-crops",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.4444444444444444,
+          0.2222222222222222
+        ],
+        "capColourLoss": [
+          0.035481167306444086,
+          0.12791587327130668
+        ],
+        "lowerEdgeSupport": [
+          0.9230769230769231,
+          0.38461538461538464
+        ]
+      }
+    },
+    {
+      "id": "real-5330aa8b62176216-body-1",
+      "method": "preserved-body",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 0.00026604199999928825,
+      "targetMode": "rgb",
+      "cropReused": true,
+      "experiment": "rgb-on-fixed-crops",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.6944444444444444,
+          0.6944444444444444
+        ],
+        "capColourLoss": [
+          0.12131002008943598,
+          0.3906448951398036
+        ],
+        "lowerEdgeSupport": [
+          0.7313432835820896,
+          0.5223880597014925
+        ]
+      }
+    },
+    {
+      "id": "real-abf590088db891f9-body-1",
+      "method": "preserved-body",
+      "status": "checked-derived-mask",
+      "cropStatus": "candidate",
+      "supported": true,
+      "cropSeconds": 0.0008948749999999564,
+      "solveSeconds": 9.404107250000001,
+      "targetMaskSha256": "670af62863533e075437e33443f8aba098b4470ff11ed0e0bb19d63fabfd6cc3",
+      "observedPixels": 62500,
+      "resolution": 250,
+      "independentImage": {
+        "mismatchPixels": 955,
+        "observedPixels": 62500,
+        "observedFraction": 1,
+        "mismatchFraction": 0.01528
+      },
+      "checkedPair": true,
+      "targetMode": "rgb",
+      "cropReused": true,
+      "experiment": "rgb-on-fixed-crops",
+      "quad": [
+        [
+          132.09210390466026,
+          49.22383860214459
+        ],
+        [
+          224.60473070470186,
+          143.06237129772967
+        ],
+        [
+          124.80942445630347,
+          240.71114704075163
+        ],
+        [
+          30.433062289850085,
+          140.6738045393147
+        ]
+      ],
+      "cropReason": null,
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.7222222222222222,
+          0.8055555555555556
+        ],
+        "capColourLoss": [
+          0.17351392217884193,
+          0.21295427439020742
+        ],
+        "lowerEdgeSupport": [
+          1,
+          0.7246376811594203
+        ]
+      },
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "editableError": 0.015264,
+        "missingFeatures": 0,
+        "editorIssues": [],
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "real-990ac34431be87fe-body-1",
+      "method": "preserved-body",
+      "status": "checked-derived-mask",
+      "cropStatus": "needs_review",
+      "supported": true,
+      "cropSeconds": 0.0013640420000010636,
+      "solveSeconds": 9.270631250000003,
+      "targetMaskSha256": "d5a6c65d70a5059ca2fdae7aea233f8c01e72d3a800b6574fb6e0e53ae02fe2a",
+      "observedPixels": 160000,
+      "resolution": 400,
+      "independentImage": {
+        "mismatchPixels": 1895,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.01184375
+      },
+      "checkedPair": true,
+      "targetMode": "rgb",
+      "cropReused": true,
+      "experiment": "rgb-on-fixed-crops",
+      "quad": [
+        [
+          289.86660444643604,
+          151.26513868667647
+        ],
+        [
+          411.5169555259042,
+          271.61666846769356
+        ],
+        [
+          286.7939035395565,
+          421.1302288622267
+        ],
+        [
+          153.05791183908545,
+          277.2172227384103
+        ]
+      ],
+      "cropReason": null,
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.6944444444444444,
+          0.7222222222222222
+        ],
+        "capColourLoss": [
+          0.12276282558899047,
+          0.09061064011732307
+        ],
+        "lowerEdgeSupport": [
+          0.9893617021276596,
+          0.9893617021276596
+        ]
+      },
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "editableError": 0.0118125,
+        "missingFeatures": 0,
+        "editorIssues": [],
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "real-12ce3c9180f7f317-body-1",
+      "method": "preserved-body",
+      "status": "checked-derived-mask",
+      "cropStatus": "needs_review",
+      "supported": true,
+      "cropSeconds": 0.0022180000000007567,
+      "solveSeconds": 4.578352332999999,
+      "targetMaskSha256": "02bc7d9e125031c881bf638129cccbfce612605dad33f45c5b52fa8c687e15ca",
+      "observedPixels": 160000,
+      "resolution": 400,
+      "independentImage": {
+        "mismatchPixels": 1236,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.007725
+      },
+      "checkedPair": true,
+      "targetMode": "rgb",
+      "cropReused": true,
+      "experiment": "rgb-on-fixed-crops",
+      "quad": [
+        [
+          1494.8756321585442,
+          552.246774127418
+        ],
+        [
+          2645.7312500503185,
+          1624.6762744008465
+        ],
+        [
+          1526.237706156667,
+          2801.0760238879834
+        ],
+        [
+          361.12815632654565,
+          1533.9916733273208
+        ]
+      ],
+      "cropReason": null,
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.9722222222222222,
+          0.9722222222222222
+        ],
+        "capColourLoss": [
+          0.06976599644226705,
+          0.183664847305994
+        ],
+        "lowerEdgeSupport": [
+          0.8160919540229885,
+          0.8850574712643678
+        ]
+      },
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "editableError": 0.00721875,
+        "missingFeatures": 0,
+        "editorIssues": [],
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1",
+      "method": "preserved-body",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 0.0005140829999945709,
+      "targetMode": "rgb",
+      "cropReused": true,
+      "experiment": "rgb-on-fixed-crops",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.5,
+          0.8055555555555556
+        ],
+        "capColourLoss": [
+          0.17068333848033135,
+          0.016214738963162667
+        ],
+        "lowerEdgeSupport": [
+          0.9918032786885246,
+          0.8278688524590164
+        ]
+      }
+    },
+    {
+      "id": "real-39f3a1ba97852876-body-1",
+      "method": "preserved-body",
+      "status": "checked-derived-mask",
+      "cropStatus": "needs_review",
+      "supported": true,
+      "cropSeconds": 0.0010577080000002753,
+      "solveSeconds": 4.468728624999996,
+      "targetMaskSha256": "d67f65f076c17d8b102cf4793fb69590300c80951c4e77fbd0fc0691940f636a",
+      "observedPixels": 90000,
+      "resolution": 300,
+      "independentImage": {
+        "mismatchPixels": 537,
+        "observedPixels": 90000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.005966666666666667
+      },
+      "checkedPair": true,
+      "targetMode": "rgb",
+      "cropReused": true,
+      "experiment": "rgb-on-fixed-crops",
+      "quad": [
+        [
+          259.43751742543077,
+          84.38087862207152
+        ],
+        [
+          360.35386204420206,
+          188.97847654859524
+        ],
+        [
+          265.4401788988431,
+          281.60808751155184
+        ],
+        [
+          182.2138173108995,
+          178.25878441536844
+        ]
+      ],
+      "cropReason": null,
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.8333333333333334,
+          0.75
+        ],
+        "capColourLoss": [
+          0.014483662401004885,
+          0.22357894453655972
+        ],
+        "lowerEdgeSupport": [
+          0.974025974025974,
+          0.8701298701298701
+        ]
+      },
+      "editable": {
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "editableError": 0.005844444444444445,
+        "missingFeatures": 0,
+        "editorIssues": [],
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "real-e936e08ac62db19b-body-1",
+      "method": "preserved-body",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 0.0025777080000043496,
+      "targetMode": "rgb",
+      "cropReused": true,
+      "experiment": "rgb-on-fixed-crops",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lobeOutlineSupport": [
+          0.3611111111111111,
+          0.25
+        ],
+        "capColourLoss": [
+          0.7838395570464136,
+          0.16656371381034044
+        ],
+        "lowerEdgeSupport": [
+          0.6964285714285714,
+          0.625
+        ]
+      }
+    },
+    {
+      "id": "real-340f5e5b0f447889-body-1",
+      "method": "preserved-body",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 0.0016228750000009313,
+      "targetMode": "rgb",
+      "cropReused": true,
+      "experiment": "rgb-on-fixed-crops",
+      "cropReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-710703159f609111-body-1",
+      "method": "preserved-body",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 0.00042691600000398466,
+      "targetMode": "rgb",
+      "cropReused": true,
+      "experiment": "rgb-on-fixed-crops",
+      "cropReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-a414dfffbd2362ae-body-1",
+      "method": "preserved-body",
+      "status": "crop-unresolved",
+      "cropStatus": "needs_review",
+      "supported": false,
+      "cropSeconds": 0.0006555000000007567,
+      "targetMode": "rgb",
+      "cropReused": true,
+      "experiment": "rgb-on-fixed-crops",
+      "cropReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    }
+  ],
+  "visualReview": {
+    "fieldImagesInspected": 16,
+    "exportedFitsInspected": 22,
+    "fixedCropComparisonsInspected": 5,
+    "findings": [
+      "Both joint material adaptations regress foreground overlap relative to their common initialization: 85.11% to 74.86% / 74.57%.",
+      "Restoring the original foreground with unchanged candidate paper probabilities increases supported crops from 2 to 5. Background leakage is one demonstrated upstream cause.",
+      "Fine-tuning improves average observed paper error from 18.47% to 15.02%, but printed/painted papers still collapse toward one material. Outdoor foliage, handles, props and hands can become foreground.",
+      "Even checker cases with zero disagreement on partial interior labels have rounded contacts and false gaps in their predicted target. The annotated score does not cover all uncertain boundaries.",
+      "Holding five crops fixed and switching only to production RGB preparation restores recognizable sloth/curved-checker detail and sharper checker contacts. Checked editable pairs increase from 3 to 5; target-mask errors across those two targets are not directly comparable.",
+      "The production bicycle has a plausible classified target but still fails fitting at the same ten-second budget (7.69% exported mask disagreement, missing features). This is a solver-stage limitation, not solely a neural/crop problem.",
+      "RGB reconstructions still contain occasional border spurs and false thin seams; measured acceptance is not a claim of exact original artwork recovery."
+    ]
+  },
+  "validation": {
+    "editableExports": 22,
+    "allEditableConversionsAndGeometryAndPaperPass": true,
+    "checkedDerivedMaskExports": 18,
+    "sourceHashesAndSavedAssetsVerified": true,
+    "originalReplaySourceSnapshot": "tmp/heart-learning/material-encoder-tail-v1/runtime-snapshots/replay-material-pair.pipeline-v2.mjs",
+    "earlierReplaySourceCommit": "4cc35f83",
+    "qa": [
+      {
+        "name": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 14.033350334
+      },
+      {
+        "name": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 9.554247958
+      },
+      {
+        "name": "app-tests",
+        "command": [
+          "/opt/homebrew/opt/node@22/bin/node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "--maxWorkers=1",
+          "--no-file-parallelism"
+        ],
+        "exitCode": 0,
+        "seconds": 84.116777459
+      },
+      {
+        "name": "material-node-tests",
+        "command": [
+          "/opt/homebrew/opt/node@22/bin/node",
+          "--test",
+          "--test-concurrency=1",
+          "scripts/inverse/material-target.test.mjs",
+          "scripts/inverse/material-fields.test.mjs",
+          "scripts/inverse/editable-paper-audit.test.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 1.2437657499999943
+      },
+      {
+        "name": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 40.32897824999999
+      }
+    ],
+    "appTests": {
+      "passed": 1598,
+      "skipped": 1
+    },
+    "focusedNodeTests": 10,
+    "fullInverseSuiteRerun": false,
+    "scopeNote": "Offline research helpers and archive metadata; focused material/export checks plus the full app suite. No production solver or inference changes.",
+    "editableRuntimeSourceHashesVerified": true,
+    "archiveBrowserWorkflows": 6
+  },
+  "interruptedRun": {
+    "path": "tmp/heart-learning/material-encoder-tail-v1/pipeline/report.json",
+    "status": "aborted-harness-assertion",
+    "reason": "The new harness distinguished null and undefined full-observation masks. Corrected before the complete fresh replay. No metrics from the interrupted run are pooled."
+  },
+  "storage": {
+    "uniqueInodeBytes": 133392912,
+    "plannedArtifactLimitMiB": 100,
+    "actualMiB": 127.21339416503906,
+    "note": "The planned 100 MiB estimate was exceeded by retained controls, audits, the interrupted run and two additional ablations. No full source-photo copies or new model downloads. Material fields and editable inputs use hard links. One serial low-priority worker."
+  },
+  "ci": {
+    "run": 39277116968,
+    "head": "d24bcdd603d299a1fcd3f8db91e23d1099eada99",
+    "conclusion": "success",
+    "advisoryTimedFailures": 17,
+    "note": "Remote main build/correctness/deploy jobs passed. Advisory jobs retain quality failures. These local research commits were not pushed or run by that workflow."
+  },
+  "decision": {
+    "deploy": false,
+    "next": "Preserve the original foreground path while adapting material features, and evaluate NN-assisted cropping with RGB classification as a predefined fallback on fresh grouped photos. Add supervision/evaluation at junctions and thin features. Validate a single deployable model and ONNX/browser performance before integration.",
+    "caution": "A post-hoc union of production and neural successes is not a measured automatic fallback policy."
+  },
+  "artifacts": {
+    "tmp/heart-learning/material-encoder-tail-v1/pipeline-v2/report.json": "1a1b73be193d0c0dc74de90bd5c471edc29bb6f48d2ba86bd8522f8ecac75831",
+    "tmp/heart-learning/material-encoder-tail-v1/editable/results.json": "7cbcb3c47f865215e3adbcd4fdd748bc5c1bb1fe11c80f92324f06011964a7d0",
+    "tmp/heart-learning/material-encoder-tail-v1/preserved-pipeline/report.json": "c840b29a6eea00eabec35bc563b2110cc258b6c7a8c331204efad6fbcd5212df",
+    "tmp/heart-learning/material-encoder-tail-v1/preserved-editable/results.json": "28cf7124bd4aa31faa9b5806b2f73a2677c1bb63cf03f73cd1b4df7f62ef59c3",
+    "tmp/heart-learning/material-encoder-tail-v1/rgb-pipeline/report.json": "6bad72ed9b581c226a370272b6060f2db3ec1359d62b5dbe5f3957a11ec860a1",
+    "tmp/heart-learning/material-encoder-tail-v1/rgb-editable/results.json": "e777a4d67f5c6524aba795091304cda4bc5a219dbcb53a9406c8dfcfc81b06e5",
+    "tmp/heart-learning/material-encoder-tail-v1/baseline/report.json": "cc46de8823514d3d3aaad4db18c1834605e282df62ec0fcf26b3122cab289dcb",
+    "tmp/heart-learning/material-encoder-tail-v1/tail/report.json": "6e334844ff846bbfa480c845f9c7963b3dc168b3ea6405865c3498078dfb8581",
+    "tmp/heart-learning/material-encoder-tail-v1/baseline-audit/audit.json": "b27bed79a293fcc4ce44d506ae337fac0b2bebbffe63c9a3d851aae1b477c905",
+    "tmp/heart-learning/material-encoder-tail-v1/tail-audit/audit.json": "f075e767af1709a988c60ff6904d80e73d84982967194129fb39d27f28dafaf2",
+    "tmp/heart-learning/material-encoder-tail-v1/gallery/fields-1.png": "c8d7e30e41f1924e6401094ba1eb215e7e408929dc3fa65dd1086352dc649eaf",
+    "tmp/heart-learning/material-encoder-tail-v1/gallery/fields-2.png": "c77759661e7deaf51ea14ab2c56ca6be9cd2a58d4b9782c4fe8db9e528a89962",
+    "tmp/heart-learning/material-encoder-tail-v1/gallery/fields-3.png": "1a46554bdedbfeead5caa6a231249441a97488a986f28e1a2c3cbfdc01ddec4b",
+    "tmp/heart-learning/material-encoder-tail-v1/gallery/fields-4.png": "8c43454c8847a3550a27abdfe1f510970125c533c58b70c3b96bebfc88c1472a",
+    "tmp/heart-learning/material-encoder-tail-v1/pipeline-gallery/fits-1.png": "e0f91f97d8b556842bbcba8f82e5c4df4bd038dda09ec59600eb8fb702345e5e",
+    "tmp/heart-learning/material-encoder-tail-v1/pipeline-gallery/fits-2.png": "3cebf58b67fb8321285f763360c280c002b8e5cb6b3d734cc19b727d076fb240",
+    "tmp/heart-learning/material-encoder-tail-v1/pipeline-gallery/fits-3.png": "4a126d8ebb7d4b2b3f2e699644fb6340404ca1ed507f98fad00d5d1045e7a924",
+    "tmp/heart-learning/material-encoder-tail-v1/pipeline-gallery/fits-4.png": "57e322c42e4ab92cb28084d2e11a8d6277bfb1ae45dbe4ed1753289f13fdd4d1",
+    "tmp/heart-learning/material-encoder-tail-v1/pipeline-gallery/fits-5.png": "ca62da2e5a6366f8b961ab61a13cffe89f7bcadcd9424a8bad6002f34980dfa8",
+    "tmp/heart-learning/material-encoder-tail-v1/rgb-gallery/comparison-1.png": "8824fb6c45c7edbdb6c2d1a91548972a15951fc40dbe471cc50763cb7554cee4",
+    "tmp/heart-learning/material-encoder-tail-v1/rgb-gallery/comparison-2.png": "e07ef4983825de870b6b2b04ccd713067099e880c6986e2faf5bd121d214a6d8",
+    "tmp/heart-learning/material-encoder-tail-v1/qa/archive-browser.json": "ffc34c1a2dc4e0ecacdd7e5d279951474dcbcd36e7c2d6d136780605179b5e3e"
+  }
+}

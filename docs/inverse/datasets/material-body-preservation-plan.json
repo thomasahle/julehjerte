@@ -1,0 +1,62 @@
+{
+  "schema": "material-body-preservation-ablation-plan-1",
+  "status": "predeclared",
+  "hypothesis": "Joint material adaptation degrades foreground separation compared with the retained synthetic foreground checkpoint. Holding material predictions fixed and restoring the original body field may recover crops. This does not assume that better body IoU is sufficient for useful corners or legal reconstruction.",
+  "parentStudy": "material-encoder-tail-plan.json",
+  "candidateReport": {
+    "path": "tmp/heart-learning/material-encoder-tail-v1/tail/report.json",
+    "sha256": "6e334844ff846bbfa480c845f9c7963b3dc168b3ea6405865c3498078dfb8581"
+  },
+  "body": {
+    "path": "tmp/heart-learning/material-encoder-tail-v1/tail/neutral-predictions.npz",
+    "sha256": "93ee63ec48b415975934ce4ad0a5ed40c0e021f8dd629d7e45976ffe90deed02",
+    "channel": 0,
+    "origin": "Retained synthetic foreground checkpoint before real-material adaptation; no real image used in its training"
+  },
+  "materials": {
+    "path": "tmp/heart-learning/material-encoder-tail-v1/tail/mixed-out-of-fold.npz",
+    "sha256": "ddcb2a547f5de772e85396e9d1225cdeb58349b837c0569edb38c2d1d53b1985",
+    "channel": 1,
+    "origin": "Original complete-source/motif-held-out tail checkpoints, unchanged"
+  },
+  "probe": {
+    "path": "tmp/heart-learning/material-encoder-tail-v1/probe/manifest.json",
+    "sha256": "859588ddfcf841f96b76346ac45459f79f608b6d0daaed11f84780dfffec9ac0"
+  },
+  "ids": [
+    "real-8c875dd0f298b5a4-body-1",
+    "real-995899fe049540ed-body-1",
+    "real-b87b0b19f12724f3-body-1",
+    "real-cf2d0fcff65d7386-body-1",
+    "real-cdae5c890b6933cd-body-1",
+    "real-68d8f25d8891df62-body-1",
+    "real-5330aa8b62176216-body-1",
+    "real-abf590088db891f9-body-1",
+    "real-990ac34431be87fe-body-1",
+    "real-12ce3c9180f7f317-body-1",
+    "real-d5b0aa8d4d2465ee-body-1",
+    "real-39f3a1ba97852876-body-1",
+    "real-e936e08ac62db19b-body-1",
+    "real-340f5e5b0f447889-body-1",
+    "real-710703159f609111-body-1",
+    "real-a414dfffbd2362ae-body-1"
+  ],
+  "policy": [
+    "One fixed combination for every eligible photo; no per-image model or threshold selection.",
+    "Same original source windows, crop support gates, observed pixels and ten-second fitting allowance.",
+    "All inputs remain development data. Do not compare derived-mask error across changed crops or masks as reconstruction improvement.",
+    "No retraining, model download, source photo copy, website change or deployment.",
+    "Preserve negative outcomes and check all successful fits through editable conversion and physical validation."
+  ],
+  "resources": {
+    "parallelWorkers": 1,
+    "priority": "nice 15",
+    "newBodyFieldMiB": 4,
+    "reuseMaterialFields": "hard links",
+    "newModelWeights": 0
+  },
+  "candidateAudit": {
+    "path": "tmp/heart-learning/material-encoder-tail-v1/tail-audit/audit.json",
+    "sha256": "f075e767af1709a988c60ff6904d80e73d84982967194129fb39d27f28dafaf2"
+  }
+}

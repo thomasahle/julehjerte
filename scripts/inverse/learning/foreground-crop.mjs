@@ -3,6 +3,7 @@
  */
 import fs from 'node:fs/promises';
 import {LOCATOR_FIELD_SELECTION} from './locator-field-source.mjs';
+import {materialFields} from './material-fields.mjs';
 import {close,signedDistance} from '../../../static/inverse/locator/fields.js';
 import {bilinear,quantile,sigmoid} from '../../../static/inverse/locator/math.js';
 import {supportedCropOutline,pixelCentresToEdges} from '../../../static/inverse/core/crop.js';
@@ -51,11 +52,11 @@ async function injectedLocator(){
   return locator;
 }
 
-export async function detectForegroundCrop(input,{roi,probability,resolution=256,window,refineFields}={}){
+export async function detectForegroundCrop(input,{roi,probability,resolution=256,window,refineFields,material}={}){
   const create=await injectedLocator(),started=performance.now();
   let refinement=null;
   const detect=create({width:input.imageWidth,height:input.imageHeight,data:input.rgba},{roi,maxSize:650,foregroundFields:work=>{
-    const fields=foregroundFields(work,probability,resolution,window),refined=fields&&refineFields?refineFields(fields):fields;
+    const fields=material?materialFields(work,probability,material,resolution,window):foregroundFields(work,probability,resolution,window),refined=fields&&refineFields?refineFields(fields):fields;
     refinement=refined?.refinement??null;return refined;
   }});
   let proposal=detect();const attempts=[];

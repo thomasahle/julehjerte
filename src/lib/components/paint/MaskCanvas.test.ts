@@ -26,7 +26,7 @@ import { LOBE_OUTLINE_COLORS } from '$lib/editor/outlineColors';
 import { cutGeometryToDesign, type CutGeometry } from '$lib/inverse/toHeartDesign';
 import starSolution from '../../../../static/inverse/examples/star.saved.json';
 import type { HeartDesign } from '$lib/types/heart';
-import type { PaintTool } from '$lib/paint/toolset';
+import type { PaintTool, PaintValue } from '$lib/paint/toolset';
 
 const BOX = 600;
 const PADDING = 24;
@@ -69,6 +69,8 @@ type Harness = {
 	box: HTMLElement;
 	edits: number;
 	setTool: (tool: PaintTool) => void;
+	setBrush: (brush: number) => void;
+	setDisabled: (disabled: boolean) => void;
 	commitSelection: () => void;
 	cell: (x: number, y: number) => number;
 	cleanup: () => void;
@@ -79,7 +81,7 @@ const alive: (() => void)[] = [];
 function render(
 	options: {
 		tool?: PaintTool;
-		paintValue?: 0 | 1;
+		paintValue?: PaintValue;
 		brush?: number;
 		symmetry?: SymmetrySettings;
 		fill?: 0 | 1;
@@ -132,6 +134,8 @@ function render(
 			component.setTool(tool);
 			flushSync();
 		},
+		setBrush: (brush: number) => { component.setBrush(brush); flushSync(); },
+		setDisabled: (disabled: boolean) => { component.setDisabled(disabled); flushSync(); },
 		commitSelection: () => {
 			component.commitSelection();
 			flushSync();
@@ -149,9 +153,9 @@ type Key = 'shiftKey';
 
 function send(
 	canvas: HTMLCanvasElement,
-	type: 'pointerdown' | 'pointermove' | 'pointerup',
+	type: 'pointerdown' | 'pointermove' | 'pointerup' | 'pointerleave' | 'pointercancel',
 	where: { clientX: number; clientY: number },
-	modifiers: Partial<Record<Key, boolean>> = {}
+	modifiers: Partial<Record<Key, boolean>> & { pointerType?: string } = {}
 ): void {
 	canvas.dispatchEvent(
 		new PointerEvent(type, {
@@ -195,6 +199,101 @@ function drag(
 }
 
 describe('painting tools through the canvas', () => {
+	it('XOR retraces once per drag and inverts again on the next drag', () => {
+		const c = render({ paintValue: 'xor', brush: 2 });
+		send(c.canvas, 'pointerdown', at(10, 10));
+		send(c.canvas, 'pointermove', at(20, 10));
+		send(c.canvas, 'pointermove', at(10, 10));
+		send(c.canvas, 'pointerup', at(10, 10));
+		expect(c.cell(10, 10)).toBe(1);
+		expect(c.cell(15, 10)).toBe(1);
+		expect(c.edits).toBe(1);
+		drag(c.canvas, [10, 10], [20, 10]);
+		expect(c.cell(15, 10)).toBe(0);
+		expect(c.edits).toBe(2);
+	});
+
+	it('finishes a held XOR gesture before a keyboard action changes its mask', () => {
+		const c = render({ paintValue: 'xor' });
+		send(c.canvas, 'pointerdown', at(10, 10));
+		press('x');
+		expect(c.edits).toBe(1);
+		const finished = c.mask.data.slice();
+		send(c.canvas, 'pointermove', at(20, 10));
+		send(c.canvas, 'pointerup', at(20, 10));
+		expect(c.mask.data).toEqual(finished);
+		expect(c.edits).toBe(1);
+	});
+
+	it('includes the final release position without toggling overlapping cells again', () => {
+		const c = render({ paintValue: 'xor' });
+		send(c.canvas, 'pointerdown', at(10, 10));
+		send(c.canvas, 'pointerup', at(20, 10));
+		expect(c.cell(10, 10)).toBe(1);
+		expect(c.cell(15, 10)).toBe(1);
+		expect(c.cell(20, 10)).toBe(1);
+	});
+
+	it.each(['line', 'rect'] as const)('previews XOR %s without committing until release', (tool) => {
+		const c = render({ tool, paintValue: 'xor', fill: 1 });
+		send(c.canvas, 'pointerdown', at(10, 10));
+		send(c.canvas, 'pointermove', at(20, 20));
+		expect(c.cell(15, 15)).toBe(1);
+		send(c.canvas, 'pointerup', at(20, 20));
+		expect(c.cell(15, 15)).toBe(0);
+		expect(c.cell(30, 30)).toBe(1);
+		expect(c.edits).toBe(1);
+	});
+
+	it('XOR fills either paper, while the eraser keeps painting paper zero', () => {
+		const c = render({ tool: 'fill', paintValue: 'xor', fill: 1 });
+		send(c.canvas, 'pointerdown', at(10, 10));
+		expect(c.cell(30, 30)).toBe(0);
+		send(c.canvas, 'pointerdown', at(10, 10));
+		expect(c.cell(30, 30)).toBe(1);
+		c.setTool('eraser');
+		drag(c.canvas, [10, 10], [20, 10]);
+		expect(c.cell(15, 10)).toBe(0);
+		expect(c.cell(30, 30)).toBe(1);
+	});
+
+	it('positions and resizes the hover circle through the same diamond transform', () => {
+		const c = render({ brush: 3 });
+		const position = at(12, 25);
+		send(c.canvas, 'pointermove', position, { pointerType: 'mouse' });
+		const outline = () => c.box.querySelector<HTMLElement>('.brush-outline');
+		expect(parseFloat(outline()!.style.left)).toBeCloseTo(position.clientX);
+		expect(parseFloat(outline()!.style.top)).toBeCloseTo(position.clientY);
+		expect(parseFloat(outline()!.style.width)).toBeCloseTo(6 * layout.scale / SIZE);
+		c.setBrush(9);
+		expect(parseFloat(outline()!.style.width)).toBeCloseTo(18 * layout.scale / SIZE);
+		c.setDisabled(true);
+		expect(outline()).toBeNull();
+		c.setDisabled(false);
+		c.setTool('fill');
+		expect(outline()).toBeNull();
+		c.setTool('pen');
+		send(c.canvas, 'pointerleave', position);
+		expect(outline()).toBeNull();
+		send(c.canvas, 'pointermove', atPoint({ x: -5, y: 20 }));
+		expect(outline()).toBeNull();
+	});
+
+	it('hides the touch brush outline on release and cancellation', () => {
+		const c = render({ paintValue: 'xor' });
+		const touch = { pointerType: 'touch' };
+		send(c.canvas, 'pointermove', at(15, 15), touch);
+		expect(c.box.querySelector('.brush-outline')).toBeNull();
+		send(c.canvas, 'pointerdown', at(15, 15), touch);
+		expect(c.box.querySelector('.brush-outline')).not.toBeNull();
+		send(c.canvas, 'pointerup', at(15, 15), touch);
+		expect(c.box.querySelector('.brush-outline')).toBeNull();
+		send(c.canvas, 'pointerdown', at(15, 15), touch);
+		send(c.canvas, 'pointercancel', at(15, 15), touch);
+		expect(c.box.querySelector('.brush-outline')).toBeNull();
+		expect(c.edits).toBe(2);
+	});
+
 	it('paints with the pen', () => {
 		const c = render({ tool: 'pen', brush: 1 });
 		drag(c.canvas, [10, 10], [20, 10]);

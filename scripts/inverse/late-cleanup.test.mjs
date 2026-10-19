@@ -1,5 +1,4 @@
-import {qualityBenchmark} from './quality-benchmark.mjs';
-import test from 'node:test';
+import {qualityBenchmark as test} from './quality-benchmark.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import {createHash} from 'node:crypto';
@@ -13,7 +12,7 @@ import {captureFitFailure} from './diagnostics/fit-failure.mjs';
 
 const fixture=JSON.parse(await fs.readFile(new URL('./fixtures/photographic-viking-cleanup.json',import.meta.url)));
 
-for(const {seconds,delay,maximum}of [{seconds:180,delay:750,maximum:.0193},{seconds:25,delay:0,maximum:.03}])(seconds===25?qualityBenchmark:test)(`late photo cleanup preserves source fidelity inside a ${seconds}-second request (${delay} ms interruption)`,async t=>{
+for(const {seconds,delay,maximum}of [{seconds:180,delay:750,maximum:.0193},{seconds:25,delay:0,maximum:.03}])test(`late photo cleanup preserves source fidelity inside a ${seconds}-second request (${delay} ms interruption)`,async t=>{
   const mask=new Uint8Array(fixture.resolution**2);
   for(const[start,length]of fixture.maskRuns)mask.fill(1,start,start+length);
   assert.equal(createHash('sha256').update(mask).digest('hex'),fixture.maskSha256);

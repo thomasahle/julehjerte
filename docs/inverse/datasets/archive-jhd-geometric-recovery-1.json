@@ -1,0 +1,461 @@
+{
+  "version": 1,
+  "generatedAt": "2026-10-19T17:27:47.760685+00:00",
+  "scope": "Recovery attempt for exactly six JulehjerteDesign geometric-pattern PDF/SVG links. No templates recovered; preserve negative and inconclusive lookup evidence without upgrading reference-only records.",
+  "sourceManifest": "docs/inverse/datasets/archive-jhd-geometric-1.json",
+  "summary": {
+    "targetTemplateUrls": 6,
+    "recoveredTemplates": 0,
+    "httpRequests": 8,
+    "httpRequestLimit": 20,
+    "transferBytes": 2065,
+    "uniqueResponseBytes": 1995,
+    "newUniquePayloadBytes": 1995,
+    "payloadLimitBytes": 2097152,
+    "uniqueEvidenceObjects": 4,
+    "newAssets": 0
+  },
+  "targets": [
+    {
+      "designId": "jhd-hexatriple",
+      "title": "Hexatriple",
+      "originalUrl": "http://julehjertedesign.dk/diagrams/hexatriple.pdf",
+      "sourcePage": "http://julehjertedesign.dk/hexatriple-julehjerte/",
+      "archivedSourcePage": "https://web.archive.org/web/20170112121410/http://julehjertedesign.dk/hexatriple-julehjerte/",
+      "designer": "Johan Rosenkilde",
+      "creditEvidenceUrls": [
+        "https://web.archive.org/web/20170112121410/http://julehjertedesign.dk/hexatriple-julehjerte/",
+        "https://web.archive.org/web/20160405091838/http://julehjertedesign.dk/om/"
+      ],
+      "creditNote": "Article byline Johan; the previously preserved About page identifies Johan Rosenkilde and presents the site as a collection of his designs. No separate contributor is credited on these three articles.",
+      "sourceDeclaredPublishedAt": "2014-11-15T14:09:01+00:00",
+      "rightsRef": "julehjertedesign-unknown",
+      "recovered": false,
+      "finding": "No capture returned by the targeted Wayback CDX query; absent from the unfiltered /diagrams/ prefix inventory. Earlier replay returned 404. This does not prove that no copy exists in any archive.",
+      "previousReplayFailures": [
+        {
+          "url": "https://web.archive.org/web/20170112121410id_/http://julehjertedesign.dk/diagrams/hexatriple.pdf",
+          "retrievedAt": "2026-10-19T16:57:39.594570+00:00",
+          "error": "HTTP Error 404: NOT FOUND"
+        }
+      ]
+    },
+    {
+      "designId": "jhd-hexatriple",
+      "title": "Hexatriple",
+      "originalUrl": "http://julehjertedesign.dk/diagrams/hexatriple.svg",
+      "sourcePage": "http://julehjertedesign.dk/hexatriple-julehjerte/",
+      "archivedSourcePage": "https://web.archive.org/web/20170112121410/http://julehjertedesign.dk/hexatriple-julehjerte/",
+      "designer": "Johan Rosenkilde",
+      "creditEvidenceUrls": [
+        "https://web.archive.org/web/20170112121410/http://julehjertedesign.dk/hexatriple-julehjerte/",
+        "https://web.archive.org/web/20160405091838/http://julehjertedesign.dk/om/"
+      ],
+      "creditNote": "Article byline Johan; the previously preserved About page identifies Johan Rosenkilde and presents the site as a collection of his designs. No separate contributor is credited on these three articles.",
+      "sourceDeclaredPublishedAt": "2014-11-15T14:09:01+00:00",
+      "rightsRef": "julehjertedesign-unknown",
+      "recovered": false,
+      "finding": "No capture returned by the targeted Wayback CDX query; absent from the unfiltered /diagrams/ prefix inventory. Earlier replay returned 404. This does not prove that no copy exists in any archive.",
+      "previousReplayFailures": [
+        {
+          "url": "https://web.archive.org/web/20170112121410id_/http://julehjertedesign.dk/diagrams/hexatriple.svg",
+          "retrievedAt": "2026-10-19T16:57:41.603248+00:00",
+          "error": "HTTP Error 404: NOT FOUND"
+        }
+      ]
+    },
+    {
+      "designId": "jhd-ovalt",
+      "title": "Ovalt Julehjerte",
+      "originalUrl": "http://julehjertedesign.dk/diagrams/oval.pdf",
+      "sourcePage": "http://julehjertedesign.dk/ovalt-julehjerte/",
+      "archivedSourcePage": "https://web.archive.org/web/20170112060010/http://julehjertedesign.dk/ovalt-julehjerte/",
+      "designer": "Johan Rosenkilde",
+      "creditEvidenceUrls": [
+        "https://web.archive.org/web/20170112060010/http://julehjertedesign.dk/ovalt-julehjerte/",
+        "https://web.archive.org/web/20160405091838/http://julehjertedesign.dk/om/"
+      ],
+      "creditNote": "Article byline Johan; the previously preserved About page identifies Johan Rosenkilde and presents the site as a collection of his designs. No separate contributor is credited on these three articles.",
+      "sourceDeclaredPublishedAt": "2015-11-09T16:07:28+00:00",
+      "rightsRef": "julehjertedesign-unknown",
+      "recovered": false,
+      "finding": "No capture returned by the targeted Wayback CDX query; absent from the unfiltered /diagrams/ prefix inventory. Earlier replay returned 404. This does not prove that no copy exists in any archive.",
+      "previousReplayFailures": [
+        {
+          "url": "https://web.archive.org/web/20170112060010id_/http://julehjertedesign.dk/diagrams/oval.pdf",
+          "retrievedAt": "2026-10-19T16:57:43.811162+00:00",
+          "error": "HTTP Error 404: NOT FOUND"
+        }
+      ]
+    },
+    {
+      "designId": "jhd-ovalt",
+      "title": "Ovalt Julehjerte",
+      "originalUrl": "http://julehjertedesign.dk/diagrams/oval.svg",
+      "sourcePage": "http://julehjertedesign.dk/ovalt-julehjerte/",
+      "archivedSourcePage": "https://web.archive.org/web/20170112060010/http://julehjertedesign.dk/ovalt-julehjerte/",
+      "designer": "Johan Rosenkilde",
+      "creditEvidenceUrls": [
+        "https://web.archive.org/web/20170112060010/http://julehjertedesign.dk/ovalt-julehjerte/",
+        "https://web.archive.org/web/20160405091838/http://julehjertedesign.dk/om/"
+      ],
+      "creditNote": "Article byline Johan; the previously preserved About page identifies Johan Rosenkilde and presents the site as a collection of his designs. No separate contributor is credited on these three articles.",
+      "sourceDeclaredPublishedAt": "2015-11-09T16:07:28+00:00",
+      "rightsRef": "julehjertedesign-unknown",
+      "recovered": false,
+      "finding": "No capture returned by the targeted Wayback CDX query; absent from the unfiltered /diagrams/ prefix inventory. Earlier replay returned 404. This does not prove that no copy exists in any archive.",
+      "previousReplayFailures": [
+        {
+          "url": "https://web.archive.org/web/20170112060010id_/http://julehjertedesign.dk/diagrams/oval.svg",
+          "retrievedAt": "2026-10-19T16:57:46.061810+00:00",
+          "error": "HTTP Error 404: NOT FOUND"
+        }
+      ]
+    },
+    {
+      "designId": "jhd-square-twist",
+      "title": "Square Twist",
+      "originalUrl": "http://julehjertedesign.dk/diagrams/inner_square.pdf",
+      "sourcePage": "http://julehjertedesign.dk/square-twist/",
+      "archivedSourcePage": "https://web.archive.org/web/20170112092310/http://julehjertedesign.dk/square-twist/",
+      "designer": "Johan Rosenkilde",
+      "creditEvidenceUrls": [
+        "https://web.archive.org/web/20170112092310/http://julehjertedesign.dk/square-twist/",
+        "https://web.archive.org/web/20160405091838/http://julehjertedesign.dk/om/"
+      ],
+      "creditNote": "Article byline Johan; the previously preserved About page identifies Johan Rosenkilde and presents the site as a collection of his designs. No separate contributor is credited on these three articles.",
+      "sourceDeclaredPublishedAt": "2015-11-01T18:01:22+00:00",
+      "rightsRef": "julehjertedesign-unknown",
+      "recovered": false,
+      "finding": "No capture returned by the targeted Wayback CDX query; absent from the unfiltered /diagrams/ prefix inventory. Earlier replay returned 404. This does not prove that no copy exists in any archive.",
+      "previousReplayFailures": [
+        {
+          "url": "https://web.archive.org/web/20170112092310id_/http://julehjertedesign.dk/diagrams/inner_square.pdf",
+          "retrievedAt": "2026-10-19T16:57:48.025231+00:00",
+          "error": "HTTP Error 404: NOT FOUND"
+        }
+      ]
+    },
+    {
+      "designId": "jhd-square-twist",
+      "title": "Square Twist",
+      "originalUrl": "http://julehjertedesign.dk/diagrams/inner_square.svg",
+      "sourcePage": "http://julehjertedesign.dk/square-twist/",
+      "archivedSourcePage": "https://web.archive.org/web/20170112092310/http://julehjertedesign.dk/square-twist/",
+      "designer": "Johan Rosenkilde",
+      "creditEvidenceUrls": [
+        "https://web.archive.org/web/20170112092310/http://julehjertedesign.dk/square-twist/",
+        "https://web.archive.org/web/20160405091838/http://julehjertedesign.dk/om/"
+      ],
+      "creditNote": "Article byline Johan; the previously preserved About page identifies Johan Rosenkilde and presents the site as a collection of his designs. No separate contributor is credited on these three articles.",
+      "sourceDeclaredPublishedAt": "2015-11-01T18:01:22+00:00",
+      "rightsRef": "julehjertedesign-unknown",
+      "recovered": false,
+      "finding": "No capture returned by the targeted Wayback CDX query; absent from the unfiltered /diagrams/ prefix inventory. Earlier replay returned 404. This does not prove that no copy exists in any archive.",
+      "previousReplayFailures": [
+        {
+          "url": "https://web.archive.org/web/20170112092310id_/http://julehjertedesign.dk/diagrams/inner_square.svg",
+          "retrievedAt": "2026-10-19T16:57:50.242084+00:00",
+          "error": "HTTP Error 404: NOT FOUND"
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "evidence": [
+    {
+      "localFile": "archive-store/heart-preservation/objects/37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3,
+      "mimeType": "application/json",
+      "role": "archive-lookup-evidence",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "retrievals": [
+        {
+          "number": 1,
+          "label": "cdx-targets",
+          "requestedUrl": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json&filter=original%3A.*%28hexatriple%7Coval%7Cinner_square%29%5C.%28pdf%7Csvg%29.*&collapse=digest&fl=timestamp,original,mimetype,statuscode,digest,length&limit=100",
+          "url": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json&filter=original%3A.*%28hexatriple%7Coval%7Cinner_square%29%5C.%28pdf%7Csvg%29.*&collapse=digest&fl=timestamp,original,mimetype,statuscode,digest,length&limit=100",
+          "finalUrl": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json&filter=original%3A.*%28hexatriple%7Coval%7Cinner_square%29%5C.%28pdf%7Csvg%29.*&collapse=digest&fl=timestamp,original,mimetype,statuscode,digest,length&limit=100",
+          "retrievedAt": "2026-10-19T17:24:06.531528+00:00",
+          "status": 200
+        },
+        {
+          "number": 3,
+          "label": "cdx-hexatriple-exact",
+          "requestedUrl": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2Fdiagrams%2Fhexatriple.pdf&output=json&fl=timestamp,original,mimetype,statuscode,digest,length&limit=30",
+          "url": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2Fdiagrams%2Fhexatriple.pdf&output=json&fl=timestamp,original,mimetype,statuscode,digest,length&limit=30",
+          "finalUrl": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2Fdiagrams%2Fhexatriple.pdf&output=json&fl=timestamp,original,mimetype,statuscode,digest,length&limit=30",
+          "retrievedAt": "2026-10-19T17:24:42.253758+00:00",
+          "status": 200
+        }
+      ]
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/4e994b94a2c826382abad108c0067c0b344d25259fb4b2204d33e21db5785822.json",
+      "sha256": "4e994b94a2c826382abad108c0067c0b344d25259fb4b2204d33e21db5785822",
+      "bytes": 1758,
+      "mimeType": "application/json",
+      "role": "archive-lookup-evidence",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "retrievals": [
+        {
+          "number": 2,
+          "label": "cdx-diagrams-inventory",
+          "requestedUrl": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json&collapse=urlkey&fl=timestamp,original,mimetype,statuscode,digest,length&limit=200",
+          "url": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json&collapse=urlkey&fl=timestamp,original,mimetype,statuscode,digest,length&limit=200",
+          "finalUrl": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json&collapse=urlkey&fl=timestamp,original,mimetype,statuscode,digest,length&limit=200",
+          "retrievedAt": "2026-10-19T17:24:33.380650+00:00",
+          "status": 200
+        }
+      ]
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/77740b547b1535ca184cd49375b955403700ee04a920259885de539f3aab5b3c.json",
+      "sha256": "77740b547b1535ca184cd49375b955403700ee04a920259885de539f3aab5b3c",
+      "bytes": 67,
+      "mimeType": "application/json",
+      "role": "archive-lookup-evidence",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "retrievals": [
+        {
+          "number": 5,
+          "label": "cc-2017-04-diagrams",
+          "requestedUrl": "https://index.commoncrawl.org/CC-MAIN-2017-04-index?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json",
+          "url": "https://index.commoncrawl.org/CC-MAIN-2017-04-index?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json",
+          "finalUrl": "https://index.commoncrawl.org/CC-MAIN-2017-04-index?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json",
+          "retrievedAt": "2026-10-19T17:25:32.468972+00:00",
+          "status": 404
+        },
+        {
+          "number": 7,
+          "label": "cc-2018-05-diagrams",
+          "requestedUrl": "https://index.commoncrawl.org/CC-MAIN-2018-05-index?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json",
+          "url": "https://index.commoncrawl.org/CC-MAIN-2018-05-index?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json",
+          "finalUrl": "https://index.commoncrawl.org/CC-MAIN-2018-05-index?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json",
+          "retrievedAt": "2026-10-19T17:25:57.736908+00:00",
+          "status": 404
+        }
+      ]
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/6e3320dd0edf2904352e442a19f5e412ea5af5d6547124b87f1a1ecd05746185.html",
+      "sha256": "6e3320dd0edf2904352e442a19f5e412ea5af5d6547124b87f1a1ecd05746185",
+      "bytes": 167,
+      "mimeType": "text/html",
+      "role": "archive-lookup-evidence",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "retrievals": [
+        {
+          "number": 6,
+          "label": "cc-2016-40-diagrams",
+          "requestedUrl": "https://index.commoncrawl.org/CC-MAIN-2016-40-index?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json",
+          "url": "https://index.commoncrawl.org/CC-MAIN-2016-40-index?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json",
+          "finalUrl": "https://index.commoncrawl.org/CC-MAIN-2016-40-index?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json",
+          "retrievedAt": "2026-10-19T17:25:46.189005+00:00",
+          "status": 504
+        }
+      ]
+    }
+  ],
+  "rights": [
+    {
+      "id": "julehjertedesign-unknown",
+      "status": "unknown",
+      "redistributionPermission": null,
+      "license": null,
+      "sourceEvidenceUrls": [
+        "https://web.archive.org/web/20160405091838/http://julehjertedesign.dk/om/"
+      ],
+      "observedPermission": "Author explains personal printing/scaling and modifying downloaded SVGs in Inkscape. No public redistribution license found in inspected pages or PDFs.",
+      "publicMirrorEligible": false
+    }
+  ],
+  "lookupFindings": [
+    {
+      "requestNumbers": [
+        1,
+        3
+      ],
+      "status": "no-captures-returned",
+      "finding": "Targeted Wayback CDX query returned an empty array for the six filenames; separate exact hexatriple.pdf query was also empty."
+    },
+    {
+      "requestNumbers": [
+        2
+      ],
+      "status": "inventory-checked",
+      "finding": "Unfiltered Wayback /diagrams/ prefix inventory contains 12 distinct URLs, below the 200-row limit. They belong to the six already preserved designs, not these three missing designs. The result includes archived 404s, so this is not merely a successful-response filter."
+    },
+    {
+      "requestNumbers": [
+        4,
+        8
+      ],
+      "status": "inconclusive-timeout",
+      "finding": "Two alternate-path/domain queries timed out. No claim is made that all alternate locations were exhausted."
+    },
+    {
+      "requestNumbers": [
+        5,
+        7
+      ],
+      "status": "no-captures-returned",
+      "finding": "Common Crawl CC-MAIN-2017-04 and CC-MAIN-2018-05 explicitly returned No Captures found for the diagrams prefix."
+    },
+    {
+      "requestNumbers": [
+        6
+      ],
+      "status": "inconclusive-gateway-error",
+      "finding": "Common Crawl CC-MAIN-2016-40 returned HTTP 504; this is a service failure, not evidence that the files were absent."
+    }
+  ],
+  "failures": [
+    {
+      "number": 4,
+      "label": "cdx-alternate-paths",
+      "requestedUrl": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk&matchType=domain&output=json&filter=original%3A.*%28hexatriple%7Coval%7Cinner_square%29.*&collapse=urlkey&fl=timestamp,original,mimetype,statuscode,digest,length&limit=100",
+      "url": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk&matchType=domain&output=json&filter=original%3A.*%28hexatriple%7Coval%7Cinner_square%29.*&collapse=urlkey&fl=timestamp,original,mimetype,statuscode,digest,length&limit=100",
+      "redirectHop": 0,
+      "retrievedAt": "2026-10-19T17:25:10.868102+00:00",
+      "error": "The read operation timed out"
+    },
+    {
+      "number": 5,
+      "label": "cc-2017-04-diagrams",
+      "requestedUrl": "https://index.commoncrawl.org/CC-MAIN-2017-04-index?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json",
+      "url": "https://index.commoncrawl.org/CC-MAIN-2017-04-index?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json",
+      "redirectHop": 0,
+      "retrievedAt": "2026-10-19T17:25:32.468972+00:00",
+      "status": 404,
+      "finalUrl": "https://index.commoncrawl.org/CC-MAIN-2017-04-index?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json",
+      "bytes": 67,
+      "sha256": "77740b547b1535ca184cd49375b955403700ee04a920259885de539f3aab5b3c",
+      "localFile": "archive-store/heart-preservation/objects/77740b547b1535ca184cd49375b955403700ee04a920259885de539f3aab5b3c.json",
+      "atReadLimit": false,
+      "error": "HTTP 404"
+    },
+    {
+      "number": 6,
+      "label": "cc-2016-40-diagrams",
+      "requestedUrl": "https://index.commoncrawl.org/CC-MAIN-2016-40-index?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json",
+      "url": "https://index.commoncrawl.org/CC-MAIN-2016-40-index?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json",
+      "redirectHop": 0,
+      "retrievedAt": "2026-10-19T17:25:46.189005+00:00",
+      "status": 504,
+      "finalUrl": "https://index.commoncrawl.org/CC-MAIN-2016-40-index?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json",
+      "bytes": 167,
+      "sha256": "6e3320dd0edf2904352e442a19f5e412ea5af5d6547124b87f1a1ecd05746185",
+      "localFile": "archive-store/heart-preservation/objects/6e3320dd0edf2904352e442a19f5e412ea5af5d6547124b87f1a1ecd05746185.html",
+      "atReadLimit": false,
+      "error": "HTTP 504"
+    },
+    {
+      "number": 7,
+      "label": "cc-2018-05-diagrams",
+      "requestedUrl": "https://index.commoncrawl.org/CC-MAIN-2018-05-index?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json",
+      "url": "https://index.commoncrawl.org/CC-MAIN-2018-05-index?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json",
+      "redirectHop": 0,
+      "retrievedAt": "2026-10-19T17:25:57.736908+00:00",
+      "status": 404,
+      "finalUrl": "https://index.commoncrawl.org/CC-MAIN-2018-05-index?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json",
+      "bytes": 67,
+      "sha256": "77740b547b1535ca184cd49375b955403700ee04a920259885de539f3aab5b3c",
+      "localFile": "archive-store/heart-preservation/objects/77740b547b1535ca184cd49375b955403700ee04a920259885de539f3aab5b3c.json",
+      "atReadLimit": false,
+      "error": "HTTP 404"
+    },
+    {
+      "number": 8,
+      "label": "cdx-alternate-paths-prefix",
+      "requestedUrl": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2F*&output=json&filter=original%3A.*%28hexatriple%7Coval%7Cinner_square%29.*&collapse=urlkey&fl=timestamp,original,mimetype,statuscode,digest,length&limit=100",
+      "url": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2F*&output=json&filter=original%3A.*%28hexatriple%7Coval%7Cinner_square%29.*&collapse=urlkey&fl=timestamp,original,mimetype,statuscode,digest,length&limit=100",
+      "redirectHop": 0,
+      "retrievedAt": "2026-10-19T17:26:29.673706+00:00",
+      "error": "The read operation timed out"
+    }
+  ],
+  "nextLeads": [
+    {
+      "kind": "owner-or-personal-originals",
+      "finding": "A copy from Johan Rosenkilde or someone who downloaded the six exact filenames could resolve these gaps. No message has been sent."
+    },
+    {
+      "kind": "editable-variant",
+      "finding": "Prior Ovalt article specifically documents hidden Fire sidetakker and Tre sidetakker SVG layers; oval.svg is more valuable than a flattened photo or recreated outline."
+    },
+    {
+      "kind": "unresolved-archive-lookups",
+      "finding": "The domain-wide alternate-path checks and Common Crawl 2016-40 remain inconclusive due to timeouts. Retry only in a later bounded pass."
+    },
+    {
+      "kind": "other-design-editable-originals",
+      "finding": "The inventory exposes successful SVG captures for five already-preserved PDF designs. These are outside this six-URL recovery scope and were not downloaded.",
+      "captures": [
+        {
+          "timestamp": "20170112161918",
+          "original": "http://julehjertedesign.dk/diagrams/darth_vader.svg",
+          "mimetype": "image/svg+xml",
+          "statuscode": "200",
+          "digest": "JYDNS5EQOPFH6L7WXMFNS7VOYWLQ5I6L",
+          "length": "36366"
+        },
+        {
+          "timestamp": "20170114132905",
+          "original": "http://julehjertedesign.dk/diagrams/heart_of_heart.svg",
+          "mimetype": "image/svg+xml",
+          "statuscode": "200",
+          "digest": "6IVU4FZKMUIJKKQKEKM55K52V3JITTXT",
+          "length": "14947"
+        },
+        {
+          "timestamp": "20170114051312",
+          "original": "http://julehjertedesign.dk/diagrams/node.svg",
+          "mimetype": "image/svg+xml",
+          "statuscode": "200",
+          "digest": "KXR4ZRJQ4FYEJOBG7UQWQS5PHDSZ4E2P",
+          "length": "11325"
+        },
+        {
+          "timestamp": "20170112181839",
+          "original": "http://julehjertedesign.dk/diagrams/sundays_fourth.svg",
+          "mimetype": "image/svg+xml",
+          "statuscode": "200",
+          "digest": "3SR5WKOQAG7E6VQOU533JHVU5PELLGXY",
+          "length": "28871"
+        },
+        {
+          "timestamp": "20170112163856",
+          "original": "http://julehjertedesign.dk/diagrams/venus.svg",
+          "mimetype": "image/svg+xml",
+          "statuscode": "200",
+          "digest": "TH2C3GKTQ2QW4ZDGZAU22UVJE7VR4TNY",
+          "length": "12336"
+        }
+      ]
+    }
+  ],
+  "validation": {
+    "files": "All response bodies checked against recorded SHA256 and size; deduplicated by bytes. JSON bodies parsed. The only HTML is a 504 gateway error, not a PDF/SVG.",
+    "budget": "Eight HTTP requests, no redirects or concurrent downloads. All new files are confined to the assigned temporary directory.",
+    "network": "All request workers have finished. No browser or heavy process was started.",
+    "publication": "No shared source files modified; no stage, commit, push or deployment. No additional public redistribution permission established."
+  },
+  "storage": {
+    "status": "promoted-and-hash-verified",
+    "manifest": "docs/inverse/datasets/heart-archive-storage.json",
+    "newUniqueObjects": 4,
+    "newOriginalBytes": 1995,
+    "publicMirrorsAdded": 0
+  },
+  "limitations": [
+    "Empty index responses and the checked prefix inventory do not establish that no copy exists anywhere.",
+    "Two alternate-path requests timed out and one Common Crawl index returned HTTP 504; those searches remain inconclusive.",
+    "This batch adds lookup evidence only. No new design, photograph, cutting template or solver ground-truth label was recovered."
+  ]
+}
