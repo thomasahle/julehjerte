@@ -1334,13 +1334,17 @@
 
 		/**
 		 * `whole`: judge the candidate among this set of cuts, edges and all, on this grid, instead of
-		 * the heart's own (a moved pattern that gains or loses a cut, see `fitLines`).
+		 * the heart's own (a moved pattern that gains or loses a cut, see `fitLines`). `checks`: only
+		 * the quick ones (its ends and the square), only the crossings, or all; `checked`: cuts whose
+		 * crossings with this one were checked already.
 		 */
 		function candidateProblem(
 			fingerId: string,
 			candidate: Finger,
 			overrides?: Map<string, Finger>,
-			whole?: { fingers: Finger[]; gridSize: GridSize }
+			whole?: { fingers: Finger[]; gridSize: GridSize },
+			checks: 'quick' | 'crossings' | 'all' = 'all',
+			checked?: Set<string>
 		): CutProblem | null {
 			const { left: minX, right: maxX, top: minY, bottom: maxY } = getOverlapRect();
 			const orderEps = 1;
@@ -1363,11 +1367,12 @@
 		const candidateLast = candidateSegments[candidateSegments.length - 1];
 		if (!candidateFirst || !candidateLast) return 'self';
 
-		const prevSegments = prev ? fingerToSegments(prev) : null;
-		const nextSegments = next ? fingerToSegments(next) : null;
-		const prevFirst = prevSegments?.[0];
-		const prevLast = prevSegments?.[prevSegments.length - 1];
-		const nextFirst = nextSegments?.[0];
+		if (checks !== 'crossings') {
+			const prevSegments = prev ? fingerToSegments(prev) : null;
+			const nextSegments = next ? fingerToSegments(next) : null;
+			const prevFirst = prevSegments?.[0];
+			const prevLast = prevSegments?.[prevSegments.length - 1];
+			const nextFirst = nextSegments?.[0];
 			const nextLast = nextSegments?.[nextSegments.length - 1];
 
 			// An end past the next cut's end crosses that cut; an outer edge's end past the square leaves it.
@@ -1389,17 +1394,19 @@
 				if (ends) return ends;
 			}
 
-		const bounds = bezierPathBBox(candidateSegments);
-		const insideSquare =
-			bounds.x >= minX - tol &&
-			bounds.x + bounds.width <= maxX + tol &&
-			bounds.y >= minY - tol &&
-			bounds.y + bounds.height <= maxY + tol;
-		if (!insideSquare) return 'outside';
+			const bounds = bezierPathBBox(candidateSegments);
+			const insideSquare =
+				bounds.x >= minX - tol &&
+				bounds.x + bounds.width <= maxX + tol &&
+				bounds.y >= minY - tol &&
+				bounds.y + bounds.height <= maxY + tol;
+			if (!insideSquare) return 'outside';
+			if (checks === 'quick') return null;
+		}
 		if (segmentsIntersect(candidateSegments, candidateSegments, { skipAdjacent: true })) return 'self';
 
 		for (const otherBase of pool) {
-			if (otherBase.id === fingerId) continue;
+			if (otherBase.id === fingerId || checked?.has(otherBase.id)) continue;
 			const other = overrides?.get(otherBase.id) ?? otherBase;
 			if (other.lobe !== candidate.lobe) continue;
 			const otherSegments = fingerToSegments(other);
@@ -1409,24 +1416,39 @@
 		return null;
 	}
 
-	/** The first problem among the cuts an edit would make (see `candidateProblem`), or null when there is none. */
-	function overridesProblem(overrides: Map<string, Finger>): CutProblem | null {
-		for (const [id, candidate] of overrides) {
-			const problem = candidateProblem(id, candidate, overrides);
+	/**
+	 * The first problem among these cuts, each judged by `candidateProblem`, or null when there is
+	 * none. Every cut's quick checks come first: an Escher edit makes every cut again, and the search
+	 * for how far a refused drag may go judges many such sets, mostly refused by those. Two of the cuts
+	 * are checked against each other once.
+	 */
+	function cutsProblem(cuts: Iterable<Finger>, overrides?: Map<string, Finger>, whole?: { fingers: Finger[]; gridSize: GridSize }): CutProblem | null {
+		const list = [...cuts];
+		for (const cut of list) {
+			const problem = candidateProblem(cut.id, cut, overrides, whole, 'quick');
 			if (problem) return problem;
+		}
+		const checked = new Set<string>();
+		for (const cut of list) {
+			const problem = candidateProblem(cut.id, cut, overrides, whole, 'crossings', checked);
+			if (problem) return problem;
+			checked.add(cut.id);
 		}
 		return null;
 	}
 
+	/** The first problem among the cuts an edit would make (see `candidateProblem`), or null when there is none. */
+	function overridesProblem(overrides: Map<string, Finger>): CutProblem | null {
+		return cutsProblem(overrides.values(), overrides);
+	}
+
 	/** The first problem among a whole new set of cuts on a grid of its own (see `candidateProblem`). */
 	function fingersProblem(all: Finger[], grid: GridSize): CutProblem | null {
-		for (const f of all) {
+		const inner = all.filter((f) => {
 			const idx = boundaryIndexFromId(f.id);
-			if (idx < 1 || idx > boundaryCurveCount(grid, f.lobe) - 2) continue;
-			const problem = candidateProblem(f.id, f, undefined, { fingers: all, gridSize: grid });
-			if (problem) return problem;
-		}
-		return null;
+			return idx >= 1 && idx <= boundaryCurveCount(grid, f.lobe) - 2;
+		});
+		return cutsProblem(inner, undefined, { fingers: all, gridSize: grid });
 	}
 
 	function overridesAreValid(overrides: Map<string, Finger>): boolean {
