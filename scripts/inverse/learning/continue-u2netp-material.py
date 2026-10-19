@@ -1,7 +1,7 @@
 """Continue a fixed paper head through complete, balanced training-pool epochs.
 
 The frozen body and input/label compiler are unchanged. Only the final head is
-saved. This is further optimization, not an isolated sampling-policy ablation.
+saved. The plan selects uniform or boundary-weighted paper supervision.
 """
 import argparse
 from collections import Counter
@@ -21,6 +21,8 @@ from real_materials_learning import joint_material_loss
 from material_pilot import evaluate_materials
 from preserved_candidate import pinned
 from data import digest
+from material_boundary_loss import boundary_material_loss
+from material_provenance import verify_material_sources
 
 
 def complete_draws(real_count, synthetic_count, epochs, seed):
@@ -52,6 +54,14 @@ def main():
     for key in ['trainIds', 'source', 'checkpoint', 'bodyReport', 'sourceManifest', 'annotations', 'evaluation', 'syntheticParent', 'printedReplay']:
         if plan[key] != old_plan[key]: raise ValueError('Continuation changed input or source split: '+key)
     assert p['materialInput'] == old_plan['protocol']['materialInput'] == 'body-relative-rgb'
+    objective = p.get('materialLoss', {'kind': 'uniform'})
+    if objective['kind'] == 'uniform':
+        loss_function = joint_material_loss
+    elif objective['kind'] == 'boundary-weighted':
+        loss_function = lambda logits, body, materials: boundary_material_loss(
+            logits, body, materials, objective['factor'], objective['radiusPixels'])
+    else:
+        raise ValueError('Unknown material loss')
     loader = module(Path(plan['source']['path']).parent/'data_loader.py', 'continued_material_input')
     helper = module(Path(__file__).with_name('train-u2netp-material.py'), 'continued_material_helpers')
     real, synthetic, separation = material_training(plan, loader.RescaleT(320), loader.ToTensorLab(flag=0))
@@ -62,22 +72,24 @@ def main():
     model.train(); frozen = frozen_hash(model)
     draws = complete_draws(len(real), len(synthetic), p['completeEpochs'], p['seed'])
     assert len(draws) == p['updates']
+    parent_updates = parent.get('totalUpdatesAfterContinuation', len(parent['history']))
     hashes = dict(parent['sourceHashes'])
-    for file in [Path(__file__), Path(__file__).with_name('u2netp_material_candidate.py')]: hashes[str(file)] = digest(file.read_bytes())
+    for name in ['continue-u2netp-material.py', 'u2netp_material_candidate.py', 'material_provenance.py', 'material_boundary_loss.py']:
+        file = Path(__file__).with_name(name); hashes[str(file)] = digest(file.read_bytes())
     report = {'schema': 'u2netp-material-training-1', 'status': 'training',
               'plan': {'path': str(args.plan), 'sha256': digest(plan_bytes)}, 'parentTraining': reference,
               'sourceHashes': hashes, 'sourceCommit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
               'sourceSeparation': separation, 'initialFrozenStateSha256': frozen,
-              'materialInput': p['materialInput'], 'initialHeadCheckpointSha256': parent['checkpointSha256'],
+              'materialInput': p['materialInput'], 'materialLoss': objective, 'initialHeadCheckpointSha256': parent['checkpointSha256'],
               'initialHeadSha256': digest(b''.join(k.encode()+v.detach().numpy().tobytes() for k, v in sorted(model.state_dict().items()) if not k.startswith('body.'))),
               'parameters': parent['parameters'], 'trainableParameters': parent['trainableParameters'],
               'trainingInputs': evidence, 'draws': draws, 'history': [], 'scope': plan['scope'],
               'runtime': {'torch': torch.__version__, 'device': 'cpu', 'threads': 1},
               'optimizer': 'Fresh AdamW with declared learning rate/weight decay; parent optimizer state was not stored.',
-              'parentUpdates': len(parent['history']), 'totalUpdatesAfterContinuation': len(parent['history'])+len(draws)}
+              'parentUpdates': parent_updates, 'totalUpdatesAfterContinuation': parent_updates+len(draws)}
     args.output.mkdir(parents=True, exist_ok=False)
     def save():
-        for file, sha in hashes.items(): pinned({'path': file, 'sha256': sha})
+        verify_material_sources(report)
         pinned(report['plan']); pinned(reference)
         for key in ['sourceManifest', 'annotations', 'evaluation', 'syntheticParent', 'source', 'checkpoint', 'bodyReport']: pinned(plan[key])
         (args.output/'report.json').write_text(json.dumps(report, indent=2)+'\n')
@@ -91,7 +103,7 @@ def main():
         materials = torch.from_numpy(np.stack([i['materials'] for i in batch])).float()
         for enabled, axis in zip(draw['flips'], [-1, -2]):
             if enabled: rgb, bodies, materials = rgb.flip(axis), bodies.flip(axis), materials.flip(axis)
-        optimizer.zero_grad(set_to_none=True); loss = joint_material_loss(model(rgb), bodies, materials)
+        optimizer.zero_grad(set_to_none=True); loss = loss_function(model(rgb), bodies, materials)
         if not torch.isfinite(loss): raise ValueError('Nonfinite continuation loss')
         loss.backward(); torch.nn.utils.clip_grad_norm_(trainable, 5); optimizer.step()
         report['history'].append(float(loss.detach()))

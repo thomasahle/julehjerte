@@ -9,6 +9,7 @@ from u2netp_relative_material import identity_model
 from u2netp_adaptation import frozen_hash
 from preserved_candidate import pinned
 from data import digest
+from material_provenance import verify_material_sources
 
 
 def module(file, name):
@@ -22,7 +23,7 @@ def load_material_candidate(directory):
     if report['schema'] != 'u2netp-material-training-1' or report['status'] != 'complete' or not report['frozenBodyExact']:
         raise ValueError('Require completed frozen-body material training')
     plan = json.loads(pinned(report['plan']).read_bytes())
-    for file, sha in report['sourceHashes'].items(): pinned({'path': file, 'sha256': sha})
+    verify_material_sources(report)
     source_file = pinned(plan['source']); source = json.loads(source_file.read_bytes()); root = source_file.parent
     for row in source['files']: pinned({'path': str(root/row['path']), 'sha256': row['sha256']})
     architecture = module(root/'model/u2net.py', 'u2netp_candidate_architecture')
