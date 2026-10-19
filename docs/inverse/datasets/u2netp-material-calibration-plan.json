@@ -1,0 +1,43 @@
+{
+  "schema": "u2netp-material-calibration-plan-1",
+  "status": "predeclared",
+  "training": {
+    "path": "tmp/heart-learning/u2netp-material-boundary-v1/report.json",
+    "sha256": "1012c443ab49fdd58260f32ece4166fe521f98716e1495179e6527db0dd00520"
+  },
+  "nativeProbe": {
+    "path": "tmp/heart-learning/u2netp-material-boundary-probe-v1/report.json",
+    "sha256": "6cd1ee8d843d529172698b2a2b1652bd2f816cc3a1cbb8c0ac44fd0ff13e5044"
+  },
+  "syntheticReference": {
+    "path": "tmp/heart-learning/u2netp-material-boundary-synthetic-v1/report.json",
+    "sha256": "7cbe7390863b3197d0afbe310124040015d4d782764181d2696f02ead4aff43e"
+  },
+  "methods": [
+    "network",
+    "learned",
+    "rgb"
+  ],
+  "scope": "Fixed 504-update boundary-weighted head. Compare original neural fields with neural-seeded and RGB-clustered paper palettes using the existing illumination-aware mixture helper. All 16 real training photos and 96 synthetic original/scene/printed views scored at 320; same 32 source-separated development photos reviewed at source-resolution colour classification. Body, model, annotations and source/crop data unchanged. No training, per-photo winners or deployment.",
+  "protocol": {
+    "paletteResolution": 320,
+    "mixtureMode": "illumination",
+    "bodySeedThreshold": 0.8,
+    "learnedMaterialSeedThresholds": [
+      0.2,
+      0.8
+    ],
+    "minimumSeedPixelsPerPaper": 32,
+    "display": "Palette evaluated on original RGB in 128-row strips; thresholded mask nearest reduced for gallery, body display unchanged. No full-size field is saved.",
+    "validation": "Require exact current network training and synthetic metrics. Retain calibration failures and all 32 photos. Use an RGB-only control and inspect both printed and shading failures; do not interpret lower interior training error as template recovery.",
+    "fitterFollowup": "Only after visual review, rectify original RGB with frozen crops and apply declared palettes before fresh fitting. Keep every attempted method and failed crop."
+  },
+  "resources": {
+    "threads": 1,
+    "minimumFreeGiB": 10,
+    "maxArtifactMiB": 10,
+    "newImagesDownloaded": 0,
+    "newCopiesOfPhotographs": 0,
+    "newModelCheckpoints": 0
+  }
+}
