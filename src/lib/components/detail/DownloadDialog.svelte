@@ -261,6 +261,8 @@
 			return null;
 		}
 	});
+	/** The sheet carries orientation marks: the legend says what the blue cross is for. */
+	const laserMarked = $derived(laserPlan?.pieces.some(({ piece }) => piece.marks.length > 0) ?? false);
 
 	// ---- What the settings give ------------------------------------------------
 
@@ -710,7 +712,7 @@
 					{@html previewSvg}
 				</div>
 				{#if mode === 'laser'}
-					<figcaption class="legend">{t('laserLegend', lang)}</figcaption>
+					<figcaption class="legend">{t(laserMarked ? 'laserLegendMarked' : 'laserLegend', lang)}</figcaption>
 				{:else if pageCount > 1}
 					<figcaption class="legend" data-testid="download-preview-page">
 						{t('pdfPreviewPage', lang, { n: pageCount })}
@@ -968,6 +970,17 @@
 	   white, as it prints. */
 	.preview[data-mode='laser'] .preview-sheet :global(.cut path) {
 		stroke: #ff0000;
+	}
+
+	/* Orientation marks: thin, black on the printer page as the PDF prints
+	   them, blue in the laser preview as in the file (not a cut). */
+	.preview-sheet :global(.mark path) {
+		stroke: #000;
+		stroke-width: 0.5px;
+	}
+
+	.preview[data-mode='laser'] .preview-sheet :global(.mark path) {
+		stroke: #0000ff;
 	}
 
 	/* The printer page's labels and address lines, in the PDF's Helvetica so a

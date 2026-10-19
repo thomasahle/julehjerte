@@ -27,6 +27,7 @@ import {
 	type TemplatePiece
 } from './plan';
 import { escapeXml } from '$lib/utils/xml';
+import { markPathData } from '$lib/utils/orientationMarks';
 
 export interface TemplatePreviewOptions {
 	page: number;
@@ -89,6 +90,10 @@ export function serializeTemplatePageSvg(
 		for (const d of data.cutPaths) lines.push(`      <path d="${d}" ${stroke} />`);
 		lines.push('    </g>');
 		lines.push(`    <g class="fold"><path d="M 0 ${th} L ${tw} ${th}" ${stroke} /></g>`);
+		// The orientation mark, as the PDF prints it: thin, in the template's colour.
+		for (const mark of piece.marks) {
+			lines.push(`    <g class="mark" data-mark="${mark.kind}"><path d="${markPathData(mark)}" ${stroke} /></g>`);
+		}
 		lines.push('  </g>');
 
 		const ear = templateEar(piece, { picture: options.previewImage, lang: options.lang });

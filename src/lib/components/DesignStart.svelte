@@ -6,7 +6,7 @@
   and figures from the generator's catalogue. They are drawn while
   prerendering ($lib/server/designStart), so the browser downloads none of
   their sources. They paint with the site's --paper-left / --paper-right, so the
-  footer's swatches recolour them; a few hearts set their own --paper-right to
+  header's swatches recolour them; a few hearts set their own --paper-right to
   show that the colours can be changed.
 
   The winter landscape is inlined here, so a page showing this screen must not

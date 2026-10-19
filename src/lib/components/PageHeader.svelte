@@ -2,11 +2,16 @@
   The site nav — docs/redesign/DESIGN.md §3 "Nav".
 
   Two variants:
-    site   (default) logo · Skabeloner / Sådan gør du / Om · EN pill · GitHub pill,
-           collapsing to a 44px burger with a drop-down menu under 900px.
+    site   (default) logo · Skabeloner / Sådan gør du / Om · paper colours ·
+           EN pill · GitHub pill, collapsing to a 44px burger with a drop-down
+           menu under 900px, where the paper colours are a row of their own.
     editor logo at the left and the page's own buttons (passed as
-           children) at the right — no nav links, no pills, no back link:
-           the logo leads home, and the browser's own back button works.
+           children) at the right, then the paper colours and the EN pill —
+           no nav links, no GitHub, no back link: the logo leads home, and
+           the browser's own back button works. The design tools have no
+           colour controls of their own, so the bar keeps the paper colours
+           (Tegn and Mal only from 900px, where there is room beside the
+           Tegn / Mal switch).
 
   Every page mounts this component, so keep the prop names stable:
     lang      the page language
@@ -25,6 +30,7 @@
 	import { href as routeHref, otherLanguageUrl } from '$lib/i18n/routes';
 	import { ImageIcon, MenuIcon, CloseIcon, PencilIcon } from '$lib/components/icons';
 	import GitHubLink from '$lib/components/GitHubLink.svelte';
+	import ColorControls from '$lib/components/ColorControls.svelte';
 
 	type NavSection = 'templates' | 'howto' | 'about';
 
@@ -181,6 +187,10 @@
 		{#if children}
 			{@render children()}
 		{/if}
+		<!-- The site's paper colours and the colourful mode (ColorControls), on
+		     every page: the design tools (Tegn, Mal, the designer) have no colour
+		     controls of their own, so this is where their paper is chosen too. -->
+		<ColorControls {lang} variant="bar" />
 		<!-- The language toggle belongs on every page type, the editor included:
 		     /editor/ and /en/editor/ both exist, and the editor has neither nav
 		     links nor a footer to reach the other one from. Below 900px the site
@@ -227,6 +237,7 @@
 					{link.label}
 				</a>
 			{/each}
+			<ColorControls {lang} variant="menu" />
 			<a class="menu-link" href={languageHref}>
 				{lang === 'da' ? 'English' : 'Dansk'}
 			</a>
@@ -445,12 +456,21 @@
 			font-size: 24px;
 		}
 
-		/* The drawer already lists the language and GitHub, so the bar drops its
+		/* The drawer already lists the language, GitHub and the paper colours, so the bar drops its
 		   own copies rather than showing the same control twice in one viewport.
 		   The editor keeps its pill: it has no drawer to fall back on. */
 		.nav-links,
 		.nav:not(.editor) .pill,
-		.nav-actions :global(.nav-github) {
+		.nav-actions :global(.nav-github),
+		.nav:not(.editor) .nav-actions :global(.colors-bar) {
+			display: none;
+		}
+
+		/* Tegn and Mal: below 900px their tools, the language pill and the
+		   Tegn / Mal switch fill the bar, and the paper colours would push the
+		   switch over the wordmark (and crush it on a phone). The designer's bar
+		   has neither switch nor tools, and keeps them. */
+		.editor:has(.mode-switch) .nav-actions :global(.colors-bar) {
 			display: none;
 		}
 

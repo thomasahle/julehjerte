@@ -11,7 +11,8 @@
 	import PageFooter from "$lib/components/PageFooter.svelte";
 	import { markAppStarted } from "$lib/hydration";
 	import { isPageViewNavigation, trackPageView } from "$lib/analytics";
-	import { getColors, subscribeColors, type HeartColors } from "$lib/stores/colors";
+	import { PAPER_KIND_CLASSES, getColors, paperKind, subscribeColors, type HeartColors } from "$lib/stores/colors";
+	import { colorModeHeadScript } from "$lib/stores/colorMode";
 
 	let { children } = $props();
 	let lang = $derived(langFromPathname($page.url.pathname));
@@ -74,11 +75,17 @@
 
 	// Mirror the paper pair into --paper-left / --paper-right (src/app.css). The
 	// hearts in the front page's HTML are prerendered and never re-render, so CSS
-	// is how the footer's swatches still reach their paper — see HangingHeart.
+	// is how the header's swatches still reach their paper — see HangingHeart.
 	onMount(() => {
+		// The classes say which of the header's colour buttons the pair
+		// belongs to (ColorControls); the head's inline script set both first.
 		const apply = (colors: HeartColors) => {
-			document.documentElement.style.setProperty("--paper-left", colors.left);
-			document.documentElement.style.setProperty("--paper-right", colors.right);
+			const root = document.documentElement;
+			root.style.setProperty("--paper-left", colors.left);
+			root.style.setProperty("--paper-right", colors.right);
+			const kind = paperKind(colors);
+			root.classList.toggle(PAPER_KIND_CLASSES.flipped, kind === "flipped");
+			root.classList.toggle(PAPER_KIND_CLASSES.custom, kind === "custom");
 		};
 		apply(getColors());
 		return subscribeColors(apply);
@@ -122,6 +129,12 @@
 </script>
 
 <svelte:head>
+	<!-- The paper pair and the colourful mode on <html>, before the body
+	     paints, so a reload never shows the hearts, or the header's colour
+	     buttons, in the default pair first ($lib/stores/colorMode). First in
+	     the head: it must not wait for anything. -->
+	{@html colorModeHeadScript()}
+
 	<!-- Google tag (gtag.js). Only the queue is set up here; the script itself is
 	     the page's largest download and is fetched after first paint (see the
 	     effect above). Calls made before it arrives queue in dataLayer.
@@ -232,7 +245,7 @@
 <div class="page-container">
 	<!-- Not <main>: every route renders its own <header class="nav"> plus its own
 	     <main id="main-content">, and a <header> nested inside <main> does not map
-	     to the banner landmark. Paper colours are the footer's on every page. -->
+	     to the banner landmark. Paper colours are the header's on every page. -->
 	<div class="page-content">
 		{@render children()}
 	</div>

@@ -56,6 +56,12 @@ false) a segmented control Venstre / Højre (`templateLeft` / `templateRight`)
 in the toolbar switches the lobe; both lobes share `x, y, s`, so they are traced
 at the same size.
 
+Orientation marks (2026-10-19, DOWNLOAD.md "Orientation marks"): a heart
+whose pieces can go in the wrong way round shows its small cross(es) on the
+template, about 3 mm across on the paper at the width shown (placed to the
+whole millimetre), ⊗ on the left lobe's template and × on the right's; a
+shared template carries both. Trace them with the rest.
+
 ### Sizing and placement (before locking)
 
 - One pointer drags (translate). Two pointers pinch (scale about the midpoint)

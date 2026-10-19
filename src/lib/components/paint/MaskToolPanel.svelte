@@ -2,7 +2,7 @@
   Mal's left column (docs/redesign/PAINT.md §2, decision 4): the two things that
   replace the mask wholesale, and the tools that change it in place.
 
-  Paper colours live in the shared footer. The paper swatches and XOR here
+  Paper colours live in the header (ColorControls). The paper swatches and XOR here
   choose how the tool edits the binary mask; they never change the paper colours.
 -->
 <script lang="ts">

@@ -34,7 +34,7 @@ const GALLERY = {
 } as const;
 const MOTIFS = ['star', 'tree', 'heart', 'snow', 'angel', 'bell'];
 
-// The site's paper pair, so the footer's swatches recolour these hearts too (see app.css).
+// The site's paper pair, so the header's swatches recolour these hearts too (see app.css).
 const paper = { left: 'var(--paper-left)', right: 'var(--paper-right)' };
 // Hundredths of a unit are far below a pixel at card size, and it halves the markup.
 const rounded = (markup: string) => markup.replace(/(\.\d\d)\d+/g, '$1');

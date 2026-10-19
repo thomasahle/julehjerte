@@ -287,7 +287,7 @@
 							{ id: snapshot.motif, name: snapshot.motif, art: '', box: 24 },
 							lang
 						),
-			// Geometry is colour independent; only the preview reads the footer preference.
+			// Geometry is colour independent; only the preview reads the header's colour preference.
 			colors: DEFAULT_COLORS_HEX,
 			text: snapshot.text,
 			frame: snapshot.frame,

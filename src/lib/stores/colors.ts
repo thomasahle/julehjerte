@@ -1,6 +1,7 @@
 import { browser } from '$app/environment';
 import type { HeartColors } from '$lib/types/heart';
 import { readStorage, writeStorage } from '$lib/utils/safeStorage';
+import { toHexColor } from '$lib/utils/heartColors';
 
 // Paper colours are a site-wide viewing preference. A saved/exported design
 // may also carry an appearance snapshot, without changing its cutting pattern.
@@ -27,16 +28,35 @@ export const DEFAULT_COLORS_HEX: HeartColors = {
   right: '#b91313'
 };
 
-/** Shared footer suggestions; the colour pickers still allow any paper pair. */
-export const COLOR_PRESETS = [
-  { colors: DEFAULT_COLORS_HEX, key: 'footerPaletteClassic' },
-  { colors: { left: '#fffdf5', right: '#b72f2b' }, key: 'footerPaletteRed' },
-  { colors: { left: '#fffdf5', right: '#365943' }, key: 'footerPaletteGreen' },
-  { colors: { left: '#ddba6b', right: '#725483' }, key: 'footerPalettePurple' },
-  { colors: { left: '#efd6cc', right: '#344e66' }, key: 'footerPaletteBlue' }
-] as const;
+/** Where the pair is kept; the head's inline script reads it too ($lib/stores/colorMode). */
+export const COLORS_STORAGE_KEY = 'julehjerte-colors';
+const STORAGE_KEY = COLORS_STORAGE_KEY;
 
-const STORAGE_KEY = 'julehjerte-colors';
+/**
+ * Which of the header's buttons a pair belongs to: the classic red and white
+ * (either way round, `flipped` with the red on the left) or a custom pair.
+ */
+export type PaperKind = 'classic' | 'flipped' | 'custom';
+
+export function paperKind(colors: HeartColors): PaperKind {
+  const left = toHexColor(colors.left, '');
+  const right = toHexColor(colors.right, '');
+  const { left: white, right: red } = DEFAULT_COLORS_HEX;
+  if (left === white && right === red) return 'classic';
+  if (left === red && right === white) return 'flipped';
+  return 'custom';
+}
+
+/**
+ * The classes on <html> that tell CSS which kind of pair is on: none for the
+ * classic pair, `paper-flipped` or `paper-custom` otherwise. The header's
+ * buttons draw their state from them, and the head's inline script sets them
+ * from storage before the body paints (with the same rule).
+ */
+export const PAPER_KIND_CLASSES: Record<Exclude<PaperKind, 'classic'>, string> = {
+  flipped: 'paper-flipped',
+  custom: 'paper-custom'
+};
 
 // Simple module-level state with subscribers
 let currentColors: HeartColors = { ...DEFAULT_COLORS };
@@ -88,7 +108,7 @@ export function setRightColor(color: string) {
   setColors({ ...currentColors, right: color });
 }
 
-/** Swap the two paper colours using the shared footer. */
+/** Swap the two paper colours: the header's red-and-white button and its colour dialog. */
 export function flipColors() {
   const { left, right } = getColors();
   setColors({ left: right, right: left });

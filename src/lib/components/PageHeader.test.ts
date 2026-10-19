@@ -23,11 +23,16 @@ afterEach(() => {
 	for (const dispose of cleanup.splice(0)) dispose();
 });
 
-function render(path: string, lang: 'da' | 'en', active?: 'templates' | 'howto' | 'about') {
+function render(
+	path: string,
+	lang: 'da' | 'en',
+	active?: 'templates' | 'howto' | 'about',
+	variant: 'site' | 'editor' = 'site'
+) {
 	url.current = new URL(`http://localhost${path}`);
 	const target = document.createElement('div');
 	document.body.appendChild(target);
-	const component = mount(PageHeader, { target, props: { lang, active } });
+	const component = mount(PageHeader, { target, props: { lang, active, variant } });
 	cleanup.push(() => {
 		unmount(component);
 		target.remove();
@@ -63,5 +68,32 @@ describe('PageHeader', () => {
 			expect(a.getAttribute('aria-current')).toBe('true');
 		}
 		expect(render('/en/', 'en', 'templates').links('Templates')[0]!.getAttribute('aria-current')).toBe('page');
+	});
+
+	it('carries the paper colours in the bar and as a row in the menu: three named buttons each', () => {
+		const { target } = render('/', 'da', 'templates');
+		const groups = [...target.querySelectorAll('[role="group"]')];
+		expect(groups.map((g) => g.getAttribute('aria-label'))).toEqual(['Farver', 'Farver']);
+		expect(target.querySelector('.nav-actions .colors-bar')).not.toBeNull();
+		expect(target.querySelector('.nav-menu .colors-menu')).not.toBeNull();
+		for (const group of groups) {
+			const names = [...group.querySelectorAll('button')].map((b) => b.getAttribute('aria-label'));
+			expect(names).toEqual(['Rød og hvid', 'Farverig', 'Egne farver']);
+		}
+		const english = render('/en/', 'en', 'templates').target.querySelector('[role="group"]')!;
+		expect([...english.querySelectorAll('button')].map((b) => b.getAttribute('aria-label'))).toEqual([
+			'Red and white',
+			'Colourful',
+			'Your own colours'
+		]);
+	});
+
+	it('keeps them in the bar of the design tools, which have no colour controls of their own', () => {
+		const { target } = render('/editor/', 'da', undefined, 'editor');
+		const groups = [...target.querySelectorAll('[role="group"]')];
+		expect(groups).toHaveLength(1);
+		expect(target.querySelector('.nav-actions .colors-bar')).not.toBeNull();
+		expect(target.querySelector('.colors-menu')).toBeNull();
+		expect(target.querySelector('input[type="color"]')).toBeNull();
 	});
 });

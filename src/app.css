@@ -41,7 +41,7 @@
   /* The site-wide paper pair, mirrored here from $lib/stores/colors by the root
      layout. The store stays the source of truth — this is only how a heart that
      is already drawn in the prerendered HTML, and so cannot re-render, still
-     follows the footer's swatches (see HangingHeart). The values are the
+     follows the header's swatches (see HangingHeart). The values are the
      store's defaults, which is what the prerender paints with. */
   --paper-left: #ffffff;
   --paper-right: rgb(185, 19, 19);
@@ -348,6 +348,49 @@
 }
 
 /*
+ * Colourful mode (docs/redesign/DESIGN.md §3 "Nav", "As built: colours in the
+ * header"). The header's button puts `colorful` on <html> along with the
+ * shuffle's `--pal-<slot>-l/-r/-o` variables, and so does the head's inline
+ * script on a reload ($lib/stores/colorMode). Every heart that follows the
+ * site's pair carries its slot in its markup: `--pair-left` / `--pair-right` /
+ * `--pair-edge` on a `[data-pair]` element, which read those variables
+ * ($lib/utils/palette). The mode makes that pair the heart's --paper-* tokens.
+ * Those already reach a frozen heart's fills and every ribbon (HangingHeart);
+ * a heart drawn in the browser paints its fills as attributes, so its papers
+ * are named (`paper-l` / `paper-r`, HeartWeaveFill) and recoloured here.
+ */
+html.colorful [data-pair] {
+  --paper-left: var(--pair-left);
+  --paper-right: var(--pair-right);
+}
+
+html.colorful [data-pair] svg .paper-l {
+  fill: var(--paper-left);
+}
+
+html.colorful [data-pair] svg .paper-r {
+  fill: var(--paper-right);
+}
+
+/* A light paper that is nearly the page's own snow gets a hairline round the
+   heart, under the usual drop shadow; --pair-edge is transparent for the rest. */
+html.colorful [data-pair] .heart > svg {
+  filter: drop-shadow(0 0 0.6px var(--pair-edge)) drop-shadow(0 8px 12px var(--shadow-color));
+}
+
+/* A reshuffle cross-fades the papers and ribbons rather than snapping. */
+@media (prefers-reduced-motion: no-preference) {
+  html.colorful [data-pair] svg .paper-l,
+  html.colorful [data-pair] svg .paper-r {
+    transition: fill 0.4s ease;
+  }
+
+  html.colorful [data-pair] .ribbon {
+    transition: background-color 0.4s ease;
+  }
+}
+
+/*
  * Printing (QA round 3). Chrome lays a page out at the paper's width (about
  * 720px on A4), so prints get the narrow layout. The rules here only take out
  * what makes no sense on paper and keep things whole across page breaks.
@@ -355,15 +398,14 @@
  */
 @media print {
   /* Controls: the sticky gallery bar (it printed over a card mid-page), the
-     header's menu and links, the footer's colour swatches, the tick boxes and
-     the hero's scroll hint. The wordmark and the footer's credit stay. */
+     header's menu, links and colour swatches, the tick boxes and the hero's
+     scroll hint. The wordmark and the footer's credit stay. */
   .gallery-bar,
   .skip-link,
   .nav-links,
   .nav-actions,
   .nav-burger,
   .nav-menu,
-  .site-footer .colors,
   .card .pick,
   .card .delete-btn,
   .scroll-hint {

@@ -27,6 +27,7 @@
 	import { trapTab } from '$lib/utils/focusTrap';
 	import { lobesShareTemplate } from '$lib/utils/symmetry';
 	import { getTemplateData, type TemplateLobe } from '$lib/utils/templateSvg';
+	import { markPathData, shownTemplateMarks } from '$lib/utils/orientationMarks';
 	import {
 		CARD_CORNER_MM,
 		CARD_HEIGHT_MM,
@@ -97,7 +98,8 @@
 	let chromeBottom = $state(0);
 
 	const twoTemplates = $derived(!lobesShareTemplate(design.fingers, design.gridSize));
-	const template = $derived(getTemplateData(design, twoTemplates ? lobe : 'left'));
+	const shownLobe = $derived<TemplateLobe>(twoTemplates ? lobe : 'left');
+	const template = $derived(getTemplateData(design, shownLobe));
 	const size = $derived({ width: template.templateWidth, height: template.templateHeight });
 	const viewport = $derived({ width: vw, height: vh });
 	const freeArea = $derived<Area>({
@@ -108,6 +110,14 @@
 	});
 
 	const widthMm = $derived(widthMmFromScale(size.width, view.s, pxPerMm));
+	/**
+	 * The orientation marks ($lib/utils/orientationMarks), about 3 mm across on
+	 * the paper whatever the size: placed for the width shown, to the whole
+	 * millimetre so pinching does not re-place them at every frame.
+	 */
+	const marks = $derived(
+		shownTemplateMarks(design, shownLobe, Math.max(1, Math.round(widthMm)) / size.width)
+	);
 	const readout = $derived(
 		t(calibrated ? 'traceWidthMmExact' : 'traceWidthMm', lang, { mm: Math.round(widthMm) })
 	);
@@ -597,6 +607,9 @@
 					/>
 					{#each template.cutPaths as d, i (i)}
 						<path {d} />
+					{/each}
+					{#each marks as mark, i (i)}
+						<path class="mark" data-mark={mark.kind} d={markPathData(mark)} stroke-width={1.5 / view.s} />
 					{/each}
 				</g>
 			{/if}

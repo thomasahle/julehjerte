@@ -179,3 +179,35 @@ describe('a cut that cannot be cut', () => {
 		expect(() => unfoldPiece(shortened(), 'left', WIDTH)).toThrow(LaserExportError);
 	});
 });
+
+describe('orientation marks on the unfolded piece', () => {
+	it('puts a piece of Jul its own mark above the fold, by the left side below the ear base', () => {
+		const piece = unfoldPiece(loadHeart('jul'), 'left', 80);
+		const H = piece.heightMm / 2;
+		const R = piece.widthMm / 2;
+		expect(piece.marks.map((m) => m.kind)).toEqual(['circled']);
+		const [m] = piece.marks;
+		expect(m!.x).toBeLessThan(piece.widthMm / 4);
+		expect(m!.y).toBeGreaterThan(R);
+		expect(m!.y).toBeLessThan(H);
+		expect(m!.r).toBeCloseTo(1.5);
+		expect(unfoldPiece(loadHeart('jul'), 'right', 80).marks.map((m) => m.kind)).toEqual(['plain']);
+	});
+
+	it('gives a shared Kroge piece both marks: × above the fold, ⊗ below it on the other side', () => {
+		const piece = unfoldPiece(loadHeart('permo-kroge'), 'right', 80, ['left', 'right']);
+		const H = piece.heightMm / 2;
+		const plain = piece.marks.find((m) => m.kind === 'plain')!;
+		const circled = piece.marks.find((m) => m.kind === 'circled')!;
+		expect(plain.y).toBeLessThan(H);
+		expect(plain.x).toBeLessThan(piece.widthMm / 4);
+		// Below the fold, mirrored: folding lays it on the template's right corner.
+		expect(circled.y).toBeGreaterThan(H);
+		expect(circled.x).toBeGreaterThan((3 * piece.widthMm) / 4);
+		expect(2 * H - circled.y).toBeCloseTo(plain.y, 0);
+	});
+
+	it('gives the classic heart none', () => {
+		expect(unfoldPiece(loadHeart('classic-3x3'), 'right', 80, ['left', 'right']).marks).toEqual([]);
+	});
+});

@@ -13,6 +13,7 @@
  */
 import type { HeartDesign, Vec } from '$lib/types/heart';
 import { getTemplateData, type TemplateLobe } from '$lib/utils/templateSvg';
+import { placeMark, markUses, type PlacedMark } from '$lib/utils/orientationMarks';
 
 /** Thrown for a design that cannot be cut as one piece. */
 export class LaserExportError extends Error {
@@ -47,6 +48,15 @@ export interface UnfoldedPiece {
 	widthMm: number;
 	heightMm: number;
 	stripWidthMm: number;
+	/**
+	 * Orientation marks ($lib/utils/orientationMarks), in millimetres in the
+	 * piece's frame: not cuts, so the writers put them on a layer of their own
+	 * (blue, "mark") for the laser to engrave or skip. The mark of the piece's
+	 * own lobe is on the half above the fold; on a shared piece, the other
+	 * lobe's mark is on the half below it, mirrored, which folding lays on the
+	 * same corner as it would be on the template. Empty for a heart that needs none.
+	 */
+	marks: PlacedMark[];
 }
 
 /**
@@ -188,7 +198,12 @@ export function heartScale(design: HeartDesign, widthMm: number): number {
 	return widthMm / widest;
 }
 
-function unfoldTemplate(design: HeartDesign, template: Template, scale: number): UnfoldedPiece {
+function unfoldTemplate(
+	design: HeartDesign,
+	template: Template,
+	scale: number,
+	uses: readonly TemplateLobe[]
+): UnfoldedPiece {
 	const { lobe, templateWidth, earRadius, templateHeight } = template;
 	const s = (p: Vec): Vec => ({ x: p.x * scale, y: p.y * scale });
 	const W = templateWidth * scale;
@@ -220,17 +235,33 @@ function unfoldTemplate(design: HeartDesign, template: Template, scale: number):
 			return { start: half.start, segments: [...half.segments, ...back.segments], closed: false };
 		});
 
+	const marks = markUses(design, lobe, uses).map((use): PlacedMark => {
+		const m = placeMark(design, lobe, use, scale);
+		const own = use.lobe === lobe;
+		return { ...m, x: m.x * scale, y: own ? m.y * scale : 2 * H - m.y * scale, r: m.r * scale };
+	});
+
 	return {
 		lobe,
 		outline,
 		cuts,
+		marks,
 		widthMm: W,
 		heightMm: 2 * H,
 		stripWidthMm: W / stripsAcross(design, lobe)
 	};
 }
 
-/** One lobe's piece, opened out, at a heart width of `widthMm` (see `heartScale`). */
-export function unfoldPiece(design: HeartDesign, lobe: TemplateLobe, widthMm: number): UnfoldedPiece {
-	return unfoldTemplate(design, getTemplateData(design, lobe), heartScale(design, widthMm));
+/**
+ * One lobe's piece, opened out, at a heart width of `widthMm` (see
+ * `heartScale`), with the orientation marks for the lobes it is cut for
+ * (`uses`: its own; both for a shared template).
+ */
+export function unfoldPiece(
+	design: HeartDesign,
+	lobe: TemplateLobe,
+	widthMm: number,
+	uses: readonly TemplateLobe[] = [lobe]
+): UnfoldedPiece {
+	return unfoldTemplate(design, getTemplateData(design, lobe), heartScale(design, widthMm), uses);
 }

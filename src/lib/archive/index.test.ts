@@ -191,7 +191,9 @@ describe('the complete heart archive', () => {
 	it('searches recorded credits and combines filters without case or accent surprises', () => {
 		const records = archiveRecords('en');
 		const mortensen = filterArchive(records, 'PER mortensen', '', 'templates');
-		expect(mortensen).toHaveLength(32);
+		// 27 hunodan.dk documents and his five "Circles in Hearts" pages, plus the
+		// five juleflet hearts built from those pages (Sol and the four permo-*).
+		expect(mortensen).toHaveLength(37);
 		expect(filterArchive(records, 'krummel', 'krymmel.dk', 'templates').length).toBeGreaterThan(25);
 		expect(filterArchive(records, 'nonexistentzzzyyy', '', 'all')).toEqual([]);
 		expect(filterArchive(records, '', '', 'juleflet')).toHaveLength(ALL_HEART_IDS.length);

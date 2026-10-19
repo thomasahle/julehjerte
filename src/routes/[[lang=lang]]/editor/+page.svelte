@@ -204,7 +204,7 @@
   let authorName = $state(urlDesign?.author ?? '');
   let description = $state(urlDesign?.description ?? '');
   let lang = $derived(langFromParam($page.params.lang));
-  // Viewing colours come from the shared footer and never schedule an edit.
+  // Viewing colours come from the header's shared controls and never schedule an edit.
   let colors = $state<HeartColors>({ ...DEFAULT_COLORS });
   let editorEl: HTMLDivElement | null = $state(null);
   let headerEl: HTMLElement | null = $state(null);
@@ -497,7 +497,7 @@
       // has its own name: a copy or a renamed heart is named once, by the visitor.
       names: initialDesign && sanitizeHtml(heartName) === initialDesign.name ? initialDesign.names : undefined,
       weaveParity: currentWeaveParity,
-      // Preserve the appearance in exported files; site previews use the footer.
+      // Preserve the appearance in exported files; site previews use the header's pair.
       colors: toHexColors(colors, DEFAULT_COLORS_HEX),
       gridSize: currentGridSize,
       overlapAspectRatio: initialDesign?.overlapAspectRatio,

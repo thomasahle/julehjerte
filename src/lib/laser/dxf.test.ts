@@ -142,4 +142,31 @@ describe('serializeLaserDxf', () => {
 		const keys = polylines.map((p) => JSON.stringify(p.vertices));
 		expect(new Set(keys).size).toBe(keys.length);
 	});
+
+	it('writes orientation marks on a blue MARK layer of their own, and none for the classic heart', () => {
+		const jul = loadHeart('jul');
+		const julPlan = planLaserSheet(jul, { widthMm: 80, count: 1, sheet: SHEETS.A4, lobe: 'left' });
+		const { layers, entities, get } = readDxf(serializeLaserDxf(julPlan));
+		expect(Object.fromEntries(layers)).toEqual({ CUT: 1, MARK: 5 });
+		const marks = entities.filter((e) => get(e, 8) === 'MARK');
+		expect(marks.every((e) => get(e, 62) === '5')).toBe(true);
+		// ⊗: two strokes and a closed circle of two half circles.
+		expect(marks).toHaveLength(3);
+		const circle = marks.find((e) => get(e, 70) === '1')!;
+		expect(circle.vertices.map((v) => v.bulge)).toEqual([1, 1]);
+		// The cuts are as many as without marks: the outline and every cut.
+		const piece = julPlan.pieces[0]!.piece;
+		expect(entities.filter((e) => get(e, 8) === 'CUT')).toHaveLength(1 + piece.cuts.length);
+		// On the piece, by its left side, below the ear base (y up: under the top's ear).
+		const [mark] = piece.marks;
+		const { x, y } = julPlan.pieces[0]!;
+		expect(circle.vertices[0]!.x).toBeCloseTo(x + mark!.x - mark!.r, 2);
+		expect(circle.vertices[0]!.y).toBeCloseTo(297 - (y + mark!.y), 2);
+
+		const right = planLaserSheet(jul, { widthMm: 80, count: 1, sheet: SHEETS.A4, lobe: 'right' });
+		const r = readDxf(serializeLaserDxf(right));
+		expect(r.entities.filter((e) => r.get(e, 8) === 'MARK')).toHaveLength(2);
+
+		expect(Object.fromEntries(readDxf(serializeLaserDxf(plan)).layers)).toEqual({ CUT: 1 });
+	});
 });

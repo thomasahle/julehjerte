@@ -3,7 +3,8 @@
   (hero, gallery cards, detail stage, related hearts). docs/redesign/DESIGN.md §3.
 
   The ribbon is cut from the same paper as the heart: it takes the right-hand
-  lobe colour, following the site-wide pair the footer's swatches edit.
+  lobe colour, following the site-wide pair the header's swatches edit (or,
+  in the colourful mode, the heart's own pair from the palette).
 
   The block is `size` px wide but shrinks with its container (max-width: 100%);
   the ribbon runs on behind the heart into the cleft between the lobes, so its
@@ -28,6 +29,12 @@
   A heart that is already drawn in the prerendered HTML is given as `markup`
   instead of being drawn from `design` — see $lib/front/galleryHearts.
 
+  A heart that follows the site's pair also carries its pair for the colourful
+  mode ($lib/utils/palette, picked by `heartId`): its slot, `data-pair`, and
+  the custom properties that read the shuffle on <html>, always, so the mode
+  is a class and variables on <html> and a reload with it on paints the right
+  colours first (src/app.css, "Colourful mode").
+
   A heart drawn from `design` needs PaperHeartSVG and the weave renderer under
   it. It is not imported here, because the front page hangs every heart as
   `markup` and would otherwise download that code for nothing. The parent supplies it instead: `paper`, the component itself, from a
@@ -38,22 +45,17 @@
   first time. The dynamic import lives with the front page's components, not
   here: SvelteKit drops a component's stylesheet from a page that imports it
   statically when a chunk listed before it also imports it dynamically. The
-  ribbon is a real element either way, so the footer's colour swatches keep
-  reaching it; the frozen SVG follows them through the --paper-* tokens below.
+  ribbon follows the header's swatches through --paper-right either way; the
+  frozen SVG follows them through the --paper-* tokens below.
 -->
 <script lang="ts">
-	import { onMount, type Snippet } from 'svelte';
+	import type { Snippet } from 'svelte';
 	// Type only: the component itself is either handed in (`paper`) or loaded on
 	// demand, see the note above.
 	import type PaperHeartSVG from '$lib/components/PaperHeartSVG.svelte';
 	import { swayAnimationDelay } from '$lib/utils/sway';
-	import {
-		DEFAULT_COLORS,
-		getColors,
-		subscribeColors,
-		type HeartColors
-	} from '$lib/stores/colors';
 	import type { HeartDesign } from '$lib/types/heart';
+	import { pairAttributes } from '$lib/utils/palette';
 
 	interface Props {
 		/** The design to draw the heart from. Not needed when `markup` is given. */
@@ -63,6 +65,12 @@
 		 * see $lib/front/galleryHearts. Given, the heart is never drawn here.
 		 */
 		markup?: string;
+		/**
+		 * The heart's id, which picks its pair in the colourful mode
+		 * ($lib/utils/palette). Defaults to the design's; a heart given as
+		 * `markup` has to name it.
+		 */
+		heartId?: string;
 		/** Width of the block in px. The heart box is size x size. */
 		size?: number;
 		/** Visible ribbon length in px, above the heart. */
@@ -96,6 +104,7 @@
 	let {
 		design,
 		markup = undefined,
+		heartId = undefined,
 		size = 168,
 		ribbon = 40,
 		delay = 0,
@@ -122,18 +131,22 @@
 		};
 	});
 
-	// The site-wide pair, read after mount so the prerendered markup and the
-	// hydrated one agree — the same dance PaperHeartSVG does for the lobes.
-	let storeColors = $state<HeartColors>({ ...DEFAULT_COLORS });
+	// Paper colours are a site-wide viewing preference: every heart, the
+	// visitor's own included, hangs from the site's right-hand paper. It does so
+	// through the token rather than the store's value: the token is in the CSS
+	// from the first frame, and the colourful mode swaps it for the heart's own
+	// pair (src/app.css). The hero's bootstrap copies this value from a card to
+	// the slot it hangs the card's heart in.
+	const ribbonColor = 'var(--paper-right)';
 
-	onMount(() => {
-		storeColors = getColors();
-		return subscribeColors((c) => {
-			storeColors = c;
-		});
+	// The colourful mode's pair.
+	let pair = $derived.by(() => {
+		const id = heartId ?? design?.id;
+		return id ? pairAttributes(id) : undefined;
 	});
 
-	let ribbonColor = $derived(storeColors.right);
+	// A heart handed over as markup cannot repaint itself, so it does it in CSS
+	// instead (see the style block).
 	let sitePaper = $derived(markup !== undefined);
 
 	// The ribbon disappears into the cleft between the lobes; the overlap is a
@@ -142,7 +155,11 @@
 	let ribbonWidth = $derived(Math.max(8, Math.round(size * 0.055)));
 </script>
 
-<div class="hang {className ?? ''}" style="width: {size}px; animation-delay: {swayAnimationDelay(delay)};">
+<div
+	class="hang {className ?? ''}"
+	data-pair={pair?.['data-pair']}
+	style="width: {size}px; animation-delay: {swayAnimationDelay(delay)};{pair ? ` ${pair.style}` : ''}"
+>
 	<div
 		class="ribbon"
 		style="width: {ribbonWidth}px; height: {ribbon + dip}px; background: {ribbonColor};"
@@ -195,7 +212,7 @@
 	}
 
 	/* A prerendered heart is frozen paper: it was drawn once, with the default
-	   pair, and no longer re-renders when the footer's swatches change. A CSS
+	   pair, and no longer re-renders when the header's swatches change. A CSS
 	   `fill` beats the `fill` presentation attribute in the markup, so the two
 	   default colours are the hooks the site-wide pair reaches it through
 	   (--paper-left / --paper-right, kept up to date in the root layout). All

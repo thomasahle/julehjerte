@@ -11,6 +11,16 @@
 > one `CUT` layer, with no "Rids falsen" option, no score colour or layer, and
 > no fold line in the file or the preview. Where the text below still speaks of
 > scoring, it describes the first version.
+>
+> **Orientation marks (2026-10-19, DOWNLOAD.md "Orientation marks").** The
+> owner's decision against scoring stands: nothing is scored by default and no
+> mark is ever cut. For a heart whose pieces can go in the wrong way round, the
+> file also carries the small orientation crosses, as a separate optional
+> layer: `<g id="mark">` in blue `#0000ff` (SVG) / a `MARK` layer, colour 5
+> (DXF), written only when there are marks. The legend then reads
+> `laserLegendMarked` ("Røde linjer skæres · 0,01 mm streg. Det blå kryds
+> viser, hvordan stykket vender: gravér det, eller slå laget fra."): engrave
+> or lightly score it, or switch it off; the pieces are right without it.
 
 A visitor with a laser cutter (Glowforge, xTool, a LightBurn-driven machine)
 wants one file that cuts a heart's pieces straight out of paper or card: the

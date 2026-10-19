@@ -5,7 +5,8 @@ import { SITE_DOMAIN } from '$lib/config';
 import { segmentsToPathData } from '$lib/geometry/bezierSegments';
 import { inferOverlapRect as inferOverlapRectShared } from '$lib/utils/overlapRect';
 import { lobesShareTemplate, SHARED_TEMPLATE_LOBE } from '$lib/utils/symmetry';
-import { transformPathData } from '$lib/utils/templateSvg';
+import { transformPathData, type TemplateLobe } from '$lib/utils/templateSvg';
+import { dedupeMarks, markStrokes, templateMarks, type PlacedMark } from '$lib/utils/orientationMarks';
 import { heartFileStem, slugify } from '$lib/utils/slug';
 import { t, type Language } from '$lib/i18n';
 import { SHEETS, type SheetSize } from '$lib/laser/sheet';
@@ -177,7 +178,8 @@ function drawLobeTemplate(
   centerX: number,
   centerY: number,
   maxWidth: number,
-  maxHeight: number
+  maxHeight: number,
+  uses: readonly TemplateLobe[] = [lobe]
 ) {
   const rect = inferOverlapRect(design);
   const overlapWidth = rect.overlapWidth;
@@ -200,6 +202,30 @@ function drawLobeTemplate(
   const offsetY = centerY - (templateHeight * scale) / 2;
 
   drawLobeTemplateAt(pdf, design, lobe, offsetX, offsetY, scale);
+  drawMarks(pdf, dedupeMarks(templateMarks(design, lobe, uses, scale)), offsetX, offsetY, scale);
+}
+
+/**
+ * The orientation marks ($lib/utils/orientationMarks) on a template drawn at
+ * (offsetX, offsetY) and `scale` mm per unit: thin crosses in the template's
+ * own black, ⊗ with its circle. Nothing for a heart that needs none.
+ */
+function drawMarks(pdf: jsPDF, marks: readonly PlacedMark[], offsetX: number, offsetY: number, scale: number) {
+  if (!marks.length) return;
+  pdf.setDrawColor(0);
+  pdf.setLineWidth(0.2);
+  for (const mark of marks) {
+    const at = (p: Vec) => ({ x: offsetX + p.x * scale, y: offsetY + p.y * scale });
+    for (const [a, b] of markStrokes(mark)) {
+      const p = at(a);
+      const q = at(b);
+      pdf.line(p.x, p.y, q.x, q.y);
+    }
+    if (mark.kind === 'circled') {
+      const c = at(mark);
+      pdf.circle(c.x, c.y, mark.r * scale, 'S');
+    }
+  }
 }
 
 // Draw a single lobe template with its top-left corner (the ear's bounding
@@ -448,7 +474,8 @@ function addTemplatesPage(
       pos.x,
       templateCenterY,
       TEMPLATE_WIDTH - 4,
-      templateHeight - 2
+      templateHeight - 2,
+      template.lobe === 'both' ? ['left', 'right'] : [template.lobe]
     );
 
     // Draw colored preview heart image inside the ear (semicircle) portion
@@ -571,6 +598,7 @@ export async function generateTemplatesPDF(designs: HeartDesign[], options: Temp
 
       const top = y + TEMPLATE_HEADER_MM;
       drawLobeTemplateAt(pdf, piece.design, piece.lobe, x, top, piece.scale);
+      drawMarks(pdf, piece.marks, x, top, piece.scale);
 
       // Inside the rounded end, which no cut crosses and folding keeps whole:
       // a template cut out of the sheet still shows what it is and says where

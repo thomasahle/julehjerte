@@ -25,6 +25,13 @@
     "name": "JUL",
     "difficulty": "hard"
   },
+  "mor-og-barn": {
+    "name": "Mor og barn",
+    "names": {
+      "en": "Mother and child"
+    },
+    "difficulty": "medium"
+  },
   "stjerne": {
     "name": "Stjerne",
     "names": {
@@ -62,6 +69,13 @@
       "en": "Sun"
     },
     "difficulty": "medium"
+  },
+  "permo-sol": {
+    "name": "Solstråler",
+    "names": {
+      "en": "Sunbeams"
+    },
+    "difficulty": "easy"
   },
   "explosion": {
     "name": "Eksplosion",
@@ -271,6 +285,27 @@
     "name": "Hvirvel",
     "names": {
       "en": "Whirl"
+    },
+    "difficulty": "medium"
+  },
+  "permo-kroge": {
+    "name": "Kroge",
+    "names": {
+      "en": "Hooks"
+    },
+    "difficulty": "hard"
+  },
+  "permo-draaber": {
+    "name": "Dråber",
+    "names": {
+      "en": "Drops"
+    },
+    "difficulty": "expert"
+  },
+  "permo-cirkler": {
+    "name": "Cirkler",
+    "names": {
+      "en": "Circles"
     },
     "difficulty": "medium"
   },

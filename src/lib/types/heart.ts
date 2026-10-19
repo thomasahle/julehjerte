@@ -80,7 +80,7 @@ export interface HeartDesign {
   // Fitted templates use 1; older designs retain their strip-sized rectangle.
   overlapAspectRatio?: number;
   // Appearance snapshot for saved/exported files. The site's live previews use
-  // the shared footer colours; changing that preference does not edit geometry.
+  // the header's shared colours; changing that preference does not edit geometry.
   colors?: HeartColors;
   // The tile the heart was drawn from in Tegn's Escher tab, when it was: the tab
   // takes it up again when the heart is opened, as long as the cuts are still

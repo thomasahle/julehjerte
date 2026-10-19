@@ -48,7 +48,10 @@ function expectClean({ plan: p, pieces }: { plan: TemplatePagePlan; pieces: { wi
 describe('templatePair', () => {
 	it('gives the classic heart one template twice, 80 × 120 mm', () => {
 		const [left, right] = templatePair(classic, 80);
-		expect(left).toBe(right);
+		expect(left).toEqual(right);
+		expect(left.lobe).toBe('right');
+		// A symmetric heart: no orientation marks, so its sheet is as it was.
+		expect(left.marks).toEqual([]);
 		expect(left.shared).toBe(true);
 		expect(left.widthMm).toBeCloseTo(80);
 		expect(left.heightMm).toBeCloseTo(120);
@@ -67,6 +70,26 @@ describe('templatePair', () => {
 		expect(Math.max(left.widthMm, right.widthMm)).toBeCloseTo(60);
 		expect(templateLabel(left, 'da')).toBe(`${jul.name} (Venstre)`);
 		expect(templateLabel(right, 'en')).toBe(`${jul.name} (Right)`);
+	});
+
+	it('marks Jul\'s left template ⊗ and its right ×, by the left side below the ear base', () => {
+		const [left, right] = templatePair(loadHeart('jul'), 60);
+		expect(left.marks.map((m) => m.kind)).toEqual(['circled']);
+		expect(right.marks.map((m) => m.kind)).toEqual(['plain']);
+		for (const piece of [left, right]) {
+			const [mark] = piece.marks;
+			expect(mark!.x * piece.scale).toBeLessThan(piece.widthMm / 4);
+			expect(mark!.y * piece.scale).toBeGreaterThan(piece.earRadiusMm);
+		}
+	});
+
+	it('prints Kroge\'s one template twice, the left copy with ⊗ on the other side (it goes in turned over)', () => {
+		const [left, right] = templatePair(loadHeart('permo-kroge'), 80);
+		expect(left.lobe).toBe(right.lobe);
+		expect(left.marks.map((m) => m.kind)).toEqual(['circled']);
+		expect(right.marks.map((m) => m.kind)).toEqual(['plain']);
+		expect(left.marks[0]!.x * left.scale).toBeGreaterThan((3 * left.widthMm) / 4);
+		expect(right.marks[0]!.x * right.scale).toBeLessThan(right.widthMm / 4);
 	});
 
 	it("labels a template with the heart's name in each language, and its own name without one", () => {
@@ -206,6 +229,23 @@ describe('serializeTemplatePageSvg', () => {
 		expect(addressY).toBeGreaterThan(pictureFoot);
 		expect(addressY).toBeLessThan(14 + 40);
 		expect(Number(addresses[0]!.getAttribute('font-size'))).toBeCloseTo((6 * 25.4) / 72, 2);
+	});
+
+	it('draws the orientation marks the PDF prints, and none for the classic heart', () => {
+		expect(svg(0).querySelectorAll('g.mark')).toHaveLength(0);
+		const jul = loadHeart('jul');
+		const pieces = templatePieces([jul], 80, 1);
+		const p = planTemplatePages(pieces, { sheet: SHEETS.A4 });
+		const doc = new DOMParser().parseFromString(
+			serializeTemplatePageSvg(p, pieces, { page: 0, lang: 'da', previewImage: true, title: 'jul' }),
+			'image/svg+xml'
+		);
+		const marks = [...doc.querySelectorAll('g.mark')];
+		expect(marks.map((g) => g.getAttribute('data-mark'))).toEqual(['circled', 'plain']);
+		// Inside each template's scaled group, so in its own units like its cuts.
+		expect(marks.every((g) => g.parentElement!.getAttribute('transform')!.includes('scale('))).toBe(true);
+		expect(marks[0]!.querySelector('path')!.getAttribute('d')).toContain(' A ');
+		expect(marks[1]!.querySelector('path')!.getAttribute('d')).not.toContain(' A ');
 	});
 
 	it('names each half of an asymmetric heart above it, and gives both the bare address', () => {

@@ -179,7 +179,7 @@
 
 	// The paper colours the mask will be shown in. The dialog draws its preview
 	// with them and the engine draws its own with them too, so they follow the
-	// footer's swatches like every other heart on the site.
+	// header's swatches like every other heart on the site.
 	$effect(() => {
 		colours = getColors();
 		return subscribeColors((next) => (colours = next));

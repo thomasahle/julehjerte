@@ -250,7 +250,7 @@
 		}
 
 	// State
-	// Paper colours follow the shared footer; changing them does not edit cuts.
+	// Paper colours follow the header's shared controls; changing them does not edit cuts.
 	let heartColors = $state<HeartColors>({ ...DEFAULT_COLORS });
 	let gridSize = $state<GridSize>({ x: 3, y: 3 });
 	let weaveParity = $state<0 | 1>(0);
