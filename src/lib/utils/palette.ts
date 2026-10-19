@@ -40,6 +40,8 @@ import type { HeartColors } from '$lib/types/heart';
 export interface PalettePair extends HeartColors {
 	/** A short name, for the docs and the tests. */
 	name: string;
+	/** What the header's colour dialog calls it, in both languages. */
+	label: { da: string; en: string };
 	/** The light paper is close to the page background: outline the heart. */
 	edge?: boolean;
 }
@@ -58,18 +60,66 @@ export const PAGE_CONTRAST_MIN = 1.15;
  * alternates warm and cool and light and dark.
  */
 export const PALETTE: readonly PalettePair[] = [
-	{ name: 'klassisk', left: DEFAULT_COLORS_HEX.left, right: DEFAULT_COLORS_HEX.right, edge: true },
-	{ name: 'gran', left: '#efe6cf', right: '#2f5d44' },
-	{ name: 'nat', left: '#dcb55e', right: '#22385c' },
-	{ name: 'bordeaux', left: '#f0cbc6', right: '#7c2236' },
-	{ name: 'petrol', left: '#e9d7b5', right: '#1f5c61' },
-	{ name: 'okker', left: '#fbf4e6', right: '#b8802a', edge: true },
-	{ name: 'skifer', left: '#dde8f0', right: '#3f5c7c' },
-	{ name: 'blomme', left: '#e8b9c6', right: '#5c2b50' },
-	{ name: 'mynte', left: '#cfe3d2', right: '#3f6f55' },
-	{ name: 'kanel', left: '#f3e2cc', right: '#9a4a2a' },
-	{ name: 'sort', left: '#c2362b', right: '#1f1d1d' },
-	{ name: 'lyng', left: '#efdfe6', right: '#7d5a7e' }
+	{
+		name: 'klassisk',
+		label: { da: 'Rød og hvid', en: 'Red and white' },
+		left: DEFAULT_COLORS_HEX.left, right: DEFAULT_COLORS_HEX.right, edge: true
+	},
+	{
+		name: 'gran',
+		label: { da: 'Gran og creme', en: 'Spruce and cream' },
+		left: '#efe6cf', right: '#2f5d44'
+	},
+	{
+		name: 'nat',
+		label: { da: 'Nat og guld', en: 'Navy and gold' },
+		left: '#dcb55e', right: '#22385c'
+	},
+	{
+		name: 'bordeaux',
+		label: { da: 'Bordeaux og rosa', en: 'Burgundy and blush' },
+		left: '#f0cbc6', right: '#7c2236'
+	},
+	{
+		name: 'petrol',
+		label: { da: 'Petrol og sand', en: 'Teal and sand' },
+		left: '#e9d7b5', right: '#1f5c61'
+	},
+	{
+		name: 'okker',
+		label: { da: 'Okker og hvid', en: 'Ochre and white' },
+		left: '#fbf4e6', right: '#b8802a', edge: true
+	},
+	{
+		name: 'skifer',
+		label: { da: 'Skifer og is', en: 'Slate and ice' },
+		left: '#dde8f0', right: '#3f5c7c'
+	},
+	{
+		name: 'blomme',
+		label: { da: 'Blomme og rosé', en: 'Plum and rose' },
+		left: '#e8b9c6', right: '#5c2b50'
+	},
+	{
+		name: 'mynte',
+		label: { da: 'Skov og mynte', en: 'Forest and mint' },
+		left: '#cfe3d2', right: '#3f6f55'
+	},
+	{
+		name: 'kanel',
+		label: { da: 'Kanel og creme', en: 'Cinnamon and cream' },
+		left: '#f3e2cc', right: '#9a4a2a'
+	},
+	{
+		name: 'sort',
+		label: { da: 'Sort og rød', en: 'Black and red' },
+		left: '#c2362b', right: '#1f1d1d'
+	},
+	{
+		name: 'lyng',
+		label: { da: 'Lyng og lys rosa', en: 'Heather and pale pink' },
+		left: '#efdfe6', right: '#7d5a7e'
+	}
 ];
 
 /** WCAG relative luminance of a `#rrggbb` colour. */

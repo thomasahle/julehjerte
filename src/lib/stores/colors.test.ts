@@ -90,3 +90,14 @@ describe('colour store', () => {
 		expect(store.getColors()).toEqual({ left: '#111111', right: '#222222' });
 	});
 });
+
+describe('paperKind', () => {
+	it('tells the classic pair, either way round, from a custom one', async () => {
+		const { paperKind, DEFAULT_COLORS } = await freshStore();
+		expect(paperKind(DEFAULT_COLORS)).toBe('classic');
+		expect(paperKind({ left: '#FFF', right: '#b91313' })).toBe('classic');
+		expect(paperKind({ left: 'rgb(185, 19, 19)', right: '#ffffff' })).toBe('flipped');
+		expect(paperKind({ left: '#ffffff', right: '#b91314' })).toBe('custom');
+		expect(paperKind({ left: '#dcb55e', right: '#22385c' })).toBe('custom');
+	});
+});

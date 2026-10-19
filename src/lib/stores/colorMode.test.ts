@@ -168,4 +168,48 @@ describe("the head's inline script", () => {
 		}
 		expect(store.colorModeHeadScript()).toBe(`<script>${source}</script>`);
 	});
+
+	it('puts the stored paper pair on <html>, with the class for its kind', async () => {
+		const cases: [unknown, string | null][] = [
+			[{ left: '#ffffff', right: 'rgb(185, 19, 19)' }, null],
+			[{ left: '#b91313', right: '#fff' }, 'paper-flipped'],
+			[{ left: '#dcb55e', right: '#22385c' }, 'paper-custom']
+		];
+		for (const [pair, cls] of cases) {
+			root().className = '';
+			root().removeAttribute('style');
+			window.localStorage.setItem('julehjerte-colors', JSON.stringify(pair));
+			await run();
+			const { left, right } = pair as { left: string; right: string };
+			expect(root().style.getPropertyValue('--paper-left')).toBe(left);
+			expect(root().style.getPropertyValue('--paper-right')).toBe(right);
+			expect([...root().classList].filter((c) => c.startsWith('paper-'))).toEqual(cls ? [cls] : []);
+		}
+	});
+
+	it('agrees with paperKind on which class a pair gets', async () => {
+		const { paperKind, PAPER_KIND_CLASSES } = await import('$lib/stores/colors');
+		const pairs = [
+			...PALETTE.map((p) => ({ left: p.left, right: p.right })),
+			...PALETTE.map((p) => ({ left: p.right, right: p.left })),
+			{ left: 'rgb(255, 255, 255)', right: 'rgb(185, 19, 19)' },
+			{ left: '#FFF', right: '#B91313' }
+		];
+		for (const pair of pairs) {
+			root().className = '';
+			window.localStorage.setItem('julehjerte-colors', JSON.stringify(pair));
+			await run();
+			const kind = paperKind(pair);
+			const expected = kind === 'classic' ? [] : [PAPER_KIND_CLASSES[kind]];
+			expect([...root().classList].filter((c) => c.startsWith('paper-')), JSON.stringify(pair)).toEqual(expected);
+		}
+	});
+
+	it('ignores a stored pair it cannot read, and still reads the shuffle', async () => {
+		window.localStorage.setItem('julehjerte-colors', '{not json');
+		window.localStorage.setItem(KEY, '1');
+		await run();
+		expect(root().style.getPropertyValue('--paper-left')).toBe('');
+		expect(root().classList.contains('colorful')).toBe(true);
+	});
 });

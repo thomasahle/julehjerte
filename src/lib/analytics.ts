@@ -144,11 +144,21 @@ export function trackHeartEdit(heartId: string, heartName: string) {
 /**
  * Track the header's colourful mode ("Farverig"): `{ on: true, shuffle: n }`
  * for the n-th press of its button in this page view (each press deals the
- * hearts new colours), `{ on: false }` when picking a paper colour or swapping
- * turns it off.
+ * hearts new colours), `{ on: false }` when choosing a pair with the header's
+ * other colour buttons turns it off.
  */
 export function trackColorMode(on: boolean, shuffle?: number) {
   trackEvent('color_mode', shuffle === undefined ? { on } : { on, shuffle });
+}
+
+/**
+ * Track the site's paper pair being chosen with the header's colour buttons:
+ * `classic` (the red and white button), `flip` (pressing it again, or the
+ * dialog's swap), `custom` (a colour picked in the dialog), `preset` (one of
+ * the dialog's ready-made pairs).
+ */
+export function trackPaperColors(source: 'classic' | 'flip' | 'custom' | 'preset') {
+  trackEvent('paper_colors', { source });
 }
 
 /**

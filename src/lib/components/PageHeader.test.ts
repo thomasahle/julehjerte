@@ -70,17 +70,22 @@ describe('PageHeader', () => {
 		expect(render('/en/', 'en', 'templates').links('Templates')[0]!.getAttribute('aria-current')).toBe('page');
 	});
 
-	it('carries the paper colours in the bar and as a row in the menu', () => {
+	it('carries the paper colours in the bar and as a row in the menu: three named buttons each', () => {
 		const { target } = render('/', 'da', 'templates');
 		const groups = [...target.querySelectorAll('[role="group"]')];
 		expect(groups.map((g) => g.getAttribute('aria-label'))).toEqual(['Farver', 'Farver']);
 		expect(target.querySelector('.nav-actions .colors-bar')).not.toBeNull();
 		expect(target.querySelector('.nav-menu .colors-menu')).not.toBeNull();
-		const toggles = target.querySelectorAll('button[aria-pressed]');
-		expect([...toggles].map((b) => b.getAttribute('aria-label'))).toEqual(['Farverig', 'Farverig']);
-		// Two sets of inputs, so the ids must differ.
-		const ids = [...target.querySelectorAll('input[type="color"]')].map((i) => i.id);
-		expect(new Set(ids).size).toBe(4);
+		for (const group of groups) {
+			const names = [...group.querySelectorAll('button')].map((b) => b.getAttribute('aria-label'));
+			expect(names).toEqual(['Rød og hvid', 'Farverig', 'Egne farver']);
+		}
+		const english = render('/en/', 'en', 'templates').target.querySelector('[role="group"]')!;
+		expect([...english.querySelectorAll('button')].map((b) => b.getAttribute('aria-label'))).toEqual([
+			'Red and white',
+			'Colourful',
+			'Your own colours'
+		]);
 	});
 
 	it('leaves them out of the editor, which has its own', () => {

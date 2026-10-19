@@ -823,6 +823,13 @@ export const translations = {
     swapColors: 'Byt farver',
     colorfulMode: 'Farverig',
     colorfulModeTitle: 'Farverig: giv hjerterne nye, tilfældige farver',
+    paperClassic: 'Rød og hvid',
+    paperClassicTitle: 'Rød og hvid (klik igen for at bytte siderne)',
+    paperCustom: 'Egne farver',
+    paperCustomTitle: 'Vælg dine egne farver',
+    paperDialogTitle: 'Papirfarver',
+    paperPresets: 'Færdige par',
+    paperDone: 'Færdig',
 
     // Error page
     errorTitle: 'Ups! Noget gik galt',
@@ -1643,6 +1650,13 @@ export const translations = {
     swapColors: 'Swap colours',
     colorfulMode: 'Colourful',
     colorfulModeTitle: 'Colourful: give the hearts new random colours',
+    paperClassic: 'Red and white',
+    paperClassicTitle: 'Red and white (click again to swap the sides)',
+    paperCustom: 'Your own colours',
+    paperCustomTitle: 'Choose your own colours',
+    paperDialogTitle: 'Paper colours',
+    paperPresets: 'Ready-made pairs',
+    paperDone: 'Done',
 
     // Error page
     errorTitle: 'Oops! Something went wrong',

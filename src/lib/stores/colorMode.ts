@@ -2,7 +2,8 @@
  * The header's "Farverig" / "Colourful" button: each press gives every heart
  * that follows the site's paper pair a new random pair out of
  * $lib/utils/palette (docs/redesign/DESIGN.md §3 "Nav", "As built: colours in
- * the header"). Picking a swatch colour or swapping turns the mode off.
+ * the header"). Choosing a pair with the header's other two buttons turns the
+ * mode off.
  *
  * Every heart already carries its slot in its markup (palette.pairAttributes),
  * prerendered hearts included. The mode's whole effect on the page is one class
@@ -29,6 +30,7 @@ import {
 	type Permutation
 } from '$lib/utils/palette';
 import { readStorage, removeStorage, writeStorage } from '$lib/utils/safeStorage';
+import { COLORS_STORAGE_KEY, DEFAULT_COLORS_HEX, PAPER_KIND_CLASSES } from '$lib/stores/colors';
 
 /** Under the site's own `juleflet:` prefix, as its other stored settings. */
 export const COLOR_MODE_STORAGE_KEY = 'juleflet:colourful';
@@ -45,11 +47,16 @@ export function parseStoredPermutation(text: string | null): Permutation | null 
 }
 
 /**
- * The inline script for the document's <head>: with a shuffle stored it puts
- * the class on <html> and sets the shuffle's variables before the body paints.
- * The same rules as parseStoredPermutation and paletteVariables, in plain ES5;
- * colorMode.test.ts checks the two agree. Storage that throws leaves the mode
- * off, like the store below.
+ * The inline script for the document's <head>. Before the body paints it puts
+ * on <html>:
+ *   - the site's paper pair from storage, as `--paper-left` / `--paper-right`
+ *     with `paper-flipped` or `paper-custom` (colors.paperKind's rule), so the
+ *     prerendered hearts and the header's colour buttons start in the pair the
+ *     visitor chose;
+ *   - with a shuffle stored, the colourful class and the shuffle's variables.
+ * The same rules as parseStoredPermutation, paletteVariables and paperKind, in
+ * plain ES5; colorMode.test.ts checks they agree. Storage that throws, or holds
+ * something unreadable, leaves the defaults.
  */
 export function colorModeHeadScript(): string {
 	return `<script>${colorModeHeadSource()}</script>`;
@@ -58,7 +65,18 @@ export function colorModeHeadScript(): string {
 /** The source alone, so the test can run it. */
 export function colorModeHeadSource(): string {
 	const pairs = JSON.stringify(PALETTE.map((p) => [p.left, p.right, p.edge ? 1 : 0]));
-	return (
+	const white = JSON.stringify(DEFAULT_COLORS_HEX.left);
+	const red = JSON.stringify(DEFAULT_COLORS_HEX.right);
+	const paper =
+		`try{(function(t){if(!t)return;var c=JSON.parse(t);if(!c||typeof c.left!=="string"||typeof c.right!=="string"||!c.left||!c.right)return;` +
+		`var r=document.documentElement;r.style.setProperty("--paper-left",c.left);r.style.setProperty("--paper-right",c.right);` +
+		`function h(v){v=v.replace(/\\s+/g,"").toLowerCase();var m=/^rgb\\((\\d+),(\\d+),(\\d+)\\)$/.exec(v);` +
+		`if(m){v="#";for(var k=1;k<4;k++){var x=(+m[k]).toString(16);v+=x.length<2?"0"+x:x}}` +
+		`else if(/^#[0-9a-f]{3}$/.test(v)){v="#"+v[1]+v[1]+v[2]+v[2]+v[3]+v[3]}return v}` +
+		`var L=h(c.left),R=h(c.right);if(L===${white}&&R===${red})return;` +
+		`r.classList.add(L===${red}&&R===${white}?${JSON.stringify(PAPER_KIND_CLASSES.flipped)}:${JSON.stringify(PAPER_KIND_CLASSES.custom)})` +
+		`})(localStorage.getItem(${JSON.stringify(COLORS_STORAGE_KEY)}))}catch(e){}`;
+	const mode =
 		`try{(function(t,P,E){if(t===null)return;var n=P.length,p=[],s={},i;` +
 		`if(t==="1"){for(i=0;i<n;i++)p.push(i)}else{var a=t.split(",");if(a.length!==n)return;` +
 		`for(i=0;i<n;i++){if(!/^\\d+$/.test(a[i]))return;var v=+a[i];if(v>=n||s[v])return;s[v]=1;p.push(v)}}` +
@@ -66,8 +84,8 @@ export function colorModeHeadSource(): string {
 		`r.style.setProperty("--pal-"+i+"-l",q[0]);r.style.setProperty("--pal-"+i+"-r",q[1]);` +
 		`r.style.setProperty("--pal-"+i+"-o",q[2]?E:"transparent")}` +
 		`r.classList.add(${JSON.stringify(COLOR_MODE_CLASS)})` +
-		`})(localStorage.getItem(${JSON.stringify(COLOR_MODE_STORAGE_KEY)}),${pairs},${JSON.stringify(EDGE_COLOR)})}catch(e){}`
-	);
+		`})(localStorage.getItem(${JSON.stringify(COLOR_MODE_STORAGE_KEY)}),${pairs},${JSON.stringify(EDGE_COLOR)})}catch(e){}`;
+	return paper + mode;
 }
 
 const subscribers = new Set<(on: boolean) => void>();

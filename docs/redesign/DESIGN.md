@@ -90,15 +90,29 @@ opens the same menu by CSS alone; with JavaScript both are `display: none`. The 
 class, not the `hidden` attribute, because Tailwind's preflight makes `[hidden]` `display: none !important`.
 
 **As built: colours in the header.** The site's paper colours live in the header (`ColorControls.svelte`), not
-the footer: from 900px up a compact group in the right-hand actions before EN and GitHub (two 22px swatch
-circles, a 28px swap button and the 22px colourful button, each inside a 44px target); below 900px a labelled
-row "Farver" / "Colours" in the burger menu, after the nav links, with 28px circles. The editor's header has
-none (the editor has its own colour controls in its panel). Without JavaScript the group is hidden.
+the footer, as three round buttons of one size: 22px circles (1px `--line` border) in the right-hand actions
+before EN and GitHub from 900px up, 28px in a labelled row "Farver" / "Colours" in the burger menu below that,
+each in a 44px target. The one that is on wears a 2px `--green` ring (outline, 1px offset).
+1. **Rød og hvid / Red and white**: a circle split left | right into white and red. A press puts the classic
+   pair on and turns the colourful mode off; pressed again while the classic pair is on, it swaps the sides,
+   and its split follows. Ring: the classic pair either way round, colourful off.
+2. **Farverig / Colourful**: a plain 2×2 grid of four palette papers (red, spruce, navy, gold), no gaps. Each
+   press reshuffles (below). Ring: colourful on.
+3. **Egne farver / Your own colours**: split into the visitor's own pair when one is on, otherwise a calm conic
+   ring of the palette's pale papers. Ring: a non-classic pair, colourful off. A press opens a dialog (the site's
+   `Modal`: focus inside, Escape and Back close it, focus returns to the button; full width on a phone) with a
+   split-circle preview, the two native colour pickers, a swap button, the palette's twelve pairs as quick picks
+   (named in both languages, the current one ringed) and "Færdig" / "Done". Changes apply live, and any of them
+   turns the colourful mode off.
+The rings and the two pictures that follow the pair come from `html.colorful`, `html.paper-flipped` /
+`html.paper-custom` and the `--paper-*` tokens, all set before first paint by the head's inline script from
+`julehjerte-colors` and `juleflet:colourful` (`colors.paperKind` is the rule), so a reload shows the right
+state, and the hearts in the visitor's pair, from the first frame. `aria-pressed` on the first two;
+`aria-haspopup="dialog"` on the third. GA4: `paper_colors {source: classic | flip | custom | preset}` (a custom
+colour is counted on the picker's `change`, not every `input`), and `color_mode` as below. The editor's header
+has none (the editor has its own colour controls in its panel). Without JavaScript the group is hidden.
 
-**As built: colourful mode.** The colourful button is a round swatch like the others, filled with a small 2×2
-weave of four palette papers (red, spruce, navy, gold) with pale gaps and over/under tabs; its accessible name is
-"Farverig" / "Colourful" (`aria-label`, `title` says it deals new random colours), `aria-pressed` while the mode
-is on, and a 2px `--green` ring (from `html.colorful`) shows it. Each press turns the mode on and deals every heart
+**As built: colourful mode.** Each press of the colourful button turns the mode on and deals every heart
 that follows the site's pair a new random pair from `$lib/utils/palette`: twelve Scandinavian Christmas pairs,
 lighter paper left, darker right (so the ribbon is the strong colour), each ≥ 2.2:1 between its papers; the two
 whose light paper is nearly the page's `#f9f9f3` (classic red/white, ochre/white) get a hairline outline. Two
@@ -115,9 +129,9 @@ onto the heart's `--paper-*` tokens and HeartWeaveFill's `paper-l`/`paper-r` pat
 ribbons over 0.4s unless reduced motion is asked for. A heart with its own colours keeps them. The hero's
 bootstrap copies a card's slot with its heart and, in the mode, draws hearts of different slots. The heart
 page's big heart and thumbnail use the heart's pair; the template previews, the PDF (and its ear picture) and the
-laser files keep the site's pair. While on, the swatches and swap button are dimmed (still the site's pair);
-picking a colour or swapping is what turns the mode off. GA4 event `color_mode`: `{on: true, shuffle: n}` for
-the n-th press in the page view, `{on: false}` when a swatch or swap turns it off.
+laser files keep the site's pair. The site's pair is kept while the mode is on; choosing a pair with
+either of the other two buttons is what turns the mode off. GA4 event `color_mode`: `{on: true, shuffle: n}`
+for the n-th press in the page view, `{on: false}` when choosing a pair turns it off.
 
 ### Hero (≥ 900px)
 Grid `minmax(0,1fr) 640px`, gap 40, padding `0 40px 0 80px`, height 660px (600px below 1200px, where the

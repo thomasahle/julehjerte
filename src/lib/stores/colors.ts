@@ -1,6 +1,7 @@
 import { browser } from '$app/environment';
 import type { HeartColors } from '$lib/types/heart';
 import { readStorage, writeStorage } from '$lib/utils/safeStorage';
+import { toHexColor } from '$lib/utils/heartColors';
 
 // A heart's colours are a property of a design as much as of the site, so the
 // type lives with the other design types; it is re-exported here because most
@@ -28,7 +29,35 @@ export const DEFAULT_COLORS_HEX: HeartColors = {
   right: '#b91313'
 };
 
-const STORAGE_KEY = 'julehjerte-colors';
+/** Where the pair is kept; the head's inline script reads it too ($lib/stores/colorMode). */
+export const COLORS_STORAGE_KEY = 'julehjerte-colors';
+const STORAGE_KEY = COLORS_STORAGE_KEY;
+
+/**
+ * Which of the header's buttons a pair belongs to: the classic red and white
+ * (either way round, `flipped` with the red on the left) or a custom pair.
+ */
+export type PaperKind = 'classic' | 'flipped' | 'custom';
+
+export function paperKind(colors: HeartColors): PaperKind {
+  const left = toHexColor(colors.left, '');
+  const right = toHexColor(colors.right, '');
+  const { left: white, right: red } = DEFAULT_COLORS_HEX;
+  if (left === white && right === red) return 'classic';
+  if (left === red && right === white) return 'flipped';
+  return 'custom';
+}
+
+/**
+ * The classes on <html> that tell CSS which kind of pair is on: none for the
+ * classic pair, `paper-flipped` or `paper-custom` otherwise. The header's
+ * buttons draw their state from them, and the head's inline script sets them
+ * from storage before the body paints (with the same rule).
+ */
+export const PAPER_KIND_CLASSES: Record<Exclude<PaperKind, 'classic'>, string> = {
+  flipped: 'paper-flipped',
+  custom: 'paper-custom'
+};
 
 // Simple module-level state with subscribers
 let currentColors: HeartColors = { ...DEFAULT_COLORS };
