@@ -4,7 +4,7 @@ import { readStorage, writeStorage } from '$lib/utils/safeStorage';
 /**
  * The repository's star count, fetched at most once a day and cached in
  * localStorage. Extracted from the old GitHubStarsButton so both the nav pill
- * and the footer link can show the same number without fetching twice.
+ * and the menu's link can show the same number without fetching twice.
  *
  * Always resolves — never throws, never logs — and resolves to null when the
  * count is not available (offline, rate limited, or called during

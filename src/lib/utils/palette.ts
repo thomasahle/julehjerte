@@ -1,8 +1,8 @@
 /**
  * The colourful mode's paper pairs, and which heart gets which —
- * docs/redesign/DESIGN.md §3 "Footer", "As built: colourful mode".
+ * docs/redesign/DESIGN.md §3 "Nav", "As built: colours in the header".
  *
- * With the footer's "Farverig" toggle on, every heart that follows the site's
+ * With the header's "Farverig" toggle on, every heart that follows the site's
  * paper pair is woven from a pair of its own instead. The pairs are a
  * Scandinavian Christmas set: deep, slightly greyed reds, greens and blues
  * against creams and pale tints, no neon. Each one keeps the site's convention

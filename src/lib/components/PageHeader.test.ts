@@ -23,11 +23,16 @@ afterEach(() => {
 	for (const dispose of cleanup.splice(0)) dispose();
 });
 
-function render(path: string, lang: 'da' | 'en', active?: 'templates' | 'howto' | 'about') {
+function render(
+	path: string,
+	lang: 'da' | 'en',
+	active?: 'templates' | 'howto' | 'about',
+	variant: 'site' | 'editor' = 'site'
+) {
 	url.current = new URL(`http://localhost${path}`);
 	const target = document.createElement('div');
 	document.body.appendChild(target);
-	const component = mount(PageHeader, { target, props: { lang, active } });
+	const component = mount(PageHeader, { target, props: { lang, active, variant } });
 	cleanup.push(() => {
 		unmount(component);
 		target.remove();
@@ -63,5 +68,24 @@ describe('PageHeader', () => {
 			expect(a.getAttribute('aria-current')).toBe('true');
 		}
 		expect(render('/en/', 'en', 'templates').links('Templates')[0]!.getAttribute('aria-current')).toBe('page');
+	});
+
+	it('carries the paper colours in the bar and as a row in the menu', () => {
+		const { target } = render('/', 'da', 'templates');
+		const groups = [...target.querySelectorAll('[role="group"]')];
+		expect(groups.map((g) => g.getAttribute('aria-label'))).toEqual(['Farver', 'Farver']);
+		expect(target.querySelector('.nav-actions .colors-bar')).not.toBeNull();
+		expect(target.querySelector('.nav-menu .colors-menu')).not.toBeNull();
+		const toggles = target.querySelectorAll('button[aria-pressed]');
+		expect([...toggles].map((b) => b.textContent?.trim())).toEqual(['Farverig', 'Farverig']);
+		// Two sets of inputs, so the ids must differ.
+		const ids = [...target.querySelectorAll('input[type="color"]')].map((i) => i.id);
+		expect(new Set(ids).size).toBe(4);
+	});
+
+	it('leaves them out of the editor, which has its own', () => {
+		const { target } = render('/editor/', 'da', undefined, 'editor');
+		expect(target.querySelector('.colors')).toBeNull();
+		expect(target.querySelector('input[type="color"]')).toBeNull();
 	});
 });

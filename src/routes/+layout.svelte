@@ -74,7 +74,7 @@
 
 	// Mirror the paper pair into --paper-left / --paper-right (src/app.css). The
 	// hearts in the front page's HTML are prerendered and never re-render, so CSS
-	// is how the footer's swatches still reach their paper — see HangingHeart.
+	// is how the header's swatches still reach their paper — see HangingHeart.
 	onMount(() => {
 		const apply = (colors: HeartColors) => {
 			document.documentElement.style.setProperty("--paper-left", colors.left);

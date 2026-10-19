@@ -4,7 +4,7 @@
 
   The ribbon is cut from the same paper as the heart: it takes the right-hand
   lobe colour, so it follows the heart's own colours or, failing those, the
-  site-wide pair the footer's swatches edit. A hardcoded red left every
+  site-wide pair the header's swatches edit. A hardcoded red left every
   blue-and-white heart hanging from a colour used nowhere else on the page.
 
   The block is `size` px wide but shrinks with its container (max-width: 100%);
@@ -45,7 +45,7 @@
   first time. The dynamic import lives with the front page's components, not
   here: SvelteKit drops a component's stylesheet from a page that imports it
   statically when a chunk listed before it also imports it dynamically. The
-  ribbon follows the footer's swatches through --paper-right either way; the
+  ribbon follows the header's swatches through --paper-right either way; the
   frozen SVG follows them through the --paper-* tokens below.
 -->
 <script lang="ts">
@@ -223,7 +223,7 @@
 	}
 
 	/* A prerendered heart is frozen paper: it was drawn once, with the default
-	   pair, and no longer re-renders when the footer's swatches change. A CSS
+	   pair, and no longer re-renders when the header's swatches change. A CSS
 	   `fill` beats the `fill` presentation attribute in the markup, so the two
 	   default colours are the hooks the site-wide pair reaches it through
 	   (--paper-left / --paper-right, kept up to date in the root layout). Only

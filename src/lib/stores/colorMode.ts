@@ -1,7 +1,7 @@
 /**
- * The footer's "Farverig" / "Colourful" toggle: on, every heart that follows
+ * The header's "Farverig" / "Colourful" toggle: on, every heart that follows
  * the site's paper pair is woven from its own pair out of $lib/utils/palette
- * instead (docs/redesign/DESIGN.md §3 "Footer", "As built: colourful mode").
+ * instead (docs/redesign/DESIGN.md §3 "Nav", "As built: colours in the header").
  *
  * The mode's whole effect on the page is one class on <html>, COLOR_MODE_CLASS.
  * Every heart already carries its pair in its markup (palette.pairAttributes),

@@ -80,13 +80,37 @@ Order: nav → hero → gallery (with decorative frame) → footer. One fluid do
 
 ### Nav
 Logo "Juleflet.dk" 28px/600 `--deep`; links **Skabeloner · Sådan gør du · Om** (15px/500 green; active = red
-text with a 2px red bottom border); right: EN pill, GitHub pill with star count. Height 62px, padding 0 40px,
+text with a 2px red bottom border); right: paper colours (see below), EN pill, GitHub pill with star count.
+Height 62px, padding 0 40px,
 1px `--line` bottom border, `--page` background. Below 900px: padding 0 16px, height 58, logo 24px, links and
 GitHub pill hidden, a 44px burger button (white, 1.5px `--line` border, radius 10) opens a menu with
-Skabeloner, Sådan gør du, Om, EN, GitHub. Adapt the existing `PageHeader.svelte`.
+Skabeloner, Sådan gør du, Om, the paper colours, EN, GitHub. Adapt the existing `PageHeader.svelte`.
 Without JavaScript (`html.no-js`) the burger is swapped for a `<label>` of a visually hidden checkbox that
 opens the same menu by CSS alone; with JavaScript both are `display: none`. The menu is shown by an `open`
 class, not the `hidden` attribute, because Tailwind's preflight makes `[hidden]` `display: none !important`.
+
+**As built: colours in the header.** The site's paper colours live in the header (`ColorControls.svelte`), not
+the footer: from 900px up a compact group in the right-hand actions before EN and GitHub (two 22px swatch
+circles, a 28px swap button and a "Farverig" / "Colourful" pill with lucide Palette, each inside a 44px
+target; between 900 and 1100px the pill shows only its icon, its name in the title and to screen readers);
+below 900px a labelled row "Farver" / "Colours" in the burger menu, after the nav links. The editor's header
+has none (the editor has its own colour controls in its panel). Without JavaScript the group is hidden.
+
+**As built: colourful mode.** The "Farverig" / "Colourful" toggle (`aria-pressed`; filled `--green` when on) gives every heart
+that follows the site's pair a pair of its own from
+`$lib/utils/palette`: twelve Scandinavian Christmas pairs, lighter paper left, darker right (so the ribbon is the
+strong colour), each ≥ 2.2:1 between its papers; the two whose light paper is nearly the page's `#f9f9f3`
+(classic red/white, ochre/white) get a hairline outline. Gallery hearts take the pair at their position in the
+gallery order, cycling the palette, so no card repeats a neighbour's pair at any of the grid's 2–6 columns; other
+hearts (Mine hjerter, shared) take a hash of their id. A heart with its own colours keeps them. The pair is in the
+markup of every heart (`data-pair`, `--pair-left/right` on HangingHeart's `.hang`; the heart page's thumbnail
+too), and the mode itself is only `html.colorful`, set before first paint by an inline head script from
+`juleflet:colourful`, so reloads never flash red/white; app.css maps the pair onto the heart's `--paper-*` tokens
+and HeartWeaveFill's `paper-l`/`paper-r` paths. The hero's bootstrap copies a card's pair with its heart and, in
+the mode, draws hearts of different pairs. The heart page's big heart and thumbnail use the heart's pair; the
+template previews, the PDF (and its ear picture) and the laser files keep the site's pair. While on, the
+swatches and swap button are dimmed (still the site's pair); picking a colour or swapping turns the mode off.
+GA4 event `color_mode {on}`. Without JavaScript the toggle is hidden.
 
 ### Hero (≥ 900px)
 Grid `minmax(0,1fr) 640px`, gap 40, padding `0 40px 0 80px`, height 660px (600px below 1200px, where the
@@ -291,24 +315,9 @@ editoren gemmes her i din browser, så du kan printe og dele dem senere." and an
 button; user hearts render as normal cards plus a delete button (30px, top right, z-index 2, revealed like the
 checkbox).
 
-Footer: `--cream2` background, centred wrapping row (gap 28, padding 32px 40px): colour swatches (white, red)
-with a swap button, EN, GitHub, "© Thomas Ahle".
-
-**As built: colourful mode.** After the swap button, a "Farverig" / "Colourful" toggle (lucide Palette, 44px pill,
-`aria-pressed`; filled `--green` when on) gives every heart that follows the site's pair a pair of its own from
-`$lib/utils/palette`: twelve Scandinavian Christmas pairs, lighter paper left, darker right (so the ribbon is the
-strong colour), each ≥ 2.2:1 between its papers; the two whose light paper is nearly the page's `#f9f9f3`
-(classic red/white, ochre/white) get a hairline outline. Gallery hearts take the pair at their position in the
-gallery order, cycling the palette, so no card repeats a neighbour's pair at any of the grid's 2–6 columns; other
-hearts (Mine hjerter, shared) take a hash of their id. A heart with its own colours keeps them. The pair is in the
-markup of every heart (`data-pair`, `--pair-left/right` on HangingHeart's `.hang`; the heart page's thumbnail
-too), and the mode itself is only `html.colorful`, set before first paint by an inline head script from
-`juleflet:colourful`, so reloads never flash red/white; app.css maps the pair onto the heart's `--paper-*` tokens
-and HeartWeaveFill's `paper-l`/`paper-r` paths. The hero's bootstrap copies a card's pair with its heart and, in
-the mode, draws hearts of different pairs. The heart page's big heart and thumbnail use the heart's pair; the
-template previews, the PDF (and its ear picture) and the laser files keep the site's pair. While on, the
-swatches and swap button are dimmed (still the site's pair); picking a colour or swapping turns the mode off.
-GA4 event `color_mode {on}`. Without JavaScript the toggle is hidden.
+Footer: `--cream2` background, one quiet centred line, 13px `--muted`, padding 20px 16px: "© Thomas Ahle, julen
+2025, 2026". (As first built it was a wrapping row with the colour swatches, EN and GitHub; the swatches moved to
+the header with the colourful mode, and EN and GitHub were already there.)
 
 ## 4. Detail page (`/hjerte/[id]/`)
 

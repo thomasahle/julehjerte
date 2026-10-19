@@ -41,7 +41,7 @@
   /* The site-wide paper pair, mirrored here from $lib/stores/colors by the root
      layout. The store stays the source of truth — this is only how a heart that
      is already drawn in the prerendered HTML, and so cannot re-render, still
-     follows the footer's swatches (see HangingHeart). The values are the
+     follows the header's swatches (see HangingHeart). The values are the
      store's defaults, which is what the prerender paints with. */
   --paper-left: #ffffff;
   --paper-right: rgb(185, 19, 19);
@@ -348,8 +348,8 @@
 }
 
 /*
- * Colourful mode (docs/redesign/DESIGN.md §3 "Footer", "As built: colourful
- * mode"). The footer's toggle puts `colorful` on <html>, and so does the head's
+ * Colourful mode (docs/redesign/DESIGN.md §3 "Nav", "As built: colours in the
+ * header"). The header's toggle puts `colorful` on <html>, and so does the head's
  * inline script on a reload ($lib/stores/colorMode). Every heart that follows
  * the site's pair carries its own pair in its markup, `--pair-left` /
  * `--pair-right` on a `[data-pair]` element ($lib/utils/palette), and the mode
@@ -385,15 +385,14 @@ html.colorful [data-pair-edge] .heart > svg {
  */
 @media print {
   /* Controls: the sticky gallery bar (it printed over a card mid-page), the
-     header's menu and links, the footer's colour swatches, the tick boxes and
-     the hero's scroll hint. The wordmark and the footer's credit stay. */
+     header's menu, links and colour swatches, the tick boxes and the hero's
+     scroll hint. The wordmark and the footer's credit stay. */
   .gallery-bar,
   .skip-link,
   .nav-links,
   .nav-actions,
   .nav-burger,
   .nav-menu,
-  .site-footer .colors,
   .card .pick,
   .card .delete-btn,
   .scroll-hint {

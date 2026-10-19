@@ -2,8 +2,9 @@
   The site nav — docs/redesign/DESIGN.md §3 "Nav".
 
   Two variants:
-    site   (default) logo · Skabeloner / Sådan gør du / Om · EN pill · GitHub pill,
-           collapsing to a 44px burger with a drop-down menu under 900px.
+    site   (default) logo · Skabeloner / Sådan gør du / Om · paper colours ·
+           EN pill · GitHub pill, collapsing to a 44px burger with a drop-down
+           menu under 900px, where the paper colours are a row of their own.
     editor logo with a back link at the left and the page's own buttons
            (passed as children) at the right — no nav links, no pills.
 
@@ -27,6 +28,7 @@
 	import { href as routeHref, otherLanguageUrl } from '$lib/i18n/routes';
 	import { ArrowLeftIcon, ImageIcon, MenuIcon, CloseIcon, PencilIcon } from '$lib/components/icons';
 	import GitHubLink from '$lib/components/GitHubLink.svelte';
+	import ColorControls from '$lib/components/ColorControls.svelte';
 
 	type NavSection = 'templates' | 'howto' | 'about';
 
@@ -207,6 +209,11 @@
 		{#if children}
 			{@render children()}
 		{/if}
+		<!-- The site's paper colours and the colourful mode (ColorControls).
+		     Not on the editor, which has its own colour controls in its panel. -->
+		{#if variant === 'site'}
+			<ColorControls {lang} variant="bar" />
+		{/if}
 		<!-- The language toggle belongs on every page type, the editor included:
 		     /editor/ and /en/editor/ both exist, and the editor has neither nav
 		     links nor a footer to reach the other one from. Below 900px the site
@@ -253,6 +260,7 @@
 					{link.label}
 				</a>
 			{/each}
+			<ColorControls {lang} variant="menu" />
 			<a class="menu-link" href={languageHref}>
 				{lang === 'da' ? 'English' : 'Dansk'}
 			</a>
@@ -482,12 +490,13 @@
 			font-size: 24px;
 		}
 
-		/* The drawer already lists the language and GitHub, so the bar drops its
+		/* The drawer already lists the language, GitHub and the paper colours, so the bar drops its
 		   own copies rather than showing the same control twice in one viewport.
 		   The editor keeps its pill: it has no drawer to fall back on. */
 		.nav-links,
 		.nav:not(.editor) .pill,
-		.nav-actions :global(.nav-github) {
+		.nav-actions :global(.nav-github),
+		.nav-actions :global(.colors-bar) {
 			display: none;
 		}
 
