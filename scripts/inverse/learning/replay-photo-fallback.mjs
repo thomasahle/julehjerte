@@ -6,7 +6,8 @@ import {createHash} from 'node:crypto';
 import {createCanvas,loadImage} from 'canvas';
 import {selectPhotoCrop} from './photo-crop-fallback.mjs';
 import {detectForegroundCrop} from './foreground-crop.mjs';
-import {supportedCropOutline} from '../../../static/inverse/core/crop.js';
+import {detectHeartCrops,supportedCropOutline} from '../../../static/inverse/core/crop.js';
+import {foregroundRegion} from './foreground-region.mjs';
 import {prepare,design} from '../../../static/inverse/core/engine.js';
 import {AUTOMATIC_PRESET} from '../../../static/inverse/core/presets.js';
 import {referenceError} from '../../../static/inverse/core/image-reference.js';
@@ -67,11 +68,24 @@ for(const id of plan.ids){
  assert.equal(plan.protocol.timeLimitSeconds,10);assert.equal(plan.protocol.trials,0);
 }
 const configuration={...AUTOMATIC_PRESET,timeLimit:plan.protocol.timeLimitSeconds,trials:plan.protocol.trials};
+const cropStrategy=plan.protocol.cropStrategy??'learned-fields';
+assert.ok(['learned-fields','foreground-region-rgb'].includes(cropStrategy));
+const control=plan.controlRun?await pinned(plan.controlRun):null;
+if(control){
+ assert.equal(control.schema,'material-pair-pipeline-1');assert.equal(control.status,'complete');
+ assert.equal(control.probeManifestSha256,plan.probe.sha256);assert.deepEqual(control.configuration,configuration);
+ assert.deepEqual(control.rows.filter(r=>r.method==='production').map(r=>r.id),plan.ids);
+ // Research adapters may change, but the original production fit implementation must match.
+ for(const [file,digest] of Object.entries(control.sourceHashes))
+  if(file.startsWith('static/inverse/')||['scripts/inverse/hard-photo-target.mjs','scripts/inverse/export-renderer.mjs'].includes(file))
+   assert.equal(hash(await fs.readFile(file)),digest,file);
+}
 const report={schema:'material-pair-pipeline-1',status:'running',configuration,methods:['production','fallback'],targetMode:'rgb',
  plan:{path:args.plan,sha256:hash(await fs.readFile(args.plan))},probeManifestSha256:plan.probe.sha256,rows:[],sourceHashes:{},
- scope:plan.purpose,comparisonProtocol:plan.protocol,sourceSeparationChecksPassed:true,runtimeNumericalGatePassed:runtime.passed};
+ scope:plan.purpose,comparisonProtocol:plan.protocol,sourceSeparationChecksPassed:true,runtimeNumericalGatePassed:runtime.passed,
+ ...(control?{reusedProductionRun:plan.controlRun}:{})};
 for(const file of [new URL(import.meta.url).pathname,'scripts/inverse/learning/photo-crop-fallback.mjs','scripts/inverse/learning/foreground-crop.mjs',
- 'scripts/inverse/learning/locator-field-source.mjs','scripts/inverse/learning/material-fields.mjs','scripts/inverse/hard-photo-target.mjs','scripts/inverse/export-renderer.mjs',
+ 'scripts/inverse/learning/foreground-region.mjs','scripts/inverse/learning/locator-field-source.mjs','scripts/inverse/learning/material-fields.mjs','scripts/inverse/hard-photo-target.mjs','scripts/inverse/export-renderer.mjs',
  ...(await fs.readdir('static/inverse',{recursive:true})).filter(p=>/^(core|locator|vendor)\/.+\.(js|mjs|wasm)$/.test(p)).map(p=>'static/inverse/'+p)])report.sourceHashes[file]=hash(await fs.readFile(file));
 await fs.mkdir(args.output,{recursive:false});
 const save=()=>fs.writeFile(path.join(args.output,'report.json'),JSON.stringify(report,null,2)+'\n');
@@ -79,6 +93,21 @@ async function field(asset){
  const root=path.dirname(plan.probe.path),file=path.resolve(root,asset.path);assert.ok(file.startsWith(path.resolve(root)+path.sep));
  const bytes=await fs.readFile(file);assert.equal(hash(bytes),asset.sha256);assert.equal(bytes.length,256**2*4);
  return Float32Array.from({length:256**2},(_,i)=>bytes.readFloatLE(i*4));
+}
+async function controlAsset(asset){
+ const root=path.resolve(path.dirname(plan.controlRun.path)),file=path.resolve(root,asset.path);
+ assert.ok(file.startsWith(root+path.sep));const bytes=await fs.readFile(file);assert.equal(hash(bytes),asset.sha256);
+ return{file,bytes};
+}
+async function reuseControl(input,selection){
+ const original=control.rows.find(r=>r.id===input.id&&r.method==='production');assert.equal(original.sourceSha256,input.photoSha256);
+ const row={...structuredClone(original),selection,reusedFitFrom:{report:plan.controlRun,id:input.id,method:'production'},assets:{}};
+ const folder=path.join(args.output,input.id+'-production');await fs.mkdir(folder);
+ for(const [name,asset] of Object.entries(original.assets)){
+  const {file}=await controlAsset(asset),target=path.join(folder,name);assert.equal(path.basename(name),name);
+  await fs.link(file,target);row.assets[name]={path:path.relative(args.output,target),sha256:asset.sha256};
+ }
+ report.rows.push(row);await save();return row;
 }
 function png(values,n,rgb=false){
  const c=createCanvas(n,n),ctx=c.getContext('2d'),pixels=ctx.createImageData(n,n);
@@ -119,13 +148,28 @@ try{
   const rgba=ctx.getImageData(0,0,image.width,image.height).data,rgb=Buffer.alloc(image.width*image.height*3);
   for(let i=0;i<image.width*image.height;i++)for(let c=0;c<3;c++)rgb[3*i+c]=rgba[4*i+c];assert.equal(hash(rgb),input.decodedRGBSha256);
   const source={type:'pixels',rgba,imageWidth:image.width,imageHeight:image.height};
-  const started=performance.now();let neuralSeconds=0;
-  const selected=await selectPhotoCrop(source,{learnedCrop:async()=>{
-   const fields=input.assets[manifest.methods[0]],body=await field(fields.body),material=await field(fields.material),start=performance.now();
-   const detected=await detectForegroundCrop(source,{probability:body,material,resolution:256,window:input.window});
+  const started=performance.now();let neuralSeconds=0,region=null;
+  const production=control?JSON.parse((await controlAsset(control.rows.find(r=>r.id===input.id&&r.method==='production').assets['detection.json'])).bytes):null;
+  const selected=await selectPhotoCrop(source,{...(production?{productionCrop:()=>production}:{}),learnedCrop:async()=>{
+   const fields=input.assets[manifest.methods[0]],body=await field(fields.body),start=performance.now();let detected;
+   if(cropStrategy==='foreground-region-rgb'){
+    region=foregroundRegion({probability:body,resolution:256,window:input.window,imageWidth:source.imageWidth,imageHeight:source.imageHeight});
+    detected=region.roi?await detectHeartCrops(source,{roi:region.roi}):{status:'not_found',reason:region.reason,candidates:[]};
+   }else{
+    const material=await field(fields.material);
+    detected=await detectForegroundCrop(source,{probability:body,material,resolution:256,window:input.window});
+   }
    neuralSeconds=(performance.now()-start)/1000;return detected;
   }});
-  const selection={...selected.decision,combinedDetectionSeconds:(performance.now()-started)/1000,neuralDetectionSeconds:neuralSeconds,inference:'Cached actual evaluation WASM output; inference excluded from timings.'};
+  const selection={...selected.decision,cropStrategy,...(region?{region}:{}),productionDetectionReused:!!control,
+   combinedDetectionSeconds:(performance.now()-started)/1000,neuralDetectionSeconds:neuralSeconds,
+   inference:'Cached actual evaluation WASM output; inference excluded from timings. Cached production detection, when present, is also excluded.'};
+  if(control){
+   const reference=await reuseControl(input,selection);
+   if(selected.detection===selected.production){report.rows.push({...reference,method:'fallback'});await save();}
+   else await fit(input,source,selected.detection,'fallback',selection);
+   continue;
+  }
   if(selected.detection===selected.production){
    const control=await fit(input,source,selected.production,'production',selection);
    // Identical source/crop/configuration: intentionally share the fit and files.
