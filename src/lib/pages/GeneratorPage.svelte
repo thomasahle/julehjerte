@@ -678,7 +678,7 @@
 						</button>
 					{/each}
 				</div>
-				<!-- Every frame takes the motif's size, the figure in the checks up to the paper's edge, and all but the board frames, whose squares hold the motif, the space around it. -->
+				<!-- Every frame takes the motif's size, up to 100% where the frame has room for it (see largestScale), and all but the board frames, whose squares hold the motif, the space around it. -->
 				<label class="range-label" for="motif-size"
 					>{t('generatorSize', lang)}<output>{config.scale}%</output></label
 				><input

@@ -78,6 +78,17 @@ square there; the photo solver does not settle whether any cuts could),
 and a sunburst motif outgrowing the largest circle at 85%. The fixture has
 **1,669** entries.
 
+
+Full size (2026-10-19). The size slider stopped at 85% for every frame but the
+figure in the checks. Swept over twelve motifs at 85–100%, the rays, checks,
+wedges and fitted frames built every one, so they now go to 100%; over the
+corpus at 100% that is 196 clean, 7 hard to cut and one refusal, the fitted
+fish, which now keeps 97%, the largest a few percent below that can be built
+(above 85% only). The sunburst, layers and corner checks refused twelve of the
+48 builds above 85% (the gift, cat, candle, bicycle, flower and angel) and took
+up to 21 s, so they keep 85% until their constructions can take larger motifs;
+the silhouette and the circle on a board are as large as the square and the
+board allow at 85%, and a motif on squares fills its square before that.
 ## Size and space around the figure in every frame
 
 Product decision (2026-10-18): the two figure sliders often did the same thing

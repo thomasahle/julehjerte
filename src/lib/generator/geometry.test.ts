@@ -27,7 +27,7 @@ import { rasterizeDesign } from '$lib/paint/rasterize';
 import { serializeTemplateToSVG } from '$lib/utils/templateSvg';
 import { renderHeartSvgMarkup } from '$lib/rendering/heartSvg';
 
-import { defaults, readGeneratorState } from './state';
+import { defaults, readGeneratorState, largestScale } from './state';
 import nunito from '../../../static/generator/fonts/nunito.json';
 import bree from '../../../static/generator/fonts/breeserif.json';
 import oswald from '../../../static/generator/fonts/oswald.json';
@@ -254,7 +254,7 @@ describe('saved generator inputs', () => {
 		);
 		expect(bad.motif).toBe('star');
 		expect(bad.font).toBe('nunito');
-		expect(bad.scale).toBe(85);
+		expect(bad.scale).toBe(largestScale(bad.style));
 		expect(bad).not.toHaveProperty('paperWidth');
 		expect(bad.text).toBe('ABCDEFGHIJ');
 		expect(readGeneratorState('#make=broken')).toEqual(defaults);

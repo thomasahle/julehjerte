@@ -457,6 +457,26 @@ function withLayout(request: GeneratorRequest): GeneratorRequest {
 }
 
 export function generate(request: GeneratorRequest): GeneratorResult {
+	const scale = request.scale ?? .7;
+	try {
+		return generateAtSize(request);
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError) || scale <= .85) throw error;
+		// Above 85% a frame takes a motif larger than its constructions were
+		// first made for. Where nothing at all can be built at that size, the
+		// motif keeps the largest a few percent below that can be, rather than
+		// refusing.
+		for (let size = scale - .03; size > .85 - 1e-9; size -= .03) try {
+			return generateAtSize({ ...request, scale: Math.round(size * 100) / 100 });
+		} catch (smallerError) {
+			if (!(smallerError instanceof ConstructionError) && !(smallerError instanceof CutGeometryError)) throw smallerError;
+		}
+		throw error;
+	}
+}
+
+/** A heart for the request at its own size (see `generate`). */
+function generateAtSize(request: GeneratorRequest): GeneratorResult {
 	if (request.mode === 'figure' && request.style === 'strips') return generateStrips(request);
 	request = withLayout(request);
 	const alternatives = frameAlternatives(request);

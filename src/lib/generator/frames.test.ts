@@ -37,6 +37,7 @@ import paw from '../../../static/generator/motifs/tb-paw.json';
 import crown from '../../../static/generator/motifs/ph-crown.json';
 import bell from '../../../static/generator/motifs/bell.json';
 import heart from '../../../static/generator/motifs/heart.json';
+import fish from '../../../static/generator/motifs/ph-fish.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
@@ -426,13 +427,20 @@ describe('frames from real hearts', () => {
   const area = (scale: number) => swapped(generate({ mode: 'figure', name: 'Snow', contours: snow.contours as Ring[], colors, style: 'strips', scale }).design).area;
   expect(area(.75)).toBeGreaterThanOrEqual(area(.7));
  }, 30000);
- slow('lets the figure in the checks grow to the paper\'s edge, unlike the other frames', () => {
+ slow('lets the figure in the checks grow to the paper\'s edge, like the frames with room for it', () => {
   const state = { ...defaults, mode: 'figure' as const, style: 'strips' as const, scale: 100 };
-  const link = (s: typeof state | (Omit<typeof state, 'style'> & { style: 'rays' })) => '#make=' + encodeURIComponent(JSON.stringify(s));
+  const link = (s: typeof state | (Omit<typeof state, 'style'> & { style: 'rays' | 'silhouette' })) => '#make=' + encodeURIComponent(JSON.stringify(s));
   expect(readGeneratorState(link(state)).scale).toBe(100);
-  expect(readGeneratorState(link({ ...state, style: 'rays' })).scale).toBe(85);
+  expect(readGeneratorState(link({ ...state, style: 'rays' })).scale).toBe(100);
+  // The silhouette fills the square at 85% already.
+  expect(readGeneratorState(link({ ...state, style: 'silhouette' })).scale).toBe(85);
   const area = (scale: number) => swapped(generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'strips', scale }).design).area;
   expect(area(1)).toBeGreaterThan(area(.85));
+ }, 30000);
+ slow('keeps a fitted fish a little smaller at 100% rather than refusing it', () => {
+  // Nothing can be built at 100%; 97% can.
+  const { design } = generate({ mode: 'figure', name: 'Fish', contours: fish.contours as Ring[], colors, style: 'fitted', scale: 1 });
+  expect(design.gridSize.x).toBeGreaterThanOrEqual(4);
  }, 30000);
  slow('weaves outlines that touch into the checks', () => {
   // The bicycle's wheels touch its frame at single points.
