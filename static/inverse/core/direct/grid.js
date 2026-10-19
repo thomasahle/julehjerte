@@ -142,16 +142,20 @@ export function fitGrid(prob,size,counts,phase,{steps=280,k=16,initial=null,seed
   // A jointly resampled native objective avoids changing the image pyramid
   // merely because a small portion of the source is unobserved.
   const resized=optimizationObjective||(weights?resizeObjective(prob,size,resolution,weights):null),target=optimizationTarget||resized?.probability||resize(prob,size,resolution),model=gridModel(counts,k,seed,initial),adam=new Adam(model.z.length,initial ? .015 : .04);
-  // Keep a feature-retaining point while following the original gradient.
-  // If none exists, return the ordinary best fallback; this is not a geometry
-  // or source-fidelity certificate. Callers still validate the final curves.
-  const preferred=()=>!preferCheckpoint||preferCheckpoint({model,phase,floor});
+  // A caller may supply a boolean preference or an ordered finite priority.
+  // Keep the lowest image error within the highest attained class; gradients
+  // and deadlines do not change. Final curves still require independent checks.
+  const preferred=()=>{
+    const value=preferCheckpoint?preferCheckpoint({model,phase,floor}):true;
+    if(typeof value==='number'&&!Number.isFinite(value))throw new Error('Grid checkpoint priority must be finite.');
+    return Number(value);
+  };
   let best={z:model.z.slice(),error:mismatch(gridMask(model,size,phase,floor),prob,weights),step:-1,preferred:preferred()},completed=0;
   for(let step=0;step<steps;step++){
     if(step%10===0&&performance.now()>deadline)break;
     const progress=step/Math.max(1,steps-1),epsilon=initial?.length?(.012*(1-progress)**2+.003):(.035*(1-progress)**2+.004);
     const value=gridLoss(model,target,resolution,phase,epsilon,{floor,clearance,weights:resized?.weights});adam.update(model.z,value.gradient,3);completed++;
-    if(step%30===0||step===steps-1){const error=mismatch(gridMask(model,size,phase,floor),prob,weights);const retained=preferred();if(retained&&!best.preferred||retained===best.preferred&&error<best.error)best={z:model.z.slice(),error,step,preferred:retained};onProgress({step,error,loss:value.loss});}
+    if(step%30===0||step===steps-1){const error=mismatch(gridMask(model,size,phase,floor),prob,weights);const retained=preferred();if(retained>best.preferred||retained===best.preferred&&error<best.error)best={z:model.z.slice(),error,step,preferred:retained};onProgress({step,error,loss:value.loss});}
   }
   model.z=best.z;return{model,phase,floor,error:best.error,steps:completed};
 }
