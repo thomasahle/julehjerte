@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { slow } from './slow.test-helpers';
 import { generate } from './generate';
 import { generateTextGrid } from './textGrid';
 import { trickyLetters } from './trickyLetters';
@@ -33,14 +34,14 @@ function validateHardToCut(design: HeartDesign, spacing: number) {
 }
 
 describe('hard-to-cut results instead of refusals', () => {
-	it('weaves the exact Cinzel 2026 in a circle and names the 6', () => {
+	slow('weaves the exact Cinzel 2026 in a circle and names the 6', () => {
 		const result = generate({ mode: 'text', name: '2026', text: '2026', font: cinzel as unknown as Font,
 			textFrame: 'circle', colors });
 		expect(result.hardToCut?.letters).toEqual(['6']);
 		validateHardToCut(result.design, result.hardToCut!.spacing);
 	}, 30_000);
 
-	it('keeps a framed coffee cup with narrow paper and names no letters', () => {
+	slow('keeps a framed coffee cup with narrow paper and names no letters', () => {
 		const result = generate({ mode: 'figure', name: 'coffee', contours: coffee.contours as Ring[], frame: 'circle',
 			style: 'sunburst', colors });
 		expect(result.hardToCut?.letters).toEqual([]);

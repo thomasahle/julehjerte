@@ -1,4 +1,5 @@
 import { expect, it } from 'vitest';
+import { slow } from './slow.test-helpers';
 import { generateFittedFigure } from './fitted';
 import { generate } from './generate';
 import { fourPortMotif, uprightToSheet, type Ring } from './geometry';
@@ -42,7 +43,7 @@ for (const [name, motif, tips, strips] of [
 	['moon and stars', moonStars, [0, 1], 5], ['rabbit', rabbit, [0, 3], 5],
 	['butterfly', butterfly, [3, 6], 5], ['snowflake', snow, [0, 7], 4],
 	['sailboat', sailboat, [0, 0], 5]
-] as const) it(`fits the grid to ${name} and retains its cuts through both exports`, () => {
+] as const) slow(`fits the grid to ${name} and retains its cuts through both exports`, () => {
 	const { design } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], style: 'fitted',
 		colors: { left: '#fffdf5', right: '#b72f2b' } });
 	expect(design.gridSize).toEqual({ x: strips, y: strips });

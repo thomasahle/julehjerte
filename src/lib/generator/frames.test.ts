@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { slow } from './slow.test-helpers';
 import { generate, fillSquare, fitCircle } from './generate';
 import { cutTipCounts } from './cutQuality';
 import { generateFittedFigure } from './fitted';
@@ -81,7 +82,7 @@ describe('complete motif frames', () => {
    expect(result.edges).toContainEqual({ from: [0, t], to: [100, t], family: 'B', kind: 'frame' });
   }
  });
- it('rounds the layered paw connections and keeps its open cuts through both exports', () => {
+ slow('rounds the layered paw connections and keeps its open cuts through both exports', () => {
   const { design } = generate({ mode: 'figure', name: 'Paw', contours: paw.contours as Ring[], colors, style: 'layers' });
   expect(design.gridSize).toEqual({ x: 9, y: 9 });
   expect(cutTipCounts(design)).toEqual([1, 1]);
@@ -179,7 +180,7 @@ describe('complete motif frames', () => {
   }
  });
  for (const [name, motif] of Object.entries({ cookie, cat, bicycle, tablerGift })) {
-  it(`opens the nested ${name} counters in the layered frame with seven strips`, () => {
+  slow(`opens the nested ${name} counters in the layered frame with seven strips`, () => {
    const { design } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], colors, style: 'layers' });
    expect(design.gridSize).toEqual({ x: 7, y: 7 });
    expect(design).not.toHaveProperty('leftCutouts');
@@ -284,7 +285,7 @@ describe('frames from real hearts', () => {
      for (const v of [...board(p0), ...board(p3)]) expect(Math.abs(v - Math.round(v)), name).toBeLessThan(1e-6);
   }
  }, 30000);
- it('lays the circle on a regular five-strip board, every square outside it equal', () => {
+ slow('lays the circle on a regular five-strip board, every square outside it equal', () => {
   for (const [name, motif] of Object.entries({ star, tree, cat, gift })) {
    const { design, hardToCut } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], colors, style: 'board' });
    expect(design.gridSize, name).toEqual({ x: 5, y: 5 });
@@ -304,7 +305,7 @@ describe('frames from real hearts', () => {
    expect(lines.size, name).toBe(8);
   }
  }, 30000);
- it('keeps the space asked for, so a circle only grows with it', () => {
+ slow('keeps the space asked for, so a circle only grows with it', () => {
   // A circle that could be cut cleanly further out stays where the space puts
   // it, hard to cut if need be, rather than jumping out as the slider moves.
   const radius = (gap: number) => {
@@ -320,7 +321,7 @@ describe('frames from real hearts', () => {
   expect(none).toBeLessThanOrEqual(some + 1e-6);
   expect(some).toBeLessThan(more);
  }, 60000);
- it('keeps a motif on equal squares on the board its default size chose', () => {
+ slow('keeps a motif on equal squares on the board its default size chose', () => {
   const heart = (scale: number) => generate({ mode: 'figure', name: 'Gift', contours: gift.contours as Ring[], colors, style: 'squares', scale });
   const chosen = heart(.7);
   expect(chosen.design.gridSize).toEqual({ x: 3, y: 3 });
@@ -330,7 +331,7 @@ describe('frames from real hearts', () => {
    expect(design.gridSize, `${scale}`).toEqual({ x: 3, y: 3 });
   }
  }, 60000);
- it('grows the board\'s circle and its motif steadily with the size, never refusing', () => {
+ slow('grows the board\'s circle and its motif steadily with the size, never refusing', () => {
   // Through the touching circle at 70%, where the construction changes, the
   // circle and the motif only grow; sizes that cannot be cut cleanly are hard.
   for (const [name, motif] of Object.entries({ star, cookie })) {
@@ -396,7 +397,7 @@ describe('frames from real hearts', () => {
   expect(middle.area).toBeLessThan(large.area);
   for (const other of [small, large]) for (const axis of [0, 1]) expect(Math.abs(other.centre[axis] - middle.centre[axis])).toBeLessThan(2);
  }, 30000);
- it('lets the figure in the checks grow to the paper\'s edge, unlike the other frames', () => {
+ slow('lets the figure in the checks grow to the paper\'s edge, unlike the other frames', () => {
   const state = { ...defaults, mode: 'figure' as const, style: 'strips' as const, scale: 100 };
   const link = (s: typeof state | (Omit<typeof state, 'style'> & { style: 'rays' })) => '#make=' + encodeURIComponent(JSON.stringify(s));
   expect(readGeneratorState(link(state)).scale).toBe(100);
@@ -404,7 +405,7 @@ describe('frames from real hearts', () => {
   const area = (scale: number) => swapped(generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'strips', scale }).design).area;
   expect(area(1)).toBeGreaterThan(area(.85));
  }, 30000);
- it('weaves outlines that touch into the checks', () => {
+ slow('weaves outlines that touch into the checks', () => {
   // The bicycle's wheels touch its frame at single points.
   const { design } = generate({ mode: 'figure', name: 'Bicycle', contours: bicycle.contours as Ring[], colors, style: 'strips' });
   expect(design.gridSize).toEqual({ x: 4, y: 4 });

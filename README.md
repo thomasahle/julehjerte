@@ -24,6 +24,9 @@ and one id in `hearts.json` in the project root, then
 `npm test` runs application tests and the complete inverse suite, including timed
 quality benchmarks. To run the inverse release gates separately, use
 `npm run test:inverse:ci`; `npm run benchmark:inverse:ci` runs the advisory cases.
+The heart generator's regressions that build whole hearts take seconds each and
+are marked `slow`; `npm run test:slow` runs them with the rest of the generator's
+tests, and the deployment workflow leaves them out.
 
 The deployment workflow requires type checks, lint, application tests, inverse
 correctness tests and a production build. Fresh image searches with strict

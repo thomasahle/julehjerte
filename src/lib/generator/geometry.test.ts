@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { slow } from './slow.test-helpers';
 import { generate } from './generate';
 import {
 	compile,
@@ -130,7 +131,7 @@ describe('constructive figure generator', () => {
 			expect(result.recipe).toBe('nested');
 		}
 	});
-	it('warns that an excessively thin ring is hard to cut instead of refusing it', () => {
+	slow('warns that an excessively thin ring is hard to cut instead of refusing it', () => {
 		const result = figure([circle(0.45), circle(0.444)]);
 		expect(result.hardToCut?.letters).toEqual([]);
 		expect(result.hardToCut?.spacing).toBeLessThan(1);

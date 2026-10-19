@@ -1,4 +1,5 @@
 import { it, expect } from 'vitest';
+import { slow } from './slow.test-helpers';
 import { generateComponentLanes } from './componentLanes';
 import { generate } from './generate';
 import { normalizeContours } from './contours';
@@ -25,7 +26,7 @@ it('keeps the cup, its handle and separate steam contours in the original frame'
 
 for (const [name, motif, frame, style, tips] of [
 	['coffee', coffee, 'circle', 'check', [0, 2]]
-] as const) it(`keeps a clearance reserve for ${name} in ${frame}-${style}, including both exports`, () => {
+] as const) slow(`keeps a clearance reserve for ${name} in ${frame}-${style}, including both exports`, () => {
 	const { design } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], frame, style,
 		colors: { left: '#fff', right: '#b91313' } });
 	expect(design.gridSize).toEqual({ x: 4, y: 4 });

@@ -1,4 +1,5 @@
 import { it, expect } from 'vitest';
+import { slow } from './slow.test-helpers';
 import { generate } from './generate';
 import { cutTipCounts } from './cutQuality';
 import type { Font } from './geometry';
@@ -14,7 +15,7 @@ for (const [text, textFrame, strips, tips] of [
 	['EM', 'circle', 8, 3], ['ME', 'circle', 8, 1],
 	['EMMA', 'circle', 11, 2]
 ] as const)
-	it(`joins the Cinzel ${text} branches into open strips in ${textFrame}`, () => {
+	slow(`joins the Cinzel ${text} branches into open strips in ${textFrame}`, () => {
 		const { design } = generate({ mode: 'text', name: text, text, font: cinzel as unknown as Font,
 			textFrame, colors: { left: '#fffdf5', right: '#b72f2b' } });
 		expect(design.gridSize).toEqual({ x: strips, y: strips });

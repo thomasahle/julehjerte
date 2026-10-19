@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { slow } from './slow.test-helpers';
 import { generate } from './generate';
 import { type Font, type Ring, FRAMES, FIGURE_STYLES } from './geometry';
 import { defaults, readGeneratorState, normalizeText } from './state';
@@ -34,7 +35,7 @@ describe('longer and multiline text', () => {
 		'ANNA\nBO',
 		'A\nB\nO'
 	])
-		it(`constructs ${JSON.stringify(text)} with open, adequately spaced cuts`, () => {
+		slow(`constructs ${JSON.stringify(text)} with open, adequately spaced cuts`, () => {
 			const { design } = generate({
 				mode: 'text',
 				name: text,

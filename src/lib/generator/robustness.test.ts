@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { slow } from './slow.test-helpers';
 import { generate } from './generate';
 import { generateComponentFigure } from './components';
 import { generateTextGrid } from './textGrid';
@@ -54,7 +55,7 @@ function validateHandoffs(design: HeartDesign) {
 // These are expected successes, never a test that passes by accepting a refusal.
 // The larger offline corpus covers 816 text and 510 figure configurations.
 describe('generator robustness regressions', () => {
-	it('removes the three narrow Cinzel B tips without adding paper strips', () => {
+	slow('removes the three narrow Cinzel B tips without adding paper strips', () => {
 		const { design } = generate({ mode: 'text', name: 'B', text: 'B', font: fonts.cinzel,
 			textFrame: 'circle', colors });
 		expect(design.gridSize).toEqual({ x: 6, y: 6 });
@@ -71,7 +72,7 @@ describe('generator robustness regressions', () => {
 		expect(design.gridSize).toEqual({ x: 3, y: 3 });
 		validateHandoffs(design);
 	}, 20000);
-	it('separates nearly touching paw outlines between the checked corners', () => {
+	slow('separates nearly touching paw outlines between the checked corners', () => {
 		const { design } = generate({ mode: 'figure', name: 'Paw', contours: tablerPaw.contours as Ring[],
 			frame: 'circle', style: 'corners', colors });
 		expect(design.gridSize).toEqual({ x: 6, y: 6 });
@@ -98,7 +99,7 @@ describe('generator robustness regressions', () => {
 			expect(findSearchIssues(design.fingers, margin * 1.1).size).toBe(0);
 			validateHandoffs(design);
 		});
-	it('clears neighbouring toes at the fitted paw grid attachments', () => {
+	slow('clears neighbouring toes at the fitted paw grid attachments', () => {
 		const { design } = generate({ mode: 'figure', name: 'Paw', contours: tablerPaw.contours as Ring[],
 			frame: 'circle', style: 'fitted', colors });
 		expect(design.gridSize).toEqual({ x: 7, y: 7 });
@@ -107,7 +108,7 @@ describe('generator robustness regressions', () => {
 		expect(findSearchIssues(design.fingers, margin * 1.1).size).toBe(0);
 		validateHandoffs(design);
 	}, 20000);
-	it('routes the paw grid around the sunburst border without narrow paper tips', () => {
+	slow('routes the paw grid around the sunburst border without narrow paper tips', () => {
 		const { design } = generate({ mode: 'figure', name: 'Paw', contours: tablerPaw.contours as Ring[],
 			frame: 'circle', style: 'sunburst', colors });
 		expect(design.gridSize).toEqual({ x: 9, y: 9 });
@@ -117,7 +118,7 @@ describe('generator robustness regressions', () => {
 		validateHandoffs(design);
 	}, 20000);
 	for (const [name, motif, narrowTips] of [['Stars', tablerStars, 0], ['Snow', snow, 7]] as const)
-		it(`keeps ${name} cuts clear of the outer sunburst corners`, () => {
+		slow(`keeps ${name} cuts clear of the outer sunburst corners`, () => {
 			const { design } = generate({ mode: 'figure', name, contours: motif.contours as Ring[],
 				frame: 'circle', style: 'sunburst', colors });
 			expect(design.gridSize).toEqual({ x: 6, y: 6 });
@@ -127,7 +128,7 @@ describe('generator robustness regressions', () => {
 			validateHandoffs(design);
 		}, 20000);
 	for (const textFrame of ['air', 'circle'] as const)
-		it(`keeps all Oswald ÆØÅ components connected in the ${textFrame} frame`, () => {
+		slow(`keeps all Oswald ÆØÅ components connected in the ${textFrame} frame`, () => {
 			const { design } = generate({ mode: 'text', name: 'ÆØÅ', text: 'ÆØÅ',
 				font: fonts.oswald, textFrame, colors });
 			expect(design.gridSize).toEqual({ x: 6, y: 6 });
@@ -151,7 +152,7 @@ describe('generator robustness regressions', () => {
 		expect(design.gridSize).toEqual({ x: 8, y: 8 });
 		validateHandoffs(design);
 	}, 20000);
-	it('connects the separate strokes of lowercase m in a checkerboard', () => {
+	slow('connects the separate strokes of lowercase m in a checkerboard', () => {
 		const { design } = generate({ mode: 'text', name: 'amy', text: 'amy', font: fonts.nunito, textFrame: 'checkered', colors });
 		expect(design.gridSize).toEqual({ x: 3, y: 3 });
 		validateHandoffs(design);
@@ -160,12 +161,12 @@ describe('generator robustness regressions', () => {
 		['kalam', 'Anna', 4], ['kalam', 'ANNA', 4], ['oswald', 'A-B', 3],
 		['nunito', 'Anna', 4], ['oswald', 'GOD JUL', 7],
 		['kalam', 'ABCDEFGHIJ', 10], ['kalam', 'GOD JUL', 7]
-	] as const) it(`weaves ${fontId} ${text} once on its checkerboard`, () => {
+	] as const) slow(`weaves ${fontId} ${text} once on its checkerboard`, () => {
 		const { design } = generate({ mode: 'text', name: text, text, font: fonts[fontId], textFrame: 'checkered', colors });
 		expect(design.gridSize).toEqual({ x: n, y: n });
 		validateHandoffs(design);
 	}, 30000);
-	it('keeps William on its checkerboard with every letter the size of its W', () => {
+	slow('keeps William on its checkerboard with every letter the size of its W', () => {
 		// The wide W makes the other letters small, so the heart may be hard to
 		// cut in these fonts; it is still made, with the usual warning.
 		for (const font of [fonts.nunito, fonts.oswald]) {
@@ -185,7 +186,7 @@ describe('generator robustness regressions', () => {
 			validateHandoffs(design);
 		}, 20000);
 	for (const [name, motif] of [['Gift', gift], ['Paw', paw]] as const)
-		it(`counts the sunburst's outer strips when routing ${name}`, () => {
+		slow(`counts the sunburst's outer strips when routing ${name}`, () => {
 			const { design } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], style: 'sunburst', colors });
 			expect(design.gridSize).toEqual({ x: 5, y: 5 });
 			validateHandoffs(design);
@@ -200,7 +201,7 @@ describe('generator robustness regressions', () => {
 		['palette', palette, 'circle', 'layers', 7],
 		['bicycle', bicycle, 'circle', 'sunburst', 5]
 	] as const)
-		it(`detours shared cuts around neighbouring outlines for ${name}/${frame}-${style}`, () => {
+		slow(`detours shared cuts around neighbouring outlines for ${name}/${frame}-${style}`, () => {
 			const { design } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], frame, style, colors });
 			expect(design.gridSize).toEqual({ x: size, y: size });
 			validateHandoffs(design);
@@ -217,29 +218,29 @@ describe('generator robustness regressions', () => {
 		validateHandoffs(design);
 	});
 	for (const [frame, style] of [['circle', 'rays']] as const)
-		it(`routes the bicycle's separate components through ${frame}-${style}`, () => {
+		slow(`routes the bicycle's separate components through ${frame}-${style}`, () => {
 			const { design } = generate({ mode: 'figure', name: 'Bicycle', contours: bicycle.contours as Ring[], frame, style, colors });
 			expect(design.gridSize).toEqual({ x: 4, y: 4 });
 			validateHandoffs(design);
 		}, 20000);
-	it('keeps the gift bow and both papers intact inside the sunburst frame', () => {
+	slow('keeps the gift bow and both papers intact inside the sunburst frame', () => {
 		const { design } = generate({ mode: 'figure', name: 'Gift', contours: tablerGift.contours as Ring[], style: 'sunburst', colors });
 		expect(design.gridSize).toEqual({ x: 5, y: 5 });
 		validateHandoffs(design);
 	}, 20000);
 	for (const textFrame of ['air', 'woven', 'circle'] as const)
-		it(`opens the counter of Cinzel P with clear shared connections in ${textFrame}`, () => {
+		slow(`opens the counter of Cinzel P with clear shared connections in ${textFrame}`, () => {
 			const { design } = generate({ mode: 'text', name: 'P', text: 'P', textFrame, font: fonts.cinzel, colors });
 			expect(design.gridSize).toEqual({ x: 3, y: 3 });
 			validateHandoffs(design);
 		}, 20000);
 	for (const textFrame of ['circle'] as const)
-		it(`divides the ink of Cinzel BO into useful panels in ${textFrame}`, () => {
+		slow(`divides the ink of Cinzel BO into useful panels in ${textFrame}`, () => {
 			const { design } = generate({ mode: 'text', name: 'BO', text: 'BO', textFrame, font: fonts.cinzel, colors });
 			expect(design.gridSize).toEqual({ x: 10, y: 10 });
 			validateHandoffs(design);
 		}, 20000);
-	it('joins Cinzel BO panels without branching cuts in air', () => {
+	slow('joins Cinzel BO panels without branching cuts in air', () => {
 		const { design } = generate({ mode: 'text', name: 'BO', text: 'BO', textFrame: 'air', font: fonts.cinzel, colors });
 		expect(design.gridSize).toEqual({ x: 8, y: 8 });
 		validateHandoffs(design);
@@ -247,7 +248,7 @@ describe('generator robustness regressions', () => {
 	for (const [text, textFrame, size] of [
 		['B', 'woven', 5], ['B', 'circle', 6]
 	] as [string, TextFrame, number][])
-		it(`divides Cinzel ${text} through solid seams in ${textFrame}`, () => {
+		slow(`divides Cinzel ${text} through solid seams in ${textFrame}`, () => {
 			// Larger letters; square cells weave B whole on the regular 3×3 board.
 			const fittedCells = textFrame === 'circle' ? undefined : true;
 			const { design } = generate({ mode: 'text', name: text, text, textFrame, fittedCells, font: fonts.cinzel, colors });
@@ -260,7 +261,7 @@ describe('generator robustness regressions', () => {
 			}
 		}, 20000);
 	for (const { id, textFrame, cells } of TEXT_TEMPLATES)
-		it(`weaves lowercase shoulders in the ${id} frame`, () => {
+		slow(`weaves lowercase shoulders in the ${id} frame`, () => {
 			const { design } = generate({ mode: 'text', name: 'anna', text: 'anna', font: fonts.nunito, textFrame,
 				fittedCells: cells && cells === 'letters', colors });
 			validateHandoffs(design);
@@ -289,7 +290,7 @@ describe('generator robustness regressions', () => {
 		['kalam', 'ANNA', 'air'], ['kalam', 'ÆØÅ', 'circle'],
 		['kalam', 'A\nB\nO', 'air'], ['righteous', 'Hej!', 'air']
 	] as [string, string, TextFrame][])
-		it(`keeps ${text} in ${fontId} through the ${textFrame} frame`, () => {
+		slow(`keeps ${text} in ${fontId} through the ${textFrame} frame`, () => {
 			validateHandoffs(generate({ mode: 'text', name: text, text, font: fonts[fontId], textFrame, colors }).design);
 		}, 20000);
 	for (const [name, motif] of [['Paw', paw], ['Butterfly', butterfly], ['Rabbit', rabbit], ['Sun', sun], ['Phosphor butterfly', phosphorButterfly]] as const)
@@ -298,7 +299,7 @@ describe('generator robustness regressions', () => {
 		}, 20000);
 	for (const [fontId, font] of Object.entries(fonts))
 		for (const text of (fontId === 'kalam' ? ['JUL', 'O'] : ['JUL', 'O', 'A']))
-			it(`handles ${text} in ${fontId}`, () => {
+			slow(`handles ${text} in ${fontId}`, () => {
 				validateHandoffs(generate({ mode: 'text', name: text, text, font, textFrame: 'checkered', colors }).design);
 			}, 20000);
 	for (const [name, motif] of [['Gift', gift], ['Paw', paw], ['Tabler gift', tablerGift]] as const)
@@ -308,7 +309,7 @@ describe('generator robustness regressions', () => {
 			validateHandoffs(design);
 		}, 20000);
 	for (const [name, motif] of [['Angel', angel], ['Snow', snow], ['Sun', sun], ['Smiley', smiley]] as const)
-		it(`distributes ${name} inside the layered medallion without losing either border`, () => {
+		slow(`distributes ${name} inside the layered medallion without losing either border`, () => {
 			const { design } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], style: 'layers', colors });
 			expect(Math.min(design.gridSize.x, design.gridSize.y)).toBeGreaterThanOrEqual(8);
 			validateHandoffs(design);

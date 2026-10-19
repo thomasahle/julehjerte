@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { slow } from './slow.test-helpers';
 import { generate } from './generate';
 import { generateCheckeredGrid, checkeredGridCache, checkeredLayout, checkeredLayouts, checkeredMatrix } from './checkeredGrid';
 import { defaults, readGeneratorState } from './state';
@@ -71,7 +72,7 @@ describe('typed letters on alternating squares', () => {
 		expect(checkeredLayouts('JUL\nul\nb').map(layout => layout.matrix.length)).toEqual([3, 3, 3, 4, 4, 4]);
 	});
 
-	it('weaves full 3×3 boards through neighbouring junctions in every font', () => {
+	slow('weaves full 3×3 boards through neighbouring junctions in every font', () => {
 		for (const [fontId, other] of Object.entries(fonts)) for (const text of ['J\nUL\nJUL\nUL\nJ', 'JUL\nJU\nL']) {
 			const result = generate({ mode: 'text', name: text, text, font: other as unknown as Font, colors, textFrame: 'checkered' });
 			expect(result.design.gridSize, `${fontId} ${text}`).toEqual({ x: 3, y: 3 });
@@ -126,14 +127,14 @@ describe('typed letters on alternating squares', () => {
 		}
 	}, 20000);
 
-	it('keeps ANNA free of narrow paper tips', () => {
+	slow('keeps ANNA free of narrow paper tips', () => {
 		expect(cutTipCounts(make('ANNA'))).toEqual([0, 0]);
 	}, 20000);
 
 	for (const [text, n] of [['ANNA', 4], ['JUL', 3], ['O', 2], ['anna', 4], ['SØREN', 5], ['M&M', 3],
 		['Å', 2], ['abc\nde', 3], ['JULE\nMAND', 5], ['GOD JUL', 7], ['J\nUL\nJUL\nUL\nJ', 3],
 		['JUL\nJUL\nJUL\nJUL\nJUL\nJUL', 6]] as const)
-		it(`preserves ${JSON.stringify(text)} and its checkerboard through JSON and SVG`, () => {
+		slow(`preserves ${JSON.stringify(text)} and its checkerboard through JSON and SVG`, () => {
 			const design = make(text), original = rasterizeDesign(design, 160).data;
 			expect(design.gridSize).toEqual({ x: n, y: n });
 			for (const restored of [normalizeHeartDesign(serializeHeartDesign(design)), parseHeartFromSVG(serializeHeartToSVG(design))]) {

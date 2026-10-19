@@ -1,4 +1,5 @@
 import { it, expect } from 'vitest';
+import { slow } from './slow.test-helpers';
 import { generate } from './generate';
 import { cutTipCounts } from './cutQuality';
 import type { Font } from './geometry';
@@ -17,7 +18,7 @@ for (const [fontId, text, textFrame, strips, tips] of [
 	['cinzel', 'MEME', 'circle', 12, 3],
 	['cinzel', 'MILLE', 'circle', 11, 1]
 ] as const)
-	it(`keeps ${fontId} ${text} attachments clear of the ${textFrame} panel seams`, () => {
+	slow(`keeps ${fontId} ${text} attachments clear of the ${textFrame} panel seams`, () => {
 		const { design } = generate({ mode: 'text', name: text, text, font: fonts[fontId],
 			textFrame, colors: { left: '#fffdf5', right: '#b72f2b' } });
 		expect(design.gridSize).toEqual({ x: strips, y: strips });
