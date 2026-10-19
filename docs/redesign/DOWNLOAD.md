@@ -25,13 +25,15 @@ dialog does today. Settings, top to bottom:
    `modePrinterHint` "PDF i rigtig størrelse. Print uden tilpasning til siden.")
    / **Laserskærer** (`modeLaser`, hint = the existing `laserFormatHint`).
    Default Printer.
-2. **Bredde (mm)** — the existing `laserWidth` control and `laserDerived` line,
+2. **Bredde (mm)** — the existing width control and derived line (keys `pieceWidth`, `pieceDerived`;
+   they were `laserWidth`/`laserDerived`),
    shared by both modes. Default 80, 40–200, step 1 (5 until QA round 3: any
    whole millimetre is a fine width). In Printer mode the derived
    line gives the strip width and the **folded** template's height
    (`templateHeight` scaled); in Laser mode the unfolded height, as now.
 3. **Antal hjerter** — existing `laserHearts` and `laserPiecesNote` ("Et hjerte
-   er to stykker."), both modes. A heart is two pieces in both: the printer PDF
+   er to stykker."), both modes. *As built: laser mode only; the printer PDF
+   always gets one heart per design (`hearts: 1`).* A heart is two pieces in both: the printer PDF
    therefore places **two folded templates per heart** (two identical ones
    when the lobes share a template, else left + right), each labelled as the
    PDF labels them today.
@@ -98,15 +100,17 @@ the field was left, and the file came out at a size the preview never showed.)
 
 Add `generateTemplatesPDF(designs, options)` / `downloadTemplatesPDF(...)`
 with `options: { widthMm, hearts, sheet: { widthMm, heightMm }, lang,
-previewImage }`, reusing `drawLobeTemplate`, the name + address labels, the
+previewImage }`, reusing `drawLobeTemplate` (as built, `drawLobeTemplateAt`), the name + address labels, the
 footer and `prerenderHeartImages` exactly as the existing pages do, but placing
 the templates with the laser module's `layoutSheet` (`src/lib/laser/sheet.ts`,
 5 mm gap and margin) on as many pages as needed. The piece box handed to
 `layoutSheet` is the folded template's width × (height + the 9 mm header the
-labels take) — since round 2 the template alone, the labels being inside it. Pull the page-planning maths into a pure function
+labels take) — in round 2 the template alone, the labels being inside it; the 9 mm header
+is back since the owner's "no name in the ear" (below). Pull the page-planning maths into a pure function
 (`planTemplatePages`) in `src/lib/pdf/plan.ts` with tests. Keep the existing
 `generatePDF`/`generateMultiPDF`/`LayoutMode` code path intact for the front
-page toolbar. `downloadTemplatesPDF` saves `{heart id}-{width}mm.pdf` (since the
+page toolbar. (Since removed: `generateMultiPDF` and `LayoutMode` are gone, and
+only the editor and the paint page still call `generatePDF`/`downloadPDF`.) `downloadTemplatesPDF` saves `{heart id}-{width}mm.pdf` (since the
 QA round of 2026-10-17 the id, `heartFileStem`, as the laser files are named;
 it was the display name's slug, so `circle` printed as `uret-v2-60mm.pdf`).
 
@@ -145,8 +149,8 @@ honest.
 ## Constraints
 
 DESIGN.md §8 applies: static prerendered site, both languages, `npm run check`,
-`npm run lint`, `npm test`, `npm run build` green, commit on this branch
-(`front-simplify`) in clear commits, **never push**, work only in this
+`npm run lint`, `npm test`, `npm run build` green, commit on a branch
+(this work was `front-simplify`; it is merged into `main`) in clear commits, **never push**, work only in this
 worktree, no shared Playwright MCP tools, do not touch `static/inverse`,
 `scripts/inverse`, `docs/inverse`, no new dependencies.
 
@@ -204,7 +208,7 @@ Everything else in this file stands, including round 1.
 - **No name in the ear (owner, after round 2):** "the heart name should not be
   in the picture, only the url" — and then, clarified: the name must still be
   on the paper, just not on the piece. So the ear holds the picture and the
-  bare `templateAddress(design)` for every piece (no lobe word there), and the
+  bare `templateAddress(design, lang)` for every piece (no lobe word there), and the
   name is printed above each template again, as before round 2:
   `templateLabel(piece, lang)` ("Jul (Venstre)" / "Jul (Right)"; the bare name
   for a shared template), 8 pt black, centred over the rounded end with its
@@ -228,7 +232,7 @@ Everything else in this file stands, including round 1.
   export stays text-free; the front page's gallery PDF is unchanged.
 - **The picture** is rendered by `prerenderHeartImages`, moved to
   `src/lib/pdf/heartRenderer.ts` so the dialog can use it without loading
-  jsPDF, at `templatePicturePixels(pieces)` (300 dpi for the largest
+  jsPDF, at `templatePicturePixels(pieces, lang)` (300 dpi for the largest
   template, as the PDF). The preview embeds it once per design as an
   `<image>` inside a `<symbol>`, placed in each ear with `<use>`. While the
   width changes, the last picture of the same heart stays until the new one

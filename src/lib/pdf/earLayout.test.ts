@@ -8,7 +8,7 @@ import { describe, expect, it } from 'vitest';
 import { jsPDF } from 'jspdf';
 import { ALL_HEART_IDS } from '$lib/data/categories';
 import { MIN_WIDTH_MM } from '$lib/laser/export';
-import { loadHeart } from '$lib/laser/testHearts';
+import { loadHeart } from '$lib/laser/testHearts.test-helpers';
 import { ADDRESS_PT, MIN_TEXT_PT, PT_MM, estimateTextWidth, layoutEar, type EarLayout, type MeasureText } from './earLayout';
 import { templateEar, templatePair } from './plan';
 

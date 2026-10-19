@@ -14,7 +14,9 @@
  * `$lib/i18n/routes`.
  */
 import hearts from '../../../hearts.json';
+import { SITE_DOMAIN, SITE_URL } from '$lib/config';
 import { t, type Language } from '$lib/i18n';
+import { heartPath } from '$lib/i18n/routes';
 import type { TranslationKey } from '$lib/i18n/translations';
 
 export type CategoryId = 'klassiske' | 'stjerner' | 'moenstre' | 'figurer' | 'hjerter';
@@ -78,6 +80,32 @@ const BY_ID = new Map<string, Category>(CATEGORIES.map((category) => [category.i
 const BY_HEART_ID = new Map<string, Category>(
 	CATEGORIES.flatMap((category) => category.hearts.map((id) => [id, category] as const))
 );
+
+const GALLERY_IDS = new Set<string>(ALL_HEART_IDS);
+
+/**
+ * Whether `id` is a gallery heart: one of hearts.json's, with a page of its
+ * own. A heart drawn in the editor, or received by link (/hjerte/delt/), is not.
+ */
+export function isGalleryHeart(id: string): boolean {
+	return GALLERY_IDS.has(id);
+}
+
+/**
+ * Where a file that leaves the site says a heart can be found again: a gallery
+ * heart's own page in `lang`, or null for any other heart. Such a heart exists
+ * only in its maker's browser (or in a link), so its page would be a dead
+ * address for anyone the file reaches; the caller then names the site.
+ *
+ * `absolute`: a link, `https://juleflet.dk/en/hjerte/<id>/` (the laser file's
+ * `<desc>`); otherwise the shortest text that gets there,
+ * `juleflet.dk/en/hjerte/<id>` (printed in a PDF template's ear).
+ */
+export function heartAddress(id: string, lang: Language, { absolute }: { absolute: boolean }): string | null {
+	if (!isGalleryHeart(id)) return null;
+	const page = heartPath(id, lang);
+	return absolute ? `${SITE_URL}${page}` : `${SITE_DOMAIN}${page.replace(/\/$/, '')}`;
+}
 
 export function getCategory(id: string): Category | null {
 	return BY_ID.get(id) ?? null;

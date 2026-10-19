@@ -3,8 +3,7 @@
   on --cream2 with the two paper-colour swatches and a swap button, the language
   toggle, GitHub and the copyright.
 
-  Rendered once by the root layout, so it is on every page except the editor,
-  which has its own colour controls in its right-hand panel.
+  Rendered once by the root layout on every page, including the design tools.
 -->
 <script lang="ts">
 	import { onMount } from 'svelte';
@@ -16,7 +15,9 @@
 	import {
 		DEFAULT_COLORS,
 		DEFAULT_COLORS_HEX,
+		COLOR_PRESETS,
 		getColors,
+		setColors,
 		setLeftColor,
 		setRightColor,
 		flipColors,
@@ -25,46 +26,68 @@
 	} from '$lib/stores/colors';
 	import { SwapIcon } from '$lib/components/icons';
 	import GitHubLink from '$lib/components/GitHubLink.svelte';
-	import { toHexColor } from '$lib/utils/heartColors';
+	import { toHexColor, toHexColors } from '$lib/utils/heartColors';
 
 	// Baked in at prerender time, like the rest of the page. The site's first
 	// season was Christmas 2025, so the line reads "julen 2025, 2026" and gains
 	// the current year from then on.
 	const FIRST_SEASON = 2025;
 	const year = new Date().getFullYear();
-	const seasons = year > FIRST_SEASON ? `${FIRST_SEASON}, ${year}` : `${FIRST_SEASON}`;
+	const seasons =
+		year > FIRST_SEASON ? `${FIRST_SEASON}, ${year}` : `${FIRST_SEASON}`;
 
 	let colors = $state<HeartColors>({ ...DEFAULT_COLORS });
 	let leftInput = $state<HTMLInputElement | null>(null);
 	let rightInput = $state<HTMLInputElement | null>(null);
+	let footer: HTMLElement;
+	let hexColors = $derived(toHexColors(colors, DEFAULT_COLORS_HEX));
 
 	// The inputs carry static default values so the prerendered markup is valid; the
 	// stored colours are applied here. A dynamic `value` attribute would be stripped
 	// by Svelte during hydration, which makes Chrome warn about a colour input
 	// momentarily holding "".
 	$effect(() => {
-		if (leftInput) leftInput.value = toHexColor(colors.left, DEFAULT_COLORS_HEX.left);
-		if (rightInput) rightInput.value = toHexColor(colors.right, DEFAULT_COLORS_HEX.right);
+		if (leftInput)
+			leftInput.value = toHexColor(colors.left, DEFAULT_COLORS_HEX.left);
+		if (rightInput)
+			rightInput.value = toHexColor(colors.right, DEFAULT_COLORS_HEX.right);
 	});
 
 	let lang = $derived(langFromPathname($page.url.pathname, base));
-	let languageHref = $derived(
-		otherLanguageUrl(
+	let languageHref = $derived.by(() => {
+		// Shallow navigation updates page.state, but leaves page.url unchanged.
+		// Read the current hash so the generator's inputs survive a language switch.
+		void $page.state;
+		return otherLanguageUrl(
 			$page.url.pathname,
-			browser ? $page.url.search : '',
-			browser ? $page.url.hash : ''
-		)
-	);
+			browser ? window.location.search : '',
+			browser ? window.location.hash : ''
+		);
+	});
 
 	onMount(() => {
 		colors = getColors();
-		return subscribeColors((c) => {
+		const unsubscribe = subscribeColors((c) => {
 			colors = c;
 		});
+		const measure = () =>
+			document.documentElement.style.setProperty(
+				'--site-footer-height',
+				`${footer.getBoundingClientRect().height}px`
+			);
+		measure();
+		// Absent in some test environments; the measured height then stays.
+		const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(measure);
+		observer?.observe(footer);
+		return () => {
+			unsubscribe();
+			observer?.disconnect();
+			document.documentElement.style.removeProperty('--site-footer-height');
+		};
 	});
 </script>
 
-<footer class="site-footer">
+<footer class="site-footer" bind:this={footer}>
 	<div class="footer-row">
 		<span class="colors">
 			<span class="colors-label">{t('footerColors', lang)}</span>
@@ -105,7 +128,28 @@
 			</button>
 		</span>
 
-		<a class="footer-link" href={languageHref} title={t('switchLanguage', lang)}>
+		<div class="presets" role="group" aria-label={t('footerPresets', lang)}>
+			<span class="colors-label">{t('footerPresets', lang)}</span>
+			{#each COLOR_PRESETS as preset (preset.key)}
+				<button
+					type="button"
+					class="preset"
+					style={`--preset-left:${preset.colors.left};--preset-right:${preset.colors.right}`}
+					aria-label={t(preset.key, lang)}
+					title={t(preset.key, lang)}
+					aria-pressed={hexColors.left === preset.colors.left &&
+						hexColors.right === preset.colors.right}
+					onclick={() => setColors(preset.colors)}
+					><span aria-hidden="true"></span></button
+				>
+			{/each}
+		</div>
+
+		<a
+			class="footer-link"
+			href={languageHref}
+			title={t('switchLanguage', lang)}
+		>
 			{lang === 'da' ? 'EN' : 'DA'}
 		</a>
 
@@ -113,7 +157,9 @@
 
 		<span class="made-by">
 			{t('madeBy', lang)}
-			<a href="https://thomasahle.com" target="_blank" rel="noopener">Thomas Ahle</a>,
+			<a href="https://thomasahle.com" target="_blank" rel="noopener"
+				>Thomas Ahle</a
+			>,
 			{lang === 'da' ? 'julen' : 'Christmas'}
 			{seasons}
 		</span>
@@ -122,6 +168,7 @@
 
 <style>
 	.site-footer {
+		flex: none;
 		background: var(--cream2);
 		color: var(--muted);
 		font-size: 14px;
@@ -140,6 +187,48 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 10px;
+	}
+
+	.presets {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+	}
+
+	.presets .colors-label {
+		margin-right: 4px;
+	}
+	.preset {
+		display: grid;
+		place-items: center;
+		width: 34px;
+		height: 34px;
+		padding: 3px;
+		border: 1px solid transparent;
+		border-radius: 50%;
+		background: transparent;
+		cursor: pointer;
+	}
+	.preset span {
+		width: 24px;
+		height: 24px;
+		border-radius: 50%;
+		border: 1px solid rgb(0 0 0 / 15%);
+		background: linear-gradient(
+			135deg,
+			var(--preset-left) 50%,
+			var(--preset-right) 50%
+		);
+	}
+	.preset:hover,
+	.preset[aria-pressed='true'] {
+		border-color: var(--green);
+	}
+	.preset:focus-visible,
+	.swatch:focus-within,
+	.swap:focus-visible {
+		outline: 2px solid var(--green);
+		outline-offset: 3px;
 	}
 
 	.colors-label {
@@ -214,11 +303,14 @@
 		color: var(--red);
 	}
 
-
 	@media (max-width: 599px) {
 		.footer-row {
 			gap: 14px;
 			padding: 24px 16px;
+		}
+		.preset {
+			width: 40px;
+			height: 40px;
 		}
 	}
 </style>

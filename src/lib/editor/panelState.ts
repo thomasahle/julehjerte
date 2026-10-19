@@ -15,36 +15,21 @@
  *
  * Both functions take the Storage to use, so a test can hand them a stub.
  */
+import { getLocalStorage, readStorage, writeStorage } from '$lib/utils/safeStorage';
 
 /** localStorage key. Written as '1' (collapsed) or '0' (open). */
 export const PANEL_COLLAPSED_KEY = 'paperheart.panelCollapsed';
 
-/** The browser's own localStorage, or null where there is none or it throws. */
-function defaultStorage(): Storage | null {
-	try {
-		return typeof localStorage === 'undefined' ? null : localStorage;
-	} catch {
-		return null;
-	}
-}
-
 /** The remembered choice; false (open) when nothing is stored or storage fails. */
-export function readPanelCollapsed(storage: Storage | null = defaultStorage()): boolean {
-	try {
-		return storage?.getItem(PANEL_COLLAPSED_KEY) === '1';
-	} catch {
-		return false;
-	}
+export function readPanelCollapsed(storage: Storage | null = getLocalStorage()): boolean {
+	return readStorage(PANEL_COLLAPSED_KEY, storage) === '1';
 }
 
 /** Remember the choice. A storage failure is ignored: it only costs persistence. */
 export function writePanelCollapsed(
 	next: boolean,
-	storage: Storage | null = defaultStorage()
+	storage: Storage | null = getLocalStorage()
 ): void {
-	try {
-		storage?.setItem(PANEL_COLLAPSED_KEY, next ? '1' : '0');
-	} catch {
-		// Storage unavailable: the choice just does not survive a reload.
-	}
+	// Storage unavailable: the choice just does not survive a reload.
+	writeStorage(PANEL_COLLAPSED_KEY, next ? '1' : '0', storage);
 }

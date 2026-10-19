@@ -1,4 +1,4 @@
-import type { Finger, GridSize, HeartDescriptions, HeartDesign, HeartNames, HeartDesignJson, LobeId, NodeType, Vec } from '$lib/types/heart';
+import type { Finger, GridSize, HeartDescriptions, HeartDesign, HeartNames, HeartDesignJson, HeartPattern, LobeId, NodeType, Vec } from '$lib/types/heart';
 import { STRIP_WIDTH, BASE_CENTER, MIN_GRID_SIZE, MAX_GRID_SIZE } from '$lib/constants';
 import { clamp, clampInt } from '$lib/utils/math';
 import {
@@ -14,6 +14,7 @@ import { parseHeartColors } from '$lib/utils/heartColors';
 import { validateRawFingers } from '$lib/utils/validatePaths';
 import { SITE_DOMAIN } from '$lib/config';
 import { vecDist } from '$lib/geometry/vec';
+import { escapeXml } from '$lib/utils/xml';
 
 type RawFinger = { id?: unknown; lobe?: unknown; pathData?: unknown; nodeTypes?: unknown };
 type RawDesign = Omit<Partial<HeartDesignJson>, 'gridSize' | 'fingers' | 'colors'> & {
@@ -94,6 +95,51 @@ function normalizeWeaveParity(raw: unknown): 0 | 1 {
   return v % 2 === 1 ? 1 : 0;
 }
 
+/**
+ * A tile of Tegn's Escher tab as a heart keeps it (`HeartPattern`), or undefined
+ * when it is not well formed. Only its form is checked here, so reading a heart
+ * does not need the tiling: whether the type is one of ours and the cuts are
+ * still the tile's is the Escher tab's to say ($lib/pattern/escherTab).
+ */
+function normalizePattern(raw: unknown): HeartPattern | undefined {
+  if (!raw || typeof raw !== 'object') return undefined;
+  const r = raw as Record<string, unknown>;
+  const finite = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v);
+  const pair = (v: unknown): v is [number, number] => Array.isArray(v) && v.length === 2 && v.every(finite);
+  const whole = (v: unknown): v is [number, number] => pair(v) && v.every(Number.isInteger);
+  if (typeof r.rule !== 'string' || !r.rule) return undefined;
+  if (!finite(r.cuts) || !Number.isInteger(r.cuts) || r.cuts < MIN_GRID_SIZE - 1 || r.cuts > MAX_GRID_SIZE - 1) return undefined;
+  if (!r.curves || typeof r.curves !== 'object' || Array.isArray(r.curves)) return undefined;
+  const curves: Record<string, number[][]> = {};
+  for (const [key, curve] of Object.entries(r.curves as Record<string, unknown>)) {
+    if (!Array.isArray(curve) || !curve.length) return undefined;
+    if (!curve.every((seg) => Array.isArray(seg) && seg.length === 8 && seg.every(finite))) return undefined;
+    curves[key] = curve.map((seg) => [...(seg as number[])]);
+  }
+  const lines = r.lines as { V?: unknown; H?: unknown } | undefined;
+  if (r.offset !== undefined && !pair(r.offset)) return undefined;
+  if (r.pan !== undefined && !pair(r.pan)) return undefined;
+  if (lines !== undefined && !(lines && whole(lines.V) && whole(lines.H))) return undefined;
+  return {
+    rule: r.rule,
+    cuts: r.cuts,
+    curves,
+    ...(r.offset ? { offset: [...(r.offset as [number, number])] as [number, number] } : {}),
+    ...(r.pan ? { pan: [...(r.pan as [number, number])] as [number, number] } : {}),
+    ...(lines ? { lines: { V: [...(lines.V as [number, number])] as [number, number], H: [...(lines.H as [number, number])] as [number, number] } } : {})
+  };
+}
+
+/** A tile of the Escher tab from an SVG's `data-pattern`, or undefined. */
+function patternFromAttribute(attr: string | null): HeartPattern | undefined {
+  if (!attr) return undefined;
+  try {
+    return normalizePattern(JSON.parse(attr));
+  } catch {
+    return undefined;
+  }
+}
+
 function normalizeAspectRatio(raw: unknown): number | undefined {
   return typeof raw === 'number' && Number.isFinite(raw) && raw >= 0.01 && raw <= 100 ? raw : undefined;
 }
@@ -102,6 +148,19 @@ function serializationRect(design: HeartDesign): OverlapRect {
   // Read the actual edited frame when an explicit shape is carried. Grid edits
   // may have changed it since import; strip counts are not physical dimensions.
   return design.overlapAspectRatio === undefined ? getOverlapRect(design.gridSize) : inferOverlapRectFromFingers(design.fingers, design.gridSize);
+}
+
+/**
+ * Whether a heart's woven area has a shape of its own rather than the one its
+ * strip counts give: an explicit shape it was imported with, or a frame its cuts
+ * say is another (a strip added by dragging an edge in, a moved Escher pattern's
+ * extra line: a strip more one way in the same square).
+ */
+function hasOwnShape(design: HeartDesign): boolean {
+  if (design.overlapAspectRatio !== undefined) return true;
+  const own = inferOverlapRectFromFingers(design.fingers, design.gridSize);
+  const strips = getOverlapRect(design.gridSize);
+  return Math.abs(own.width / own.height - strips.width / strips.height) > 1e-6;
 }
 
 function normalizeNodeTypes(
@@ -343,6 +402,7 @@ export function normalizeHeartDesign(raw: unknown): HeartDesign | null {
   const colors = parseHeartColors(r.colors);
   const gridSize = normalizeGridSize(r.gridSize);
   const overlapAspectRatio = normalizeAspectRatio(r.overlapAspectRatio);
+  const pattern = normalizePattern(r.pattern);
 
   const fingersRaw = Array.isArray(r.fingers) ? r.fingers : [];
 
@@ -380,6 +440,7 @@ export function normalizeHeartDesign(raw: unknown): HeartDesign | null {
     colors,
     gridSize: inferredGrid,
     ...(overlapAspectRatio === undefined ? {} : { overlapAspectRatio }),
+    ...(pattern ? { pattern } : {}),
     fingers
   };
 }
@@ -428,6 +489,7 @@ export function serializeHeartDesign(design: HeartDesign): HeartDesignJson {
     colors: design.colors,
     gridSize: design.gridSize,
     ...(design.overlapAspectRatio === undefined ? {} : { overlapAspectRatio: rect.width / rect.height }),
+    ...(design.pattern ? { pattern: design.pattern } : {}),
     fingers: interiorFingers.map((f) => {
       // Transform from internal pixel coords to JSON 0-100 coords
       const jsonSegments = transformSegmentsToJson(f.segments, rect);
@@ -445,16 +507,12 @@ export function serializeHeartDesign(design: HeartDesign): HeartDesignJson {
 // SVG Serialization / Parsing
 // ============================================================================
 
-function escapeXml(str: string): string {
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
-
 export function serializeHeartToSVG(design: HeartDesign): string {
-  const rect = serializationRect(design);
+  // An SVG is read back by the shape it says it has, its strip counts' unless it
+  // says otherwise, so a heart with a shape of its own is written in its own frame
+  // and says so; JSON reads the frame back off the cuts and needs no such word.
+  const ownShape = hasOwnShape(design);
+  const rect = ownShape ? inferOverlapRectFromFingers(design.fingers, design.gridSize) : serializationRect(design);
   // Sort fingers by position so boundaries are at correct positions, then filter out outer boundaries
   const leftFingers = design.fingers
     .filter((f) => f.lobe === 'left')
@@ -484,7 +542,9 @@ export function serializeHeartToSVG(design: HeartDesign): string {
     'xmlns:dc="http://purl.org/dc/elements/1.1/"',
     `data-weave-parity="${design.weaveParity ?? 0}"`
   ];
-  if (design.overlapAspectRatio !== undefined) attrs.push(`data-overlap-aspect-ratio="${rect.width / rect.height}"`);
+  if (ownShape) attrs.push(`data-overlap-aspect-ratio="${rect.width / rect.height}"`);
+  // The Escher tab's tile, when the heart was drawn from one, so the tab takes it up again on import.
+  if (design.pattern) attrs.push(`data-pattern="${escapeXml(JSON.stringify(design.pattern))}"`);
   // The heart's own colours, when it has them. Gallery hearts carry none, so an
   // exported file only pins the colours if the visitor picked them in the editor.
   if (design.colors) {
@@ -1214,6 +1274,7 @@ export function parseHeartFromSVGWithReport(
   const date = svg.getAttribute('data-date') || dcDate || undefined;
   const weaveParity = normalizeWeaveParity(parseInt(svg.getAttribute('data-weave-parity') || '0', 10));
   const overlapAspectRatio = normalizeAspectRatio(Number(svg.getAttribute('data-overlap-aspect-ratio')));
+  const pattern = patternFromAttribute(svg.getAttribute('data-pattern'));
   const colors = parseHeartColors({
     left: svg.getAttribute('data-color-left'),
     right: svg.getAttribute('data-color-right')
@@ -1404,15 +1465,27 @@ export function parseHeartFromSVGWithReport(
   for (const cut of leftCuts) if (!spansEdgeToEdge(cut.segments, 'left')) report.unjoined.push(cut.name);
   for (const cut of rightCuts) if (!spansEdgeToEdge(cut.segments, 'right')) report.unjoined.push(cut.name);
 
-  // Deduplicate paths that are at the same position (within tolerance)
-  const POSITION_TOLERANCE = 2; // Consider positions within 2 units as the same strip
+  // A path drawn twice is one cut. Pieces of one strip that were not joined
+  // into a whole cut count once per position (within 2 units); whole cuts all
+  // stay, since dense generated patterns can have distinct cuts less than two
+  // normalized units apart at the paper edge.
+  const POSITION_TOLERANCE = 2;
   const deduplicatePaths = (cuts: Cut[], lobe: LobeId): Cut[] => {
-    const seen: number[] = [];
+    const kept: BezierSegment[][] = [];
+    const matches = (a: BezierSegment[], b: BezierSegment[]) =>
+      a.length === b.length && a.every((segment, i) =>
+        (['p0', 'p1', 'p2', 'p3'] as const).every(key =>
+          Math.hypot(segment[key].x - b[i]![key].x, segment[key].y - b[i]![key].y) < 1e-6
+        )
+      );
+    // Position is the non-spanning coordinate (Y for left lobe, X for right lobe)
+    const position = (segments: BezierSegment[]) => lobe === 'left' ? segments[0]!.p0.y : segments[0]!.p0.x;
     return cuts.filter(({ segments }) => {
-      // Position is the non-spanning coordinate (Y for left lobe, X for right lobe)
-      const position = lobe === 'left' ? segments[0]!.p0.y : segments[0]!.p0.x;
-      if (seen.some(p => Math.abs(p - position) < POSITION_TOLERANCE)) return false;
-      seen.push(position);
+      if (!segments.length) return false;
+      if (kept.some(prior => matches(prior, segments) || matches(reverseSegments(prior), segments))) return false;
+      if (!spansEdgeToEdge(segments, lobe) &&
+        kept.some(prior => Math.abs(position(prior) - position(segments)) < POSITION_TOLERANCE)) return false;
+      kept.push(segments);
       return true;
     });
   };
@@ -1484,6 +1557,7 @@ export function parseHeartFromSVGWithReport(
       colors,
       gridSize: inferredGrid,
       ...(overlapAspectRatio === undefined ? {} : { overlapAspectRatio }),
+      ...(pattern ? { pattern } : {}),
       fingers: finalFingers
     },
     report

@@ -239,6 +239,64 @@ describe('heartDesign round trips', () => {
     expect(parseHeartFromSVG(svg, 'grid-test.svg')!.colors).toBeUndefined();
   });
 
+  it('keeps a square heart with a strip more one way square through SVG, as through JSON', () => {
+    // a 3 x 3 heart with one more cut in the right lobe, as dragging its edge in or moving an Escher
+    // pattern makes: 4 x 3 strips in the same square
+    const square = makeGridDesign(3);
+    const rect = getCenteredRectParams({ x: 3, y: 3 });
+    const right = lobeFingers(square.fingers, 'right');
+    const extra: Finger = { ...right[1]!, id: 'R-x', segments: right[1]!.segments.map((s) => ({ p0: { ...s.p0, x: s.p0.x + rect.width / 6 }, p1: { ...s.p1, x: s.p1.x + rect.width / 6 }, p2: { ...s.p2, x: s.p2.x + rect.width / 6 }, p3: { ...s.p3, x: s.p3.x + rect.width / 6 } })) };
+    const design: HeartDesign = { ...square, gridSize: { x: 4, y: 3 }, fingers: [...square.fingers, extra] };
+    expect(inferOverlapRect(design.fingers, design.gridSize).width / inferOverlapRect(design.fingers, design.gridSize).height).toBeCloseTo(1, 9);
+    for (const copy of [normalizeHeartDesign(JSON.parse(JSON.stringify(serializeHeartDesign(design))))!, parseHeartFromSVG(serializeHeartToSVG(design), 'strip.svg')!]) {
+      const frame = inferOverlapRect(copy.fingers, copy.gridSize);
+      expect(copy.gridSize).toEqual({ x: 4, y: 3 });
+      expect(frame.width / frame.height).toBeCloseTo(1, 9);
+    }
+    // a heart in its strip counts' own frame writes no shape of its own
+    expect(serializeHeartToSVG(square)).not.toContain('data-overlap-aspect-ratio');
+  });
+
+  it("keeps the Escher tab's tile through JSON and through SVG", () => {
+    const pattern = {
+      rule: 'opposite:move:mirror',
+      cuts: 2,
+      curves: { vertical: [[0, 0, 0, 0, 0.4, 0.12, 0.4, 0.12], [0.4, 0.12, 0.4, 0.12, 1, 0, 1, 0]] },
+      pan: [0.4, 0] as [number, number],
+      lines: { V: [0, 3] as [number, number], H: [1, 2] as [number, number] }
+    };
+    const design: HeartDesign = { ...makeGridDesign(3), pattern };
+    const json = serializeHeartDesign(design);
+    expect(json.pattern).toEqual(pattern);
+    expect(normalizeHeartDesign(JSON.parse(JSON.stringify(json)) as unknown)!.pattern).toEqual(pattern);
+    const svg = serializeHeartToSVG(design);
+    expect(svg).toContain('data-pattern="{&quot;rule&quot;:&quot;opposite:move:mirror&quot;');
+    expect(parseHeartFromSVG(svg, 'grid-test.svg')!.pattern).toEqual(pattern);
+    // and a heart drawn without the tab has none
+    expect(normalizeHeartDesign(serializeHeartDesign(makeGridDesign(3)))!.pattern).toBeUndefined();
+  });
+
+  it('drops a tile a hand-edited link cannot have produced', () => {
+    const json = serializeHeartDesign(makeGridDesign(3));
+    const good = { rule: 'free', cuts: 2, curves: { nw: [[0, 0, 0, 0, 1, 0, 1, 0]] } };
+    for (const bad of [
+      'free',
+      { ...good, rule: 3 },
+      { ...good, cuts: 0 },
+      { ...good, cuts: 2.5 },
+      { ...good, curves: [] },
+      { ...good, curves: { nw: [[0, 0, 1]] } },
+      { ...good, curves: { nw: [[0, 0, 0, 0, 1, 0, 1, Infinity]] } },
+      { ...good, pan: [1] },
+      { ...good, lines: { V: [0.5, 2], H: [1, 2] } }
+    ]) {
+      expect(normalizeHeartDesign({ ...json, pattern: bad })!.pattern, JSON.stringify(bad)).toBeUndefined();
+    }
+    expect(normalizeHeartDesign({ ...json, pattern: good })!.pattern).toEqual(good);
+    const svg = serializeHeartToSVG(makeGridDesign(3)).replace('<svg ', '<svg data-pattern="{not json" ');
+    expect(parseHeartFromSVG(svg, 'grid-test.svg')!.pattern).toBeUndefined();
+  });
+
   it('drops colours a hand-edited link cannot have produced', () => {
     const json = serializeHeartDesign(makeGridDesign(3));
     for (const bad of [

@@ -1,7 +1,7 @@
 # The sticky gallery bar: wordmark, category chips with scroll-spy, selection
 
-The gallery's sticky toolbar (`src/lib/components/front/GalleryToolbar.svelte`)
-used to carry the download controls and a step strip. The strip is gone and
+The gallery's sticky toolbar (`GalleryToolbar.svelte`, since removed; the bar
+is `src/lib/components/front/GalleryBar.svelte`) used to carry the download controls and a step strip. The strip is gone and
 the download controls only show while hearts are ticked, so the bar is empty
 most of the time. It becomes a **gallery bar** that is useful while scrolling
 55 hearts in five categories (owner's direction, 2026-10-17):
@@ -75,7 +75,7 @@ Rewrite DESIGN.md §3's toolbar paragraph as "Gallery bar" with the above.
 
 - `scrollSpy.test.ts`: the pure rule for tops above/below the bar, the
   bottom-of-page case, the above-first-section case.
-- `GalleryBar.test.ts` (jsdom, like GalleryToolbar.test.ts): one chip per
+- `GalleryBar.test.ts` (jsdom, like the old GalleryToolbar.test.ts): one chip per
   category with its count; "Mine hjerter" only with user hearts; the wordmark
   hidden until stuck; `aria-current` follows the active index; the selection
   controls only while ticked.

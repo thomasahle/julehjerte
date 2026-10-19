@@ -6,7 +6,8 @@
 import type { HeartDesign } from '$lib/types/heart';
 import { SITE_URL } from '$lib/config';
 import type { Language } from '$lib/i18n';
-import { heartPath, path } from '$lib/i18n/routes';
+import { path } from '$lib/i18n/routes';
+import { heartAddress } from '$lib/data/categories';
 import { lobesShareTemplate, SHARED_TEMPLATE_LOBE } from '$lib/utils/symmetry';
 import { serializeLaserDxf } from './dxf';
 import { layoutSheet, SHEETS, type LaserSheet, type SheetSize } from './sheet';
@@ -14,6 +15,7 @@ import { serializeLaserSvg } from './svg';
 import { unfoldPiece, type UnfoldedPiece } from './unfold';
 import type { TemplateLobe } from '$lib/utils/templateSvg';
 import { heartFileStem, slugify } from '$lib/utils/slug';
+import { clamp } from '$lib/utils/math';
 
 export type LaserFormat = 'svg' | 'dxf';
 
@@ -24,6 +26,14 @@ export const LASER_MIME: Record<LaserFormat, string> = {
 	dxf: 'application/dxf'
 };
 
+/**
+ * The download's width range: the width of the heart's *wider* template
+ * (`heartScale`), the same for the PDF and the laser file. Not the same
+ * measure as the tracing mode's 30–200 mm ($lib/utils/trace), which is the
+ * width of the one template on screen; on a non-square grid the two differ
+ * by a strip, so "80 mm" there is not "80 mm" here. Deliberately left apart
+ * (TRACE.md, "Width").
+ */
 export const MIN_WIDTH_MM = 40;
 export const MAX_WIDTH_MM = 200;
 export const WIDTH_STEP_MM = 1;
@@ -74,10 +84,6 @@ export interface LaserPlan extends LaserSheet {
 	heartsOnSheet: LaserHeart[];
 	/** The hearts the sheet had no room for at all. */
 	heartsLeftOut: LaserHeart[];
-}
-
-export function clamp(n: number, min: number, max: number): number {
-	return Math.min(max, Math.max(min, n));
 }
 
 function laserHeart(design: HeartDesign, widthMm: number, lobe: TemplateLobe): LaserHeart {
@@ -152,14 +158,10 @@ export interface LaserFileInfo {
  * link for anyone the file reaches; it, like a sheet of several hearts, gets
  * the site's front page instead.
  */
-export function laserFileUrl(
-	heartIds: readonly string[],
-	lang: Language,
-	inGallery: (id: string) => boolean
-): string {
+export function laserFileUrl(heartIds: readonly string[], lang: Language): string {
 	const [only] = heartIds;
-	if (heartIds.length === 1 && only && inGallery(only)) return `${SITE_URL}${heartPath(only, lang)}`;
-	return `${SITE_URL}${path('home', lang)}`;
+	const page = heartIds.length === 1 && only ? heartAddress(only, lang, { absolute: true }) : null;
+	return page ?? `${SITE_URL}${path('home', lang)}`;
 }
 
 /** The file's text, in the chosen format. */

@@ -18,13 +18,14 @@ import {
 	MIN_HEARTS,
 	MIN_SHEET_MM,
 	MIN_WIDTH_MM,
-	clamp,
 	parseLaserSettings,
 	type LaserFormat
 } from '$lib/laser/export';
 import type { SheetSize } from '$lib/laser/sheet';
+import { clamp } from '$lib/utils/math';
+import { readStorage, writeStorage } from '$lib/utils/safeStorage';
 
-export const DOWNLOAD_STORAGE_KEY = 'juleflet:download';
+const DOWNLOAD_STORAGE_KEY = 'juleflet:download';
 
 export type DownloadMode = 'printer' | 'laser';
 
@@ -88,25 +89,18 @@ export function parseDownloadSettings(raw: string | null): DownloadSettings {
 }
 
 export function loadDownloadSettings(): DownloadSettings {
-	try {
-		const raw = window.localStorage.getItem(DOWNLOAD_STORAGE_KEY);
-		if (raw !== null) return parseDownloadSettings(raw);
-		// Nothing saved by this dialog yet: start from the laser dialog's width
-		// and format, if it left any. The next save writes the new key, and from
-		// then on the old one is not looked at.
-		const legacy = window.localStorage.getItem(LASER_STORAGE_KEY);
-		if (legacy === null) return { ...DEFAULT_DOWNLOAD_SETTINGS };
-		const { format, widthMm } = parseLaserSettings(legacy);
-		return { ...DEFAULT_DOWNLOAD_SETTINGS, format, widthMm };
-	} catch {
-		return { ...DEFAULT_DOWNLOAD_SETTINGS };
-	}
+	const raw = readStorage(DOWNLOAD_STORAGE_KEY);
+	if (raw !== null) return parseDownloadSettings(raw);
+	// Nothing saved by this dialog yet: start from the laser dialog's width
+	// and format, if it left any. The next save writes the new key, and from
+	// then on the old one is not looked at.
+	const legacy = readStorage(LASER_STORAGE_KEY);
+	if (legacy === null) return { ...DEFAULT_DOWNLOAD_SETTINGS };
+	const { format, widthMm } = parseLaserSettings(legacy);
+	return { ...DEFAULT_DOWNLOAD_SETTINGS, format, widthMm };
 }
 
 export function saveDownloadSettings(settings: DownloadSettings): void {
-	try {
-		window.localStorage.setItem(DOWNLOAD_STORAGE_KEY, JSON.stringify(settings));
-	} catch {
-		// Blocked or full: the next visit starts from the defaults again.
-	}
+	// Blocked or full: the next visit starts from the defaults again.
+	writeStorage(DOWNLOAD_STORAGE_KEY, JSON.stringify(settings));
 }

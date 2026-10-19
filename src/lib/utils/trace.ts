@@ -14,8 +14,15 @@
  * `translate(x, y) scale(s)`, so `s` is CSS px per template unit and (x, y) is
  * the template's top-left corner in CSS px from the viewport's top-left.
  */
+import { readStorage, writeStorage } from '$lib/utils/safeStorage';
 
-/** Narrowest and widest template the slider offers, in millimetres. */
+/**
+ * Narrowest and widest template the slider offers, in millimetres: the width
+ * of the template on screen (the lobe shown). Not the same measure as the
+ * download's 40–200 mm ($lib/laser/export), which is the width of the heart's
+ * wider template; on a non-square grid the two differ by a strip, so "80 mm"
+ * here is not "80 mm" in the PDF. Deliberately left apart (TRACE.md, "Width").
+ */
 export const MIN_WIDTH_MM = 30;
 export const MAX_WIDTH_MM = 200;
 
@@ -36,14 +43,14 @@ export const CARD_CORNER_MM = 3.18;
  * 7 and old desktop monitors near 3; anything far outside is a corrupt stored
  * value, not a screen, and is ignored.
  */
-export const MIN_PX_PER_MM = 1.5;
-export const MAX_PX_PER_MM = 12;
+const MIN_PX_PER_MM = 1.5;
+const MAX_PX_PER_MM = 12;
 
 /** How much of the template must stay on screen, so it can always be grabbed back. */
 export const MIN_VISIBLE_PX = 40;
 
 /** "Tilpas" fills this share of the free area, leaving a margin to grab. */
-export const FIT_FRACTION = 0.9;
+const FIT_FRACTION = 0.9;
 
 /** How long the unlock button has to be held. */
 export const HOLD_MS = 2000;
@@ -84,7 +91,7 @@ export function scaleFromWidthMm(templateWidth: number, widthMm: number, pxPerMm
 	return (widthMm * pxPerMm) / templateWidth;
 }
 
-export function clampWidthMm(widthMm: number): number {
+function clampWidthMm(widthMm: number): number {
 	return Math.min(MAX_WIDTH_MM, Math.max(MIN_WIDTH_MM, widthMm));
 }
 
@@ -280,19 +287,12 @@ function isFiniteNumber(value: unknown): value is number {
 
 /** Both are settings the visitor chose, so no consent question; blocked storage just forgets. */
 export function loadTraceSettings(): TraceSettings {
-	try {
-		return parseTraceSettings(window.localStorage.getItem(STORAGE_KEY));
-	} catch {
-		return {};
-	}
+	return parseTraceSettings(readStorage(STORAGE_KEY));
 }
 
 export function saveTraceSettings(settings: TraceSettings): void {
-	try {
-		window.localStorage.setItem(STORAGE_KEY, serializeTraceSettings(settings));
-	} catch {
-		// Storage full or blocked: the next visit starts from "Tilpas" again.
-	}
+	// Storage full or blocked: the next visit starts from "Tilpas" again.
+	writeStorage(STORAGE_KEY, serializeTraceSettings(settings));
 }
 
 /**

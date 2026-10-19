@@ -5,8 +5,9 @@
   import { onMount, tick } from 'svelte';
   import PaperHeart from '$lib/components/PaperHeart.svelte';
   import { pageTitle } from '$lib/seo';
-  import { t, tArray, type Language } from '$lib/i18n';
-  import { DEFAULT_COLORS, getColors, subscribeColors, type HeartColors } from '$lib/stores/colors';
+  import { langFromParam, t, tArray } from '$lib/i18n';
+  import { toHexColors } from '$lib/utils/heartColors';
+  import { DEFAULT_COLORS, DEFAULT_COLORS_HEX, getColors, subscribeColors, type HeartColors } from '$lib/stores/colors';
   import { getUserCollection, loadStaticHeartById, saveUserDesign } from '$lib/stores/collection';
   import {
     clearDraft,
@@ -16,15 +17,12 @@
     type DraftSource,
     type EditorDraft
   } from '$lib/editor/draft';
-  import type { Finger, GridSize, HeartDesign } from '$lib/types/heart';
-  import { normalizeHeartDesign, serializeHeartToSVG, parseHeartFromSVGWithReport } from '$lib/utils/heartDesign';
+  import type { Finger, GridSize, HeartDesign, HeartPattern } from '$lib/types/heart';
+  import { normalizeHeartDesign, parseHeartFromSVGWithReport } from '$lib/utils/heartDesign';
   import { heartName as nameIn } from '$lib/utils/heartName';
   import { importSummary } from '$lib/utils/svgImportSummary';
-  import { detectSymmetry } from '$lib/utils/symmetry';
-  import { serializeTemplateToSVG, type TemplateLobe } from '$lib/utils/templateSvg';
-  import { renderHeartSvgInline } from '$lib/rendering/heartSvg';
+  import { downloadHeartSvg, downloadTemplateSvg } from '$lib/editor/svgDownloads';
   import { sanitizeHtml } from '$lib/utils';
-  import { slugify } from '$lib/utils/slug';
   import { trackImportError } from '$lib/analytics';
   import CanvasBackdrop from '$lib/components/editor/CanvasBackdrop.svelte';
   import Modal from '$lib/components/Modal.svelte';
@@ -132,9 +130,10 @@
     fromSession: boolean;
     isEditMode: boolean;
     returnToDetail: boolean;
+    escher: boolean;
   } {
     if (!browser) {
-      return { design: null, fromId: null, fromSession: false, isEditMode: false, returnToDetail: false };
+      return { design: null, fromId: null, fromSession: false, isEditMode: false, returnToDetail: false, escher: false };
     }
     const query = new URLSearchParams(window.location.search);
     const hash = new URLSearchParams(window.location.hash.replace(/^#/, ''));
@@ -153,7 +152,9 @@
       fromId,
       fromSession,
       isEditMode: design !== null && get('edit') === 'true',
-      returnToDetail
+      returnToDetail,
+      // `?tab=escher`: the design start's Escher card opens Tegn on that tab.
+      escher: get('tab') === 'escher'
     };
   }
 
@@ -163,7 +164,8 @@
     fromId: urlFromId,
     fromSession: urlFromSession,
     isEditMode: urlEditMode,
-    returnToDetail: urlReturnToDetail
+    returnToDetail: urlReturnToDetail,
+    escher: urlEscher
   } = getEditorUrlInput();
 
   // The heart Mal found, taken exactly once, before the first render so the
@@ -194,17 +196,16 @@
   let currentFingers: Finger[] = $state(urlDesign?.fingers ?? []);
   let currentGridSize: GridSize = $state(urlDesign?.gridSize ?? { x: 3, y: 3 });
   let currentWeaveParity: 0 | 1 = $state((urlDesign?.weaveParity ?? 0) as 0 | 1);
+  // The Escher tab's tile, while the cuts are its own (HeartDesign.pattern).
+  let currentPattern: HeartPattern | undefined = $state(urlDesign?.pattern);
 
   // Form fields - initialize with URL design if available
   let heartName = $state('');
   let authorName = $state(urlDesign?.author ?? '');
   let description = $state(urlDesign?.description ?? '');
-  let lang = $derived(($page.params.lang === 'en' ? 'en' : 'da') as Language);
-  // The site-wide pair, the colours this heart carries once the visitor has picked
-  // any (docs/redesign/DESIGN.md §7), and what the heart is actually drawn in.
-  let siteColors = $state<HeartColors>({ ...DEFAULT_COLORS });
-  let designColors = $state<HeartColors | null>(urlDesign?.colors ?? null);
-  let colors = $derived(designColors ?? siteColors);
+  let lang = $derived(langFromParam($page.params.lang));
+  // Viewing colours come from the shared footer and never schedule an edit.
+  let colors = $state<HeartColors>({ ...DEFAULT_COLORS });
   let editorEl: HTMLDivElement | null = $state(null);
   let headerEl: HTMLElement | null = $state(null);
   let importInput: HTMLInputElement | null = $state(null);
@@ -242,8 +243,8 @@
 
   onMount(() => {
     // Initialize colors
-    siteColors = getColors();
-    const unsubscribeColors = subscribeColors((c) => { siteColors = c; });
+    colors = getColors();
+    const unsubscribeColors = subscribeColors((c) => { colors = c; });
 
     // Set heart name (needs lang to be initialized)
     if (sessionDesign) {
@@ -330,17 +331,12 @@
     return () => mq.removeEventListener('change', sync);
   });
 
-  // Picking a colour is always a real edit, so it autosaves straight away — unlike
-  // the geometry, which PaperHeart also emits once on mount.
-  function handleColorsChange(next: HeartColors) {
-    designColors = next;
-    scheduleAutosave();
-  }
-
-  function handleFingersChange(fingers: Finger[], gridSize: GridSize, weaveParity: 0 | 1) {
+  function handleFingersChange(fingers: Finger[], gridSize: GridSize, weaveParity: 0 | 1, pattern: HeartPattern | null) {
     currentFingers = fingers;
     currentGridSize = gridSize;
     currentWeaveParity = weaveParity;
+    // The tile alone is not an edit: it comes and goes with the tab, and is saved with the next change.
+    currentPattern = pattern ?? undefined;
     // PaperHeart emits once on mount (with reconciled boundary curves). That is not a
     // user edit, so only autosave once the design actually differs from that baseline.
     if (!hasDesignEdits) {
@@ -372,7 +368,7 @@
     currentFingers = design.fingers;
     currentGridSize = design.gridSize;
     currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
-    designColors = design.colors ?? null;
+    currentPattern = design.pattern;
     heartName = `${nameIn(design, lang)} ${t('copy', lang)}`;
     authorName = design.author ?? '';
     description = design.description ?? '';
@@ -501,11 +497,11 @@
       // has its own name: a copy or a renamed heart is named once, by the visitor.
       names: initialDesign && sanitizeHtml(heartName) === initialDesign.name ? initialDesign.names : undefined,
       weaveParity: currentWeaveParity,
-      // A heart keeps only the colours the visitor picked; one that was never
-      // touched follows the site-wide pair, as the gallery hearts do.
-      colors: designColors ?? undefined,
+      // Preserve the appearance in exported files; site previews use the footer.
+      colors: toHexColors(colors, DEFAULT_COLORS_HEX),
       gridSize: currentGridSize,
       overlapAspectRatio: initialDesign?.overlapAspectRatio,
+      pattern: currentPattern,
       fingers: currentFingers
     };
   }
@@ -558,7 +554,7 @@
     currentFingers = design.fingers;
     currentGridSize = design.gridSize;
     currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
-    designColors = design.colors ?? null;
+    currentPattern = design.pattern;
     heartName = design.name;
     authorName = design.author ?? '';
     description = design.description ?? '';
@@ -578,42 +574,11 @@
   }
 
   function downloadSVG() {
-    const design = createHeartDesign();
-    const svg = serializeHeartToSVG(design);
-    const blob = new Blob([svg], { type: 'image/svg+xml' });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${slugify(design.name)}.svg`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    downloadHeartSvg(createHeartDesign());
   }
 
-  async function downloadTemplateSVG() {
-    const design = createHeartDesign();
-    const isSymmetric =
-      design.gridSize.x === design.gridSize.y && detectSymmetry(design.fingers).mirrorSymmetry;
-    const lobes: TemplateLobe[] = isSymmetric ? ['left'] : ['left', 'right'];
-    const previewSvgs = lobes.map((lobe, index) =>
-      renderHeartSvgInline(design, colors, {
-        idPrefix: `template-preview-${design.id}-${lobe}-${index}`,
-        outline: { color: '#111' }
-      })
-    );
-    const svg = serializeTemplateToSVG(design, lobes, { previewSvgs });
-    const blob = new Blob([svg], { type: 'image/svg+xml' });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${slugify(design.name)}-template.svg`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+  function downloadTemplateSVG() {
+    downloadTemplateSvg(createHeartDesign(), colors);
   }
 
   // Top bar: the A4 template as a PDF, the same generator the gallery and detail pages use.
@@ -689,7 +654,7 @@
         currentFingers = design.fingers;
         currentGridSize = design.gridSize;
         currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
-        designColors = design.colors ?? null;
+        currentPattern = design.pattern;
         heartName = design.name || t('importedHeart', lang);
         authorName = design.author || '';
         description = design.description || '';
@@ -902,11 +867,11 @@
         {lang}
         fullPage
         onFingersChange={handleFingersChange}
-        onColorsChange={handleColorsChange}
         initialGridSize={currentGridSize}
         initialFingers={currentFingers}
         initialWeaveParity={currentWeaveParity}
-        initialColors={designColors ?? undefined}
+        initialPattern={currentPattern}
+        initialEscherTab={urlEscher}
         panelExtra={isNarrow ? undefined : heartPanels}
         notice={pendingDraft ? draftNotice : undefined}
       />
@@ -1058,14 +1023,14 @@
     }
   }
 
-  /* Desktop: the tool fills the viewport, so the page itself never scrolls. */
+  /* Keep the shared colour footer visible below the desktop canvas. */
   @media (min-width: 900px) {
     .editor {
       padding-bottom: 0;
     }
 
     .editor-top {
-      height: calc(100dvh - var(--editor-header-height));
+      height: calc(100dvh - var(--editor-header-height) - var(--site-footer-height, 100px));
     }
   }
 

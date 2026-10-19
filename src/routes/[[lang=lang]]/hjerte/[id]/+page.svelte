@@ -39,7 +39,8 @@
     SITE_URL,
   } from "$lib/config";
   import { heartMetaDescription, heartPageTitle, socialImage } from "$lib/seo";
-  import { stripsLabel as formatStrips, t, type Language } from "$lib/i18n";
+  import { langFromParam, stripsLabel as formatStrips, t } from "$lib/i18n";
+  import { slugify } from "$lib/utils/slug";
   import { editorHref, heartPath, homeAnchorHref, href as routeHref } from "$lib/i18n/routes";
   import { lobesShareTemplate } from "$lib/utils/symmetry";
   import { calculateDifficulty } from "$lib/utils/difficulty";
@@ -99,7 +100,7 @@
   let saveError = $state<string | null>(null);
   // User hearts are shared as a self-contained link with the design in the fragment.
   let userShareUrl = $state<string | null>(null);
-  let lang = $derived(($page.params.lang === 'en' ? 'en' : 'da') as Language);
+  let lang = $derived(langFromParam($page.params.lang));
   let heartId = $derived($page.params.id ?? '');
 
   onMount(async () => {
@@ -499,6 +500,7 @@
       designs={[design]}
       {heartId}
       heartName={info.name}
+      fileStem={isShared ? slugify(info.name) : undefined}
       {lang}
       open={downloadOpen}
       onClose={handleDownloadClose}

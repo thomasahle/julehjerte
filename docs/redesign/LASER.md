@@ -34,7 +34,8 @@ throw (`LaserExportError`) if a cut does not reach both — such a design cannot
 be cut.
 
 `unfoldPiece(design, lobe, widthMm)` returns, in **millimetres** (scale
-`widthMm / templateWidth`), with the origin at the piece's top-left:
+`heartScale(design, widthMm)` = `widthMm` / the wider of the two pieces'
+`templateWidth`, so both pieces of a non-square heart share one strip width), with the origin at the piece's top-left:
 
 - `outline`: one closed path — ear arc, right side, mirrored ear arc, left side:
   `M 0 R  A R R 0 0 1 W R  L W (2H−R)  A R R 0 0 1 0 (2H−R)  Z`, with
@@ -58,8 +59,8 @@ Keep numbers as numbers; formatting (3 decimals) happens in the writers.
 places pieces top-left to bottom-right in rows (no rotation), returns their
 offsets and how many fit. The caller asks for one piece per heart, all of one
 lobe — the two halves are cut from two paper colours, so a sheet is one colour
-(DOWNLOAD.md, amendment 9); when `lobesShareTemplate` it is the left piece
-whichever lobe is chosen. If not all fit, the dialog says so ("Der er kun plads
+(DOWNLOAD.md, amendment 9); when `lobesShareTemplate` it is the right piece
+(`SHARED_TEMPLATE_LOBE`, as in the PDF) whichever lobe is chosen. If not all fit, the dialog says so ("Der er kun plads
 til {n} af {total} stykker på arket") and exports what fits — one sheet per
 file, no multi-page.
 
@@ -88,6 +89,11 @@ the "score fold" flag they once took is gone.
 
 ## The dialog (`src/lib/components/detail/LaserDialog.svelte`)
 
+> **Superseded:** the laser dialog was folded into the one download dialog,
+> `src/lib/components/detail/DownloadDialog.svelte` (DOWNLOAD.md); there is no
+> `LaserDialog.svelte`. The list below is the original spec; where it differs
+> from the code, the code and DOWNLOAD.md win.
+
 Entry: the heart page's primary button becomes a split button like the
 toolbar's — "Download PDF-skabelon" still downloads the PDF on click, and its
 caret opens a `DropdownMenu` with "PDF til print (A4)" and "Til laserskærer…"
@@ -101,13 +107,13 @@ laserskærer"), with:
    `$lib/components/ui`), default SVG, with one line under it
    (`laserFormatHint`): "SVG læses af alle laserprogrammer. DXF til xTool,
    LightBurn og CAD." / English.
-2. Width: a number input `laserWidth` "Bredde (mm)", 40–200, step 5, default 80,
-   remembered in `localStorage` key `juleflet:laser` (try/catch) together with
+2. Width: a number input `laserWidth` "Bredde (mm)", 40–200, step 1, default 80,
+   remembered in `localStorage` key `juleflet:download` (try/catch) together with
    the format; under it a derived line `laserDerived`: "Stribebredde {strip} mm
    · højde {height} mm" so the strips can be judged against a laser's limits.
 3. Hearts: `laserHearts` "Antal hjerter" 1–20, default 1, with the note
    `laserPiecesNote` "Et hjerte er to stykker." and the sheet line
-   `laserSheetFit` "Der er plads til {n} på arket" when fewer fit.
+   `sheetFit` "Der er plads til {n} på arket" when fewer fit.
 4. Sheet: segmented A4 / A3 / `laserCustom` "Eget mål" revealing two number
    inputs (mm). Default A4 (210 × 297, portrait).
 5. ~~Score the fold~~ — removed in DOWNLOAD.md round 2: there is no
@@ -118,7 +124,8 @@ laserskærer"), with:
 7. Buttons: primary `laserDownload` "Hent {format}" and ghost `cancel` (reuse an
    existing cancel key if one exists). The download creates a Blob
    (`image/svg+xml` or `application/dxf`), an object URL, an `<a download>`
-   named `{heart id}-laser-{width}mm.{svg|dxf}`, and revokes the URL after a
+   named `{heart id}-laser-{width}mm.{svg|dxf}` (with `-venstre`/`-hoejre` before
+   the extension when the heart's halves differ; `laserFileName`), and revokes the URL after a
    second. On error show `laserFailed` in red inside the dialog.
 8. A one-line legend `laserLegend` "Alle linjer skæres · 0,01 mm streg" /
    "Every line is cut · 0.01 mm stroke" (round 2; it named red and blue before).
@@ -147,7 +154,7 @@ Docs: add a short "Laser" paragraph to DESIGN.md §4 after the buttons.
   group-code reader for DXF) and check units, layers/groups, entity counts,
   the bulge values, y-flip, that no path is emitted twice, and (round 2) that
   there is one cut group / one CUT layer and no fold line.
-- `LaserDialog.test.ts` (jsdom, as `TraceMode.test.ts`): defaults, derived
+- `LaserDialog.test.ts` (now `DownloadDialog.test.ts`; jsdom, as `TraceMode.test.ts`): defaults, derived
   line, fit note, the download producing a Blob of the chosen type, one
   `download_laser` event.
 - Your own Playwright run (own Chromium; `npm run build && npm run preview`):

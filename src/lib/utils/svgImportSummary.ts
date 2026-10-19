@@ -5,7 +5,7 @@ import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIs
 import { inferOverlapRect } from '$lib/utils/overlapRect';
 
 /** Curves that cross or touch another in their half — the editor's red warnings. */
-export function crossingWarnings(design: HeartDesign): number {
+function crossingWarnings(design: HeartDesign): number {
   return findFingersWithIssues(design.fingers, intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize))).size;
 }
 

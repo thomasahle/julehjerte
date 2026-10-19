@@ -31,6 +31,10 @@ heart page with its own buttons is. The gallery therefore changes from
 
 ## Toolbar (`src/lib/components/front/GalleryToolbar.svelte`)
 
+> **Superseded** (2026-10-17): the toolbar was replaced by the gallery bar,
+> `front/GalleryBar.svelte` (GALLERY-BAR.md); `GalleryToolbar.svelte` and its
+> test no longer exist. Kept as the record of this step.
+
 With nothing selected the toolbar shows only the three-step strip (the steps
 keep their place at the right, `margin-left: auto`; below 1200 they take the
 full line as now; below 700 the toolbar is then empty and must collapse to
@@ -57,7 +61,7 @@ multi-PDF download, `trackMultiDownload` and `trackHeartSelect` are unchanged.
   card renders one link to `heartHref(id, lang)` with the heart's name as its
   accessible name; the checkbox toggles `onSelect` and reflects `selected`;
   no "Detaljer" link; the delete button only for user hearts.
-- `GalleryToolbar.test.ts` (new): no download/select controls at count 0; all
+- `GalleryToolbar.test.ts` (new; since replaced by `GalleryBar.test.ts`): no download/select controls at count 0; all
   three at count 2; "Vælg alle" hidden when `allSelected`.
 - `heroBootstrap.test.ts` and everything else must keep passing.
 - Your own Playwright run (own Chromium, see constraints) on

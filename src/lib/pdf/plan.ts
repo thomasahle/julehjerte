@@ -9,10 +9,9 @@
  */
 import type { HeartDesign } from '$lib/types/heart';
 import { SITE_DOMAIN } from '$lib/config';
-import { ALL_HEART_IDS } from '$lib/data/categories';
+import { heartAddress } from '$lib/data/categories';
 import { t, type Language } from '$lib/i18n';
 import { heartName } from '$lib/utils/heartName';
-import { heartPath } from '$lib/i18n/routes';
 import { heartScale } from '$lib/laser/unfold';
 import { layoutSheet, type Placement, type SheetSize } from '$lib/laser/sheet';
 import { lobesShareTemplate, SHARED_TEMPLATE_LOBE } from '$lib/utils/symmetry';
@@ -101,8 +100,6 @@ export function templatePieces(designs: readonly HeartDesign[], widthMm: number,
 	return pieces;
 }
 
-const GALLERY_IDS = new Set<string>(ALL_HEART_IDS);
-
 /**
  * A template's address, printed in its rounded end. A gallery heart has its own page,
  * which is the shortest way back to exactly this template; a heart the visitor
@@ -110,8 +107,7 @@ const GALLERY_IDS = new Set<string>(ALL_HEART_IDS);
  * (`juleflet.dk/en/hjerte/<id>` in English), as the laser file's link is.
  */
 export function templateAddress(design: HeartDesign, lang: Language): string {
-	if (!GALLERY_IDS.has(design.id)) return SITE_DOMAIN;
-	return `${SITE_DOMAIN}${heartPath(design.id, lang).replace(/\/$/, '')}`;
+	return heartAddress(design.id, lang, { absolute: false }) ?? SITE_DOMAIN;
 }
 
 /**
@@ -120,7 +116,8 @@ export function templateAddress(design: HeartDesign, lang: Language): string {
  * for a heart whose two halves differ, which half this is ("Jul (Venstre)").
  */
 export function templateLabel(piece: Pick<TemplatePiece, 'design' | 'lobe' | 'shared'>, lang: Language): string {
-	const name = heartName(piece.design, lang);
+	// A name of several lines (generated text) prints on one.
+	const name = heartName(piece.design, lang).replace(/\r?\n/g, ' / ');
 	if (piece.shared) return name;
 	return `${name} (${t(piece.lobe === 'left' ? 'lobeLeft' : 'lobeRight', lang)})`;
 }

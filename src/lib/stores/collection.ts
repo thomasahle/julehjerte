@@ -1,7 +1,7 @@
 import { browser } from '$app/environment';
 import type { HeartDesign } from '$lib/types/heart';
 import { normalizeHeartDesign, serializeHeartDesign, parseHeartFromSVG } from '$lib/utils/heartDesign';
-import { writeStorage } from '$lib/utils/safeStorage';
+import { readStorage, writeStorage } from '$lib/utils/safeStorage';
 import { trackHeartLoadError, trackSvgParseError } from '$lib/analytics';
 import { ALL_HEART_IDS } from '$lib/data/categories';
 
@@ -12,8 +12,8 @@ const STORAGE_KEY = USER_COLLECTION_KEY;
 export function getUserCollection(): HeartDesign[] {
   if (!browser) return [];
 
+  const stored = readStorage(STORAGE_KEY);
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
     const raw = stored ? (JSON.parse(stored) as unknown[]) : [];
     if (!Array.isArray(raw)) return [];
     return raw
@@ -26,8 +26,8 @@ export function getUserCollection(): HeartDesign[] {
 
 function readUserCollectionRaw(): unknown[] {
   if (!browser) return [];
+  const stored = readStorage(STORAGE_KEY);
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
     const raw = stored ? (JSON.parse(stored) as unknown) : [];
     return Array.isArray(raw) ? raw : [];
   } catch {
@@ -52,6 +52,7 @@ export function saveUserDesign(design: HeartDesign): void {
   } else {
     raw.push(serialized);
   }
+  // Raw on purpose, not writeStorage: the failure must reach the caller.
   localStorage.setItem(STORAGE_KEY, JSON.stringify(raw));
 }
 

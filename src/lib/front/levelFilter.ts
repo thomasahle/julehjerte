@@ -14,12 +14,12 @@
  * JavaScript for the first paint; it is given LEVEL_SLUGS and the storage key
  * from here.
  */
-import type { DifficultyLevel } from '$lib/utils/difficulty';
-import type { TranslationKey } from '$lib/i18n/translations';
+import { LEVELS, LEVEL_LABEL_KEYS, type DifficultyLevel } from '$lib/utils/difficulty';
 import { makeHeartAnchorId } from '$lib/utils/heartAnchors';
+import { getSessionStorage, readStorage, removeStorage, writeStorage } from '$lib/utils/safeStorage';
 
-/** Easiest first: the chips' order. */
-export const LEVELS: readonly DifficultyLevel[] = ['easy', 'medium', 'hard', 'expert'];
+/** The levels, easiest first (the chips' order), and their names: kept in $lib/utils/difficulty. */
+export { LEVELS, LEVEL_LABEL_KEYS };
 
 /** The level's word in `?level=`. */
 export const LEVEL_SLUGS: Readonly<Record<DifficultyLevel, string>> = {
@@ -105,31 +105,16 @@ export function initialLevels(search: string, stored: string | null): Set<Diffic
 
 /** The tab's stored choice, or null; never throws (private mode, blocked storage). */
 export function readStoredLevels(): string | null {
-	try {
-		return sessionStorage.getItem(LEVEL_STORAGE_KEY);
-	} catch {
-		return null;
-	}
+	return readStorage(LEVEL_STORAGE_KEY, getSessionStorage());
 }
 
 /** Remember `levels` for the tab, or forget the filter when none is chosen. */
 export function storeLevels(levels: ReadonlySet<DifficultyLevel>): void {
-	try {
-		const value = levelValue(levels);
-		if (value) sessionStorage.setItem(LEVEL_STORAGE_KEY, value);
-		else sessionStorage.removeItem(LEVEL_STORAGE_KEY);
-	} catch {
-		// The URL still carries it.
-	}
+	// Blocked storage just forgets: the URL still carries it.
+	const value = levelValue(levels);
+	if (value) writeStorage(LEVEL_STORAGE_KEY, value, getSessionStorage());
+	else removeStorage(LEVEL_STORAGE_KEY, getSessionStorage());
 }
-
-/** Each level's name ("Let", "Mellem", …), as the cards' dots name it. */
-export const LEVEL_LABEL_KEYS: Readonly<Record<DifficultyLevel, TranslationKey>> = {
-	easy: 'difficultyEasy',
-	medium: 'difficultyMedium',
-	hard: 'difficultyHard',
-	expert: 'difficultyExpert'
-};
 
 /**
  * Whether `levels` hides the gallery category or card that `anchor` (a hash

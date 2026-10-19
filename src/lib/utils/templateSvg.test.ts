@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { getTemplateData, transformPathData } from './templateSvg';
 import { lobesShareTemplate } from './symmetry';
-import { loadHeart } from '$lib/laser/testHearts';
+import { loadHeart } from '$lib/laser/testHearts.test-helpers';
 
 /** First and last point of an absolute M/L/C path. */
 function endpoints(d: string): { first: [number, number]; last: [number, number] } {

@@ -5,8 +5,7 @@
 -->
 <script lang="ts">
 	import { t, type Language } from '$lib/i18n';
-	import type { DifficultyLevel } from '$lib/utils/difficulty';
-	import type { TranslationKey } from '$lib/i18n/translations';
+	import { LEVEL_LABEL_KEYS, levelRank, type DifficultyLevel } from '$lib/utils/difficulty';
 
 	interface Props {
 		level: DifficultyLevel;
@@ -25,16 +24,9 @@
 
 	let { level, lang, size = 8, showLabel = true, decorative = false }: Props = $props();
 
-	const FILLED: Record<DifficultyLevel, number> = { easy: 1, medium: 2, hard: 3, expert: 4 };
-	const LABEL_KEYS: Record<DifficultyLevel, TranslationKey> = {
-		easy: 'difficultyEasy',
-		medium: 'difficultyMedium',
-		hard: 'difficultyHard',
-		expert: 'difficultyExpert'
-	};
-
-	let filled = $derived(FILLED[level] ?? 2);
-	let label = $derived(t(LABEL_KEYS[level] ?? 'difficultyMedium', lang));
+	// A value that is no level shows as "Mellem", as it always has.
+	let filled = $derived(levelRank(level) || levelRank('medium'));
+	let label = $derived(t(LEVEL_LABEL_KEYS[level] ?? LEVEL_LABEL_KEYS.medium, lang));
 </script>
 
 <span

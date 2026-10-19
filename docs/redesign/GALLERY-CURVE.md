@@ -64,6 +64,11 @@ The category headings go.
 
 ## How
 
+> **Superseded** by amendments 3 and 4 below: the cards hang in per-column
+> strands moved with `translate` (`--strand-k`), not per-card `margin-top`s,
+> and the bar sets each chip's lift as its `translate`, not a `--lift`. Kept as
+> the record of the first build.
+
 - Geometry in a pure module, `src/lib/front/hillLine.ts`: the path above as
   a constant, a cubic-bezier evaluator, `hillY(xUnits)` (bisection on x is
   fine), and a helper that maps between page px and drawing units given the

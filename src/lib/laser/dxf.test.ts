@@ -3,7 +3,7 @@ import type { Vec } from '$lib/types/heart';
 import { serializeLaserDxf } from './dxf';
 import { planLaserSheet } from './export';
 import { SHEETS } from './sheet';
-import { loadHeart } from './testHearts';
+import { loadHeart } from './testHearts.test-helpers';
 
 type Pair = { code: number; value: string };
 interface Entity {

@@ -188,9 +188,6 @@ export function trackMultiLaserDownload(
 }
 
 /**
- * Track when a new heart is created in the editor
- */
-/**
  * Track an error event for debugging
  */
 function trackError(
@@ -242,6 +239,3 @@ export function trackImportError(filename: string, reason: string) {
   });
 }
 
-/**
- * Track PDF generation errors
- */

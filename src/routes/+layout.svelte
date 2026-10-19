@@ -36,6 +36,8 @@
 	let metaDescription = $derived(
 		routeKey === "archive"
 			? t("archiveMetaDescription", lang)
+			: routeKey === "generator"
+			? t("generatorMetaDescription", lang)
 			: routeKey === "noPrinter"
 			? t("noPrinterMetaDescription", lang)
 			: routeKey === "howTo"
@@ -54,9 +56,6 @@
 
 	// Heart detail pages (/hjerte/[id]) emit their own description, canonical, hreflang, og and twitter tags.
 	let isDetailRoute = $derived($page.route.id?.includes("/hjerte/") ?? false);
-	// The editor is a full-screen tool: it carries its own colour controls in the
-	// right-hand panel and has no footer (docs/redesign/DESIGN.md §7).
-	let isEditorRoute = $derived($page.route.id?.includes("/editor") ?? false);
 	// An error page (+error.svelte, e.g. a 404) is not a page of the site: no
 	// canonical or language alternates pointing at the dead URL, and it writes
 	// its own noindex.
@@ -137,7 +136,9 @@
 	     event of the page load. The config sends the first page view only:
 	     the stream's history-based page views are off (each ?selected= rewrite
 	     counted as one), and later page views come from afterNavigate above,
-	     one per change of pathname. -->
+	     one per change of pathname. Automated browsers and browsers marked
+	     with localStorage juleflet:internal = "1" send traffic_type =
+	     "internal", which the property's internal-traffic filter excludes. -->
 	{#if GA_MEASUREMENT_ID && !dev}
 		{@html `<script>
 			window.dataLayer = window.dataLayer || [];
@@ -163,6 +164,14 @@
 				};
 				var tag = new URLSearchParams(location.search).get('ref');
 				if (tag) { params.ref_tag = tag; }
+				// Our own traffic: browsers driven by automation (Playwright and the
+				// like set navigator.webdriver) and browsers the owner has marked
+				// with localStorage "juleflet:internal". GA4's internal-traffic data
+				// filter drops events that carry traffic_type = "internal", so QA
+				// runs and development visits stay out of the reports.
+				var internal = navigator.webdriver === true;
+				try { internal = internal || localStorage.getItem('juleflet:internal') === '1'; } catch (_e) {}
+				if (internal) { params.traffic_type = 'internal'; }
 				return params;
 			})());
 		</script>`}
@@ -223,13 +232,11 @@
 <div class="page-container">
 	<!-- Not <main>: every route renders its own <header class="nav"> plus its own
 	     <main id="main-content">, and a <header> nested inside <main> does not map
-	     to the banner landmark. -->
+	     to the banner landmark. Paper colours are the footer's on every page. -->
 	<div class="page-content">
 		{@render children()}
 	</div>
-	{#if !isEditorRoute}
-		<PageFooter />
-	{/if}
+	<PageFooter />
 </div>
 
 <style>

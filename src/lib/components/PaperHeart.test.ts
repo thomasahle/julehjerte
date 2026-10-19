@@ -1,7 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushSync, mount, unmount } from 'svelte';
 import PaperHeart from './PaperHeart.svelte';
-import type { Finger, GridSize, Vec } from '$lib/types/heart';
+import type { Finger, GridSize, HeartPattern, Vec } from '$lib/types/heart';
+import { opposite } from '$lib/pattern/rules';
+import { fitLines } from '$lib/pattern/tiling';
+import { ruleStart } from '$lib/pattern/starts';
+import { savedPattern, tileFingers, tileGrid, weaveParityOf } from '$lib/pattern/escherTab';
+// The Escher tab's panel, which Tegn loads when a heart opens on the tab, loaded ahead.
+import '$lib/components/pattern/EscherPanel.svelte';
 
 const cleanup: (() => Promise<void>)[] = [];
 
@@ -25,7 +31,9 @@ afterEach(async () => {
 	vi.unstubAllGlobals();
 });
 
-function render() {
+type Opened = { initialFingers: Finger[]; initialGridSize: GridSize; initialWeaveParity: 0 | 1; initialPattern: HeartPattern };
+
+function render(opened?: Opened) {
 	const target = document.createElement('div');
 	document.body.appendChild(target);
 	let fingers: Finger[] = [];
@@ -34,6 +42,7 @@ function render() {
 		target,
 		props: {
 			lang: 'en',
+			...opened,
 			onFingersChange(nextFingers, nextGrid) {
 				fingers = nextFingers;
 				gridSize = nextGrid;
@@ -128,5 +137,55 @@ describe('outer edges in the designer', () => {
 		}
 		expect(h.fingers.find((f) => f.id === cut)!.segments).toHaveLength(2);
 		expect(h.handles()).toHaveLength(3);
+	});
+});
+
+describe('the Escher tab', () => {
+	it('drags the same node of a moved pattern on, though the edge cuts a node before it off the cut on the way', async () => {
+		// Dragging node 11 of R-1 lets the edge cut the curve before it short: the cut made again has
+		// the node as node 10.
+		const tile = fitLines({ ...ruleStart(opposite('turn', 'move'), 4), pan: { x: 0.37, y: -0.21 } });
+		const h = render({ initialFingers: tileFingers(tile), initialGridSize: tileGrid(tile), initialWeaveParity: weaveParityOf(tile), initialPattern: savedPattern(tile) });
+		await vi.waitFor(() => expect(h.target.querySelector('.rule-templates')).not.toBeNull());
+		const nodes = () => h.fingers.find((f) => f.id === 'R-1')!.segments.map((s) => s.p0);
+		send(h.path('R-1'), 'pointerdown', nodes()[5]!);
+		send(h.svg, 'pointerup', nodes()[5]!);
+		const start = nodes()[11]!;
+		send(h.handles()[11]!, 'pointerdown', start);
+		let pointer = start;
+		for (let step = 1; step <= 3; step++) {
+			pointer = { x: start.x + 1.5 * step, y: start.y - step };
+			send(h.svg, 'pointermove', pointer);
+			// The dragged node is under the pointer, and still the one selected.
+			const at = nodes().findIndex((p) => Math.hypot(p.x - pointer.x, p.y - pointer.y) < 1e-6);
+			expect(at, `step ${step}`).toBe(10);
+			expect(h.handles()[at]!.getAttribute('fill'), `step ${step}`).toBe('#ffcc00');
+		}
+		send(h.svg, 'pointerup', pointer);
+	});
+});
+
+describe('the red cuts', () => {
+	it('mark a cut dragged too close to the next one at the first move, and are right again the moment the drag ends', () => {
+		const h = render();
+		const red = () => h.target.querySelectorAll('path[stroke="#ff0000"]').length;
+		expect(red()).toBe(0);
+		// A node in the middle of R-1, put by a double-click.
+		const at = midpoint(h.fingers.find((f) => f.id === 'R-1')!);
+		for (let i = 0; i < 2; i++) {
+			send(h.path('R-1'), 'pointerdown', at);
+			send(h.svg, 'pointerup', at);
+		}
+		// Dragged to a pixel short of R-2: no crossing, so the drag goes there, but far too close.
+		const next = h.fingers.find((f) => f.id === 'R-2')!.segments[0]!.p0.x;
+		const node = h.fingers.find((f) => f.id === 'R-1')!.segments[1]!.p0;
+		send(h.handles()[1]!, 'pointerdown', node);
+		send(h.svg, 'pointermove', { x: next - 1, y: node.y });
+		expect(h.fingers.find((f) => f.id === 'R-1')!.segments[1]!.p0.x).toBeCloseTo(next - 1);
+		expect(red()).toBeGreaterThan(0);
+		// Straight back and let go: during a drag the check may wait a moment, but not past its end.
+		send(h.svg, 'pointermove', node);
+		send(h.svg, 'pointerup', node);
+		expect(red()).toBe(0);
 	});
 });

@@ -8,7 +8,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { jsPDF } from 'jspdf';
 import { SHEETS } from '$lib/laser/sheet';
-import { loadHeart } from '$lib/laser/testHearts';
+import { loadHeart } from '$lib/laser/testHearts.test-helpers';
 import { laserFileName } from '$lib/laser/export';
 import { getGalleryDesign } from '$lib/data/heartDesigns';
 import { generateTemplatesPDF, templatesFilename } from './template';
@@ -111,5 +111,13 @@ describe('templatesFilename', () => {
 		expect(templatesFilename([circle], 60, 'en')).toBe('circle-60mm.pdf');
 		expect(laserFileName(circle.id, 60, 'svg')).toBe('circle-laser-60mm.svg');
 		expect(templatesFilename([{ ...circle, id: 'mit hjerte/2' }], 60)).toBe('mit-hjerte-2-60mm.pdf');
+	});
+
+	it('names one heart by the stem it is given, when it is given one', () => {
+		const classic = loadHeart('classic-3x3');
+		const jul = loadHeart('jul');
+		expect(templatesFilename([classic], 80, 'da', 'mit-hjerte')).toBe('mit-hjerte-80mm.pdf');
+		// Several hearts are still named by their count.
+		expect(templatesFilename([classic, jul], 80, 'da', 'mit-hjerte')).toBe('julehjerter-2-skabeloner.pdf');
 	});
 });

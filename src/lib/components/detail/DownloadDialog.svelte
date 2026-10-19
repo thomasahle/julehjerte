@@ -33,7 +33,6 @@
 	import { ToggleGroup, ToggleGroupItem } from '$lib/components/ui/toggle-group';
 	import { CloseIcon, DownloadIcon } from '$lib/components/icons';
 	import { t, type Language } from '$lib/i18n';
-	import { getGalleryDesign } from '$lib/data/heartDesigns';
 	import type { HeartDesign } from '$lib/types/heart';
 	import {
 		trackHeartDownload,
@@ -51,7 +50,6 @@
 		MIN_WIDTH_MM,
 		WIDTH_STEP_MM,
 		a3FitsAll,
-		clamp,
 		laserFileContent,
 		laserFileName,
 		laserFileUrl,
@@ -60,6 +58,8 @@
 		type LaserPlan
 	} from '$lib/laser/export';
 	import { formatMm } from '$lib/laser/format';
+	import { clamp } from '$lib/utils/math';
+	import { downloadBlob } from '$lib/utils/download';
 	import { SHEETS, type SheetSize } from '$lib/laser/sheet';
 	import { serializeLaserSvg } from '$lib/laser/svg';
 	import {
@@ -91,17 +91,27 @@
 		 */
 		heartId?: string;
 		heartName?: string;
+		/**
+		 * The single heart's file names' stem, when it is not `heartId`. A heart
+		 * received by link (/hjerte/delt/) has the page's id "delt", which says
+		 * nothing, and a design id the visitor never sees; its page passes the
+		 * slug of its name, so its PDF and laser file are named alike. The
+		 * analytics keep `heartId` (laser) and the design's id (PDF).
+		 */
+		fileStem?: string;
 		lang: Language;
 		open: boolean;
 		/** The page returns focus to whatever opened the dialog. */
 		onClose: () => void;
 	}
 
-	let { designs, heartId: idProp, heartName: nameProp, lang, open, onClose }: Props = $props();
+	let { designs, heartId: idProp, heartName: nameProp, fileStem: stemProp, lang, open, onClose }: Props = $props();
 
 	const design = $derived(designs[0]!);
 	const several = $derived(designs.length > 1);
 	const heartId = $derived(idProp ?? design.id);
+	/** What a single heart's PDF and laser file are named after. */
+	const fileStem = $derived(stemProp ?? heartId);
 	const heartName = $derived(
 		several ? designs.map((d) => nameIn(d, lang)).join(', ') : (nameProp ?? nameIn(design, lang))
 	);
@@ -309,11 +319,7 @@
 	const fileInfo = $derived({
 		heartId,
 		heartName: several ? laserHearts.map((d) => nameIn(d, lang)).join(', ') : heartName,
-		url: laserFileUrl(
-			several ? laserHearts.map((d) => d.id) : [heartId],
-			lang,
-			(id) => getGalleryDesign(id) !== null
-		),
+		url: laserFileUrl(several ? laserHearts.map((d) => d.id) : [heartId], lang),
 		widthMm
 	});
 
@@ -434,7 +440,14 @@
 		else trackHeartDownload(design.id, heartName);
 		try {
 			const { downloadTemplatesPDF } = await import('$lib/pdf/template');
-			await downloadTemplatesPDF([...designs], { widthMm, hearts: 1, sheet, lang, previewImage });
+			await downloadTemplatesPDF([...designs], {
+				widthMm,
+				hearts: 1,
+				sheet,
+				lang,
+				previewImage,
+				fileStem: several ? undefined : stemProp
+			});
 			failure = null;
 		} catch (err) {
 			// Without this the download simply did nothing, with no sign of why.
@@ -461,22 +474,13 @@
 		if (!laserPlan) return;
 		try {
 			const content = laserFileContent(laserPlan, format, fileInfo);
-			const blob = new Blob([content], { type: LASER_MIME[format] });
-			const url = URL.createObjectURL(blob);
-			const link = document.createElement('a');
-			link.href = url;
-			link.download = laserFileName(
-				several ? t('laserMultiFilename', lang, { n: laserHearts.length }) : heartId,
+			const name = laserFileName(
+				several ? t('laserMultiFilename', lang, { n: laserHearts.length }) : fileStem,
 				widthMm,
 				format,
 				laserPlan.shared ? undefined : lobeName(laserPlan.lobe)
 			);
-			document.body.appendChild(link);
-			link.click();
-			link.remove();
-			// Some browsers start the download only after the click returns, so the
-			// URL has to outlive it for a moment.
-			setTimeout(() => URL.revokeObjectURL(url), 1000);
+			downloadBlob(new Blob([content], { type: LASER_MIME[format] }), name);
 			failure = null;
 			// The hearts with a piece on the sheet, as the file name counts them.
 			if (several) trackMultiLaserDownload(laserHearts.map((d) => ({ id: d.id, name: nameIn(d, lang) })), format, widthMm);

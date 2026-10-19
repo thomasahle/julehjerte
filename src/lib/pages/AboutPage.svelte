@@ -12,6 +12,7 @@
   table (aboutMetaDescription), so <svelte:head> here carries only the title.
 -->
 <script lang="ts">
+	import TopologyExamples from '$lib/components/TopologyExamples.svelte';
 	import GitHubLink from '$lib/components/GitHubLink.svelte';
 	import PageHeader from '$lib/components/PageHeader.svelte';
 	import { ExternalIcon, PencilIcon, PlusIcon } from '$lib/components/icons';
@@ -79,12 +80,13 @@
 			<GitHubLink />
 		</div>
 		<p>{t('aboutDesigners', lang)}</p>
+		<TopologyExamples {lang} />
 
 		<section class="callout" aria-labelledby="missing-heading">
 			<h2 id="missing-heading">{t('aboutMissingTitle', lang)}</h2>
 			<p>{t('aboutMissingText', lang)}</p>
 			<div class="actions">
-				<a class="btn btn-outline" href={href('editor', lang)}>
+				<a class="btn btn-outline" href={href('generator', lang)}>
 					<PencilIcon size={18} />
 					{t('createNewHeart', lang)}
 				</a>

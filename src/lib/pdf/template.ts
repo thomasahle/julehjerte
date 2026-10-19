@@ -515,6 +515,8 @@ export interface TemplatesPDFOptions {
   lang?: Language;
   /** Print the heart's picture in each template's ear. */
   previewImage?: boolean;
+  /** The file name's stem for a single heart, in place of its id (`templatesFilename`). */
+  fileStem?: string;
 }
 
 /** jsPDF's own names for the two standard sheets, so a printer sees "A4", not 210 × 297 mm. */
@@ -596,21 +598,24 @@ export async function generateTemplatesPDF(designs: HeartDesign[], options: Temp
 
 /**
  * "classic-3x3-80mm.pdf": the heart's id (as the laser files are named,
- * `heartFileStem`), and the width it was printed at; for
- * several hearts (SELECTION.md) "julehjerter-3-skabeloner.pdf", the count.
+ * `heartFileStem`), or `stem` when the caller names the file otherwise (a
+ * heart received by link is named after its name), and the width it was
+ * printed at; for several hearts (SELECTION.md) "julehjerter-3-skabeloner.pdf",
+ * the count.
  */
 export function templatesFilename(
   designs: HeartDesign | readonly HeartDesign[],
   widthMm: number,
-  lang: Language = 'da'
+  lang: Language = 'da',
+  stem?: string
 ): string {
   const list = Array.isArray(designs) ? (designs as readonly HeartDesign[]) : [designs as HeartDesign];
   if (list.length > 1) return `${t('pdfMultiFilename', lang, { n: list.length })}.pdf`;
-  return `${heartFileStem(list[0]!.id)}-${widthMm}mm.pdf`;
+  return `${heartFileStem(stem ?? list[0]!.id)}-${widthMm}mm.pdf`;
 }
 
 export async function downloadTemplatesPDF(designs: HeartDesign[], options: TemplatesPDFOptions) {
   if (designs.length === 0) return;
   const pdf = await generateTemplatesPDF(designs, options);
-  pdf.save(templatesFilename(designs, options.widthMm, options.lang));
+  pdf.save(templatesFilename(designs, options.widthMm, options.lang, options.fileStem));
 }

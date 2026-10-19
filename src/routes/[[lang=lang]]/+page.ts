@@ -16,7 +16,7 @@ import {
 } from '$lib/front/levelFilter';
 import { CATEGORIES, categoryTitle } from '$lib/data/categories';
 import { USER_COLLECTION_KEY } from '$lib/stores/collection';
-import { t, type Language } from '$lib/i18n';
+import { langFromParam, t } from '$lib/i18n';
 import type { HeartDesign, HeartNames } from '$lib/types/heart';
 import { heartName } from '$lib/utils/heartName';
 import type { DifficultyLevel } from '$lib/utils/difficulty';
@@ -55,7 +55,7 @@ const CARDS = heartCards as Record<string, { name: string; names?: HeartNames; d
 export const load: PageLoad = async ({ params }) => {
 	const indexCategories = CATEGORIES.map(({ id, hearts }) => ({ id, hearts }));
 	const ids = indexCategories.flatMap((category) => category.hearts);
-	const lang = (params.lang === 'en' ? 'en' : 'da') as Language;
+	const lang = langFromParam(params.lang);
 
 	// What a card shows besides the heart: its name in this page's language and
 	// its difficulty. The

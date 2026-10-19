@@ -1,5 +1,5 @@
 /**
- * localStorage that cannot throw.
+ * localStorage (and sessionStorage) that cannot throw.
  *
  * With storage blocked (Chrome's "Block all cookies", some private modes) even
  * reading `window.localStorage` throws a SecurityError, and a full store throws
@@ -15,6 +15,16 @@ export function getLocalStorage(): Storage | null {
 	try {
 		if (typeof window === 'undefined') return null;
 		return window.localStorage ?? null;
+	} catch {
+		return null;
+	}
+}
+
+/** The tab's sessionStorage, or null where there is none or touching it throws. */
+export function getSessionStorage(): Storage | null {
+	try {
+		if (typeof window === 'undefined') return null;
+		return window.sessionStorage ?? null;
 	} catch {
 		return null;
 	}

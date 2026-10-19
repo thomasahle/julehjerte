@@ -42,7 +42,7 @@ interface Vertex extends Vec {
  * DXF writes as a negative bulge. `orientCounterClockwise` turns the outline
  * round afterwards, so the file's bulges come out +1.
  */
-export function pathVertices(path: LaserPath, toleranceMm = FLATTEN_TOLERANCE_MM): Vertex[] {
+function pathVertices(path: LaserPath, toleranceMm = FLATTEN_TOLERANCE_MM): Vertex[] {
 	const vertices: Vertex[] = [{ ...path.start, bulge: 0 }];
 	let current = path.start;
 	for (const seg of path.segments) {
