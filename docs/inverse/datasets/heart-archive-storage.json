@@ -2252,13 +2252,95 @@
           "archiveCaptureTimestamp": "20170112092310"
         }
       ]
+    },
+    {
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3,
+      "path": "archive-store/heart-preservation/objects/37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570.json",
+      "contentType": "application/json",
+      "role": "archive-lookup-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "jhd-geometric-recovery-1",
+          "originalUrl": null,
+          "retrievedUrl": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json&filter=original%3A.*%28hexatriple%7Coval%7Cinner_square%29%5C.%28pdf%7Csvg%29.*&collapse=digest&fl=timestamp,original,mimetype,statuscode,digest,length&limit=100",
+          "retrievedAt": "2026-10-19T17:24:06.531528+00:00",
+          "archiveCaptureTimestamp": null
+        },
+        {
+          "collection": "jhd-geometric-recovery-1",
+          "originalUrl": null,
+          "retrievedUrl": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2Fdiagrams%2Fhexatriple.pdf&output=json&fl=timestamp,original,mimetype,statuscode,digest,length&limit=30",
+          "retrievedAt": "2026-10-19T17:24:42.253758+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "4e994b94a2c826382abad108c0067c0b344d25259fb4b2204d33e21db5785822",
+      "bytes": 1758,
+      "path": "archive-store/heart-preservation/objects/4e994b94a2c826382abad108c0067c0b344d25259fb4b2204d33e21db5785822.json",
+      "contentType": "application/json",
+      "role": "archive-lookup-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "jhd-geometric-recovery-1",
+          "originalUrl": null,
+          "retrievedUrl": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json&collapse=urlkey&fl=timestamp,original,mimetype,statuscode,digest,length&limit=200",
+          "retrievedAt": "2026-10-19T17:24:33.380650+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "77740b547b1535ca184cd49375b955403700ee04a920259885de539f3aab5b3c",
+      "bytes": 67,
+      "path": "archive-store/heart-preservation/objects/77740b547b1535ca184cd49375b955403700ee04a920259885de539f3aab5b3c.json",
+      "contentType": "application/json",
+      "role": "archive-lookup-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "jhd-geometric-recovery-1",
+          "originalUrl": null,
+          "retrievedUrl": "https://index.commoncrawl.org/CC-MAIN-2017-04-index?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json",
+          "retrievedAt": "2026-10-19T17:25:32.468972+00:00",
+          "archiveCaptureTimestamp": null
+        },
+        {
+          "collection": "jhd-geometric-recovery-1",
+          "originalUrl": null,
+          "retrievedUrl": "https://index.commoncrawl.org/CC-MAIN-2018-05-index?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json",
+          "retrievedAt": "2026-10-19T17:25:57.736908+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "6e3320dd0edf2904352e442a19f5e412ea5af5d6547124b87f1a1ecd05746185",
+      "bytes": 167,
+      "path": "archive-store/heart-preservation/objects/6e3320dd0edf2904352e442a19f5e412ea5af5d6547124b87f1a1ecd05746185.html",
+      "contentType": "text/html",
+      "role": "archive-lookup-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "jhd-geometric-recovery-1",
+          "originalUrl": null,
+          "retrievedUrl": "https://index.commoncrawl.org/CC-MAIN-2016-40-index?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json",
+          "retrievedAt": "2026-10-19T17:25:46.189005+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
     }
   ],
   "counts": {
-    "objects": 129,
-    "originalBytes": 15993759,
+    "objects": 133,
+    "originalBytes": 15995754,
     "publicObjects": 1
   },
   "scope": "Original source documents and evidence, retained once by SHA-256. Public template copies require recorded redistribution terms. Other originals are kept in archive-store, outside tmp and outside Git/public assets. A second off-device backup is still needed.",
-  "updatedAt": "2026-10-19T17:03:14.304726+00:00"
+  "updatedAt": "2026-10-19T17:28:51.663711+00:00"
 }

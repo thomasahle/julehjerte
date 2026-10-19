@@ -369,5 +369,12 @@
       "retrievedAt": "2026-10-19T16:58:27.795263+00:00",
       "error": "HTTP Error 404: NOT FOUND"
     }
+  ],
+  "recoveryAttempts": [
+    {
+      "manifest": "docs/inverse/datasets/archive-jhd-geometric-recovery-1.json",
+      "recoveredTemplates": 0,
+      "summary": "The six original filenames were absent from the completed targeted/prefix index queries. Two alternate-path queries timed out and Common Crawl 2016-40 returned 504; those searches remain inconclusive. All three design records stay reference-only."
+    }
   ]
 }
