@@ -101,6 +101,32 @@
     },
     "photo": null
   },
+  "mor-og-barn": {
+    "name": "Mor og barn",
+    "names": {
+      "en": "Mother and child"
+    },
+    "author": "Traditional",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 4,
+      "y": 4
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
   "stjerne": {
     "name": "Stjerne",
     "names": {
