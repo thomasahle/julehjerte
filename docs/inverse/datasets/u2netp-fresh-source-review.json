@@ -1,0 +1,314 @@
+{
+  "schema": "saliency-fresh-source-review-1",
+  "selectionSha256": "44cbdfb7babdfc6c606315694562b898c1220b525948c442c179831fc240f8e6",
+  "scope": "All four original-photo sheets inspected before inspecting fitted outputs (first two no-crop logs were already visible). Tags describe visible source conditions and hypotheses, not cutting-path ground truth. No case is removed or replaced.",
+  "primaryDenominator": 32,
+  "observations": [
+    {
+      "case": 1,
+      "id": "real-1bcc922200edde26-body-1",
+      "tags": [
+        "multiple-colors",
+        "low-resolution"
+      ],
+      "observation": "Several strong colors are visible; two uniform paper colors are not a reliable photographic model."
+    },
+    {
+      "case": 2,
+      "id": "real-80a649a21ea938ae-body-1",
+      "tags": [
+        "pale-background",
+        "grayscale"
+      ],
+      "observation": "Black and pale paper, with a pale background and slanted checker motif."
+    },
+    {
+      "case": 3,
+      "id": "real-f6e5e128449e3cb9-body-1",
+      "tags": [
+        "open-basket",
+        "occlusion",
+        "strong-nonplanarity"
+      ],
+      "observation": "The heart is held open, filled with sweets and partly covered by a hand; a planar overlap square is questionable."
+    },
+    {
+      "case": 4,
+      "id": "real-fcbcc23efea92b93-body-1",
+      "tags": [
+        "fine-motif",
+        "low-resolution"
+      ],
+      "observation": "Thin cat and flower details in a small source image."
+    },
+    {
+      "case": 5,
+      "id": "real-55704c6e2911bebc-body-1",
+      "tags": [
+        "printed-paper"
+      ],
+      "observation": "Dots and diagonal stripes are ink on the sheets; their pixel boundaries must not become cutting paths."
+    },
+    {
+      "case": 6,
+      "id": "real-24b5ed49c9411b11-body-1",
+      "tags": [
+        "metallic",
+        "fine-grid"
+      ],
+      "observation": "Reflective gold paper with several small checker cells."
+    },
+    {
+      "case": 7,
+      "id": "real-589f606a9d9899f2-body-1",
+      "tags": [
+        "fine-motif",
+        "colored-background"
+      ],
+      "observation": "Small butterflies and figure details against a red background."
+    },
+    {
+      "case": 8,
+      "id": "real-dfa7e4b71b43aa86-body-1",
+      "tags": [
+        "printed-paper",
+        "occlusion",
+        "poster-text"
+      ],
+      "observation": "Printed sheets and a hand against a banner background."
+    },
+    {
+      "case": 9,
+      "id": "real-2b0550dd86d23b40-body-1",
+      "tags": [
+        "sideways",
+        "clipped-tip"
+      ],
+      "observation": "Sideways silver/green heart; its tip extends beyond the left image edge."
+    },
+    {
+      "case": 10,
+      "id": "real-2502cdec0720f4ea-body-1",
+      "tags": [
+        "fine-motif",
+        "colored-background"
+      ],
+      "observation": "Nativity silhouette has small star, head and animal details."
+    },
+    {
+      "case": 11,
+      "id": "real-d3f063052599e167-body-1",
+      "tags": [
+        "poster-text"
+      ],
+      "observation": "Two-tone flower motif inside a banner image."
+    },
+    {
+      "case": 12,
+      "id": "real-a126ed5d62adfd92-body-1",
+      "tags": [
+        "sideways",
+        "clipped-tip"
+      ],
+      "observation": "Sideways gold/dark heart, with the tip at or beyond the left edge."
+    },
+    {
+      "case": 13,
+      "id": "real-5088a58018c3aa28-body-1",
+      "tags": [
+        "pale-background",
+        "fine-motif"
+      ],
+      "observation": "Gold/red cat with a fine tail and pale paper against white."
+    },
+    {
+      "case": 14,
+      "id": "real-1a7cfc6be8b164b5-body-1",
+      "tags": [
+        "printed-paper"
+      ],
+      "observation": "Snowflakes and leaves are printed on the two sheets, not woven boundaries."
+    },
+    {
+      "case": 15,
+      "id": "real-fe7fb089d1cd86b4-body-1",
+      "tags": [
+        "metallic",
+        "strong-nonplanarity",
+        "fine-motif"
+      ],
+      "observation": "Gold/white house has strong folds and reflections and small architectural details."
+    },
+    {
+      "case": 16,
+      "id": "real-8b91ecf546833a3f-body-1",
+      "tags": [
+        "fine-motif"
+      ],
+      "observation": "Red/gold dinosaur silhouette with narrow neck, legs and tail."
+    },
+    {
+      "case": 17,
+      "id": "real-b5317080eec610dc-body-1",
+      "tags": [
+        "printed-paper",
+        "occlusion"
+      ],
+      "observation": "Two mainly white papers have different red/gray printing; a hand covers part of one lobe."
+    },
+    {
+      "case": 18,
+      "id": "real-c7d1e0ad5050db71-body-1",
+      "tags": [
+        "metallic",
+        "fine-grid"
+      ],
+      "observation": "Gold/dark checker and suit motifs, with folds and reflections."
+    },
+    {
+      "case": 19,
+      "id": "real-45ad148d9ec045be-body-1",
+      "tags": [
+        "pale-background",
+        "fine-motif"
+      ],
+      "observation": "Silver/red fox against a pale background."
+    },
+    {
+      "case": 20,
+      "id": "real-702942779385436c-body-1",
+      "tags": [
+        "printed-paper"
+      ],
+      "observation": "One floral sheet and one purple sheet; printed flowers are not extra cuts."
+    },
+    {
+      "case": 21,
+      "id": "real-03bddab9c8f384c4-body-1",
+      "tags": [
+        "folds",
+        "uneven-lighting"
+      ],
+      "observation": "Candlestick motif has a pronounced crease and shadow."
+    },
+    {
+      "case": 22,
+      "id": "real-eb60ff94dfc6e2f8-body-1",
+      "tags": [
+        "fine-motif",
+        "metallic"
+      ],
+      "observation": "Dragonfly has thin antennae and a narrow body."
+    },
+    {
+      "case": 23,
+      "id": "real-af21a4ef38355dfa-body-1",
+      "tags": [
+        "poster-text",
+        "possible-duplicate-motif"
+      ],
+      "observation": "Two-heart design appears to be the same motif/photo as case 32, with a different banner presentation."
+    },
+    {
+      "case": 24,
+      "id": "real-f4bd8d13fc7e68d0-body-1",
+      "tags": [
+        "metallic",
+        "uneven-lighting"
+      ],
+      "observation": "Bell motif photographed against a textured wall, with reflections."
+    },
+    {
+      "case": 25,
+      "id": "real-f05cf91c134daea9-body-1",
+      "tags": [
+        "fine-motif",
+        "metallic"
+      ],
+      "observation": "Octopus silhouette contains fine tentacle curls; reflections cross part of its border."
+    },
+    {
+      "case": 26,
+      "id": "real-12f272f48ed09d51-body-1",
+      "tags": [
+        "irregular-outline",
+        "printed-paper",
+        "occlusion"
+      ],
+      "observation": "The bottom silhouette follows an extended tree shape rather than the regular straight-sided overlap square. Keep in the primary cohort, flag separately as potentially outside the regular-heart model."
+    },
+    {
+      "case": 27,
+      "id": "real-28a87a8be083f16c-body-1",
+      "tags": [
+        "pale-background",
+        "metallic"
+      ],
+      "observation": "Outlined star and small hearts, pale paper close to background."
+    },
+    {
+      "case": 28,
+      "id": "real-ce66f9634c2c613b-body-1",
+      "tags": [
+        "fine-motif"
+      ],
+      "observation": "Figure, bird and arm contain small/thin features."
+    },
+    {
+      "case": 29,
+      "id": "real-52e732b98f9b14f1-body-1",
+      "tags": [
+        "printed-decoration",
+        "poster-text",
+        "multiple-colors"
+      ],
+      "observation": "Central red/orange/black rosette appears printed inside a paper region. Its ink boundaries are not a two-sheet weave."
+    },
+    {
+      "case": 30,
+      "id": "real-7e9f6f83ae43ec2a-body-1",
+      "tags": [
+        "metallic",
+        "uneven-lighting"
+      ],
+      "observation": "Long narrow checker pattern with uneven illumination and curled paper."
+    },
+    {
+      "case": 31,
+      "id": "real-d4f6e3c76cf08ea8-body-1",
+      "tags": [
+        "metallic",
+        "colored-background",
+        "fine-motif"
+      ],
+      "observation": "Copper/green bird has fine beak and tail details against red."
+    },
+    {
+      "case": 32,
+      "id": "real-41b7c3e0b79f1265-body-1",
+      "tags": [
+        "possible-duplicate-motif"
+      ],
+      "observation": "Same apparent two-heart motif/photo as case 23, without the banner text."
+    }
+  ],
+  "duplicateCaution": "The catalog near-duplicate groups do not identify every repeated motif or reframed photograph; cases 23 and 32 appear related. Do not treat 32 files as 32 independent motifs.",
+  "sheets": [
+    {
+      "path": "tmp/heart-learning/u2netp-fresh-source-gallery/photos-1.jpg",
+      "sha256": "56daa195624b50e173126b260d219676155aca97e849b1f06ee189723ebf69cb"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-fresh-source-gallery/photos-2.jpg",
+      "sha256": "870a837d0e312ca04b08a59a4100877f3ff46097cf7fafa64007f6968efb0cfa"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-fresh-source-gallery/photos-3.jpg",
+      "sha256": "d4b11d5040856c2f0468136bb70ca98700c815aad6aa558f123bde42957064b6"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-fresh-source-gallery/photos-4.jpg",
+      "sha256": "49100eac29ed91950e8723f4689b126681f7e0a37219ab44756a01c41388b015"
+    }
+  ]
+}

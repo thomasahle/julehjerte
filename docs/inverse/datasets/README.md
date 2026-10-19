@@ -14,7 +14,7 @@ production path.
 | Sabrina Danholm's Pinterest board | All 225 pins imported; 220 new image files, about 35 MiB | No new corner, material or cutting-path labels; the whole board is QA-reserved |
 | Synthetic geometry | 256 saved witnesses pass the current geometry/paper re-audit across 768 original/subdivided/reflected representations | Limited procedural diversity; recipe holdouts are not topology-disjoint splits |
 | Small learned model | Earlier MobileNetV3-Small fallback raises checked editable pairs from 7/16 to 9/16 on its development cohort; a newer fixed candidate stays at 7/16 on separately selected Sabrina photos | These are different cohorts; no deployment or established source generalization |
-| Pretrained saliency baseline | U2NETP finds two additional checked partial-photo pairs on the newer cohort; browser inputs, crop coordinates and masks match native results exactly | Frozen observed-corner policy still stays at 7/16; partial-photo policy needs prospective testing, and raw probability tolerance fails |
+| Pretrained saliency baseline | A predeclared U2NETP fallback raises checked derived-mask pairs from 10/32 to 12/32 on a fresh pipeline cohort; all 24 distinct exports pass editable geometry checks | Printed paper and fine motifs still fail; one added fit retains visible seams; numerical parity gates fail; no production integration |
 | Larger segmentation baseline | Official pretrained MobileSAM evaluated offline | A useful body mask alone does not establish correct corners, material boundaries or legal templates |
 | Solver | Current revision passes 1,109/1,109 inverse tests and 34 browser workflows; all 22 regular Hunodan designs finish under ten seconds | Some hard fits retain thin false seams; the earlier 27/31 photo benchmark has not been rerun |
 
@@ -25,10 +25,38 @@ hover outline) and archive are **deployed**. The [19 October release record](oct
 contains live Danish/English and mobile QA, 2,216 application tests and 1,122
 inverse correctness checks. Ten of 77 advisory timed quality targets still miss;
 these are retained separately from correctness. Subsequent main commit
-`3762b82c` also passed [CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39302176699).
+`7c6e232a` also passed [CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39309081068).
 The local preview is at `http://localhost:4173/editor/mal/`.
 
 #### Latest neural experiments
+
+The [fresh 32-photo evaluation](u2netp-fresh-results.json) freezes the model and
+crop policy before inference. It keeps every existing production crop and adds
+a review-required neural proposal only where none exists. Crop proposals rise
+from **21 to 24**, and checked pairs from **10 to 12**. The new checker-heart and
+outlined-star fits have 2.93% and 0.48% independent derived-mask error. All 24
+distinct exports pass conversion and geometry checks; 22 pass nominal paper
+checks, and 12 pass all reconstruction checks. These are approximate templates,
+not comparisons with original cutting paths or physical assembly tests.
+
+[Visual review of every case](u2netp-fresh-output-review.json) finds conspicuous
+seams in the gained checker-heart fit, printed ink mistaken for sheet boundaries,
+and fine details lost despite reasonable crops and masks. One numerically checked
+printed-rosette result is therefore not evidence of recovering its original
+physical weave. Five weak existing crops are preserved by policy, including a
+house cropped in half. No failure was removed from the denominator. The cohort
+is new to recorded pipeline experiments, but has only five source groups and at
+least one apparent repeated motif/photo.
+
+All 32 browser input tensors match the independent Python inputs exactly.
+Single-thread warm WASM inference has a 1.04-second median on this desktop.
+The strict output gates still fail: browser-versus-PyTorch probability difference
+reaches 0.000145, and four photos each change one threshold pixel. Actual browser
+fields feed the reported crop/fitting results. Downstream consequences of those
+small numerical differences need checking before any tolerance change.
+
+Earlier experiments remain recorded below with their original policies and
+denominators.
 
 The [fixed material candidate](preserved-candidate-results.json) preserves its
 foreground network exactly but adds no checked recovery on the separately
