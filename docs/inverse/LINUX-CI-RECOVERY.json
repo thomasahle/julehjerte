@@ -1487,5 +1487,117 @@
     },
     "releaseReady": false,
     "remainingFailureDiagnosis": "The shifted bird has no enclosed-eye candidate before cleanup: source colours remain but its small opening is connected to the background. Its local-detail attempts encounter same-sheet self-intersections; final cleanup did not create the missing enclosure. Short-budget detailed-grid and late-clearance failures still lose most of the cleanup window to initialization, geometry and paper checks. Full Linux replay remains failed; focused matching success is not release acceptance."
+  },
+  "pathStepRecovery": {
+    "releaseReady": false,
+    "change": "Opt in to continuous exact path-step positions for smoothed photographic feature-recovery MILPs; preserve commodity flow for ordinary boundary routing. All integrality, geometry, image, feature, paper and deadline checks remain unchanged.",
+    "connectivityArgument": "Each selected directed edge advances one rank. Internal selected degree is zero or one in and one out; boundary degrees identify sources and sinks. A detached directed cycle would sum to 0 = its positive length. Every simple valid source-to-sink path admits ranks from zero through at most V-1, including backward-running geometric cuts.",
+    "benchmark": {
+      "command": "node scripts/inverse/solver-connectivity-benchmark.mjs --reference=407a97e5",
+      "referenceCommit": "407a97e517970dd10e4fb598b10337258fdabb7d",
+      "fixtureSha256": "2e1b1dafff1d730d63f23ec61452f8b444f8ce732cfc4a7740777615bdc6faaf",
+      "node": "v22.21.1",
+      "platform": "darwin",
+      "scope": "Current path-step recovery formulation versus previous commodity-flow formulation on identical freshly traced source masks and connector graphs; alternating previous/current order. Stop at the first returned integer routing, whether accepted or rejected by geometry. No template or accepted candidate is used as a warm start. Not a full solver benchmark.",
+      "rows": [
+        {
+          "case": "frozen",
+          "smoothRadius": 0.3,
+          "previousSeconds": 2.814068292,
+          "pathStepSeconds": 1.7763756249999996,
+          "previousContinuousVariables": 1120,
+          "pathStepContinuousVariables": 404,
+          "geometryAccepted": false
+        },
+        {
+          "case": "frozen",
+          "smoothRadius": 0.5,
+          "previousSeconds": 1.9460851659999998,
+          "pathStepSeconds": 1.3557837910000008,
+          "previousContinuousVariables": 1088,
+          "pathStepContinuousVariables": 386,
+          "geometryAccepted": false
+        },
+        {
+          "case": "synthetic-control",
+          "smoothRadius": 0.3,
+          "previousSeconds": 3.5099660829999992,
+          "pathStepSeconds": 2.152114125,
+          "previousContinuousVariables": 1152,
+          "pathStepContinuousVariables": 416,
+          "geometryAccepted": false
+        },
+        {
+          "case": "synthetic-control",
+          "smoothRadius": 0.5,
+          "previousSeconds": 2.205330333,
+          "pathStepSeconds": 1.4257779169999993,
+          "previousContinuousVariables": 1172,
+          "pathStepContinuousVariables": 416,
+          "geometryAccepted": false
+        },
+        {
+          "case": "y-plus-1",
+          "smoothRadius": 0.3,
+          "previousSeconds": 2.1292453330000027,
+          "pathStepSeconds": 1.7171014170000016,
+          "previousContinuousVariables": 1112,
+          "pathStepContinuousVariables": 392,
+          "geometryAccepted": false
+        },
+        {
+          "case": "y-plus-1",
+          "smoothRadius": 0.5,
+          "previousSeconds": 2.6930841670000008,
+          "pathStepSeconds": 1.4107320830000025,
+          "previousContinuousVariables": 1160,
+          "pathStepContinuousVariables": 404,
+          "geometryAccepted": true
+        }
+      ]
+    },
+    "rejectedUniversalReplacement": {
+      "case": "gallery squares heuristic graph",
+      "vertices": 33,
+      "edges": 95,
+      "commodityFlowSeconds": 1.258436584,
+      "pathStepSeconds": 5.0044875,
+      "pathStepAccepted": false,
+      "budgetSeconds": 5,
+      "decision": "Do not replace the default formulation. Lower variable count does not guarantee faster branch-and-bound."
+    },
+    "localFocused": {
+      "passed": 15,
+      "failed": 0,
+      "log": "/tmp/julehjerte-path-recovery-tests.log",
+      "coverage": "Fresh frozen/synthetic-control/shifted sloth source-mask fits at their original ten-second request, independent exports, late-repair allowance, gallery-square exact weave, and path/loop connectivity fixtures."
+    },
+    "otherRejectedExperiments": [
+      {
+        "method": "continuous orientations with binary visited vertices",
+        "result": "Reduced binary count but usually slower first integer proposals on the same six recovery graphs."
+      },
+      {
+        "method": "lazy detached-loop exclusion without connectivity variables",
+        "result": "Repeated cycle exclusions consumed most four-second budgets."
+      },
+      {
+        "method": "one-sided path ranks",
+        "result": "Improved some graphs but slowed frozen .3; exact unit increments performed better in the six-graph comparison."
+      },
+      {
+        "method": "reused grid-loss product/derivative allocation",
+        "result": "Only about 1-5 percent warm-loop savings; restored the simpler allocation code."
+      }
+    ],
+    "linux": {
+      "status": "not yet run on this source"
+    },
+    "localCore": {
+      "passed": 77,
+      "failed": 0,
+      "log": "/tmp/julehjerte-path-recovery-core-tests.log",
+      "coverage": "Core MILP, reference, fractional relaxation rejection, rejected-routing safety and connector coverage."
+    }
   }
 }
