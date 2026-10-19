@@ -34,7 +34,7 @@ test('an image-rejected routing is only a provisional refinement seed',async()=>
   assert.deepEqual(target.sourceImage.mask,before);
 });
 
-test('poor grid agreement recovers tree branches without relying on a spurious edge feature',async()=>{
+qualityBenchmark('poor grid agreement recovers tree branches without relying on a spurious edge feature',async()=>{
   const data=await catalogue(),entry=data.cases.find(c=>c.id==='danish-tree-red');
   const photo=await readPhoto(data.photos.find(p=>p.id===entry.photo));
   const crop=detectHeartCrops(photo,{roi:entry.roi}).candidates[0];assert.ok(crop);
@@ -171,7 +171,7 @@ qualityBenchmark('a delayed preferred grid keeps checked progress or resumes rou
   assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
 });
 
-test('infeasible photograph traces can retry a smoother seed without changing the source target',async()=>{
+qualityBenchmark('infeasible photograph traces can retry a smoother seed without changing the source target',async()=>{
   const data=await catalogue(),entry=data.cases.find(c=>c.id==='danish-tree-group-right'),photo=await readPhoto(data.photos.find(p=>p.id===entry.photo));
   const crop=detectHeartCrops(photo,{roi:entry.roi}).candidates[0];assert.ok(crop);
   const cfg={...AUTOMATIC_PRESET,timeLimit:10,trials:0,earlyStop:false},prepared=prepare({...photo,quad:crop.quad},cfg),source=prepared.target.sourceImage;
@@ -188,7 +188,7 @@ test('infeasible photograph traces can retry a smoother seed without changing th
 });
 
 
-test('an actual cropped upload recovers its template when one edge hides slit endpoints',async()=>{
+qualityBenchmark('an actual cropped upload recovers its template when one edge hides slit endpoints',async()=>{
   const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/browser-group-tree.json')),n=fixture.resolution,mask=new Uint8Array(n*n);
   for(const [start,length]of fixture.maskRuns)mask.fill(1,start,start+length);
   const cfg={...AUTOMATIC_PRESET,timeLimit:10,trials:0,earlyStop:false},prepared=prepare({type:'mask',mask,resolution:n},cfg),source=prepared.target.sourceImage;

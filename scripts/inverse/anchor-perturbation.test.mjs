@@ -1,4 +1,4 @@
-import test from 'node:test';
+import {qualityBenchmark} from './quality-benchmark.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import {createHash} from 'node:crypto';
@@ -9,7 +9,7 @@ import {renderExportedWeave} from './export-renderer.mjs';
 
 // A changed color estimate perturbs fewer than 1% of the source pixels. Crop
 // coordinates and geometry are not supplied to the solver; only the frozen mask.
-test('a small photographic mask perturbation recovers after an intrinsic trace loop',async()=>{
+qualityBenchmark('a small photographic mask perturbation recovers after an intrinsic trace loop',async()=>{
   const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-anchor-perturbation.json'));
   const bytes=await fs.readFile(fixture.maskFile),hash=value=>createHash('sha256').update(value).digest('hex');
   assert.equal(hash(bytes),fixture.imageSha256);

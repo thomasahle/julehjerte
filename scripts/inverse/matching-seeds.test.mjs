@@ -1,4 +1,4 @@
-import test from 'node:test';
+import {qualityBenchmark} from './quality-benchmark.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import {createHash} from 'node:crypto';
@@ -16,7 +16,7 @@ function expand(runs,Type){
   assert.equal(at,out.length);return out;
 }
 
-test('the matching preference can change cut count and colour phase without forcing or editing the mask',async t=>{
+qualityBenchmark('the matching preference can change cut count and colour phase without forcing or editing the mask',async t=>{
   const mask=expand(fixture.maskRuns,Uint8Array),weights=expand(fixture.weightRuns,Float64Array),before=mask.slice();
   assert.equal(createHash('sha256').update(mask).digest('hex'),fixture.maskSha256);
   const cfg={...AUTOMATIC_PRESET,width:100,minWidth:2,cutError:.25,minRadius:.8,kerf:0,printShrinkPercent:.2,materialResolution:360,timeLimit:10,trials:0,earlyStop:false,preferMatchingSheets:true,symmetry:{}};

@@ -1,3 +1,4 @@
+import {qualityBenchmark} from './quality-benchmark.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -54,7 +55,7 @@ test('reserving another count pair never evicts an already simpler finalist',()=
   assert.deepEqual(gridFinalists(protectedLargest,[]),protectedLargest.slice(0,3),'A reservation cannot increase a finalist count when the only larger grid is protected.');
 });
 
-test('small resolution changes retain a checked three-cut flower instead of crowding it out',{timeout:40000},async()=>{
+qualityBenchmark('small resolution changes retain a checked three-cut flower instead of crowding it out',{timeout:40000},async()=>{
   const record=JSON.parse(await fs.readFile(new URL('./fixtures/flower-resolution/source.json',import.meta.url)));
   const hash=b=>createHash('sha256').update(b).digest('hex'),masks=[];
   for(const entry of record.cases){

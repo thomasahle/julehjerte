@@ -1,3 +1,4 @@
+import {qualityBenchmark} from './quality-benchmark.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -101,5 +102,5 @@ async function checkStar(jpeg=false){
   assert.equal(exported.correct,28);assert.equal(exported.covered,28);
   assert.deepEqual(source.rgba,before);
 }
-test('fresh automatic blue-star crop preserves photographed details through template export',()=>checkStar());
-test('JPEG recompression preserves the automatic crop and photographed details through export',()=>checkStar(true));
+qualityBenchmark('fresh automatic blue-star crop preserves photographed details through template export',()=>checkStar());
+qualityBenchmark('JPEG recompression preserves the automatic crop and photographed details through export',()=>checkStar(true));

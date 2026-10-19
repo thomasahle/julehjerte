@@ -1,3 +1,4 @@
+import {qualityBenchmark} from './quality-benchmark.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -105,7 +106,7 @@ test('traced recovery ignores arbitrary free-border colours and scores the obser
   }
 });
 
-for(const id of ['photo-bird','hunodan-hjfig-05'])test(`one unobserved corner preserves the significant features of ${id}`,async t=>{
+for(const id of ['photo-bird','hunodan-hjfig-05'])qualityBenchmark(`one unobserved corner preserves the significant features of ${id}`,async t=>{
   const {entry,input}=image(id);input.validMask=new Uint8Array(input.mask.length).fill(1);input.validMask[0]=0;
   const prepared=prepare(input,entry.settings),source=prepared.target.sourceImage,before=structuredClone(source);
   assert.equal(sourceWeights(source)[0],0);assert.deepEqual(source.mask,input.mask);
@@ -123,7 +124,7 @@ for(const id of ['photo-bird','hunodan-hjfig-05'])test(`one unobserved corner pr
   }catch(error){t.diagnostic(await captureFitFailure({answer,source,context:{case:id,unobservedCorner:true,assertion:error.message}}));throw error;}
 });
 
-test('an invalid feature proposal cannot consume the partial-photo search without a legal result',async t=>{
+qualityBenchmark('an invalid feature proposal cannot consume the partial-photo search without a legal result',async t=>{
   const {entry,input}=image('photo-bauble'),prepared=prepare(input,entry.settings),source=prepared.target.sourceImage,before=structuredClone(source);
   const answer=await design(prepared.target,entry.settings);
   let exportedError=null;

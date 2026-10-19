@@ -1,4 +1,4 @@
-import test from 'node:test';
+import {qualityBenchmark} from './quality-benchmark.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import {createHash} from 'node:crypto';
@@ -8,7 +8,7 @@ import {auditFeatureFidelity} from '../../static/inverse/core/feature-shapes.js'
 import {renderExportedWeave} from './export-renderer.mjs';
 import {captureFitFailure} from './diagnostics/fit-failure.mjs';
 
-test('a missed border fragment cannot suppress useful interior routing or erase its final warning',async t=>{
+qualityBenchmark('a missed border fragment cannot suppress useful interior routing or erase its final warning',async t=>{
   const fixture=JSON.parse(await fs.readFile(new URL('./fixtures/rabbit-border-routing.json',import.meta.url)));
   const mask=new Uint8Array(fixture.resolution**2);let offset=0;
   for(const [value,length] of fixture.runs){assert.ok(value===0||value===1);assert.ok(Number.isInteger(length)&&length>0);mask.fill(value,offset,offset+length);offset+=length;}

@@ -296,7 +296,7 @@ qualityBenchmark('a one-pixel crop shift cannot discard a feature-preserving fin
   }
 });
 
-test('the candle reaches its better ordinary finalist without losing paper validity',async()=>{
+qualityBenchmark('the candle reaches its better ordinary finalist without losing paper validity',async()=>{
   const catalogue=JSON.parse(await fs.readFile('scripts/inverse/hard-photo-cases.json'));
   const photo=await readHardPhoto(catalogue.source);
   const quad=[[1010.9144542590817,589.4652765269831],[1103.7537578794381,696.2833649430704],[998.6357722702141,795.1746948683086],[894.9268445855275,683.6338821954087]];

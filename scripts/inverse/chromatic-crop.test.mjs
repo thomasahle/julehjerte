@@ -1,3 +1,4 @@
+import {qualityBenchmark} from './quality-benchmark.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -90,7 +91,7 @@ async function windowPhoto(){
   const spec=hardPhotoCatalogCases(catalog)[0];
   return{source:await readHardPhoto(spec),roi:spec.roi};
 }
-test('reflective blue/orange photograph crops automatically and fits independently rendered templates',async()=>{
+qualityBenchmark('reflective blue/orange photograph crops automatically and fits independently rendered templates',async()=>{
   const {source,roi}=await windowPhoto(),before=source.rgba.slice();
   const crop=detectHeartCrops(source,{roi}).candidates[0];
   assert.ok(crop&&supportedCropOutline(crop.locator));

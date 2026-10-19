@@ -26,7 +26,7 @@ quality benchmarks. To run the inverse release gates separately, use
 `npm run test:inverse:ci`; `npm run benchmark:inverse:ci` runs the advisory cases.
 
 The deployment workflow requires type checks, lint, application tests, inverse
-correctness tests and a production build. Fresh photo searches with strict
+correctness tests and a production build. Fresh image searches with strict
 wall-clock quality or routing expectations are registered with `qualityBenchmark`.
 They run separately with their original budgets and assertions; misses appear in
 the workflow summary and the `inverse-timed-quality` artifact (kept seven days).

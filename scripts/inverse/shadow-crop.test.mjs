@@ -1,3 +1,4 @@
+import {qualityBenchmark} from './quality-benchmark.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -40,7 +41,7 @@ test('a cast shadow does not move the physical corners across exposure changes',
   }
 });
 
-test('automatic shadowed-frame crop recovers two matching cuts per sheet',async t=>{
+qualityBenchmark('automatic shadowed-frame crop recovers two matching cuts per sheet',async t=>{
   const image=await decode('shadow-frame.jpg',labels.photoSha256),source={type:'pixels',imageWidth:image.width,imageHeight:image.height,rgba:image.data};
   const candidate=detectHeartCrops(source).candidates[0],cfg={...AUTOMATIC_PRESET,timeLimit:10,trials:0,resolution:384};
   const prepared=prepare({...source,quad:candidate.quad},cfg),answer=await design(prepared.target,cfg);
