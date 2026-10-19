@@ -294,3 +294,55 @@ Everything else in this file stands, including round 1.
   shared; printer has no count), `export.test.ts` (multi-heart plan, file
   names), `template.test.ts` (`templatesFilename`).
 
+
+## Orientation marks (2026-10-19)
+
+Owner: "For templates that are not symmetric, it's often helpful to know which
+side should be up and down, e.g. by putting a little x, like
+https://cs.au.dk/~gerth/julehjerter/ does." The idea is Gerth Stølting
+Brodal's: in his generator one piece carries a small circled cross ⊗ and the
+other a plain ×, and the weaver lays the two pieces so the crosses lie on top
+of each other. Juleflet does the same (`$lib/utils/orientationMarks`).
+
+- **Why one mark per piece is enough.** A folded piece fits its place in the
+  heart two ways: as cut, or turned over (half a turn about its long axis,
+  which swaps its layers and its long edges and so shows the template
+  mirrored, `x → W − x`). Which face of the paper is out changes nothing else.
+  So a piece whose template is its own mirror image can go in either way, and
+  any other piece has one right way, fixed by one corner.
+- **Where.** At the top of the heart, where the two rounded ends meet. In the
+  editor's frame (drawn turned 45° clockwise) that is the overlap square's
+  top-left corner, and `getTemplateData` maps it to `(0, R)` on both lobes'
+  templates. The mark sits by the template's left side, just below the ear
+  base (the ear holds the picture and the address down to its base), at the
+  nearest spot clear of every cut: about 3 mm across, smaller (down to
+  1.5 mm) only where a strip at the corner is narrow (`amy-weave-1` at
+  40 mm). The left lobe's piece carries ⊗, the right's ×. Which piece goes
+  left does not change the paper (a heart turned over has its pieces
+  swapped); it decides which face is the front, and with ⊗ on the left the
+  heart looks as on the site.
+- **Shared templates.** The other lobe's own template is either the printed
+  one (lobes mirrored across the diagonal) or the printed one turned over
+  (the right lobe is the left turned 90°: `permo-kroge`, `hvirvel`, `kogle`,
+  `origami`, `plus`, `plus3`, `sun`); then that lobe's mark is on the right side, `(W, R)`.
+  The PDF prints the shared template twice, the first copy with ⊗ and the
+  second with ×; a template shown once (heart page, tracing mode) carries
+  both, or one ⊗ when they fall on the same corner; a laser piece carries
+  its own lobe's mark above the fold and the other lobe's mirrored below it,
+  which folding lays on the same corner.
+- **When.** `needsOrientationMarks(design)`: some piece of the heart is not
+  its own mirror image (Hausdorff distance of the sampled cuts over 2 % of the
+  template's width). 41 of the 61 gallery hearts; the classic heart and the
+  other symmetric ones get none and their sheets are unchanged. A heart with
+  two different templates that are each symmetric (`drageskael`) gets none
+  either: every way a piece can go in is right.
+- **Drawn:** the printer PDF (0.2 mm black) and its preview, the editor's
+  nine-up PDF, the tracing mode, the heart page's large template view (not
+  its 104 px thumbnails), and the laser file as a separate non-cut layer
+  (LASER.md). The guide has one sentence on it (`guideMarksNote`).
+- **Tests:** `orientationMarks.test.ts` lists the marked hearts and checks,
+  for every one, that a piece laid with its mark at the top of the rendered
+  heart (svgWeave's frame turned 45°) has exactly the cuts of the woven lobe
+  the site draws, and laid the other way does not; `plan.test.ts`,
+  `template.test.ts`, `svg.test.ts`, `dxf.test.ts`, `unfold.test.ts` check
+  each output.

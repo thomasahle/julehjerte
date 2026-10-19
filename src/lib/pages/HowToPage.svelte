@@ -57,6 +57,7 @@
 	<section class="weaving" aria-labelledby="weave-heading">
 		<h2 id="weave-heading">{t('guideWeaveTitle', lang)}</h2>
 		<p class="reading-width">{t('guideWeaveIntro', lang)}</p>
+		<p class="reading-width" data-testid="guide-marks">{t('guideMarksNote', lang)}</p>
 		<div class="loop-lesson">
 			<h3>{t('guideLoopTitle', lang)}</h3>
 			<p class="reading-width">{t('guideLoopText', lang)}</p>
