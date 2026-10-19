@@ -1,4 +1,4 @@
-"""Compare material and RGB targets at identical saved crop coordinates.
+"""Compare two target methods at identical saved crop coordinates.
 
 The RGB target is a previous classifier output, not ground truth. A lower fit
 error against a neural target does not establish better artwork reconstruction.
@@ -61,24 +61,31 @@ def main():
     parser.add_argument('--reference', type=Path, required=True)
     parser.add_argument('--candidate', type=Path, required=True)
     parser.add_argument('--reference-method', default='fallback')
+    parser.add_argument('--candidate-method', help='Select one method from a paired run; omitted requires a single-method candidate.')
+    parser.add_argument('--reference-label', default='Previous RGB')
+    parser.add_argument('--candidate-label', default='Neural')
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     old = json.loads((args.reference/'report.json').read_bytes())
     new = json.loads((args.candidate/'report.json').read_bytes())
     assert old['status'] == new['status'] == 'complete'
     before = [r for r in old['rows'] if r['method'] == args.reference_method]
-    assert [r['id'] for r in before] == [r['id'] for r in new['rows']]
+    after = [r for r in new['rows'] if args.candidate_method is None or r['method'] == args.candidate_method]
+    assert len(before) and len({r['id'] for r in after}) == len(after)
+    assert [r['id'] for r in before] == [r['id'] for r in after]
     args.output.mkdir(parents=True, exist_ok=False)
     report = {'schema': 'material-fixed-comparison-1', 'scope': __doc__.strip(),
               'inputs': [{'path': str(root/'report.json'), 'sha256': sha(root/'report.json')}
                          for root in [args.reference, args.candidate]],
-              'implementationSha256': sha(Path(__file__)), 'rows': [], 'gallery': []}
+              'implementationSha256': sha(Path(__file__)), 'rows': [], 'gallery': [],
+              'referenceMethod': args.reference_method, 'candidateMethod': args.candidate_method,
+              'labels': [args.reference_label, args.candidate_label]}
     size = 240
     for start in range(0, len(before), 4):
-        pairs = list(zip(before[start:start+4], new['rows'][start:start+4]))
+        pairs = list(zip(before[start:start+4], after[start:start+4]))
         sheet = Image.new('RGB', (5*size, 32+len(pairs)*(size+40)), 'white')
         pen = ImageDraw.Draw(sheet)
-        for column, title in enumerate(['Fixed crop/photo', 'Previous RGB mask', 'Previous RGB weave', 'Neural mask', 'Neural weave']):
+        for column, title in enumerate(['Fixed crop/photo', args.reference_label+' mask', args.reference_label+' weave', args.candidate_label+' mask', args.candidate_label+' weave']):
             pen.text((column*size+4, 8), title, fill='black')
         for index, (a, b) in enumerate(pairs):
             assert a['sourceSha256'] == b['sourceSha256']
@@ -110,7 +117,7 @@ def main():
             top = 32+index*(size+40)
             errors = [result['referenceOwnMaskError'], result['candidateOwnMaskError']]
             text = ' / '.join('none' if e is None else f'{e:.2%}' for e in errors)
-            pen.text((4, top+4), b['id']+' / own-mask errors RGB, NN: '+text, fill='black')
+            pen.text((4, top+4), b['id']+' / own-mask errors, reference / candidate: '+text, fill='black')
             for column, item in enumerate(images):
                 frame = Image.new('RGB', (size, size), (235, 235, 235))
                 if item is None:
