@@ -29,6 +29,8 @@
  * and renders the hearts the script actually hung.
  */
 
+import { COLOR_MODE_CLASS } from '$lib/stores/colorMode';
+
 /** Where the script leaves its draw, on the root element. */
 export const HERO_PICKS_ATTRIBUTE = 'data-hero-hearts';
 
@@ -61,10 +63,26 @@ try {
 	// Partial Fisher-Yates over the gallery's own cards: distinct hearts, and no
 	// heart the visitor drew — those are not in the HTML yet, which is the same
 	// pool rule $lib/utils/randomHearts states for the prerendered set.
+	// In the colourful mode each heart is woven from its own pair, and two
+	// hearts of one pair side by side in the hero look like a mistake: a draw
+	// whose pair is taken moves on to the next card that has a free one, as
+	// long as there is one.
+	var colorful = document.documentElement.classList.contains(${JSON.stringify(COLOR_MODE_CLASS)});
+	var used = {};
 	var pool = Array.prototype.slice.call(cards);
 	var picked = [];
 	for (var i = 0; i < need && i < pool.length; i++) {
 		var j = i + Math.floor(Math.random() * (pool.length - i));
+		if (colorful) {
+			for (var t = 0; t < pool.length - i; t++) {
+				var c = i + ((j - i + t) % (pool.length - i));
+				if (!used[pairOf(pool[c])]) {
+					j = c;
+					break;
+				}
+			}
+			used[pairOf(pool[j])] = true;
+		}
 		var swap = pool[i];
 		pool[i] = pool[j];
 		pool[j] = swap;
@@ -89,6 +107,11 @@ try {
 	// A hero with the prerendered hearts in it beats an empty one.
 }
 reveal();
+
+function pairOf(card) {
+	var hang = card.querySelector('.hang');
+	return (hang && hang.getAttribute('data-pair')) || '';
+}
 
 function reveal() {
 	document.documentElement.classList.add('hero-ready');
@@ -121,6 +144,25 @@ function hang(slot, card, prefix) {
 	var ribbon = slot.querySelector('.ribbon');
 	var cardRibbon = card.querySelector('.ribbon');
 	if (ribbon && cardRibbon) ribbon.style.background = cardRibbon.style.background;
+
+	// The heart's colourful-mode pair travels with it ($lib/utils/palette):
+	// the slot's block still carries the prerendered stand-in's.
+	var hang = slot.querySelector('.hang');
+	var cardHang = card.querySelector('.hang');
+	if (hang && cardHang) {
+		var names = ['data-pair', 'data-pair-edge'];
+		for (var n = 0; n < names.length; n++) {
+			var value = cardHang.getAttribute(names[n]);
+			if (value === null) hang.removeAttribute(names[n]);
+			else hang.setAttribute(names[n], value);
+		}
+		var props = ['--pair-left', '--pair-right'];
+		for (var q = 0; q < props.length; q++) {
+			var v = cardHang.style.getPropertyValue(props[q]);
+			if (v) hang.style.setProperty(props[q], v);
+			else hang.style.removeProperty(props[q]);
+		}
+	}
 
 	var link = slot.querySelector('a');
 	if (link) {

@@ -30,6 +30,11 @@
   A heart that is already drawn in the prerendered HTML is given as `markup`
   instead of being drawn from `design` — see $lib/front/galleryHearts.
 
+  A heart that follows the site's pair also carries its pair for the colourful
+  mode ($lib/utils/palette, picked by `heartId`): `data-pair` and two custom
+  properties on .hang, always, so the mode is a class on <html> and a reload
+  with it on paints the right colours first (src/app.css, "Colourful mode").
+
   A heart drawn from `design` needs PaperHeartSVG and the weave renderer under
   it. It is not imported here, because the front page hangs every heart as
   `markup` and would otherwise download that code for nothing. The parent supplies it instead: `paper`, the component itself, from a
@@ -40,22 +45,18 @@
   first time. The dynamic import lives with the front page's components, not
   here: SvelteKit drops a component's stylesheet from a page that imports it
   statically when a chunk listed before it also imports it dynamically. The
-  ribbon is a real element either way, so the footer's colour swatches keep
-  reaching it; the frozen SVG follows them through the --paper-* tokens below.
+  ribbon follows the footer's swatches through --paper-right either way; the
+  frozen SVG follows them through the --paper-* tokens below.
 -->
 <script lang="ts">
-	import { onMount, type Snippet } from 'svelte';
+	import type { Snippet } from 'svelte';
 	// Type only: the component itself is either handed in (`paper`) or loaded on
 	// demand, see the note above.
 	import type PaperHeartSVG from '$lib/components/PaperHeartSVG.svelte';
 	import { swayAnimationDelay } from '$lib/utils/sway';
-	import {
-		DEFAULT_COLORS,
-		getColors,
-		subscribeColors,
-		type HeartColors
-	} from '$lib/stores/colors';
+	import type { HeartColors } from '$lib/stores/colors';
 	import type { HeartDesign } from '$lib/types/heart';
+	import { pairAttributes } from '$lib/utils/palette';
 
 	interface Props {
 		/** The design to draw the heart from. Not needed when `markup` is given. */
@@ -70,6 +71,12 @@
 		 * to read them off. They fix the ribbon's colour and the heart's.
 		 */
 		colors?: HeartColors;
+		/**
+		 * The heart's id, which picks its pair in the colourful mode
+		 * ($lib/utils/palette). Defaults to the design's; a heart given as
+		 * `markup` has to name it.
+		 */
+		heartId?: string;
 		/** Width of the block in px. The heart box is size x size. */
 		size?: number;
 		/** Visible ribbon length in px, above the heart. */
@@ -104,6 +111,7 @@
 		design,
 		markup = undefined,
 		colors = undefined,
+		heartId = undefined,
 		size = 168,
 		ribbon = 40,
 		delay = 0,
@@ -130,19 +138,20 @@
 		};
 	});
 
-	// The site-wide pair, read after mount so the prerendered markup and the
-	// hydrated one agree — the same dance PaperHeartSVG does for the lobes.
-	let storeColors = $state<HeartColors>({ ...DEFAULT_COLORS });
-
-	onMount(() => {
-		storeColors = getColors();
-		return subscribeColors((c) => {
-			storeColors = c;
-		});
-	});
-
 	let ownColors = $derived(colors ?? design?.colors);
-	let ribbonColor = $derived(ownColors?.right ?? storeColors.right);
+	// A heart that follows the site's pair hangs from the site's right-hand
+	// paper through its token rather than the store's value: the token is in
+	// the CSS from the first frame, and the colourful mode swaps it for the
+	// heart's own pair (src/app.css). The hero's bootstrap copies this value
+	// from a card to the slot it hangs the card's heart in.
+	let ribbonColor = $derived(ownColors?.right ?? 'var(--paper-right)');
+
+	// The colourful mode's pair, for a heart that follows the site's pair: a
+	// heart with its own colours keeps them in that mode too.
+	let pair = $derived.by(() => {
+		const id = heartId ?? design?.id;
+		return ownColors === undefined && id ? pairAttributes(id) : undefined;
+	});
 
 	// A heart handed over as markup cannot repaint itself, so one that follows the
 	// site-wide pair does it in CSS instead (see the style block). A heart with
@@ -155,7 +164,12 @@
 	let ribbonWidth = $derived(Math.max(8, Math.round(size * 0.055)));
 </script>
 
-<div class="hang {className ?? ''}" style="width: {size}px; animation-delay: {swayAnimationDelay(delay)};">
+<div
+	class="hang {className ?? ''}"
+	data-pair={pair?.['data-pair']}
+	data-pair-edge={pair?.['data-pair-edge']}
+	style="width: {size}px; animation-delay: {swayAnimationDelay(delay)};{pair ? ` ${pair.style}` : ''}"
+>
 	<div
 		class="ribbon"
 		style="width: {ribbonWidth}px; height: {ribbon + dip}px; background: {ribbonColor};"

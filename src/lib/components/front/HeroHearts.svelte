@@ -92,6 +92,7 @@
 					<HangingHeart
 						design={heart.design}
 						markup={heart.markup}
+						heartId={heart.id}
 						loadPaper={loadPaperHeart}
 						size={slot.size}
 						ribbon={slot.ribbon}

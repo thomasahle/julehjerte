@@ -9,21 +9,30 @@ const LABEL = 'Gå til {name} i galleriet';
  * real markup (HeroHearts, HeartCard, HangingHeart), including the comments
  * Svelte hydrates the `{@html}` block by, which the script must leave in place.
  */
-function page({ cards = 6, userCards = 0 } = {}) {
+function page({ cards = 6, userCards = 0, pairs = [] as number[] } = {}) {
 	const slot = (i: number) =>
 		`<div class="slot"><a class="slot-link" href="#" aria-label="placeholder">` +
-		`<div class="hang"><div class="ribbon" style="background: rgb(0, 0, 0);"></div>` +
+		`<div class="hang" data-pair="99" data-pair-edge="" style="--pair-left: #000000; --pair-right: #000000;">` +
+		`<div class="ribbon" style="background: rgb(0, 0, 0);"></div>` +
 		`<div class="heart"><!--[--><!---->${heartSvg(`hero-${i}`)}<!----><!--]--></div>` +
 		`</div></a></div>`;
 
-	const card = (id: string, name: string, user: boolean) =>
+	// A card's colourful-mode pair, as HangingHeart writes it (pair n: #0000nn / #nn0000).
+	const pairOf = (i: number) => {
+		const n = pairs[i];
+		if (n === undefined) return '';
+		const hex = n.toString(16).padStart(2, '0');
+		return ` data-pair="${n}" style="--pair-left: #0000${hex}; --pair-right: #${hex}0000;"`;
+	};
+
+	const card = (id: string, name: string, user: boolean, i = 0) =>
 		`<article id="heart-${id}" data-heart-id="${id}" data-heart-name="${name}"` +
-		`${user ? ' data-user=""' : ''}><div class="card-heart"><div class="hang">` +
+		`${user ? ' data-user=""' : ''}><div class="card-heart"><div class="hang"${user ? '' : pairOf(i)}>` +
 		`<div class="ribbon" style="background: rgb(9, 9, ${9 + Number(user)});"></div>` +
 		`<div class="heart">${heartSvg(`card-${id}`)}</div></div></div></article>`;
 
 	const gallery = [
-		...Array.from({ length: cards }, (_, i) => card(`h${i}`, `Heart ${i}`, false)),
+		...Array.from({ length: cards }, (_, i) => card(`h${i}`, `Heart ${i}`, false, i)),
 		...Array.from({ length: userCards }, (_, i) => card(`u${i}`, `Mit ${i}`, true))
 	].join('');
 
@@ -136,6 +145,43 @@ describe('the hero bootstrap script', () => {
 			const ribbon = slot.querySelector<HTMLElement>('.ribbon')!;
 			expect(ribbon.style.background).toBe('rgb(9, 9, 9)');
 		}
+	});
+
+	it("carries the card's colourful-mode pair over to the slot", () => {
+		page({ cards: 8, pairs: [0, 1, 2, 3, 4, 5, 6, 7] });
+		run();
+
+		for (const slot of slotsOf('hero-d')) {
+			const n = Number(heartIdIn(slot)!.slice(1));
+			const hang = slot.querySelector<HTMLElement>('.hang')!;
+			const hex = n.toString(16).padStart(2, '0');
+			expect(hang.getAttribute('data-pair')).toBe(String(n));
+			// The stand-in's outline flag goes: these cards have none.
+			expect(hang.hasAttribute('data-pair-edge')).toBe(false);
+			expect(hang.style.getPropertyValue('--pair-left').trim()).toBe(`#0000${hex}`);
+			expect(hang.style.getPropertyValue('--pair-right').trim()).toBe(`#${hex}0000`);
+		}
+	});
+
+	it('hangs hearts of different pairs in the colourful mode', () => {
+		// Twelve cards, but only five pairs among them, and most of one: a plain
+		// draw would often hang two of pair 0 side by side.
+		const pairs = [0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4];
+		for (let round = 0; round < 40; round++) {
+			document.documentElement.className = 'colorful';
+			page({ cards: pairs.length, pairs });
+			run();
+			const drawn = slotsOf('hero-d').map((slot) => pairs[Number(heartIdIn(slot)!.slice(1))]);
+			expect(new Set(drawn).size).toBe(5);
+		}
+	});
+
+	it('still fills every slot when there are fewer pairs than slots', () => {
+		document.documentElement.className = 'colorful';
+		page({ cards: 6, pairs: [0, 0, 0, 1, 1, 1] });
+		run();
+		const ids = slotsOf('hero-d').map(heartIdIn);
+		expect(new Set(ids).size).toBe(5);
 	});
 
 	it('leaves the gallery it copied from alone', () => {

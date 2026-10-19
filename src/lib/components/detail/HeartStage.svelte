@@ -20,6 +20,7 @@
 	import TemplatePreview from '$lib/components/TemplatePreview.svelte';
 	import { t, type Language } from '$lib/i18n';
 	import type { HeartDesign } from '$lib/types/heart';
+	import { pairAttributes } from '$lib/utils/palette';
 
 	type ViewId = 'heart' | 'photo' | 'left' | 'right';
 
@@ -90,6 +91,7 @@
 
 <div class="thumbs">
 	{#each views as v (v.id)}
+		{@const pair = v.id === 'heart' && design && !design.colors ? pairAttributes(design.id) : undefined}
 		<button
 			type="button"
 			class="thumb-btn"
@@ -97,8 +99,16 @@
 			aria-pressed={shownView === v.id}
 			onclick={() => (view = v.id)}
 		>
-			<!-- Decorative: the button is named by its label below. -->
-			<span class="thumb" class:thumb-heart={v.id === 'heart'} aria-hidden="true">
+			<!-- Decorative: the button is named by its label below. The heart's
+			     thumbnail carries its colourful-mode pair, like the big heart above
+			     it (HangingHeart), so the two show the same papers. -->
+			<span
+				class="thumb"
+				class:thumb-heart={v.id === 'heart'}
+				aria-hidden="true"
+				data-pair={pair?.['data-pair']}
+				style={pair?.style}
+			>
 				{#if v.id === 'heart' && design}
 					<PaperHeartSVG
 						readonly

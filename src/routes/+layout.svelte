@@ -12,6 +12,7 @@
 	import { markAppStarted } from "$lib/hydration";
 	import { isPageViewNavigation, trackPageView } from "$lib/analytics";
 	import { getColors, subscribeColors, type HeartColors } from "$lib/stores/colors";
+	import { colorModeHeadScript } from "$lib/stores/colorMode";
 
 	let { children } = $props();
 	let lang = $derived(langFromPathname($page.url.pathname));
@@ -121,6 +122,12 @@
 </script>
 
 <svelte:head>
+	<!-- The colourful mode's class on <html>, before the body paints, so a
+	     reload with the mode on never shows the hearts in the site's pair first
+	     ($lib/stores/colorMode). First in the head: it must not wait for
+	     anything. -->
+	{@html colorModeHeadScript()}
+
 	<!-- Google tag (gtag.js). Only the queue is set up here; the script itself is
 	     the page's largest download and is fetched after first paint (see the
 	     effect above). Calls made before it arrives queue in dataLayer.
