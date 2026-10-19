@@ -1,0 +1,592 @@
+{
+  "schema": "saliency-validation-selection-1",
+  "status": "previously-inspected-development-selection-current-catalog",
+  "sourceManifest": {
+    "path": "docs/inverse/datasets/real-manifest.json",
+    "sha256": "999544ef30b1d71095e1630d7f834e162e2aa6145181df10107a831aa2eda350"
+  },
+  "originalSelection": {
+    "path": "docs/inverse/datasets/u2netp-fresh-selection.json",
+    "sha256": "44cbdfb7babdfc6c606315694562b898c1220b525948c442c179831fc240f8e6"
+  },
+  "scope": "Same 32 photographs and selection order. Refresh only current source/duplicate/split metadata after board import; not a fresh sample or prospective evaluation.",
+  "photos": [
+    {
+      "id": "real-1bcc922200edde26-body-1",
+      "assetId": "real-1bcc922200edde26",
+      "file": "tmp/heart-training-real/assets/1bcc922200edde26ff8dc0513fbabdbcc092f9d7bd6e2e09e213c703d8c3099b.jpg",
+      "imageSha256": "1bcc922200edde26ff8dc0513fbabdbcc092f9d7bd6e2e09e213c703d8c3099b",
+      "dimensions": [
+        285,
+        180
+      ],
+      "decodedRGBSha256": "0817e1442b803d055f81a7c7e7aa65094c07016025a951cb17ea84ada05102f0",
+      "splitGroupId": "real-split-7ff100248741a01a",
+      "nearDuplicateGroup": "real-1bcc922200edde26",
+      "selectionRank": "e70e7a865add80467e222dcd9e9e6a35885f176b199dba245719baf2c60a2e62",
+      "sourceGroups": [
+        "bibel",
+        "publisher:bibelselskabet.dk"
+      ]
+    },
+    {
+      "id": "real-80a649a21ea938ae-body-1",
+      "assetId": "real-80a649a21ea938ae",
+      "file": "tmp/heart-training-real/assets/80a649a21ea938ae429e5d5268fc40db7e2e00ed0987c54d1346543557cb4184.jpg",
+      "imageSha256": "80a649a21ea938ae429e5d5268fc40db7e2e00ed0987c54d1346543557cb4184",
+      "dimensions": [
+        1000,
+        1334
+      ],
+      "decodedRGBSha256": "f4f8b7587791bd0064a3d59c8981c0c7e86841237fe9c2af8ae5074eb80f94e9",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "nearDuplicateGroup": "real-80a649a21ea938ae",
+      "selectionRank": "0297d05e46159d4403d6587dcee1a459ae73a4adb3a3871dee655550ac4132b6",
+      "sourceGroups": [
+        "pinterest-board:https://dk.pinterest.com/sabrinadanholm/mine-egne-flettede-julehjerter/",
+        "pinterest-pin-405746247658560927"
+      ]
+    },
+    {
+      "id": "real-f6e5e128449e3cb9-body-1",
+      "assetId": "real-f6e5e128449e3cb9",
+      "file": "tmp/heart-training-real/assets/f6e5e128449e3cb9733275863a9e089bc3ae1eb18e74f222feae36b7839546f8.jpg",
+      "imageSha256": "f6e5e128449e3cb9733275863a9e089bc3ae1eb18e74f222feae36b7839546f8",
+      "dimensions": [
+        800,
+        922
+      ],
+      "decodedRGBSha256": "9bbd2c807124e6386770140adeb5863918e45ad4fa563d098b582f6f4da2b493",
+      "splitGroupId": "real-split-e234e243db926fe7",
+      "nearDuplicateGroup": "real-f6e5e128449e3cb9",
+      "selectionRank": "59f8f25d1bcf9e1f1258fbce6379d65d4eafec8cfbee8e9da3ac70948d4dec5b",
+      "sourceGroups": [
+        "pinterest-pin-740279257473021957",
+        "pinterest-pin-818740407277500464",
+        "publisher:startsateight.com"
+      ]
+    },
+    {
+      "id": "real-fcbcc23efea92b93-body-1",
+      "assetId": "real-fcbcc23efea92b93",
+      "file": "tmp/heart-training-real/assets/fcbcc23efea92b93609b156241237793fa738b3d17c8bed30113bed3aa2d7695.jpg",
+      "imageSha256": "fcbcc23efea92b93609b156241237793fa738b3d17c8bed30113bed3aa2d7695",
+      "dimensions": [
+        229,
+        300
+      ],
+      "decodedRGBSha256": "a4cee063ff5fa2fea1a98f4273c3a80de8904a7d0d5accdf083f19018228cf45",
+      "splitGroupId": "real-split-f62261fbd9c9f7f9",
+      "nearDuplicateGroup": "real-ee1fef56037b0e40",
+      "selectionRank": "013e7b24ed7fce71f4714042b145e6a5cf2bdd73515095d24f85874b76bf3db7",
+      "sourceGroups": [
+        "pinterest-pin-493284965437334290",
+        "publisher:flettedehjerter.dk"
+      ]
+    },
+    {
+      "id": "real-55704c6e2911bebc-body-1",
+      "assetId": "real-55704c6e2911bebc",
+      "file": "tmp/heart-training-real/assets/55704c6e2911bebc83f7cc828096cb0bb6856014b4a95979b1faf1b49260ca04.jpg",
+      "imageSha256": "55704c6e2911bebc83f7cc828096cb0bb6856014b4a95979b1faf1b49260ca04",
+      "dimensions": [
+        1200,
+        1200
+      ],
+      "decodedRGBSha256": "324cc90ecb46359077212476c2503d4819f0a9e7e1a20bcb91b87f3888bd16db",
+      "splitGroupId": "real-split-7733a2ebb431f524",
+      "nearDuplicateGroup": "real-55704c6e2911bebc",
+      "selectionRank": "11241e945c17b8f84c9bec86ec12a1c1aa65c94666af8be38d6e165e8df83b1b",
+      "sourceGroups": [
+        "danishthings",
+        "publisher:danishthings.com"
+      ]
+    },
+    {
+      "id": "real-24b5ed49c9411b11-body-1",
+      "assetId": "real-24b5ed49c9411b11",
+      "file": "tmp/heart-training-real/assets/24b5ed49c9411b1162d0746a0366ae3a32c46cdb787e248ec09931a66b9ce1dd.jpg",
+      "imageSha256": "24b5ed49c9411b1162d0746a0366ae3a32c46cdb787e248ec09931a66b9ce1dd",
+      "dimensions": [
+        1000,
+        1334
+      ],
+      "decodedRGBSha256": "50a4f95055bf89f04266a7dec8ddaadf8c3ab5a8e8be1b034b7a5999a12fee1d",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "nearDuplicateGroup": "real-24b5ed49c9411b11",
+      "selectionRank": "03d3dc759f3425381181f47038e62227b879a8f1000ffc0ef507c6c9e83f89d0",
+      "sourceGroups": [
+        "pinterest-board:https://dk.pinterest.com/sabrinadanholm/mine-egne-flettede-julehjerter/",
+        "pinterest-pin-405746247658518755"
+      ]
+    },
+    {
+      "id": "real-589f606a9d9899f2-body-1",
+      "assetId": "real-589f606a9d9899f2",
+      "file": "tmp/heart-training-real/assets/589f606a9d9899f2e9dae91b7fe9d2cd24b94838db6f20257cec43a7062f600c.jpg",
+      "imageSha256": "589f606a9d9899f2e9dae91b7fe9d2cd24b94838db6f20257cec43a7062f600c",
+      "dimensions": [
+        525,
+        647
+      ],
+      "decodedRGBSha256": "c9d1830535bac6e96ecc317069a83782049f6c78f5b0fdad7dc27adf401aa095",
+      "splitGroupId": "real-split-f62261fbd9c9f7f9",
+      "nearDuplicateGroup": "real-589f606a9d9899f2",
+      "selectionRank": "0146eb018363419014fc635af28abf668e2c7895c67fed97511f304843a030ab",
+      "sourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ]
+    },
+    {
+      "id": "real-dfa7e4b71b43aa86-body-1",
+      "assetId": "real-dfa7e4b71b43aa86",
+      "file": "tmp/heart-training-real/assets/dfa7e4b71b43aa866156f7c24493f1113307e330668ebbecd3a2bbc297fa8301.jpg",
+      "imageSha256": "dfa7e4b71b43aa866156f7c24493f1113307e330668ebbecd3a2bbc297fa8301",
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "decodedRGBSha256": "7ec095f622848023ef195b4275147769d5c827a785e592543fbf82422f21623e",
+      "splitGroupId": "real-split-7733a2ebb431f524",
+      "nearDuplicateGroup": "real-c9b9f7614b1de23b",
+      "selectionRank": "12b852c74734c8daba2a26455ba30b3501afc9bf7336db77598f1a17b09a3272",
+      "sourceGroups": [
+        "danishthings",
+        "publisher:danishthings.com"
+      ]
+    },
+    {
+      "id": "real-2b0550dd86d23b40-body-1",
+      "assetId": "real-2b0550dd86d23b40",
+      "file": "tmp/heart-training-real/assets/2b0550dd86d23b406cbee98615558ecc726de82f1668629d736bbdd15b01d305.jpg",
+      "imageSha256": "2b0550dd86d23b406cbee98615558ecc726de82f1668629d736bbdd15b01d305",
+      "dimensions": [
+        1334,
+        1000
+      ],
+      "decodedRGBSha256": "22fc142e531496c2d5bc15199d07352def2b1fa36e1561ae53b2d6e92de3764f",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "nearDuplicateGroup": "real-2b0550dd86d23b40",
+      "selectionRank": "042f77c9bff2d7af5612bc071512c06083db83459352eaffe9a22b3592b33d46",
+      "sourceGroups": [
+        "pinterest-board:https://dk.pinterest.com/sabrinadanholm/mine-egne-flettede-julehjerter/",
+        "pinterest-pin-405746247658525854"
+      ]
+    },
+    {
+      "id": "real-2502cdec0720f4ea-body-1",
+      "assetId": "real-2502cdec0720f4ea",
+      "file": "tmp/heart-training-real/assets/2502cdec0720f4eab6bcc6e6c3ca830a472f54fbccfb58b0ef10eed5c5ac8cbd.jpg",
+      "imageSha256": "2502cdec0720f4eab6bcc6e6c3ca830a472f54fbccfb58b0ef10eed5c5ac8cbd",
+      "dimensions": [
+        566,
+        648
+      ],
+      "decodedRGBSha256": "ba44960a82bb1094db92e85cded62529eccaa29471bf7393be9a7e0d1f3cd161",
+      "splitGroupId": "real-split-f62261fbd9c9f7f9",
+      "nearDuplicateGroup": "real-3e688a50ef76ead4",
+      "selectionRank": "03a1e965f8bec259aa67a569114e1871f599e5e34868fe4d5b55e2ee8d00f87c",
+      "sourceGroups": [
+        "pinterest-pin-74802043804358005",
+        "publisher:julehjerter.wordpress.com"
+      ]
+    },
+    {
+      "id": "real-d3f063052599e167-body-1",
+      "assetId": "real-d3f063052599e167",
+      "file": "tmp/heart-training-real/assets/d3f063052599e167ddc94cefc8951a15f9204a01708018fd254332d547c3ca94.jpg",
+      "imageSha256": "d3f063052599e167ddc94cefc8951a15f9204a01708018fd254332d547c3ca94",
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "decodedRGBSha256": "36ff798fa84a705e618e7391892796a1508439266427599305963ddc3e6558a7",
+      "splitGroupId": "real-split-7733a2ebb431f524",
+      "nearDuplicateGroup": "real-9d16c75dcd2cf474",
+      "selectionRank": "3c212867f968986dbc02643f8e055042d0de907df2da507c003de114de34af32",
+      "sourceGroups": [
+        "pinterest-pin-147070744075009582",
+        "publisher:danishthings.com"
+      ]
+    },
+    {
+      "id": "real-a126ed5d62adfd92-body-1",
+      "assetId": "real-a126ed5d62adfd92",
+      "file": "tmp/heart-training-real/assets/a126ed5d62adfd9202b1d6cde5f0dc8b3da4c365c5687975b11f1191231831a0.jpg",
+      "imageSha256": "a126ed5d62adfd9202b1d6cde5f0dc8b3da4c365c5687975b11f1191231831a0",
+      "dimensions": [
+        1334,
+        1000
+      ],
+      "decodedRGBSha256": "65ec6d06220c7920a8be9e311699e5fbd007efc59a3036355a2aa3a7427458f7",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "nearDuplicateGroup": "real-a126ed5d62adfd92",
+      "selectionRank": "04bb49e13b2d10a331e0cda76180259b8312d63d2325b249b0d42ccca58e2529",
+      "sourceGroups": [
+        "pinterest-board:https://dk.pinterest.com/sabrinadanholm/mine-egne-flettede-julehjerter/",
+        "pinterest-pin-405746247658538773"
+      ]
+    },
+    {
+      "id": "real-5088a58018c3aa28-body-1",
+      "assetId": "real-5088a58018c3aa28",
+      "file": "tmp/heart-training-real/assets/5088a58018c3aa281e2715fad627c6bac0d111a06625fce8eb884694deaa87da.jpg",
+      "imageSha256": "5088a58018c3aa281e2715fad627c6bac0d111a06625fce8eb884694deaa87da",
+      "dimensions": [
+        1897,
+        2544
+      ],
+      "decodedRGBSha256": "de1a1036ec473b70b937eb66e054bd3b1af3346f92964fa86166dffe55708ab1",
+      "splitGroupId": "real-split-f62261fbd9c9f7f9",
+      "nearDuplicateGroup": "real-5088a58018c3aa28",
+      "selectionRank": "03bb56a821c820ac4cf53101897b070cd5062602cf6ccb8740102af774891436",
+      "sourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ]
+    },
+    {
+      "id": "real-1a7cfc6be8b164b5-body-1",
+      "assetId": "real-1a7cfc6be8b164b5",
+      "file": "tmp/heart-training-real/assets/1a7cfc6be8b164b596e62254fc53e38df55e877524c08ebc597957b4ac15177a.jpg",
+      "imageSha256": "1a7cfc6be8b164b596e62254fc53e38df55e877524c08ebc597957b4ac15177a",
+      "dimensions": [
+        1200,
+        1200
+      ],
+      "decodedRGBSha256": "17fed53a65e963c8aee9ffe0447766d4c09b921df603330e81c7f8aff4dc86c2",
+      "splitGroupId": "real-split-7733a2ebb431f524",
+      "nearDuplicateGroup": "real-1a7cfc6be8b164b5",
+      "selectionRank": "477b25376fa128ac5eae74de41bcff5d3394cc2764283b3f3e77ffc040decfac",
+      "sourceGroups": [
+        "danishthings",
+        "publisher:danishthings.com"
+      ]
+    },
+    {
+      "id": "real-fe7fb089d1cd86b4-body-1",
+      "assetId": "real-fe7fb089d1cd86b4",
+      "file": "tmp/heart-training-real/assets/fe7fb089d1cd86b444dc68d47f6aa4d04f5b88eb3bf68c5c8304568f0a3ea4d8.jpg",
+      "imageSha256": "fe7fb089d1cd86b444dc68d47f6aa4d04f5b88eb3bf68c5c8304568f0a3ea4d8",
+      "dimensions": [
+        2448,
+        3264
+      ],
+      "decodedRGBSha256": "f20ba763b5dcea76453eefe1decf2100aebd835b10a81ec5cdd10048e362ffbe",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "nearDuplicateGroup": "real-fe7fb089d1cd86b4",
+      "selectionRank": "04bee3ecaf7363ea4450ab1edb02e03154daefab9b03380bad3958d91a15aab5",
+      "sourceGroups": [
+        "pinterest-board:https://dk.pinterest.com/sabrinadanholm/mine-egne-flettede-julehjerter/",
+        "pinterest-pin-405746247663756257"
+      ]
+    },
+    {
+      "id": "real-8b91ecf546833a3f-body-1",
+      "assetId": "real-8b91ecf546833a3f",
+      "file": "tmp/heart-training-real/assets/8b91ecf546833a3f968f00685ad2a1702f4967f9bc9a5fcd9117feb00b19d96e.jpg",
+      "imageSha256": "8b91ecf546833a3f968f00685ad2a1702f4967f9bc9a5fcd9117feb00b19d96e",
+      "dimensions": [
+        826,
+        986
+      ],
+      "decodedRGBSha256": "06b3526418d5f03b1f3a8c48b528456d08aead3845eadde5ee4d787c951f569f",
+      "splitGroupId": "real-split-f62261fbd9c9f7f9",
+      "nearDuplicateGroup": "real-8b91ecf546833a3f",
+      "selectionRank": "04311614bc194f2c4e55d7abfe9185ab0738e0b44d4dc8775fe2c5f59e029c09",
+      "sourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ]
+    },
+    {
+      "id": "real-b5317080eec610dc-body-1",
+      "assetId": "real-b5317080eec610dc",
+      "file": "tmp/heart-training-real/assets/b5317080eec610dc8a022fa1895f04440a629d6e6e6f2d1562550bf48ca92ed5.jpg",
+      "imageSha256": "b5317080eec610dc8a022fa1895f04440a629d6e6e6f2d1562550bf48ca92ed5",
+      "dimensions": [
+        1200,
+        1200
+      ],
+      "decodedRGBSha256": "eeeb0efc1c58e4d4f627baf3c661c27c1c2a761b9b00827201990307820f750e",
+      "splitGroupId": "real-split-7733a2ebb431f524",
+      "nearDuplicateGroup": "real-564a039e27aae41a",
+      "selectionRank": "4c3eca065c022f845693d4edf628fe95d3c4087d27cf7f4a69bdd7cec678525c",
+      "sourceGroups": [
+        "pinterest-pin-779404279280226846",
+        "publisher:danishthings.com"
+      ]
+    },
+    {
+      "id": "real-c7d1e0ad5050db71-body-1",
+      "assetId": "real-c7d1e0ad5050db71",
+      "file": "tmp/heart-training-real/assets/c7d1e0ad5050db713a43a7acccacecdac65b68c0fc4072f587ff7b3422f9b0ba.jpg",
+      "imageSha256": "c7d1e0ad5050db713a43a7acccacecdac65b68c0fc4072f587ff7b3422f9b0ba",
+      "dimensions": [
+        1000,
+        1334
+      ],
+      "decodedRGBSha256": "1784d1de304417d043151153fea0a393eff0d17e1316e365e67e8f6231ddb202",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "nearDuplicateGroup": "real-c7d1e0ad5050db71",
+      "selectionRank": "05cb230ff52bfa0e40ee6e95f2ca06b56c85777fd7e51aa8ece2dcb1edd569d5",
+      "sourceGroups": [
+        "pinterest-board:https://dk.pinterest.com/sabrinadanholm/mine-egne-flettede-julehjerter/",
+        "pinterest-pin-405746247658486331"
+      ]
+    },
+    {
+      "id": "real-45ad148d9ec045be-body-1",
+      "assetId": "real-45ad148d9ec045be",
+      "file": "tmp/heart-training-real/assets/45ad148d9ec045bec60048664871f4bfb466b2e5d1acd017b0fd35d173b532b9.jpg",
+      "imageSha256": "45ad148d9ec045bec60048664871f4bfb466b2e5d1acd017b0fd35d173b532b9",
+      "dimensions": [
+        650,
+        809
+      ],
+      "decodedRGBSha256": "8e81f8c17cbff03cdde174b1b4b499c582dc53748e47e251eed9ff3a47f39ab8",
+      "splitGroupId": "real-split-f62261fbd9c9f7f9",
+      "nearDuplicateGroup": "real-f24df29c4af5c31d",
+      "selectionRank": "05b451841aa9a6a0562c080982a1fb059f2b059ac6a60f1627f4592d98b6d4c2",
+      "sourceGroups": [
+        "pinterest-pin-289145238569136867",
+        "publisher:julehjerter.wordpress.com"
+      ]
+    },
+    {
+      "id": "real-702942779385436c-body-1",
+      "assetId": "real-702942779385436c",
+      "file": "tmp/heart-training-real/assets/702942779385436cd9d6d0007130c158ce35361ed3d06900d7825eea647bcfce.jpg",
+      "imageSha256": "702942779385436cd9d6d0007130c158ce35361ed3d06900d7825eea647bcfce",
+      "dimensions": [
+        1200,
+        1200
+      ],
+      "decodedRGBSha256": "37591b9e059dce2dc1bc54c3d58ee247eb739a3e46f31c87832872b38ea90f06",
+      "splitGroupId": "real-split-7733a2ebb431f524",
+      "nearDuplicateGroup": "real-702942779385436c",
+      "selectionRank": "5f70ab3cc8b56ecc7fbf2a1b074486c87826534ee530b9988b2edcb8030c5496",
+      "sourceGroups": [
+        "danishthings",
+        "publisher:danishthings.com"
+      ]
+    },
+    {
+      "id": "real-03bddab9c8f384c4-body-1",
+      "assetId": "real-03bddab9c8f384c4",
+      "file": "tmp/heart-training-real/assets/03bddab9c8f384c4f87cab690d00d92761b99d4339cee83a471398a117d82ddd.jpg",
+      "imageSha256": "03bddab9c8f384c4f87cab690d00d92761b99d4339cee83a471398a117d82ddd",
+      "dimensions": [
+        2448,
+        3264
+      ],
+      "decodedRGBSha256": "76f0ee229d2aa6ede858861cf60a0708232d71415ed685381fd0bfadb0322a70",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "nearDuplicateGroup": "real-03bddab9c8f384c4",
+      "selectionRank": "08fffdfa49703f2c77bba6fe8539fcb4072e9de48fd8999c717286beafaaf418",
+      "sourceGroups": [
+        "pinterest-board:https://dk.pinterest.com/sabrinadanholm/mine-egne-flettede-julehjerter/",
+        "pinterest-pin-405746247663679215"
+      ]
+    },
+    {
+      "id": "real-eb60ff94dfc6e2f8-body-1",
+      "assetId": "real-eb60ff94dfc6e2f8",
+      "file": "tmp/heart-training-real/assets/eb60ff94dfc6e2f85e09e9e82b2ae369806b839081c63811e26c0c0e3e5528a8.jpg",
+      "imageSha256": "eb60ff94dfc6e2f85e09e9e82b2ae369806b839081c63811e26c0c0e3e5528a8",
+      "dimensions": [
+        562,
+        692
+      ],
+      "decodedRGBSha256": "8c9cfa7a8c791df8646c81b9ee39ba0bf37bee08b7ada6eaea6fbd3fe6ef6754",
+      "splitGroupId": "real-split-f62261fbd9c9f7f9",
+      "nearDuplicateGroup": "real-c0ad47a394836a36",
+      "selectionRank": "062f536af6f98bef9d2c2ac1d3778b5e2ac48f50891bc1853d9a9579fa523a76",
+      "sourceGroups": [
+        "pinterest-pin-500603314846291436",
+        "publisher:flettedehjerter.dk"
+      ]
+    },
+    {
+      "id": "real-af21a4ef38355dfa-body-1",
+      "assetId": "real-af21a4ef38355dfa",
+      "file": "tmp/heart-training-real/assets/af21a4ef38355dfa63085e3ac742e6c152e213ae70ddd3a72d2a66923ab833a8.jpg",
+      "imageSha256": "af21a4ef38355dfa63085e3ac742e6c152e213ae70ddd3a72d2a66923ab833a8",
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "decodedRGBSha256": "621a7a086c098eadddda7e828b603239b75be6fe5276c1b828a959f4abfc2dc4",
+      "splitGroupId": "real-split-7733a2ebb431f524",
+      "nearDuplicateGroup": "real-0eb4a193bbb474ba",
+      "selectionRank": "622283f4f713afa8b3821ec1f6b11868f7dbc893917f7a4aa6514cfbc20f12cd",
+      "sourceGroups": [
+        "pinterest-pin-415527503129662160",
+        "publisher:danishthings.com"
+      ]
+    },
+    {
+      "id": "real-f4bd8d13fc7e68d0-body-1",
+      "assetId": "real-f4bd8d13fc7e68d0",
+      "file": "tmp/heart-training-real/assets/f4bd8d13fc7e68d056351e659a03ed12364eef8878dd47b5dd1fa723eaa02755.jpg",
+      "imageSha256": "f4bd8d13fc7e68d056351e659a03ed12364eef8878dd47b5dd1fa723eaa02755",
+      "dimensions": [
+        2448,
+        3264
+      ],
+      "decodedRGBSha256": "fd919deabdc7f4ae45065acd53db07498f5dfa9241f1170cf1115b879292655f",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "nearDuplicateGroup": "real-f4bd8d13fc7e68d0",
+      "selectionRank": "09a074ed4ffa98ffd2e03aab8331d3a8d92771c43a6262b25dedb1bac514a907",
+      "sourceGroups": [
+        "pinterest-board:https://dk.pinterest.com/sabrinadanholm/mine-egne-flettede-julehjerter/",
+        "pinterest-pin-405746247663679172"
+      ]
+    },
+    {
+      "id": "real-f05cf91c134daea9-body-1",
+      "assetId": "real-f05cf91c134daea9",
+      "file": "tmp/heart-training-real/assets/f05cf91c134daea977f2f7058f6f9d64cfdfdf823eb641f0dd454bdef002b998.jpg",
+      "imageSha256": "f05cf91c134daea977f2f7058f6f9d64cfdfdf823eb641f0dd454bdef002b998",
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "decodedRGBSha256": "b6ea736fad3044ce3f48594d8ec3a62f329f331636f88e937afc1d59db0bc2f3",
+      "splitGroupId": "real-split-f62261fbd9c9f7f9",
+      "nearDuplicateGroup": "real-04b2452a67b6406a",
+      "selectionRank": "070e9bbdfec54deb12fe66f1014bfa61c8733d0ff30e1febbd2e3e0ced7601a6",
+      "sourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ]
+    },
+    {
+      "id": "real-12f272f48ed09d51-body-1",
+      "assetId": "real-12f272f48ed09d51",
+      "file": "tmp/heart-training-real/assets/12f272f48ed09d51e9442f894ad1f7be29906285bd2009e2edc9ed329e54996a.jpg",
+      "imageSha256": "12f272f48ed09d51e9442f894ad1f7be29906285bd2009e2edc9ed329e54996a",
+      "dimensions": [
+        1200,
+        1600
+      ],
+      "decodedRGBSha256": "fdded7a77f43461b2777620b8e3b0d8963c08bf61da6c154940cd525861e8e9e",
+      "splitGroupId": "real-split-7733a2ebb431f524",
+      "nearDuplicateGroup": "real-12f272f48ed09d51",
+      "selectionRank": "65a4db494f64d008c73bef2810f6b706941f056301177e629b41cc15a5de5789",
+      "sourceGroups": [
+        "pinterest-pin-767300855298799083",
+        "publisher:danishthings.com"
+      ]
+    },
+    {
+      "id": "real-28a87a8be083f16c-body-1",
+      "assetId": "real-28a87a8be083f16c",
+      "file": "tmp/heart-training-real/assets/28a87a8be083f16c7711d55fad658eb45634e684f9a0f288a63ae1672dd3db6a.jpg",
+      "imageSha256": "28a87a8be083f16c7711d55fad658eb45634e684f9a0f288a63ae1672dd3db6a",
+      "dimensions": [
+        1000,
+        1334
+      ],
+      "decodedRGBSha256": "316b1c52604427370333769ae6ac9670cb4f7aad4809b82c23da8c94618d4c69",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "nearDuplicateGroup": "real-28a87a8be083f16c",
+      "selectionRank": "0b3b5d4622e62ca2c2ac40e38e171d61885c12d8599f9c7fd39d8b974c4f6e0c",
+      "sourceGroups": [
+        "pinterest-board:https://dk.pinterest.com/sabrinadanholm/mine-egne-flettede-julehjerter/",
+        "pinterest-pin-405746247658488265"
+      ]
+    },
+    {
+      "id": "real-ce66f9634c2c613b-body-1",
+      "assetId": "real-ce66f9634c2c613b",
+      "file": "tmp/heart-training-real/assets/ce66f9634c2c613b521fcc4f96970b3947e00156581b55426978e1e6cf988345.jpg",
+      "imageSha256": "ce66f9634c2c613b521fcc4f96970b3947e00156581b55426978e1e6cf988345",
+      "dimensions": [
+        709,
+        797
+      ],
+      "decodedRGBSha256": "18f765a7777c71aca6c38c980239ba36bd99ff5b9a935b40baf77a97544b1b07",
+      "splitGroupId": "real-split-f62261fbd9c9f7f9",
+      "nearDuplicateGroup": "real-ce66f9634c2c613b",
+      "selectionRank": "0977b18f978e4794e976d07440cb5de4a2c66b0ea7515512aca171e0dc4b629d",
+      "sourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ]
+    },
+    {
+      "id": "real-52e732b98f9b14f1-body-1",
+      "assetId": "real-52e732b98f9b14f1",
+      "file": "tmp/heart-training-real/assets/52e732b98f9b14f182f4481dd7318789f751751b9f03f14f14b622d372eaf8f0.jpg",
+      "imageSha256": "52e732b98f9b14f182f4481dd7318789f751751b9f03f14f14b622d372eaf8f0",
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "decodedRGBSha256": "897787fbd39903f0aaf05a5eb46963e9f960a9512399dce213cb48e1bb82ba45",
+      "splitGroupId": "real-split-7733a2ebb431f524",
+      "nearDuplicateGroup": "real-346a26cb517947fd",
+      "selectionRank": "77c4a7bbd7e7600a7efd2b37c497909f41e6751965c9ed75e35064f5e5a34b48",
+      "sourceGroups": [
+        "danishthings",
+        "publisher:danishthings.com"
+      ]
+    },
+    {
+      "id": "real-7e9f6f83ae43ec2a-body-1",
+      "assetId": "real-7e9f6f83ae43ec2a",
+      "file": "tmp/heart-training-real/assets/7e9f6f83ae43ec2aad2fc0b37ad4c42d8f111df9cd7ae35b2f8a6649bb76c70d.jpg",
+      "imageSha256": "7e9f6f83ae43ec2aad2fc0b37ad4c42d8f111df9cd7ae35b2f8a6649bb76c70d",
+      "dimensions": [
+        1000,
+        1334
+      ],
+      "decodedRGBSha256": "73a945eeb23e17fc100e57a438d854003877d4eb10bf807ee54e3b2323bb231a",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "nearDuplicateGroup": "real-7e9f6f83ae43ec2a",
+      "selectionRank": "0ed6b271fb327b6de50118906a02328726729bb5a6d3a88463ac57d31e94faf9",
+      "sourceGroups": [
+        "pinterest-board:https://dk.pinterest.com/sabrinadanholm/mine-egne-flettede-julehjerter/",
+        "pinterest-pin-405746247658560941"
+      ]
+    },
+    {
+      "id": "real-d4f6e3c76cf08ea8-body-1",
+      "assetId": "real-d4f6e3c76cf08ea8",
+      "file": "tmp/heart-training-real/assets/d4f6e3c76cf08ea8559e9cd4c349a48edc979fccddde9b3d38a6478672c4c11a.jpg",
+      "imageSha256": "d4f6e3c76cf08ea8559e9cd4c349a48edc979fccddde9b3d38a6478672c4c11a",
+      "dimensions": [
+        747,
+        747
+      ],
+      "decodedRGBSha256": "7341677c7e045280b7a8857c2f6a32ad2a4d1e87855782558120d225f57505ca",
+      "splitGroupId": "real-split-f62261fbd9c9f7f9",
+      "nearDuplicateGroup": "real-d4f6e3c76cf08ea8",
+      "selectionRank": "0b9f0ad2a408c4bab569ad24e1f62b422a8a795d9e5bc9abccb51512e14f5a61",
+      "sourceGroups": [
+        "flettede",
+        "publisher:flettedehjerter.dk"
+      ]
+    },
+    {
+      "id": "real-41b7c3e0b79f1265-body-1",
+      "assetId": "real-41b7c3e0b79f1265",
+      "file": "tmp/heart-training-real/assets/41b7c3e0b79f126576ecce2c2f7fb12139af1f4bd06c22a3cc1831e2c8d78be2.jpg",
+      "imageSha256": "41b7c3e0b79f126576ecce2c2f7fb12139af1f4bd06c22a3cc1831e2c8d78be2",
+      "dimensions": [
+        1200,
+        1200
+      ],
+      "decodedRGBSha256": "74cdbcfa10e295ead78b905c950e6955720e4d07e277ff46b640a5aae46853b5",
+      "splitGroupId": "real-split-7733a2ebb431f524",
+      "nearDuplicateGroup": "real-9a88a2ce27e40b16",
+      "selectionRank": "905a083955bf737922caf7037ae7099ae364a67d4402d14241533915c35c5ea1",
+      "sourceGroups": [
+        "pinterest-pin-861032022517460569",
+        "publisher:danishthings.com"
+      ]
+    }
+  ]
+}

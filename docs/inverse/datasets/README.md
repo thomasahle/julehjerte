@@ -75,7 +75,13 @@ replacing only the resulting chroma field restores the reference crop exactly.
 In the other, one foreground pixel changes 589 paper-distance samples;
 replacing only that distance field restores the reference crop. Component-mask
 and colour-field substitutions do not. Continuous palette weighting and subpixel
-distance geometry are the next experiments; these causes are diagnosed, not fixed.
+distance geometry were then [tested separately and together](u2netp-continuous-fields-results.json).
+Confidence-weighted colour sampling preserves all original crop/support decisions
+and reduces maximum export-induced corner drift from 1.94 to 0.19 pixels.
+Distance-only processing worsens it to 7.47 pixels; the combined variant loses
+one existing crop. Both unsuccessful variants are retained. Colour weighting
+also changes some corners by 5–9 pixels relative to the old algorithm, so it
+needs fresh fitting and visual checks before any quality or release claim.
 
 The original [fresh 32-photo evaluation](u2netp-fresh-results.json) freezes the model and
 crop policy before inference. It keeps every existing production crop and adds
